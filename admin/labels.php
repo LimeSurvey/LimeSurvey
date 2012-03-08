@@ -597,9 +597,9 @@ function modlabelsetanswers($lid)
     if (!isset($_POST['method'])) {
         $_POST['method'] = $clang->gT("Save");
     }
-
-    $data = json_decode(stripslashes($_POST['dataToSend']));
-
+    
+    $data = json_decode(html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8"));
+    
     if ($ajax){
         $lid = insertlabelset();
     }

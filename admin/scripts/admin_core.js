@@ -643,8 +643,7 @@ function htmlspecialchars(str) {
 function saveaslabelset()
 {
     var lang = langs.split(";");
-
-
+	
     dataToSend = {};
     dataToSend['langs'] = lang;
     dataToSend['codelist'] = [];
@@ -696,7 +695,9 @@ function js2php(object){
     for (property in object){
         var value = object[property];
         if (typeof(value)=="string"){
-            json += '"'+property+'":"'+value+'",'
+			//escape double quotes!
+            value = value.replace(/"/g, '\\"'); //.replace(/'/g, '\\\'')
+			json += '"'+property+'":"'+value+'",';
         }
         else{
             if (!value[0]){
