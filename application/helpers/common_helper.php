@@ -3282,6 +3282,7 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Off'),
     1=>$clang->gT('Google Maps')),
+    'default' => 0,
     "help"=>$clang->gT("Activate this to show a map above the input field where the user can select a location"),
     "caption"=>$clang->gT("Use mapping service"));
 
@@ -3310,6 +3311,7 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Yes'),
     1=>$clang->gT('No')),
+    'default' => 0,
     "help"=>$clang->gT("Get the default location using the user's IP address?"),
     "caption"=>$clang->gT("IP as default location"));
 
@@ -3811,6 +3813,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(1=>$clang->gT('Warn and move on'),
     2=>$clang->gT('Move on without warning'),
     3=>$clang->gT('Disable only')),
+    "default" => 1,
     "help"=>$clang->gT("Action to perform when time limit is up"),
     "caption"=>$clang->gT("Time limit action"));
 
@@ -3832,6 +3835,7 @@ function questionAttributes($returnByName=false)
     "inputtype"=>"singleselect",
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
+    'default'=>0,
     "help"=>$clang->gT("Disable the prev button until the time limit expires"),
     "caption"=>$clang->gT("Time limit disable prev"));
 

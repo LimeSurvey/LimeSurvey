@@ -316,10 +316,6 @@ function retrieveAnswers($ia)
         list($answer, $inputnames)=$values;
     }
 
-    $answer .= "\n\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
-    $answer .= 'on'; //If this is single format, then it must be showing. Needed for checking conditional mandatories
-    $answer .= "' />\n"; //for conditional mandatory questions
-
     if ($ia[6] == 'Y')
     {
         $qtitle = '<span class="asterisk">'.$clang->gT('*').'</span>'.$qtitle;
@@ -449,7 +445,7 @@ function validation_message($ia,$show)
     if (!$show) {
         $class .= ' hide-tip';
     }
-    $tip = '<span class="' . $class . '" id="' . $ia[0] . '_vmsg">' . $qinfo['validTip'] . "</span>";
+    $tip = '<span class="' . $class . '" id="vmsg_' . $ia[0] . '">' . $qinfo['validTip'] . "</span>";
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
     //    if (!$qinfo['valid']) {
@@ -895,14 +891,7 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
         $htmltbody2 .= " style='display: none'";
     }
     $htmltbody2 .= ">\n";
-    if($ia[4]=="1") {
-        //This is an array dual scale question and we have to massage the tbidpslay rowname
-        $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='on' />\n";
-        $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='on' />\n";
-    } else {
-        $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />\n";
-    }
-    return array($htmltbody2, $hiddenfield);
+    return array($htmltbody2, "");
 }
 
 // ==================================================================
@@ -2229,7 +2218,7 @@ function do_ranking($ia)
         . "  function ensureminansw_{$ia[0]}()\n"
         . "  {\n"
         . "     count={$anscount} - document.getElementById('CHOICES_{$ia[0]}').options.length;\n"
-        . "     if (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n";
+        . "     if (count < {$minansw} && $('#relevance{$ia[0]}').val()==1){\n";
         if(!isset($showpopups) || $showpopups == 0)
         {
             $minanswscript .= "\n

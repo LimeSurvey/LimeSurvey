@@ -26,8 +26,9 @@ define('LEM_DEBUG_TIMING',1);
 define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
 define('LEM_DEBUG_VALIDATION_DETAIL',4);
 define('LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB',8);
-define('LEM_DEBUG_TRANSLATION_DETAIL',16);
 define('LEM_PRETTY_PRINT_ALL_SYNTAX',32);
+
+define('LEM_DEFAULT_PRECISION',12);
 
 class LimeExpressionManager {
     private static $instance;
@@ -49,8 +50,6 @@ class LimeExpressionManager {
     private $qcode2sgq; // maps name of the variable to the  SGQ name
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
     private $varNameAttr;   // JavaScript array of mappings of canonical JavaScript variable name to key attributes.
-    private $pageTailoringLog;  // Debug log of tailorings done on this page
-    private $surveyLogicFile;   // Shows current configuration and data from most recent $fieldmap
 
     private $qans;  // array of answer lists indexed by qid
     private $groupId2groupSeq;  // map of gid to 0-based sequence number of groups
@@ -320,6 +319,12 @@ class LimeExpressionManager {
             else if (preg_match('/^{.+}$/',$value)) {
                 $value = substr($value,1,-1);
             }
+            else if ($row['method'] == 'RX') {
+                if (!preg_match('#^/.*/$#',$value))
+                {
+                    $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
+                }
+            }
             else {
                 $value = '"' . $value . '"';
             }
@@ -573,7 +578,7 @@ class LimeExpressionManager {
                             $validationEqn[$questionNum] = array();
                         }
                         // sumEqn and sumRemainingEqn may need to be rounded if using sliders
-                        $precision=NULL;    // default is not to round
+                        $precision=LEM_DEFAULT_PRECISION;    // default is not to round
                         if (isset($qattr['slider_layout']) && $qattr['slider_layout']=='1')
                         {
                             $precision=0;   // default is to round to whole numbers
@@ -1018,13 +1023,21 @@ class LimeExpressionManager {
                         {
                             $validationEqn[$questionNum] = array();
                         }
+
+                        $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
+                        $precision = LEM_DEFAULT_PRECISION;
+                        if (!is_null($precision))
+                        {
+                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
+                        }
+
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value',
                             'class' => 'sum_range',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
+                            'sumEqn' => $sumEqn,
                         );
                     }
                 }
@@ -1068,13 +1081,21 @@ class LimeExpressionManager {
                         {
                             $validationEqn[$questionNum] = array();
                         }
+
+                        $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
+                        $precision = LEM_DEFAULT_PRECISION;
+                        if (!is_null($precision))
+                        {
+                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
+                        }
+
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value',
                             'class' => 'sum_range',
                             'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
+                            'sumEqn' => $sumEqn,
                         );
                     }
                 }
@@ -1396,7 +1417,7 @@ class LimeExpressionManager {
                             'qtype' => $type,
                             'type' => 'em_validation_q',
                             'class' => 'q_fn_validation',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' => '(sum(' . implode(', ', array_unique($sq_names)) . ') == 0)',
                             'qid' => $questionNum,
                         );
                     }
@@ -1781,7 +1802,6 @@ class LimeExpressionManager {
         $this->knownVars = array();   // mapping of VarName to Value
         $this->qcode2sgqa = array();
         $this->tempVars = array();
-        $this->debugLog = array();    // array of mappings among values to confirm their accuracy
         $this->qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
         $this->jsVar2qid = array();
         $this->qcode2sgq = array();
@@ -2318,21 +2338,6 @@ class LimeExpressionManager {
                 . "','gseq':" . $groupSeq
                 . ",'qseq':" . $questionSeq
                 .$ansList."}";
-
-            if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-            {
-                $this->debugLog[] = array(
-                    'sgqa' => $sgqa,
-                    'type' => $type,
-                    'varname' => $varName,
-                    'jsName_on'=> $jsVarName_on,
-                    'jsName' => $jsVarName,
-                    'question' => $question,
-                    'readWrite' => $readWrite,
-                    'relevance' => $relevance,
-                    'hidden' => $hidden,
-                    );
-            }
         }
 
         $this->q2subqInfo = $q2subqInfo;
@@ -2362,21 +2367,6 @@ class LimeExpressionManager {
                     'jsName'=>'',
                     'readWrite'=>'N',
                     );
-
-                if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-                {
-                    $this->debugLog[] = array(
-                        'sgqa' => $key,
-                        'type' => '&nbsp;',
-                        'varname' => '&nbsp;',
-                        'jsName_on' => '&nbsp;',
-                        'jsName' => '&nbsp;',
-                        'question' => '&nbsp;',
-                        'readWrite'=>'N',
-                        'relevance'=>'',
-                        'hidden'=>'',
-                    );
-                }
             }
         }
         else
@@ -2425,25 +2415,6 @@ class LimeExpressionManager {
                 );
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
-        if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-        {
-            $debugLog_html = "<table border='1'>";
-            $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Hidden</th><th>Question</th></tr>";
-            foreach ($this->debugLog as $t)
-            {
-                $debugLog_html .= "<tr><td>" . $t['sgqa']
-                    . "</td><td>" . $t['type']
-                    . "</td><td>" . $t['varname']
-                    . "</td><td>" . $t['jsName']
-                    . "</td><td>" . $t['readWrite']
-                    . "</td><td>" . $t['relevance']
-                    . "</td><td>" . $t['hidden']
-                    . "</td><td>" . $t['question']
-                    . "</td></tr>";
-            }
-            $debugLog_html .= "</table>";
-            $this->surveyLogicFile = $debugLog_html;
-        }
         usort($this->questionSeq2relevance,'cmpQuestionSeq');
         $this->numQuestions = count($this->questionSeq2relevance);
         $this->numGroups = count($this->groupId2groupSeq);
@@ -2608,14 +2579,6 @@ class LimeExpressionManager {
 
         if ($timeit) {
             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-        }
-
-        if (($LEM->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-        {
-            $varsUsed = $LEM->em->GetJSVarsUsed();
-            if (is_array($varsUsed) and count($varsUsed) > 0) {
-                $LEM->pageTailoringLog .= '<tr><td>' . $LEM->groupNum . '</td><td>' . $string . '</td><td>' . $LEM->em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
-            }
         }
 
         return $result;
@@ -2870,17 +2833,11 @@ class LimeExpressionManager {
         $LEM->pageRelevanceInfo=array();
         $LEM->pageTailorInfo=array();
         $LEM->allOnOnePage=$allOnOnePage;
-        $LEM->pageTailoringLog='';
-        $LEM->surveyLogicFile='';
         $LEM->processedRelevance=false;
         $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
 
 //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
-        if (($LEM->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-        {
-            $LEM->pageTailoringLog .= '<tr><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
-        }
         $LEM->initialized=true;
     }
 
@@ -3051,8 +3008,10 @@ class LimeExpressionManager {
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
 
-                    if (!$result['relevant'] || $result['hidden'])
+                    if (!$grel || !$result['relevant'] || $result['hidden'])
                     {
                         // then skip this question - assume already saved?
                         continue;
@@ -3211,7 +3170,10 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
+
+                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
@@ -3266,8 +3228,10 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
 
-                    if (!$result['relevant'] || $result['hidden'])
+                    if (!$grel || !$result['relevant'] || $result['hidden'])
                     {
                         // then skip this question - assume already saved?
                         continue;
@@ -3655,7 +3619,9 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-                    if ($result['mandViolation'] || !$result['valid'])
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
+                    if ($grel && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
@@ -3716,10 +3682,16 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
 
-                    if (!$preview && (!$result['relevant'] || $result['hidden']))
+                    if (!$preview && (!$grel || !$result['relevant'] || $result['hidden']))
                     {
                         // then skip this question
+                        continue;
+                    }
+                    else if (!$grel)
+                    {
                         continue;
                     }
                     else if (!($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq) {
@@ -4427,7 +4399,7 @@ class LimeExpressionManager {
                 $stringToParse = '';
                 foreach ($LEM->qid2validationEqn[$qid]['tips'] as $vclass=>$vtip)
                 {
-                    $stringToParse .= "<div id='" . $qid . "_vmsg_" . $vclass . "' class='em_" . $vclass . "'>" . $vtip . "</div>\n";
+                    $stringToParse .= "<div id='vmsg_" . $qid  . '_' . $vclass . "' class='em_" . $vclass . "'>" . $vtip . "</div>\n";
                 }
                 $prettyPrintValidTip = $stringToParse;
                 $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
@@ -4827,8 +4799,6 @@ class LimeExpressionManager {
     static function FinishProcessingPage()
     {
         $LEM =& LimeExpressionManager::singleton();
-        $_SESSION['EM_pageTailoringLog'] = $LEM->pageTailoringLog;
-        $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
 
         $totalTime = 0.;
         if ((($LEM->debugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) && count($LEM->runtimeTimings)>0) {
@@ -4866,30 +4836,6 @@ class LimeExpressionManager {
         $LEM->initialized=false;    // so detect calls after done
         $LEM->ParseResultCache=array(); // don't need to persist it in session
         $_SESSION['LEMsingleton']=serialize($LEM);
-    }
-
-    /**
-     * Show the HTML for the logic file if $debugLevel has LEM_DEBUG_TRANSLATION_DETAIL bit set
-     * @return <type>
-     */
-    static function ShowLogicFile()
-    {
-        if (isset($_SESSION['EM_surveyLogicFile'])) {
-            return $_SESSION['EM_surveyLogicFile'];
-        }
-        return '';
-    }
-
-    /**
-     * Show the HTML of the tailorings on this page if $debugLevel has LEM_DEBUG_TRANSLATION_DETAIL bit set
-     * @return <type>
-     */
-    static function ShowPageTailorings()
-    {
-        if (isset($_SESSION['EM_pageTailoringLog'])) {
-            return $_SESSION['EM_pageTailoringLog'];
-        }
-        return '';
     }
 
     /*
@@ -5048,27 +4994,6 @@ static function GetRelevanceAndTailoringJavaScript()
                     $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
                     $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
                     $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
-                    switch ($sq['qtype'])
-                    {
-                        case '1': //Array (Flexible Labels) dual scale
-                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('on');\n";
-                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('on');\n";
-                            break;
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                        case ';': //ARRAY (Multi Flexi) Text
-                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'L': //LIST drop-down/radio-button list
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
-                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('on');\n";
-                            break;
-                        default:
-                            break;
-                    }
                     $relParts[] = "  }\n  else {\n";
                     $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
                     $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";
@@ -5076,7 +5001,6 @@ static function GetRelevanceAndTailoringJavaScript()
                     switch ($sq['qtype'])
                     {
                         case 'L': //LIST drop-down/radio-button list
-                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
                             $relParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
                             if ($listItem == 'other') {
@@ -5155,9 +5079,9 @@ static function GetRelevanceAndTailoringJavaScript()
                         $_validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
 
                         $valParts[] = "\n  if(" . $_validationJS . "){\n";
-                        $valParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass . "').removeClass('error').addClass('good');\n";
+                        $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').removeClass('error').addClass('good');\n";
                         $valParts[] = "  }\n  else {\n";
-                        $valParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass ."').removeClass('good').addClass('error');\n";
+                        $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').removeClass('good').addClass('error');\n";
                         switch ($vclass)
                         {
                             case 'sum_range':
@@ -5580,7 +5504,7 @@ static function GetRelevanceAndTailoringJavaScript()
 <b>Unknown/Misspelled Variables, Functions, and Operators</b><br/>{if(sex=='M','Mr.','Mrs.')} {surname}, next year you will be {age++} years old.
 <b>Warns if use = instead of == or perform value assignments</b><br>Hello, {if(gender='M','Mr.','Mrs.')} {surname}, next year you will be {age+=1} years old.
 <b>Wrong number of arguments for functions:</b><br/>{if(gender=='M','Mr.','Mrs.','Other')} {surname}, sum(age,numKids,numPets)={sum(age,numKids,numPets,)}
-<b>Mismatched parentheses</b><br/>pow(3,4)={pow(3,4)}<br/>but these are wrong: {pow(3,4}, {(pow(3,4)}, {pow(3,4))}
+<b>Mismatched parentheses</b><br/>pow(3,4)={pow(3,4)}<br/>but these are wrong: {pow(3,4}, {(((pow(3,4)}, {pow(3,4))}
 <b>Unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age, age % 2);}<br/>Nor '|', '&', '^':  {(sum(2 | 3, 3 & 4, 5 ^ 6)}}<br/>Nor arrays:  {name[2], name['mine']}
 <b>Invalid assignments</b><br/>Assign values to equations or strings:  {(3 + 4)=5}, {'hi'='there'}<br/>Assign read-only vars:  {TOKEN:ATTRIBUTE_1='boss'}, {name='Sally'}
 <b>Values:</b><br/>name={name}; surname={surname}<br/>gender={gender}; age={age}; numPets={numPets}<br/>numKids=INSERTANS:61764X1X3={numKids}={INSERTANS:61764X1X3}<br/>TOKEN:ATTRIBUTE_1={TOKEN:ATTRIBUTE_1}
@@ -5718,7 +5642,8 @@ EOT;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceStatus'=>'1','gseq'=>1, 'qseq'=>$i);
+            $type = (($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S');
+            $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>$type, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
             $LEM->questionId2questionSeq[$i] = $i;
@@ -5729,14 +5654,24 @@ EOT;
                 'qseq'=>$i,
                 'gseq'=>1,
                 'jsResultVar'=>'java' . $args[0],
-                'type'=>(($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S'),
+                'type'=>$type,
                 'hidden'=>false,
                 'gid'=>1,   // ($i % 3),
                 );
             ++$i;
         }
 
-        $LEM->tempVars = $vars;
+        $LEM->knownVars = $vars;
+        $LEM->gRelInfo[1] = array(
+            'gid' => 1,
+            'gseq' => 1,
+            'eqn' => '',
+            'result' => 1,
+            'numJsVars' => 0,
+            'relevancejs' => '',
+            'relevanceVars' => '',
+            'prettyPrint'=> '',
+        );
         $LEM->ProcessAllNeededRelevance();
 
         // collect relevance
@@ -5754,6 +5689,7 @@ EOT;
             $argInfo[] = array(
                 'num' => $i,
                 'name' => $jsVarName,
+                'sgqa' => $testArg[0],
                 'type' => $testArg[2],
                 'question' => $question,
                 'relevance' => $testArg[1],
@@ -5815,10 +5751,10 @@ EOD;
                 {
                     case 'yesno':
                     case 'text':
-                        print "<td><input type='text' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring(\"onchange\")'/></td>\n";
+                        print "<td><input type='text' id='" . $arg['name'] . "' name='" . $arg['sgqa'] . "' value='' onchange='checkconditions(this.value, this.name, this.type)'/></td>\n";
                         break;
                     case 'message':
-                        print "<input type='hidden' id='" . $arg['name'] . "' name='" . $arg['name'] . "' value=''/>\n";
+                        print "<input type='hidden' id='" . $arg['name'] . "' name='" . $arg['sgqa'] . "' value=''/>\n";
                         break;
                 }
                 print "</tr>\n</table>\n";
@@ -6132,115 +6068,120 @@ EOD;
     /**
      * Cleanse the $_POSTed data and update $_SESSION variables accordingly
      */
-    static function ProcessCurrentResponses()
-    {
-        $LEM =& LimeExpressionManager::singleton();
-        if (!isset($LEM->currentQset)) {
-            return array();
-        }
-        $updatedValues=array();
-        $radixchange = (($LEM->surveyOptions['radix']==',') ? true : false);
-        foreach ($LEM->currentQset as $qinfo)
+        static function ProcessCurrentResponses()
         {
-            $relevant=false;
-            $qid = $qinfo['info']['qid'];
-            $gid = $qinfo['info']['gid'];
-            $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
-            $grelevant = (isset($_POST['relevanceG' . $gid]) ? ($_POST['relevanceG' . $gid] == 1) : false);
-            $_SESSION['relevanceStatus'][$qid] = $relevant;
-            $_SESSION['relevanceStatus']['G' . $gid] = $grelevant;
-            if (isset($qinfo['info']['rowdivid']) && $qinfo['info']['rowdivid']!='')
-            {
-                $rowdivid=$qinfo['info']['rowdivid'];
-                if ($rowdivid!='' && isset($_POST['relevance' . $rowdivid]))
-                {
-                    $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
-                    $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
-                }
+            $LEM =& LimeExpressionManager::singleton();
+            if (!isset($LEM->currentQset)) {
+                return array();
             }
-            foreach (explode('|',$qinfo['sgqa']) as $sq)
+            $updatedValues=array();
+            $radixchange = (($LEM->surveyOptions['radix']==',') ? true : false);
+            foreach ($LEM->currentQset as $qinfo)
             {
-                if ($relevant && $grelevant)
+                $relevant=false;
+                $qid = $qinfo['info']['qid'];
+                $gid = $qinfo['info']['gid'];
+                $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
+                $grelevant = (isset($_POST['relevanceG' . $gid]) ? ($_POST['relevanceG' . $gid] == 1) : false);
+                $_SESSION['relevanceStatus'][$qid] = $relevant;
+                $_SESSION['relevanceStatus']['G' . $gid] = $grelevant;
+                foreach (explode('|',$qinfo['sgqa']) as $sq)
                 {
-                    $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                    $sqrelevant=true;
+                    if (isset($LEM->subQrelInfo[$qid][$sq]['rowdivid']))
+                    {
+                        $rowdivid = $LEM->subQrelInfo[$qid][$sq]['rowdivid'];
+                        if ($rowdivid!='' && isset($_POST['relevance' . $rowdivid]))
+                        {
+                            $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
+                            $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
+                        }
+                    }
                     $type = $qinfo['info']['type'];
-                    if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
+                    if ($relevant && $grelevant && $sqrelevant)
                     {
-                        // convert from comma back to decimal
-                        $value = implode('.',explode(',',$value));
-                    }
-                    switch($type)
-                    {
-                        case 'D': //DATE
-                            if (trim($value)=="")
-                            {
-                                $value = "";
-                            }
-                            else
-                            {
-                                $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                                $value=$datetimeobj->convert("Y-m-d");
-                            }
-                            break;
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
-                            if (trim($value)=="") {
-                                $value = "";
-                            }
-                            else {
-                                $value = sanitize_float($value);
-                            }
-                            break;
-                        case '|': //File Upload
-                            if (!preg_match('/_filecount$/', $sq))
-                            {
-                                $json = $value;
-                                $phparray = json_decode(stripslashes($json));
-
-                                // if the files have not been saved already,
-                                // move the files from tmp to the files folder
-
-                                $tmp = $LEM->surveyOptions['tempdir'] . '/upload/';
-                                if (!is_null($phparray) && count($phparray) > 0)
+                        $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                        if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
+                        {
+                            // convert from comma back to decimal
+                            $value = implode('.',explode(',',$value));
+                        }
+                        switch($type)
+                        {
+                            case 'D': //DATE
+                                if (trim($value)=="")
                                 {
-                                    // Move the (unmoved, temp) files from temp to files directory.
-                                    // Check all possible file uploads
-                                    for ($i = 0; $i < count($phparray); $i++)
-                                    {
-                                        if (file_exists($tmp . $phparray[$i]->filename))
-                                        {
-                                            $sDestinationFileName = 'fu_' . randomChars(15);
-                                            if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
-                                            {
-                                                echo "Error moving file to target destination";
-                                            }
-                                            $phparray[$i]->filename = $sDestinationFileName;
-                                        }
-                                    }
-                                    $value = str_replace('{','{ ',json_encode($phparray));  // so that EM doesn't try to parse it.
+                                    $value = "";
                                 }
-                            }
-                            break;
-                    }
-                    $_SESSION[$sq] = $value;
-                    $updatedValues[$sq] = array (
+                                else
+                                {
+                                    $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+                                    $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                                    $value=$datetimeobj->convert("Y-m-d");
+                                }
+                                break;
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                if (trim($value)=="") {
+                                    $value = "";
+                                }
+                                else {
+                                    $value = sanitize_float($value);
+                                }
+                                break;
+                            case '|': //File Upload
+                                if (!preg_match('/_filecount$/', $sq))
+                                {
+                                    $json = $value;
+                                    $phparray = json_decode(stripslashes($json));
+
+                                    // if the files have not been saved already,
+                                    // move the files from tmp to the files folder
+
+                                    $tmp = $LEM->surveyOptions['tempdir'] . '/upload/';
+                                    if (!is_null($phparray) && count($phparray) > 0)
+                                    {
+                                        // Move the (unmoved, temp) files from temp to files directory.
+                                        // Check all possible file uploads
+                                        for ($i = 0; $i < count($phparray); $i++)
+                                        {
+                                            if (file_exists($tmp . $phparray[$i]->filename))
+                                            {
+                                                $sDestinationFileName = 'fu_' . randomChars(15);
+                                                if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
+                                                {
+                                                    echo "Error moving file to target destination";
+                                                }
+                                                $phparray[$i]->filename = $sDestinationFileName;
+                                            }
+                                        }
+                                        $value = str_replace('{','{ ',json_encode($phparray));  // so that EM doesn't try to parse it.
+                                    }
+                                }
+                                break;
+                        }
+                        $_SESSION[$sq] = $value;
+                        $updatedValues[$sq] = array (
                         'type'=>$type,
                         'value'=>$value,
                         );
-                }
-                else {  // irrelevant, so database will be NULLed separately
-                    // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
-                    unset($_SESSION[$sq]);
+                    }
+                    else {  // irrelevant, so database will be NULLed separately
+                        // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
+                        unset($_SESSION[$sq]);
+                        $updatedValues[$sq] = array (
+                        'type'=>$type,
+                        'value'=>NULL,
+                        );
+                    }
                 }
             }
+            if (isset($_POST['timerquestion']))
+            {
+                $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
+            }
+            return $updatedValues;
         }
-        if (isset($_POST['timerquestion']))
-        {
-            $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
-        }
-        return $updatedValues;
-    }
 
     static public function isValidVariable($varName)
     {
@@ -6666,15 +6607,15 @@ EOD;
             }
 
             $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
-            $help = (($q['info']['help'] != '') ? '<hr/>[HELP: ' . $q['info']['help'] . ']': '');
-            $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr/>(TIP: ' . $q['prettyValidTip'] . ')');
+            $help = (($q['info']['help'] != '') ? '<hr/>[' . $LEM->gT("HELP:") . ' ' . $q['info']['help'] . ']': '');
+            $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr/>(' . $LEM->gT("TIP:") . ' ' . $q['prettyValidTip'] . ')');
 
             //////
             // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
             //////
             $attrTable = '';
             if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
-                $attrTable = "<hr/><table border='1'><tr><th>Question Attribute</th><th>Value</th></tr>\n";
+                $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                 $count=0;
                 foreach ($LEM->qattr[$qid] as $key=>$value) {
                     if (is_null($value) || trim($value) == '') {
@@ -6799,7 +6740,7 @@ EOD;
 
             if (!preg_match('/^[_a-zA-Z][_0-9a-zA-Z]*$/', $rootVarName))
             {
-                $varNameErrorMsg .= $LEM->gT('Starting in 1.92, variable names can only contain letters, numbers, and underscores. This variable name is deprecated.');
+                $varNameErrorMsg .= $LEM->gT('Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated.');
             }
             if ($varNameErrorMsg != '')
             {
@@ -6939,7 +6880,7 @@ EOD;
             //////
             // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
             //////
-            $errclass = ($errorCount > 0) ? "class='LEMerror' title='This question has at least $errorCount error(s)'" : '';
+            $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->gT("This question has at least %s error(s)"), $errorCount) . "'" : '';
 
             $questionRow = "<tr class='LEMquestion'>"
             . "<td $errclass>Q-" . $q['info']['qseq'] . "</td>"
@@ -6978,7 +6919,7 @@ EOD;
         }
 
         if (count($allErrors) > 0) {
-            $out = "<p class='LEMerror'>".sprintf($LEM->gT("%d question(s) contain errors that need to be corrected"), count($allErrors)) . "</p>\n" . $out;
+            $out = "<p class='LEMerror'>". sprintf($LEM->gT("%s question(s) contain errors that need to be corrected"), count($allErrors)) . "</p>\n" . $out;
         }
         else {
             switch ($surveyMode)
