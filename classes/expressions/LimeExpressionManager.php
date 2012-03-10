@@ -2161,8 +2161,9 @@
                         break;
                     case '|': //File Upload
                         // Only want the use the one that ends in '_filecount'
-                        $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$sgqa);
-                        $jsVarName = $goodcode . '_filecount';
+//                        $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$sgqa);
+//                        $jsVarName = $goodcode . '_filecount';
+                        $jsVarName = $sgqa;
                         $jsVarName_on = $jsVarName;
                         break;
                     case 'P': //Multiple choice with comments checkbox + text
@@ -6132,6 +6133,10 @@ EOD;
                                             if (file_exists($tmp . $phparray[$i]->filename))
                                             {
                                                 $sDestinationFileName = 'fu_' . sRandomChars(15);
+                                                if (!is_dir($LEM->surveyOptions['target']))
+                                                {
+                                                    mkdir($LEM->surveyOptions['target'], 0777, true);
+                                                }
                                                 if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
                                                 {
                                                     echo "Error moving file to target destination";
@@ -6356,14 +6361,23 @@ EOD;
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
                             case 'U': //HUGE FREE TEXT
-                            case 'M': //Multiple choice checkbox
-                            case 'P': //Multiple choice with comments checkbox + text
                             case 'D': //DATE
                             case '*': //Equation
                             case 'I': //Language Question
                             case '|': //File Upload
                             case 'X': //BOILERPLATE QUESTION
                                 $shown = $code;
+                                break;
+                            case 'M': //Multiple choice checkbox
+                            case 'P': //Multiple choice with comments checkbox + text
+                                if ($code == 'Y' && isset($var['question']))
+                                {
+                                    $shown = $var['question'];
+                                }
+                                else
+                                {
+                                    $shown = $default;
+                                }
                                 break;
                             case 'G': //GENDER drop-down list
                             case 'Y': //YES/NO radio-buttons
@@ -6377,9 +6391,7 @@ EOD;
                                 else
                                 {
                                     if (isset($ansArray[$code])) {
-                                        $answerInfo = explode('|',$ansArray[$code]);
-                                        array_shift($answerInfo);
-                                        $answer = join('|',$answerInfo);
+                                        $answer = $ansArray[$code];
                                     }
                                     else {
                                         $answer = $default;

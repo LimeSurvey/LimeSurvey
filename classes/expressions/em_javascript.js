@@ -268,14 +268,19 @@ function LEMval(alias)
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
-                    which_ans = '0~' + value;
-                    if (typeof attr.answers[which_ans] === 'undefined') {
+                    if (attr.type == 'O' && varName.match(/comment$/)) {
                         answer = value;
                     }
                     else {
-                        answerParts = attr.answers[which_ans].split('|');
-                        answerParts.shift();    // remove the first element
-                        answer = answerParts.join('|');
+                        which_ans = '0~' + value;
+                        if (typeof attr.answers[which_ans] === 'undefined') {
+                            answer = value;
+                        }
+                        else {
+                            answerParts = attr.answers[which_ans].split('|');
+                            answerParts.shift();    // remove the first element
+                            answer = answerParts.join('|');
+                        }
                     }
                     shown = answer;
                     break;
@@ -303,14 +308,26 @@ function LEMval(alias)
                 case 'S': //SHORT FREE TEXT
                 case 'T': //LONG FREE TEXT
                 case 'U': //HUGE FREE TEXT
-                case 'M': //Multiple choice checkbox
-                case 'P': //Multiple choice with comments checkbox + text
                 case 'D': //DATE
                 case '*': //Equation
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
                     shown = value; // what about "no answer"?
+                    break;
+                case 'M': //Multiple choice checkbox
+                case 'P': //Multiple choice with comments checkbox + text
+                    if (typeof attr.question === 'undefined' || value == '') {
+                        shown = '';
+                    }
+                    else {
+                        if (attr.type == 'P' && varName.match(/comment$/)) {
+                            shown = value;
+                        }
+                        else {
+                            shown = htmlspecialchars_decode(attr.question);
+                        }
+                    }
                     break;
             }
         }
