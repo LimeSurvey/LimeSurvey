@@ -2939,13 +2939,14 @@
                         {
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                            return array(
+                            $LEM->lastMoveResult = array(
                             'at_start'=>true,
                             'finished'=>false,
                             'message'=>$message,
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
+                            return $LEM->lastMoveResult;
                         }
 
                         $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
@@ -2963,7 +2964,7 @@
                             // display new group
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                            return array(
+                            $LEM->lastMoveResult = array(
                             'at_start'=>false,
                             'finished'=>false,
                             'message'=>$message,
@@ -2974,6 +2975,7 @@
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
+                            return $LEM->lastMoveResult;
                         }
                     }
                     break;
@@ -2988,13 +2990,14 @@
                         {
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                            return array(
+                            $LEM->lastMoveResult = array(
                             'at_start'=>true,
                             'finished'=>false,
                             'message'=>$message,
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
+                            return $LEM->lastMoveResult;
                         }
 
                         // Set certain variables normally set by StartProcessingGroup()
@@ -3024,7 +3027,7 @@
                             // display new question
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                            return array(
+                            $LEM->lastMoveResult = array(
                             'at_start'=>false,
                             'finished'=>false,
                             'message'=>$message,
@@ -3036,6 +3039,7 @@
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
+                            return $LEM->lastMoveResult;
                         }
                     }
                     break;
@@ -3441,10 +3445,18 @@
             return $message;
         }
 
-        static function GetLastMoveResult()
+        /**
+         * Get last move information, optionally clearing the substitution cache
+         * @param type $clearSubstitutionInfo
+         * @return type
+         */
+        static function GetLastMoveResult($clearSubstitutionInfo=false)
         {
             $LEM =& LimeExpressionManager::singleton();
-            $LEM->em->ClearSubstitutionInfo();  // need to avoid double-generation of tailoring info
+            if ($clearSubstitutionInfo)
+            {
+                $LEM->em->ClearSubstitutionInfo();  // need to avoid double-generation of tailoring info
+            }
             return (isset($LEM->lastMoveResult) ? $LEM->lastMoveResult : NULL);
         }
 

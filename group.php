@@ -95,7 +95,7 @@ else
     {
         // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
         // Does not try to save anything from the page to the database
-        $moveResult = LimeExpressionManager::GetLastMoveResult();
+        $moveResult = LimeExpressionManager::GetLastMoveResult(true);
         if (isset($_POST['thisstep']) && isset($moveResult['seq']) && $_POST['thisstep'] == $moveResult['seq'])
         {
             // then pressing F5 or otherwise refreshing the current page, which is OK
@@ -180,7 +180,7 @@ else
         }
         if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION['step'] == 0)) {
             // Just in case not set via any other means, but don't do this if it is the welcome page
-            $moveResult = LimeExpressionManager::GetLastMoveResult();
+            $moveResult = LimeExpressionManager::GetLastMoveResult(true);
             $LEMskipReprocessing=true;
         }
     }
@@ -249,7 +249,7 @@ else
             showsaveform(); // reshow the form if there is an error
         }
 
-        $moveResult = LimeExpressionManager::GetLastMoveResult();
+        $moveResult = LimeExpressionManager::GetLastMoveResult(true);
         $LEMskipReprocessing=true;
 
         // TODO - does this work automatically for token answer persistence? Used to be savedsilent()

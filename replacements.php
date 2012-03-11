@@ -568,18 +568,24 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_assessment_current_total = '';
     }
 
-    $_googleAnalyticsAPIKey = (isset($thissurvey['googleanalyticsapikey']) ? $thissurvey['googleanalyticsapikey'] : '');
-    $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '0');
-
-    switch ($_googleAnalyticsStyle)
+    if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '')
     {
-        case '0':
-        default:
-            $_googleAnalyticsJavaScript = '';
-            break;
-        case '1':
-            // Default Google Tracking
-            $_googleAnalyticsJavaScript = <<<EOD
+        $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
+    }
+    else
+    {
+        $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
+    }
+    $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '0');
+    $_googleAnalyticsJavaScript = '';
+
+    if ($_googleAnalyticsStyle != '' && $_googleAnalyticsStyle != 0 && $_googleAnalyticsAPIKey != '')
+    {
+        switch ($_googleAnalyticsStyle)
+        {
+            case '1':
+                // Default Google Tracking
+                $_googleAnalyticsJavaScript = <<<EOD
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -588,14 +594,34 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 try{
 var pageTracker = _gat._getTracker("$_googleAnalyticsAPIKey");
 pageTracker._trackPageview();
-} catch(err) {}
+} catch(err) { }
 </script>
 EOD;
-            break;
-        case '2':
-            // SurveyName-[SID]/GroupName
-            $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/' . $_groupname);
-            $_googleAnalyticsJavaScript = <<<EOD
+                break;
+            case '2':
+                // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
+                $moveInfo = LimeExpressionManager::GetLastMoveResult();
+                if (is_null($moveInfo)) {
+                    $gseq='welcome';
+                }
+                else if ($moveInfo['finished'])
+                {
+                    $gseq='finished';
+                }
+                else if (isset($moveInfo['at_start']) && $moveInfo['at_start'])
+                {
+                    $gseq='welcome';
+                }
+                else if (is_null($_groupname))
+                {
+                    $gseq='printanswers';
+                }
+                else
+                {
+                    $gseq=$moveInfo['gseq']+1;
+                }
+                $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
+                $_googleAnalyticsJavaScript = <<<EOD
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -604,11 +630,13 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 try{
 var pageTracker = _gat._getTracker("$_googleAnalyticsAPIKey");
 pageTracker._trackPageview("$_trackURL");
-} catch(err) {}
+} catch(err) { }
 </script>
 EOD;
-            break;
+                break;
+        }
     }
+
     // Set the array of replacement variables here - don't include curly braces
     // Please put any conditional logic above this section.  Here below should just be an alphabetical list of replacement values with no embedded logic.
 
