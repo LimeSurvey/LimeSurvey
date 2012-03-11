@@ -105,6 +105,8 @@ function globalsettingssave()
             setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
 
             $_SESSION['flashmessage'] = $clang->gT("Global settings were saved.");
+            $url = htmlspecialchars_decode($_SESSION['refurl']);
+            header("Location: $url");
 
         }
     }
@@ -114,7 +116,8 @@ function globalsettingsdisplay()
 {
     global $action, $connect, $js_admin_includes, $editsurvey, $subaction, $scriptname, $clang;
     global $updateversion, $updatebuild, $updateavailable, $updatelastcheck, $demoModeOnly;
-
+    global $refurl;
+    
     if (isset($subaction) && $subaction == "updatecheck")
     {
         $updateinfo=updatecheck();
@@ -124,6 +127,9 @@ function globalsettingsdisplay()
     {
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         {
+            //save refurl from where global settings screen is called!
+            $_SESSION['refurl'] = htmlspecialchars($refurl); //just to be safe!
+            
             $js_admin_includes[]='scripts/globalsettings.js';
             // header
             $editsurvey = "<div class='header ui-widget-header'>".$clang->gT("Global settings")."</div>\n";
