@@ -815,11 +815,11 @@ function upgrade_token_tables145()
 {
     global $modifyoutput,$dbprefix;
     $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
-    $surveyidresult = db_execute_assoc($surveyidquery);
+    $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
     {
-        foreach ( $surveyidresult->result_array() as $sv)
+        while ($sv = $surveyidresult->FetchRow())
         {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `usesleft` int(11) NOT NULL default '1'"); echo $modifyoutput; flush();@ob_flush();
             modify_database("","UPDATE ".$sv[0]." SET `usesleft`='0' WHERE completed<>'N'"); echo $modifyoutput; flush();@ob_flush();

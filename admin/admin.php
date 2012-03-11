@@ -45,6 +45,7 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
+$refurl =  $_SERVER['HTTP_REFERER']; //store referer. Can be used for other screens and not just GlobalSettings
 LimeExpressionManager::SetSurveyId($surveyid);  // must be called early - it clears internal cache if a new survey is being used
 
 if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
