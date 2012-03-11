@@ -56,7 +56,11 @@ class GlobalSettings extends Survey_Common_Action
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');
-
+        
+        //save refurl from where global settings screen is called!
+        $refurl = CHttpRequest::getUrlReferrer(); 
+        Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
+        
         $data['clang'] = $this->getController()->lang;
         $data['title'] = "hi";
         $data['message'] = "message";
@@ -105,7 +109,7 @@ class GlobalSettings extends Survey_Common_Action
         } else {
             $aRestrictToLanguages = implode(' ', $aRestrictToLanguages);
         }
-
+        
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('updatecheckperiod', (int)($_POST['updatecheckperiod']));
@@ -162,6 +166,9 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
 
         Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");
+        
+        $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
+        CController::redirect($url);
     }
 
     private function _checkSettings()
