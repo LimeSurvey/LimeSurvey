@@ -3290,7 +3290,7 @@
                 //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
                 if ($connect->AutoExecute($this->surveyOptions['tablename'], $sdata,'INSERT'))    // Checked
                 {
-                    $srid = $connect->Insert_ID($this->surveyOptions['tablename'],"sid");
+                    $srid = $connect->Insert_ID($this->surveyOptions['tablename'],"id");
                     $_SESSION['srid'] = $srid;
                 }
                 else
