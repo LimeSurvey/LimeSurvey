@@ -1,4 +1,4 @@
-Welcome to LimeSurvey 2.0alpha!
+Welcome to LimeSurvey v1.92+!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -39,7 +39,7 @@ However, you can import old survey structures from version 1.0 (when you create 
 Just do a new installation as described on http://docs.limesurvey.org.
 
 
-HOW TO UPGRADE from LimeSurvey 1.50 or later (<=1.70)
+HOW TO UPGRADE from LimeSurvey 1.45 or later (<=1.70)
 ------------------------------------------------------
 1. Make backups of your files and database.
 2. Backup your config.php.
@@ -56,7 +56,7 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 2.x
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 --------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
@@ -77,28 +77,131 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 2.x
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.91+ (build 11228) to 2.0a (build 11268) Oct 20, 2011
-+New feature: Ported LimeSurvey to use the CodeIgniter PHP framework (magiclko,dionet)
-+New feature #5103: Advanced way to create conditions/piping/micro-tailoring based on equations by using the Expression Manage (EM) engine (tmswhite)
-+New feature: Auto-generate Relevance Equation from Conditions when save question (tmswhite)
-+New feature: GUI for ExpressionManager (tmswhite)
+Changes from 1.92+ to 2.0a2 (build 120312) Mar 11, 2012
+#Updated feature: Users and rights management workflow improvements - GCI2011 by Daniel Huang N (Pieter Jan Speelmans)
+#Updated feature: CodeMirror UI editor now used when editing templates  (magiclko)
++New feature #5044: Allowing selection of token valid from/until datea(#1) (Shubham Sachdeva)
++New feature: More class on question and answer item for easiest manipulation
++New feature: More explicit labels for accessibility, hidden by default with .hide class
++New feature: Each type of validation tip can be styled separately (so if a question fails validation checks, you can see whether it is because of wrong number of answers, wrong value range, wrong sum range, or wrong regex criteria). (tmswhite)
++New feature: "Send confirmation emails?" setting in Survey properties --> General settings --> Tokens. (Tony Partner)
++New feature: $lwcdropdowns setting removed from config-defaults.php and moved to Advanced question settings for List with Comment question type (Carsten Schmitz)
 +New feature: A real installer (magiclko)
-+New feature: $lwcdropdowns setting removed from config-defaults.php and moved to Advanced question settings for List with Comment question type (c_schmitz)
 +New feature: Ability to make last minute changes in the survey activation screen to settings that cannot be changed after activation anymore (c_schmitz)
-+New feature: Export multiple survey archives at the survey list as one big ZIP file (c_schmitz)
++New feature: Add drag and drop feature to ranking question - done by GCI participant Nano8Blazex 
++New feature: Attribute hide_tip now available for date question (Carsten Schmitz)
++New feature: Create new label sets or replace old ones from subquestions or answers
++New feature: Database installation by command line. Usage: "php index.php installer cmd_install_db" (Carsten Schmitz)
++New feature: Export multiple survey archives at the survey list as one big ZIP file (Carsten Schmitz)
 +New feature: Export survey ZIP archive function with includes the survey structure, responses, tokens and timings - can be used for archival purposes or to move a survey from one server to another. (c_schmitz)
 +New feature: Global setting to restrict the languages being available in administration or frontend (c_schmitz)
-+New feature: Implemented mass actions in surveylist which allows to delete/expire several surveys at the same time - only available to super administrators (c_schmitz)
-+New feature: In deactivation screen you can choose now between deactivation and expiration (c_schmitz)
-+New feature: Multilingual question attributes (c_schmitz)
-+New feature: New RemoteControl 2 XML-RPC interface (instead of the old SOAP interface) (c_schmitz)
-+New feature: Randomization groups for question groups (c_schmitz)
-+New feature: Reorder questions/question groups per Drag-n-drop (c_schmitz)
-+New feature: Show modified question attributes at question summary (c_schmitz)
-+New feature: URL params for integration of survey panels (c_schmitz)
++New feature: Global setting to restrict the languages being available in administration or frontend (Carsten Schmitz)
++New feature: Implemented mass actions in surveylist which allows to delete/expire several surveys at the same time - only available to super administrators (Carsten Schmitz)
++New feature: In deactivation screen you can choose now between deactivation and expiration (Carsten Schmitz)
++New feature: Multilingual question attributes (Carsten Schmitz)
++New feature: Option to display text responses 'inline' in statistics output (will need translations) (Jason Cleeland)
++New feature: Option to switch between different graphs/no graph in statistics  - switchable in advanced question settings and in statistics itself (Carsten Schmitz)
++New feature: Ported LimeSurvey to use the Yii framework (magiclko,dionet)
++New feature: Randomization groups for question groups Carsten Schmitz)
++New feature: Reorder questions/question groups per Drag-n-drop  (Carsten Schmitz)
++New feature: Show Google maps with markers at statistics by GCI participant Licker Nandor (Carsten Schmitz)
++New feature: Show modified question attributes at question summary (Carsten Schmitz)
++New feature: Token section workflow improvements by GCI participant Nano8Blazex
++New feature: URL params for integration of survey panels (Carsten Schmitz)
+
+
+#Updated feature: Users and rights management workflow improvements - GCI2011 by Daniel Huang N (Pieter Jan Speelmans)
++New Feature #5044: Allowing selection of token valid from/until datea(#1) (Shubham Sachdeva)
++New Feature Each type of validation tip can be styled separately (so if a question fails validation checks, you can see whether it is because of wrong number of answers, wrong value range, wrong sum range, or wrong regex criteria). (tmswhite)
++New feature: "Send confirmation emails?" setting in Survey properties --> General settings --> Tokens. (Tony Partner)
++New feature: $lwcdropdowns setting removed from config-defaults.php and moved to Advanced question settings for List with Comment question type (Carsten Schmitz)
++New feature: Ability to make last minute changes in the survey activation screen to settings that cannot be changed after activation anymore 
++New feature: In deactivation screen you can choose now between deactivation and expiration (Carsten Schmitz)
++New feature: Add drag and drop feature to ranking question - done by GCI participant Nano8Blazex (Carsten Schmitz)
++New feature: Attribute hide_tip now available for date question (Carsten Schmitz)
++New feature: Database installation by command line. Usage: "php index.php installer cmd_install_db" (Carsten Schmitz)
++New feature: Export multiple survey archives at the survey list as one big ZIP file (Carsten Schmitz)
++New feature: Export survey ZIP archive function with includes the survey structure, responses, tokens and timings - can be used for archival purposes or to move a survey from one server to another. 
++New feature: Global setting to restrict the languages being available in administration or frontend (Carsten Schmitz)
++New feature: Implemented mass actions in surveylist which allows to delete/expire several surveys at the same time - only available to super administrators (Carsten Schmitz)
++New feature: Multilingual question attributes (Carsten Schmitz)
++New feature: Option to display text responses 'inline' in statistics output (will need translations) (Jason Cleeland)
++New feature: Option to switch between different graphs/no graph in statistics  - switchable in advanced question settings and in statistics itself (Carsten Schmitz)
++New feature: Randomization groups for question groups Carsten Schmitz)
++New feature: Reorder questions/question groups per Drag-n-drop  (Carsten Schmitz)
++New feature: Show Google maps with markers at statistics by GCI participant Licker Nandor (Carsten Schmitz)
++New feature: Show modified question attributes at question summary (Carsten Schmitz)
++New feature: Token section workflow improvements by GCI participant Nano8Blazex
++New feature: URL params for integration of survey panels (Carsten Schmitz)
+
+
 *Changed feature: CodeMirror UI editor now used when editing templates  (magiclko)
 
-Changes from 1.90 (build 9642) to 1.91+ (build 11228)
+Changes from 1.91+ (build 120302) to 1.92+ (build 120311) Mar 11, 2012
+-Fixed issue #5859: Question group import does not update references properly (Thomas White)
+-Fixed issue #5875: Flexible Labels do not register in french when apostrophes are in label text. (magiclko)
+-Fixed issue #5879: em_validation_q generates duplicative JavaScript (Thomas White)
+-Fixed issue #5880: Make em_q_fn_validation and em_sq_fn_validation more easily visible (Thomas White)
+-Fixed issue #5887: Minimum answers in Ranking question type are deactivated (Thomas White)
+-Fixed issue #5892: With question type "Short free text" and "display row" set, the text field is shown with some code (Thomas White)
+-Fixed issue #5894: INSERTANS (and qcode.shown) returning wrong values for some question types 
+-Fixed issue #5895: On-page substitution of comment for List with Comment type not being displayed (Thomas White)
+-Fixed issue #5897: Survey ID not set correctly after row insert in servey_NNN table (Thomas White)
+-Fixed issue #5778: Multiple choice answer for rtl in basic,bluenegrey,citronade,clear_logo,eireicon Dev: Add some empty class in citronade (Shnoulle)
+-Fixed issue #5778: Template for RTL : limespired, mint_idea,sherpa,vallendar (Shnoulle)
+-Fixed issue #5870: Progress indicator in quick-translate hiding to early. Some language (like Irish or Chinese) did not translate. (Carsten Schmitz)
+-Fixed issue #5876: Cryptic error message when trying to run LimeSurvey using an outdated PHP version (Carsten Schmitz)
+-Fixed issue #5878: Progress-bar not showing because of JS /eval folder being blocked Dev Renamed the folder from 'eval' to 'expressions' (Carsten Schmitz)
+-Fixed issue: Uploaded files fail if target directory does not exist. (Thomas White)
+-Fixed issue: Data not saved and validations don't work when use multiflexible_checkbox option in Array (numbers) question type (Thomas White)
+-Fixed issue: Differencation for good/empty and good/not-empty Dev : some css cleaning removing (Shnoulle)
+-Fixed issue: Equation question types were only capturing the contents of the first replacement <span> element (Thomas White)
+-Fixed issue: Error on upgrade from 1.90 or earlier (Carsten Schmitz)
+-Fixed issue: Group preview sometimes does not work (Thomas White)
+-Fixed issue: hide_type advanced question option not available for all question types (Thomas White)
+-Fixed issue: JavaScript IDs for validation messages start with a number, which does not pass strict HTML validation criteria (Thomas White)
+-Fixed issue: When using question type Array (Numbers) with multiflexible_checkbox input and radix separator = comma, JavaScript throws error when trying to fix radix separator (Thomas White)
+#Updated translation: Greek by Γιάννης Κασκαμανίδης (Carsten Schmitz)
+
+Changes from 1.91+ (build 120302) to 1.92+ (build 120303) Mar 11, 2012
++New feature #5780: Information when there is no matching label set (shnoulle)
++New feature #5103: Support conditional piping/tailoring and complex calculations via embedded equation parser (tmswhite)
++New feature #5104: Create new question type for stored calculation results, called Equation (tmswhite)
++New feature #5268: Do all LimeReplacementField and Token replacements in a single function (tmswhite)
++New feature #5269: Use ExpressionManager for Branching logic as optional alternative to Conditions (tmswhite)
++New feature #5279: Add a GUI for ExpressionManager (tmswhite)
++New feature #5288: Optionally replace Assessments with ExpressionManager features (tmswhite)
++New feature: Each type of validation tip can be styled separately (so if a question fails validation checks, you can see whether it is because of wrong number of answers, wrong value range, wrong sum range, or wrong regex criteria). (tmswhite)
++New feature: JavaScript question type selector and Editarea template can be desactivated by user (shnoulle)
++New feature: EM reserved word "this" which refers the the current sgqa code (tmswhite)
++New feature: Question_attribute 'em_validation_q': "Boolean equation to validate the whole question" (tmswhite)
++New feature: Question_attribute 'em_validation_q_tip': "Tip to show user describing the Question Validation Equation" (tmswhite)
++New feature: Question_attribute 'em_validation_sq': "Boolean equation to validate each sub-question." (tmswhite)
++New feature: Question_attribute 'em_validation_sq_tip': "Tip to show user describing the Sub-Question Validation Equation." (tmswhite)
++New feature: Added Tools button to access Expression Manager Test Suite (tmswhite)
++New feature: Allow Regular-Expression validation of question type ';' (ARRAY (Multi Flexi) Text) (tmswhite)
++New feature: Allow Regular-Expression validation of question type 'Q' (Multiple Short Text) (tmswhite)
++New feature: Google Analytics Support (tmswhite)
++New feature: Support dynamic validation range for multiflexible_min and multiflexible_max when in text input mode (tmswhite)
++New feature: dropdown_prefix attribute for List (dropdown) - lets you prefix each entry with its visible order in the list (tmswhite)
++New feature: dropdown_size attribute for List (dropdown) - lets you specify number of visible rows in the dropdown box (tmswhite)
++New feature: Code/QID visible in quick-translation answers/subquestions/questions for easier orientation (c_schmitz)
++New feature: Show Logic File for Entire Survey, with all conditions, validation, and tailoring (tmswhite)
++New feature: Sets "equals" as the default comparison operator for conditions (jcleeland)
++New feature: Quick-add feature for label sets which (was in _dev branch but was accidentally removed with merge in from _dev_tms branch) (tmswhite)
+#Updated feature: Added German translations to 1.91 sample survey. (maziminke)
+#Updated feature: Browse of submitted responses now only shows relevant questions and answers. (tmswhite)
+#Updated feature: Default values now available for the following question types: Date, Short/Long/Huge Text, Multiple ShortText, Multiple Numerical (tmswhite)
+#Updated feature: Deprecated min_num_value_sgqa, max_num_value_sgqa, and num_value_equals_sgqa (tmswhite)
+#Updated feature: array_filter - now also available for multiple_numeric and multiple_short_text (tmswhite)
+#Updated feature: exclude_all_others - now also available for multiple_choice_with_comments (tmswhite)
+#Updated feature: max_answers - now also available for all array types, multiple_numeric and multiple_short_text (tmswhite)
+#Updated feature: max_num_value_n - now also available for multiple_numeric (tmswhite)
+#Updated feature: min_answers - now also available for all array types, multiple_numeric and multiple_short_text (tmswhite)
+#Updated feature: Add many more unit tests to EM and group/sort them.  Contributed by GCi participant Aaron Schmitz (tmswhite)
+#Updated feature: min_num_value_n - now also available for multiple_numeric (tmswhite)
+
+Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
 +New feature: New variable $iFileUploadTotalSpaceMB which sets the maximum space available to all file uploads in the particular LimeSurvey installation - defaults to unlimited (c_schmitz)
 +New feature: Updated FCKeditor to CKEditor (c_schmitz)
 +New feature #4927: added SurveyGroupQuestion identifier {SGQ} as a variable for use in questions - thanks to timbee for the patch (mennodekker)
@@ -291,7 +394,7 @@ Changes from  1.87+ (build 6406) to 1.87+ (build 8429) - Legend: # updated featu
 #Updated language: Croatian (idobraca)
 #Updated language: French (b00z00)
 #Updated language: Italian (thanks to Cristina Fiorentini ) (gandalfar)
-#Updated language: Portuguese, thanks to Rui Gouveia and Marco MendonÃ§a (gandalfar)
+#Updated language: Portuguese, thanks to Rui Gouveia and Marco MendonÃƒÂ§a (gandalfar)
 #Updated language: Spanish (es) (kadejo)
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
@@ -480,8 +583,8 @@ Changes from 1.87RC4 (build 8002) [29-11-2009] to 1.87RC5 (build 8151) - Legend:
 +New feature: Start/Expiry is now date and time (previously only date) (c_schmitz)
 #Updated feature: SPSS export now configurable for SPSS version - patch by Menno Dekker (c_schmitz)
 #Updated translation: Croatian (idobraca)
-#Updated translation: Norwegian BokmÃ¥l (reidarok)
-#Updated translation: Czech by VladimÃ­r Braun (c_schmitz)
+#Updated translation: Norwegian BokmÃƒÂ¥l (reidarok)
+#Updated translation: Czech by VladimÃƒÂ­r Braun (c_schmitz)
 #Updated translation: Dutch by Fred Dekkers & Han Velthuis (c_schmitz)
 #Updated translation: Dutch by Fred Dekkers (c_schmitz)
 #Updated translation: Dutch Informal by Han Velthuis (c_schmitz)
@@ -560,7 +663,7 @@ Changes from 1.87RC2 (build 7886) to 1.87RC3 (build 7996) [27-11-2009] - Legend:
 #Updated translation: Finnish by Tapio Nurminen <tapio dot nurminen at tietokannat dot fi> 
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
-#Updated translation: Norwegian BokmÃ¥l. By Reidar Ã˜ksnevad <reidar dot oksnevad at freecode dot no> 
+#Updated translation: Norwegian BokmÃƒÂ¥l. By Reidar ÃƒËœksnevad <reidar dot oksnevad at freecode dot no> 
 #Updated translation: Portuguese Brazilian by Yoshitake <yoshitake at pucsp dot br> 
 #Updated translation: Slovakian by Pavel Cerny  <pcerny at gmail dot com>
 #Updated translation: Spanish (kadejo)
@@ -841,7 +944,7 @@ Changes from 1.85+ (build 7337) to 1.85+ (build 7393) [03-08-2009] - Legend: + n
 #Updated translation: Italian. (idobraca)
 #Updated translation: French. (b00z00)
 #Updated translation: Polish(elisa-ls)
-#Updated translation: Slovak by Marek HallÃ©r. (jaycburton)
+#Updated translation: Slovak by Marek HallÃƒÂ©r. (jaycburton)
 #Updated translation: Spanish (es) (kadejo)
 +New feature: CSS class for cells within array (flexible label) question type. This way cells within the table can have a background color assigned using CSS. (maziminke)
 -Fixed bug #03459: Using a "lower than" > character as code within label set leads to a save error in the end user survey form (jcleeland)
@@ -1038,7 +1141,7 @@ Changes from 1.81 to 1.82 (build 6757) [2009/04/29] - Legend: + new feature, # u
 +New feature in group order - detects faulty group_order numbering and fixes before displaying groups (jcleeland)
 +New language translation: Sinhalese translation by Janaka Padukka (c_schmitz)
 #Updated Language: Czech (macduy)
-#Updated Language: Hungarian - kindly provided by Miklós Kriván (c_schmitz)
+#Updated Language: Hungarian - kindly provided by MiklÃ³s KrivÃ¡n (c_schmitz)
 #Updated Language: Polish - kindly provided by Ela Lesinska (elisa) (c_schmitz)
 #Updated language: German & German (informal) (c_schmitz)
 #Updated language: German translation (c_schmitz)
@@ -1236,10 +1339,10 @@ Updated translations:
     Updated Language: Galician language updated. By Carlos Neira Cortizas. (kadejo)
     Updated Language: Greek language updated. By Yiannos Katsirintakis. (kadejo)
     Updated Language: Italian. By Giovanni Chiozza. (kadejo)
-    Updated Language: Norwegian Bokmål. By Reidar Øksnevad. (kadejo)
+    Updated Language: Norwegian BokmÃ¥l. By Reidar Ã˜ksnevad. (kadejo)
     Updated Language: Polish (xqleg)
-    Updated Language: Portuguese Brazilian by Andréa Simões (c_schmitz)
-    Updated Language: Portuguese Brazilian by Flávio Veras (c_schmitz)
+    Updated Language: Portuguese Brazilian by AndrÃ©a SimÃµes (c_schmitz)
+    Updated Language: Portuguese Brazilian by FlÃ¡vio Veras (c_schmitz)
     Updated Language: Russian. By Pavel Tokarev. (kadejo)
     Updated Language: Serbian language updated. By Miroslav Jovanovic. (first in Cyrillic alphabet). (kadejo)
     Updated Language: Slovenian language update (gasper_koren)
@@ -1460,7 +1563,7 @@ Feature Changes:
 -Applied changes to originals texts for better i18n compatibility by Hooman Mesgary (c_schmitz)
 
 Languages:
--Added Icelandic translation kindly provided by Jóhann Friðriksson ( johannfr -i-t- arskoli -d-i-t- is )
+-Added Icelandic translation kindly provided by JÃ³hann FriÃ°riksson ( johannfr -i-t- arskoli -d-i-t- is )
 -Updated Albanian Language file by Eniel Ninka (e -d-o-t- ninka -a-t- univpm -d-o-t- it )
 -Updated Basque Translation by inforbek13 --i-t-- eps -d-a-t- mondragon -d-a-t- edu
 -Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg
@@ -1470,7 +1573,7 @@ Languages:
 -Updated Dutch translation by Hans Delva, Gerton Poot
 -Updated Estonian Translation by Villem Vannas (villem -dot- vannas(a) mail (dot) ee)
 -Renamed Farsi to Persian (c_schmitz)
--Updated Finnish Translation by Juuso Heinisuo, Päivi Tyni  (c_schmitz)
+-Updated Finnish Translation by Juuso Heinisuo, PÃ¤ivi Tyni  (c_schmitz)
 -Updated French translation (b00z00 and el Almoman walmoman -a-t- hemisa -d-o-z- com)
 -Updated German translations (c_schmitz)
 -Updated Greek translation by Christos Rodosthenous and Yiannos Katsirintakis
@@ -1826,7 +1929,7 @@ New Features / Feature Changes - Release Date: 2008/02/25
 [Survey Design] Adding new questions to very large surveys, and question sorts (jasebo)
 [Survey Design] Question Attribute "display_columns" for Gender Question--Type (jasebo)
 [Survey Design] Implemented dropdown layout for Dual Scale Question Type (lemeur)
-[Language] Added Slovak translation provided by Juraj Zubán aka D4v1dZ ( d4v1dz -a-t- gmail -d-o-t- com)
+[Language] Added Slovak translation provided by Juraj ZubÃ¡n aka D4v1dZ ( d4v1dz -a-t- gmail -d-o-t- com)
 
 
 
@@ -1839,7 +1942,7 @@ Features
 -Lots of security fixes regarding internal security - upgrade is highly recommended. (c_schmitz)
 -Hint is now shown if database exist (c_schmitz)
 -Added a warning message when the user did not change the 'password' Password (c_schmitz)
--Updated and now complete SPanish Translation by Luis M. Martínez
+-Updated and now complete SPanish Translation by Luis M. MartÃ­nez
 -Updated and now complete Polish Translation by Damian Kubiak
 
 
@@ -1851,7 +1954,7 @@ Fixes:
 -Fixed problem with mandatory questions in all-in-one mode (leochaton)	
 -Fixed "Load unfinished survey" and "Save survey and return" buttons active even when the survey is not active (leochaton)	
 -Fixed question marks being shown instead if Cyrillic/chinese/greek/... characters when installing LImeSurvey into a non-UTF8 database (c_schmitz)
--Fixed $accesscontrol isn´t working correctly - removed this obsolete setting (leochaton, c_schmitz)	
+-Fixed $accesscontrol isnÂ´t working correctly - removed this obsolete setting (leochaton, c_schmitz)	
 -Fixed error clicking Browse button to view text box responses (leochaton)
 -Fixed Locale nl point to wrong images-directory (el-matador-69)
 -Fixed The saved control records were not deleted when the survey was deactivated. (leochaton)
@@ -1904,14 +2007,14 @@ New General Features
 
 New Languages
 
-    * Brazilian Portuguese by Anderson La‚cio Galindo Trindade
+    * Brazilian Portuguese by Anderson Laâ€šcio Galindo Trindade
     * Chinese Traditional (Area Hong Kong) by Mark Yeung
     * Finnish by Matti Lassila
     * Galician translation by Carlos Neira Cortizas
     * Japanese translation by Hiroki Yoshino
     * Polish by Maciej Zawado
     * Serbian by Ivan Recevic
-    * Spanish by Carlos Juan Martín Pérez
+    * Spanish by Carlos Juan MartÃ­n PÃ©rez
     * Vietnamese by Vinh Ngo 
 
 
