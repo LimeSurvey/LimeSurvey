@@ -189,7 +189,7 @@ class InstallerController extends CController {
     */
     public function stepViewLicense()
     {
-        $filename = dirname(BASEPATH) . '/docs/COPYING';
+        $filename = dirname(BASEPATH) . '/docs/license.txt';
         header('Content-Type: text/plain;');
         readfile($filename);
         exit;
