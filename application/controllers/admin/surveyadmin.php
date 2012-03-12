@@ -490,7 +490,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
             $surveys->permission(Yii::app()->user->getId());
         $surveys = $surveys->with('languagesettings', 'owner')->findAll();
-
+        $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
         foreach ($surveys as $rows)
         {

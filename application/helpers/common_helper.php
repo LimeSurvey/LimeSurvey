@@ -557,33 +557,41 @@ function getQuestions($surveyid,$gid,$selectedqid)
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0));
 
-    if (!isset($questionselecter)) {$questionselecter="";}
+    if (!isset($sQuestionselecter)) {$sQuestionselecter="";}
     foreach ($qrows as $qrow)
     {
         $qrow = $qrow->attributes;
         $qrow['title'] = strip_tags($qrow['title']);
         $link = Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$qrow['qid']);
-        $questionselecter .= "<option value='{$link}'";
-        if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
-        $questionselecter .=">{$qrow['title']}:";
-        $questionselecter .= " ";
+        $sQuestionselecter .= "<option value='{$link}'";
+        if ($selectedqid == $qrow['qid'])
+        {
+                $sQuestionselecter .= " selected='selected'";
+                $qexists=true;
+        }
+        $sQuestionselecter .=">{$qrow['title']}:";
+        $sQuestionselecter .= " ";
         $question=flattenText($qrow['question'],true);
         if (strlen($question)<35)
         {
-            $questionselecter .= $question;
+            $sQuestionselecter .= $question;
         }
         else
         {
-            $questionselecter .= htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
+            $sQuestionselecter .= htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
         }
-        $questionselecter .= "</option>\n";
+        $sQuestionselecter .= "</option>\n";
     }
 
     if (!isset($qexists))
     {
-        $questionselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$questionselecter;
+        $sQuestionselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$sQuestionselecter;
     }
-    return $questionselecter;
+    else
+    {
+        $sQuestionselecter = "<option>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+    }
+    return $sQuestionselecter;
 }
 
 /**

@@ -90,7 +90,7 @@
                                     <?php } ?>
                             </ul>
                         </li>
-                    <?php } ?>
+                        <?php } ?>
                 </ul></li>
             <li><a href="#">
                     <img src='<?php echo $imageurl;?>/tools.png' alt='<?php $clang->eT("Tools");?>' /></a><ul>
@@ -110,7 +110,7 @@
                     <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
                         <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
                             <img src='<?php echo $imageurl;?>/expressionmanager_30.png' alt=''/> <?php $clang->eT("Expression Manager");?></a></li>
-                    <?php } ?>
+                        <?php } ?>
                 </ul></li>
             <li><a href='#'>
                     <img src='<?php echo $imageurl;?>/display_export.png' alt='<?php $clang->eT("Display / Export");?>' width="40" height="40"/></a><ul>
@@ -282,16 +282,16 @@
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' width='15' alt='' />
             <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/minus.gif' title='<?php $clang->eT("Hide details of this Survey"); ?>'
-                alt='<?php $clang->eT("Hide details of this Survey"); ?>' onclick='document.getElementById("surveydetails").style.display="none";' />
+                alt='<?php $clang->eT("Hide details of this Survey"); ?>' onclick='$("#surveydetails").hide();' />
 
             <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.gif' title='<?php $clang->eT("Show details of this survey"); ?>'
-                alt='<?php $clang->eT("Show details of this survey"); ?>' onclick='document.getElementById("surveydetails").style.display="";' />
+                alt='<?php $clang->eT("Show details of this survey"); ?>' onclick='$("#surveydetails").show();' />
 
             <?php if (!$gid)
                 { ?>
 
                 <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close this survey"); ?>'
-                    alt='<?php $clang->eT("Close this survey"); ?>' href="<?php echo $this->createUrl("/admin"); ?>" />
+                    alt='<?php $clang->eT("Close this survey"); ?>' onclick="window.open('<?php echo $this->createUrl("/admin/index"); ?>','_top');" />
                 <?php }
                 else
                 { ?>

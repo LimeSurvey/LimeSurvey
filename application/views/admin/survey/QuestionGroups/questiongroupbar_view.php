@@ -23,15 +23,15 @@
             <a href="<?php echo $this->createUrl('admin/questiongroup/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>"
                 title="<?php $clang->eTview("Edit current question group"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="40" height="40"/></a>
-        <?php } ?>
+            <?php } ?>
 
         <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
-        { ?>
+            { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
             <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
                 title="<?php $clang->eTview("Survey Logic File for current question group"); ?>">
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question group"); ?>' /></a>
-        <?php } ?>
+                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question group"); ?>' /></a>
+            <?php } ?>
 
         <?php
             if (hasSurveyPermission($surveyid,'surveycontent','delete'))
@@ -83,13 +83,13 @@
 
                 <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidPrev); ?>'>
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_20.png' title='' alt='<?php $clang->eT("Previous question"); ?>'
-                       width="20" height="20"/></a>
+                        width="20" height="20"/></a>
                 <?php }
                 else
                 { ?>
 
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_disabled_20.png' title='' alt='<?php $clang->eT("No previous question"); ?>'
-                   width="20" height="20"/>
+                    width="20" height="20"/>
                 <?php } ?>
 
 
@@ -99,13 +99,13 @@
 
                 <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidNext); ?>'>
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/next_20.png' title='' alt='<?php $clang->eT("Next question"); ?>'
-                   width="20" height="20"/> </a>
+                    width="20" height="20"/> </a>
                 <?php }
                 else
                 { ?>
 
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/next_disabled_20.png' title='' alt='<?php $clang->eT("No next question"); ?>'
-                   width="20" height="20"/>
+                    width="20" height="20"/>
                 <?php } ?>
         </span>
 
@@ -118,7 +118,7 @@
             { ?>
             <a href='<?php echo $this->createUrl("admin/question/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'
                 title="<?php $clang->eTview("Add new question to group"); ?>" >
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' title='' alt='<?php $clang->eT("Add New Question to Group"); ?>' width="40" height="40" /></a>
+                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' title='' alt='<?php $clang->eT("Add new question to group"); ?>' width="40" height="40" /></a>
             <?php } ?>
 
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
@@ -128,8 +128,8 @@
         <input type='image' id='MaximizeGroupWindow' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.gif' title='<?php $clang->eT("Show details of this group"); ?>' alt='<?php $clang->eT("Show details of this group"); ?>' />
         <?php if (!$qid)
             { ?>
-            <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close this Group"); ?>' alt='<?php $clang->eT("Close this Group"); ?>'
-                href="<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>" />
+            <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close this group"); ?>' alt='<?php $clang->eT("Close this group"); ?>'
+                onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>','_top');" />
             <?php }
             else
             { ?>
@@ -170,7 +170,7 @@
             ?>
         </td>
     </tr>
-<?php } ?>
+    <?php } ?>
 <?php
     if (trim($grow['randomization_group'])!='')
     {?>
