@@ -6992,12 +6992,15 @@ function getHeader($meta = false)
 
     $surveyid = Yii::app()->getConfig('sid');
     Yii::app()->loadHelper('surveytranslator');
-    //$clang = Yii::app()->lang;
     $clang=Yii::app()->lang;
-
-    if (!empty(Yii::app()->session[$surveyid]['s_lang']))
+    // Set Langage : put in a function ?
+    if ( !empty($_REQUEST['lang']) )
     {
-        $surveylanguage= Yii::app()->session[$surveyid]['s_lang'];
+        $DisplayLanguage = sanitize_languagecode($_REQUEST['lang']);
+    }
+    elseif (!empty(Yii::app()->session[$surveyid]['s_lang']))
+    {
+        $DisplayLanguage =  Yii::app()->session[$surveyid]['s_lang'];
     }
     elseif (isset($surveyid) && $surveyid)
     {
@@ -7005,7 +7008,7 @@ function getHeader($meta = false)
     }
     else
     {
-        $surveylanguage=Yii::app()->getConfig('defaultlang');
+        $DisplayLanguage = Yii::app()->getConfig('defaultlang');
     }
 
     $js_header = ''; $css_header='';
@@ -7030,8 +7033,8 @@ function getHeader($meta = false)
     if ( !$embedded )
     {
         $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
-        if (getLanguageRTL($surveylanguage))
+        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$DisplayLanguage."\" lang=\"".$DisplayLanguage."\"";
+        if (getLanguageRTL($DisplayLanguage))
         {
             $header.=" dir=\"rtl\" ";
         }
