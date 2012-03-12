@@ -924,7 +924,7 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 $importerror = true;
             }
-            if ($action == 'importsurvey')
+            if ($action == 'importsurvey' && isset($sFullFilepath))
             {
                 unlink($sFullFilepath);
             }
@@ -1095,7 +1095,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $esresult['template']=Yii::app()->getConfig('defaulttemplate');
                 }
                 $esresult['template']=validateTemplateDir($esresult['template']);
-                
+
                 $esrow = $esresult;
             }
         }
