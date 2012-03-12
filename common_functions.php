@@ -4202,7 +4202,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
 // If you want to echo the header use doHeader() !
 function getHeader($meta = false)
 {
-    global $embedded, $surveyid, $rooturl,$defaultlang, $js_header_includes, $css_header_includes;
+    global $embedded, $surveyid, $rooturl, $defaultlang, $js_header_includes, $css_header_includes;
 
     $js_header_includes = array_unique($js_header_includes);
     $css_header_includes = array_unique($css_header_includes);
