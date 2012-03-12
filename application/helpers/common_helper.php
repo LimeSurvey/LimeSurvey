@@ -6996,38 +6996,36 @@ function getLabelSets($languages = null)
 
 function getHeader($meta = false)
 {
-    global $embedded;
+    global $embedded,$surveyid ;
+    // Not needed ? Yii::app()->loadHelper('surveytranslator');
 
-    $surveyid = Yii::app()->getConfig('sid');
-    Yii::app()->loadHelper('surveytranslator');
-    $clang=Yii::app()->lang;
-    // Set Langage : put in a function ?
-    if ( !empty($_REQUEST['lang']) )
+    // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
+    if (Yii::app()->session['s_lang'] )
     {
-        $DisplayLanguage = sanitize_languagecode($_REQUEST['lang']);
+        $languagecode =  Yii::app()->session['s_lang'];
     }
-    elseif (!empty(Yii::app()->session[$surveyid]['s_lang']))
+    elseif (Yii::app()->session['survey_'.$surveyid]['s_lang'] )
     {
-        $DisplayLanguage =  Yii::app()->session[$surveyid]['s_lang'];
+        $languagecode =  Yii::app()->session['survey_'.$surveyid]['s_lang'];
     }
     elseif (isset($surveyid) && $surveyid)
     {
-        $surveylanguage=Survey::model()->findByPk($surveyid)->language;
+        $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
     else
     {
-        $DisplayLanguage = Yii::app()->getConfig('defaultlang');
+        $languagecode = Yii::app()->getConfig('defaultlang');
     }
-
+    
     $js_header = ''; $css_header='';
     if(Yii::app()->getConfig("js_admin_includes"))
     {
         foreach (Yii::app()->getConfig("js_admin_includes") as $jsinclude)
         {
             if (substr($jsinclude,0,4) == 'http')
-                $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
+                $js_header .= "<script type=\"text/javascript\" src=\"{$jsinclude}\"></script>\n";
             else
-                $js_header .= "<script type=\"text/javascript\" src=\"".Yii::app()->baseUrl."$jsinclude\"></script>\n";
+                $js_header .= "<script type=\"text/javascript\" src=\"".Yii::app()->baseUrl."{$jsinclude}\"></script>\n";
         }
     }
     if(Yii::app()->getConfig("css_admin_includes"))
@@ -7041,8 +7039,8 @@ function getHeader($meta = false)
     if ( !$embedded )
     {
         $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$DisplayLanguage."\" lang=\"".$DisplayLanguage."\"";
-        if (getLanguageRTL($DisplayLanguage))
+        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
+        if (getLanguageRTL($languagecode))
         {
             $header.=" dir=\"rtl\" ";
         }
