@@ -84,7 +84,7 @@ class SurveyRuntimeHelper {
         }
         else
         {
-            
+
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION['survey_'.$surveyid]['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
             {
@@ -111,7 +111,7 @@ class SurveyRuntimeHelper {
             {
                 $_SESSION['survey_'.$surveyid]['maxstep'] = 0;
             }
-            
+
             if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
             {
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
@@ -121,21 +121,21 @@ class SurveyRuntimeHelper {
                 {
                     // then pressing F5 or otherwise refreshing the current page, which is OK
                     $LEMskipReprocessing=true;
-                    $move = "movenext"; // so will re-display the survey 
+                    $move = "movenext"; // so will re-display the survey
                 }
                 else
                 {
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
                     $LEMskipReprocessing=true;
-                    $move = "movenext"; // so will re-display the survey                 
+                    $move = "movenext"; // so will re-display the survey
                     $invalidLastPage=true;
                     $vpopup="<script type=\"text/javascript\">\n
                     <!--\n $(document).ready(function(){
-                        alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
-                    </script>\n";                
+                    alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
+                    </script>\n";
                 }
             }
-            
+
             if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
             {
                 $_SESSION['survey_'.$surveyid]['prevstep'] = $_SESSION['survey_'.$surveyid]['step'];
@@ -143,26 +143,26 @@ class SurveyRuntimeHelper {
             if (!isset($_SESSION['prevstep']))
             {
                 $_SESSION['survey_'.$surveyid]['prevstep']=-1;   // this only happens on re-load
-            }                 
-            
+            }
+
             if (isset($_SESSION['LEMtokenResume']))
             {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION['survey_'.$surveyid]['step']+1,false,false);   // if late in the survey, will re-validate contents, which may be overkill
-                unset($_SESSION['LEMtokenResume']);   
+                unset($_SESSION['LEMtokenResume']);
                 unset($_SESSION['LEMreload']);
-            }            
+            }
             else if (!$LEMskipReprocessing)
-            {
-                //Move current step ###########################################################################
-                if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['allowjumps'] == 'Y'))
                 {
-                    $moveResult = LimeExpressionManager::NavigateBackwards();
-                    if ($moveResult['at_start'])
+                    //Move current step ###########################################################################
+                    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['allowjumps'] == 'Y'))
                     {
-                        $_SESSION['survey_'.$surveyid]['step'] = 0;
-                        unset($moveResult); // so display welcome page again
-                    }
+                        $moveResult = LimeExpressionManager::NavigateBackwards();
+                        if ($moveResult['at_start'])
+                        {
+                            $_SESSION['survey_'.$surveyid]['step'] = 0;
+                            unset($moveResult); // so display welcome page again
+                        }
                 }
                 if (isset($move) && $move == "movenext")
                 {
@@ -498,7 +498,7 @@ class SurveyRuntimeHelper {
                     doHeader();
                     echo $content;
                 }
-                $redata['completed'] = $completed;                
+                $redata['completed'] = $completed;
                 echo templatereplace(file_get_contents("$thistpl/completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n<br />\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
@@ -576,10 +576,10 @@ class SurveyRuntimeHelper {
                         $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                         $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
                         $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-                     } else {
+                    } else {
                         $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                     }
-                    
+
                     $gid = $stepInfo['gid'];
                     $groupname = $stepInfo['gname'];
                     $groupdescription = $stepInfo['gtext'];

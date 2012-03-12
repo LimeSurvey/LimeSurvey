@@ -3424,6 +3424,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['bouncetime'] = NULL;
         }
 
+        if (isset($insertdata['showXquestions']))
+        {
+            $insertdata['showxquestions']=$insertdata['showXquestions'];
+            unset($insertdata['showXquestions']);
+        }
+
         switchMSSQLIdentityInsert('surveys',true);
         if ($xssfilter)
             XSSFilterArray($insertdata);
