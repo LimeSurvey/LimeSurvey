@@ -167,12 +167,13 @@ class index extends CAction {
             }
             $languagechanger = makeLanguageChanger($sDisplayLanguage);
             //Find out if there are any publicly available surveys
-            $query = "SELECT sid, surveyls_title, publicstatistics
+            $query = "SELECT sid, surveyls_title, publicstatistics, language
             FROM {{surveys}}
             INNER JOIN {{surveys_languagesettings}}
             ON ( surveyls_survey_id = sid  )
-            WHERE surveyls_language='{$sDisplayLanguage}'
-            AND active='Y'
+            AND (surveyls_language=language)
+            WHERE 
+            active='Y'
             AND listpublic='Y'
             AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
             AND ((startdate <= '".date("Y-m-d H:i")."') OR (startdate is null))
@@ -184,41 +185,72 @@ class index extends CAction {
             {
                 foreach($result->readAll() as $rows)
                 {
+                    $querylang="SELECT surveyls_title
+                    FROM {{surveys_languagesettings}}
+                    WHERE surveyls_survey_id={$rows['sid']} 
+                    AND surveyls_language='{$sDisplayLanguage}'";
+                    $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
+                    if ($resultlang['surveyls_title'] )
+                    {
+                        $rows['surveyls_title']=$resultlang['surveyls_title'];
+                        $langtag = "";
+                    }
+                    else
+                    {
+                        $langtag = "lang=\"{$rows['language']}\"";
+                    }
                     $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid']);
-                    if (isset($param['lang']))
+                    if (isset($param['lang']) && $langtag=="") // TODO review with session ?
                     {
                         $link .= "/lang-".sanitize_languagecode($param['lang']);
                     }
-                    $link .= "'  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
+                    $link .= "' $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
                     if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
                     $link .= "</li>\n";
                     $list[]=$link;
                 }
             }
+            
             //Check for inactive surveys which allow public registration.
-            $squery = "SELECT sid, surveyls_title, publicstatistics
+            // TODO add a new template replace {SURVEYREGISTERLIST} ?
+            $squery = "SELECT sid, surveyls_title, publicstatistics, language
             FROM {{surveys}}
-            INNER JOIN {{surveys_languagesettings}} ON surveyls_survey_id = sid
-            WHERE surveyls_language='{$sDisplayLanguage}'
-            AND allowregister='Y'
-            AND active='N'
+            INNER JOIN {{surveys_languagesettings}} 
+            ON (surveyls_survey_id = sid)
+            AND (surveyls_language=language)
+            WHERE allowregister='Y'
+            AND active='Y'
             AND listpublic='Y'
             AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
-            AND startdate is not null
+            AND (startdate >= '".date("Y-m-d H:i")."') 
             ORDER BY surveyls_title";
 
             $sresult = dbExecuteAssoc($squery) or safeDie("Couldn't execute $squery");
-
-
             if($sresult->count() > 0)
             {
-                $list[] = "<br/>".$clang->gT("Following survey(s) are not yet active but you can register for them.");
+                $list[] = "</ul>"
+                ." <div class=\"survey-list-heading\">".$clang->gT("Following survey(s) are not yet active but you can register for them.")."</div>"
+                ." <ul>"; // TODO give it to template
                 foreach($sresult->readAll() as $rows)
                 {
+                    $querylang="SELECT surveyls_title
+                    FROM {{surveys_languagesettings}}
+                    WHERE surveyls_survey_id={$rows['sid']} 
+                    AND surveyls_language='{$sDisplayLanguage}'";
+                    $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
+                    if ($resultlang['surveyls_title'] )
+                    {
+                        $rows['surveyls_title']=$resultlang['surveyls_title'];
+                        $langtag = "";
+                    }
+                    else
+                    {
+                        $langtag = "lang=\"{$rows['language']}\"";
+                    }
                     $link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'sendreq(".$rows['sid'].");' ";
                     //$link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'convertGETtoPOST(".$this->getController()->createUrl('survey/send/')."?sid={$rows['sid']}&amp;)sendreq(".$rows['sid'].",".$rows['startdate'].",".$rows['expires'].");' ";
-                    $link .= "  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
+                    $link .= " $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
+                    //if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
                     $link .= "</li><div id='regform'></div>\n";
                     $list[]=$link;
                 }
