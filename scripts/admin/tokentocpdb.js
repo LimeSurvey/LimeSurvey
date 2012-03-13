@@ -15,10 +15,10 @@ $('#addtocpdb').click(function()
     {
         var dialog_buttons={};
         var token = [];
-        $(":checked").each(function() {
-        token.push($(this).attr('name'));
-        });
-        if(token.length==0)
+        
+        var token = jQuery('#displaytokens').jqGrid('getGridParam','selarrrow');
+
+    if(token.length==0)
         {		/* build an array containing the various button functions */
                 /* Needed because it's the only way to label a button with a variable */
             
@@ -35,5 +35,9 @@ $('#addtocpdb').click(function()
         {
            addtoCPDB(token);
         }    
+        
+        /*$(":checked").each(function() {
+        token.push($(this).attr('name'));
+        });*/
     }); 
 });

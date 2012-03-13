@@ -54,14 +54,17 @@ else
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
     var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>";
     var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/deleteanswer.png" ?>";
+    var survey_id = "<?php echo $surveyid; ?>";
     var delUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/delete/surveyid/" . $surveyid); ?>";
     var cancelBtn = "<?php $clang->eT("Cancel") ?>";
     var okBtn = "<?php echo $clang->eT("OK") ?>";
     var delmsg = "<?php $clang->eT("Are you sure you want to delete this entry?") ?>";
     var surveyID = "<?php echo $surveyid; ?>";
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/getTokens_json/surveyid/' . $surveyid); ?>";
+    var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/setSession"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/editToken/surveyid/' . $surveyid); ?>";
     var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/remind/surveyid/{$surveyid}/tids/|"); ?>";
+    var attMapUrl = "<?php echo $this->createUrl("admin/participants/attributeMapToken/sid/");?>";
     var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"
     var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$surveyid}/tids/|"); ?>";
@@ -160,6 +163,32 @@ else
 <!--p><input type="button" name="sendinvitations" id="sendinvitations" value="Send Invitations" onclick='window.open("<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$surveyid}/tids/|"); ?>"+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")' /><input type="button" name="sendreminders" id="sendreminders" value="Send Reminders" onclick='window.open("<?php echo Yii::app()->getController()->createUrl("admin/tokens/remind/surveyid/{$surveyid}/tids/|"); ?>"+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")' />
 </p-->
 </table>
+<p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
+<div id="norowselected" title="<?php $clang->eT("Error") ?>" style="display:none">
+            <p>
+                <?php $clang->eT("Please select at least one participant to be added"); ?>
+            </p>
+        </div>
+<div id="addcpdb" title="addsurvey" style="display:none">
+  <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
+        <p>
+           <select id="attributeid" name="attributeid" multiple="multiple">
+            <?php
+               if(!empty($attrfieldnames))
+                {
+                       foreach($attrfieldnames as $key=>$value)
+                        {
+                           echo "<option value='".$key."'>".$value."</option>";
+                        }
+               }
+
+             ?>
+         </select>
+        </p>
+
+</div>
+</div>
+
 
 <div id="fieldnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
     <p>
