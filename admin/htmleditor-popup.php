@@ -58,7 +58,7 @@ if (!isset($_GET['fieldname']) || !isset($_GET['fieldtext']))
 	</body>
 	</html>';
 }
-
+else {
     require_once("../classes/inputfilter/class.inputfilter_clean.php");
     $oFilter = new InputFilter('','',1,1,1);
 
