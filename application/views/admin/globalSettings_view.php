@@ -186,6 +186,10 @@
                     <input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey')); ?>" /></li>
                 <li><label for='googleMapsAPIKey'><?php $clang->eT("Google Maps API key:"); ?></label>
                     <input type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('googleMapsAPIKey')); ?>" /></li>
+                <li><label for='googleanalyticsapikey'><?php $clang->eT("Google Analytics API key:"); ?></label>
+                    <input type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey' value="<?php echo htmlspecialchars(getGlobalSetting('googleanalyticsapikey')); ?>" /></li>
+                <li><label for='googletranslateapikey'><?php $clang->eT("Google Translate API key:"); ?></label>
+                    <input type='text' size='35' id='googletranslateapikey' name='googletranslateapikey' value="<?php echo htmlspecialchars(getGlobalSetting('googletranslateapikey')); ?>" /></li>
             </ul></div>
 
 
