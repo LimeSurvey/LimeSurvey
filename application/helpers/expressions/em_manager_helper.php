@@ -5193,7 +5193,11 @@ static function GetRelevanceAndTailoringJavaScript()
                 {
                     $relParts[] = "  // Write value from the question into the answer field\n";
                     $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
-                    $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .em_equation').find('span').html()))).replace(/%20/g,' '));\n";
+                    // Note, this will destroy embedded HTML in the equation (e.g. if it is a report)
+                    // Should be possible to use jQuery to remove just the LEMtailoring span, but not easy since done (the following doesn't work)
+                    // _tmpval = $('#question801 .em_equation').clone()
+                    // $(_tmpval).find('[id^=LEMtailor]').each(function(){ $(this).replaceWith(function(){ $(this).contents; }); })
+                    $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .em_equation').html())));\n";
                 }
                 $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                 $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
