@@ -35,6 +35,7 @@ class LimeExpressionManager {
     private $em;    // Expression Manager
     private $groupRelevanceInfo;
     private $sid;
+    private $sessid;    // session name
     private $groupNum;
     private $debugLevel=0;  // sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
     private $knownVars; // collection of variable attributes, indexed by SGQA code
@@ -2348,14 +2349,14 @@ class LimeExpressionManager {
         $this->q2subqInfo = $q2subqInfo;
 
         // Now set tokens
-        if (isset($_SESSION['token']) && $_SESSION['token'] != '')
+        if (isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
         {
             //Gather survey data for tokenised surveys, for use in presenting questions
-            $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+            $_SESSION[$this->sessid]['thistoken']=getTokenData($surveyid, $_SESSION[$this->sessid]['token']);
         }
-        if (isset($_SESSION['thistoken']))
+        if (isset($_SESSION[$this->sessid]['thistoken']))
         {
-            foreach (array_keys($_SESSION['thistoken']) as $tokenkey)
+            foreach (array_keys($_SESSION[$this->sessid]['thistoken']) as $tokenkey)
             {
                 if ($anonymized)
                 {
@@ -2363,7 +2364,7 @@ class LimeExpressionManager {
                 }
                 else
                 {
-                    $val = $_SESSION['thistoken'][$tokenkey];
+                    $val = $_SESSION[$this->sessid]['thistoken'][$tokenkey];
                 }
                 $key = "TOKEN:" . strtoupper($tokenkey);
                 $this->knownVars[$key] = array(
@@ -2443,12 +2444,12 @@ class LimeExpressionManager {
         $sqrel=1;
         if (isset($var['rowdivid']) && $var['rowdivid'] != '')
         {
-            $sqrel = (isset($_SESSION['relevanceStatus'][$var['rowdivid']]) ? $_SESSION['relevanceStatus'][$var['rowdivid']] : 1);
+            $sqrel = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$var['rowdivid']]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$var['rowdivid']] : 1);
         }
         $qid = $var['qid'];
-        $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 1);
+        $qrel = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
         $gid = $var['gid'];
-        $grel = (isset($_SESSION['relevanceStatus']['G' . $gid]) ? $_SESSION['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
+        $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
         return ($grel && $qrel && $sqrel);
     }
 
@@ -2460,10 +2461,10 @@ class LimeExpressionManager {
     static function QuestionIsRelevant($qid)
     {
         $LEM =& LimeExpressionManager::singleton();
-        $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 1);
+        $qrel = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
         $groupSeq = (isset($LEM->questionId2groupSeq[$qid]) ? $LEM->questionId2groupSeq[$qid] : -1);
         $gid = (isset($LEM->gseq2info[$groupSeq]['gid']) ? $LEM->gseq2info[$groupSeq]['gid'] : -1);
-        $grel = (isset($_SESSION['relevanceStatus']['G' . $gid]) ? $_SESSION['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
+        $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
         return ($grel && $qrel);
     }
 
@@ -2475,7 +2476,7 @@ class LimeExpressionManager {
     static function GroupIsIrrelevantOrHidden($gid)
     {
         $LEM =& LimeExpressionManager::singleton();
-        $grel = (isset($_SESSION['relevanceStatus']['G' . $gid]) ? $_SESSION['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
+        $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
         $gseq = (isset($LEM->groupId2groupSeq[$gid]) ? $LEM->groupId2groupSeq[$gid] : -1);
         $gshow = (isset($LEM->indexGseq[$gseq]['show']) ? $LEM->indexGseq[$gseq]['show'] : true);   // default to true?
         return !($grel && $gshow);
@@ -2512,7 +2513,7 @@ class LimeExpressionManager {
                     $rel['type'],
                     $rel['hidden']
                     );
-            $_SESSION['relevanceStatus'][$qid] = $result;
+            $_SESSION[$this->sessid]['relevanceStatus'][$qid] = $result;
 
             if (!isset($grelComputed[$gid])) {
                 $this->_ProcessGroupRelevance($gid);
@@ -2813,7 +2814,7 @@ class LimeExpressionManager {
                 'prettyprint'=> $prettyPrint,
                 'hasErrors' => $hasErrors,
             );
-            $_SESSION['relevanceStatus']['G' . $gid] = $result;
+            $_SESSION[$this->sessid]['relevanceStatus']['G' . $gid] = $result;
         }
     }
 
@@ -2857,6 +2858,7 @@ class LimeExpressionManager {
     {
         $LEM =& LimeExpressionManager::singleton();
         $LEM->sid=sanitize_int($surveyid);
+        $LEM->sessid = 'survey_' . $LEM->sid;
 
         if (is_null($options)) {
             $options = array();
@@ -2882,7 +2884,7 @@ class LimeExpressionManager {
         $LEM->surveyOptions['token'] = (isset($options['token']) ? $options['token'] : NULL);
 
         $LEM->debugLevel=$debugLevel;
-        $_SESSION['LEMdebugLevel']=$debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
+        $_SESSION[$LEM->sessid]['LEMdebugLevel']=$debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
             case 'survey':
                 $LEM->allOnOnePage=true;
@@ -2905,9 +2907,9 @@ class LimeExpressionManager {
         $LEM->indexGseq=array();
         $LEM->indexQseq=array();
         
-        if (isset($_SESSION['survey_'.$surveyid]['startingValues']) && is_array($_SESSION['survey_'.$surveyid]['startingValues']) && count($_SESSION['survey_'.$surveyid]['startingValues']) > 0)
+        if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
         {
-            $startingValues = $_SESSION['survey_'.$surveyid]['startingValues'];
+            $startingValues = $_SESSION[$LEM->sessid]['startingValues'];
             $LEM->_UpdateValuesInDatabase($startingValues);
         }
 
@@ -3275,8 +3277,8 @@ class LimeExpressionManager {
     private function _UpdateValuesInDatabase($updatedValues, $finished=false)
     {
         $message = '';
-        $_SESSION['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-        if ($this->surveyOptions['active'] && !isset($_SESSION['srid']))
+        $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+        if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
         {
             // Create initial insert row for this record
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
@@ -3285,9 +3287,9 @@ class LimeExpressionManager {
                 //"ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''),
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 //"token"=>($this->surveyOptions['token']),
-                //"datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
+                //"datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : NULL),
                 //"refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL),
-                //"startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
+                //"startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION[$LEM->sessid]['datestamp'] : date("Y-m-d H:i:s",0)),
                 );
             if ($this->surveyOptions['anonymized'] == "N")
             {
@@ -3296,8 +3298,8 @@ class LimeExpressionManager {
             if ($this->surveyOptions['datestamp'] == "Y")
             {
                 $sdata = array_merge($sdata, array(
-                                            "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
-                                            "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0))
+                                            "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : NULL),
+                                            "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : date("Y-m-d H:i:s",0))
                                                 ));
         
             }
@@ -3314,7 +3316,7 @@ class LimeExpressionManager {
             if (Yii::app()->db->createCommand()->insert($this->surveyOptions['tablename'], $sdata))    // Checked
             {
                 $srid = Yii::app()->db->getLastInsertID();
-                $_SESSION['srid'] = $srid;
+                $_SESSION[$this->sessid]['srid'] = $srid;
             }
             else
             {
@@ -3356,14 +3358,14 @@ class LimeExpressionManager {
             }
             $setter[] = dbQuoteID('lastpage') . "=" . dbQuoteAll($thisstep);
 
-            if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
-                $setter[] = dbQuoteID('datestamp') . "=" . dbQuoteAll($_SESSION['datestamp']);
+            if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
+                $setter[] = dbQuoteID('datestamp') . "=" . dbQuoteAll($_SESSION[$this->sessid]['datestamp']);
             }
             if ($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) {
                 $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll($_SERVER['REMOTE_ADDR']);
             }
             if ($finished) {
-                $setter[] = dbQuoteID('submitdate') . "=" . dbQuoteAll($_SESSION['datestamp']);
+                $setter[] = dbQuoteID('submitdate') . "=" . dbQuoteAll($_SESSION[$this->sessid]['datestamp']);
             }
 
             foreach ($updatedValues as $key=>$value)
@@ -3402,9 +3404,9 @@ class LimeExpressionManager {
             $query .= implode(', ', $setter);
             $query .= " WHERE ID=";
 
-            if (isset($_SESSION['srid']) && $this->surveyOptions['active'])
+            if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
             {
-                $query .= $_SESSION['srid'];
+                $query .= $_SESSION[$this->sessid]['srid'];
 
                 if (!dbExecuteAssoc($query))
                 {
@@ -3424,7 +3426,7 @@ class LimeExpressionManager {
                 if ($finished)
                 {
                     // Delete the save control record if successfully finalize the submission
-                    $query = "DELETE FROM {{saved_control}} where srid=".$_SESSION['srid'].' and sid='.$this->sid;
+                    $query = "DELETE FROM {{saved_control}} where srid=".$_SESSION[$this->sessid]['srid'].' and sid='.$this->sid;
                     Yii::app()->db->createCommand($query)->execute();
 
                     if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -3451,9 +3453,9 @@ class LimeExpressionManager {
                         check_quota('enforce',$this->sid);  // will create a page and quit.
                     }
                 }
-                else if ($this->surveyOptions['allowsave'] && isset($_SESSION['scid']))
+                else if ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
                 {
-                    Saved_control::model()->updateByPk($_SESSION['scid'], array('saved_thisstep'=>$thisstep));
+                    Saved_control::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
                 }
             }
             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -3980,7 +3982,7 @@ class LimeExpressionManager {
      * (a) mandatory - if so, then all relevant sub-questions must be answered (e.g. pay attention to array_filter and array_filter_exclude)
      * (b) always-hidden
      * (c) relevance status - including sub-question-level relevance
-     * (d) answered - if $_SESSION[sgqa]=='' or NULL, then it is not answered
+     * (d) answered - if $_SESSION[$LEM->sessid][sgqa]=='' or NULL, then it is not answered
      * (e) validity - whether relevant questions pass their validity tests
      * @param <type> $questionSeq - the 0-index sequence number for this question
      * @return <array> of information about this question and its sub-questions
@@ -4104,12 +4106,12 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
-                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
+                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=true;
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
-                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
+                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
                                 }
                             }
                             break;
@@ -4145,12 +4147,12 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
-                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
+                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=true;
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
-                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
+                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
                                 }
                             }
                         case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -4191,12 +4193,12 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
-                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
+                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=true;
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
-                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
+                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
                                 }
                             }
                             break;
@@ -4266,7 +4268,7 @@ class LimeExpressionManager {
         $unansweredSQs = array();   // list of sub-questions that weren't answered
         foreach ($relevantSQs as $sgqa)
         {
-            if (($qInfo['type'] != '*') && (!isset($_SESSION[$sgqa]) || ($_SESSION[$sgqa] === '' || is_null($_SESSION[$sgqa]))))
+            if (($qInfo['type'] != '*') && (!isset($_SESSION[$LEM->sessid][$sgqa]) || ($_SESSION[$LEM->sessid][$sgqa] === '' || is_null($_SESSION[$LEM->sessid][$sgqa]))))
             {
                 // then a relevant, visible, mandatory question hasn't been answered
                 // Equations are ignored, since set automatically
@@ -4542,7 +4544,7 @@ class LimeExpressionManager {
             $sgqas = explode('|',$LEM->qid2code[$qid]);
             foreach ($sgqas as $sgqa)
             {
-                $_SESSION[$sgqa] = NULL;
+                $_SESSION[$LEM->sessid][$sgqa] = NULL;
                 $updatedValues[$sgqa] = NULL;
             }
         }
@@ -4552,7 +4554,7 @@ class LimeExpressionManager {
             $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
             $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
             // Store the result of the Equation in the SESSION
-            $_SESSION[$sgqa] = $result;
+            $_SESSION[$LEM->sessid][$sgqa] = $result;
             $updatedValues[$sgqa] = array(
                 'type'=>'*',
                 'value'=>$result,
@@ -4566,19 +4568,19 @@ class LimeExpressionManager {
         foreach ($irrelevantSQs as $sq)
         {
             // NULL irrelevant sub-questions
-            $_SESSION[$sq] = NULL;
+            $_SESSION[$LEM->sessid][$sq] = NULL;
             $updatedValues[$sq] = NULL;
         }
 
-        // Regardless of whether relevant or hidden, if there is a default value and $_SESSION[$sgqa] is NULL, then use the default value in $_SESSION, but don't write to database
+        // Regardless of whether relevant or hidden, if there is a default value and $_SESSION[$LEM->sessid][$sgqa] is NULL, then use the default value in $_SESSION, but don't write to database
         // Also, set this AFTER testing relevance
         $sgqas = explode('|',$LEM->qid2code[$qid]);
         foreach ($sgqas as $sgqa)
         {
-            if (!is_null($LEM->knownVars[$sgqa]['default']) && !isset($_SESSION[$sgqa])) {
+            if (!is_null($LEM->knownVars[$sgqa]['default']) && !isset($_SESSION[$LEM->sessid][$sgqa])) {
                 // add support for replacements
                 $defaultVal = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], NULL, NULL, false, 1, 1, false, false, true);
-                $_SESSION[$sgqa] = $defaultVal;
+                $_SESSION[$LEM->sessid][$sgqa] = $defaultVal;
             }
         }
 
@@ -4638,7 +4640,7 @@ class LimeExpressionManager {
             'valid' => $qvalid,
         );
 
-        $_SESSION['relevanceStatus'][$qid] = $qrel;
+        $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $qrel;
 
         return $qStatus;
     }
@@ -5418,7 +5420,7 @@ static function GetRelevanceAndTailoringJavaScript()
                         }
                         $undeclaredJsVars[] = $jsVar;
                         $sgqa = $knownVar['sgqa'];
-                        $codeValue = (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : '';
+                        $codeValue = (isset($_SESSION[$LEM->sessid][$sgqa])) ? $_SESSION[$LEM->sessid][$sgqa] : '';
                         $undeclaredVal[$jsVar] = $codeValue;
 
                         if (isset($LEM->jsVar2qid[$jsVar])) {
@@ -5437,8 +5439,8 @@ static function GetRelevanceAndTailoringJavaScript()
         }
         foreach ($qidList as $qid)
         {
-            if (isset($_SESSION['relevanceStatus'])) {
-                $relStatus = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 1);
+            if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
+                $relStatus = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
             }
             else {
                 $relStatus = 1;
@@ -5448,8 +5450,8 @@ static function GetRelevanceAndTailoringJavaScript()
 
         foreach ($gidList as $gid)
         {
-            if (isset($_SESSION['relevanceStatus'])) {
-                $relStatus = (isset($_SESSION['relevanceStatus']['G' . $gid]) ? $_SESSION['relevanceStatus']['G' . $gid] : 1);
+            if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
+                $relStatus = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] : 1);
             }
             else {
                 $relStatus = 1;
@@ -5569,12 +5571,12 @@ EOST;
 
         $LEM->questionId2questionSeq = array();
         $LEM->questionId2groupSeq = array();
-        $_SESSION['relevanceStatus'] = array();
+        $_SESSION[$LEM->sessid]['relevanceStatus'] = array();
         foreach ($vars as $var) {
             if (isset($var['qseq'])) {
                 $LEM->questionId2questionSeq[$var['qseq']] = $var['qseq'];
                 $LEM->questionId2groupSeq[$var['qseq']] = $var['gseq'];
-                $_SESSION['relevanceStatus'][$var['qseq']] = 1;
+                $_SESSION[$LEM->sessid]['relevanceStatus'][$var['qseq']] = 1;
             }
         }
 
@@ -6100,8 +6102,8 @@ EOD;
                 $gid = $qinfo['info']['gid'];
                 $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
                 $grelevant = (isset($_POST['relevanceG' . $gid]) ? ($_POST['relevanceG' . $gid] == 1) : false);
-                $_SESSION['relevanceStatus'][$qid] = $relevant;
-                $_SESSION['relevanceStatus']['G' . $gid] = $grelevant;
+                $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;
+                $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] = $grelevant;
                 foreach (explode('|',$qinfo['sgqa']) as $sq)
                 {
                     $sqrelevant=true;
@@ -6111,7 +6113,7 @@ EOD;
                         if ($rowdivid!='' && isset($_POST['relevance' . $rowdivid]))
                         {
                             $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
-                            $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
+                            $_SESSION[$LEM->sessid]['relevanceStatus'][$rowdivid] = $sqrelevant;
                         }
                     }
                     $type = $qinfo['info']['type'];
@@ -6181,7 +6183,7 @@ EOD;
                                 }
                                 break;
                         }
-                        $_SESSION[$sq] = $value;
+                        $_SESSION[$LEM->sessid][$sq] = $value;
                         $updatedValues[$sq] = array (
                         'type'=>$type,
                         'value'=>$value,
@@ -6189,7 +6191,7 @@ EOD;
                     }
                     else {  // irrelevant, so database will be NULLed separately
                         // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
-                        unset($_SESSION[$sq]);
+                        unset($_SESSION[$LEM->sessid][$sq]);
                         $updatedValues[$sq] = array (
                         'type'=>$type,
                         'value'=>NULL,
@@ -6199,7 +6201,7 @@ EOD;
             }
             if (isset($_POST['timerquestion']))
             {
-                $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
+                $_SESSION[$LEM->sessid][$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
             }
             return $updatedValues;
         }
@@ -6267,8 +6269,8 @@ EOD;
                     return $var['code'];    // for static values like TOKEN
                 }
                 else {
-                    if (isset($_SESSION[$sgqa])) {
-                        return $_SESSION[$sgqa];
+                    if (isset($_SESSION[$this->sessid][$sgqa])) {
+                        return $_SESSION[$this->sessid][$sgqa];
                     }
                     if (isset($var['default']) && !is_null($var['default'])) {
                         return $var['default'];
@@ -6444,9 +6446,9 @@ EOD;
                 if (isset($args[1]) && $args[1]=='NAOK') {
                     return 1;
                 }
-                $grel = (isset($_SESSION['relevanceStatus']['G'.$gid]) ? $_SESSION['relevanceStatus']['G'.$gid] : 1);   // true by default
-                $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0);
-                $sqrel = (isset($_SESSION['relevanceStatus'][$rowdivid]) ? $_SESSION['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
+                $grel = (isset($_SESSION[$this->sessid]['relevanceStatus']['G'.$gid]) ? $_SESSION[$this->sessid]['relevanceStatus']['G'.$gid] : 1);   // true by default
+                $qrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$qid] : 0);
+                $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                 return ($grel && $qrel && $sqrel);
             default:
                 print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";

@@ -1187,6 +1187,8 @@
         
         if (!isset($_SESSION['survey_'.$surveyid]['srid']))
             $srid = null;
+        else
+            $srid = $_SESSION['survey_'.$surveyid]['srid'];
         $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
         $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
         $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id=".$srid;
@@ -2162,6 +2164,7 @@ function surveymover()
     global $surveyid, $presentinggroupdescription;
 
     $clang = Yii::app()->lang;
+    $LEMsessid = Yii::app()->getConfig('surveyID');
 
     $surveymover = "";
 
@@ -2216,7 +2219,7 @@ function surveymover()
         $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
         value='".$clang->gT("Next")."' name='move2' id=\"movenextbtn\" $disabled>".$clang->gT("Next")."</button>\n";
     }
-    if (($_SESSION['survey_'.$surveyid]['step'] && ($_SESSION['survey_'.$surveyid]['step'] == $_SESSION['survey_'.$surveyid]['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
+    if (isset($_SESSION['survey_'.$surveyid]['step']) && ($_SESSION['survey_'.$surveyid]['step'] && ($_SESSION['survey_'.$surveyid]['step'] == $_SESSION['survey_'.$surveyid]['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
     {
         $surveymover .= "\t<button class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\"
         value=\"".$clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" $disabled>".$clang->gT("Submit")."</button>\n";
@@ -2775,8 +2778,8 @@ function display_first_page() {
     if (isset($loadsecurity)) {
         echo "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
     }
-    $_SESSION['LEMpostKey'] = mt_rand();
-    echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['LEMpostKey']}' id='LEMpostKey' />\n";
+    $_SESSION['survey_'.$surveyid]['LEMpostKey'] = mt_rand();
+    echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['survey_'.$surveyid]['LEMpostKey']}' id='LEMpostKey' />\n";
     echo "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
     
     echo "\n</form>\n";

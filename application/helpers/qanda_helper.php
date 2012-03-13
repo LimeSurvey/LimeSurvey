@@ -3226,7 +3226,7 @@ function do_multipleshorttext($ia)
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                    if ($qidattributes['numbers_only']==1)
+                    if ($aQuestionAttributes['numbers_only']==1)
                     {
                         $dispVal = str_replace('.',$sSeperator,$dispVal);
                     }
@@ -3261,7 +3261,7 @@ function do_multipleshorttext($ia)
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                    if ($qidattributes['numbers_only']==1)
+                    if ($aQuestionAttributes['numbers_only']==1)
                     {
                         $dispVal = str_replace('.',$sSeperator,$dispVal);
                     }
@@ -3935,7 +3935,7 @@ function do_shortfreetext($ia)
     else
     {
         $numbersonly = '';
-        $checkconditionFunction = "fixnum_checkconditions";
+        $checkconditionFunction = "checkconditions";
     }
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {

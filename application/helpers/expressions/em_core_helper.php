@@ -2839,11 +2839,13 @@ EOD;
         $em = new ExpressionManager();
         $LEM->setTempVars($vars);
 
+        $LEMsessid = 'survey_' . Yii::app()->getConfig('surveyID');
+
         // manually set relevance status
-        $_SESSION['relevanceStatus'] = array();
+        $_SESSION[$LEMsessid]['relevanceStatus'] = array();
         foreach ($vars as $var) {
             if (isset($var['qseq'])) {
-                $_SESSION['relevanceStatus'][$var['qseq']] = 1;
+                $_SESSION[$LEMsessid]['relevanceStatus'][$var['qseq']] = 1;
             }
         }
 
