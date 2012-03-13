@@ -60,7 +60,7 @@
             //A match has been found. Let's load the values!
             //If this is from an email, build surveysession first
             $_SESSION['LEMtokenResume']=true;
-                    
+
             $row=$result->read();
             foreach ($row as $column => $value)
             {
@@ -297,7 +297,7 @@
         // we know the true fieldname $value (for instance SGQA for each checkboxes)
         // and we want to compare it to the values stored in $_SESSION['fieldarray'] which are simple fieldnames
         // ==> We first translate $value to the simple fieldname (let's call it the masterFieldName) from
-        //     the $_SESSION['fieldnamesInfo'] translation table
+        //     the $_SESSION['survey_X']['fieldnamesInfo'] translation table
         if (isset($_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$value]))
         {
             $masterFieldName = $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$value];
@@ -1184,7 +1184,7 @@
         {
             $aReplacementVars['RELOADURL']='';
         }
-        
+
         if (!isset($_SESSION['survey_'.$surveyid]['srid']))
             $srid = null;
         $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
@@ -2094,13 +2094,13 @@
                     $startingValues[$field] = array (
                         'type'=>$type,
                         'value'=>$value,
-                        );  
+                        );
                 }
             }
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
-    
+
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
@@ -2778,7 +2778,7 @@ function display_first_page() {
     $_SESSION['LEMpostKey'] = mt_rand();
     echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['LEMpostKey']}' id='LEMpostKey' />\n";
     echo "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
-    
+
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2782]');
 
