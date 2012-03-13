@@ -5171,14 +5171,12 @@ static function GetRelevanceAndTailoringJavaScript()
                 if ($arg['hidden']) {
                     $relParts[] = "  // This question should always be hidden\n";
                     $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                    $relParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
                 }
                 else {
                     if (!($relevance == '' || $relevance == '1'))
                     {
                         // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
                         $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                        $relParts[] = "  $('#display" . $arg['qid'] . "').val('on');\n";
                         if ($arg['type'] == 'S')
                         {
                             $relParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
@@ -5207,7 +5205,6 @@ static function GetRelevanceAndTailoringJavaScript()
                 {
                     $relParts[] = "else {\n";
                     $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                    $relParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
                     $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
