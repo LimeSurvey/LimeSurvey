@@ -2166,8 +2166,15 @@ class LimeExpressionManager {
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'M': //Multiple choice checkbox
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    if ($type == 'O' && preg_match('/_comment$/', $varName))
+                    {
+                        $jsVarName_on = 'answer' . $sgqa;
+                    }
+                    else
+                    {
+                        $jsVarName_on = 'java' . $sgqa;
+                    }
                     $jsVarName = 'java' . $sgqa;
-                    $jsVarName_on = $jsVarName;
                     break;
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
