@@ -232,9 +232,9 @@ CREATE TABLE prefix_saved_control (
 -- Table structure for table sessions
 --
 CREATE TABLE prefix_sessions(
-     sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+     sesskey character varying( 64 ) NOT NULL DEFAULT '',
      expiry TIMESTAMP NOT NULL ,
-     expireref VARCHAR( 250 ) DEFAULT '',
+     expireref character varying( 250 ) DEFAULT '',
      created TIMESTAMP NOT NULL ,
      modified TIMESTAMP NOT NULL ,
      sessdata TEXT DEFAULT '',

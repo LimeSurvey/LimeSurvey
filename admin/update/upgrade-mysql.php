@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: upgrade-mysql.php 7108 2009-06-15 05:43:21Z jcleeland $
  */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
@@ -646,7 +645,7 @@ function db_upgrade($oldversion) {
         PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
 
-        // add question_attributes field to assessment table
+        // add language field to question_attributes table
         modify_database("","ALTER TABLE `prefix_question_attributes` ADD `language` varchar(20)"); echo $modifyoutput; flush();@ob_flush();
         upgrade_question_attributes148();
         fixSubquestions();

@@ -231,7 +231,7 @@ CREATE TABLE `prefix_sessions`(
       PRIMARY KEY ( sesskey ) ,
       INDEX sess2_expiry( expiry ),
       INDEX sess2_expireref( expireref )
-);
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 --
@@ -292,11 +292,11 @@ CREATE TABLE `prefix_surveys` (
   `showqnumcode` char(1) default 'X',
   `bouncetime` bigint(20),
   `bounceprocessing` varchar(1) default 'N',
-  `bounceaccounttype` VARCHAR(4),
-  `bounceaccounthost` VARCHAR(200),
-  `bounceaccountpass` VARCHAR(100),
-  `bounceaccountencryption` VARCHAR(3),
-  `bounceaccountuser` VARCHAR(200),
+  `bounceaccounttype` varchar(4),
+  `bounceaccounthost` varchar(200),
+  `bounceaccountpass` varchar(100),
+  `bounceaccountencryption` varchar(3),
+  `bounceaccountuser` varchar(200),
   `showwelcome` char(1) default 'Y',
   `showprogress` char(1) default 'Y',
   `allowjumps` char(1) default 'N',
@@ -313,26 +313,26 @@ CREATE TABLE `prefix_surveys` (
 -- Table structure for table surveys_languagesettings
 --
 CREATE TABLE `prefix_surveys_languagesettings` (
-  `surveyls_survey_id` INT UNSIGNED NOT NULL DEFAULT 0,
-  `surveyls_language` VARCHAR(45) NULL DEFAULT 'en',
-  `surveyls_title` VARCHAR(200) NOT NULL,
+  `surveyls_survey_id` int(11) NOT NULL DEFAULT 0,
+  `surveyls_language` varchar(45) NULL DEFAULT 'en',
+  `surveyls_title` varchar(200) NOT NULL,
   `surveyls_description` TEXT NULL,
   `surveyls_welcometext` TEXT NULL,
   `surveyls_endtext` TEXT NULL,
-  `surveyls_url` VARCHAR(255) NULL,
-  `surveyls_urldescription` VARCHAR(255) NULL,
-  `surveyls_email_invite_subj` VARCHAR(255) NULL,
+  `surveyls_url` varchar(255) NULL,
+  `surveyls_urldescription` varchar(255) NULL,
+  `surveyls_email_invite_subj` varchar(255) NULL,
   `surveyls_email_invite` TEXT NULL,
-  `surveyls_email_remind_subj` VARCHAR(255) NULL,
+  `surveyls_email_remind_subj` varchar(255) NULL,
   `surveyls_email_remind` TEXT NULL,
-  `surveyls_email_register_subj` VARCHAR(255) NULL,
+  `surveyls_email_register_subj` varchar(255) NULL,
   `surveyls_email_register` TEXT NULL,
-  `surveyls_email_confirm_subj` VARCHAR(255) NULL,
+  `surveyls_email_confirm_subj` varchar(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
   `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1,
   `email_admin_notification_subj`  VARCHAR(255) NULL,
   `email_admin_notification` TEXT NULL,
-  `email_admin_responses_subj` VARCHAR(255) NULL,
+  `email_admin_responses_subj` varchar(255) NULL,
   `email_admin_responses` TEXT NULL,
   `surveyls_numberformat` INT NOT NULL DEFAULT 0,
 
@@ -344,8 +344,8 @@ CREATE TABLE `prefix_surveys_languagesettings` (
 -- Table structure for table survey_permissions
 --
 CREATE TABLE `prefix_survey_permissions` (
-	`sid` int(10) unsigned NOT NULL,
-	`uid` int(10) unsigned NOT NULL,
+	`sid` int(11) NOT NULL,
+	`uid` int(11) NOT NULL,
 	`permission` varchar(20) NOT NULL,
 	`create_p` tinyint(1) NOT NULL default '0',
     `read_p` tinyint(1) NOT NULL default '0',
@@ -362,7 +362,7 @@ CREATE TABLE `prefix_survey_permissions` (
 --
 CREATE TABLE `prefix_survey_url_parameters` (
 	`id` int(9) NOT NULL AUTO_INCREMENT,
-	`sid` int(10) NOT NULL,
+	`sid` int(11) NOT NULL,
 	`parameter` varchar(50) NOT NULL,
 	`targetqid` int(10) NULL,
 	`targetsqid` int(10) NULL,
@@ -373,10 +373,10 @@ CREATE TABLE `prefix_survey_url_parameters` (
 -- Table structure for table user_groups
 --
 CREATE TABLE `prefix_user_groups` (
-	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
+	`ugid` int(11) NOT NULL auto_increment PRIMARY KEY,
 	`name` varchar(20) NOT NULL UNIQUE,
 	`description` TEXT NOT NULL,
-	`owner_id` int(10) unsigned NOT NULL
+	`owner_id` int(11) NOT NULL
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -384,8 +384,8 @@ CREATE TABLE `prefix_user_groups` (
 -- Table structure for table user_in_groups
 --
 CREATE TABLE `prefix_user_in_groups` (
-	`ugid` int(10) unsigned NOT NULL,
-	`uid` int(10) unsigned NOT NULL,
+	`ugid` int(11) NOT NULL,
+	`uid` int(11) NOT NULL,
      PRIMARY KEY  (`ugid`,`uid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -398,11 +398,12 @@ CREATE TABLE `prefix_users` (
   `users_name` varchar(64) NOT NULL UNIQUE default '',
   `password` BLOB NOT NULL,
   `full_name` varchar(50) NOT NULL,
-  `parent_id` int(10) unsigned NOT NULL,
+  `parent_id` int(11) NOT NULL,
   `lang` varchar(20),
   `email` varchar(320),
   `create_survey` tinyint(1) NOT NULL default '0',
   `create_user` tinyint(1) NOT NULL default '0',
+  `participant_panel` tinyint(1) NOT NULL default '0',
   `delete_user` tinyint(1) NOT NULL default '0',
   `superadmin` tinyint(1) NOT NULL default '0',
   `configurator` tinyint(1) NOT NULL default '0',
@@ -412,8 +413,7 @@ CREATE TABLE `prefix_users` (
   `templateeditormode` varchar(7) default 'default',
   `questionselectormode` varchar(7) default 'default',
   `one_time_pw` BLOB,
-  `dateformat` INT UNSIGNED NOT NULL DEFAULT 1,
-  `participant_panel` tinyint(1) NOT NULL DEFAULT '0'
+  `dateformat` INT NOT NULL DEFAULT 1
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -440,7 +440,9 @@ CREATE TABLE `prefix_participants` (
   `blacklisted` varchar(1) NOT NULL,
   `owner_uid` int(20) NOT NULL,
   PRIMARY KEY  (`participant_id`)
-) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_attribute
 --
@@ -449,7 +451,9 @@ CREATE TABLE `prefix_participant_attribute` (
   `attribute_id` int(11) NOT NULL,
   `value` varchar(50) NOT NULL,
   PRIMARY KEY  (`participant_id`,`attribute_id`)
-) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_attribute_names_lang
 --
@@ -458,7 +462,9 @@ CREATE TABLE `prefix_participant_attribute_names_lang` (
   `attribute_name` varchar(30) NOT NULL,
   `lang` varchar(20) NOT NULL,
    PRIMARY KEY  (`attribute_id`,`lang`)
- ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_attribute_names
 --
@@ -467,7 +473,9 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `attribute_type` varchar(4) NOT NULL,
   `visible` char(5) NOT NULL,
   PRIMARY KEY  (`attribute_id`,`attribute_type`)
-) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_attribute_names_values
 --
@@ -476,7 +484,9 @@ CREATE TABLE `prefix_participant_attribute_values` (
   `attribute_id` int(11) NOT NULL,
   `value` varchar(20) NOT NULL,
   PRIMARY KEY  ( `value_id`)
-) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_shares
 --
@@ -486,7 +496,9 @@ CREATE TABLE `prefix_participant_shares` (
   `date_added` datetime NOT NULL,
   `can_edit` varchar(5) NOT NULL,
   PRIMARY KEY  (`participant_id`,`share_uid`)
- ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table survey_links
 --
@@ -496,7 +508,9 @@ CREATE TABLE `prefix_survey_links` (
   `survey_id` int(11) NOT NULL,
   `date_created` datetime NOT NULL,
    PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
- ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table templates
 --
