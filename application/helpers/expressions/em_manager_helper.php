@@ -2776,6 +2776,7 @@ class LimeExpressionManager {
                 'relevanceVars' => '',
                 'prettyprint'=> '',
             );
+            $_SESSION[$this->sessid]['relevanceStatus']['G' . $gid] = 1;
             return;
         }
         $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);

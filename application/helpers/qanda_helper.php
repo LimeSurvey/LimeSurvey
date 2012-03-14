@@ -937,7 +937,7 @@ function do_5pointchoice($ia)
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes=  getQuestionAttributeValues($ia[0], $ia[4]);
     $id = 'slider'.time().rand(0,100);
-    $answer = "\n<ul id=\"{$id}\"> class=\"answers-list radio-list\"\n";
+    $answer = "\n<ul id=\"{$id}\" class=\"answers-list radio-list\">\n";
     for ($fp=1; $fp<=5; $fp++)
     {
         $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer$ia[1]$fp\" value=\"$fp\"";
@@ -5174,7 +5174,7 @@ function do_array($ia)
 
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">>\n<label for=\"answer$myfname-\">\n"
+                $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" title=\"".$clang->gT('No answer').'"';
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
