@@ -1307,9 +1307,11 @@ class ExpressionManager {
         if (is_null($expr) || $expr == '') {
             $expr = "'NULL'";
         }
+        $jsmultiline_expr = str_replace("\n","\\\n",$expr);
+        $jsmultiline_expected = str_replace("\n","\\\n",addslashes($expected));
         $jsParts = array();
-        $jsParts[] = "val = " . $expr . ";\n";
-        $jsParts[] = "klass = (LEMeq(addslashes(val),'" . addslashes($expected) . "')) ? 'ok' : 'error';\n";
+        $jsParts[] = "val = " . $jsmultiline_expr . ";\n";
+        $jsParts[] = "klass = (LEMeq(addslashes(val),'" . $jsmultiline_expected . "')) ? 'ok' : 'error';\n";
         $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=(val);\n";
         $jsParts[] = "document.getElementById('test_" . $num . "').className=klass;\n";
         return implode('',$jsParts);
@@ -2295,6 +2297,7 @@ class ExpressionManager {
                         if ($this->RDP_TokenType[$i] == 'DQ_STRING' || $this->RDP_TokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
+//                            $unquotedToken = str_replace(array('\"',"\'","\\\\",'\n','\r','\t'),array('"',"'",'\\',"\n","\n","\t"),substr($token,1,-1));
                             $unquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($token,1,-1));
                             $tokens0[$j][0] = $unquotedToken;
                         }
@@ -2378,7 +2381,10 @@ EOD;
 
         $em = new ExpressionManager();
 
-        foreach(explode("\n",$tests) as $test)
+        $atests = explode("\n",$tests);
+        array_push($atests,'"hi\nthere\nhow\nare\nyou?\n"');
+
+        foreach($atests as $test)
         {
             $tokens = $em->RDP_Tokenize($test);
             print '<b>' . $test . '</b><hr/>';
@@ -2449,7 +2455,7 @@ EOD;
 '12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
 'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
 'empty' => array('sgqa'=>'empty', 'code'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
-'BREAKS' => array('sgqa'=>'BREAKS', 'code'=>'1\n2\n3', 'jsName'=>'', 'readWrite'=>'N'),
+'BREAKS' => array('sgqa'=>'BREAKS', 'code'=>"1\n2\n3", 'jsName'=>'', 'readWrite'=>'N'),
         );
 
         // Syntax for $tests is
@@ -2574,7 +2580,6 @@ I was trimmed   ~ltrim('     I was trimmed   ')
 1~min(five,four,one,two,three)
 1344765967~mktime(5,6,7,8)
 1144191723~mktime(1,2,3,4,5,6)
-1\\n2\\n3~nl2br(BREAKS)
 1,000~number_format(1000)
 1,000.23~number_format(1000.23)
 1,234,567~number_format(1234567)
@@ -2583,7 +2588,6 @@ I was trimmed   ~ltrim('     I was trimmed   ')
 4~pow(2,2)
 27~pow(3,3)
 =~quoted_printable_decode(quoted_printable_encode('='))
-1\\n2\\n3=~nl2br(quoted_printable_decode(quoted_printable_encode(BREAKS)+'='))
 \\$~quotemeta('$')
 IGNORE THIS ERROR~rand(3,5)
 0~(a=rand())-a
@@ -2824,6 +2828,12 @@ NULL~'Tom'='tired'
 NULL~max()
 EOD;
 
+        $atests = explode("\n",$tests);
+        $atests[] = "1\n2\n3~BREAKS";
+        $atests[] = "1<br />\n2<br />\n3~nl2br(BREAKS)";
+        $atests[] = "hi<br />\nthere<br />\nhow<br />\nare<br />\nyou?~nl2br('hi\\nthere\\nhow\\nare\\nyou?')";
+        $atests[] = "hi<br />\nthere,<br />\nuser!~nl2br(implode('\\n','hi','there,','user!'))";
+
         $LEM =& LimeExpressionManager::singleton();
         $em = new ExpressionManager();
         $LEM->setTempVars($vars);
@@ -2841,7 +2851,7 @@ EOD;
         $body .= '<table border="1"><tr><th>Expression</th><th>PHP Result</th><th>Expected</th><th>JavaScript Result</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
         $i=0;
         $javaScript = array();
-        foreach(explode("\n",$tests)as $test)
+        foreach($atests as $test)
         {
             ++$i;
             $values = explode("~",$test);
