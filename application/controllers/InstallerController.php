@@ -201,6 +201,7 @@ class InstallerController extends CController {
     private function stepPreInstallationCheck()
     {
         $aData['clang'] = $clang = $this->lang;
+        $model = new InstallerConfigForm();
         //usual data required by view
         $aData['title'] = $clang->gT('Pre-installation check');
         $aData['descp'] = $clang->gT('Pre-installation check for LimeSurvey ').Yii::app()->getConfig('versionnumber');
@@ -209,9 +210,15 @@ class InstallerController extends CController {
         $aData['phpVersion'] = phpversion();
         // variable storing next button link.initially null
         $aData['next'] = '';
+        $aData['dbtypes']=$model->supported_db_types;
 
         $bProceed = $this->_check_requirements($aData);
+        $aData['dbtypes']=$model->supported_db_types;
 
+        if(count($aData['dbtypes'])==0)
+        {
+           $bProceed=false;
+        }
         // after all check, if flag value is true, show next button and sabe step2 status.
         if ($bProceed)
         {
