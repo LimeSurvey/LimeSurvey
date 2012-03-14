@@ -282,7 +282,7 @@ function upgrade_surveypermissions_table145()
     }
 }
 
-function upgrade_survey_table152()
+function upgrade_survey_table156()
 {
     global $modifyoutput;
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";

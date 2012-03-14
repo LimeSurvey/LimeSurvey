@@ -457,15 +457,6 @@ CREATE TABLE prefix_participant_attribute (
 
 
 --
--- Table structure for table participant_attribute_names
---
-CREATE TABLE prefix_participant_attribute_names (
-  "attribute_id" serial NOT NULL,
-  "attribute_type" character varying( 30 ) NOT NULL,
-  "visible" character varying( 5 ) NOT NULL,
-  CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
-);
---
 -- Table structure for table participant_attribute_lang
 --
 CREATE TABLE prefix_participant_attribute_names_lang (
@@ -474,6 +465,19 @@ CREATE TABLE prefix_participant_attribute_names_lang (
   "attribute_name" character varying( 30 ) NOT NULL,
   "lang" character varying( 20 ) NOT NULL
 );
+
+
+--
+-- Table structure for table participant_attribute_names
+--
+CREATE TABLE prefix_participant_attribute_names (
+  "attribute_id" serial NOT NULL,
+  "attribute_type" character varying( 30 ) NOT NULL,
+  "visible" character varying( 5 ) NOT NULL,
+  CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
+);
+
+
 --
 -- Table structure for table participant_attribute_values
 --
@@ -547,4 +551,4 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '155');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '156');

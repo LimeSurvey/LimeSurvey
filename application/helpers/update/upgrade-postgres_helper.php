@@ -10,7 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
@@ -314,55 +313,54 @@ function db_upgrade($oldversion) {
     if ($oldversion < 148)
     {
         modifyDatabase("","CREATE TABLE prefix_participants (
-        participant_id VARCHAR( 50 ) NOT NULL,
-        firstname VARCHAR( 40 ) NOT NULL,
-        lastname VARCHAR( 40 ) NOT NULL,
-        email VARCHAR( 80 ) NOT NULL,
-        language VARCHAR( 2 ) NOT NULL,
-        blacklisted VARCHAR( 1 ) NOT NULL,
+        participant_id character varying( 50 ) NOT NULL,
+        firstname character varying( 40 ) NOT NULL,
+        lastname character varying( 40 ) NOT NULL,
+        email character varying( 80 ) NOT NULL,
+        language character varying( 2 ) NOT NULL,
+        blacklisted character varying( 1 ) NOT NULL,
         owner_uid integer NOT NULL,
         PRIMARY KEY (participant_id)
         );"); echo $modifyoutput; flush();@ob_flush();
 
         modifyDatabase("","CREATE TABLE prefix_participant_attribute (
-        participant_id VARCHAR( 50 ) NOT NULL,
+        participant_id character varying( 50 ) NOT NULL,
         attribute_id integer NOT NULL,
         value integer NOT NULL,
         PRIMARY KEY (participant_id,attribute_id)
         );"); echo $modifyoutput; flush();@ob_flush();
 
-        modifyDatabase("","CREATE TABLE prefix_participant_attribute_names (
-        attribute_id integer NOT NULL AUTO_INCREMENT,
-        attribute_type VARCHAR( 30 ) NOT NULL,
-        visible CHAR( 5 ) NOT NULL,
-        PRIMARY KEY (attribute_type,attribute_id)
-        );"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("",'CREATE TABLE prefix_participant_attribute_names (
+        "attribute_id" serial NOT NULL,
+        "attribute_type" character varying( 30 ) NOT NULL,
+        "visible" character varying( 5 ) NOT NULL,
+        CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
+        );'); echo $modifyoutput; flush();@ob_flush();
 
-        modifyDatabase("","CREATE TABLE prefix_participant_attribute_names_lang (
-        id integer NOT NULL AUTO_INCREMENT,
-        attribute_id integer NOT NULL,
-        attribute_name VARCHAR( 30 ) NOT NULL,
-        lang CHAR( 20 ) NOT NULL,
-        PRIMARY KEY (lang,attribute_id)
-        );"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("",'CREATE TABLE prefix_participant_attribute_names_lang (
+        "id" serial PRIMARY KEY NOT NULL,
+        "attribute_id" integer NOT NULL,
+        "attribute_name" character varying( 30 ) NOT NULL,
+        "lang" character varying( 20 ) NOT NULL
+        );'); echo $modifyoutput; flush();@ob_flush();
 
         modifyDatabase("","CREATE TABLE prefix_participant_attribute_values (
         attribute_id integer NOT NULL,
         value_id integer NOT NULL AUTO_INCREMENT,
-        value VARCHAR( 20 ) NOT NULL,
+        value character varying( 20 ) NOT NULL,
         PRIMARY KEY (value_id)
         );"); echo $modifyoutput; flush();@ob_flush();
 
         modifyDatabase("","CREATE TABLE prefix_participant_shares (
-        participant_id VARCHAR( 50 ) NOT NULL,
+        participant_id character varying( 50 ) NOT NULL,
         shared_uid integer NOT NULL,
         date_added date NOT NULL,
-        can_edit VARCHAR( 5 ) NOT NULL,
+        can_edit character varying( 5 ) NOT NULL,
         PRIMARY KEY (lang,attribute_id)
         );"); echo $modifyoutput; flush();@ob_flush();
 
-        modifyDatabase("","CREATE TABLE prefix_survey_links (
-        participant_id VARCHAR( 50 ) NOT NULL,
+        participant_id("","CREATE TABLE prefix_survey_links (
+        participant_id character varying( 50 ) NOT NULL,
         token_id integer NOT NULL,
         survey_id integer NOT NULL,
         date_created date NOT NULL,
@@ -376,10 +374,49 @@ function db_upgrade($oldversion) {
         modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
 
     }
+
+    if ($oldversion < 149)
+    {
+        modifyDatabase("","CREATE TABLE prefix_survey_url_parameters (
+        id serial PRIMARY KEY NOT NULL,
+        sid integer NOT NULL,
+        parameter character varying(50) NOT NULL,
+        targetqid integer NULL,
+        targetsqid integer NULL
+        );"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='149' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
+
+    }
+    if ($oldversion < 150)
+    {
+        modifyDatabase("","ALTER TABLE prefix_questions ADD relevance TEXT;"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='150' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
+    }
+    if ($oldversion < 151)
+    {
+        modifyDatabase("","ALTER TABLE prefix_groups ADD randomization_group character varying(20) NOT NULL DEFAULT '';"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='151' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
+    }
+    if ($oldversion < 152)
+    {
+        modifyDatabase("","CREATE INDEX question_attributes_idx3 ON prefix_question_attributes (attribute);"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='152' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
+    }
     if ($oldversion < 153)
     {
-        modifyDatabase("","ALTER TABLE `prefix_surveys` ADD `sendconfirmation` CHAR(1) default 'Y'"); echo $modifyoutput; flush();@ob_flush();
-		upgrade_survey_table152();
+        modifyDatabase("",'CREATE TABLE prefix_expression_errors (
+        "id" serial PRIMARY KEY NOT NULL,
+        errortime character varying(50) DEFAULT NULL,
+        sid integer DEFAULT NULL,
+        gid integer DEFAULT NULL,
+        qid integer DEFAULT NULL,
+        gseq integer DEFAULT NULL,
+        qseq integer DEFAULT NULL,
+        "type" character varying(50) ,
+        eqn text,
+        prettyprint text
+        );'); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='153' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
     if ($oldversion < 154)
     {
@@ -393,6 +430,22 @@ function db_upgrade($oldversion) {
         modifyDatabase("","ALTER TABLE prefix_surveys ADD googleanalyticsapikey character varying(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","ALTER TABLE prefix_surveys RENAME COLUMN showXquestions TO showxquestions;"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
+    }
+
+    if ($oldversion < 156)
+    {
+        modifyDatabase("", "DROP TABLE prefix_sessions;"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("", "CREATE TABLE prefix_sessions(
+            id character varying(32) PRIMARY KEY NOT NULL,
+            expire integer DEFAULT NULL,
+            data text
+        );"); echo $modifyoutput; flush();@ob_flush();
+
+        modifyDatabase("","ALTER TABLE prefix_surveys_languagesettings ADD surveyls_attributecaptions TEXT NULL;"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("","ALTER TABLE prefix_surveys ADD sendconfirmation CHAR(1) default 'Y'"); echo $modifyoutput; flush();@ob_flush();
+        upgrade_survey_table156();
+
+        modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='156' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
 
     fixLanguageConsistencyAllSurveys();

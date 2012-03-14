@@ -219,7 +219,7 @@ CREATE TABLE `prefix_saved_control` (
 
 
 --
--- Table structure for table templates_sessions
+-- Table structure for table sessions
 --
 CREATE TABLE `prefix_sessions`(
       `id` char(32) NOT NULL,
@@ -423,19 +423,23 @@ CREATE TABLE `prefix_templates_rights` (
   `use` int(1) NOT NULL,
   PRIMARY KEY  (`uid`,`folder`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participants
 --
 CREATE TABLE `prefix_participants` (
   `participant_id` varchar(50) NOT NULL,
-  `firstname` varchar(40) NOT NULL,
-  `lastname` varchar(40) NOT NULL,
-  `email` varchar(80) NOT NULL,
-  `language` varchar(20) NOT NULL,
-  `blacklisted` char(1) NOT NULL,
+  `firstname` varchar(40) DEFAULT NULL,
+  `lastname` varchar(40) DEFAULT NULL,
+  `email` varchar(80) DEFAULT NULL,
+  `language` varchar(40) DEFAULT NULL,
+  `blacklisted` varchar(1) NOT NULL,
   `owner_uid` int(20) NOT NULL,
   PRIMARY KEY  (`participant_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_attribute
 --
@@ -445,6 +449,8 @@ CREATE TABLE `prefix_participant_attribute` (
   `value` varchar(50) NOT NULL,
   PRIMARY KEY  (`participant_id`,`attribute_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_attribute_names_lang
 --
@@ -454,6 +460,8 @@ CREATE TABLE `prefix_participant_attribute_names_lang` (
   `lang` varchar(20) NOT NULL,
    PRIMARY KEY  (`attribute_id`,`lang`)
  ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_attribute_names
 --
@@ -463,6 +471,8 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `visible` char(5) NOT NULL,
   PRIMARY KEY  (`attribute_id`,`attribute_type`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_attribute_names_values
 --
@@ -472,6 +482,8 @@ CREATE TABLE `prefix_participant_attribute_values` (
   `value` varchar(20) NOT NULL,
   PRIMARY KEY  ( `value_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table participant_shares
 --
@@ -482,6 +494,8 @@ CREATE TABLE `prefix_participant_shares` (
   `can_edit` varchar(5) NOT NULL,
   PRIMARY KEY  (`participant_id`,`share_uid`)
  ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table survey_links
 --
@@ -492,6 +506,8 @@ CREATE TABLE `prefix_survey_links` (
   `date_created` datetime NOT NULL,
    PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
  ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 --
 -- Table structure for table templates
 --
@@ -535,4 +551,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '155');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '156');
