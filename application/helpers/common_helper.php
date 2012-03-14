@@ -557,33 +557,41 @@ function getQuestions($surveyid,$gid,$selectedqid)
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0));
 
-    if (!isset($questionselecter)) {$questionselecter="";}
+    if (!isset($sQuestionselecter)) {$sQuestionselecter="";}
     foreach ($qrows as $qrow)
     {
         $qrow = $qrow->attributes;
         $qrow['title'] = strip_tags($qrow['title']);
         $link = Yii::app()->getController()->createUrl("/admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$qrow['qid']);
-        $questionselecter .= "<option value='{$link}'";
-        if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
-        $questionselecter .=">{$qrow['title']}:";
-        $questionselecter .= " ";
+        $sQuestionselecter .= "<option value='{$link}'";
+        if ($selectedqid == $qrow['qid'])
+        {
+                $sQuestionselecter .= " selected='selected'";
+                $qexists=true;
+        }
+        $sQuestionselecter .=">{$qrow['title']}:";
+        $sQuestionselecter .= " ";
         $question=flattenText($qrow['question'],true);
         if (strlen($question)<35)
         {
-            $questionselecter .= $question;
+            $sQuestionselecter .= $question;
         }
         else
         {
-            $questionselecter .= htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
+            $sQuestionselecter .= htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
         }
-        $questionselecter .= "</option>\n";
+        $sQuestionselecter .= "</option>\n";
     }
 
     if (!isset($qexists))
     {
-        $questionselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$questionselecter;
+        $sQuestionselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$sQuestionselecter;
     }
-    return $questionselecter;
+    else
+    {
+        $sQuestionselecter = "<option>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+    }
+    return $sQuestionselecter;
 }
 
 /**
@@ -3335,7 +3343,7 @@ function questionAttributes($returnByName=false)
     // End Map Options
 
     $qattributes["hide_tip"]=array(
-    "types"=>"!DKLMNOPRSWZ",
+    "types"=>"15ABCDEFGHIKLMNOPQRSTUXY!:;|",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -6988,35 +6996,36 @@ function getLabelSets($languages = null)
 
 function getHeader($meta = false)
 {
-    global $embedded;
+    global $embedded,$surveyid ;
+    // Not needed ? Yii::app()->loadHelper('surveytranslator');
 
-    $surveyid = Yii::app()->getConfig('sid');
-    Yii::app()->loadHelper('surveytranslator');
-    //$clang = Yii::app()->lang;
-    $clang=Yii::app()->lang;
-
-    if (!empty(Yii::app()->session[$surveyid]['s_lang']))
+    // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
+    if (Yii::app()->session['s_lang'] )
     {
-        $surveylanguage= Yii::app()->session[$surveyid]['s_lang'];
+        $languagecode =  Yii::app()->session['s_lang'];
+    }
+    elseif (Yii::app()->session['survey_'.$surveyid]['s_lang'] )
+    {
+        $languagecode =  Yii::app()->session['survey_'.$surveyid]['s_lang'];
     }
     elseif (isset($surveyid) && $surveyid)
     {
-        $surveylanguage=Survey::model()->findByPk($surveyid)->language;
+        $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
     else
     {
-        $surveylanguage=Yii::app()->getConfig('defaultlang');
+        $languagecode = Yii::app()->getConfig('defaultlang');
     }
-
+    
     $js_header = ''; $css_header='';
     if(Yii::app()->getConfig("js_admin_includes"))
     {
         foreach (Yii::app()->getConfig("js_admin_includes") as $jsinclude)
         {
             if (substr($jsinclude,0,4) == 'http')
-                $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
+                $js_header .= "<script type=\"text/javascript\" src=\"{$jsinclude}\"></script>\n";
             else
-                $js_header .= "<script type=\"text/javascript\" src=\"".Yii::app()->baseUrl."$jsinclude\"></script>\n";
+                $js_header .= "<script type=\"text/javascript\" src=\"".Yii::app()->baseUrl."{$jsinclude}\"></script>\n";
         }
     }
     if(Yii::app()->getConfig("css_admin_includes"))
@@ -7030,8 +7039,8 @@ function getHeader($meta = false)
     if ( !$embedded )
     {
         $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
-        if (getLanguageRTL($surveylanguage))
+        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
+        if (getLanguageRTL($languagecode))
         {
             $header.=" dir=\"rtl\" ";
         }

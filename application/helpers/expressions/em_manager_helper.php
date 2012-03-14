@@ -2166,8 +2166,15 @@ class LimeExpressionManager {
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'M': //Multiple choice checkbox
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    if ($type == 'O' && preg_match('/_comment$/', $varName))
+                    {
+                        $jsVarName_on = 'answer' . $sgqa;
+                    }
+                    else
+                    {
+                        $jsVarName_on = 'java' . $sgqa;
+                    }
                     $jsVarName = 'java' . $sgqa;
-                    $jsVarName_on = $jsVarName;
                     break;
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
@@ -2175,9 +2182,7 @@ class LimeExpressionManager {
                     $jsVarName_on = 'answer' . $sgqa;;
                     break;
                 case '|': //File Upload
-                    // Only want the use the one that ends in '_filecount'
-                    $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$sgqa);
-                    $jsVarName = $goodcode . '_filecount';
+                    $jsVarName = $sgqa;
                     $jsVarName_on = $jsVarName;
                     break;
                 case 'P': //Multiple choice with comments checkbox + text
@@ -2936,13 +2941,14 @@ class LimeExpressionManager {
                     {
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'at_start'=>true,
                             'finished'=>false,
                             'message'=>$message,
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
+                        return $LEM->lastMoveResult;
                     }
 
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
@@ -2960,7 +2966,7 @@ class LimeExpressionManager {
                         // display new group
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'at_start'=>false,
                             'finished'=>false,
                             'message'=>$message,
@@ -2971,6 +2977,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 break;
@@ -2985,13 +2992,14 @@ class LimeExpressionManager {
                     {
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'at_start'=>true,
                             'finished'=>false,
                             'message'=>$message,
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
+                        return $LEM->lastMoveResult;
                     }
 
                     // Set certain variables normally set by StartProcessingGroup()
@@ -3455,10 +3463,18 @@ class LimeExpressionManager {
         return $message;
     }
 
-    static function GetLastMoveResult()
+    /**
+        * Get last move information, optionally clearing the substitution cache
+        * @param type $clearSubstitutionInfo
+        * @return type
+        */
+    static function GetLastMoveResult($clearSubstitutionInfo=false)
     {
         $LEM =& LimeExpressionManager::singleton();
-        $LEM->em->ClearSubstitutionInfo();  // need to avoid double-generation of tailoring info
+        if ($clearSubstitutionInfo)
+        {
+            $LEM->em->ClearSubstitutionInfo();  // need to avoid double-generation of tailoring info
+        }
         return (isset($LEM->lastMoveResult) ? $LEM->lastMoveResult : NULL);
     }
 
@@ -5171,14 +5187,12 @@ static function GetRelevanceAndTailoringJavaScript()
                 if ($arg['hidden']) {
                     $relParts[] = "  // This question should always be hidden\n";
                     $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                    $relParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
                 }
                 else {
                     if (!($relevance == '' || $relevance == '1'))
                     {
                         // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
                         $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                        $relParts[] = "  $('#display" . $arg['qid'] . "').val('on');\n";
                         if ($arg['type'] == 'S')
                         {
                             $relParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
@@ -5193,7 +5207,11 @@ static function GetRelevanceAndTailoringJavaScript()
                 {
                     $relParts[] = "  // Write value from the question into the answer field\n";
                     $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
-                    $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .em_equation').find('span').html()))).replace(/%20/g,' '));\n";
+                    // Note, this will destroy embedded HTML in the equation (e.g. if it is a report)
+                    // Should be possible to use jQuery to remove just the LEMtailoring span, but not easy since done (the following doesn't work)
+                    // _tmpval = $('#question801 .em_equation').clone()
+                    // $(_tmpval).find('[id^=LEMtailor]').each(function(){ $(this).replaceWith(function(){ $(this).contents; }); })
+                    $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .em_equation').html())));\n";
                 }
                 $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                 $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
@@ -5203,7 +5221,6 @@ static function GetRelevanceAndTailoringJavaScript()
                 {
                     $relParts[] = "else {\n";
                     $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                    $relParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
                     $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
@@ -6148,6 +6165,10 @@ EOD;
                                             if (file_exists($tmp . $phparray[$i]->filename))
                                             {
                                                 $sDestinationFileName = 'fu_' . randomChars(15);
+                                                if (!is_dir($LEM->surveyOptions['target']))
+                                                {
+                                                    mkdir($LEM->surveyOptions['target'], 0777, true);
+                                                }
                                                 if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
                                                 {
                                                     echo "Error moving file to target destination";
@@ -6372,14 +6393,23 @@ EOD;
                         case 'S': //SHORT FREE TEXT
                         case 'T': //LONG FREE TEXT
                         case 'U': //HUGE FREE TEXT
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
                         case 'D': //DATE
                         case '*': //Equation
                         case 'I': //Language Question
                         case '|': //File Upload
                         case 'X': //BOILERPLATE QUESTION
                             $shown = $code;
+                            break;
+                        case 'M': //Multiple choice checkbox
+                        case 'P': //Multiple choice with comments checkbox + text
+                            if ($code == 'Y' && isset($var['question']))
+                            {
+                                $shown = $var['question'];
+                            }
+                            else
+                            {
+                                $shown = $default;
+                            }
                             break;
                         case 'G': //GENDER drop-down list
                         case 'Y': //YES/NO radio-buttons
@@ -6393,9 +6423,7 @@ EOD;
                             else
                             {
                                 if (isset($ansArray[$code])) {
-                                    $answerInfo = explode('|',$ansArray[$code]);
-                                    array_shift($answerInfo);
-                                    $answer = join('|',$answerInfo);
+                                    $answer = $ansArray[$code];
                                 }
                                 else {
                                     $answer = $default;

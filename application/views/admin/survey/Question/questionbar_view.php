@@ -3,7 +3,7 @@
             <?php foreach ($tmp_survlangs as $tmp_lang)
                 { ?>
                 <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
-                    <?php } ?>
+                <?php } ?>
         </ul></div>
     <?php } ?>
 <div class='menubar-title ui-widget-header'>
@@ -40,12 +40,12 @@
             <?php } ?>
 
         <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
-        { ?>
+            { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
             <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')"
                 title="<?php $clang->eTview("Survey Logic File for current question"); ?>">
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question"); ?>' /></a>
-        <?php } ?>
+                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question"); ?>' /></a>
+            <?php } ?>
 
         <?php if ((($qct == 0 && $activated != "Y") || $activated != "Y") && hasSurveyPermission($surveyid,'surveycontent','delete'))
             {
@@ -164,12 +164,11 @@
             <?php } ?>
     </div>
     <div class='menubar-right'>
-        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/minus.gif' title='
-            <?php $clang->eT("Hide Details of this Question"); ?>'  alt='<?php $clang->eT("Hide Details of this Question"); ?>' onclick='document.getElementById("questiondetails").style.display="none";' />
-        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.gif' title='
-            <?php $clang->eT("Show Details of this Question"); ?>'  alt='<?php $clang->eT("Show Details of this Question"); ?>' onclick='document.getElementById("questiondetails").style.display="";' />
-        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='
-            <?php $clang->eT("Close this Question"); ?>' alt='<?php $clang->eT("Close this Question"); ?>' href="<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$gid"); ?>" />
+        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/minus.gif'
+            title='<?php $clang->eT("Hide details of this question"); ?>'  alt='<?php $clang->eT("Hide details of this question"); ?>' onclick='document.getElementById("questiondetails").style.display="none";' />
+        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.gif' title='<?php $clang->eT("Show details of this question"); ?>'  alt='<?php $clang->eT("Show Details of this Question"); ?>' onclick='document.getElementById("questiondetails").style.display="";' />
+        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close this question"); ?>' alt='<?php $clang->eT("Close this question"); ?>'
+            onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$gid"); ?>','_top');" />
     </div>
 </div>
 </div>
@@ -218,8 +217,7 @@
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
                     <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add answer options to this question"); ?>
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/answers_20.png' title='
-                            <?php $clang->eT("Edit answer options for this question"); ?>' /></a></span></td></tr>
+                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/answers_20.png' title='<?php $clang->eT("Edit answer options for this question"); ?>' /></a></span></td></tr>
         <?php }
 
 
@@ -228,8 +226,7 @@
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
                     <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/subquestions_20.png' title='
-                            <?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
+                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/subquestions_20.png' title='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
         <?php }
 
         if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
@@ -263,18 +260,18 @@
             </td>
         </tr>
         <?php } ?>
-        <?php if (trim($qrrow['relevance']) != '') { ?>
+    <?php if (trim($qrrow['relevance']) != '') { ?>
         <tr>
             <td><?php $clang->eT("Relevance equation:"); ?></td>
             <td>
-            <?php
-                LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
-                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-            ?>
+                <?php
+                    LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
+                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                ?>
             </td>
         </tr>
         <?php } ?>
-        <?php
+    <?php
         $sCurrentCategory='';
         foreach ($advancedsettings as $aAdvancedSetting)
         { ?>

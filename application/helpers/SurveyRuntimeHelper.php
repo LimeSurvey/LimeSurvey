@@ -84,7 +84,7 @@ class SurveyRuntimeHelper {
         }
         else
         {
-            
+
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION['survey_'.$surveyid]['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
             {
@@ -111,31 +111,31 @@ class SurveyRuntimeHelper {
             {
                 $_SESSION['survey_'.$surveyid]['maxstep'] = 0;
             }
-            
+
             if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
             {
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
                 // Does not try to save anything from the page to the database
-                $moveResult = LimeExpressionManager::GetLastMoveResult();
+                $moveResult = LimeExpressionManager::GetLastMoveResult(true);
                 if (isset($_POST['thisstep']) && isset($moveResult['seq']) && $_POST['thisstep'] == $moveResult['seq'])
                 {
                     // then pressing F5 or otherwise refreshing the current page, which is OK
                     $LEMskipReprocessing=true;
-                    $move = "movenext"; // so will re-display the survey 
+                    $move = "movenext"; // so will re-display the survey
                 }
                 else
                 {
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
                     $LEMskipReprocessing=true;
-                    $move = "movenext"; // so will re-display the survey                 
+                    $move = "movenext"; // so will re-display the survey
                     $invalidLastPage=true;
                     $vpopup="<script type=\"text/javascript\">\n
                     <!--\n $(document).ready(function(){
-                        alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
-                    </script>\n";                
+                    alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
+                    </script>\n";
                 }
             }
-            
+
             if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
             {
                 $_SESSION['survey_'.$surveyid]['prevstep'] = $_SESSION['survey_'.$surveyid]['step'];
@@ -143,26 +143,26 @@ class SurveyRuntimeHelper {
             if (!isset($_SESSION['prevstep']))
             {
                 $_SESSION['survey_'.$surveyid]['prevstep']=-1;   // this only happens on re-load
-            }                 
-            
+            }
+
             if (isset($_SESSION['LEMtokenResume']))
             {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION['survey_'.$surveyid]['step']+1,false,false);   // if late in the survey, will re-validate contents, which may be overkill
-                unset($_SESSION['LEMtokenResume']);   
+                unset($_SESSION['LEMtokenResume']);
                 unset($_SESSION['LEMreload']);
-            }            
+            }
             else if (!$LEMskipReprocessing)
-            {
-                //Move current step ###########################################################################
-                if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['allowjumps'] == 'Y'))
                 {
-                    $moveResult = LimeExpressionManager::NavigateBackwards();
-                    if ($moveResult['at_start'])
+                    //Move current step ###########################################################################
+                    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['allowjumps'] == 'Y'))
                     {
-                        $_SESSION['survey_'.$surveyid]['step'] = 0;
-                        unset($moveResult); // so display welcome page again
-                    }
+                        $moveResult = LimeExpressionManager::NavigateBackwards();
+                        if ($moveResult['at_start'])
+                        {
+                            $_SESSION['survey_'.$surveyid]['step'] = 0;
+                            unset($moveResult); // so display welcome page again
+                        }
                 }
                 if (isset($move) && $move == "movenext")
                 {
@@ -206,7 +206,7 @@ class SurveyRuntimeHelper {
                 if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION['survey_'.$surveyid]['step'] == 0))
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
-                    $moveResult = LimeExpressionManager::GetLastMoveResult();
+                    $moveResult = LimeExpressionManager::GetLastMoveResult(true);
                     $LEMskipReprocessing=true;
                 }
             }
@@ -284,7 +284,7 @@ class SurveyRuntimeHelper {
                     $cSave->showsaveform(); // reshow the form if there is an error
                 }
 
-                $moveResult = LimeExpressionManager::GetLastMoveResult();
+                $moveResult = LimeExpressionManager::GetLastMoveResult(true);
                 $LEMskipReprocessing=true;
 
                 // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
@@ -498,7 +498,7 @@ class SurveyRuntimeHelper {
                     doHeader();
                     echo $content;
                 }
-                $redata['completed'] = $completed;                
+                $redata['completed'] = $completed;
                 echo templatereplace(file_get_contents("$thistpl/completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n<br />\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
@@ -576,10 +576,10 @@ class SurveyRuntimeHelper {
                         $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                         $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
                         $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-                     } else {
+                    } else {
                         $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                     }
-                    
+
                     $gid = $stepInfo['gid'];
                     $groupname = $stepInfo['gname'];
                     $groupdescription = $stepInfo['gtext'];
@@ -794,7 +794,8 @@ class SurveyRuntimeHelper {
             {
                 newval = value;
                 if (LEMradix === ',') {
-                    newval = value.split(',').join('.');
+                    newval = new String(value);
+                    newval = newval.split(',').join('.');
                 }
                 if (newval != parseFloat(newval)) {
                     newval = '';
@@ -837,6 +838,31 @@ class SurveyRuntimeHelper {
                     $('#java'+name).val(value);
                 }
                 ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+END;
+
+if ($previewgrp)
+{
+    // force the group to be visible, even if irrelevant - will not always work
+    print <<<END
+    $('#relevanceG' + LEMgid).val(1);
+    $(document).ready(function() {
+        $('#group-' + LEMgid).show();
+    });
+    $(document).change(function() {
+        $('#group-' + LEMgid).show();
+    });
+    $(document).bind('keydown',function(e) {
+                if (e.keyCode == 9) {
+                    $('#group-' + LEMgid).show();
+                    return true;
+                }
+                return true;
+            });
+
+END;
+}
+
+print <<<END
             }
         // -->
         </script>
@@ -876,7 +902,7 @@ END;
             echo "\n\n<!-- START THE GROUP -->\n";
             echo "\n\n<div id='group-$gid'";
             $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($gid);
-            if  ($gnoshow)
+            if  ($gnoshow && !$previewgrp)
             {
                 echo " style='display: none;'";
             }

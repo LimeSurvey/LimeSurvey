@@ -596,11 +596,11 @@ a.optoutemail {
 }
 
 .assessmentlist {
-	margin-top: 15px;
+    margin-top: 15px;
 }
 
 ul.assessmentscope {
-	margin: 15px 0;
+    margin: 15px 0;
 }
 
 ul.assessmentscope li label:first-child {
@@ -608,28 +608,28 @@ ul.assessmentscope li label:first-child {
 }
 
 #assessmentsform #languagetabs {
-	margin: 15px auto;
-	min-width: 740px;
+    margin: 15px auto;
+    min-width: 740px;
 }
 
 #assessmentsform #languagetabs ul.editor-parent {
-	width: 710px;
-	min-width: 710px;
-	padding: 0;
-	margin: 0 auto;
+    width: 710px;
+    min-width: 710px;
+    padding: 0;
+    margin: 0 auto;
 }
 
 #assessmentsform #languagetabs .cke_skin_office2003 {
-	width: 580px !important;
+    width: 580px !important;
 }
 
 #assessmentsform #languagetabs label {
-	width: 100px;
+    width: 100px;
 }
 
 #assessmentsform #languagetabs input[type="text"] {
-	width: 565px;
-	margin-bottom: 5px;
+    width: 565px;
+    margin-bottom: 5px;
 }
 
 
@@ -1526,3 +1526,4 @@ ol.organizer {
 }
 .labelsets-update label{display:block}
 .button-list{text-align:left}
+#gbox_displaysurveys{ margin:0 auto;}

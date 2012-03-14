@@ -632,6 +632,76 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_assessment_current_total = '';
     }
 
+    if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '')
+    {
+        $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
+    }
+    else
+    {
+        $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
+    }
+    $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '0');
+    $_googleAnalyticsJavaScript = '';
+
+    if ($_googleAnalyticsStyle != '' && $_googleAnalyticsStyle != 0 && $_googleAnalyticsAPIKey != '')
+    {
+        switch ($_googleAnalyticsStyle)
+        {
+            case '1':
+                // Default Google Tracking
+                $_googleAnalyticsJavaScript = <<<EOD
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '$_googleAnalyticsAPIKey']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+EOD;
+                break;
+            case '2':
+                // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
+                $moveInfo = LimeExpressionManager::GetLastMoveResult();
+                if (is_null($moveInfo)) {
+                    $gseq='welcome';
+                }
+                else if ($moveInfo['finished'])
+                {
+                    $gseq='finished';
+                }
+                else if (isset($moveInfo['at_start']) && $moveInfo['at_start'])
+                {
+                    $gseq='welcome';
+                }
+                else if (is_null($_groupname))
+                {
+                    $gseq='printanswers';
+                }
+                else
+                {
+                    $gseq=$moveInfo['gseq']+1;
+                }
+                $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
+                $_googleAnalyticsJavaScript = <<<EOD
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '$_googleAnalyticsAPIKey']);
+  _gaq.push(['_trackPageview','$_trackURL']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+EOD;
+                break;
+        }
+    }
 
     // Set the array of replacement variables here - don't include curly braces
 
@@ -649,6 +719,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['EXPIRY'] = $_dateoutput;
     $coreReplacements['GID'] = isset($questiondetails['gid']) ? $questiondetails['gid']: '';
+    $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
+    $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
     $coreReplacements['LANG'] = $clang->getlangcode();
