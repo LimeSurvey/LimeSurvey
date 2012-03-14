@@ -10,29 +10,6 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: save.php 12094 2012-01-17 19:54:01Z tmswhite $
-
- //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
-
- Save Feature redesign
- ---------------------
- Benefits
- Partial survey answers are saved (provided at least Next/Prev/Last/Submit/Save so far clicked at least once).
-
- Details.
- 1. The answers are saved in the "survey_x" table only.  The "saved" table is no longer used.
- 2. The "saved_control" table has new column (srid) that points to the "survey_x" record it corresponds to.
- 3. Answers are saved every time you move between pages (Next,Prev,Last,Submit, or Save so far).
- 4. Only the fields modified on the page are updated. A new hidden field "modfields" store which fields have changed. - REVERTED
- 5. Answered are reloaded from the database after the save so that if some other answers were modified by someone else
- the updates would be picked up for the current page.  There is still an issue if two people modify the same
- answer at the same time.. the 'last one to save' wins.
- 6. The survey_x datestamp field is updated every time the record is updated.
- 7. Template can now contain {DATESTAMP} to show the last modified date/time.
- 8. A new field 'submitdate' has been added to the survey_x table and is written when the submit button is clicked.
- 9. Save So Far now displays on Submit page. This allows the user one last chance to create a saved_control record so they
- can return later.
-
  */
 
 global $errormsg;   // since neeeded by savecontrol()
@@ -117,6 +94,12 @@ global $errormsg;   // since neeeded by savecontrol()
         }
     }
 
+    if (trim($_POST['saveemail'])!='' && !validate_email($_POST['saveemail']))
+    {
+            $errormsg .= $clang->gT("The email address is not valid. Please leave the email field blank or give a valid email address.")."<br />\n";
+    }
+
+
     if ($errormsg)
     {
         return;
@@ -183,26 +166,23 @@ global $errormsg;   // since neeeded by savecontrol()
         //Email if needed
         if (isset($_POST['saveemail']) )
         {
-            if (validate_email($_POST['saveemail']))
-            {
-                $subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
-                $message=$clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.","unescaped");
-                $message.="\n\n".$thissurvey['name']."\n\n";
-                $message.=$clang->gT("Name","unescaped").": ".$_POST['savename']."\n";
-                $message.=$clang->gT("Password","unescaped").": ".$_POST['savepass']."\n\n";
-                $message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped")."\n";
-                $message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
+            $subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
+            $message=$clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.","unescaped");
+            $message.="\n\n".$thissurvey['name']."\n\n";
+            $message.=$clang->gT("Name","unescaped").": ".$_POST['savename']."\n";
+            $message.=$clang->gT("Password","unescaped").": ".$_POST['savepass']."\n\n";
+            $message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped")."\n";
+            $message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
-                if ($clienttoken){$message.="&token=".$clienttoken;}
-                $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                if (SendEmailMessage(null, $message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
-                {
-                    $emailsent="Y";
-                }
-                else
-                {
-                    echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
-                }
+            if ($clienttoken){$message.="&token=".$clienttoken;}
+            $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
+            if (SendEmailMessage(null, $message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
+            {
+                $emailsent="Y";
+            }
+            else
+            {
+                echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
             }
         }
         return  $clang->gT('Your survey was successfully saved.');

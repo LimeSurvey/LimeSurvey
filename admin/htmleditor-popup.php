@@ -10,14 +10,15 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: htmleditor-popup.php 11607 2011-12-06 23:19:52Z tmswhite $
  */
 
-//Ensure script is not run directly, avoid path disclosure
-//include_once("login_check.php");
+require_once(dirname(__FILE__).'/../classes/core/startup.php');
 
 require_once(dirname(__FILE__).'/../config-defaults.php');
 require_once(dirname(__FILE__).'/../common.php');
+require_once('login_check.php');
+
+if (!isset($_SESSION['loginID'])) die();
 
 if (!isset($_GET['lang']))
 {
@@ -27,6 +28,7 @@ else
 {
     $clang = new limesurvey_lang($_GET['lang']);
 }
+
 
 if (!isset($_GET['fieldname']) || !isset($_GET['fieldtext']))
 {
@@ -45,8 +47,8 @@ if (!isset($_GET['fieldname']) || !isset($_GET['fieldtext']))
 			LimeSurvey '.$clang->gT("HTML Editor").'
 		</div>
 		<hr />
-		
-		<tr><td align="center"><br /><span style="color:red;"><strong>	
+
+		<tr><td align="center"><br /><span style="color:red;"><strong>
 		</strong></span><br />
 		</table>
 		<form  onsubmit="self.close()">
@@ -57,8 +59,11 @@ if (!isset($_GET['fieldname']) || !isset($_GET['fieldtext']))
 	</html>';
 }
 else {
-    $fieldname=$_GET['fieldname'];
-    $fieldtext=$_GET['fieldtext'];
+    require_once("../classes/inputfilter/class.inputfilter_clean.php");
+    $oFilter = new InputFilter('','',1,1,1);
+
+    $fieldname=$oFilter->process($_GET['fieldname']);
+    $fieldtext=$oFilter->process($_GET['fieldtext']);
     if (get_magic_quotes_gpc()) $fieldtext = stripslashes($fieldtext);
     $controlidena=$_GET['fieldname'].'_popupctrlena';
     $controliddis=$_GET['fieldname'].'_popupctrldis';
@@ -186,4 +191,5 @@ else {
 }
 
 echo $output;
-?>
+
+// Yes, closing PHP tag was intentionally left out

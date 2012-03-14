@@ -1601,7 +1601,7 @@ function do_list_radio($ia)
     $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-    
+
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);  //Checked
     while($row = $result->FetchRow())
@@ -1944,7 +1944,7 @@ function do_listwithcomment($ia)
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
         {
-            $answer .= str_replace("\\", "", $_SESSION[$fname2]);
+            $answer .= htmlspecialchars(htmlspecialchars(str_replace("\\", "", $_SESSION[$fname2])));
         }
         $answer .= '</textarea>
         </p>
@@ -2002,7 +2002,7 @@ function do_listwithcomment($ia)
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
         {
-            $answer .= str_replace("\\", "", $_SESSION[$fname2]);
+            $answer .= htmlspecialchars(htmlspecialchars(str_replace("\\", "", $_SESSION[$fname2])));
         }
         $answer .= '</textarea>
 	<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]." value=\"{$_SESSION[$ia[1]]}\" />\n</p>\n";
@@ -2498,7 +2498,7 @@ function do_multiplechoice($ia)
     {
         $myfname = $ia[1].'other';
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
-        
+
         if($wrapper['item-start'] == "\t<li>\n")
         {
             $startitem = "\t$htmltbody2\n";
@@ -3036,7 +3036,7 @@ function do_file_upload($ia)
     $currentdir = getcwd();
     $pos = stripos($currentdir, "admin");
     $scriptloc = $rooturl.'/uploader.php';
-    
+
     if ($pos)
     {
         $_SESSION['preview'] = 1;
@@ -3275,7 +3275,7 @@ function do_multipleshorttext($ia)
                     {
                         $dispVal = str_replace('.',$sSeperator,$dispVal);
                     }
-                    $answer_main .= $dispVal;
+                    $answer_main .= htmlspecialchars(htmlspecialchars($dispVal));
                 }
 
                 $answer_main .= "</textarea>\n".$suffix."\n\t</span>\n"
@@ -4016,7 +4016,7 @@ function do_shortfreetext($ia)
             {
                 $dispVal = str_replace('.',$sSeperator,$dispVal);
             }
-            $answer .= $dispVal;
+            $answer .= htmlspecialchars(htmlspecialchars($dispVal));
         }
 
         $answer .= "</textarea>\n";
@@ -4101,7 +4101,7 @@ function do_shortfreetext($ia)
     {
         //no question attribute set, use common input text field
         $answer = "<p class=\"question\">\n<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
-        
+
         $dispVal = $_SESSION[$ia[1]];
         if ($qidattributes['numbers_only']==1)
         {
@@ -4109,7 +4109,7 @@ function do_shortfreetext($ia)
         }
         $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
         $answer .= " value=\"$dispVal\"";
-        
+
         $answer .=" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
     }
 
@@ -4197,7 +4197,7 @@ function do_longfreetext($ia)
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
-    if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
+    if ($_SESSION[$ia[1]]) {$answer .= htmlspecialchars(htmlspecialchars(str_replace("\\", "", $_SESSION[$ia[1]])));}
 
     $answer .= "</textarea>\n";
 
@@ -4271,7 +4271,7 @@ function do_hugefreetext($ia)
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
-    if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
+    if ($_SESSION[$ia[1]]) {$answer .= htmlspecialchars(htmlspecialchars(str_replace("\\", "", $_SESSION[$ia[1]])));}
 
     $answer .= "</textarea>\n";
 
@@ -5358,8 +5358,8 @@ function do_array_multitext($ia)
 
     $checkconditionFunction = "checkconditions";
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeperator = $sSeperator['seperator']; 
-                
+    $sSeperator = $sSeperator['seperator'];
+
     //echo "<pre>"; print_r($_POST); echo "</pre>";
     $defaultvaluescript = "";
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
@@ -5378,7 +5378,7 @@ function do_array_multitext($ia)
     {
         $maxlength= "";
     }
-    
+
     $show_grand = $qidattributes['show_grand_total'];
     $totals_class = '';
     $num_class = '';
