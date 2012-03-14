@@ -256,11 +256,11 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
-        
+
         $aData['surveyid'] = $surveyid;
         $aData['gid']      = $gid;
         $aData['qid']      = $qid;
-        
+
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aViewUrls = $this->_editansweroptions($surveyid, $gid, $qid);
@@ -423,7 +423,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editsubquestions';
         $aViewUrls = $this->_editsubquestion($surveyid, $gid, $qid);
-        
+
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -504,7 +504,7 @@ class question extends Survey_Common_Action
                     if (empty($qrow))
                     {
                         switchMSSQLIdentityInsert('questions', true);
-                        
+
                         $question = new Questions;
                         $question->qid = $row->qid;
                         $question->sid = $surveyid;
@@ -974,14 +974,14 @@ class question extends Survey_Common_Action
         if (!isset(Yii::app()->session['maxstep'])) { Yii::app()->session['maxstep'] = 0; }
 
         // Use $_SESSION instead of $this->session for frontend features.
-        $_SESSION[$surveyid]['s_lang'] = $language;
-        $_SESSION[$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language);
+        $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
+        $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language);
 
 
         // Prefill question/answer from defaultvalues
-        foreach ($_SESSION[$surveyid]['fieldmap'] as $field)
+        foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $field)
             if (isset($field['defaultvalue']))
-                $_SESSION[$field['fieldname']] = $field['defaultvalue'];
+                $_SESSION['survey_'.$surveyid][$field['fieldname']] = $field['defaultvalue'];
 
         $clang = new limesurvey_lang($language);
 
@@ -1170,7 +1170,7 @@ EOD;
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
         $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/".Yii::app()->getConfig('admintheme')."/superfish.css");
-        
+
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }
