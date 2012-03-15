@@ -940,6 +940,69 @@ class question extends Survey_Common_Action
         $aData['attributedata'] = $aAttributesPrepared;
         $this->getController()->render('/admin/survey/Question/advanced_settings_view', $aData);
     }
+    
+    /**
+     * This function prepares the data for label set details
+     *
+     * @access public
+     * @return void
+     */
+    public function ajaxlabelsetdetails()
+    {
+        $lid=returnglobal('lid');
+        Yii::app()->loadHelper('surveytranslator');
+        
+        $labelsetdata=Labelsets::model()->find('lid=:lid',array(':lid' => $lid)); //$connect->GetArray($query);
+        
+        $labelsetlanguages=explode(' ',$labelsetdata->languages);
+        foreach  ($labelsetlanguages as $language){
+            
+            //$query='select * from lime_labels where lid='.$lid." and language='{$language}' order by sortorder";
+            $criteria=new CDbCriteria;
+            $criteria->condition='lid=:lid and language=:language';
+            $criteria->params=array(':lid'=>$lid, ':language'=>$language);
+            $criteria->order='sortorder';
+            $labelsdata=Label::model()->findAll($criteria);
+            $i=0;
+            foreach($labelsdata as $labeldata)
+            {
+                $data[$i]['lid'] = $labeldata->lid;
+                $data[$i]['code'] = $labeldata->code;
+                $data[$i]['title'] = $labeldata->title;
+                $data[$i]['sortorder'] = $labeldata->sortorder;
+                $data[$i]['assessment_value'] = $labeldata->assessment_value;
+                $data[$i]['language'] = $labeldata->language;
+                $i++;
+            }
+            $labels = $data;
+            //$labels=dbExecuteAssoc($query); //Label::model()->find(array('lid' => $lid, 'language' => $language), array('order' => 'sortorder')); //$connect->GetArray($query);
+            $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
+        }
+        
+        echo json_encode($resultdata);
+    }
+    
+    /**
+     * This function prepares the data for labelset
+     *
+     * @access public
+     * @return void
+     */
+    public function ajaxlabelsetpicker()
+    {
+        $match=(int)returnglobal('match');
+        $surveyid=returnglobal('sid');
+        if ($match==1)
+        {
+            $language=GetBaseLanguageFromSurveyID($surveyid);
+        }
+        else
+        {
+            $language=null;
+        }
+        $resultdata=getlabelsets($language);
+        echo json_encode($resultdata);
+    }
 
     /**
      * Load preview of a question screen.

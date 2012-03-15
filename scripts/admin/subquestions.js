@@ -256,7 +256,7 @@ function lsbrowser()
     {
         match=1;
     }*/
-    $.getJSON('admin.php?action=ajaxlabelsetpicker',{sid:surveyid, match:1},function(json){
+    $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
         var x=0;    
         $("#labelsets").removeOption(/.*/); 
         for (x in json)
@@ -301,7 +301,7 @@ function lspreview()
    if (!isset(labelcache[lsid]))
    {
        $.ajax({
-              url: 'admin.php?action=ajaxlabelsetdetails',
+              url: lsdetailurl,
               dataType: 'json',
               data: {lid:lsid, sid:surveyid},
               cache: true,
@@ -409,7 +409,7 @@ function transferlabels()
    
    var lsid=$('#labelsets').val();
    $.ajax({
-          url: 'admin.php?action=ajaxlabelsetdetails',
+          url: lsdetailurl,
           dataType: 'json',
           data: {lid:lsid, sid:surveyid},
           cache: true,
