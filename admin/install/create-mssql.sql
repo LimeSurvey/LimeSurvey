@@ -66,7 +66,7 @@ CREATE TABLE [prefix_defaultvalues] (
 --
 
 CREATE TABLE [prefix_expression_errors] (
-  [id] integer NOT NULL AUTO_INCREMENT,
+  [id] integer NOT NULL IDENTITY,
   [errortime] varchar(50) DEFAULT NULL,
   [sid] integer DEFAULT NULL,
   [gid] integer DEFAULT NULL,
@@ -440,6 +440,8 @@ CREATE TABLE [prefix_templates_rights] (
     [use] int NOT NULL,
     PRIMARY KEY  ([uid],[folder])
 );
+
+
 --
 -- Table structure for table participants
 --
@@ -450,9 +452,11 @@ CREATE TABLE [prefix_participants] (
     [email] varchar(80) DEFAULT NULL,
     [language] varchar(40) DEFAULT NULL,
     [blacklisted] varchar(1) DEFAULT NULL,
-    [owner_uid] int(20) NOT NULL,
+    [owner_uid] int NOT NULL,
     PRIMARY KEY  ([participant_id])
 );
+
+
 --
 -- Table structure for table participant attribute
 --
@@ -466,16 +470,18 @@ CREATE TABLE [prefix_participant_attribute] (
 -- Table structure for table participant attribute names
 --
 CREATE TABLE [prefix_participant_attribute_names] (
-    [attribute_id] integer NOT NULL AUTO_INCREMENT,
+    [attribute_id] integer NOT NULL IDENTITY,
     [attribute_type] varchar(4) NOT NULL,
     [visible] char(5) NOT NULL,
     PRIMARY KEY  ([attribute_id],[attribute_type]   )
 );
+
+
 --
 -- Table structure for table participant attribute names lang
 --
 CREATE TABLE [prefix_participant_attribute_names_lang] (
-    [id] integer NOT NULL AUTO_INCREMENT,
+    [id] integer NOT NULL IDENTITY,
     [attribute_id] integer NOT NULL,
     [attribute_name] varchar(30) NOT NULL,
     [lang] varchar(20) NOT NULL,
@@ -486,7 +492,7 @@ CREATE TABLE [prefix_participant_attribute_names_lang] (
 --
 CREATE TABLE [prefix_participant_attribute_values] (
     [attribute_id] integer NOT NULL,
-    [value_id] integer NOT NULL AUTO_INCREMENT,
+    [value_id] integer NOT NULL IDENTITY,
     [value] varchar(20) NOT NULL,
     PRIMARY KEY  ([value_id])
 );
@@ -510,6 +516,8 @@ CREATE TABLE [prefix_survey_links] (
     [date_created] datetime
     PRIMARY KEY  ([participant_id],[token_id],[survey_id]   )
 );
+
+
 --
 -- Table structure for table templates
 --
@@ -518,6 +526,7 @@ CREATE TABLE [prefix_templates] (
     [creator] int NOT NULL,
     PRIMARY KEY  ([folder])
 );
+
 
 --
 -- Create failed_login_attempts
@@ -529,6 +538,7 @@ CREATE TABLE [prefix_failed_login_attempts] (
   [last_attempt] varchar(20) NOT NULL,
   [number_attempts] int NOT NULL
 );
+
 
 --
 -- Secondary indexes

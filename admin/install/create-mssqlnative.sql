@@ -38,7 +38,6 @@ CREATE TABLE [prefix_assessments] (
 --
 -- Table structure for table conditions
 --
-
 CREATE TABLE [prefix_conditions] (
   [cid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
@@ -69,7 +68,7 @@ CREATE TABLE [prefix_defaultvalues] (
 --
 
 CREATE TABLE [prefix_expression_errors] (
-  [id] integer NOT NULL AUTO_INCREMENT,
+  [id] integer NOT NULL IDENTITY,
   [errortime] varchar(50) DEFAULT NULL,
   [sid] integer DEFAULT NULL,
   [gid] integer DEFAULT NULL,
@@ -86,7 +85,6 @@ CREATE TABLE [prefix_expression_errors] (
 --
 -- Table structure for table groups
 --
-
 CREATE TABLE [prefix_groups] (
   [gid] INT NOT NULL IDENTITY (1,1),
   [sid] INT NOT NULL default '0',
@@ -104,7 +102,6 @@ CREATE TABLE [prefix_groups] (
 --
 -- Table structure for table labels
 --
-
 CREATE TABLE [prefix_labels] (
   [lid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
@@ -124,7 +121,6 @@ CREATE INDEX labels_code_idx
 --
 -- Table structure for table labelsets
 --
-
 CREATE TABLE [prefix_labelsets] (
   [lid] INT NOT NULL IDENTITY (1,1),
   [label_name] VARCHAR(100) NOT NULL default '',
@@ -137,7 +133,6 @@ CREATE TABLE [prefix_labelsets] (
 --
 -- Table structure for table question_attributes
 --
-
 CREATE TABLE [prefix_question_attributes] (
   [qaid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
@@ -191,7 +186,6 @@ CREATE TABLE [prefix_quota_members] (
 );
 
 
-
 --
 -- Table structure for table questions
 --
@@ -222,7 +216,6 @@ CREATE TABLE [prefix_questions] (
 --
 -- Table structure for table saved_control
 --
-
 CREATE TABLE [prefix_saved_control] (
   [scid] INT NOT NULL IDENTITY (1,1),
   [sid] INT NOT NULL default '0',
@@ -276,7 +269,7 @@ CREATE TABLE [prefix_surveys] (
   [startdate] DATETIME default NULL,
   [expires] DATETIME default NULL,
   [adminemail] VARCHAR(320) default NULL,
-  [anonymized] char(1) NOT NULL default 'N',
+  [anonymized] char(1) default NULL,
   [faxto] VARCHAR(20) default NULL,
   [format] char(1) default NULL,
   [savetimings] char(1) default 'N',
@@ -399,13 +392,12 @@ CREATE TABLE [prefix_user_groups] (
 	[name] VARCHAR(20) NOT NULL UNIQUE,
 	[description] varchar(max) NOT NULL default '',
 	[owner_id] INT NOT NULL
-)
-;
+);
+
 
 --
 -- Table structure for table user_in_groups
 --
-
 CREATE TABLE [prefix_user_in_groups] (
 	[ugid] INT NOT NULL,
 	[uid] INT NOT NULL
@@ -416,7 +408,6 @@ CREATE TABLE [prefix_user_in_groups] (
 --
 -- Table structure for table users
 --
-
 CREATE TABLE [prefix_users] (
   [uid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [users_name] VARCHAR(64) NOT NULL UNIQUE default '',
@@ -452,6 +443,7 @@ CREATE TABLE [prefix_templates_rights] (
 						  PRIMARY KEY  ([uid],[folder])
 						  );
 
+
 --
 -- Table structure for table participants
 --
@@ -462,43 +454,47 @@ CREATE TABLE [prefix_participants] (
     [email] varchar(80) DEFAULT NULL,
     [language] varchar(40) DEFAULT NULL,
     [blacklisted] varchar(1) DEFAULT NULL,
-    [owner_uid] int(20) NOT NULL,
+    [owner_uid] int NOT NULL,
     PRIMARY KEY  ([participant_id])
 );
+
+
 --
 -- Table structure for table participant attribute
 --
 CREATE TABLE [prefix_participant_attribute] (
 						  [participant_id] varchar(50) NOT NULL,
-                                                  [attribute_id] int(11) NOT NULL,
+    [attribute_id] integer NOT NULL,
                                                   [value] varchar(50) NOT NULL,
                                                   PRIMARY KEY  ([participant_id],[attribute_id])
-						  );
---
--- Table structure for table participant attribute names lang
---
-CREATE TABLE [prefix_participant_attribute_names_lang] (
-                                                  [attribute_id] int(11) NOT NULL,
-                                                  [attribute_name] varchar(30) NOT NULL,
-                                                  [lang] varchar(20) NOT NULL,
-                                                  PRIMARY KEY  ([attribute_id],[lang])
 						  );
 --
 -- Table structure for table participant attribute names
 --
 CREATE TABLE [prefix_participant_attribute_names] (
-						  [attribute_id] int(11) NOT NULL AUTO_INCREMENT,
-                                                  [attribute_type] varchar(30) NOT NULL,
-                                                  [visible] char(5) NOT NULL,
-                                                  PRIMARY KEY  ([attribute_id],[attribute_type])
-						  );
+    [attribute_id] integer NOT NULL IDENTITY,
+    [attribute_type] varchar(4) NOT NULL,
+    [visible] char(5) NOT NULL,
+    PRIMARY KEY  ([attribute_id],[attribute_type]   )
+);
 
+
+--
+-- Table structure for table participant attribute names lang
+--
+CREATE TABLE [prefix_participant_attribute_names_lang] (
+    [id] integer NOT NULL IDENTITY,
+    [attribute_id] integer NOT NULL,
+                                                  [attribute_name] varchar(30) NOT NULL,
+                                                  [lang] varchar(20) NOT NULL,
+                                                  PRIMARY KEY  ([attribute_id],[lang])
+						  );
 --
 -- Table structure for table participant attribute values
 --
 CREATE TABLE [prefix_participant_attribute_values] (
-                               			  [attribute_id] int(11) NOT NULL,
-                                                  [value_id] int(11) NOT NULL AUTO_INCREMENT,
+    [attribute_id] integer NOT NULL,
+    [value_id] integer NOT NULL IDENTITY,
                                                   [value] varchar(20) NOT NULL,
                                                   PRIMARY KEY  ([value_id])
 						  );
@@ -507,19 +503,19 @@ CREATE TABLE [prefix_participant_attribute_values] (
 --
 CREATE TABLE [prefix_participant_shares] (
                                                   [participant_id] varchar(50) NOT NULL,
-                               			  [shared_uid] int(11) NOT NULL,
+    [share_uid] integer NOT NULL,
                                                   [date_added] datetime,
-                                                  [can_edit] varchar(5) NOT NULL,
-                                                  PRIMARY KEY  ([participant_id],[shared_uid])
+    [can_edit] vrachar(max) NOT NULL,
+    PRIMARY KEY  ([participant_id],[share_uid])
 						  );
 --
 -- Table structure for table survey links
 --
 CREATE TABLE [prefix_survey_links] (
                                                   [participant_id] varchar(50) NOT NULL,
-                               			  [token_id] int(11) NOT NULL,
-                                                  [survey_id] int(11) NOT NULL,
-                                                  [date_created] datetime,
+    [token_id] integer NOT NULL,
+    [survey_id] integer NOT NULL,
+    [date_created] datetime
                                                   PRIMARY KEY  ([participant_id],[token_id],[survey_id])
 						  );
 
