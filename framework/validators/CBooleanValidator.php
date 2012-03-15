@@ -11,10 +11,18 @@
 /**
  * CBooleanValidator validates that the attribute value is either {@link trueValue}  or {@link falseValue}.
  *
+ * When using the {@link message} property to define a custom error message, the message
+ * may contain additional placeholders that will be replaced with the actual content. In addition
+ * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
+ * CBooleanValidator allows for the following placeholders to be specified:
+ * <ul>
+ * <li>{true}: replaced with value representing the true status {@link trueValue}.</li>
+ * <li>{false}: replaced with value representing the false status {@link falseValue}.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBooleanValidator.php 3120 2011-03-25 01:50:48Z qiang.xue $
+ * @version $Id: CBooleanValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
- * @since 1.0.10
  */
 class CBooleanValidator extends CValidator
 {

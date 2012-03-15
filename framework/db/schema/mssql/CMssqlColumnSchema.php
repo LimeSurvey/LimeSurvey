@@ -14,9 +14,8 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: CMssqlColumnSchema.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CMssqlColumnSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.mssql
- * @since 1.0.4
  */
 class CMssqlColumnSchema extends CDbColumnSchema
 {

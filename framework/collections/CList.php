@@ -27,8 +27,12 @@
  * To extend CList by doing additional operations with each addition or removal
  * operation (e.g. performing type check), override {@link insertAt()}, and {@link removeAt()}.
  *
+ * @property boolean $readOnly Whether this list is read-only or not. Defaults to false.
+ * @property Iterator $iterator An iterator for traversing the items in the list.
+ * @property integer $count The number of items in the list.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CList.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CList.php 3430 2011-11-02 23:10:03Z alexander.makarow@gmail.com $
  * @package system.collections
  * @since 1.0
  */

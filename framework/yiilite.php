@@ -15,9 +15,9 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2012 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: yiilite.php 3322 2011-06-26 17:38:50Z qiang.xue $
+ * @version $Id: yiilite.php 3564 2012-02-13 01:29:03Z qiang.xue $
  * @since 1.0
  */
 
@@ -40,7 +40,7 @@ class YiiBase
 	private static $_logger;
 	public static function getVersion()
 	{
-		return '1.1.8';
+		return '1.1.10';
 	}
 	public static function createWebApplication($config=null)
 	{
@@ -208,10 +208,10 @@ class YiiBase
 	public static function autoload($className)
 	{
 		// use include so that the error PHP file may appear
-		if(isset(self::$_coreClasses[$className]))
-			include(YII_PATH.self::$_coreClasses[$className]);
-		else if(isset(self::$classMap[$className]))
+		if(isset(self::$classMap[$className]))
 			include(self::$classMap[$className]);
+		else if(isset(self::$_coreClasses[$className]))
+			include(YII_PATH.self::$_coreClasses[$className]);
 		else
 		{
 			// include class file relying on include_path
@@ -290,7 +290,7 @@ class YiiBase
 	}
 	public static function powered()
 	{
-		return 'Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a>.';
+		return Yii::t('yii','Powered by {yii}.', array('{yii}'=>'<a href="http://www.yiiframework.com/" rel="external">Yii Framework</a>'));
 	}
 	public static function t($category,$message,$params=array(),$source=null,$language=null)
 	{
@@ -632,7 +632,7 @@ class CComponent
 			foreach($this->_m as $object)
 			{
 				if($object->getEnabled() && (property_exists($object,$name) || $object->canGetProperty($name)))
-					return true;
+					return $object->$name!==null;
 			}
 		}
 		return false;
@@ -1385,7 +1385,10 @@ abstract class CApplication extends CModule
 		// php <5.2 doesn't support string conversion auto-magically
 		$message=$exception->__toString();
 		if(isset($_SERVER['REQUEST_URI']))
-			$message.=' REQUEST_URI='.$_SERVER['REQUEST_URI'];
+			$message.="\nREQUEST_URI=".$_SERVER['REQUEST_URI'];
+		if(isset($_SERVER['HTTP_REFERER']))
+			$message.="\nHTTP_REFERER=".$_SERVER['HTTP_REFERER'];
+		$message.="\n---";
 		Yii::log($message,CLogger::LEVEL_ERROR,$category);
 		try
 		{
@@ -1970,16 +1973,22 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	}
 	public static function mergeArray($a,$b)
 	{
-		foreach($b as $k=>$v)
+		$args=func_get_args();
+		$res=array_shift($args);
+		while(!empty($args))
 		{
-			if(is_integer($k))
-				isset($a[$k]) ? $a[]=$v : $a[$k]=$v;
-			else if(is_array($v) && isset($a[$k]) && is_array($a[$k]))
-				$a[$k]=self::mergeArray($a[$k],$v);
-			else
-				$a[$k]=$v;
+			$next=array_shift($args);
+			foreach($next as $k => $v)
+			{
+				if(is_integer($k))
+					isset($res[$k]) ? $res[]=$v : $res[$k]=$v;
+				else if(is_array($v) && isset($res[$k]) && is_array($res[$k]))
+					$res[$k]=self::mergeArray($res[$k],$v);
+				else
+					$res[$k]=$v;
+			}
 		}
-		return $a;
+		return $res;
 	}
 	public function offsetExists($offset)
 	{
@@ -2012,12 +2021,17 @@ class CLogger extends CComponent
 	private $_levels;
 	private $_categories;
 	private $_timings;
+	private $_processing = false;
 	public function log($message,$level='info',$category='application')
 	{
 		$this->_logs[]=array($message,$level,$category,microtime(true));
 		$this->_logCount++;
-		if($this->autoFlush>0 && $this->_logCount>=$this->autoFlush)
+		if($this->autoFlush>0 && $this->_logCount>=$this->autoFlush && !$this->_processing)
+		{
+			$this->_processing=true;
 			$this->flush($this->autoDump);
+			$this->_processing=false;
+		}
 	}
 	public function getLogs($levels='',$categories='')
 	{
@@ -2306,7 +2320,7 @@ class CHttpRequest extends CApplicationComponent
 			$pathInfo=$this->getRequestUri();
 			if(($pos=strpos($pathInfo,'?'))!==false)
 			   $pathInfo=substr($pathInfo,0,$pos);
-			$pathInfo=urldecode($pathInfo);
+			$pathInfo=$this->decodePathInfo($pathInfo);
 			$scriptUrl=$this->getScriptUrl();
 			$baseUrl=$this->getBaseUrl();
 			if(strpos($pathInfo,$scriptUrl)===0)
@@ -2321,6 +2335,29 @@ class CHttpRequest extends CApplicationComponent
 		}
 		return $this->_pathInfo;
 	}
+	protected function decodePathInfo($pathInfo)
+	{
+		$pathInfo = urldecode($pathInfo);
+		// is it UTF-8?
+		// http://w3.org/International/questions/qa-forms-utf-8.html
+		if(preg_match('%^(?:
+		   [\x09\x0A\x0D\x20-\x7E]            # ASCII
+		 | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+		 | \xE0[\xA0-\xBF][\x80-\xBF]         # excluding overlongs
+		 | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+		 | \xED[\x80-\x9F][\x80-\xBF]         # excluding surrogates
+		 | \xF0[\x90-\xBF][\x80-\xBF]{2}      # planes 1-3
+		 | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+		 | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
+		)*$%xs', $pathInfo))
+		{
+			return $pathInfo;
+		}
+		else
+		{
+			return utf8_encode($pathInfo);
+		}
+	}
 	public function getRequestUri()
 	{
 		if($this->_requestUri===null)
@@ -2330,7 +2367,7 @@ class CHttpRequest extends CApplicationComponent
 			else if(isset($_SERVER['REQUEST_URI']))
 			{
 				$this->_requestUri=$_SERVER['REQUEST_URI'];
-				if(isset($_SERVER['HTTP_HOST']))
+				if(!empty($_SERVER['HTTP_HOST']))
 				{
 					if(strpos($this->_requestUri,$_SERVER['HTTP_HOST'])!==false)
 						$this->_requestUri=preg_replace('/^\w+:\/\/[^\/]+/','',$this->_requestUri);
@@ -2483,7 +2520,7 @@ class CHttpRequest extends CApplicationComponent
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header("Content-type: $mimeType");
-		if(ini_get("output_handler")=='')
+		if(ob_get_length()===false)
 			header('Content-Length: '.(function_exists('mb_strlen') ? mb_strlen($content,'8bit') : strlen($content)));
 		header("Content-Disposition: attachment; filename=\"$fileName\"");
 		header('Content-Transfer-Encoding: binary');
@@ -2500,8 +2537,10 @@ class CHttpRequest extends CApplicationComponent
 	}
 	public function xSendFile($filePath, $options=array())
 	{
-		if(!is_file($filePath))
-			return false;
+		if(!isset($options['forceDownload']) || $options['forceDownload'])
+			$disposition='attachment';
+		else
+			$disposition='inline';
 		if(!isset($options['saveName']))
 			$options['saveName']=basename($filePath);
 		if(!isset($options['mimeType']))
@@ -2511,12 +2550,17 @@ class CHttpRequest extends CApplicationComponent
 		}
 		if(!isset($options['xHeader']))
 			$options['xHeader']='X-Sendfile';
-		header('Content-type: '.$options['mimeType']);
-		header('Content-Disposition: attachment; filename="'.$options['saveName'].'"');
+		if($options['mimeType'] !== null)
+			header('Content-type: '.$options['mimeType']);
+		header('Content-Disposition: '.$disposition.'; filename="'.$options['saveName'].'"');
+		if(isset($options['addHeaders']))
+		{
+			foreach($options['addHeaders'] as $header=>$value)
+				header($header.': '.$value);
+		}
 		header(trim($options['xHeader']).': '.$filePath);
 		if(!isset($options['terminate']) || $options['terminate'])
 			Yii::app()->end();
-		return true;
 	}
 	public function getCsrfToken()
 	{
@@ -2674,10 +2718,18 @@ class CUrlManager extends CApplicationComponent
 		if(isset($cache))
 			$cache->set(self::CACHE_KEY,array($this->_rules,$hash));
 	}
-	public function addRules($rules)
+	public function addRules($rules, $append=true)
 	{
-		foreach($rules as $pattern=>$route)
-			$this->_rules[]=$this->createUrlRule($route,$pattern);
+		if ($append)
+		{
+			foreach($rules as $pattern=>$route)
+				$this->_rules[]=$this->createUrlRule($route,$pattern);
+		}
+		else
+		{
+			foreach($rules as $pattern=>$route)
+				array_unshift($this->_rules, $this->createUrlRule($route,$pattern));
+		}
 	}
 	protected function createUrlRule($route,$pattern)
 	{
@@ -2689,9 +2741,9 @@ class CUrlManager extends CApplicationComponent
 	public function createUrl($route,$params=array(),$ampersand='&')
 	{
 		unset($params[$this->routeVar]);
-		foreach($params as &$param)
+		foreach($params as $i=>$param)
 			if($param===null)
-				$param='';
+				$params[$i]='';
 		if(isset($params['#']))
 		{
 			$anchor='#'.$params['#'];
@@ -3585,29 +3637,20 @@ class CController extends CBaseController
 		if(Yii::app()->getRequest()->getIsPostRequest())
 			$filterChain->run();
 		else
-			throw new CHttpException(400,Yii::t('yii','Your request is not valid.'));
+			throw new CHttpException(400,Yii::t('yii','Your request is invalid.'));
 	}
 	public function filterAjaxOnly($filterChain)
 	{
 		if(Yii::app()->getRequest()->getIsAjaxRequest())
 			$filterChain->run();
 		else
-			throw new CHttpException(400,Yii::t('yii','Your request is not valid.'));
+			throw new CHttpException(400,Yii::t('yii','Your request is invalid.'));
 	}
 	public function filterAccessControl($filterChain)
 	{
 		$filter=new CAccessControlFilter;
 		$filter->setRules($this->accessRules());
 		$filter->filter($filterChain);
-	}
-	public function paginate($itemCount,$pageSize=null,$pageVar=null)
-	{
-		$pages=new CPagination($itemCount);
-		if($pageSize!==null)
-			$pages->pageSize=$pageSize;
-		if($pageVar!==null)
-			$pages->pageVar=$pageVar;
-		return $pages;
 	}
 	public function getPageState($name,$defaultValue=null)
 	{
@@ -3733,6 +3776,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	public $authTimeout;
 	public $autoRenewCookie=false;
 	public $autoUpdateFlash=true;
+	public $loginRequiredAjaxResponse;
 	private $_keyPrefix;
 	private $_access=array();
 	public function __get($name)
@@ -3792,6 +3836,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 			}
 			$this->afterLogin(false);
 		}
+		return !$this->getIsGuest();
 	}
 	public function logout($destroySession=true)
 	{
@@ -3852,6 +3897,11 @@ class CWebUser extends CApplicationComponent implements IWebUser
 		$request=$app->getRequest();
 		if(!$request->getIsAjaxRequest())
 			$this->setReturnUrl($request->getUrl());
+		elseif(isset($this->loginRequiredAjaxResponse))
+		{
+			echo $this->loginRequiredAjaxResponse;
+			Yii::app()->end();
+		}
 		if(($url=$this->loginUrl)!==null)
 		{
 			if(is_array($url))
@@ -3881,7 +3931,8 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	protected function restoreFromCookie()
 	{
 		$app=Yii::app();
-		$cookie=$app->getRequest()->getCookies()->itemAt($this->getStateKeyPrefix());
+		$request=$app->getRequest();
+		$cookie=$request->getCookies()->itemAt($this->getStateKeyPrefix());
 		if($cookie && !empty($cookie->value) && ($data=$app->getSecurityManager()->validateData($cookie->value))!==false)
 		{
 			$data=@unserialize($data);
@@ -3894,7 +3945,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 					if($this->autoRenewCookie)
 					{
 						$cookie->expire=time()+$duration;
-						$app->getRequest()->getCookies()->add($cookie->name,$cookie);
+						$request->getCookies()->add($cookie->name,$cookie);
 					}
 					$this->afterLogin(true);
 				}
@@ -3903,7 +3954,8 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	}
 	protected function renewCookie()
 	{
-		$cookies=Yii::app()->getRequest()->getCookies();
+		$request=Yii::app()->getRequest();
+		$cookies=$request->getCookies();
 		$cookie=$cookies->itemAt($this->getStateKeyPrefix());
 		if($cookie && !empty($cookie->value) && ($data=Yii::app()->getSecurityManager()->validateData($cookie->value))!==false)
 		{
@@ -4100,7 +4152,8 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	{
 		if($this->getUseCustomStorage())
 			@session_set_save_handler(array($this,'openSession'),array($this,'closeSession'),array($this,'readSession'),array($this,'writeSession'),array($this,'destroySession'),array($this,'gcSession'));
-		if(@session_start()===false && YII_DEBUG)
+		@session_start();
+		if(YII_DEBUG && session_id()=='')
 		{
 			$message=Yii::t('yii','Failed to start session.');
 			if(function_exists('error_get_last'))
@@ -4187,7 +4240,10 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	public function setCookieMode($value)
 	{
 		if($value==='none')
+		{
 			ini_set('session.use_cookies','0');
+			ini_set('session.use_only_cookies','0');
+		}
 		else if($value==='allow')
 		{
 			ini_set('session.use_cookies','1');
@@ -4337,6 +4393,7 @@ class CHtml
 	public static $beforeRequiredLabel='';
 	public static $afterRequiredLabel=' <span class="required">*</span>';
 	public static $count=0;
+	public static $liveEvents = true;
 	public static function encode($text)
 	{
 		return htmlspecialchars($text,ENT_QUOTES,Yii::app()->charset);
@@ -4700,19 +4757,19 @@ class CHtml
 				array_unshift($items,$item);
 			$name=strtr($name,array('['=>'\\[',']'=>'\\]'));
 			$js=<<<EOD
-jQuery('#$id').click(function() {
-	jQuery("input[name='$name']").attr('checked', this.checked);
+$('#$id').click(function() {
+	$("input[name='$name']").prop('checked', this.checked);
 });
-jQuery("input[name='$name']").click(function() {
-	jQuery('#$id').attr('checked', !jQuery("input[name='$name']:not(:checked)").length);
+$("input[name='$name']").click(function() {
+	$('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
 });
-jQuery('#$id').attr('checked', !jQuery("input[name='$name']:not(:checked)").length);
+$('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
 EOD;
 			$cs=Yii::app()->getClientScript();
 			$cs->registerCoreScript('jquery');
 			$cs->registerScript($id,$js);
 		}
-		return implode($separator,$items);
+		return self::tag('span',array('id'=>$baseID),implode($separator,$items));
 	}
 	public static function radioButtonList($name,$select,$data,$htmlOptions=array())
 	{
@@ -4733,7 +4790,7 @@ EOD;
 			$label=self::label($label,$htmlOptions['id'],$labelOptions);
 			$items[]=strtr($template,array('{input}'=>$option,'{label}'=>$label));
 		}
-		return implode($separator,$items);
+		return self::tag('span',array('id'=>$baseID),implode($separator,$items));
 	}
 	public static function ajaxLink($text,$url,$ajaxOptions=array(),$htmlOptions=array())
 	{
@@ -4978,10 +5035,6 @@ EOD;
 		$hidden=$uncheck!==null ? self::hiddenField($name,$uncheck,$hiddenOptions) : '';
 		return $hidden . self::radioButtonList($name,$selection,$data,$htmlOptions);
 	}
-	public static function getActiveId($model,$attribute)
-	{
-		return self::activeId($model,$attribute);
-	}
 	public static function errorSummary($model,$header=null,$footer=null,$htmlOptions=array())
 	{
 		$content='';
@@ -5177,7 +5230,7 @@ EOD;
 			unset($htmlOptions['live']);
 		}
 		else
-			$live=true;
+			$live = self::$liveEvents;
 		if(isset($htmlOptions['return']) && $htmlOptions['return'])
 			$return='return true';
 		else
@@ -5222,9 +5275,9 @@ EOD;
 				$handler="return $confirm;";
 		}
 		if($live)
-			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('body').undelegate('#$id','$event').delegate('#$id','$event',function(){{$handler}});");
+			$cs->registerScript('Yii.CHtml.#' . $id, "$('body').on('$event','#$id',function(){{$handler}});");
 		else
-			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('#$id').unbind('$event').bind('$event', function(){{$handler}});");
+			$cs->registerScript('Yii.CHtml.#' . $id, "$('#$id').on('$event', function(){{$handler}});");
 		unset($htmlOptions['params'],$htmlOptions['submit'],$htmlOptions['ajax'],$htmlOptions['confirm'],$htmlOptions['return'],$htmlOptions['csrf']);
 	}
 	public static function resolveNameID($model,&$attribute,&$htmlOptions)
@@ -5880,6 +5933,11 @@ class CClientScript extends CApplicationComponent
 	{
 		if(($controller=Yii::app()->getController())!==null)
 			$controller->recordCachingAction($context,$method,$params);
+	}
+	public function addPackage($name,$definition)
+	{
+		$this->packages[$name]=$definition;
+		return $this;
 	}
 }
 class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countable
@@ -7534,6 +7592,7 @@ class CActiveRelation extends CBaseActiveRelation
 	public $alias;
 	public $with=array();
 	public $together;
+	 public $scopes;
 	public function mergeWith($criteria,$fromScope=false)
 	{
 		if($criteria instanceof CDbCriteria)
@@ -7982,9 +8041,9 @@ abstract class CDbSchema extends CComponent
 	{
 		return $this->_connection;
 	}
-	public function getTable($name)
+	public function getTable($name,$refresh=false)
 	{
-		if(isset($this->_tables[$name]))
+		if($refresh===false && isset($this->_tables[$name]))
 			return $this->_tables[$name];
 		else
 		{
@@ -8001,7 +8060,8 @@ abstract class CDbSchema extends CComponent
 			if(!isset($this->_cacheExclude[$name]) && ($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
 			{
 				$key='yii:dbschema'.$this->_connection->connectionString.':'.$this->_connection->username.':'.$name;
-				if(($table=$cache->get($key))===false)
+				$table=$cache->get($key);
+				if($refresh===true || $table===false)
 				{
 					$table=$this->loadTable($realName);
 					if($table!==null)
@@ -8155,11 +8215,9 @@ abstract class CDbSchema extends CComponent
 	}
 	public function addColumn($table, $column, $type)
 	{
-		$type=$this->getColumnType($type);
-		$sql='ALTER TABLE ' . $this->quoteTableName($table)
+		return 'ALTER TABLE ' . $this->quoteTableName($table)
 			. ' ADD ' . $this->quoteColumnName($column) . ' '
 			. $this->getColumnType($type);
-		return $sql;
 	}
 	public function dropColumn($table, $column)
 	{
@@ -8174,7 +8232,6 @@ abstract class CDbSchema extends CComponent
 	}
 	public function alterColumn($table, $column, $type)
 	{
-		$type=$this->getColumnType($type);
 		return 'ALTER TABLE ' . $this->quoteTableName($table) . ' CHANGE '
 			. $this->quoteColumnName($column) . ' '
 			. $this->quoteColumnName($column) . ' '
@@ -9125,7 +9182,7 @@ class CDbColumnSchema extends CComponent
 	{
 		if(gettype($value)===$this->type || $value===null || $value instanceof CDbExpression)
 			return $value;
-		if($value==='')
+		if($value==='' && $this->allowNull)
 			return $this->type==='string' ? '' : null;
 		switch($this->type)
 		{
@@ -9195,6 +9252,11 @@ abstract class CValidator extends CComponent
 			$validator=new CInlineValidator;
 			$validator->attributes=$attributes;
 			$validator->method=$name;
+			if(isset($params['clientValidate']))
+			{
+				$validator->clientValidate=$params['clientValidate'];
+				unset($params['clientValidate']);
+			}
 			$validator->params=$params;
 			if(isset($params['skipOnError']))
 				$validator->skipOnError=$params['skipOnError'];

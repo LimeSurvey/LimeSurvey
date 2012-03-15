@@ -47,8 +47,10 @@ Yii::import('CHtml',true);
  * CErrorHandler is a core application component that can be accessed via
  * {@link CApplication::getErrorHandler()}.
  *
+ * @property array $error The error details. Null if there is no error.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CErrorHandler.php 3314 2011-06-24 14:47:47Z qiang.xue $
+ * @version $Id: CErrorHandler.php 3540 2012-01-16 10:17:01Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -77,7 +79,6 @@ class CErrorHandler extends CApplicationComponent
 	 * @var string the route (eg 'site/error') to the controller action that will be used to display external errors.
 	 * Inside the action, it can retrieve the error information by Yii::app()->errorHandler->error.
 	 * This property defaults to null, meaning CErrorHandler will handle the error display.
-	 * @since 1.0.6
 	 */
 	public $errorAction;
 
@@ -96,8 +97,11 @@ class CErrorHandler extends CApplicationComponent
 
 		if($this->discardOutput)
 		{
-			while (ob_get_length())
+			// the following manual level counting is to deal with zlib.output_compression set to On
+			for($level=ob_get_level();$level>0;--$level)
+			{
 				@ob_end_clean();
+			}
 		}
 
 		if($event instanceof CExceptionEvent)
@@ -119,7 +123,6 @@ class CErrorHandler extends CApplicationComponent
 	 * <li>source - the context source code where the error occurs</li>
 	 * </ul>
 	 * @return array the error details. Null if there is no error.
-	 * @since 1.0.6
 	 */
 	public function getError()
 	{
@@ -175,12 +178,16 @@ class CErrorHandler extends CApplicationComponent
 
 			if(!headers_sent())
 				header("HTTP/1.0 {$data['code']} ".get_class($exception));
-			if($this->isAjaxRequest())
-				$app->displayException($exception);
-			else if($exception instanceof CHttpException || !YII_DEBUG)
+
+			if($exception instanceof CHttpException || !YII_DEBUG)
 				$this->render('error',$data);
 			else
-				$this->render('exception',$data);
+			{
+				if($this->isAjaxRequest())
+					$app->displayException($exception);
+				else
+					$this->render('exception',$data);
+			}
 		}
 		else
 			$app->displayException($exception);
@@ -219,9 +226,32 @@ class CErrorHandler extends CApplicationComponent
 		$app=Yii::app();
 		if($app instanceof CWebApplication)
 		{
+			switch($event->code)
+			{
+				case E_WARNING:
+					$type = 'PHP warning';
+					break;
+				case E_NOTICE:
+					$type = 'PHP notice';
+					break;
+				case E_USER_ERROR:
+					$type = 'User error';
+					break;
+				case E_USER_WARNING:
+					$type = 'User warning';
+					break;
+				case E_USER_NOTICE:
+					$type = 'User notice';
+					break;
+				case E_RECOVERABLE_ERROR:
+					$type = 'Recoverable error';
+					break;
+				default:
+					$type = 'PHP error';
+			}
 			$this->_error=$data=array(
 				'code'=>500,
-				'type'=>'PHP Error',
+				'type'=>$type,
 				'message'=>$event->message,
 				'file'=>$event->file,
 				'line'=>$event->line,
@@ -362,6 +392,9 @@ class CErrorHandler extends CApplicationComponent
 	protected function argumentsToString($args)
 	{
 		$count=0;
+
+		$isAssoc=$args!==array_values($args);
+
 		foreach($args as $key => $value)
 		{
 			$count++;
@@ -393,7 +426,13 @@ class CErrorHandler extends CApplicationComponent
 				$args[$key] = 'resource';
 
 			if(is_string($key))
+			{
 				$args[$key] = '"'.$key.'" => '.$args[$key];
+			}
+			else if($isAssoc)
+			{
+				$args[$key] = $key.' => '.$args[$key];
+			}
 		}
 		$out = implode(", ", $args);
 

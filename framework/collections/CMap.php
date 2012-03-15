@@ -23,8 +23,13 @@
  * $n=count($map);  // returns the number of items in the map
  * </pre>
  *
+ * @property boolean $readOnly Whether this map is read-only or not. Defaults to false.
+ * @property CMapIterator $iterator An iterator for traversing the items in the list.
+ * @property integer $count The number of items in the map.
+ * @property array $keys The key list.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMap.php 3153 2011-04-01 12:50:06Z qiang.xue $
+ * @version $Id: CMap.php 3518 2011-12-28 23:31:29Z alexander.makarow $
  * @package system.collections
  * @since 1.0
  */
@@ -222,7 +227,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	 * <ul>
 	 * <li>the map data is saved as $a, and the source data is saved as $b;</li>
 	 * <li>if $a and $b both have an array indxed at the same string key, the arrays will be merged using this algorithm;</li>
-	 * <li>any integer-indexed elements in $b will be appended to $a and reindxed accordingly;</li>
+	 * <li>any integer-indexed elements in $b will be appended to $a and reindexed accordingly;</li>
 	 * <li>any string-indexed elements in $b will overwrite elements in $a with the same index;</li>
 	 * </ul>
 	 *
@@ -260,7 +265,7 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	}
 
 	/**
-	 * Merges two arrays into one recursively.
+	 * Merges two or more arrays into one recursively.
 	 * If each array has an element with the same string key value, the latter
 	 * will overwrite the former (different from array_merge_recursive).
 	 * Recursive merging will be conducted if both arrays have an element of array
@@ -268,22 +273,29 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	 * For integer-keyed elements, the elements from the latter array will
 	 * be appended to the former array.
 	 * @param array $a array to be merged to
-	 * @param array $b array to be merged from
+	 * @param array $b array to be merged from. You can specifiy additional
+	 * arrays via third argument, fourth argument etc.
 	 * @return array the merged array (the original arrays are not changed.)
 	 * @see mergeWith
 	 */
 	public static function mergeArray($a,$b)
 	{
-		foreach($b as $k=>$v)
+		$args=func_get_args();
+		$res=array_shift($args);
+		while(!empty($args))
 		{
-			if(is_integer($k))
-				isset($a[$k]) ? $a[]=$v : $a[$k]=$v;
-			else if(is_array($v) && isset($a[$k]) && is_array($a[$k]))
-				$a[$k]=self::mergeArray($a[$k],$v);
-			else
-				$a[$k]=$v;
+			$next=array_shift($args);
+			foreach($next as $k => $v)
+			{
+				if(is_integer($k))
+					isset($res[$k]) ? $res[]=$v : $res[$k]=$v;
+				else if(is_array($v) && isset($res[$k]) && is_array($res[$k]))
+					$res[$k]=self::mergeArray($res[$k],$v);
+				else
+					$res[$k]=$v;
+			}
 		}
-		return $a;
+		return $res;
 	}
 
 	/**

@@ -12,7 +12,7 @@
  * CMysqlSchema is the class for retrieving metadata information from a MySQL database (version 4.1.x and 5.x).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMysqlSchema.php 3304 2011-06-23 14:53:50Z qiang.xue $
+ * @version $Id: CMysqlSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.mysql
  * @since 1.0
  */
@@ -244,7 +244,6 @@ class CMysqlSchema extends CDbSchema
 	 * @param string $schema the schema of the tables. Defaults to empty string, meaning the current or default schema.
 	 * If not empty, the returned table names will be prefixed with the schema name.
 	 * @return array all table names in the database.
-	 * @since 1.0.2
 	 */
 	protected function findTableNames($schema='')
 	{

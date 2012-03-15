@@ -41,7 +41,7 @@
  * CCache also implements ArrayAccess so that it can be used like an array.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCache.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -102,7 +102,6 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * @return array list of cached values corresponding to the specified keys. The array
 	 * is returned in terms of (key,value) pairs.
 	 * If a value is not cached or expired, the corresponding array value will be false.
-	 * @since 1.0.8
 	 */
 	public function mget($ids)
 	{
@@ -212,7 +211,6 @@ abstract class CCache extends CApplicationComponent implements ICache, ArrayAcce
 	 * be overridden to exploit that feature.
 	 * @param array $keys a list of keys identifying the cached values
 	 * @return array a list of cached values indexed by the keys
-	 * @since 1.0.8
 	 */
 	protected function getValues($keys)
 	{

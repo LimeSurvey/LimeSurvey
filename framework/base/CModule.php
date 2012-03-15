@@ -13,10 +13,28 @@
  *
  * CModule mainly manages application components and sub-modules.
  *
+ * @property string $id The module ID.
+ * @property string $basePath The root directory of the module. Defaults to the directory containing the module class.
+ * @property CAttributeCollection $params The list of user-defined parameters.
+ * @property string $modulePath The directory that contains the application modules. Defaults to the 'modules' subdirectory of {@link basePath}.
+ * @property CModule $parentModule The parent module. Null if this module does not have a parent.
+ * @property array $modules The configuration of the currently installed modules (module ID => configuration).
+ * @property array $components The application components (indexed by their IDs).
+ * @property array $import List of aliases to be imported.
+ * @property array $aliases List of aliases to be defined. The array keys are root aliases,
+ * while the array values are paths or aliases corresponding to the root aliases.
+ * For example,
+ * <pre>
+ * array(
+ *    'models'=>'application.models',              // an existing alias
+ *    'extensions'=>'application.extensions',      // an existing alias
+ *    'backend'=>dirname(__FILE__).'/../backend',  // a directory
+ * )
+ * </pre>.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModule.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CModule.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
- * @since 1.0.4
  */
 abstract class CModule extends CComponent
 {
@@ -221,7 +239,6 @@ abstract class CModule extends CComponent
 	 *    'backend'=>dirname(__FILE__).'/../backend',  // a directory
 	 * )
 	 * </pre>
-	 * @since 1.0.5
 	 */
 	public function setAliases($mappings)
 	{
@@ -352,8 +369,7 @@ abstract class CModule extends CComponent
 	/**
 	 * Retrieves the named application component.
 	 * @param string $id application component ID (case-sensitive)
-	 * @param boolean $createIfNull whether to create the component if it doesn't exist yet. This parameter
-	 * has been available since version 1.0.6.
+	 * @param boolean $createIfNull whether to create the component if it doesn't exist yet.
 	 * @return IApplicationComponent the application component instance, null if the application component is disabled or does not exist.
 	 * @see hasComponent
 	 */

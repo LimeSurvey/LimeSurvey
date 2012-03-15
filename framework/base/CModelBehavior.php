@@ -11,16 +11,18 @@
 /**
  * CModelBehavior is a base class for behaviors that are attached to a model component.
  * The model should extend from {@link CModel} or its child classes.
+ *
+ * @property CModel $owner The owner model that this behavior is attached to.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CModelBehavior.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CModelBehavior.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
- * @since 1.0.2
  */
 class CModelBehavior extends CBehavior
 {
 	/**
 	 * Declares events and the corresponding event handler methods.
-	 * The default implementation returns 'onBeforeValidate' and 'onAfterValidate' events and handlers.
+	 * The default implementation returns 'onAfterConstruct', 'onBeforeValidate' and 'onAfterValidate' events and handlers.
 	 * If you override this method, make sure you merge the parent result to the return value.
 	 * @return array events (array keys) and the corresponding event handler methods (array values).
 	 * @see CBehavior::events

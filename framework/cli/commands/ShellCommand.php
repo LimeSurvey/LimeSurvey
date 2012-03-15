@@ -6,14 +6,16 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ShellCommand.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: ShellCommand.php 3477 2011-12-06 22:33:37Z alexander.makarow $
  */
 
 /**
  * ShellCommand executes the specified Web application and provides a shell for interaction.
  *
+ * @property string $help The help information for the shell command.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ShellCommand.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: ShellCommand.php 3477 2011-12-06 22:33:37Z alexander.makarow $
  * @package system.cli.commands
  * @since 1.0
  */
@@ -48,7 +50,7 @@ EOD;
 
 	/**
 	 * Execute the action.
-	 * @param array command line parameters specific for this command
+	 * @param array $args command line parameters specific for this command
 	 */
 	public function run($args)
 	{
@@ -99,26 +101,6 @@ EOD;
 		$this->runShell();
 	}
 
-	/**
-	 * Reads input via the readline PHP extension if that's available, or fgets() if readline is not installed.
-	 * @param string prompt to echo out before waiting for user input
-	 * @return mixed line read as a string, or false if input has been closed
-	 */
-	protected function readline($prompt)
-	{
-		if (extension_loaded('readline'))
-		{
-			$input = readline($prompt);
-			readline_add_history($input);
-			return $input;
-		}
-		else
-		{
-			echo $prompt;
-			return fgets(STDIN);
-		}
-	}
-
 	protected function runShell()
 	{
 		// disable E_NOTICE so that the shell is more friendly
@@ -132,7 +114,7 @@ EOD;
 		$_commands_=$_runner_->commands;
 		$log=Yii::app()->log;
 
-		while(($_line_=$this->readline("\n>> "))!==false)
+		while(($_line_=$this->prompt("\n>>"))!==false)
 		{
 			$_line_=trim($_line_);
 			if($_line_==='exit')
@@ -144,6 +126,7 @@ EOD;
 				{
 					$_command_=$_runner_->createCommand($_args_[0]);
 					array_shift($_args_);
+					$_command_->init();
 					$_command_->run($_args_);
 				}
 				else

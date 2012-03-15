@@ -13,8 +13,21 @@
  *
  * Note, this validator should only be used with string-typed attributes.
  *
+ * In addition to the {@link message} property for setting a custom error message,
+ * CStringValidator has a couple custom error messages you can set that correspond to different
+ * validation scenarios. For defining a custom message when the string is too short, 
+ * you may use the {@link tooShort} property. Similarly with {@link tooLong}. The messages may contain 
+ * placeholders that will be replaced with the actual content. In addition to the "{attribute}" 
+ * placeholder, recognized by all validators (see {@link CValidator}), CStringValidator allows for the following
+ * placeholders to be specified:
+ * <ul>
+ * <li>{min}: when using {@link tooShort}, replaced with minimum length, {@link min}, if set.</li>
+ * <li>{max}: when using {@link tooLong}, replaced with the maximum length, {@link max}, if set.</li>
+ * <li>{length}: when using {@link message}, replaced with the exact required length, {@link is}, if set.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStringValidator.php 3148 2011-03-31 21:44:00Z alexander.makarow $
+ * @version $Id: CStringValidator.php 3491 2011-12-17 05:17:57Z jefftulsa $
  * @package system.validators
  * @since 1.0
  */

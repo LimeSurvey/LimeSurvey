@@ -31,8 +31,10 @@ Yii::import('system.test.CTestCase');
  * corresponding to a fixture data row using <code>$this->posts('first post')</code>.
  * Note, here 'first post' refers to a key to a row in the original fixture data.
  *
+ * @property CDbFixtureManager $fixtureManager The database fixture manager.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbTestCase.php 3035 2011-03-08 22:01:20Z alexander.makarow $
+ * @version $Id: CDbTestCase.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.test
  * @since 1.1
  */

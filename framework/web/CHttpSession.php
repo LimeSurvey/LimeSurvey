@@ -51,8 +51,22 @@
  * CHttpSession is a Web application component that can be accessed via
  * {@link CWebApplication::getSession()}.
  *
+ * @property boolean $useCustomStorage Whether to use custom storage.
+ * @property boolean $isStarted Whether the session has started.
+ * @property string $sessionID The current session ID.
+ * @property string $sessionName The current session name.
+ * @property string $savePath The current session save path, defaults to '/tmp'.
+ * @property array $cookieParams The session cookie parameters.
+ * @property string $cookieMode How to use cookie to store session ID. Defaults to 'Allow'.
+ * @property integer $gCProbability The probability (percentage) that the gc (garbage collection) process is started on every session initialization, defaults to 1 meaning 1% chance.
+ * @property boolean $useTransparentSessionID Whether transparent sid support is enabled or not, defaults to false.
+ * @property integer $timeout The number of seconds after which data will be seen as 'garbage' and cleaned up, defaults to 1440 seconds.
+ * @property CHttpSessionIterator $iterator An iterator for traversing the session variables.
+ * @property integer $count The number of session variables.
+ * @property array $keys The list of session variable names.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpSession.php 3167 2011-04-07 04:25:27Z qiang.xue $
+ * @version $Id: CHttpSession.php 3511 2011-12-27 00:02:53Z alexander.makarow $
  * @package system.web
  * @since 1.0
  */
@@ -97,7 +111,9 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	{
 		if($this->getUseCustomStorage())
 			@session_set_save_handler(array($this,'openSession'),array($this,'closeSession'),array($this,'readSession'),array($this,'writeSession'),array($this,'destroySession'),array($this,'gcSession'));
-		if(@session_start()===false && YII_DEBUG)
+
+		@session_start();
+		if(YII_DEBUG && session_id()=='')
 		{
 			$message=Yii::t('yii','Failed to start session.');
 			if(function_exists('error_get_last'))
@@ -249,7 +265,10 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	public function setCookieMode($value)
 	{
 		if($value==='none')
+		{
 			ini_set('session.use_cookies','0');
+			ini_set('session.use_only_cookies','0');
+		}
 		else if($value==='allow')
 		{
 			ini_set('session.use_cookies','1');

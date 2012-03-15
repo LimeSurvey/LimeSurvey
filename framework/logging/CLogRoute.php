@@ -25,7 +25,7 @@
  * satisfying both filter conditions will they be returned.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRoute.php 3205 2011-05-07 23:16:46Z qiang.xue $
+ * @version $Id: CLogRoute.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.logging
  * @since 1.0
  */
@@ -33,7 +33,6 @@ abstract class CLogRoute extends CComponent
 {
 	/**
 	 * @var boolean whether to enable this log route. Defaults to true.
-	 * @since 1.0.7
 	 */
 	public $enabled=true;
 	/**
@@ -51,7 +50,6 @@ abstract class CLogRoute extends CComponent
 	 * filter class name or an array representing the filter configuration.
 	 * In general, the log filter class should be {@link CLogFilter} or a child class of it.
 	 * Defaults to null, meaning no filter will be used.
-	 * @since 1.0.6
 	 */
 	public $filter;
 	/**

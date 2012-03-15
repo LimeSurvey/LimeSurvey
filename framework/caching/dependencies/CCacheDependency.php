@@ -15,8 +15,12 @@
  * Child classes should override its {@link generateDependentData} for
  * actual dependency checking.
  *
+ * @property boolean $hasChanged Whether the dependency has changed.
+ * @property mixed $dependentData The data used to determine if dependency has been changed.
+ * This data is available after {@link evaluateDependency} is called.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCacheDependency.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CCacheDependency.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.caching.dependencies
  * @since 1.0
  */

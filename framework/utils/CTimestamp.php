@@ -27,7 +27,7 @@
  * to the PHP manual for more information.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CTimestamp.php 3254 2011-06-11 00:10:54Z keyboard.idol@gmail.com $
+ * @version $Id: CTimestamp.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.utils
  * @since 1.0
  */
@@ -198,7 +198,6 @@ class CTimestamp
 	 * @param integer $s second
 	 * @param boolean $hs24 whether the hours should be 0 through 23 (default) or 1 through 12.
 	 * @return boolean true if valid date, semantic check only.
-	 * @since 1.0.5
 	 */
 	public static function isValidTime($h,$m,$s,$hs24=true)
 	{

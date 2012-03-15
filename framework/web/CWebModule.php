@@ -16,10 +16,19 @@
  * project as a whole. Controllers inside a module must be accessed with routes
  * that are prefixed with the module ID.
  *
+ * @property string $name The name of this module.
+ * @property string $description The description of this module.
+ * @property string $version The version of this module.
+ * @property string $controllerPath The directory that contains the controller classes. Defaults to 'moduleDir/controllers'
+ * where moduleDir is the directory containing the module class.
+ * @property string $viewPath The root directory of view files. Defaults to 'moduleDir/views' where moduleDir is
+ * the directory containing the module class.
+ * @property string $layoutPath The root directory of layout files. Defaults to 'moduleDir/views/layouts' where
+ * moduleDir is the directory containing the module class.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebModule.php 3276 2011-06-15 14:21:12Z alexander.makarow $
+ * @version $Id: CWebModule.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web
- * @since 1.0.3
  */
 class CWebModule extends CModule
 {
@@ -80,7 +89,8 @@ class CWebModule extends CModule
 	}
 
 	/**
-	 * @return string the directory that contains the controller classes. Defaults to 'protected/controllers'.
+	 * @return string the directory that contains the controller classes. Defaults to 'moduleDir/controllers' where
+     * moduleDir is the directory containing the module class.
 	 */
 	public function getControllerPath()
 	{
@@ -102,7 +112,8 @@ class CWebModule extends CModule
 	}
 
 	/**
-	 * @return string the root directory of view files. Defaults to 'protected/views'.
+	 * @return string the root directory of view files. Defaults to 'moduleDir/views' where
+	 * moduleDir is the directory containing the module class.
 	 */
 	public function getViewPath()
 	{
@@ -124,7 +135,8 @@ class CWebModule extends CModule
 	}
 
 	/**
-	 * @return string the root directory of layout files. Defaults to 'protected/views/layouts'.
+	 * @return string the root directory of layout files. Defaults to 'moduleDir/views/layouts' where
+	 * moduleDir is the directory containing the module class.
 	 */
 	public function getLayoutPath()
 	{
@@ -161,7 +173,6 @@ class CWebModule extends CModule
 	 * @param CController $controller the controller
 	 * @param CAction $action the action
 	 * @return boolean whether the action should be executed.
-	 * @since 1.0.4
 	 */
 	public function beforeControllerAction($controller,$action)
 	{
@@ -176,7 +187,6 @@ class CWebModule extends CModule
 	 * are executed. If you override this method, make sure you call the parent implementation at the end.
 	 * @param CController $controller the controller
 	 * @param CAction $action the action
-	 * @since 1.0.4
 	 */
 	public function afterControllerAction($controller,$action)
 	{

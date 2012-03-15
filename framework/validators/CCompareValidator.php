@@ -20,11 +20,19 @@
  *
  * The comparison can be either {@link strict} or not.
  *
- * Starting from version 1.0.8, CCompareValidator supports different comparison operators.
+ * CCompareValidator supports different comparison operators.
  * Previously, it only compares to see if two values are equal or not.
  *
+ * When using the {@link message} property to define a custom error message, the message
+ * may contain additional placeholders that will be replaced with the actual content. In addition
+ * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
+ * CCompareValidator allows for the following placeholders to be specified:
+ * <ul>
+ * <li>{compareValue}: replaced with the constant value being compared with {@link compareValue}.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCompareValidator.php 3120 2011-03-25 01:50:48Z qiang.xue $
+ * @version $Id: CCompareValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -61,7 +69,6 @@ class CCompareValidator extends CValidator
 	 * <li>'<': validates to see if the value being validated is less than the value being compared with.</li>
 	 * <li>'<=': validates to see if the value being validated is less than or equal to the value being compared with.</li>
 	 * </ul>
-	 * @since 1.0.8
 	 */
 	public $operator='=';
 
@@ -174,22 +181,22 @@ class CCompareValidator extends CValidator
 			case '>':
 				if($message===null)
 					$message=Yii::t('yii','{attribute} must be greater than "{compareValue}".');
-				$condition='value<='.$compareValue;
+				$condition='parseFloat(value)<=parseFloat('.$compareValue.')';
 				break;
 			case '>=':
 				if($message===null)
 					$message=Yii::t('yii','{attribute} must be greater than or equal to "{compareValue}".');
-				$condition='value<'.$compareValue;
+				$condition='parseFloat(value)<parseFloat('.$compareValue.')';
 				break;
 			case '<':
 				if($message===null)
 					$message=Yii::t('yii','{attribute} must be less than "{compareValue}".');
-				$condition='value>='.$compareValue;
+				$condition='parseFloat(value)>=parseFloat('.$compareValue.')';
 				break;
 			case '<=':
 				if($message===null)
 					$message=Yii::t('yii','{attribute} must be less than or equal to "{compareValue}".');
-				$condition='value>'.$compareValue;
+				$condition='parseFloat(value)>parseFloat('.$compareValue.')';
 				break;
 			default:
 				throw new CException(Yii::t('yii','Invalid operator "{operator}".',array('{operator}'=>$this->operator)));

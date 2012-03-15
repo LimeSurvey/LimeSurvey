@@ -25,8 +25,13 @@
  * {@link setFetchMode FetchMode}. See {@link http://www.php.net/manual/en/function.PDOStatement-setFetchMode.php}
  * for more details.
  *
+ * @property boolean $isClosed Whether the reader is closed or not.
+ * @property integer $rowCount Number of rows contained in the result.
+ * @property integer $columnCount The number of columns in the result set.
+ * @property mixed $fetchMode Fetch mode.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbDataReader.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CDbDataReader.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.db
  * @since 1.0
  */

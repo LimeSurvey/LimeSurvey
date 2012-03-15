@@ -50,7 +50,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CValidator.php 3160 2011-04-03 01:08:23Z qiang.xue $
+ * @version $Id: CValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -92,7 +92,7 @@ abstract class CValidator extends CComponent
 	 */
 	public $message;
 	/**
-	 * @var boolean whether this validation rule should be skipped if when there is already a validation
+	 * @var boolean whether this validation rule should be skipped when there is already a validation
 	 * error for the current attribute. Defaults to false.
 	 * @since 1.1.1
 	 */
@@ -153,6 +153,11 @@ abstract class CValidator extends CComponent
 			$validator=new CInlineValidator;
 			$validator->attributes=$attributes;
 			$validator->method=$name;
+			if(isset($params['clientValidate']))
+			{
+				$validator->clientValidate=$params['clientValidate'];
+				unset($params['clientValidate']);
+			}
 			$validator->params=$params;
 			if(isset($params['skipOnError']))
 				$validator->skipOnError=$params['skipOnError'];
@@ -220,7 +225,6 @@ abstract class CValidator extends CComponent
 	 * </ul>
 	 * @param string $scenario scenario name
 	 * @return boolean whether the validator applies to the specified scenario.
-	 * @since 1.0.2
 	 */
 	public function applyTo($scenario)
 	{
@@ -248,7 +252,6 @@ abstract class CValidator extends CComponent
 	 * @param mixed $value the value to be checked
 	 * @param boolean $trim whether to perform trimming before checking if the string is empty. Defaults to false.
 	 * @return boolean whether the value is empty
-	 * @since 1.0.9
 	 */
 	protected function isEmpty($value,$trim=false)
 	{

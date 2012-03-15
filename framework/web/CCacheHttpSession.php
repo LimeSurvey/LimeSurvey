@@ -20,8 +20,10 @@
  * is NOT volatile. If you want to use {@link CDbCache} as storage medium, use {@link CDbHttpSession}
  * is a better choice.
  *
+ * @property boolean $useCustomStorage Whether to use custom storage.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCacheHttpSession.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CCacheHttpSession.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web
  * @since 1.0
  */

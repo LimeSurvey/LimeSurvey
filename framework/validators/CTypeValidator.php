@@ -18,8 +18,8 @@
  * <li><b>string</b> A string data type.</li>
  * <li><b>array</b> An array value. </li>
  * <li><b>date</b> A date data type.</li>
- * <li><b>time</b> A time data type (available since version 1.0.5).</li>
- * <li><b>datetime</b> A date and time data type (available since version 1.0.5).</li>
+ * <li><b>time</b> A time data type.</li>
+ * <li><b>datetime</b> A date and time data type.</li>
  * </ul>
  *
  * For <b>date</b> type, the property {@link dateFormat}
@@ -29,8 +29,16 @@
  * Starting from version 1.1.7, we have a dedicated date validator {@link CDateValidator}.
  * Please consider using this validator to validate a date-typed value.
  *
+ * When using the {@link message} property to define a custom error message, the message
+ * may contain additional placeholders that will be replaced with the actual content. In addition
+ * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
+ * CTypeValidator allows for the following placeholders to be specified:
+ * <ul>
+ * <li>{type}: replaced with data type the attribute should be {@link type}.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTypeValidator.php 3052 2011-03-12 14:27:07Z qiang.xue $
+ * @version $Id: CTypeValidator.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.validators
  * @since 1.0
  */
@@ -39,7 +47,6 @@ class CTypeValidator extends CValidator
 	/**
 	 * @var string the data type that the attribute should be. Defaults to 'string'.
 	 * Valid values include 'string', 'integer', 'float', 'array', 'date', 'time' and 'datetime'.
-	 * Note that 'time' and 'datetime' have been available since version 1.0.5.
 	 */
 	public $type='string';
 	/**
@@ -52,14 +59,12 @@ class CTypeValidator extends CValidator
 	 * @var string the format pattern that the time value should follow. Defaults to 'hh:mm'.
 	 * Please see {@link CDateTimeParser} for details about how to specify a time format.
 	 * This property is effective only when {@link type} is 'time'.
-	 * @since 1.0.5
 	 */
 	public $timeFormat='hh:mm';
 	/**
 	 * @var string the format pattern that the datetime value should follow. Defaults to 'MM/dd/yyyy hh:mm'.
 	 * Please see {@link CDateTimeParser} for details about how to specify a datetime format.
 	 * This property is effective only when {@link type} is 'datetime'.
-	 * @since 1.0.5
 	 */
 	public $datetimeFormat='MM/dd/yyyy hh:mm';
 	/**

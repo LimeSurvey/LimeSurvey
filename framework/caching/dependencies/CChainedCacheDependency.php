@@ -18,8 +18,11 @@
  * which gives a {@link CTypedList} instance and can be used like an array
  * (see {@link CList} for more details}).
  *
+ * @property CTypedList $dependencies List of dependency objects.
+ * @property boolean $hasChanged Whether the dependency is changed or not.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CChainedCacheDependency.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CChainedCacheDependency.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -52,7 +55,6 @@ class CChainedCacheDependency extends CComponent implements ICacheDependency
 	 * @param array $values list of dependency objects or configurations to be added to this chain.
 	 * If a depedency is specified as a configuration, it must be an array that can be recognized
 	 * by {@link YiiBase::createComponent}.
-	 * @since 1.0.10
 	 */
 	public function setDependencies($values)
 	{

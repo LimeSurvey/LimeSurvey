@@ -34,8 +34,14 @@
  * }
  * </pre>
  *
+ * @property string $name The command name.
+ * @property CConsoleCommandRunner $commandRunner The command runner instance.
+ * @property string $help The command description. Defaults to 'Usage: php entry-script.php command-name'.
+ * @property array $optionHelp The command option help information. Each array element describes
+ * the help information for a single action.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommand.php 3276 2011-06-15 14:21:12Z alexander.makarow $
+ * @version $Id: CConsoleCommand.php 3548 2012-01-24 11:42:59Z mdomba $
  * @package system.console
  * @since 1.0
  */
@@ -431,11 +437,22 @@ abstract class CConsoleCommand extends CComponent
 	public function pluralize($name)
 	{
 		$rules=array(
+			'/move$/i' => 'moves',
+			'/foot$/i' => 'feet',
+			'/child$/i' => 'children',
+			'/human$/i' => 'humans',
+			'/man$/i' => 'men',
+			'/tooth$/i' => 'teeth',
+			'/person$/i' => 'people',
+			'/([m|l])ouse$/i' => '\1ice',
 			'/(x|ch|ss|sh|us|as|is|os)$/i' => '\1es',
+			'/([^aeiouy]|qu)y$/i' => '\1ies',
 			'/(?:([^f])fe|([lr])f)$/i' => '\1\2ves',
-			'/(m)an$/i' => '\1en',
-			'/(child)$/i' => '\1ren',
-			'/(r)y$/i' => '\1ies',
+			'/(shea|lea|loa|thie)f$/i' => '\1ves',
+			'/([ti])um$/i' => '\1a',
+			'/(tomat|potat|ech|her|vet)o$/i' => '\1oes',
+			'/(bu)s$/i' => '\1ses',
+			'/(ax|test)is$/i' => '\1es',
 			'/s$/' => 's',
 		);
 		foreach($rules as $rule=>$replacement)
@@ -444,5 +461,42 @@ abstract class CConsoleCommand extends CComponent
 				return preg_replace($rule,$replacement,$name);
 		}
 		return $name.'s';
+	}
+
+	/**
+	 * Reads input via the readline PHP extension if that's available, or fgets() if readline is not installed.
+	 *
+	 * @param string $message to echo out before waiting for user input
+	 * @return mixed line read as a string, or false if input has been closed
+	 *
+	 * @since 1.1.9
+	 */
+	public function prompt($message)
+	{
+		if(extension_loaded('readline'))
+		{
+			$input = readline($message.' ');
+			readline_add_history($input);
+			return $input;
+		}
+		else
+		{
+			echo $message.' ';
+			return trim(fgets(STDIN));
+		}
+	}
+
+	/**
+	 * Asks user to confirm by typing y or n.
+	 *
+	 * @param string $message to echo out before waiting for user input
+	 * @return bool if user confirmed
+	 *
+	 * @since 1.1.9
+	 */
+	public function confirm($message)
+	{
+		echo $message.' [yes|no] ';
+		return !strncasecmp(trim(fgets(STDIN)),'y',1);
 	}
 }

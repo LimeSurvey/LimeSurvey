@@ -36,13 +36,30 @@
  * represent the attribute names, while the values represent the virtual attribute definitions.
  * For more details, please check the documentation about {@link attributes}.
  *
+ * @property string $orderBy The order-by columns represented by this sort object.
+ * This can be put in the ORDER BY clause of a SQL statement.
+ * @property array $directions Sort directions indexed by attribute names.
+ * The sort direction. Can be either CSort::SORT_ASC for ascending order or
+ * CSort::SORT_DESC for descending order.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CSort.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CSort.php 3554 2012-02-08 16:31:30Z alexander.makarow $
  * @package system.web
- * @since 1.0.1
  */
 class CSort extends CComponent
 {
+	/**
+	 * Sort ascending
+	 * @since 1.1.10
+	 */
+	const SORT_ASC = false;
+
+	/**
+	 * Sort descending
+	 * @since 1.1.10
+	 */
+	const SORT_DESC = true;
+
 	/**
 	 * @var boolean whether the sorting can be applied to multiple attributes simultaneously.
 	 * Defaults to false, which means each time the data can only be sorted by one attribute.
@@ -148,7 +165,7 @@ class CSort extends CComponent
 	 * be in descending order. For example,
 	 * <pre>
 	 * 'defaultOrder'=>array(
-	 *     'price'=>true,
+	 *     'price'=>CSort::SORT_DESC,
 	 * )
 	 * </pre>
 	 *
@@ -172,7 +189,6 @@ class CSort extends CComponent
 	/**
 	 * @var array the additional GET parameters (name=>value) that should be used when generating sort URLs.
 	 * Defaults to null, meaning using the currently available GET parameters.
-	 * @since 1.0.9
 	 */
 	public $params;
 
@@ -317,15 +333,15 @@ class CSort extends CComponent
 	/**
 	 * Returns the currently requested sort information.
 	 * @return array sort directions indexed by attribute names.
-	 * The sort direction is true if the corresponding attribute should be
-	 * sorted in descending order.
+	 * Sort direction can be either CSort::SORT_ASC for ascending order or
+	 * CSort::SORT_DESC for descending order.
 	 */
 	public function getDirections()
 	{
 		if($this->_directions===null)
 		{
 			$this->_directions=array();
-			if(isset($_GET[$this->sortVar]))
+			if(isset($_GET[$this->sortVar]) && is_string($_GET[$this->sortVar]))
 			{
 				$attributes=explode($this->separators[0],$_GET[$this->sortVar]);
 				foreach($attributes as $attribute)
@@ -356,8 +372,9 @@ class CSort extends CComponent
 	/**
 	 * Returns the sort direction of the specified attribute in the current request.
 	 * @param string $attribute the attribute name
-	 * @return mixed the sort direction of the attribut. True if the attribute should be sorted in descending order,
-	 * false if in ascending order, and null if the attribute doesn't need to be sorted.
+	 * @return mixed Sort direction of the attribute. Can be either CSort::SORT_ASC
+	 * for ascending order or CSort::SORT_DESC for descending order. Value is null
+	 * if the attribute doesn't need to be sorted.
 	 */
 	public function getDirection($attribute)
 	{
@@ -369,8 +386,8 @@ class CSort extends CComponent
 	 * Creates a URL that can lead to generating sorted data.
 	 * @param CController $controller the controller that will be used to create the URL.
 	 * @param array $directions the sort directions indexed by attribute names.
-	 * The sort direction is true if the corresponding attribute should be
-	 * sorted in descending order.
+	 * The sort direction can be either CSort::SORT_ASC for ascending order or
+	 * CSort::SORT_DESC for descending order.
 	 * @return string the URL for sorting
 	 */
 	public function createUrl($controller,$directions)

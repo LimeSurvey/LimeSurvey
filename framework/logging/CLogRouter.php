@@ -32,7 +32,7 @@
  *                 array(
  *                     'class'=>'CEmailLogRoute',
  *                     'levels'=>'error, warning',
- *                     'email'=>'admin@example.com',
+ *                     'emails'=>array('admin@example.com'),
  *                 ),
  *             ),
  *         ),
@@ -43,8 +43,10 @@
  * You can specify multiple routes with different filtering conditions and different
  * targets, even if the routes are of the same type.
  *
+ * @property array $routes The currently initialized routes.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRouter.php 3066 2011-03-13 14:22:55Z qiang.xue $
+ * @version $Id: CLogRouter.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.logging
  * @since 1.0
  */
