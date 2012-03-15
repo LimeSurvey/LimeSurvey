@@ -320,8 +320,6 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
         else
             $surveyidresult = Survey::model()->with('languagesettings')->findAll();
 
-        if (!$surveyidresult) {return array();}
-
         $surveynames = array();
         foreach ($surveyidresult as $result)
             $surveynames[] = array_merge($result->attributes, $result->languagesettings->attributes);
@@ -1740,13 +1738,13 @@ function getSIDGIDQIDAIDType($fieldcode)
 */
 function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
 {
-    $clang = Yii::app()->getController()->lang;
+    $clang = Yii::app()->lang;
 
     // use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     if  (!isset($action) || (isset($action) && $action!='browse') || $action == NULL )
     {
-        if (Yii::app()->session[$surveyid]['s_lang']) $s_lang = Yii::app()->session[$surveyid]['s_lang'];  //This one does not work in admin mode when you browse a particular answer
+        if ($_SESSION['survey_'.$surveyid]['s_lang']) $s_lang = $_SESSION['survey_'.$surveyid]['s_lang'];  //This one does not work in admin mode when you browse a particular answer
     }
 
     //Fieldcode used to determine question, $value used to match against answer code
@@ -2234,18 +2232,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     if ($prow['datestamp'] == "Y")
     {
-        $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
-        'type'=>"datestamp",
-        'sid'=>$surveyid,
-        "gid"=>"",
-        "qid"=>"",
-        "aid"=>"");
-        if ($style == "full")
-        {
-            $fieldmap["datestamp"]['title']="";
-            $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
-            $fieldmap["datestamp"]['group_name']="";
-        }
         $fieldmap["startdate"]=array("fieldname"=>"startdate",
         'type'=>"startdate",
         'sid'=>$surveyid,
@@ -2257,6 +2243,19 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap["startdate"]['title']="";
             $fieldmap["startdate"]['question']=$clang->gT("Date started");
             $fieldmap["startdate"]['group_name']="";
+        }
+        
+        $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
+        'type'=>"datestamp",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
+        {
+            $fieldmap["datestamp"]['title']="";
+            $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
+            $fieldmap["datestamp"]['group_name']="";
         }
 
     }
@@ -5666,7 +5665,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
     //Get response data
-    $idrow = Surveys_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
+    $idrow = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
     // Create array of non-null values - those are the relevant ones
     $aRelevantFields = array();
@@ -5713,7 +5712,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 }
                 else
                 {
-                    $answer = getExtendedAnswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+                    $answer = getExtendedAnswer($iSurveyID,null,$fname['fieldname'], $idrow[$fname['fieldname']]);
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
@@ -5721,7 +5720,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         }
         else
         {
-            $answer=getExtendedAnswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+            $answer=getExtendedAnswer($iSurveyID,null,$fname['fieldname'], $idrow[$fname['fieldname']]);
             $aResultTable[$fname['fieldname']]=array($question,'',$answer);
             continue;
         }
@@ -5734,7 +5733,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
 
-        $answer = getExtendedAnswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+        $answer = getExtendedAnswer($iSurveyID,null,$fname['fieldname'], $idrow[$fname['fieldname']]);
         $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
     }
     return $aResultTable;
@@ -7016,7 +7015,7 @@ function getHeader($meta = false)
     {
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
-    
+
     $js_header = ''; $css_header='';
     if(Yii::app()->getConfig("js_admin_includes"))
     {

@@ -449,8 +449,9 @@ class SurveyRuntimeHelper {
                     // Link to Print Answer Preview  **********
                     if ($thissurvey['printanswers'] == 'Y')
                     {
+                        $url = Yii::app()->getController()->createUrl("printanswers/view/?surveyid={$surveyid}");
                         $completed .= "<br /><br />"
-                        . "<a class='printlink' href='printanswers.php?sid=$surveyid'  target='_blank'>"
+                        . "<a class='printlink' href='$url'  target='_blank'>"
                         . $clang->gT("Print your answers.")
                         . "</a><br />\n";
                     }

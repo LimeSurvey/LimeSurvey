@@ -635,11 +635,11 @@
     {
         if (!isset($languagecode) || $languagecode=='')
         {
-            $languagecode=Survey::model()->findByPk($surveyid)->language;;
+            $languagecode=Survey::model()->findByPk($surveyid)->language;
         }
         $data = Surveys_languagesettings::model()->getDateFormat($surveyid,$languagecode);
 
-        if(empty($dateformat))
+        if(empty($data))
         {
             $dateformat = 0;
         }

@@ -21,17 +21,9 @@
  * @version $Id$
  * @access public
  */
-class printanswers extends LSYii_Controller {
+class PrintanswersController extends LSYii_Controller {
 
-	/**
-	 * printanswers::__construct()
-	 * Constructor
-	 * @return
-	 */
-	function __construct()
-	{
-		parent::__construct();
-	}
+
 
     /**
      * printanswers::view()
@@ -40,34 +32,31 @@ class printanswers extends LSYii_Controller {
      * @param bool $printableexport
      * @return
      */
-    function view($surveyid,$printableexport=FALSE)
+    function actionView($surveyid,$printableexport=FALSE)
     {
 
         global $siteadminname, $siteadminemail;
+        Yii::app()->loadHelper("frontend");
 
         if(Yii::app()->getConfig('usepdfexport'))
         {
             Yii::import('application.libraries.admin.pdf');
         }
 
-        //if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
-        //else {
-            //This next line ensures that the $surveyid value is never anything but a number.
         $surveyid = (int)($surveyid);
-        //}
         Yii::app()->loadHelper('database');
 
-        if (isset(Yii::app()->session[$surveyid]['sid']))
+        if (isset($_SESSION['survey_'.$surveyid]['sid']))
         {
-            $surveyid = Yii::app()->session[$surveyid]['sid'];
+            $surveyid = $_SESSION['survey_'.$surveyid]['sid'];
         }
         else
         {
-            show_error('Invalid survey/session');
+            die('Invalid survey/session');
         }
 
         //Debut session time out
-        if (!isset(Yii::app()->session[$surveyid]['finished']) || !isset(Yii::app()->session[$surveyid]['srid']))
+        if (!isset($_SESSION['survey_'.$surveyid]['finished']) || !isset($_SESSION['survey_'.$surveyid]['srid']))
         // Argh ... a session time out! RUN!
         //display "sorry but your session has expired"
         {
@@ -93,19 +82,19 @@ class printanswers extends LSYii_Controller {
         }
         //Fin session time out
 
-        $id = Yii::app()->session[$surveyid]['srid']; //I want to see the answers with this id
-        $clang = Yii::app()->session[$surveyid]['s_lang'];
+        $id = $_SESSION['survey_'.$surveyid]['srid']; //I want to see the answers with this id
+        $clang = $_SESSION['survey_'.$surveyid]['s_lang'];
 
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
         // Set the language for dispay
         //require_once($rootdir.'/classes/core/language.php');  // has been secured
-        if (isset(Yii::app()->session[$surveyid]['s_lang']))
+        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
         {
 
-            $clang = SetSurveyLanguage( $surveyid, Yii::app()->session[$surveyid]['s_lang']);
-            $language = Yii::app()->session[$surveyid]['s_lang'];
+            $clang = SetSurveyLanguage( $surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+            $language = $_SESSION['survey_'.$surveyid]['s_lang'];
         }
         else
         {
@@ -132,21 +121,10 @@ class printanswers extends LSYii_Controller {
         }
 
         //CHECK IF SURVEY IS ACTIVATED AND EXISTS
-        $actquery = new CDbCriteria;
-        $actquery->join = 'INNER JOIN  {{surveys_languagesettings}} as b on (b.surveyls_surveyid = t.sid and b.surveyls_language = t.language)';
-        $actquery->condition = 't.sid = :sid';
-        $actquery->params(array(':sid' => $surveyid));
-        $actresult = Surveys::model()->findAll($actquery);
-        $actcount = count($actresult);
-        if ($actcount > 0)
-        {
-            foreach ($actresult as $actrow)
-            {
-                $surveytable = "{{survey_{$actrow->sid}}}";
-                $surveyname = "{$actrow->surveyls_title}";
-                $anonymized = $actrow->anonymized;
-            }
-        }
+
+        $surveytable = "{{survey_{$surveyid}}}";
+        $surveyname = $thissurvey['surveyls_title'];
+        $anonymized = $thissurvey['anonymized'];
 
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
