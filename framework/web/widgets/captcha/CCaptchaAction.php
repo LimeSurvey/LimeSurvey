@@ -28,8 +28,10 @@
  * <li>In the controller view, insert a {@link CCaptcha} widget in the form.</li>
  * </ol>
  *
+ * @property string $verifyCode The verification code.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCaptchaAction.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CCaptchaAction.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.widgets.captcha
  * @since 1.0
  */
@@ -71,7 +73,6 @@ class CCaptchaAction extends CAction
 	public $foreColor = 0x2040A0;
 	/**
 	 * @var boolean whether to use transparent background. Defaults to false.
-	 * @since 1.0.10
 	 */
 	public $transparent = false;
 	/**
@@ -162,7 +163,7 @@ class CCaptchaAction extends CAction
 	 * Validates the input to see if it matches the generated code.
 	 * @param string $input user input
 	 * @param boolean $caseSensitive whether the comparison should be case-sensitive
-	 * @return whether the input is valid
+	 * @return boolean whether the input is valid
 	 */
 	public function validate($input,$caseSensitive)
 	{

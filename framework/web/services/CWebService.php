@@ -20,8 +20,10 @@
  * call {@link generateWsdl} or {@link renderWsdl}. To process the web service
  * requests, call {@link run}.
  *
+ * @property string $methodName The currently requested method name. Empty if no method is being requested.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebService.php 3277 2011-06-15 15:27:52Z qiang.xue $
+ * @version $Id: CWebService.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.services
  * @since 1.0
  */
@@ -49,7 +51,6 @@ class CWebService extends CComponent
 	 * @var string the ID of the cache application component that is used to cache the generated WSDL.
 	 * Defaults to 'cache' which refers to the primary cache application component.
 	 * Set this property to false if you want to disable caching WSDL.
-	 * @since 1.0.10
 	 */
 	public $cacheID='cache';
 	/**
@@ -248,9 +249,8 @@ class CWebService extends CComponent
  * CSoapObjectWrapper is a wrapper class internally used when SoapServer::setObject() is not defined.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebService.php 3277 2011-06-15 15:27:52Z qiang.xue $
+ * @version $Id: CWebService.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.services
- * @since 1.0.5
  */
 class CSoapObjectWrapper
 {

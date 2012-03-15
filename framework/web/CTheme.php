@@ -11,8 +11,15 @@
 /**
  * CTheme represents an application theme.
  *
+ * @property string $name Theme name.
+ * @property string $baseUrl The relative URL to the theme folder (without ending slash).
+ * @property string $basePath The file path to the theme folder.
+ * @property string $viewPath The path for controller views. Defaults to 'ThemeRoot/views'.
+ * @property string $systemViewPath The path for system views. Defaults to 'ThemeRoot/views/system'.
+ * @property string $skinPath The path for widget skins. Defaults to 'ThemeRoot/views/skins'.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTheme.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CTheme.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web
  * @since 1.0
  */

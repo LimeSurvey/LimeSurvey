@@ -21,14 +21,14 @@
  * CCaptcha may also render a button next to the CAPTCHA image. Clicking on the button
  * will change the CAPTCHA image to be a new one in an AJAX way.
  *
- * Since version 1.0.8, if {@link clickableImage} is set true, clicking on the CAPTCHA image
+ * If {@link clickableImage} is set true, clicking on the CAPTCHA image
  * will refresh the CAPTCHA.
  *
  * A {@link CCaptchaValidator} may be used to validate that the user enters
  * a verification code matching the code displayed in the CAPTCHA image.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCaptcha.php 3203 2011-05-05 14:08:06Z qiang.xue $
+ * @version $Id: CCaptcha.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.widgets.captcha
  * @since 1.0
  */
@@ -53,7 +53,6 @@ class CCaptcha extends CWidget
 	 * this property to be true because they serve for the same purpose.
 	 * To enhance accessibility, you may set {@link imageOptions} to provide hints to end-users that
 	 * the image is clickable.
-	 * @since 1.0.8
 	 */
 	public $clickableImage=false;
 	/**
@@ -105,7 +104,6 @@ class CCaptcha extends CWidget
 
 	/**
 	 * Registers the needed client scripts.
-	 * @since 1.0.2
 	 */
 	public function registerClientScript()
 	{

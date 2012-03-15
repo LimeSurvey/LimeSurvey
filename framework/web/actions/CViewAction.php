@@ -22,8 +22,11 @@
  * Note, the user specified view can only contain word characters, dots and dashes and
  * the first letter must be a word letter.
  *
+ * @property string $requestedView The name of the view requested by the user.
+ * This is in the format of 'path.to.view'.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CViewAction.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CViewAction.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web.actions
  * @since 1.0
  */

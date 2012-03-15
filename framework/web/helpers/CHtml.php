@@ -13,7 +13,7 @@
  * CHtml is a static class that provides a collection of helper methods for creating HTML views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHtml.php 3306 2011-06-23 15:26:33Z qiang.xue $
+ * @version $Id: CHtml.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.helpers
  * @since 1.0
  */
@@ -50,9 +50,28 @@ class CHtml
 	public static $afterRequiredLabel=' <span class="required">*</span>';
 	/**
 	 * @var integer the counter for generating automatic input field names.
-	 * @since 1.0.4
 	 */
 	public static $count=0;
+
+	/**
+	 * Sets the default style for attaching jQuery event handlers.
+	 * 
+	 * If set to true (default), live/delegated style is used. Event handlers 
+	 * are attached to the document body and can process events from descendant 
+	 * elements that are added to the document at a later time.
+	 * 
+	 * If set to false, direct style is used. Event handlers are attached directly 
+	 * to the DOM element, that must already exist on the page. Elements injected 
+	 * into the page at a later time will not be processed.
+	 * 
+	 * You can override this setting for a particular element by setting the htmlOptions live attribute
+	 * (see {@link clientChange}).
+	 * 
+	 * For more information about attaching jQuery event handler see {@link http://api.jquery.com/on/}
+	 * @since 1.1.9
+	 * @see clientChange
+	 */
+	public static $liveEvents = true;
 
 	/**
 	 * Encodes special characters into HTML entities.
@@ -87,7 +106,6 @@ class CHtml
 	 * @param array $data data to be encoded
 	 * @return array the encoded data
 	 * @see http://www.php.net/manual/en/function.htmlspecialchars.php
-	 * @since 1.0.4
 	 */
 	public static function encodeArray($data)
 	{
@@ -109,7 +127,7 @@ class CHtml
 	 * Generates an HTML element.
 	 * @param string $tag the tag name
 	 * @param array $htmlOptions the element attributes. The values will be HTML-encoded using {@link encode()}.
-	 * Since version 1.0.5, if an 'encode' attribute is given and its value is false,
+	 * If an 'encode' attribute is given and its value is false,
 	 * the rest of the attribute values will NOT be HTML-encoded.
 	 * Since version 1.1.5, attributes whose value is null will not be rendered.
 	 * @param mixed $content the content to be enclosed between open and close element tags. It will not be HTML-encoded.
@@ -130,7 +148,7 @@ class CHtml
 	 * Generates an open HTML element.
 	 * @param string $tag the tag name
 	 * @param array $htmlOptions the element attributes. The values will be HTML-encoded using {@link encode()}.
-	 * Since version 1.0.5, if an 'encode' attribute is given and its value is false,
+	 * If an 'encode' attribute is given and its value is false,
 	 * the rest of the attribute values will NOT be HTML-encoded.
 	 * Since version 1.1.5, attributes whose value is null will not be rendered.
 	 * @return string the generated HTML element tag
@@ -167,7 +185,6 @@ class CHtml
 	 * @param string $httpEquiv http-equiv attribute of the meta tag. If null, the attribute will not be generated
 	 * @param array $options other options in name-value pairs (e.g. 'scheme', 'lang')
 	 * @return string the generated meta tag
-	 * @since 1.0.1
 	 */
 	public static function metaTag($content,$name=null,$httpEquiv=null,$options=array())
 	{
@@ -188,7 +205,6 @@ class CHtml
 	 * @param string $media media attribute of the link tag. If null, the attribute will not be generated.
 	 * @param array $options other options in name-value pairs
 	 * @return string the generated link tag
-	 * @since 1.0.1
 	 */
 	public static function linkTag($relation=null,$type=null,$href=null,$media=null,$options=array())
 	{
@@ -287,7 +303,6 @@ class CHtml
 	 * @param string $method form method (e.g. post, get)
 	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
 	 * @return string the generated form tag.
-	 * @since 1.0.4
 	 * @see endForm
 	 */
 	public static function beginForm($action='',$method='post',$htmlOptions=array())
@@ -315,7 +330,6 @@ class CHtml
 	/**
 	 * Generates a closing form tag.
 	 * @return string the generated tag
-	 * @since 1.0.4
 	 * @see beginForm
 	 */
 	public static function endForm()
@@ -377,7 +391,6 @@ class CHtml
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated mailto link
 	 * @see clientChange
-	 * @since 1.0.1
 	 */
 	public static function mailto($text,$email='',$htmlOptions=array())
 	{
@@ -433,7 +446,6 @@ class CHtml
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated button tag
 	 * @see clientChange
-	 * @since 1.0.8
 	 */
 	public static function htmlButton($label='button',$htmlOptions=array())
 	{
@@ -507,9 +519,9 @@ class CHtml
 	 * Generates a label tag.
 	 * @param string $label label text. Note, you should HTML-encode the text if needed.
 	 * @param string $for the ID of the HTML element that this label is associated with.
-	 * If this is false, the 'for' attribute for the label tag will not be rendered (since version 1.0.11).
+	 * If this is false, the 'for' attribute for the label tag will not be rendered.
 	 * @param array $htmlOptions additional HTML attributes.
-	 * Starting from version 1.0.2, the following HTML option is recognized:
+	 * The following HTML option is recognized:
 	 * <ul>
 	 * <li>required: if this is set and is true, the label will be styled
 	 * with CSS class 'required' (customizable with CHtml::$requiredCss),
@@ -727,10 +739,10 @@ class CHtml
 	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
 	 * In addition, the following options are also supported specifically for dropdown list:
 	 * <ul>
-	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
-	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
@@ -741,7 +753,6 @@ class CHtml
 	 *         'value2'=>array('label'=>'value 2'),
 	 *     );
 	 * </pre>
-	 *     This option has been available since version 1.0.3.
 	 * </li>
 	 * </ul>
 	 * @return string the generated drop down list
@@ -773,10 +784,10 @@ class CHtml
 	 * attributes are also recognized. See {@link clientChange} and {@link tag} for more details.
 	 * In addition, the following options are also supported specifically for list box:
 	 * <ul>
-	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
-	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
@@ -787,7 +798,6 @@ class CHtml
 	 *         'value2'=>array('label'=>'value 2'),
 	 *     );
 	 * </pre>
-	 *     This option has been available since version 1.0.3.
 	 * </li>
 	 * </ul>
 	 * @return string the generated list box
@@ -826,14 +836,13 @@ class CHtml
 	 * <li>separator: string, specifies the string that separates the generated check boxes.</li>
 	 * <li>checkAll: string, specifies the label for the "check all" checkbox.
 	 * If this option is specified, a 'check all' checkbox will be displayed. Clicking on
-	 * this checkbox will cause all checkboxes checked or unchecked. This option has been
-	 * available since version 1.0.4.</li>
+	 * this checkbox will cause all checkboxes checked or unchecked.</li>
 	 * <li>checkAllLast: boolean, specifies whether the 'check all' checkbox should be
 	 * displayed at the end of the checkbox list. If this option is not set (default)
 	 * or is false, the 'check all' checkbox will be displayed at the beginning of
-	 * the checkbox list. This option has been available since version 1.0.4.</li>
+	 * the checkbox list.</li>
 	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
-	 * for every label tag in the list. This option has been available since version 1.0.10.</li>
+	 * for every label tag in the list.</li>
 	 * </ul>
 	 * @return string the generated check box list
 	 */
@@ -885,20 +894,20 @@ class CHtml
 				array_unshift($items,$item);
 			$name=strtr($name,array('['=>'\\[',']'=>'\\]'));
 			$js=<<<EOD
-jQuery('#$id').click(function() {
-	jQuery("input[name='$name']").attr('checked', this.checked);
+$('#$id').click(function() {
+	$("input[name='$name']").prop('checked', this.checked);
 });
-jQuery("input[name='$name']").click(function() {
-	jQuery('#$id').attr('checked', !jQuery("input[name='$name']:not(:checked)").length);
+$("input[name='$name']").click(function() {
+	$('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
 });
-jQuery('#$id').attr('checked', !jQuery("input[name='$name']:not(:checked)").length);
+$('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
 EOD;
 			$cs=Yii::app()->getClientScript();
 			$cs->registerCoreScript('jquery');
 			$cs->registerScript($id,$js);
 		}
 
-		return implode($separator,$items);
+		return self::tag('span',array('id'=>$baseID),implode($separator,$items));
 	}
 
 	/**
@@ -907,8 +916,7 @@ EOD;
 	 * it only allows single selection.
 	 * @param string $name name of the radio button list. You can use this name to retrieve
 	 * the selected value(s) once the form is submitted.
-	 * @param mixed $select selection of the radio buttons. This can be either a string
-	 * for single selection or an array for multiple selections.
+	 * @param string $select selection of the radio buttons.
 	 * @param array $data value-label pairs used to generate the radio button list.
 	 * Note, the values will be automatically HTML-encoded, while the labels will not.
 	 * @param array $htmlOptions addtional HTML options. The options will be applied to
@@ -917,9 +925,9 @@ EOD;
 	 * <li>template: string, specifies how each radio button is rendered. Defaults
 	 * to "{input} {label}", where "{input}" will be replaced by the generated
 	 * radio button input tag while "{label}" will be replaced by the corresponding radio button label.</li>
-	 * <li>separator: string, specifies the string that separates the generated radio buttons.</li>
+	 * <li>separator: string, specifies the string that separates the generated radio buttons. Defaults to new line (<br/>).</li>
 	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
-	 * for every label tag in the list. This option has been available since version 1.0.10.</li>
+	 * for every label tag in the list.</li>
 	 * </ul>
 	 * @return string the generated radio button list
 	 */
@@ -944,7 +952,7 @@ EOD;
 			$label=self::label($label,$htmlOptions['id'],$labelOptions);
 			$items[]=strtr($template,array('{input}'=>$option,'{label}'=>$label));
 		}
-		return implode($separator,$items);
+		return self::tag('span',array('id'=>$baseID),implode($separator,$items));
 	}
 
 	/**
@@ -1127,11 +1135,10 @@ EOD;
 	 * <li>required: if this is set and is true, the label will be styled
 	 * with CSS class 'required' (customizable with CHtml::$requiredCss),
 	 * and be decorated with {@link CHtml::beforeRequiredLabel} and
-	 * {@link CHtml::afterRequiredLabel}. This option has been available since version 1.0.2.</li>
+	 * {@link CHtml::afterRequiredLabel}.</li>
 	 * <li>label: this specifies the label to be displayed. If this is not set,
 	 * {@link CModel::getAttributeLabel} will be called to get the label for display.
-	 * If the label is specified as false, no label will be rendered.
-	 * This option has been available since version 1.0.4.</li>
+	 * If the label is specified as false, no label will be rendered.</li>
 	 * </ul>
 	 * @return string the generated label tag
 	 */
@@ -1170,7 +1177,6 @@ EOD;
 	 * @param string $attribute the attribute
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated label tag
-	 * @since 1.0.2
 	 */
 	public static function activeLabelEx($model,$attribute,$htmlOptions=array())
 	{
@@ -1282,7 +1288,7 @@ EOD;
 	 * @param string $attribute the attribute
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-	 * Since version 1.0.9, a special option named 'uncheckValue' is available that can be used to specify
+	 * A special option named 'uncheckValue' is available that can be used to specify
 	 * the value returned when the radio button is not checked. By default, this value is '0'.
 	 * Internally, a hidden field is rendered so that when the radio button is not checked,
 	 * we can still obtain the posted uncheck value.
@@ -1324,7 +1330,7 @@ EOD;
 	 * @param string $attribute the attribute
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-	 * Since version 1.0.2, a special option named 'uncheckValue' is available that can be used to specify
+	 * A special option named 'uncheckValue' is available that can be used to specify
 	 * the value returned when the checkbox is not checked. By default, this value is '0'.
 	 * Internally, a hidden field is rendered so that when the checkbox is not checked,
 	 * we can still obtain the posted uncheck value.
@@ -1370,10 +1376,10 @@ EOD;
 	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
 	 * In addition, the following options are also supported:
 	 * <ul>
-	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.  Note, the prompt text will NOT be HTML-encoded.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
-	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
@@ -1384,7 +1390,6 @@ EOD;
 	 *         'value2'=>array('label'=>'value 2'),
 	 *     );
 	 * </pre>
-	 *     This option has been available since version 1.0.3.
 	 * </li>
 	 * </ul>
 	 * @return string the generated drop down list
@@ -1422,10 +1427,10 @@ EOD;
 	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
 	 * In addition, the following options are also supported:
 	 * <ul>
-	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
-	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
@@ -1436,7 +1441,6 @@ EOD;
 	 *         'value2'=>array('label'=>'value 2'),
 	 *     );
 	 * </pre>
-	 *     This option has been available since version 1.0.3.
 	 * </li>
 	 * </ul>
 	 * @return string the generated list box
@@ -1471,14 +1475,12 @@ EOD;
 	 * <li>separator: string, specifies the string that separates the generated check boxes.</li>
 	 * <li>checkAll: string, specifies the label for the "check all" checkbox.
 	 * If this option is specified, a 'check all' checkbox will be displayed. Clicking on
-	 * this checkbox will cause all checkboxes checked or unchecked. This option has been
-	 * available since version 1.0.4.</li>
+	 * this checkbox will cause all checkboxes checked or unchecked.</li>
 	 * <li>checkAllLast: boolean, specifies whether the 'check all' checkbox should be
 	 * displayed at the end of the checkbox list. If this option is not set (default)
 	 * or is false, the 'check all' checkbox will be displayed at the beginning of
-	 * the checkbox list. This option has been available since version 1.0.4.</li>
-	 * <li>encode: boolean, specifies whether to encode HTML-encode tag attributes and values. Defaults to true.
-	 * This option has been available since version 1.0.5.</li>
+	 * the checkbox list.</li>
+	 * <li>encode: boolean, specifies whether to encode HTML-encode tag attributes and values. Defaults to true.</li>
 	 * </ul>
 	 * Since 1.1.7, a special option named 'uncheckValue' is available. It can be used to set the value
 	 * that will be returned when the checkbox is not checked. By default, this value is ''.
@@ -1525,9 +1527,8 @@ EOD;
 	 * <li>template: string, specifies how each radio button is rendered. Defaults
 	 * to "{input} {label}", where "{input}" will be replaced by the generated
 	 * radio button input tag while "{label}" will be replaced by the corresponding radio button label.</li>
-	 * <li>separator: string, specifies the string that separates the generated radio buttons.</li>
-	 * <li>encode: boolean, specifies whether to encode HTML-encode tag attributes and values. Defaults to true.
-	 * This option has been available since version 1.0.5.</li>
+	 * <li>separator: string, specifies the string that separates the generated radio buttons. Defaults to new line (<br/>).</li>
+	 * <li>encode: boolean, specifies whether to encode HTML-encode tag attributes and values. Defaults to true.</li>
 	 * </ul>
 	 * Since version 1.1.7, a special option named 'uncheckValue' is available that can be used to specify the value
 	 * returned when the radio button is not checked. By default, this value is ''. Internally, a hidden field is
@@ -1560,26 +1561,12 @@ EOD;
 	}
 
 	/**
-	 * Returns the element ID that is used by methods such as {@link activeTextField}.
-	 * This method has been deprecated since version 1.0.5. Please use {@link activeId} instead.
-	 * @param CModel $model the data model
-	 * @param string $attribute the attribute
-	 * @return string the element ID for the active field corresponding to the specified model and attribute.
-	 * @deprecated 1.0.5
-	 */
-	public static function getActiveId($model,$attribute)
-	{
-		return self::activeId($model,$attribute);
-	}
-
-	/**
 	 * Displays a summary of validation errors for one or several models.
 	 * @param mixed $model the models whose input errors are to be displayed. This can be either
 	 * a single model or an array of models.
 	 * @param string $header a piece of HTML code that appears in front of the errors
 	 * @param string $footer a piece of HTML code that appears at the end of the errors
 	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
-	 * This parameter has been available since version 1.0.7.
 	 * A special option named 'firstError' is recognized, which when set true, will
 	 * make the error summary to show only the first error message of each attribute.
 	 * If this is not set or is false, all error messages will be displayed.
@@ -1630,7 +1617,6 @@ EOD;
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute name
 	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
-	 * This parameter has been available since version 1.0.7.
 	 * @return string the error display. Empty if no errors are found.
 	 * @see CModel::getErrors
 	 * @see errorMessageCss
@@ -1656,7 +1642,7 @@ EOD;
 	 * Note, this method does not HTML-encode the generated data. You may call {@link encodeArray} to
 	 * encode it if needed.
 	 * Please refer to the {@link value} method on how to specify value field, text field and group field.
-	 * @param array $models a list of model objects. Starting from version 1.0.3, this parameter
+	 * @param array $models a list of model objects. This parameter
 	 * can also be an array of associative arrays (e.g. results of {@link CDbCommand::queryAll}).
 	 * @param string $valueField the attribute name for list option values
 	 * @param string $textField the attribute name for list option texts
@@ -1701,7 +1687,6 @@ EOD;
 	 * @param string $attribute the attribute name (use dot to concatenate multiple attributes)
 	 * @param mixed $defaultValue the default value to return when the attribute does not exist
 	 * @return mixed the attribute value
-	 * @since 1.0.5
 	 */
 	public static function value($model,$attribute,$defaultValue=null)
 	{
@@ -1732,7 +1717,6 @@ EOD;
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
 	 * @return string the generated input field ID
-	 * @since 1.0.1
 	 */
 	public static function activeId($model,$attribute)
 	{
@@ -1745,7 +1729,6 @@ EOD;
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
 	 * @return string the generated input field name
-	 * @since 1.0.1
 	 */
 	public static function activeName($model,$attribute)
 	{
@@ -1800,10 +1783,10 @@ EOD;
 	 * @param array $listData the option data (see {@link listData})
 	 * @param array $htmlOptions additional HTML attributes. The following two special attributes are recognized:
 	 * <ul>
-	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true. This option has been available since version 1.0.5.</li>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
 	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
 	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
-	 * Starting from version 1.0.10, the 'empty' option can also be an array of value-label pairs.
+	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
 	 *     The array keys must be the option values, and the array values are the extra
@@ -1814,7 +1797,6 @@ EOD;
 	 *         'value2'=>array('label'=>'value 2'),
 	 *     );
 	 * </pre>
-	 *     This option has been available since version 1.0.3.
 	 * </li>
 	 * <li>key: string, specifies the name of key attribute of the selection object(s).
 	 * This is used when the selection is represented in terms of objects. In this case,
@@ -1898,13 +1880,13 @@ EOD;
 	 * <li>submit: string, specifies the URL that the button should submit to. If empty, the current requested URL will be used.</li>
 	 * <li>params: array, name-value pairs that should be submitted together with the form. This is only used when 'submit' option is specified.</li>
 	 * <li>csrf: boolean, whether a CSRF token should be submitted when {@link CHttpRequest::enableCsrfValidation} is true. Defaults to false.
-	 * This option has been available since version 1.0.7. You may want to set this to be true if there is no enclosing
-	 * form around this element. This option is meaningful only when 'submit' option is set.</li>
+	 * You may want to set this to be true if there is no enclosing form around this element.
+	 * This option is meaningful only when 'submit' option is set.</li>
 	 * <li>return: boolean, the return value of the javascript. Defaults to false, meaning that the execution of
-	 * javascript would not cause the default behavior of the event. This option has been available since version 1.0.2.</li>
+	 * javascript would not cause the default behavior of the event.</li>
 	 * <li>confirm: string, specifies the message that should show in a pop-up confirmation dialog.</li>
 	 * <li>ajax: array, specifies the AJAX options (see {@link ajax}).</li>
-	 * <li>live: boolean, whether the event handler should be bound in "live" (a jquery event concept). Defaults to true. This option has been available since version 1.1.6.</li>
+	 * <li>live: boolean, whether the event handler should be attached with live/delegate or direct style. If not set, {@link liveEvents} will be used. This option has been available since version 1.1.6.</li>
 	 * </ul>
 	 * This parameter has been available since version 1.1.1.
 	 */
@@ -1919,7 +1901,7 @@ EOD;
 			unset($htmlOptions['live']);
 		}
 		else
-			$live=true;
+			$live = self::$liveEvents;
 
 		if(isset($htmlOptions['return']) && $htmlOptions['return'])
 			$return='return true';
@@ -1972,9 +1954,9 @@ EOD;
 		}
 
 		if($live)
-			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('body').undelegate('#$id','$event').delegate('#$id','$event',function(){{$handler}});");
+			$cs->registerScript('Yii.CHtml.#' . $id, "$('body').on('$event','#$id',function(){{$handler}});");
 		else
-			$cs->registerScript('Yii.CHtml.#'.$id,"jQuery('#$id').unbind('$event').bind('$event', function(){{$handler}});");
+			$cs->registerScript('Yii.CHtml.#' . $id, "$('#$id').on('$event', function(){{$handler}});");
 		unset($htmlOptions['params'],$htmlOptions['submit'],$htmlOptions['ajax'],$htmlOptions['confirm'],$htmlOptions['return'],$htmlOptions['csrf']);
 	}
 
@@ -2004,7 +1986,6 @@ EOD;
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
 	 * @return string the input name
-	 * @since 1.0.2
 	 */
 	public static function resolveName($model,&$attribute)
 	{
@@ -2082,7 +2063,6 @@ EOD;
 	 * properly based on their corresponding boolean value.
 	 * @param array $htmlOptions attributes to be rendered
 	 * @return string the rendering result
-	 * @since 1.0.5
 	 */
 	public static function renderAttributes($htmlOptions)
 	{

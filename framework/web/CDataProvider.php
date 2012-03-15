@@ -5,8 +5,17 @@
  * Derived classes mainly need to implement three methods: {@link fetchData},
  * {@link fetchKeys} and {@link calculateTotalItemCount}.
  *
+ * @property string $id The unique ID that uniquely identifies the data provider among all data providers.
+ * @property CPagination $pagination The pagination object. If this is false, it means the pagination is disabled.
+ * @property CSort $sort The sorting object. If this is false, it means the sorting is disabled.
+ * @property array $data The list of data items currently available in this data provider.
+ * @property array $keys The list of key values corresponding to {@link data}. Each data item in {@link data}
+ * is uniquely identified by the corresponding key value in this array.
+ * @property integer $itemCount The number of data items in the current page.
+ * @property integer $totalItemCount Total number of possible data items.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDataProvider.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CDataProvider.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web
  * @since 1.1
  */

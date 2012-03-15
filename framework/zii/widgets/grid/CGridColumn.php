@@ -18,8 +18,11 @@
  * Child classes may override {@link renderHeaderCellContent}, {@link renderDataCellContent}
  * and {@link renderFooterCellContent} to customize how these cells are rendered.
  *
+ * @property boolean $hasFooter Whether this column has a footer cell.
+ * This is determined based on whether {@link footer} is set.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridColumn.php 3041 2011-03-11 20:29:55Z qiang.xue $
+ * @version $Id: CGridColumn.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package zii.widgets.grid
  * @since 1.1
  */

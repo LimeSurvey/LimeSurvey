@@ -21,7 +21,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * value will be used by {@link CSort} to render a clickable link in the header cell to trigger the sorting.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDataColumn.php 3252 2011-06-10 07:38:47Z mdomba $
+ * @version $Id: CDataColumn.php 3448 2011-11-18 10:21:42Z mdomba $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -31,6 +31,12 @@ class CDataColumn extends CGridColumn
 	 * @var string the attribute name of the data model. The corresponding attribute value will be rendered
 	 * in each data cell. If {@link value} is specified, this property will be ignored
 	 * unless the column needs to be sortable or filtered.
+	 * @see value
+	 * @see sortable
+	 */
+	/**
+	 * @var string the attribute name of the data model. Used for column sorting, filtering and to render the corresponding
+	 * attribute value in each data cell. If {@link value} is specified it will be used to rendered the data cell instead of the attribute value.
 	 * @see value
 	 * @see sortable
 	 */
@@ -59,7 +65,7 @@ class CDataColumn extends CGridColumn
 	/**
 	 * @var mixed the HTML code representing a filter input (eg a text field, a dropdown list)
 	 * that is used for this data column. This property is effective only when
-	 * {@link CGridView::enableFiltering} is set true.
+	 * {@link CGridView::filter} is set.
 	 * If this property is not set, a text field will be generated as the filter input;
 	 * If this property is an array, a dropdown list will be generated that uses this property value as
 	 * the list options.

@@ -28,7 +28,6 @@
  *   // if not specified, rule applies to all actions
  *   'actions'=>array('edit', 'delete'),
  *   // optional, list of controller IDs (case insensitive) that this rule applies to
- *   // This option is available since version 1.0.3.
  *   'controllers'=>array('post', 'admin/user'),
  *   // optional, list of usernames (case insensitive) that this rule applies to
  *   // Use * to represent all users, ? guest users, and @ authenticated users
@@ -41,7 +40,6 @@
  *   // optional, list of request types (case insensitive) that this rule applies to
  *   'verbs'=>array('GET', 'POST'),
  *   // optional, a PHP expression whose value indicates whether this rule applies
- *   // This option is available since version 1.0.3.
  *   'expression'=>'!$user->isGuest && $user->level==2',
  *   // optional, the customized error message to be displayed
  *   // This option is available since version 1.1.1.
@@ -49,8 +47,10 @@
  * )
  * </pre>
  *
+ * @property array $rules List of access rules.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 3257 2011-06-13 16:10:18Z alexander.makarow $
+ * @version $Id: CAccessControlFilter.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.auth
  * @since 1.0
  */
@@ -148,7 +148,6 @@ class CAccessControlFilter extends CFilter
 	 * This method is invoked when access check fails.
 	 * @param IWebUser $user the current user
 	 * @param string $message the error message to be displayed
-	 * @since 1.0.5
 	 */
 	protected function accessDenied($user,$message)
 	{
@@ -164,7 +163,7 @@ class CAccessControlFilter extends CFilter
  * CAccessRule represents an access rule that is managed by {@link CAccessControlFilter}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAccessControlFilter.php 3257 2011-06-13 16:10:18Z alexander.makarow $
+ * @version $Id: CAccessControlFilter.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.auth
  * @since 1.0
  */
@@ -181,7 +180,6 @@ class CAccessRule extends CComponent
 	public $actions;
 	/**
 	 * @var array list of controler IDs that this rule applies to. The comparison is case-insensitive.
-	 * @since 1.0.4
 	 */
 	public $controllers;
 	/**
@@ -209,14 +207,13 @@ class CAccessRule extends CComponent
 	/**
 	 * @var string a PHP expression whose value indicates whether this rule should be applied.
 	 * In this expression, you can use <code>$user</code> which refers to <code>Yii::app()->user</code>.
-	 * Starting from version 1.0.11, the expression can also be a valid PHP callback,
+	 * The expression can also be a valid PHP callback,
 	 * including class method name (array(ClassName/Object, MethodName)),
 	 * or anonymous function (PHP 5.3.0+). The function/method signature should be as follows:
 	 * <pre>
 	 * function foo($user, $rule) { ... }
 	 * </pre>
 	 * where $user is the current application user object and $rule is this access rule.
-	 * @since 1.0.3
 	 */
 	public $expression;
 	/**
@@ -334,7 +331,6 @@ class CAccessRule extends CComponent
 	/**
 	 * @param IWebUser $user the user
 	 * @return boolean the expression value. True if the expression is not specified.
-	 * @since 1.0.3
 	 */
 	protected function isExpressionMatched($user)
 	{
