@@ -132,11 +132,11 @@ class PrintanswersController extends LSYii_Controller {
         $printoutput = '';
         if(Yii::app()->getConfig('usepdfexport') == 1)
         {
-            $printoutput .= "<form action='".Yii::app()->getController()->createUrl('printanswers/view/'.$surveyid.'/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+            $printoutput .= "<form action='".Yii::app()->getController()->createUrl('printanswers/view/surveyid/'.$surveyid.'/printableexport/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
         }
         if($printableexport == 'pdf')
         {
-            require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf_config_ci.php');
+            require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
             Yii::import('application.libraries.admin.pdf', true);
             $pdf = new pdf();
             $pdf->_config = $tcpdf;
