@@ -57,7 +57,7 @@ elseif (strtolower($sExtension)=='lsl')
     $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('$scriptname?action=labels', '_top')\" />\n";
     $importlabeloutput .= "</div><br />\n";
 }
-unlink($sFullFilepath);  
+unlink($sFullFilepath);
 
 if (isset($aImportResults))
 {
@@ -67,7 +67,7 @@ if (isset($aImportResults))
         foreach ($aImportResults['warnings'] as $warning)
         {
             $importlabeloutput .= '<li>'.$warning.'</li>';
-        } 
+        }
         $importlabeloutput .= "</ul>\n";
     }
 
@@ -168,7 +168,7 @@ function CSVImportLabelset($sFullFilepath, $options)
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
             $lsiresult=$connect->Execute($lsainsert);
-            $results['labelsets']++;            
+            $results['labelsets']++;
 
             // Get the new insert id for the labels inside this labelset
             $newlid=$connect->Insert_ID("{$dbprefix}labelsets",'lid');
@@ -183,7 +183,7 @@ function CSVImportLabelset($sFullFilepath, $options)
                     // Combine into one array with keys and values since its easier to handle
                     $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                     $labellid=$labelrowdata['lid'];
-                     
+
                     if ($labellid == $oldlid) {
                         $labelrowdata['lid']=$newlid;
 
@@ -241,7 +241,7 @@ function CSVImportLabelset($sFullFilepath, $options)
                     $result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
                     $newlid=$lsmatch;
                     $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
-                     
+
                 }
                 //END CHECK FOR DUPLICATES
             }
@@ -255,23 +255,23 @@ function CSVImportLabelset($sFullFilepath, $options)
 function XMLImportLabelsets($sFullFilepath, $options)
 {
     global $connect, $dbprefix, $clang;
-    
-    $xml = simplexml_load_file($sFullFilepath);    
+
+    $xml = simplexml_load_file($sFullFilepath);
     if ($xml->LimeSurveyDocType!='Label set') safe_die('This is not a valid LimeSurvey label set structure XML file.');
     $dbversion = (int) $xml->DBVersion;
     $csarray=buildLabelSetCheckSumArray();
-    $aLSIDReplacements=array();     
+    $aLSIDReplacements=array();
     $results['labelsets']=0;
     $results['labels']=0;
     $results['warnings']=array();
-   
-                           
+
+
     // Import labels table ===================================================================================
 
     $tablename=$dbprefix.'labelsets';
     foreach ($xml->labelsets->rows->row as $row)
     {
-       $insertdata=array(); 
+       $insertdata=array();
         foreach ($row as $key=>$value)
         {
             $insertdata[(string)$key]=(string)$value;
@@ -279,32 +279,33 @@ function XMLImportLabelsets($sFullFilepath, $options)
         $oldlsid=$insertdata['lid'];
         unset($insertdata['lid']); // save the old qid
 
-        // Insert the new question    
-        $query=$connect->GetInsertSQL($tablename,$insertdata); 
+        // Insert the new question
+        $query=$connect->GetInsertSQL($tablename,$insertdata);
         $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
         $results['labelsets']++;
 
         $newlsid=$connect->Insert_ID($tablename,"lid"); // save this for later
         $aLSIDReplacements[$oldlsid]=$newlsid; // add old and new lsid to the mapping array
     }
-                           
-                                                                                      
+
+
     // Import labels table ===================================================================================
 
     $tablename=$dbprefix.'labels';
+    if (isset($xml->labels->rows->row))
     foreach ($xml->labels->rows->row as $row)
     {
-       $insertdata=array(); 
+       $insertdata=array();
         foreach ($row as $key=>$value)
         {
             $insertdata[(string)$key]=(string)$value;
         }
         $insertdata['lid']=$aLSIDReplacements[$insertdata['lid']];
-        $query=$connect->GetInsertSQL($tablename,$insertdata); 
+        $query=$connect->GetInsertSQL($tablename,$insertdata);
         $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
         $results['labels']++;
     }
-    
+
     //CHECK FOR DUPLICATE LABELSETS
 
     if (isset($_POST['checkforduplicates']))
@@ -346,11 +347,11 @@ function XMLImportLabelsets($sFullFilepath, $options)
                 $results['labelsets']--;
                 $newlid=$lsmatch;
                 $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
-                 
+
             }
         }
         //END CHECK FOR DUPLICATES
-    }    
+    }
     return $results;
 }
 
