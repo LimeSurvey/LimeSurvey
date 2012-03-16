@@ -175,7 +175,7 @@ a:link,a:visited {
 }
 
 .printouttable .printanswersgroup td{
-  text-align: center;        
+  text-align: center;
   font-weight:bold;
   padding-top:1em;
 }
@@ -197,7 +197,7 @@ a:link,a:visited {
 
 /* Format the language changer combobox on the public homepage */
 .languagechanger {
-  
+
 }
 
 /* Basic formatting for the four keyparts of an question */
@@ -470,8 +470,8 @@ table.clearall-result td {
 .register-table td {
 	text-align: center;
 }
-
-.register-message-1 {
+                     
+.register-message-1, strong {
 	font-weight: bold;
 }
 
@@ -607,13 +607,13 @@ table.clearall-result td {
 ,.array-5-pt
 ,.array-10-pt
 ,.array-yes-uncertain-no
-,.array-increase-same-decrease 
-,.array-flexible-row 
-,.array-flexible-column 
-,.slider 
-,.array-multi-flexi 
+,.array-increase-same-decrease
+,.array-flexible-row
+,.array-flexible-column
+,.slider
+,.array-multi-flexi
 ,.array-multi-flexi-text
-,.array-flexible-duel-scale 
+,.array-flexible-duel-scale
 */ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .answer ul,.list-radio-flexible .answer ul,.list-radio .answer ul,.list-with-comment .answer ul,.multiple-opt .answer ul,.multiple-opt-comments .answer ul,.multiple-short-txt .answer ul,.numeric-multi .answer ul,.yes-no .answer ul,.gender .answer ul
@@ -659,15 +659,15 @@ table.clearall-result td {
 }
 
 .date p.question select.day {
-  
+
 }
 
 .date p.question select.month {
-  
+
 }
 
 .date p.question select.year {
-  
+
 }
 
 .date p.tip,.numeric-multi p.tip,.numeric p.tip {
@@ -682,7 +682,7 @@ table.clearall-result td {
 }
 
 .numeric-multi ul {
-  
+
 }
 
 .numeric-multi span,.multiple-short-txt .question .answer ul li span {
@@ -809,7 +809,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 .multiple-opt
 */
 .language {
-  
+
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -898,7 +898,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 }
 
 .numeric-multi li.multiplenumerichelp span input {
-  
+
 }
 
 .text-short input,.text-short textarea,.text-long textarea,.text-huge textarea
@@ -1184,7 +1184,7 @@ td.rank label,td.rank td strong {
 }
 
 #tokenform input {
-  
+
 }
 
 #tokenform label {
@@ -1304,7 +1304,7 @@ div.questionTitle {
   border-left: 1px solid #ccc;
 }
 
-#index h2 { 
+#index h2 {
   padding: 1em;
   background: #eef6ff;
   text-align: center;
