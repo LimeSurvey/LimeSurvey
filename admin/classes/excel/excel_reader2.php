@@ -582,6 +582,36 @@ class Spreadsheet_Excel_Reader {
 		return $this->fontProperty($row,$col,$sheet,'font');
 	}
 
+
+    /**
+     * Create a sparse, named array from the contents of the spreadsheet
+     * @param type $sheet
+     * @return type
+     */
+    function dumptonamedarray($sheet=0) {
+        $arr = array();
+        $colnames = array();
+
+        for($col=1;$col<=$this->colcount($sheet);$col++)
+        {
+            $colnames[$col] = $this->val(1,$col,$sheet);
+        }
+
+        for($row=2;$row<=$this->rowcount($sheet);$row++)
+        {
+            for($col=1;$col<=$this->colcount($sheet);$col++)
+            {
+                $val = $this->val($row,$col,$sheet);
+                if ($val != '')
+                {
+                    $arr[$row-1][$colnames[$col]] = $val;
+                }
+            }
+        }
+
+        return $arr;
+    }
+
 	// DUMP AN HTML TABLE OF THE ENTIRE XLS DATA
 	// =========================================
 	function dump($row_numbers=false,$col_letters=false,$sheet=0,$table_class='excel') {
