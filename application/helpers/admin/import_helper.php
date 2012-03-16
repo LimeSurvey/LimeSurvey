@@ -2169,6 +2169,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
     // Import labels table ===================================================================================
 
 
+    if (isset($xml->labels->rows->row))
     foreach ($xml->labels->rows->row as $row)
     {
         $insertdata=array();
