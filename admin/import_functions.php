@@ -1613,3 +1613,221 @@ function GetNewSurveyID($oldsid)
         return $oldsid;
     }
 }
+
+require_once './classes/excel/excel_reader2.php';
+
+/**
+ * Import survey from an Excel file template that does not require or allow assigning of GID or QID values.
+ * NOTE:  This currently only supports import of one language
+ * @global type $connect
+ * @global type $dbprefix
+ * @global type $clang
+ * @global type $timeadjust
+ * @param type $sFullFilepath
+ * @return type
+ */
+function ExcelImportSurvey($sFullFilepath)
+{
+    global $connect, $dbprefix, $clang, $timeadjust;
+
+    $insertdata=array();
+    $results=array();
+    $results['error']=false;
+    $lang = 'en';   // TODO set proper default
+
+    try {
+        $data = new Spreadsheet_Excel_Reader($sFullFilepath);
+        $adata = $data->dumptonamedarray();
+
+        $results['defaultvalues']=0;
+        $results['answers']=0;
+        $results['surveys']=0;
+        $results['languages']=0;
+        $results['questions']=0;
+        $results['subquestions']=0;
+        $results['question_attributes']=0;
+        $results['groups']=0;
+        $results['importwarnings']=array();
+        // these aren't used here, but are needed to avoid errors in post-import display
+        $results['assessments']=0;
+        $results['quota']=0;
+        $results['quotamembers']=0;
+        $results['quotals']=0;
+
+        // Create the survey entry
+        $tablename=$dbprefix.'surveys';
+        $newsid=GetNewSurveyID(1);
+        $insertdata['startdate']=NULL;
+        $insertdata['sid']=$newsid;
+        $insertdata['active']='N';
+        $insertdata['owner_id']=$_SESSION['loginID'];
+        $insertdata['language'] = $lang;
+        $insertdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));
+
+        db_switchIDInsert('surveys',true);
+        $query=$connect->GetInsertSQL($tablename,$insertdata);
+        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+        $results['surveys']++;
+        db_switchIDInsert('surveys',false);
+        $results['newsid']=$newsid;
+
+        $gid=0;
+        $gseq=0;    // group_order
+        $qid=0;
+        $qseq=0;    // question_order
+        $qtype='T';
+        $aseq=0;    // answer sortorder
+
+        // set the language for the survey
+        $insertdata = array();
+        $insertdata['surveyls_survey_id'] = $newsid;
+        $insertdata['surveyls_language'] = $lang;
+        $insertdata['surveyls_title'] = 'Imported from ' . $sFullFilepath;
+
+        $tablename=$dbprefix.'surveys_languagesettings';
+        $query=$connect->GetInsertSQL($tablename,$insertdata);
+        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+        $results['languages']++;
+
+
+        foreach ($adata as $row)
+        {
+            $insertdata = array();
+            switch($row['class'])
+            {
+                case 'G':
+                    // insert group
+                    $insertdata['sid'] = $newsid;
+                    $insertdata['group_name'] = ((isset($row['name']) ? $row['name'] : 'G' . $gseq));
+                    $insertdata['grelevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                    $insertdata['description'] = (isset($row['text']) ? $row['text'] : '');
+                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $lang);
+                    $insertdata['group_order'] = $gseq++;
+
+                    $tablename=$dbprefix.'groups';
+                    $query=$connect->GetInsertSQL($tablename,$insertdata);
+                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                    $results['groups']++;
+                    $gid=$connect->Insert_ID($tablename,"gid"); // save this for later
+
+                    $qseq=0;    // reset the question_order
+                    break;
+                case 'Q':
+                    // insert question
+                    $insertdata['sid'] = $newsid;
+                    $qtype = (isset($row['type/scale']) ? $row['type/scale'] : 'T');
+                    $insertdata['gid'] = $gid;
+                    $insertdata['type'] = $qtype;
+                    $insertdata['title'] = (isset($row['name']) ? $row['name'] : 'Q' . $qseq);
+                    $insertdata['question'] = (isset($row['text']) ? $row['text'] : '');
+                    $insertdata['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                    $insertdata['preg'] = (isset($row['validation']) ? $row['validation'] : '');
+                    $insertdata['help'] = (isset($row['help']) ? $row['help'] : '');
+                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $lang);
+                    $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
+                    $insertdata['other'] = (isset($row['other']) ? $row['other'] : 'N');
+                    $insertdata['same_default'] = (isset($row['default']) ? $row['default'] : 0);
+                    $insertdata['question_order'] = $qseq++;
+
+                    $tablename=$dbprefix.'questions';
+                    $query=$connect->GetInsertSQL($tablename,$insertdata);
+                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                    $results['questions']++;
+                    $qid=$connect->Insert_ID($tablename,"qid"); // save this for later
+
+                    $aseq=0;    //reset the answer sortorder
+
+                    // insert question attributes
+                    $insertdata = array();
+                    $insertdata['qid'] = $qid;
+                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $lang);
+                    $tablename=$dbprefix.'question_attributes';
+                    foreach ($row as $key=>$val)
+                    {
+                        switch($key)
+                        {
+                            case 'class':
+                            case 'type/scale':
+                            case 'name':
+                            case 'text':
+                            case 'validation':
+                            case 'relevance':
+                            case 'help':
+                            case 'language':
+                            case 'mandatory':
+                            case 'other':
+                            case 'same_default':
+                            case 'default':
+                                break;
+                            default:
+                                if ($key != '' && $val != '')
+                                {
+                                    $insertdata['attribute'] = $key;
+                                    $insertdata['value'] = $val;
+                                    $query=$connect->GetInsertSQL($tablename,$insertdata);
+                                    $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                                    $results['question_attributes']++;
+                                }
+                                break;
+                        }
+                    }
+
+                    // insert default value
+                    if (isset($row['default']))
+                    {
+                        $tablename=$dbprefix.'question_attributes';
+                        $insertdata=array();
+                        $insertdata['qid'] = $qid;
+                        $insertdata['language'] = (isset($row['language']) ? $row['language'] : $lang);
+                        $insertdata['defaultvalue'] = $row['default'];
+                        $query=$connect->GetInsertSQL($tablename,$insertdata);
+                        $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                        $results['defaultvalues']++;
+                    }
+                    break;
+                case 'SQ':
+                    $insertdata['sid'] = $newsid;
+                    $insertdata['gid'] = $gid;
+                    $insertdata['parent_qid'] = $qid;
+                    $insertdata['type'] = $qtype;
+                    $insertdata['title'] = (isset($row['name']) ? $row['name'] : 'Q' . $qseq);
+                    $insertdata['question'] = (isset($row['text']) ? $row['text'] : '');
+                    $insertdata['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                    $insertdata['preg'] = (isset($row['validation']) ? $row['validation'] : '');
+                    $insertdata['help'] = (isset($row['help']) ? $row['help'] : '');
+                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $lang);
+                    $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
+                    $insertdata['other'] = (isset($row['other']) ? $row['other'] : 'N');
+                    $insertdata['same_default'] = (isset($row['default']) ? $row['default'] : 0);
+                    $insertdata['question_order'] = $qseq++;
+                    $insertdata['scale_id'] = (isset($row['type/scale']) ? $row['type/scale'] : 0);
+
+                    $tablename=$dbprefix.'questions';
+                    $query=$connect->GetInsertSQL($tablename,$insertdata);
+                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                    $results['questions']++;
+                    break;
+                case 'A':
+                    $insertdata['qid'] = $qid;
+                    $insertdata['code'] = (isset($row['name']) ? $row['name'] : 'A' . $aseq);
+                    $insertdata['answer'] = (isset($row['text']) ? $row['text'] : '');
+                    $insertdata['scale_id'] = (isset($row['type/scale']) ? $row['type/scale'] : 0);
+                    $insertdata['language']= (isset($row['language']) ? $row['language'] : $lang);
+                    $insertdata['assessment_value'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                    $insertdata['sortorder'] = ++$aseq;
+
+                    $tablename=$dbprefix.'answers';
+                    $query=$connect->GetInsertSQL($tablename,$insertdata);
+                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                    $results['questions']++;
+                    break;
+            }
+
+        }
+    }
+    catch (Exception $e) {
+        $results['error'] = $e->getMessage();
+    }
+    return $results;
+}
+?>
