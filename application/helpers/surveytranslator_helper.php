@@ -645,7 +645,7 @@
         }
         else
         {
-            $dateformat = $data->read();
+            $dateformat = (int) $data;
         }
         return (int) $dateformat;
     }

@@ -309,20 +309,23 @@ function isStandardTemplate($sTemplateName)
 */
 function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=false)
 {
-    static $cached = null;
+    $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
     $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
 
     if(is_null($cached)) {
         if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN'))
-            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with('languagesettings')->findAll();
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
         else
-            $surveyidresult = Survey::model()->with('languagesettings')->findAll();
+            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll();
 
         $surveynames = array();
         foreach ($surveyidresult as $result)
-            $surveynames[] = array_merge($result->attributes, $result->languagesettings->attributes);
+        {
+            $surveynames[] = array_merge($result->attributes, $result->languagesettings[0]->attributes);
+
+        }
 
         $cached = $surveynames;
     } else {
@@ -1866,6 +1869,16 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
                 ;
         } // switch
     }
+    switch($fieldcode)
+    {
+        case 'submitdate':
+            if (trim($value)!='')
+            {
+                $dateformatdetails = getDateFormatDataForQID(array('date_format'=>''), $surveyid);
+                $value=convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate'].' H:i:s');
+            }
+            break;
+    }
     if (isset($this_answer))
     {
         if ($format != 'INSERTANS')
@@ -2244,7 +2257,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap["startdate"]['question']=$clang->gT("Date started");
             $fieldmap["startdate"]['group_name']="";
         }
-        
+
         $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
         'type'=>"datestamp",
         'sid'=>$surveyid,

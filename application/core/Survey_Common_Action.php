@@ -431,9 +431,9 @@ class Survey_Common_Action extends CAction
         . "<div class='menubar-title ui-widget-header'>\n";
 
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$iSurveyId"; //Getting data for this survey
-        $sumresult1 = Survey::model()->with('languagesettings')->findByPk($iSurveyId); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyId); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $aData['activated'] = $activated = $surveyinfo['active'];
@@ -487,13 +487,13 @@ class Survey_Common_Action extends CAction
         $condition = array('sid' => $iSurveyId, 'language' => $baselang);
 
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$iSurveyId"; //Getting data for this survey
-        $sumresult1 = Survey::model()->with('languagesettings')->findByPk($iSurveyId); //$sumquery1, 1) ; //Checked
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyId); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
             die('Invalid survey id');
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = ($surveyinfo['active'] == 'Y');
@@ -629,13 +629,13 @@ class Survey_Common_Action extends CAction
         $baselang = Survey::model()->findByPk($iSurveyId)->language;
         $condition = array('sid' => $iSurveyId, 'language' => $baselang);
 
-        $sumresult1 = Survey::model()->with('languagesettings')->findByPk($iSurveyId); //$sumquery1, 1) ; //Checked
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyId); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
             die('Invalid survey id');
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = $surveyinfo['active'];

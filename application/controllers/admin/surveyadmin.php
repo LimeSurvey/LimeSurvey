@@ -489,13 +489,13 @@ class SurveyAdmin extends Survey_Common_Action
         //!!! Is this even possible to execute?
         if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
             $surveys->permission(Yii::app()->user->getId());
-        $surveys = $surveys->with('languagesettings', 'owner')->findAll();
+        $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
         foreach ($surveys as $rows)
         {
             $aSurveyEntry = array();
-            $rows = array_merge($rows->attributes, $rows->languagesettings->attributes, $rows->owner->attributes);
+            $rows = array_merge($rows->attributes, $rows->languagesettings[0]->attributes, $rows->owner->attributes);
 
             // Set status
             if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
