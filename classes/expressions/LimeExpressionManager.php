@@ -6958,6 +6958,13 @@ EOD;
             );
         }
 
+        /**
+         * Export survey definition in format readable by ExcelSurveyImport
+         * one line each per group, question, sub-question, and answer
+         * does not use SGQA naming at all.
+         * @param type $sid
+         * @return type
+         */
         static public function ExcelSurveyExport($sid)
         {
             $LEM =& LimeExpressionManager::singleton();
