@@ -1,17 +1,17 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
 
 /**
@@ -2170,18 +2170,18 @@ function XMLImportLabelsets($sFullFilepath, $options)
 
 
     if (isset($xml->labels->rows->row))
-    foreach ($xml->labels->rows->row as $row)
-    {
-        $insertdata=array();
-        foreach ($row as $key=>$value)
+        foreach ($xml->labels->rows->row as $row)
         {
-            $insertdata[(string)$key]=(string)$value;
-        }
-        $insertdata['lid']=$aLSIDReplacements[$insertdata['lid']];
-        if ($xssfilter)
-            XSSFilterArray($insertdata);
-        $result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
-        $results['labels']++;
+            $insertdata=array();
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['lid']=$aLSIDReplacements[$insertdata['lid']];
+            if ($xssfilter)
+                XSSFilterArray($insertdata);
+            $result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
+            $results['labels']++;
     }
 
     //CHECK FOR DUPLICATE LABELSETS
