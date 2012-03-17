@@ -511,7 +511,7 @@ for ($i=0; $i<$fieldcount; $i++)
                 if (isset($faid)) {$fquest .= " [{$faid}]";}
                 if (isset($fielddata['scale_id'])) $fquest = $fquest."[{$fielddata['scale_id']}]";
                 break;
-            case 'headfull': // Full question text
+            default: // Full question text
                 $fquest=$fielddata['question'];
                 if (isset($fielddata['scale_id'])) $fquest = "[{$fielddata['scale_id']}] ". $fquest;
                 if (isset($fielddata['subquestion'])) $fquest = "[{$fielddata['subquestion']}] ". $fquest;
@@ -520,13 +520,14 @@ for ($i=0; $i<$fieldcount; $i++)
                 $fquest=FlattenText($fquest,true);
                 break;
         }
-        if ($type == "csv") {$fquest .= "\"$fquest\"";}
+         if($convertspacetous == "Y")
+        {
+            $fquest=str_replace(" ", "_", $fquest);
+        }
+        if ($type == "csv") {$fquest = "\"$fquest\"";}
         $firstline .= $fquest.$separator;
 
-        if($convertspacetous == "Y")
-        {
-            $firstline=str_replace(" ", "_", $firstline);
-        }
+
     }
 }
 
