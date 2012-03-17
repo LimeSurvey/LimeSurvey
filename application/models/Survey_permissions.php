@@ -191,7 +191,7 @@ class Survey_permissions extends CActiveRecord
 
 		foreach ($condition as $item => $value)
 		{
-			$criteria->addCondition($item.'="'.$value.'"');
+			$criteria->addCondition($item."='".$value."'");
 		}
 
 		$this->deleteAll($criteria);

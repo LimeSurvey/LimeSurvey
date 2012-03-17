@@ -308,7 +308,7 @@ class database extends Survey_Common_Action
 
 
             //$insertqids=array(); //?
-            $insertqid =array(); 
+            $insertqid =array();
             for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
             {
                 foreach ($anslangs as $language)
@@ -432,7 +432,7 @@ class database extends Survey_Common_Action
 
                 // Checked
                 // Get the last inserted questionid for other languages
-                $qid=Yii::app()->db->getLastInsertID();
+                $qid=$question->qid;
 
                 // Add other languages
                 if ($result)
