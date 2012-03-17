@@ -7096,6 +7096,43 @@ EOD;
 
             $rows = array();
 
+            // Export survey-level information
+            $query = "select * from " . db_table_name("surveys") . " where sid = " . $sid;
+            $data = db_execute_assoc($query);
+            foreach ($data->GetRows() as $r)
+            {
+                foreach ($r as $key=>$value)
+                {
+                    if ($value != '')
+                    {
+                        $row['class'] = 'S';
+                        $row['name'] = $key;
+                        $row['text'] = $value;
+                        $rows[] = $row;
+                    }
+                }
+            }
+
+            // Export survey language settings
+            $query = "select * from " . db_table_name("surveys_languagesettings") . " where surveyls_survey_id = " . $sid;
+            $data = db_execute_assoc($query);
+            foreach ($data->GetRows() as $r)
+            {
+                $_lang = $r['surveyls_language'];
+                foreach ($r as $key=>$value)
+                {
+                    if ($value != '' && $key != 'surveyls_language' && $key != 'surveyls_survey_id')
+                    {
+                        $row['class'] = 'SL';
+                        $row['name'] = $key;
+                        $row['text'] = $value;
+                        $row['language'] = $_lang;
+                        $rows[] = $row;
+                    }
+                }
+            }
+
+
             $_gseq=-1;
             foreach ($LEM->currentQset as $q) {
                 $gseq = $q['info']['gseq'];

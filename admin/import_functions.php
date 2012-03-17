@@ -1654,18 +1654,44 @@ function ExcelImportSurvey($sFullFilepath)
         $results['quotamembers']=0;
         $results['quotals']=0;
 
+        // collect information about survey and its language settings
+        $surveyinfo = array();
+        $surveyls = array();
+        foreach ($adata as $row)
+        {
+            switch($row['class'])
+            {
+                case 'S':
+                    if (isset($row['text']))
+                    {
+                        $surveyinfo[$row['name']] = $row['text'];
+                    }
+                    break;
+                case 'SL':
+                    if (!isset($surveyls[$row['language']]))
+                    {
+                        $surveyls[$row['language']] = array();
+                    }
+                    if (isset($row['text']))
+                    {
+                        $surveyls[$row['language']][$row['name']] = $row['text'];
+                    }
+                    break;
+            }
+        }
+
+
         // Create the survey entry
         $tablename=$dbprefix.'surveys';
         $newsid=GetNewSurveyID(1);
-        $insertdata['startdate']=NULL;
-        $insertdata['sid']=$newsid;
-        $insertdata['active']='N';
-        $insertdata['owner_id']=$_SESSION['loginID'];
-        $insertdata['language'] = $lang;
-        $insertdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));
+        $surveyinfo['startdate']=NULL;
+        $surveyinfo['sid']=$newsid;
+        $surveyinfo['active']='N';
+        $surveyinfo['owner_id']=$_SESSION['loginID'];
+        $surveyinfo['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));
 
         db_switchIDInsert('surveys',true);
-        $query=$connect->GetInsertSQL($tablename,$insertdata);
+        $query=$connect->GetInsertSQL($tablename,$surveyinfo);
         $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
         $results['surveys']++;
         db_switchIDInsert('surveys',false);
@@ -1679,16 +1705,16 @@ function ExcelImportSurvey($sFullFilepath)
         $aseq=0;    // answer sortorder
 
         // set the language for the survey
-        $insertdata = array();
-        $insertdata['surveyls_survey_id'] = $newsid;
-        $insertdata['surveyls_language'] = $lang;
-        $insertdata['surveyls_title'] = 'Imported from ' . $sFullFilepath;
+        foreach ($surveyls as $_lang => $insertdata)
+        {
+            $insertdata['surveyls_survey_id'] = $newsid;
+            $insertdata['surveyls_language'] = $_lang;
 
-        $tablename=$dbprefix.'surveys_languagesettings';
-        $query=$connect->GetInsertSQL($tablename,$insertdata);
-        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
-        $results['languages']++;
-
+            $tablename=$dbprefix.'surveys_languagesettings';
+            $query=$connect->GetInsertSQL($tablename,$insertdata);
+            $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            $results['languages']++;
+        }
 
         foreach ($adata as $row)
         {
