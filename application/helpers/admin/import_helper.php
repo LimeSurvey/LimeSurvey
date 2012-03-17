@@ -3509,13 +3509,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 switchMSSQLIdentityInsert('groups',true);
                 $insertdata['gid']=$aGIDReplacements[$oldgid];
             }
-            $result = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $newgid = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
             $results['groups']++;
 
             if (!isset($aGIDReplacements[$oldgid]))
             {
-                $newgid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-                $newgid=$newgid['LAST_INSERT_ID()'];
                 $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
             }
             else
@@ -3560,11 +3558,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($xssfilter)
                 XSSFilterArray($insertdata);
-            $result = Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $newqid = Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
             if (!isset($aQIDReplacements[$oldqid]))
             {
-                $newqid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-                $aQIDReplacements[$oldqid]=$newqid['LAST_INSERT_ID()'];
+                $aQIDReplacements[$oldqid]=$newqid;
                 $results['questions']++;
             }
             else
@@ -3603,9 +3600,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($xssfilter)
                 XSSFilterArray($insertdata);
-            $result =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
-            $newsqid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-            $newsqid=$newsqid['LAST_INSERT_ID()'];
+            $newsqid =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array

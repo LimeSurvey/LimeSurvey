@@ -1836,7 +1836,7 @@
     // first find all groups and their groups IDS
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
-    $criteria->addCondition('randomization_group != ""');
+    $criteria->addCondition("randomization_group != ''");
     $oData = Groups::model()->findAll($criteria);
     foreach($oData as $aGroup)
     {
@@ -2045,14 +2045,14 @@
     }
 
     // Defaults need to be set within Expression Manager so that it can process defaults comprised of equations
-//    // Prefill question/answer from defaultvalues
-//    foreach ($fieldmap as $field)
-//    {
-//        if (isset($field['defaultvalue']))
-//        {
-//            $_SESSION['survey_'.$surveyid][$field['fieldname']]=$field['defaultvalue'];
-//        }
-//    }
+    //    // Prefill question/answer from defaultvalues
+    //    foreach ($fieldmap as $field)
+    //    {
+    //        if (isset($field['defaultvalue']))
+    //        {
+    //            $_SESSION['survey_'.$surveyid][$field['fieldname']]=$field['defaultvalue'];
+    //        }
+    //    }
     // Prefill questions/answers from command line params
     $startingValues=array();
     if (isset($_SESSION['survey_'.$surveyid]['insertarray']))
@@ -2094,9 +2094,9 @@
                 {
                     $_SESSION['survey_'.$surveyid][$field] = $value;
                     $startingValues[$field] = array (
-                        'type'=>$type,
-                        'value'=>$value,
-                        );
+                    'type'=>$type,
+                    'value'=>$value,
+                    );
                 }
             }
         }
