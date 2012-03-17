@@ -282,13 +282,15 @@ switch ( $_POST["type"] ) {
         $workbook->send('results-survey'.$surveyid.'.xls');
         // Creating the first worksheet
 
-        $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=".$surveyid;
+        $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id={$surveyid} AND surveyls_language='{$surveybaselang}'" ;
         $result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
         $row = $result->FetchRow();
 
         $row['surveyls_title']=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$row['surveyls_title']),0,31); // Remove invalid characters
-        $sheet =& $workbook->addWorksheet($row['surveyls_title']); // do not translate/change this - the library does not support any special chars in sheet name
+        $sheet =& $workbook->addWorksheet(); // do not translate/change this - the library does not support any special chars in sheet name
+//        $row['surveyls_title']
         $sheet->setInputEncoding('utf-8');
+        $sheet->name=$row['surveyls_title'] ;
         $separator="~|";
         break;
     case "csv":
