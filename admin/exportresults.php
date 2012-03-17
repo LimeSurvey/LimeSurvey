@@ -303,7 +303,7 @@ switch ( $_POST["type"] ) {
         $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
         $pdf->AddPage();
         $pdf->intopdf("PDF Export ".date("Y.m.d-H:i",time()));
-        $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=".$surveyid;
+        $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id={$surveyid}  AND surveyls_language='{$surveybaselang}'" ;
         $result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
         while ($row = $result->FetchRow())
         {
