@@ -7243,7 +7243,7 @@ EOD;
 
                     $row = array();
                     $row['class'] = 'SQ';
-                    $row['type/scale'] = $type; // TODO - shouldn't this be the scale?
+                    $row['type/scale'] = 0; 
                     $row['name'] = substr($varName,strlen($rootVarName)+1);
                     $row['text'] = $subqText;
                     $row['language'] = $lang;
@@ -7274,7 +7274,14 @@ EOD;
                         }
 
                         $row = array();
-                        $row['class'] = 'A';
+                        if ($type == ':' || $type == ';')
+                        {
+                            $row['class'] = 'SQ';
+                        }
+                        else
+                        {
+                            $row['class'] = 'A';
+                        }
                         $row['type/scale'] = $_scale;
                         $row['name'] = $ansInfo[1];
                         $row['relevance'] = $valInfo[0];    // TODO - true? - what if it isn't an assessment value?
