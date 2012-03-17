@@ -489,57 +489,47 @@ for ($i=0; $i<$fieldcount; $i++)
     }
     else
     {
-        //Data field heading!
+        // Prepare the header line
         $fielddata=$fieldmap[$fieldinfo];
         $fqid=$fielddata['qid'];
         $ftype=$fielddata['type'];
         $fsid=$fielddata['sid'];
         $fgid=$fielddata['gid'];
         $faid=$fielddata['aid'];
-        $question=$fielddata['question'];
-        if (isset($fielddata['scale'])) $question = "[{$fielddata['scale']}] ". $question;
-        if (isset($fielddata['subquestion'])) $question = "[{$fielddata['subquestion']}] ". $question;
-        if (isset($fielddata['subquestion2'])) $question = "[{$fielddata['subquestion2']}] ". $question;
-        if (isset($fielddata['subquestion1'])) $question = "[{$fielddata['subquestion1']}] ". $question;
-        if ($exportstyle == "abrev")
+        switch ($exportstyle)
         {
-            $qname=strip_tags_full($question);
-            $qname=mb_substr($qname, 0, 15)."..";
-            $firstline = str_replace("\n", "", $firstline);
-            $firstline = str_replace("\r", "", $firstline);
-            if ($type == "csv") {$firstline .= "\"$qname";}
-            else {$firstline .= "$qname";}
-            if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
-            if ($type == "csv") {$firstline .= "\"";}
-            $firstline .= "$separator";
-        }
-        else    //headcode or full answer
-        {
-            if ($exportstyle == "headcodes")
-            {
+            case 'headcodes': // only question codes
                 $fquest=$fielddata['title'];
                 if (!empty($fielddata['aid'])) $fquest .= ' [' . $fielddata['aid'] . ']';
-            }
-            else
-            {
-                $fquest=$question;
-            }
-            $fquest=FlattenText($fquest,true);
-            if ($type == "csv")
-            {
-                $firstline .="\"$fquest\"$separator";
-            }
-            else
-            {
-                $firstline .= $fquest.$separator;
-            }
+                if (isset($fielddata['scale_id'])) $fquest = $fquest."[{$fielddata['scale_id']}]";
+                $fquest=FlattenText($fquest,true);
+                break;
+            case 'abrev': // Abbreviated question text
+                $fquest=FlattenText($fielddata['question']);
+                $fquest=mb_substr($fquest, 0, 15);
+                if (strlen($fquest)==15) $fquest.='...';
+                if (isset($faid)) {$fquest .= " [{$faid}]";}
+                if (isset($fielddata['scale_id'])) $fquest = $fquest."[{$fielddata['scale_id']}]";
+                break;
+            case 'headfull': // Full question text
+                $fquest=$fielddata['question'];
+                if (isset($fielddata['scale_id'])) $fquest = "[{$fielddata['scale_id']}] ". $fquest;
+                if (isset($fielddata['subquestion'])) $fquest = "[{$fielddata['subquestion']}] ". $fquest;
+                if (isset($fielddata['subquestion2'])) $fquest = "[{$fielddata['subquestion2']}] ". $fquest;
+                if (isset($fielddata['subquestion1'])) $fquest = "[{$fielddata['subquestion1']}] ". $fquest;
+                $fquest=FlattenText($fquest,true);
+                break;
         }
+        if ($type == "csv") {$fquest .= "\"$fquest\"";}
+        $firstline .= $fquest.$separator;
+
         if($convertspacetous == "Y")
         {
             $firstline=str_replace(" ", "_", $firstline);
         }
     }
 }
+
 if ($type == "csv") { $firstline = mb_substr(trim($firstline),0,strlen($firstline)-1);}
 else
 {
