@@ -77,7 +77,7 @@ class Survey extends CActiveRecord
     {
         return array(
         'active' => array(
-        'condition' => 'active = "Y"',
+        'condition' => "active = 'Y'",
         ),
         );
     }
