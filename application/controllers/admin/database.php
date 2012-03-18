@@ -202,7 +202,7 @@ class database extends Survey_Common_Action
                         'scale_id'=>$scale_id));
                         if (!$result) // Checked
                         {
-                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - "."\")\n //-->\n</script>\n";
+                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")."\")\n //-->\n</script>\n";
                         }
                     } // foreach ($alllanguages as $language)
 
@@ -261,7 +261,7 @@ class database extends Survey_Common_Action
                     $result = Questions::model()->deleteAllByAttributes(array('qid'=>$deletedqid));
                     if (!$result)
                     {
-                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." \")\n //-->\n</script>\n";
+                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." \")\n //-->\n</script>\n";
                     }
                 }
             }
