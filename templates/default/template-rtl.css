@@ -47,3 +47,8 @@ td.questiontext {
 #limesurvey table.question tbody th.answertext, #limesurvey table.question tbody th.arraycaptionleft {
     text-align: left;
 }
+
+/* line 641 */
+.choice-5-pt-radio .answer ul, .yes-no .answer ul, .gender .answer ul {
+    text-align: right;
+}
