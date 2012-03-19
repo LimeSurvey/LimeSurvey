@@ -7060,7 +7060,7 @@ EOD;
          * @param type $sid
          * @return type
          */
-        static public function ExcelSurveyExport($sid)
+        static public function &ExcelSurveyExport($sid)
         {
              $fields = array(
                 'class',
@@ -7443,9 +7443,9 @@ EOD;
                     }
                 }
             }
-            // Now generate the CSV output
+            // Now generate the array out output data
             $out = array();
-            $out[] = implode("\t",$fields);
+            $out[] = $fields;
 
             foreach ($rows as $row)
             {
@@ -7453,16 +7453,11 @@ EOD;
                 foreach ($fields as $field)
                 {
                     $val = (isset($row[$field]) ? $row[$field] : '');
-                    if ($val != '')
-                    {
-                        $val = str_replace(array("\n","\r","\t"),array(" ", " ", " "),$val);
-                    }
                     $tsv[] = $val;
                 }
-                $out[] = implode("\t",$tsv);
+                $out[] = $tsv;
             }
-            $output = implode("\n",$out);
-            return $output;
+            return $out;
         }
     }
     /**

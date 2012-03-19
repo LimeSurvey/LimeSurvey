@@ -13,8 +13,8 @@
  * $Id: export_structure_xml.php 11607 2011-12-06 23:19:52Z tmswhite $
  */
 
-
 include_once("login_check.php");
+include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
 
 if (!isset($surveyid))
 {
@@ -43,14 +43,42 @@ if (!$surveyid)
 
 if (!isset($copyfunction))
 {
-    $fn = "limesurvey_survey_$surveyid.txt";
+    $fn = "limesurvey_survey_$surveyid.xls";
     header("Content-Type: text/csv");
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: public");                          // HTTP/1.0
-    echo LimeExpressionManager::ExcelSurveyExport($surveyid);
+
+    $data =& LimeExpressionManager::ExcelSurveyExport($surveyid);
+    
+    // actually generate an Excel workbook
+    $workbook = new Spreadsheet_Excel_Writer();
+    $workbook->setVersion(8);
+    $workbook->send($fn);
+
+    $sheet =& $workbook->addWorksheet(); // do not translate/change this - the library does not support any special chars in sheet name
+    $sheet->setInputEncoding('utf-8');
+
+    $rc = -1;    // row counter
+    $cc = -1;    // column counter
+    foreach($data as $row)
+    {
+        ++$rc;
+        $cc=-1;
+        foreach ($row as $col)
+        {
+            // Enclose in \" if begins by =
+            ++$cc;
+            if (substr($col,0,1) ==  "=")
+            {
+                $col = "\"".$col."\"";
+            }
+            $sheet->write($rc, $cc, $col);
+        }
+    }
+    $workbook->close();
     exit;
 }
 ?>

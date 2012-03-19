@@ -1756,18 +1756,18 @@ if($action == "exportstructure")
         ."<div class='header ui-widget-header'>"
         .$clang->gT("Export Survey Structure")."\n</div><br />\n"
         ."<ul style='margin-left:35%;'>\n"
-        ."<li><input type='radio' class='radiobtn' name='action' value='exportstructurexml' checked='checked' id='surveyxml'"
-        ."<label for='surveycsv'>"
+        ."<li><input type='radio' class='radiobtn' name='action' value='exportstructurexml' checked='checked' id='surveyxml'>"
+        ."<label for='surveyxml'>"
         .$clang->gT("LimeSurvey XML survey file (*.lss)")."</label></li>\n";
 
-	    $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructurequexml'  id='queXML'"
+	    $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructurequexml'  id='queXML'>"
 	    ."<label for='queXML'>"
 	    .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
 	    ."</label></li>\n";
 
-        $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructureexcel' id='surveyexcel'"
+        $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructureexcel' id='surveyexcel'>"
         ."<label for='surveyexcel'>"
-        .$clang->gT("LimeSurvey Excel survey file (tab delimited, *.txt)")."</label></li>\n";
+        .$clang->gT("LimeSurvey Excel survey file (*.xls)")."</label></li>\n";
 
 	    // XXX
 	    //include("../config.php");
