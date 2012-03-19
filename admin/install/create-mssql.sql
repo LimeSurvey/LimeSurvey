@@ -426,8 +426,7 @@ CREATE TABLE [prefix_users] (
   [templateeditormode] char(7) default 'default',
   [questionselectormode] char(7) default 'default',
   [one_time_pw] TEXT NULL,
-  [dateformat] INT NOT NULL DEFAULT 1,
-  [participant_panel] TINYINT NOT NULL DEFAULT '0'
+  [dateformat] INT NOT NULL DEFAULT 1
 );
 
 
