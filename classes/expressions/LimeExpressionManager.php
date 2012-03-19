@@ -1755,11 +1755,10 @@
         * @param <type> $surveyid
         * @param <type> $forceRefresh
         * @param <type> $anonymized
-        * @param <type> $allOnOnePage - if true (like for survey_format), uses certain optimizations
         * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
         */
 
-        private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
+        private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false)
         {
             if (isset($_SESSION['LEMforceRefresh'])) {
                 unset($_SESSION['LEMforceRefresh']);
@@ -1839,6 +1838,8 @@
             $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAnswerSetsForEM',(microtime(true) - $now));
             $now = microtime(true);
 
+            $qi18n = $this->getQuestionTextforEM($surveyid,NULL,$_SESSION['LEMlang']);
+
             $q2subqInfo = array();
 
             $this->multiflexiAnswers=array();
@@ -1857,7 +1858,6 @@
                 $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
                 $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
 
-                $questionId = $fieldNameParts[2];
                 $questionNum = $fielddata['qid'];
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
                 $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
@@ -1868,7 +1868,7 @@
                 if (trim($preg) == '') {
                     $preg = NULL;
                 }
-                $help = (isset($fielddata['help'])) ? $fielddata['help']: '';
+                $help = (isset($fielddata['help'])) ? $fielddata['help']: '';   // default value - will be overridden by language-specific if needed
                 $other = (isset($fielddata['other'])) ? $fielddata['other'] : '';
 
                 if (isset($this->questionId2groupSeq[$questionNum])) {
@@ -2020,13 +2020,15 @@
                         if ($fielddata['aid'] != '') {
                             $varName .= '_' . $fielddata['aid'];
                         }
-                        $question = $fielddata['question'];
+//                        $question = $fielddata['question'];
+                        $question = $qi18n[$questionNum]['question'];
                         break;
                     case '1': //Array (Flexible Labels) dual scale
                         $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
                         $sqsuffix = '_' . $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
-                        $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
+//                        $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
+                        $question = $qi18n[$questionNum]['subqs'][$fielddata['aid']] . '[' . $fielddata['scale'] . ']';
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                         $rowdivid = substr($sgqa,0,-2);
                         break;
@@ -2043,7 +2045,36 @@
                     case 'R': //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                         $csuffix = $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                        $question = $fielddata['subquestion'];
+//                        $question = $fielddata['subquestion'];
+                        if (!isset($qi18n[$questionNum]['subqs'][$csuffix]))
+                        {
+                            switch ($type)
+                            {
+                                case 'M': //Multiple choice checkbox
+                                    if ($other=='Y' && $csuffix=='other')
+                                    {
+                                        $question = $this->gT('Other');
+                                    }
+                                    break;
+                                case 'P': //Multiple choice with comments checkbox + text
+                                    if ($other == 'Y' && preg_match('/other(comment)?$/',$csuffix))
+                                    {
+                                        $question = $this->gT('Other');
+                                    }
+                                    else if (preg_match('/comment$/',$csuffix))
+                                    {
+                                        $question = $qi18n[$questionNum]['subqs'][substr($csuffix,0,strpos($csuffix,'comment'))];
+                                    }
+                                    break;
+                                case 'R':
+                                    $question = $qi18n[$questionNum]['question'];
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            $question = $qi18n[$questionNum]['subqs'][$csuffix];
+                        }
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                         if ($type != 'H' && $type != 'R') {
                             if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
@@ -2060,7 +2091,10 @@
                         $csuffix = $fielddata['aid'];
                         $sqsuffix = '_' . substr($fielddata['aid'],0,strpos($fielddata['aid'],'_'));
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                        $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
+//                        $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
+                        $_part1 = substr($csuffix,0,strpos($csuffix,'_'));
+                        $_part2 = substr($csuffix,strpos($csuffix,'_')+1);
+                        $question = $qi18n[$questionNum]['subqs'][$_part1] . '[' . $qi18n[$questionNum]['subqs'][$_part2] . ']';
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                         $rowdivid = substr($sgqa,0,strpos($sgqa,'_'));
                         break;
@@ -2897,7 +2931,7 @@
                     break;
             }
 
-            $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage);
+            $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized']);
             $LEM->currentGroupSeq=-1;
             $LEM->currentQuestionSeq=-1;    // for question-by-question mode
             $LEM->indexGseq=array();
@@ -3473,7 +3507,7 @@
 
             if ($changeLang)
             {
-                $LEM->setVariableAndTokenMappingsForExpressionManager($LEM->sid,true,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage);
+                $LEM->setVariableAndTokenMappingsForExpressionManager($LEM->sid,true,$LEM->surveyOptions['anonymized']);
             }
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
@@ -4731,7 +4765,7 @@
 
                 if (!is_null($surveyid))
                 {
-                    $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage);
+                    $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized);
                     if (isset ($LEM->groupId2groupSeq[$groupNum]))
                     {
                         $groupSeq = $LEM->groupId2groupSeq[$groupNum];
@@ -6032,6 +6066,67 @@ EOD;
         }
 
         /**
+         * Get language-specific text for questions and sub-questions
+         * @param type $surveyid
+         * @param type $qid
+         * @param string $lang
+         * @return type
+         */
+        function getQuestionTextForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
+        {
+            if (!is_null($qid))
+            {
+                $where = "q.qid = ".$qid;
+            }
+            else if (!is_null($surveyid))
+            {
+                $where = "q.sid = ".$surveyid;
+            }
+            else {
+                $where = "1";
+            }
+            if (!is_null($lang)) {
+                $lang = " and q.language='".$lang."'";
+            }
+
+
+            $qtexts = array();
+
+            // first get main question text
+            $query = "SELECT q.qid, q.question, q.help"
+            ." FROM ".db_table_name('questions')." as q"
+            ." WHERE ".$where
+            .$lang
+            ." and q.parent_qid=0";
+
+            $data = db_execute_assoc($query);
+
+            foreach($data->GetRows() as $row) {
+                $qtexts[$row['qid']] = array(
+                    'qid'=>$row['qid'],
+                    'question'=>$row['question'],
+                    'help'=>$row['help'],
+                    'subqs'=>array(),
+                );
+            }
+
+            // then get sub-question text
+            $query = "SELECT q.qid, q.parent_qid, q.title, q.question"
+            ." FROM ".db_table_name('questions')." as q"
+            ." WHERE ".$where
+            .$lang
+            ." and q.parent_qid>0";
+
+            $data = db_execute_assoc($query);
+
+            foreach($data->GetRows() as $row) {
+                $qtexts[$row['parent_qid']]['subqs'][$row['title']] = $row['question'];
+            }
+
+            return $qtexts;
+        }
+
+        /**
         * Returns group info needed for indexes
         * @param <type> $surveyid
         * @param string $lang
@@ -6967,21 +7062,7 @@ EOD;
          */
         static public function ExcelSurveyExport($sid)
         {
-            $LEM =& LimeExpressionManager::singleton();
-            
-            $lang = 'en';   // TODO - set proper value
-
-            LimeExpressionManager::StartSurvey($sid, 'survey', NULL, false);
-            $moveResult = LimeExpressionManager::NavigateForwards();
-
-            if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
-                return array(
-                'errors'=>1,
-                'html'=>$LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language ') . $_SESSION['LEMlang'],
-                );
-            }
-
-            $fields = array(
+             $fields = array(
                 'class',
                 'type/scale',
                 'name',
@@ -7095,6 +7176,9 @@ EOD;
             );
 
             $rows = array();
+            $primarylang='en';
+            $otherlangs='';
+            $langs = array();
 
             // Export survey-level information
             $query = "select * from " . db_table_name("surveys") . " where sid = " . $sid;
@@ -7110,8 +7194,18 @@ EOD;
                         $row['text'] = $value;
                         $rows[] = $row;
                     }
+                    if ($key=='language')
+                    {
+                        $primarylang = $value;
+                    }
+                    if ($key=='additional_languages')
+                    {
+                        $otherlangs = $value;
+                    }
                 }
             }
+            $langs = explode(' ',$primarylang . ' ' . $otherlangs);
+            $langs = array_unique($langs);
 
             // Export survey language settings
             $query = "select * from " . db_table_name("surveys_languagesettings") . " where surveyls_survey_id = " . $sid;
@@ -7132,206 +7226,220 @@ EOD;
                 }
             }
 
+            LimeExpressionManager::StartSurvey($sid, 'survey');
+            foreach($langs as $lang)
+            {
+                if (trim($lang) == '')
+                {
+                    continue;
+                }
+                SetSurveyLanguage($sid,$lang);
+                $moveResult = LimeExpressionManager::JumpTo(1,false,false,false);
+                $LEM =& LimeExpressionManager::singleton();
 
-            $_gseq=-1;
-            foreach ($LEM->currentQset as $q) {
-                $gseq = $q['info']['gseq'];
-                $gid = $q['info']['gid'];
-                $qid = $q['info']['qid'];
-                $qseq = $q['info']['qseq'];
+                if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
+                    continue;
+                }
 
-                //////
-                // SHOW GROUP-LEVEL INFO
-                //////
-                if ($gseq != $_gseq) {
-                    $_gseq = $gseq;
-                    $ginfo = $LEM->gseq2info[$gseq];
+                $_gseq=-1;
+                foreach ($LEM->currentQset as $q) {
+                    $gseq = $q['info']['gseq'];
+                    $gid = $q['info']['gid'];
+                    $qid = $q['info']['qid'];
 
-                    $grelevance = (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']);
-                    $gtext = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
+                    //////
+                    // SHOW GROUP-LEVEL INFO
+                    //////
+                    if ($gseq != $_gseq) {
+                        $_gseq = $gseq;
+                        $ginfo = $LEM->gseq2info[$gseq];
 
+                        $grelevance = (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']);
+                        $gtext = ((trim($ginfo['description']) == '') ? '' : $ginfo['description']);
+
+                        $row = array();
+                        $row['class'] = 'G';
+                        $row['name'] = $ginfo['group_name'];
+                        $row['relevance'] = $grelevance;
+                        $row['text'] = $gtext;
+                        $rows[] = $row;
+                    }
+
+                    //////
+                    // SHOW QUESTION-LEVEL INFO
+                    //////
                     $row = array();
-                    $row['class'] = 'G';
-                    $row['name'] = $ginfo['group_name'];
-                    $row['relevance'] = $grelevance;
-                    $row['text'] = $gtext;
-                    $rows[] = $row;
-                }
 
-                //////
-                // SHOW QUESTION-LEVEL INFO
-                //////
-                $row = array();
-                
-                $mandatory = (($q['info']['mandatory']=='Y') ? 'Y' : '');
-                $type = $q['info']['type'];
+                    $mandatory = (($q['info']['mandatory']=='Y') ? 'Y' : '');
+                    $type = $q['info']['type'];
 
-                $sgqas = explode('|',$q['sgqa']);
-                if (count($sgqas) == 1 && !is_null($q['info']['default']))
-                {
-                    $default = $q['info']['default'];
-                }
-                else
-                {
-                    $default = '';
-                }
-
-                $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '');
-                $help = (($q['info']['help'] != '') ? $q['info']['help']: '');
-
-                //////
-                // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
-                //////
-                if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
-                    foreach ($LEM->qattr[$qid] as $key=>$value) {
-                        if (is_null($value) || trim($value) == '') {
-                            continue;
-                        }
-                        switch ($key)
-                        {
-                            default:
-                            case 'exclude_all_others':
-                            case 'exclude_all_others_auto':
-                            case 'hidden':
-                                if ($value == false || $value == '0') {
-                                    $value = NULL; // so can skip this one - just using continue here doesn't work.
-                                }
-                                break;
-                            case 'relevance':
-                                $value = NULL;  // means an outdate database structure
-                                break;
-                        }
-                        if (is_null($value) || trim($value) == '') {
-                            continue;   // since continuing from within a switch statement doesn't work
-                        }
-                        $row[$key] = $value;
-                    }
-                }
-
-                $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
-                $rootVarName = $q['info']['rootVarName'];
-                $preg = ((isset($qinfo['preg']) && !is_null($qinfo['preg'])) ? $qinfo['preg'] : '');
-
-                $row['class'] = 'Q';
-                $row['type/scale'] = $type;
-                $row['name'] = $rootVarName;
-                $row['relevance'] = $relevanceEqn;
-                $row['text'] = $qtext;
-                $row['help'] = $help;
-                $row['language'] = $lang;
-                $row['validation'] = $preg;
-                $row['mandatory'] = $mandatory;
-                $row['other'] = $q['info']['other'];
-                $row['default'] = $default;
-                $row['same_default'] = 1;   // TODO - need this: $q['info']['same_default'];
-
-                $rows[] = $row;
-
-                //////
-                // SHOW ALL SUB-QUESTIONS
-                //////
-                $sawThis = array(); // array of rowdivids already seen so only show them once
-                foreach ($sgqas as $sgqa)
-                {
-                    if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName) {
-                        continue;   // so don't show the main question as a sub-question too
-                    }
-                    $rowdivid=$sgqa;
-                    $varName=$LEM->knownVars[$sgqa]['qcode'];
-
-                    switch  ($q['info']['type'])
+                    $sgqas = explode('|',$q['sgqa']);
+                    if (count($sgqas) == 1 && !is_null($q['info']['default']))
                     {
-                        case '1':
-                            if (preg_match('/#1$/',$sgqa)) {
-                                $rowdivid = NULL;   // so that doesn't show same message for second scale
-                            }
-                            else {
-                                $rowdivid = substr($sgqa,0,-2); // strip suffix
-                                $varName = substr($LEM->knownVars[$sgqa]['qcode'],0,-2);
-                            }
-                            break;
-                        case 'P':
-                            if (preg_match('/comment$/',$sgqa)) {
-                                $rowdivid = NULL;
-                            }
-                            break;
-                        case ':':
-                        case ';':
-                            $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
-                            if (isset($sawThis[$qid . '~' . $_rowdivid])) {
-                                $rowdivid = NULL;   // so don't show again
-                            }
-                            else {
-                                $sawThis[$qid . '~' . $_rowdivid] = true;
-                                $rowdivid = $_rowdivid;
-                                $sgqa_len = strlen($sid . 'X'. $gid . 'X' . $qid);
-                                $varName = $rootVarName . '_' . substr($_rowdivid,$sgqa_len);
-                            }
-                            break;
-                    }
-                    if (is_null($rowdivid)) {
-                        continue;
-                    }
-
-                    $sgqaInfo = $LEM->knownVars[$sgqa];
-                    $subqText = $sgqaInfo['subqtext'];
-
-                    if (isset($sgqaInfo['default']))
-                    {
-                        $default = $sgqaInfo['default'];
+                        $default = $q['info']['default'];
                     }
                     else
                     {
                         $default = '';
                     }
 
-                    $row = array();
-                    $row['class'] = 'SQ';
-                    $row['type/scale'] = 0; 
-                    $row['name'] = substr($varName,strlen($rootVarName)+1);
-                    $row['text'] = $subqText;
-                    $row['language'] = $lang;
-                    $row['default'] = $default;
-                    $rows[] = $row;
-                }
+                    $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '');
+                    $help = (($q['info']['help'] != '') ? $q['info']['help']: '');
 
-                //////
-                // SHOW ANSWER OPTIONS FOR ENUMERATED LISTS, AND FOR MULTIFLEXI
-                //////
-                if (isset($LEM->qans[$qid]) || isset($LEM->multiflexiAnswers[$qid]))
-                {
-                    $_scale=-1;
-                    if (isset($LEM->multiflexiAnswers[$qid])) {
-                        $ansList = $LEM->multiflexiAnswers[$qid];
+                    //////
+                    // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
+                    //////
+                    if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
+                        foreach ($LEM->qattr[$qid] as $key=>$value) {
+                            if (is_null($value) || trim($value) == '') {
+                                continue;
+                            }
+                            switch ($key)
+                            {
+                                default:
+                                case 'exclude_all_others':
+                                case 'exclude_all_others_auto':
+                                case 'hidden':
+                                    if ($value == false || $value == '0') {
+                                        $value = NULL; // so can skip this one - just using continue here doesn't work.
+                                    }
+                                    break;
+                                case 'relevance':
+                                    $value = NULL;  // means an outdate database structure
+                                    break;
+                            }
+                            if (is_null($value) || trim($value) == '') {
+                                continue;   // since continuing from within a switch statement doesn't work
+                            }
+                            $row[$key] = $value;
+                        }
                     }
-                    else {
-                        $ansList = $LEM->qans[$qid];
-                    }
-                    foreach ($ansList as $ans=>$value)
+
+                    $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
+                    $rootVarName = $q['info']['rootVarName'];
+                    $preg = ((isset($qinfo['preg']) && !is_null($qinfo['preg'])) ? $qinfo['preg'] : '');
+
+                    $row['class'] = 'Q';
+                    $row['type/scale'] = $type;
+                    $row['name'] = $rootVarName;
+                    $row['relevance'] = $relevanceEqn;
+                    $row['text'] = $qtext;
+                    $row['help'] = $help;
+                    $row['language'] = $lang;
+                    $row['validation'] = $preg;
+                    $row['mandatory'] = $mandatory;
+                    $row['other'] = $q['info']['other'];
+                    $row['default'] = $default;
+                    $row['same_default'] = 1;   // TODO - need this: $q['info']['same_default'];
+
+                    $rows[] = $row;
+
+                    //////
+                    // SHOW ALL SUB-QUESTIONS
+                    //////
+                    $sawThis = array(); // array of rowdivids already seen so only show them once
+                    foreach ($sgqas as $sgqa)
                     {
-                        $ansInfo = explode('~',$ans);
-                        $valParts = explode('|',$value);
-                        $valInfo[0] = array_shift($valParts);
-                        $valInfo[1] = implode('|',$valParts);
-                        if ($_scale != $ansInfo[0]) {
-                            $_scale = $ansInfo[0];
+                        if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName) {
+                            continue;   // so don't show the main question as a sub-question too
+                        }
+                        $rowdivid=$sgqa;
+                        $varName=$LEM->knownVars[$sgqa]['qcode'];
+
+                        switch  ($q['info']['type'])
+                        {
+                            case '1':
+                                if (preg_match('/#1$/',$sgqa)) {
+                                    $rowdivid = NULL;   // so that doesn't show same message for second scale
+                                }
+                                else {
+                                    $rowdivid = substr($sgqa,0,-2); // strip suffix
+                                    $varName = substr($LEM->knownVars[$sgqa]['qcode'],0,-2);
+                                }
+                                break;
+                            case 'P':
+                                if (preg_match('/comment$/',$sgqa)) {
+                                    $rowdivid = NULL;
+                                }
+                                break;
+                            case ':':
+                            case ';':
+                                $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
+                                if (isset($sawThis[$qid . '~' . $_rowdivid])) {
+                                    $rowdivid = NULL;   // so don't show again
+                                }
+                                else {
+                                    $sawThis[$qid . '~' . $_rowdivid] = true;
+                                    $rowdivid = $_rowdivid;
+                                    $sgqa_len = strlen($sid . 'X'. $gid . 'X' . $qid);
+                                    $varName = $rootVarName . '_' . substr($_rowdivid,$sgqa_len);
+                                }
+                                break;
+                        }
+                        if (is_null($rowdivid)) {
+                            continue;
                         }
 
-                        $row = array();
-                        if ($type == ':' || $type == ';')
+                        $sgqaInfo = $LEM->knownVars[$sgqa];
+                        $subqText = $sgqaInfo['subqtext'];
+
+                        if (isset($sgqaInfo['default']))
                         {
-                            $row['class'] = 'SQ';
+                            $default = $sgqaInfo['default'];
                         }
                         else
                         {
-                            $row['class'] = 'A';
+                            $default = '';
                         }
-                        $row['type/scale'] = $_scale;
-                        $row['name'] = $ansInfo[1];
-                        $row['relevance'] = $valInfo[0];    // TODO - true? - what if it isn't an assessment value?
-                        $row['text'] = $valInfo[1];
+
+                        $row = array();
+                        $row['class'] = 'SQ';
+                        $row['type/scale'] = 0;
+                        $row['name'] = substr($varName,strlen($rootVarName)+1);
+                        $row['text'] = $subqText;
                         $row['language'] = $lang;
+                        $row['default'] = $default;
                         $rows[] = $row;
+                    }
+
+                    //////
+                    // SHOW ANSWER OPTIONS FOR ENUMERATED LISTS, AND FOR MULTIFLEXI
+                    //////
+                    if (isset($LEM->qans[$qid]) || isset($LEM->multiflexiAnswers[$qid]))
+                    {
+                        $_scale=-1;
+                        if (isset($LEM->multiflexiAnswers[$qid])) {
+                            $ansList = $LEM->multiflexiAnswers[$qid];
+                        }
+                        else {
+                            $ansList = $LEM->qans[$qid];
+                        }
+                        foreach ($ansList as $ans=>$value)
+                        {
+                            $ansInfo = explode('~',$ans);
+                            $valParts = explode('|',$value);
+                            $valInfo[0] = array_shift($valParts);
+                            $valInfo[1] = implode('|',$valParts);
+                            if ($_scale != $ansInfo[0]) {
+                                $_scale = $ansInfo[0];
+                            }
+
+                            $row = array();
+                            if ($type == ':' || $type == ';')
+                            {
+                                $row['class'] = 'SQ';
+                            }
+                            else
+                            {
+                                $row['class'] = 'A';
+                            }
+                            $row['type/scale'] = $_scale;
+                            $row['name'] = $ansInfo[1];
+                            $row['relevance'] = $valInfo[0];    // TODO - true? - what if it isn't an assessment value?
+                            $row['text'] = $valInfo[1];
+                            $row['language'] = $lang;
+                            $rows[] = $row;
+                        }
                     }
                 }
             }
