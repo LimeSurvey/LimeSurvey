@@ -328,29 +328,29 @@ CREATE TABLE [prefix_surveys] (
 -- Table structure for table surveys_languagesettings
 --
 CREATE TABLE [prefix_surveys_languagesettings] (
-  [surveyls_survey_id] INT NOT NULL DEFAULT 0,
-  [surveyls_language] VARCHAR(45) NOT NULL DEFAULT 'en',
-  [surveyls_title] VARCHAR(200) NOT NULL,
-  [surveyls_description] varchar(max) NULL,
-  [surveyls_welcometext] varchar(max) NULL,
-  [surveyls_endtext] varchar(max) NULL,
-  [surveyls_url] VARCHAR(255) NULL,
-  [surveyls_urldescription] VARCHAR(255) NULL,
-  [surveyls_email_invite_subj] VARCHAR(255) NULL,
-  [surveyls_email_invite] varchar(max) NULL,
-  [surveyls_email_remind_subj] VARCHAR(255) NULL,
-  [surveyls_email_remind] varchar(max) NULL,
-  [surveyls_email_register_subj] VARCHAR(255) NULL,
-  [surveyls_email_register] varchar(max) NULL,
-  [surveyls_email_confirm_subj] VARCHAR(255) NULL,
-  [surveyls_email_confirm] varchar(max) NULL,
-  [surveyls_dateformat] INT NOT NULL DEFAULT 1,
-  [email_admin_notification_subj] VARCHAR(255) NULL,
-  [email_admin_notification] varchar(max) NULL,
-  [email_admin_responses_subj] VARCHAR(255) NULL,
-  [email_admin_responses] varchar(max) NULL,
-  [surveyls_numberformat] INT NOT NULL DEFAULT 0,
-  PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
+    [surveyls_survey_id] INT NOT NULL DEFAULT 0,
+    [surveyls_language] VARCHAR(45) NOT NULL DEFAULT 'en',
+    [surveyls_title] VARCHAR(200) NOT NULL,
+    [surveyls_description] varchar(max) NULL,
+    [surveyls_welcometext] varchar(max) NULL,
+    [surveyls_endtext] varchar(max) NULL,
+    [surveyls_url] VARCHAR(255) NULL,
+    [surveyls_urldescription] VARCHAR(255) NULL,
+    [surveyls_email_invite_subj] VARCHAR(255) NULL,
+    [surveyls_email_invite] varchar(max) NULL,
+    [surveyls_email_remind_subj] VARCHAR(255) NULL,
+    [surveyls_email_remind] varchar(max) NULL,
+    [surveyls_email_register_subj] VARCHAR(255) NULL,
+    [surveyls_email_register] varchar(max) NULL,
+    [surveyls_email_confirm_subj] VARCHAR(255) NULL,
+    [surveyls_email_confirm] varchar(max) NULL,
+    [surveyls_dateformat] INT NOT NULL DEFAULT 1,
+    [email_admin_notification_subj] VARCHAR(255) NULL,
+    [email_admin_notification] varchar(max) NULL,
+    [email_admin_responses_subj] VARCHAR(255) NULL,
+    [email_admin_responses] varchar(max) NULL,
+    [surveyls_numberformat] INT NOT NULL DEFAULT 0,
+    PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 )
 ;
 
@@ -428,8 +428,7 @@ CREATE TABLE [prefix_users] (
   [templateeditormode] char(7) default 'default',
   [questionselectormode] char(7) default 'default',
   [one_time_pw] varchar(max),
-  [dateformat] INT NOT NULL DEFAULT 1,
-  [participant_panel] TINYINT NOT NULL DEFAULT '0'
+  [dateformat] INT NOT NULL DEFAULT 1
 );
 
 
@@ -437,11 +436,11 @@ CREATE TABLE [prefix_users] (
 -- Table structure for table templates_rights
 --
 CREATE TABLE [prefix_templates_rights] (
-						  [uid] int NOT NULL,
-						  [folder] varchar(255) NOT NULL,
-						  [use] int NOT NULL,
-						  PRIMARY KEY  ([uid],[folder])
-						  );
+    [uid] int NOT NULL,
+    [folder] varchar(255) NOT NULL,
+    [use] int NOT NULL,
+    PRIMARY KEY  ([uid],[folder])
+);
 
 
 --
@@ -485,49 +484,49 @@ CREATE TABLE [prefix_participant_attribute_names] (
 CREATE TABLE [prefix_participant_attribute_names_lang] (
     [id] integer NOT NULL IDENTITY,
     [attribute_id] integer NOT NULL,
-                                                  [attribute_name] varchar(30) NOT NULL,
-                                                  [lang] varchar(20) NOT NULL,
-                                                  PRIMARY KEY  ([attribute_id],[lang])
-						  );
+    [attribute_name] varchar(30) NOT NULL,
+    [lang] varchar(20) NOT NULL,
+    PRIMARY KEY  ([attribute_id],[lang])
+);
 --
 -- Table structure for table participant attribute values
 --
 CREATE TABLE [prefix_participant_attribute_values] (
     [attribute_id] integer NOT NULL,
     [value_id] integer NOT NULL IDENTITY,
-                                                  [value] varchar(20) NOT NULL,
-                                                  PRIMARY KEY  ([value_id])
-						  );
+    [value] varchar(20) NOT NULL,
+    PRIMARY KEY  ([value_id])
+);
 --
 -- Table structure for table participant shares
 --
 CREATE TABLE [prefix_participant_shares] (
-                                                  [participant_id] varchar(50) NOT NULL,
+    [participant_id] varchar(50) NOT NULL,
     [share_uid] integer NOT NULL,
-                                                  [date_added] datetime,
-    [can_edit] vrachar(max) NOT NULL,
+    [date_added] datetime,
+    [can_edit] varchar(max) NOT NULL,
     PRIMARY KEY  ([participant_id],[share_uid])
-						  );
+);
 --
 -- Table structure for table survey links
 --
 CREATE TABLE [prefix_survey_links] (
-                                                  [participant_id] varchar(50) NOT NULL,
+    [participant_id] varchar(50) NOT NULL,
     [token_id] integer NOT NULL,
     [survey_id] integer NOT NULL,
     [date_created] datetime
-                                                  PRIMARY KEY  ([participant_id],[token_id],[survey_id])
-						  );
+    PRIMARY KEY  ([participant_id],[token_id],[survey_id])
+);
 
 
 --
 -- Table structure for table templates
 --
 CREATE TABLE [prefix_templates] (
-						  [folder] varchar(255) NOT NULL,
-						  [creator] int NOT NULL,
-						  PRIMARY KEY  ([folder])
-						  );
+    [folder] varchar(255) NOT NULL,
+    [creator] int NOT NULL,
+    PRIMARY KEY  ([folder])
+);
 
 
 --

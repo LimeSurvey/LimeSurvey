@@ -34,7 +34,7 @@ if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
 if (!isset($p_cqid))
 {
-    $p_cqid=returnglobal('cqid');
+    $p_cqid=(int)returnglobal('cqid');
     if ($p_cqid == '') $p_cqid=0; // we are not using another question as source of condition
 }
 if (!isset($p_cid)) {$p_cid=returnglobal('cid');}

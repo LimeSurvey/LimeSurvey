@@ -184,7 +184,7 @@
 
             $queries = array();
             foreach ($releqns as $key=>$value) {
-                $query = "UPDATE ".db_table_name('questions')." SET relevance='".addslashes($value)."' WHERE qid=".$key;
+                $query = "UPDATE ".db_table_name('questions')." SET relevance=".db_quoteall($value)." WHERE qid=".$key;
                 db_execute_assoc($query);
                 $queries[] = $query;
             }
@@ -5956,9 +5956,9 @@ EOD;
                 {
                     foreach  ($updates as $key=>$value)
                     {
-                        $query = "UPDATE ".db_table_name('question_attributes')." SET value='".addslashes($value)."' WHERE qid=".$qid." and attribute='".addslashes($key)."';";
+                        $query = "UPDATE ".db_table_name('question_attributes')." SET value=".db_quoteall($value)." WHERE qid=".$qid." and attribute=".db_quoteall($key);
                         $queries[] = $query;
-                        $query = "DELETE FROM ".db_table_name('question_attributes')." WHERE qid=".$qid." and attribute='".addslashes($reverseAttributeMap[$key])."';";
+                        $query = "DELETE FROM ".db_table_name('question_attributes')." WHERE qid=".$qid." and attribute=".db_quoteall($reverseAttributeMap[$key]);
                         $queries[] = $query;
 
                     }

@@ -210,7 +210,6 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_questions DROP COLUMN lid"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE prefix_questions DROP COLUMN lid1"); echo $modifyoutput; flush();ob_flush();
         // add field for timings and table for extended conditions
-        modify_database("", "ALTER TABLE prefix_surveys ADD savetimings char(1) default 'N'"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "CREATE TABLE prefix_sessions(
         sesskey character varying( 64 ) NOT NULL DEFAULT '',
         expiry TIMESTAMP NOT NULL ,
@@ -311,7 +310,7 @@ function db_upgrade($oldversion) {
     }
     if ($oldversion < 148)
     {
-        modify_database("","ALTER TABLE prefix_user ADD participant_panel integer NOT NULL default '0'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE prefix_users ADD participant_panel integer NOT NULL default '0'"); echo $modifyoutput; flush();ob_flush();
         modify_database("","CREATE TABLE prefix_participants (
         participant_id character varying( 50 ) NOT NULL,
         firstname character varying( 40 ) NOT NULL,
@@ -344,20 +343,19 @@ function db_upgrade($oldversion) {
         "lang" character varying( 20 ) NOT NULL
         );'); echo $modifyoutput; flush();ob_flush();
 
-        modify_database("","CREATE TABLE prefix_participant_attribute_values (
-        attribute_id integer NOT NULL,
-        value_id integer NOT NULL AUTO_INCREMENT,
-        value character varying( 20 ) NOT NULL,
-        PRIMARY KEY (value_id)
-        );"); echo $modifyoutput; flush();ob_flush();
+        modify_database("",'CREATE TABLE prefix_participant_attribute_values (
+        "value_id" serial PRIMARY KEY NOT NULL,
+        "attribute_id" integer NOT NULL,
+        "value" character varying( 20 ) NOT NULL
+        );'); echo $modifyoutput; flush();ob_flush();
 
-        modify_database("","CREATE TABLE prefix_participant_shares (
-        participant_id character varying( 50 ) NOT NULL,
-        shared_uid integer NOT NULL,
-        date_added date NOT NULL,
-        can_edit character varying( 5 ) NOT NULL,
-        PRIMARY KEY (lang,attribute_id)
-        );"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("",'CREATE TABLE prefix_participant_shares (
+        "participant_id" character varying( 50 ) NOT NULL,
+        "shared_uid" integer NOT NULL,
+        "date_added" date NOT NULL,
+        "can_edit" character varying( 5 ) NOT NULL,
+        CONSTRAINT prefix_participant_shares_pkey PRIMARY KEY (participant_id,shared_uid)
+        );'); echo $modifyoutput; flush();@ob_flush();
 
         modify_database("","CREATE TABLE prefix_survey_links (
         participant_id character varying( 50 ) NOT NULL,
