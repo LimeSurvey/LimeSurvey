@@ -22,8 +22,9 @@
     </style>
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>    
 <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
+{GOOGLE_ANALYTICS_JAVASCRIPT}
 </head>
-	<body id="page_bg"  class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+	<body id="page_bg"  class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
                 <div class="outerframe">
 		        <div id="wrapper2">
 			<div id="survey-wrapper">

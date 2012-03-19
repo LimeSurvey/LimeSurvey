@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: database.php 12242 2012-01-27 23:41:13Z c_schmitz $
  */
 //Last security audit on 2009-10-11
 
@@ -87,18 +87,19 @@ if(isset($surveyid))
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grouplang]=fix_FCKeditor_text($_POST['group_name_'.$grouplang]);
                 $_POST['description_'.$grouplang]=fix_FCKeditor_text($_POST['description_'.$grouplang]);
+                $grelevance = (isset($_POST['grelevance']) ? $_POST['grelevance'] : 1);
 
 
                 if ($first)
                 {
-                    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description, grelevance, group_order, language) VALUES ('".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."','".db_quote($grelevance)."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                     $result = $connect->Execute($query); // Checked
                     $groupid=$connect->Insert_Id(db_table_name_nq('groups'),"gid");
                     $first=false;
                 }
                 else{
                     db_switchIDInsert('groups',true);
-                    $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                    $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description, grelevance, group_order, language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."','".db_quote($grelevance)."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                     $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());   // Checked
                     db_switchIDInsert('groups',false);
                 }
@@ -147,7 +148,7 @@ if(isset($surveyid))
                 // don't use array_map db_quote on POST
                 // since this is iterated for each language
                 //$_POST  = array_map('db_quote', $_POST);
-                $ugquery = "UPDATE ".db_table_name('groups')." SET group_name='".db_quote($_POST['group_name_'.$grplang])."', description='".db_quote($_POST['description_'.$grplang])."' WHERE sid=".db_quote($postsid)." AND gid=".db_quote($postgid)." AND language='{$grplang}'";
+                $ugquery = "UPDATE ".db_table_name('groups')." SET group_name='".db_quote($_POST['group_name_'.$grplang])."', description='".db_quote($_POST['description_'.$grplang])."', grelevance='".db_quote($_POST['grelevance'])."' WHERE sid=".db_quote($postsid)." AND gid=".db_quote($postgid)." AND language='{$grplang}'";
                 $ugresult = $connect->Execute($ugquery);  // Checked
                 if ($ugresult)
                 {
@@ -166,6 +167,8 @@ if(isset($surveyid))
 
     elseif ($action == "delgroup" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
     {
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+
         if (!isset($gid)) $gid=returnglobal('gid');
         $query = "SELECT qid FROM ".db_table_name('groups')." g, ".db_table_name('questions')." q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
         if ($result = db_execute_assoc($query)) // Checked
@@ -196,6 +199,7 @@ if(isset($surveyid))
         {
             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
         }
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
     }
 
     elseif ($action == "insertquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
@@ -244,9 +248,9 @@ if(isset($surveyid))
             $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
 
             $_POST  = array_map('db_quote', $_POST);
-            $query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
+            $query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, question_order, relevance, language)"
             ." VALUES ('{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
-            ." '{$_POST['question_'.$baselang]}', '{$_POST['preg']}', '{$_POST['help_'.$baselang]}', '{$_POST['other']}', '{$_POST['mandatory']}', $question_order,'{$baselang}')";
+            ." '{$_POST['question_'.$baselang]}', '{$_POST['preg']}', '{$_POST['help_'.$baselang]}', '{$_POST['other']}', '{$_POST['mandatory']}', $question_order,'".db_quote($_POST['relevance'])."','{$baselang}')";
             $result = $connect->Execute($query);  // Checked
             // Get the last inserted questionid for other languages
             $qid=$connect->Insert_ID(db_table_name_nq('questions'),"qid");
@@ -304,13 +308,16 @@ if(isset($surveyid))
             //include("surveytable_functions.php");
             //surveyFixColumns($surveyid);
         }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
     }
     elseif ($action == "renumberquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
         //Automatically renumbers the "question codes" so that they follow
         //a methodical numbering method
+        $style = ((isset($_POST['style']) && $_POST['style']=="bygroup") ? 'bygroup' : 'straight');
         $question_number=1;
         $group_number=0;
+        $gseq=0;
         $gselect="SELECT a.qid, a.gid\n"
         ."FROM ".db_table_name('questions')." as a, ".db_table_name('groups')."\n"
         ."WHERE a.gid=".db_table_name('groups').".gid AND a.sid=$surveyid AND a.parent_qid=0 "
@@ -322,13 +329,16 @@ if(isset($surveyid))
         foreach($grows as $grow)
         {
             //Go through all the questions
-            if ((isset($_POST['style']) && $_POST['style']=="bygroup") && (!isset($group_number) || $group_number != $grow['gid']))
+            if ($style == 'bygroup' && (!isset($group_number) || $group_number != $grow['gid']))
             { //If we're doing this by group, restart the numbering when the group number changes
                 $question_number=1;
-                $group_number++;
+                $group_number = $grow['gid'];
+                $gseq++;
             }
             $usql="UPDATE ".db_table_name('questions')."\n"
-            ."SET title='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
+            ."SET title='"
+            .(($style == 'bygroup') ? ('G' . $gseq . '_') : '')
+            ."Q".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
             ."WHERE qid=".$grow['qid'];
             //$databaseoutput .= "[$sql]";
             $uresult=$connect->Execute($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked
@@ -336,7 +346,8 @@ if(isset($surveyid))
             $group_number=$grow['gid'];
         }
         $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");
-    }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+        }
 
 
     elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
@@ -408,12 +419,25 @@ if(isset($surveyid))
                 }
             }
         }
+        if ($qtproperties[$questiontype]['answerscales']==0 && $qtproperties[$questiontype]['subquestions']==0)
+        {
+            foreach ($questlangs as $language)
+            {
+                if (isset($_POST['defaultanswerscale_0_'.$language.'_0']))
+                {
+                   Updatedefaultvalues($postqid,0,0,'',$language,$_POST['defaultanswerscale_0_'.$language.'_0'],true);
+                }
+            }
+        }
         $_SESSION['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
+        LimeExpressionManager::SetDirtyFlag();
     }
 
 
     elseif ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+
         $cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
         $cqresult=db_execute_assoc($cqquery) or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
         $cqr=$cqresult->FetchRow();
@@ -483,7 +507,7 @@ if(isset($surveyid))
 
         // These are the questions types that have no validation - so zap it accordingly
         if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" ||
-        $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" ||
+        $_POST['type']== "F" || $_POST['type']== "H" || 
         $_POST['type']== "X" || $_POST['type']== "")
         {
             $_POST['preg']='';
@@ -514,10 +538,10 @@ if(isset($surveyid))
             if (isset($postgid) && $postgid != "")
             {
 
-                $array_result=checkMovequestionConstraintsForConditions(sanitize_int($postsid),sanitize_int($postqid), sanitize_int($postgid));
+//                $array_result=checkMovequestionConstraintsForConditions(sanitize_int($postsid),sanitize_int($postqid), sanitize_int($postgid));
                 // If there is no blocking conditions that could prevent this move
-                if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
-                {
+//                if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
+//                {
 
                     $questlangs = GetAdditionalLanguagesFromSurveyID($postsid);
                     $baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -556,7 +580,8 @@ if(isset($surveyid))
                             . "SET type='".db_quote($_POST['type'])."', title='".db_quote($_POST['title'])."', "
                             . "question='".db_quote($_POST['question_'.$qlang])."', preg='".db_quote($_POST['preg'])."', help='".db_quote($_POST['help_'.$qlang])."', "
                             . "gid='".db_quote($postgid)."', other='".db_quote($_POST['other'])."', "
-                            . "mandatory='".db_quote($_POST['mandatory'])."'";
+                            . "mandatory='".db_quote($_POST['mandatory'])."'"
+                            . ", relevance='".db_quote($_POST['relevance'])."'";;
                             if ($oldgid!=$postgid)
                             {
                                 if ( getGroupOrder(returnglobal('sid'),$oldgid) > getGroupOrder(returnglobal('sid'),returnglobal('gid')) )
@@ -609,44 +634,45 @@ if(isset($surveyid))
                     $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");
 
 
-                }
-                else
-                {
-                    // There are conditions constraints: alert the user
-                    $errormsg="";
-                    if (!is_null($array_result['notAbove']))
-                    {
-                        $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
-                        . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
-                        . $clang->gT("See conditions:")."\\n";
-
-                        foreach ($array_result['notAbove'] as $notAboveCond)
-                        {
-                            $errormsg.="- cid:". $notAboveCond[3]."\\n";
-                        }
-
-                    }
-                    if (!is_null($array_result['notBelow']))
-                    {
-                        $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
-                        . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
-                        . $clang->gT("See conditions:")."\\n";
-
-                        foreach ($array_result['notBelow'] as $notBelowCond)
-                        {
-                            $errormsg.="- cid:". $notBelowCond[3]."\\n";
-                        }
-                    }
-
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-                    $gid= $oldgid; // group move impossible ==> keep display on oldgid
-                }
+//                }
+//                else
+//                {
+//                    // There are conditions constraints: alert the user
+//                    $errormsg="";
+//                    if (!is_null($array_result['notAbove']))
+//                    {
+//                        $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
+//                        . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
+//                        . $clang->gT("See conditions:")."\\n";
+//
+//                        foreach ($array_result['notAbove'] as $notAboveCond)
+//                        {
+//                            $errormsg.="- cid:". $notAboveCond[3]."\\n";
+//                        }
+//
+//                    }
+//                    if (!is_null($array_result['notBelow']))
+//                    {
+//                        $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
+//                        . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
+//                        . $clang->gT("See conditions:")."\\n";
+//
+//                        foreach ($array_result['notBelow'] as $notBelowCond)
+//                        {
+//                            $errormsg.="- cid:". $notBelowCond[3]."\\n";
+//                        }
+//                    }
+//
+//                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
+//                    $gid= $oldgid; // group move impossible ==> keep display on oldgid
+//                }
             }
             else
             {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
             }
         }
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
     }
 
     elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
@@ -686,8 +712,8 @@ if(isset($surveyid))
             $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
             $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
             $_POST  = array_map('db_quote', $_POST);
-            $query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)
-                      VALUES ({$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '{$_POST['preg']}', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', $max,".db_quoteall($baselang).")";
+            $query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, relevance, question_order, language)
+                      VALUES ({$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '{$_POST['preg']}', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['relevance']}', $max,".db_quoteall($baselang).")";
             $result = $connect->Execute($query) or safe_die($connect->ErrorMsg()); // Checked
             $newqid = $connect->Insert_ID("{$dbprefix}questions","qid");
             if (!$result)
@@ -714,8 +740,8 @@ if(isset($surveyid))
                 $_POST['help_'.$qlanguage]=fix_FCKeditor_text($_POST['help_'.$qlanguage]);
 
                 db_switchIDInsert('questions',true);
-                $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, question_order, language)
-                      VALUES ($newqid,{$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', $max,".db_quoteall($qlanguage).")";
+                $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, relevance, question_order, language)
+                      VALUES ($newqid,{$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['relevance']}', $max,".db_quoteall($qlanguage).")";
                 $result = $connect->Execute($query) or safe_die($connect->ErrorMsg()); // Checked
                 db_switchIDInsert('questions',false);
             }
@@ -769,10 +795,10 @@ if(isset($surveyid))
                 while ($qr1 = $r1->FetchRow())
                 {
                     $qr1 = array_map('db_quote', $qr1);
-                    $i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id) "
+                    $i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id, assessment_value) "
                     . "VALUES ('$newqid', '{$qr1['code']}', "
                     . "'{$qr1['answer']}', "
-                    . "'{$qr1['sortorder']}', '{$qr1['language']}', '{$qr1['scale_id']}')";
+                    . "'{$qr1['sortorder']}', '{$qr1['language']}', '{$qr1['scale_id']}', '{$qr1['assessment_value']}')";
                     $ir1 = $connect->Execute($i1);   // Checked
 
                 }
@@ -799,12 +825,15 @@ if(isset($surveyid))
             $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
             $_SESSION['flashmessage'] = $clang->gT("Question was successfully copied.");
 
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         }
     }
     elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
     {
         if (!isset($qid)) {$qid=returnglobal('qid');}
         //check if any other questions have conditions which rely on this question. Don't delete if there are.
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);
+
         $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid=$qid";
         $ccresult = db_execute_assoc($ccquery) or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
         $cccount=$ccresult->RecordCount();
@@ -860,6 +889,8 @@ if(isset($surveyid))
         $query = "delete from ".db_table_name('answers')." where qid=".db_quote($qid);
         $result = $connect->Execute($query); // Checked
 
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+
         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
         {
             $maxcount=(int)$_POST['answercount_'.$scale_id];
@@ -908,6 +939,8 @@ if(isset($surveyid))
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }  //  for ($scale_id=0;
 
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
+
         if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
         if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
@@ -932,6 +965,8 @@ if(isset($surveyid))
 
         // First delete any deleted ids
         $deletedqids=explode(' ', trim($_POST['deletedqids']));
+
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
         foreach ($deletedqids as $deletedqid)
         {
@@ -1030,6 +1065,8 @@ if(isset($surveyid))
 
             }
         }
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
+
         //include("surveytable_functions.php");
         //surveyFixColumns($surveyid);
         $_SESSION['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
@@ -1101,7 +1138,7 @@ if(isset($surveyid))
                             'printanswers'=>$_POST['printanswers'],
                             'publicstatistics'=>$_POST['publicstatistics'],
                             'autoredirect'=>$_POST['autoredirect'],
-                            'showXquestions'=>$_POST['showXquestions'],
+                            'showxquestions'=>$_POST['showxquestions'],
                             'showgroupinfo'=>$_POST['showgroupinfo'],
                             'showqnumcode'=>$_POST['showqnumcode'],
                             'shownoanswer'=>$_POST['shownoanswer'],
@@ -1117,6 +1154,8 @@ if(isset($surveyid))
                             'usecaptcha'=>$_POST['usecaptcha'],
                             'emailresponseto'=>trim($_POST['emailresponseto']),
                             'emailnotificationto'=>trim($_POST['emailnotificationto']),
+                            'googleanalyticsapikey'=>trim($_POST['googleanalyticsapikey']),
+                            'googleanalyticsstyle'=>trim($_POST['googleanalyticsstyle']),
                             'tokenlength'=>$_POST['tokenlength']
         );
 
@@ -1400,7 +1439,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'allowsave'=>$_POST['allowsave'],
                             'navigationdelay'=>$_POST['navigationdelay'],
                             'autoredirect'=>$_POST['autoredirect'],
-                            'showXquestions'=>$_POST['showXquestions'],
+                            'showxquestions'=>$_POST['showxquestions'],
                             'showgroupinfo'=>$_POST['showgroupinfo'],
                             'showqnumcode'=>$_POST['showqnumcode'],
                             'shownoanswer'=>$_POST['shownoanswer'],
@@ -1491,11 +1530,13 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 elseif ($action == "savepersonalsettings")
 {
     $_POST  = array_map('db_quote', $_POST);
-    $uquery = "UPDATE {$dbprefix}users SET lang='{$_POST['lang']}', dateformat='{$_POST['dateformat']}', htmleditormode= '{$_POST['htmleditormode']}'
+    $uquery = "UPDATE {$dbprefix}users SET lang='{$_POST['lang']}', dateformat='{$_POST['dateformat']}', htmleditormode= '{$_POST['htmleditormode']}', questionselectormode= '{$_POST['questionselectormode']}', templateeditormode= '{$_POST['templateeditormode']}'
                WHERE uid={$_SESSION['loginID']}";
     $uresult = $connect->Execute($uquery)  or safe_die ($uquery."<br />".$connect->ErrorMsg());  // Checked
     $_SESSION['adminlang']=$_POST['lang'];
     $_SESSION['htmleditormode']=$_POST['htmleditormode'];
+    $_SESSION['questionselectormode']=$_POST['questionselectormode'];
+    $_SESSION['templateeditormode']=$_POST['templateeditormode'];
     $_SESSION['dateformat']= $_POST['dateformat'];
     $_SESSION['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");
 }

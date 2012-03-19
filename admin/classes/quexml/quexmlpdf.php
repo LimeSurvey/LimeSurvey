@@ -35,10 +35,10 @@ class queXMLPDF extends TCPDF {
 
 	/**
 	 * Whether a page break has occured
-	 * Should be a private var but crash occurs on PHP 5.1.6, see Limesurvey Bug 5824
+	 * 
 	 * @var bool
 	 */
-	protected $pageBreakOccured;
+	private $pageBreakOccured;
 
 	/**
 	 * Corner border (the number of mm between the edge of the page and the start of the document)
@@ -152,30 +152,12 @@ class queXMLPDF extends TCPDF {
 	protected $questionTitleWidth = 14;
 
 	/**
-	 * The suffix of the question title. i.e. A15. (the . is the suffix)
-	 * 
-	 * @var mixed  Defaults to ".". 
-	 * @since 2012-01-31
-	 */
-	protected $questionTitleSuffix = ".";
-
-	/**
 	 * Width of question text in MM
 	 * 
 	 * @var mixed  Defaults to 120. 
 	 * @since 2010-09-20
-	 * @deprecated
 	 */
-	//protected $questionTextWidth = 120;
-
-	/**
-	 * Right margin of question text in MM
-	 * 
-	 * @var mixed  Defaults to 40. 
-	 * @since 2012-01-11
-	 * @see $questionTextWidth
-	 */
-	protected $questionTextRightMargin = 40;
+	protected $questionTextWidth = 120;
 
 	/**
 	 * Height of the border between questions in MM
@@ -184,22 +166,6 @@ class queXMLPDF extends TCPDF {
 	 * @since 2010-09-20
 	 */
 	protected $questionBorderBottom = 1;
-	
-	/**
-	 * Border after a help before directive
-	 * 
-	 * @var mixed  Defaults to 3. 
-	 * @since 2012-01-31
-	 */
-	protected $helpBeforeBorderBottom = 3;
-
-	/**
-	 * Border before a help before directive
-	 * 
-	 * @var mixed  Defaults to 3. 
-	 * @since 2012-01-31
-	 */
-	protected $helpBeforeBorderTop = 3;
 
 	/**
 	 * Width of the skip column area (where skip text is written)
@@ -217,13 +183,10 @@ class queXMLPDF extends TCPDF {
 	 */
 	protected $style = "<style>
 		td.questionTitle {font-weight:bold; font-size:12pt;}
-		td.questionTitleSkipTo {font-weight:bold; font-size:16pt;}
 		td.questionText {font-weight:bold; font-size:12pt;} 
-		td.questionSpecifier {font-weight:normal; font-size:12pt;} 
 		td.vasLabel {font-weight:bold; font-size:10pt; text-align:center;}
 		td.questionHelp {font-weight:normal; text-align:right; font-style:italic; font-size:8pt;}
 		td.questionHelpAfter {text-align:center; font-weight:bold; font-size:10pt;}
-		td.questionHelpBefore {text-align:center; font-weight:bold; font-size:12pt;}
 		td.responseAboveText {font-weight:normal; font-style:normal; text-align:left; font-size:12pt;} 
 		span.sectionTitle {font-size:18pt; font-weight:bold;} 
 		span.sectionDescription {font-size:14pt; font-weight:bold;} 
@@ -241,11 +204,11 @@ class queXMLPDF extends TCPDF {
 	 * @var string  Defaults to 10.5. 
 	 * @since 2011-12-20
 	 */
-	protected $singleResponseHorizontalHeight = 12.5;
+	protected $singleResponseHorizontalHeight = 10.5;
 
 	/**
 	 */
-	protected $singleResponseAreaWidth = 10.5;
+	protected $singleResponseAreaWidth = 10;
 
 	/**
 	 * Height of the are of each single response (includes guiding lines)
@@ -293,7 +256,7 @@ class queXMLPDF extends TCPDF {
 	 * @var string  Defaults to 15. 
 	 * @since 2010-09-20
 	 */
-	protected $singleResponseVerticalAreaWidth = 13;
+	protected $singleResponseVerticalAreaWidth = 15;
 
 	/**
 	 * Vertical area taken up by a "small" vertical response area
@@ -437,15 +400,6 @@ class queXMLPDF extends TCPDF {
 	 * @since 2010-09-02
 	 */
 	protected $section = array();
-
-	/**
-	 * An array of key: skip target, value: last originating question 
-	 * that skips to the target
-	 * 
-	 * @var string  Defaults to array(). 
-	 * @since 2012-01-31
-	 */
-	protected $skipToRegistry = array();
 
 	/**
 	 * Page counter pointer (links to barcode id of page)
@@ -976,7 +930,9 @@ class queXMLPDF extends TCPDF {
 	
 		if (!$downarrow)
 		{
-			$y = $y + (($this->singleResponseAreaHeight - $this->singleResponseBoxHeight) / 2.0);
+			if ($position == 'only') $y = $y + (($this->singleResponseAreaHeight - $this->singleResponseBoxHeight) / 2.0);
+			else if ($position == 'first' || $position == 'last') $y = $y + (($this->singleResponseAreaHeight - ($this->singleResponseBoxHeight + $this->singleResponseBoxLineLength)) / 2.0);
+			else if ($position == 'middle') $y = $y + (($this->singleResponseAreaHeight - ($this->singleResponseBoxHeight + ($this->singleResponseBoxLineLength * 2.0))) / 2.0);
 		}
 
 		$boxmid = ($x + ($this->singleResponseBoxWidth / 2.0));
@@ -1120,7 +1076,7 @@ class queXMLPDF extends TCPDF {
 				$qtmp = array();
 				$rstmp = array();
 				
-				$qtmp['title'] = $sl . $qcount . $this->questionTitleSuffix;
+				$qtmp['title'] = $sl . $qcount . ".";
 				$qtmp['text'] = "";
 
 				foreach ($qu->text as $ttmp)
@@ -1130,18 +1086,10 @@ class queXMLPDF extends TCPDF {
 					
 					$qtmp['text'] .= $ttmp;
 				}
-			
-				foreach ($qu->specifier as $ttmp)
-				{
-					if (!isset($qtmp['specifier']))
-						$qtmp['specifier'] = "";
-
-					$qtmp['specifier'] .= $ttmp;
-				}
-	
+				
 				foreach ($qu->directive as $ttmp)
 				{
-					if ($ttmp->administration == 'self' && $ttmp->position == 'during')
+					if ($ttmp->administration == 'self' && $ttmp->position != 'after')
 					{
 						if (!isset($qtmp['helptext']))
 							$qtmp['helptext'] = "";
@@ -1154,13 +1102,6 @@ class queXMLPDF extends TCPDF {
 							$qtmp['helptextafter'] = "";
 
 						$qtmp['helptextafter'] .= $ttmp->text;
-					}
-					if ($ttmp->administration == 'self' && $ttmp->position == 'before')
-					{
-						if (!isset($qtmp['helptextbefore']))
-							$qtmp['helptextbefore'] = "";
-
-						$qtmp['helptextbefore'] .= $ttmp->text;
 					}
 				}
 
@@ -1192,12 +1133,7 @@ class queXMLPDF extends TCPDF {
 							$cat = array();
 							$cat['text'] = current($c->label);
 							$cat['value'] = current($c->value);
-							if (isset($c->skipTo))
-							{ 
-								$cat['skipto'] = current($c->skipTo);
-								//save a skip
-								$this->skipToRegistry[current($c->skipTo) . $this->questionTitleSuffix] = $qtmp['title'];
-							}
+							if (isset($c->skipTo)) $cat['skipto'] = current($c->skipTo);
 							if (isset($c->contingentQuestion))
 							{
 								//Need to handle contingent questions
@@ -1265,8 +1201,13 @@ class queXMLPDF extends TCPDF {
 		//Draw questionnaireInfo before if exists
 		if (isset($questionnaire['infobefore']))
 		{
-			$this->drawInfo($questionnaire['infobefore']);
+			$this->setBackground('question');
+			$this->writeHTMLCell($this->getMainPageWidth(), $this->questionnaireInfoMargin, $this->getMainPageX(), $this->GetY() - $this->questionBorderBottom, "<div></div>",0,1,true,true);
+			$html = "<table><tr><td width=\"" . $this->getMainPageWidth() . "mm\" class=\"questionnaireInfo\">{$questionnaire['infobefore']}</td><td></td></tr></table>";
+			$this->writeHTMLCell($this->getMainPageWidth(), 1, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
 		}
+
+
 
 		foreach($questionnaire['sections'] as $sk => $sv)
 		{
@@ -1312,29 +1253,13 @@ class queXMLPDF extends TCPDF {
 			}
 		}
 
-
 		//Draw questionnaireInfo after if exists
 		if (isset($questionnaire['infoafter']))
 		{
-			$this->startTransaction();
-
-			$this->drawInfo($questionnaire['infoafter']);
-
-			if ($this->pageBreakOccured)
-			{
-				$this->pageBreakOccured = false;
-				$this->rollBackTransaction(true);
-				$this->SetAutoPageBreak(false); //Temporarily set so we don't trigger a page break
-				//now draw a background to the bottom of the page
-				$this->fillPageBackground();
-		
-				$this->newPage();
-				//retry question here
-				$this->drawInfo($questionnaire['infoafter']);
-			}
-			else
-				$this->commitTransaction();
-
+			$this->setBackground('question');
+			$this->writeHTMLCell($this->getMainPageWidth(), $this->questionnaireInfoMargin, $this->getMainPageX(), $this->GetY() - $this->questionBorderBottom, "<div></div>",0,1,true,true);
+			$html = "<table><tr><td width=\"" . $this->getMainPageWidth() . "mm\" class=\"questionnaireInfo\">{$questionnaire['infoafter']}</td><td></td></tr></table>";
+			$this->writeHTMLCell($this->getMainPageWidth(), 1, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
 		}
 
 
@@ -1342,26 +1267,10 @@ class queXMLPDF extends TCPDF {
 		$this->fillPageBackground();
 	}
 
-
-	/**
-	 * Draw the questionnaire info specified
-	 * 
-	 * @param string $text The text to draw in info style
-	 * @author Adam Zammit <adam.zammit@acspri.org.au>
-	 * @since  2011-12-21
-	 */
-	protected function drawInfo($info)
-	{
-		$this->setBackground('question');
-		$this->writeHTMLCell($this->getMainPageWidth(), $this->questionnaireInfoMargin, $this->getMainPageX(), $this->GetY() - $this->questionBorderBottom, "<div></div>",0,1,true,true);
-		$html = "<table><tr><td width=\"" . $this->getMainPageWidth() . "mm\" class=\"questionnaireInfo\">{$info}</td><td></td></tr></table>";
-		$this->writeHTMLCell($this->getMainPageWidth(), 1, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
-	}
-
 	/**
 	 * Create a question that may have multiple response groups
 	 *
-	 * questions (title, text, specifier, helptext, helptextafter)
+	 * questions (title, text, helptext, helptextafter)
 	 *	responses (varname)
 	 *		subquestions 
 	 *			subquestion(text, varname)
@@ -1375,28 +1284,10 @@ class queXMLPDF extends TCPDF {
 	protected function createQuestion($question)
 	{
 		$help = false;
-		$specifier = false;
 		if (isset($question['helptext'])) $help = $question['helptext'];
-		if (isset($question['specifier'])) $specifier = $question['specifier'];
-
-		//If there is some help text for before the question
-		if (isset($question['helptextbefore']))
-		{
-			//Leave a border at the top of the Help Before text
-			if ($this->helpBeforeBorderTop > 0) //question border
-				$this->SetY($this->GetY() + $this->helpBeforeBorderTop,false); //new line
-	
-			$this->setBackground('question');
-			$html = "<table><tr><td width=\"" . $this->getMainPageWidth() . "mm\" class=\"questionHelpBefore\">{$question['helptextbefore']}</td><td></td></tr></table>";
-			$this->writeHTMLCell($this->getMainPageWidth(), 1, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
-
-			//Leave a border at the bottom of the Help Before text
-			if ($this->helpBeforeBorderBottom > 0) //question border
-				$this->SetY($this->GetY() + $this->helpBeforeBorderBottom,false); //new line
-		}
 
 		//Question header
-		$this->drawQuestionHead($question['title'], $question['text'],$help,$specifier);
+		$this->drawQuestionHead($question['title'], $question['text'],$help);
 
 		$text = "";
 		if (isset($question['text'])) $text = $question['text'];
@@ -2108,28 +1999,13 @@ class queXMLPDF extends TCPDF {
 	 * @param string $title The question title (number)
 	 * @param string $text The question text (can be HTML)
 	 * @param string|bool $help The question help text or false if none (can be HTML)
-	 * @param string|bool $specifier The question specifier text or false if none (can be HTML)
 	 */
-	protected function drawQuestionHead($title,$text,$help = false,$specifier = false)
+	protected function drawQuestionHead($title,$text,$help = false)
 	{
 		$this->setBackground('question');
 		//Cell for question number (title) and text including a white border at the bottom
-		
-		$class = "questionTitle";
 
-		//If there is a skip to this question, make the question title bigger
-		if (isset($this->skipToRegistry[$title]))
-			$class = "questionTitleSkipTo";
-
-		$html = "<table><tr><td class=\"$class\" width=\"" . $this->questionTitleWidth . "mm\">$title</td><td class=\"questionText\" width=\"" . ($this->getMainPageWidth() - $this->questionTextRightMargin - $this->questionTitleWidth) . "mm\">$text</td><td></td></tr>";
-
-		if ($specifier !== false)
-		{
-			$html .= "<tr><td></td><td></td><td></td></tr><tr><td class=\"$class\" width=\"" . $this->questionTitleWidth . "mm\">&nbsp;</td><td class=\"questionSpecifier\" width=\"" . ($this->getMainPageWidth() - $this->questionTextRightMargin - $this->questionTitleWidth) . "mm\">$specifier</td><td></td></tr>";
-		}
-
-		$html .= "</table>";
-		
+		$html = "<table><tr><td class=\"questionTitle\" width=\"" . $this->questionTitleWidth . "mm\">$title</td><td class=\"questionText\" width=\"" . $this->questionTextWidth . "mm\">$text</td><td></td></tr></table>";
 
 		$this->writeHTMLCell($this->getMainPageWidth(), 1, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
 

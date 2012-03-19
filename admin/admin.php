@@ -1,17 +1,17 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id$
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id: admin.php 12082 2012-01-17 04:55:39Z tmswhite $
+*/
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
@@ -36,6 +36,15 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
+if (isset($_SERVER['HTTP_REFERER']))
+{
+    $refurl =  $_SERVER['HTTP_REFERER']; //store referer. Can be used for other screens and not just GlobalSettings
+}
+else
+{
+    $refurl =  "";
+}
+LimeExpressionManager::SetSurveyId($surveyid);  // must be called early - it clears internal cache if a new survey is being used
 
 if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {
@@ -76,15 +85,15 @@ if(isset($_SESSION['loginID']))
     sendcacheheaders();
 
     /* Check user right actions for validity
-     Currently existing user rights:
-     `configurator`
-     `create_survey`
-     `create_user`
-     `delete_user`
-     `manage_label`
-     `manage_template`
-     `superadmin`
-     */
+    Currently existing user rights:
+    `configurator`
+    `create_survey`
+    `create_user`
+    `delete_user`
+    `manage_label`
+    `manage_template`
+    `superadmin`
+    */
 
     if ($action == 'importsurvey' || $action == 'copysurvey')
     {
@@ -140,14 +149,14 @@ if(isset($_SESSION['loginID']))
 
 
     /* Check survey right actions for validity
-     Currently existing survey rights:
-     `edit_survey_property`
-     `define_questions`
-     `browse_response`
-     `export`
-     `delete_survey`
-     `activate_survey`
-     */
+    Currently existing survey rights:
+    `edit_survey_property`
+    `define_questions`
+    `browse_response`
+    `export`
+    `delete_survey`
+    `activate_survey`
+    */
 
     if ($action == 'activate')
     {
@@ -246,6 +255,24 @@ if(isset($_SESSION['loginID']))
         exit;
 
     }
+    elseif ($action == 'showlogicfile')
+    {
+        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        {
+            $surveyid = sanitize_int($surveyid);
+            $thissurvey  = getSurveyInfo($surveyid);
+            $_POST['sid'] = $surveyid . '|N';
+            $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
+            $_POST['surveyMode'] = 'survey';
+            $_POST['LEMcalledFromAdmin'] = 'Y';
+            $_POST['assessments'] = $thissurvey['assessments'];
+            if (isset($_GET['gid'])) { $_POST['gid'] = $_GET['gid']; }
+            if (isset($_GET['qid'])) { $_POST['qid'] = $_GET['qid']; }
+            include($rootdir . '/classes/expressions/test/survey_logic_file.php');
+            exit;
+        }
+        else { include('access_denied.php');}
+    }
     elseif ($action=='addgroup' || $action=='editgroup' || $action=='ordergroups')
     {
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))    {$_SESSION['FileManagerContext']="edit:group:$surveyid"; include('questiongrouphandling.php');}
@@ -256,13 +283,13 @@ if(isset($_SESSION['loginID']))
         if(bHasSurveyPermission($surveyid,'responses','read'))    {include('saved.php');}
         else { include('access_denied.php');}
     }
-//<AdV>
+    //<AdV>
     elseif ($action == 'translate')
     {
         if(bHasSurveyPermission($surveyid,'translations','read'))    {$_SESSION['FileManagerContext']="edit:translate:$surveyid"; include('translate.php');}
         else { include('access_denied.php'); }
     }
-//</AdV>
+    //</AdV>
     elseif ($action == 'tokens')
     {
         if(bHasSurveyPermission($surveyid,'tokens','read'))
@@ -428,11 +455,11 @@ if(isset($_SESSION['loginID']))
         include('surveylist.php');
     }
     if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) &&
-        !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) &&
-        !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
-        !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) && !isset($translateoutput) && //<AdV>
-        !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
-        (isset($surveyid) || $action == "" || preg_match('/^(personalsettings|statistics|copysurvey|importsurvey|editsurveysettings|editsurveylocalesettings|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatedefaultvalues|ordergroups|dataentry|newsurvey|globalsettings|editusergroups|editusergroup|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|editusergroupindb|usergroupindb|finaldeluser|delusergroup|mailusergroup|mailsendusergroup)$/',$action)))
+    !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) &&
+    !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
+    !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) && !isset($translateoutput) && //<AdV>
+    !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
+    (isset($surveyid) || $action == "" || preg_match('/^(personalsettings|statistics|copysurvey|importsurvey|editsurveysettings|editsurveylocalesettings|updatesurveysettings|updatesurveysettingsandeditlocalesettings|updatedefaultvalues|ordergroups|dataentry|newsurvey|globalsettings|editusergroups|editusergroup|exportspss|surveyrights|quotas|editusers|login|browse|vvimport|vvexport|setuserrights|modifyuser|setusertemplates|deluser|adduser|userrights|usertemplates|moduser|addusertogroup|deleteuserfromgroup|globalsettingssave|savepersonalsettings|addusergroup|editusergroupindb|usergroupindb|finaldeluser|delusergroup|mailusergroup|mailsendusergroup)$/',$action)))
     {
         if ($action=='editsurveysettings' || $action=='editsurveylocalesettings')
         {
@@ -511,8 +538,103 @@ if(isset($_SESSION['loginID']))
         if(bHasSurveyPermission($surveyid,'responses','create'))    {include('vvimport.php');}
         else { include('access_denied.php');}
     }
+    elseif ($action == 'EMtest') {
+        switch ($subaction) {
+            case 'functions':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/expressions/test/functions.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'stringsplit':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/expressions/test/stringsplit.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'tokenizer':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/expressions/test/tokenizer.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'unit':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/expressions/test/unit.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'strings_with_expressions':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/expressions/test/strings_with_expressions.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'relevance':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/expressions/test/relevance.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'conditions2relevance':
+                if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
+                {
+                    include('../classes/expressions/test/conditions2relevance.php');
+                }
+                else
+                {
+                    include('access_denied.php');
+                }
+                break;
+            case 'navigation_test':
+                if($_SESSION['USER_RIGHT_CONFIGURATOR']==1) {
+                    include('../classes/expressions/test/navigation_test.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'survey_logic_file':
+                if($_SESSION['USER_RIGHT_CONFIGURATOR']==1) {
+                    include('../classes/expressions/test/survey_logic_file.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'upgrade_conditions2relevance':
+                if($_SESSION['USER_RIGHT_CONFIGURATOR']==1) {
+                    include('../classes/expressions/test/upgrade_conditions2relevance.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            default:
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/expressions/test/test.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+        }
+        exit;
+    }
     if ($action=='addquestion'    || $action=='copyquestion' || $action=='editquestion' || $action=='editdefaultvalues' ||
-        $action=='orderquestions' || $action=='ajaxquestionattributes' || $action=='ajaxlabelsetpicker' || $action=='ajaxlabelsetdetails')
+    $action=='orderquestions' || $action=='ajaxquestionattributes' || $action=='ajaxlabelsetpicker' || $action=='ajaxlabelsetdetails')
     {
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
@@ -665,11 +787,11 @@ if(isset($_SESSION['loginID']))
 else
 { //not logged in
 
-sendcacheheaders();
-if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-$adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput.$loginsummary;  // All future output is written into this and then outputted at the end of file
-unset($_SESSION['metaHeader']);
-$adminoutput.= "</div>\n".getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+    sendcacheheaders();
+    if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
+    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput.$loginsummary;  // All future output is written into this and then outputted at the end of file
+    unset($_SESSION['metaHeader']);
+    $adminoutput.= "</div>\n".getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 }
 if (($action=='showphpinfo') && ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1))
 {

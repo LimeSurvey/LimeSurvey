@@ -1459,3 +1459,12 @@ div.translate {
 #translateform textarea:focus{
   outline: blue solid thin;
 }
+
+.textresponses {
+  text-align: center;
+  border: 1px solid #eee;
+  height: 200px;
+  overflow: auto;
+}
+.labelsets-update label{display:block}
+.button-list{text-align:left}

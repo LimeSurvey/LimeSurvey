@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Slovak Translation v0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-17 16:52+0100\n"
+"POT-Creation-Date: 2011-12-17 15:21+0100\n"
 "PO-Revision-Date: 2011-11-28 18:29+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: \n"
@@ -261,541 +261,537 @@ msgstr "Rad (Texty)"
 msgid "File upload"
 msgstr "Nahrať súbor"
 
-#: common_functions.php:622
+#: common_functions.php:269
+msgid "Equation"
+msgstr "Rovnica"
+
+#: common_functions.php:628
 msgid "Active"
 msgstr "Aktívny"
 
-#: common_functions.php:627
+#: common_functions.php:633
 msgid "Expired"
 msgstr "Vypršané"
 
-#: common_functions.php:632
+#: common_functions.php:638
 msgid "Inactive"
 msgstr "Neaktívný"
 
-#: common_functions.php:637 common_functions.php:691 common_functions.php:1301
-#: common_functions.php:1326 common_functions.php:1401
-#: common_functions.php:4999 common_functions.php:5048
-#: common_functions.php:5084 common_functions.php:5120 qanda.php:1986
-#: qanda.php:2138 qanda.php:7511 qanda.php:7565
+#: common_functions.php:643 common_functions.php:697 common_functions.php:1308
+#: common_functions.php:1333 common_functions.php:1408
+#: common_functions.php:4685 common_functions.php:4734
+#: common_functions.php:4770 common_functions.php:4806 qanda.php:1280
+#: qanda.php:1433 qanda.php:6736 qanda.php:6790
 msgid "Please choose..."
 msgstr "Prosím, zvoľte..."
 
-#: common_functions.php:642 common_functions.php:645 common_functions.php:1302
-#: common_functions.php:1327 common_functions.php:1402
-#: common_functions.php:5049 common_functions.php:5085
+#: common_functions.php:648 common_functions.php:651 common_functions.php:1309
+#: common_functions.php:1334 common_functions.php:1409
+#: common_functions.php:4735 common_functions.php:4771
 msgid "None"
 msgstr "Nič"
 
-#: common_functions.php:1257
+#: common_functions.php:1264
 msgid "No email notification"
 msgstr "Žiadna notifikácia e-mailom"
 
-#: common_functions.php:1258
+#: common_functions.php:1265
 msgid "Basic email notification"
 msgstr "Základná notifikácia e-mailom"
 
-#: common_functions.php:1259
+#: common_functions.php:1266
 msgid "Detailed email notification with result codes"
 msgstr "Detailná e-mailová notifikácia s kódmi výsledkov"
 
-#: common_functions.php:1876 common_functions.php:1930
-#: common_functions.php:2466 common_functions.php:2709
-#: common_functions.php:3464 common_functions.php:3478
-#: common_functions.php:3494 common_functions.php:3549
-#: common_functions.php:3568 common_functions.php:3705
-#: common_functions.php:3886 common_functions.php:3895
-#: common_functions.php:3904 common_functions.php:3913 qanda.php:2432
-#: qanda.php:3260 qanda.php:3604
+#: common_functions.php:1884 common_functions.php:1938
+#: common_functions.php:2494 common_functions.php:2762
+#: common_functions.php:3533 common_functions.php:3547
+#: common_functions.php:3563 common_functions.php:3618
+#: common_functions.php:3637 common_functions.php:3785
+#: common_functions.php:3966 common_functions.php:3975
+#: common_functions.php:3984 common_functions.php:3993 qanda.php:1728
+#: qanda.php:2500 qanda.php:2829
 msgid "Other"
 msgstr "Iné"
 
-#: common_functions.php:1884 common_functions.php:1890
-#: common_functions.php:1906 common_functions.php:3038
-#: common_functions.php:3119 common_functions.php:3194
-#: common_functions.php:3207 common_functions.php:3218
-#: common_functions.php:3229 common_functions.php:3240
-#: common_functions.php:3278 common_functions.php:3308
-#: common_functions.php:3319 common_functions.php:3426
-#: common_functions.php:3437 common_functions.php:3457
-#: common_functions.php:3469 common_functions.php:3499
-#: common_functions.php:3512 common_functions.php:3523
-#: common_functions.php:3534 common_functions.php:3553
-#: common_functions.php:3572 common_functions.php:3583
-#: common_functions.php:3594 common_functions.php:3637
-#: common_functions.php:3663 common_functions.php:3698
-#: common_functions.php:3743 common_functions.php:3753
-#: common_functions.php:3867 common_functions.php:3878 qanda.php:5059
-#: qanda.php:5530 qanda.php:5569
+#: common_functions.php:1892 common_functions.php:1898
+#: common_functions.php:1914 common_functions.php:3107
+#: common_functions.php:3188 common_functions.php:3263
+#: common_functions.php:3276 common_functions.php:3287
+#: common_functions.php:3298 common_functions.php:3309
+#: common_functions.php:3347 common_functions.php:3377
+#: common_functions.php:3388 common_functions.php:3495
+#: common_functions.php:3506 common_functions.php:3526
+#: common_functions.php:3538 common_functions.php:3568
+#: common_functions.php:3581 common_functions.php:3592
+#: common_functions.php:3603 common_functions.php:3622
+#: common_functions.php:3641 common_functions.php:3652
+#: common_functions.php:3674 common_functions.php:3717
+#: common_functions.php:3743 common_functions.php:3778
+#: common_functions.php:3823 common_functions.php:3833
+#: common_functions.php:3947 common_functions.php:3958 qanda.php:4276
+#: qanda.php:4738 qanda.php:4778
 msgid "Yes"
 msgstr "Áno"
 
-#: common_functions.php:1891 common_functions.php:1907
-#: common_functions.php:3037 common_functions.php:3118
-#: common_functions.php:3193 common_functions.php:3208
-#: common_functions.php:3219 common_functions.php:3230
-#: common_functions.php:3241 common_functions.php:3279
-#: common_functions.php:3307 common_functions.php:3318
-#: common_functions.php:3425 common_functions.php:3436
-#: common_functions.php:3456 common_functions.php:3468
-#: common_functions.php:3498 common_functions.php:3511
-#: common_functions.php:3522 common_functions.php:3533
-#: common_functions.php:3552 common_functions.php:3571
-#: common_functions.php:3582 common_functions.php:3593
-#: common_functions.php:3636 common_functions.php:3648
-#: common_functions.php:3662 common_functions.php:3697
-#: common_functions.php:3742 common_functions.php:3752
-#: common_functions.php:3866 common_functions.php:3877 qanda.php:5068
-#: qanda.php:5532 qanda.php:5587
+#: common_functions.php:1899 common_functions.php:1915
+#: common_functions.php:3106 common_functions.php:3187
+#: common_functions.php:3262 common_functions.php:3277
+#: common_functions.php:3288 common_functions.php:3299
+#: common_functions.php:3310 common_functions.php:3348
+#: common_functions.php:3376 common_functions.php:3387
+#: common_functions.php:3494 common_functions.php:3505
+#: common_functions.php:3525 common_functions.php:3537
+#: common_functions.php:3567 common_functions.php:3580
+#: common_functions.php:3591 common_functions.php:3602
+#: common_functions.php:3621 common_functions.php:3640
+#: common_functions.php:3651 common_functions.php:3673
+#: common_functions.php:3716 common_functions.php:3728
+#: common_functions.php:3742 common_functions.php:3777
+#: common_functions.php:3822 common_functions.php:3832
+#: common_functions.php:3946 common_functions.php:3957 qanda.php:4285
+#: qanda.php:4740 qanda.php:4796
 msgid "No"
 msgstr "Nie"
 
-#: common_functions.php:1892 common_functions.php:1900
-#: common_functions.php:5962 common_functions.php:5967 qanda.php:1660
-#: qanda.php:2156 qanda.php:2466 qanda.php:2606 qanda.php:2669 qanda.php:5079
-#: qanda.php:5147 qanda.php:5244 qanda.php:5308 qanda.php:5403 qanda.php:5451
-#: qanda.php:5535 qanda.php:5607 qanda.php:5697 qanda.php:5776 qanda.php:5883
-#: qanda.php:5905 qanda.php:5978 qanda.php:6111 qanda.php:6857 qanda.php:6858
-#: qanda.php:7149 qanda.php:7224 qanda.php:7329 qanda.php:7531 qanda.php:7585
+#: common_functions.php:1900 common_functions.php:1908
+#: common_functions.php:5648 common_functions.php:5653 qanda.php:956
+#: qanda.php:1451 qanda.php:1762 qanda.php:1903 qanda.php:1966 qanda.php:4296
+#: qanda.php:4350 qanda.php:4448 qanda.php:4513 qanda.php:4609 qanda.php:4658
+#: qanda.php:4743 qanda.php:4816 qanda.php:4907 qanda.php:4987 qanda.php:5095
+#: qanda.php:5117 qanda.php:5193 qanda.php:5327 qanda.php:6078 qanda.php:6079
+#: qanda.php:6372 qanda.php:6447 qanda.php:6553 qanda.php:6756 qanda.php:6810
 msgid "No answer"
 msgstr "Bez odpovede"
 
-#: common_functions.php:1898 qanda.php:5123
+#: common_functions.php:1906 qanda.php:4340
 msgid "Male"
 msgstr "Muž"
 
-#: common_functions.php:1899 qanda.php:5115
+#: common_functions.php:1907 qanda.php:4332
 msgid "Female"
 msgstr "Žena"
 
-#: common_functions.php:1908 qanda.php:5531 qanda.php:5577
+#: common_functions.php:1916 qanda.php:4739 qanda.php:4786
 msgid "Uncertain"
 msgstr "Neviem"
 
-#: common_functions.php:1914 qanda.php:5692 qanda.php:5735
+#: common_functions.php:1922 qanda.php:4902 qanda.php:4946
 msgid "Increase"
 msgstr "Zvýšenie"
 
-#: common_functions.php:1915 qanda.php:5694 qanda.php:5758
+#: common_functions.php:1923 qanda.php:4904 qanda.php:4969
 msgid "Decrease"
 msgstr "Zníženie"
 
-#: common_functions.php:1916 qanda.php:5693 qanda.php:5746
+#: common_functions.php:1924 qanda.php:4903 qanda.php:4957
 msgid "Same"
 msgstr "Rovnaké"
 
-#: common_functions.php:2249
+#: common_functions.php:2277
 msgid "Response ID"
 msgstr "ID odpovede"
 
-#: common_functions.php:2257
+#: common_functions.php:2285
 #, fuzzy
 msgid "Date submitted"
 msgstr "Dátum odoslania"
 
-#: common_functions.php:2265
+#: common_functions.php:2293
 msgid "Last page"
 msgstr "Posledná strana"
 
-#: common_functions.php:2273
+#: common_functions.php:2301
 msgid "Start language"
 msgstr "Začať jazyk"
 
-#: common_functions.php:2289 index.php:2354 index.php:2521
+#: common_functions.php:2317 index.php:1762 index.php:1929
 msgid "Token"
 msgstr "Identifikátor účastníka-token"
 
-#: common_functions.php:2304
+#: common_functions.php:2332
 msgid "Date last action"
 msgstr "Dátum poslednej akcie"
 
-#: common_functions.php:2316
+#: common_functions.php:2344
 msgid "Date started"
 msgstr "Dátum začatia"
 
-#: common_functions.php:2332
+#: common_functions.php:2360
 msgid "IP address"
 msgstr "IP adresa"
 
-#: common_functions.php:2343
+#: common_functions.php:2371
 #, fuzzy
 msgid "Referrer URL"
 msgstr "Odkazujúce URL"
 
-#: common_functions.php:2497 common_functions.php:2692
+#: common_functions.php:2523 common_functions.php:2743
 msgid "Comment"
 msgstr "Komentár"
 
-#: common_functions.php:2564
+#: common_functions.php:2601
 #, fuzzy
 msgid "Scale 1"
 msgstr "Muž"
 
-#: common_functions.php:2579
+#: common_functions.php:2618
 #, fuzzy
 msgid "Scale 2"
 msgstr "Muž"
 
-#: common_functions.php:2600
+#: common_functions.php:2641
 #, php-format
 msgid "Rank %s"
 msgstr "Hodnotenie %s"
 
-#: common_functions.php:2724
+#: common_functions.php:2780
 msgid "Other comment"
 msgstr "Iný komentár"
 
-#: common_functions.php:2763
+#: common_functions.php:2830
 msgid "Total time"
 msgstr "Celkový čas"
 
-#: common_functions.php:2770
+#: common_functions.php:2837
 msgid "Group time"
 msgstr "čas skupiny"
 
-#: common_functions.php:2777
+#: common_functions.php:2844
 msgid "Question time"
 msgstr "Čas otázky"
 
-#: common_functions.php:3034 common_functions.php:3045
-#: common_functions.php:3080 common_functions.php:3096
-#: common_functions.php:3107 common_functions.php:3115
-#: common_functions.php:3126 common_functions.php:3134
-#: common_functions.php:3142 common_functions.php:3150
-#: common_functions.php:3158 common_functions.php:3166
-#: common_functions.php:3304 common_functions.php:3315
-#: common_functions.php:3398 common_functions.php:3406
-#: common_functions.php:3414 common_functions.php:3422
-#: common_functions.php:3433 common_functions.php:3508
-#: common_functions.php:3541 common_functions.php:3560
-#: common_functions.php:3579 common_functions.php:3644
-#: common_functions.php:3678 common_functions.php:3686
-#: common_functions.php:3694
+#: common_functions.php:3103 common_functions.php:3114
+#: common_functions.php:3149 common_functions.php:3165
+#: common_functions.php:3176 common_functions.php:3184
+#: common_functions.php:3195 common_functions.php:3203
+#: common_functions.php:3211 common_functions.php:3219
+#: common_functions.php:3227 common_functions.php:3235
+#: common_functions.php:3373 common_functions.php:3384
+#: common_functions.php:3467 common_functions.php:3475
+#: common_functions.php:3483 common_functions.php:3491
+#: common_functions.php:3502 common_functions.php:3577
+#: common_functions.php:3610 common_functions.php:3629
+#: common_functions.php:3648 common_functions.php:3724
+#: common_functions.php:3758 common_functions.php:3766
+#: common_functions.php:3774
 msgid "Display"
 msgstr "Zobraziť"
 
-#: common_functions.php:3040
+#: common_functions.php:3109
 msgid "Sort the answer options alphabetically"
 msgstr "Usporiadať odpovede podľa abecedy"
 
-#: common_functions.php:3041
+#: common_functions.php:3110
 msgid "Sort answers alphabetically"
 msgstr "Usporiadaj odpovede podľa abecedy."
 
-#: common_functions.php:3050
+#: common_functions.php:3119
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "Nastavte percentuálnu šírku stĺpca s odpoveďami (1-100)"
 
-#: common_functions.php:3051
+#: common_functions.php:3120
 msgid "Answer width"
 msgstr "Šírka odpovede"
 
-#: common_functions.php:3055 common_functions.php:3063
-#: common_functions.php:3071 common_functions.php:3088
-#: common_functions.php:3182 common_functions.php:3190
-#: common_functions.php:3326 common_functions.php:3350
-#: common_functions.php:3366 common_functions.php:3390
-#: common_functions.php:3444 common_functions.php:3519
-#: common_functions.php:3530 common_functions.php:3922
+#: common_functions.php:3124 common_functions.php:3132
+#: common_functions.php:3140 common_functions.php:3251
+#: common_functions.php:3259 common_functions.php:3395
+#: common_functions.php:3419 common_functions.php:3435
+#: common_functions.php:3459 common_functions.php:3513
+#: common_functions.php:3588 common_functions.php:3599
+#: common_functions.php:4002
 #, fuzzy
 msgid "Logic"
 msgstr "Prihlásiť sa"
 
-#: common_functions.php:3058
+#: common_functions.php:3127
 msgid ""
 "Enter the code of a Multiple choice question to only show the matching "
 "answer options in this question."
 msgstr ""
 
-#: common_functions.php:3059
+#: common_functions.php:3128
 msgid "Array filter"
 msgstr "Filter poľa"
 
-#: common_functions.php:3066
+#: common_functions.php:3135
 msgid ""
 "Enter the code of a Multiple choice question to exclude the matching answer "
 "options in this question."
 msgstr ""
 
-#: common_functions.php:3067
+#: common_functions.php:3136
 #, fuzzy
 msgid "Array filter exclusion"
 msgstr "Filter poľa"
 
-#: common_functions.php:3075
+#: common_functions.php:3144
 msgid ""
 "If one of the subquestions is marked then for each marked subquestion this "
 "value is added as assessment."
 msgstr ""
 
-#: common_functions.php:3076
+#: common_functions.php:3145
 msgid "Assessment value"
 msgstr "Pravidlá hodnotenia"
 
-#: common_functions.php:3083 common_functions.php:3084
+#: common_functions.php:3152 common_functions.php:3153
 msgid "Category separator"
 msgstr "Separátor kategórií"
 
-#: common_functions.php:3091
-msgid "Filter the available answers by this value"
-msgstr "Filtruj dostupné odpovede podľa tejto hodnoty"
-
-#: common_functions.php:3092
-msgid "Code filter"
-msgstr "Filter kódu"
-
-#: common_functions.php:3102
+#: common_functions.php:3171
 msgid ""
 "The answer options will be distributed across the number of columns set here"
 msgstr ""
 
-#: common_functions.php:3103
+#: common_functions.php:3172
 msgid "Display columns"
 msgstr "Filter kódu"
 
-#: common_functions.php:3110
+#: common_functions.php:3179
 msgid "How many rows to display"
 msgstr "Koľko riadkov sa má zobraziť"
 
-#: common_functions.php:3111
+#: common_functions.php:3180
 msgid "Display rows"
 msgstr "Zobraziť riadky"
 
-#: common_functions.php:3121
+#: common_functions.php:3190
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr ""
 
-#: common_functions.php:3122
+#: common_functions.php:3191
 msgid "Display dropdown boxes"
 msgstr ""
 
-#: common_functions.php:3129
+#: common_functions.php:3198
 msgid "Minimum year value in calendar"
 msgstr "Minimálna hodnota roku v kalendári"
 
-#: common_functions.php:3130
+#: common_functions.php:3199
 msgid "Minimum year"
 msgstr "Minimalny rok"
 
-#: common_functions.php:3137
+#: common_functions.php:3206
 msgid "Maximum year value for calendar"
 msgstr "Maximálna hodnota roka v kalendári"
 
-#: common_functions.php:3138
+#: common_functions.php:3207
 msgid "Maximum year"
 msgstr "Maximálny rok"
 
-#: common_functions.php:3145
+#: common_functions.php:3214
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Prefix|Suffix pre rpzbaľovacie zoznamy"
 
-#: common_functions.php:3146
+#: common_functions.php:3215
 msgid "Dropdown prefix/suffix"
 msgstr ""
 
-#: common_functions.php:3153
+#: common_functions.php:3222
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Oddeľovač po-odpovedi|medzi-zoznamy pre rozbaľovacie zoznamy"
 
-#: common_functions.php:3154
+#: common_functions.php:3223
 msgid "Dropdown separator"
 msgstr ""
 
-#: common_functions.php:3161
+#: common_functions.php:3230
 msgid "Enter a header text for the first scale"
 msgstr ""
 
-#: common_functions.php:3162
+#: common_functions.php:3231
 msgid "Header for first scale"
 msgstr ""
 
-#: common_functions.php:3169
+#: common_functions.php:3238
 msgid "Enter a header text for the second scale"
 msgstr ""
 
-#: common_functions.php:3170
+#: common_functions.php:3239
 msgid "Header for second scale"
 msgstr ""
 
-#: common_functions.php:3174 common_functions.php:3334
-#: common_functions.php:3342 common_functions.php:3358
-#: common_functions.php:3374 common_functions.php:3382
-#: common_functions.php:3452
+#: common_functions.php:3243 common_functions.php:3403
+#: common_functions.php:3411 common_functions.php:3427
+#: common_functions.php:3443 common_functions.php:3451
+#: common_functions.php:3521
 msgid "Input"
 msgstr "Vstup"
 
-#: common_functions.php:3177
+#: common_functions.php:3246
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Viacnásobný číselný vstup musí mať súčet rovný tejto hodnote"
 
-#: common_functions.php:3178
+#: common_functions.php:3247
 msgid "Equals sum value"
 msgstr "Súčet je rovný"
 
-#: common_functions.php:3185
+#: common_functions.php:3254
 #, fuzzy
 msgid ""
 "Excludes all other options if a certain answer is selected - just enter the "
 "answer code(s) seperated with a semikolon."
 msgstr "Vylúč všetky ostatné možnosti, ak je vybraná táto "
 
-#: common_functions.php:3186
+#: common_functions.php:3255
 msgid "Exclusive option"
 msgstr "Exkluzívna možnosť"
 
-#: common_functions.php:3196
+#: common_functions.php:3265
 msgid ""
 "If the participant marks all options, uncheck all and check the option set "
 "in the \"Exclusive option\" setting"
 msgstr ""
 
-#: common_functions.php:3197
+#: common_functions.php:3266
 msgid "Auto-check exclusive option if all others are checked"
 msgstr ""
 
-#: common_functions.php:3204 common_functions.php:3215
-#: common_functions.php:3226 common_functions.php:3237
-#: common_functions.php:3247 common_functions.php:3257
-#: common_functions.php:3266 common_functions.php:3275
-#: common_functions.php:3285 common_functions.php:3293
+#: common_functions.php:3273 common_functions.php:3284
+#: common_functions.php:3295 common_functions.php:3306
+#: common_functions.php:3316 common_functions.php:3326
+#: common_functions.php:3335 common_functions.php:3344
+#: common_functions.php:3354 common_functions.php:3362
 msgid "Location"
 msgstr "Poloha"
 
-#: common_functions.php:3209
+#: common_functions.php:3278
 msgid "Store the city?"
 msgstr "Zaznamenať mesto?"
 
-#: common_functions.php:3210
+#: common_functions.php:3279
 msgid "Save city"
 msgstr "Uložiť mesto?"
 
-#: common_functions.php:3220
+#: common_functions.php:3289
 msgid "Store the state?"
 msgstr "Zaznamenať štát?"
 
-#: common_functions.php:3221
+#: common_functions.php:3290
 msgid "Save state"
 msgstr "Uložiť štát?"
 
-#: common_functions.php:3231
+#: common_functions.php:3300
 msgid "Store the postal code?"
 msgstr "Zaznamenať PSČ?"
 
-#: common_functions.php:3232
+#: common_functions.php:3301
 msgid "Save postal code"
 msgstr "Uložiť PSČ?"
 
-#: common_functions.php:3242
+#: common_functions.php:3311
 msgid "Store the country?"
 msgstr "Zaznamenať krajinu?"
 
-#: common_functions.php:3243
+#: common_functions.php:3312
 msgid "Save country"
 msgstr "Uložiť krajinu?"
 
-#: common_functions.php:3250 common_functions.php:3482
+#: common_functions.php:3319 common_functions.php:3551
 msgid "Off"
 msgstr "Vypnuté"
 
-#: common_functions.php:3251
+#: common_functions.php:3320
 msgid "Google Maps"
 msgstr "Google Mapy"
 
-#: common_functions.php:3252
+#: common_functions.php:3321
 msgid ""
 "Activate this to show a map above the input field where the user can select "
 "a location"
 msgstr ""
 
-#: common_functions.php:3253
+#: common_functions.php:3322
 msgid "Use mapping service"
 msgstr "Použiť mapovú službu"
 
-#: common_functions.php:3261
+#: common_functions.php:3330
 msgid "Width of the map in pixel"
 msgstr "Šírka mapy v pixeloch"
 
-#: common_functions.php:3262
+#: common_functions.php:3331
 msgid "Map width"
 msgstr "Šírka mapy"
 
-#: common_functions.php:3270
+#: common_functions.php:3339
 msgid "Height of the map in pixel"
 msgstr "Výška mapy v pixeloch"
 
-#: common_functions.php:3271
+#: common_functions.php:3340
 msgid "Map height"
 msgstr "Výška mapy"
 
-#: common_functions.php:3280
+#: common_functions.php:3349
 msgid "Get the default location using the user's IP address?"
 msgstr ""
 
-#: common_functions.php:3281
+#: common_functions.php:3350
 msgid "IP as default location"
 msgstr ""
 
-#: common_functions.php:3288
+#: common_functions.php:3357
 msgid ""
 "Default coordinates of the map when the page first loads. Format: latitude "
 "[space] longtitude"
 msgstr ""
 
-#: common_functions.php:3289
+#: common_functions.php:3358
 msgid "Default position"
 msgstr "Východzia pozícia"
 
-#: common_functions.php:3297
+#: common_functions.php:3366
 msgid "Map zoom level"
 msgstr "Úroveň priblíženia mapy"
 
-#: common_functions.php:3298
+#: common_functions.php:3367
 msgid "Zoom level"
 msgstr "Úrovaň priblíženia"
 
-#: common_functions.php:3310
+#: common_functions.php:3379
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Schovaj tip, ktorý sa normálne zobrazuje s otázkou"
 
-#: common_functions.php:3311
+#: common_functions.php:3380
 msgid "Hide tip"
 msgstr "Schovaj tip"
 
-#: common_functions.php:3321
+#: common_functions.php:3390
 msgid ""
 "Hide this question at any time. This is useful for including data using "
 "answer prefilling."
 msgstr ""
 
-#: common_functions.php:3322
+#: common_functions.php:3391
 msgid "Always hide this question"
 msgstr "Vždy skryť túto otázku"
 
-#: common_functions.php:3329
+#: common_functions.php:3398
 msgid "Limit the number of possible answers"
 msgstr "Obmedziť množstvo možných odpovedí"
 
-#: common_functions.php:3330
+#: common_functions.php:3399
 msgid "Maximum answers"
 msgstr "Maximálne množstvo odpovedí"
 
-#: common_functions.php:3337
+#: common_functions.php:3406
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Maximálny súčet hodnôt viacnásobných číselných vstupov"
 
-#: common_functions.php:3338
+#: common_functions.php:3407
 msgid "Maximum sum value"
 msgstr "Maximálny súčet"
 
-#: common_functions.php:3345
+#: common_functions.php:3414
 msgid "Maximum value of the numeric input"
 msgstr "Maximálna hodnota číselneho vstupu"
 
-#: common_functions.php:3346 common_functions.php:3402
+#: common_functions.php:3415 common_functions.php:3471
 msgid "Maximum value"
 msgstr "Maximum"
 
-#: common_functions.php:3353
+#: common_functions.php:3422
 #, fuzzy
 msgid ""
 "Enter the SGQA identifier to use the total of a previous question as the "
@@ -804,44 +800,44 @@ msgstr ""
 "SGQA identifikátor na použitie súčtu z predchádzajúcej otázky ako maximum "
 "pre túto otázku"
 
-#: common_functions.php:3354
+#: common_functions.php:3423
 msgid "Max value from SGQA"
 msgstr "Maximálna hodnota z SQGA"
 
-#: common_functions.php:3361
+#: common_functions.php:3430
 msgid "Maximum characters allowed"
 msgstr "Maximálny povolený počet znakov"
 
-#: common_functions.php:3362
+#: common_functions.php:3431
 msgid "Maximum characters"
 msgstr "Maximum znakov"
 
-#: common_functions.php:3369
+#: common_functions.php:3438
 #, fuzzy
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Zaistit minimálny počet možných odpovedí"
 
-#: common_functions.php:3370
+#: common_functions.php:3439
 msgid "Minimum answers"
 msgstr "Minimálne množstvo odpovedí"
 
-#: common_functions.php:3377
+#: common_functions.php:3446
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr ""
 
-#: common_functions.php:3378
+#: common_functions.php:3447
 msgid "Minimum sum value"
 msgstr "Minmálny súčet"
 
-#: common_functions.php:3385
+#: common_functions.php:3454
 msgid "Minimum value of the numeric input"
 msgstr ""
 
-#: common_functions.php:3386 common_functions.php:3410
+#: common_functions.php:3455 common_functions.php:3479
 msgid "Minimum value"
 msgstr "Minimum"
 
-#: common_functions.php:3393
+#: common_functions.php:3462
 #, fuzzy
 msgid ""
 "Enter the SGQA identifier to use the total of a previous question as the "
@@ -850,129 +846,129 @@ msgstr ""
 "SGQA identifikátor na použitie súčtu z predchádzajúcej otázky ako minimum "
 "pre túto otázku"
 
-#: common_functions.php:3394
+#: common_functions.php:3463
 msgid "Minimum value from SGQA"
 msgstr "Minimálna hodnota SGQA"
 
-#: common_functions.php:3401
+#: common_functions.php:3470
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maximálna hodnota pre otázku typu Pole (mult-flexible)"
 
-#: common_functions.php:3409
+#: common_functions.php:3478
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Minimálna hodnota pre otázku typu Pole (mult-flexible)"
 
-#: common_functions.php:3417 common_functions.php:3418
+#: common_functions.php:3486 common_functions.php:3487
 msgid "Step value"
 msgstr "Hodnota kroku"
 
-#: common_functions.php:3428
+#: common_functions.php:3497
 #, fuzzy
 msgid "Use checkbox layout"
 msgstr "Podklad pre kontrolné pole"
 
-#: common_functions.php:3429
+#: common_functions.php:3498
 msgid "Checkbox layout"
 msgstr "Podklad pre kontrolné pole"
 
-#: common_functions.php:3439
+#: common_functions.php:3508
 msgid "Present answer options in reverse order"
 msgstr ""
 
-#: common_functions.php:3440
+#: common_functions.php:3509
 msgid "Reverse answer order"
 msgstr "Opačné poradie otázok"
 
-#: common_functions.php:3447
+#: common_functions.php:3516
 msgid ""
 "SGQA identifier to use total of previous question as total for this question"
 msgstr ""
 "SGQA identifikátor na použitie súčtu z predchádzajúcej otázky ako súčet pre "
 "túto otázku"
 
-#: common_functions.php:3448
+#: common_functions.php:3517
 msgid "Value equals SGQA"
 msgstr "Hodnota rovná SQGA"
 
-#: common_functions.php:3459
+#: common_functions.php:3528
 msgid "Restrict input to integer values"
 msgstr ""
 
-#: common_functions.php:3460
+#: common_functions.php:3529
 msgid "Integer only"
 msgstr "Iba celé číslo"
 
-#: common_functions.php:3472
+#: common_functions.php:3541
 msgid "Allow only numerical input"
 msgstr "Povolené len odpovede v číselnom tvare"
 
-#: common_functions.php:3473
+#: common_functions.php:3542
 msgid "Numbers only"
 msgstr "Len čísla"
 
-#: common_functions.php:3483
+#: common_functions.php:3552
 msgid "Rows"
 msgstr "Riadky"
 
-#: common_functions.php:3484
+#: common_functions.php:3553
 msgid "Columns"
 msgstr "Stĺpce"
 
-#: common_functions.php:3485
+#: common_functions.php:3554
 msgid "Both rows and columns"
 msgstr "RIadky a stĺpce"
 
-#: common_functions.php:3488
+#: common_functions.php:3557
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr ""
 
-#: common_functions.php:3489
+#: common_functions.php:3558
 msgid "Show totals for"
 msgstr ""
 
-#: common_functions.php:3502
+#: common_functions.php:3571
 msgid "Show grand total for either columns or rows"
 msgstr ""
 
-#: common_functions.php:3503
+#: common_functions.php:3572
 msgid "Show grand total"
 msgstr ""
 
-#: common_functions.php:3514
+#: common_functions.php:3583
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr ""
 
-#: common_functions.php:3515
+#: common_functions.php:3584
 msgid "Text inputs"
 msgstr "Textové vstupy"
 
-#: common_functions.php:3525
+#: common_functions.php:3594
 msgid ""
 "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "Spraviť  'Iné:' komentár povinný keď je možnosť 'Iné:' aktivovaná"
 
-#: common_functions.php:3526
+#: common_functions.php:3595
 msgid "'Other:' comment mandatory"
 msgstr "'Iné:' komentár povinný"
 
-#: common_functions.php:3536
+#: common_functions.php:3605
 msgid "Allow only numerical input for 'Other' text"
 msgstr "Povoliť iba číselný vstup pre text do 'Iné:'"
 
-#: common_functions.php:3537
+#: common_functions.php:3606
 msgid "Numbers only for 'Other'"
 msgstr "Iba čísla pre 'Iné'"
 
-#: common_functions.php:3544
+#: common_functions.php:3613
 #, fuzzy
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "Nahraď štítok \"iné\" textom"
 
-#: common_functions.php:3545
+#: common_functions.php:3614
 msgid "Label for 'Other:' option"
 msgstr "Popis pre možnosť 'Iné:'"
 
-#: common_functions.php:3555
+#: common_functions.php:3624
 #, fuzzy
 msgid ""
 "Insert a page break before this question in printable view by setting this "
@@ -981,462 +977,462 @@ msgstr ""
 "Nastavením tejto hodnoty na 1 sa nasledujúca otázka v tlačiteľnej verzii "
 "zobrazí na novej stránke."
 
-#: common_functions.php:3556
+#: common_functions.php:3625
 msgid "Insert page break in printable view"
 msgstr "Vložiť ukočenie stránky vo verzii pre tlač"
 
-#: common_functions.php:3563
+#: common_functions.php:3632
 msgid "Add a prefix to the answer field"
 msgstr "Pridať prefix k poľu odpovede"
 
-#: common_functions.php:3564
+#: common_functions.php:3633
 msgid "Answer prefix"
 msgstr "Predpona odpovede"
 
-#: common_functions.php:3574
+#: common_functions.php:3643
 #, fuzzy
 msgid "Show statistics of this question in the public statistics page"
 msgstr "Ukáž štiatistiky určitej otázky užívateľovi"
 
-#: common_functions.php:3575
+#: common_functions.php:3644
 msgid "Show in public statistics"
 msgstr "Ukázať vo verejných štatistikách"
 
-#: common_functions.php:3585
+#: common_functions.php:3654
 msgid "Present answers in random order"
 msgstr "Ukáž odpovede v náhodnom poradí"
 
-#: common_functions.php:3586
+#: common_functions.php:3655
 msgid "Random answer order"
 msgstr "Náhodné poradie odpovedí"
 
-#: common_functions.php:3590 common_functions.php:3601
-#: common_functions.php:3609 common_functions.php:3617
-#: common_functions.php:3625 common_functions.php:3633
-#: common_functions.php:3659 common_functions.php:3670
+#: common_functions.php:3670 common_functions.php:3681
+#: common_functions.php:3689 common_functions.php:3697
+#: common_functions.php:3705 common_functions.php:3713
+#: common_functions.php:3739 common_functions.php:3750
 msgid "Slider"
 msgstr "Posuvník"
 
-#: common_functions.php:3596 common_functions.php:3597
-#: common_functions.php:3653 common_functions.php:3654
+#: common_functions.php:3676 common_functions.php:3677
+#: common_functions.php:3733 common_functions.php:3734
 msgid "Use slider layout"
 msgstr "Použiť východiskovú zarážku"
 
-#: common_functions.php:3604 common_functions.php:3605
+#: common_functions.php:3684 common_functions.php:3685
 msgid "Slider minimum value"
 msgstr "Minimálna hodnota posuvníka"
 
-#: common_functions.php:3612 common_functions.php:3613
+#: common_functions.php:3692 common_functions.php:3693
 msgid "Slider maximum value"
 msgstr "Maximálna hodnota posuvníka"
 
-#: common_functions.php:3620 common_functions.php:3621
+#: common_functions.php:3700 common_functions.php:3701
 msgid "Slider accuracy"
 msgstr "Presnosť posuvníka"
 
-#: common_functions.php:3628 common_functions.php:3629
+#: common_functions.php:3708 common_functions.php:3709
 msgid "Slider initial value"
 msgstr "Úvodná hodnota posuvníka"
 
-#: common_functions.php:3639
+#: common_functions.php:3719
 msgid ""
 "The handle is displayed at the middle of the slider (this will not set the "
 "initial value)"
 msgstr ""
 
-#: common_functions.php:3640
+#: common_functions.php:3720
 msgid "Slider starts at the middle position"
 msgstr "Posuvník začína v stredovej pozícii"
 
-#: common_functions.php:3649
+#: common_functions.php:3729
 msgid "Yes - stars"
 msgstr "Áno - hviezdy"
 
-#: common_functions.php:3650
+#: common_functions.php:3730
 msgid "Yes - slider with emoticon"
 msgstr "Áno - posuvník so smajlíkom"
 
-#: common_functions.php:3665
+#: common_functions.php:3745
 msgid "Display min and max value under the slider"
 msgstr "Zobraziť min. a max. hodnotu pod posuvníkom"
 
-#: common_functions.php:3666
+#: common_functions.php:3746
 msgid "Display slider min and max value"
 msgstr "Zobraziť min. a max. hodnotu posuvníka"
 
-#: common_functions.php:3673
+#: common_functions.php:3753
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
-#: common_functions.php:3674
+#: common_functions.php:3754
 msgid "Slider left/right text separator"
 msgstr ""
 
-#: common_functions.php:3681
+#: common_functions.php:3761
 msgid "Add a suffix to the answer field"
 msgstr "Pridať suffix k poľu odpovede"
 
-#: common_functions.php:3682
+#: common_functions.php:3762
 msgid "Answer suffix"
 msgstr "Prípona odpovede"
 
-#: common_functions.php:3689
+#: common_functions.php:3769
 msgid "Width of text input box"
 msgstr "Šírka textového vstupného políčka"
 
-#: common_functions.php:3690
+#: common_functions.php:3770
 msgid "Input box width"
 msgstr "Šírka vstupného políčka"
 
-#: common_functions.php:3700
+#: common_functions.php:3780
 #, fuzzy
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr "Použiť dva rozbaľovacie zoznamy namiesto dvoch škál"
 
-#: common_functions.php:3701
+#: common_functions.php:3781
 msgid "Use dropdown boxes"
 msgstr ""
 
-#: common_functions.php:3708
+#: common_functions.php:3788
 msgid "Default"
 msgstr "Východisková"
 
-#: common_functions.php:3709
+#: common_functions.php:3789
 #, fuzzy
 msgid "Nominal"
 msgstr "Čiselný"
 
-#: common_functions.php:3710
+#: common_functions.php:3790
 msgid "Ordinal"
 msgstr "Postupne"
 
-#: common_functions.php:3711
+#: common_functions.php:3791
 #, fuzzy
 msgid "Scale"
 msgstr "Muž"
 
-#: common_functions.php:3713
+#: common_functions.php:3793
 msgid "Set a specific SPSS export scale type for this question"
 msgstr ""
 
-#: common_functions.php:3714
+#: common_functions.php:3794
 msgid "SPSS export scale type"
 msgstr ""
 
-#: common_functions.php:3719 common_functions.php:3727
-#: common_functions.php:3738 common_functions.php:3749
-#: common_functions.php:3759 common_functions.php:3767
-#: common_functions.php:3775 common_functions.php:3783
-#: common_functions.php:3791 common_functions.php:3799
-#: common_functions.php:3807 common_functions.php:3815
-#: common_functions.php:3823 common_functions.php:3831
+#: common_functions.php:3799 common_functions.php:3807
+#: common_functions.php:3818 common_functions.php:3829
 #: common_functions.php:3839 common_functions.php:3847
-#: common_functions.php:3855
+#: common_functions.php:3855 common_functions.php:3863
+#: common_functions.php:3871 common_functions.php:3879
+#: common_functions.php:3887 common_functions.php:3895
+#: common_functions.php:3903 common_functions.php:3911
+#: common_functions.php:3919 common_functions.php:3927
+#: common_functions.php:3935
 msgid "Timer"
 msgstr "Časovač"
 
-#: common_functions.php:3722
+#: common_functions.php:3802
 msgid "Limit time to answer question (in seconds)"
 msgstr "Obmedziť čas na zodpovedanie otázky (v sekundách)"
 
-#: common_functions.php:3723
+#: common_functions.php:3803
 msgid "Time limit"
 msgstr "Časový limit"
 
-#: common_functions.php:3730
+#: common_functions.php:3810
 msgid "Warn and move on"
 msgstr ""
 
-#: common_functions.php:3731
+#: common_functions.php:3811
 msgid "Move on without warning"
 msgstr "Pokračovať bez varovania"
 
-#: common_functions.php:3732
+#: common_functions.php:3812
 msgid "Disable only"
 msgstr "Iba zakázať"
 
-#: common_functions.php:3733
+#: common_functions.php:3813
 msgid "Action to perform when time limit is up"
 msgstr ""
 
-#: common_functions.php:3734
+#: common_functions.php:3814
 msgid "Time limit action"
 msgstr ""
 
-#: common_functions.php:3744
+#: common_functions.php:3824
 msgid "Disable the next button until time limit expires"
 msgstr "Zakázať ďalšie tlačidlo po vypršaní časového limitu"
 
-#: common_functions.php:3745
+#: common_functions.php:3825
 msgid "Time limit disable next"
 msgstr ""
 
-#: common_functions.php:3754
+#: common_functions.php:3834
 msgid "Disable the prev button until the time limit expires"
 msgstr ""
 
-#: common_functions.php:3755
+#: common_functions.php:3835
 #, fuzzy
 msgid "Time limit disable prev"
 msgstr "Čas odoslania"
 
-#: common_functions.php:3762
+#: common_functions.php:3842
 msgid ""
 "The text message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: common_functions.php:3763
+#: common_functions.php:3843
 msgid "Time limit countdown message"
 msgstr "Správa odpočítavania do konca časového limitu"
 
-#: common_functions.php:3770
+#: common_functions.php:3850
 msgid ""
 "CSS Style for the message that displays in the countdown timer during the "
 "countdown"
 msgstr "CSS štýl pre správu, ktorá zobrazuje odpočítavaie času do konca limitu"
 
-#: common_functions.php:3771
+#: common_functions.php:3851
 msgid "Time limit timer CSS style"
 msgstr ""
 
-#: common_functions.php:3778
+#: common_functions.php:3858
 msgid ""
 "Display the 'time limit expiry message' for this many seconds before "
 "performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr ""
 
-#: common_functions.php:3779
+#: common_functions.php:3859
 msgid "Time limit expiry message display time"
 msgstr ""
 
-#: common_functions.php:3786
+#: common_functions.php:3866
 msgid ""
 "The message to display when the time limit has expired (a default message "
 "will display if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:3787
+#: common_functions.php:3867
 msgid "Time limit expiry message"
 msgstr "Správa vypršania časového limitu"
 
-#: common_functions.php:3794
+#: common_functions.php:3874
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "CSS štýl pre \"Správa vypršania časového limitu\""
 
-#: common_functions.php:3795
+#: common_functions.php:3875
 msgid "Time limit message CSS style"
 msgstr "CSS štýl správy časového limitu"
 
-#: common_functions.php:3802
+#: common_functions.php:3882
 msgid ""
 "Display a 'time limit warning' when there are this many seconds remaining in "
 "the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: common_functions.php:3803
+#: common_functions.php:3883
 msgid "1st time limit warning message timer"
 msgstr ""
 
-#: common_functions.php:3810
+#: common_functions.php:3890
 msgid ""
 "The 'time limit warning' will stay visible for this many seconds (will not "
 "turn off if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:3811
+#: common_functions.php:3891
 msgid "1st time limit warning message display time"
 msgstr ""
 
-#: common_functions.php:3818
+#: common_functions.php:3898
 msgid ""
 "The message to display as a 'time limit warning' (a default warning will "
 "display if this is left blank)"
 msgstr ""
 
-#: common_functions.php:3819
+#: common_functions.php:3899
 msgid "1st time limit warning message"
 msgstr ""
 
-#: common_functions.php:3826
+#: common_functions.php:3906
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr ""
 
-#: common_functions.php:3827
+#: common_functions.php:3907
 msgid "1st time limit warning CSS style"
 msgstr ""
 
-#: common_functions.php:3834
+#: common_functions.php:3914
 msgid ""
 "Display the 2nd 'time limit warning' when there are this many seconds "
 "remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: common_functions.php:3835
+#: common_functions.php:3915
 msgid "2nd time limit warning message timer"
 msgstr ""
 
-#: common_functions.php:3842
+#: common_functions.php:3922
 msgid ""
 "The 2nd 'time limit warning' will stay visible for this many seconds (will "
 "not turn off if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:3843
+#: common_functions.php:3923
 msgid "2nd time limit warning message display time"
 msgstr ""
 
-#: common_functions.php:3850
+#: common_functions.php:3930
 msgid ""
 "The 2nd message to display as a 'time limit warning' (a default warning will "
 "display if this is left blank)"
 msgstr ""
 
-#: common_functions.php:3851
+#: common_functions.php:3931
 msgid "2nd time limit warning message"
 msgstr ""
 
-#: common_functions.php:3858
+#: common_functions.php:3938
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr ""
 
-#: common_functions.php:3859
+#: common_functions.php:3939
 msgid "2nd time limit warning CSS style"
 msgstr ""
 
-#: common_functions.php:3863 common_functions.php:3874
+#: common_functions.php:3943 common_functions.php:3954
 msgid "File metadata"
 msgstr ""
 
-#: common_functions.php:3869
+#: common_functions.php:3949
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr "Vyžiadať od účastníka aby nazval nahraný súbor?"
 
-#: common_functions.php:3870
+#: common_functions.php:3950
 msgid "Show title"
 msgstr "Zobraziť názov"
 
-#: common_functions.php:3880
+#: common_functions.php:3960
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr "Vyžiadať od účastníka pridať komentár k nahratému súboru?"
 
-#: common_functions.php:3881
+#: common_functions.php:3961
 msgid "Show comment"
 msgstr "Zobraziť komentár"
 
-#: common_functions.php:3890
+#: common_functions.php:3970
 msgid "The participant cannot upload a single file larger than this size"
 msgstr "Účastník nemôže nahrať súbor o väčšej veľkosti ako je táto"
 
-#: common_functions.php:3891
+#: common_functions.php:3971
 msgid "Maximum file size allowed (in KB)"
 msgstr "Maximálna povolená veľkosť súboru (v KB)"
 
-#: common_functions.php:3899
+#: common_functions.php:3979
 msgid ""
 "Maximum number of files that the participant can upload for this question"
 msgstr "Maximálny počet súborov ktoré musí účastník nahrať pre túto otázku"
 
-#: common_functions.php:3900
+#: common_functions.php:3980
 msgid "Max number of files"
 msgstr "Maximálny počet súborov"
 
-#: common_functions.php:3908
+#: common_functions.php:3988
 msgid ""
 "Minimum number of files that the participant must upload for this question"
 msgstr "Minimálny počet súborov ktoré musí účastník nahrať pre túto otázku"
 
-#: common_functions.php:3909
+#: common_functions.php:3989
 msgid "Min number of files"
 msgstr "Minimálny počet súborov"
 
-#: common_functions.php:3917
+#: common_functions.php:3997
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: common_functions.php:3918
+#: common_functions.php:3998
 msgid "Allowed file types"
 msgstr "Povolené typy súborov"
 
-#: common_functions.php:3925
+#: common_functions.php:4005
 msgid ""
 "Place questions into a specified randomization group, all questions included "
 "in the specified group will appear in a random order"
 msgstr ""
 
-#: common_functions.php:3926
+#: common_functions.php:4006
 msgid "Randomization group name"
 msgstr ""
 
-#: common_functions.php:4112
+#: common_functions.php:4192
 msgid "Version"
 msgstr "Verzia"
 
-#: common_functions.php:4121
+#: common_functions.php:4201
 msgid "Online Manual"
 msgstr "Online Manuál"
 
-#: common_functions.php:4124
+#: common_functions.php:4204
 msgid "Support this project - Donate to "
 msgstr "Podporiť tento projekt - Prispieť "
 
-#: common_functions.php:4127
+#: common_functions.php:4207
 msgid "Visit our website!"
 msgstr "Navštívte naše webové stránky!"
 
-#: common_functions.php:4241
+#: common_functions.php:4321
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Email nebol zaslaný, lebo je aktivovaný demo mód"
 
-#: common_functions.php:4369
+#: common_functions.php:4449
 msgid "SMTP debug output:"
 msgstr ""
 
-#: common_functions.php:4899
+#: common_functions.php:4585
 #, fuzzy, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr "SQL príkaz zlyhal: %s"
 
-#: common_functions.php:5976 index.php:559
+#: common_functions.php:5662 index.php:563
 msgid "Error"
 msgstr "Chyba"
 
-#: common_functions.php:7055
+#: common_functions.php:6384
 msgid "First name"
 msgstr "Meno"
 
-#: common_functions.php:7056
+#: common_functions.php:6385
 msgid "Last name"
 msgstr "Priezvisko"
 
-#: common_functions.php:7057
+#: common_functions.php:6386
 msgid "Email address"
 msgstr "Emailová adresa"
 
-#: common_functions.php:7058
+#: common_functions.php:6387
 msgid "Token code"
 msgstr "Token/Identifikátor účastníka"
 
-#: common_functions.php:7059
+#: common_functions.php:6388
 msgid "Language code"
 msgstr "Kód jazyka"
 
-#: common_functions.php:7060
+#: common_functions.php:6389
 msgid "Invitation sent date"
 msgstr "Pozvánka zaslaná:"
 
-#: common_functions.php:7061
+#: common_functions.php:6390
 msgid "Last Reminder sent date"
 msgstr "Dátum poslednej pripomienky:"
 
-#: common_functions.php:7062
+#: common_functions.php:6391
 msgid "Total numbers of sent reminders"
 msgstr "Celkový počet zaslaných pripomienok"
 
-#: common_functions.php:7063
+#: common_functions.php:6392
 msgid "Uses left"
 msgstr ""
 
-#: common_functions.php:7084
+#: common_functions.php:6413
 #, php-format
 msgid "Attribute %s"
 msgstr "Atribút %s"
@@ -1451,60 +1447,77 @@ msgstr "Súbor zmazaný: %s"
 msgid "Oops, There was an error deleting the file"
 msgstr "Ľutujeme, ale vyskytla sa chyba pri nahrávaní vášho súboru"
 
-#: group.php:82 question.php:50
+#: group.php:97
+msgid ""
+"Please use the LimeSurvey navigation buttons or index.  It appears you "
+"attempted to use the browser back button to re-submit a page."
+msgstr ""
+
+#: group.php:183
 msgid "Save your responses so far"
 msgstr "Uložte Vaše doterajšie odpovede"
 
-#: group.php:184 index.php:2198 question.php:230
+#: group.php:300 index.php:1606
 msgid "Did Not Save"
 msgstr "Neuložené"
 
-#: group.php:185 question.php:231
+#: group.php:301
 msgid ""
 "Your survey responses have not been recorded. This survey is not yet active."
 msgstr ""
 "Vaše odpovede nemohli byť zaznamenané. Tento dotazník nie je ešte aktívny."
 
-#: group.php:190 question.php:237
+#: group.php:306
 msgid "Clear Responses"
 msgstr "Vymazať odpovede"
 
-#: group.php:248 question.php:270
+#: group.php:363
 msgid "Thank you!"
 msgstr "Ďakujeme Vám"
 
-#: group.php:249 question.php:271
+#: group.php:364
 msgid "Your survey responses have been recorded."
 msgstr "Vaše odpovede boli zaznamenané."
 
-#: group.php:261
+#: group.php:376
 msgid "Print your answers."
 msgstr "Vytlačte svoje odpovede."
 
-#: group.php:266 question.php:288
+#: group.php:381
 msgid "or"
 msgstr "alebo"
 
-#: group.php:273 question.php:295
+#: group.php:388
 msgid "View the statistics for this survey."
 msgstr "Pozrite si štatistiky tohto prieskumu"
 
-#: group.php:322 question.php:77
+#: group.php:444
 msgid "Sorry. There is no matching survey."
 msgstr "Prepáčte, žiadny zodpovedajúci dotazník tu nie je. "
 
-#: group.php:352
+#: group.php:460
+#, fuzzy
+msgid "Invalid group number for this survey: "
+msgstr "%d odpovedí na tento dotazník"
+
+#: group.php:465
+msgid ""
+"This group contains no questions.  You must add questions to this group "
+"before you can preview it"
+msgstr ""
+
+#: group.php:482
 msgid "Submit your answers"
 msgstr "Odoslať vaše odpovede."
 
-#: group.php:353
+#: group.php:483
 #, fuzzy
 msgid ""
 "There are no more questions. Please press the <Submit> button to finish this "
 "survey."
 msgstr "Bohužiaľ v tomto prieskume nie je podporvaný tento typ odpovedí."
 
-#: group.php:1212 qanda.php:990 question.php:528
+#: group.php:709 qanda.php:495
 msgid ""
 "One or more mandatory questions have not been answered. You cannot proceed "
 "until these have been completed."
@@ -1512,7 +1525,7 @@ msgstr ""
 "Jedna alebo viacero povinných otázok nebolo zodpovedaných. Nemôžete "
 "pokračovať, kým tieto nebudú zodpovedané."
 
-#: group.php:1218 qanda.php:1017 question.php:534
+#: group.php:715 qanda.php:524
 msgid ""
 "One or more questions have not been answered in a valid manner. You cannot "
 "proceed until these answers are valid."
@@ -1520,7 +1533,7 @@ msgstr ""
 "Jedna alebo viacero otázok nebolo zopdovedaných správnym spôsobom. Nemôžete "
 "pokračovať, kým tieto odpovede nebudú zodpovedané v rámci kritérií."
 
-#: group.php:1224
+#: group.php:721
 msgid ""
 "One or more uploaded files are not in proper format/size. You cannot proceed "
 "until these files are valid."
@@ -1528,7 +1541,7 @@ msgstr ""
 "Jeden alebo viac z nahraných súborov nie je v správnom formáte/nemá správnu "
 "veľkosť. Nemôžete pokračovať pokiaľ nebudú tieto súbory platné."
 
-#: group.php:1305 index.php:3444 question.php:619
+#: group.php:836 index.php:2855
 msgid ""
 "This survey is currently not active. You will not be able to save your "
 "responses."
@@ -1536,33 +1549,33 @@ msgstr ""
 "Tento prieskum momentálne nie je aktívny. Nebudete môcť ukladať vaše "
 "odpovede."
 
-#: group.php:1313 question.php:630
+#: group.php:844
 msgid "Question index"
 msgstr "Index otázky"
 
-#: group.php:1351 index.php:2928 question.php:666
+#: group.php:879 index.php:2336
 msgid "Submit"
 msgstr "Odoslať"
 
-#: index.php:124
+#: index.php:126
 msgid "Token mismatch"
 msgstr "Neznámy identifikátor"
 
-#: index.php:125
+#: index.php:127
 msgid "The token you provided doesn't match the one in your session."
 msgstr ""
 "Prihlasovacie údaje, ktoré ste uviedol(a) nesúhlasia y tými, ktoré vám boli "
 "pridelené."
 
-#: index.php:126 index.php:152
+#: index.php:128 index.php:154
 msgid "Please wait to begin with a new session."
 msgstr "Počkajte prosím, na začiatok novej session."
 
-#: index.php:150
+#: index.php:152
 msgid "Previous session is set to be finished."
 msgstr "Predchádzajúca session bola pripravená pre ukončenie."
 
-#: index.php:151
+#: index.php:153
 msgid ""
 "Your browser reports that it was used previously to answer this survey. We "
 "are resetting the session so that you can start from the beginning."
@@ -1570,25 +1583,25 @@ msgstr ""
 "Váš prehliadač hlási, že už bol využitý na odpovedanie v tomto prieskume. "
 "Obnovujeme session tak aby ste mohli začať od začiatku."
 
-#: index.php:295 index.php:328 printanswers.php:75
+#: index.php:297 index.php:330 printanswers.php:75
 msgid "ERROR"
 msgstr "CHYBA"
 
-#: index.php:296
+#: index.php:298
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "Ospravedlňujeme sa, ale nemáte povolenie na tento krok."
 
-#: index.php:297 index.php:331 index.php:440 index.php:520 index.php:539
-#: index.php:561 printanswers.php:77
+#: index.php:299 index.php:333 index.php:444 index.php:524 index.php:543
+#: index.php:565 printanswers.php:77
 #, php-format
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "Prosím, kontaktujte %s (%s) pre ďalšiu pomoc."
 
-#: index.php:329 printanswers.php:76
+#: index.php:331 printanswers.php:76
 msgid "We are sorry but your session has expired."
 msgstr "Ospravedlňujeme sa ale Vaša session vypršala."
 
-#: index.php:330 printanswers.php:76
+#: index.php:332 printanswers.php:76
 msgid ""
 "Either you have been inactive for too long, you have cookies disabled for "
 "your browser, or there were problems with your connection."
@@ -1596,71 +1609,71 @@ msgstr ""
 "Buď ste boli príliš dlho neaktívny, máte v prehliadači zakázané cookies "
 "alebo je problém s pripojením."
 
-#: index.php:429
+#: index.php:433
 msgid "View statistics"
 msgstr "Zobraziť štatistiky"
 
-#: index.php:436
+#: index.php:440
 msgid "No available surveys"
 msgstr "Nie je dostupný žiadny dotazník"
 
-#: index.php:439
+#: index.php:443
 msgid "You have not provided a survey identification number"
 msgstr "Neposkytli ste identifikačné číslo dotazníka"
 
-#: index.php:441
+#: index.php:445
 msgid "The following surveys are available:"
 msgstr "Tieto dotazníky sú dostupné:"
 
-#: index.php:519
+#: index.php:523
 msgid "This survey is no longer available."
 msgstr "Tento dotazník už nie je dostupný."
 
-#: index.php:538
+#: index.php:542
 msgid "This survey is not yet started."
 msgstr "Tento dotazník ešte nie je aktívny."
 
-#: index.php:560
+#: index.php:564
 msgid "You have already completed this survey."
 msgstr "Tento dotazník ste už vyplnil(a)."
 
-#: index.php:618
+#: index.php:622
 msgid "You did not provide a name"
 msgstr "Neuviedol(a) ste meno"
 
-#: index.php:623
+#: index.php:627
 msgid "You did not provide a password"
 msgstr "Neuviedol(a) ste heslo"
 
-#: index.php:635 index.php:2276 index.php:2498
+#: index.php:639 index.php:1684 index.php:1906 register.php:72
 msgid "The answer to the security question is incorrect."
 msgstr "Odpoveď na bezpečnostnú otázku je nesprávna"
 
-#: index.php:653 index.php:657
+#: index.php:658 index.php:662
 msgid "Load Unfinished Survey"
 msgstr "Načítať nedokončený dotazník"
 
-#: index.php:693 index.php:2348 index.php:2420 index.php:2464 index.php:2501
+#: index.php:698 index.php:1756 index.php:1828 index.php:1872 index.php:1909
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 "Toto je riadený dotazník. K účasti potrebujete platné prihlasovacie údaje."
 
-#: index.php:694 index.php:2421 index.php:2465
+#: index.php:699 index.php:1829 index.php:1873
 msgid ""
 "The token you have provided is either not valid, or has already been used."
 msgstr ""
 "Prihlasovacie údaje, ktoré ste uviedol(a) sú neplatné alebo už boli použité."
 
-#: index.php:695 index.php:731 index.php:2422 index.php:2466 index.php:2657
+#: index.php:700 index.php:736 index.php:1830 index.php:1874 index.php:2065
 #, php-format
 msgid "For further information please contact %s"
 msgstr "Pre bližšie informácie kontaktujte %s"
 
-#: index.php:729
+#: index.php:734
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr "Ospravedlňujeme sa, ale tohto prieskumu sa nemôžete zúčastniť ."
 
-#: index.php:730
+#: index.php:735
 msgid ""
 "Your token seems to be valid but can be used only during a certain time "
 "period."
@@ -1668,40 +1681,40 @@ msgstr ""
 "Váš token - identifikátor účastníka se javí ako platný, ale môže byť použitý "
 "iba v určitom období."
 
-#: index.php:907
+#: index.php:887
 msgid "Your responses were successfully saved."
 msgstr "Vaše odpovede boli úspešne uložené."
 
-#: index.php:949
+#: index.php:929
 msgid "There is no matching saved survey"
 msgstr "Medzi uloženými dotazníkmi nie je žiadny zodpovedajúci"
 
-#: index.php:1051
+#: index.php:1031
 #, php-format
 msgid "You have completed %s%% of this survey"
 msgstr "Dokončili ste %s%% tohto prieskumu."
 
-#: index.php:1706
+#: index.php:1215
 #, php-format
 msgid ""
 "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr ""
 "Prepáčte, nahratý súbor (%s) je väčší ako povolená veľkosť súboru %s KB."
 
-#: index.php:1719 index.php:1725
+#: index.php:1228 index.php:1234
 #, php-format
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
-#: index.php:1737
+#: index.php:1246
 msgid "The minimum number of files has not been uploaded."
 msgstr "Minimálny počet súborov nebol nahratý."
 
-#: index.php:2199
+#: index.php:1607
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Stala sa neočakávaná chyba a Vaše odpovede nemohli byť uložené."
 
-#: index.php:2202
+#: index.php:1610
 msgid ""
 "Your responses have not been lost and have been emailed to the survey "
 "administrator and will be entered into our database at a later point."
@@ -1709,31 +1722,31 @@ msgstr ""
 "Vaše odpovede neboli stratené, boli zaslané e-mailom administrátorovi "
 "dotazníka a do databázy budú uložené neskôr."
 
-#: index.php:2207
+#: index.php:1615
 msgid "An error occurred saving a response to survey id"
 msgstr "Pri ukladaní odpovede k id dotazníka sa stala chyba"
 
-#: index.php:2208
+#: index.php:1616
 msgid "DATA TO BE ENTERED"
 msgstr "DÁTA, KTORÉ MAJÚ BYŤ VLOŽENÉ"
 
-#: index.php:2213
+#: index.php:1621
 msgid "SQL CODE THAT FAILED"
 msgstr "SQL KÓD, KTORÝ ZLYHAL"
 
-#: index.php:2215
+#: index.php:1623
 msgid "ERROR MESSAGE"
 msgstr "CHYBOVÁ SPRÁVA"
 
-#: index.php:2217
+#: index.php:1625
 msgid "Error saving results"
 msgstr "Chyba pri ukladaní výsledku"
 
-#: index.php:2225
+#: index.php:1633
 msgid "Try to submit again"
 msgstr "Zkúsiť odoslať znovu"
 
-#: index.php:2279
+#: index.php:1687
 msgid ""
 "Please confirm access to survey by answering the security question below and "
 "click continue."
@@ -1741,15 +1754,15 @@ msgstr ""
 "Prosím, potvrďte prístup k dotazníku odpovedaním na bezpečnostnú otázku "
 "uvedenú dole a stlačte pokračovať."
 
-#: index.php:2303
+#: index.php:1711
 msgid "Security question:"
 msgstr "Bezpečnostná otázka:"
 
-#: index.php:2308 index.php:2383 index.php:2550
+#: index.php:1716 index.php:1791 index.php:1958
 msgid "Continue"
 msgstr "Pokračovať"
 
-#: index.php:2349 index.php:2506
+#: index.php:1757 index.php:1914
 msgid ""
 "If you have been issued a token, please enter it in the box below and click "
 "continue."
@@ -1757,11 +1770,11 @@ msgstr ""
 "Pokiaľ ste bol vybavený identifikátorom, prosím, zapíšte ho nižšie do "
 "uvedeného poľa a kliknite pokračovať."
 
-#: index.php:2379 index.php:2547
+#: index.php:1787 index.php:1955
 msgid "Security Question"
 msgstr "Bezpečnostná otázka"
 
-#: index.php:2525
+#: index.php:1933
 msgid ""
 "Please confirm the token by answering the security question below and click "
 "continue."
@@ -1769,11 +1782,11 @@ msgstr ""
 "Prosím, potvrďte identifikátor odpovedaním bezpečnostnej otázky a stlačte "
 "pokračovať."
 
-#: index.php:2539
+#: index.php:1947
 msgid "Token:"
 msgstr "Token-Identifikátor účastníka:"
 
-#: index.php:2656
+#: index.php:2064
 msgid ""
 "This survey does not yet have any questions and cannot be tested or "
 "completed."
@@ -1781,11 +1794,11 @@ msgstr ""
 "Tento dotazník zatiaľ neobsahuje žiadne otázky a nemože byť testovaný alebo "
 "vyplnený."
 
-#: index.php:2906 index.php:3327
+#: index.php:2314 index.php:2735
 msgid "Previous"
 msgstr "Predchádzajúci"
 
-#: index.php:2912 index.php:2918 index.php:2923
+#: index.php:2320 index.php:2326 index.php:2331
 msgid "Next"
 msgstr "Ďalší"
 
@@ -1807,32 +1820,32 @@ msgstr "Pre tento prieskum neboli nastavené žiadne kvóty"
 msgid "You have been already removed from this survey."
 msgstr "Tento dotazník ste už vyplnil(a)."
 
-#: printanswers.php:166
+#: printanswers.php:171
 msgid "PDF Export"
 msgstr "PDF Export"
 
-#: printanswers.php:173
+#: printanswers.php:178
 msgid "Survey name (ID)"
 msgstr "Názov dotazníka (ID)"
 
-#: printanswers.php:175
+#: printanswers.php:180
 msgid "Survey name (ID):"
 msgstr "Názov prieskumu (ID):"
 
-#: printanswers.php:191
+#: printanswers.php:200
 msgid "Question"
 msgstr "Otázka"
 
-#: printanswers.php:191
+#: printanswers.php:200
 msgid "Your answer"
 msgstr "Vaša odpoveď"
 
-#: qanda.php:595 qanda.php:596 qanda.php:604 qanda.php:605 qanda.php:613
-#: qanda.php:614
+#: qanda.php:130 qanda.php:131 qanda.php:139 qanda.php:140 qanda.php:148
+#: qanda.php:149
 msgid "Choose one of the following answers"
 msgstr "Prosím, zvoľte iba jednu z možností"
 
-#: qanda.php:621
+#: qanda.php:156
 msgid ""
 "Click on an item in the list on the left, starting with your highest ranking "
 "item, moving through to your lowest ranking item."
@@ -1840,109 +1853,80 @@ msgstr ""
 "V zozname vľavo vyberte vhodné položky, začnite s tou, ktorú hodnotíte "
 "najvyššie a pokračujte až po tú, ktorú hodnotíte najnižšie v rebríčku."
 
-#: qanda.php:625 qanda.php:626
+#: qanda.php:160 qanda.php:161
 #, fuzzy, php-format
 msgid "Check at least %d item"
 msgid_plural "Check at least %d items"
 msgstr[0] "Prosím, ohodnoťte aspoň %d položku/y"
 msgstr[1] "Prosím, ohodnoťte aspoň %d položku/y"
 
-#: qanda.php:639 qanda.php:640 qanda.php:682 qanda.php:683
+#: qanda.php:174 qanda.php:175 qanda.php:217 qanda.php:218
 msgid "Check any that apply"
 msgstr ""
 "Môžete vybrať viacero možností. Vyberte všetky, ktoré zodpovedajú "
 "skutočnosti."
 
-#: qanda.php:647 qanda.php:648 qanda.php:690 qanda.php:691
+#: qanda.php:182 qanda.php:183 qanda.php:225 qanda.php:226
 #, php-format
 msgid "Check between %d and %d answers"
 msgstr "Vyberte medzi %d a %d odpoveďami"
 
-#: qanda.php:652 qanda.php:653 qanda.php:695 qanda.php:696
+#: qanda.php:187 qanda.php:188 qanda.php:230 qanda.php:231
 #, php-format
 msgid "Check at most %d answers"
 msgstr "Vyberte najviac %d odpovede"
 
-#: qanda.php:657 qanda.php:658
+#: qanda.php:192 qanda.php:193
 #, php-format
 msgid "Check at least %d answer"
 msgid_plural "Check at least %d answers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: qanda.php:669 qanda.php:670
+#: qanda.php:204 qanda.php:205
 msgid "Choose your language"
 msgstr "Zvoľte si Váš jazyk"
 
-#: qanda.php:700 qanda.php:701
+#: qanda.php:235 qanda.php:236
 #, php-format
 msgid "Check at least %d answers"
 msgstr "Vyberte najmenej %d odpovede"
 
-#: qanda.php:713 qanda.php:714
+#: qanda.php:248 qanda.php:249
 #, php-format
 msgid "At least %d files must be uploaded for this question"
 msgstr ""
 
-#: qanda.php:784 qanda.php:785
+#: qanda.php:322 qanda.php:323
 msgid "*"
 msgstr "*"
 
-#: qanda.php:877
-msgid "This question is mandatory"
-msgstr "Na otázku je nutné odpovedať."
-
-#: qanda.php:889
-msgid "Please complete all parts"
-msgstr "Prosím, dokončite všetky časti"
-
-#: qanda.php:892
-msgid "Please check the items"
-msgstr "Prosím, skontrolujte položku"
-
-#: qanda.php:895
-msgid "Please rank all items"
-msgstr "Prosím, zoraďte všetky položky"
-
-#: qanda.php:899
-msgid "Please check at least one item."
-msgstr "Prosím, vyberte aspoň jednu položku."
-
-#: qanda.php:912 qanda.php:2029 qanda.php:2329 qanda.php:2988 qanda.php:3474
-msgid "Other:"
-msgstr "Iné"
-
-#: qanda.php:914
-#, php-format
-msgid "If you choose '%s' you must provide a description."
-msgstr "Ak vyberiete '%s', musíte uviesť zdôvodnenie."
-
-#: qanda.php:944
+#: qanda.php:442
 msgid "This question must be answered correctly"
 msgstr "Otázka musí byť zodpovedaná presne."
 
-#: qanda.php:983
+#: qanda.php:488
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr ""
 "Nemôžete pokračovať dokým nezadáte nejaký text pre jednu alebo viacero "
 "otázok."
 
-#: qanda.php:1041
+#: qanda.php:549
 msgid ""
 "One or more file have either exceeded the filesize/are not in the right "
 "format or the minimum number of required files have not been uploaded. You "
 "cannot proceed until these have been completed"
 msgstr ""
 
-#: qanda.php:1084
+#: qanda.php:592
 msgid "Your time to answer this question has expired"
 msgstr "Váš čas na zodpovedanie tejto otázky vypršal"
 
-#: qanda.php:1087
+#: qanda.php:595
 msgid "Time remaining"
 msgstr "Zostávajúci čas"
 
-#: qanda.php:1088 qanda.php:1091
+#: qanda.php:596 qanda.php:599
 msgid ""
 "Your time to answer this question has nearly expired. You have {TIME} "
 "remaining."
@@ -1950,96 +1934,100 @@ msgstr ""
 "Váš čas na odpovedanie tejto otázky už skoro vypršal. Zostáva vám ešte "
 "{TIME} času. "
 
-#: qanda.php:1244 qanda.php:1262 qanda.php:1293
+#: qanda.php:752 qanda.php:770 qanda.php:801
 msgid "hours"
 msgstr "hodiny"
 
-#: qanda.php:1245 qanda.php:1263 qanda.php:1294
+#: qanda.php:753 qanda.php:771 qanda.php:802
 msgid "mins"
 msgstr "minuty"
 
-#: qanda.php:1246 qanda.php:1264 qanda.php:1295 qanda.php:1296
+#: qanda.php:754 qanda.php:772 qanda.php:803 qanda.php:804
 msgid "seconds"
 msgstr "sekundy"
 
-#: qanda.php:1793
+#: qanda.php:1087
 msgid "Day"
 msgstr "Deň"
 
-#: qanda.php:1810
+#: qanda.php:1104
 msgid "Month"
 msgstr "Mesiac"
 
-#: qanda.php:1812
+#: qanda.php:1106
 msgid "Jan"
 msgstr "Jan"
 
-#: qanda.php:1813
+#: qanda.php:1107
 msgid "Feb"
 msgstr "Feb"
 
-#: qanda.php:1814
+#: qanda.php:1108
 msgid "Mar"
 msgstr "Mar"
 
-#: qanda.php:1815
+#: qanda.php:1109
 msgid "Apr"
 msgstr "Apr"
 
-#: qanda.php:1816
+#: qanda.php:1110
 msgid "May"
 msgstr "Máj"
 
-#: qanda.php:1817
+#: qanda.php:1111
 msgid "Jun"
 msgstr "Jún"
 
-#: qanda.php:1818
+#: qanda.php:1112
 msgid "Jul"
 msgstr "Júl"
 
-#: qanda.php:1819
+#: qanda.php:1113
 msgid "Aug"
 msgstr "Aug"
 
-#: qanda.php:1820
+#: qanda.php:1114
 msgid "Sep"
 msgstr "Sep"
 
-#: qanda.php:1821
+#: qanda.php:1115
 msgid "Oct"
 msgstr "Okt"
 
-#: qanda.php:1822
+#: qanda.php:1116
 msgid "Nov"
 msgstr "Nov"
 
-#: qanda.php:1823
+#: qanda.php:1117
 msgid "Dec"
 msgstr "Dec"
 
-#: qanda.php:1840
+#: qanda.php:1134
 msgid "Year"
 msgstr "Rok"
 
-#: qanda.php:1904 qanda.php:4657 qanda.php:4937 qanda.php:5016
+#: qanda.php:1198 qanda.php:3874 qanda.php:4154 qanda.php:4233
 msgid "Answer"
 msgstr "Odpoveď"
 
-#: qanda.php:1951
+#: qanda.php:1245
 msgid "Date picker"
 msgstr ""
 
-#: qanda.php:1958
+#: qanda.php:1252
 #, php-format
 msgid "Format: %s"
 msgstr "Formát: %s"
 
-#: qanda.php:2210
+#: qanda.php:1324 qanda.php:1625 qanda.php:2288 qanda.php:2699
+msgid "Other:"
+msgstr "Iné"
+
+#: qanda.php:1505
 msgid "Other answer"
 msgstr "Iná odpoveď"
 
-#: qanda.php:2234 qanda.php:2503
+#: qanda.php:1529 qanda.php:1799
 #, fuzzy, php-format
 msgid ""
 "You've selected the \"%s\" answer for question \"%s\". Please also fill in "
@@ -2048,23 +2036,23 @@ msgstr ""
 "Vybrali ste odpoveď \"ďalšie\"  pre otázku \"%s\". Vyplňte prosím, aj "
 "položku \"ďalšie komentáre\"."
 
-#: qanda.php:2572
+#: qanda.php:1869
 msgid "Please enter your comment here"
 msgstr "Vaše komentáre napíšte, prosím, sem"
 
-#: qanda.php:2842
+#: qanda.php:2140
 msgid "Remove this item"
 msgstr "Odstrániť túto položku"
 
-#: qanda.php:2870
+#: qanda.php:2169
 msgid "Your Choices"
 msgstr "Vaše voľby"
 
-#: qanda.php:2881
+#: qanda.php:2180
 msgid "Your Ranking"
 msgstr "Vaše poradie"
 
-#: qanda.php:2889
+#: qanda.php:2188
 msgid ""
 "Click on the scissors next to each item on the right to remove the last "
 "entry in your ranked list"
@@ -2072,24 +2060,24 @@ msgstr ""
 "Kliknite na nožnice umiestnené napravo od každej položky aby ste odstránili "
 "posledný záznam vo vami vybranom rebríčku"
 
-#: qanda.php:2900 qanda.php:2915
+#: qanda.php:2199 qanda.php:2214
 #, php-format
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] ""
 msgstr[1] ""
 
-#: qanda.php:3327 qanda.php:3658
+#: qanda.php:2567 qanda.php:2883
 #, php-format
 msgid "Please choose at most %d answers for question \"%s\""
 msgstr "Prosím, vyberte najviac %d odpovedí pre otázku \"%s\""
 
-#: qanda.php:3348 qanda.php:3683
+#: qanda.php:2588 qanda.php:2908
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Prosím, vyberte najmenej %d odpovede pre otázku \"%s\""
 
-#: qanda.php:3383 qanda.php:3714
+#: qanda.php:2623 qanda.php:2939
 #, php-format
 msgid ""
 "You've marked the \"other\" field for question \"%s\". Please also fill in "
@@ -2098,100 +2086,92 @@ msgstr ""
 "Vyznačilii ste položku \"ďalšie\"  pre otázku \"%s\". Vyplňte prosím, aj "
 "položku \"ďalšie komentáre\"."
 
-#: qanda.php:3586 qanda.php:3614
+#: qanda.php:2811 qanda.php:2839
 msgid "Make a comment on your choice here:"
 msgstr "Tu uveďte komentár k Vašej voľbe:"
 
-#: qanda.php:3811
+#: qanda.php:3036
 msgid "Upload files"
 msgstr "Odoslať súbory"
 
-#: qanda.php:3815
+#: qanda.php:3040
 msgid "Upload your files"
 msgstr "Odoslať tvoje súbory"
 
-#: qanda.php:3816
+#: qanda.php:3041
 msgid "Return to survey"
 msgstr "Vrátiť sa do prieskumu."
 
-#: qanda.php:3994 qanda.php:4296 qanda.php:5542 qanda.php:7381
+#: qanda.php:3220 qanda.php:3523 qanda.php:4750 qanda.php:6605
 msgid "Error: This question has no answers."
 msgstr "Chyba: Táto otázka nemá odpovede."
 
-#: qanda.php:4438
+#: qanda.php:3665
 msgid "Only numbers may be entered in these fields"
 msgstr "Do týchto polí môžete vložiť iba čísla"
 
-#: qanda.php:4442
+#: qanda.php:3669
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Celkový počet vstupov nesmie presiahnuť %d"
 
-#: qanda.php:4446
+#: qanda.php:3673
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Celkový počet vstupov musí byť rovný %d"
 
-#: qanda.php:4450
+#: qanda.php:3677
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Celkový počet vstupov musí byť aspoň %s"
 
-#: qanda.php:4458
+#: qanda.php:3685
 msgid "Remaining: "
 msgstr "Ostáva:"
 
-#: qanda.php:4460
+#: qanda.php:3687
 msgid "Total: "
 msgstr "Celkom:"
 
-#: qanda.php:4506 qanda.php:4512 qanda.php:4548 qanda.php:4559
+#: qanda.php:3733 qanda.php:3739 qanda.php:3769 qanda.php:3778
 msgid ""
 "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odpoveď je chybná. Celkový počet záznamov nesmie byť vyšší ako"
 
-#: qanda.php:4525 qanda.php:4533
+#: qanda.php:3750 qanda.php:3756
 #, php-format
 msgid ""
 "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Odpoveď je chybná. Celkový počet záznamov by mal dosiahnuť aspoň %s"
 
-#: qanda.php:4661
+#: qanda.php:3878
 msgid "Only numbers may be entered in this field"
 msgstr "Do tohto poľa je možné vložiť iba čísla"
 
-#: qanda.php:4838 qanda.php:4839
+#: qanda.php:4055 qanda.php:4056
 msgid ""
 "Drag and drop the pin to the desired location. You may also right click on "
 "the map to move the pin."
 msgstr ""
 
-#: qanda.php:6091
+#: qanda.php:5307
 msgid "Please choose"
 msgstr "Prosím, zvoľte"
 
-#: qanda.php:6135 qanda.php:6481 qanda.php:6818 qanda.php:6970 qanda.php:7611
+#: qanda.php:5351 qanda.php:5699 qanda.php:6038 qanda.php:6192 qanda.php:6836
 #, fuzzy
 msgid ""
 "Error: There are no answer options for this question and/or they don't exist "
 "in this language."
 msgstr "Chyba: Popis použivaný pre túto otázku nie je dostupný v tomto jazyku."
 
-#: qanda.php:6736
+#: qanda.php:5956
 msgid "..."
 msgstr "..."
 
-#: qanda.php:6964
+#: qanda.php:6186
 msgid "Error: There are no answers defined for this question."
 msgstr "Chyba: Pre túto otázku neboli zaznačené žiadne odpovede."
-
-#: question.php:283
-msgid "Click here to print your answers."
-msgstr "Stlačte sem pre vytlačenie Vašich odpovedí."
-
-#: question.php:540
-msgid "One or more uploaded files do not satisfy the criteria"
-msgstr "Jeden alebo viac z nahraných súborov nespĺňa kritériá"
 
 #: register.php:79
 msgid "The email you used is not valid. Please try again."
@@ -2218,31 +2198,31 @@ msgstr ""
 msgid "Survey Administrator"
 msgstr "Administrátor dotazníku"
 
-#: replacements.php:201
+#: replacements.php:203
 msgid "There are no questions in this survey"
 msgstr "V tomto dotazníku nie sú žiadne otázky"
 
-#: replacements.php:205
+#: replacements.php:207
 msgid "There is 1 question in this survey"
 msgstr "Tento dotazník obsahuje 1 otázku"
 
-#: replacements.php:209
+#: replacements.php:211
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Dotazník obsahuje {NUMBEROFQUESTIONS} otázok."
 
-#: replacements.php:281
+#: replacements.php:283
 msgid "Exit and Clear Survey"
 msgstr "Ukončiť a vymazať dotazník"
 
-#: replacements.php:282
+#: replacements.php:284
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Ste si istý(á), že chcete vymazať všetky Vaše odpovede?"
 
-#: replacements.php:307 replacements.php:311 replacements.php:331
+#: replacements.php:309 replacements.php:313 replacements.php:333
 msgid "Resume Later"
 msgstr "Obnoviť neskôr"
 
-#: replacements.php:377
+#: replacements.php:379
 msgid ""
 "If you want to check any of the answers you have made, and/or change them, "
 "you can do that now by clicking on the [<< prev] button and browsing through "
@@ -2252,11 +2232,11 @@ msgstr ""
 "zmeniť, môžete tak spraviť teraz, kliknutím na tlačítko [<< predchádzajúce] "
 "a prechádzaním Vašich odpovedí."
 
-#: replacements.php:386 replacements.php:397
+#: replacements.php:388 replacements.php:399
 msgid "Restart this Survey"
 msgstr "Reštartovať tento Dotazník"
 
-#: replacements.php:401
+#: replacements.php:403
 msgid ""
 "To remain anonymous please use a pseudonym as your username, also an email "
 "address is not required."
@@ -2264,47 +2244,47 @@ msgstr ""
 "Pre zachovanie anonymity prosím použíte preudonym ako používateľské meno, "
 "taktiež emailová adresa nie je požadovaná."
 
-#: replacements.php:413
+#: replacements.php:415
 msgid "Return To Survey"
 msgstr "Vrátiť sa k dotazníku"
 
-#: replacements.php:415 save.php:385
+#: replacements.php:417 save.php:191
 msgid "Name"
 msgstr "Meno"
 
-#: replacements.php:421 replacements.php:453 save.php:386
+#: replacements.php:423 replacements.php:455 save.php:192
 msgid "Password"
 msgstr "Heslo"
 
-#: replacements.php:427
+#: replacements.php:429
 msgid "Repeat Password"
 msgstr "Zopakovať heslo"
 
-#: replacements.php:433
+#: replacements.php:435
 msgid "Your Email"
 msgstr "Váš Email"
 
-#: replacements.php:444
+#: replacements.php:446
 msgid "Save Now"
 msgstr "Uložiť teraz"
 
-#: replacements.php:447
+#: replacements.php:449
 msgid "Saved name"
 msgstr "Meno"
 
-#: replacements.php:465
+#: replacements.php:467
 msgid "Load Now"
 msgstr "Nahrať teraz"
 
-#: replacements.php:548
+#: replacements.php:550
 msgid "Answers Cleared"
 msgstr "Odpovede vymazané"
 
-#: replacements.php:551
+#: replacements.php:553
 msgid "Your Assessment"
 msgstr "Vaše hodnotenie"
 
-#: replacements.php:552
+#: replacements.php:554
 msgid ""
 "Caution: JavaScript execution is disabled in your browser. You may not be "
 "able to answer all questions in this survey. Please, verify your browser "
@@ -2314,31 +2294,31 @@ msgstr ""
 "stať, že nebudete môcť zodpovedať všetky otázky v tomto dotazníku. Prosím, "
 "skontrolujte nastavenia Vášho prehliadača."
 
-#: replacements.php:554
+#: replacements.php:556
 msgid "Close this window"
 msgstr "Zavri okno"
 
-#: replacements.php:564
+#: replacements.php:566
 msgid "Load A Previously Saved Survey"
 msgstr "Načítať skôr uložený dotazník"
 
-#: replacements.php:565
+#: replacements.php:567
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Môžete si načítať dotazník, ktorý ste skôr uložil(a)."
 
-#: replacements.php:565
+#: replacements.php:567
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Napíšte 'meno', ktoré ste použil(a) pri ukladaní súboru, a heslo."
 
-#: replacements.php:571
+#: replacements.php:573
 msgid "A Note On Privacy"
 msgstr "Prehlásenie o zachovaní súkromia"
 
-#: replacements.php:571
+#: replacements.php:573
 msgid "This survey is anonymous."
 msgstr "Tento dotazník je anonymný."
 
-#: replacements.php:571
+#: replacements.php:573
 msgid ""
 "The record kept of your survey responses does not contain any identifying "
 "information about you unless a specific question in the survey has asked for "
@@ -2358,15 +2338,15 @@ msgstr ""
 "Neexistuje spôsob, ako spárovať identifikátor s odpoveďami v tomto "
 "dotazníku. "
 
-#: replacements.php:589
+#: replacements.php:591
 msgid "You must be registered to complete this survey"
 msgstr "Aby bolo možné dokončiť tento dotazník, musíte sa zaregistrovať."
 
-#: replacements.php:590
+#: replacements.php:592
 msgid "You may register for this survey if you wish to take part."
 msgstr "Ak sa chcete zúčastniť tohto prieskumu, mal(a) by si sa zaregistrovať."
 
-#: replacements.php:590
+#: replacements.php:592
 msgid ""
 "Enter your details below, and an email containing the link to participate in "
 "this survey will be sent immediately."
@@ -2374,15 +2354,15 @@ msgstr ""
 "Nižšie uveďte Vaše detaily, a bezporostredne nato Vám bude zaslaný e-mailom "
 "odkaz na účasť v prieskume"
 
-#: replacements.php:598
+#: replacements.php:600
 msgid "Save Your Unfinished Survey"
 msgstr "Uložiť Váš nedokončený dotazník"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Vložte meno a heslo pre tento dotazník a stlačte na uložte."
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "Your survey will be saved using that name and password, and can be completed "
 "later by logging in with the same name and password."
@@ -2390,13 +2370,13 @@ msgstr ""
 "Váš dotazník bude uložený pod menom a heslom. Dotazník môže byť dokončený "
 "neskôr, po prihlásení sa pod rovnakým menom a heslom."
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "If you give an email address, an email containing the details will be sent "
 "to you."
 msgstr "Ak uvediete e-mailovú adresu, bude Vám zaslaný e-mail s podrobnosťami."
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "After having clicked the save button you can either close this browser "
 "window or continue filling out the survey."
@@ -2404,32 +2384,32 @@ msgstr ""
 "Po kliknutí na tlačidlo uložiť môžete buť zatvoriť toto okno prehliadača "
 "alebo pokračovať vo vypĺňaní dotazníka."
 
-#: replacements.php:604
+#: replacements.php:606
 msgid "You have completed answering the questions in this survey."
 msgstr "Všetky otázky v tomto dotazníku si vyplnil(a)."
 
-#: replacements.php:604
+#: replacements.php:606
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr ""
 "Teraz stlačte na 'Odoslať' k dokončeniu procesu uloženia Vašich odpovedí."
 
-#: save.php:257
+#: save.php:63
 msgid "Please try again."
 msgstr "Prosím, skúste znovu."
 
-#: save.php:299
+#: save.php:105
 msgid "You must supply a name for this saved session."
 msgstr "Musíte pridať meno pre túto uloženú session."
 
-#: save.php:300
+#: save.php:106
 msgid "You must supply a password for this saved session."
 msgstr "Musíte uviesť heslo pre túto uloženú session."
 
-#: save.php:302
+#: save.php:108
 msgid "Your passwords do not match."
 msgstr "Vaše heslá sa nezhodujú."
 
-#: save.php:326
+#: save.php:132
 msgid ""
 "This name has already been used for this survey. You must use a unique save "
 "name."
@@ -2437,11 +2417,11 @@ msgstr ""
 "Toto meno už bolo použité pre uloženie dotazníku. K uloženiu musíte použiť "
 "iné meno."
 
-#: save.php:382 save.php:424
+#: save.php:188
 msgid "Saved Survey Details"
 msgstr "Detaily uloženého prieskumu"
 
-#: save.php:383
+#: save.php:189
 msgid ""
 "Thank you for saving your survey in progress.  The following details can be "
 "used to return to this survey and continue where you left off.  Please keep "
@@ -2452,7 +2432,7 @@ msgstr ""
 "opustili. Uložte si prosím, tento email, nie je možné odoslať Vám heslo "
 "znova."
 
-#: save.php:387 save.php:426
+#: save.php:193
 msgid ""
 "Reload your survey by clicking on the following link (or pasting it into "
 "your browser):"
@@ -2460,43 +2440,9 @@ msgstr ""
 "Klikni na nasledujúci link (alebo ho vlož do svojho prehliadača) a  znovu "
 "načítaj svoj prieskum:"
 
-#: save.php:402 save.php:445
+#: save.php:208
 msgid "Your survey was successfully saved."
 msgstr "Váš dotazník bol úspešne uložený."
-
-#: save.php:425
-msgid ""
-"Thank you for saving your survey in progress. You can return to the survey "
-"at the same point you saved it at any time using the link from this or any "
-"previous email sent to regarding this survey."
-msgstr ""
-
-#: save.php:739
-msgid "Cannot submit results - there are none to submit."
-msgstr "Nemôžem odoslať výsledky - nie sú tu žiadne na odoslanie."
-
-#: save.php:740
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"Táto chyba môže nastať, pokiaľ ste už prieskum odoslali a stlačili \"obnoviť"
-"\" vo svojom prehliadači. V tomto prípade sú Vaše odpovede už uložené."
-
-#: save.php:740
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"Ak ste obdržalli túto správu v priebehu vyplňovania prieskumu, odporúčame "
-"stlačiť \"<- späť\" vo Vašom prehliadači a následne \"obnoviť\" "
-"predchádzajúcu stránku. Aj keď sú všetky odpovede z poslednej stránky "
-"stratené, ostatné sú stále dostupné. Tento problém môže nastať, ak je server "
-"preťažený. Ospravedlňujeme sa za spôsobené problémy. "
 
 #: statistics_user.php:386
 msgid "Please wait ..."
@@ -2518,18 +2464,10 @@ msgstr "Počet záznamov v prieskume"
 msgid "Generating summaries ..."
 msgstr "Generujovať súhrnné zistenia...."
 
-#: statistics_user.php:454
+#: statistics_user.php:454 admin/browse.php:140 admin/browse.php:141
+#: admin/browse.php:479
 msgid "Completed"
 msgstr "Dokončené"
-
-#: survey.php:918
-msgid ""
-"One or more files are either not in the proper format or exceed the maximum "
-"file size limitation. You cannot proceed until these answers are valid."
-msgstr ""
-"Jeden alebo viac zo súborov buď nie je v správnom formáte, alebo prekračuje "
-"maximálnu povolenú veľkosť súboru. Nemôžete pokračovať pokiaľ nebude otázka "
-"platne zodpovedaná."
 
 #: upload.php:87
 #, php-format
@@ -2689,7 +2627,7 @@ msgstr "Nemáte povolené nastavovať pravidlá hodnotenia!"
 msgid "You are not allowed to delete this group!"
 msgstr "Nemáte povolené zmazať túto skupinu!"
 
-#: admin/access_denied.php:102
+#: admin/access_denied.php:102 admin/cmdline_importsurvey.php:80
 msgid "You are not allowed to import a survey!"
 msgstr "Nemáte povolenie importovať tento prieskum!"
 
@@ -2726,7 +2664,7 @@ msgid "You are not allowed to perform this operation!"
 msgstr "Nemáte povolené vykonať túto operáciu!"
 
 #: admin/activate.php:39 admin/activate.php:67 admin/activate.php:76
-#: admin/activate_functions.php:406 admin/activate_functions.php:446
+#: admin/activate_functions.php:413 admin/activate_functions.php:453
 msgid "Activate Survey"
 msgstr "Aktivovať dotazník"
 
@@ -2810,35 +2748,35 @@ msgstr ""
 "všetky dáta, ktoré boli zadané do dotazníka do separátnej archivovanej "
 "tabuľky."
 
-#: admin/activate_functions.php:85
+#: admin/activate_functions.php:89
 msgid "This group does not contain any question(s)."
 msgstr "Táto skupina neobsahuje žiadnu otázku(ky)."
 
-#: admin/activate_functions.php:133
+#: admin/activate_functions.php:137
 msgid ""
 "This question is a subquestion type question but has no configured "
 "subquestions."
 msgstr ""
 "Táto otázka je typ otázky s podotázkami, no žiadne podotázky neboli určené."
 
-#: admin/activate_functions.php:143
+#: admin/activate_functions.php:147
 msgid "This question is a multiple answer type question but has no answers."
 msgstr ""
 "Táto otázka je otázka s možnosťou viacerých odpovedí, ale žiadne neobsahuje."
 
-#: admin/activate_functions.php:153
+#: admin/activate_functions.php:157
 msgid "This question does not have a question 'type' set."
 msgstr "Táto otázka nemá nastavený typ otázky."
 
-#: admin/activate_functions.php:163
+#: admin/activate_functions.php:167
 msgid "This question requires answers, but none are set."
 msgstr "Táto otázka vyžaduje odpovede, no žiadne nie sú nastavené."
 
-#: admin/activate_functions.php:170
+#: admin/activate_functions.php:174
 msgid "This question requires a second answer set but none is set."
 msgstr "Táto otázka vyžaduje druhú odpoveď, no žiadna nie je nastavená."
 
-#: admin/activate_functions.php:225
+#: admin/activate_functions.php:229
 msgid ""
 "This question has a condition set, however the condition is based on a "
 "question that appears after it."
@@ -2846,52 +2784,53 @@ msgstr ""
 "Táto otázka má nastavenú podmienku, ale podmienka je založená na otázke, "
 "ktorá sa objaví za ňou."
 
-#: admin/activate_functions.php:407
+#: admin/activate_functions.php:414
 msgid "Survey could not be actived."
 msgstr "Dotazník nemohol byť aktivovaný."
 
-#: admin/activate_functions.php:409
+#: admin/activate_functions.php:416
 msgid "Database error:"
 msgstr "Chyba databázy:"
 
-#: admin/activate_functions.php:411
+#: admin/activate_functions.php:418 admin/browse.php:34 admin/browse.php:65
+#: admin/browse.php:77
 msgid "Main Admin Screen"
 msgstr "Hlavná obrazovka admina"
 
-#: admin/activate_functions.php:447
+#: admin/activate_functions.php:454
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Dotazník bol aktivovaný. Tabuľka s výsledkami bola úspešne vytvorená."
 
-#: admin/activate_functions.php:456
+#: admin/activate_functions.php:463
 msgid ""
 "The required directory for saving the uploaded files couldn't be created. "
 "Please check file premissions on the limesurvey/upload/surveys directory."
 msgstr ""
 
-#: admin/activate_functions.php:470
+#: admin/activate_functions.php:477
 msgid ""
 "This survey allows public registration. A token table must also be created."
 msgstr ""
 "Tento prieskum má povolenú verejnú registráciu. Musí byť vytvorená tabuľka "
 "účastníkov s identifikátormi."
 
-#: admin/activate_functions.php:471
+#: admin/activate_functions.php:478
 msgid "Initialise tokens"
 msgstr "Aktivizuj tokeny"
 
-#: admin/activate_functions.php:475
+#: admin/activate_functions.php:482
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Tento dotazník je teraz aktíny a odpovede budú zaznamenané."
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid "Open-access mode"
 msgstr "Mód voľného prístupu"
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid "No invitation code is needed to complete the survey."
 msgstr "K účasti na prieskume nie je potrebné pozvanie."
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid ""
 "You can switch to the closed-access mode by initialising a token table with "
 "the button below."
@@ -2899,11 +2838,11 @@ msgstr ""
 "Môžete prepnúť na uzatvorený prieskum aktiváciou tabuľky tokenov-"
 "identifikátorov pomocou tlačítka nižšie."
 
-#: admin/activate_functions.php:477
+#: admin/activate_functions.php:484
 msgid "Switch to closed-access mode"
 msgstr "Prepnúť na uzavretý prístup"
 
-#: admin/activate_functions.php:478
+#: admin/activate_functions.php:485
 msgid "No, thanks."
 msgstr "Nie, ďakujem."
 
@@ -3145,7 +3084,7 @@ msgstr "Pravidlá hodnotenia"
 msgid "ID"
 msgstr "ID"
 
-#: admin/assessments.php:169
+#: admin/assessments.php:169 admin/browse.php:541 admin/browse.php:883
 msgid "Actions"
 msgstr "Akcie"
 
@@ -3161,7 +3100,7 @@ msgstr "Správa"
 msgid "Delete"
 msgstr "Vymazať"
 
-#: admin/assessments.php:194
+#: admin/assessments.php:194 admin/browse.php:229
 msgid "Are you sure you want to delete this entry?"
 msgstr "Ste si istý ze chcete vymazať tento záznam?"
 
@@ -3169,7 +3108,7 @@ msgstr "Ste si istý ze chcete vymazať tento záznam?"
 msgid "Total"
 msgstr "Celkom"
 
-#: admin/assessments.php:234
+#: admin/assessments.php:234 admin/browse.php:871
 msgid "Group"
 msgstr "Skupina"
 
@@ -3194,8 +3133,7 @@ msgid "Message:"
 msgstr "Správa"
 
 #: admin/browse.php:31 admin/browse.php:62 admin/browse.php:74
-#: admin/browse.php:109 admin/browse.php:325 admin/dataentry.php:1458
-#: admin/dataentry.php:1474
+#: admin/browse.php:109 admin/browse.php:325
 msgid "Browse Responses"
 msgstr "Prechádzať odpovede"
 
@@ -3230,7 +3168,7 @@ msgstr "Dátum potvrdenia"
 msgid "View response ID %d"
 msgstr "Zobraziť odpoveď ID %d"
 
-#: admin/browse.php:224 admin/dataentry.php:146
+#: admin/browse.php:224
 msgid "Edit this entry"
 msgstr "Upraviť tento vstup"
 
@@ -3431,7 +3369,7 @@ msgid "Greater than"
 msgstr "Väčšie než"
 
 #: admin/conditionshandling.php:69 admin/conditionshandling.php:85
-#: admin/conditionshandling.php:1923
+#: admin/conditionshandling.php:1931
 msgid "Regular expression"
 msgstr "Regulárny výraz"
 
@@ -3468,7 +3406,7 @@ msgstr "Hlavná obrazovka admina"
 msgid "You have not selected a question"
 msgstr "Nevybral ste otázku"
 
-#: admin/conditionshandling.php:173 admin/conditionshandling.php:249
+#: admin/conditionshandling.php:173 admin/conditionshandling.php:250
 msgid ""
 "Your condition could not be added! It did not include the question and/or "
 "answer upon which the condition was based. Please ensure you have selected a "
@@ -3478,7 +3416,7 @@ msgstr ""
 "ktorej je podmienka založená. Prosím, uistite sa, že ste vybrali otázku a "
 "odpoveď."
 
-#: admin/conditionshandling.php:410
+#: admin/conditionshandling.php:418
 msgid ""
 "Conditions successfully copied (some were skipped because they were "
 "duplicates)"
@@ -3486,68 +3424,69 @@ msgstr ""
 "Podmienky boli úspešne skopírované (niektoré boli preskočené, pretože boli "
 "duplicitné)"
 
-#: admin/conditionshandling.php:414
+#: admin/conditionshandling.php:422
 msgid "Conditions successfully copied"
 msgstr "Podmienky boli úspešne skopírované"
 
-#: admin/conditionshandling.php:419
+#: admin/conditionshandling.php:427
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "Žiadne podmienky nie je možné kopírovať (boli nájdené duplicity)"
 
-#: admin/conditionshandling.php:862
+#: admin/conditionshandling.php:870
 msgid "Group of checkboxes"
 msgstr "Skupina zaškrtávacích polí"
 
-#: admin/conditionshandling.php:878
+#: admin/conditionshandling.php:886
 msgid "Single checkbox"
 msgstr "Jediná odpoveď"
 
-#: admin/conditionshandling.php:881
+#: admin/conditionshandling.php:889
 msgid "checked"
 msgstr "zaškrtnuté"
 
-#: admin/conditionshandling.php:882
+#: admin/conditionshandling.php:890
 msgid "not checked"
 msgstr "nezaškrtnuté"
 
-#: admin/conditionshandling.php:990
+#: admin/conditionshandling.php:998
 msgid "Conditions designer"
 msgstr "Dizajnér podmienok"
 
-#: admin/conditionshandling.php:999
+#: admin/conditionshandling.php:1007
 msgid "Show conditions for this question"
 msgstr "Ukázať podmienky pre túto otázku"
 
-#: admin/conditionshandling.php:1002
+#: admin/conditionshandling.php:1010
 msgid "Add and edit conditions"
 msgstr "Pridať a upraviť podmienky"
 
-#: admin/conditionshandling.php:1004 admin/conditionshandling.php:1592
-#: admin/conditionshandling.php:1637
+#: admin/conditionshandling.php:1012 admin/conditionshandling.php:1600
+#: admin/conditionshandling.php:1645
 msgid "Copy conditions"
 msgstr "Kopírovať podmienky"
 
-#: admin/conditionshandling.php:1008
+#: admin/conditionshandling.php:1016
 msgid "Before"
 msgstr "Pred"
 
-#: admin/conditionshandling.php:1025
+#: admin/conditionshandling.php:1033
 msgid "Current"
 msgstr "Súčasný"
 
-#: admin/conditionshandling.php:1038
+#: admin/conditionshandling.php:1046
 msgid "After"
 msgstr "Po"
 
-#: admin/conditionshandling.php:1058 admin/conditionshandling.php:1872
+#: admin/conditionshandling.php:1066 admin/conditionshandling.php:1880
+#: admin/exportresults.php:103
 msgid "Questions"
 msgstr "Otázky"
 
-#: admin/conditionshandling.php:1146
+#: admin/conditionshandling.php:1154
 msgid "Only show question {QID} IF"
 msgstr "Zobraziť otázku {QID} pokiaľ"
 
-#: admin/conditionshandling.php:1167
+#: admin/conditionshandling.php:1175
 msgid ""
 "Are you sure you want to delete all conditions set to the questions you have "
 "selected?"
@@ -3555,170 +3494,170 @@ msgstr ""
 "Ste si istý že chcete vymazať všetky podmienky nastavené k otázkam, ktoré "
 "ste vybrali?"
 
-#: admin/conditionshandling.php:1169
+#: admin/conditionshandling.php:1177
 msgid "Delete all conditions"
 msgstr "Vymaž všetky podmienky"
 
-#: admin/conditionshandling.php:1175
+#: admin/conditionshandling.php:1183
 msgid ""
 "Are you sure you want to renumber the scenarios with incremented numbers "
 "beginning from 1?"
 msgstr ""
 "Ste si istý, že chcete prečíslovať všetky scenáre nadväzujúcimi číslami od 1?"
 
-#: admin/conditionshandling.php:1177
+#: admin/conditionshandling.php:1185
 msgid "Renumber scenario automatically"
 msgstr "Automaticky si zapamätaj scenár"
 
-#: admin/conditionshandling.php:1205 admin/conditionshandling.php:1345
+#: admin/conditionshandling.php:1213 admin/conditionshandling.php:1353
 #: admin/dataentry.php:1612 admin/dataentry.php:1702 admin/dataentry.php:1734
 msgid "OR"
 msgstr "ALEBO"
 
-#: admin/conditionshandling.php:1221
+#: admin/conditionshandling.php:1229
 msgid "New scenario number"
 msgstr "Nové číslo scenára"
 
-#: admin/conditionshandling.php:1228
+#: admin/conditionshandling.php:1236
 msgid "Update scenario"
 msgstr "Aktualizovať scenár"
 
-#: admin/conditionshandling.php:1239
+#: admin/conditionshandling.php:1247
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr ""
 "Ste si istý že chcete vymazať vyšetky nastavené podmienky v tomto scenári?"
 
-#: admin/conditionshandling.php:1241
+#: admin/conditionshandling.php:1249
 msgid "Delete this scenario"
 msgstr "Vymazať scenár"
 
-#: admin/conditionshandling.php:1247
+#: admin/conditionshandling.php:1255
 msgid "Edit scenario"
 msgstr "Upraviť scenár"
 
-#: admin/conditionshandling.php:1338
+#: admin/conditionshandling.php:1346
 msgid "and"
 msgstr "a"
 
-#: admin/conditionshandling.php:1370 admin/conditionshandling.php:1443
+#: admin/conditionshandling.php:1378 admin/conditionshandling.php:1451
 msgid "From token table"
 msgstr "Z tabuľky tokenov"
 
-#: admin/conditionshandling.php:1374 admin/conditionshandling.php:1447
+#: admin/conditionshandling.php:1382 admin/conditionshandling.php:1455
 msgid "Inexistant token table"
 msgstr "Neexistujca tabuľka tokenov-identifikátorov"
 
-#: admin/conditionshandling.php:1432
+#: admin/conditionshandling.php:1440
 msgid "Not found"
 msgstr "Nebolo nájdené"
 
-#: admin/conditionshandling.php:1489
+#: admin/conditionshandling.php:1497
 msgid "Are you sure you want to delete this condition?"
 msgstr "Ste si istý ze chcete vymazať túto podmienku?"
 
-#: admin/conditionshandling.php:1491
+#: admin/conditionshandling.php:1499
 msgid "Delete this condition"
 msgstr "Vymazať túto podmienku"
 
-#: admin/conditionshandling.php:1494
+#: admin/conditionshandling.php:1502
 msgid "Edit this condition"
 msgstr "Upraviť túto podmienku"
 
-#: admin/conditionshandling.php:1571
+#: admin/conditionshandling.php:1579
 msgid "This question is always shown."
 msgstr "Táto otázka je stále zobrazovaná."
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "No questions selected"
 msgstr "Nie sú označené žiadne otázky"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "Check all"
 msgstr "Označiť všetky"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "Uncheck all"
 msgstr "Zrušiť označenie všetkých"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "selected"
 msgstr "označené"
 
-#: admin/conditionshandling.php:1612
+#: admin/conditionshandling.php:1620
 msgid "Copy the selected conditions to"
 msgstr "Kopírovať vybrané podmienky do"
 
-#: admin/conditionshandling.php:1661
+#: admin/conditionshandling.php:1669
 msgid "This survey's questions don't use conditions"
 msgstr "Tieto otázky prieskumu nepoužívajú podmienky"
 
-#: admin/conditionshandling.php:1698
+#: admin/conditionshandling.php:1706
 msgid "Edit condition"
 msgstr "Upraviť podmienku"
 
-#: admin/conditionshandling.php:1702 admin/conditionshandling.php:1940
+#: admin/conditionshandling.php:1710 admin/conditionshandling.php:1948
 msgid "Add condition"
 msgstr "Pridať podmienku"
 
-#: admin/conditionshandling.php:1713
+#: admin/conditionshandling.php:1721
 msgid "Add scenario"
 msgstr "Pridať scenár"
 
-#: admin/conditionshandling.php:1714
+#: admin/conditionshandling.php:1722
 msgid "Default scenario"
 msgstr "Prednastavený scenár"
 
-#: admin/conditionshandling.php:1725
+#: admin/conditionshandling.php:1733
 msgid "Scenario"
 msgstr "Scenár"
 
-#: admin/conditionshandling.php:1737
+#: admin/conditionshandling.php:1745
 msgid "Previous questions"
 msgstr "Predchádzajúce otázky"
 
-#: admin/conditionshandling.php:1738 admin/conditionshandling.php:1873
+#: admin/conditionshandling.php:1746 admin/conditionshandling.php:1881
 #, fuzzy
 msgid "Token fields"
 msgstr "Vyberte pole tokenov-identifikátorov"
 
-#: admin/conditionshandling.php:1795
+#: admin/conditionshandling.php:1803
 msgid "Comparison operator"
 msgstr "Oprátor porovnania"
 
-#: admin/conditionshandling.php:1870
+#: admin/conditionshandling.php:1878
 msgid "Predefined"
 msgstr "Preddefinované"
 
-#: admin/conditionshandling.php:1871
+#: admin/conditionshandling.php:1879
 msgid "Constant"
 msgstr "Konštantný"
 
-#: admin/conditionshandling.php:1874
+#: admin/conditionshandling.php:1882
 msgid "RegExp"
 msgstr "RegExp"
 
-#: admin/conditionshandling.php:1881
+#: admin/conditionshandling.php:1889
 #, fuzzy
 msgid "Predefined answer options for this question"
 msgstr "Preddefinované odpovede pre túto otázku"
 
-#: admin/conditionshandling.php:1887
+#: admin/conditionshandling.php:1895
 msgid "Constant value"
 msgstr "Konštantná hodnota"
 
-#: admin/conditionshandling.php:1905
+#: admin/conditionshandling.php:1913
 msgid "Answers from previous questions"
 msgstr "Odpovede z predchádzajúcich otázok"
 
-#: admin/conditionshandling.php:1917
+#: admin/conditionshandling.php:1925
 msgid "Attributes values from the participant's token"
 msgstr "Hodnoty atribútov z tokenu účastníka"
 
-#: admin/conditionshandling.php:1934
+#: admin/conditionshandling.php:1942
 msgid "Update condition"
 msgstr "Aktualizovať podmienku"
 
-#: admin/conditionshandling.php:1950
+#: admin/conditionshandling.php:1958
 msgid "Clear"
 msgstr "Vyčistiť"
 
@@ -3729,63 +3668,63 @@ msgid ""
 msgstr ""
 "Skupinu nie je možné pridať\\n\\nChýba meno skupiny pre nasledujúce jazyky"
 
-#: admin/database.php:107
+#: admin/database.php:108
 msgid "Error: The database reported the following error:"
 msgstr "Chyba: databáza hlásila nasledujúcu chybu:"
 
-#: admin/database.php:116
+#: admin/database.php:117
 msgid "New question group was saved."
 msgstr "Nová skupina otázok bola uložená."
 
-#: admin/database.php:158
+#: admin/database.php:159
 msgid "Group could not be updated"
 msgstr "Skupina nemôže byť aktualizovaná"
 
-#: admin/database.php:163
+#: admin/database.php:164
 msgid "Question group successfully saved."
 msgstr "Skupina otázok bola úspešne uložená."
 
-#: admin/database.php:193
+#: admin/database.php:196
 msgid "The question group was deleted."
 msgstr "Skupina otázok bola vymazaná."
 
-#: admin/database.php:197
+#: admin/database.php:200
 msgid "Group could not be deleted"
 msgstr "Skupina nemôže byť zmazaná"
 
-#: admin/database.php:207
+#: admin/database.php:211
 msgid ""
 "The question could not be added. You must enter at least enter a question "
 "code."
 msgstr "Otázku nie je možné pridať. Musíte vložiť aspoň kód otázky."
 
-#: admin/database.php:269
+#: admin/database.php:273
 #, php-format
 msgid "Question in language %s could not be created."
 msgstr "Otázka v jazyku %s nemohla byť vytvorená."
 
-#: admin/database.php:280 admin/database.php:695 admin/database.php:724
+#: admin/database.php:284 admin/database.php:711 admin/database.php:740
 msgid "Question could not be created."
 msgstr "Otázka nemohla byť vytvorená."
 
-#: admin/database.php:302
+#: admin/database.php:306
 msgid "Question was successfully added."
 msgstr "Otázka bola úspešne pridaná."
 
-#: admin/database.php:338
+#: admin/database.php:348
 #, fuzzy
 msgid "Question codes were successfully regenerated."
 msgstr "Otázka bola úspešne vymazaná."
 
-#: admin/database.php:363 admin/database.php:582 admin/database.php:647
+#: admin/database.php:374 admin/database.php:597 admin/database.php:662
 msgid "Question could not be updated"
 msgstr "Otázka nemohla byť aktualizovaná"
 
-#: admin/database.php:411
+#: admin/database.php:422
 msgid "Default value settings were successfully saved."
 msgstr "Nastavenia predvolených hodnôt boli úspešne uložené."
 
-#: admin/database.php:510
+#: admin/database.php:524
 msgid ""
 "Question could not be updated. There are conditions for other questions that "
 "rely on the answers to this question and changing the type will cause "
@@ -3796,45 +3735,21 @@ msgstr ""
 "túto otázku a zmena typu spôsobí problémy. Najprv musíte zmazať tieto "
 "podmienky."
 
-#: admin/database.php:609
+#: admin/database.php:624
 msgid "Question was successfully saved."
 msgstr "Otázka bola úspešne uložená."
 
-#: admin/database.php:619
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr ""
-"Táto otázka závisí od odpovedí na iné otázky a nie je možné ju presunúť pred "
-"IDskupiny:"
-
-#: admin/database.php:620 admin/database.php:632
-msgid "in position"
-msgstr "na mieste"
-
-#: admin/database.php:621 admin/database.php:633
-msgid "See conditions:"
-msgstr "Podmienky zobrazenia:"
-
-#: admin/database.php:631
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"Niektoré otázky závisia na odpovediach na túto otázku. Nemôžete presunúť "
-"túto otázku za IDskupiny:"
-
-#: admin/database.php:657
+#: admin/database.php:673
 msgid ""
 "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Otázku nie je možné pridať. Musíte vložiť kód povinného poľa"
 
-#: admin/database.php:800
+#: admin/database.php:816
 #, fuzzy
 msgid "Question was successfully copied."
 msgstr "Otázka bola úspešne pridaná."
 
-#: admin/database.php:815
+#: admin/database.php:834
 msgid ""
 "Question could not be deleted. There are conditions for other questions that "
 "rely on this question. You cannot delete this question until those "
@@ -3843,15 +3758,15 @@ msgstr ""
 "Otázku nie je možné zmazať. Podmienky iných otázok na nej závisia. Otázku "
 "nie je možné zmazať pokiaľ tieto podmienky nebudú odstránené"
 
-#: admin/database.php:834
+#: admin/database.php:853
 msgid "Question was successfully deleted."
 msgstr "Otázka bola úspešne vymazaná."
 
-#: admin/database.php:903
+#: admin/database.php:924
 msgid "Failed to update answers"
 msgstr "Aktualizácia odpovede zlyhala"
 
-#: admin/database.php:911
+#: admin/database.php:934
 msgid ""
 "Answers with a code of 0 (zero) or blank code are not allowed, and will not "
 "be saved"
@@ -3859,51 +3774,51 @@ msgstr ""
 "Odpovede s kódom 0 (nula) alebo prázdnym kódom nie sú povolené a nebudú "
 "uložené"
 
-#: admin/database.php:912
+#: admin/database.php:935
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Boli nájdené duplicitné kódy, tieto položky nebudú aktualizované"
 
-#: admin/database.php:915
+#: admin/database.php:938
 msgid "Answer options were successfully saved."
 msgstr "Možnosti odpovede boli úspešne uložené."
 
-#: admin/database.php:944
+#: admin/database.php:969
 msgid "Failed to delete answer"
 msgstr "Chyba pri mazaní odpovede"
 
-#: admin/database.php:1034
+#: admin/database.php:1061
 msgid "Subquestions were successfully saved."
 msgstr "Podotázky boli úspešne uložené."
 
-#: admin/database.php:1195
+#: admin/database.php:1222
 msgid "Survey settings were successfully saved."
 msgstr "Nastavenia prieskumu boli úspešne uložené."
 
-#: admin/database.php:1200
+#: admin/database.php:1227
 msgid "Survey could not be updated"
 msgstr "Prieskum nemohol byť aktualizovaný"
 
-#: admin/database.php:1225
+#: admin/database.php:1252
 msgid "Email templates successfully saved."
 msgstr "Šablóna emailu úspešne uložená"
 
-#: admin/database.php:1239
+#: admin/database.php:1266
 msgid "ERROR deleting Survey id"
 msgstr "Chyba pri mazaní ID prieskumu"
 
-#: admin/database.php:1298
+#: admin/database.php:1325
 msgid "Survey text elements successfully saved."
 msgstr "Textové elementy prieskumu boli úspešne uložené."
 
-#: admin/database.php:1317
+#: admin/database.php:1344
 msgid "Survey could not be created because it did not have a title"
 msgstr "Prieskum nemohol byť vytvorený pretože nemal názov."
 
-#: admin/database.php:1473
+#: admin/database.php:1500
 msgid "Survey was successfully added."
 msgstr "Prieskum bol úspešne pridaný."
 
-#: admin/database.php:1499
+#: admin/database.php:1526
 msgid "Your personal settings were successfully saved."
 msgstr "Vaše osobné nastavenia boli úspešne uložené."
 
@@ -3948,23 +3863,23 @@ msgstr ""
 msgid "Try again"
 msgstr "Skúsiť znovu"
 
-#: admin/dataentry.php:181 admin/dataentry.php:1342 admin/dataentry.php:2630
+#: admin/dataentry.php:181 admin/dataentry.php:1342 admin/dataentry.php:2631
 msgid "Identifier:"
 msgstr "Identifikátor:"
 
-#: admin/dataentry.php:183 admin/dataentry.php:2632
+#: admin/dataentry.php:183 admin/dataentry.php:2633
 msgid "Password:"
 msgstr "Heslo:"
 
-#: admin/dataentry.php:185 admin/dataentry.php:2634
+#: admin/dataentry.php:185 admin/dataentry.php:2635
 msgid "Confirm Password:"
 msgstr "Potvrdenie hesla:"
 
-#: admin/dataentry.php:187 admin/dataentry.php:2636
+#: admin/dataentry.php:187 admin/dataentry.php:2637
 msgid "Email:"
 msgstr "E-mail:"
 
-#: admin/dataentry.php:189 admin/dataentry.php:2638
+#: admin/dataentry.php:189 admin/dataentry.php:2639
 msgid "Start Language:"
 msgstr "Začiatočný jazyk:"
 
@@ -4016,11 +3931,11 @@ msgstr "Editácia odpovede (ID %s)"
 msgid "Viewing response (ID %s)"
 msgstr "Editácia odpovede (ID %s)"
 
-#: admin/dataentry.php:1336 admin/dataentry.php:2620
+#: admin/dataentry.php:1336 admin/dataentry.php:2621
 msgid "Finalize response submission"
 msgstr "Dokončiť odoslanie odpovede"
 
-#: admin/dataentry.php:1338 admin/dataentry.php:2626
+#: admin/dataentry.php:1338 admin/dataentry.php:2627
 msgid "Save for further completion by survey user"
 msgstr "Uložiť pre neskoršie dokončenie prieskumu užívateľom"
 
@@ -4053,21 +3968,21 @@ msgstr "Žiadna odpoveď"
 msgid "Only answer this if the following conditions are met:"
 msgstr "Odpovedzte na toto, iba ak sú splnené nasledujúce podmienky:"
 
-#: admin/dataentry.php:1786
+#: admin/dataentry.php:1787
 msgid "Help about this question"
 msgstr "Nápoveda k tejto otázke"
 
-#: admin/dataentry.php:1830
+#: admin/dataentry.php:1831
 #, php-format
 msgid "Label %s"
 msgstr "Označenie %s"
 
-#: admin/dataentry.php:2675
+#: admin/dataentry.php:2676
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr ""
 "Tento dotazník nie je zatiaľ aktívny. Vaše odpovede nemôžu byť uložené."
 
-#: admin/dataentry.php:2685
+#: admin/dataentry.php:2686
 msgid "The survey you selected does not exist"
 msgstr "Prieskum, ktorý ste vybrali, neexistuje"
 
@@ -4256,41 +4171,41 @@ msgstr "Odpoveď bola"
 msgid "Answer option"
 msgstr "Možnosť odpovede"
 
-#: admin/editansweroptions.php:225
+#: admin/editansweroptions.php:216
 msgid "Answer:"
 msgstr "Odpoveď:"
 
-#: admin/editansweroptions.php:249 admin/editsubquestions.php:232
+#: admin/editansweroptions.php:230 admin/editsubquestions.php:232
 #, fuzzy
 msgid "Predefined label sets..."
 msgstr "Zmaž sadu štítkov"
 
-#: admin/editansweroptions.php:250 admin/editsubquestions.php:233
+#: admin/editansweroptions.php:231 admin/editsubquestions.php:233
 msgid "Quick add..."
 msgstr "Rýchlo pridať..."
 
-#: admin/editansweroptions.php:262 admin/editsubquestions.php:243
+#: admin/editansweroptions.php:243 admin/editsubquestions.php:243
 #, fuzzy
 msgid "Available label sets:"
 msgstr "Zmaž sadu štítkov"
 
-#: admin/editansweroptions.php:264 admin/editansweroptions.php:272
+#: admin/editansweroptions.php:245 admin/editansweroptions.php:253
 #: admin/editsubquestions.php:245 admin/editsubquestions.php:252
 msgid "Replace"
 msgstr "Nahradiť"
 
-#: admin/editansweroptions.php:270
+#: admin/editansweroptions.php:251
 msgid "Enter your answers:"
 msgstr "Zadaj svoje odpovede:"
 
-#: admin/editansweroptions.php:271
+#: admin/editansweroptions.php:252
 msgid ""
 "Enter one answer per line. You can provide a code by separating code and "
 "answer text with a semikolon or tab. For multilingual surveys you add the "
 "translation(s) on the same line separated with a semikolon/tab."
 msgstr ""
 
-#: admin/editansweroptions.php:277 admin/editsubquestions.php:257
+#: admin/editansweroptions.php:258 admin/editsubquestions.php:257
 msgid "Save changes"
 msgstr "Uložiť zmeny"
 
@@ -4468,6 +4383,7 @@ msgid "Edit survey settings"
 msgstr "Upraviť nastavenia prieskumu"
 
 #: admin/editsurveysettings.php:90 admin/editsurveysettings.php:185
+#: admin/exportresults.php:90
 msgid "General"
 msgstr "Všeobecné"
 
@@ -4987,8 +4903,6 @@ msgid "Decimal separator:"
 msgstr "Desiatkové označenie:"
 
 #: admin/exportresults.php:57 admin/exportresults.php:58
-#: admin/export_data_r.php:83 admin/export_data_r.php:85
-#: admin/export_data_spss.php:102
 msgid "Export results"
 msgstr "Exportovať výsledky"
 
@@ -5033,8 +4947,7 @@ msgstr "Kódy otázok"
 msgid "Convert spaces in question text to underscores"
 msgstr "Konvertovať medzery v texte otázky na podčiarovníky"
 
-#: admin/exportresults.php:118 admin/http_importsurvey.php:159
-#: admin/importgroup.php:82
+#: admin/exportresults.php:118
 msgid "Answers"
 msgstr "Odpovede"
 
@@ -5121,7 +5034,7 @@ msgstr ""
 "Spolu s každou odpoveďou môže prieskum exportovať dáta z príslušného záznamu "
 "účastníka. Vyberte polia, ktoré sa majú exportovať."
 
-#: admin/exportresults.php:245 admin/export_data_spss.php:135
+#: admin/exportresults.php:245
 msgid "Export data"
 msgstr "Exportovať dáta"
 
@@ -5168,39 +5081,39 @@ msgstr "Problém s tokenmi-identifkátormi - chýba tabuľka tokenov"
 msgid "Not Selected"
 msgstr "Nevybrané"
 
-#: admin/export_data_r.php:86
+#: admin/export_data_r.php:87
 msgid "Export result data to R"
 msgstr "Export výsledkov do R"
 
-#: admin/export_data_r.php:103 admin/export_data_spss.php:120
+#: admin/export_data_r.php:104 admin/export_data_spss.php:121
 msgid "Data selection:"
 msgstr "Výber dát:"
 
-#: admin/export_data_r.php:113 admin/export_data_spss.php:134
+#: admin/export_data_r.php:114 admin/export_data_spss.php:135
 msgid "Step 1:"
 msgstr "Krok 1:"
 
-#: admin/export_data_r.php:113
+#: admin/export_data_r.php:114
 msgid "Export R syntax file"
 msgstr "Exportovať R syntax súbor"
 
-#: admin/export_data_r.php:114 admin/export_data_spss.php:135
+#: admin/export_data_r.php:115 admin/export_data_spss.php:136
 msgid "Step 2:"
 msgstr "Krok 2:"
 
-#: admin/export_data_r.php:114
+#: admin/export_data_r.php:115
 msgid "Export .csv data file"
 msgstr "Exportovať .csv data súbor"
 
-#: admin/export_data_r.php:117 admin/export_data_spss.php:138
+#: admin/export_data_r.php:118 admin/export_data_spss.php:139
 msgid "Instructions for the impatient"
 msgstr "Inštrukcie pre netrpezlivých"
 
-#: admin/export_data_r.php:119 admin/export_data_spss.php:140
+#: admin/export_data_r.php:120 admin/export_data_spss.php:141
 msgid "Download the data and the syntax file."
 msgstr "Stiahni dáta a súbor syntaxu."
 
-#: admin/export_data_r.php:120
+#: admin/export_data_r.php:121
 msgid ""
 "Save both of them on the R working directory (use getwd() and setwd() on the "
 "R command window to get and set it)"
@@ -5208,14 +5121,14 @@ msgstr ""
 "Uložiť obe do pracovného adresára R (použite getwd() a setwd() v príkazovom "
 "okne R pre získanie a nastavenie)"
 
-#: admin/export_data_r.php:121
+#: admin/export_data_r.php:122
 #, php-format
 msgid ""
 "digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command "
 "window"
 msgstr ""
 
-#: admin/export_data_r.php:123
+#: admin/export_data_r.php:124
 msgid ""
 "Your data should be imported now, the data.frame is named \"data\", the "
 "variable.labels are attributes of data (\"attributes(data)$variable.labels"
@@ -5224,42 +5137,42 @@ msgstr ""
 "Vaše dáta by teraz mali byť importované, data.frame je pomenovaný \"data\", "
 "variable.names sú atribúty dát podobne ako pre read.spss(foreign)."
 
-#: admin/export_data_spss.php:103
+#: admin/export_data_spss.php:104
 msgid "Export result data to SPSS"
 msgstr "Export výsledkov do SPSS súboru "
 
-#: admin/export_data_spss.php:126
+#: admin/export_data_spss.php:127
 msgid "SPSS version:"
 msgstr "Verzia SPSS:"
 
-#: admin/export_data_spss.php:128
+#: admin/export_data_spss.php:129
 msgid "Prior to 16"
 msgstr ""
 
-#: admin/export_data_spss.php:130
+#: admin/export_data_spss.php:131
 msgid "16 or up"
 msgstr "16 alebo viac"
 
-#: admin/export_data_spss.php:134
+#: admin/export_data_spss.php:135
 msgid "Export syntax"
 msgstr "Exportovať CSV"
 
-#: admin/export_data_spss.php:141
+#: admin/export_data_spss.php:142
 msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr "Otvorte súbor syntaxe v SPSS v Unicode móde"
 
-#: admin/export_data_spss.php:142
+#: admin/export_data_spss.php:143
 msgid ""
 "Edit the 4th line and complete the filename with a full path to the "
 "downloaded data file."
 msgstr ""
 "Zmeňte 4.riadok a doplňte meno súboru a plnú cestu k stiahnutému súboru dát."
 
-#: admin/export_data_spss.php:143
+#: admin/export_data_spss.php:144
 msgid "Choose 'Run/All' from the menu to run the import."
 msgstr "Vyberte 'Run/All' (Spustiť/Všetko) z menu pre spustenie importu."
 
-#: admin/export_data_spss.php:145
+#: admin/export_data_spss.php:146
 msgid "Your data should be imported now."
 msgstr "Teraz by mali byť vaše dáta importované."
 
@@ -5433,7 +5346,7 @@ msgstr "Mód prieskumu je nastavený na %s:"
 msgid "Global settings were saved."
 msgstr "Globálne nastavenia boli uložené."
 
-#: admin/globalsettings.php:127 admin/html.php:2064
+#: admin/globalsettings.php:127 admin/html.php:2158
 msgid "Global settings"
 msgstr "Globálne nastavenia"
 
@@ -5775,7 +5688,7 @@ msgstr "Názov databázy"
 msgid "Users"
 msgstr "Používatelia"
 
-#: admin/globalsettings.php:629 admin/html.php:2109
+#: admin/globalsettings.php:629 admin/html.php:2203
 #: admin/http_importsurvey.php:155
 msgid "Surveys"
 msgstr "Dotazníky"
@@ -5855,7 +5768,7 @@ msgstr "Tento dotazník je aktívny ale jeho platnosť skončila."
 msgid "This survey is active but has a start date."
 msgstr "Tento dotazník je aktívny ale má dátum začatia (ktorý ešte nenastal)."
 
-#: admin/html.php:185 admin/html.php:567 admin/html.php:969
+#: admin/html.php:185 admin/html.php:593 admin/html.php:1016
 msgid "This survey is currently active."
 msgstr "Tento prieskum je momentálne aktívny."
 
@@ -5883,7 +5796,7 @@ msgstr "Upraviť textové elementy"
 msgid "General settings"
 msgstr "Hlavné nastavenia"
 
-#: admin/html.php:268 admin/html.php:1735
+#: admin/html.php:268 admin/html.php:1829
 msgid "Survey permissions"
 msgstr "Povolenia prieskumu"
 
@@ -5906,234 +5819,251 @@ msgstr "NEmôžte kopírovať otázku pokiaľ je dotazník aktívny."
 msgid "Email templates"
 msgstr "Šablóny emailov"
 
-#: admin/html.php:317
+#: admin/html.php:315
+#, fuzzy
+msgid "Survey  Logic File"
+msgstr "Vynulovať logiku prieskumu"
+
+#: admin/html.php:343
 msgid "Tools"
 msgstr "Nástroje"
 
-#: admin/html.php:337 admin/html.php:342
+#: admin/html.php:363 admin/html.php:368
 msgid "Quick-translation"
 msgstr "Rýchly preklad"
 
-#: admin/html.php:341
+#: admin/html.php:367
 msgid "Currently there are no additional languages configured for this survey."
 msgstr ""
 "Momentálne nie sú pre túto skupinu nakonfigurované žiadne dodatočné jazyky."
 
-#: admin/html.php:352
+#: admin/html.php:378
 msgid "Reset conditions"
 msgstr "Obnoviť podmienky"
 
-#: admin/html.php:356
+#: admin/html.php:382
 msgid "Currently there are no conditions configured for this survey."
 msgstr "Momentálne nie sú pre túto skupinu nakonfigurované žiadne podmienky."
 
-#: admin/html.php:357
+#: admin/html.php:383
 msgid "Reset Survey Logic"
 msgstr "Vynulovať logiku prieskumu"
 
-#: admin/html.php:366
+#: admin/html.php:392
 msgid "Display / Export"
 msgstr "Zobraziť / Exportovať"
 
-#: admin/html.php:372
+#: admin/html.php:398
 #, fuzzy
 msgid "Export survey"
 msgstr "Exportovať dotazník"
 
-#: admin/html.php:380 admin/html.php:385
+#: admin/html.php:406 admin/html.php:411
 msgid "Printable version"
 msgstr "Tlačiteľná verzia"
 
-#: admin/html.php:406 admin/html.php:411
+#: admin/html.php:432 admin/html.php:437
 msgid "QueXML export"
 msgstr "QueXML export"
 
-#: admin/html.php:440 admin/html.php:445
+#: admin/html.php:466 admin/html.php:471
 msgid "Responses & statistics"
 msgstr "Odpovede a štatistiky"
 
-#: admin/html.php:444 admin/html.php:475
+#: admin/html.php:470 admin/html.php:501
 msgid "This survey is not active - no responses are available."
 msgstr "Tento prieskum nie je aktívny - žiadne odpovede nie sú dostupné."
 
-#: admin/html.php:456 admin/html.php:460
+#: admin/html.php:482 admin/html.php:486
 msgid "Data entry screen"
 msgstr "Obrazovka zadávania dát"
 
-#: admin/html.php:459
+#: admin/html.php:485
 msgid "This survey is not active, data entry is not allowed"
 msgstr "Tento prieskum nie je aktívny, nie je povolené vkladanie dát"
 
-#: admin/html.php:471 admin/html.php:476
+#: admin/html.php:497 admin/html.php:502
 msgid "Partial (saved) responses"
 msgstr "Čiastočné (uložené) odpovede"
 
-#: admin/html.php:491
+#: admin/html.php:517
 msgid "Token management"
 msgstr "Spáva tokenov-identifikátorov"
 
-#: admin/html.php:506 admin/http_importsurvey.php:157
+#: admin/html.php:532 admin/http_importsurvey.php:157
 msgid "Question groups"
 msgstr "Skupiny otázok"
 
-#: admin/html.php:533 admin/html.php:534
+#: admin/html.php:559 admin/html.php:560
 msgid "Previous question group"
 msgstr "Predchádzajúca skupina otázok:"
 
-#: admin/html.php:539
+#: admin/html.php:565
 msgid "No previous question group"
 msgstr "Žiadna predchadzajúca skupina otázok"
 
-#: admin/html.php:548
+#: admin/html.php:574
 msgid "Next question group"
 msgstr "Nasledujúca skupina otázok"
 
-#: admin/html.php:554
+#: admin/html.php:580
 msgid "No next question group"
 msgstr "Žiadna nasledujúca skupina otázok"
 
-#: admin/html.php:567 admin/html.php:969
+#: admin/html.php:593 admin/html.php:1016
 msgid "Disabled"
 msgstr "Blokovaný"
 
-#: admin/html.php:574
+#: admin/html.php:600
 msgid "Add new group to survey"
 msgstr "Pridať novú skupinu do prieskumu"
 
-#: admin/html.php:579 admin/html.php:580
+#: admin/html.php:605 admin/html.php:606
 msgid "Hide details of this Survey"
 msgstr "Skryť detaily tohto dotazníka"
 
-#: admin/html.php:583 admin/html.php:584
+#: admin/html.php:609 admin/html.php:610
 msgid "Show details of this survey"
 msgstr "Zobraziť detaily tohto dotazníka"
 
-#: admin/html.php:589 admin/html.php:590
+#: admin/html.php:615 admin/html.php:616
 msgid "Close this survey"
 msgstr "Zatvoriť tento dotazník"
 
-#: admin/html.php:621
+#: admin/html.php:647
 msgid "It is presented question by question."
 msgstr "Je prezentovaný otázka za otázkou."
 
-#: admin/html.php:622
+#: admin/html.php:648
 msgid "It is presented group by group."
 msgstr "Je prezentovaný skupina za skupinou."
 
-#: admin/html.php:623
+#: admin/html.php:649
 msgid "It is presented on one single page."
 msgstr "Je prezentovaný na jednej strane."
 
-#: admin/html.php:626
+#: admin/html.php:652
 msgid "No question index will be shown with this format."
 msgstr ""
 
-#: admin/html.php:627
+#: admin/html.php:653
 msgid ""
 "A question index will be shown; participants will be able to jump between "
 "viewed questions."
 msgstr ""
 
-#: admin/html.php:630
+#: admin/html.php:656
 msgid "IP Addresses will be logged"
 msgstr "IP adresa je zaznamenaná"
 
-#: admin/html.php:631
+#: admin/html.php:657
 msgid "Referrer URL will be saved."
 msgstr ""
 
-#: admin/html.php:632
+#: admin/html.php:658
 msgid "It uses cookies for access control."
 msgstr "Používava cookies pre kontrolu prístupu."
 
-#: admin/html.php:633
+#: admin/html.php:659
 msgid "If tokens are used, the public may register for this survey"
 msgstr ""
 "Ak sú použité tokeny, môžu sa na tento prieskum registrovať verejní "
 "užívatelia"
 
-#: admin/html.php:634
+#: admin/html.php:660
 msgid "Participants can save partially finished surveys"
 msgstr "Účastníci môžu ukladať čiastočne dokončené dotazníky"
 
-#: admin/html.php:637
+#: admin/html.php:663
 msgid "Basic email notification is sent to:"
 msgstr ""
 
-#: admin/html.php:641
+#: admin/html.php:667
 msgid "Detailed email notification with response data is sent to:"
 msgstr ""
 
-#: admin/html.php:646
+#: admin/html.php:672
 #, fuzzy
 msgid "Regenerate question codes:"
 msgstr "Znovu generovať kódy otázok:"
 
-#: admin/html.php:648 admin/html.php:651
-msgid "Are you sure you want regenerate the question codes?"
-msgstr "Ste si istým že chcete znova vygenerovať kódy otázok?"
+#: admin/html.php:674 admin/html.php:677
+msgid ""
+"Are you sure you want to regenerate the question codes?\n"
+"\n"
+"WARNING:\n"
+"This is safe if you only use the Conditions editor.\n"
+"\n"
+"HOWEVER, if you manually specified any relevance equations, regenerating the "
+"question codes will break all of that survey logic."
+msgstr ""
 
-#: admin/html.php:649
+#: admin/html.php:675
 msgid "Straight"
 msgstr "Priamo"
 
-#: admin/html.php:652
+#: admin/html.php:678
 msgid "By Group"
 msgstr "Podľa skupiny"
 
-#: admin/html.php:657
+#: admin/html.php:683
 msgid "Survey URL"
 msgstr "URL dotazníka"
 
-#: admin/html.php:663 admin/html.php:670
+#: admin/html.php:689 admin/html.php:696
 msgid "Survey URL for language:"
 msgstr "URL prieskumu pre jazyk:"
 
-#: admin/html.php:663 admin/html.php:670
+#: admin/html.php:689 admin/html.php:696
 msgid "Flag"
 msgstr "Vlajka"
 
-#: admin/html.php:752
+#: admin/html.php:791
 msgid "End URL"
 msgstr "Koncová URL"
 
-#: admin/html.php:764
+#: admin/html.php:803
 msgid "Number of questions/groups"
 msgstr "Počet otázok/skupín"
 
-#: admin/html.php:766
+#: admin/html.php:805
 msgid "Survey currently active"
 msgstr "Dotazník je aktívny"
 
-#: admin/html.php:780
+#: admin/html.php:819
 msgid "Survey table name"
 msgstr "Meno tabuľky dotazníka"
 
-#: admin/html.php:783
+#: admin/html.php:822
 msgid "Hints"
 msgstr "Tipy"
 
-#: admin/html.php:787
+#: admin/html.php:826
 msgid "Survey cannot be activated yet."
 msgstr "Dotazník nemôže byť teraz aktivovaný."
 
-#: admin/html.php:790
+#: admin/html.php:829
 msgid "You need to add question groups"
 msgstr "Musíte pridať skupiny otázok"
 
-#: admin/html.php:794
+#: admin/html.php:833
 msgid "You need to add questions"
 msgstr "Musíte pridať otázky"
 
-#: admin/html.php:845
+#: admin/html.php:884
 msgid "Preview current question group"
 msgstr "Náhľad tejto skupiny otázok"
 
-#: admin/html.php:860
+#: admin/html.php:899
 msgid "Edit current question group"
 msgstr "Upraviť aktuálnu skupinu otázok"
 
-#: admin/html.php:873
+#: admin/html.php:908
+#, fuzzy
+msgid "Survey Logic File for current question group"
+msgstr "Náhľad tejto skupiny otázok"
+
+#: admin/html.php:920
 msgid ""
 "Deleting this group will also delete any questions and answers it contains. "
 "Are you sure you want to continue?"
@@ -6141,75 +6071,73 @@ msgstr ""
 "Vymazanie tejto skupiny takisto vymaže všetky otázky a odpovede, ktoré "
 "obsahuje. Ste si istý, že chcete pokračovať?"
 
-#: admin/html.php:875 admin/html.php:882
+#: admin/html.php:922
 msgid "Delete current question group"
 msgstr "Vymazať aktuálnu skupinu otázok"
 
-#: admin/html.php:880
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"Nie je možné zmazať skupinu, pretože aspoň jedna otázka má podmienku, ktorá "
-"je závislá na jej obsahu"
-
-#: admin/html.php:898
+#: admin/html.php:945
 msgid "Export this question group"
 msgstr "Exportovať túto skupinu otázok"
 
-#: admin/html.php:912
+#: admin/html.php:959
 msgid "Change Question Order"
 msgstr "Zmeniť poradie otázok"
 
-#: admin/html.php:936
+#: admin/html.php:983
 msgid "Previous question"
 msgstr "Predchadzajúca otázka:"
 
-#: admin/html.php:942
+#: admin/html.php:989
 msgid "No previous question"
 msgstr "Žiadna predchadzajúca otázka:"
 
-#: admin/html.php:952
+#: admin/html.php:999
 msgid "Next question"
 msgstr "Nasledujúca otázka"
 
-#: admin/html.php:958
+#: admin/html.php:1005
 msgid "No next question"
 msgstr "Žiadna nasledujúca otázka"
 
-#: admin/html.php:976
+#: admin/html.php:1023
 msgid "Add New Question to Group"
 msgstr "Pridať novú otázku ku skupine"
 
-#: admin/html.php:987
+#: admin/html.php:1034
 msgid "Hide Details of this Group"
 msgstr "Skryť detaily tejto skupiny"
 
-#: admin/html.php:989
+#: admin/html.php:1036
 msgid "Show Details of this Group"
 msgstr "Zobraziť detaily tejto skupiny"
 
-#: admin/html.php:993
+#: admin/html.php:1040
 msgid "Close this Group"
 msgstr "Zatvoriť túto skupinu"
 
-#: admin/html.php:1019
-msgid "Questions with conditions to this group"
-msgstr "Otázky s podmienkami na túto skupinu"
+#: admin/html.php:1068 admin/html.php:1422
+#, fuzzy
+msgid "Relevance:"
+msgstr "Nahradiť"
 
-#: admin/html.php:1081 admin/html.php:1086
+#: admin/html.php:1139 admin/html.php:1144
 msgid "Preview This Question"
 msgstr "Náhľad otázky"
 
-#: admin/html.php:1095 admin/html_functions.php:54
+#: admin/html.php:1153 admin/html_functions.php:54
 msgid "Please select a language:"
 msgstr "Prosím, zvoľte jazyk:"
 
-#: admin/html.php:1117
+#: admin/html.php:1175
 msgid "Edit Current Question"
 msgstr "Upraviť aktuálnu otázku"
 
-#: admin/html.php:1128
+#: admin/html.php:1184
+#, fuzzy
+msgid "Survey Logic File for current question"
+msgstr "Vymazať aktuálnu otázku"
+
+#: admin/html.php:1195
 msgid ""
 "Deleting this question will also delete any answer options and subquestions "
 "it includes. Are you sure you want to continue?"
@@ -6217,291 +6145,275 @@ msgstr ""
 "Vymazanie tejto otázky tiež vymaže odpovede a podotázky, ktoré zahŕňa. Ste "
 "si istý že chcete pokračovať?"
 
-#: admin/html.php:1129
+#: admin/html.php:1196
 msgid "Delete current question"
 msgstr "Vymazať aktuálnu otázku"
 
-#: admin/html.php:1135
-msgid ""
-"It's impossible to delete this question because there is at least one "
-"question having a condition on it."
-msgstr ""
-"Nie je možné zmazať otázku, pretože existuje aspoň jedna otázka, ktorá je od "
-"nej závislá."
-
-#: admin/html.php:1137
-msgid "Disabled - Delete current question"
-msgstr "Zakázané - Vymažte aktuálnu otázku"
-
-#: admin/html.php:1149
+#: admin/html.php:1216
 msgid "Export this question"
 msgstr "Exportovať túto otázku"
 
-#: admin/html.php:1163 admin/html.php:1170
+#: admin/html.php:1230 admin/html.php:1237
 msgid "Copy Current Question"
 msgstr "Kopírovať aktuálnu otázku"
 
-#: admin/html.php:1169
+#: admin/html.php:1236
 msgid "You can't copy a question if the survey is active."
 msgstr "NEmôžte kopírovať otázku pokiaľ je dotazník aktívny."
 
-#: admin/html.php:1186
+#: admin/html.php:1253
 msgid "Set conditions for this question"
 msgstr "Nastaviť podmienky pre túto otázku"
 
-#: admin/html.php:1204 admin/html.php:1300
+#: admin/html.php:1271 admin/html.php:1378
 msgid "Edit subquestions for this question"
 msgstr "Upraviť pod-otázky pre túto otázku"
 
-#: admin/html.php:1219 admin/html.php:1290
+#: admin/html.php:1286 admin/html.php:1368
 msgid "Edit answer options for this question"
 msgstr "Upraviť možnosti odpovedí pre túto otázku"
 
-#: admin/html.php:1233
+#: admin/html.php:1300
 msgid "Edit default answers for this question"
 msgstr "Upraviť predvolené odpovede pre túto otázku"
 
-#: admin/html.php:1238
+#: admin/html.php:1305
 msgid "Hide Details of this Question"
 msgstr "Skryť detaily tejto otázky"
 
-#: admin/html.php:1241
+#: admin/html.php:1308
 msgid "Show Details of this Question"
 msgstr "Zobraziť detaily tejto otázky"
 
-#: admin/html.php:1244
+#: admin/html.php:1311
 msgid "Close this Question"
 msgstr "Zatvoriť túto otázku"
 
-#: admin/html.php:1260
+#: admin/html.php:1327
 msgid "Code:"
 msgstr "Kód:"
 
-#: admin/html.php:1264
+#: admin/html.php:1331
 msgid "Mandatory Question"
 msgstr "Povinná otázka"
 
-#: admin/html.php:1265
+#: admin/html.php:1332
 msgid "Optional Question"
 msgstr "Voliteľná otázka"
 
-#: admin/html.php:1269
+#: admin/html.php:1336
 msgid "Question:"
 msgstr "Otázka:"
 
-#: admin/html.php:1271
+#: admin/html.php:1345
 msgid "Help:"
 msgstr "Pomoc:"
 
-#: admin/html.php:1277
+#: admin/html.php:1355
 msgid "Validation:"
 msgstr "Validácia:"
 
-#: admin/html.php:1282
+#: admin/html.php:1360
 msgid "Type:"
 msgstr "Typ:"
 
-#: admin/html.php:1288
+#: admin/html.php:1366
 msgid "You need to add answer options to this question"
 msgstr "Tejto otázke musíte pridať možnosti odpovede"
 
-#: admin/html.php:1298
+#: admin/html.php:1376
 msgid "You need to add subquestions to this question"
 msgstr "Musíte pridať pod-otázky do tejto otázky"
 
-#: admin/html.php:1307
+#: admin/html.php:1385
 msgid "Option 'Other':"
 msgstr "Možnosť 'Iné':"
 
-#: admin/html.php:1316
+#: admin/html.php:1394
 msgid "Mandatory:"
 msgstr "Povinná:"
 
-#: admin/html.php:1325
-msgid "Other questions having conditions on this question:"
-msgstr "Ďalšie otázky, ktoré majú nastavené podmienky na túto otázku:"
-
-#: admin/html.php:1362 admin/html.php:1864
+#: admin/html.php:1456 admin/html.php:1958
 msgid "Add User"
 msgstr "Pridať používateľa"
 
-#: admin/html.php:1378
+#: admin/html.php:1472
 msgid "User added."
 msgstr "Používateľ pridaný."
 
-#: admin/html.php:1380
+#: admin/html.php:1474
 msgid "Set survey permissions"
 msgstr "Nastaviť povolenia prieskumu."
 
-#: admin/html.php:1388 admin/html.php:1395 admin/html.php:1456
+#: admin/html.php:1482 admin/html.php:1489 admin/html.php:1550
 msgid "Failed to add user."
 msgstr "Nepodarilo sa pridať používateľa."
 
-#: admin/html.php:1389
+#: admin/html.php:1483
 msgid "Username already exists."
 msgstr "Používateľ už existuje."
 
-#: admin/html.php:1396 admin/html.php:1457
+#: admin/html.php:1490 admin/html.php:1551
 msgid "No Username selected."
 msgstr "Nebolo vybrané žiadne užívateľské meno."
 
-#: admin/html.php:1410
+#: admin/html.php:1504
 msgid "Add user group"
 msgstr "Pridať skupinu používateľov"
 
-#: admin/html.php:1432
+#: admin/html.php:1526
 msgid "User Group added."
 msgstr "Skupina používateľov pridaná."
 
-#: admin/html.php:1435
+#: admin/html.php:1529
 msgid "Set Survey Rights"
 msgstr "Nastav oprávnenia v prieskume"
 
-#: admin/html.php:1443 admin/html.php:1450
+#: admin/html.php:1537 admin/html.php:1544
 msgid "Failed to add User Group."
 msgstr "Pridanie skupiny používateľov zlyhalo."
 
-#: admin/html.php:1470
+#: admin/html.php:1564
 msgid "Deleting User"
 msgstr "Vymazávam používateľa"
 
-#: admin/html.php:1482 admin/html.php:1739
+#: admin/html.php:1576 admin/html.php:1833
 msgid "Username"
 msgstr "Používateľské meno"
 
-#: admin/html.php:1483
+#: admin/html.php:1577
 msgid "Success!"
 msgstr "Úspech!"
 
-#: admin/html.php:1487
+#: admin/html.php:1581
 msgid "Could not delete user. User was not supplied."
 msgstr "Nemôžem zamazť užívateľa. Užívateľ nebol zadaný."
 
-#: admin/html.php:1513
+#: admin/html.php:1607
 #, php-format
 msgid "Edit survey permissions for user %s"
 msgstr "Upraviť povolenia prieskumu pre používateľa %s"
 
-#: admin/html.php:1518
+#: admin/html.php:1612
 #, php-format
 msgid "Edit survey permissions for group %s"
 msgstr "Upraviť povolenia prieskumu pre skupinu %s"
 
-#: admin/html.php:1524
+#: admin/html.php:1618
 msgid "Permission"
 msgstr "Povolenie"
 
-#: admin/html.php:1526
+#: admin/html.php:1620
 msgid "Create"
 msgstr "Vytvoriť"
 
-#: admin/html.php:1527
+#: admin/html.php:1621
 msgid "View/read"
 msgstr "Zobraziť/čítať"
 
-#: admin/html.php:1528
+#: admin/html.php:1622
 msgid "Update"
 msgstr "Aktualizuj"
 
-#: admin/html.php:1531
+#: admin/html.php:1625
 msgid "Export"
 msgstr "Export"
 
-#: admin/html.php:1593
+#: admin/html.php:1687
 msgid "Export Survey Structure"
 msgstr "Exportovať štruktúru dotazníka"
 
-#: admin/html.php:1597
+#: admin/html.php:1691
 #, fuzzy
 msgid "LimeSurvey XML survey file (*.lss)"
 msgstr "LimeSurvey súbor dotazníka (*.csv)"
 
-#: admin/html.php:1601
+#: admin/html.php:1695
 msgid "queXML Survey XML Format (*.xml)"
 msgstr "queXML formát dotazníka XML (*.xml)"
 
-#: admin/html.php:1613 admin/html.php:1654 admin/html.php:1701
+#: admin/html.php:1707 admin/html.php:1748 admin/html.php:1795
 msgid "Save for Lsrc (*.csv)"
 msgstr "Uložiť pre  Lsrc (*.csv)"
 
-#: admin/html.php:1620
+#: admin/html.php:1714
 msgid "Export To File"
 msgstr "Exportovať do súboru"
 
-#: admin/html.php:1632
+#: admin/html.php:1726
 msgid "Export group structure"
 msgstr "Exportovať štruktúru skupín"
 
-#: admin/html.php:1638 admin/html.php:1685
+#: admin/html.php:1732 admin/html.php:1779
 msgid "LimeSurvey group file (*.csv)"
 msgstr "Súbor skupiny LimeSurvey (*.csv)"
 
-#: admin/html.php:1661 admin/html.php:1708
+#: admin/html.php:1755 admin/html.php:1802
 msgid "Export to file"
 msgstr "Exportovať súbor"
 
-#: admin/html.php:1679
+#: admin/html.php:1773
 #, fuzzy
 msgid "Export question structure"
 msgstr "Exportovať štruktúru dotazníka"
 
-#: admin/html.php:1740
+#: admin/html.php:1834
 msgid "User Group"
 msgstr "Skupina používateľov"
 
-#: admin/html.php:1741
+#: admin/html.php:1835
 msgid "Full name"
 msgstr "Celé meno"
 
-#: admin/html.php:1796
+#: admin/html.php:1890
 msgid "Edit permissions"
 msgstr "Upraviť oprávnenia"
 
-#: admin/html.php:1861
+#: admin/html.php:1955
 msgid "User"
 msgstr "Používateľ"
 
-#: admin/html.php:1864
+#: admin/html.php:1958
 msgid "Please select a user first"
 msgstr "Prosím, zvoľte najprv užívateľa"
 
-#: admin/html.php:1868 admin/importgroup.php:79
+#: admin/html.php:1962 admin/importgroup.php:79
 msgid "Groups"
 msgstr "Skupiny"
 
-#: admin/html.php:1871
+#: admin/html.php:1965
 msgid "Add User Group"
 msgstr "Pridať skupinu používateľov"
 
-#: admin/html.php:1871
+#: admin/html.php:1965
 msgid "Please select a user group first"
 msgstr "Prosím, zvoľte najprv užívateľskú skupinu"
 
-#: admin/html.php:1884
+#: admin/html.php:1978
 msgid "Edit survey permissions"
 msgstr "Upraviť povolenia prieskumu"
 
-#: admin/html.php:1933
+#: admin/html.php:2027
 msgid ""
 "Survey permissions for all users in this group were successfully updated."
 msgstr ""
 "Povolenia prieskumu boli úspečne upravené pre všetkých používateľov tejto "
 "skupiny."
 
-#: admin/html.php:1940
+#: admin/html.php:2034
 msgid "Survey permissions were successfully updated."
 msgstr "Povolenia prieskumu boli úspečne upravené."
 
-#: admin/html.php:1944
+#: admin/html.php:2038
 msgid "Failed to update survey permissions!"
 msgstr "Nepodarilo sa zmeniť povolenia prieskumu!"
 
-#: admin/html.php:1977
+#: admin/html.php:2071
 #, fuzzy
 msgid "Quick-translate survey"
 msgstr "Preložiť prieskum"
 
-#: admin/html.php:2028
+#: admin/html.php:2122
 msgid ""
 "Warning: You are still using the default password ('password'). Please "
 "change your password and re-login again."
@@ -6509,48 +6421,48 @@ msgstr ""
 "Varovanie: Stále používate základné heslo ('password'). Zmeňte Vaše heslo a "
 "prihláste sa znova."
 
-#: admin/html.php:2032
+#: admin/html.php:2126
 msgid "Administration"
 msgstr "Administrácia"
 
-#: admin/html.php:2035
+#: admin/html.php:2129
 msgid "Logged in as:"
 msgstr "Prihlásený ako:"
 
-#: admin/html.php:2037
+#: admin/html.php:2131
 msgid "Edit your personal preferences"
 msgstr "Upraviť vaše osobné nastavenia"
 
-#: admin/html.php:2043
+#: admin/html.php:2137
 #, php-format
 msgid "Update available: %s"
 msgstr "Aktualizácia dostupná: %s"
 
-#: admin/html.php:2049
+#: admin/html.php:2143
 msgid "Default Administration Page"
 msgstr "Základná stránka administrátora"
 
-#: admin/html.php:2056
+#: admin/html.php:2150
 msgid "Create/Edit Users"
 msgstr "Vytvoriť/Editovať používateľov"
 
-#: admin/html.php:2059
+#: admin/html.php:2153
 msgid "Create/Edit Groups"
 msgstr "Vytvoriť/Editovať skupiny"
 
-#: admin/html.php:2071
+#: admin/html.php:2165
 msgid "Check Data Integrity"
 msgstr "Skontrolovať integritu dát"
 
-#: admin/html.php:2076
+#: admin/html.php:2170
 msgid "List Surveys"
 msgstr "Zoznam dotazníkov"
 
-#: admin/html.php:2085
+#: admin/html.php:2179
 msgid "Backup Entire Database"
 msgstr "Zálohovať celú databázu"
 
-#: admin/html.php:2090
+#: admin/html.php:2184
 msgid ""
 "The database export is only available for MySQL databases. For other "
 "database types please use the according backup mechanism to create a "
@@ -6559,57 +6471,57 @@ msgstr ""
 "Export databázy je dostupný len pre MySQL. Pre ostatní typy databáz použite, "
 "prosím, zodpovedajúci zálohovací mechanizmus."
 
-#: admin/html.php:2098
+#: admin/html.php:2192
 #, fuzzy
 msgid "Edit label sets"
 msgstr "Uprav sadu štítkov"
 
-#: admin/html.php:2105
+#: admin/html.php:2199
 msgid "Template Editor"
 msgstr "Editor šablón"
 
-#: admin/html.php:2118
+#: admin/html.php:2212
 msgid "Create, import, or copy a survey"
 msgstr "Vytvoriť, importovať, alebo skopírovať prieskum"
 
-#: admin/html.php:2127
+#: admin/html.php:2221
 msgid "Logout"
 msgstr "Odhlásiť"
 
-#: admin/html.php:2140
+#: admin/html.php:2234
 #, php-format
 msgid "Welcome to %s!"
 msgstr "Vitajte %s:"
 
-#: admin/html.php:2141
+#: admin/html.php:2235
 msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr ""
 "Niekoľko veľmi jednoduchých krokov pre vytvorenie Vášho prvého vlastného "
 "prieskumu. "
 
-#: admin/html.php:2143
+#: admin/html.php:2237
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
 msgstr "Vytvorte nový dotazník kliknutím na %s ikonu vpravo hore."
 
-#: admin/html.php:2143
+#: admin/html.php:2237
 msgid "Add survey"
 msgstr "Pridať dotazník"
 
-#: admin/html.php:2144
+#: admin/html.php:2238
 msgid "Create a new question group inside your survey."
 msgstr "Vytvoriť novú skupinu otázok vo vašom prieskume."
 
-#: admin/html.php:2145
+#: admin/html.php:2239
 msgid "Create one or more questions inside the new question group."
 msgstr "Vytvoriť jednu alebo viac otázok v novej skupine otázok."
 
-#: admin/html.php:2146
+#: admin/html.php:2240
 #, php-format
 msgid "Done. Test your survey using the %s icon."
 msgstr "Hotovo. Otestujte svoj dotazník s pomocou %s ikony."
 
-#: admin/html.php:2146
+#: admin/html.php:2240
 msgid "Test survey"
 msgstr "Testovať tento dotazník"
 
@@ -6674,7 +6586,7 @@ msgstr "Export výsledkov do SPSS súboru"
 msgid "Export results to a R data file"
 msgstr "Export výsledkov do R dátového súboru"
 
-#: admin/html_functions.php:112
+#: admin/html_functions.php:112 admin/importoldresponses.php:51
 msgid "Import responses from a deactivated survey table"
 msgstr "Importovať odpovede z deaktivovanej tabuľky prieskumu"
 
@@ -6695,6 +6607,7 @@ msgid "Iterate survey"
 msgstr "Opakovať dotazník"
 
 #: admin/http_importsurvey.php:47 admin/importgroup.php:28
+#: admin/importlabel.php:30
 #, php-format
 msgid ""
 "An error occurred uploading your file. This may be caused by incorrect "
@@ -6704,10 +6617,12 @@ msgstr ""
 "nesprávnym nastavením oprávnení pre váš %s adresár."
 
 #: admin/http_importsurvey.php:54 admin/importgroup.php:53
+#: admin/importlabel.php:36
 msgid "File upload succeeded."
 msgstr "Nahratie súboru úspešné."
 
 #: admin/http_importsurvey.php:55 admin/importgroup.php:54
+#: admin/importlabel.php:37
 msgid "Reading file.."
 msgstr "Čítam súbor.."
 
@@ -6741,6 +6656,7 @@ msgid "Conditions"
 msgstr "Podmienky"
 
 #: admin/http_importsurvey.php:174 admin/importgroup.php:85
+#: admin/importlabel.php:76 admin/importlabel.php:86
 #, fuzzy
 msgid "Label sets"
 msgstr "Štítky"
@@ -6771,7 +6687,7 @@ msgstr "členovia kvóty"
 msgid "quota language settings"
 msgstr "jazykové nastavenia kvóty"
 
-#: admin/http_importsurvey.php:186
+#: admin/http_importsurvey.php:186 admin/importlabel.php:66
 msgid "Warnings"
 msgstr "Upozornenia"
 
@@ -6858,7 +6774,7 @@ msgstr ""
 msgid "Faulty line in import - fields and data don't match"
 msgstr "Chybný riadok v importe - polia a dáta sa nezhodujú"
 
-#: admin/importgroup.php:906
+#: admin/importgroup.php:909
 msgid ""
 "The languages of the imported group file must at least include the base "
 "language of this survey."
@@ -6866,7 +6782,7 @@ msgstr ""
 "Jazyky importovaného súboru skupiny musia zahŕňať aspoň základný jazyk tohto "
 "prieskumu."
 
-#: admin/importlabel.php:21 admin/import_resources_zip.php:215
+#: admin/importlabel.php:21
 msgid "Import Label Set"
 msgstr "Importuj sadu štítkov"
 
@@ -6884,7 +6800,7 @@ msgstr ""
 msgid "Return to label set administration"
 msgstr "Návrat k administrácií dotazníka"
 
-#: admin/importlabel.php:77 admin/importlabel.php:87 admin/labels.php:300
+#: admin/importlabel.php:77 admin/importlabel.php:87
 msgid "Labels"
 msgstr "Štítky"
 
@@ -6950,7 +6866,7 @@ msgstr ""
 msgid "%s old response(s) and according timings were successfully imported."
 msgstr ""
 
-#: admin/importquestion.php:19 admin/questionhandling.php:553
+#: admin/importquestion.php:19 admin/questionhandling.php:572
 msgid "Import Question"
 msgstr "Importovať otázku"
 
@@ -6971,7 +6887,7 @@ msgstr "Import otázky je kompletný."
 msgid "Go to question"
 msgstr "Choď na otázku"
 
-#: admin/importquestion.php:727
+#: admin/importquestion.php:729
 msgid ""
 "The languages of the imported question file must at least include the base "
 "language of this survey."
@@ -7014,11 +6930,11 @@ msgstr ""
 "Skupina v CSV/SQL súbore nie je časťou rovnakého prieskumu. Import prieskumu "
 "bol zastavený."
 
-#: admin/import_functions.php:1021
+#: admin/import_functions.php:1021 admin/quota.php:833
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Prepáčte, Vaše odpovede presiahli kvóty v tomto dotazníku."
 
-#: admin/import_functions.php:1092
+#: admin/import_functions.php:1095
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr "Toto nie je platný LimeSurvey XML súbor štruktúry prieskumu."
 
@@ -7639,8 +7555,8 @@ msgstr ""
 msgid "Don't import if label set already exists:"
 msgstr "E-mailová adresa už existuje."
 
-#: admin/labels.php:231 admin/questiongrouphandling.php:83
-#: admin/questionhandling.php:548
+#: admin/labels.php:231 admin/questiongrouphandling.php:87
+#: admin/questionhandling.php:567
 #, fuzzy
 msgid "Convert resource links?"
 msgstr "Konvertovať zdrojové odkazy?"
@@ -7789,10 +7705,6 @@ msgstr ""
 msgid "Forgot Your Password?"
 msgstr "Zabudli ste heslo?"
 
-#: admin/preview.php:105
-msgid "[Dependency on another question (ID $4)]"
-msgstr "[Závislosť na inej otázke (ID $4)]"
-
 #: admin/printablesurvey.php:135
 msgid "Database"
 msgstr "Databáza"
@@ -7801,11 +7713,11 @@ msgstr "Databáza"
 msgid "table"
 msgstr "Tabuľka"
 
-#: admin/printablesurvey.php:149 admin/printablesurvey.php:1930
+#: admin/printablesurvey.php:149 admin/printablesurvey.php:1948
 msgid "Submit Your Survey."
 msgstr "Odoslať Váš dotazník."
 
-#: admin/printablesurvey.php:151 admin/printablesurvey.php:1930
+#: admin/printablesurvey.php:151 admin/printablesurvey.php:1948
 msgid "Thank you for completing this survey."
 msgstr "Ďakujeme Vám za vyplnenie tohto dotazníka."
 
@@ -7813,7 +7725,7 @@ msgstr "Ďakujeme Vám za vyplnenie tohto dotazníka."
 msgid "Please fax your completed survey to:"
 msgstr "Prosím, odfaxujte hotový prieskum na:"
 
-#: admin/printablesurvey.php:171 admin/printablesurvey.php:1924
+#: admin/printablesurvey.php:171 admin/printablesurvey.php:1942
 #, php-format
 msgid "Please submit by %s"
 msgstr "Prosím, odošlite do %s"
@@ -7846,142 +7758,157 @@ msgstr "Číslo v odpovedi bolo väčšie ako"
 msgid "Answer matched (regexp)"
 msgstr "Odpoveď sa zhodovala (regexp)"
 
-#: admin/printablesurvey.php:503 admin/printablesurvey.php:531
+#: admin/printablesurvey.php:496
+#, fuzzy
+msgid "not selected"
+msgstr "Nevybrané"
+
+#: admin/printablesurvey.php:509 admin/printablesurvey.php:537
 msgid "is"
 msgstr "je"
 
-#: admin/printablesurvey.php:507
+#: admin/printablesurvey.php:513
 msgid "is NOT"
 msgstr "NIE je"
 
-#: admin/printablesurvey.php:511
+#: admin/printablesurvey.php:517
 msgid "is less than"
 msgstr "je menej ako"
 
-#: admin/printablesurvey.php:515
+#: admin/printablesurvey.php:521
 msgid "is less than or equal to"
 msgstr "je menej alebo rovnako ako"
 
-#: admin/printablesurvey.php:519
+#: admin/printablesurvey.php:525
 msgid "is greater than or equal to"
 msgstr "je viac alebo rovnako ako"
 
-#: admin/printablesurvey.php:523
+#: admin/printablesurvey.php:529
 msgid "is greater than"
 msgstr "je viac ako"
 
-#: admin/printablesurvey.php:527
+#: admin/printablesurvey.php:533
 msgid "is matched (regexp)"
 msgstr "je zhodná (regexp)"
 
-#: admin/printablesurvey.php:726
+#: admin/printablesurvey.php:735
 msgid "RANK"
 msgstr "PORADIE"
 
-#: admin/printablesurvey.php:745
+#: admin/printablesurvey.php:754
 msgid "at question"
 msgstr "pri otázke"
 
-#: admin/printablesurvey.php:757
+#: admin/printablesurvey.php:766
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Odpovedzte na toto, iba ak sú splnené nasledujúce podmienky:"
 
-#: admin/printablesurvey.php:777
+#: admin/printablesurvey.php:786
 msgid "ID:"
 msgstr "ID:"
 
-#: admin/printablesurvey.php:778
+#: admin/printablesurvey.php:787
 msgid "Question code:"
 msgstr "Kód otázky:"
 
-#: admin/printablesurvey.php:835 admin/printablesurvey.php:836
-#: admin/printablesurvey.php:860 admin/printablesurvey.php:867
-#: admin/printablesurvey.php:893 admin/printablesurvey.php:896
-#: admin/printablesurvey.php:960 admin/printablesurvey.php:961
-#: admin/printablesurvey.php:1199 admin/printablesurvey.php:1203
+#: admin/printablesurvey.php:844 admin/printablesurvey.php:845
+#: admin/printablesurvey.php:869 admin/printablesurvey.php:876
+#: admin/printablesurvey.php:902 admin/printablesurvey.php:905
+#: admin/printablesurvey.php:969 admin/printablesurvey.php:970
+#: admin/printablesurvey.php:1217 admin/printablesurvey.php:1221
 msgid "Please choose *only one* of the following:"
 msgstr "Prosím, zvoľte *iba jednu* z nasledujúcich možností:"
 
-#: admin/printablesurvey.php:852 admin/printablesurvey.php:854
+#: admin/printablesurvey.php:861 admin/printablesurvey.php:863
 msgid "Please enter a date:"
 msgstr "Prosím, napíšte dátum:"
 
-#: admin/printablesurvey.php:987
+#: admin/printablesurvey.php:996
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Prosím, očíslujte každé okienko podľa preferencií od 1 do"
 
-#: admin/printablesurvey.php:988
+#: admin/printablesurvey.php:998
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Prosím, očíslujte každé okienko podľa preferencií od 1 do"
 
-#: admin/printablesurvey.php:1010 admin/printablesurvey.php:1011
+#: admin/printablesurvey.php:1020 admin/printablesurvey.php:1021
 msgid "Please choose *all* that apply:"
 msgstr "Prosím, zvoľte *všetko*, čo je relevantné:"
 
-#: admin/printablesurvey.php:1016 admin/printablesurvey.php:1017
+#: admin/printablesurvey.php:1026 admin/printablesurvey.php:1027
 #, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "Prosím vyberte *najviac* %s odpovedí:"
 
-#: admin/printablesurvey.php:1068 admin/printablesurvey.php:1069
+#: admin/printablesurvey.php:1078 admin/printablesurvey.php:1079
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Prosím, zvoľte všetky vyhovujúce a poskytnite komentár:"
 
-#: admin/printablesurvey.php:1074 admin/printablesurvey.php:1075
+#: admin/printablesurvey.php:1084 admin/printablesurvey.php:1085
 msgid "Please choose *at most* "
 msgstr "Prosím, zvoľte *nanajvýš*"
 
-#: admin/printablesurvey.php:1074 admin/printablesurvey.php:1075
+#: admin/printablesurvey.php:1084 admin/printablesurvey.php:1085
 msgid "answers and provide a comment:"
 msgstr "Odpovede a komentár:"
 
-#: admin/printablesurvey.php:1114 admin/printablesurvey.php:1132
+#: admin/printablesurvey.php:1124 admin/printablesurvey.php:1142
 msgid "Please write your answer(s) here:"
 msgstr "Prosím, napíšte Vaše odpovede tu:"
 
-#: admin/printablesurvey.php:1154 admin/printablesurvey.php:1156
-#: admin/printablesurvey.php:1163 admin/printablesurvey.php:1166
-#: admin/printablesurvey.php:1176 admin/printablesurvey.php:1179
-#: admin/printablesurvey.php:1189 admin/printablesurvey.php:1192
+#: admin/printablesurvey.php:1164 admin/printablesurvey.php:1166
+#: admin/printablesurvey.php:1173 admin/printablesurvey.php:1176
+#: admin/printablesurvey.php:1186 admin/printablesurvey.php:1189
+#: admin/printablesurvey.php:1207 admin/printablesurvey.php:1210
 msgid "Please write your answer here:"
 msgstr "Prosím, napíšte Vašu odpoveď tu:"
 
-#: admin/printablesurvey.php:1213 admin/printablesurvey.php:1230
-#: admin/printablesurvey.php:1277 admin/printablesurvey.php:1286
-#: admin/printablesurvey.php:1313 admin/printablesurvey.php:1328
-#: admin/printablesurvey.php:1354 admin/printablesurvey.php:1369
-#: admin/printablesurvey.php:1578 admin/printablesurvey.php:1588
-#: admin/printablesurvey.php:1682 admin/printablesurvey.php:1685
-#: admin/printablesurvey.php:1789 admin/printablesurvey.php:1790
+#: admin/printablesurvey.php:1231 admin/printablesurvey.php:1248
+#: admin/printablesurvey.php:1295 admin/printablesurvey.php:1304
+#: admin/printablesurvey.php:1331 admin/printablesurvey.php:1346
+#: admin/printablesurvey.php:1372 admin/printablesurvey.php:1387
+#: admin/printablesurvey.php:1596 admin/printablesurvey.php:1606
+#: admin/printablesurvey.php:1700 admin/printablesurvey.php:1703
+#: admin/printablesurvey.php:1807 admin/printablesurvey.php:1808
 msgid "Please choose the appropriate response for each item:"
 msgstr "Prosím, vyberte vhodnú odpoveď pre každú položku:"
 
-#: admin/printablesurvey.php:1431 admin/printablesurvey.php:1432
+#: admin/printablesurvey.php:1449 admin/printablesurvey.php:1450
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr ""
 
-#: admin/printablesurvey.php:1435 admin/printablesurvey.php:1436
+#: admin/printablesurvey.php:1453 admin/printablesurvey.php:1454
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr "Prosím vložte číslo medzi %d a %d pre každú položku:"
 
-#: admin/printablesurvey.php:1847
+#: admin/printablesurvey.php:1865
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Dotazník obsahuje {NUMBEROFQUESTIONS} otázok."
 
-#: admin/printablesurvey.php:1928
+#: admin/printablesurvey.php:1946
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "Prosím, pošlite faxom vyplnený dotazník na: %s"
 
-#: admin/printablesurvey.php:1947
+#: admin/printablesurvey.php:1960
+#, fuzzy, php-format
+msgid "Please choose no more than %d items"
+msgstr "Prosím, skontrolujte položku"
+
+#: admin/printablesurvey.php:1963
+#, fuzzy, php-format
+msgid "Please choose at least %d items"
+msgstr "Prosím, vyberte aspoň jednu položku."
+
+#: admin/printablesurvey.php:1977
 #, fuzzy, php-format
 msgid ""
 "Only answer this question for the items you selected in question %d ('%s')"
 msgstr "Odpovedzte na toto, iba ak sú splnené nasledujúce podmienky:"
 
-#: admin/printablesurvey.php:1956
+#: admin/printablesurvey.php:1986
 #, fuzzy, php-format
 msgid ""
 "Only answer this question for the items you did not select in question %d ('%"
@@ -8000,58 +7927,37 @@ msgstr "Chyba: Musíte zadať názov skupiny pre každý jazyk"
 msgid "Required"
 msgstr "Požadovaný"
 
-#: admin/questiongrouphandling.php:65
+#: admin/questiongrouphandling.php:65 admin/questiongrouphandling.php:151
+#: admin/questionhandling.php:71 admin/questionhandling.php:496
+msgid "Relevance equation:"
+msgstr ""
+
+#: admin/questiongrouphandling.php:69
 msgid "Save question group"
 msgstr "Uložiť skupinu otázok"
 
-#: admin/questiongrouphandling.php:81
+#: admin/questiongrouphandling.php:85
 msgid "Select question group file (*.lsg/*.csv):"
 msgstr "Vybrať súbor skupiny otázok (*.lsg/*.csv)"
 
-#: admin/questiongrouphandling.php:164
+#: admin/questiongrouphandling.php:172
 msgid "Edit Group"
 msgstr "Upraviť skupinu"
 
-#: admin/questiongrouphandling.php:178
+#: admin/questiongrouphandling.php:186
 msgid "Update Group"
 msgstr "Aktualizovať skupinu"
 
-#: admin/questiongrouphandling.php:256
+#: admin/questiongrouphandling.php:266
 msgid "Change Group Order"
 msgstr "Zmeniť poradie skupín"
 
-#: admin/questiongrouphandling.php:265
-msgid "Current survey has questions with conditions outside their own group"
-msgstr "Aktuálny prieskum má otázky s podmienkami mimo vlastnú skupinu"
-
-#: admin/questiongrouphandling.php:265
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr ""
-"Zmena poradia skupín je zakázaná preto, aby nedošlo k umiestneniu "
-"podmieňujúcej otázky za otázku, ktorá je podmienená"
-
-#: admin/questiongrouphandling.php:265
-msgid "The following groups are concerned"
-msgstr "Týka sa to nasledujúcich skupín"
-
-#: admin/questiongrouphandling.php:270
-#, php-format
-msgid "Group %s depends on group %s, see the marked conditions on:"
-msgstr "Skupina %s závisí na skupine %s, viď označené podmienky v:"
-
-#: admin/questiongrouphandling.php:275
-msgid "QID"
-msgstr "QID"
-
-#: admin/questiongrouphandling.php:341 admin/questionhandling.php:690
+#: admin/questiongrouphandling.php:351 admin/questionhandling.php:710
 msgid "Place after.."
 msgstr "Umiestniť za..."
 
-#: admin/questiongrouphandling.php:346 admin/questionhandling.php:496
-#: admin/questionhandling.php:695
+#: admin/questiongrouphandling.php:356 admin/questionhandling.php:515
+#: admin/questionhandling.php:714
 msgid "At beginning"
 msgstr "Na začiatku"
 
@@ -8059,7 +7965,7 @@ msgstr "Na začiatku"
 msgid "Copy Question"
 msgstr "Kopírovať otázku"
 
-#: admin/questionhandling.php:29 admin/questionhandling.php:341
+#: admin/questionhandling.php:29 admin/questionhandling.php:354
 msgid "Error: You have to enter a question code."
 msgstr "Error: Zadali ste kód otázky"
 
@@ -8067,123 +7973,105 @@ msgstr "Error: Zadali ste kód otázky"
 msgid "Note: You MUST enter a new question code!"
 msgstr "Poznámka: MUSÍTE zadať nový kód otázky!"
 
-#: admin/questionhandling.php:69 admin/questionhandling.php:434
-#: admin/questionhandling.php:442
+#: admin/questionhandling.php:75 admin/questionhandling.php:447
+#: admin/questionhandling.php:455
 msgid "Question group:"
 msgstr "Skupina otázok:"
 
-#: admin/questionhandling.php:97
+#: admin/questionhandling.php:103
 msgid "Copy subquestions?"
 msgstr "Kopírovať pod-otázku?"
 
-#: admin/questionhandling.php:100
+#: admin/questionhandling.php:106
 #, fuzzy
 msgid "Copy answer options?"
 msgstr "Kopírovať odpovede?"
 
-#: admin/questionhandling.php:103
+#: admin/questionhandling.php:109
 msgid "Copy advanced settings?"
 msgstr "Kopírovať rozšírené nastavenia?"
 
-#: admin/questionhandling.php:106
+#: admin/questionhandling.php:112
 #, fuzzy
 msgid "Copy question"
 msgstr "Kopírovať otázku"
 
-#: admin/questionhandling.php:124
+#: admin/questionhandling.php:130
 msgid "Edit default answer values"
 msgstr "Upraviť prednastavané hodnoty odpovedí"
 
-#: admin/questionhandling.php:139 admin/questionhandling.php:184
+#: admin/questionhandling.php:145 admin/questionhandling.php:190
 #, php-format
 msgid "Default answer for scale %s:"
 msgstr "Predvolená odpoveď pre rozsah %s:"
 
-#: admin/questionhandling.php:143
+#: admin/questionhandling.php:149
 msgid "Default answer value:"
 msgstr "Predvolená hodnota odpovede:"
 
-#: admin/questionhandling.php:152 admin/questionhandling.php:188
+#: admin/questionhandling.php:158 admin/questionhandling.php:194
 msgid "<No default value>"
 msgstr "<Žiadna predvolená hodnota>"
 
-#: admin/questionhandling.php:169
+#: admin/questionhandling.php:175
 msgid "Default value for option 'Other':"
 msgstr "Predvolená hodnota pre možnosť 'Iné':"
 
-#: admin/questionhandling.php:188
+#: admin/questionhandling.php:194
 msgid "Checked"
 msgstr "Overené"
 
-#: admin/questionhandling.php:212
+#: admin/questionhandling.php:218
 msgid "Use same default value across languages:"
 msgstr "Použi rovnakú základnú hodnotu pre všetky jazyky:"
 
-#: admin/questionhandling.php:302
+#: admin/questionhandling.php:314
 msgid "Edit question"
 msgstr "Upraviť otázku"
 
-#: admin/questionhandling.php:302
+#: admin/questionhandling.php:314
 msgid "Add a new question"
 msgstr "Pridať novú otázku"
 
-#: admin/questionhandling.php:408
+#: admin/questionhandling.php:421
 msgid "Question Type:"
 msgstr "Typ otázky:"
 
-#: admin/questionhandling.php:419 admin/questionhandling.php:443
-#: admin/questionhandling.php:461
+#: admin/questionhandling.php:432 admin/questionhandling.php:456
+#: admin/questionhandling.php:474
 #, fuzzy
 msgid "Cannot be changed (survey is active)"
 msgstr "Nemôže byť zmenené (dotazník je aktívny)"
 
-#: admin/questionhandling.php:493
+#: admin/questionhandling.php:512
 msgid "Position:"
 msgstr "Pozícia:"
 
-#: admin/questionhandling.php:495
+#: admin/questionhandling.php:514
 msgid "At end"
 msgstr "Na konci"
 
-#: admin/questionhandling.php:513
+#: admin/questionhandling.php:532
 msgid "Show advanced settings"
 msgstr "Ukázať rozšírené nastavenia"
 
-#: admin/questionhandling.php:513
+#: admin/questionhandling.php:532
 msgid "Hide advanced settings"
 msgstr "Skryť rozšírené nastavenia"
 
-#: admin/questionhandling.php:515
+#: admin/questionhandling.php:534
 msgid "Loading..."
 msgstr "Načítavanie..."
 
-#: admin/questionhandling.php:540
+#: admin/questionhandling.php:559
 msgid "...or import a question"
 msgstr "...alebo importuj otázku"
 
-#: admin/questionhandling.php:544
+#: admin/questionhandling.php:563
 msgid "Select LimeSurvey question file (*.lsq/*.csv)"
 msgstr "Vybrať súbor otázky Limesurvey (*.lsq/*.csv)"
 
-#: admin/questionhandling.php:650
-msgid "Current group is using conditional questions"
-msgstr "Aktuálna skupina používa podmienené otázky"
-
-#: admin/questionhandling.php:650
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr ""
-"Zmena poradia otázok v tejto skupine je zakázaná, aby bolo zaistené, že "
-"otázky, na ktorých závisia podmienky nie sú preradené až za otázky, ktoré "
-"tieto podmienky využívajú"
-
-#: admin/questionhandling.php:650
-msgid "See the conditions marked on the following questions"
-msgstr "Zobraziť podmienky označené pri nasledujúcich otázkach"
-
-#: admin/questionhandling.php:751
+#: admin/questionhandling.php:769
 msgid "View Question"
 msgstr "Zobraziť otázku"
 
@@ -8250,7 +8138,7 @@ msgstr "Uložiť kvótu"
 msgid "Survey quotas"
 msgstr "Kvóty prieskumu"
 
-#: admin/quota.php:481 admin/surveylist.php:30
+#: admin/quota.php:481
 msgid "Status"
 msgstr "Stav"
 
@@ -8327,7 +8215,7 @@ msgstr ""
 "Pred pokračovním odporúčame exportovať celý prieskum z hlavnej "
 "administrátorskej obrazovky."
 
-#: admin/resetsurveylogic.php:64
+#: admin/resetsurveylogic.php:65
 msgid "All conditions in this survey have been deleted."
 msgstr "Všetky podmienky v tomto prieskume boli zmazané."
 
@@ -8442,48 +8330,52 @@ msgstr "Možnosti výstupu"
 msgid "Show graphs"
 msgstr "Zobraziť grafy"
 
-#: admin/statistics.php:346
+#: admin/statistics.php:345
+msgid "Show text responses inline"
+msgstr "Zobraziť textové odpovede zasebou"
+
+#: admin/statistics.php:352
 msgid "Select output format"
 msgstr "Vyber výstupný formát"
 
-#: admin/statistics.php:351 admin/statistics.php:1593
+#: admin/statistics.php:357 admin/statistics.php:1599
 msgid "View stats"
 msgstr "Zobraziť štatistiky"
 
-#: admin/statistics.php:358
+#: admin/statistics.php:364
 msgid "Response filters"
 msgstr "Filtre odpovedí"
 
-#: admin/statistics.php:563 admin/statistics.php:678
+#: admin/statistics.php:569 admin/statistics.php:684
 msgid "Number greater than"
 msgstr "Číslo väčšie ako"
 
-#: admin/statistics.php:569 admin/statistics.php:684
+#: admin/statistics.php:575 admin/statistics.php:690
 msgid "Number less than"
 msgstr "Číslo menšie ako"
 
-#: admin/statistics.php:609 admin/statistics.php:639 admin/statistics.php:662
-#: admin/statistics.php:1083
+#: admin/statistics.php:615 admin/statistics.php:645 admin/statistics.php:668
+#: admin/statistics.php:1089
 msgid "Responses containing"
 msgstr "Odpovede obsahujúce"
 
-#: admin/statistics.php:702
+#: admin/statistics.php:708
 msgid "Number of files greater than"
 msgstr "Počet súborov väčší ako"
 
-#: admin/statistics.php:708
+#: admin/statistics.php:714
 msgid "Number of files less than"
 msgstr "Počet súborov menší ako"
 
-#: admin/statistics.php:753
+#: admin/statistics.php:759
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Dátum (RRRR-MM-DD) rovný"
 
-#: admin/statistics.php:759
+#: admin/statistics.php:765
 msgid "Date is"
 msgstr "Dátum je"
 
-#: admin/statistics.php:765
+#: admin/statistics.php:771
 msgid "AND/OR Date is"
 msgstr "A/ALEBO Dátum je"
 
@@ -8512,7 +8404,7 @@ msgid "Results"
 msgstr "Výsledky"
 
 #: admin/statistics_function.php:636 admin/statistics_function.php:2069
-#: admin/statistics_function.php:2090
+#: admin/statistics_function.php:2108
 msgid "Browse"
 msgstr "Prechádzať"
 
@@ -8559,17 +8451,17 @@ msgstr "Kalkulácie"
 msgid "Result"
 msgstr "Výsledky"
 
-#: admin/statistics_function.php:1185 admin/statistics_function.php:2118
-#: admin/statistics_function.php:2124 admin/statistics_function.php:2130
-#: admin/statistics_function.php:2141 admin/statistics_function.php:2819
-#: admin/statistics_function.php:2823 admin/statistics_function.php:2835
-#: admin/statistics_function.php:2841
+#: admin/statistics_function.php:1185 admin/statistics_function.php:2155
+#: admin/statistics_function.php:2161 admin/statistics_function.php:2167
+#: admin/statistics_function.php:2178 admin/statistics_function.php:2856
+#: admin/statistics_function.php:2860 admin/statistics_function.php:2872
+#: admin/statistics_function.php:2878
 msgid "Sum"
 msgstr "Súčet"
 
-#: admin/statistics_function.php:1186 admin/statistics_function.php:2997
-#: admin/statistics_function.php:3004 admin/statistics_function.php:3011
-#: admin/statistics_function.php:3018
+#: admin/statistics_function.php:1186 admin/statistics_function.php:3037
+#: admin/statistics_function.php:3044 admin/statistics_function.php:3051
+#: admin/statistics_function.php:3058
 msgid "Standard deviation"
 msgstr "Štandardná odchylka"
 
@@ -8577,14 +8469,14 @@ msgstr "Štandardná odchylka"
 msgid "Average"
 msgstr "Priemer"
 
-#: admin/statistics_function.php:1234 admin/statistics_function.php:2083
-#: admin/statistics_function.php:2099 admin/statistics_function.php:2118
-#: admin/statistics_function.php:2122 admin/statistics_function.php:2130
-#: admin/statistics_function.php:2137 admin/statistics_function.php:2160
-#: admin/statistics_function.php:2164 admin/statistics_function.php:2172
-#: admin/statistics_function.php:2179 admin/statistics_function.php:2261
-#: admin/statistics_function.php:2265 admin/statistics_function.php:2272
-#: admin/statistics_function.php:2279
+#: admin/statistics_function.php:1234 admin/statistics_function.php:2101
+#: admin/statistics_function.php:2117 admin/statistics_function.php:2155
+#: admin/statistics_function.php:2159 admin/statistics_function.php:2167
+#: admin/statistics_function.php:2174 admin/statistics_function.php:2197
+#: admin/statistics_function.php:2201 admin/statistics_function.php:2209
+#: admin/statistics_function.php:2216 admin/statistics_function.php:2298
+#: admin/statistics_function.php:2302 admin/statistics_function.php:2309
+#: admin/statistics_function.php:2316
 msgid "Count"
 msgstr "Počet"
 
@@ -8629,31 +8521,35 @@ msgstr "Málo hodnôt na výpočet"
 msgid "Comments"
 msgstr "Komentáre"
 
-#: admin/statistics_function.php:2083 admin/statistics_function.php:2101
-#: admin/statistics_function.php:2118 admin/statistics_function.php:2123
-#: admin/statistics_function.php:2130 admin/statistics_function.php:2139
-#: admin/statistics_function.php:2160 admin/statistics_function.php:2165
-#: admin/statistics_function.php:2172 admin/statistics_function.php:2181
-#: admin/statistics_function.php:2261 admin/statistics_function.php:2266
-#: admin/statistics_function.php:2272 admin/statistics_function.php:2281
+#: admin/statistics_function.php:2079
+msgid "'Other' Responses"
+msgstr "'Iné' odpovede"
+
+#: admin/statistics_function.php:2101 admin/statistics_function.php:2119
+#: admin/statistics_function.php:2155 admin/statistics_function.php:2160
+#: admin/statistics_function.php:2167 admin/statistics_function.php:2176
+#: admin/statistics_function.php:2197 admin/statistics_function.php:2202
+#: admin/statistics_function.php:2209 admin/statistics_function.php:2218
+#: admin/statistics_function.php:2298 admin/statistics_function.php:2303
+#: admin/statistics_function.php:2309 admin/statistics_function.php:2318
 msgid "Percentage"
 msgstr "Percentuálny podiel"
 
-#: admin/statistics_function.php:2382 admin/statistics_function.php:2414
+#: admin/statistics_function.php:2419 admin/statistics_function.php:2451
 msgid "Not completed or Not displayed"
 msgstr "Nedokončené alebo Nezobrazené"
 
-#: admin/statistics_function.php:2386 admin/statistics_function.php:2418
+#: admin/statistics_function.php:2423 admin/statistics_function.php:2455
 msgid "Not displayed"
 msgstr "Nezobrazené"
 
-#: admin/statistics_function.php:2820 admin/statistics_function.php:2828
-#: admin/statistics_function.php:2836 admin/statistics_function.php:2847
+#: admin/statistics_function.php:2857 admin/statistics_function.php:2865
+#: admin/statistics_function.php:2873 admin/statistics_function.php:2884
 msgid "Number of cases"
 msgstr "Počet prípadov"
 
-#: admin/statistics_function.php:2996 admin/statistics_function.php:3000
-#: admin/statistics_function.php:3010 admin/statistics_function.php:3016
+#: admin/statistics_function.php:3036 admin/statistics_function.php:3040
+#: admin/statistics_function.php:3050 admin/statistics_function.php:3056
 msgid "Arithmetic mean"
 msgstr "Aritmetický priemer"
 
@@ -10369,11 +10265,12 @@ msgstr "Všetky používateľove prieskumy boli presunuté do %s. "
 msgid "Transfer the user's surveys to: "
 msgstr "Presunúť používateľove prieskumy do:"
 
-#: admin/usercontrol.php:618
+#: admin/usercontrol.php:618 admin/userrighthandling.php:324
+#: admin/userrighthandling.php:995
 msgid "Delete User"
 msgstr "Vymazať používateľa"
 
-#: admin/usercontrol.php:640
+#: admin/usercontrol.php:640 admin/userrighthandling.php:222
 msgid "Editing user"
 msgstr "Upraviť užívateľa"
 
@@ -11109,8 +11006,8 @@ msgstr "Prosím buďte trpezlivý"
 msgid "Moving user templates to new location at %s..."
 msgstr "Presúvajú sa užívateľské šablóny na nové miesto v (%s)"
 
-#: admin/update/upgrade-mssql.php:481 admin/update/upgrade-mssqlnative.php:481
-#: admin/update/upgrade-mysql.php:586 admin/update/upgrade-postgres.php:309
+#: admin/update/upgrade-mssql.php:595 admin/update/upgrade-mssqlnative.php:595
+#: admin/update/upgrade-mysql.php:706 admin/update/upgrade-postgres.php:430
 #, php-format
 msgid "Database update finished (%s)"
 msgstr "Aktualizácia databázy dokončená (%s)"
@@ -11359,6 +11256,423 @@ msgstr ""
 msgid "Vietnamese"
 msgstr "Vietnamčina"
 
+#: classes/eval/ExpressionManager.php:134
+msgid "Absolute value"
+msgstr "Absolútna hodnota"
+
+#: classes/eval/ExpressionManager.php:135
+msgid "Arc cosine"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:136
+msgid "addslashes"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:137
+msgid "Arc sine"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:138
+msgid "Arc tangent"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:139
+msgid "Arc tangent of two variables"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:140
+msgid "Round fractions up"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:141
+msgid "Returns true(1) if it is a valid date in gregorian calendar"
+msgstr "Vrátiť true(1) ak je to platný dátum gregoriánskeho kalendára"
+
+#: classes/eval/ExpressionManager.php:142
+msgid "Cosine"
+msgstr "Kosínus"
+
+#: classes/eval/ExpressionManager.php:143
+msgid "Count the number of answered questions in the list"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:144
+msgid "Format a local date/time"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:145
+msgid "Calculates the exponent of e"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:146
+msgid "Round fractions down"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:147
+msgid "Format a GMT date/time"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:148
+msgid ""
+"Convert all HTML entities to their applicable characters (always uses "
+"ENT_QUOTES and UTF-8)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:149
+msgid ""
+"Convert all applicable characters to HTML entities (always uses ENT_QUOTES "
+"and UTF-8)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:150
+msgid ""
+"Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-"
+"8)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:151
+msgid ""
+"Convert special HTML entities back to characters (always uses ENT_QUOTES and "
+"UTF-8)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:152
+msgid "Format a local time/date as integer"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:153
+msgid "Conditional processing"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:154
+msgid "Join array elements with a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:155
+msgid "Get the integer value of a variable"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:156
+msgid "Determine whether a variable is considered to be empty"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:157
+msgid "Finds whether the type of a variable is float"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:158
+msgid "Find whether the type of a variable is integer"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:159
+msgid "Finds whether a value is not a number"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:160
+msgid "Finds whether a variable is NULL"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:161
+msgid "Finds whether a variable is a number or a numeric string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:162
+msgid "Find whether the type of a variable is string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:163
+msgid "Return comma-separated list of values"
+msgstr "Vrátiť čiarkami oddelený zoznam hodnôt"
+
+#: classes/eval/ExpressionManager.php:164
+msgid "Natural logarithm"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:165
+msgid "Strip whitespace (or other characters) from the beginning of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:166
+msgid "Find highest value"
+msgstr "Nájdi najvyššiu hodnotu"
+
+#: classes/eval/ExpressionManager.php:167
+msgid "Find lowest value"
+msgstr "Nájdi najnižšiu hodnotu"
+
+#: classes/eval/ExpressionManager.php:168
+msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:169
+msgid "Inserts HTML line breaks before all newlines in a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:170
+msgid "Format a number with grouped thousands"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:171
+msgid "Get value of pi"
+msgstr "Získať hodnotu pí"
+
+#: classes/eval/ExpressionManager.php:172
+msgid "Exponential expression"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:173
+msgid "Convert a quoted-printable string to an 8 bit string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:174
+msgid "Convert a 8 bit string to a quoted-printable string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:175
+msgid "Quote meta characters"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:176
+msgid "Generate a random integer"
+msgstr "Generuj náhodné číslo"
+
+#: classes/eval/ExpressionManager.php:177
+msgid "Compare a string to a regular expression pattern"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:178
+msgid "Rounds a number to an optional precision"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:179
+msgid "Strip whitespace (or other characters) from the end of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:180
+msgid "Sine"
+msgstr "Sínus"
+
+#: classes/eval/ExpressionManager.php:181
+msgid "Return a formatted string"
+msgstr "Vráť naformátovaný reťazec"
+
+#: classes/eval/ExpressionManager.php:182
+msgid "Square root"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:183
+msgid "Calculate the Sample Standard Deviation for the list of numbers"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:184
+msgid "Pad a string to a certain length with another string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:185
+msgid "Repeat a string"
+msgstr "Zopakuj reťazec"
+
+#: classes/eval/ExpressionManager.php:186
+msgid ""
+"Replace all occurrences of the search string with the replacement string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:187
+msgid "Binary safe case-insensitive string comparison"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:188
+msgid "Binary safe string comparison"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:189
+msgid "Strip HTML and PHP tags from a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:190
+msgid "Find position of first occurrence of a case-insensitive string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:191
+msgid "Un-quotes a quoted string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:192
+msgid "Case-insensitive strstr"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:193
+msgid "Get string length"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:194
+msgid "Find position of first occurrence of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:195
+msgid "Reverse a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:196
+msgid "Find first occurrence of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:197
+msgid "Make a string lowercase"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:198
+msgid "Make a string uppercase"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:199
+msgid "Return part of a string"
+msgstr "Vráť časť reťazca"
+
+#: classes/eval/ExpressionManager.php:200
+msgid "Calculate the sum of values in an array"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:201
+msgid "Tangent"
+msgstr "Tangens"
+
+#: classes/eval/ExpressionManager.php:202
+msgid "Return current UNIX timestamp"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:203
+msgid ""
+"Strip whitespace (or other characters) from the beginning and end of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:204
+msgid "Uppercase the first character of each word in a string"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:523
+#: classes/eval/LimeExpressionManager.php:907
+#, fuzzy
+msgid "Total of all entries must equal"
+msgstr "Celkový počet vstupov musí byť rovný %d"
+
+#: classes/eval/LimeExpressionManager.php:608
+#, fuzzy
+msgid "The minimum number of answers for this question is"
+msgstr "Upraviť predvolené odpovede pre túto otázku"
+
+#: classes/eval/LimeExpressionManager.php:646
+#: classes/eval/LimeExpressionManager.php:715
+#, fuzzy
+msgid "Total of all entries must be at least"
+msgstr "Celkový počet vstupov musí byť aspoň %s"
+
+#: classes/eval/LimeExpressionManager.php:677
+#, fuzzy
+msgid "The entry must be at least"
+msgstr "Celkový počet vstupov musí byť aspoň %s"
+
+#: classes/eval/LimeExpressionManager.php:762
+#, fuzzy
+msgid "The maximum number of answers for this question is"
+msgstr "Upraviť predvolené odpovede pre túto otázku"
+
+#: classes/eval/LimeExpressionManager.php:800
+#: classes/eval/LimeExpressionManager.php:869
+#, fuzzy
+msgid "Total of all entries must not exceed"
+msgstr "Celkový počet vstupov nesmie presiahnuť %d"
+
+#: classes/eval/LimeExpressionManager.php:831
+#, fuzzy
+msgid "The entry must not exceed"
+msgstr "Celkový počet vstupov nesmie presiahnuť %d"
+
+#: classes/eval/LimeExpressionManager.php:963
+msgid "All entries must conform to this regular expression:"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:3428
+msgid "This question is mandatory"
+msgstr "Na otázku je nutné odpovedať."
+
+#: classes/eval/LimeExpressionManager.php:3440
+msgid "Please check at least one item."
+msgstr "Prosím, vyberte aspoň jednu položku."
+
+#: classes/eval/LimeExpressionManager.php:3450
+#, php-format
+msgid "If you choose '%s' you must provide a description."
+msgstr "Ak vyberiete '%s', musíte uviesť zdôvodnenie."
+
+#: classes/eval/LimeExpressionManager.php:3472
+msgid "Please complete all parts"
+msgstr "Prosím, dokončite všetky časti"
+
+#: classes/eval/LimeExpressionManager.php:3479
+msgid "Please check the items"
+msgstr "Prosím, skontrolujte položku"
+
+#: classes/eval/LimeExpressionManager.php:3486
+msgid "Please rank all items"
+msgstr "Prosím, zoraďte všetky položky"
+
+#: classes/eval/LimeExpressionManager.php:3493
+#, fuzzy
+msgid "Please answer this question"
+msgstr "Odpovedať iba na túto otázku"
+
+#: classes/eval/LimeExpressionManager.php:5011
+msgid ""
+"Invalid question - probably missing sub-questions or language-specific "
+"settings for language "
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5016
+#, fuzzy
+msgid "Name [ID]"
+msgstr "Meno"
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Relevance [Validation] (Default)"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Text [Help] (Tip)"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5182
+#, fuzzy
+msgid "This variable name has already been used."
+msgstr "E-mail, ktorý ste použil(a), už bol zaregistrovaný."
+
+#: classes/eval/LimeExpressionManager.php:5194
+msgid "This variable name contains invalid characters."
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5361
+msgid " Question(s) contain errors that need to be corrected"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5367
+#, fuzzy
+msgid "No syntax errors detected in this survey"
+msgstr "Nie ste účastníkom tohto prieskumu."
+
+#: classes/eval/LimeExpressionManager.php:5370
+#, fuzzy
+msgid "This group, by itself, does not contain any syntax errors"
+msgstr "Táto skupina neobsahuje žiadnu otázku(ky)."
+
+#: classes/eval/LimeExpressionManager.php:5373
+#, fuzzy
+msgid "This question, by itself, does not contain any syntax errors"
+msgstr "Táto skupina neobsahuje žiadnu otázku(ky)."
+
+#: classes/eval/test/survey_logic_file.php:131
+msgid "Logic File for Survey # "
+msgstr ""
+
 #~ msgid "Modify Quota"
 #~ msgstr "Zmeniť kvótu"
 
@@ -11505,6 +11819,9 @@ msgstr "Vietnamčina"
 #~ msgid "Referer-URL will be saved"
 #~ msgstr "Bude zaznamenané referujúce URL"
 
+#~ msgid "Are you sure you want regenerate the question codes?"
+#~ msgstr "Ste si istým že chcete znova vygenerovať kódy otázok?"
+
 #~ msgid "Fax To:"
 #~ msgstr "Faxovať na:"
 
@@ -11514,11 +11831,34 @@ msgstr "Vietnamčina"
 #~ msgid "Exit Link"
 #~ msgstr "Výstupný odkaz"
 
+#~ msgid ""
+#~ "Impossible to delete this group because there is at least one question "
+#~ "having a condition on its content"
+#~ msgstr ""
+#~ "Nie je možné zmazať skupinu, pretože aspoň jedna otázka má podmienku, "
+#~ "ktorá je závislá na jej obsahu"
+
+#~ msgid "Questions with conditions to this group"
+#~ msgstr "Otázky s podmienkami na túto skupinu"
+
+#~ msgid ""
+#~ "It's impossible to delete this question because there is at least one "
+#~ "question having a condition on it."
+#~ msgstr ""
+#~ "Nie je možné zmazať otázku, pretože existuje aspoň jedna otázka, ktorá je "
+#~ "od nej závislá."
+
+#~ msgid "Disabled - Delete current question"
+#~ msgstr "Zakázané - Vymažte aktuálnu otázku"
+
 #~ msgid "Export this Question"
 #~ msgstr "Exportovať túto otázku"
 
 #~ msgid "Set Conditions for this Question"
 #~ msgstr "Nastaviť podmienky pre túto otázku"
+
+#~ msgid "Other questions having conditions on this question:"
+#~ msgstr "Ďalšie otázky, ktoré majú nastavené podmienky na túto otázku:"
 
 #~ msgid "Failed to add User."
 #~ msgstr "Zlyhalo pridanie užívateľa."
@@ -11619,6 +11959,26 @@ msgstr "Vietnamčina"
 #~ msgid "Answers can't be deleted"
 #~ msgstr "Odpoveď nemohla byť zmazaná."
 
+#~ msgid ""
+#~ "This question relies on other question's answers and can't be moved above "
+#~ "groupId:"
+#~ msgstr ""
+#~ "Táto otázka závisí od odpovedí na iné otázky a nie je možné ju presunúť "
+#~ "pred IDskupiny:"
+
+#~ msgid "in position"
+#~ msgstr "na mieste"
+
+#~ msgid "See conditions:"
+#~ msgstr "Podmienky zobrazenia:"
+
+#~ msgid ""
+#~ "Some questions rely on this question's answers. You can't move this "
+#~ "question below groupId:"
+#~ msgstr ""
+#~ "Niektoré otázky závisia na odpovediach na túto otázku. Nemôžete presunúť "
+#~ "túto otázku za IDskupiny:"
+
 #~ msgid "Invitation to participate in survey"
 #~ msgstr "Pozvánka na účasť v prieskume"
 
@@ -11713,6 +12073,21 @@ msgstr "Vietnamčina"
 
 #~ msgid "Update Question"
 #~ msgstr "Aktualizovať otázku"
+
+#~ msgid "Current group is using conditional questions"
+#~ msgstr "Aktuálna skupina používa podmienené otázky"
+
+#~ msgid ""
+#~ "Re-ordering questions in this group is restricted to ensure that "
+#~ "questions on which conditions are based aren't reordered after questions "
+#~ "having the conditions set"
+#~ msgstr ""
+#~ "Zmena poradia otázok v tejto skupine je zakázaná, aby bolo zaistené, že "
+#~ "otázky, na ktorých závisia podmienky nie sú preradené až za otázky, ktoré "
+#~ "tieto podmienky využívajú"
+
+#~ msgid "See the conditions marked on the following questions"
+#~ msgstr "Zobraziť podmienky označené pri nasledujúcich otázkach"
 
 #~ msgid "New Password"
 #~ msgstr "Nové heslo"
@@ -11915,6 +12290,26 @@ msgstr "Vietnamčina"
 #~ msgid "Equals"
 #~ msgstr "Je rovné"
 
+#~ msgid "Current survey has questions with conditions outside their own group"
+#~ msgstr "Aktuálny prieskum má otázky s podmienkami mimo vlastnú skupinu"
+
+#~ msgid ""
+#~ "Re-ordering groups is restricted to ensure that questions on which "
+#~ "conditions are based aren't reordered after questions having the "
+#~ "conditions set"
+#~ msgstr ""
+#~ "Zmena poradia skupín je zakázaná preto, aby nedošlo k umiestneniu "
+#~ "podmieňujúcej otázky za otázku, ktorá je podmienená"
+
+#~ msgid "The following groups are concerned"
+#~ msgstr "Týka sa to nasledujúcich skupín"
+
+#~ msgid "Group %s depends on group %s, see the marked conditions on:"
+#~ msgstr "Skupina %s závisí na skupine %s, viď označené podmienky v:"
+
+#~ msgid "QID"
+#~ msgstr "QID"
+
 #~ msgid "Italian-Formal"
 #~ msgstr "Taliansky-formálny"
 
@@ -11923,6 +12318,34 @@ msgstr "Vietnamčina"
 #~ "responses."
 #~ msgstr ""
 #~ "Tento dotazník nie je teraz aktívny. Nebudete môcť uložiť Vaše odpovede."
+
+#~ msgid "Click here to print your answers."
+#~ msgstr "Stlačte sem pre vytlačenie Vašich odpovedí."
+
+#~ msgid "Cannot submit results - there are none to submit."
+#~ msgstr "Nemôžem odoslať výsledky - nie sú tu žiadne na odoslanie."
+
+#~ msgid ""
+#~ "This error can occur if you have already submitted your responses and "
+#~ "pressed 'refresh' on your browser. In this case, your responses have "
+#~ "already been saved."
+#~ msgstr ""
+#~ "Táto chyba môže nastať, pokiaľ ste už prieskum odoslali a stlačili "
+#~ "\"obnoviť\" vo svojom prehliadači. V tomto prípade sú Vaše odpovede už "
+#~ "uložené."
+
+#~ msgid ""
+#~ "If you receive this message in the middle of completing a survey, you "
+#~ "should choose '<- BACK' on your browser and then refresh/reload the "
+#~ "previous page. While you will lose answers from the last page all your "
+#~ "others will still exist. This problem can occur if the webserver is "
+#~ "suffering from overload or excessive use. We apologise for this problem."
+#~ msgstr ""
+#~ "Ak ste obdržalli túto správu v priebehu vyplňovania prieskumu, odporúčame "
+#~ "stlačiť \"<- späť\" vo Vašom prehliadači a následne \"obnoviť\" "
+#~ "predchádzajúcu stránku. Aj keď sú všetky odpovede z poslednej stránky "
+#~ "stratené, ostatné sú stále dostupné. Tento problém môže nastať, ak je "
+#~ "server preťažený. Ospravedlňujeme sa za spôsobené problémy. "
 
 #~ msgid "Survey Name (ID)"
 #~ msgstr "Meno dotazníka (ID)"
@@ -12011,6 +12434,12 @@ msgstr "Vietnamčina"
 
 #~ msgid "Category Separator"
 #~ msgstr "Oddeľovač kategórií"
+
+#~ msgid "Filter the available answers by this value"
+#~ msgstr "Filtruj dostupné odpovede podľa tejto hodnoty"
+
+#~ msgid "Code filter"
+#~ msgstr "Filter kódu"
 
 #~ msgid "Use accessible select boxes instead of calendar popup"
 #~ msgstr "Použiť prístupné výberové polia namiesto kalendárového popup okna"
@@ -12729,9 +13158,6 @@ msgstr "Vietnamčina"
 #~ msgid "Date/Time"
 #~ msgstr "Dátum/Čas"
 
-#~ msgid "Equation"
-#~ msgstr "Rovnica"
-
 #, fuzzy
 #~ msgid "Show a map in the statistics?"
 #~ msgstr "Chcete vo verejných štatistikách zobraziť grafy?"
@@ -12790,48 +13216,6 @@ msgstr "Vietnamčina"
 
 #~ msgid "Database error!!"
 #~ msgstr "Chyba databáze!"
-
-#~ msgid "'Other' Responses"
-#~ msgstr "'Iné' odpovede"
-
-#~ msgid "Absolute value"
-#~ msgstr "Absolútna hodnota"
-
-#~ msgid "Returns true(1) if it is a valid date in gregorian calendar"
-#~ msgstr "Vrátiť true(1) ak je to platný dátum gregoriánskeho kalendára"
-
-#~ msgid "Cosine"
-#~ msgstr "Kosínus"
-
-#~ msgid "Return comma-separated list of values"
-#~ msgstr "Vrátiť čiarkami oddelený zoznam hodnôt"
-
-#~ msgid "Find highest value"
-#~ msgstr "Nájdi najvyššiu hodnotu"
-
-#~ msgid "Find lowest value"
-#~ msgstr "Nájdi najnižšiu hodnotu"
-
-#~ msgid "Get value of pi"
-#~ msgstr "Získať hodnotu pí"
-
-#~ msgid "Generate a random integer"
-#~ msgstr "Generuj náhodné číslo"
-
-#~ msgid "Sine"
-#~ msgstr "Sínus"
-
-#~ msgid "Return a formatted string"
-#~ msgstr "Vráť naformátovaný reťazec"
-
-#~ msgid "Repeat a string"
-#~ msgstr "Zopakuj reťazec"
-
-#~ msgid "Return part of a string"
-#~ msgstr "Vráť časť reťazca"
-
-#~ msgid "Tangent"
-#~ msgstr "Tangens"
 
 #, fuzzy
 #~ msgid ""
@@ -13006,9 +13390,6 @@ msgstr "Vietnamčina"
 #~ msgid "-------"
 #~ msgstr "-------"
 
-#~ msgid "Show text responses inline"
-#~ msgstr "Zobraziť textové odpovede zasebou"
-
 #, fuzzy
 #~ msgid "User created successfully! "
 #~ msgstr "Skupina používateľov bola úspešne pridaná!"
@@ -13035,6 +13416,9 @@ msgstr "Vietnamčina"
 #~ msgid "You are not authorized to delete questions."
 #~ msgstr "Nemáte povolenie vymazávať otázky."
 
+#~ msgid "[Dependency on another question (ID $4)]"
+#~ msgstr "[Závislosť na inej otázke (ID $4)]"
+
 #~ msgid "Group name length more than 20 characters!"
 #~ msgstr "Názov skupiny obsahuje viac ako 20 znakov!"
 
@@ -13046,6 +13430,18 @@ msgstr "Vietnamčina"
 
 #~ msgid "You are already a part of this survey."
 #~ msgstr "Už ste súčasťou tohto prieskumu"
+
+#~ msgid "One or more uploaded files do not satisfy the criteria"
+#~ msgstr "Jeden alebo viac z nahraných súborov nespĺňa kritériá"
+
+#~ msgid ""
+#~ "One or more files are either not in the proper format or exceed the "
+#~ "maximum file size limitation. You cannot proceed until these answers are "
+#~ "valid."
+#~ msgstr ""
+#~ "Jeden alebo viac zo súborov buď nie je v správnom formáte, alebo "
+#~ "prekračuje maximálnu povolenú veľkosť súboru. Nemôžete pokračovať pokiaľ "
+#~ "nebude otázka platne zodpovedaná."
 
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "Upraviť/pridať sady štítkov"
@@ -13142,9 +13538,6 @@ msgstr "Vietnamčina"
 
 #~ msgid "Incomplete Records Only"
 #~ msgstr "Len nekompletné záznamy"
-
-#~ msgid "%d responses for this survey"
-#~ msgstr "%d odpovedí na tento dotazník"
 
 #~ msgid "%d full responses"
 #~ msgstr "%d úplných odpovedí"
@@ -13581,10 +13974,6 @@ msgstr "Vietnamčina"
 #, fuzzy
 #~ msgid "if you have NOT answered"
 #~ msgstr "ak ste odpovedal(a)"
-
-#, fuzzy
-#~ msgid "Only answer this question %s"
-#~ msgstr "Odpovedať iba na túto otázku"
 
 #~ msgid "Group:"
 #~ msgstr "Skupina:"

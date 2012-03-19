@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: load.php 8997 2010-07-29 13:28:25Z c_schmitz $
  */
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -30,7 +30,7 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 }
 echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 ."\t<script type='text/javascript'>\n"
-."function checkconditions(value, name, type)\n"
+."function checkconditions(value, name, type, evt_type)\n"
 ."\t{\n"
 ."\t}\n"
 ."\t</script>\n\n";

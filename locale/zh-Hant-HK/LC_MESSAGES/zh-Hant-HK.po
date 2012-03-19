@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Chinese-traditional(Hong Kong) language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-17 16:52+0100\n"
+"POT-Creation-Date: 2011-12-17 15:21+0100\n"
 "PO-Revision-Date: 2011-11-17 17:03+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: MHHK <webmaster@mhhk.co.cc>\n"
@@ -277,1192 +277,1189 @@ msgstr "陣列 (文本)"
 msgid "File upload"
 msgstr "操作代碼檔上傳"
 
-#: common_functions.php:622
+#: common_functions.php:269
+#, fuzzy
+msgid "Equation"
+msgstr "編輯問題"
+
+#: common_functions.php:628
 msgid "Active"
 msgstr "活動的"
 
-#: common_functions.php:627
+#: common_functions.php:633
 msgid "Expired"
 msgstr "過期"
 
-#: common_functions.php:632
+#: common_functions.php:638
 msgid "Inactive"
 msgstr "非活動的"
 
-#: common_functions.php:637 common_functions.php:691 common_functions.php:1301
-#: common_functions.php:1326 common_functions.php:1401
-#: common_functions.php:4999 common_functions.php:5048
-#: common_functions.php:5084 common_functions.php:5120 qanda.php:1986
-#: qanda.php:2138 qanda.php:7511 qanda.php:7565
+#: common_functions.php:643 common_functions.php:697 common_functions.php:1308
+#: common_functions.php:1333 common_functions.php:1408
+#: common_functions.php:4685 common_functions.php:4734
+#: common_functions.php:4770 common_functions.php:4806 qanda.php:1280
+#: qanda.php:1433 qanda.php:6736 qanda.php:6790
 msgid "Please choose..."
 msgstr "請選擇..."
 
-#: common_functions.php:642 common_functions.php:645 common_functions.php:1302
-#: common_functions.php:1327 common_functions.php:1402
-#: common_functions.php:5049 common_functions.php:5085
+#: common_functions.php:648 common_functions.php:651 common_functions.php:1309
+#: common_functions.php:1334 common_functions.php:1409
+#: common_functions.php:4735 common_functions.php:4771
 msgid "None"
 msgstr "無"
 
-#: common_functions.php:1257
+#: common_functions.php:1264
 msgid "No email notification"
 msgstr "沒有郵件通知"
 
-#: common_functions.php:1258
+#: common_functions.php:1265
 msgid "Basic email notification"
 msgstr "基本郵件通知"
 
-#: common_functions.php:1259
+#: common_functions.php:1266
 msgid "Detailed email notification with result codes"
 msgstr "帶有結果碼的詳細郵件通知"
 
-#: common_functions.php:1876 common_functions.php:1930
-#: common_functions.php:2466 common_functions.php:2709
-#: common_functions.php:3464 common_functions.php:3478
-#: common_functions.php:3494 common_functions.php:3549
-#: common_functions.php:3568 common_functions.php:3705
-#: common_functions.php:3886 common_functions.php:3895
-#: common_functions.php:3904 common_functions.php:3913 qanda.php:2432
-#: qanda.php:3260 qanda.php:3604
+#: common_functions.php:1884 common_functions.php:1938
+#: common_functions.php:2494 common_functions.php:2762
+#: common_functions.php:3533 common_functions.php:3547
+#: common_functions.php:3563 common_functions.php:3618
+#: common_functions.php:3637 common_functions.php:3785
+#: common_functions.php:3966 common_functions.php:3975
+#: common_functions.php:3984 common_functions.php:3993 qanda.php:1728
+#: qanda.php:2500 qanda.php:2829
 msgid "Other"
 msgstr "其它"
 
-#: common_functions.php:1884 common_functions.php:1890
-#: common_functions.php:1906 common_functions.php:3038
-#: common_functions.php:3119 common_functions.php:3194
-#: common_functions.php:3207 common_functions.php:3218
-#: common_functions.php:3229 common_functions.php:3240
-#: common_functions.php:3278 common_functions.php:3308
-#: common_functions.php:3319 common_functions.php:3426
-#: common_functions.php:3437 common_functions.php:3457
-#: common_functions.php:3469 common_functions.php:3499
-#: common_functions.php:3512 common_functions.php:3523
-#: common_functions.php:3534 common_functions.php:3553
-#: common_functions.php:3572 common_functions.php:3583
-#: common_functions.php:3594 common_functions.php:3637
-#: common_functions.php:3663 common_functions.php:3698
-#: common_functions.php:3743 common_functions.php:3753
-#: common_functions.php:3867 common_functions.php:3878 qanda.php:5059
-#: qanda.php:5530 qanda.php:5569
+#: common_functions.php:1892 common_functions.php:1898
+#: common_functions.php:1914 common_functions.php:3107
+#: common_functions.php:3188 common_functions.php:3263
+#: common_functions.php:3276 common_functions.php:3287
+#: common_functions.php:3298 common_functions.php:3309
+#: common_functions.php:3347 common_functions.php:3377
+#: common_functions.php:3388 common_functions.php:3495
+#: common_functions.php:3506 common_functions.php:3526
+#: common_functions.php:3538 common_functions.php:3568
+#: common_functions.php:3581 common_functions.php:3592
+#: common_functions.php:3603 common_functions.php:3622
+#: common_functions.php:3641 common_functions.php:3652
+#: common_functions.php:3674 common_functions.php:3717
+#: common_functions.php:3743 common_functions.php:3778
+#: common_functions.php:3823 common_functions.php:3833
+#: common_functions.php:3947 common_functions.php:3958 qanda.php:4276
+#: qanda.php:4738 qanda.php:4778
 msgid "Yes"
 msgstr "是"
 
-#: common_functions.php:1891 common_functions.php:1907
-#: common_functions.php:3037 common_functions.php:3118
-#: common_functions.php:3193 common_functions.php:3208
-#: common_functions.php:3219 common_functions.php:3230
-#: common_functions.php:3241 common_functions.php:3279
-#: common_functions.php:3307 common_functions.php:3318
-#: common_functions.php:3425 common_functions.php:3436
-#: common_functions.php:3456 common_functions.php:3468
-#: common_functions.php:3498 common_functions.php:3511
-#: common_functions.php:3522 common_functions.php:3533
-#: common_functions.php:3552 common_functions.php:3571
-#: common_functions.php:3582 common_functions.php:3593
-#: common_functions.php:3636 common_functions.php:3648
-#: common_functions.php:3662 common_functions.php:3697
-#: common_functions.php:3742 common_functions.php:3752
-#: common_functions.php:3866 common_functions.php:3877 qanda.php:5068
-#: qanda.php:5532 qanda.php:5587
+#: common_functions.php:1899 common_functions.php:1915
+#: common_functions.php:3106 common_functions.php:3187
+#: common_functions.php:3262 common_functions.php:3277
+#: common_functions.php:3288 common_functions.php:3299
+#: common_functions.php:3310 common_functions.php:3348
+#: common_functions.php:3376 common_functions.php:3387
+#: common_functions.php:3494 common_functions.php:3505
+#: common_functions.php:3525 common_functions.php:3537
+#: common_functions.php:3567 common_functions.php:3580
+#: common_functions.php:3591 common_functions.php:3602
+#: common_functions.php:3621 common_functions.php:3640
+#: common_functions.php:3651 common_functions.php:3673
+#: common_functions.php:3716 common_functions.php:3728
+#: common_functions.php:3742 common_functions.php:3777
+#: common_functions.php:3822 common_functions.php:3832
+#: common_functions.php:3946 common_functions.php:3957 qanda.php:4285
+#: qanda.php:4740 qanda.php:4796
 msgid "No"
 msgstr "否"
 
-#: common_functions.php:1892 common_functions.php:1900
-#: common_functions.php:5962 common_functions.php:5967 qanda.php:1660
-#: qanda.php:2156 qanda.php:2466 qanda.php:2606 qanda.php:2669 qanda.php:5079
-#: qanda.php:5147 qanda.php:5244 qanda.php:5308 qanda.php:5403 qanda.php:5451
-#: qanda.php:5535 qanda.php:5607 qanda.php:5697 qanda.php:5776 qanda.php:5883
-#: qanda.php:5905 qanda.php:5978 qanda.php:6111 qanda.php:6857 qanda.php:6858
-#: qanda.php:7149 qanda.php:7224 qanda.php:7329 qanda.php:7531 qanda.php:7585
+#: common_functions.php:1900 common_functions.php:1908
+#: common_functions.php:5648 common_functions.php:5653 qanda.php:956
+#: qanda.php:1451 qanda.php:1762 qanda.php:1903 qanda.php:1966 qanda.php:4296
+#: qanda.php:4350 qanda.php:4448 qanda.php:4513 qanda.php:4609 qanda.php:4658
+#: qanda.php:4743 qanda.php:4816 qanda.php:4907 qanda.php:4987 qanda.php:5095
+#: qanda.php:5117 qanda.php:5193 qanda.php:5327 qanda.php:6078 qanda.php:6079
+#: qanda.php:6372 qanda.php:6447 qanda.php:6553 qanda.php:6756 qanda.php:6810
 msgid "No answer"
 msgstr "拒答"
 
-#: common_functions.php:1898 qanda.php:5123
+#: common_functions.php:1906 qanda.php:4340
 msgid "Male"
 msgstr "男"
 
-#: common_functions.php:1899 qanda.php:5115
+#: common_functions.php:1907 qanda.php:4332
 msgid "Female"
 msgstr "女"
 
-#: common_functions.php:1908 qanda.php:5531 qanda.php:5577
+#: common_functions.php:1916 qanda.php:4739 qanda.php:4786
 msgid "Uncertain"
 msgstr "不確定"
 
-#: common_functions.php:1914 qanda.php:5692 qanda.php:5735
+#: common_functions.php:1922 qanda.php:4902 qanda.php:4946
 msgid "Increase"
 msgstr "增加"
 
-#: common_functions.php:1915 qanda.php:5694 qanda.php:5758
+#: common_functions.php:1923 qanda.php:4904 qanda.php:4969
 msgid "Decrease"
 msgstr "減少"
 
-#: common_functions.php:1916 qanda.php:5693 qanda.php:5746
+#: common_functions.php:1924 qanda.php:4903 qanda.php:4957
 msgid "Same"
 msgstr "相同"
 
-#: common_functions.php:2249
+#: common_functions.php:2277
 msgid "Response ID"
 msgstr "回饋 ID"
 
-#: common_functions.php:2257
+#: common_functions.php:2285
 msgid "Date submitted"
 msgstr "提交的日期"
 
-#: common_functions.php:2265
+#: common_functions.php:2293
 msgid "Last page"
 msgstr "末頁"
 
-#: common_functions.php:2273
+#: common_functions.php:2301
 msgid "Start language"
 msgstr "起始語言"
 
-#: common_functions.php:2289 index.php:2354 index.php:2521
+#: common_functions.php:2317 index.php:1762 index.php:1929
 msgid "Token"
 msgstr "操作代碼"
 
-#: common_functions.php:2304
+#: common_functions.php:2332
 msgid "Date last action"
 msgstr "上次操作日期"
 
-#: common_functions.php:2316
+#: common_functions.php:2344
 msgid "Date started"
 msgstr "開始日期"
 
-#: common_functions.php:2332
+#: common_functions.php:2360
 msgid "IP address"
 msgstr "IP 地址"
 
-#: common_functions.php:2343
+#: common_functions.php:2371
 msgid "Referrer URL"
 msgstr "來源網址"
 
-#: common_functions.php:2497 common_functions.php:2692
+#: common_functions.php:2523 common_functions.php:2743
 msgid "Comment"
 msgstr "評論"
 
-#: common_functions.php:2564
+#: common_functions.php:2601
 msgid "Scale 1"
 msgstr "尺度1"
 
-#: common_functions.php:2579
+#: common_functions.php:2618
 msgid "Scale 2"
 msgstr "尺度2"
 
-#: common_functions.php:2600
+#: common_functions.php:2641
 #, php-format
 msgid "Rank %s"
 msgstr "排序 %s"
 
-#: common_functions.php:2724
+#: common_functions.php:2780
 msgid "Other comment"
 msgstr "其它評論"
 
-#: common_functions.php:2763
+#: common_functions.php:2830
 msgid "Total time"
 msgstr "全部時間："
 
-#: common_functions.php:2770
+#: common_functions.php:2837
 msgid "Group time"
 msgstr "小組時間"
 
-#: common_functions.php:2777
+#: common_functions.php:2844
 msgid "Question time"
 msgstr "問題時間"
 
-#: common_functions.php:3034 common_functions.php:3045
-#: common_functions.php:3080 common_functions.php:3096
-#: common_functions.php:3107 common_functions.php:3115
-#: common_functions.php:3126 common_functions.php:3134
-#: common_functions.php:3142 common_functions.php:3150
-#: common_functions.php:3158 common_functions.php:3166
-#: common_functions.php:3304 common_functions.php:3315
-#: common_functions.php:3398 common_functions.php:3406
-#: common_functions.php:3414 common_functions.php:3422
-#: common_functions.php:3433 common_functions.php:3508
-#: common_functions.php:3541 common_functions.php:3560
-#: common_functions.php:3579 common_functions.php:3644
-#: common_functions.php:3678 common_functions.php:3686
-#: common_functions.php:3694
+#: common_functions.php:3103 common_functions.php:3114
+#: common_functions.php:3149 common_functions.php:3165
+#: common_functions.php:3176 common_functions.php:3184
+#: common_functions.php:3195 common_functions.php:3203
+#: common_functions.php:3211 common_functions.php:3219
+#: common_functions.php:3227 common_functions.php:3235
+#: common_functions.php:3373 common_functions.php:3384
+#: common_functions.php:3467 common_functions.php:3475
+#: common_functions.php:3483 common_functions.php:3491
+#: common_functions.php:3502 common_functions.php:3577
+#: common_functions.php:3610 common_functions.php:3629
+#: common_functions.php:3648 common_functions.php:3724
+#: common_functions.php:3758 common_functions.php:3766
+#: common_functions.php:3774
 msgid "Display"
 msgstr "顯示"
 
-#: common_functions.php:3040
+#: common_functions.php:3109
 #, fuzzy
 msgid "Sort the answer options alphabetically"
 msgstr "按字母排列答案項"
 
-#: common_functions.php:3041
+#: common_functions.php:3110
 msgid "Sort answers alphabetically"
 msgstr "按字母排列答案項"
 
-#: common_functions.php:3050
+#: common_functions.php:3119
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "設置答案列的寬度百分比 (1-100)"
 
-#: common_functions.php:3051
+#: common_functions.php:3120
 msgid "Answer width"
 msgstr "答案寬度"
 
-#: common_functions.php:3055 common_functions.php:3063
-#: common_functions.php:3071 common_functions.php:3088
-#: common_functions.php:3182 common_functions.php:3190
-#: common_functions.php:3326 common_functions.php:3350
-#: common_functions.php:3366 common_functions.php:3390
-#: common_functions.php:3444 common_functions.php:3519
-#: common_functions.php:3530 common_functions.php:3922
+#: common_functions.php:3124 common_functions.php:3132
+#: common_functions.php:3140 common_functions.php:3251
+#: common_functions.php:3259 common_functions.php:3395
+#: common_functions.php:3419 common_functions.php:3435
+#: common_functions.php:3459 common_functions.php:3513
+#: common_functions.php:3588 common_functions.php:3599
+#: common_functions.php:4002
 msgid "Logic"
 msgstr "邏輯"
 
-#: common_functions.php:3058
+#: common_functions.php:3127
 #, fuzzy
 msgid ""
 "Enter the code of a Multiple choice question to only show the matching "
 "answer options in this question."
 msgstr "輸入該陣列的多選題的編碼來僅顯示匹配答案項。"
 
-#: common_functions.php:3059
+#: common_functions.php:3128
 msgid "Array filter"
 msgstr "陣列篩選"
 
-#: common_functions.php:3066
+#: common_functions.php:3135
 #, fuzzy
 msgid ""
 "Enter the code of a Multiple choice question to exclude the matching answer "
 "options in this question."
 msgstr "輸入該陣列的多選題的編碼來匹配答案項。"
 
-#: common_functions.php:3067
+#: common_functions.php:3136
 msgid "Array filter exclusion"
 msgstr "陣列篩選排除"
 
-#: common_functions.php:3075
+#: common_functions.php:3144
 msgid ""
 "If one of the subquestions is marked then for each marked subquestion this "
 "value is added as assessment."
 msgstr ""
 "如果有任何一個子題目被標記，則每個已標記的子題目，其欄位內容會被視為評估用途"
 
-#: common_functions.php:3076
+#: common_functions.php:3145
 msgid "Assessment value"
 msgstr "評價值"
 
-#: common_functions.php:3083 common_functions.php:3084
+#: common_functions.php:3152 common_functions.php:3153
 #, fuzzy
 msgid "Category separator"
 msgstr "類別分隔符號"
 
-#: common_functions.php:3091
-msgid "Filter the available answers by this value"
-msgstr "按值篩選現有答案項"
-
-#: common_functions.php:3092
-msgid "Code filter"
-msgstr "代碼篩選"
-
-#: common_functions.php:3102
+#: common_functions.php:3171
 msgid ""
 "The answer options will be distributed across the number of columns set here"
 msgstr "答案項將分佈於這裡設定的欄目"
 
-#: common_functions.php:3103
+#: common_functions.php:3172
 msgid "Display columns"
 msgstr "顯示列"
 
-#: common_functions.php:3110
+#: common_functions.php:3179
 msgid "How many rows to display"
 msgstr "顯示的行數"
 
-#: common_functions.php:3111
+#: common_functions.php:3180
 msgid "Display rows"
 msgstr "顯示行"
 
-#: common_functions.php:3121
+#: common_functions.php:3190
 #, fuzzy
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "使用可訪問選擇框替代彈出日曆"
 
-#: common_functions.php:3122
+#: common_functions.php:3191
 #, fuzzy
 msgid "Display dropdown boxes"
 msgstr "顯示行"
 
-#: common_functions.php:3129
+#: common_functions.php:3198
 msgid "Minimum year value in calendar"
 msgstr "日曆最小年份值"
 
-#: common_functions.php:3130
+#: common_functions.php:3199
 msgid "Minimum year"
 msgstr "最小年份"
 
-#: common_functions.php:3137
+#: common_functions.php:3206
 msgid "Maximum year value for calendar"
 msgstr "日曆最大年份值"
 
-#: common_functions.php:3138
+#: common_functions.php:3207
 msgid "Maximum year"
 msgstr "最大年份"
 
-#: common_functions.php:3145
+#: common_functions.php:3214
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "下拉清單的首碼|尾碼"
 
-#: common_functions.php:3146
+#: common_functions.php:3215
 msgid "Dropdown prefix/suffix"
 msgstr ""
 
-#: common_functions.php:3153
+#: common_functions.php:3222
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "下拉清單的答案後分隔符號|下拉清單內分隔符號"
 
-#: common_functions.php:3154
+#: common_functions.php:3223
 #, fuzzy
 msgid "Dropdown separator"
 msgstr "下拉隔離符"
 
-#: common_functions.php:3161
+#: common_functions.php:3230
 #, fuzzy
 msgid "Enter a header text for the first scale"
 msgstr "為尺度A輸入表頭文本"
 
-#: common_functions.php:3162
+#: common_functions.php:3231
 #, fuzzy
 msgid "Header for first scale"
 msgstr "尺度A標題"
 
-#: common_functions.php:3169
+#: common_functions.php:3238
 #, fuzzy
 msgid "Enter a header text for the second scale"
 msgstr "為尺度A輸入表頭文本"
 
-#: common_functions.php:3170
+#: common_functions.php:3239
 #, fuzzy
 msgid "Header for second scale"
 msgstr "尺度A標題"
 
-#: common_functions.php:3174 common_functions.php:3334
-#: common_functions.php:3342 common_functions.php:3358
-#: common_functions.php:3374 common_functions.php:3382
-#: common_functions.php:3452
+#: common_functions.php:3243 common_functions.php:3403
+#: common_functions.php:3411 common_functions.php:3427
+#: common_functions.php:3443 common_functions.php:3451
+#: common_functions.php:3521
 msgid "Input"
 msgstr "輸入"
 
-#: common_functions.php:3177
+#: common_functions.php:3246
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "多重數值輸入和必須等於該值"
 
-#: common_functions.php:3178
+#: common_functions.php:3247
 msgid "Equals sum value"
 msgstr "等於合計值"
 
-#: common_functions.php:3185
+#: common_functions.php:3254
 msgid ""
 "Excludes all other options if a certain answer is selected - just enter the "
 "answer code(s) seperated with a semikolon."
 msgstr "如果選擇了特定答案則排除所有其它選項-僅輸入答案代碼，用分號分隔。"
 
-#: common_functions.php:3186
+#: common_functions.php:3255
 msgid "Exclusive option"
 msgstr "排除選項"
 
-#: common_functions.php:3196
+#: common_functions.php:3265
 msgid ""
 "If the participant marks all options, uncheck all and check the option set "
 "in the \"Exclusive option\" setting"
 msgstr ""
 
-#: common_functions.php:3197
+#: common_functions.php:3266
 msgid "Auto-check exclusive option if all others are checked"
 msgstr ""
 
-#: common_functions.php:3204 common_functions.php:3215
-#: common_functions.php:3226 common_functions.php:3237
-#: common_functions.php:3247 common_functions.php:3257
-#: common_functions.php:3266 common_functions.php:3275
-#: common_functions.php:3285 common_functions.php:3293
+#: common_functions.php:3273 common_functions.php:3284
+#: common_functions.php:3295 common_functions.php:3306
+#: common_functions.php:3316 common_functions.php:3326
+#: common_functions.php:3335 common_functions.php:3344
+#: common_functions.php:3354 common_functions.php:3362
 msgid "Location"
 msgstr "位置"
 
-#: common_functions.php:3209
+#: common_functions.php:3278
 msgid "Store the city?"
 msgstr "儲存城市?"
 
-#: common_functions.php:3210
+#: common_functions.php:3279
 msgid "Save city"
 msgstr "儲存城市"
 
-#: common_functions.php:3220
+#: common_functions.php:3289
 msgid "Store the state?"
 msgstr "儲存現狀？"
 
-#: common_functions.php:3221
+#: common_functions.php:3290
 msgid "Save state"
 msgstr "儲存州"
 
-#: common_functions.php:3231
+#: common_functions.php:3300
 msgid "Store the postal code?"
 msgstr "儲存郵遞區號？"
 
-#: common_functions.php:3232
+#: common_functions.php:3301
 msgid "Save postal code"
 msgstr "儲存郵遞區號"
 
-#: common_functions.php:3242
+#: common_functions.php:3311
 msgid "Store the country?"
 msgstr "儲存國名？"
 
-#: common_functions.php:3243
+#: common_functions.php:3312
 msgid "Save country"
 msgstr "儲存國家"
 
-#: common_functions.php:3250 common_functions.php:3482
+#: common_functions.php:3319 common_functions.php:3551
 msgid "Off"
 msgstr "關"
 
-#: common_functions.php:3251
+#: common_functions.php:3320
 msgid "Google Maps"
 msgstr "Google 地圖"
 
-#: common_functions.php:3252
+#: common_functions.php:3321
 msgid ""
 "Activate this to show a map above the input field where the user can select "
 "a location"
 msgstr "啟用這個項目會在輸入欄位顯示地圖讓使用者可以選取地點"
 
-#: common_functions.php:3253
+#: common_functions.php:3322
 msgid "Use mapping service"
 msgstr "使用地圖服務"
 
-#: common_functions.php:3261
+#: common_functions.php:3330
 #, fuzzy
 msgid "Width of the map in pixel"
 msgstr "文本輸入框寬度"
 
-#: common_functions.php:3262
+#: common_functions.php:3331
 msgid "Map width"
 msgstr "地圖寬度"
 
-#: common_functions.php:3270
+#: common_functions.php:3339
 msgid "Height of the map in pixel"
 msgstr "地圖高度(像素)"
 
-#: common_functions.php:3271
+#: common_functions.php:3340
 msgid "Map height"
 msgstr "地圖高度"
 
-#: common_functions.php:3280
+#: common_functions.php:3349
 msgid "Get the default location using the user's IP address?"
 msgstr ""
 
-#: common_functions.php:3281
+#: common_functions.php:3350
 #, fuzzy
 msgid "IP as default location"
 msgstr "基本郵件通知"
 
-#: common_functions.php:3288
+#: common_functions.php:3357
 msgid ""
 "Default coordinates of the map when the page first loads. Format: latitude "
 "[space] longtitude"
 msgstr ""
 
-#: common_functions.php:3289
+#: common_functions.php:3358
 #, fuzzy
 msgid "Default position"
 msgstr "默認場景"
 
-#: common_functions.php:3297
+#: common_functions.php:3366
 msgid "Map zoom level"
 msgstr "地圖縮放層級"
 
-#: common_functions.php:3298
+#: common_functions.php:3367
 msgid "Zoom level"
 msgstr "縮放層級"
 
-#: common_functions.php:3310
+#: common_functions.php:3379
 msgid "Hide the tip that is normally shown with a question"
 msgstr "隱藏問題提示"
 
-#: common_functions.php:3311
+#: common_functions.php:3380
 msgid "Hide tip"
 msgstr "隱藏提示"
 
-#: common_functions.php:3321
+#: common_functions.php:3390
 msgid ""
 "Hide this question at any time. This is useful for including data using "
 "answer prefilling."
 msgstr "始終隱藏該題。這在使用答案預填來包含資料時很有用。"
 
-#: common_functions.php:3322
+#: common_functions.php:3391
 msgid "Always hide this question"
 msgstr "始終隱藏本題"
 
-#: common_functions.php:3329
+#: common_functions.php:3398
 msgid "Limit the number of possible answers"
 msgstr "限制答案項數目"
 
-#: common_functions.php:3330
+#: common_functions.php:3399
 msgid "Maximum answers"
 msgstr "最多答案項"
 
-#: common_functions.php:3337
+#: common_functions.php:3406
 msgid "Maximum sum value of multiple numeric input"
 msgstr "多重數值輸入的最大合計值"
 
-#: common_functions.php:3338
+#: common_functions.php:3407
 msgid "Maximum sum value"
 msgstr "最大合計值"
 
-#: common_functions.php:3345
+#: common_functions.php:3414
 #, fuzzy
 msgid "Maximum value of the numeric input"
 msgstr "多重數值輸入的最大合計值"
 
-#: common_functions.php:3346 common_functions.php:3402
+#: common_functions.php:3415 common_functions.php:3471
 msgid "Maximum value"
 msgstr "最大值"
 
-#: common_functions.php:3353
+#: common_functions.php:3422
 msgid ""
 "Enter the SGQA identifier to use the total of a previous question as the "
 "maximum for this question"
 msgstr "把先前問題總計作為本題最大值的SGQA識別字"
 
-#: common_functions.php:3354
+#: common_functions.php:3423
 msgid "Max value from SGQA"
 msgstr "SGQA最大值"
 
-#: common_functions.php:3361
+#: common_functions.php:3430
 msgid "Maximum characters allowed"
 msgstr "允許的最大字元數"
 
-#: common_functions.php:3362
+#: common_functions.php:3431
 msgid "Maximum characters"
 msgstr "最大字元數"
 
-#: common_functions.php:3369
+#: common_functions.php:3438
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "確保最少答案項數目(0=無限制)"
 
-#: common_functions.php:3370
+#: common_functions.php:3439
 msgid "Minimum answers"
 msgstr "最少答案項"
 
-#: common_functions.php:3377
+#: common_functions.php:3446
 #, fuzzy
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr "多重數值輸入必須大於該值"
 
-#: common_functions.php:3378
+#: common_functions.php:3447
 msgid "Minimum sum value"
 msgstr "最小合計值"
 
-#: common_functions.php:3385
+#: common_functions.php:3454
 #, fuzzy
 msgid "Minimum value of the numeric input"
 msgstr "多重數值輸入的最大合計值"
 
-#: common_functions.php:3386 common_functions.php:3410
+#: common_functions.php:3455 common_functions.php:3479
 msgid "Minimum value"
 msgstr "最小值"
 
-#: common_functions.php:3393
+#: common_functions.php:3462
 msgid ""
 "Enter the SGQA identifier to use the total of a previous question as the "
 "minimum for this question"
 msgstr "把先前問題總計作為本題最小值的SGQA識別字"
 
-#: common_functions.php:3394
+#: common_functions.php:3463
 #, fuzzy
 msgid "Minimum value from SGQA"
 msgstr "SGQA最小值"
 
-#: common_functions.php:3401
+#: common_functions.php:3470
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "陣列（多重彈性）問題類型的最大值"
 
-#: common_functions.php:3409
+#: common_functions.php:3478
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "陣列（多重彈性）問題類型的最小值"
 
-#: common_functions.php:3417 common_functions.php:3418
+#: common_functions.php:3486 common_functions.php:3487
 msgid "Step value"
 msgstr "步進值"
 
-#: common_functions.php:3428
+#: common_functions.php:3497
 msgid "Use checkbox layout"
 msgstr "使用核取方塊佈局"
 
-#: common_functions.php:3429
+#: common_functions.php:3498
 msgid "Checkbox layout"
 msgstr "核取方塊佈局"
 
-#: common_functions.php:3439
+#: common_functions.php:3508
 #, fuzzy
 msgid "Present answer options in reverse order"
 msgstr "隨機提供答案"
 
-#: common_functions.php:3440
+#: common_functions.php:3509
 #, fuzzy
 msgid "Reverse answer order"
 msgstr "隨機答案順序"
 
-#: common_functions.php:3447
+#: common_functions.php:3516
 msgid ""
 "SGQA identifier to use total of previous question as total for this question"
 msgstr "把先前問題總計用作總計的本題SGQA識別字"
 
-#: common_functions.php:3448
+#: common_functions.php:3517
 msgid "Value equals SGQA"
 msgstr "值等於SGQA"
 
-#: common_functions.php:3459
+#: common_functions.php:3528
 msgid "Restrict input to integer values"
 msgstr ""
 
-#: common_functions.php:3460
+#: common_functions.php:3529
 #, fuzzy
 msgid "Integer only"
 msgstr "僅未完成記錄"
 
-#: common_functions.php:3472
+#: common_functions.php:3541
 msgid "Allow only numerical input"
 msgstr "僅限數值輸入"
 
-#: common_functions.php:3473
+#: common_functions.php:3542
 msgid "Numbers only"
 msgstr "僅限數字"
 
-#: common_functions.php:3483
+#: common_functions.php:3552
 #, fuzzy
 msgid "Rows"
 msgstr "流覽"
 
-#: common_functions.php:3484
+#: common_functions.php:3553
 msgid "Columns"
 msgstr "列"
 
-#: common_functions.php:3485
+#: common_functions.php:3554
 msgid "Both rows and columns"
 msgstr "欄和列"
 
-#: common_functions.php:3488
+#: common_functions.php:3557
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr ""
 
-#: common_functions.php:3489
+#: common_functions.php:3558
 msgid "Show totals for"
 msgstr "總數為"
 
-#: common_functions.php:3502
+#: common_functions.php:3571
 msgid "Show grand total for either columns or rows"
 msgstr "顯示欄或列的累計"
 
-#: common_functions.php:3503
+#: common_functions.php:3572
 msgid "Show grand total"
 msgstr "顯示累計"
 
-#: common_functions.php:3514
+#: common_functions.php:3583
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "把文本輸入框替代下拉清單用作提供"
 
-#: common_functions.php:3515
+#: common_functions.php:3584
 msgid "Text inputs"
 msgstr "文本輸入"
 
-#: common_functions.php:3525
+#: common_functions.php:3594
 msgid ""
 "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "當\"其它：\"選項啟動時設置 \"其它：\" 評論欄位為必填"
 
-#: common_functions.php:3526
+#: common_functions.php:3595
 msgid "'Other:' comment mandatory"
 msgstr "'其他：'必填的評論"
 
-#: common_functions.php:3536
+#: common_functions.php:3605
 msgid "Allow only numerical input for 'Other' text"
 msgstr "`其它`文本僅限數值輸入"
 
-#: common_functions.php:3537
+#: common_functions.php:3606
 msgid "Numbers only for 'Other'"
 msgstr "`其它`僅限數位"
 
-#: common_functions.php:3544
+#: common_functions.php:3613
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "用自訂文本替換'其它：'標籤的答案項"
 
-#: common_functions.php:3545
+#: common_functions.php:3614
 msgid "Label for 'Other:' option"
 msgstr "`其它：'選項的標籤"
 
-#: common_functions.php:3555
+#: common_functions.php:3624
 msgid ""
 "Insert a page break before this question in printable view by setting this "
 "to Yes."
 msgstr "通過設置為“是”在可列印視圖內的該問題前插入分頁符"
 
-#: common_functions.php:3556
+#: common_functions.php:3625
 msgid "Insert page break in printable view"
 msgstr "在可列印視圖內插入分頁符"
 
-#: common_functions.php:3563
+#: common_functions.php:3632
 msgid "Add a prefix to the answer field"
 msgstr "為答案項欄位添加首碼"
 
-#: common_functions.php:3564
+#: common_functions.php:3633
 msgid "Answer prefix"
 msgstr "答案項首碼"
 
-#: common_functions.php:3574
+#: common_functions.php:3643
 msgid "Show statistics of this question in the public statistics page"
 msgstr "在公眾統計頁面顯示該題的統計"
 
-#: common_functions.php:3575
+#: common_functions.php:3644
 msgid "Show in public statistics"
 msgstr "在公開統計內顯示"
 
-#: common_functions.php:3585
+#: common_functions.php:3654
 msgid "Present answers in random order"
 msgstr "隨機提供答案"
 
-#: common_functions.php:3586
+#: common_functions.php:3655
 msgid "Random answer order"
 msgstr "隨機答案順序"
 
-#: common_functions.php:3590 common_functions.php:3601
-#: common_functions.php:3609 common_functions.php:3617
-#: common_functions.php:3625 common_functions.php:3633
-#: common_functions.php:3659 common_functions.php:3670
+#: common_functions.php:3670 common_functions.php:3681
+#: common_functions.php:3689 common_functions.php:3697
+#: common_functions.php:3705 common_functions.php:3713
+#: common_functions.php:3739 common_functions.php:3750
 msgid "Slider"
 msgstr "滑塊"
 
-#: common_functions.php:3596 common_functions.php:3597
-#: common_functions.php:3653 common_functions.php:3654
+#: common_functions.php:3676 common_functions.php:3677
+#: common_functions.php:3733 common_functions.php:3734
 msgid "Use slider layout"
 msgstr "使用滑塊佈局"
 
-#: common_functions.php:3604 common_functions.php:3605
+#: common_functions.php:3684 common_functions.php:3685
 msgid "Slider minimum value"
 msgstr "滑塊最小值"
 
-#: common_functions.php:3612 common_functions.php:3613
+#: common_functions.php:3692 common_functions.php:3693
 msgid "Slider maximum value"
 msgstr "滑塊最大值"
 
-#: common_functions.php:3620 common_functions.php:3621
+#: common_functions.php:3700 common_functions.php:3701
 msgid "Slider accuracy"
 msgstr "滑塊精度"
 
-#: common_functions.php:3628 common_functions.php:3629
+#: common_functions.php:3708 common_functions.php:3709
 msgid "Slider initial value"
 msgstr "滑塊初始值"
 
-#: common_functions.php:3639
+#: common_functions.php:3719
 msgid ""
 "The handle is displayed at the middle of the slider (this will not set the "
 "initial value)"
 msgstr "滑塊中間顯示操縱柄（這不會設置初始值）"
 
-#: common_functions.php:3640
+#: common_functions.php:3720
 msgid "Slider starts at the middle position"
 msgstr "滑塊起始位於中間位置"
 
-#: common_functions.php:3649
+#: common_functions.php:3729
 msgid "Yes - stars"
 msgstr "是 - 星號"
 
-#: common_functions.php:3650
+#: common_functions.php:3730
 msgid "Yes - slider with emoticon"
 msgstr "是 - 選取表情"
 
-#: common_functions.php:3665
+#: common_functions.php:3745
 msgid "Display min and max value under the slider"
 msgstr "在滑塊下顯示最小和最大值"
 
-#: common_functions.php:3666
+#: common_functions.php:3746
 msgid "Display slider min and max value"
 msgstr "顯示滑塊最小值和最大值"
 
-#: common_functions.php:3673
+#: common_functions.php:3753
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "答案r|滑塊左邊文本|滑塊右邊文本分隔符號"
 
-#: common_functions.php:3674
+#: common_functions.php:3754
 msgid "Slider left/right text separator"
 msgstr "滑塊左/右文本分隔"
 
-#: common_functions.php:3681
+#: common_functions.php:3761
 msgid "Add a suffix to the answer field"
 msgstr "為答案項欄位添加尾碼"
 
-#: common_functions.php:3682
+#: common_functions.php:3762
 msgid "Answer suffix"
 msgstr "答案項尾碼"
 
-#: common_functions.php:3689
+#: common_functions.php:3769
 msgid "Width of text input box"
 msgstr "文本輸入框寬度"
 
-#: common_functions.php:3690
+#: common_functions.php:3770
 msgid "Input box width"
 msgstr "輸入框寬度"
 
-#: common_functions.php:3700
+#: common_functions.php:3780
 #, fuzzy
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr "用雙下拉清單替代雙尺度"
 
-#: common_functions.php:3701
+#: common_functions.php:3781
 #, fuzzy
 msgid "Use dropdown boxes"
 msgstr "顯示行"
 
-#: common_functions.php:3708
+#: common_functions.php:3788
 msgid "Default"
 msgstr "默認"
 
-#: common_functions.php:3709
+#: common_functions.php:3789
 msgid "Nominal"
 msgstr "定類"
 
-#: common_functions.php:3710
+#: common_functions.php:3790
 msgid "Ordinal"
 msgstr "定序"
 
-#: common_functions.php:3711
+#: common_functions.php:3791
 msgid "Scale"
 msgstr "尺度"
 
-#: common_functions.php:3713
+#: common_functions.php:3793
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "為該題設定SPSS匯出尺度類型 "
 
-#: common_functions.php:3714
+#: common_functions.php:3794
 msgid "SPSS export scale type"
 msgstr "SPSS 匯出尺度類型"
 
-#: common_functions.php:3719 common_functions.php:3727
-#: common_functions.php:3738 common_functions.php:3749
-#: common_functions.php:3759 common_functions.php:3767
-#: common_functions.php:3775 common_functions.php:3783
-#: common_functions.php:3791 common_functions.php:3799
-#: common_functions.php:3807 common_functions.php:3815
-#: common_functions.php:3823 common_functions.php:3831
+#: common_functions.php:3799 common_functions.php:3807
+#: common_functions.php:3818 common_functions.php:3829
 #: common_functions.php:3839 common_functions.php:3847
-#: common_functions.php:3855
+#: common_functions.php:3855 common_functions.php:3863
+#: common_functions.php:3871 common_functions.php:3879
+#: common_functions.php:3887 common_functions.php:3895
+#: common_functions.php:3903 common_functions.php:3911
+#: common_functions.php:3919 common_functions.php:3927
+#: common_functions.php:3935
 #, fuzzy
 msgid "Timer"
 msgstr "標題"
 
-#: common_functions.php:3722
+#: common_functions.php:3802
 msgid "Limit time to answer question (in seconds)"
 msgstr "限時答題（秒）"
 
-#: common_functions.php:3723
+#: common_functions.php:3803
 msgid "Time limit"
 msgstr "時間限制"
 
-#: common_functions.php:3730
+#: common_functions.php:3810
 msgid "Warn and move on"
 msgstr "警告並繼續"
 
-#: common_functions.php:3731
+#: common_functions.php:3811
 msgid "Move on without warning"
 msgstr "不帶警告繼續"
 
-#: common_functions.php:3732
+#: common_functions.php:3812
 msgid "Disable only"
 msgstr "僅禁用"
 
-#: common_functions.php:3733
+#: common_functions.php:3813
 msgid "Action to perform when time limit is up"
 msgstr "到達時限時執行的操作"
 
-#: common_functions.php:3734
+#: common_functions.php:3814
 msgid "Time limit action"
 msgstr "時間限制操作"
 
-#: common_functions.php:3744
+#: common_functions.php:3824
 msgid "Disable the next button until time limit expires"
 msgstr "超時後禁用下一頁按鈕"
 
-#: common_functions.php:3745
+#: common_functions.php:3825
 msgid "Time limit disable next"
 msgstr "時間限制禁用下一頁"
 
-#: common_functions.php:3754
+#: common_functions.php:3834
 msgid "Disable the prev button until the time limit expires"
 msgstr "超時後禁用上一頁按鈕"
 
-#: common_functions.php:3755
+#: common_functions.php:3835
 msgid "Time limit disable prev"
 msgstr "時間限制禁用上一頁"
 
-#: common_functions.php:3762
+#: common_functions.php:3842
 msgid ""
 "The text message that displays in the countdown timer during the countdown"
 msgstr "倒計時期間在計時器內顯示的文本消息"
 
-#: common_functions.php:3763
+#: common_functions.php:3843
 msgid "Time limit countdown message"
 msgstr "時限倒計時消息"
 
-#: common_functions.php:3770
+#: common_functions.php:3850
 msgid ""
 "CSS Style for the message that displays in the countdown timer during the "
 "countdown"
 msgstr "時限倒計時計時器CSS樣式"
 
-#: common_functions.php:3771
+#: common_functions.php:3851
 msgid "Time limit timer CSS style"
 msgstr "時限計時器CSS樣式"
 
-#: common_functions.php:3778
+#: common_functions.php:3858
 msgid ""
 "Display the 'time limit expiry message' for this many seconds before "
 "performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr "在執行'超時操作'前顯示的'超時消息'的秒數(置空則默認為 1 秒)"
 
-#: common_functions.php:3779
+#: common_functions.php:3859
 msgid "Time limit expiry message display time"
 msgstr "超時消息顯示延時"
 
-#: common_functions.php:3786
+#: common_functions.php:3866
 msgid ""
 "The message to display when the time limit has expired (a default message "
 "will display if this setting is left blank)"
 msgstr "超時後顯示的消息 (本設置置空則顯示預設的消息)"
 
-#: common_functions.php:3787
+#: common_functions.php:3867
 msgid "Time limit expiry message"
 msgstr "超時消息"
 
-#: common_functions.php:3794
+#: common_functions.php:3874
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "時限消息的CSS樣式"
 
-#: common_functions.php:3795
+#: common_functions.php:3875
 msgid "Time limit message CSS style"
 msgstr "時限消息的CSS樣式"
 
-#: common_functions.php:3802
+#: common_functions.php:3882
 msgid ""
 "Display a 'time limit warning' when there are this many seconds remaining in "
 "the countdown (warning will not display if left blank)"
 msgstr "在倒計時期間顯示'時限警告' (置空則不顯示警告)"
 
-#: common_functions.php:3803
+#: common_functions.php:3883
 #, fuzzy
 msgid "1st time limit warning message timer"
 msgstr "首次限時警告消息計時器"
 
-#: common_functions.php:3810
+#: common_functions.php:3890
 msgid ""
 "The 'time limit warning' will stay visible for this many seconds (will not "
 "turn off if this setting is left blank)"
 msgstr "'時限警告' 繼續停留的秒數(本設置置空不會關閉顯示)"
 
-#: common_functions.php:3811
+#: common_functions.php:3891
 #, fuzzy
 msgid "1st time limit warning message display time"
 msgstr "首次時限警告消息顯示時長"
 
-#: common_functions.php:3818
+#: common_functions.php:3898
 msgid ""
 "The message to display as a 'time limit warning' (a default warning will "
 "display if this is left blank)"
 msgstr "作為'時限警告'顯示的消息 (本設置置空則顯示預設的警告)"
 
-#: common_functions.php:3819
+#: common_functions.php:3899
 #, fuzzy
 msgid "1st time limit warning message"
 msgstr "首次時限警告消息"
 
-#: common_functions.php:3826
+#: common_functions.php:3906
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "時限警告消息的CSS樣式"
 
-#: common_functions.php:3827
+#: common_functions.php:3907
 #, fuzzy
 msgid "1st time limit warning CSS style"
 msgstr "首次時限警告CSS樣式"
 
-#: common_functions.php:3834
+#: common_functions.php:3914
 msgid ""
 "Display the 2nd 'time limit warning' when there are this many seconds "
 "remaining in the countdown (warning will not display if left blank)"
 msgstr "在倒計時期間顯示二次'時限警告' (置空則不顯示警告)"
 
-#: common_functions.php:3835
+#: common_functions.php:3915
 #, fuzzy
 msgid "2nd time limit warning message timer"
 msgstr "二次限時警告消息計時器"
 
-#: common_functions.php:3842
+#: common_functions.php:3922
 msgid ""
 "The 2nd 'time limit warning' will stay visible for this many seconds (will "
 "not turn off if this setting is left blank)"
 msgstr "二次'時限警告' 繼續停留的秒數(本設置置空不會關閉顯示)"
 
-#: common_functions.php:3843
+#: common_functions.php:3923
 #, fuzzy
 msgid "2nd time limit warning message display time"
 msgstr "首次時限警告消息顯示時長"
 
-#: common_functions.php:3850
+#: common_functions.php:3930
 msgid ""
 "The 2nd message to display as a 'time limit warning' (a default warning will "
 "display if this is left blank)"
 msgstr "作為'時限警告'顯示的二次消息 (本設置置空則顯示預設的警告)"
 
-#: common_functions.php:3851
+#: common_functions.php:3931
 #, fuzzy
 msgid "2nd time limit warning message"
 msgstr "二次時限警告消息"
 
-#: common_functions.php:3858
+#: common_functions.php:3938
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "二次時限警告消息的CSS樣式"
 
-#: common_functions.php:3859
+#: common_functions.php:3939
 #, fuzzy
 msgid "2nd time limit warning CSS style"
 msgstr "首次時限警告CSS樣式"
 
-#: common_functions.php:3863 common_functions.php:3874
+#: common_functions.php:3943 common_functions.php:3954
 #, fuzzy
 msgid "File metadata"
 msgstr "更新失敗！"
 
-#: common_functions.php:3869
+#: common_functions.php:3949
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr ""
 
-#: common_functions.php:3870
+#: common_functions.php:3950
 msgid "Show title"
 msgstr "顯示標題"
 
-#: common_functions.php:3880
+#: common_functions.php:3960
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr ""
 
-#: common_functions.php:3881
+#: common_functions.php:3961
 msgid "Show comment"
 msgstr "其它評論"
 
-#: common_functions.php:3890
+#: common_functions.php:3970
 msgid "The participant cannot upload a single file larger than this size"
 msgstr ""
 
-#: common_functions.php:3891
+#: common_functions.php:3971
 msgid "Maximum file size allowed (in KB)"
 msgstr "允許的最大文件大小 （KB）"
 
-#: common_functions.php:3899
+#: common_functions.php:3979
 msgid ""
 "Maximum number of files that the participant can upload for this question"
 msgstr ""
 
-#: common_functions.php:3900
+#: common_functions.php:3980
 msgid "Max number of files"
 msgstr "最大的文件數"
 
-#: common_functions.php:3908
+#: common_functions.php:3988
 msgid ""
 "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
-#: common_functions.php:3909
+#: common_functions.php:3989
 msgid "Min number of files"
 msgstr "最小數量的文件"
 
-#: common_functions.php:3917
+#: common_functions.php:3997
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: common_functions.php:3918
+#: common_functions.php:3998
 msgid "Allowed file types"
 msgstr "壬戌的文件種類"
 
-#: common_functions.php:3925
+#: common_functions.php:4005
 msgid ""
 "Place questions into a specified randomization group, all questions included "
 "in the specified group will appear in a random order"
 msgstr ""
 
-#: common_functions.php:3926
+#: common_functions.php:4006
 msgid "Randomization group name"
 msgstr ""
 
-#: common_functions.php:4112
+#: common_functions.php:4192
 msgid "Version"
 msgstr "版本"
 
-#: common_functions.php:4121
+#: common_functions.php:4201
 msgid "Online Manual"
 msgstr "線上手冊"
 
-#: common_functions.php:4124
+#: common_functions.php:4204
 msgid "Support this project - Donate to "
 msgstr "支持本專案 - 捐贈"
 
-#: common_functions.php:4127
+#: common_functions.php:4207
 msgid "Visit our website!"
 msgstr "請訪問我們的網站！"
 
-#: common_functions.php:4241
+#: common_functions.php:4321
 msgid "Email was not sent because demo-mode is activated."
 msgstr "演示模式 - 郵件未能發送。"
 
-#: common_functions.php:4369
+#: common_functions.php:4449
 msgid "SMTP debug output:"
 msgstr "SMTP 調試輸出："
 
-#: common_functions.php:4899
+#: common_functions.php:4585
 #, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr ""
 
-#: common_functions.php:5976 index.php:559
+#: common_functions.php:5662 index.php:563
 msgid "Error"
 msgstr "錯誤"
 
-#: common_functions.php:7055
+#: common_functions.php:6384
 msgid "First name"
 msgstr "名"
 
-#: common_functions.php:7056
+#: common_functions.php:6385
 msgid "Last name"
 msgstr "姓"
 
-#: common_functions.php:7057
+#: common_functions.php:6386
 msgid "Email address"
 msgstr "郵寄地址"
 
-#: common_functions.php:7058
+#: common_functions.php:6387
 msgid "Token code"
 msgstr "操作代碼編碼"
 
-#: common_functions.php:7059
+#: common_functions.php:6388
 msgid "Language code"
 msgstr "語言編碼"
 
-#: common_functions.php:7060
+#: common_functions.php:6389
 msgid "Invitation sent date"
 msgstr "邀請發送日期"
 
-#: common_functions.php:7061
+#: common_functions.php:6390
 msgid "Last Reminder sent date"
 msgstr "提醒郵件最後發送日期"
 
-#: common_functions.php:7062
+#: common_functions.php:6391
 msgid "Total numbers of sent reminders"
 msgstr "發送提醒郵件總數"
 
-#: common_functions.php:7063
+#: common_functions.php:6392
 #, fuzzy
 msgid "Uses left"
 msgstr "使用默認設置"
 
-#: common_functions.php:7084
+#: common_functions.php:6413
 #, php-format
 msgid "Attribute %s"
 msgstr "屬性%s"
@@ -1477,314 +1474,331 @@ msgstr "檔刪除： %s"
 msgid "Oops, There was an error deleting the file"
 msgstr "對不起，上傳出現錯誤"
 
-#: group.php:82 question.php:50
+#: group.php:97
+msgid ""
+"Please use the LimeSurvey navigation buttons or index.  It appears you "
+"attempted to use the browser back button to re-submit a page."
+msgstr ""
+
+#: group.php:183
 msgid "Save your responses so far"
 msgstr "保存您當前的回饋"
 
-#: group.php:184 index.php:2198 question.php:230
+#: group.php:300 index.php:1606
 msgid "Did Not Save"
 msgstr "未保存"
 
-#: group.php:185 question.php:231
+#: group.php:301
 msgid ""
 "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "此調查尚未開始。您的調查回饋未被記錄。"
 
-#: group.php:190 question.php:237
+#: group.php:306
 msgid "Clear Responses"
 msgstr "清除回饋"
 
-#: group.php:248 question.php:270
+#: group.php:363
 msgid "Thank you!"
 msgstr "謝謝您！"
 
-#: group.php:249 question.php:271
+#: group.php:364
 msgid "Your survey responses have been recorded."
 msgstr "您的回饋已記錄。"
 
-#: group.php:261
+#: group.php:376
 msgid "Print your answers."
 msgstr "列印你的答案。"
 
-#: group.php:266 question.php:288
+#: group.php:381
 msgid "or"
 msgstr "或"
 
-#: group.php:273 question.php:295
+#: group.php:388
 msgid "View the statistics for this survey."
 msgstr "查看本調查統計。"
 
-#: group.php:322 question.php:77
+#: group.php:444
 msgid "Sorry. There is no matching survey."
 msgstr "抱歉，未找到相應的調查。"
 
-#: group.php:352
+#: group.php:460
+#, fuzzy
+msgid "Invalid group number for this survey: "
+msgstr "本調查總共%d個回饋"
+
+#: group.php:465
+msgid ""
+"This group contains no questions.  You must add questions to this group "
+"before you can preview it"
+msgstr ""
+
+#: group.php:482
 msgid "Submit your answers"
 msgstr "提交您的答案"
 
-#: group.php:353
+#: group.php:483
 msgid ""
 "There are no more questions. Please press the <Submit> button to finish this "
 "survey."
 msgstr "沒有餘留問題了。請按<提交>按鈕來完成本調查。"
 
-#: group.php:1212 qanda.php:990 question.php:528
+#: group.php:709 qanda.php:495
 msgid ""
 "One or more mandatory questions have not been answered. You cannot proceed "
 "until these have been completed."
 msgstr "一個或多個必答問題尚未回答。完成後方可繼續。"
 
-#: group.php:1218 qanda.php:1017 question.php:534
+#: group.php:715 qanda.php:524
 msgid ""
 "One or more questions have not been answered in a valid manner. You cannot "
 "proceed until these answers are valid."
 msgstr "一個或者更多的問題未按有效方式回答。更正回答後方可繼續。"
 
-#: group.php:1224
+#: group.php:721
 #, fuzzy
 msgid ""
 "One or more uploaded files are not in proper format/size. You cannot proceed "
 "until these files are valid."
 msgstr "一個或者更多的問題未按有效方式回答。更正回答後方可繼續。"
 
-#: group.php:1305 index.php:3444 question.php:619
+#: group.php:836 index.php:2855
 #, fuzzy
 msgid ""
 "This survey is currently not active. You will not be able to save your "
 "responses."
 msgstr "此調查尚未啟用，您的回饋將無法保存。"
 
-#: group.php:1313 question.php:630
+#: group.php:844
 #, fuzzy
 msgid "Question index"
 msgstr "問題編碼"
 
-#: group.php:1351 index.php:2928 question.php:666
+#: group.php:879 index.php:2336
 msgid "Submit"
 msgstr "提交 "
 
-#: index.php:124
+#: index.php:126
 msgid "Token mismatch"
 msgstr "操作代碼不匹配"
 
-#: index.php:125
+#: index.php:127
 msgid "The token you provided doesn't match the one in your session."
 msgstr "您提供的操作代碼與您會話不匹配。"
 
-#: index.php:126 index.php:152
+#: index.php:128 index.php:154
 msgid "Please wait to begin with a new session."
 msgstr "請稍候，新會話正開始。"
 
-#: index.php:150
+#: index.php:152
 msgid "Previous session is set to be finished."
 msgstr "先前會話預計將結束。"
 
-#: index.php:151
+#: index.php:153
 msgid ""
 "Your browser reports that it was used previously to answer this survey. We "
 "are resetting the session so that you can start from the beginning."
 msgstr "您的流覽器報告先前已回答過調查。我們將重置會話以便您能從頭開始。"
 
-#: index.php:295 index.php:328 printanswers.php:75
+#: index.php:297 index.php:330 printanswers.php:75
 msgid "ERROR"
 msgstr "錯誤"
 
-#: index.php:296
+#: index.php:298
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "抱歉，您沒有許可權執行該操作。 "
 
-#: index.php:297 index.php:331 index.php:440 index.php:520 index.php:539
-#: index.php:561 printanswers.php:77
+#: index.php:299 index.php:333 index.php:444 index.php:524 index.php:543
+#: index.php:565 printanswers.php:77
 #, php-format
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "請聯繫%s ( %s )以獲得進一步幫助。"
 
-#: index.php:329 printanswers.php:76
+#: index.php:331 printanswers.php:76
 msgid "We are sorry but your session has expired."
 msgstr "很抱歉，您的會話已過期。"
 
-#: index.php:330 printanswers.php:76
+#: index.php:332 printanswers.php:76
 msgid ""
 "Either you have been inactive for too long, you have cookies disabled for "
 "your browser, or there were problems with your connection."
 msgstr "您的電腦長時間未活動、或您已禁用流覽器cookies、或網路連接有問題。 "
 
-#: index.php:429
+#: index.php:433
 msgid "View statistics"
 msgstr "查看統計"
 
-#: index.php:436
+#: index.php:440
 msgid "No available surveys"
 msgstr "沒有可用的調查 "
 
-#: index.php:439
+#: index.php:443
 msgid "You have not provided a survey identification number"
 msgstr "您沒有提供調查識別號"
 
-#: index.php:441
+#: index.php:445
 msgid "The following surveys are available:"
 msgstr "現有的調查："
 
-#: index.php:519
+#: index.php:523
 msgid "This survey is no longer available."
 msgstr "該調查已結束。"
 
-#: index.php:538
+#: index.php:542
 msgid "This survey is not yet started."
 msgstr "該調查尚未啟用。"
 
-#: index.php:560
+#: index.php:564
 msgid "You have already completed this survey."
 msgstr "您已經完成了此調查。"
 
-#: index.php:618
+#: index.php:622
 msgid "You did not provide a name"
 msgstr "您沒有提供名字"
 
-#: index.php:623
+#: index.php:627
 msgid "You did not provide a password"
 msgstr "您沒有提供密碼"
 
-#: index.php:635 index.php:2276 index.php:2498
+#: index.php:639 index.php:1684 index.php:1906 register.php:72
 msgid "The answer to the security question is incorrect."
 msgstr "安全問題的回答錯誤。"
 
-#: index.php:653 index.php:657
+#: index.php:658 index.php:662
 msgid "Load Unfinished Survey"
 msgstr "載入未完成調查"
 
-#: index.php:693 index.php:2348 index.php:2420 index.php:2464 index.php:2501
+#: index.php:698 index.php:1756 index.php:1828 index.php:1872 index.php:1909
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "這是個受控調查。您必須持有有效操作代碼方可參與。"
 
-#: index.php:694 index.php:2421 index.php:2465
+#: index.php:699 index.php:1829 index.php:1873
 msgid ""
 "The token you have provided is either not valid, or has already been used."
 msgstr "您提供的操作代碼無效，或已經被使用過。"
 
-#: index.php:695 index.php:731 index.php:2422 index.php:2466 index.php:2657
+#: index.php:700 index.php:736 index.php:1830 index.php:1874 index.php:2065
 #, php-format
 msgid "For further information please contact %s"
 msgstr "更多資訊，請聯繫%s"
 
-#: index.php:729
+#: index.php:734
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr "抱歉，您沒有刪除該調查的許可權。"
 
-#: index.php:730
+#: index.php:735
 msgid ""
 "Your token seems to be valid but can be used only during a certain time "
 "period."
 msgstr "您的操作代碼看來有效，但它只能在特定時間段內使用。"
 
-#: index.php:907
+#: index.php:887
 msgid "Your responses were successfully saved."
 msgstr "已成功保存您的個人答案。"
 
-#: index.php:949
+#: index.php:929
 msgid "There is no matching saved survey"
 msgstr "未發現匹配的已保存調查"
 
-#: index.php:1051
+#: index.php:1031
 #, php-format
 msgid "You have completed %s%% of this survey"
 msgstr "您已經完成了本調查%s%% "
 
-#: index.php:1706
+#: index.php:1215
 #, fuzzy, php-format
 msgid ""
 "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr "上傳的文件比在php.ini設定的最大上傳文件大小大"
 
-#: index.php:1719 index.php:1725
+#: index.php:1228 index.php:1234
 #, php-format
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
-#: index.php:1737
+#: index.php:1246
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: index.php:2199
+#: index.php:1607
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "出現意外的錯誤，無法保存您的回饋。"
 
-#: index.php:2202
+#: index.php:1610
 msgid ""
 "Your responses have not been lost and have been emailed to the survey "
 "administrator and will be entered into our database at a later point."
 msgstr ""
 "您的回饋並未丟失，已經電郵給此項調查的管理員，它將在晚些時候錄入到資料庫。"
 
-#: index.php:2207
+#: index.php:1615
 msgid "An error occurred saving a response to survey id"
 msgstr "保存調查id回饋時出錯"
 
-#: index.php:2208
+#: index.php:1616
 msgid "DATA TO BE ENTERED"
 msgstr "待錄入資料"
 
-#: index.php:2213
+#: index.php:1621
 msgid "SQL CODE THAT FAILED"
 msgstr "執行失敗的SQL代碼"
 
-#: index.php:2215
+#: index.php:1623
 msgid "ERROR MESSAGE"
 msgstr "錯誤資訊"
 
-#: index.php:2217
+#: index.php:1625
 msgid "Error saving results"
 msgstr "保存結果時出錯"
 
-#: index.php:2225
+#: index.php:1633
 msgid "Try to submit again"
 msgstr "請再次提交"
 
-#: index.php:2279
+#: index.php:1687
 msgid ""
 "Please confirm access to survey by answering the security question below and "
 "click continue."
 msgstr "請回答下面的安全問題以確認調查存取權限，再點擊繼續。"
 
-#: index.php:2303
+#: index.php:1711
 msgid "Security question:"
 msgstr "安全問題："
 
-#: index.php:2308 index.php:2383 index.php:2550
+#: index.php:1716 index.php:1791 index.php:1958
 msgid "Continue"
 msgstr "繼續"
 
-#: index.php:2349 index.php:2506
+#: index.php:1757 index.php:1914
 msgid ""
 "If you have been issued a token, please enter it in the box below and click "
 "continue."
 msgstr "如果您持有操作代碼，請將它輸入到下面的文字方塊內，再點擊繼續。 "
 
-#: index.php:2379 index.php:2547
+#: index.php:1787 index.php:1955
 msgid "Security Question"
 msgstr "安全問題"
 
-#: index.php:2525
+#: index.php:1933
 msgid ""
 "Please confirm the token by answering the security question below and click "
 "continue."
 msgstr "請通過回答安全問題來確認操作代碼，再點擊繼續。 "
 
-#: index.php:2539
+#: index.php:1947
 msgid "Token:"
 msgstr "操作代碼："
 
-#: index.php:2656
+#: index.php:2064
 msgid ""
 "This survey does not yet have any questions and cannot be tested or "
 "completed."
 msgstr "此調查為空，無法進行測試或完成。"
 
-#: index.php:2906 index.php:3327
+#: index.php:2314 index.php:2735
 msgid "Previous"
 msgstr "上一頁"
 
-#: index.php:2912 index.php:2918 index.php:2923
+#: index.php:2320 index.php:2326 index.php:2331
 msgid "Next"
 msgstr "下一頁"
 
@@ -1804,121 +1818,92 @@ msgstr "您已經成功退出此調查。"
 msgid "You have been already removed from this survey."
 msgstr "您已經成功退出此調查。"
 
-#: printanswers.php:166
+#: printanswers.php:171
 msgid "PDF Export"
 msgstr "匯出為PDF"
 
-#: printanswers.php:173
+#: printanswers.php:178
 msgid "Survey name (ID)"
 msgstr "調查名稱(ID)"
 
-#: printanswers.php:175
+#: printanswers.php:180
 msgid "Survey name (ID):"
 msgstr "問卷名稱(ID)"
 
-#: printanswers.php:191
+#: printanswers.php:200
 msgid "Question"
 msgstr "問題"
 
-#: printanswers.php:191
+#: printanswers.php:200
 msgid "Your answer"
 msgstr "您的答案"
 
-#: qanda.php:595 qanda.php:596 qanda.php:604 qanda.php:605 qanda.php:613
-#: qanda.php:614
+#: qanda.php:130 qanda.php:131 qanda.php:139 qanda.php:140 qanda.php:148
+#: qanda.php:149
 msgid "Choose one of the following answers"
 msgstr "請選擇一個符合的選項"
 
-#: qanda.php:621
+#: qanda.php:156
 msgid ""
 "Click on an item in the list on the left, starting with your highest ranking "
 "item, moving through to your lowest ranking item."
 msgstr "點擊左邊列表內條目，從最高排序項開始，直到最低排序項。"
 
-#: qanda.php:625 qanda.php:626
+#: qanda.php:160 qanda.php:161
 #, fuzzy, php-format
 msgid "Check at least %d item"
 msgid_plural "Check at least %d items"
 msgstr[0] "至少勾選 %d 個答案"
 msgstr[1] "至少勾選 %d 個答案"
 
-#: qanda.php:639 qanda.php:640 qanda.php:682 qanda.php:683
+#: qanda.php:174 qanda.php:175 qanda.php:217 qanda.php:218
 msgid "Check any that apply"
 msgstr "請勾選所有符合的選項"
 
-#: qanda.php:647 qanda.php:648 qanda.php:690 qanda.php:691
+#: qanda.php:182 qanda.php:183 qanda.php:225 qanda.php:226
 #, php-format
 msgid "Check between %d and %d answers"
 msgstr "勾選介於%d和%d答案"
 
-#: qanda.php:652 qanda.php:653 qanda.php:695 qanda.php:696
+#: qanda.php:187 qanda.php:188 qanda.php:230 qanda.php:231
 #, php-format
 msgid "Check at most %d answers"
 msgstr "最多勾選%d個答案"
 
-#: qanda.php:657 qanda.php:658
+#: qanda.php:192 qanda.php:193
 #, php-format
 msgid "Check at least %d answer"
 msgid_plural "Check at least %d answers"
 msgstr[0] "至少勾選 %d 個答案"
 msgstr[1] "至少勾選 %d 個答案"
 
-#: qanda.php:669 qanda.php:670
+#: qanda.php:204 qanda.php:205
 msgid "Choose your language"
 msgstr "選擇您的語言"
 
-#: qanda.php:700 qanda.php:701
+#: qanda.php:235 qanda.php:236
 #, php-format
 msgid "Check at least %d answers"
 msgstr "至少勾選%d個答案"
 
-#: qanda.php:713 qanda.php:714
+#: qanda.php:248 qanda.php:249
 #, fuzzy, php-format
 msgid "At least %d files must be uploaded for this question"
 msgstr "該問題的預定義答案項"
 
-#: qanda.php:784 qanda.php:785
+#: qanda.php:322 qanda.php:323
 msgid "*"
 msgstr "*"
 
-#: qanda.php:877
-msgid "This question is mandatory"
-msgstr "本題必答"
-
-#: qanda.php:889
-msgid "Please complete all parts"
-msgstr "請完成所有部分"
-
-#: qanda.php:892
-msgid "Please check the items"
-msgstr "請檢查各項"
-
-#: qanda.php:895
-msgid "Please rank all items"
-msgstr "請排序所有項"
-
-#: qanda.php:899
-msgid "Please check at least one item."
-msgstr "請至少選擇一項。"
-
-#: qanda.php:912 qanda.php:2029 qanda.php:2329 qanda.php:2988 qanda.php:3474
-msgid "Other:"
-msgstr "其他："
-
-#: qanda.php:914
-#, php-format
-msgid "If you choose '%s' you must provide a description."
-msgstr "如果您選擇了 '%s'，就必須提供描述。"
-
-#: qanda.php:944
+#: qanda.php:442
 msgid "This question must be answered correctly"
 msgstr "這個問題必須正確回答"
 
-#: qanda.php:983
+#: qanda.php:488
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "只有在您為一個或多個問題輸入文本後方可繼續。"
 
-#: qanda.php:1041
+#: qanda.php:549
 #, fuzzy
 msgid ""
 "One or more file have either exceeded the filesize/are not in the right "
@@ -1926,255 +1911,251 @@ msgid ""
 "cannot proceed until these have been completed"
 msgstr "一個或多個必答問題尚未回答。完成後方可繼續。"
 
-#: qanda.php:1084
+#: qanda.php:592
 msgid "Your time to answer this question has expired"
 msgstr "您答題已超時"
 
-#: qanda.php:1087
+#: qanda.php:595
 msgid "Time remaining"
 msgstr "剩餘時間"
 
-#: qanda.php:1088 qanda.php:1091
+#: qanda.php:596 qanda.php:599
 msgid ""
 "Your time to answer this question has nearly expired. You have {TIME} "
 "remaining."
 msgstr "您的答題時間將要，尚餘 {TIME}。"
 
-#: qanda.php:1244 qanda.php:1262 qanda.php:1293
+#: qanda.php:752 qanda.php:770 qanda.php:801
 msgid "hours"
 msgstr "小時"
 
-#: qanda.php:1245 qanda.php:1263 qanda.php:1294
+#: qanda.php:753 qanda.php:771 qanda.php:802
 msgid "mins"
 msgstr "分鐘"
 
-#: qanda.php:1246 qanda.php:1264 qanda.php:1295 qanda.php:1296
+#: qanda.php:754 qanda.php:772 qanda.php:803 qanda.php:804
 msgid "seconds"
 msgstr "秒"
 
-#: qanda.php:1793
+#: qanda.php:1087
 msgid "Day"
 msgstr "日"
 
-#: qanda.php:1810
+#: qanda.php:1104
 msgid "Month"
 msgstr "月"
 
-#: qanda.php:1812
+#: qanda.php:1106
 msgid "Jan"
 msgstr "1月"
 
-#: qanda.php:1813
+#: qanda.php:1107
 msgid "Feb"
 msgstr "2月"
 
-#: qanda.php:1814
+#: qanda.php:1108
 msgid "Mar"
 msgstr "3月"
 
-#: qanda.php:1815
+#: qanda.php:1109
 msgid "Apr"
 msgstr "4月"
 
-#: qanda.php:1816
+#: qanda.php:1110
 msgid "May"
 msgstr "5月"
 
-#: qanda.php:1817
+#: qanda.php:1111
 msgid "Jun"
 msgstr "6月"
 
-#: qanda.php:1818
+#: qanda.php:1112
 msgid "Jul"
 msgstr "7月"
 
-#: qanda.php:1819
+#: qanda.php:1113
 msgid "Aug"
 msgstr "8月"
 
-#: qanda.php:1820
+#: qanda.php:1114
 msgid "Sep"
 msgstr "9月"
 
-#: qanda.php:1821
+#: qanda.php:1115
 msgid "Oct"
 msgstr "10月"
 
-#: qanda.php:1822
+#: qanda.php:1116
 msgid "Nov"
 msgstr "11月"
 
-#: qanda.php:1823
+#: qanda.php:1117
 msgid "Dec"
 msgstr "12月"
 
-#: qanda.php:1840
+#: qanda.php:1134
 msgid "Year"
 msgstr "年"
 
-#: qanda.php:1904 qanda.php:4657 qanda.php:4937 qanda.php:5016
+#: qanda.php:1198 qanda.php:3874 qanda.php:4154 qanda.php:4233
 msgid "Answer"
 msgstr "答案"
 
-#: qanda.php:1951
+#: qanda.php:1245
 msgid "Date picker"
 msgstr "日期選取器"
 
-#: qanda.php:1958
+#: qanda.php:1252
 #, php-format
 msgid "Format: %s"
 msgstr "格式：%s"
 
-#: qanda.php:2210
+#: qanda.php:1324 qanda.php:1625 qanda.php:2288 qanda.php:2699
+msgid "Other:"
+msgstr "其他："
+
+#: qanda.php:1505
 msgid "Other answer"
 msgstr "其它答案"
 
-#: qanda.php:2234 qanda.php:2503
+#: qanda.php:1529 qanda.php:1799
 #, php-format
 msgid ""
 "You've selected the \"%s\" answer for question \"%s\". Please also fill in "
 "the accompanying \"other comment\" field."
 msgstr "您選擇了問題 \"%s\"的\"%s\" 答案項。請再填寫相應的\"其它評論\"欄位。"
 
-#: qanda.php:2572
+#: qanda.php:1869
 msgid "Please enter your comment here"
 msgstr "請在此發表評論"
 
-#: qanda.php:2842
+#: qanda.php:2140
 msgid "Remove this item"
 msgstr "刪除這一項"
 
-#: qanda.php:2870
+#: qanda.php:2169
 msgid "Your Choices"
 msgstr "您的選擇"
 
-#: qanda.php:2881
+#: qanda.php:2180
 msgid "Your Ranking"
 msgstr "您的排序"
 
-#: qanda.php:2889
+#: qanda.php:2188
 msgid ""
 "Click on the scissors next to each item on the right to remove the last "
 "entry in your ranked list"
 msgstr "點擊每一項右邊的剪刀可刪除排序列表的最後輸入項"
 
-#: qanda.php:2900 qanda.php:2915
+#: qanda.php:2199 qanda.php:2214
 #, php-format
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] "請最多選擇 '%d' 個答案（限問題\"%s\"）"
 msgstr[1] "請排序至少 '%d'項（限問題\"%s\"）。"
 
-#: qanda.php:3327 qanda.php:3658
+#: qanda.php:2567 qanda.php:2883
 #, php-format
 msgid "Please choose at most %d answers for question \"%s\""
 msgstr "請至少選擇 '%d' 個答案（限問題\"%s\"）"
 
-#: qanda.php:3348 qanda.php:3683
+#: qanda.php:2588 qanda.php:2908
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "請至少選擇'%d'個答案（限問題\"%s\"）"
 
-#: qanda.php:3383 qanda.php:3714
+#: qanda.php:2623 qanda.php:2939
 #, php-format
 msgid ""
 "You've marked the \"other\" field for question \"%s\". Please also fill in "
 "the accompanying \"other comment\" field."
 msgstr "您標記了問題 \"%s\"的\"其它\" 欄位。請再填寫相應的\"其它評論\"欄位。"
 
-#: qanda.php:3586 qanda.php:3614
+#: qanda.php:2811 qanda.php:2839
 msgid "Make a comment on your choice here:"
 msgstr "請為您的選擇做個評論："
 
-#: qanda.php:3811
+#: qanda.php:3036
 msgid "Upload files"
 msgstr "上傳文件："
 
-#: qanda.php:3815
+#: qanda.php:3040
 msgid "Upload your files"
 msgstr "上傳你的文件："
 
-#: qanda.php:3816
+#: qanda.php:3041
 msgid "Return to survey"
 msgstr "回到調查"
 
-#: qanda.php:3994 qanda.php:4296 qanda.php:5542 qanda.php:7381
+#: qanda.php:3220 qanda.php:3523 qanda.php:4750 qanda.php:6605
 msgid "Error: This question has no answers."
 msgstr "錯誤：該問題沒有答案項。"
 
-#: qanda.php:4438
+#: qanda.php:3665
 msgid "Only numbers may be entered in these fields"
 msgstr "這些欄位只能輸入數字"
 
-#: qanda.php:4442
+#: qanda.php:3669
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "所有輸入項不能超過 %d"
 
-#: qanda.php:4446
+#: qanda.php:3673
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "所有輸入項總計須等於 %d"
 
-#: qanda.php:4450
+#: qanda.php:3677
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "所有輸入項總計至少%s"
 
-#: qanda.php:4458
+#: qanda.php:3685
 msgid "Remaining: "
 msgstr "剩餘："
 
-#: qanda.php:4460
+#: qanda.php:3687
 msgid "Total: "
 msgstr "總計："
 
-#: qanda.php:4506 qanda.php:4512 qanda.php:4548 qanda.php:4559
+#: qanda.php:3733 qanda.php:3739 qanda.php:3769 qanda.php:3778
 msgid ""
 "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "答案無效。所有輸入項總計不能超過"
 
-#: qanda.php:4525 qanda.php:4533
+#: qanda.php:3750 qanda.php:3756
 #, php-format
 msgid ""
 "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "答案無效。所有輸入項總計至少是%s。"
 
-#: qanda.php:4661
+#: qanda.php:3878
 msgid "Only numbers may be entered in this field"
 msgstr "本欄位只能輸入數位"
 
-#: qanda.php:4838 qanda.php:4839
+#: qanda.php:4055 qanda.php:4056
 msgid ""
 "Drag and drop the pin to the desired location. You may also right click on "
 "the map to move the pin."
 msgstr ""
 
-#: qanda.php:6091
+#: qanda.php:5307
 msgid "Please choose"
 msgstr "請選擇"
 
-#: qanda.php:6135 qanda.php:6481 qanda.php:6818 qanda.php:6970 qanda.php:7611
+#: qanda.php:5351 qanda.php:5699 qanda.php:6038 qanda.php:6192 qanda.php:6836
 msgid ""
 "Error: There are no answer options for this question and/or they don't exist "
 "in this language."
 msgstr "錯誤：本語言未含此問題的標籤集或問題答案項不存在。"
 
-#: qanda.php:6736
+#: qanda.php:5956
 msgid "..."
 msgstr "。。。"
 
-#: qanda.php:6964
+#: qanda.php:6186
 msgid "Error: There are no answers defined for this question."
 msgstr "錯誤：沒有為這個問題定義答案。"
-
-#: question.php:283
-msgid "Click here to print your answers."
-msgstr "點擊此處列印您的答案。"
-
-#: question.php:540
-msgid "One or more uploaded files do not satisfy the criteria"
-msgstr ""
 
 #: register.php:79
 msgid "The email you used is not valid. Please try again."
@@ -2200,88 +2181,88 @@ msgstr ""
 msgid "Survey Administrator"
 msgstr "調查管理員"
 
-#: replacements.php:201
+#: replacements.php:203
 msgid "There are no questions in this survey"
 msgstr "本調查沒有問題"
 
-#: replacements.php:205
+#: replacements.php:207
 msgid "There is 1 question in this survey"
 msgstr "本調查有一個問題"
 
-#: replacements.php:209
+#: replacements.php:211
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "本調查包括{NUMBEROFQUESTIONS}個問題。"
 
-#: replacements.php:281
+#: replacements.php:283
 msgid "Exit and Clear Survey"
 msgstr "退出並清除調查"
 
-#: replacements.php:282
+#: replacements.php:284
 msgid "Are you sure you want to clear all your responses?"
 msgstr "您確定要清除所有回饋嗎？"
 
-#: replacements.php:307 replacements.php:311 replacements.php:331
+#: replacements.php:309 replacements.php:313 replacements.php:333
 msgid "Resume Later"
 msgstr "稍後繼續"
 
-#: replacements.php:377
+#: replacements.php:379
 msgid ""
 "If you want to check any of the answers you have made, and/or change them, "
 "you can do that now by clicking on the [<< prev] button and browsing through "
 "your responses."
 msgstr "如果您想檢查或修改回饋，您可以通過點擊 [<< prev]按鈕流覽並實現。"
 
-#: replacements.php:386 replacements.php:397
+#: replacements.php:388 replacements.php:399
 msgid "Restart this Survey"
 msgstr "重新開始本次調查"
 
-#: replacements.php:401
+#: replacements.php:403
 msgid ""
 "To remain anonymous please use a pseudonym as your username, also an email "
 "address is not required."
 msgstr ""
 
-#: replacements.php:413
+#: replacements.php:415
 msgid "Return To Survey"
 msgstr "返回調查"
 
-#: replacements.php:415 save.php:385
+#: replacements.php:417 save.php:191
 msgid "Name"
 msgstr "名字"
 
-#: replacements.php:421 replacements.php:453 save.php:386
+#: replacements.php:423 replacements.php:455 save.php:192
 msgid "Password"
 msgstr "密碼"
 
-#: replacements.php:427
+#: replacements.php:429
 msgid "Repeat Password"
 msgstr "重複密碼"
 
-#: replacements.php:433
+#: replacements.php:435
 msgid "Your Email"
 msgstr "您的郵件"
 
-#: replacements.php:444
+#: replacements.php:446
 msgid "Save Now"
 msgstr "現在保存"
 
-#: replacements.php:447
+#: replacements.php:449
 msgid "Saved name"
 msgstr "保存的名稱"
 
-#: replacements.php:465
+#: replacements.php:467
 msgid "Load Now"
 msgstr "現在載入"
 
-#: replacements.php:548
+#: replacements.php:550
 msgid "Answers Cleared"
 msgstr "答案已清除"
 
-#: replacements.php:551
+#: replacements.php:553
 msgid "Your Assessment"
 msgstr "您的評價"
 
-#: replacements.php:552
+#: replacements.php:554
 msgid ""
 "Caution: JavaScript execution is disabled in your browser. You may not be "
 "able to answer all questions in this survey. Please, verify your browser "
@@ -2290,31 +2271,31 @@ msgstr ""
 "注意：您的流覽器已禁用JavaScript。您可能無法回答問卷中所有的問題。請核實流覽"
 "器參數。"
 
-#: replacements.php:554
+#: replacements.php:556
 msgid "Close this window"
 msgstr "關閉窗口"
 
-#: replacements.php:564
+#: replacements.php:566
 msgid "Load A Previously Saved Survey"
 msgstr "載入以前保存的調查"
 
-#: replacements.php:565
+#: replacements.php:567
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "您可以在此介面載入以前保存的調查。"
 
-#: replacements.php:565
+#: replacements.php:567
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "輸入您用來保存調查的用戶名和密碼。"
 
-#: replacements.php:571
+#: replacements.php:573
 msgid "A Note On Privacy"
 msgstr "隱私注解"
 
-#: replacements.php:571
+#: replacements.php:573
 msgid "This survey is anonymous."
 msgstr "本調查採取匿名方式。"
 
-#: replacements.php:571
+#: replacements.php:573
 msgid ""
 "The record kept of your survey responses does not contain any identifying "
 "information about you unless a specific question in the survey has asked for "
@@ -2330,81 +2311,81 @@ msgstr ""
 "的答案保存在一起。它通過單獨的資料庫來管理，只是用來識別你是否完成了這個調"
 "查。匹配調查的問卷答案和識別操作碼是不可能的事情。"
 
-#: replacements.php:589
+#: replacements.php:591
 msgid "You must be registered to complete this survey"
 msgstr "您必須註冊才能完成此調查"
 
-#: replacements.php:590
+#: replacements.php:592
 msgid "You may register for this survey if you wish to take part."
 msgstr "如果您想參與調查，請先註冊。"
 
-#: replacements.php:590
+#: replacements.php:592
 msgid ""
 "Enter your details below, and an email containing the link to participate in "
 "this survey will be sent immediately."
 msgstr "在下面填寫您的詳細資料，然後一封包含參與該調查的連結的郵件會立刻發送。"
 
-#: replacements.php:598
+#: replacements.php:600
 msgid "Save Your Unfinished Survey"
 msgstr "保存您未完成的調查"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid "Enter a name and password for this survey and click save below."
 msgstr "為本次調查輸入一個用戶名和密碼並點擊下面的保存。"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "Your survey will be saved using that name and password, and can be completed "
 "later by logging in with the same name and password."
 msgstr "您的調查將使用該名字和密碼保存，以後您可利用它們繼續登錄並完成調查。"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "If you give an email address, an email containing the details will be sent "
 "to you."
 msgstr "如果您提供了郵寄地址，您就會收到一封包含詳細資料的郵件。"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "After having clicked the save button you can either close this browser "
 "window or continue filling out the survey."
 msgstr ""
 
-#: replacements.php:604
+#: replacements.php:606
 msgid "You have completed answering the questions in this survey."
 msgstr "您已經完成了本次調查的全部問題。"
 
-#: replacements.php:604
+#: replacements.php:606
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "現在點擊“提交”完成這一過程，並保存您的回答。"
 
-#: save.php:257
+#: save.php:63
 msgid "Please try again."
 msgstr "請重試。"
 
-#: save.php:299
+#: save.php:105
 msgid "You must supply a name for this saved session."
 msgstr "您必須為這個保存的會話提供一個名稱。"
 
-#: save.php:300
+#: save.php:106
 msgid "You must supply a password for this saved session."
 msgstr "您必須為這個保存的會話提供一個密碼。"
 
-#: save.php:302
+#: save.php:108
 msgid "Your passwords do not match."
 msgstr "您的密碼不匹配。"
 
-#: save.php:326
+#: save.php:132
 msgid ""
 "This name has already been used for this survey. You must use a unique save "
 "name."
 msgstr "這個名字在本調查中已被使用。您必須使用一個唯一的保存名字。"
 
-#: save.php:382 save.php:424
+#: save.php:188
 msgid "Saved Survey Details"
 msgstr "已保存調查的詳細資料"
 
-#: save.php:383
+#: save.php:189
 msgid ""
 "Thank you for saving your survey in progress.  The following details can be "
 "used to return to this survey and continue where you left off.  Please keep "
@@ -2413,47 +2394,15 @@ msgstr ""
 "感謝您及時保存調查。您可以用下面的詳細資料來返回並繼續本調查。請保留本電郵以"
 "備後用 - 我們無法為您找回密碼。"
 
-#: save.php:387 save.php:426
+#: save.php:193
 msgid ""
 "Reload your survey by clicking on the following link (or pasting it into "
 "your browser):"
 msgstr "點擊下麵的URL（或粘貼至流覽器）以重載您的調查： "
 
-#: save.php:402 save.php:445
+#: save.php:208
 msgid "Your survey was successfully saved."
 msgstr "成功保存您的調查。"
-
-#: save.php:425
-msgid ""
-"Thank you for saving your survey in progress. You can return to the survey "
-"at the same point you saved it at any time using the link from this or any "
-"previous email sent to regarding this survey."
-msgstr ""
-
-#: save.php:739
-msgid "Cannot submit results - there are none to submit."
-msgstr "無法提交結果 - 沒有內容可提交。"
-
-#: save.php:740
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"您已經提交了回饋並按了流覽器上的“刷新”，就會出現這個錯誤。這種情況下，您的反"
-"饋已經保存了。 "
-
-#: save.php:740
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"如果您在完成調查的過程中收到本資訊，您應該選擇流覽器上的 '<- 後退'並刷新/重載"
-"前面的頁面。這樣你就僅會丟失最後一頁的答案，而其它答案則不會丟失。非常抱歉，"
-"伺服器超負荷或過度使用就會發生這個問題。"
 
 #: statistics_user.php:386
 msgid "Please wait ..."
@@ -2475,16 +2424,10 @@ msgstr "調查中總記錄數"
 msgid "Generating summaries ..."
 msgstr "正在生成摘要..."
 
-#: statistics_user.php:454
+#: statistics_user.php:454 admin/browse.php:140 admin/browse.php:141
+#: admin/browse.php:479
 msgid "Completed"
 msgstr "已完成"
-
-#: survey.php:918
-#, fuzzy
-msgid ""
-"One or more files are either not in the proper format or exceed the maximum "
-"file size limitation. You cannot proceed until these answers are valid."
-msgstr "一個或者更多的問題未按有效方式回答。更正回答後方可繼續。"
 
 #: upload.php:87
 #, php-format
@@ -2633,7 +2576,7 @@ msgstr "您沒有修改評價規則的許可權！"
 msgid "You are not allowed to delete this group!"
 msgstr "您沒有刪除這個組的許可權！"
 
-#: admin/access_denied.php:102
+#: admin/access_denied.php:102 admin/cmdline_importsurvey.php:80
 msgid "You are not allowed to import a survey!"
 msgstr "您沒有導入調查的許可權！"
 
@@ -2669,7 +2612,7 @@ msgid "You are not allowed to perform this operation!"
 msgstr "您沒有執行該項操作的許可權！"
 
 #: admin/activate.php:39 admin/activate.php:67 admin/activate.php:76
-#: admin/activate_functions.php:406 admin/activate_functions.php:446
+#: admin/activate_functions.php:413 admin/activate_functions.php:453
 msgid "Activate Survey"
 msgstr "啟用調查"
 
@@ -2744,92 +2687,93 @@ msgstr ""
 "一旦有資料錄入到這份問卷，當您想增加/刪除題組或問題時，您需要停用此調查，已經"
 "錄入的資料會被移動到一個獨立的存檔表中。"
 
-#: admin/activate_functions.php:85
+#: admin/activate_functions.php:89
 msgid "This group does not contain any question(s)."
 msgstr "該組未含任何問題。"
 
-#: admin/activate_functions.php:133
+#: admin/activate_functions.php:137
 msgid ""
 "This question is a subquestion type question but has no configured "
 "subquestions."
 msgstr "本題包含有子問題類型的問題但尚未配置。"
 
-#: admin/activate_functions.php:143
+#: admin/activate_functions.php:147
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "本題多選但未有答案項。"
 
-#: admin/activate_functions.php:153
+#: admin/activate_functions.php:157
 msgid "This question does not have a question 'type' set."
 msgstr "本題未設定類型。"
 
-#: admin/activate_functions.php:163
+#: admin/activate_functions.php:167
 msgid "This question requires answers, but none are set."
 msgstr "本題需要答案項，但是尚未設定。"
 
-#: admin/activate_functions.php:170
+#: admin/activate_functions.php:174
 msgid "This question requires a second answer set but none is set."
 msgstr "本題需要第二答案項，但是尚未設定。"
 
-#: admin/activate_functions.php:225
+#: admin/activate_functions.php:229
 msgid ""
 "This question has a condition set, however the condition is based on a "
 "question that appears after it."
 msgstr "本題的條件設定不能基於後面的問題。"
 
-#: admin/activate_functions.php:407
+#: admin/activate_functions.php:414
 msgid "Survey could not be actived."
 msgstr "調查無法啟用。"
 
-#: admin/activate_functions.php:409
+#: admin/activate_functions.php:416
 msgid "Database error:"
 msgstr "資料庫錯誤："
 
-#: admin/activate_functions.php:411
+#: admin/activate_functions.php:418 admin/browse.php:34 admin/browse.php:65
+#: admin/browse.php:77
 msgid "Main Admin Screen"
 msgstr "主管理介面"
 
-#: admin/activate_functions.php:447
+#: admin/activate_functions.php:454
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "調查已啟用。已成功創建結果表。"
 
-#: admin/activate_functions.php:456
+#: admin/activate_functions.php:463
 msgid ""
 "The required directory for saving the uploaded files couldn't be created. "
 "Please check file premissions on the limesurvey/upload/surveys directory."
 msgstr ""
 
-#: admin/activate_functions.php:470
+#: admin/activate_functions.php:477
 msgid ""
 "This survey allows public registration. A token table must also be created."
 msgstr "本調查允許公眾註冊。必須創建一個操作代碼表。"
 
-#: admin/activate_functions.php:471
+#: admin/activate_functions.php:478
 msgid "Initialise tokens"
 msgstr "初始化操作代碼"
 
-#: admin/activate_functions.php:475
+#: admin/activate_functions.php:482
 msgid "This survey is now active, and responses can be recorded."
 msgstr "本調查已啟用，並且可以記錄回饋項。"
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid "Open-access mode"
 msgstr "開放式訪問模式"
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid "No invitation code is needed to complete the survey."
 msgstr "不需要邀請碼即可完成這個調查。"
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid ""
 "You can switch to the closed-access mode by initialising a token table with "
 "the button below."
 msgstr "您可以通過下面的按鈕初始化一張操作代碼表來轉換到封閉式訪問模式。"
 
-#: admin/activate_functions.php:477
+#: admin/activate_functions.php:484
 msgid "Switch to closed-access mode"
 msgstr "切換至封閉式訪問模式"
 
-#: admin/activate_functions.php:478
+#: admin/activate_functions.php:485
 msgid "No, thanks."
 msgstr "不，謝謝。"
 
@@ -3101,7 +3045,7 @@ msgstr "評價規則"
 msgid "ID"
 msgstr "識別號"
 
-#: admin/assessments.php:169
+#: admin/assessments.php:169 admin/browse.php:541 admin/browse.php:883
 msgid "Actions"
 msgstr "操作"
 
@@ -3117,7 +3061,7 @@ msgstr "信息"
 msgid "Delete"
 msgstr "刪除"
 
-#: admin/assessments.php:194
+#: admin/assessments.php:194 admin/browse.php:229
 msgid "Are you sure you want to delete this entry?"
 msgstr "您確定要刪除該條目嗎？"
 
@@ -3125,7 +3069,7 @@ msgstr "您確定要刪除該條目嗎？"
 msgid "Total"
 msgstr "全部"
 
-#: admin/assessments.php:234
+#: admin/assessments.php:234 admin/browse.php:871
 msgid "Group"
 msgstr "組"
 
@@ -3150,8 +3094,7 @@ msgid "Message:"
 msgstr "信息："
 
 #: admin/browse.php:31 admin/browse.php:62 admin/browse.php:74
-#: admin/browse.php:109 admin/browse.php:325 admin/dataentry.php:1458
-#: admin/dataentry.php:1474
+#: admin/browse.php:109 admin/browse.php:325
 msgid "Browse Responses"
 msgstr "流覽回饋"
 
@@ -3184,7 +3127,7 @@ msgstr "提交日期"
 msgid "View response ID %d"
 msgstr "流覽回饋(ID %s)"
 
-#: admin/browse.php:224 admin/dataentry.php:146
+#: admin/browse.php:224
 msgid "Edit this entry"
 msgstr "編輯此條目"
 
@@ -3388,7 +3331,7 @@ msgid "Greater than"
 msgstr "大於"
 
 #: admin/conditionshandling.php:69 admin/conditionshandling.php:85
-#: admin/conditionshandling.php:1923
+#: admin/conditionshandling.php:1931
 msgid "Regular expression"
 msgstr "正規運算式"
 
@@ -3424,7 +3367,7 @@ msgstr "主管理介面"
 msgid "You have not selected a question"
 msgstr "您尚未選擇問題"
 
-#: admin/conditionshandling.php:173 admin/conditionshandling.php:249
+#: admin/conditionshandling.php:173 admin/conditionshandling.php:250
 msgid ""
 "Your condition could not be added! It did not include the question and/or "
 "answer upon which the condition was based. Please ensure you have selected a "
@@ -3433,243 +3376,244 @@ msgstr ""
 "您的條件不能被添加！它未包含所基於的問題和/或答案項。請確認您已經選擇一個問題"
 "和一個答案項。"
 
-#: admin/conditionshandling.php:410
+#: admin/conditionshandling.php:418
 msgid ""
 "Conditions successfully copied (some were skipped because they were "
 "duplicates)"
 msgstr "成功複製條件（由於重複某些條件已跳過）"
 
-#: admin/conditionshandling.php:414
+#: admin/conditionshandling.php:422
 msgid "Conditions successfully copied"
 msgstr "條件成功複製"
 
-#: admin/conditionshandling.php:419
+#: admin/conditionshandling.php:427
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "由於重複未能複製條件"
 
-#: admin/conditionshandling.php:862
+#: admin/conditionshandling.php:870
 msgid "Group of checkboxes"
 msgstr "核取方塊組"
 
-#: admin/conditionshandling.php:878
+#: admin/conditionshandling.php:886
 msgid "Single checkbox"
 msgstr "單選"
 
-#: admin/conditionshandling.php:881
+#: admin/conditionshandling.php:889
 #, fuzzy
 msgid "checked"
 msgstr "已檢查"
 
-#: admin/conditionshandling.php:882
+#: admin/conditionshandling.php:890
 #, fuzzy
 msgid "not checked"
 msgstr "已檢查"
 
-#: admin/conditionshandling.php:990
+#: admin/conditionshandling.php:998
 msgid "Conditions designer"
 msgstr "條件設計器"
 
-#: admin/conditionshandling.php:999
+#: admin/conditionshandling.php:1007
 msgid "Show conditions for this question"
 msgstr "顯示該題條件"
 
-#: admin/conditionshandling.php:1002
+#: admin/conditionshandling.php:1010
 msgid "Add and edit conditions"
 msgstr "添加並編輯條件"
 
-#: admin/conditionshandling.php:1004 admin/conditionshandling.php:1592
-#: admin/conditionshandling.php:1637
+#: admin/conditionshandling.php:1012 admin/conditionshandling.php:1600
+#: admin/conditionshandling.php:1645
 msgid "Copy conditions"
 msgstr "複製條件"
 
-#: admin/conditionshandling.php:1008
+#: admin/conditionshandling.php:1016
 msgid "Before"
 msgstr "之前"
 
-#: admin/conditionshandling.php:1025
+#: admin/conditionshandling.php:1033
 msgid "Current"
 msgstr "當前"
 
-#: admin/conditionshandling.php:1038
+#: admin/conditionshandling.php:1046
 msgid "After"
 msgstr "之後"
 
-#: admin/conditionshandling.php:1058 admin/conditionshandling.php:1872
+#: admin/conditionshandling.php:1066 admin/conditionshandling.php:1880
+#: admin/exportresults.php:103
 msgid "Questions"
 msgstr "問題"
 
-#: admin/conditionshandling.php:1146
+#: admin/conditionshandling.php:1154
 msgid "Only show question {QID} IF"
 msgstr "顯示問題 {QID}僅當"
 
-#: admin/conditionshandling.php:1167
+#: admin/conditionshandling.php:1175
 msgid ""
 "Are you sure you want to delete all conditions set to the questions you have "
 "selected?"
 msgstr "您確認想刪除選定問題的所有條件嗎？"
 
-#: admin/conditionshandling.php:1169
+#: admin/conditionshandling.php:1177
 msgid "Delete all conditions"
 msgstr "刪除所有條件"
 
-#: admin/conditionshandling.php:1175
+#: admin/conditionshandling.php:1183
 msgid ""
 "Are you sure you want to renumber the scenarios with incremented numbers "
 "beginning from 1?"
 msgstr "您確認要從1開始對場景重新編碼嗎？"
 
-#: admin/conditionshandling.php:1177
+#: admin/conditionshandling.php:1185
 msgid "Renumber scenario automatically"
 msgstr "對場景自動重新編號"
 
-#: admin/conditionshandling.php:1205 admin/conditionshandling.php:1345
+#: admin/conditionshandling.php:1213 admin/conditionshandling.php:1353
 #: admin/dataentry.php:1612 admin/dataentry.php:1702 admin/dataentry.php:1734
 msgid "OR"
 msgstr "或"
 
-#: admin/conditionshandling.php:1221
+#: admin/conditionshandling.php:1229
 msgid "New scenario number"
 msgstr "新建場景號"
 
-#: admin/conditionshandling.php:1228
+#: admin/conditionshandling.php:1236
 msgid "Update scenario"
 msgstr "更新場景"
 
-#: admin/conditionshandling.php:1239
+#: admin/conditionshandling.php:1247
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "您確定要刪除本場景所有條件嗎？"
 
-#: admin/conditionshandling.php:1241
+#: admin/conditionshandling.php:1249
 msgid "Delete this scenario"
 msgstr "刪除場景"
 
-#: admin/conditionshandling.php:1247
+#: admin/conditionshandling.php:1255
 msgid "Edit scenario"
 msgstr "編輯場景"
 
-#: admin/conditionshandling.php:1338
+#: admin/conditionshandling.php:1346
 msgid "and"
 msgstr "和"
 
-#: admin/conditionshandling.php:1370 admin/conditionshandling.php:1443
+#: admin/conditionshandling.php:1378 admin/conditionshandling.php:1451
 msgid "From token table"
 msgstr "從操作代碼表"
 
-#: admin/conditionshandling.php:1374 admin/conditionshandling.php:1447
+#: admin/conditionshandling.php:1382 admin/conditionshandling.php:1455
 msgid "Inexistant token table"
 msgstr "不存在的操作代碼表"
 
-#: admin/conditionshandling.php:1432
+#: admin/conditionshandling.php:1440
 msgid "Not found"
 msgstr "未發現"
 
-#: admin/conditionshandling.php:1489
+#: admin/conditionshandling.php:1497
 msgid "Are you sure you want to delete this condition?"
 msgstr "您確定要刪除這個條件嗎？"
 
-#: admin/conditionshandling.php:1491
+#: admin/conditionshandling.php:1499
 msgid "Delete this condition"
 msgstr "刪除本條件"
 
-#: admin/conditionshandling.php:1494
+#: admin/conditionshandling.php:1502
 msgid "Edit this condition"
 msgstr "編輯條件"
 
-#: admin/conditionshandling.php:1571
+#: admin/conditionshandling.php:1579
 msgid "This question is always shown."
 msgstr "本題一直顯示。"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 #, fuzzy
 msgid "No questions selected"
 msgstr "問題選擇"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 #, fuzzy
 msgid "Check all"
 msgstr "檢查資料"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "Uncheck all"
 msgstr ""
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "selected"
 msgstr "玄德"
 
-#: admin/conditionshandling.php:1612
+#: admin/conditionshandling.php:1620
 msgid "Copy the selected conditions to"
 msgstr "複製選定條件至"
 
-#: admin/conditionshandling.php:1661
+#: admin/conditionshandling.php:1669
 msgid "This survey's questions don't use conditions"
 msgstr "本調查有問題沒有條件限制"
 
-#: admin/conditionshandling.php:1698
+#: admin/conditionshandling.php:1706
 msgid "Edit condition"
 msgstr "編輯條件"
 
-#: admin/conditionshandling.php:1702 admin/conditionshandling.php:1940
+#: admin/conditionshandling.php:1710 admin/conditionshandling.php:1948
 msgid "Add condition"
 msgstr "添加條件"
 
-#: admin/conditionshandling.php:1713
+#: admin/conditionshandling.php:1721
 msgid "Add scenario"
 msgstr "添加場景"
 
-#: admin/conditionshandling.php:1714
+#: admin/conditionshandling.php:1722
 msgid "Default scenario"
 msgstr "默認場景"
 
-#: admin/conditionshandling.php:1725
+#: admin/conditionshandling.php:1733
 msgid "Scenario"
 msgstr "場景"
 
-#: admin/conditionshandling.php:1737
+#: admin/conditionshandling.php:1745
 msgid "Previous questions"
 msgstr "先前問題"
 
-#: admin/conditionshandling.php:1738 admin/conditionshandling.php:1873
+#: admin/conditionshandling.php:1746 admin/conditionshandling.php:1881
 msgid "Token fields"
 msgstr "操作代碼欄位"
 
-#: admin/conditionshandling.php:1795
+#: admin/conditionshandling.php:1803
 msgid "Comparison operator"
 msgstr "比較操作符"
 
-#: admin/conditionshandling.php:1870
+#: admin/conditionshandling.php:1878
 msgid "Predefined"
 msgstr "預定義"
 
-#: admin/conditionshandling.php:1871
+#: admin/conditionshandling.php:1879
 msgid "Constant"
 msgstr "常量"
 
-#: admin/conditionshandling.php:1874
+#: admin/conditionshandling.php:1882
 msgid "RegExp"
 msgstr "規則運算式"
 
-#: admin/conditionshandling.php:1881
+#: admin/conditionshandling.php:1889
 msgid "Predefined answer options for this question"
 msgstr "該問題的預定義答案項"
 
-#: admin/conditionshandling.php:1887
+#: admin/conditionshandling.php:1895
 msgid "Constant value"
 msgstr "常量值"
 
-#: admin/conditionshandling.php:1905
+#: admin/conditionshandling.php:1913
 msgid "Answers from previous questions"
 msgstr "來自先前問題的答案項"
 
-#: admin/conditionshandling.php:1917
+#: admin/conditionshandling.php:1925
 msgid "Attributes values from the participant's token"
 msgstr "參與者操作代碼的屬性值"
 
-#: admin/conditionshandling.php:1934
+#: admin/conditionshandling.php:1942
 msgid "Update condition"
 msgstr "更新條件"
 
-#: admin/conditionshandling.php:1950
+#: admin/conditionshandling.php:1958
 msgid "Clear"
 msgstr "清除"
 
@@ -3679,64 +3623,64 @@ msgid ""
 "following languages"
 msgstr "無法添加組。\\n\\n在下面的語言中缺少組名"
 
-#: admin/database.php:107
+#: admin/database.php:108
 msgid "Error: The database reported the following error:"
 msgstr "錯誤：資料庫報告下面的錯誤："
 
-#: admin/database.php:116
+#: admin/database.php:117
 msgid "New question group was saved."
 msgstr "新的問題組已保存"
 
-#: admin/database.php:158
+#: admin/database.php:159
 msgid "Group could not be updated"
 msgstr "無法更新組"
 
-#: admin/database.php:163
+#: admin/database.php:164
 msgid "Question group successfully saved."
 msgstr "問題組已成功保存"
 
-#: admin/database.php:193
+#: admin/database.php:196
 msgid "The question group was deleted."
 msgstr "的個問題組已刪除"
 
-#: admin/database.php:197
+#: admin/database.php:200
 msgid "Group could not be deleted"
 msgstr "無法刪除組"
 
-#: admin/database.php:207
+#: admin/database.php:211
 msgid ""
 "The question could not be added. You must enter at least enter a question "
 "code."
 msgstr "不能添加問題，您至少須輸入一個問題編碼。"
 
-#: admin/database.php:269
+#: admin/database.php:273
 #, php-format
 msgid "Question in language %s could not be created."
 msgstr "無法以語言%s創建問題。"
 
-#: admin/database.php:280 admin/database.php:695 admin/database.php:724
+#: admin/database.php:284 admin/database.php:711 admin/database.php:740
 msgid "Question could not be created."
 msgstr "無法創建問題。"
 
-#: admin/database.php:302
+#: admin/database.php:306
 msgid "Question was successfully added."
 msgstr "問題已成功保存"
 
-#: admin/database.php:338
+#: admin/database.php:348
 #, fuzzy
 msgid "Question codes were successfully regenerated."
 msgstr "這個問題已被刪除"
 
-#: admin/database.php:363 admin/database.php:582 admin/database.php:647
+#: admin/database.php:374 admin/database.php:597 admin/database.php:662
 msgid "Question could not be updated"
 msgstr "無法更新問題"
 
-#: admin/database.php:411
+#: admin/database.php:422
 #, fuzzy
 msgid "Default value settings were successfully saved."
 msgstr "成功保存您的個人設置。"
 
-#: admin/database.php:510
+#: admin/database.php:524
 msgid ""
 "Question could not be updated. There are conditions for other questions that "
 "rely on the answers to this question and changing the type will cause "
@@ -3746,41 +3690,21 @@ msgstr ""
 "無法更新問題。有其他問題的條件基於此問題的答案項，更改類型會引起問題。您必須"
 "在更改此題類型之前刪除這些條件。"
 
-#: admin/database.php:609
+#: admin/database.php:624
 msgid "Question was successfully saved."
 msgstr "問題已成功保存"
 
-#: admin/database.php:619
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr "這個問題依賴於其他問題的答案項，不能移動到該組之上："
-
-#: admin/database.php:620 admin/database.php:632
-msgid "in position"
-msgstr "在適當的位置"
-
-#: admin/database.php:621 admin/database.php:633
-msgid "See conditions:"
-msgstr "查看條件："
-
-#: admin/database.php:631
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr "一些問題依賴於這個問題的答案項。您不能把這個問題移動到該組之下："
-
-#: admin/database.php:657
+#: admin/database.php:673
 msgid ""
 "Question could not be added. You must insert a code in the mandatory field"
 msgstr "不能添加問題，您必須在必須填寫的欄位中插入碼號"
 
-#: admin/database.php:800
+#: admin/database.php:816
 #, fuzzy
 msgid "Question was successfully copied."
 msgstr "問題已成功保存"
 
-#: admin/database.php:815
+#: admin/database.php:834
 msgid ""
 "Question could not be deleted. There are conditions for other questions that "
 "rely on this question. You cannot delete this question until those "
@@ -3788,71 +3712,71 @@ msgid ""
 msgstr ""
 "無法刪除問題，有其他問題的條件基於此題。請在刪除此題之前，刪除這些條件。"
 
-#: admin/database.php:834
+#: admin/database.php:853
 msgid "Question was successfully deleted."
 msgstr "這個問題已被刪除"
 
-#: admin/database.php:903
+#: admin/database.php:924
 msgid "Failed to update answers"
 msgstr "更新答案項失敗"
 
-#: admin/database.php:911
+#: admin/database.php:934
 msgid ""
 "Answers with a code of 0 (zero) or blank code are not allowed, and will not "
 "be saved"
 msgstr "答案項編碼為0或空是不允許的，也不會保存。"
 
-#: admin/database.php:912
+#: admin/database.php:935
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "發現重複編碼，這些條目無法更新"
 
-#: admin/database.php:915
+#: admin/database.php:938
 #, fuzzy
 msgid "Answer options were successfully saved."
 msgstr "已成功保存您的個人答案。"
 
-#: admin/database.php:944
+#: admin/database.php:969
 msgid "Failed to delete answer"
 msgstr "刪除答案項無效"
 
-#: admin/database.php:1034
+#: admin/database.php:1061
 #, fuzzy
 msgid "Subquestions were successfully saved."
 msgstr "已成功保存您的個人答案。"
 
-#: admin/database.php:1195
+#: admin/database.php:1222
 #, fuzzy
 msgid "Survey settings were successfully saved."
 msgstr "成功保存您的個人設置。"
 
-#: admin/database.php:1200
+#: admin/database.php:1227
 msgid "Survey could not be updated"
 msgstr "無法更新調查"
 
-#: admin/database.php:1225
+#: admin/database.php:1252
 #, fuzzy
 msgid "Email templates successfully saved."
 msgstr "成功保存您的調查。"
 
-#: admin/database.php:1239
+#: admin/database.php:1266
 msgid "ERROR deleting Survey id"
 msgstr "刪除調查id時出錯"
 
-#: admin/database.php:1298
+#: admin/database.php:1325
 #, fuzzy
 msgid "Survey text elements successfully saved."
 msgstr "成功保存您的調查。"
 
-#: admin/database.php:1317
+#: admin/database.php:1344
 msgid "Survey could not be created because it did not have a title"
 msgstr "無法創建沒有標題的調查"
 
-#: admin/database.php:1473
+#: admin/database.php:1500
 #, fuzzy
 msgid "Survey was successfully added."
 msgstr "成功保存您的調查。"
 
-#: admin/database.php:1499
+#: admin/database.php:1526
 msgid "Your personal settings were successfully saved."
 msgstr "成功保存您的個人設置。"
 
@@ -3894,23 +3818,23 @@ msgstr "這個調查使用了匿名形式，所以您不能更新回饋。"
 msgid "Try again"
 msgstr "再試一次"
 
-#: admin/dataentry.php:181 admin/dataentry.php:1342 admin/dataentry.php:2630
+#: admin/dataentry.php:181 admin/dataentry.php:1342 admin/dataentry.php:2631
 msgid "Identifier:"
 msgstr "識別字："
 
-#: admin/dataentry.php:183 admin/dataentry.php:2632
+#: admin/dataentry.php:183 admin/dataentry.php:2633
 msgid "Password:"
 msgstr "密碼："
 
-#: admin/dataentry.php:185 admin/dataentry.php:2634
+#: admin/dataentry.php:185 admin/dataentry.php:2635
 msgid "Confirm Password:"
 msgstr "確認密碼："
 
-#: admin/dataentry.php:187 admin/dataentry.php:2636
+#: admin/dataentry.php:187 admin/dataentry.php:2637
 msgid "Email:"
 msgstr "郵件："
 
-#: admin/dataentry.php:189 admin/dataentry.php:2638
+#: admin/dataentry.php:189 admin/dataentry.php:2639
 msgid "Start Language:"
 msgstr "起始語言："
 
@@ -3961,11 +3885,11 @@ msgstr "編輯回饋(ID %s)"
 msgid "Viewing response (ID %s)"
 msgstr "流覽回饋(ID %s)"
 
-#: admin/dataentry.php:1336 admin/dataentry.php:2620
+#: admin/dataentry.php:1336 admin/dataentry.php:2621
 msgid "Finalize response submission"
 msgstr "完成回饋提交"
 
-#: admin/dataentry.php:1338 admin/dataentry.php:2626
+#: admin/dataentry.php:1338 admin/dataentry.php:2627
 msgid "Save for further completion by survey user"
 msgstr "參與調查用戶保存調查以便將來完成"
 
@@ -3997,20 +3921,20 @@ msgstr "沒有答案"
 msgid "Only answer this if the following conditions are met:"
 msgstr "只有符合下面條件方可回答本題:"
 
-#: admin/dataentry.php:1786
+#: admin/dataentry.php:1787
 msgid "Help about this question"
 msgstr "本題的幫助"
 
-#: admin/dataentry.php:1830
+#: admin/dataentry.php:1831
 #, php-format
 msgid "Label %s"
 msgstr "標籤%s"
 
-#: admin/dataentry.php:2675
+#: admin/dataentry.php:2676
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "本調查沒有啟用，無法保存您的回饋。"
 
-#: admin/dataentry.php:2685
+#: admin/dataentry.php:2686
 msgid "The survey you selected does not exist"
 msgstr "您選擇的調查不存在"
 
@@ -4186,32 +4110,32 @@ msgstr "答案尺度 %s"
 msgid "Answer option"
 msgstr "答案項"
 
-#: admin/editansweroptions.php:225
+#: admin/editansweroptions.php:216
 msgid "Answer:"
 msgstr "答案項："
 
-#: admin/editansweroptions.php:249 admin/editsubquestions.php:232
+#: admin/editansweroptions.php:230 admin/editsubquestions.php:232
 msgid "Predefined label sets..."
 msgstr "預定義標籤集..."
 
-#: admin/editansweroptions.php:250 admin/editsubquestions.php:233
+#: admin/editansweroptions.php:231 admin/editsubquestions.php:233
 msgid "Quick add..."
 msgstr "快速添加..."
 
-#: admin/editansweroptions.php:262 admin/editsubquestions.php:243
+#: admin/editansweroptions.php:243 admin/editsubquestions.php:243
 msgid "Available label sets:"
 msgstr "可用標籤集："
 
-#: admin/editansweroptions.php:264 admin/editansweroptions.php:272
+#: admin/editansweroptions.php:245 admin/editansweroptions.php:253
 #: admin/editsubquestions.php:245 admin/editsubquestions.php:252
 msgid "Replace"
 msgstr "替換"
 
-#: admin/editansweroptions.php:270
+#: admin/editansweroptions.php:251
 msgid "Enter your answers:"
 msgstr "輸入你的答案："
 
-#: admin/editansweroptions.php:271
+#: admin/editansweroptions.php:252
 #, fuzzy
 msgid ""
 "Enter one answer per line. You can provide a code by separating code and "
@@ -4220,7 +4144,7 @@ msgid ""
 msgstr ""
 "每行輸入一個答案。您可通過使用分號或tab鍵分隔編碼和答案文本的方式來提供編碼。"
 
-#: admin/editansweroptions.php:277 admin/editsubquestions.php:257
+#: admin/editansweroptions.php:258 admin/editsubquestions.php:257
 msgid "Save changes"
 msgstr "保存更改"
 
@@ -4405,6 +4329,7 @@ msgid "Edit survey settings"
 msgstr "編輯調查設置"
 
 #: admin/editsurveysettings.php:90 admin/editsurveysettings.php:185
+#: admin/exportresults.php:90
 msgid "General"
 msgstr "常規"
 
@@ -4932,8 +4857,6 @@ msgid "Decimal separator:"
 msgstr "類別分隔符號"
 
 #: admin/exportresults.php:57 admin/exportresults.php:58
-#: admin/export_data_r.php:83 admin/export_data_r.php:85
-#: admin/export_data_spss.php:102
 msgid "Export results"
 msgstr "匯出結果"
 
@@ -4977,8 +4900,7 @@ msgstr "問題編碼"
 msgid "Convert spaces in question text to underscores"
 msgstr "把問題文本內空格轉換為底線"
 
-#: admin/exportresults.php:118 admin/http_importsurvey.php:159
-#: admin/importgroup.php:82
+#: admin/exportresults.php:118
 msgid "Answers"
 msgstr "答案"
 
@@ -5064,7 +4986,7 @@ msgid ""
 msgstr ""
 "您可關聯操作代碼資料和回饋來匯出您的調查。您可選擇任何您想匯出的附加欄位。"
 
-#: admin/exportresults.php:245 admin/export_data_spss.php:135
+#: admin/exportresults.php:245
 msgid "Export data"
 msgstr "匯出數據"
 
@@ -5111,46 +5033,46 @@ msgstr "操作代碼問題-操作代碼表丟失"
 msgid "Not Selected"
 msgstr "未選擇"
 
-#: admin/export_data_r.php:86
+#: admin/export_data_r.php:87
 msgid "Export result data to R"
 msgstr "匯出調查結果資料到R"
 
-#: admin/export_data_r.php:103 admin/export_data_spss.php:120
+#: admin/export_data_r.php:104 admin/export_data_spss.php:121
 msgid "Data selection:"
 msgstr "資料選擇："
 
-#: admin/export_data_r.php:113 admin/export_data_spss.php:134
+#: admin/export_data_r.php:114 admin/export_data_spss.php:135
 msgid "Step 1:"
 msgstr "步驟1："
 
-#: admin/export_data_r.php:113
+#: admin/export_data_r.php:114
 msgid "Export R syntax file"
 msgstr "匯出R語法檔"
 
-#: admin/export_data_r.php:114 admin/export_data_spss.php:135
+#: admin/export_data_r.php:115 admin/export_data_spss.php:136
 msgid "Step 2:"
 msgstr "步驟2："
 
-#: admin/export_data_r.php:114
+#: admin/export_data_r.php:115
 msgid "Export .csv data file"
 msgstr "匯出.csv資料檔案"
 
-#: admin/export_data_r.php:117 admin/export_data_spss.php:138
+#: admin/export_data_r.php:118 admin/export_data_spss.php:139
 msgid "Instructions for the impatient"
 msgstr "詳細說明"
 
-#: admin/export_data_r.php:119 admin/export_data_spss.php:140
+#: admin/export_data_r.php:120 admin/export_data_spss.php:141
 msgid "Download the data and the syntax file."
 msgstr "下載資料和語法檔。"
 
-#: admin/export_data_r.php:120
+#: admin/export_data_r.php:121
 msgid ""
 "Save both of them on the R working directory (use getwd() and setwd() on the "
 "R command window to get and set it)"
 msgstr ""
 "把它們都保存在R的工作目錄 (使用R命令視窗的 getwd()和setwd()來取得並設定)"
 
-#: admin/export_data_r.php:121
+#: admin/export_data_r.php:122
 #, fuzzy, php-format
 msgid ""
 "digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command "
@@ -5158,7 +5080,7 @@ msgid ""
 msgstr ""
 "R 命令窗口內位元數：   源(\"Surveydata_syntax.R\", 編碼 = \"UTF-8\")   "
 
-#: admin/export_data_r.php:123
+#: admin/export_data_r.php:124
 msgid ""
 "Your data should be imported now, the data.frame is named \"data\", the "
 "variable.labels are attributes of data (\"attributes(data)$variable.labels"
@@ -5167,41 +5089,41 @@ msgstr ""
 "現在您應當導入資料，資料.frame命名為 \"data\",變數.labels是數據 (\"attributes"
 "(data)$variable.labels\")屬性，就象foreign:read.spss。"
 
-#: admin/export_data_spss.php:103
+#: admin/export_data_spss.php:104
 msgid "Export result data to SPSS"
 msgstr "匯出調查結果資料到SPSS"
 
-#: admin/export_data_spss.php:126
+#: admin/export_data_spss.php:127
 msgid "SPSS version:"
 msgstr "SPSS版本："
 
-#: admin/export_data_spss.php:128
+#: admin/export_data_spss.php:129
 msgid "Prior to 16"
 msgstr "16之前"
 
-#: admin/export_data_spss.php:130
+#: admin/export_data_spss.php:131
 msgid "16 or up"
 msgstr "16或以上"
 
-#: admin/export_data_spss.php:134
+#: admin/export_data_spss.php:135
 msgid "Export syntax"
 msgstr "匯出句法"
 
-#: admin/export_data_spss.php:141
+#: admin/export_data_spss.php:142
 msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr "以Unicode模式在SPSS內打開語法檔"
 
-#: admin/export_data_spss.php:142
+#: admin/export_data_spss.php:143
 msgid ""
 "Edit the 4th line and complete the filename with a full path to the "
 "downloaded data file."
 msgstr "編輯第四行並填寫下載資料檔案的完整路徑和檔案名。"
 
-#: admin/export_data_spss.php:143
+#: admin/export_data_spss.php:144
 msgid "Choose 'Run/All' from the menu to run the import."
 msgstr "從功能表中選擇並開始導入。"
 
-#: admin/export_data_spss.php:145
+#: admin/export_data_spss.php:146
 msgid "Your data should be imported now."
 msgstr "現在將導入你的資料。"
 
@@ -5381,7 +5303,7 @@ msgstr "調查模式設置為 %s:"
 msgid "Global settings were saved."
 msgstr "全域設定已保存。 "
 
-#: admin/globalsettings.php:127 admin/html.php:2064
+#: admin/globalsettings.php:127 admin/html.php:2158
 msgid "Global settings"
 msgstr "全域設定"
 
@@ -5730,7 +5652,7 @@ msgstr "資料庫名"
 msgid "Users"
 msgstr "用戶"
 
-#: admin/globalsettings.php:629 admin/html.php:2109
+#: admin/globalsettings.php:629 admin/html.php:2203
 #: admin/http_importsurvey.php:155
 msgid "Surveys"
 msgstr "調查"
@@ -5806,7 +5728,7 @@ msgstr "本調查已啟用，但已過期。"
 msgid "This survey is active but has a start date."
 msgstr "本調查已經啟用，但尚未到開始日期。"
 
-#: admin/html.php:185 admin/html.php:567 admin/html.php:969
+#: admin/html.php:185 admin/html.php:593 admin/html.php:1016
 msgid "This survey is currently active."
 msgstr "該調查當前已啟用"
 
@@ -5836,7 +5758,7 @@ msgstr "編輯操作代碼條目"
 msgid "General settings"
 msgstr "全域設定"
 
-#: admin/html.php:268 admin/html.php:1735
+#: admin/html.php:268 admin/html.php:1829
 #, fuzzy
 msgid "Survey permissions"
 msgstr "調查許可權"
@@ -5861,649 +5783,652 @@ msgstr "調查啟用後您不能複製問題。"
 msgid "Email templates"
 msgstr "編輯郵件模版"
 
-#: admin/html.php:317
+#: admin/html.php:315
+#, fuzzy
+msgid "Survey  Logic File"
+msgstr "重置調查邏輯"
+
+#: admin/html.php:343
 msgid "Tools"
 msgstr "工具"
 
-#: admin/html.php:337 admin/html.php:342
+#: admin/html.php:363 admin/html.php:368
 msgid "Quick-translation"
 msgstr "快速翻譯"
 
-#: admin/html.php:341
+#: admin/html.php:367
 #, fuzzy
 msgid "Currently there are no additional languages configured for this survey."
 msgstr "當前調查未配置條件。"
 
-#: admin/html.php:352
+#: admin/html.php:378
 #, fuzzy
 msgid "Reset conditions"
 msgstr "重置條件？"
 
-#: admin/html.php:356
+#: admin/html.php:382
 msgid "Currently there are no conditions configured for this survey."
 msgstr "當前調查未配置條件。"
 
-#: admin/html.php:357
+#: admin/html.php:383
 msgid "Reset Survey Logic"
 msgstr "重置調查邏輯"
 
-#: admin/html.php:366
+#: admin/html.php:392
 msgid "Display / Export"
 msgstr "顯示/出口"
 
-#: admin/html.php:372
+#: admin/html.php:398
 #, fuzzy
 msgid "Export survey"
 msgstr "匯出調查"
 
-#: admin/html.php:380 admin/html.php:385
+#: admin/html.php:406 admin/html.php:411
 msgid "Printable version"
 msgstr "可列印的調查版本"
 
-#: admin/html.php:406 admin/html.php:411
+#: admin/html.php:432 admin/html.php:437
 msgid "QueXML export"
 msgstr ""
 
-#: admin/html.php:440 admin/html.php:445
+#: admin/html.php:466 admin/html.php:471
 #, fuzzy
 msgid "Responses & statistics"
 msgstr "回饋包含"
 
-#: admin/html.php:444 admin/html.php:475
+#: admin/html.php:470 admin/html.php:501
 #, fuzzy
 msgid "This survey is not active - no responses are available."
 msgstr "本調查已啟用，並且可以記錄回饋項。"
 
-#: admin/html.php:456 admin/html.php:460
+#: admin/html.php:482 admin/html.php:486
 #, fuzzy
 msgid "Data entry screen"
 msgstr "調查資料錄入介面"
 
-#: admin/html.php:459
+#: admin/html.php:485
 msgid "This survey is not active, data entry is not allowed"
 msgstr "本調查尚未啟用，還不能錄入資料"
 
-#: admin/html.php:471 admin/html.php:476
+#: admin/html.php:497 admin/html.php:502
 #, fuzzy
 msgid "Partial (saved) responses"
 msgstr "部分回饋"
 
-#: admin/html.php:491
+#: admin/html.php:517
 msgid "Token management"
 msgstr "操作代碼管理"
 
-#: admin/html.php:506 admin/http_importsurvey.php:157
+#: admin/html.php:532 admin/http_importsurvey.php:157
 msgid "Question groups"
 msgstr "題組"
 
-#: admin/html.php:533 admin/html.php:534
+#: admin/html.php:559 admin/html.php:560
 msgid "Previous question group"
 msgstr "上一個問題組"
 
-#: admin/html.php:539
+#: admin/html.php:565
 msgid "No previous question group"
 msgstr "沒有上一個問題組"
 
-#: admin/html.php:548
+#: admin/html.php:574
 msgid "Next question group"
 msgstr "下一個問題組"
 
-#: admin/html.php:554
+#: admin/html.php:580
 msgid "No next question group"
 msgstr "沒有下一個問題組"
 
-#: admin/html.php:567 admin/html.php:969
+#: admin/html.php:593 admin/html.php:1016
 msgid "Disabled"
 msgstr "已禁用"
 
-#: admin/html.php:574
+#: admin/html.php:600
 msgid "Add new group to survey"
 msgstr "給調查增加新的題組"
 
-#: admin/html.php:579 admin/html.php:580
+#: admin/html.php:605 admin/html.php:606
 msgid "Hide details of this Survey"
 msgstr "隱藏調查詳細資料"
 
-#: admin/html.php:583 admin/html.php:584
+#: admin/html.php:609 admin/html.php:610
 msgid "Show details of this survey"
 msgstr "顯示調查詳細資料"
 
-#: admin/html.php:589 admin/html.php:590
+#: admin/html.php:615 admin/html.php:616
 msgid "Close this survey"
 msgstr "關閉此調查"
 
-#: admin/html.php:621
+#: admin/html.php:647
 msgid "It is presented question by question."
 msgstr "按問題顯示。"
 
-#: admin/html.php:622
+#: admin/html.php:648
 msgid "It is presented group by group."
 msgstr "按題組顯示。"
 
-#: admin/html.php:623
+#: admin/html.php:649
 msgid "It is presented on one single page."
 msgstr "所有的問題都在一個頁面。"
 
-#: admin/html.php:626
+#: admin/html.php:652
 msgid "No question index will be shown with this format."
 msgstr ""
 
-#: admin/html.php:627
+#: admin/html.php:653
 msgid ""
 "A question index will be shown; participants will be able to jump between "
 "viewed questions."
 msgstr ""
 
-#: admin/html.php:630
+#: admin/html.php:656
 msgid "IP Addresses will be logged"
 msgstr "IP位址會被記入日誌"
 
-#: admin/html.php:631
+#: admin/html.php:657
 #, fuzzy
 msgid "Referrer URL will be saved."
 msgstr "來源網址將被保存"
 
-#: admin/html.php:632
+#: admin/html.php:658
 msgid "It uses cookies for access control."
 msgstr "它採用cookies來進行存取控制。"
 
-#: admin/html.php:633
+#: admin/html.php:659
 msgid "If tokens are used, the public may register for this survey"
 msgstr "如果使用了操作代碼，公眾需註冊方可參與調查"
 
-#: admin/html.php:634
+#: admin/html.php:660
 msgid "Participants can save partially finished surveys"
 msgstr "參加者可以保存部分完成的問卷"
 
-#: admin/html.php:637
+#: admin/html.php:663
 #, fuzzy
 msgid "Basic email notification is sent to:"
 msgstr "基本郵件通知"
 
-#: admin/html.php:641
+#: admin/html.php:667
 #, fuzzy
 msgid "Detailed email notification with response data is sent to:"
 msgstr "帶有結果碼的詳細郵件通知"
 
-#: admin/html.php:646
+#: admin/html.php:672
 msgid "Regenerate question codes:"
 msgstr "重新生成問題編碼："
 
-#: admin/html.php:648 admin/html.php:651
-msgid "Are you sure you want regenerate the question codes?"
-msgstr "您確認要重新生成問題的編碼嗎？"
+#: admin/html.php:674 admin/html.php:677
+msgid ""
+"Are you sure you want to regenerate the question codes?\n"
+"\n"
+"WARNING:\n"
+"This is safe if you only use the Conditions editor.\n"
+"\n"
+"HOWEVER, if you manually specified any relevance equations, regenerating the "
+"question codes will break all of that survey logic."
+msgstr ""
 
-#: admin/html.php:649
+#: admin/html.php:675
 msgid "Straight"
 msgstr "整齊的"
 
-#: admin/html.php:652
+#: admin/html.php:678
 msgid "By Group"
 msgstr "按組"
 
-#: admin/html.php:657
+#: admin/html.php:683
 msgid "Survey URL"
 msgstr "調查連結位址："
 
-#: admin/html.php:663 admin/html.php:670
+#: admin/html.php:689 admin/html.php:696
 msgid "Survey URL for language:"
 msgstr "調查語言連結位址："
 
-#: admin/html.php:663 admin/html.php:670
+#: admin/html.php:689 admin/html.php:696
 msgid "Flag"
 msgstr "標誌"
 
-#: admin/html.php:752
+#: admin/html.php:791
 msgid "End URL"
 msgstr "結束URL："
 
-#: admin/html.php:764
+#: admin/html.php:803
 msgid "Number of questions/groups"
 msgstr "問題/組的數量"
 
-#: admin/html.php:766
+#: admin/html.php:805
 msgid "Survey currently active"
 msgstr "當前已啟用的調查"
 
-#: admin/html.php:780
+#: admin/html.php:819
 msgid "Survey table name"
 msgstr "調查表的名字"
 
-#: admin/html.php:783
+#: admin/html.php:822
 msgid "Hints"
 msgstr "提示"
 
-#: admin/html.php:787
+#: admin/html.php:826
 msgid "Survey cannot be activated yet."
 msgstr "調查還不能啟用。"
 
-#: admin/html.php:790
+#: admin/html.php:829
 msgid "You need to add question groups"
 msgstr "您需要增加問題組"
 
-#: admin/html.php:794
+#: admin/html.php:833
 msgid "You need to add questions"
 msgstr "您需要增加問題"
 
-#: admin/html.php:845
+#: admin/html.php:884
 #, fuzzy
 msgid "Preview current question group"
 msgstr "刪除當前題組"
 
-#: admin/html.php:860
+#: admin/html.php:899
 msgid "Edit current question group"
 msgstr "編輯當前題組"
 
-#: admin/html.php:873
+#: admin/html.php:908
+#, fuzzy
+msgid "Survey Logic File for current question group"
+msgstr "刪除當前題組"
+
+#: admin/html.php:920
 msgid ""
 "Deleting this group will also delete any questions and answers it contains. "
 "Are you sure you want to continue?"
 msgstr "刪除題組會同時刪除它包含的所有問題及答案項。您確認要繼續嗎？"
 
-#: admin/html.php:875 admin/html.php:882
+#: admin/html.php:922
 msgid "Delete current question group"
 msgstr "刪除當前題組"
 
-#: admin/html.php:880
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr "不能刪除此組，因為至少有一個問題的條件和此組相關"
-
-#: admin/html.php:898
+#: admin/html.php:945
 msgid "Export this question group"
 msgstr "匯出當前題組"
 
-#: admin/html.php:912
+#: admin/html.php:959
 msgid "Change Question Order"
 msgstr "更改問題順序"
 
-#: admin/html.php:936
+#: admin/html.php:983
 msgid "Previous question"
 msgstr "上一個問題"
 
-#: admin/html.php:942
+#: admin/html.php:989
 msgid "No previous question"
 msgstr "沒有上一個問題"
 
-#: admin/html.php:952
+#: admin/html.php:999
 msgid "Next question"
 msgstr "下一個問題"
 
-#: admin/html.php:958
+#: admin/html.php:1005
 msgid "No next question"
 msgstr "沒有下一個問題"
 
-#: admin/html.php:976
+#: admin/html.php:1023
 msgid "Add New Question to Group"
 msgstr "在題組中增加新的問題"
 
-#: admin/html.php:987
+#: admin/html.php:1034
 msgid "Hide Details of this Group"
 msgstr "隱藏此題組的專案資料"
 
-#: admin/html.php:989
+#: admin/html.php:1036
 msgid "Show Details of this Group"
 msgstr "顯示此題組的詳細資料"
 
-#: admin/html.php:993
+#: admin/html.php:1040
 msgid "Close this Group"
 msgstr "關閉本題組"
 
-#: admin/html.php:1019
-msgid "Questions with conditions to this group"
-msgstr "與此組有關聯的問題"
+#: admin/html.php:1068 admin/html.php:1422
+#, fuzzy
+msgid "Relevance:"
+msgstr "替換"
 
-#: admin/html.php:1081 admin/html.php:1086
+#: admin/html.php:1139 admin/html.php:1144
 msgid "Preview This Question"
 msgstr "預覽這個問題"
 
-#: admin/html.php:1095 admin/html_functions.php:54
+#: admin/html.php:1153 admin/html_functions.php:54
 msgid "Please select a language:"
 msgstr "請選擇語言："
 
-#: admin/html.php:1117
+#: admin/html.php:1175
 msgid "Edit Current Question"
 msgstr "編輯當前問題"
 
-#: admin/html.php:1128
+#: admin/html.php:1184
+#, fuzzy
+msgid "Survey Logic File for current question"
+msgstr "刪除當前問題"
+
+#: admin/html.php:1195
 msgid ""
 "Deleting this question will also delete any answer options and subquestions "
 "it includes. Are you sure you want to continue?"
 msgstr "刪除本問題同時會刪除本問題的所有選項。您確認要繼續嗎？"
 
-#: admin/html.php:1129
+#: admin/html.php:1196
 msgid "Delete current question"
 msgstr "刪除當前問題"
 
-#: admin/html.php:1135
-msgid ""
-"It's impossible to delete this question because there is at least one "
-"question having a condition on it."
-msgstr "不能刪除此題，至少有一個問題的條件和此題相關。"
-
-#: admin/html.php:1137
-msgid "Disabled - Delete current question"
-msgstr "禁用-刪除當前問題"
-
-#: admin/html.php:1149
+#: admin/html.php:1216
 #, fuzzy
 msgid "Export this question"
 msgstr "匯出此問題"
 
-#: admin/html.php:1163 admin/html.php:1170
+#: admin/html.php:1230 admin/html.php:1237
 msgid "Copy Current Question"
 msgstr "複製當前問題"
 
-#: admin/html.php:1169
+#: admin/html.php:1236
 msgid "You can't copy a question if the survey is active."
 msgstr "調查啟用後您不能複製問題。"
 
-#: admin/html.php:1186
+#: admin/html.php:1253
 #, fuzzy
 msgid "Set conditions for this question"
 msgstr "為此題設定條件"
 
-#: admin/html.php:1204 admin/html.php:1300
+#: admin/html.php:1271 admin/html.php:1378
 msgid "Edit subquestions for this question"
 msgstr "編輯此題的子問題"
 
-#: admin/html.php:1219 admin/html.php:1290
+#: admin/html.php:1286 admin/html.php:1368
 msgid "Edit answer options for this question"
 msgstr "編輯此題的選項"
 
-#: admin/html.php:1233
+#: admin/html.php:1300
 msgid "Edit default answers for this question"
 msgstr "編輯此題的默認項"
 
-#: admin/html.php:1238
+#: admin/html.php:1305
 msgid "Hide Details of this Question"
 msgstr "隱藏此問題的詳細資料"
 
-#: admin/html.php:1241
+#: admin/html.php:1308
 msgid "Show Details of this Question"
 msgstr "顯示此問題的詳細資料"
 
-#: admin/html.php:1244
+#: admin/html.php:1311
 msgid "Close this Question"
 msgstr "關閉此題"
 
-#: admin/html.php:1260
+#: admin/html.php:1327
 msgid "Code:"
 msgstr "編號："
 
-#: admin/html.php:1264
+#: admin/html.php:1331
 msgid "Mandatory Question"
 msgstr "必答題"
 
-#: admin/html.php:1265
+#: admin/html.php:1332
 msgid "Optional Question"
 msgstr "選答題"
 
-#: admin/html.php:1269
+#: admin/html.php:1336
 msgid "Question:"
 msgstr "問題："
 
-#: admin/html.php:1271
+#: admin/html.php:1345
 msgid "Help:"
 msgstr "幫助："
 
-#: admin/html.php:1277
+#: admin/html.php:1355
 msgid "Validation:"
 msgstr "有效性："
 
-#: admin/html.php:1282
+#: admin/html.php:1360
 msgid "Type:"
 msgstr "類型："
 
-#: admin/html.php:1288
+#: admin/html.php:1366
 msgid "You need to add answer options to this question"
 msgstr "您需要為本題增加選項"
 
-#: admin/html.php:1298
+#: admin/html.php:1376
 msgid "You need to add subquestions to this question"
 msgstr "您需要為本題添加子題"
 
-#: admin/html.php:1307
+#: admin/html.php:1385
 msgid "Option 'Other':"
 msgstr "選項 '其它'："
 
-#: admin/html.php:1316
+#: admin/html.php:1394
 msgid "Mandatory:"
 msgstr "必答："
 
-#: admin/html.php:1325
-msgid "Other questions having conditions on this question:"
-msgstr "基於本題的其它問題："
-
-#: admin/html.php:1362 admin/html.php:1864
+#: admin/html.php:1456 admin/html.php:1958
 msgid "Add User"
 msgstr "添加用戶"
 
-#: admin/html.php:1378
+#: admin/html.php:1472
 msgid "User added."
 msgstr "用戶已添加。"
 
-#: admin/html.php:1380
+#: admin/html.php:1474
 msgid "Set survey permissions"
 msgstr "設置調查權限"
 
-#: admin/html.php:1388 admin/html.php:1395 admin/html.php:1456
+#: admin/html.php:1482 admin/html.php:1489 admin/html.php:1550
 msgid "Failed to add user."
 msgstr "添加用戶失敗。"
 
-#: admin/html.php:1389
+#: admin/html.php:1483
 msgid "Username already exists."
 msgstr "用戶名已存在。"
 
-#: admin/html.php:1396 admin/html.php:1457
+#: admin/html.php:1490 admin/html.php:1551
 msgid "No Username selected."
 msgstr "未選擇用戶名。"
 
-#: admin/html.php:1410
+#: admin/html.php:1504
 msgid "Add user group"
 msgstr "添加用戶組"
 
-#: admin/html.php:1432
+#: admin/html.php:1526
 msgid "User Group added."
 msgstr "用戶組已添加。"
 
-#: admin/html.php:1435
+#: admin/html.php:1529
 msgid "Set Survey Rights"
 msgstr "設置調查許可權"
 
-#: admin/html.php:1443 admin/html.php:1450
+#: admin/html.php:1537 admin/html.php:1544
 msgid "Failed to add User Group."
 msgstr "用戶組添加失敗。"
 
-#: admin/html.php:1470
+#: admin/html.php:1564
 msgid "Deleting User"
 msgstr "正在刪除用戶"
 
-#: admin/html.php:1482 admin/html.php:1739
+#: admin/html.php:1576 admin/html.php:1833
 msgid "Username"
 msgstr "用戶名稱"
 
-#: admin/html.php:1483
+#: admin/html.php:1577
 msgid "Success!"
 msgstr "成功！"
 
-#: admin/html.php:1487
+#: admin/html.php:1581
 msgid "Could not delete user. User was not supplied."
 msgstr "不能刪除用戶。未提供用戶名。"
 
-#: admin/html.php:1513
+#: admin/html.php:1607
 #, php-format
 msgid "Edit survey permissions for user %s"
 msgstr "設定使用者 %s的模版權限"
 
-#: admin/html.php:1518
+#: admin/html.php:1612
 #, php-format
 msgid "Edit survey permissions for group %s"
 msgstr "設定該組%s使用權限 "
 
-#: admin/html.php:1524
+#: admin/html.php:1618
 msgid "Permission"
 msgstr "權限"
 
-#: admin/html.php:1526
+#: admin/html.php:1620
 msgid "Create"
 msgstr "建立者"
 
-#: admin/html.php:1527
+#: admin/html.php:1621
 msgid "View/read"
 msgstr "查看"
 
-#: admin/html.php:1528
+#: admin/html.php:1622
 msgid "Update"
 msgstr "更新"
 
-#: admin/html.php:1531
+#: admin/html.php:1625
 msgid "Export"
 msgstr "匯出"
 
-#: admin/html.php:1593
+#: admin/html.php:1687
 msgid "Export Survey Structure"
 msgstr "匯出調查結構"
 
-#: admin/html.php:1597
+#: admin/html.php:1691
 msgid "LimeSurvey XML survey file (*.lss)"
 msgstr "LimeSurvey XML 調查檔（*.lss）"
 
-#: admin/html.php:1601
+#: admin/html.php:1695
 msgid "queXML Survey XML Format (*.xml)"
 msgstr "queXML調查XML格式（*.xml）"
 
-#: admin/html.php:1613 admin/html.php:1654 admin/html.php:1701
+#: admin/html.php:1707 admin/html.php:1748 admin/html.php:1795
 msgid "Save for Lsrc (*.csv)"
 msgstr "保存為 Lsrc（*.csv）"
 
-#: admin/html.php:1620
+#: admin/html.php:1714
 msgid "Export To File"
 msgstr "匯出到文件"
 
-#: admin/html.php:1632
+#: admin/html.php:1726
 msgid "Export group structure"
 msgstr "匯出組結構"
 
-#: admin/html.php:1638 admin/html.php:1685
+#: admin/html.php:1732 admin/html.php:1779
 msgid "LimeSurvey group file (*.csv)"
 msgstr "LimeSurvey組文件（*.csv）"
 
-#: admin/html.php:1661 admin/html.php:1708
+#: admin/html.php:1755 admin/html.php:1802
 msgid "Export to file"
 msgstr "匯出到文件"
 
-#: admin/html.php:1679
+#: admin/html.php:1773
 msgid "Export question structure"
 msgstr "導出問題結構"
 
-#: admin/html.php:1740
+#: admin/html.php:1834
 msgid "User Group"
 msgstr "用戶組"
 
-#: admin/html.php:1741
+#: admin/html.php:1835
 msgid "Full name"
 msgstr "全名"
 
-#: admin/html.php:1796
+#: admin/html.php:1890
 msgid "Edit permissions"
 msgstr "修改權限"
 
-#: admin/html.php:1861
+#: admin/html.php:1955
 msgid "User"
 msgstr "用戶"
 
-#: admin/html.php:1864
+#: admin/html.php:1958
 msgid "Please select a user first"
 msgstr "請先選擇用戶"
 
-#: admin/html.php:1868 admin/importgroup.php:79
+#: admin/html.php:1962 admin/importgroup.php:79
 msgid "Groups"
 msgstr "問題分組"
 
-#: admin/html.php:1871
+#: admin/html.php:1965
 msgid "Add User Group"
 msgstr "添加用戶組"
 
-#: admin/html.php:1871
+#: admin/html.php:1965
 msgid "Please select a user group first"
 msgstr "請先選擇用戶組"
 
-#: admin/html.php:1884
+#: admin/html.php:1978
 #, fuzzy
 msgid "Edit survey permissions"
 msgstr "編輯模版許可權"
 
-#: admin/html.php:1933
+#: admin/html.php:2027
 #, fuzzy
 msgid ""
 "Survey permissions for all users in this group were successfully updated."
 msgstr "成功保存您的個人設置。"
 
-#: admin/html.php:1940
+#: admin/html.php:2034
 #, fuzzy
 msgid "Survey permissions were successfully updated."
 msgstr "操作代碼描述已成功更新。"
 
-#: admin/html.php:1944
+#: admin/html.php:2038
 #, fuzzy
 msgid "Failed to update survey permissions!"
 msgstr "更新調查許可權失敗！"
 
-#: admin/html.php:1977
+#: admin/html.php:2071
 #, fuzzy
 msgid "Quick-translate survey"
 msgstr "翻譯調查"
 
-#: admin/html.php:2028
+#: admin/html.php:2122
 msgid ""
 "Warning: You are still using the default password ('password'). Please "
 "change your password and re-login again."
 msgstr "警告：您還在用預設的密碼'password'。請修改密碼並重新登錄。"
 
-#: admin/html.php:2032
+#: admin/html.php:2126
 msgid "Administration"
 msgstr "管理"
 
-#: admin/html.php:2035
+#: admin/html.php:2129
 msgid "Logged in as:"
 msgstr "登錄身份："
 
-#: admin/html.php:2037
+#: admin/html.php:2131
 msgid "Edit your personal preferences"
 msgstr "編輯您的個人喜好"
 
-#: admin/html.php:2043
+#: admin/html.php:2137
 #, php-format
 msgid "Update available: %s"
 msgstr "現有更新： %s"
 
-#: admin/html.php:2049
+#: admin/html.php:2143
 msgid "Default Administration Page"
 msgstr "預設管理頁面"
 
-#: admin/html.php:2056
+#: admin/html.php:2150
 msgid "Create/Edit Users"
 msgstr "創建/編輯用戶"
 
-#: admin/html.php:2059
+#: admin/html.php:2153
 msgid "Create/Edit Groups"
 msgstr "創建/編輯用戶組"
 
-#: admin/html.php:2071
+#: admin/html.php:2165
 msgid "Check Data Integrity"
 msgstr "檢查資料完整性"
 
-#: admin/html.php:2076
+#: admin/html.php:2170
 msgid "List Surveys"
 msgstr "列出調查"
 
-#: admin/html.php:2085
+#: admin/html.php:2179
 msgid "Backup Entire Database"
 msgstr "備份整個資料庫"
 
-#: admin/html.php:2090
+#: admin/html.php:2184
 msgid ""
 "The database export is only available for MySQL databases. For other "
 "database types please use the according backup mechanism to create a "
@@ -6512,54 +6437,54 @@ msgstr ""
 "資料庫匯出只對mysql資料庫有效。其他類型的資料庫請使用相應的備份機制來創建資料"
 "庫轉儲。"
 
-#: admin/html.php:2098
+#: admin/html.php:2192
 msgid "Edit label sets"
 msgstr "編輯標籤集"
 
-#: admin/html.php:2105
+#: admin/html.php:2199
 msgid "Template Editor"
 msgstr "範本編輯器"
 
-#: admin/html.php:2118
+#: admin/html.php:2212
 msgid "Create, import, or copy a survey"
 msgstr "創建，導入或複製調查 "
 
-#: admin/html.php:2127
+#: admin/html.php:2221
 msgid "Logout"
 msgstr "登出"
 
-#: admin/html.php:2140
+#: admin/html.php:2234
 #, php-format
 msgid "Welcome to %s!"
 msgstr "歡迎來到 %s！"
 
-#: admin/html.php:2141
+#: admin/html.php:2235
 msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr "創建您首個個人調查的四個簡單步驟："
 
-#: admin/html.php:2143
+#: admin/html.php:2237
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
 msgstr "可點擊最右邊的 %s 圖示來新建調查。"
 
-#: admin/html.php:2143
+#: admin/html.php:2237
 msgid "Add survey"
 msgstr "添加調查"
 
-#: admin/html.php:2144
+#: admin/html.php:2238
 msgid "Create a new question group inside your survey."
 msgstr "在調查內創建新題組。"
 
-#: admin/html.php:2145
+#: admin/html.php:2239
 msgid "Create one or more questions inside the new question group."
 msgstr "在新題組內創建一個或多個問題。"
 
-#: admin/html.php:2146
+#: admin/html.php:2240
 #, php-format
 msgid "Done. Test your survey using the %s icon."
 msgstr "已完成。請使用%s圖示測試您的調查。"
 
-#: admin/html.php:2146
+#: admin/html.php:2240
 msgid "Test survey"
 msgstr "測試調查"
 
@@ -6626,7 +6551,7 @@ msgstr "匯出結果為SPSS/PASW命令檔"
 msgid "Export results to a R data file"
 msgstr "匯出結果為R資料檔案"
 
-#: admin/html_functions.php:112
+#: admin/html_functions.php:112 admin/importoldresponses.php:51
 #, fuzzy
 msgid "Import responses from a deactivated survey table"
 msgstr "從一個停用的調查表中導入回饋"
@@ -6648,6 +6573,7 @@ msgid "Iterate survey"
 msgstr "反覆運算調查"
 
 #: admin/http_importsurvey.php:47 admin/importgroup.php:28
+#: admin/importlabel.php:30
 #, php-format
 msgid ""
 "An error occurred uploading your file. This may be caused by incorrect "
@@ -6655,10 +6581,12 @@ msgid ""
 msgstr "上傳文件時出錯。可能是因為您的%s目錄不正確的許可權設置導致的。"
 
 #: admin/http_importsurvey.php:54 admin/importgroup.php:53
+#: admin/importlabel.php:36
 msgid "File upload succeeded."
 msgstr "檔上傳成功。"
 
 #: admin/http_importsurvey.php:55 admin/importgroup.php:54
+#: admin/importlabel.php:37
 msgid "Reading file.."
 msgstr "文件讀取中.."
 
@@ -6691,6 +6619,7 @@ msgid "Conditions"
 msgstr "條件"
 
 #: admin/http_importsurvey.php:174 admin/importgroup.php:85
+#: admin/importlabel.php:76 admin/importlabel.php:86
 msgid "Label sets"
 msgstr "標籤集"
 
@@ -6716,7 +6645,7 @@ msgstr "配額成員"
 msgid "quota language settings"
 msgstr "配額語言設定"
 
-#: admin/http_importsurvey.php:186
+#: admin/http_importsurvey.php:186 admin/importlabel.php:66
 msgid "Warnings"
 msgstr "警告"
 
@@ -6794,13 +6723,13 @@ msgstr "您不能導入不支援當前調查的基礎語言的標籤集"
 msgid "Faulty line in import - fields and data don't match"
 msgstr "導入行有誤 - 欄位和資料不匹配"
 
-#: admin/importgroup.php:906
+#: admin/importgroup.php:909
 msgid ""
 "The languages of the imported group file must at least include the base "
 "language of this survey."
 msgstr "導入題組檔的語言至少應當包含該調查的基礎語言。"
 
-#: admin/importlabel.php:21 admin/import_resources_zip.php:215
+#: admin/importlabel.php:21
 msgid "Import Label Set"
 msgstr "導入標籤集"
 
@@ -6816,7 +6745,7 @@ msgstr ""
 msgid "Return to label set administration"
 msgstr "返回標籤集管理"
 
-#: admin/importlabel.php:77 admin/importlabel.php:87 admin/labels.php:300
+#: admin/importlabel.php:77 admin/importlabel.php:87
 msgid "Labels"
 msgstr "標籤"
 
@@ -6880,7 +6809,7 @@ msgstr "已成功保存您的個人答案。"
 msgid "%s old response(s) and according timings were successfully imported."
 msgstr "已成功保存您的個人答案。"
 
-#: admin/importquestion.php:19 admin/questionhandling.php:553
+#: admin/importquestion.php:19 admin/questionhandling.php:572
 msgid "Import Question"
 msgstr "導入問題"
 
@@ -6900,7 +6829,7 @@ msgstr "問題導入完成。"
 msgid "Go to question"
 msgstr "轉至問題"
 
-#: admin/importquestion.php:727
+#: admin/importquestion.php:729
 msgid ""
 "The languages of the imported question file must at least include the base "
 "language of this survey."
@@ -6938,11 +6867,11 @@ msgid ""
 "the survey was stopped."
 msgstr "CSV/SQL文件內組不是來自同一調查。調查導入終止。"
 
-#: admin/import_functions.php:1021
+#: admin/import_functions.php:1021 admin/quota.php:833
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "抱歉，您的回饋已經超出了我們的配額。"
 
-#: admin/import_functions.php:1092
+#: admin/import_functions.php:1095
 #, fuzzy
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr "該檔不是LimeSurvey的調查檔。導入失敗。"
@@ -7540,8 +7469,8 @@ msgstr "選擇標籤集檔 (*.lsl,*.csv)："
 msgid "Don't import if label set already exists:"
 msgstr "請勿導入已存在的標籤集："
 
-#: admin/labels.php:231 admin/questiongrouphandling.php:83
-#: admin/questionhandling.php:548
+#: admin/labels.php:231 admin/questiongrouphandling.php:87
+#: admin/questionhandling.php:567
 msgid "Convert resource links?"
 msgstr "轉換資源連結？"
 
@@ -7686,10 +7615,6 @@ msgstr ""
 msgid "Forgot Your Password?"
 msgstr "忘記密碼？"
 
-#: admin/preview.php:105
-msgid "[Dependency on another question (ID $4)]"
-msgstr ""
-
 #: admin/printablesurvey.php:135
 #, fuzzy
 msgid "Database"
@@ -7700,11 +7625,11 @@ msgstr "資料庫名"
 msgid "table"
 msgstr "啟用"
 
-#: admin/printablesurvey.php:149 admin/printablesurvey.php:1930
+#: admin/printablesurvey.php:149 admin/printablesurvey.php:1948
 msgid "Submit Your Survey."
 msgstr "提交您的問卷."
 
-#: admin/printablesurvey.php:151 admin/printablesurvey.php:1930
+#: admin/printablesurvey.php:151 admin/printablesurvey.php:1948
 msgid "Thank you for completing this survey."
 msgstr "感謝您完成此項調查。"
 
@@ -7712,7 +7637,7 @@ msgstr "感謝您完成此項調查。"
 msgid "Please fax your completed survey to:"
 msgstr "請將您完成的問卷傳真到："
 
-#: admin/printablesurvey.php:171 admin/printablesurvey.php:1924
+#: admin/printablesurvey.php:171 admin/printablesurvey.php:1942
 #, php-format
 msgid "Please submit by %s"
 msgstr "請按提交%s"
@@ -7745,143 +7670,158 @@ msgstr "答案大於"
 msgid "Answer matched (regexp)"
 msgstr "匹配答案（規則運算式）"
 
-#: admin/printablesurvey.php:503 admin/printablesurvey.php:531
+#: admin/printablesurvey.php:496
+#, fuzzy
+msgid "not selected"
+msgstr "未選擇"
+
+#: admin/printablesurvey.php:509 admin/printablesurvey.php:537
 msgid "is"
 msgstr "是"
 
-#: admin/printablesurvey.php:507
+#: admin/printablesurvey.php:513
 msgid "is NOT"
 msgstr "不是"
 
-#: admin/printablesurvey.php:511
+#: admin/printablesurvey.php:517
 msgid "is less than"
 msgstr "小於"
 
-#: admin/printablesurvey.php:515
+#: admin/printablesurvey.php:521
 msgid "is less than or equal to"
 msgstr "小於或等於"
 
-#: admin/printablesurvey.php:519
+#: admin/printablesurvey.php:525
 msgid "is greater than or equal to"
 msgstr "大於或等於"
 
-#: admin/printablesurvey.php:523
+#: admin/printablesurvey.php:529
 msgid "is greater than"
 msgstr "大於"
 
-#: admin/printablesurvey.php:527
+#: admin/printablesurvey.php:533
 #, fuzzy
 msgid "is matched (regexp)"
 msgstr "匹配答案（規則運算式）"
 
-#: admin/printablesurvey.php:726
+#: admin/printablesurvey.php:735
 msgid "RANK"
 msgstr "排序"
 
-#: admin/printablesurvey.php:745
+#: admin/printablesurvey.php:754
 msgid "at question"
 msgstr "問題"
 
-#: admin/printablesurvey.php:757
+#: admin/printablesurvey.php:766
 msgid "Only answer this question if the following conditions are met:"
 msgstr "只有符合下面條件方可回答本題："
 
-#: admin/printablesurvey.php:777
+#: admin/printablesurvey.php:786
 msgid "ID:"
 msgstr "識別碼"
 
-#: admin/printablesurvey.php:778
+#: admin/printablesurvey.php:787
 msgid "Question code:"
 msgstr "問題編碼"
 
-#: admin/printablesurvey.php:835 admin/printablesurvey.php:836
-#: admin/printablesurvey.php:860 admin/printablesurvey.php:867
-#: admin/printablesurvey.php:893 admin/printablesurvey.php:896
-#: admin/printablesurvey.php:960 admin/printablesurvey.php:961
-#: admin/printablesurvey.php:1199 admin/printablesurvey.php:1203
+#: admin/printablesurvey.php:844 admin/printablesurvey.php:845
+#: admin/printablesurvey.php:869 admin/printablesurvey.php:876
+#: admin/printablesurvey.php:902 admin/printablesurvey.php:905
+#: admin/printablesurvey.php:969 admin/printablesurvey.php:970
+#: admin/printablesurvey.php:1217 admin/printablesurvey.php:1221
 msgid "Please choose *only one* of the following:"
 msgstr "請只選擇下面的一項："
 
-#: admin/printablesurvey.php:852 admin/printablesurvey.php:854
+#: admin/printablesurvey.php:861 admin/printablesurvey.php:863
 msgid "Please enter a date:"
 msgstr "請填寫日期:"
 
-#: admin/printablesurvey.php:987
+#: admin/printablesurvey.php:996
 msgid "Please number each box in order of preference from 1 to"
 msgstr "請為每一項按喜好排序從1到"
 
-#: admin/printablesurvey.php:988
+#: admin/printablesurvey.php:998
 msgid "Please number each box in order of preference from 1 to "
 msgstr "請為每一項按喜好排序從1到"
 
-#: admin/printablesurvey.php:1010 admin/printablesurvey.php:1011
+#: admin/printablesurvey.php:1020 admin/printablesurvey.php:1021
 msgid "Please choose *all* that apply:"
 msgstr "請選擇所有符合條件的："
 
-#: admin/printablesurvey.php:1016 admin/printablesurvey.php:1017
+#: admin/printablesurvey.php:1026 admin/printablesurvey.php:1027
 #, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "請選擇*至多* %s答案："
 
-#: admin/printablesurvey.php:1068 admin/printablesurvey.php:1069
+#: admin/printablesurvey.php:1078 admin/printablesurvey.php:1079
 msgid "Please choose all that apply and provide a comment:"
 msgstr "請選擇所有符合的選項並說明理由："
 
-#: admin/printablesurvey.php:1074 admin/printablesurvey.php:1075
+#: admin/printablesurvey.php:1084 admin/printablesurvey.php:1085
 msgid "Please choose *at most* "
 msgstr "請選擇*至多* "
 
-#: admin/printablesurvey.php:1074 admin/printablesurvey.php:1075
+#: admin/printablesurvey.php:1084 admin/printablesurvey.php:1085
 msgid "answers and provide a comment:"
 msgstr "回答並提交評論："
 
-#: admin/printablesurvey.php:1114 admin/printablesurvey.php:1132
+#: admin/printablesurvey.php:1124 admin/printablesurvey.php:1142
 msgid "Please write your answer(s) here:"
 msgstr "請在此填寫您的回答:"
 
-#: admin/printablesurvey.php:1154 admin/printablesurvey.php:1156
-#: admin/printablesurvey.php:1163 admin/printablesurvey.php:1166
-#: admin/printablesurvey.php:1176 admin/printablesurvey.php:1179
-#: admin/printablesurvey.php:1189 admin/printablesurvey.php:1192
+#: admin/printablesurvey.php:1164 admin/printablesurvey.php:1166
+#: admin/printablesurvey.php:1173 admin/printablesurvey.php:1176
+#: admin/printablesurvey.php:1186 admin/printablesurvey.php:1189
+#: admin/printablesurvey.php:1207 admin/printablesurvey.php:1210
 msgid "Please write your answer here:"
 msgstr "請在此填寫您的回答:"
 
-#: admin/printablesurvey.php:1213 admin/printablesurvey.php:1230
-#: admin/printablesurvey.php:1277 admin/printablesurvey.php:1286
-#: admin/printablesurvey.php:1313 admin/printablesurvey.php:1328
-#: admin/printablesurvey.php:1354 admin/printablesurvey.php:1369
-#: admin/printablesurvey.php:1578 admin/printablesurvey.php:1588
-#: admin/printablesurvey.php:1682 admin/printablesurvey.php:1685
-#: admin/printablesurvey.php:1789 admin/printablesurvey.php:1790
+#: admin/printablesurvey.php:1231 admin/printablesurvey.php:1248
+#: admin/printablesurvey.php:1295 admin/printablesurvey.php:1304
+#: admin/printablesurvey.php:1331 admin/printablesurvey.php:1346
+#: admin/printablesurvey.php:1372 admin/printablesurvey.php:1387
+#: admin/printablesurvey.php:1596 admin/printablesurvey.php:1606
+#: admin/printablesurvey.php:1700 admin/printablesurvey.php:1703
+#: admin/printablesurvey.php:1807 admin/printablesurvey.php:1808
 msgid "Please choose the appropriate response for each item:"
 msgstr "請為每一項選擇合適的回饋項："
 
-#: admin/printablesurvey.php:1431 admin/printablesurvey.php:1432
+#: admin/printablesurvey.php:1449 admin/printablesurvey.php:1450
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr "請為每個條目寫下個介於%d 和 %d之間的%d倍數："
 
-#: admin/printablesurvey.php:1435 admin/printablesurvey.php:1436
+#: admin/printablesurvey.php:1453 admin/printablesurvey.php:1454
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr "請為每個條目寫下個介於 %d和 %d之間的數字："
 
-#: admin/printablesurvey.php:1847
+#: admin/printablesurvey.php:1865
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "本調查包括{NUMBEROFQUESTIONS}個問題。"
 
-#: admin/printablesurvey.php:1928
+#: admin/printablesurvey.php:1946
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "請將您完成的調查傳真到：%s"
 
-#: admin/printablesurvey.php:1947
+#: admin/printablesurvey.php:1960
+#, fuzzy, php-format
+msgid "Please choose no more than %d items"
+msgstr "請檢查各項"
+
+#: admin/printablesurvey.php:1963
+#, fuzzy, php-format
+msgid "Please choose at least %d items"
+msgstr "請至少選擇一項。"
+
+#: admin/printablesurvey.php:1977
 #, php-format
 msgid ""
 "Only answer this question for the items you selected in question %d ('%s')"
 msgstr "本題僅需回答您在問題 %d ('%s')內選擇的條目"
 
-#: admin/printablesurvey.php:1956
+#: admin/printablesurvey.php:1986
 #, php-format
 msgid ""
 "Only answer this question for the items you did not select in question %d ('%"
@@ -7900,56 +7840,37 @@ msgstr "錯誤：您必須為每個語言輸入一個組標題。"
 msgid "Required"
 msgstr "必須的"
 
-#: admin/questiongrouphandling.php:65
+#: admin/questiongrouphandling.php:65 admin/questiongrouphandling.php:151
+#: admin/questionhandling.php:71 admin/questionhandling.php:496
+msgid "Relevance equation:"
+msgstr ""
+
+#: admin/questiongrouphandling.php:69
 msgid "Save question group"
 msgstr "保存題組"
 
-#: admin/questiongrouphandling.php:81
+#: admin/questiongrouphandling.php:85
 msgid "Select question group file (*.lsg/*.csv):"
 msgstr "LimeSurvey問題組文件（*.lsg/*.csv）："
 
-#: admin/questiongrouphandling.php:164
+#: admin/questiongrouphandling.php:172
 msgid "Edit Group"
 msgstr "編輯組"
 
-#: admin/questiongrouphandling.php:178
+#: admin/questiongrouphandling.php:186
 msgid "Update Group"
 msgstr "更新組"
 
-#: admin/questiongrouphandling.php:256
+#: admin/questiongrouphandling.php:266
 msgid "Change Group Order"
 msgstr "修改組順序"
 
-#: admin/questiongrouphandling.php:265
-msgid "Current survey has questions with conditions outside their own group"
-msgstr "當前調查中有些問題的條件在它們所在題組之外"
-
-#: admin/questiongrouphandling.php:265
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr "重新排序組要先確保有條件基於的問題不能排到有條件的問題的後面"
-
-#: admin/questiongrouphandling.php:265
-msgid "The following groups are concerned"
-msgstr "下面的題組是相關的"
-
-#: admin/questiongrouphandling.php:270
-#, php-format
-msgid "Group %s depends on group %s, see the marked conditions on:"
-msgstr "組%s依賴於組%s，請查看標記的條件:"
-
-#: admin/questiongrouphandling.php:275
-msgid "QID"
-msgstr "問題識別號 "
-
-#: admin/questiongrouphandling.php:341 admin/questionhandling.php:690
+#: admin/questiongrouphandling.php:351 admin/questionhandling.php:710
 msgid "Place after.."
 msgstr "請等待.."
 
-#: admin/questiongrouphandling.php:346 admin/questionhandling.php:496
-#: admin/questionhandling.php:695
+#: admin/questiongrouphandling.php:356 admin/questionhandling.php:515
+#: admin/questionhandling.php:714
 msgid "At beginning"
 msgstr "開始"
 
@@ -7957,7 +7878,7 @@ msgstr "開始"
 msgid "Copy Question"
 msgstr "複製問題"
 
-#: admin/questionhandling.php:29 admin/questionhandling.php:341
+#: admin/questionhandling.php:29 admin/questionhandling.php:354
 msgid "Error: You have to enter a question code."
 msgstr "錯誤：您必須為這個問題輸入一個編碼。"
 
@@ -7965,118 +7886,103 @@ msgstr "錯誤：您必須為這個問題輸入一個編碼。"
 msgid "Note: You MUST enter a new question code!"
 msgstr "注釋：您必須輸入一個新的問題編號！"
 
-#: admin/questionhandling.php:69 admin/questionhandling.php:434
-#: admin/questionhandling.php:442
+#: admin/questionhandling.php:75 admin/questionhandling.php:447
+#: admin/questionhandling.php:455
 msgid "Question group:"
 msgstr "題組："
 
-#: admin/questionhandling.php:97
+#: admin/questionhandling.php:103
 msgid "Copy subquestions?"
 msgstr "複製子問題？"
 
-#: admin/questionhandling.php:100
+#: admin/questionhandling.php:106
 msgid "Copy answer options?"
 msgstr "複製答案項？"
 
-#: admin/questionhandling.php:103
+#: admin/questionhandling.php:109
 msgid "Copy advanced settings?"
 msgstr "複製高級設定？"
 
-#: admin/questionhandling.php:106
+#: admin/questionhandling.php:112
 msgid "Copy question"
 msgstr "複製問題"
 
-#: admin/questionhandling.php:124
+#: admin/questionhandling.php:130
 msgid "Edit default answer values"
 msgstr "編輯默認答案值"
 
-#: admin/questionhandling.php:139 admin/questionhandling.php:184
+#: admin/questionhandling.php:145 admin/questionhandling.php:190
 #, php-format
 msgid "Default answer for scale %s:"
 msgstr "尺度 %s 的默認答案："
 
-#: admin/questionhandling.php:143
+#: admin/questionhandling.php:149
 msgid "Default answer value:"
 msgstr "默認答案值："
 
-#: admin/questionhandling.php:152 admin/questionhandling.php:188
+#: admin/questionhandling.php:158 admin/questionhandling.php:194
 msgid "<No default value>"
 msgstr "<沒有預設值>"
 
-#: admin/questionhandling.php:169
+#: admin/questionhandling.php:175
 msgid "Default value for option 'Other':"
 msgstr "選項 '其它' 的預設值："
 
-#: admin/questionhandling.php:188
+#: admin/questionhandling.php:194
 msgid "Checked"
 msgstr "已檢查"
 
-#: admin/questionhandling.php:212
+#: admin/questionhandling.php:218
 msgid "Use same default value across languages:"
 msgstr "不同語言間使用系統的預設值："
 
-#: admin/questionhandling.php:302
+#: admin/questionhandling.php:314
 msgid "Edit question"
 msgstr "編輯問題"
 
-#: admin/questionhandling.php:302
+#: admin/questionhandling.php:314
 msgid "Add a new question"
 msgstr "添加新問題"
 
-#: admin/questionhandling.php:408
+#: admin/questionhandling.php:421
 msgid "Question Type:"
 msgstr "問題類型："
 
-#: admin/questionhandling.php:419 admin/questionhandling.php:443
-#: admin/questionhandling.php:461
+#: admin/questionhandling.php:432 admin/questionhandling.php:456
+#: admin/questionhandling.php:474
 #, fuzzy
 msgid "Cannot be changed (survey is active)"
 msgstr "無法修改（調查已啟用）"
 
-#: admin/questionhandling.php:493
+#: admin/questionhandling.php:512
 msgid "Position:"
 msgstr "位置"
 
-#: admin/questionhandling.php:495
+#: admin/questionhandling.php:514
 msgid "At end"
 msgstr "最後"
 
-#: admin/questionhandling.php:513
+#: admin/questionhandling.php:532
 msgid "Show advanced settings"
 msgstr "顯示高級設定"
 
-#: admin/questionhandling.php:513
+#: admin/questionhandling.php:532
 msgid "Hide advanced settings"
 msgstr "隱藏高級設定"
 
-#: admin/questionhandling.php:515
+#: admin/questionhandling.php:534
 msgid "Loading..."
 msgstr "載入..."
 
-#: admin/questionhandling.php:540
+#: admin/questionhandling.php:559
 msgid "...or import a question"
 msgstr "...或導入問題"
 
-#: admin/questionhandling.php:544
+#: admin/questionhandling.php:563
 msgid "Select LimeSurvey question file (*.lsq/*.csv)"
 msgstr "選擇LimeSurvey問題組文件（*.lsq/*.csv）"
 
-#: admin/questionhandling.php:650
-msgid "Current group is using conditional questions"
-msgstr "當前組正使用有條件的問題"
-
-#: admin/questionhandling.php:650
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr "重新排序這個組內的問題要確保條件基於的問題不能排到有條件的問題的後面"
-
-#: admin/questionhandling.php:650
-msgid "See the conditions marked on the following questions"
-msgstr "查看下面問題上標記的條件"
-
-#: admin/questionhandling.php:751
+#: admin/questionhandling.php:769
 msgid "View Question"
 msgstr "查看問題"
 
@@ -8142,7 +8048,7 @@ msgstr "保留指標"
 msgid "Survey quotas"
 msgstr "調查配額"
 
-#: admin/quota.php:481 admin/surveylist.php:30
+#: admin/quota.php:481
 msgid "Status"
 msgstr "狀態"
 
@@ -8217,7 +8123,7 @@ msgid ""
 "main administration screen."
 msgstr "建議您在刪除調查之前在住管理頁面匯出整個調查。 "
 
-#: admin/resetsurveylogic.php:64
+#: admin/resetsurveylogic.php:65
 msgid "All conditions in this survey have been deleted."
 msgstr "所有關於這個調查的限制條件都已刪除。"
 
@@ -8324,48 +8230,53 @@ msgstr "輸出選項"
 msgid "Show graphs"
 msgstr "顯示統計圖"
 
-#: admin/statistics.php:346
+#: admin/statistics.php:345
+#, fuzzy
+msgid "Show text responses inline"
+msgstr "僅已完成回饋"
+
+#: admin/statistics.php:352
 msgid "Select output format"
 msgstr "選擇輸出格式"
 
-#: admin/statistics.php:351 admin/statistics.php:1593
+#: admin/statistics.php:357 admin/statistics.php:1599
 msgid "View stats"
 msgstr "查看統計"
 
-#: admin/statistics.php:358
+#: admin/statistics.php:364
 msgid "Response filters"
 msgstr "回饋篩選"
 
-#: admin/statistics.php:563 admin/statistics.php:678
+#: admin/statistics.php:569 admin/statistics.php:684
 msgid "Number greater than"
 msgstr "數字大於"
 
-#: admin/statistics.php:569 admin/statistics.php:684
+#: admin/statistics.php:575 admin/statistics.php:690
 msgid "Number less than"
 msgstr "數字小於"
 
-#: admin/statistics.php:609 admin/statistics.php:639 admin/statistics.php:662
-#: admin/statistics.php:1083
+#: admin/statistics.php:615 admin/statistics.php:645 admin/statistics.php:668
+#: admin/statistics.php:1089
 msgid "Responses containing"
 msgstr "回饋包含"
 
-#: admin/statistics.php:702
+#: admin/statistics.php:708
 msgid "Number of files greater than"
 msgstr "文件數大於"
 
-#: admin/statistics.php:708
+#: admin/statistics.php:714
 msgid "Number of files less than"
 msgstr "文件數小於"
 
-#: admin/statistics.php:753
+#: admin/statistics.php:759
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "日期(YYYY-MM-DD)等於"
 
-#: admin/statistics.php:759
+#: admin/statistics.php:765
 msgid "Date is"
 msgstr "日期是"
 
-#: admin/statistics.php:765
+#: admin/statistics.php:771
 msgid "AND/OR Date is"
 msgstr "和/或 日期是"
 
@@ -8394,7 +8305,7 @@ msgid "Results"
 msgstr "結果"
 
 #: admin/statistics_function.php:636 admin/statistics_function.php:2069
-#: admin/statistics_function.php:2090
+#: admin/statistics_function.php:2108
 msgid "Browse"
 msgstr "流覽"
 
@@ -8441,17 +8352,17 @@ msgstr "計算"
 msgid "Result"
 msgstr "結果"
 
-#: admin/statistics_function.php:1185 admin/statistics_function.php:2118
-#: admin/statistics_function.php:2124 admin/statistics_function.php:2130
-#: admin/statistics_function.php:2141 admin/statistics_function.php:2819
-#: admin/statistics_function.php:2823 admin/statistics_function.php:2835
-#: admin/statistics_function.php:2841
+#: admin/statistics_function.php:1185 admin/statistics_function.php:2155
+#: admin/statistics_function.php:2161 admin/statistics_function.php:2167
+#: admin/statistics_function.php:2178 admin/statistics_function.php:2856
+#: admin/statistics_function.php:2860 admin/statistics_function.php:2872
+#: admin/statistics_function.php:2878
 msgid "Sum"
 msgstr "總和"
 
-#: admin/statistics_function.php:1186 admin/statistics_function.php:2997
-#: admin/statistics_function.php:3004 admin/statistics_function.php:3011
-#: admin/statistics_function.php:3018
+#: admin/statistics_function.php:1186 admin/statistics_function.php:3037
+#: admin/statistics_function.php:3044 admin/statistics_function.php:3051
+#: admin/statistics_function.php:3058
 msgid "Standard deviation"
 msgstr "標準差"
 
@@ -8459,14 +8370,14 @@ msgstr "標準差"
 msgid "Average"
 msgstr "均值"
 
-#: admin/statistics_function.php:1234 admin/statistics_function.php:2083
-#: admin/statistics_function.php:2099 admin/statistics_function.php:2118
-#: admin/statistics_function.php:2122 admin/statistics_function.php:2130
-#: admin/statistics_function.php:2137 admin/statistics_function.php:2160
-#: admin/statistics_function.php:2164 admin/statistics_function.php:2172
-#: admin/statistics_function.php:2179 admin/statistics_function.php:2261
-#: admin/statistics_function.php:2265 admin/statistics_function.php:2272
-#: admin/statistics_function.php:2279
+#: admin/statistics_function.php:1234 admin/statistics_function.php:2101
+#: admin/statistics_function.php:2117 admin/statistics_function.php:2155
+#: admin/statistics_function.php:2159 admin/statistics_function.php:2167
+#: admin/statistics_function.php:2174 admin/statistics_function.php:2197
+#: admin/statistics_function.php:2201 admin/statistics_function.php:2209
+#: admin/statistics_function.php:2216 admin/statistics_function.php:2298
+#: admin/statistics_function.php:2302 admin/statistics_function.php:2309
+#: admin/statistics_function.php:2316
 msgid "Count"
 msgstr "計數"
 
@@ -8511,31 +8422,35 @@ msgstr "沒有足夠的資料進行計算"
 msgid "Comments"
 msgstr "評論"
 
-#: admin/statistics_function.php:2083 admin/statistics_function.php:2101
-#: admin/statistics_function.php:2118 admin/statistics_function.php:2123
-#: admin/statistics_function.php:2130 admin/statistics_function.php:2139
-#: admin/statistics_function.php:2160 admin/statistics_function.php:2165
-#: admin/statistics_function.php:2172 admin/statistics_function.php:2181
-#: admin/statistics_function.php:2261 admin/statistics_function.php:2266
-#: admin/statistics_function.php:2272 admin/statistics_function.php:2281
+#: admin/statistics_function.php:2079
+msgid "'Other' Responses"
+msgstr "其他的回答"
+
+#: admin/statistics_function.php:2101 admin/statistics_function.php:2119
+#: admin/statistics_function.php:2155 admin/statistics_function.php:2160
+#: admin/statistics_function.php:2167 admin/statistics_function.php:2176
+#: admin/statistics_function.php:2197 admin/statistics_function.php:2202
+#: admin/statistics_function.php:2209 admin/statistics_function.php:2218
+#: admin/statistics_function.php:2298 admin/statistics_function.php:2303
+#: admin/statistics_function.php:2309 admin/statistics_function.php:2318
 msgid "Percentage"
 msgstr "百分比"
 
-#: admin/statistics_function.php:2382 admin/statistics_function.php:2414
+#: admin/statistics_function.php:2419 admin/statistics_function.php:2451
 msgid "Not completed or Not displayed"
 msgstr "未完成或未顯示"
 
-#: admin/statistics_function.php:2386 admin/statistics_function.php:2418
+#: admin/statistics_function.php:2423 admin/statistics_function.php:2455
 msgid "Not displayed"
 msgstr "未顯示"
 
-#: admin/statistics_function.php:2820 admin/statistics_function.php:2828
-#: admin/statistics_function.php:2836 admin/statistics_function.php:2847
+#: admin/statistics_function.php:2857 admin/statistics_function.php:2865
+#: admin/statistics_function.php:2873 admin/statistics_function.php:2884
 msgid "Number of cases"
 msgstr "實例數"
 
-#: admin/statistics_function.php:2996 admin/statistics_function.php:3000
-#: admin/statistics_function.php:3010 admin/statistics_function.php:3016
+#: admin/statistics_function.php:3036 admin/statistics_function.php:3040
+#: admin/statistics_function.php:3050 admin/statistics_function.php:3056
 msgid "Arithmetic mean"
 msgstr "算術平均數"
 
@@ -10211,11 +10126,12 @@ msgstr ""
 msgid "Transfer the user's surveys to: "
 msgstr ""
 
-#: admin/usercontrol.php:618
+#: admin/usercontrol.php:618 admin/userrighthandling.php:324
+#: admin/userrighthandling.php:995
 msgid "Delete User"
 msgstr "刪除用戶"
 
-#: admin/usercontrol.php:640
+#: admin/usercontrol.php:640 admin/userrighthandling.php:222
 msgid "Editing user"
 msgstr "編輯用戶"
 
@@ -10949,8 +10865,8 @@ msgstr "請耐心等待。。。"
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: admin/update/upgrade-mssql.php:481 admin/update/upgrade-mssqlnative.php:481
-#: admin/update/upgrade-mysql.php:586 admin/update/upgrade-postgres.php:309
+#: admin/update/upgrade-mssql.php:595 admin/update/upgrade-mssqlnative.php:595
+#: admin/update/upgrade-mysql.php:706 admin/update/upgrade-postgres.php:430
 #, php-format
 msgid "Database update finished (%s)"
 msgstr ""
@@ -11200,6 +11116,433 @@ msgstr "烏爾都"
 msgid "Vietnamese"
 msgstr "越南語"
 
+#: classes/eval/ExpressionManager.php:134
+#, fuzzy
+msgid "Absolute value"
+msgstr "步進值"
+
+#: classes/eval/ExpressionManager.php:135
+msgid "Arc cosine"
+msgstr "繁育玄"
+
+#: classes/eval/ExpressionManager.php:136
+msgid "addslashes"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:137
+msgid "Arc sine"
+msgstr "反正玄"
+
+#: classes/eval/ExpressionManager.php:138
+msgid "Arc tangent"
+msgstr "反正切"
+
+#: classes/eval/ExpressionManager.php:139
+msgid "Arc tangent of two variables"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:140
+msgid "Round fractions up"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:141
+msgid "Returns true(1) if it is a valid date in gregorian calendar"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:142
+msgid "Cosine"
+msgstr "餘弦"
+
+#: classes/eval/ExpressionManager.php:143
+msgid "Count the number of answered questions in the list"
+msgstr "清點清單上也回答的問題"
+
+#: classes/eval/ExpressionManager.php:144
+#, fuzzy
+msgid "Format a local date/time"
+msgstr "開始日期/時間："
+
+#: classes/eval/ExpressionManager.php:145
+msgid "Calculates the exponent of e"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:146
+msgid "Round fractions down"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:147
+#, fuzzy
+msgid "Format a GMT date/time"
+msgstr "開始日期/時間："
+
+#: classes/eval/ExpressionManager.php:148
+msgid ""
+"Convert all HTML entities to their applicable characters (always uses "
+"ENT_QUOTES and UTF-8)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:149
+msgid ""
+"Convert all applicable characters to HTML entities (always uses ENT_QUOTES "
+"and UTF-8)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:150
+msgid ""
+"Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-"
+"8)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:151
+msgid ""
+"Convert special HTML entities back to characters (always uses ENT_QUOTES and "
+"UTF-8)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:152
+msgid "Format a local time/date as integer"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:153
+#, fuzzy
+msgid "Conditional processing"
+msgstr "條件設計器"
+
+#: classes/eval/ExpressionManager.php:154
+msgid "Join array elements with a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:155
+msgid "Get the integer value of a variable"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:156
+msgid "Determine whether a variable is considered to be empty"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:157
+msgid "Finds whether the type of a variable is float"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:158
+msgid "Find whether the type of a variable is integer"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:159
+msgid "Finds whether a value is not a number"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:160
+msgid "Finds whether a variable is NULL"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:161
+msgid "Finds whether a variable is a number or a numeric string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:162
+msgid "Find whether the type of a variable is string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:163
+msgid "Return comma-separated list of values"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:164
+msgid "Natural logarithm"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:165
+msgid "Strip whitespace (or other characters) from the beginning of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:166
+msgid "Find highest value"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:167
+msgid "Find lowest value"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:168
+msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:169
+msgid "Inserts HTML line breaks before all newlines in a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:170
+msgid "Format a number with grouped thousands"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:171
+msgid "Get value of pi"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:172
+#, fuzzy
+msgid "Exponential expression"
+msgstr "正規運算式"
+
+#: classes/eval/ExpressionManager.php:173
+msgid "Convert a quoted-printable string to an 8 bit string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:174
+msgid "Convert a 8 bit string to a quoted-printable string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:175
+#, fuzzy
+msgid "Quote meta characters"
+msgstr "最大字元數"
+
+#: classes/eval/ExpressionManager.php:176
+msgid "Generate a random integer"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:177
+#, fuzzy
+msgid "Compare a string to a regular expression pattern"
+msgstr "常量或者規則運算式"
+
+#: classes/eval/ExpressionManager.php:178
+msgid "Rounds a number to an optional precision"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:179
+msgid "Strip whitespace (or other characters) from the end of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:180
+msgid "Sine"
+msgstr "正玄"
+
+#: classes/eval/ExpressionManager.php:181
+msgid "Return a formatted string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:182
+msgid "Square root"
+msgstr "平方根"
+
+#: classes/eval/ExpressionManager.php:183
+msgid "Calculate the Sample Standard Deviation for the list of numbers"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:184
+msgid "Pad a string to a certain length with another string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:185
+#, fuzzy
+msgid "Repeat a string"
+msgstr "重複密碼"
+
+#: classes/eval/ExpressionManager.php:186
+msgid ""
+"Replace all occurrences of the search string with the replacement string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:187
+msgid "Binary safe case-insensitive string comparison"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:188
+msgid "Binary safe string comparison"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:189
+msgid "Strip HTML and PHP tags from a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:190
+msgid "Find position of first occurrence of a case-insensitive string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:191
+msgid "Un-quotes a quoted string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:192
+msgid "Case-insensitive strstr"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:193
+#, fuzzy
+msgid "Get string length"
+msgstr "設置操作代碼長度為："
+
+#: classes/eval/ExpressionManager.php:194
+msgid "Find position of first occurrence of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:195
+msgid "Reverse a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:196
+msgid "Find first occurrence of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:197
+msgid "Make a string lowercase"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:198
+msgid "Make a string uppercase"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:199
+#, fuzzy
+msgid "Return part of a string"
+msgstr "返回標籤管理介面"
+
+#: classes/eval/ExpressionManager.php:200
+msgid "Calculate the sum of values in an array"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:201
+msgid "Tangent"
+msgstr "正切："
+
+#: classes/eval/ExpressionManager.php:202
+msgid "Return current UNIX timestamp"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:203
+msgid ""
+"Strip whitespace (or other characters) from the beginning and end of a string"
+msgstr ""
+
+#: classes/eval/ExpressionManager.php:204
+msgid "Uppercase the first character of each word in a string"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:523
+#: classes/eval/LimeExpressionManager.php:907
+#, fuzzy
+msgid "Total of all entries must equal"
+msgstr "所有輸入項總計須等於 %d"
+
+#: classes/eval/LimeExpressionManager.php:608
+#, fuzzy
+msgid "The minimum number of answers for this question is"
+msgstr "編輯此題的默認項"
+
+#: classes/eval/LimeExpressionManager.php:646
+#: classes/eval/LimeExpressionManager.php:715
+#, fuzzy
+msgid "Total of all entries must be at least"
+msgstr "所有輸入項總計至少%s"
+
+#: classes/eval/LimeExpressionManager.php:677
+#, fuzzy
+msgid "The entry must be at least"
+msgstr "所有輸入項總計至少%s"
+
+#: classes/eval/LimeExpressionManager.php:762
+#, fuzzy
+msgid "The maximum number of answers for this question is"
+msgstr "編輯此題的默認項"
+
+#: classes/eval/LimeExpressionManager.php:800
+#: classes/eval/LimeExpressionManager.php:869
+#, fuzzy
+msgid "Total of all entries must not exceed"
+msgstr "所有輸入項不能超過 %d"
+
+#: classes/eval/LimeExpressionManager.php:831
+#, fuzzy
+msgid "The entry must not exceed"
+msgstr "所有輸入項不能超過 %d"
+
+#: classes/eval/LimeExpressionManager.php:963
+msgid "All entries must conform to this regular expression:"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:3428
+msgid "This question is mandatory"
+msgstr "本題必答"
+
+#: classes/eval/LimeExpressionManager.php:3440
+msgid "Please check at least one item."
+msgstr "請至少選擇一項。"
+
+#: classes/eval/LimeExpressionManager.php:3450
+#, php-format
+msgid "If you choose '%s' you must provide a description."
+msgstr "如果您選擇了 '%s'，就必須提供描述。"
+
+#: classes/eval/LimeExpressionManager.php:3472
+msgid "Please complete all parts"
+msgstr "請完成所有部分"
+
+#: classes/eval/LimeExpressionManager.php:3479
+msgid "Please check the items"
+msgstr "請檢查各項"
+
+#: classes/eval/LimeExpressionManager.php:3486
+msgid "Please rank all items"
+msgstr "請排序所有項"
+
+#: classes/eval/LimeExpressionManager.php:3493
+#, fuzzy
+msgid "Please answer this question"
+msgstr "僅回答此問題%s"
+
+#: classes/eval/LimeExpressionManager.php:5011
+msgid ""
+"Invalid question - probably missing sub-questions or language-specific "
+"settings for language "
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5016
+#, fuzzy
+msgid "Name [ID]"
+msgstr "名字"
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Relevance [Validation] (Default)"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Text [Help] (Tip)"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5182
+#, fuzzy
+msgid "This variable name has already been used."
+msgstr "您使用的email已被註冊。"
+
+#: classes/eval/LimeExpressionManager.php:5194
+msgid "This variable name contains invalid characters."
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5361
+msgid " Question(s) contain errors that need to be corrected"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5367
+#, fuzzy
+msgid "No syntax errors detected in this survey"
+msgstr "您沒有參與這個調查的許可權！"
+
+#: classes/eval/LimeExpressionManager.php:5370
+#, fuzzy
+msgid "This group, by itself, does not contain any syntax errors"
+msgstr "該組未含任何問題。"
+
+#: classes/eval/LimeExpressionManager.php:5373
+#, fuzzy
+msgid "This question, by itself, does not contain any syntax errors"
+msgstr "該組未含任何問題。"
+
+#: classes/eval/test/survey_logic_file.php:131
+msgid "Logic File for Survey # "
+msgstr ""
+
 #~ msgid "Modify Quota"
 #~ msgstr "修改配額"
 
@@ -11344,6 +11687,9 @@ msgstr "越南語"
 #~ msgid "Referer-URL will be saved"
 #~ msgstr "來源網址將被保存"
 
+#~ msgid "Are you sure you want regenerate the question codes?"
+#~ msgstr "您確認要重新生成問題的編碼嗎？"
+
 #~ msgid "Fax To:"
 #~ msgstr "傳真："
 
@@ -11353,11 +11699,30 @@ msgstr "越南語"
 #~ msgid "Exit Link"
 #~ msgstr "退出連結"
 
+#~ msgid ""
+#~ "Impossible to delete this group because there is at least one question "
+#~ "having a condition on its content"
+#~ msgstr "不能刪除此組，因為至少有一個問題的條件和此組相關"
+
+#~ msgid "Questions with conditions to this group"
+#~ msgstr "與此組有關聯的問題"
+
+#~ msgid ""
+#~ "It's impossible to delete this question because there is at least one "
+#~ "question having a condition on it."
+#~ msgstr "不能刪除此題，至少有一個問題的條件和此題相關。"
+
+#~ msgid "Disabled - Delete current question"
+#~ msgstr "禁用-刪除當前問題"
+
 #~ msgid "Export this Question"
 #~ msgstr "匯出此問題"
 
 #~ msgid "Set Conditions for this Question"
 #~ msgstr "為此題設定條件"
+
+#~ msgid "Other questions having conditions on this question:"
+#~ msgstr "基於本題的其它問題："
 
 #~ msgid ""
 #~ "Enter one answer per line. You can provide a code by separating code and "
@@ -11467,6 +11832,22 @@ msgstr "越南語"
 #~ msgid "Answers can't be deleted"
 #~ msgstr "不能刪除答案項"
 
+#~ msgid ""
+#~ "This question relies on other question's answers and can't be moved above "
+#~ "groupId:"
+#~ msgstr "這個問題依賴於其他問題的答案項，不能移動到該組之上："
+
+#~ msgid "in position"
+#~ msgstr "在適當的位置"
+
+#~ msgid "See conditions:"
+#~ msgstr "查看條件："
+
+#~ msgid ""
+#~ "Some questions rely on this question's answers. You can't move this "
+#~ "question below groupId:"
+#~ msgstr "一些問題依賴於這個問題的答案項。您不能把這個問題移動到該組之下："
+
 #~ msgid "Invitation to participate in survey"
 #~ msgstr "參加調查的邀請"
 
@@ -11557,6 +11938,19 @@ msgstr "越南語"
 
 #~ msgid "Update Question"
 #~ msgstr "更新問題"
+
+#~ msgid "Current group is using conditional questions"
+#~ msgstr "當前組正使用有條件的問題"
+
+#~ msgid ""
+#~ "Re-ordering questions in this group is restricted to ensure that "
+#~ "questions on which conditions are based aren't reordered after questions "
+#~ "having the conditions set"
+#~ msgstr ""
+#~ "重新排序這個組內的問題要確保條件基於的問題不能排到有條件的問題的後面"
+
+#~ msgid "See the conditions marked on the following questions"
+#~ msgstr "查看下面問題上標記的條件"
 
 #~ msgid "New Password"
 #~ msgstr "新的密碼"
@@ -11779,6 +12173,24 @@ msgstr "越南語"
 #~ msgid "Note: Demo mode is activated. Marked (*) settings won't be saved."
 #~ msgstr "注意：演示模式已啟用。標記(*)的設置將不會保存。"
 
+#~ msgid "Current survey has questions with conditions outside their own group"
+#~ msgstr "當前調查中有些問題的條件在它們所在題組之外"
+
+#~ msgid ""
+#~ "Re-ordering groups is restricted to ensure that questions on which "
+#~ "conditions are based aren't reordered after questions having the "
+#~ "conditions set"
+#~ msgstr "重新排序組要先確保有條件基於的問題不能排到有條件的問題的後面"
+
+#~ msgid "The following groups are concerned"
+#~ msgstr "下面的題組是相關的"
+
+#~ msgid "Group %s depends on group %s, see the marked conditions on:"
+#~ msgstr "組%s依賴於組%s，請查看標記的條件:"
+
+#~ msgid "QID"
+#~ msgstr "問題識別號 "
+
 #~ msgid "Italian-Formal"
 #~ msgstr "義大利語-正式"
 
@@ -11786,6 +12198,31 @@ msgstr "越南語"
 #~ "This survey is not currently active. You will not be able to save your "
 #~ "responses."
 #~ msgstr "此調查尚未啟用，您的回饋將無法保存。"
+
+#~ msgid "Click here to print your answers."
+#~ msgstr "點擊此處列印您的答案。"
+
+#~ msgid "Cannot submit results - there are none to submit."
+#~ msgstr "無法提交結果 - 沒有內容可提交。"
+
+#~ msgid ""
+#~ "This error can occur if you have already submitted your responses and "
+#~ "pressed 'refresh' on your browser. In this case, your responses have "
+#~ "already been saved."
+#~ msgstr ""
+#~ "您已經提交了回饋並按了流覽器上的“刷新”，就會出現這個錯誤。這種情況下，您的"
+#~ "反饋已經保存了。 "
+
+#~ msgid ""
+#~ "If you receive this message in the middle of completing a survey, you "
+#~ "should choose '<- BACK' on your browser and then refresh/reload the "
+#~ "previous page. While you will lose answers from the last page all your "
+#~ "others will still exist. This problem can occur if the webserver is "
+#~ "suffering from overload or excessive use. We apologise for this problem."
+#~ msgstr ""
+#~ "如果您在完成調查的過程中收到本資訊，您應該選擇流覽器上的 '<- 後退'並刷新/"
+#~ "重載前面的頁面。這樣你就僅會丟失最後一頁的答案，而其它答案則不會丟失。非常"
+#~ "抱歉，伺服器超負荷或過度使用就會發生這個問題。"
 
 #~ msgid "Survey Name (ID)"
 #~ msgstr "調查名稱(ID)："
@@ -11878,6 +12315,12 @@ msgstr "越南語"
 
 #~ msgid "Category Separator"
 #~ msgstr "類別分隔符號"
+
+#~ msgid "Filter the available answers by this value"
+#~ msgstr "按值篩選現有答案項"
+
+#~ msgid "Code filter"
+#~ msgstr "代碼篩選"
 
 #~ msgid "Use accessible select boxes instead of calendar popup"
 #~ msgstr "使用可訪問選擇框替代彈出日曆"
@@ -12159,10 +12602,6 @@ msgstr "越南語"
 #~ msgstr "發送到操作代碼 ID"
 
 #, fuzzy
-#~ msgid "Show text responses inline"
-#~ msgstr "僅已完成回饋"
-
-#, fuzzy
 #~ msgid "Survey structure import summary"
 #~ msgstr "調查導入摘要"
 
@@ -12214,10 +12653,6 @@ msgstr "越南語"
 #~ "Drag items in the list on the left to the list on the right in the order "
 #~ "that you would like to rank them."
 #~ msgstr "點擊左邊列表內條目，從最高排序項開始，直到最低排序項。"
-
-#, fuzzy
-#~ msgid "Equation"
-#~ msgstr "編輯問題"
 
 #, fuzzy
 #~ msgid ""
@@ -12303,76 +12738,9 @@ msgstr "越南語"
 #~ msgid "You are not allowed to stop this survey!"
 #~ msgstr "你不可以結束這個調查！"
 
-#~ msgid "'Other' Responses"
-#~ msgstr "其他的回答"
-
-#, fuzzy
-#~ msgid "Absolute value"
-#~ msgstr "步進值"
-
-#~ msgid "Arc cosine"
-#~ msgstr "繁育玄"
-
-#~ msgid "Arc sine"
-#~ msgstr "反正玄"
-
-#~ msgid "Arc tangent"
-#~ msgstr "反正切"
-
-#, fuzzy
-#~ msgid "Compare a string to a regular expression pattern"
-#~ msgstr "常量或者規則運算式"
-
-#, fuzzy
-#~ msgid "Conditional processing"
-#~ msgstr "條件設計器"
-
-#~ msgid "Cosine"
-#~ msgstr "餘弦"
-
-#~ msgid "Count the number of answered questions in the list"
-#~ msgstr "清點清單上也回答的問題"
-
-#, fuzzy
-#~ msgid "Exponential expression"
-#~ msgstr "正規運算式"
-
-#, fuzzy
-#~ msgid "Format a GMT date/time"
-#~ msgstr "開始日期/時間："
-
-#, fuzzy
-#~ msgid "Format a local date/time"
-#~ msgstr "開始日期/時間："
-
-#, fuzzy
-#~ msgid "Get string length"
-#~ msgstr "設置操作代碼長度為："
-
 #, fuzzy
 #~ msgid "Labels sucessfully updated"
 #~ msgstr "版本號已成功更新至 %s。"
-
-#, fuzzy
-#~ msgid "Quote meta characters"
-#~ msgstr "最大字元數"
-
-#, fuzzy
-#~ msgid "Repeat a string"
-#~ msgstr "重複密碼"
-
-#, fuzzy
-#~ msgid "Return part of a string"
-#~ msgstr "返回標籤管理介面"
-
-#~ msgid "Sine"
-#~ msgstr "正玄"
-
-#~ msgid "Square root"
-#~ msgstr "平方根"
-
-#~ msgid "Tangent"
-#~ msgstr "正切："
 
 #, fuzzy
 #~ msgid "This is not a valid response data XML file."
@@ -12385,6 +12753,13 @@ msgstr "越南語"
 #, fuzzy
 #~ msgid "This is not a valid token data XML file."
 #~ msgstr "該文件非有效ZIP文件檔。導入失敗。 "
+
+#, fuzzy
+#~ msgid ""
+#~ "One or more files are either not in the proper format or exceed the "
+#~ "maximum file size limitation. You cannot proceed until these answers are "
+#~ "valid."
+#~ msgstr "一個或者更多的問題未按有效方式回答。更正回答後方可繼續。"
 
 #, fuzzy
 #~ msgid "Available languages:"
@@ -13441,9 +13816,6 @@ msgstr "越南語"
 #~ msgid "Survey Submitted"
 #~ msgstr "調查已提交"
 
-#~ msgid "%d responses for this survey"
-#~ msgstr "本調查總共%d個回饋"
-
 #~ msgid "%d full responses"
 #~ msgstr "%d完整回饋"
 
@@ -13760,9 +14132,6 @@ msgstr "越南語"
 
 #~ msgid "if you have NOT answered"
 #~ msgstr "如果你沒有回答"
-
-#~ msgid "Only answer this question %s"
-#~ msgstr "僅回答此問題%s"
 
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "

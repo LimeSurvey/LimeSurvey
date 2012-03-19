@@ -445,8 +445,10 @@ if ($action == "editusers")
     . "</tr></thead><tbody>\n";
 
     $userlist = getuserlist();
+
     $ui = count($userlist);
     $usrhimself = $userlist[0];
+    $usrhimself =array_map('htmlspecialchars',$usrhimself);
     unset($userlist[0]);
 
     //	output users
@@ -511,6 +513,8 @@ if ($action == "editusers")
     {
 
         $usr = $usr_arr[$i];
+        $usr =array_map('htmlspecialchars',$usr);
+
         $usersummary .= "<tr>\n";
 
         $usersummary .= "<td align='center' style='padding:3px;'>\n";
@@ -620,7 +624,7 @@ if ($action == "addusergroup")
         . "<form action='$scriptname' id='usergroupform' class='form30' method='post'>"
         . "<ul>\n"
         . "<li><label for='group_name'>".$clang->gT("Name:")."</label>\n"
-        . "<input type='text' size='50' id='group_name' name='group_name' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></li>\n"
+        . "<input type='text' size='50' maxlength='20' id='group_name' name='group_name' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></li>\n"
         . "<li><label for='group_description'>".$clang->gT("Description:")."</label>\n"
         . "<textarea cols='50' rows='4' id='group_description' name='group_description'></textarea></li>\n"
         . "</ul><p><input type='submit' value='".$clang->gT("Add Group")."' />\n"

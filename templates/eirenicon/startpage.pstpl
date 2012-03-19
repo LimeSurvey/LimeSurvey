@@ -22,10 +22,11 @@
     </style>
 		
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
-	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />    
+	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
+{GOOGLE_ANALYTICS_JAVASCRIPT}
 </head>
 
-	<body bgcolor="#C0C0C0" class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+	<body bgcolor="#C0C0C0" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
                 <div class="outerframe">
 <table class="outer-frame">
                         	<tr>

@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: admin_functions.php 9586 2010-12-06 03:08:07Z c_schmitz $
+ *	$Id: admin_functions.php 11664 2011-12-16 05:19:42Z tmswhite $
  *	Files Purpose:
  */
 

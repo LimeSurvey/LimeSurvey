@@ -12,7 +12,7 @@
  *
  * $Id: updater.php 8987 2010-07-27 12:59:34Z c_schmitz $
  */
-list(,$updaterversion)=explode(' ','$Rev$');  // this is updated by subversion so don't change this string
+list(,$updaterversion)=explode(' ','$Rev: 11664 $');  // this is updated by subversion so don't change this string
 
 if (isset($_REQUEST['update'])) die();
 
@@ -435,6 +435,7 @@ function UpdateStep3()
     $basefilename = date("YmdHis-").md5(uniqid(rand(), true));
     //Now create a backup of the files to be delete or modified
 
+    $filestozip=array();
     Foreach ($updateinfo['files'] as $file)
     {
         if (is_file($publicdir.$file['file'])===true) // Sort out directories
@@ -450,7 +451,6 @@ function UpdateStep3()
     //PclTraceOn(1);
 
     $archive = new PclZip($tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip');
-
 
     $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 

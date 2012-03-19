@@ -2,9 +2,12 @@
 	<div class="question-text">
 		<span class="asterisk">{QUESTION_MANDATORY}</span><span class="qnumcode">{QUESTION_NUMBER} {QUESTION_CODE} </span>{QUESTION_TEXT}
 	</div>
-	<div class="error-wrapper">{QUESTION_MAN_MESSAGE}{QUESTION_VALID_MESSAGE}</div>
-			<div class="tip help">{QUESTION_HELP}</div>
-		<div class="answers">
+	<div class="help-wrapper">
+		<div class="mandatory error">{QUESTION_MAN_MESSAGE}</div>
+		{QUESTION_VALID_MESSAGE}
+		<div class="tip">{QUESTION_HELP}</div>
+	</div>
+	<div class="answers-wrapper">
 		{ANSWER}
 	</div>
 	<div class="question-help">

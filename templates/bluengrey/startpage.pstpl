@@ -25,8 +25,9 @@
 		
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
     <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
+    {GOOGLE_ANALYTICS_JAVASCRIPT}
 	</head>
-        <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+        <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
             <div class="outerframe">
                 <br/>
                 <div id="container">

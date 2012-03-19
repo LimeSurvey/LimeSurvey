@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id$
+* $Id: exportresults.php 11664 2011-12-16 05:19:42Z tmswhite $
 */
 
 
@@ -219,28 +219,28 @@ if (!$exportstyle)
     }
     $exportoutput .= "\t</select>\n";
     $exportoutput .= "<br />&nbsp;</fieldset>\n";
-    //OPTIONAL EXTRAS (FROM TOKENS TABLE)
+        //OPTIONAL EXTRAS (FROM TOKENS TABLE)
     // Find out if survey results are anonymous
     if ($thissurvey['anonymized'] == "N" && tableExists("tokens_$surveyid"))
-    {
-        $exportoutput .= "<fieldset><legend>".$clang->gT("Token control")."</legend>\n"
-        .$clang->gT("Choose token fields").":"
-        ."<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
-        .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
-        ."\")' /><br />"
-        ."<select name='attribute_select[]' multiple size='20'>\n"
-        ."<option value='first_name' id='first_name' />".$clang->gT("First name")."</option>\n"
-        ."<option value='last_name' id='last_name' />".$clang->gT("Last name")."</option>\n"
-        ."<option value='email_address' id='email_address' />".$clang->gT("Email address")."</option>\n"
-        ."<option value='token' id='token' />".$clang->gT("Token")."</option>\n";
-
-        $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
-        foreach ($attrfieldnames as $attr_name=>$attr_desc)
         {
-            $exportoutput .= "<option value='$attr_name' id='$attr_name' />".$attr_desc."</option>\n";
+            $exportoutput .= "<fieldset><legend>".$clang->gT("Token control")."</legend>\n"
+            .$clang->gT("Choose token fields").":"
+            ."<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
+            .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
+            ."\")' /><br />"
+            ."<select name='attribute_select[]' multiple size='20'>\n"
+            ."<option value='first_name' id='first_name' />".$clang->gT("First name")."</option>\n"
+            ."<option value='last_name' id='last_name' />".$clang->gT("Last name")."</option>\n"
+            ."<option value='email_address' id='email_address' />".$clang->gT("Email address")."</option>\n"
+            ."<option value='token' id='token' />".$clang->gT("Token")."</option>\n";
+
+            $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
+            foreach ($attrfieldnames as $attr_name=>$attr_desc)
+            {
+                $exportoutput .= "<option value='$attr_name' id='$attr_name' />".$attr_desc."</option>\n";
+            }
+            $exportoutput .= "</select></fieldset>\n";
         }
-        $exportoutput .= "</select></fieldset>\n";
-    }
     $exportoutput .= "</div>\n"
     ."\t<div style='clear:both;'><p><input type='submit' value='".$clang->gT("Export data")."' /></div></form></div>\n";
     return;
@@ -282,13 +282,15 @@ switch ( $_POST["type"] ) {
         $workbook->send('results-survey'.$surveyid.'.xls');
         // Creating the first worksheet
 
-        $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=".$surveyid;
+        $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id={$surveyid} AND surveyls_language='{$surveybaselang}'" ;
         $result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
         $row = $result->FetchRow();
 
         $row['surveyls_title']=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$row['surveyls_title']),0,31); // Remove invalid characters
-        $sheet =& $workbook->addWorksheet($row['surveyls_title']); // do not translate/change this - the library does not support any special chars in sheet name
+        $sheet =& $workbook->addWorksheet(); // do not translate/change this - the library does not support any special chars in sheet name
+//        $row['surveyls_title']
         $sheet->setInputEncoding('utf-8');
+        $sheet->name=$row['surveyls_title'] ;
         $separator="~|";
         break;
     case "csv":
@@ -301,7 +303,7 @@ switch ( $_POST["type"] ) {
         $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
         $pdf->AddPage();
         $pdf->intopdf("PDF Export ".date("Y.m.d-H:i",time()));
-        $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=".$surveyid;
+        $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id={$surveyid}  AND surveyls_language='{$surveybaselang}'" ;
         $result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
         while ($row = $result->FetchRow())
         {
@@ -489,57 +491,48 @@ for ($i=0; $i<$fieldcount; $i++)
     }
     else
     {
-        //Data field heading!
+        // Prepare the header line
         $fielddata=$fieldmap[$fieldinfo];
         $fqid=$fielddata['qid'];
         $ftype=$fielddata['type'];
         $fsid=$fielddata['sid'];
         $fgid=$fielddata['gid'];
         $faid=$fielddata['aid'];
-        $question=$fielddata['question'];
-        if (isset($fielddata['scale'])) $question = "[{$fielddata['scale']}] ". $question;
-        if (isset($fielddata['subquestion'])) $question = "[{$fielddata['subquestion']}] ". $question;
-        if (isset($fielddata['subquestion2'])) $question = "[{$fielddata['subquestion2']}] ". $question;
-        if (isset($fielddata['subquestion1'])) $question = "[{$fielddata['subquestion1']}] ". $question;
-        if ($exportstyle == "abrev")
+        switch ($exportstyle)
         {
-            $qname=strip_tags_full($question);
-            $qname=mb_substr($qname, 0, 15)."..";
-            $firstline = str_replace("\n", "", $firstline);
-            $firstline = str_replace("\r", "", $firstline);
-            if ($type == "csv") {$firstline .= "\"$qname";}
-            else {$firstline .= "$qname";}
-            if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
-            if ($type == "csv") {$firstline .= "\"";}
-            $firstline .= "$separator";
-        }
-        else    //headcode or full answer
-        {
-            if ($exportstyle == "headcodes")
-            {
+            case 'headcodes': // only question codes
                 $fquest=$fielddata['title'];
                 if (!empty($fielddata['aid'])) $fquest .= ' [' . $fielddata['aid'] . ']';
-            }
-            else
-            {
-                $fquest=$question;
-            }
-            $fquest=FlattenText($fquest,true);
-            if ($type == "csv")
-            {
-                $firstline .="\"$fquest\"$separator";
-            }
-            else
-            {
-                $firstline .= $fquest.$separator;
-            }
+                if (isset($fielddata['scale_id'])) $fquest = $fquest."[{$fielddata['scale_id']}]";
+                $fquest=FlattenText($fquest,true);
+                break;
+            case 'abrev': // Abbreviated question text
+                $fquest=FlattenText($fielddata['question']);
+                $fquest=mb_substr($fquest, 0, 15);
+                if (strlen($fquest)==15) $fquest.='...';
+                if (isset($faid)) {$fquest .= " [{$faid}]";}
+                if (isset($fielddata['scale_id'])) $fquest = $fquest."[{$fielddata['scale_id']}]";
+                break;
+            default: // Full question text
+                $fquest=$fielddata['question'];
+                if (isset($fielddata['scale_id'])) $fquest = "[{$fielddata['scale_id']}] ". $fquest;
+                if (isset($fielddata['subquestion'])) $fquest = "[{$fielddata['subquestion']}] ". $fquest;
+                if (isset($fielddata['subquestion2'])) $fquest = "[{$fielddata['subquestion2']}] ". $fquest;
+                if (isset($fielddata['subquestion1'])) $fquest = "[{$fielddata['subquestion1']}] ". $fquest;
+                $fquest=FlattenText($fquest,true);
+                break;
         }
-        if($convertspacetous == "Y")
+         if($convertspacetous == "Y")
         {
-            $firstline=str_replace(" ", "_", $firstline);
+            $fquest=str_replace(" ", "_", $fquest);
         }
+        if ($type == "csv") {$fquest = "\"$fquest\"";}
+        $firstline .= $fquest.$separator;
+
+
     }
 }
+
 if ($type == "csv") { $firstline = mb_substr(trim($firstline),0,strlen($firstline)-1);}
 else
 {
@@ -552,33 +545,33 @@ if ($type == "doc" || $type == "pdf")
 {
     $flarray=explode($separator, $firstline);
     $exportoutput .= '<style>
-    table {
-    border-collapse:collapse;
-    }
-    td, th {
-    border:solid black 1.0pt;
-    }
-    th {
-    background: #c0c0c0;
-    }
-    </style>';
+        table {
+            border-collapse:collapse;
+        }
+        td, th {
+            border:solid black 1.0pt;
+        }
+        th {
+            background: #c0c0c0;
+        }
+        </style>';
 }
 else
     if ($type == "xls")
     {
-        //var_dump ($firstline);
-        $flarray=explode($separator, $firstline);
-        $fli=0;
-        foreach ($flarray as $fl)
-        {
-            $sheet->write(0,$fli,$fl);
-            $fli++;
-        }
-        //print_r($fieldmap);
+    //var_dump ($firstline);
+    $flarray=explode($separator, $firstline);
+    $fli=0;
+    foreach ($flarray as $fl)
+    {
+        $sheet->write(0,$fli,$fl);
+        $fli++;
+    }
+    //print_r($fieldmap);
     }
     else
     {
-        $exportoutput .= $firstline; //Sending the header row
+    $exportoutput .= $firstline; //Sending the header row
 }
 
 
@@ -628,11 +621,11 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
             foreach($drow as $key=>$dr) {
                 if (isset($fieldmap[$key]))
                 {
-                    $fielddata=$fieldmap[$key];
+                $fielddata=$fieldmap[$key];
                     if (isset($fielddata['type']) && ($fielddata['type'] == "M" || $fielddata['type'] == "P" || $fielddata['type'] == "Y"))
-                    {
-                        if($dr == "Y") {$dr = $convertyto;}
-                    }
+                {
+                    if($dr == "Y") {$dr = $convertyto;}
+                }
                 }
                 $line[$key]=$dr;
             }
@@ -645,11 +638,11 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
             foreach($drow as $key=>$dr) {
                 if (isset($fieldmap[$key]))
                 {
-                    $fielddata=$fieldmap[$key];
+                $fielddata=$fieldmap[$key];
                     if (isset($fielddata['type']) && ($fielddata['type'] == "M" || $fielddata['type'] == "P" || $fielddata['type'] == "Y"))
-                    {
-                        if($dr == "N") {$dr = $convertnto;}
-                    }
+                {
+                    if($dr == "N") {$dr = $convertnto;}
+                }
                 }
                 $line[$key]=$dr;
             }
@@ -676,19 +669,19 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
             }
         }
         else if($type == "pdf")
+        {
+            $pdf->titleintopdf($clang->gT("New Record"));
+            $pdfstring="";
+            foreach ($drow as $rowfield)
             {
-                $pdf->titleintopdf($clang->gT("New Record"));
-                $pdfstring="";
-                foreach ($drow as $rowfield)
-                {
-                    $rowfield=str_replace("?","-",$rowfield);
-                    $pdfstring .=$rowfield." | ";
-                }
-                $pdf->intopdf($pdfstring);
+                $rowfield=str_replace("?","-",$rowfield);
+                $pdfstring .=$rowfield." | ";
             }
-            else
-            {
-                $exportoutput .= implode($separator, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
+                $pdf->intopdf($pdfstring);
+        }
+        else
+        {
+            $exportoutput .= implode($separator, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
         }
     }
 }
@@ -889,45 +882,45 @@ elseif ($answers == "long")        //chose complete answers
                         if ($type == "csv")
                         {$exportoutput .= str_replace("\r\n", "\n", str_replace("\"", "\"\"", strip_tags_full($drow[$i])));}
                         else if ($type == "pdf")
-                            {$pdf->intopdf(str_replace("\r\n", " ", strip_tags_full($drow[$i])));}
-                            else
-                            {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
+                        {$pdf->intopdf(str_replace("\r\n", " ", strip_tags_full($drow[$i])));}
+                        else
+                        {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
                     }
                     break;
                 case "Y": //YES\NO
-                switch($drow[$i])
-                {
-                    case "Y":
-                        $exportoutput .= $elang->gT("Yes");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("Yes"));}
-                        break;
-                    case "N":
-                        $exportoutput .= $elang->gT("No");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("No"));}
-                        break;
-                    default:
-                        $exportoutput .= $elang->gT("N/A");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("N/A"));}
-                        break;
-                }
-                break;
+                    switch($drow[$i])
+                    {
+                        case "Y":
+                            $exportoutput .= $elang->gT("Yes");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("Yes"));}
+                            break;
+                        case "N":
+                            $exportoutput .= $elang->gT("No");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("No"));}
+                            break;
+                        default:
+                            $exportoutput .= $elang->gT("N/A");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("N/A"));}
+                            break;
+                    }
+                    break;
                 case "G": //GENDER
-                switch($drow[$i])
-                {
-                    case "M":
-                        $exportoutput .= $elang->gT("Male");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("Male"));}
-                        break;
-                    case "F":
-                        $exportoutput .= $elang->gT("Female");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("Female"));}
-                        break;
-                    default:
-                        $exportoutput .= $elang->gT("N/A");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("N/A"));}
-                        break;
-                }
-                break;
+                    switch($drow[$i])
+                    {
+                        case "M":
+                            $exportoutput .= $elang->gT("Male");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("Male"));}
+                            break;
+                        case "F":
+                            $exportoutput .= $elang->gT("Female");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("Female"));}
+                            break;
+                        default:
+                            $exportoutput .= $elang->gT("N/A");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("N/A"));}
+                            break;
+                    }
+                    break;
                 case "M": //multioption
                 case "P":
                     if (mb_substr($fieldinfo, -5, 5) == "other")
@@ -964,38 +957,38 @@ elseif ($answers == "long")        //chose complete answers
                     }
                     break;
                 case "C":
-                switch($drow[$i])
-                {
-                    case "Y":
-                        $exportoutput .= $elang->gT("Yes");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("Yes")); }
-                        break;
-                    case "N":
-                        $exportoutput .= $elang->gT("No");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("No")); }
-                        break;
-                    case "U":
-                        $exportoutput .= $elang->gT("Uncertain");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("Uncertain"));}
-                        break;
-                }
+                    switch($drow[$i])
+                    {
+                        case "Y":
+                            $exportoutput .= $elang->gT("Yes");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("Yes")); }
+                            break;
+                        case "N":
+                            $exportoutput .= $elang->gT("No");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("No")); }
+                            break;
+                        case "U":
+                            $exportoutput .= $elang->gT("Uncertain");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("Uncertain"));}
+                            break;
+                    }
                 case "E":
-                switch($drow[$i])
-                {
-                    case "I":
-                        $exportoutput .= $elang->gT("Increase");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("Increase"));}
-                        break;
-                    case "S":
-                        $exportoutput .= $elang->gT("Same");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("Same"));}
-                        break;
-                    case "D":
-                        $exportoutput .= $elang->gT("Decrease");
-                        if($type == "pdf"){$pdf->intopdf($elang->gT("Decrease"));}
-                        break;
-                }
-                break;
+                    switch($drow[$i])
+                    {
+                        case "I":
+                            $exportoutput .= $elang->gT("Increase");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("Increase"));}
+                            break;
+                        case "S":
+                            $exportoutput .= $elang->gT("Same");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("Same"));}
+                            break;
+                        case "D":
+                            $exportoutput .= $elang->gT("Decrease");
+                            if($type == "pdf"){$pdf->intopdf($elang->gT("Decrease"));}
+                            break;
+                    }
+                    break;
                 case "F":
                 case "H":
                     if (!isset($labelscache[$fqid.'|'.$explang.'|'.$drow[$i]]))
@@ -1036,32 +1029,32 @@ elseif ($answers == "long")        //chose complete answers
                     break;
 
                 default: $tempresult=$dresult->FetchField($i);
-                    if ($tempresult->name == "token")
+                if ($tempresult->name == "token")
+                {
+                    $tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$surveyid WHERE token='$drow[$i]'";
+                    if ($tokenresult = db_execute_assoc($tokenquery)) //or safe_die ("Couldn't get token info<br />$tokenquery<br />".$connect->ErrorMsg());
+                    while ($tokenrow=$tokenresult->FetchRow())
                     {
-                        $tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$surveyid WHERE token='$drow[$i]'";
-                        if ($tokenresult = db_execute_assoc($tokenquery)) //or safe_die ("Couldn't get token info<br />$tokenquery<br />".$connect->ErrorMsg());
-                            while ($tokenrow=$tokenresult->FetchRow())
-                            {
-                                $exportoutput .= "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
-                                if($type == "pdf"){$pdf->intopdf($tokenrow['lastname']." , ".$tokenrow['firstname']);}
-                        }
-                        else
-                        {
-                            $exportoutput .= $elang->gT("Tokens problem - token table missing");
-                            if($type == "pdf"){$pdf->intopdf($elang->gT("Tokens problem - token table missing"));}
-                        }
+                        $exportoutput .= "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
+                        if($type == "pdf"){$pdf->intopdf($tokenrow['lastname']." , ".$tokenrow['firstname']);}
                     }
                     else
                     {
-                        if ($type == "csv")
-                        {$exportoutput .= str_replace("\r\n", "\n", str_replace("\"", "\"\"", strip_tags_full($drow[$i])));}
-                        else if ($type == "pdf")
-                            {$pdf->intopdf(trim(strip_tags($drow[$i])));}
-                            else if ($type == "doc")
-                                {$exportoutput .= trim(strip_tags($drow[$i]));}
-                                else
-                                {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
+                        $exportoutput .= $elang->gT("Tokens problem - token table missing");
+                        if($type == "pdf"){$pdf->intopdf($elang->gT("Tokens problem - token table missing"));}
                     }
+                }
+                else
+                {
+                    if ($type == "csv")
+                    {$exportoutput .= str_replace("\r\n", "\n", str_replace("\"", "\"\"", strip_tags_full($drow[$i])));}
+                    else if ($type == "pdf")
+                    {$pdf->intopdf(trim(strip_tags($drow[$i])));}
+                    else if ($type == "doc")
+                    {$exportoutput .= trim(strip_tags($drow[$i]));}
+                    else
+                    {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
+                }
             }
             if ($type == "doc")
             {
@@ -1102,11 +1095,11 @@ if ($type=='xls')
 }
 else if($type=='pdf')
     {
-        $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","D");
+    $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","D");
     }
     else
     {
-        echo $exportoutput;
+    echo $exportoutput;
 }
 exit;
 

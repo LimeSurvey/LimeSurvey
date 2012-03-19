@@ -28,18 +28,68 @@ function focusFirst(Event)
 	$('#limesurvey :input:visible:enabled:first').focus();
 }
 
+// This function deactivate comment on multi with comment
+function autoDisabledComment(){
+  $(".answers-wrapper li input.checkbox").each(function(){
+    if($(this).attr('checked')){
+      $(this).closest('li').find('input:text').attr('disabled','');
+    }else{
+      $(this).closest('li').find('input:text').val('');
+      $(this).closest('li').find('input:text').attr('disabled','disabled');
+    }
+  });
+  $(".answers-wrapper li input.checkbox").click(function(){
+    if($(this).attr('checked')){
+      $(this).closest('li').find('input:text').attr('disabled','');
+      $(this).closest('li').find('input:text').focus();
+    }else{
+      $(this).closest('li').find('input:text').val('');
+      $(this).closest('li').find('input:text').attr('disabled','disabled');
+    }
+  });
+}
+
+// Add empty class to input text and textarea
+function addClassEmpty(){
+      $('.answers-wrapper input.text[value=""]').addClass('empty');
+      $('.answers-wrapper input[type=text][value=""]').addClass('empty');
+      $('.answers-wrapper textarea').each(function(index) {
+        if ($(this).val() == ""){
+          $(this).addClass('empty');
+        }
+      });
+
+    $("input.text,input[type=text]").live("blur", function(){ 
+      if ($(this).val() == ""){
+        $(this).addClass('empty');
+      }else{
+        $(this).removeClass('empty');
+      }
+    });
+    $("textarea").live("blur", function(){ 
+      if ($(this).val() == ""){
+        $(this).addClass('empty');
+      }else{
+        $(this).removeClass('empty');
+      }
+    });
+}
 // Replace common alert with jquery-ui dialog
-// Uncomment this part to test this function
-/*function alert(text) {
+function jalert(text) {
 	var $dialog = $('<div></div>')
 		.html(text)
 		.dialog({
-			title: 'Alert',
+			title: '',
+			dialogClass: 'alert',
 			buttons: { "Ok": function() { $(this).dialog("close"); } },
 			modal: true
 		});
 
 	$dialog.dialog('open');
+}
+// Uncomment this part to replace default alert
+/*function alert(text) {
+	jalert(text);
 }*/
 
 /*
@@ -52,8 +102,10 @@ function focusFirst(Event)
 
 $(document).ready(function(){
   // focusFirst(); /** Uncomment if you want to use the focusFirst function **/
-  
-
+  autoDisabledComment();
+  addClassEmpty();
+  //$(".help-wrapper > span,.help-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
+  //$(".help-wrapper .error-wrapper > span,.help-wrapper .error-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
 })
 
 

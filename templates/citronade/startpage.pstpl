@@ -2,6 +2,7 @@
 	<title>{SURVEYNAME} {GROUPNAME} {SITENAME}</title>
 	<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 
+<meta name="viewport" content="width=device-width" />
 <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
 	<style type="text/css" media="aural tty">
         progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
@@ -10,17 +11,19 @@
     {TEMPLATECSS}
 	<link rel="stylesheet" type="text/css"  media="print" href="{TEMPLATEURL}print.css" />
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
-	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />		
+	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
+{GOOGLE_ANALYTICS_JAVASCRIPT}
 </head>
-<!--[if lt IE 7 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie6"> <![endif]-->
-<!--[if IE 7 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie7"> <![endif]-->
-<!--[if IE 8 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie8"> <![endif]-->
-<!--[if IE 9 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie9"> <![endif]-->
-<!--[if gt IE 9]><!--><body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}"><!--<![endif]-->
+<!--[if lt IE 7 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie6 no-js"> <![endif]-->
+<!--[if IE 7 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie7 no-js"> <![endif]-->
+<!--[if IE 8 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie8 no-js"> <![endif]-->
+<!--[if IE 9 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie9 no-js"> <![endif]-->
+<!--[if gt IE 9]><!--><body id="body" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} no-js"><!--<![endif]-->
+<script type='text/javascript'>/*<![CDATA[*/(function(H){ H.className=H.className.replace(/\bno-js\b/,'js') })(document.getElementsByTagName('body')[0]);/*]]>*/</script>
 <div id="container">
 	<div id="head">
 		<div class="wrapper">
-			<a href="http://www.limesurvey.org" title="The survey software" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt="LimeSurvey" id="logo"/></a>
+			<a href="#" title="Made with LimeSurvey" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt=" " id="logo"/></a>
 			<h1 id="sitename">{SITENAME}</h1>
 		</div>
 	</div>

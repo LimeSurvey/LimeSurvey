@@ -1,8 +1,9 @@
 // $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz
+var iRunningThreads=0;
+
 $(document).ready(function(){
 
     intThrottlingRate = 550; // 1 request per 550 ms
-
     $('#translationtabs').tabs();
     $('#translationtabs').show();
     $('#translationloading').hide();
@@ -13,6 +14,23 @@ $(document).ready(function(){
 
         var sBaseLang    = $("[name=baselang]").val();
         var sToLang      = $("[name=tolang]").val();
+
+        switch (sToLang)
+        {
+            case 'he': sToLang='iw'; break;
+            case 'zh-Hans': sToLang='zh-CN'; break;
+            case 'zh-Hant-TW': sToLang='zh-TW'; break;
+            case 'zh-Hant-HK': sToLang='zh-TW'; break;
+            case 'nl-informal': sToLang='nl'; break;
+            case 'de-informal': sToLang='de'; break;
+            case 'ie': sToLang='ga'; break;
+            case 'it-formal': sToLang='it'; break;
+            case 'nb': sToLang='no'; break;
+            case 'nn': sToLang='no'; break;
+            case 'pt-BR': sToLang='pt'; break;
+            case 'es-MX': sToLang='es'; break;
+            zh-Hans
+        }
 
         $("._from_",$(ui.target).parent()).each(function(index,element)
         {
@@ -48,6 +66,7 @@ $(document).ready(function(){
             }
 
             if (!bIgnore){
+
                 sToConvert = sToConvert.replace( new RegExp( "\\n", "g" ),'\\n');
                 sToConvert = sToConvert.replace(/"/g,'\\"');
                 setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate)
@@ -55,18 +74,22 @@ $(document).ready(function(){
 
         });
 
-        setTimeout('fHideAjaxLoader();',($("._from_",$(ui.target).parent()).length)*intThrottlingRate)
 
         return false;
     });
 });
 function fHideAjaxLoader(){
-    $('.ajax-loader').css('display','none');
+    iRunningThreads--;
+    if (iRunningThreads<=0)
+    {
+        $('.ajax-loader').css('display','none');
+    }
 }
 
 function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
   {
       $('.ajax-loader').css('display','inline');
+      iRunningThreads++;
       $.ajax({
             url:'admin.php',
             datatype: 'json',
@@ -77,8 +100,14 @@ function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
                 tolang:sToLang,
                 text:sToConvert
             },
+            error: function()
+            {
+                fHideAjaxLoader();
+            },
             success: function(aData)
             {
+                fHideAjaxLoader();
+
                 if (aData.error)
                 {
                     alert(sGoogleApiError + " " + sDetailedError + ": " + aData.error);

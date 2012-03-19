@@ -1286,7 +1286,7 @@
    <fieldname>allowsave</fieldname>
    <fieldname>autonumber_start</fieldname>
    <fieldname>autoredirect</fieldname>
-   <fieldname>showXquestions</fieldname>
+   <fieldname>showxquestions</fieldname>
    <fieldname>showgroupinfo</fieldname>
    <fieldname>shownoanswer</fieldname>
    <fieldname>showqnumcode</fieldname>
@@ -1338,7 +1338,7 @@
     <allowsave><![CDATA[Y]]></allowsave>
     <autonumber_start><![CDATA[0]]></autonumber_start>
     <autoredirect><![CDATA[N]]></autoredirect>
-    <showXquestions><![CDATA[Y]]></showXquestions>
+    <showxquestions><![CDATA[Y]]></showxquestions>
     <showgroupinfo><![CDATA[B]]></showgroupinfo>
     <shownoanswer><![CDATA[Y]]></shownoanswer>
     <showqnumcode><![CDATA[C]]></showqnumcode>

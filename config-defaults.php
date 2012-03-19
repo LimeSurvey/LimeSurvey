@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: config-defaults.php 12242 2012-01-27 23:41:13Z c_schmitz $
  */
 
 // CAUTION
@@ -189,6 +189,20 @@ $filterout_incomplete_answers = 'show';
 //     --> faster, but html code is displayed on the form
 //  * none: no html editor
 $defaulthtmleditormode = 'inline';
+
+// $defaultquestionselectormode
+// * sets the default for the question-type selector : full or none
+//    users without specific preference inherit this setup
+// * full : javascript selector with picture of the question type
+// * none : basic html selector
+$defaultquestionselectormode = 'full';
+
+// $defaulttemplateeditormode
+// * sets the default for the template editor : full or none
+//    users without specific preference inherit this setup
+// * full : javascript editor mode, with Editarea (text formatting, search and replace and real-time syntax highlight)
+// * none : basic textarea
+$defaulttemplateeditormode = 'full';
 
 // $surveyPreview_require_Auth
 // Enforce Authentication to the LS system
@@ -458,13 +472,13 @@ $chartfontsize =10;
 $updatecheckperiod=7;
 
 /**
- * @var $showXquestions string allows you to control whether or not
+ * @var $showxquestions string allows you to control whether or not
  * {THEREAREXQUESTIONS} is displayed (if it is included in a template)
  *	hide = always hide {THEREAREXQUESTIONS}
  *	show = always show {THEREAREXQUESTIONS}
  *	choose = allow survey admins to choose
  */
-$showXquestions = 'choose';
+$showxquestions = 'choose';
 
 
 /**
@@ -538,6 +552,18 @@ $ipInfoDbAPIKey = '';
 // To have questions that require google Maps!
 
 $googleMapsAPIKey = '';
+
+// Google Analytics API key:  http://www.google.com/analytics/
+$googleAnalyticsAPIKey = '';
+
+// Style for using Google Analytics
+// 0 = Don't use Analytics
+// 1 = Default
+// 2 = SurveyName-[SID]/GroupName
+$googleAnalyticsStyle = '0';
+
+// Google Translate API key:  https://code.google.com/apis/language/translate/v2/getting_started.html
+$googletranslateapikey = '';
 
 /**
 * This variable defines the total space available to the file upload question across all surveys. If set to 0 then no limit applies.

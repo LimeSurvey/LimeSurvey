@@ -1,4 +1,6 @@
-/* This file is part of Lime Survey Template :a free template
+/*  This file is part of Lime Survey Template : citronade
+    Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
+    Copyright (C) 2010-2012 GsiLL / Denis Chenu
     you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -43,8 +45,7 @@ table{border-collapse:separate;border-spacing:0;border:1px solid gray;margin:0}
 table td,table th{border:1px solid #ccc;vertical-align:top;padding:4px}
 article,aside,dialog,figure,footer,header,hgroup,menu,nav,section{display:block}
 ul#surveylist{list-style:none}
-.hide{position:absolute;top:-9999px;left:-9999px}
-.good{color:#090}
+.hide{position:absolute;top:auto;left:-999999px}
 #progress-wrapper{width:252px;font-size:12px;height:20px;margin:0 auto}
 #progress-wrapper #progress-pre{float:left;width:45px;text-align:right;margin:0 5px 0 0}
 #progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
@@ -56,10 +57,14 @@ ul#surveylist{list-style:none}
 .slider_lefttext{display:inline-block;position:relative;top:-.5em;padding-right:1em;text-align:right;font-size:.9em;color:#666}
 .slider_righttext{display:inline-block;position:relative;top:-.5em;padding-left:1em;font-size:.9em;color:#666}
 .slider_callout{overflow:hidden;position:absolute;top:-1.3em;margin-left:.8em;text-align:right;color:#333;font-size:.9em}
-.ie6 .ui-slider,.ie7 .ui-slider{display:block;float:left;}
-.ie6 .slider_lefttext ,.ie7 .slider_lefttext {float: left;margin-top:1em;}
-.ie6 .slider_righttext ,.ie7 .slider_righttext {float: left;margin-top:1em;}
+.ie .ui-slider{display:block;float:left;}
+.ie .slider_lefttext  {float: left;margin-top:1em;}
+.ie .slider_righttext {float: left;margin-top:1em;}
 
+.no-js .slider_showmin,.no-js .slider_showmax
+{display:none;}
+.no-js .slider_lefttext, .no-js .slider_righttext
+{display:none;}
 #percentcomplete{height:20px;display:block;margin:5px 0}
 h5,h6{font-size:1em}
 p,dl{margin:.75em 0}
@@ -113,11 +118,8 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	input#registercontinue,
 	.navigator input
 		{border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
-  -moz-box-shadow: 2px 2px 5px #ccc;
-  -webkit-box-shadow: 2px 2px 5px #ccc;
-  box-shadow: 2px 2px 5px #ccc;
-
-}
+		-moz-box-shadow: 2px 2px 5px #ccc;-webkit-box-shadow: 2px 2px 5px #ccc;box-shadow: 2px 2px 5px #ccc;
+		}
 #languagechanger select:hover,
 	.tools input:hover,
 	.tools a:hover,
@@ -135,9 +137,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	input#loadbutton:focus,
 	input#registercontinue:focus
 		{color:#415479;background:#dcdfe6;border-color:#ABB8D1;
-  -moz-box-shadow: 2px 2px 5px #415479;
-  -webkit-box-shadow: 2px 2px 5px #415479;
-  box-shadow: 2px 2px 5px #415479;
+		-moz-box-shadow: 2px 2px 5px #415479;-webkit-box-shadow: 2px 2px 5px #415479;box-shadow: 2px 2px 5px #415479;
 		}
 #languagechanger select:hover option{background:#FEFEFE;}
 
@@ -158,6 +158,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	.ie input#loadbutton
 		{height:2em}
 
+.no-js input.saveall,.no-js input.clearall,.no-js input#moveprevbtn  {display:none}
 /* gloabl information block */
 .note,#tokenmessage{border:#8195BA 1px solid;background:#EEF6FF;}
 
@@ -175,9 +176,9 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .question-wrapper .question-text strong,.question-wrapper .question-text b{font-weight:bolder;}/* see for strong and b to add some color */
 .asterisk {display:none}
 .mandatory .asterisk {display:inline;}
-.asterisk {color:#FF8900;padding-right:1em;}
+.asterisk {color:#FF8900;}
 .showqnumcode-X .qnumcode {display:none;}
-.qnumcode {font-style:italic;padding-right:1em;}
+.qnumcode {font-style:italic;}
 
 /* input decoration */
 .form input[type=text],#tokenform input[type=text]
@@ -189,6 +190,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .error{color:#944}
 .good{color:#494}
 .problem{color:#944}
+/* input error after*/
 
 /* If you want some round box, add round style */
 .round{-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
@@ -209,7 +211,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 
 /* index */
 #index .container{margin-top: 2em;border: 1px solid #5670A1;background:#EEF6FF;}
-#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
+#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0;font-size:1.1em;}
 #index .container h2{background:#5670A1;color:#FEFEFE;font-size:1.2em}
 #index .hdr{color:#5670A1;padding:0 0.5em;}
 #index .row{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: underline;}
@@ -218,11 +220,12 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 #index .row:hover, #index .row:focus, #index .row:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
 #index .container .submit{margin:0 auto 0.5em;display:block}
 /* --------------------------------------------- */
-/* More tempate adaptation                       */
+/* More template adaptation                       */
 /* --------------------------------------------- */
-#container{margin:0;text-align:center;} /* Global container */
-
-.wrapper,#content{overflow:auto;position:relative;text-align:left;}
+#container{margin:0;} /* Global container */
+.ie6 #container,.ie7 #container{text-align:center}
+.wrapper,#content{overflow:auto;position:relative;}
+.ie6 .wrapper,.ie6 #content,.ie7 .wrapper,.ie7 #content{text-align:left;}
 #container{min-height:100%;position:relative;}
 
 #head{position:relative;}
@@ -234,14 +237,24 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 #footer {text-align:center;padding:0.8em 0 0.4em;margin:0;font-size:0.8em;font-weight:normal;}
 #footer{border-width:1px 0;}
 #footer{width:100%;position:absolute;bottom:0;left:0;}
-#footer ul#credits{list-style: none outside;margin-top:0;margin-bottom:0;padding:0;text-align:center;overflow:auto;}
+.ie6 #footer{position:relative;}
+.ie6 #content{padding-bottom:1em;}
+#footer ul#credits{width:100%;list-style: none outside;margin:0;padding:0;text-align:center;display:block;}
 #footer ul#credit a {display: block;}
 #footer ul#credit li a.ui-state-hover {font-weight:normal;}/* to be corrected */
 #footer ul#credits li {list-style: none inside;margin:0;padding:0;text-align:center;}
-#footer ul#credits li{display:inline;}
-#footer ul#credits li#poweredby{position:absolute;top:0;left:0;text-align:center;}
-#footer ul#credits li#donate{position:absolute;top:0;right:0;text-align:center;}
-#footer ul#credits li#licence{margin:0;}
+#footer ul#credits li{display:inline-block;width:33%;}
+#footer ul#credits li.first{text-align:left;}
+#footer ul#credits li.last{text-align:right;}
+.ie6 #footer ul#credits li,.ie7 #footer ul#credits li{width:33%;display:block;float:left;}
+
+@media screen and (max-width: 480px) {
+	#footer ul#credits li{display:block;width:100%;}
+	#footer ul#credits li.first{text-align:center;}
+	#footer ul#credits li.last{text-align:center;}
+}
+
+
 
 /* survey title bar */
 #title{margin:0;text-align:center;padding:0;}
@@ -265,8 +278,9 @@ tools input,.tools a,input.submit,.navigator input,input#savebutton,input#loadbu
 	{margin:0;padding:3px 6px;text-decoration:none;cursor: pointer;}
 #languagechanger select
 		{margin:0;padding:1px 2px;}
-.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue
-	{outline: 0;}/* try to remove the outline on click : replaced with focus selector*/
+.tools,.navigator,.tools :active,.navigator :active,.tools :focus,.navigator :focus
+     { outline: 0 none; }
+.tools ::-moz-focus-inner,.navigator ::-moz-focus-inner {border:0;}
 .tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
 	{-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
 /* tools list */
@@ -303,46 +317,64 @@ div.form table table td{padding:0;}
 /* Group decoration */
 .group{margin-bottom: 2em}
 .groupdescription{padding:0 1.5em;margin:0 0 0.5em;}
-.grouptitle{line-height:2em;padding:0 1em;margin:0 0 0em;font-size:1.1em;}
+.grouptitle{line-height:2em;padding:0 1em;margin:0;font-size:1.1em;}
 
 
 /* Question decoration */
 .question-wrapper{margin:1em 0;}
 .question-text{border-bottom:none 0px #FFF;}
-.question-wrapper .answers{overflow:auto;overflow-y:hidden;}
+.question-wrapper .answers-wrapper{overflow:auto;overflow-y:hidden;}
+.answers-wrapper{padding:0.5em 1em;margin:0.5em auto;}
 
-/* tips and help */
-.tip{font-size:0.9em;font-style:italic;margin:0;}
-.answers{padding:0.5em 1em;margin:0.5em auto;}
+
 .question-help,.help{padding:0 1em;margin:0.5em auto 0;clear:both;}
 .question-help img{margin:1px 5px 5px 1px;}
 
-/* error bloc */
-.error-wrapper {display:none;}/* don't diplay error-wrapper if all is OK */
-.input-error .error-wrapper {display:block;padding:0 1em;}/*diplay error-wrapper only if there are error */
-.error-wrapper br:first-child{display:none;}/* don't put linefeed at start of an error box */
-.error-wrapper {margin:0.5em auto;width:96%;}
-.error-wrapper .error,.error-wrapper .errormandatory {padding:0.3em 1em;}
-.error-wrapper {background:transparent url(./exclamation.png) no-repeat center left;padding:4px;padding-left:20px;}
-.error-wrapper {color:#CD0A0A;border:#CD0A0A solid 1px;}
-.error-wrapper {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
+/* tip bloc */
+
+.help-wrapper ,.tip{font-style:italic;margin:0.5em auto;width:96%;line-height: 150%;}
+.help-wrapper {font-size:0.8em;}
+.help-wrapper .error,.help-wrapper .error-wrapper{color:#944;font-weight:bold}
+.help-wrapper .success,.help-wrapper .good,.help-wrapper .ok{color:#444}
+.help-wrapper .problem{color:#944}
+.help-wrapper .errormandatory{color:#944;font-weight:1em;}
+.help-wrapper .errormandatory br:first,.help-wrapper .errormandatory strong br:first{display:none;}
+.mandatory br{display:none;}/* don't put linefeed at start of an error box */
+
+.help-wrapper .mandatory{display:none;}
+.input-error .help-wrapper .mandatory{display:block;}
+.answer-wrapper .tip{text-align:left;font-size:0.8em;}
 /* input error */
-input.error,input.problem{font-weight:bold}/* some width problem : todo :fix it */
 input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 /* input decoration */
-.answers input.text,.answers textarea,.answers input[type=text]
+.answers-wrapper input.text,.answers-wrapper textarea,.answers-wrapper input[type=text]
 	{margin:3px;padding:2px;}
-.form input[type=text],.answers input.text,.answers textarea, .answers input[type=text]
+.form input[type=text],.answers-wrapper input.text,.answers-wrapper textarea, .answers-wrapper input[type=text]
 	{border:1px solid #999;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius:3px;}
-.answers textarea:focus, .answers input.text:focus, .answers input[type=text]:focus{
-  background-color:#F0F0F0;border-color:#666;
+
+
+.mandatory .answers-wrapper textarea.empty,.mandatory  .answers-wrapper input[type=text].empty,
+.answers-wrapper textarea.error, .answers-wrapper input[type=text].error{
+	border:1px solid #944;color:#444;background-color:#FEF;
+}
+.answers-wrapper textarea.good, .answers-wrapper input[type=text].good{
+	border:1px solid #494;color:#444
+}
+.answers-wrapper textarea.empty, .answers-wrapper input[type=text].empty{
+	border:1px solid #999;color:#444;background-color:#FFF;
+}
+.answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]{
+  background-color:#FFF;border-color:#EEE;
+}
+.answers-wrapper textarea.empty[disabled], .answers-wrapper input[type=text].empty[disabled]{
+	border:1px solid #EEE;color:#444;background-color:#FFF;
+}
+
+.answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
+  background-color:#FFF;border-color:#666;color:#222;
   -moz-box-shadow: 1px 1px 3px #555;
   -webkit-box-shadow: 1px 1px 3px #555;
   box-shadow: 1px 1px 3px #555;
-}
-
-.answers textarea[disabled], .answers input.text[disabled], .answers input[type=text][disabled]{
-  background-color:#FFF;border-color:#EEE;
 }
 
 /* specific questions color and background*/
@@ -396,8 +428,7 @@ button.ui-button::-moz-focus-inner {
 	line-height: normal;
 }
 
-.ui-button-icon-only { 
-	width: 2.2em; /* To make room for the icon, a width needs to be set here */
+.ui-button-icon-only { width: 2.2em;
 } 
 
 button.ui-button-icon-only { 
@@ -543,6 +574,8 @@ input.ui-button {
 .ui-widget-overlay { background: #aaaaaa 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
 .ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
+.alert .ui-dialog-titlebar {display:none}
+
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
 
@@ -600,46 +633,46 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 
 
 /* remove the list dot */
-.answers ul {
+.answers-wrapper ul {
 	list-style: none;
 	margin:0.75em 0;
 }
-.answers li {
+.answers-wrapper li {
     list-style-type: none;
     text-align: left;
     margin: 1em 0;
 }
-.answers label:hover {
+.answers-wrapper label:hover {
     color:#222;
 }
 
-.ie .multiple-opt-comments  .answers,
-	.ie .multiple-short-txt  .answers,
-	.ie .numeric-multi  .answers,
-	.ie .multiple-opt .answers 
+.ie .multiple-opt-comments  .answers-wrapper,
+	.ie .multiple-short-txt  .answers-wrapper,
+	.ie .numeric-multi  .answers-wrapper,
+	.ie .multiple-opt .answers-wrapper 
 	{overflow:hidden;}
 
 /* some inline list */
- .choice-5-pt-radio .answers ul li
-,.yes-no .answers ul li
-,.gender .answers ul li
+ .choice-5-pt-radio .answers-wrapper ul li
+,.yes-no .answers-wrapper ul li
+,.gender .answers-wrapper ul li
 {
 	display: inline;
-	padding: 0% 1em 0% 0%;
+	padding: 0 1em 0 0;
 	text-align:left;
 }
- .choice-5-pt-radio .answers li
-,.list-radio-flexible .answers li
-,.list-radio .answers li
-,.list-with-comment .answers li
+ .choice-5-pt-radio .answers-wrapper li
+,.list-radio-flexible .answers-wrapper li
+,.list-radio .answers-wrapper li
+,.list-with-comment .answers-wrapper li
 {
-	margin-left: 3em;
+	margin-right:0;margin-left: 3em;
 }
 @media screen and (max-width: 640px) {
-	 .choice-5-pt-radio .answers li
-	,.list-radio-flexible .answers li
-	,.list-radio .answers li
-	,.list-with-comment .answers li
+	 .choice-5-pt-radio .answers-wrapper li
+	,.list-radio-flexible .answers-wrapper li
+	,.list-radio .answers-wrapper li
+	,.list-with-comment .answers-wrapper li
 	{
 		margin-left: 0;
 	}
@@ -647,21 +680,10 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 .list-radio-flexible li{width:auto;}
 .list-radio-flexible ul{width:auto;margin:0 auto 0.5em;}
 
-
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
-{
-	font-size: 80%;
-	font-style: italic;
-}
-
 table.rank{width:98%;table-layout:fixed;}
 table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
 table.rank td{border-width:1px;}
 table.rank table td{border-width:0px;}
-
-
 
 .numeric-multi ul.slider.computed
 {
@@ -670,65 +692,39 @@ table.rank table td{border-width:0px;}
 
 .boilerplate {}
 
- .choice-5-pt-radio .answers ul
-,.yes-no .answers ul
-,.gender .answers ul
+ .choice-5-pt-radio .answers-wrapper ul
+,.yes-no .answers-wrapper ul
+,.gender .answers-wrapper ul
 {
 	text-align: center;
 }
- .choice-5-pt-radio .answers ul li
-,.yes-no .answers ul li
-,.gender .answers ul li
+ .choice-5-pt-radio .answers-wrapper ul li
+,.yes-no .answers-wrapper ul li
+,.gender .answers-wrapper ul li
 {
 	display: inline;
-	padding: 0% 2em 0% 0%;
+	padding: 0 2em 0 0;
 	text-align:left;
 }
 
-.date p.question { margin-left: 1em;margin-right: 1em; text-align:center;}
-.date p.question select.day {}
-.date p.question select.month {}
-.date p.question select.year {}
-
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
-{
-	padding-left: 1.5em;
-	font-size: 80%;
-	font-style: italic;
-	line-height: 150%;
-}
-.numeric p.question
+p.question
 {
 	 margin-left: 1em;margin-right: 1em;
 	font-weight: normal;
 	text-align:center;
 }
- .numeric-multi p.tip.error
-,.numeric-multi input.tip.error
-{
-	text-align: left;
-}
- .numeric-multi p.tip.good
-,.numeric-multi input.tip.good
-{
-	text-align: left;
-}
-
 
 table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
 table.rank{margin:0.3em auto;}
 table.rank select{width:99%;min-width:10em;padding-left:0.3em;}
 table.rank td{border:1px solid #D5DBE7}
 table.rank table td{border:0px none #D5DBE7}
-
-/*input{text-align:right}*/
+table.rank input{border:1px solid #999}
 
 
 .list-dropdown-flexible .question, .list-dropdown .question, .language .question
 {
-text-align:center;
+	text-align:center;
 }
 
 .list-with-comment div.list
@@ -742,11 +738,11 @@ text-align:center;
 	width: 47%;
 	float: left;
 	padding: 0.5em;
-	margin: 0%;
+	margin: 0;
 }
 .list-with-comment div.list p
 {
-	margin: 0%;
+	margin: 0;
 	text-align: left;
 }
 .list-with-comment p.comment
@@ -762,11 +758,6 @@ text-align:center;
 	width: 100%;
 }
 
- .multiple-opt-comments td.answer
-,.multiple-short-txt td.answer
-,.numeric-multi td.answer
-{
-}
  .multiple-opt-comments ul
 ,.multiple-short-txt ul
 ,.numeric-multi ul
@@ -777,13 +768,11 @@ text-align:center;
 	width:99%;
 }
 
-
-
-.numeric-multi ul	{	}
+.numeric-multi ul	{}
 .numeric-multi ul.computed
 {
 	float:left;
-	padding-right: 2em;
+	padding-left: 0;padding-right: 2em;
 }
 .numeric-multi ul.slider.computed
 {
@@ -799,31 +788,13 @@ text-align:center;
 	width:99%;
 }
 .numeric-multi ul li
-,.multiple-opt ul li
-,.multiple-opt-comments ul li
-,.multiple-short-txt ul li
+, .multiple-opt ul li
+, .multiple-opt-comments ul li
+, .multiple-short-txt ul li
 {
 	display: block;
 }
 
-.numeric-multi ul li label
-,.multiple-opt-comments ul li span.option
-,.multiple-short-txt ul li label
-{
-	clear:left;
-	float:left; 
-	width:45%;
-	padding: 0.3em 1em 0% 0%;
-}
-@media screen and (max-width: 640px) {
-	.numeric-multi ul li label
-	,.multiple-opt-comments ul li span.option
-	,.multiple-short-txt ul li label
-	{
-		width:auto;
-		padding: 0.3em 0 0;
-	}
-}
 .numeric-multi ul li label
 ,.multiple-short-txt ul li label
 {
@@ -837,47 +808,87 @@ text-align:center;
 	text-align: left;
 }
 
-.numeric-multi ul.multiplenumerichelp span input {
-    border: none;
-    background-color: #fff;
-    color: #222;
-    padding: 0%;
-    width: 7em;
-}
-
-.multiple-opt .answers ul li
-, .list-radio .answers ul li
-, .list-radio-flexible .answers ul li
+.numeric-multi .answers-wrapper ul
+, .multiple-short-txt .answers-wrapper ul 
+, .multiple-opt-comments  .answers-wrapper ul
 {
-	padding-left:30%;
+	display:table;
+}
+.numeric-multi .answers-wrapper ul li
+, .multiple-short-txt .answers-wrapper ul li
+, .multiple-opt-comments  .answers-wrapper ul li
+{
+	display:table-row;
 }
 
+.numeric-multi .answers-wrapper ul li label, .numeric-multi .answers-wrapper ul li span 
+, .multiple-short-txt .answers-wrapper ul li label, .multiple-short-txt .answers-wrapper ul li span
+, .multiple-opt-comments  .answers-wrapper ul .option, .multiple-opt-comments  .answers-wrapper ul .comment
+{
+	display:table-cell;
+	vertical-align:middle;
+	width:50%;
+	padding:0.3em 0.5em 0.7em;
+}
 
+.numeric-multi .answers-wrapper ul li label span
+, .multiple-short-txt .answers-wrapper ul li label span
+{
+	display:inline;
+	width:auto
+}
+
+.numeric-multi .answers-wrapper ul li span span
+, .multiple-short-txt .answers-wrapper ul li span span
+{
+	display:inline-block;
+	width:5em;
+	text-align:center;
+	font-weight:bold;
+}
+.ie6 .numeric-multi ul li label,.ie7 .numeric-multi ul li label
+,.ie6 .multiple-opt-comments ul li span.option,.ie7 .multiple-opt-comments ul li span.option
+,.ie6 .multiple-short-txt ul li label,.ie7 .multiple-short-txt ul li label
+{
+	clear:left;
+	float:left; 
+	width:45%;
+	padding: 0.3em 1em 0 0;
+}
+
+.multiple-opt .answers-wrapper ul li
+, .list-radio .answers-wrapper ul li
+, .list-radio-flexible .answers-wrapper ul li
+{
+	padding-right:0;padding-left:40%;
+}
 @media screen and (max-width: 640px) {
-.multiple-opt .answers ul li
-, .list-radio .answers ul li
-, .list-with-comment .answers ul li 
-, .list-radio-flexible .answers ul li 
-{
-	padding-left:0;
+	.multiple-opt .answers-wrapper ul li
+	, .list-radio .answers ul li
+	, .list-with-comment .answers ul li 
+	, .list-radio-flexible .answers ul li 
+	{
+		padding-left:0;
+	}
 }
-}
+
 
  .text-short input
- ,.text-short textarea
+,.text-short textarea
 ,.text-long textarea
 ,.text-huge textarea
 {
-	margin-left: 1em;
-text-align:left;
+	margin-right: 0;margin-left: 1em;
+    text-align:left;
 }
  .text-short .question
- ,.text-short .answers
-,.text-long .answers
-,.text-huge .answers
+ ,.text-short .answers-wrapper
+,.text-long .answers-wrapper
+,.text-huge .answers-wrapper
 {
 text-align:center;
 }
+
 
 /* multi column */
   ul.cols-2 , table.cols-2
@@ -903,27 +914,27 @@ text-align:center;
 	padding: 0;
 	white-space: normal
 }
- .list-radio-flexible .answers ul.cols-2 li ,.list-radio-flexible .answers ul.cols-2-ul li
-,.list-radio-flexible .answers ul.cols-3 li ,.list-radio-flexible .answers ul.cols-3-ul li
-,.list-radio-flexible .answers ul.cols-4 li ,.list-radio-flexible .answers ul.cols-4-ul li
-,.list-radio-flexible .answers ul.cols-5 li ,.list-radio-flexible .answers ul.cols-5-ul li
-,.list-radio-flexible .answers ul.cols-6 li ,.list-radio-flexible .answers ul.cols-6-ul li
-,.list-radio-flexible .answers ul.cols-7 li ,.list-radio-flexible .answers ul.cols-7-ul li
-,.list-radio-flexible .answers ul.cols-8 li ,.list-radio-flexible .answers ul.cols-8-ul li
-,.list-radio .answers ul.cols-2 li ,.list-radio .answers ul.cols-2-ul li
-,.list-radio .answers ul.cols-3 li ,.list-radio .answers ul.cols-3-ul li
-,.list-radio .answers ul.cols-4 li ,.list-radio .answers ul.cols-4-ul li
-,.list-radio .answers ul.cols-5 li ,.list-radio .answers ul.cols-5-ul li
-,.list-radio .answers ul.cols-6 li ,.list-radio .answers ul.cols-6-ul li
-,.list-radio .answers ul.cols-7 li ,.list-radio .answers ul.cols-7-ul li
-,.list-radio .answers ul.cols-8 li ,.list-radio .answers ul.cols-8-ul li
-,.multiple-opt .answers ul.cols-2 li ,.multiple-opt .answers ul.cols-2-ul li
-,.multiple-opt .answers ul.cols-3 li ,.multiple-opt .answers ul.cols-3-ul li
-,.multiple-opt .answers ul.cols-4 li ,.multiple-opt .answers ul.cols-4-ul li
-,.multiple-opt .answers ul.cols-5 li ,.multiple-opt .answers ul.cols-5-ul li
-,.multiple-opt .answers ul.cols-6 li ,.multiple-opt .answers ul.cols-6-ul li
-,.multiple-opt .answers ul.cols-7 li ,.multiple-opt .answers ul.cols-7-ul li
-,.multiple-opt .answers ul.cols-8 li ,.multiple-opt .answers ul.cols-8-ul li
+ .list-radio-flexible .answers-wrapper ul.cols-2 li ,.list-radio-flexible .answers-wrapper ul.cols-2-ul li
+,.list-radio-flexible .answers-wrapper ul.cols-3 li ,.list-radio-flexible .answers-wrapper ul.cols-3-ul li
+,.list-radio-flexible .answers-wrapper ul.cols-4 li ,.list-radio-flexible .answers-wrapper ul.cols-4-ul li
+,.list-radio-flexible .answers-wrapper ul.cols-5 li ,.list-radio-flexible .answers-wrapper ul.cols-5-ul li
+,.list-radio-flexible .answers-wrapper ul.cols-6 li ,.list-radio-flexible .answers-wrapper ul.cols-6-ul li
+,.list-radio-flexible .answers-wrapper ul.cols-7 li ,.list-radio-flexible .answers-wrapper ul.cols-7-ul li
+,.list-radio-flexible .answers-wrapper ul.cols-8 li ,.list-radio-flexible .answers-wrapper ul.cols-8-ul li
+,.list-radio .answers-wrapper ul.cols-2 li ,.list-radio .answers-wrapper ul.cols-2-ul li
+,.list-radio .answers-wrapper ul.cols-3 li ,.list-radio .answers-wrapper ul.cols-3-ul li
+,.list-radio .answers-wrapper ul.cols-4 li ,.list-radio .answers-wrapper ul.cols-4-ul li
+,.list-radio .answers-wrapper ul.cols-5 li ,.list-radio .answers-wrapper ul.cols-5-ul li
+,.list-radio .answers-wrapper ul.cols-6 li ,.list-radio .answers-wrapper ul.cols-6-ul li
+,.list-radio .answers-wrapper ul.cols-7 li ,.list-radio .answers-wrapper ul.cols-7-ul li
+,.list-radio .answers-wrapper ul.cols-8 li ,.list-radio .answers-wrapper ul.cols-8-ul li
+,.multiple-opt .answers-wrapper ul.cols-2 li ,.multiple-opt .answers-wrapper ul.cols-2-ul li
+,.multiple-opt .answers-wrapper ul.cols-3 li ,.multiple-opt .answers-wrapper ul.cols-3-ul li
+,.multiple-opt .answers-wrapper ul.cols-4 li ,.multiple-opt .answers-wrapper ul.cols-4-ul li
+,.multiple-opt .answers-wrapper ul.cols-5 li ,.multiple-opt .answers-wrapper ul.cols-5-ul li
+,.multiple-opt .answers-wrapper ul.cols-6 li ,.multiple-opt .answers-wrapper ul.cols-6-ul li
+,.multiple-opt .answers-wrapper ul.cols-7 li ,.multiple-opt .answers-wrapper ul.cols-7-ul li
+,.multiple-opt .answers-wrapper ul.cols-8 li ,.multiple-opt .answers-wrapper ul.cols-8-ul li
 , ul.cols-2 li , ul.cols-2-ul li
 , ul.cols-3 li , ul.cols-3-ul li
 , ul.cols-4 li , ul.cols-4-ul li
@@ -950,3 +961,16 @@ input.text,textarea{
 .yes-no {}
 .gender {}
 */
+
+
+/* Tips / Validation Messages */
+/* If the question is invalid, but has not been submitted, give it a pleasant warning color */
+
+.hide-tip .good {
+    display: none;
+}
+.hide-tip .error {
+}
+.input-error .hide-tip .error {
+    display: block;
+}

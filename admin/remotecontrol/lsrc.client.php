@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: lsrc.client.php 9031 2010-08-05 15:07:08Z wahrendorff $
  *
  */
 class lsrcClient {

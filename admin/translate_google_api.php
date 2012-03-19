@@ -21,19 +21,25 @@ try {
     $objGt         = new Gtranslate;
     // Gtranslate requires you to run function named XXLANG_to_XXLANG
     $sProcedure       = $sBaselang."_to_".$sTolang;
-
-    // Replace {TEXT} with <TEXT>. Text within <> act as a placeholder and are
-    // not translated by Google Translate
-    $sToNewconvert  = preg_replace("/\{(\w+)\}/", "<$1>",$sToconvert);
-    $bDoNotConvertBack = false;
-    if ($sToNewconvert == $sToconvert)
-        $bDoNotConvertBack = true;
-    $sToconvert = $sToNewconvert;
-    $sConverted  = $objGt->$sProcedure($sToconvert);
-    $sConverted  = str_replace("<br>","\r\n",$sConverted);
-    if (!$bDoNotConvertBack)
-        $sConverted  = preg_replace("/\<(\w+)\>/", '{$1}',$sConverted);
-    $sConverted  = html_entity_decode(stripcslashes($sConverted));
+    
+    $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
+    
+    $sparts = array();
+    foreach($parts as $part)
+    {
+        if ($part[2]=='EXPRESSION')
+        {
+            $sparts[] = $part[0];
+        }
+        else
+        {
+            $convertedPart = $objGt->$sProcedure($part[0]);
+            $convertedPart  = str_replace("<br>","\r\n",$convertedPart);
+            $convertedPart  = html_entity_decode(stripcslashes($convertedPart));      
+            $sparts[] = $convertedPart;
+        }
+    }
+    $sConverted = implode(' ', $sparts);
 
     $aOutput = array(
         'error'     =>  false,

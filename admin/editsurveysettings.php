@@ -60,6 +60,8 @@
             $esrow['showwelcome']              = 'Y';
             $esrow['emailresponseto']          = '';
             $esrow['assessments']              = 'N';
+            $esrow['googleanalyticsapikey']    = '';
+            $esrow['googleanalyticsstyle']     = '0';
 
             $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
@@ -274,6 +276,11 @@
         . "</li>\n";
 
         //TEMPLATES
+        if (!$esrow['template'])
+        {
+            $esrow['template']=$defaulttemplate;
+        }
+        $esrow['template']=validate_templatedir($esrow['template']);
         $editsurvey .= "<li><label for='template'>".$clang->gT("Template:")."</label>\n"
         . "<select id='template' name='template'>\n";
         foreach (array_keys(gettemplatelist()) as $tname) {
@@ -281,8 +288,6 @@
             if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1) {
                 $editsurvey .= "<option value='$tname'";
                 if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {
-                    $editsurvey .= " selected='selected'";
-                } elseif (!$esrow['template'] && $tname == "default") {
                     $editsurvey .= " selected='selected'";
                 }
                 $editsurvey .= ">$tname</option>\n";
@@ -436,10 +441,10 @@
         . "</select></li>";
 
         // Show {THEREAREXQUESTIONS} block
-        $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n\t\t".'<input type="hidden" name="showXquestions" id="" value="';
-        $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="';
+        $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showxquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n\t\t".'<input type="hidden" name="showxquestions" id="" value="';
+        $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="';
         $show_dis_post = "\" size=\"70\" />\n\t</li>\n";
-        switch ($showXquestions) {
+        switch ($showxquestions) {
             case 'show':
                 $editsurvey .= $show_dis_pre.'Y'.$show_dis_mid.$clang->gT('Yes (Forced by the system administrator)').$show_dis_post;
                 break;
@@ -449,15 +454,15 @@
             case 'choose':
             default:
                 $sel_showxq = array( 'Y' => '' , 'N' => '' );
-                if (isset($esrow['showXquestions'])) {
-                    $set_showxq = $esrow['showXquestions'];
+                if (isset($esrow['showxquestions'])) {
+                    $set_showxq = $esrow['showxquestions'];
                     $sel_showxq[$set_showxq] = ' selected="selected"';
                 }
                 if (empty($sel_showxq['Y']) && empty($sel_showxq['N'])) {
                     $sel_showxq['Y'] = ' selected="selected"';
                 };
-                $editsurvey .= "\n\t<li>\n\t\t<label for=\"showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n\t\t"
-                . "<select id=\"showXquestions\" name=\"showXquestions\">\n\t\t\t"
+                $editsurvey .= "\n\t<li>\n\t\t<label for=\"showxquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n\t\t"
+                . "<select id=\"showxquestions\" name=\"showxquestions\">\n\t\t\t"
                 . '<option value="Y"'.$sel_showxq['Y'].'>'.$clang->gT('Yes')."</option>\n\t\t\t"
                 . '<option value="N"'.$sel_showxq['N'].'>'.$clang->gT('No')."</option>\n\t\t"
                 . "</select>\n\t</li>\n";
@@ -836,6 +841,31 @@
         $editsurvey .= ">".$clang->gT("No")."</option>\n"
         . "</select></li>\n";
 
+        //GOOGLE ANALYTICS PROCESSING
+        //GOOGLE ANALYTICS API KEY
+        $editsurvey .= "<li><label for='googleanalyticsapikey'>".$clang->gT("Google Analytics API Key for this Survey?")."</label>\n"
+        . "<input type='text' value=\"{$esrow['googleanalyticsapikey']}\" name='googleanalyticsapikey' id='googleanalyticsapikey' size='20'/>\n"
+        . "</li>\n";
+
+        //GOOGLE ANALYTICS STYLE
+        $editsurvey .= "<li><label for='googleanalyticsstyle'>".$clang->gT("Google Analytics Style for this Survey?")."</label>\n"
+        . "<select id='googleanalyticsstyle' name='googleanalyticsstyle'>\n"
+        . "<option value='0'";
+        if (!$esrow['googleanalyticsstyle'] || $esrow['googleanalyticsstyle'] == "0") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">".$clang->gT("Do not use Google Analytics")."</option>\n"
+        . "<option value='1'";
+        if ($esrow['googleanalyticsstyle'] == "1") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">".$clang->gT("Default Google Analytics")."</option>\n"
+        . "<option value='2'";
+        if ($esrow['googleanalyticsstyle'] == "2") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">".$clang->gT("Track pages within survey")."</option>\n"
+        . "</select></li>\n";
 
         // End Notification and Data management TAB
         $editsurvey .= "</ul></div>\n";
