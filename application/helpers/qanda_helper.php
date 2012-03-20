@@ -4462,7 +4462,7 @@ function do_array_5point($ia)
     }
     $answer .= "</tr></thead>\n";
 
-    $answer_t_content = '';
+    $answer_t_content = '<tbody>';
     $trbc = '';
     $n=0;
     //return array($answer, $inputnames);
@@ -4483,11 +4483,9 @@ function do_array_5point($ia)
         $trbc = alternation($trbc , 'row');
 
         // Get array_filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
 
-        $answer_t_content .= $htmltbody2;
-
-        $answer_t_content .= "<tr class=\"$trbc answers-list radio-list\">\n"
+        $answer_t_content .= $htmltbody2
         . "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -4530,12 +4528,12 @@ function do_array_5point($ia)
             $answer_t_content .= " onclick='$checkconditionFunction(this.value, this.name, this.type)'  />\n</label>\n\t</td>\n";
         }
 
-        $answer_t_content .= "</tr>\n\n\t</tbody>";
+        $answer_t_content .= "</tr>\n";
         $fn++;
         $inputnames[]=$myfname;
     }
 
-    $answer .= $answer_t_content . "\t</table>\n";
+    $answer .= $answer_t_content . "\n</tbody>\t</table>\n";
     return array($answer, $inputnames);
 }
 
@@ -4616,7 +4614,7 @@ function do_array_10point($ia)
         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
     }
     $answer .= "</tr>\n</thead>";
-    $answer_t_content = '';
+    $answer_t_content = '<tbody';
     $trbc = '';
     foreach ($ansresult->readAll() as $ansrow)
     {
@@ -4631,11 +4629,9 @@ function do_array_10point($ia)
         $trbc = alternation($trbc , 'row');
 
         //Get array filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
 
-        $answer_t_content .= $htmltbody2;
-
-        $answer_t_content .= "<tr class=\"$trbc answers-list radio-list\">\n"
+        $answer_t_content .= $htmltbody2
         . "\t<th class=\"answertext\">\n$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -4668,11 +4664,11 @@ function do_array_10point($ia)
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
 
         }
-        $answer_t_content .= "</tr>\n</tbody>";
+        $answer_t_content .= "</tr>\n";
         $inputnames[]=$myfname;
         $fn++;
     }
-    $answer .=  $answer_t_content . "\t\n</table>\n";
+    $answer .=  $answer_t_content . "\t\n</tbody>\n</table>\n";
     return array($answer, $inputnames);
 }
 
@@ -4741,7 +4737,7 @@ function do_array_yesnouncertain($ia)
         $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
     }
     $answer .= "</tr>\n\t</thead>";
-    $answer_t_content = '';
+    $answer_t_content = '<tbody>';
     if ($anscount==0)
     {
         $inputnames=array();
@@ -4763,12 +4759,11 @@ function do_array_yesnouncertain($ia)
             $trbc = alternation($trbc , 'row');
 
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
 
             $answer_t_content .= $htmltbody2;
 
-            $answer_t_content .= "<tr class=\"$trbc answers-list radio-list\">\n"
-            . "\t<th class=\"answertext\">\n"
+            $answer_t_content .= "\t<th class=\"answertext\">\n"
             . $hiddenfield
             . "\t\t\t\t$answertext</th>\n"
             . "\t<td class=\"answer_cell_Y answer-item radio-item\">\n<label for=\"answer$myfname-Y\">\n"
@@ -4819,12 +4814,12 @@ function do_array_yesnouncertain($ia)
                 $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
                 // --> END NEW FEATURE - SAVE
             }
-            $answer_t_content .= "</tr>\n</tbody>";
+            $answer_t_content .= "</tr>";
             $inputnames[]=$myfname;
             $fn++;
         }
     }
-    $answer .=  $answer_t_content . "\t\n</table>\n";
+    $answer .=  $answer_t_content . "\t\</tbody>\n</table>\n";
     return array($answer, $inputnames);
 }
 
@@ -4900,7 +4895,7 @@ function do_array_increasesamedecrease($ia)
     }
     $answer .= "</tr>\n"
     ."\t</thead>\n";
-    $answer_body = '';
+    $answer_body = '<tbody>';
     $trbc = '';
     foreach($ansresult->readAll() as $ansrow)
     {
@@ -4917,12 +4912,11 @@ function do_array_increasesamedecrease($ia)
         $trbc = alternation($trbc , 'row');
 
         // Get array_filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,'tr',"$trbc answers-list radio-list");
 
         $answer_body .= $htmltbody2;
 
-        $answer_body .= "<tr class=\"$trbc answers-list radio-list\">\n"
-        . "\t<th class=\"answertext\">\n"
+        $answer_body .= "\t<th class=\"answertext\">\n"
         . "$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -4984,11 +4978,11 @@ function do_array_increasesamedecrease($ia)
             . "</label>\n"
             . "\t</td>\n";
         }
-        $answer_body .= "</tr>\n\t</tbody>";
+        $answer_body .= "</tr>\n";
         $inputnames[]=$myfname;
         $fn++;
     }
-    $answer .=  $answer_body . "\t\n</table>\n";
+    $answer .=  $answer_body . "\t</tbody>\n</table>\n";
     return array($answer, $inputnames);
 }
 
@@ -4997,9 +4991,9 @@ function do_array_increasesamedecrease($ia)
 function do_array($ia)
 {
     global $thissurvey;
-    global $repeatheadings;
     global $notanswered;
-    global $minrepeatheadings;
+    $repeatheadings = Yii::app()->getConfig("repeatheadings");
+    $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $clang = Yii::app()->lang;
 
@@ -5082,7 +5076,7 @@ function do_array($ia)
         }
         $answer_head .= "</tr>\n\t</thead>\n\n\t\n";
 
-        $answer = '';
+        $answer = '<tbody>';
         $trbc = '';
         $inputnames=array();
 
@@ -5092,6 +5086,7 @@ function do_array($ia)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
+                    $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
                     $answer .= "<tr class=\"repeat headings\">\n"
                     . "\t<td>&nbsp;</td>\n";
                     foreach ($labelans as $ld)
@@ -5124,17 +5119,12 @@ function do_array($ia)
             // Get array_filter stuff
             //
             // TMSW - is this correct?
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
-            //            $row_selected = return_array_filter_selected($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
-            //			if($row_selected)
-            //			{
             $trbc = alternation($trbc , 'row');
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
             $fn++;
-            //			}
             $answer .= $htmltbody2;
 
-            $answer .= "<tr class=\"$trbc answers-list radio-list\">\n"
-            . "\t<th class=\"answertext\">\n$answertext"
+            $answer .= "\t<th class=\"answertext\">\n$answertext"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -5189,7 +5179,7 @@ function do_array($ia)
             $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
         }
-
+        $answer .= "</tbody>\n";
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
         ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;
 
@@ -5211,7 +5201,7 @@ function do_array($ia)
         }
         $answer_cols .= "\t</colgroup>\n";
 
-        $answer = $answer_start . $answer_cols . $answer_head .$answer . "\t</tbody>\n</table>\n";
+        $answer = $answer_start . $answer_cols . $answer_head .$answer ."</table>\n";
     }
     elseif ($useDropdownLayout === true && $lresult->count() > 0)
     {
@@ -5270,11 +5260,10 @@ function do_array($ia)
                 $answertext = '<span class="errormandatory">'.$answertext.'</span>';
             }
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc question-item answer-item dropdown-item");
             $answer .= $htmltbody2;
 
-            $answer .= "<tr class=\"$trbc question-item answer-item dropdown-item\">\n"
-            . "\t<th class=\"answertext\">\n$answertext"
+            $answer .= "\t<th class=\"answertext\">\n$answertext"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -5322,13 +5311,13 @@ function do_array($ia)
                 $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
             }
 
-            $answer .= "</tr>\n</tbody>";
+            $answer .= "</tr>\n";
             $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
-
-        $answer = $answer_start . $answer . "\t</tbody>\n</table>\n";
+        $answer .= "\t</tbody>";
+        $answer = $answer_start . $answer . "\n</table>\n";
     }
     else
     {
@@ -5346,9 +5335,9 @@ function do_array($ia)
 function do_array_multitext($ia)
 {
     global $thissurvey;
-    global $repeatheadings;
     global $notanswered;
-    global $minrepeatheadings;
+    $repeatheadings = Yii::app()->getConfig("repeatheadings");
+    $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $clang = Yii::app()->lang;
 
@@ -5584,7 +5573,7 @@ function do_array_multitext($ia)
         . "\t</thead>\n";
 
         $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list{$extraclass}$num_class"."$totals_class\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
-
+        $answer .= "<tbody>";
         $trbc = '';
         foreach ($ansresult->readAll() as $ansrow)
         {
@@ -5592,14 +5581,14 @@ function do_array_multitext($ia)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
-                    $trbc = alternation($trbc , 'row');
-                    $answer .= "<tbody>\n<tr class=\"$trbc repeat headings\">\n"
+                    $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
+                    $answer .= "<tr class=\"repeat headings\">\n"
                     . "\t<td>&nbsp;</td>\n";
                     foreach ($labelans as $ld)
                     {
                         $answer .= "\t<th>".$ld."</th>\n";
                     }
-                    $answer .= "</tr>\n</tbody>\n";
+                    $answer .= "</tr>\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -5627,14 +5616,13 @@ function do_array_multitext($ia)
             }
 
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            $trbc = alternation($trbc , 'row');
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list");
 
             $answer .= $htmltbody2;
 
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
-            $trbc = alternation($trbc , 'row');
-            $answer .= "\t\t<tr class=\"$trbc subquestion-list questions-list\" id=\"$myfname\">\n"
-            . "\t\t\t<th class=\"answertext\">\n"
+            $answer .= "\t\t\t<th class=\"answertext\">\n"
             . "\t\t\t\t".$hiddenfield
             . "$answertext\n"
             . "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -5669,11 +5657,10 @@ function do_array_multitext($ia)
 
             $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
             $answer .= "\n\t\t</tr>\n";
-            $answer .= "</tbody>\n";
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
-        if($show_totals == 'col' || $show_totals = 'both' || $grand_total == true)
+        if($show_totals == 'col' || $show_totals == 'both' || $grand_total == true)
         {
             $answer .= "\t\t<tr class=\"total\">$row_head";
             for( $a = 0; $a < count($labelcode) ; ++$a )
@@ -5727,9 +5714,9 @@ EOD;
 function do_array_multiflexi($ia)
 {
     global $thissurvey;
-    global $repeatheadings;
     global $notanswered;
-    global $minrepeatheadings;
+    $repeatheadings = Yii::app()->getConfig("repeatheadings");
+    $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $answertypeclass = "";
     $clang = Yii::app()->lang;
@@ -5912,21 +5899,21 @@ function do_array_multiflexi($ia)
 
         $trbc = '';
         $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n";
-
+        $answer .= "<tbody>";
         foreach ($ansresult as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
-                    $trbc = alternation($trbc , 'row');
-                    $answer .= "<tbody>\n<tr class=\"$trbc repeat\">\n"
+                    $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
+                    $answer .= "<tr class=\"repeat headings\">\n"
                     . "\t<td>&nbsp;</td>\n";
                     foreach ($labelans as $ld)
                     {
                         $answer .= "\t<th>".$ld."</th>\n";
                     }
-                    $answer .= "</tr>\n</tbody>\n";
+                    $answer .= "</tr>\n\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -5954,16 +5941,13 @@ function do_array_multiflexi($ia)
             }
 
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            $trbc = alternation($trbc , 'row');
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestions-list questions-list {$answertypeclass}-list");
 
             $answer .= $htmltbody2;
 
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
-
-            $trbc = alternation($trbc , 'row');
-
-            $answer .= "<tr class=\"$trbc subquestions-list questions-list {$answertypeclass}-list\">\n"
-            . "\t<th class=\"answertext\" width=\"$answerwidth%\">\n"
+            $answer .= "\t<th class=\"answertext\" width=\"$answerwidth%\">\n"
             . "$answertext\n"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -6070,11 +6054,11 @@ function do_array_multiflexi($ia)
                 $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
             }
 
-            $answer .= "</tr>\n\t</tbody>";
+            $answer .= "</tr>\n";
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
-        $answer .= "\n</table>\n";
+        $answer .= "\t</tbody>\n</table>\n";
     }
     else
     {
@@ -6237,9 +6221,9 @@ function do_arraycolumns($ia)
 function do_array_dual($ia)
 {
     global $thissurvey;
-    global $repeatheadings;
     global $notanswered;
-    global $minrepeatheadings;
+    $repeatheadings = Yii::app()->getConfig("repeatheadings");
+    $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $answertypeclass = ""; // Maybe not
     $clang = Yii::app()->lang;
@@ -6442,7 +6426,8 @@ function do_array_dual($ia)
         . "\n\t<thead>\n"
         . $myheader1
         . $myheader2
-        . "\n\t</thead>\n";
+        . "\n\t</thead>\n"
+        . "<tbody>\n";
 
         $trbc = '';
         foreach ($ansresult->readAll() as $ansrow)
@@ -6452,7 +6437,8 @@ function do_array_dual($ia)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
-                    $answer .= "<tbody>\n<tr  class=\"repeat headings\">\n"
+                    $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
+                    $answer .= "\n<tr  class=\"repeat headings\">\n"
                     . "\t<th class=\"header_answer_text\">&nbsp;</th>\n";
                     foreach ($labelans as $ld)
                     {
@@ -6475,7 +6461,7 @@ function do_array_dual($ia)
                         $answer .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
                         $answer .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
                     }
-                    $answer .= "</tr>\n</tbody>\n";
+                    $answer .= "</tr>\n";
                 }
             }
 
@@ -6496,15 +6482,14 @@ function do_array_dual($ia)
             }
 
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname0, $trbc, $myfname);
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname0, $trbc, $myfname,"tr","$trbc answers-list radio-list");
 
             $answer .= $htmltbody2;
 
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 
             array_push($inputnames,$myfname);
-            $answer .= "<tr class=\"$trbc answers-list radio-list\">\n" // Note real : answers-list radios-list ? or answers-list radio-list dualanswers-list dualradio-list
-            . "\t<th class=\"answertext\">\n"
+            $answer .= "\t<th class=\"answertext\">\n"
             . $hiddenfield
             . "$answertext\n"
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -6591,11 +6576,11 @@ function do_array_dual($ia)
             }
 
             $answer .= "</tr>\n";
-            $answer .= "\t</tbody>\n";
             // $inputnames[]=$myfname;
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
+        $answer .= "\t</tbody>\n";
         $answer .= "</table>\n";
     }
     elseif ($useDropdownLayout === true && $lresult->count() > 0)
@@ -6714,7 +6699,7 @@ function do_array_dual($ia)
             . "\t<th>$rightheader</th>\n"
             . $suffix_cell."</tr>\n"
             . "\t</thead>\n\n";
-
+            $answer .= "\n<tbody>\n";
             $trbc = '';
             foreach ($ansresult->readAll() as $ansrow)
             {
@@ -6736,12 +6721,11 @@ function do_array_dual($ia)
                 $trbc = alternation($trbc , 'row');
 
                 // Get array_filter stuff
-                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc, $myfname);
+                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list dropdown-list");
 
                 $answer .= $htmltbody2;
 
-                $answer .= "<tr class=\"$trbc subquestion-list questions-list dropdown-list\">\n"
-                . "\t<th class=\"answertext\">\n"
+                $answer .= "\t<th class=\"answertext\">\n"
                 . "<label for=\"answer$rowname\">\n"
                 . $hiddenfield
                 . "$answertext\n"
@@ -6853,9 +6837,9 @@ function do_array_dual($ia)
                 $inputnames[]=$myfname1;
 
                 $answer .= "</tr>\n";
-                $answer .= "\t</tbody>\n";
             }
         } // End there are answers
+        $answer .= "\t</tbody>\n";
         $answer .= "</table>\n";
     }
     else
