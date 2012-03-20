@@ -1362,7 +1362,7 @@ class LimeExpressionManager {
             {
                 $preg='';
             }
-            
+
             // em_validation_q_tip - a description of the EM validation equation that must be satisfied for the whole question.
             if (isset($qattr['em_validation_q_tip']) && !is_null($qattr['em_validation_q_tip']) && trim($qattr['em_validation_q_tip']) != '')
             {
@@ -1392,7 +1392,7 @@ class LimeExpressionManager {
                             case 'N': //NUMERICAL QUESTION TYPE
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
-                            case 'U': //HUGE FREE TEXT                                
+                            case 'U': //HUGE FREE TEXT
                                 if ($this->sgqaNaming)
                                 {
                                     $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_q) . ')';
@@ -1525,11 +1525,11 @@ class LimeExpressionManager {
             {
                 $em_validation_sq='';
             }
-            
+
             ////////////////////////////////////////////
             // COMPOSE USER FRIENDLY MIN/MAX MESSAGES //
             ////////////////////////////////////////////
-            
+
              // Put these in the order you with them to appear in messages.
             $qtips=array();
 
@@ -1624,7 +1624,7 @@ class LimeExpressionManager {
 //                $qtips['regex_validation']=sprintf($this->gT('Each answer must conform to this regular expression: %s'), str_replace(array('{','}'),array('{ ',' }'), $preg));
                 $qtips['regex_validation']=$this->gT('Please check the format of your answer.');
             }
-            
+
             if ($em_validation_sq!='')
             {
                 if ($em_validation_sq_tip =='')
@@ -1639,9 +1639,9 @@ class LimeExpressionManager {
                 {
                     $qtips['sq_fn_validation']=$em_validation_sq_tip;
                 }
-                
+
             }
-            
+
             // em_validation_q - whole-question validation equation
             if ($em_validation_q!='')
             {
@@ -2907,7 +2907,7 @@ class LimeExpressionManager {
         $LEM->currentQuestionSeq=-1;    // for question-by-question mode
         $LEM->indexGseq=array();
         $LEM->indexQseq=array();
-        
+
         if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
         {
             $startingValues = $_SESSION[$LEM->sessid]['startingValues'];
@@ -3302,7 +3302,7 @@ class LimeExpressionManager {
                                             "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : NULL),
                                             "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : date("Y-m-d H:i:s",0))
                                                 ));
-        
+
             }
             if ($this->surveyOptions['ipaddr'] == "Y")
             {
@@ -3312,7 +3312,7 @@ class LimeExpressionManager {
             {
                 $sdata = array_merge($sdata,array("refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL)));
             }
-            
+
             $sdata = array_filter($sdata);
             if (Yii::app()->db->createCommand()->insert($this->surveyOptions['tablename'], $sdata))    // Checked
             {
@@ -4355,7 +4355,7 @@ class LimeExpressionManager {
                 default:
                     if (count($unansweredSQs) > 0)
                     {
-                        $qmandViolation = true; 
+                        $qmandViolation = true;
                     }
                     break;
             }
@@ -5263,7 +5263,7 @@ static function GetRelevanceAndTailoringJavaScript()
                 {
                     $qrelQIDs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
                     $qrelGIDs=array();
-                }    
+                }
 
                 $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                 $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
@@ -5894,7 +5894,7 @@ EOD;
 
 		return $data;
     }
-    
+
 /**
      * Deprecate obsolete question attributes.
      * @param boolean $changedb - if true, updates parameters and deletes old ones
@@ -5905,9 +5905,9 @@ EOD;
     {
         $LEM =& LimeExpressionManager::singleton();
         $qattrs = $LEM->getQuestionAttributesForEM($surveyid,$onlythisqid);
-        
+
         $qupdates = array();
-        
+
         $attibutemap = array(
             'max_num_value_sgqa' => 'max_num_value',
             'min_num_value_sgqa' => 'min_num_value',
@@ -6120,7 +6120,14 @@ EOD;
                     $type = $qinfo['info']['type'];
                     if ($relevant && $grelevant && $sqrelevant)
                     {
-                        $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                        if ($qinfo['info']['hidden'])
+                        {
+                            $value = (isset($_SESSION['survey_'.$LEM->sessid][$sq]) ? $_SESSION['survey_'.$LEM->sessid][$sq] : '');    // if always hidden, use the default value, if any
+                        }
+                        else
+                        {
+                            $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                        }
                         if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
                         {
                             // convert from comma back to decimal
