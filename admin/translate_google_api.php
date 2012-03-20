@@ -17,13 +17,13 @@ $aReplace    = array('zh-CN','zh-TW','zh-TW','nl','de','it','pt','es','no','no')
 $sTolang  = str_replace($aSearch,$aReplace,$sTolang);
 
 try {
-    
+
     $objGt         = new Gtranslate;
     // Gtranslate requires you to run function named XXLANG_to_XXLANG
     $sProcedure       = $sBaselang."_to_".$sTolang;
-    
+
     $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
-    
+
     $sparts = array();
     foreach($parts as $part)
     {
@@ -35,7 +35,7 @@ try {
         {
             $convertedPart = $objGt->$sProcedure($part[0]);
             $convertedPart  = str_replace("<br>","\r\n",$convertedPart);
-            $convertedPart  = html_entity_decode(stripcslashes($convertedPart));      
+            $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
             $sparts[] = $convertedPart;
         }
     }
@@ -47,7 +47,7 @@ try {
         'tolang'    =>  $sTolang,
         'converted' =>  $sConverted
     );
-    
+
 }   catch (GTranslateException $ge){
 
     // Get the error message and build the ouput array
