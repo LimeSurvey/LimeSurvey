@@ -203,11 +203,11 @@ function passJSON(fieldname, show_title, show_comment, pos) {
 
     while (i <= licount)
     {
-        if (filecount > 0)
-            json += ",";
 
         if ($("#"+fieldname+"_li_"+i).is(':visible'))
         {
+            if (filecount > 0)
+                json += ",";
             json += '{';
 
             if ($("#"+fieldname+"_show_title").val() == 1)
@@ -220,12 +220,8 @@ function passJSON(fieldname, show_title, show_comment, pos) {
                     '"ext":"'    +$("#"+fieldname+"_ext_"    +i).val()+'"}';
 
             filecount += 1;
-            i += 1;
         }
-        else
-        {
-            i += 1;
-        }
+        i += 1;
     }
     json += "]";
     window.parent.window.copyJSON(json, filecount, fieldname, show_title, show_comment, pos);
