@@ -7226,7 +7226,7 @@ EOD;
                 }
             }
 
-            LimeExpressionManager::StartSurvey($sid, 'survey');
+            // TODO - this still isn't always exporting the right language - often blends preceding languages, and does so inconsistently (caching issue?)
             foreach($langs as $lang)
             {
                 if (trim($lang) == '')
@@ -7234,7 +7234,9 @@ EOD;
                     continue;
                 }
                 SetSurveyLanguage($sid,$lang);
-                $moveResult = LimeExpressionManager::JumpTo(1,false,false,false);
+                LimeExpressionManager::StartSurvey($sid, 'survey', array('sgqaNaming'=>'N'), false);
+                $moveResult = LimeExpressionManager::NavigateForwards();
+//                $moveResult = LimeExpressionManager::JumpTo(1,false,false,false,true);
                 $LEM =& LimeExpressionManager::singleton();
 
                 if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
@@ -7254,7 +7256,10 @@ EOD;
                         $_gseq = $gseq;
                         $ginfo = $LEM->gseq2info[$gseq];
 
+                        // if relevance equation is using SGQA coding, convert to qcoding
                         $grelevance = (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']);
+                        $LEM->em->ProcessBooleanExpression($grelevance, $gseq, 0);    // $qseq
+                        $grelevance = trim(strip_tags($LEM->em->GetPrettyPrintString()));
                         $gtext = ((trim($ginfo['description']) == '') ? '' : $ginfo['description']);
 
                         $row = array();
@@ -7262,6 +7267,7 @@ EOD;
                         $row['name'] = $ginfo['group_name'];
                         $row['relevance'] = $grelevance;
                         $row['text'] = $gtext;
+                        $row['language'] = $lang;
                         $rows[] = $row;
                     }
 
@@ -7315,7 +7321,10 @@ EOD;
                         }
                     }
 
+                    // if relevance equation is using SGQA coding, convert to qcoding
                     $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
+                    $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $q['info']['qseq']);    // $qseq
+                    $relevanceEqn = trim(strip_tags($LEM->em->GetPrettyPrintString()));
                     $rootVarName = $q['info']['rootVarName'];
                     $preg = ((isset($qinfo['preg']) && !is_null($qinfo['preg'])) ? $qinfo['preg'] : '');
 

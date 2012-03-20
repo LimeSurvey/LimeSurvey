@@ -75,6 +75,7 @@ if (!isset($copyfunction))
             {
                 $col = "\"".$col."\"";
             }
+            $col = str_replace(array("\t","\n","\r"),array(" "," "," "),$col);
             $sheet->write($rc, $cc, $col);
         }
     }
