@@ -382,12 +382,12 @@ class question extends Survey_Common_Action
         $aData['scalecount'] = $scalecount;
 
         // The following line decides if the assessment input fields are visible or not
-        $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('sid' => $surveyid));
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findByAttributes(array('sid' => $surveyid));
         if (is_null($sumresult1))
             $this->getController()->error('Invalid survey ID');
 
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
         $aData['assessmentvisible'] = $assessmentvisible;
@@ -583,12 +583,12 @@ class question extends Survey_Common_Action
 
         $aData['scalecount'] = $scalecount = $qtypes[$qtype]['subquestions'];
 
-        $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('sid' => $surveyid));
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findByAttributes(array('sid' => $surveyid));
         if ($sumresult1 == null)
             $this->getController()->error('Invalid survey id');
 
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
 
         $aData['activated'] = $activated = $surveyinfo['active'];
@@ -940,7 +940,7 @@ class question extends Survey_Common_Action
         $aData['attributedata'] = $aAttributesPrepared;
         $this->getController()->render('/admin/survey/Question/advanced_settings_view', $aData);
     }
-    
+
     /**
      * This function prepares the data for label set details
      *
@@ -951,12 +951,12 @@ class question extends Survey_Common_Action
     {
         $lid=returnglobal('lid');
         Yii::app()->loadHelper('surveytranslator');
-        
+
         $labelsetdata=Labelsets::model()->find('lid=:lid',array(':lid' => $lid)); //$connect->GetArray($query);
-        
+
         $labelsetlanguages=explode(' ',$labelsetdata->languages);
         foreach  ($labelsetlanguages as $language){
-            
+
             //$query='select * from lime_labels where lid='.$lid." and language='{$language}' order by sortorder";
             $criteria=new CDbCriteria;
             $criteria->condition='lid=:lid and language=:language';
@@ -978,10 +978,10 @@ class question extends Survey_Common_Action
             //$labels=dbExecuteAssoc($query); //Label::model()->find(array('lid' => $lid, 'language' => $language), array('order' => 'sortorder')); //$connect->GetArray($query);
             $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
         }
-        
+
         echo json_encode($resultdata);
     }
-    
+
     /**
      * This function prepares the data for labelset
      *
