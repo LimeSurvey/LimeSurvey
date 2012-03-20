@@ -303,16 +303,16 @@
                     $value = substr($value,1,-1);
                 }
                 else if (preg_match('/^{.+}$/',$value)) {
-                    $value = substr($value,1,-1);
-                }
-                else if ($row['method'] == 'RX') {
-                    if (!preg_match('#^/.*/$#',$value))
-                    {
-                        $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
+                        $value = substr($value,1,-1);
                     }
-                }
-                else {
-                    $value = '"' . $value . '"';
+                    else if ($row['method'] == 'RX') {
+                            if (!preg_match('#^/.*/$#',$value))
+                            {
+                                $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
+                            }
+                    }
+                    else {
+                        $value = '"' . $value . '"';
                 }
 
                 // add equation
@@ -2168,8 +2168,8 @@
                         break;
                     case '|': //File Upload
                         // Only want the use the one that ends in '_filecount'
-//                        $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$sgqa);
-//                        $jsVarName = $goodcode . '_filecount';
+                        //                        $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$sgqa);
+                        //                        $jsVarName = $goodcode . '_filecount';
                         $jsVarName = $sgqa;
                         $jsVarName_on = $jsVarName;
                         break;
@@ -3446,10 +3446,10 @@
         }
 
         /**
-         * Get last move information, optionally clearing the substitution cache
-         * @param type $clearSubstitutionInfo
-         * @return type
-         */
+        * Get last move information, optionally clearing the substitution cache
+        * @param type $clearSubstitutionInfo
+        * @return type
+        */
         static function GetLastMoveResult($clearSubstitutionInfo=false)
         {
             $LEM =& LimeExpressionManager::singleton();
@@ -6104,7 +6104,14 @@ EOD;
                     $type = $qinfo['info']['type'];
                     if ($relevant && $grelevant && $sqrelevant)
                     {
-                        $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                        if ($qinfo['info']['hidden'])
+                        {
+                            $value = (isset($_SESSION[$sq]) ? $_SESSION[$sq] : '');    // if always hidden, use the default value, if any
+                        }
+                        else
+                        {
+                            $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                        }
                         if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
                         {
                             // convert from comma back to decimal
