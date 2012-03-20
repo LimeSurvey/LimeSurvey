@@ -6102,7 +6102,14 @@ EOD;
                     $type = $qinfo['info']['type'];
                     if ($relevant && $grelevant && $sqrelevant)
                     {
-                        $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                        if ($qinfo['info']['hidden'])
+                        {
+                            $value = (isset($_SESSION[$sq]) ? $_SESSION[$sq] : '');    // if always hidden, use the default value, if any
+                        }
+                        else
+                        {
+                            $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                        }
                         if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
                         {
                             // convert from comma back to decimal
