@@ -1838,8 +1838,6 @@
             $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAnswerSetsForEM',(microtime(true) - $now));
             $now = microtime(true);
 
-            $qi18n = $this->getQuestionTextforEM($surveyid,NULL,$_SESSION['LEMlang']);
-
             $q2subqInfo = array();
 
             $this->multiflexiAnswers=array();
@@ -2020,16 +2018,14 @@
                         if ($fielddata['aid'] != '') {
                             $varName .= '_' . $fielddata['aid'];
                         }
-//                        $question = $fielddata['question'];
-                        $question = $qi18n[$questionNum]['question'];
+                        $question = $fielddata['question'];
                         break;
                     case '1': //Array (Flexible Labels) dual scale
                         $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
                         $sqsuffix = '_' . $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
-//                        $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                        $question = $qi18n[$questionNum]['subqs'][$fielddata['aid']] . '[' . $fielddata['scale'] . ']';
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
+                        $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
+//                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                         $rowdivid = substr($sgqa,0,-2);
                         break;
                     case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -2045,37 +2041,8 @@
                     case 'R': //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                         $csuffix = $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-//                        $question = $fielddata['subquestion'];
-                        if (!isset($qi18n[$questionNum]['subqs'][$csuffix]))
-                        {
-                            switch ($type)
-                            {
-                                case 'M': //Multiple choice checkbox
-                                    if ($other=='Y' && $csuffix=='other')
-                                    {
-                                        $question = $this->gT('Other');
-                                    }
-                                    break;
-                                case 'P': //Multiple choice with comments checkbox + text
-                                    if ($other == 'Y' && preg_match('/other(comment)?$/',$csuffix))
-                                    {
-                                        $question = $this->gT('Other');
-                                    }
-                                    else if (preg_match('/comment$/',$csuffix))
-                                    {
-                                        $question = $qi18n[$questionNum]['subqs'][substr($csuffix,0,strpos($csuffix,'comment'))];
-                                    }
-                                    break;
-                                case 'R':
-                                    $question = $qi18n[$questionNum]['question'];
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            $question = $qi18n[$questionNum]['subqs'][$csuffix];
-                        }
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
+                        $question = $fielddata['subquestion'];
+//                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                         if ($type != 'H' && $type != 'R') {
                             if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
                                 //                            $rowdivid = substr($sgqa,0,-7);
@@ -2091,11 +2058,8 @@
                         $csuffix = $fielddata['aid'];
                         $sqsuffix = '_' . substr($fielddata['aid'],0,strpos($fielddata['aid'],'_'));
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-//                        $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                        $_part1 = substr($csuffix,0,strpos($csuffix,'_'));
-                        $_part2 = substr($csuffix,strpos($csuffix,'_')+1);
-                        $question = $qi18n[$questionNum]['subqs'][$_part1] . '[' . $qi18n[$questionNum]['subqs'][$_part2] . ']';
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
+                        $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
+//                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                         $rowdivid = substr($sgqa,0,strpos($sgqa,'_'));
                         break;
                 }
@@ -6066,67 +6030,6 @@ EOD;
         }
 
         /**
-         * Get language-specific text for questions and sub-questions
-         * @param type $surveyid
-         * @param type $qid
-         * @param string $lang
-         * @return type
-         */
-        function getQuestionTextForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
-        {
-            if (!is_null($qid))
-            {
-                $where = "q.qid = ".$qid;
-            }
-            else if (!is_null($surveyid))
-            {
-                $where = "q.sid = ".$surveyid;
-            }
-            else {
-                $where = "1";
-            }
-            if (!is_null($lang)) {
-                $lang = " and q.language='".$lang."'";
-            }
-
-
-            $qtexts = array();
-
-            // first get main question text
-            $query = "SELECT q.qid, q.question, q.help"
-            ." FROM ".db_table_name('questions')." as q"
-            ." WHERE ".$where
-            .$lang
-            ." and q.parent_qid=0";
-
-            $data = db_execute_assoc($query);
-
-            foreach($data->GetRows() as $row) {
-                $qtexts[$row['qid']] = array(
-                    'qid'=>$row['qid'],
-                    'question'=>$row['question'],
-                    'help'=>$row['help'],
-                    'subqs'=>array(),
-                );
-            }
-
-            // then get sub-question text
-            $query = "SELECT q.qid, q.parent_qid, q.title, q.question"
-            ." FROM ".db_table_name('questions')." as q"
-            ." WHERE ".$where
-            .$lang
-            ." and q.parent_qid>0";
-
-            $data = db_execute_assoc($query);
-
-            foreach($data->GetRows() as $row) {
-                $qtexts[$row['parent_qid']]['subqs'][$row['title']] = $row['question'];
-            }
-
-            return $qtexts;
-        }
-
-        /**
         * Returns group info needed for indexes
         * @param <type> $surveyid
         * @param string $lang
@@ -7226,7 +7129,6 @@ EOD;
                 }
             }
 
-            // TODO - this still isn't always exporting the right language - often blends preceding languages, and does so inconsistently (caching issue?)
             foreach($langs as $lang)
             {
                 if (trim($lang) == '')
@@ -7234,9 +7136,8 @@ EOD;
                     continue;
                 }
                 SetSurveyLanguage($sid,$lang);
-                LimeExpressionManager::StartSurvey($sid, 'survey', array('sgqaNaming'=>'N'), false);
+                LimeExpressionManager::StartSurvey($sid, 'survey', array('sgqaNaming'=>'N'), true);
                 $moveResult = LimeExpressionManager::NavigateForwards();
-//                $moveResult = LimeExpressionManager::JumpTo(1,false,false,false,true);
                 $LEM =& LimeExpressionManager::singleton();
 
                 if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
