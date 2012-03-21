@@ -29,8 +29,11 @@
  * }
  * </pre>
  *
+ * @property CDbConnection $connection The DB connection for this transaction.
+ * @property boolean $active Whether this transaction is active.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbTransaction.php 3069 2011-03-14 00:28:38Z qiang.xue $
+ * @version $Id: CDbTransaction.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.db
  * @since 1.0
  */

@@ -21,8 +21,39 @@
  * CHttpRequest is a default application component loaded by {@link CWebApplication}. It can be
  * accessed via {@link CWebApplication::getRequest()}.
  *
+ * @property string $url Part of the request URL after the host info.
+ * @property string $hostInfo Schema and hostname part (with port number if needed) of the request URL (e.g. http://www.yiiframework.com).
+ * @property string $baseUrl The relative URL for the application.
+ * @property string $scriptUrl The relative URL of the entry script.
+ * @property string $pathInfo Part of the request URL that is after the entry script and before the question mark.
+ * Note, the returned pathinfo is decoded starting from 1.1.4.
+ * Prior to 1.1.4, whether it is decoded or not depends on the server configuration
+ * (in most cases it is not decoded).
+ * @property string $requestUri The request URI portion for the currently requested URL.
+ * @property string $queryString Part of the request URL that is after the question mark.
+ * @property boolean $isSecureConnection If the request is sent via secure channel (https).
+ * @property string $requestType Request type, such as GET, POST, HEAD, PUT, DELETE.
+ * @property boolean $isPostRequest Whether this is a POST request.
+ * @property boolean $isDeleteRequest Whether this is a DELETE request.
+ * @property boolean $isPutRequest Whether this is a PUT request.
+ * @property boolean $isAjaxRequest Whether this is an AJAX (XMLHttpRequest) request.
+ * @property string $serverName Server name.
+ * @property integer $serverPort Server port number.
+ * @property string $urlReferrer URL referrer, null if not present.
+ * @property string $userAgent User agent, null if not present.
+ * @property string $userHostAddress User IP address.
+ * @property string $userHost User host name, null if cannot be determined.
+ * @property string $scriptFile Entry script file path (processed w/ realpath()).
+ * @property array $browser User browser capabilities.
+ * @property string $acceptTypes User browser accept types, null if not present.
+ * @property integer $port Port number for insecure requests.
+ * @property integer $securePort Port number for secure requests.
+ * @property CCookieCollection $cookies The cookie collection.
+ * @property string $preferredLanguage The user preferred language.
+ * @property string $csrfToken The random token for CSRF validation.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 3050 2011-03-12 13:22:11Z qiang.xue $
+ * @version $Id: CHttpRequest.php 3560 2012-02-10 14:13:00Z mdomba $
  * @package system.web
  * @since 1.0
  */
@@ -120,7 +151,6 @@ class CHttpRequest extends CApplicationComponent
 	 * @param string $name the GET parameter name
 	 * @param mixed $defaultValue the default parameter value if the GET parameter does not exist.
 	 * @return mixed the GET parameter value
-	 * @since 1.0.4
 	 * @see getQuery
 	 * @see getPost
 	 */
@@ -135,7 +165,6 @@ class CHttpRequest extends CApplicationComponent
 	 * @param string $name the GET parameter name
 	 * @param mixed $defaultValue the default parameter value if the GET parameter does not exist.
 	 * @return mixed the GET parameter value
-	 * @since 1.0.4
 	 * @see getPost
 	 * @see getParam
 	 */
@@ -150,7 +179,6 @@ class CHttpRequest extends CApplicationComponent
 	 * @param string $name the POST parameter name
 	 * @param mixed $defaultValue the default parameter value if the POST parameter does not exist.
 	 * @return mixed the POST parameter value
-	 * @since 1.0.4
 	 * @see getParam
 	 * @see getQuery
 	 */
@@ -278,7 +306,6 @@ class CHttpRequest extends CApplicationComponent
 	 * This is similar to {@link getScriptUrl scriptUrl} except that
 	 * it does not have the script file name, and the ending slashes are stripped off.
 	 * @param boolean $absolute whether to return an absolute URL. Defaults to false, meaning returning a relative one.
-	 * This parameter has been available since 1.0.2.
 	 * @return string the relative URL for the application
 	 * @see setScriptUrl
 	 */
@@ -356,7 +383,7 @@ class CHttpRequest extends CApplicationComponent
 			if(($pos=strpos($pathInfo,'?'))!==false)
 			   $pathInfo=substr($pathInfo,0,$pos);
 
-			$pathInfo=urldecode($pathInfo);
+			$pathInfo=$this->decodePathInfo($pathInfo);
 
 			$scriptUrl=$this->getScriptUrl();
 			$baseUrl=$this->getBaseUrl();
@@ -375,13 +402,45 @@ class CHttpRequest extends CApplicationComponent
 	}
 
 	/**
+	 * Decodes the path info.
+	 * This method is an improved variant of the native urldecode() function and used in {@link getPathInfo getPathInfo()} to
+	 * decode the path part of the request URI. You may override this method to change the way the path info is being decoded.
+	 * @param string $pathInfo encoded path info
+	 * @return string decoded path info
+	 * @since 1.1.10
+	 */
+	protected function decodePathInfo($pathInfo)
+	{
+		$pathInfo = urldecode($pathInfo);
+
+		// is it UTF-8?
+		// http://w3.org/International/questions/qa-forms-utf-8.html
+		if(preg_match('%^(?:
+		   [\x09\x0A\x0D\x20-\x7E]            # ASCII
+		 | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+		 | \xE0[\xA0-\xBF][\x80-\xBF]         # excluding overlongs
+		 | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+		 | \xED[\x80-\x9F][\x80-\xBF]         # excluding surrogates
+		 | \xF0[\x90-\xBF][\x80-\xBF]{2}      # planes 1-3
+		 | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+		 | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
+		)*$%xs', $pathInfo))
+		{
+			return $pathInfo;
+		}
+		else
+		{
+			return utf8_encode($pathInfo);
+		}
+	}
+
+	/**
 	 * Returns the request URI portion for the currently requested URL.
 	 * This refers to the portion that is after the {@link hostInfo host info} part.
 	 * It includes the {@link queryString query string} part if any.
 	 * The implementation of this method referenced Zend_Controller_Request_Http in Zend Framework.
 	 * @return string the request URI portion for the currently requested URL.
 	 * @throws CException if the request URI cannot be determined due to improper server configuration
-	 * @since 1.0.1
 	 */
 	public function getRequestUri()
 	{
@@ -392,7 +451,7 @@ class CHttpRequest extends CApplicationComponent
 			else if(isset($_SERVER['REQUEST_URI']))
 			{
 				$this->_requestUri=$_SERVER['REQUEST_URI'];
-				if(isset($_SERVER['HTTP_HOST']))
+				if(!empty($_SERVER['HTTP_HOST']))
 				{
 					if(strpos($this->_requestUri,$_SERVER['HTTP_HOST'])!==false)
 						$this->_requestUri=preg_replace('/^\w+:\/\/[^\/]+/','',$this->_requestUri);
@@ -648,7 +707,7 @@ class CHttpRequest extends CApplicationComponent
 	 * the application will be inserted at the beginning.
 	 * @param boolean $terminate whether to terminate the current application
 	 * @param integer $statusCode the HTTP status code. Defaults to 302. See {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}
-	 * for details about HTTP status code. This parameter has been available since version 1.0.4.
+	 * for details about HTTP status code.
 	 */
 	public function redirect($url,$terminate=true,$statusCode=302)
 	{
@@ -701,7 +760,7 @@ class CHttpRequest extends CApplicationComponent
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header("Content-type: $mimeType");
-		if(ini_get("output_handler")=='')
+		if(ob_get_length()===false)
 			header('Content-Length: '.(function_exists('mb_strlen') ? mb_strlen($content,'8bit') : strlen($content)));
 		header("Content-Disposition: attachment; filename=\"$fileName\"");
 		header('Content-Transfer-Encoding: binary');
@@ -734,8 +793,8 @@ class CHttpRequest extends CApplicationComponent
 	 * As this header directive is non-standard different directives exists for different web servers applications:
 	 * <ul>
 	 * <li>Apache: {@link http://tn123.org/mod_xsendfile X-Sendfile}</li>
-	 * <li>Lighttpd v1.4: {@link http://redmine.lighttpd.net/wiki/lighttpd/X-LIGHTTPD-send-file X-LIGHTTPD-send-file}</li>
-	 * <li>Lighttpd v1.5: X-Sendfile {@link http://redmine.lighttpd.net/wiki/lighttpd/X-LIGHTTPD-send-file X-Sendfile}</li>
+	 * <li>Lighttpd v1.4: {@link http://redmine.lighttpd.net/projects/lighttpd/wiki/X-LIGHTTPD-send-file X-LIGHTTPD-send-file}</li>
+	 * <li>Lighttpd v1.5: {@link http://redmine.lighttpd.net/projects/lighttpd/wiki/X-LIGHTTPD-send-file X-Sendfile}</li>
 	 * <li>Nginx: {@link http://wiki.nginx.org/XSendfile X-Accel-Redirect}</li>
 	 * <li>Cherokee: {@link http://www.cherokee-project.com/doc/other_goodies.html#x-sendfile X-Sendfile and X-Accel-Redirect}</li>
 	 * </ul>
@@ -752,27 +811,30 @@ class CHttpRequest extends CApplicationComponent
 	 * <b>Example</b>:
 	 * <pre>
 	 * <?php
-	 *   Yii::app()->request->xSendFile('/home/user/Pictures/picture1.jpg',array(
-	 *	  'saveName'=>'image1.jpg',
-	 *	  'mimeType'=>'image/jpeg',
-	 *	  'terminate'=>false,
-	 *   ));
+	 *    Yii::app()->request->xSendFile('/home/user/Pictures/picture1.jpg',array(
+	 *        'saveName'=>'image1.jpg',
+	 *        'mimeType'=>'image/jpeg',
+	 *        'terminate'=>false,
+	 *    ));
 	 * ?>
 	 * </pre>
 	 * @param string $filePath file name with full path
 	 * @param array $options additional options:
 	 * <ul>
 	 * <li>saveName: file name shown to the user, if not set real file name will be used</li>
-	 * <li>mimeType: mime type of the file, if not set it will be guessed automatically based on the file name.</li>
+	 * <li>mimeType: mime type of the file, if not set it will be guessed automatically based on the file name, if set to null no content-type header will be sent.</li>
 	 * <li>xHeader: appropriate x-sendfile header, defaults to "X-Sendfile"</li>
 	 * <li>terminate: whether to terminate the current application after calling this method, defaults to true</li>
+	 * <li>forceDownload: specifies whether the file will be downloaded or shown inline, defaults to true. (Since version 1.1.9.)</li>
+	 * <li>addHeaders: an array of additional http headers in header-value pairs (available since version 1.1.10)</li>
 	 * </ul>
-	 * @return boolean false if file not found, true otherwise.
 	 */
 	public function xSendFile($filePath, $options=array())
 	{
-		if(!is_file($filePath))
-			return false;
+		if(!isset($options['forceDownload']) || $options['forceDownload'])
+			$disposition='attachment';
+		else
+			$disposition='inline';
 
 		if(!isset($options['saveName']))
 			$options['saveName']=basename($filePath);
@@ -786,14 +848,18 @@ class CHttpRequest extends CApplicationComponent
 		if(!isset($options['xHeader']))
 			$options['xHeader']='X-Sendfile';
 
-		header('Content-type: '.$options['mimeType']);
-		header('Content-Disposition: attachment; filename="'.$options['saveName'].'"');
+		if($options['mimeType'] !== null)
+			header('Content-type: '.$options['mimeType']);
+		header('Content-Disposition: '.$disposition.'; filename="'.$options['saveName'].'"');
+		if(isset($options['addHeaders']))
+		{
+			foreach($options['addHeaders'] as $header=>$value)
+				header($header.': '.$value);
+		}
 		header(trim($options['xHeader']).': '.$filePath);
 
 		if(!isset($options['terminate']) || $options['terminate'])
 			Yii::app()->end();
-
-		return true;
 	}
 
 	/**
@@ -844,7 +910,6 @@ class CHttpRequest extends CApplicationComponent
 	 * from a cookie and from a POST field. If they are different, a CSRF attack is detected.
 	 * @param CEvent $event event parameter
 	 * @throws CHttpException if the validation fails
-	 * @since 1.0.4
 	 */
 	public function validateCsrfToken($event)
 	{
@@ -881,7 +946,7 @@ class CHttpRequest extends CApplicationComponent
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 3050 2011-03-12 13:22:11Z qiang.xue $
+ * @version $Id: CHttpRequest.php 3560 2012-02-10 14:13:00Z mdomba $
  * @package system.web
  * @since 1.0
  */
@@ -972,7 +1037,7 @@ class CCookieCollection extends CMap
 
 	/**
 	 * Sends a cookie.
-	 * @param CHttpCookie $cookie cook to be sent
+	 * @param CHttpCookie $cookie cookie to be sent
 	 */
 	protected function addCookie($cookie)
 	{
@@ -987,7 +1052,7 @@ class CCookieCollection extends CMap
 
 	/**
 	 * Deletes a cookie.
-	 * @param CHttpCookie $cookie cook to be deleted
+	 * @param CHttpCookie $cookie cookie to be deleted
 	 */
 	protected function removeCookie($cookie)
 	{

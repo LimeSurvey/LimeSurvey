@@ -25,7 +25,7 @@
  * accessing modification time of multiple files under the directory.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDirectoryCacheDependency.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CDirectoryCacheDependency.php 3500 2011-12-20 16:25:43Z mdomba $
  * @package system.caching.dependencies
  * @since 1.0
  */
@@ -99,7 +99,7 @@ class CDirectoryCacheDependency extends CCacheDependency
 			else
 			{
 				if(($this->recursiveLevel<0 || $level<$this->recursiveLevel) && $this->validateDirectory($path))
-					$timestamps=array_merge($this->generateTimestamps($path,$level+1));
+					$timestamps=array_merge($timestamps, $this->generateTimestamps($path,$level+1));
 			}
 		}
 		closedir($dir);

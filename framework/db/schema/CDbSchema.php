@@ -11,8 +11,15 @@
 /**
  * CDbSchema is the base class for retrieving metadata information.
  *
+ * @property CDbConnection $dbConnection Database connection. The connection is active.
+ * @property array $tables The metadata for all tables in the database.
+ * Each array element is an instance of {@link CDbTableSchema} (or its child class).
+ * The array keys are table names.
+ * @property array $tableNames All table names in the database.
+ * @property CDbCommandBuilder $commandBuilder The SQL command builder for this connection.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbSchema.php 3297 2011-06-22 21:46:11Z qiang.xue $
+ * @version $Id: CDbSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema
  * @since 1.0
  */
@@ -59,11 +66,13 @@ abstract class CDbSchema extends CComponent
 	/**
 	 * Obtains the metadata for the named table.
 	 * @param string $name table name
+	 * @param boolean $refresh if we need to refresh schema cache for a table.
+	 * Parameter available since 1.1.9
 	 * @return CDbTableSchema table metadata. Null if the named table does not exist.
 	 */
-	public function getTable($name)
+	public function getTable($name,$refresh=false)
 	{
-		if(isset($this->_tables[$name]))
+		if($refresh===false && isset($this->_tables[$name]))
 			return $this->_tables[$name];
 		else
 		{
@@ -82,7 +91,8 @@ abstract class CDbSchema extends CComponent
 			if(!isset($this->_cacheExclude[$name]) && ($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
 			{
 				$key='yii:dbschema'.$this->_connection->connectionString.':'.$this->_connection->username.':'.$name;
-				if(($table=$cache->get($key))===false)
+				$table=$cache->get($key);
+				if($refresh===true || $table===false)
 				{
 					$table=$this->loadTable($realName);
 					if($table!==null)
@@ -106,7 +116,6 @@ abstract class CDbSchema extends CComponent
 	 * @return array the metadata for all tables in the database.
 	 * Each array element is an instance of {@link CDbTableSchema} (or its child class).
 	 * The array keys are table names.
-	 * @since 1.0.2
 	 */
 	public function getTables($schema='')
 	{
@@ -124,7 +133,6 @@ abstract class CDbSchema extends CComponent
 	 * @param string $schema the schema of the tables. Defaults to empty string, meaning the current or default schema.
 	 * If not empty, the returned table names will be prefixed with the schema name.
 	 * @return array all table names in the database.
-	 * @since 1.0.2
 	 */
 	public function getTableNames($schema='')
 	{
@@ -294,7 +302,6 @@ abstract class CDbSchema extends CComponent
 	 * @param string $schema the schema of the tables. Defaults to empty string, meaning the current or default schema.
 	 * If not empty, the returned table names will be prefixed with the schema name.
 	 * @return array all table names in the database.
-	 * @since 1.0.2
 	 */
 	protected function findTableNames($schema='')
 	{
@@ -419,11 +426,9 @@ abstract class CDbSchema extends CComponent
 	 */
 	public function addColumn($table, $column, $type)
 	{
-		$type=$this->getColumnType($type);
-		$sql='ALTER TABLE ' . $this->quoteTableName($table)
+		return 'ALTER TABLE ' . $this->quoteTableName($table)
 			. ' ADD ' . $this->quoteColumnName($column) . ' '
 			. $this->getColumnType($type);
-		return $sql;
 	}
 
 	/**
@@ -466,7 +471,6 @@ abstract class CDbSchema extends CComponent
 	 */
 	public function alterColumn($table, $column, $type)
 	{
-		$type=$this->getColumnType($type);
 		return 'ALTER TABLE ' . $this->quoteTableName($table) . ' CHANGE '
 			. $this->quoteColumnName($column) . ' '
 			. $this->quoteColumnName($column) . ' '

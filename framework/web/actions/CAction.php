@@ -19,8 +19,11 @@
  *
  * An action instance can access its controller via {@link getController controller} property.
  *
+ * @property CController $controller The controller who owns this action.
+ * @property string $id Id of this action.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAction.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: CAction.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web.actions
  * @since 1.0
  */

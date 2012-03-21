@@ -15,7 +15,7 @@
  * method of every loaded application component.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -38,7 +38,7 @@ interface IApplicationComponent
  * This interface must be implemented by classes supporting caching feature.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -59,7 +59,6 @@ interface ICache
 	 * @return array list of cached values corresponding to the specified keys. The array
 	 * is returned in terms of (key,value) pairs.
 	 * If a value is not cached or expired, the corresponding array value will be false.
-	 * @since 1.0.8
 	 */
 	public function mget($ids);
 	/**
@@ -107,7 +106,7 @@ interface ICache
  * Objects implementing this interface must be able to be serialized and unserialized.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -131,7 +130,7 @@ interface ICacheDependency
  * This interface must be implemented by all state persister classes (such as
  * {@link CStatePersister}.
  *
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -153,7 +152,7 @@ interface IStatePersister
 /**
  * IFilter is the interface that must be implemented by action filters.
  *
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -173,7 +172,7 @@ interface IFilter
 /**
  * IAction is the interface that must be implemented by controller actions.
  *
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -196,7 +195,7 @@ interface IAction
  * If this interface is implemented, the provider instance will be able
  * to intercept the remote method invocation (e.g. for logging or authentication purpose).
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -224,7 +223,7 @@ interface IWebServiceProvider
  * implemented in {@link CBaseController}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -250,7 +249,7 @@ interface IViewRenderer
  * used with the {@link CWebApplication::user user application component}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -293,7 +292,7 @@ interface IUserIdentity
  * for the current user.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -331,7 +330,7 @@ interface IWebUser
  * An auth manager is mainly responsible for providing role-based access control (RBAC) service.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -417,7 +416,7 @@ interface IAuthManager
 	/**
 	 * Returns the children of the specified item.
 	 * @param mixed $itemName the parent item name. This can be either a string or an array.
-	 * The latter represents a list of item names (available since version 1.0.5).
+	 * The latter represents a list of item names.
 	 * @return array all child items of the parent
 	 */
 	public function getItemChildren($itemName);
@@ -504,9 +503,8 @@ interface IAuthManager
  * are defined in the behavior class and not available in the component class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
- * @since 1.0.2
  */
 interface IBehavior
 {
@@ -537,7 +535,7 @@ interface IBehavior
  * it will be used for creating the requested widget.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web
  * @since 1.1
  */
@@ -560,7 +558,7 @@ interface IWidgetFactory
  * Besides providing data, they also support pagination and sorting.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: interfaces.php 3058 2011-03-13 04:20:12Z qiang.xue $
+ * @version $Id: interfaces.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web
  * @since 1.1
  */

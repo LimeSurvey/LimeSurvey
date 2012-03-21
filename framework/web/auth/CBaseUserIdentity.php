@@ -19,8 +19,15 @@
  * and {@link IUserIdentity::getId} that are required by the {@link IUserIdentity}
  * interface.
  *
+ * @property mixed $id A value that uniquely represents the identity (e.g. primary key value).
+ * The default implementation simply returns {@link name}.
+ * @property string $name The display name for the identity.
+ * The default implementation simply returns empty string.
+ * @property array $persistentStates The identity states that should be persisted.
+ * @property whether $isAuthenticated The authentication is successful.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBaseUserIdentity.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CBaseUserIdentity.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.auth
  * @since 1.0
  */
@@ -117,7 +124,6 @@ abstract class CBaseUserIdentity extends CComponent implements IUserIdentity
 	/**
 	 * Removes the specified state.
 	 * @param string $name the name of the state
-	 * @since 1.0.8
 	 */
 	public function clearState($name)
 	{

@@ -60,8 +60,19 @@
  * For more details about configuring form elements, please refer to {@link CFormInputElement}
  * and {@link CFormButtonElement}.
  *
+ * @property CForm $root The top-level form object.
+ * @property CActiveForm $activeFormWidget The active form widget associated with this form.
+ * This method will return the active form widget as specified by {@link activeForm}.
+ * @property CBaseController $owner The owner of this form. This refers to either a controller or a widget
+ * by which the form is created and rendered.
+ * @property CModel $model The model associated with this form. If this form does not have a model,
+ * it will look for a model in its ancestors.
+ * @property array $models The models that are associated with this form or its sub-forms.
+ * @property CFormElementCollection $elements The form elements.
+ * @property CFormElementCollection $buttons The form elements.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CForm.php 3076 2011-03-14 13:16:43Z qiang.xue $
+ * @version $Id: CForm.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web.form
  * @since 1.1
  */

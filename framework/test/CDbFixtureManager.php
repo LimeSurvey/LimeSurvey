@@ -31,8 +31,11 @@
  * the database. If this file is not found, all available fixtures will be loaded
  * into the database.
  *
+ * @property CDbConnection $dbConnection The database connection.
+ * @property array $fixtures The information of the available fixtures (table name => fixture file).
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbFixtureManager.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CDbFixtureManager.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.test
  * @since 1.1
  */

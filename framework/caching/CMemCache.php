@@ -9,7 +9,7 @@
  */
 
 /**
- * CMemCache implements a cache application component based on {@link http://www.danga.com/memcached/ memcached}.
+ * CMemCache implements a cache application component based on {@link http://memcached.org/ memcached}.
  *
  * CMemCache can be configured with a list of memcache servers by settings
  * its {@link setServers servers} property. By default, CMemCache assumes
@@ -48,11 +48,14 @@
  * See {@link http://www.php.net/manual/en/function.memcache-addserver.php}
  * for more details.
  *
- * Since version 1.0.6, CMemCache can also be used with {@link http://pecl.php.net/package/memcached memcached}.
+ * CMemCache can also be used with {@link http://pecl.php.net/package/memcached memcached}.
  * To do so, set {@link useMemcached} to be true.
  *
+ * @property mixed $memCache The memcache instance (or memcached if {@link useMemcached} is true) used by this component.
+ * @property array $servers List of memcache server configurations. Each element is a {@link CMemCacheServerConfiguration}.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CMemCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -63,7 +66,6 @@ class CMemCache extends CCache
 	 * If true {@link http://pecl.php.net/package/memcached memcached} will be used.
 	 * If false {@link http://pecl.php.net/package/memcache memcache}. will be used.
 	 * Defaults to false.
-	 * @since 1.0.6
 	 */
 	public $useMemcached=false;
 	/**
@@ -145,7 +147,6 @@ class CMemCache extends CCache
 	 * Retrieves multiple values from cache with the specified keys.
 	 * @param array $keys a list of keys identifying the cached values
 	 * @return array a list of cached values indexed by the keys
-	 * @since 1.0.8
 	 */
 	protected function getValues($keys)
 	{
@@ -220,7 +221,7 @@ class CMemCache extends CCache
  * for detailed explanation of each configuration property.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMemCache.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CMemCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */

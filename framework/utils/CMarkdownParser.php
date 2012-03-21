@@ -41,8 +41,10 @@ if(!class_exists('HTMLPurifier_Bootstrap',false))
  * <li>{@link http://michelf.com/projects/php-markdown/extra/ markdown extra syntax}</li>
  * </ul>
  *
+ * @property string $defaultCssFile The default CSS file that is used to highlight code blocks.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMarkdownParser.php 2886 2011-01-17 13:34:11Z qiang.xue $
+ * @version $Id: CMarkdownParser.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.utils
  * @since 1.0
  */
@@ -71,7 +73,6 @@ class CMarkdownParser extends MarkdownExtra_Parser
 	 * to avoid XSS attacks.
 	 * @param string $content the markdown content
 	 * @return string the purified HTML content
-	 * @since 1.0.1
 	 */
 	public function safeTransform($content)
 	{

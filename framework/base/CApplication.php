@@ -45,32 +45,36 @@
  * Starting from lifecycle 3, if a PHP error or an uncaught exception occurs,
  * the application will switch to its error handling logic and jump to step 6 afterwards.
  *
+ * @property string $id The unique identifier for the application.
+ * @property string $basePath The root directory of the application. Defaults to 'protected'.
+ * @property string $runtimePath The directory that stores runtime files. Defaults to 'protected/runtime'.
+ * @property string $extensionPath The directory that contains all extensions. Defaults to the 'extensions' directory under 'protected'.
+ * @property string $language The language that the user is using and the application should be targeted to.
+ * Defaults to the {@link sourceLanguage source language}.
+ * @property string $timeZone The time zone used by this application.
+ * @property CLocale $locale The locale instance.
+ * @property string $localeDataPath The directory that contains the locale data. It defaults to 'framework/i18n/data'.
+ * @property CNumberFormatter $numberFormatter The locale-dependent number formatter.
+ * The current {@link getLocale application locale} will be used.
+ * @property CDateFormatter $dateFormatter The locale-dependent date formatter.
+ * The current {@link getLocale application locale} will be used.
+ * @property CDbConnection $db The database connection.
+ * @property CErrorHandler $errorHandler The error handler application component.
+ * @property CSecurityManager $securityManager The security manager application component.
+ * @property CStatePersister $statePersister The state persister application component.
+ * @property CCache $cache The cache application component. Null if the component is not enabled.
+ * @property CPhpMessageSource $coreMessages The core message translations.
+ * @property CMessageSource $messages The application message translations.
+ * @property CHttpRequest $request The request component.
+ * @property CUrlManager $urlManager The URL manager component.
+ * @property CController $controller The currently active controller. Null is returned in this base class.
+ * @property string $baseUrl The relative URL for the application.
+ * @property string $homeUrl The homepage URL.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApplication.php 3305 2011-06-23 15:08:27Z qiang.xue $
+ * @version $Id: CApplication.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
- *
- * @property string $basePath Returns the root path of the application.
- * @property CCache $cache Returns the cache component.
- * @property CPhpMessageSource $coreMessages Returns the core message translations.
- * @property CDateFormatter $dateFormatter Returns the locale-dependent date formatter.
- * @property CDbConnection $db Returns the database connection component.
- * @property CErrorHandler $errorHandler Returns the error handler component.
- * @property string $extensionPath Returns the root directory that holds all third-party extensions.
- * @property string $id Returns the unique identifier for the application.
- * @property string $language Returns the language that the user is using and the application should be targeted to.
- * @property CLocale $locale Returns the locale instance.
- * @property string $localeDataPath Returns the directory that contains the locale data.
- * @property CMessageSource $messages Returns the application message translations component.
- * @property CNumberFormatter $numberFormatter The locale-dependent number formatter.
- * @property CHttpRequest $request Returns the request component.
- * @property string $runtimePath Returns the directory that stores runtime files.
- * @property CSecurityManager $securityManager Returns the security manager component.
- * @property CStatePersister $statePersister Returns the state persister component.
- * @property string $timeZone Returns the time zone used by this application.
- * @property CUrlManager $urlManager Returns the URL manager component.
- * @property string $baseUrl Returns the relative URL for the application
- * @property string $homeUrl the homepage URL
  */
 abstract class CApplication extends CModule
 {
@@ -321,7 +325,6 @@ abstract class CApplication extends CModule
 	 * This is a simple wrapper of PHP function date_default_timezone_get().
 	 * @return string the time zone used by this application.
 	 * @see http://php.net/manual/en/function.date-default-timezone-get.php
-	 * @since 1.0.9
 	 */
 	public function getTimeZone()
 	{
@@ -333,7 +336,6 @@ abstract class CApplication extends CModule
 	 * This is a simple wrapper of PHP function date_default_timezone_set().
 	 * @param string $value the time zone used by this application.
 	 * @see http://php.net/manual/en/function.date-default-timezone-set.php
-	 * @since 1.0.9
 	 */
 	public function setTimeZone($value)
 	{
@@ -543,7 +545,6 @@ abstract class CApplication extends CModule
 	 * Returns the relative URL for the application.
 	 * This is a shortcut method to {@link CHttpRequest::getBaseUrl()}.
 	 * @param boolean $absolute whether to return an absolute URL. Defaults to false, meaning returning a relative one.
-	 * This parameter has been available since 1.0.2.
 	 * @return string the relative URL for the application
 	 * @see CHttpRequest::getBaseUrl()
 	 */
@@ -695,7 +696,10 @@ abstract class CApplication extends CModule
 		// php <5.2 doesn't support string conversion auto-magically
 		$message=$exception->__toString();
 		if(isset($_SERVER['REQUEST_URI']))
-			$message.=' REQUEST_URI='.$_SERVER['REQUEST_URI'];
+			$message.="\nREQUEST_URI=".$_SERVER['REQUEST_URI'];
+		if(isset($_SERVER['HTTP_REFERER']))
+			$message.="\nHTTP_REFERER=".$_SERVER['HTTP_REFERER'];
+		$message.="\n---";
 		Yii::log($message,CLogger::LEVEL_ERROR,$category);
 
 		try
@@ -903,13 +907,13 @@ abstract class CApplication extends CModule
 		if(YII_DEBUG)
 		{
 			echo '<h1>'.get_class($exception)."</h1>\n";
-			echo '<p>'.htmlspecialchars_decode($exception->getMessage()).' ('.$exception->getFile().':'.$exception->getLine().')</p>';
+			echo '<p>'.$exception->getMessage().' ('.$exception->getFile().':'.$exception->getLine().')</p>';
 			echo '<pre>'.$exception->getTraceAsString().'</pre>';
 		}
 		else
 		{
 			echo '<h1>'.get_class($exception)."</h1>\n";
-			echo '<p>'.htmlspecialchars_decode($exception->getMessage()).'</p>';
+			echo '<p>'.$exception->getMessage().'</p>';
 		}
 	}
 

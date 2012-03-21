@@ -38,7 +38,7 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiTabs.php 3222 2011-05-13 15:04:13Z sebathi $
+ * @version $Id: CJuiTabs.php 3400 2011-09-22 00:47:39Z sebathi $
  * @package zii.widgets.jui
  * @since 1.1
  */
@@ -108,7 +108,7 @@ class CJuiTabs extends CJuiWidget
 			}
 			else
 			{
-				$tabsOut .= strtr($this->headerTemplate, array('{title}'=>$title, '{url}'=>'#'.$tabId))."\n";
+				$tabsOut .= strtr($this->headerTemplate, array('{title}'=>$title, '{url}'=>'#'.$tabId, '{id}'=>$tabId))."\n";
 				if(isset($content['content']))
 					$contentOut .= strtr($this->contentTemplate, array('{content}'=>$content['content'],'{id}'=>$tabId))."\n";
 			}

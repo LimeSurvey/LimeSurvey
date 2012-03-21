@@ -29,7 +29,7 @@
  * </ul>
  * When {@link cachingDuration} is set as a positive number, message translations will be cached.
  *
- * Starting from version 1.0.10, messages for an extension class (e.g. a widget, a module) can be specially managed and used.
+ * Messages for an extension class (e.g. a widget, a module) can be specially managed and used.
  * In particular, if a message belongs to an extension whose class name is Xyz, then the message category
  * can be specified in the format of 'Xyz.categoryName'. And the corresponding message file
  * is assumed to be 'BasePath/messages/LanguageID/categoryName.php', where 'BasePath' refers to
@@ -37,7 +37,7 @@
  * the category name should be set as 'Xyz.categoryName'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPhpMessageSource.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id: CPhpMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */
@@ -54,7 +54,6 @@ class CPhpMessageSource extends CMessageSource
 	 * @var string the ID of the cache application component that is used to cache the messages.
 	 * Defaults to 'cache' which refers to the primary cache application component.
 	 * Set this property to false if you want to disable caching the messages.
-	 * @since 1.0.10
 	 */
 	public $cacheID='cache';
 	/**
@@ -86,7 +85,6 @@ class CPhpMessageSource extends CMessageSource
 	 * @param string $category category name
 	 * @param string $language language ID
 	 * @return string the message file path
-	 * @since 1.0.10
 	 */
 	protected function getMessageFile($category,$language)
 	{

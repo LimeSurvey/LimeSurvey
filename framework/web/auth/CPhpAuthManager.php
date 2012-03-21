@@ -18,8 +18,10 @@
  * (for example, the authorization data for a personal blog system).
  * Use {@link CDbAuthManager} for more complex authorization data.
  *
+ * @property array $authItems The authorization items of the specific type.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPhpAuthManager.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CPhpAuthManager.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.auth
  * @since 1.0
  */
@@ -90,6 +92,7 @@ class CPhpAuthManager extends CAuthManager
 	 * Adds an item as a child of another item.
 	 * @param string $itemName the parent item name
 	 * @param string $childName the child item name
+	 * @return boolean whether the item is added successfully
 	 * @throws CException if either parent or child doesn't exist or if a loop has been detected.
 	 */
 	public function addItemChild($itemName,$childName)
@@ -106,6 +109,7 @@ class CPhpAuthManager extends CAuthManager
 			throw new CException(Yii::t('yii','The item "{parent}" already has a child "{child}".',
 				array('{child}'=>$childName,'{parent}'=>$itemName)));
 		$this->_children[$itemName][$childName]=$this->_items[$childName];
+		return true;
 	}
 
 	/**
@@ -140,7 +144,7 @@ class CPhpAuthManager extends CAuthManager
 	/**
 	 * Returns the children of the specified item.
 	 * @param mixed $names the parent item name. This can be either a string or an array.
-	 * The latter represents a list of item names (available since version 1.0.5).
+	 * The latter represents a list of item names.
 	 * @return array all child items of the parent
 	 */
 	public function getItemChildren($names)

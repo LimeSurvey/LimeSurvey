@@ -16,8 +16,10 @@
  * so that it points to the "views" subdirectory under the directory containing
  * the controller class file.
  *
+ * @property string $viewPath The directory containing the view files for this controller.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExtController.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CExtController.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web
  * @since 1.0
  */
@@ -44,7 +46,6 @@ class CExtController extends CController
 
 	/**
 	 * @param string $value the directory containing the view files for this controller.
-	 * @since 1.0.1
 	 */
 	public function setViewPath($value)
 	{

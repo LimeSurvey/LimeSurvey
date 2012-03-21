@@ -10,10 +10,10 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
  */
-$config['versionnumber'] = "2.0a2";
-$config['dbversionnumber'] = 155;
+
+$config['versionnumber'] = "2.0a3";
+$config['dbversionnumber'] = 156;
 $config['buildnumber'] = '';
 
 return $config;

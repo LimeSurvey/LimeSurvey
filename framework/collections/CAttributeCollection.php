@@ -25,7 +25,7 @@
  * {@link caseSensitive} property of the collection.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAttributeCollection.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CAttributeCollection.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.collections
  * @since 1.0
  */
@@ -71,7 +71,6 @@ class CAttributeCollection extends CMap
 	 * if the key exists in the collection and contains a non-null value.
 	 * @param string $name the property name or the event name
 	 * @return boolean whether the property value is null
-	 * @since 1.0.1
 	 */
 	public function __isset($name)
 	{
@@ -86,7 +85,6 @@ class CAttributeCollection extends CMap
 	 * This method overrides the parent implementation by clearing
 	 * the specified key value.
 	 * @param string $name the property name or the event name
-	 * @since 1.0.1
 	 */
 	public function __unset($name)
 	{

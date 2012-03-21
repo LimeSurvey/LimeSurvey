@@ -19,9 +19,8 @@
  * issues encountered.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogFilter.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CLogFilter.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.logging
- * @since 1.0.6
  */
 class CLogFilter extends CComponent
 {

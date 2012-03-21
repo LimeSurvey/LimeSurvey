@@ -17,7 +17,7 @@
  * See {@link CCache} manual for common cache operations that are supported by CApcCache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CApcCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CApcCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
  * @since 1.0
  */
@@ -51,7 +51,6 @@ class CApcCache extends CCache
 	 * Retrieves multiple values from cache with the specified keys.
 	 * @param array $keys a list of keys identifying the cached values
 	 * @return array a list of cached values indexed by the keys
-	 * @since 1.0.8
 	 */
 	protected function getValues($keys)
 	{

@@ -22,8 +22,10 @@
  * <li>{@link CMarkdownParser markdown with syntax highlighting}</li>
  * </ul>
  *
+ * @property CMarkdownParser $markdownParser The parser instance.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMarkdown.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: CMarkdown.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -75,7 +77,6 @@ class CMarkdown extends COutputProcessor
 
 	/**
 	 * Registers the needed CSS and JavaScript.
-	 * @since 1.0.1
 	 */
 	public function registerClientScript()
 	{
@@ -86,7 +87,6 @@ class CMarkdown extends COutputProcessor
 	/**
 	 * Registers the needed CSS file.
 	 * @param string $url the CSS URL. If null, a default CSS URL will be used.
-	 * @since 1.0.2
 	 */
 	public static function registerCssFile($url=null)
 	{
@@ -98,7 +98,6 @@ class CMarkdown extends COutputProcessor
 	 * This method calls {@link createMarkdownParser} to create the parser instance.
 	 * Call this method multipe times will only return the same instance.
 	 * @return CMarkdownParser the parser instance
-	 * @since 1.0.1
 	 */
 	public function getMarkdownParser()
 	{

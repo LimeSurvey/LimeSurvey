@@ -22,8 +22,11 @@
  * foreach($stack as $item) ...
  * </pre>
  *
+ * @property Iterator $iterator An iterator for traversing the items in the stack.
+ * @property integer $count The number of items in the stack.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStack.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CStack.php 3427 2011-10-25 00:03:52Z alexander.makarow $
  * @package system.collections
  * @since 1.0
  */

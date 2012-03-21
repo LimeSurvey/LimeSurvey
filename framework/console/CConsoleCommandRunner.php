@@ -11,8 +11,10 @@
 /**
  * CConsoleCommandRunner manages commands and executes the requested command.
  *
+ * @property string $scriptName The entry script name.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CConsoleCommandRunner.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CConsoleCommandRunner.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.console
  * @since 1.0
  */

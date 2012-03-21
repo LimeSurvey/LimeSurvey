@@ -256,11 +256,11 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
-        
+
         $aData['surveyid'] = $surveyid;
         $aData['gid']      = $gid;
         $aData['qid']      = $qid;
-        
+
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aViewUrls = $this->_editansweroptions($surveyid, $gid, $qid);
@@ -382,12 +382,12 @@ class question extends Survey_Common_Action
         $aData['scalecount'] = $scalecount;
 
         // The following line decides if the assessment input fields are visible or not
-        $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('sid' => $surveyid));
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findByAttributes(array('sid' => $surveyid));
         if (is_null($sumresult1))
             $this->getController()->error('Invalid survey ID');
 
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
         $aData['assessmentvisible'] = $assessmentvisible;
@@ -423,7 +423,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editsubquestions';
         $aViewUrls = $this->_editsubquestion($surveyid, $gid, $qid);
-        
+
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -504,7 +504,7 @@ class question extends Survey_Common_Action
                     if (empty($qrow))
                     {
                         switchMSSQLIdentityInsert('questions', true);
-                        
+
                         $question = new Questions;
                         $question->qid = $row->qid;
                         $question->sid = $surveyid;
@@ -583,12 +583,12 @@ class question extends Survey_Common_Action
 
         $aData['scalecount'] = $scalecount = $qtypes[$qtype]['subquestions'];
 
-        $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('sid' => $surveyid));
+        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findByAttributes(array('sid' => $surveyid));
         if ($sumresult1 == null)
             $this->getController()->error('Invalid survey id');
 
         $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
+        $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
 
         $aData['activated'] = $activated = $surveyinfo['active'];
@@ -942,6 +942,69 @@ class question extends Survey_Common_Action
     }
 
     /**
+     * This function prepares the data for label set details
+     *
+     * @access public
+     * @return void
+     */
+    public function ajaxlabelsetdetails()
+    {
+        $lid=returnglobal('lid');
+        Yii::app()->loadHelper('surveytranslator');
+
+        $labelsetdata=Labelsets::model()->find('lid=:lid',array(':lid' => $lid)); //$connect->GetArray($query);
+
+        $labelsetlanguages=explode(' ',$labelsetdata->languages);
+        foreach  ($labelsetlanguages as $language){
+
+            //$query='select * from lime_labels where lid='.$lid." and language='{$language}' order by sortorder";
+            $criteria=new CDbCriteria;
+            $criteria->condition='lid=:lid and language=:language';
+            $criteria->params=array(':lid'=>$lid, ':language'=>$language);
+            $criteria->order='sortorder';
+            $labelsdata=Label::model()->findAll($criteria);
+            $i=0;
+            foreach($labelsdata as $labeldata)
+            {
+                $data[$i]['lid'] = $labeldata->lid;
+                $data[$i]['code'] = $labeldata->code;
+                $data[$i]['title'] = $labeldata->title;
+                $data[$i]['sortorder'] = $labeldata->sortorder;
+                $data[$i]['assessment_value'] = $labeldata->assessment_value;
+                $data[$i]['language'] = $labeldata->language;
+                $i++;
+            }
+            $labels = $data;
+            //$labels=dbExecuteAssoc($query); //Label::model()->find(array('lid' => $lid, 'language' => $language), array('order' => 'sortorder')); //$connect->GetArray($query);
+            $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
+        }
+
+        echo json_encode($resultdata);
+    }
+
+    /**
+     * This function prepares the data for labelset
+     *
+     * @access public
+     * @return void
+     */
+    public function ajaxlabelsetpicker()
+    {
+        $match=(int)returnglobal('match');
+        $surveyid=returnglobal('sid');
+        if ($match==1)
+        {
+            $language=GetBaseLanguageFromSurveyID($surveyid);
+        }
+        else
+        {
+            $language=null;
+        }
+        $resultdata=getlabelsets($language);
+        echo json_encode($resultdata);
+    }
+
+    /**
      * Load preview of a question screen.
      *
      * @access public
@@ -974,14 +1037,14 @@ class question extends Survey_Common_Action
         if (!isset(Yii::app()->session['maxstep'])) { Yii::app()->session['maxstep'] = 0; }
 
         // Use $_SESSION instead of $this->session for frontend features.
-        $_SESSION[$surveyid]['s_lang'] = $language;
-        $_SESSION[$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language);
+        $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
+        $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language);
 
 
         // Prefill question/answer from defaultvalues
-        foreach ($_SESSION[$surveyid]['fieldmap'] as $field)
+        foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $field)
             if (isset($field['defaultvalue']))
-                $_SESSION[$field['fieldname']] = $field['defaultvalue'];
+                $_SESSION['survey_'.$surveyid][$field['fieldname']] = $field['defaultvalue'];
 
         $clang = new limesurvey_lang($language);
 
@@ -1170,7 +1233,7 @@ EOD;
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
         $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/".Yii::app()->getConfig('admintheme')."/superfish.css");
-        
+
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

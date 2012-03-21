@@ -6,14 +6,14 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: ModelCommand.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: ModelCommand.php 3477 2011-12-06 22:33:37Z alexander.makarow $
  */
 
 /**
  * ModelCommand generates a model class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: ModelCommand.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: ModelCommand.php 3477 2011-12-06 22:33:37Z alexander.makarow $
  * @package system.cli.commands.shell
  * @since 1.0
  */
@@ -316,9 +316,8 @@ EOD;
 			foreach($this->_classes as $tableName=>$className)
 				$entries[]=++$count.". $className ($tableName)";
 			echo "The following model classes (tables) match your criteria:\n";
-			echo implode("\n",$entries);
-			echo "\n\nDo you want to generate the above classes? [Yes|No] ";
-			if(strncasecmp(trim(fgets(STDIN)),'y',1))
+			echo implode("\n",$entries)."\n\n";
+			if(!$this->confirm("Do you want to generate the above classes?"))
 				return;
 		}
 

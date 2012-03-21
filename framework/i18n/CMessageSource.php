@@ -17,8 +17,11 @@
  *
  * A concrete class must implement {@link loadMessages} or override {@link translateMessage}.
  *
+ * @property string $language The language that the source messages are written in.
+ * Defaults to {@link CApplication::language application language}.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id: CMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */
@@ -73,7 +76,6 @@ abstract class CMessageSource extends CApplicationComponent
 	 * @param string $category the message category
 	 * @param string $message the message to be translated
 	 * @param string $language the target language. If null (default), the {@link CApplication::getLanguage application language} will be used.
-	 * This parameter has been available since version 1.0.3.
 	 * @return string the translated message (or the original message if translation is not needed)
 	 */
 	public function translate($category,$message,$language=null)
@@ -130,7 +132,7 @@ abstract class CMessageSource extends CApplicationComponent
  * CMissingTranslationEvent represents the parameter for the {@link CMessageSource::onMissingTranslation onMissingTranslation} event.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMessageSource.php 2798 2011-01-01 19:29:03Z qiang.xue $
+ * @version $Id: CMessageSource.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.i18n
  * @since 1.0
  */

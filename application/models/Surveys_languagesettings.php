@@ -94,7 +94,7 @@ class Surveys_languagesettings extends CActiveRecord
             ->where('surveyls_language = :langcode')
             ->bindParam(":langcode", $languagecode, PDO::PARAM_STR)
 			->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
-            ->query();
+            ->queryScalar();
     }
 
     function getAllSurveys($hasPermission = FALSE)

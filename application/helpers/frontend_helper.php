@@ -60,7 +60,7 @@
             //A match has been found. Let's load the values!
             //If this is from an email, build surveysession first
             $_SESSION['LEMtokenResume']=true;
-                    
+
             $row=$result->read();
             foreach ($row as $column => $value)
             {
@@ -297,7 +297,7 @@
         // we know the true fieldname $value (for instance SGQA for each checkboxes)
         // and we want to compare it to the values stored in $_SESSION['fieldarray'] which are simple fieldnames
         // ==> We first translate $value to the simple fieldname (let's call it the masterFieldName) from
-        //     the $_SESSION['fieldnamesInfo'] translation table
+        //     the $_SESSION['survey_X']['fieldnamesInfo'] translation table
         if (isset($_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$value]))
         {
             $masterFieldName = $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$value];
@@ -1184,9 +1184,11 @@
         {
             $aReplacementVars['RELOADURL']='';
         }
-        
+
         if (!isset($_SESSION['survey_'.$surveyid]['srid']))
             $srid = null;
+        else
+            $srid = $_SESSION['survey_'.$surveyid]['srid'];
         $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
         $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
         $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id=".$srid;
@@ -1834,7 +1836,7 @@
     // first find all groups and their groups IDS
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
-    $criteria->addCondition('randomization_group != ""');
+    $criteria->addCondition("randomization_group != ''");
     $oData = Groups::model()->findAll($criteria);
     foreach($oData as $aGroup)
     {
@@ -2043,14 +2045,14 @@
     }
 
     // Defaults need to be set within Expression Manager so that it can process defaults comprised of equations
-//    // Prefill question/answer from defaultvalues
-//    foreach ($fieldmap as $field)
-//    {
-//        if (isset($field['defaultvalue']))
-//        {
-//            $_SESSION['survey_'.$surveyid][$field['fieldname']]=$field['defaultvalue'];
-//        }
-//    }
+    //    // Prefill question/answer from defaultvalues
+    //    foreach ($fieldmap as $field)
+    //    {
+    //        if (isset($field['defaultvalue']))
+    //        {
+    //            $_SESSION['survey_'.$surveyid][$field['fieldname']]=$field['defaultvalue'];
+    //        }
+    //    }
     // Prefill questions/answers from command line params
     $startingValues=array();
     if (isset($_SESSION['survey_'.$surveyid]['insertarray']))
@@ -2092,15 +2094,15 @@
                 {
                     $_SESSION['survey_'.$surveyid][$field] = $value;
                     $startingValues[$field] = array (
-                        'type'=>$type,
-                        'value'=>$value,
-                        );  
+                    'type'=>$type,
+                    'value'=>$value,
+                    );
                 }
             }
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
-    
+
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
@@ -2162,6 +2164,7 @@ function surveymover()
     global $surveyid, $presentinggroupdescription;
 
     $clang = Yii::app()->lang;
+    $LEMsessid = Yii::app()->getConfig('surveyID');
 
     $surveymover = "";
 
@@ -2216,7 +2219,7 @@ function surveymover()
         $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
         value='".$clang->gT("Next")."' name='move2' id=\"movenextbtn\" $disabled>".$clang->gT("Next")."</button>\n";
     }
-    if (($_SESSION['survey_'.$surveyid]['step'] && ($_SESSION['survey_'.$surveyid]['step'] == $_SESSION['survey_'.$surveyid]['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
+    if (isset($_SESSION['survey_'.$surveyid]['step']) && ($_SESSION['survey_'.$surveyid]['step'] && ($_SESSION['survey_'.$surveyid]['step'] == $_SESSION['survey_'.$surveyid]['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
     {
         $surveymover .= "\t<button class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\"
         value=\"".$clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" $disabled>".$clang->gT("Submit")."</button>\n";
@@ -2775,10 +2778,10 @@ function display_first_page() {
     if (isset($loadsecurity)) {
         echo "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
     }
-    $_SESSION['LEMpostKey'] = mt_rand();
-    echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['LEMpostKey']}' id='LEMpostKey' />\n";
+    $_SESSION['survey_'.$surveyid]['LEMpostKey'] = mt_rand();
+    echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['survey_'.$surveyid]['LEMpostKey']}' id='LEMpostKey' />\n";
     echo "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
-    
+
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2782]');
 

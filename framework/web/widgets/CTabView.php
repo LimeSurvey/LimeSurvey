@@ -51,7 +51,7 @@
  * when the page is initially loaded, set {@link activeTab} to be the ID of the desired tab.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTabView.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CTabView.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -157,7 +157,6 @@ class CTabView extends CWidget
 	/**
 	 * Registers the needed CSS file.
 	 * @param string $url the CSS URL. If null, a default CSS URL will be used.
-	 * @since 1.0.2
 	 */
 	public static function registerCssFile($url=null)
 	{

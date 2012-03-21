@@ -26,8 +26,12 @@
  * and reopen it. To declare an attribute is sticky, simply list it in a validation rule with
  * the validator name being "sticky".
  *
+ * @property array $templates A list of available code templates (name=>directory).
+ * @property string $templatePath The directory that contains the template files.
+ * @property string $stickyFile The file path that stores the sticky attribute values.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCodeModel.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CCodeModel.php 3547 2012-01-24 10:07:28Z mdomba $
  * @package system.gii
  * @since 1.1.2
  */
@@ -37,6 +41,84 @@ abstract class CCodeModel extends CFormModel
 	const STATUS_PREVIEW=2;
 	const STATUS_SUCCESS=3;
 	const STATUS_ERROR=4;
+
+	static $keywords=array(
+		'__class__',
+		'__dir__',
+		'__file__',
+		'__function__',
+		'__line__',
+		'__method__',
+		'__namespace__',
+		'abstract',
+		'and',
+		'array',
+		'as',
+		'break',
+		'case',
+		'catch',
+		'cfunction',
+		'class',
+		'clone',
+		'const',
+		'continue',
+		'declare',
+		'default',
+		'die',
+		'do',
+		'echo',
+		'else',
+		'elseif',
+		'empty',
+		'enddeclare',
+		'endfor',
+		'endforeach',
+		'endif',
+		'endswitch',
+		'endwhile',
+		'eval',
+		'exception',
+		'exit',
+		'extends',
+		'final',
+		'final',
+		'for',
+		'foreach',
+		'function',
+		'global',
+		'goto',
+		'if',
+		'implements',
+		'include',
+		'include_once',
+		'instanceof',
+		'interface',
+		'isset',
+		'list',
+		'namespace',
+		'new',
+		'old_function',
+		'or',
+		'parent',
+		'php_user_filter',
+		'print',
+		'private',
+		'protected',
+		'public',
+		'require',
+		'require_once',
+		'return',
+		'static',
+		'switch',
+		'this',
+		'throw',
+		'try',
+		'unset',
+		'use',
+		'var',
+		'while',
+		'xor',
+	);
 
 	/**
 	 * @var array user confirmations on whether to overwrite existing code files with the newly generated ones.
@@ -323,11 +405,22 @@ abstract class CCodeModel extends CFormModel
 	public function pluralize($name)
 	{
 		$rules=array(
+			'/move$/i' => 'moves',
+			'/foot$/i' => 'feet',
+			'/child$/i' => 'children',
+			'/human$/i' => 'humans',
+			'/man$/i' => 'men',
+			'/tooth$/i' => 'teeth',
+			'/person$/i' => 'people',
+			'/([m|l])ouse$/i' => '\1ice',
 			'/(x|ch|ss|sh|us|as|is|os)$/i' => '\1es',
+			'/([^aeiouy]|qu)y$/i' => '\1ies',
 			'/(?:([^f])fe|([lr])f)$/i' => '\1\2ves',
-			'/(m)an$/i' => '\1en',
-			'/(child)$/i' => '\1ren',
-			'/(r|t)y$/i' => '\1ies',
+			'/(shea|lea|loa|thie)f$/i' => '\1ves',
+			'/([ti])um$/i' => '\1a',
+			'/(tomat|potat|ech|her|vet)o$/i' => '\1oes',
+			'/(bu)s$/i' => '\1ses',
+			'/(ax|test)is$/i' => '\1es',
 			'/s$/' => 's',
 		);
 		foreach($rules as $rule=>$replacement)
@@ -382,85 +475,8 @@ abstract class CCodeModel extends CFormModel
 	 */
 	public function validateReservedWord($attribute,$params)
 	{
-		static $keywords=array(
-			'__class__',
-			'__dir__',
-			'__file__',
-			'__function__',
-			'__line__',
-			'__method__',
-			'__namespace__',
-			'abstract',
-			'and',
-			'array',
-			'as',
-			'break',
-			'case',
-			'catch',
-			'cfunction',
-			'class',
-			'clone',
-			'const',
-			'continue',
-			'declare',
-			'default',
-			'die',
-			'do',
-			'echo',
-			'else',
-			'elseif',
-			'empty',
-			'enddeclare',
-			'endfor',
-			'endforeach',
-			'endif',
-			'endswitch',
-			'endwhile',
-			'eval',
-			'exception',
-			'exit',
-			'extends',
-			'final',
-			'final',
-			'for',
-			'foreach',
-			'function',
-			'global',
-			'goto',
-			'if',
-			'implements',
-			'include',
-			'include_once',
-			'instanceof',
-			'interface',
-			'isset',
-			'list',
-			'namespace',
-			'new',
-			'old_function',
-			'or',
-			'parent',
-			'php_user_filter',
-			'print',
-			'private',
-			'protected',
-			'public',
-			'require',
-			'require_once',
-			'return',
-			'static',
-			'switch',
-			'this',
-			'throw',
-			'try',
-			'unset',
-			'use',
-			'var',
-			'while',
-			'xor',
-		);
 		$value=$this->$attribute;
-		if(in_array(strtolower($value),$keywords))
+		if(in_array(strtolower($value),self::$keywords))
 			$this->addError($attribute, $this->getAttributeLabel($attribute).' cannot take a reserved PHP keyword.');
 	}
 }

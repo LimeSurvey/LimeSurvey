@@ -15,12 +15,28 @@
  * Please check {@link http://www.yiiframework.com/doc/guide/database.ar the Guide} for more details
  * about this class.
  *
+ * @property CDbCriteria $dbCriteria The query criteria that is associated with this model.
+ * This criteria is mainly used by {@link scopes named scope} feature to accumulate
+ * different criteria specifications.
+ * @property CActiveRecordMetaData $metaData The meta for this AR class.
+ * @property CDbConnection $dbConnection The database connection used by active record.
+ * @property CDbTableSchema $tableSchema The metadata of the table that this AR belongs to.
+ * @property CDbCommandBuilder $commandBuilder The command builder used by this AR.
+ * @property array $attributes Attribute values indexed by attribute names.
+ * @property boolean $isNewRecord Whether the record is new and should be inserted when calling {@link save}.
+ * This property is automatically set in constructor and {@link populateRecord}.
+ * Defaults to false, but it will be set to true if the instance is created using
+ * the new operator.
+ * @property mixed $primaryKey The primary key value. An array (column name=>column value) is returned if the primary key is composite.
+ * If primary key is not defined, null will be returned.
+ * @property mixed $oldPrimaryKey The old primary key value. An array (column name=>column value) is returned if the primary key is composite.
+ * If primary key is not defined, null will be returned.
+ * @property string $tableAlias The default table alias.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
- *
- * @property array $attributes
  */
 abstract class CActiveRecord extends CModel
 {
@@ -73,7 +89,6 @@ abstract class CActiveRecord extends CModel
 	 * its {@link scenario} set.
 	 * You may override this method to provide code that is needed to initialize the model (e.g. setting
 	 * initial property values.)
-	 * @since 1.0.8
 	 */
 	public function init()
 	{
@@ -152,7 +167,6 @@ abstract class CActiveRecord extends CModel
 	 * if the named attribute is null or not.
 	 * @param string $name the property name or the event name
 	 * @return boolean whether the property value is null
-	 * @since 1.0.1
 	 */
 	public function __isset($name)
 	{
@@ -173,7 +187,6 @@ abstract class CActiveRecord extends CModel
 	 * This method overrides the parent implementation by clearing
 	 * the specified attribute value.
 	 * @param string $name the property name or the event name
-	 * @since 1.0.1
 	 */
 	public function __unset($name)
 	{
@@ -192,7 +205,6 @@ abstract class CActiveRecord extends CModel
 	 * @param string $name the method name
 	 * @param array $parameters method parameters
 	 * @return mixed the method return value
-	 * @since 1.0.5
 	 */
 	public function __call($name,$parameters)
 	{
@@ -224,10 +236,8 @@ abstract class CActiveRecord extends CModel
 	 * @param string $name the relation name (see {@link relations})
 	 * @param boolean $refresh whether to reload the related objects from database. Defaults to false.
 	 * @param array $params additional parameters that customize the query conditions as specified in the relation declaration.
-	 * This parameter has been available since version 1.0.5.
 	 * @return mixed the related object(s).
 	 * @throws CDbException if the relation is not specified in {@link relations}.
-	 * @since 1.0.2
 	 */
 	public function getRelated($name,$refresh=false,$params=array())
 	{
@@ -285,7 +295,6 @@ abstract class CActiveRecord extends CModel
 	 * Returns a value indicating whether the named related object(s) has been loaded.
 	 * @param string $name the relation name
 	 * @return boolean a value indicating whether the named related object(s) has been loaded.
-	 * @since 1.0.3
 	 */
 	public function hasRelated($name)
 	{
@@ -298,7 +307,6 @@ abstract class CActiveRecord extends CModel
 	 * @return CDbCriteria the query criteria that is associated with this model.
 	 * This criteria is mainly used by {@link scopes named scope} feature to accumulate
 	 * different criteria specifications.
-	 * @since 1.0.5
 	 */
 	public function getDbCriteria($createIfNull=true)
 	{
@@ -327,7 +335,6 @@ abstract class CActiveRecord extends CModel
 	 * if the model needs to be queried with some default criteria (e.g. only active records should be returned).
 	 * @return array the query criteria. This will be used as the parameter to the constructor
 	 * of {@link CDbCriteria}.
-	 * @since 1.0.5
 	 */
 	public function defaultScope()
 	{
@@ -393,7 +400,6 @@ abstract class CActiveRecord extends CModel
 	 * This is useful if the table schema has been changed and you want to use the latest
 	 * available table schema. Make sure you have called {@link CDbSchema::refresh}
 	 * before you call this method. Otherwise, old table schema data will still be used.
-	 * @since 1.0.8
 	 */
 	public function refreshMetaData()
 	{
@@ -424,7 +430,6 @@ abstract class CActiveRecord extends CModel
 	 * If the key is a single column, it should return the column name;
 	 * If the key is a composite one consisting of several columns, it should
 	 * return the array of the key column names.
-	 * @since 1.0.4
 	 */
 	public function primaryKey()
 	{
@@ -455,8 +460,10 @@ abstract class CActiveRecord extends CModel
 	 * following four constants: self::BELONGS_TO, self::HAS_ONE, self::HAS_MANY and self::MANY_MANY;
 	 * 'className' refers to the name of the active record class that the related object(s) is of;
 	 * and 'foreign_key' states the foreign key that relates the two kinds of active record.
-	 * Note, for composite foreign keys, they must be listed together, separated by commas;
-	 * and for foreign keys used in MANY_MANY relation, the joining table must be declared as well
+	 * Note, for composite foreign keys, they can be either listed together, separated by commas or specified as an array
+	 * in format of array('key1','key2'). In case you need to specify custom PK->FK association you can define it as
+	 * array('fk'=>'pk'). For composite keys it will be array('fk_c1'=>'pk_с1','fk_c2'=>'pk_c2').
+	 * For foreign keys used in MANY_MANY relation, the joining table must be declared as well
 	 * (e.g. 'join_table(fk1, fk2)').
 	 *
 	 * Additional options may be specified as name-value pairs in the rest array elements:
@@ -471,17 +478,18 @@ abstract class CActiveRecord extends CModel
 	 *   Note, this is only honored by lazy loading, not eager loading.</li>
 	 * <li>'joinType': type of join. Defaults to 'LEFT OUTER JOIN'.</li>
 	 * <li>'alias': the alias for the table associated with this relationship.
-	 *   This option has been available since version 1.0.1. It defaults to null,
+	 *   It defaults to null,
 	 *   meaning the table alias is the same as the relation name.</li>
-     * <li>'params': the parameters to be bound to the generated SQL statement.
-	 *   This should be given as an array of name-value pairs. This option has been
-	 *   available since version 1.0.3.</li>
+	 * <li>'params': the parameters to be bound to the generated SQL statement.
+	 *   This should be given as an array of name-value pairs.</li>
 	 * <li>'on': the ON clause. The condition specified here will be appended
-	 *   to the joining condition using the AND operator. This option has been
-	 *   available since version 1.0.2.</li>
+	 *   to the joining condition using the AND operator.</li>
 	 * <li>'index': the name of the column whose values should be used as keys
 	 *   of the array that stores related objects. This option is only available to
-	 *   HAS_MANY and MANY_MANY relations. This option has been available since version 1.0.7.</li>
+	 *   HAS_MANY and MANY_MANY relations.</li>
+	 * <li>'scopes': scopes to apply. In case of a single scope can be used like 'scopes'=>'scopeName',
+	 *   in case of multiple scopes can be used like 'scopes'=>array('scopeName1','scopeName2').
+	 *   This option has been available since version 1.1.9.</li>
 	 * </ul>
 	 *
 	 * The following options are available for certain relations when lazy loading:
@@ -541,7 +549,6 @@ abstract class CActiveRecord extends CModel
 	 * @return array the scope definition. The array keys are scope names; the array
 	 * values are the corresponding scope definitions. Each scope definition is represented
 	 * as an array whose keys must be properties of {@link CDbCriteria}.
-	 * @since 1.0.5
 	 */
 	public function scopes()
 	{
@@ -552,7 +559,6 @@ abstract class CActiveRecord extends CModel
 	 * Returns the list of all attribute names of the model.
 	 * This would return all column names of the table associated with this AR class.
 	 * @return array list of attribute names.
-	 * @since 1.0.1
 	 */
 	public function attributeNames()
 	{
@@ -809,7 +815,6 @@ abstract class CActiveRecord extends CModel
 	 * This event is raised before the record is saved.
 	 * By setting {@link CModelEvent::isValid} to be false, the normal {@link save()} process will be stopped.
 	 * @param CModelEvent $event the event parameter
-	 * @since 1.0.2
 	 */
 	public function onBeforeSave($event)
 	{
@@ -819,7 +824,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * This event is raised after the record is saved.
 	 * @param CEvent $event the event parameter
-	 * @since 1.0.2
 	 */
 	public function onAfterSave($event)
 	{
@@ -830,7 +834,6 @@ abstract class CActiveRecord extends CModel
 	 * This event is raised before the record is deleted.
 	 * By setting {@link CModelEvent::isValid} to be false, the normal {@link delete()} process will be stopped.
 	 * @param CModelEvent $event the event parameter
-	 * @since 1.0.2
 	 */
 	public function onBeforeDelete($event)
 	{
@@ -840,7 +843,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * This event is raised after the record is deleted.
 	 * @param CEvent $event the event parameter
-	 * @since 1.0.2
 	 */
 	public function onAfterDelete($event)
 	{
@@ -855,7 +857,6 @@ abstract class CActiveRecord extends CModel
 	 * You can modify either criteria to customize them based on needs.
 	 * @param CModelEvent $event the event parameter
 	 * @see beforeFind
-	 * @since 1.0.9
 	 */
 	public function onBeforeFind($event)
 	{
@@ -865,7 +866,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * This event is raised after the record is instantiated by a find method.
 	 * @param CEvent $event the event parameter
-	 * @since 1.0.2
 	 */
 	public function onAfterFind($event)
 	{
@@ -947,7 +947,6 @@ abstract class CActiveRecord extends CModel
 	 * Starting from version 1.1.5, this method may be called with a hidden {@link CDbCriteria}
 	 * parameter which represents the current query criteria as passed to a find method of AR.
 	 *
-	 * @since 1.0.9
 	 */
 	protected function beforeFind()
 	{
@@ -975,7 +974,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Calls {@link beforeFind}.
 	 * This method is internally used.
-	 * @since 1.0.11
 	 */
 	public function beforeFindInternal()
 	{
@@ -985,7 +983,6 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Calls {@link afterFind}.
 	 * This method is internally used.
-	 * @since 1.0.3
 	 */
 	public function afterFindInternal()
 	{
@@ -1301,7 +1298,6 @@ abstract class CActiveRecord extends CModel
 	 * This method merges {@link dbCriteria} with the given criteria parameter.
 	 * It then resets {@link dbCriteria} to be null.
 	 * @param CDbCriteria $criteria the query criteria. This parameter may be modified by merging {@link dbCriteria}.
-	 * @since 1.0.12
 	 */
 	public function applyScopes(&$criteria)
 	{
@@ -1446,7 +1442,7 @@ abstract class CActiveRecord extends CModel
 	 * Finds a single active record that has the specified attribute values.
 	 * See {@link find()} for detailed explanation about $condition and $params.
 	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
-	 * Since version 1.0.8, an attribute value can be an array which will be used to generate an IN condition.
+	 * An attribute value can be an array which will be used to generate an IN condition.
 	 * @param mixed $condition query condition or criteria.
 	 * @param array $params parameters to be bound to an SQL statement.
 	 * @return CActiveRecord the record found. Null if none is found.
@@ -1463,7 +1459,7 @@ abstract class CActiveRecord extends CModel
 	 * Finds all active records that have the specified attribute values.
 	 * See {@link find()} for detailed explanation about $condition and $params.
 	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
-	 * Since version 1.0.8, an attribute value can be an array which will be used to generate an IN condition.
+	 * An attribute value can be an array which will be used to generate an IN condition.
 	 * @param mixed $condition query condition or criteria.
 	 * @param array $params parameters to be bound to an SQL statement.
 	 * @return array the records found. An empty array is returned if none is found.
@@ -1637,10 +1633,6 @@ abstract class CActiveRecord extends CModel
 	 * ))->findAll();
 	 * </pre>
 	 *
-	 * Note, the possible parameters to this method have been changed since version 1.0.2.
-	 * Previously, it was not possible to specify on-th-fly query options,
-	 * and child-relations were specified as hierarchical arrays.
-	 *
 	 * @return CActiveRecord the AR object itself.
 	 */
 	public function with()
@@ -1763,11 +1755,10 @@ abstract class CActiveRecord extends CModel
 	 * Deletes rows which match the specified attribute values.
 	 * See {@link find()} for detailed explanation about $condition and $params.
 	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
-	 * Since version 1.0.8, an attribute value can be an array which will be used to generate an IN condition.
+	 * An attribute value can be an array which will be used to generate an IN condition.
 	 * @param mixed $condition query condition or criteria.
 	 * @param array $params parameters to be bound to an SQL statement.
 	 * @return integer number of rows affected by the execution.
-	 * @since 1.0.9
 	 */
 	public function deleteAllByAttributes($attributes,$condition='',$params=array())
 	{
@@ -1784,7 +1775,6 @@ abstract class CActiveRecord extends CModel
 	 * This method is internally used by the find methods.
 	 * @param array $attributes attribute values (column name=>column value)
 	 * @param boolean $callAfterFind whether to call {@link afterFind} after the record is populated.
-	 * This parameter is added in version 1.0.3.
 	 * @return CActiveRecord the newly created active record. The class of the object is the same as the model class.
 	 * Null is returned if the input data is false.
 	 */
@@ -1818,7 +1808,6 @@ abstract class CActiveRecord extends CModel
 	 * This method is internally used by the find methods.
 	 * @param array $data list of attribute values for the active records.
 	 * @param boolean $callAfterFind whether to call {@link afterFind} after each record is populated.
-	 * This parameter is added in version 1.0.3.
 	 * @param string $index the name of the attribute whose value will be used as indexes of the query result array.
 	 * If null, it means the array will be indexed by zero-based integers.
 	 * @return array list of active records.
@@ -1848,7 +1837,6 @@ abstract class CActiveRecord extends CModel
 	 * you may implement the so-called single-table inheritance mapping.
 	 * @param array $attributes list of attribute values for the active records.
 	 * @return CActiveRecord the active record
-	 * @since 1.0.2
 	 */
 	protected function instantiate($attributes)
 	{
@@ -1862,7 +1850,6 @@ abstract class CActiveRecord extends CModel
 	 * This method is required by the interface ArrayAccess.
 	 * @param mixed $offset the offset to check on
 	 * @return boolean
-	 * @since 1.0.2
 	 */
 	public function offsetExists($offset)
 	{
@@ -1874,9 +1861,8 @@ abstract class CActiveRecord extends CModel
 /**
  * CBaseActiveRelation is the base class for all active relations.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
- * @since 1.0.4
  */
 class CBaseActiveRelation extends CComponent
 {
@@ -1889,7 +1875,7 @@ class CBaseActiveRelation extends CComponent
 	 */
 	public $className;
 	/**
-	 * @var string the foreign key in this relation
+	 * @var mixed the foreign key in this relation
 	 */
 	public $foreignKey;
 	/**
@@ -1950,7 +1936,6 @@ class CBaseActiveRelation extends CComponent
 	 * Merges this relation with a criteria specified dynamically.
 	 * @param array $criteria the dynamically specified criteria
 	 * @param boolean $fromScope whether the criteria to be merged is from scopes
-	 * @since 1.0.5
 	 */
 	public function mergeWith($criteria,$fromScope=false)
 	{
@@ -2017,9 +2002,8 @@ class CBaseActiveRelation extends CComponent
 /**
  * CStatRelation represents a statistical relational query.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
- * @since 1.0.4
  */
 class CStatRelation extends CBaseActiveRelation
 {
@@ -2038,7 +2022,6 @@ class CStatRelation extends CBaseActiveRelation
 	 * Merges this relation with a criteria specified dynamically.
 	 * @param array $criteria the dynamically specified criteria
 	 * @param boolean $fromScope whether the criteria to be merged is from scopes
-	 * @since 1.0.5
 	 */
 	public function mergeWith($criteria,$fromScope=false)
 	{
@@ -2055,7 +2038,7 @@ class CStatRelation extends CBaseActiveRelation
 /**
  * CActiveRelation is the base class for representing active relations that bring back related objects.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2067,13 +2050,11 @@ class CActiveRelation extends CBaseActiveRelation
 	public $joinType='LEFT OUTER JOIN';
 	/**
 	 * @var string ON clause. The condition specified here will be appended to the joining condition using AND operator.
-	 * @since 1.0.2
 	 */
 	public $on='';
 	/**
 	 * @var string the alias for the table that this relation refers to. Defaults to null, meaning
 	 * the alias will be the same as the relation name.
-	 * @since 1.0.1
 	 */
 	public $alias;
 	/**
@@ -2091,12 +2072,21 @@ class CActiveRelation extends CBaseActiveRelation
 	 * only when the primary table is not limited.
 	 */
 	public $together;
+	/**
+	 * @var mixed scopes to apply
+	 * Can be set to the one of the following:
+	 * <ul>
+	 * <li>Single scope: 'scopes'=>'scopeName'.</li>
+	 * <li>Multiple scopes: 'scopes'=>array('scopeName1','scopeName2').</li>
+	 * </ul>
+	 * @since 1.1.9
+	 */
+	 public $scopes;
 
 	/**
 	 * Merges this relation with a criteria specified dynamically.
 	 * @param array $criteria the dynamically specified criteria
 	 * @param boolean $fromScope whether the criteria to be merged is from scopes
-	 * @since 1.0.5
 	 */
 	public function mergeWith($criteria,$fromScope=false)
 	{
@@ -2142,7 +2132,7 @@ class CActiveRelation extends CBaseActiveRelation
 /**
  * CBelongsToRelation represents the parameters specifying a BELONGS_TO relation.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2154,7 +2144,7 @@ class CBelongsToRelation extends CActiveRelation
 /**
  * CHasOneRelation represents the parameters specifying a HAS_ONE relation.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2172,7 +2162,7 @@ class CHasOneRelation extends CActiveRelation
 /**
  * CHasManyRelation represents the parameters specifying a HAS_MANY relation.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2189,7 +2179,6 @@ class CHasManyRelation extends CActiveRelation
 	/**
 	 * @var string the name of the column that should be used as the key for storing related objects.
 	 * Defaults to null, meaning using zero-based integer IDs.
-	 * @since 1.0.7
 	 */
 	public $index;
 	/**
@@ -2203,7 +2192,6 @@ class CHasManyRelation extends CActiveRelation
 	 * Merges this relation with a criteria specified dynamically.
 	 * @param array $criteria the dynamically specified criteria
 	 * @param boolean $fromScope whether the criteria to be merged is from scopes
-	 * @since 1.0.5
 	 */
 	public function mergeWith($criteria,$fromScope=false)
 	{
@@ -2225,7 +2213,7 @@ class CHasManyRelation extends CActiveRelation
 /**
  * CManyManyRelation represents the parameters specifying a MANY_MANY relation.
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */
@@ -2238,7 +2226,7 @@ class CManyManyRelation extends CHasManyRelation
  * CActiveRecordMetaData represents the meta-data for an Active Record class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecord.php 3317 2011-06-24 20:38:49Z qiang.xue $
+ * @version $Id: CActiveRecord.php 3533 2012-01-08 22:07:55Z mdomba $
  * @package system.db.ar
  * @since 1.0
  */

@@ -16,8 +16,10 @@
  * the three tables used to store the authorization data by setting {@link itemTable},
  * {@link itemChildTable} and {@link assignmentTable}.
  *
+ * @property array $authItems The authorization items of the specific type.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbAuthManager.php 3274 2011-06-15 09:28:16Z mdomba $
+ * @version $Id: CDbAuthManager.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.auth
  * @since 1.0
  */
@@ -118,6 +120,7 @@ class CDbAuthManager extends CAuthManager
 	 * Adds an item as a child of another item.
 	 * @param string $itemName the parent item name
 	 * @param string $childName the child item name
+	 * @return boolean whether the item is added successfully
 	 * @throws CException if either parent or child doesn't exist or if a loop has been detected.
 	 */
 	public function addItemChild($itemName,$childName)
@@ -157,6 +160,8 @@ class CDbAuthManager extends CAuthManager
 					'parent'=>$itemName,
 					'child'=>$childName,
 				));
+
+			return true;
 		}
 		else
 			throw new CException(Yii::t('yii','Either "{parent}" or "{child}" does not exist.',array('{child}'=>$childName,'{parent}'=>$itemName)));
@@ -198,7 +203,7 @@ class CDbAuthManager extends CAuthManager
 	/**
 	 * Returns the children of the specified item.
 	 * @param mixed $names the parent item name. This can be either a string or an array.
-	 * The latter represents a list of item names (available since version 1.0.5).
+	 * The latter represents a list of item names.
 	 * @return array all child items of the parent
 	 */
 	public function getItemChildren($names)

@@ -13,10 +13,11 @@
  * Compared with {@link CModelBehavior}, CActiveRecordBehavior attaches to more events
  * that are only defined by {@link CActiveRecord}.
  *
+ * @property CActiveRecord $owner The owner AR that this behavior is attached to.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveRecordBehavior.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CActiveRecordBehavior.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.ar
- * @since 1.0.2
  */
 class CActiveRecordBehavior extends CModelBehavior
 {
@@ -80,7 +81,6 @@ class CActiveRecordBehavior extends CModelBehavior
 	 * Responds to {@link CActiveRecord::onBeforeFind} event.
 	 * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
 	 * @param CEvent $event event parameter
-	 * @since 1.0.9
 	 */
 	public function beforeFind($event)
 	{

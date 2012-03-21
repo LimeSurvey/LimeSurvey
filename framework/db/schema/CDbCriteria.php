@@ -12,7 +12,7 @@
  * CDbCriteria represents a query criteria, such as conditions, ordering by, limit/offset.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbCriteria.php 3238 2011-05-25 19:02:15Z qiang.xue $
+ * @version $Id: CDbCriteria.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema
  * @since 1.0
  */
@@ -33,7 +33,6 @@ class CDbCriteria extends CComponent
 	/**
 	 * @var boolean whether to select distinct rows of data only. If this is set true,
 	 * the SELECT clause would be changed to SELECT DISTINCT.
-	 * @since 1.0.9
 	 */
 	public $distinct=false;
 	/**
@@ -71,7 +70,6 @@ class CDbCriteria extends CComponent
 	/**
 	 * @var string the condition to be applied with GROUP-BY clause.
 	 * For example, <code>'SUM(revenue)<50000'</code>.
-	 * @since 1.0.1
 	 */
 	public $having='';
 	/**
@@ -97,7 +95,7 @@ class CDbCriteria extends CComponent
 	public $alias;
 	/**
 	 * @var boolean whether the foreign tables should be joined with the primary table in a single SQL.
-	 * This property is only used in relational AR queries.
+	 * This property is only used in relational AR queries for HAS_MANY and MANY_MANY relations.
 	 *
 	 * When this property is set true, only a single SQL will be executed for a relational AR query,
 	 * even if the primary table is limited and the relationship between a foreign table and the primary
@@ -105,7 +103,8 @@ class CDbCriteria extends CComponent
 	 *
 	 * When this property is set false, a SQL statement will be executed for each HAS_MANY relation.
 	 *
-	 * When this property is not set, if the primary table is limited, a SQL statement will be executed for each HAS_MANY relation.
+	 * When this property is not set, if the primary table is limited or paginated,
+	 * a SQL statement will be executed for each HAS_MANY relation.
 	 * Otherwise, a single SQL statement will be executed for all.
 	 *
 	 * @since 1.1.4
@@ -132,15 +131,16 @@ class CDbCriteria extends CComponent
      * <li>{@link CActiveRecord::count()}</li>
      * </ul>
 	 *
-     * Can be set to one of the following:
-     * <ul>
-     * <li>One scope: $criteria->scopes='scopeName';</li>
-     * <li>Multiple scopes: $criteria->scopes=array('scopeName1','scopeName1');</li>
-     * <li>Scope with parameters: $criteria->scopes=array('scopeName'=>array($paramters));</li>
-     * <li>Multiple scopes with the same name: array(array('scopeName'=>array($paramters1)),array('scopeName'=>array($paramters2)));</li>
-     * </ul>
-     * @since 1.1.7
-     */
+	 * Can be set to one of the following:
+	 * <ul>
+	 * <li>One scope: $criteria->scopes='scopeName';</li>
+	 * <li>Multiple scopes: $criteria->scopes=array('scopeName1','scopeName2');</li>
+	 * <li>Scope with parameters: $criteria->scopes=array('scopeName'=>array($params));</li>
+	 * <li>Multiple scopes with parameters: $criteria->scopes=array('scopeName1'=>array($params1),'scopeName2'=>array($params2));</li>
+	 * <li>Multiple scopes with the same name: array(array('scopeName'=>array($params1)),array('scopeName'=>array($params2)));</li>
+	 * </ul>
+	 * @since 1.1.7
+	 */
 	public $scopes;
 
 	/**
@@ -154,6 +154,24 @@ class CDbCriteria extends CComponent
 	}
 
 	/**
+	 * Remaps criteria parameters on unserialize to prevent name collisions.
+	 * @since 1.1.9
+	 */
+	public function __wakeup()
+	{
+		$map=array();
+		$params=array();
+		foreach($this->params as $name=>$value)
+		{
+			$newName=self::PARAM_PREFIX.self::$paramCount++;
+			$map[$name]=$newName;
+			$params[$newName]=$value;
+		}
+		$this->condition=strtr($this->condition,$map);
+		$this->params=$params;
+	}
+
+	/**
 	 * Appends a condition to the existing {@link condition}.
 	 * The new condition and the existing condition will be concatenated via the specified operator
 	 * which defaults to 'AND'.
@@ -164,7 +182,6 @@ class CDbCriteria extends CComponent
 	 * @param mixed $condition the new condition. It can be either a string or an array of strings.
 	 * @param string $operator the operator to join different conditions. Defaults to 'AND'.
 	 * @return CDbCriteria the criteria object itself
-	 * @since 1.0.9
 	 */
 	public function addCondition($condition,$operator='AND')
 	{
@@ -198,7 +215,6 @@ class CDbCriteria extends CComponent
 	 * Defaults to 'AND'.
 	 * @param string $like the LIKE operator. Defaults to 'LIKE'. You may also set this to be 'NOT LIKE'.
 	 * @return CDbCriteria the criteria object itself
-	 * @since 1.0.10
 	 */
 	public function addSearchCondition($column,$keyword,$escape=true,$operator='AND',$like='LIKE')
 	{
@@ -222,7 +238,6 @@ class CDbCriteria extends CComponent
 	 * @param string $operator the operator used to concatenate the new condition with the existing one.
 	 * Defaults to 'AND'.
 	 * @return CDbCriteria the criteria object itself
-	 * @since 1.0.10
 	 */
 	public function addInCondition($column,$values,$operator='AND')
 	{
@@ -297,7 +312,6 @@ class CDbCriteria extends CComponent
 	 * @param string $operator the operator used to concatenate the new condition with the existing one.
 	 * Defaults to 'AND'.
 	 * @return CDbCriteria the criteria object itself
-	 * @since 1.0.10
 	 */
 	public function addColumnCondition($columns,$columnOperator='AND',$operator='AND')
 	{
@@ -437,11 +451,9 @@ class CDbCriteria extends CComponent
 	 * For example, if both criterias have conditions, they will be 'AND' together.
 	 * Also, the criteria passed as the parameter takes precedence in case
 	 * two options cannot be merged (e.g. LIMIT, OFFSET).
-	 * @param CDbCriteria $criteria the criteria to be merged with.
+	 * @param mixed $criteria the criteria to be merged with. Either an array or CDbCriteria.
 	 * @param boolean $useAnd whether to use 'AND' to merge condition and having options.
-	 * If false, 'OR' will be used instead. Defaults to 'AND'. This parameter has been
-	 * available since version 1.0.6.
-	 * @since 1.0.5
+	 * If false, 'OR' will be used instead. Defaults to 'AND'.
 	 */
 	public function mergeWith($criteria,$useAnd=true)
 	{
@@ -584,7 +596,6 @@ class CDbCriteria extends CComponent
 
 	/**
 	 * @return array the array representation of the criteria
-	 * @since 1.0.6
 	 */
 	public function toArray()
 	{

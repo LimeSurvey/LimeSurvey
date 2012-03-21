@@ -20,8 +20,10 @@
  *
  * CFilterWidget provides all properties and methods of {@link CWidget} and {@link CFilter}.
  *
+ * @property boolean $isFilter Whether this widget is used as a filter.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFilterWidget.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CFilterWidget.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -48,7 +50,6 @@ class CFilterWidget extends CWidget implements IFilter
 
 	/**
 	 * @return boolean whether this widget is used as a filter.
-	 * @since 1.0.4
 	 */
 	public function getIsFilter()
 	{

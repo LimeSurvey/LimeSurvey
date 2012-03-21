@@ -1,6 +1,3 @@
-<?php
-    $usrhimself=array_map('htmlspecialchars', $usrhimself);
-?>
 <div class='header ui-widget-header'><?php $clang->eT("User control");?></div><br />
 <table id='users' class='users' width='100%' border='0'>
     <thead>
@@ -20,23 +17,23 @@
                 <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
                     <input type='image' src='<?php echo $imageurl;?>/token_edit.png' value='<?php $clang->eT("Edit user");?>' />
                     <input type='hidden' name='action' value='modifyuser' />
-                    <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
+                    <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
                 </form>
 
                 <?php if ($usrhimself['parent_id'] != 0 && Yii::app()->session['USER_RIGHT_DELETE_USER'] == 1 ) { ?>
                     <form method='post' action='$scriptname?action=deluser' onsubmit='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' >
                         <input type='submit' value='<?php $clang->eT("Delete");?>' />
                         <input type='hidden' name='action' value='deluser' />
-                        <input type='hidden' name='user' value='<?php echo $usrhimself['user'];?>' />
+                        <input type='hidden' name='user' value='<?php echo htmlspecialchars($usrhimself['user']);?>' />
                         <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
                     </form>
                     <?php } ?>
 
             </td>
 
-            <td align='center'><strong><?php echo $usrhimself['user'];?></strong></td>
-            <td align='center'><strong><?php echo $usrhimself['email'];?></strong></td>
-            <td align='center'><strong><?php echo $usrhimself['full_name'];?></strong></td>
+            <td align='center'><strong><?php echo htmlspecialchars($usrhimself['user']);?></strong></td>
+            <td align='center'><strong><?php echo htmlspecialchars($usrhimself['email']);?></strong></td>
+            <td align='center'><strong><?php echo htmlspecialchars($usrhimself['full_name']);?></strong></td>
 
             <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) { ?>
                 <td align='center'><strong><?php echo $noofsurveys;?></strong></td>

@@ -1,17 +1,17 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
 
 /**
@@ -2169,18 +2169,19 @@ function XMLImportLabelsets($sFullFilepath, $options)
     // Import labels table ===================================================================================
 
 
-    foreach ($xml->labels->rows->row as $row)
-    {
-        $insertdata=array();
-        foreach ($row as $key=>$value)
+    if (isset($xml->labels->rows->row))
+        foreach ($xml->labels->rows->row as $row)
         {
-            $insertdata[(string)$key]=(string)$value;
-        }
-        $insertdata['lid']=$aLSIDReplacements[$insertdata['lid']];
-        if ($xssfilter)
-            XSSFilterArray($insertdata);
-        $result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
-        $results['labels']++;
+            $insertdata=array();
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['lid']=$aLSIDReplacements[$insertdata['lid']];
+            if ($xssfilter)
+                XSSFilterArray($insertdata);
+            $result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
+            $results['labels']++;
     }
 
     //CHECK FOR DUPLICATE LABELSETS
@@ -3508,13 +3509,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 switchMSSQLIdentityInsert('groups',true);
                 $insertdata['gid']=$aGIDReplacements[$oldgid];
             }
-            $result = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $newgid = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
             $results['groups']++;
 
             if (!isset($aGIDReplacements[$oldgid]))
             {
-                $newgid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-                $newgid=$newgid['LAST_INSERT_ID()'];
                 $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
             }
             else
@@ -3559,11 +3558,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($xssfilter)
                 XSSFilterArray($insertdata);
-            $result = Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $newqid = Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
             if (!isset($aQIDReplacements[$oldqid]))
             {
-                $newqid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-                $aQIDReplacements[$oldqid]=$newqid['LAST_INSERT_ID()'];
+                $aQIDReplacements[$oldqid]=$newqid;
                 $results['questions']++;
             }
             else
@@ -3602,9 +3600,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($xssfilter)
                 XSSFilterArray($insertdata);
-            $result =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
-            $newsqid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-            $newsqid=$newsqid['LAST_INSERT_ID()'];
+            $newsqid =Questions::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array

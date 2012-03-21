@@ -21,7 +21,7 @@ $(document).ready(function(){
                     "<table align='center'><tr>"+
                        "<td  align='center' width='50%' padding='20px' >";
 
-            if (isValueInArray(image_extensions, json[i-1].ext))
+            if (isValueInArray(image_extensions, json[i-1].ext.toLowerCase()))
                 previewblock += "<img src='uploader.php?filegetcontents="+json[i-1].filename+"' height='60px' />"+decodeURIComponent(json[i-1].name);
             else
                 previewblock += "<img src='"+imageurl+"placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i-1].name);
@@ -134,7 +134,7 @@ $(document).ready(function(){
                                             "<td  align='center' width='50%'>";
 
                 // If the file is not an image, use a placeholder
-                if (isValueInArray(image_extensions, metadata.ext))
+                if (isValueInArray(image_extensions, metadata.ext.toLowerCase()))
                     previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' height='60px' />";
                 else
                     previewblock += "<img src='"+imageurl+"placeholder.png' height='60px' />";
@@ -203,11 +203,11 @@ function passJSON(fieldname, show_title, show_comment, pos) {
 
     while (i <= licount)
     {
-        if (filecount > 0)
-            json += ",";
 
         if ($("#"+fieldname+"_li_"+i).is(':visible'))
         {
+            if (filecount > 0)
+                json += ",";
             json += '{';
 
             if ($("#"+fieldname+"_show_title").val() == 1)
@@ -220,12 +220,8 @@ function passJSON(fieldname, show_title, show_comment, pos) {
                     '"ext":"'    +$("#"+fieldname+"_ext_"    +i).val()+'"}';
 
             filecount += 1;
-            i += 1;
         }
-        else
-        {
-            i += 1;
-        }
+        i += 1;
     }
     json += "]";
     window.parent.window.copyJSON(json, filecount, fieldname, show_title, show_comment, pos);
@@ -300,7 +296,6 @@ function deletefile(fieldname, count) {
     }
     filename=$("#"+fieldname+"_filename_"+count).val();
     name=$("#"+fieldname+"_name_"+count).val();
-    //xmlhttp.open('GET','delete.php?sid='+surveyid+'&fieldname='+fieldname+'&filename='+filename+'&name='+encodeURI(name), true);
-    alert('Not yet implemented!');
+    xmlhttp.open('GET','delete.php?sid='+surveyid+'&fieldname='+fieldname+'&filename='+filename+'&name='+encodeURI(name), true);
     xmlhttp.send();
 }

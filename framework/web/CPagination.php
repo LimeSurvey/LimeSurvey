@@ -50,8 +50,18 @@
  * )) ?>
  * </pre>
  *
+ * @property integer $pageSize Number of items in each page. Defaults to 10.
+ * @property integer $itemCount Total number of items. Defaults to 0.
+ * @property integer $pageCount Number of pages.
+ * @property integer $currentPage The zero-based index of the current page. Defaults to 0.
+ * @property integer $offset The offset of the data. This may be used to set the
+ * OFFSET value for a SQL statement for fetching the current page of data.
+ * @property integer $limit The limit of the data. This may be used to set the
+ * LIMIT value for a SQL statement for fetching the current page of data.
+ * This returns the same value as {@link pageSize}.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CPagination.php 3249 2011-05-29 11:35:37Z alexander.makarow $
+ * @version $Id: CPagination.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web
  * @since 1.0
  */
@@ -73,7 +83,6 @@ class CPagination extends CComponent
 	/**
 	 * @var array of parameters (name=>value) that should be used instead of GET when generating pagination URLs.
 	 * Defaults to null, meaning using the currently available GET parameters.
-	 * @since 1.0.9
 	 */
 	public $params;
 	/**
@@ -95,7 +104,6 @@ class CPagination extends CComponent
 	/**
 	 * Constructor.
 	 * @param integer $itemCount total number of items.
-	 * @since 1.0.1
 	 */
 	public function __construct($itemCount=0)
 	{
@@ -203,7 +211,6 @@ class CPagination extends CComponent
 	/**
 	 * Applies LIMIT and OFFSET to the specified query criteria.
 	 * @param CDbCriteria $criteria the query criteria that should be applied with the limit
-	 * @since 1.0.1
 	 */
 	public function applyLimit($criteria)
 	{

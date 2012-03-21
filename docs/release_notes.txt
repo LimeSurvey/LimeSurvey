@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.00 alpha 2!
+Welcome to LimeSurvey v2.00 alpha 3!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,29 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 2.0a2 to 2.0a3 (build 120315) Mar 14, 2012
++New feature #5492: Changing global settings takes you away from survey design Now it "remembers" the referee url and redirect to that url after saving global settings! (magiclko)
+-Fixed issue #5880: make em_q_fn_validation and em_sq_fn_validation more easily visible Dev  Now, if there is a validation_tip, it will appear if the validation fails.  One can use hide_tip to have it always be invisible unless there is a validation violation. (Thomas White)
+-Fixed issue #5894: INSERTANS (and qcode.shown) returning wrong values for some question types Fixed issue Uploaded files fail if target directory does not exist. (Thomas White)
+-Fixed issue #5895: on-page substitution of comment for List with Comment type not being displayed (Thomas White)
+-Fixed issue #5898: {GOOGLE_ANALYTICS_JAVASCRIPT} integration errors Dev upgraded Goggle Analytics JavaScript to use recommended async code (Thomas White)
+-Fixed issue #5901: Unable to movenext or submit a survey (Thomas White)
+-Fixed issue #5891: "Add/edit answers for this question" icon for Array (Numbers) & Array (Texts) is "Row-Icon" instead of "Row-Column" Icon (Carsten Schmitz)
+-Fixed issue #5899: Some error HTML instead of GPL license displayed in installation (Carsten Schmitz)
+-Fixed issue: Data not saved and validations don't work when use multiflexible_checkbox option in Array (numbers) question type (Thomas White)
+-Fixed issue: Demo surveys still using old fieldnames (Carsten Schmitz)
+-Fixed issue: Equation question types were only capturing the contents of the first replacement <span> element (Thomas White)
+-Fixed issue: Group preview sometimes does not work (Thomas White)
+-Fixed issue: hide_type advanced question option not available for all question types (Thomas White)
+-Fixed issue: Langage are not sent for HTML lang Dev: dirty fix, need a global function to replace in survey/index.php (Shnoulle)
+-Fixed issue: List only langage selected survey in survey list Fixed issue : partially : bad HTML for survey listing with inactive survey with registration New feature ; lang tag in survey listing link list Dev: need to review registration link : template AND/OR global setting Dev: need a better langage session ( global langage session) (Shnoulle)
+-Fixed issue: Question preview not working (Carsten Schmitz)
+-Fixed issue: Survey cannot be imported (Carsten Schmitz)
+-Fixed issue: Survey, group, and question details cannot be closed (Carsten Schmitz)
+-Fixed issue: Unable to set global googleanalyticsapikey and googletranslateapikey (Thomas White)
+-Fixed issue: When using question type Array (Numbers) with multiflexible_checkbox input and radix separator = comma, JavaScript throws error when trying to fix radix separator (Thomas White)
+
 
 Changes from 1.92+ to 2.0a2 (build 120312) Mar 11, 2012
 #Updated feature: Users and rights management workflow improvements - GCI2011 by Daniel Huang N (Pieter Jan Speelmans)

@@ -1,6 +1,10 @@
 var DOM1;
 $(document).ready(function()
 {
+
+	// Jquery-ui avigation buttons
+    navbuttonsJqueryUi();
+
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
@@ -120,24 +124,38 @@ $(document).ready(function()
         var row = $("#index .row.current");
         idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
     }
-	
-	// Nav buttons
-	if ($.browser.msie && $.browser.version.substr(0,1)<8 && $('button.submit').length > 0) { // Get rid of the focus outline in IE7
-		$('#movenextbtn, #movesubmitbtn').focus().blur(); 
-	}
-	
-	$('#moveprevbtn').button({
-		icons: {
-			primary: 'ui-icon-triangle-1-w'
-		}
-    });
-	$('#movenextbtn').button({
-		icons: {
-			secondary: 'ui-icon-triangle-1-e'
-		}
-	});
-	$('#movesubmitbtn, input.saveall, input.clearall').button();
 });
+
+
+// Set jquery-ui to LS Button
+function navbuttonsJqueryUi(){
+    if ($.browser.msie && $.browser.version.substr(0,1)<8 && $('button.submit').length > 0) { // Get rid of the focus outline in IE7
+        $('#movenextbtn, #movesubmitbtn').focus().blur(); 
+    }
+
+    $('[dir!="rtl"] #moveprevbtn').button({
+    icons: {
+        primary: 'ui-icon-triangle-1-w'
+    }
+    });
+    $('[dir="rtl"] #moveprevbtn').button({
+    icons: {
+        secondary: 'ui-icon-triangle-1-e'
+    }
+    });
+    $('[dir!="rtl"] #movenextbtn').button({
+    icons: {
+        secondary: 'ui-icon-triangle-1-e'
+    }
+    });
+    $('[dir="rtl"] #movenextbtn').button({
+    icons: {
+        primary: 'ui-icon-triangle-1-w'
+    }
+    });
+    $('#movesubmitbtn, input.saveall, input.clearall').button();
+}
+
 
 gmaps = new Object;
 osmaps = new Object;

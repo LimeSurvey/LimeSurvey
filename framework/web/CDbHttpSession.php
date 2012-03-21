@@ -35,8 +35,10 @@
  * and set {@link autoCreateSessionTable} to be false. This will greatly improve the performance.
  * You may also create a DB index for the 'expire' column in the session table to further improve the performance.
  *
+ * @property boolean $useCustomStorage Whether to use custom storage.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbHttpSession.php 3167 2011-04-07 04:25:27Z qiang.xue $
+ * @version $Id: CDbHttpSession.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.web
  * @since 1.0
  */
@@ -80,14 +82,19 @@ class CDbHttpSession extends CHttpSession
 	}
 
 	/**
-	 * Updates the current session id with a newly generated one .
+	 * Updates the current session id with a newly generated one.
 	 * Please refer to {@link http://php.net/session_regenerate_id} for more details.
 	 * @param boolean $deleteOldSession Whether to delete the old associated session file or not.
 	 * @since 1.1.8
 	 */
 	public function regenerateID($deleteOldSession=false)
 	{
-		$oldID=session_id();;
+		$oldID=session_id();
+
+		// if no session is started, there is nothing to regenerate
+		if(empty($oldID))
+			return;
+
 		parent::regenerateID(false);
 		$newID=session_id();
 		$db=$this->getDbConnection();

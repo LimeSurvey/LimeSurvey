@@ -11,8 +11,10 @@
 /**
  * CClientScript manages JavaScript and CSS stylesheets for views.
  *
+ * @property string $coreScriptUrl The base URL of all core javascript files.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CClientScript.php 3231 2011-05-21 06:50:35Z mdomba $
+ * @version $Id: CClientScript.php 3559 2012-02-09 21:12:53Z alexander.makarow $
  * @package system.web
  * @since 1.0
  */
@@ -48,11 +50,10 @@ class CClientScript extends CApplicationComponent
 	 * The array keys are script file names (without directory part) and the array values are the corresponding URLs.
 	 * If an array value is false, the corresponding script file will not be rendered.
 	 * If an array key is '*.js' or '*.css', the corresponding URL will replace all
-	 * all JavaScript files or CSS files, respectively.
+	 * JavaScript files or CSS files, respectively.
 	 *
 	 * This property is mainly used to optimize the generated HTML pages
 	 * by merging different scripts files into fewer and optimized script files.
-	 * @since 1.0.3
 	 */
 	public $scriptMap=array();
 	/**
@@ -115,17 +116,14 @@ class CClientScript extends CApplicationComponent
 	public $corePackages;
 	/**
 	 * @var array the registered CSS files (CSS URL=>media type).
-	 * @since 1.0.4
 	 */
 	protected $cssFiles=array();
 	/**
 	 * @var array the registered JavaScript files (position, key => URL)
-	 * @since 1.0.4
 	 */
 	protected $scriptFiles=array();
 	/**
 	 * @var array the registered JavaScript code blocks (position, key => code)
-	 * @since 1.0.5
 	 */
 	protected $scripts=array();
 	/**
@@ -244,7 +242,6 @@ class CClientScript extends CApplicationComponent
 
 	/**
 	 * Uses {@link scriptMap} to re-map the registered scripts.
-	 * @since 1.0.3
 	 */
 	protected function remapScripts()
 	{
@@ -293,7 +290,6 @@ class CClientScript extends CApplicationComponent
 
 	/**
 	 * Renders the specified core javascript library.
-	 * @since 1.0.3
 	 */
 	public function renderCoreScripts()
 	{
@@ -617,10 +613,10 @@ class CClientScript extends CApplicationComponent
 
 	/**
 	 * Registers a meta tag that will be inserted in the head section (right before the title element) of the resulting page.
-	 * 
+	 *
 	 * <b>Note:</b>
 	 * Meta tags with same attributes will be rendered more then once if called with different values.
-	 * 
+	 *
 	 * <b>Example:</b>
 	 * <pre>
 	 *    $cs->registerMetaTag('example', 'description', null, array('lang' => 'en'));
@@ -631,7 +627,6 @@ class CClientScript extends CApplicationComponent
 	 * @param string $httpEquiv http-equiv attribute of the meta tag. If null, the attribute will not be generated
 	 * @param array $options other options in name-value pairs (e.g. 'scheme', 'lang')
 	 * @return CClientScript the CClientScript object itself (to support method chaining, available since version 1.1.5).
-	 * @since 1.0.1
 	 */
 	public function registerMetaTag($content,$name=null,$httpEquiv=null,$options=array())
 	{
@@ -655,7 +650,6 @@ class CClientScript extends CApplicationComponent
 	 * @param string $media media attribute of the link tag. If null, the attribute will not be generated.
 	 * @param array $options other options in name-value pairs
 	 * @return CClientScript the CClientScript object itself (to support method chaining, available since version 1.1.5).
-	 * @since 1.0.1
 	 */
 	public function registerLinkTag($relation=null,$type=null,$href=null,$media=null,$options=array())
 	{
@@ -737,11 +731,26 @@ class CClientScript extends CApplicationComponent
 	 * @param string $method the method name
 	 * @param array $params parameters passed to the method
 	 * @see COutputCache
-	 * @since 1.0.5
 	 */
 	protected function recordCachingAction($context,$method,$params)
 	{
 		if(($controller=Yii::app()->getController())!==null)
 			$controller->recordCachingAction($context,$method,$params);
+	}
+
+	/**
+	 * Adds a package to packages list.
+	 *
+	 * @param string $name the name of the script package.
+	 * @param array $definition the definition array of the script package,
+	 * @see CClientScript::packages.
+	 * @return CClientScript the CClientScript object itself (to support method chaining, available since version 1.1.10).
+	 *
+	 * @since 1.1.9
+	 */
+	public function addPackage($name,$definition)
+	{
+		$this->packages[$name]=$definition;
+		return $this;
 	}
 }

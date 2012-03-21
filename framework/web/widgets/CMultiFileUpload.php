@@ -35,7 +35,7 @@
  * </pre>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMultiFileUpload.php 3221 2011-05-13 12:00:40Z mdomba $
+ * @version $Id: CMultiFileUpload.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.web.widgets
  * @since 1.0
  */
@@ -98,7 +98,6 @@ class CMultiFileUpload extends CInputWidget
 
 	/**
 	 * Registers the needed CSS and JavaScript.
-	 * @since 1.0.1
 	 */
 	public function registerClientScript()
 	{

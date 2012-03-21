@@ -36,7 +36,7 @@
  * page state persistent method based on cache.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStatePersister.php 3165 2011-04-06 08:27:40Z mdomba $
+ * @version $Id: CStatePersister.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
  * @since 1.0
  */
@@ -52,7 +52,6 @@ class CStatePersister extends CApplicationComponent implements IStatePersister
 	 * @var string the ID of the cache application component that is used to cache the state values.
 	 * Defaults to 'cache' which refers to the primary cache application component.
 	 * Set this property to false if you want to disable caching state values.
-	 * @since 1.0.10
 	 */
 	public $cacheID='cache';
 

@@ -25,14 +25,5 @@ require(dirname(__FILE__).'/YiiBase.php');
  * @since 1.0
  */
 class Yii extends YiiBase
- {
-
-    /**
-     * Returns the application singleton, null if the singleton has not been created yet.
-     * @return LSYii_Application the application singleton, null if the singleton has not been created yet.
-     */
-    public static function app() {
-        return parent::app();
-    }
-
+{
 }

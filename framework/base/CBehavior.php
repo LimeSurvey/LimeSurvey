@@ -10,10 +10,13 @@
 
 /**
  * CBehavior is a convenient base class for behavior classes.
+ *
+ * @property CComponent $owner The owner component that this behavior is attached to.
+ * @property boolean $enabled Whether this behavior is enabled.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CBehavior.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CBehavior.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.base
- * @since 1.0.2
  */
 class CBehavior extends CComponent implements IBehavior
 {

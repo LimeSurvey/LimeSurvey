@@ -16,9 +16,8 @@
  * See {@link CCache} manual for common cache operations that are supported by CXCache.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: CXCache.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CXCache.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.caching
- * @since 1.0.1
  */
 class CXCache extends CCache
 {

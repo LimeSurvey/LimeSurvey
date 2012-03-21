@@ -12,9 +12,8 @@
  * COciColumnSchema class describes the column meta data of a Oracle table.
  *
  * @author Ricardo Grana <rickgrana@yahoo.com.br>
- * @version $Id: COciColumnSchema.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id: COciColumnSchema.php 3515 2011-12-28 12:29:24Z mdomba $
  * @package system.db.schema.oci
- * @since 1.0.5
  */
 class COciColumnSchema extends CDbColumnSchema
 {

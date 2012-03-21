@@ -25,7 +25,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * {@link value}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCheckBoxColumn.php 2852 2011-01-14 09:46:46Z mdomba $
+ * @version $Id: CCheckBoxColumn.php 3437 2011-11-07 15:03:58Z mdomba $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -119,7 +119,7 @@ class CCheckBoxColumn extends CGridColumn
 		elseif($this->selectableRows==1)
 		{
 			//.. only one can be checked, uncheck all other
-			$cbcode="$(\"input:not(#\"+$(this).attr('id')+\")[name='$name']\").attr('checked',false);";
+			$cbcode="$(\"input:not(#\"+this.id+\")[name='$name']\").prop('checked',false);";
 		}
 		else
 		{
@@ -131,7 +131,7 @@ $('#{$this->id}_all').live('click',function() {
 });
 
 CBALL;
-			$cbcode="$('#{$this->id}_all').attr('checked', $(\"input[name='$name']\").length==$(\"input[name='$name']:checked\").length);";
+			$cbcode="$('#{$this->id}_all').prop('checked', $(\"input[name='$name']\").length==$(\"input[name='$name']:checked\").length);";
 		}
 
 		$js=$cball;

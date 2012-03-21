@@ -16,8 +16,10 @@ require_once('PHPUnit/Extensions/SeleniumTestCase.php');
  * It extends PHPUnit_Extensions_SeleniumTestCase and provides the database
  * fixture management feature like {@link CDbTestCase}.
  *
+ * @property CDbFixtureManager $fixtureManager The database fixture manager.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebTestCase.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CWebTestCase.php 3426 2011-10-25 00:01:09Z alexander.makarow $
  * @package system.test
  * @since 1.1
  */

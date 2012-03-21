@@ -16,8 +16,16 @@
  * A user may be assigned one or several authorization items (called {@link CAuthAssignment assignments}.
  * He can perform an operation only when it is among his assigned items.
  *
+ * @property IAuthManager $authManager The authorization manager.
+ * @property integer $type The authorization item type. This could be 0 (operation), 1 (task) or 2 (role).
+ * @property string $name The item name.
+ * @property string $description The item description.
+ * @property string $bizRule The business rule associated with this item.
+ * @property mixed $data The additional data associated with this item.
+ * @property array $children All child items of this item.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CAuthItem.php 3001 2011-02-24 16:42:44Z alexander.makarow $
+ * @version $Id: CAuthItem.php 3442 2011-11-09 02:48:50Z alexander.makarow $
  * @package system.web.auth
  * @since 1.0
  */
@@ -45,7 +53,7 @@ class CAuthItem extends CComponent
 	 */
 	public function __construct($auth,$name,$type,$description='',$bizRule=null,$data=null)
 	{
-		$this->_type=$type;
+		$this->_type=(int)$type;
 		$this->_auth=$auth;
 		$this->_name=$name;
 		$this->_description=$description;
@@ -154,7 +162,7 @@ class CAuthItem extends CComponent
 	}
 
 	/**
-	 * @return string the additional data associated with this item
+	 * @return mixed the additional data associated with this item
 	 */
 	public function getData()
 	{
@@ -162,7 +170,7 @@ class CAuthItem extends CComponent
 	}
 
 	/**
-	 * @param string $value the business rule associated with this item
+	 * @param mixed $value the additional data associated with this item
 	 */
 	public function setData($value)
 	{

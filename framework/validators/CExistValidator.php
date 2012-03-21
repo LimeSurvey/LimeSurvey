@@ -14,10 +14,17 @@
  * This validator is often used to verify that a foreign key contains a value
  * that can be found in the foreign table.
  *
+ * When using the {@link message} property to define a custom error message, the message
+ * may contain additional placeholders that will be replaced with the actual content. In addition
+ * to the "{attribute}" placeholder, recognized by all validators (see {@link CValidator}),
+ * CExistValidator allows for the following placeholders to be specified:
+ * <ul>
+ * <li>{value}: replaced with value of the attribute.</li>
+ * </ul>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExistValidator.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id: CExistValidator.php 3549 2012-01-27 15:36:43Z qiang.xue $
  * @package system.validators
- * @since 1.0.4
  */
 class CExistValidator extends CValidator
 {
@@ -40,7 +47,6 @@ class CExistValidator extends CValidator
 	 * @var array additional query criteria. This will be combined with the condition
 	 * that checks if the attribute value exists in the corresponding table column.
 	 * This array will be used to instantiate a {@link CDbCriteria} object.
-	 * @since 1.0.8
 	 */
 	public $criteria=array();
 	/**
@@ -79,7 +85,7 @@ class CExistValidator extends CValidator
 		if(!$finder->exists($criteria))
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} "{value}" is invalid.');
-			$this->addError($object,$attribute,$message,array('{value}'=>$value));
+			$this->addError($object,$attribute,$message,array('{value}'=>CHtml::encode($value)));
 		}
 	}
 }

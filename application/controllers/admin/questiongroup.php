@@ -186,7 +186,7 @@ class questiongroup extends Survey_Common_Action
                         foreach ($aData as $k => $v)
                             $group->$k = $v;
                         $group->save();
-                        $groupid = Yii::app()->db->getLastInsertID();
+                        $groupid = $group->gid;
                         $first = false;
                     }
                     else

@@ -72,8 +72,12 @@ Yii::import('zii.widgets.grid.CCheckBoxColumn');
  *
  * Please refer to {@link columns} for more details about how to configure this property.
  *
+ * @property boolean $hasFooter Whether the table should render a footer.
+ * This is true if any of the {@link columns} has a true {@link CGridColumn::hasFooter} value.
+ * @property CFormatter $formatter The formatter instance. Defaults to the 'format' application component.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridView.php 3286 2011-06-16 17:34:34Z qiang.xue $
+ * @version $Id: CGridView.php 3551 2012-02-02 12:45:25Z mdomba $
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -194,7 +198,7 @@ class CGridView extends CBaseListView
 	 */
 	public $selectableRows=1;
 	/**
-	 * @var string the base script URL for all grid view resources (e.g. javascript, CSS file, images).
+	 * @var string the base script URL for all grid view resources (eg javascript, CSS file, images).
 	 * Defaults to null, meaning using the integrated grid view resources (which are published as assets).
 	 */
 	public $baseScriptUrl;
@@ -244,6 +248,7 @@ class CGridView extends CBaseListView
 	 * at the top that users can fill in to filter the data.
 	 * Note that in order to show an input field for filtering, a column must have its {@link CDataColumn::name}
 	 * property set or have {@link CDataColumn::filter} as the HTML code for the input field.
+	 * When this property is not set (null) the filtering is disabled.
 	 * @since 1.1.1
 	 */
 	public $filter;

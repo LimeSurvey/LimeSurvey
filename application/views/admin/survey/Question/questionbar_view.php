@@ -131,7 +131,7 @@
                 { ?>
                 <a href='<?php echo $this->createUrl('admin/question/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                     title='<?php $clang->eTview("Edit subquestions for this question"); ?>'>
-                    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/subquestions.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a>
+                    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/<?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions.png<?php } else {?>subquestions2d.png<?php } ?>' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a>
                 <?php }
             }
             else
@@ -226,7 +226,7 @@
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
                     <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/subquestions_20.png' title='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
+                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/<?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions_20<?php } else {?>subquestions2d_20<?php } ?>.png' title='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
         <?php }
 
         if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
