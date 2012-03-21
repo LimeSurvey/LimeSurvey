@@ -3412,31 +3412,30 @@
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= ';<br/>'.$query;
                         }
-
-                        // Check Quotas
-                        $bQuotaMatched = false;
-                        $aQuotas = check_quota('return', $this->sid);
-                        if ($aQuotas !== false)
+                    }
+                    elseif ($this->surveyOptions['allowsave'] && isset($_SESSION['scid']))
+                    {
+                        $connect->Execute("UPDATE " . db_table_name("saved_control") . " SET saved_thisstep=" . db_quoteall($thisstep) . " where scid=" . $_SESSION['scid']);  // Checked
+                    }
+                    // Check quotas whenever results are saved
+                    $bQuotaMatched = false;
+                    $aQuotas = check_quota('return', $this->sid);
+                    if ($aQuotas !== false)
+                    {
+                        if ($aQuotas != false)
                         {
-                            if ($aQuotas != false)
+                            foreach ($aQuotas as $aQuota)
                             {
-                                foreach ($aQuotas as $aQuota)
-                                {
-                                    if (isset($aQuota['status']) && $aQuota['status'] == 'matched') {
-                                        $bQuotaMatched = true;
-                                    }
+                                if (isset($aQuota['status']) && $aQuota['status'] == 'matched') {
+                                    $bQuotaMatched = true;
                                 }
                             }
                         }
-                        if ($bQuotaMatched)
-                        {
-                            check_quota('enforce',$this->sid);  // will create a page and quit.
-                        }
                     }
-                    else if ($this->surveyOptions['allowsave'] && isset($_SESSION['scid']))
-                        {
-                            $connect->Execute("UPDATE " . db_table_name("saved_control") . " SET saved_thisstep=" . db_quoteall($thisstep) . " where scid=" . $_SESSION['scid']);  // Checked
-                        }
+                    if ($bQuotaMatched)
+                    {
+                        check_quota('enforce',$this->sid);  // will create a page and quit.
+                    }
                 }
                 if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                     $message .= $query;
