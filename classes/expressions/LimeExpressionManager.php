@@ -303,16 +303,16 @@
                     $value = substr($value,1,-1);
                 }
                 else if (preg_match('/^{.+}$/',$value)) {
-                        $value = substr($value,1,-1);
+                    $value = substr($value,1,-1);
+                }
+                else if ($row['method'] == 'RX') {
+                    if (!preg_match('#^/.*/$#',$value))
+                    {
+                        $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
                     }
-                    else if ($row['method'] == 'RX') {
-                            if (!preg_match('#^/.*/$#',$value))
-                            {
-                                $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
-                            }
-                    }
-                    else {
-                        $value = '"' . $value . '"';
+                }
+                else {
+                    $value = '"' . $value . '"';
                 }
 
                 // add equation
@@ -1755,11 +1755,10 @@
         * @param <type> $surveyid
         * @param <type> $forceRefresh
         * @param <type> $anonymized
-        * @param <type> $allOnOnePage - if true (like for survey_format), uses certain optimizations
         * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
         */
 
-        private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
+        private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false)
         {
             if (isset($_SESSION['LEMforceRefresh'])) {
                 unset($_SESSION['LEMforceRefresh']);
@@ -1857,7 +1856,6 @@
                 $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
                 $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
 
-                $questionId = $fieldNameParts[2];
                 $questionNum = $fielddata['qid'];
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
                 $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
@@ -1868,7 +1866,7 @@
                 if (trim($preg) == '') {
                     $preg = NULL;
                 }
-                $help = (isset($fielddata['help'])) ? $fielddata['help']: '';
+                $help = (isset($fielddata['help'])) ? $fielddata['help']: '';   // default value - will be overridden by language-specific if needed
                 $other = (isset($fielddata['other'])) ? $fielddata['other'] : '';
 
                 if (isset($this->questionId2groupSeq[$questionNum])) {
@@ -2027,7 +2025,7 @@
                         $sqsuffix = '_' . $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
                         $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
+//                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                         $rowdivid = substr($sgqa,0,-2);
                         break;
                     case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -2044,7 +2042,7 @@
                         $csuffix = $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
+//                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                         if ($type != 'H' && $type != 'R') {
                             if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
                                 //                            $rowdivid = substr($sgqa,0,-7);
@@ -2061,7 +2059,7 @@
                         $sqsuffix = '_' . substr($fielddata['aid'],0,strpos($fielddata['aid'],'_'));
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
+//                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                         $rowdivid = substr($sgqa,0,strpos($sgqa,'_'));
                         break;
                 }
@@ -2168,8 +2166,8 @@
                         break;
                     case '|': //File Upload
                         // Only want the use the one that ends in '_filecount'
-                        //                        $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$sgqa);
-                        //                        $jsVarName = $goodcode . '_filecount';
+//                        $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$sgqa);
+//                        $jsVarName = $goodcode . '_filecount';
                         $jsVarName = $sgqa;
                         $jsVarName_on = $jsVarName;
                         break;
@@ -2897,7 +2895,7 @@
                     break;
             }
 
-            $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage);
+            $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized']);
             $LEM->currentGroupSeq=-1;
             $LEM->currentQuestionSeq=-1;    // for question-by-question mode
             $LEM->indexGseq=array();
@@ -3446,10 +3444,10 @@
         }
 
         /**
-        * Get last move information, optionally clearing the substitution cache
-        * @param type $clearSubstitutionInfo
-        * @return type
-        */
+         * Get last move information, optionally clearing the substitution cache
+         * @param type $clearSubstitutionInfo
+         * @return type
+         */
         static function GetLastMoveResult($clearSubstitutionInfo=false)
         {
             $LEM =& LimeExpressionManager::singleton();
@@ -3473,7 +3471,7 @@
 
             if ($changeLang)
             {
-                $LEM->setVariableAndTokenMappingsForExpressionManager($LEM->sid,true,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage);
+                $LEM->setVariableAndTokenMappingsForExpressionManager($LEM->sid,true,$LEM->surveyOptions['anonymized']);
             }
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
@@ -4731,7 +4729,7 @@
 
                 if (!is_null($surveyid))
                 {
-                    $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage);
+                    $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized);
                     if (isset ($LEM->groupId2groupSeq[$groupNum]))
                     {
                         $groupSeq = $LEM->groupId2groupSeq[$groupNum];
@@ -6964,8 +6962,421 @@ EOD;
             'html'=>$out
             );
         }
-    }
 
+        /**
+         * Export survey definition in format readable by ExcelSurveyImport
+         * one line each per group, question, sub-question, and answer
+         * does not use SGQA naming at all.
+         * @param type $sid
+         * @return type
+         */
+        static public function &ExcelSurveyExport($sid)
+        {
+             $fields = array(
+                'class',
+                'type/scale',
+                'name',
+                'relevance',
+                'text',
+                'help',
+                'language',
+                'validaton',
+                'mandatory',
+                'other',
+                'default',
+                'same_default',
+                // Advanced question attributes
+                'allowed_filetypes',
+                'alphasort',
+                'answer_width',
+                'array_filter',
+                'array_filter_exclude',
+                'assessment_value',
+                'category_separator',
+                'display_columns',
+                'display_rows',
+                'dropdown_dates_year_min',
+                'dropdown_dates',
+                'dropdown_dates_year_max',
+                'dropdown_prefix',
+                'dropdown_prepostfix',
+                'dropdown_separators',
+                'dropdown_size',
+                'dualscale_headerA',
+                'dualscale_headerB',
+                'em_validation_q_tip',
+                'em_validation_q',
+                'em_validation_sq',
+                'em_validation_sq_tip',
+                'equals_num_value',
+                'exclude_all_others',
+                'exclude_all_others_auto',
+                'hidden',
+                'hide_tip',
+                'input_boxes',
+                'location_city',
+                'location_country',
+                'location_defaultcoordinates',
+                'location_mapheight',
+                'location_mapservice',
+                'location_mapwidth',
+                'location_mapzoom',
+                'location_nodefaultfromip',
+                'location_postal',
+                'location_state',
+                'max_answers',
+                'max_filesize',
+                'max_num_of_files',
+                'max_num_value',
+                'max_num_value_n',
+                'maximum_chars',
+                'min_answers',
+                'min_num_of_files',
+                'min_num_value',
+                'min_num_value_n',
+                'multiflexible_checkbox',
+                'multiflexible_max',
+                'multiflexible_min',
+                'multiflexible_step',
+                'num_value_int_only',
+                'numbers_only',
+                'other_comment_mandatory',
+                'other_numbers_only',
+                'other_replace_text',
+                'page_break',
+                'prefix',
+                'public_statistics',
+                'random_group',
+                'random_order',
+                'reverse',
+                'scale_export',
+                'show_comment',
+                'show_grand_total',
+                'show_title',
+                'show_totals',
+                'slider_accuracy',
+                'slider_default',
+                'slider_layout',
+                'slider_max',
+                'slider_middlestart',
+                'slider_min',
+                'slider_rating',
+                'slider_separator',
+                'slider_showminmax',
+                'suffix',
+                'text_input_width',
+                'time_limit_action',
+                'time_limit_countdown_message',
+                'time_limit_disable_next',
+                'time_limit_disable_prev',
+                'time_limit_message',
+                'time_limit_message_delay',
+                'time_limit_message_style',
+                'time_limit_timer_style',
+                'time_limit_warning_2_display_time',
+                'time_limit_warning_2_message',
+                'time_limit_warning_2_style',
+                'time_limit_warning_2',
+                'time_limit_warning',
+                'time_limit',
+                'time_limit_warning_display_time',
+                'time_limit_warning_message',
+                'time_limit_warning_style',
+                'use_dropdown',
+            );
+
+            $rows = array();
+            $primarylang='en';
+            $otherlangs='';
+            $langs = array();
+
+            // Export survey-level information
+            $query = "select * from " . db_table_name("surveys") . " where sid = " . $sid;
+            $data = db_execute_assoc($query);
+            foreach ($data->GetRows() as $r)
+            {
+                foreach ($r as $key=>$value)
+                {
+                    if ($value != '')
+                    {
+                        $row['class'] = 'S';
+                        $row['name'] = $key;
+                        $row['text'] = $value;
+                        $rows[] = $row;
+                    }
+                    if ($key=='language')
+                    {
+                        $primarylang = $value;
+                    }
+                    if ($key=='additional_languages')
+                    {
+                        $otherlangs = $value;
+                    }
+                }
+            }
+            $langs = explode(' ',$primarylang . ' ' . $otherlangs);
+            $langs = array_unique($langs);
+
+            // Export survey language settings
+            $query = "select * from " . db_table_name("surveys_languagesettings") . " where surveyls_survey_id = " . $sid;
+            $data = db_execute_assoc($query);
+            foreach ($data->GetRows() as $r)
+            {
+                $_lang = $r['surveyls_language'];
+                foreach ($r as $key=>$value)
+                {
+                    if ($value != '' && $key != 'surveyls_language' && $key != 'surveyls_survey_id')
+                    {
+                        $row['class'] = 'SL';
+                        $row['name'] = $key;
+                        $row['text'] = $value;
+                        $row['language'] = $_lang;
+                        $rows[] = $row;
+                    }
+                }
+            }
+
+            foreach($langs as $lang)
+            {
+                if (trim($lang) == '')
+                {
+                    continue;
+                }
+                SetSurveyLanguage($sid,$lang);
+                LimeExpressionManager::StartSurvey($sid, 'survey', array('sgqaNaming'=>'N'), true);
+                $moveResult = LimeExpressionManager::NavigateForwards();
+                $LEM =& LimeExpressionManager::singleton();
+
+                if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
+                    continue;
+                }
+
+                $_gseq=-1;
+                foreach ($LEM->currentQset as $q) {
+                    $gseq = $q['info']['gseq'];
+                    $gid = $q['info']['gid'];
+                    $qid = $q['info']['qid'];
+
+                    //////
+                    // SHOW GROUP-LEVEL INFO
+                    //////
+                    if ($gseq != $_gseq) {
+                        $_gseq = $gseq;
+                        $ginfo = $LEM->gseq2info[$gseq];
+
+                        // if relevance equation is using SGQA coding, convert to qcoding
+                        $grelevance = (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']);
+                        $LEM->em->ProcessBooleanExpression($grelevance, $gseq, 0);    // $qseq
+                        $grelevance = trim(strip_tags($LEM->em->GetPrettyPrintString()));
+                        $gtext = ((trim($ginfo['description']) == '') ? '' : $ginfo['description']);
+
+                        $row = array();
+                        $row['class'] = 'G';
+                        $row['name'] = $ginfo['group_name'];
+                        $row['relevance'] = $grelevance;
+                        $row['text'] = $gtext;
+                        $row['language'] = $lang;
+                        $rows[] = $row;
+                    }
+
+                    //////
+                    // SHOW QUESTION-LEVEL INFO
+                    //////
+                    $row = array();
+
+                    $mandatory = (($q['info']['mandatory']=='Y') ? 'Y' : '');
+                    $type = $q['info']['type'];
+
+                    $sgqas = explode('|',$q['sgqa']);
+                    if (count($sgqas) == 1 && !is_null($q['info']['default']))
+                    {
+                        $default = $q['info']['default'];
+                    }
+                    else
+                    {
+                        $default = '';
+                    }
+
+                    $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '');
+                    $help = (($q['info']['help'] != '') ? $q['info']['help']: '');
+
+                    //////
+                    // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
+                    //////
+                    if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
+                        foreach ($LEM->qattr[$qid] as $key=>$value) {
+                            if (is_null($value) || trim($value) == '') {
+                                continue;
+                            }
+                            switch ($key)
+                            {
+                                default:
+                                case 'exclude_all_others':
+                                case 'exclude_all_others_auto':
+                                case 'hidden':
+                                    if ($value == false || $value == '0') {
+                                        $value = NULL; // so can skip this one - just using continue here doesn't work.
+                                    }
+                                    break;
+                                case 'relevance':
+                                    $value = NULL;  // means an outdate database structure
+                                    break;
+                            }
+                            if (is_null($value) || trim($value) == '') {
+                                continue;   // since continuing from within a switch statement doesn't work
+                            }
+                            $row[$key] = $value;
+                        }
+                    }
+
+                    // if relevance equation is using SGQA coding, convert to qcoding
+                    $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
+                    $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $q['info']['qseq']);    // $qseq
+                    $relevanceEqn = trim(strip_tags($LEM->em->GetPrettyPrintString()));
+                    $rootVarName = $q['info']['rootVarName'];
+                    $preg = ((isset($qinfo['preg']) && !is_null($qinfo['preg'])) ? $qinfo['preg'] : '');
+
+                    $row['class'] = 'Q';
+                    $row['type/scale'] = $type;
+                    $row['name'] = $rootVarName;
+                    $row['relevance'] = $relevanceEqn;
+                    $row['text'] = $qtext;
+                    $row['help'] = $help;
+                    $row['language'] = $lang;
+                    $row['validation'] = $preg;
+                    $row['mandatory'] = $mandatory;
+                    $row['other'] = $q['info']['other'];
+                    $row['default'] = $default;
+                    $row['same_default'] = 1;   // TODO - need this: $q['info']['same_default'];
+
+                    $rows[] = $row;
+
+                    //////
+                    // SHOW ALL SUB-QUESTIONS
+                    //////
+                    $sawThis = array(); // array of rowdivids already seen so only show them once
+                    foreach ($sgqas as $sgqa)
+                    {
+                        if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName) {
+                            continue;   // so don't show the main question as a sub-question too
+                        }
+                        $rowdivid=$sgqa;
+                        $varName=$LEM->knownVars[$sgqa]['qcode'];
+
+                        switch  ($q['info']['type'])
+                        {
+                            case '1':
+                                if (preg_match('/#1$/',$sgqa)) {
+                                    $rowdivid = NULL;   // so that doesn't show same message for second scale
+                                }
+                                else {
+                                    $rowdivid = substr($sgqa,0,-2); // strip suffix
+                                    $varName = substr($LEM->knownVars[$sgqa]['qcode'],0,-2);
+                                }
+                                break;
+                            case 'P':
+                                if (preg_match('/comment$/',$sgqa)) {
+                                    $rowdivid = NULL;
+                                }
+                                break;
+                            case ':':
+                            case ';':
+                                $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
+                                if (isset($sawThis[$qid . '~' . $_rowdivid])) {
+                                    $rowdivid = NULL;   // so don't show again
+                                }
+                                else {
+                                    $sawThis[$qid . '~' . $_rowdivid] = true;
+                                    $rowdivid = $_rowdivid;
+                                    $sgqa_len = strlen($sid . 'X'. $gid . 'X' . $qid);
+                                    $varName = $rootVarName . '_' . substr($_rowdivid,$sgqa_len);
+                                }
+                                break;
+                        }
+                        if (is_null($rowdivid)) {
+                            continue;
+                        }
+
+                        $sgqaInfo = $LEM->knownVars[$sgqa];
+                        $subqText = $sgqaInfo['subqtext'];
+
+                        if (isset($sgqaInfo['default']))
+                        {
+                            $default = $sgqaInfo['default'];
+                        }
+                        else
+                        {
+                            $default = '';
+                        }
+
+                        $row = array();
+                        $row['class'] = 'SQ';
+                        $row['type/scale'] = 0;
+                        $row['name'] = substr($varName,strlen($rootVarName)+1);
+                        $row['text'] = $subqText;
+                        $row['language'] = $lang;
+                        $row['default'] = $default;
+                        $rows[] = $row;
+                    }
+
+                    //////
+                    // SHOW ANSWER OPTIONS FOR ENUMERATED LISTS, AND FOR MULTIFLEXI
+                    //////
+                    if (isset($LEM->qans[$qid]) || isset($LEM->multiflexiAnswers[$qid]))
+                    {
+                        $_scale=-1;
+                        if (isset($LEM->multiflexiAnswers[$qid])) {
+                            $ansList = $LEM->multiflexiAnswers[$qid];
+                        }
+                        else {
+                            $ansList = $LEM->qans[$qid];
+                        }
+                        foreach ($ansList as $ans=>$value)
+                        {
+                            $ansInfo = explode('~',$ans);
+                            $valParts = explode('|',$value);
+                            $valInfo[0] = array_shift($valParts);
+                            $valInfo[1] = implode('|',$valParts);
+                            if ($_scale != $ansInfo[0]) {
+                                $_scale = $ansInfo[0];
+                            }
+
+                            $row = array();
+                            if ($type == ':' || $type == ';')
+                            {
+                                $row['class'] = 'SQ';
+                            }
+                            else
+                            {
+                                $row['class'] = 'A';
+                            }
+                            $row['type/scale'] = $_scale;
+                            $row['name'] = $ansInfo[1];
+                            $row['relevance'] = $valInfo[0];    // TODO - true? - what if it isn't an assessment value?
+                            $row['text'] = $valInfo[1];
+                            $row['language'] = $lang;
+                            $rows[] = $row;
+                        }
+                    }
+                }
+            }
+            // Now generate the array out output data
+            $out = array();
+            $out[] = $fields;
+
+            foreach ($rows as $row)
+            {
+                $tsv = array();
+                foreach ($fields as $field)
+                {
+                    $val = (isset($row[$field]) ? $row[$field] : '');
+                    $tsv[] = $val;
+                }
+                $out[] = $tsv;
+            }
+            return $out;
+        }
+    }
     /**
     * Used by usort() to order $this->questionSeq2relevance in proper order
     * @param <type> $a
