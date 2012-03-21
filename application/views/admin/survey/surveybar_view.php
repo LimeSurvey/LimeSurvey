@@ -139,6 +139,9 @@
                                 <li><a href='<?php echo $this->createUrl("admin/export/survey/action/exportstructurequexml/surveyid/$surveyid");?>' >
                                     <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php $clang->eT("queXML format (*.xml)");?></a>
                                 </li>
+                                <li><a href='<?php echo $this->createUrl("admin/export/survey/action/exportstructureexcel/surveyid/$surveyid");?>' >
+                                    <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Excel format (*.xls)");?></a>
+                                </li>
                                 <?php } ?>
 
                         </ul>

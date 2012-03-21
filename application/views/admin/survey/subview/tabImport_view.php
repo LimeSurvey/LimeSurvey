@@ -3,7 +3,7 @@
 
         <form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='<?php echo $this->createUrl('admin/survey/copy'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!', 'js'); ?> ");'>
         <ul>
-                    <li><label for='the_file'><?php $clang->eT("Select survey structure file (*.lss, *.csv) or survey archive (*.zip):");  ?> </label>
+                    <li><label for='the_file'><?php $clang->eT("Select survey structure file (*.lss, *.csv, *.xls) or survey archive (*.zip):");  ?> </label>
                     <input id='the_file' name="the_file" type="file" size="50" /></li>
                     <li>&nbsp;</li>
                     <li><label for='translinksfields'><?php $clang->eT("Convert resource links and INSERTANS fields?"); ?> </label>
