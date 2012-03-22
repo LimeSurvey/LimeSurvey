@@ -65,7 +65,6 @@ Specify which debugging features to use
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_SUMMARY' id='LEM_DEBUG_VALIDATION_SUMMARY' value='Y'/>Validation Summary</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_DETAIL' id='LEM_DEBUG_VALIDATION_DETAIL' value='Y'/>Validation Detail (Validation Summary must also be checked to see detail)</li>
 <li><input type='checkbox' name='LEM_PRETTY_PRINT_ALL_SYNTAX' id='LEM_PRETTY_PRINT_ALL_SYNTAX' value='Y' checked="checked"/>Pretty Print Syntax</li>
-<li><input type='checkbox' name='LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB' id='LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB' value='Y'/>Log Syntax Errors to Database</li>
 </ul></td>
 </tr>
 <tr><td colspan='2'><input type='submit'/></td></tr>
@@ -91,7 +90,6 @@ EOD;
             ((isset($_POST['LEM_DEBUG_TIMING']) && $_POST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
             ((isset($_POST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_POST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +
             ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
-            ((isset($_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB']) && $_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB'] == 'Y') ? LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB : 0) +
             ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
             );
 
