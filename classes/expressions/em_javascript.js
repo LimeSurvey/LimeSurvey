@@ -226,7 +226,7 @@ function LEMval(alias)
         }
     }
     var whichJsName;    // correct name whether on- or off-page
-    if (LEMmode=='survey' || (LEMmode=='group' && attr.gid == LEMgid) || (LEMmode=='question' && attr.qid == LEMqid)) {
+    if (LEMmode=='survey' || (LEMmode=='group' && attr.gseq == LEMgseq) || (LEMmode=='question' && attr.qid == LEMqid)) {
         whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
     }
     else {
@@ -398,7 +398,7 @@ function LEMval(alias)
                         break;
                 }
             }
-            
+
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
                 newval = value;
                 if (LEMradix === ',') {
@@ -773,7 +773,7 @@ function htmlentities (string, quote_style, charset, double_encode) {
     // +    revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
     // +    bugfixed by: Brett Zamir (http://brett-zamir.me)
     // +      input by: Ratheous
-    // +   improved by: Rafał Kukawski (http://blog.kukawski.pl)
+    // +   improved by: Rafal Kukawski (http://blog.kukawski.pl)
     // -    depends on: get_html_translation_table
     // *     example 1: htmlentities('Kevin & van Zonneveld');
     // *     returns 1: 'Kevin &amp; van Zonneveld'
@@ -1313,7 +1313,7 @@ function round (value, precision, mode) {
     // +      input by: William
     // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
     // +      input by: Josep Sanz (http://www.ws3.es/)
-    // +    revised by: Rafał Kukawski (http://blog.kukawski.pl/)
+    // +    revised by: Rafal Kukawski (http://blog.kukawski.pl/)
     // %        note 1: Great work. Ideas for improvement:
     // %        note 1:  - code more compliant with developer guidelines
     // %        note 1:  - for implementing PHP constant arguments look at
@@ -1678,7 +1678,7 @@ function strip_tags (input, allowed) {
     // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
     // +   bugfixed by: Tomasz Wesolowski
     // +      input by: Evertjan Garretsen
-    // +    revised by: Rafał Kukawski (http://blog.kukawski.pl/)
+    // +    revised by: Rafal Kukawski (http://blog.kukawski.pl/)
     // *     example 1: strip_tags('<p>Kevin</p> <b>van</b> <i>Zonneveld</i>', '<i><b>');
     // *     returns 1: 'Kevin <b>van</b> <i>Zonneveld</i>'
     // *     example 2: strip_tags('<p>Kevin <img src="someimage.png" onmouseover="someFunction()">van <i>Zonneveld</i></p>', '<p>');
@@ -2074,7 +2074,7 @@ function date (format, timestamp) {
     // +   improved by: Thomas Beaucourt (http://www.webapp.fr)
     // +   improved by: JT
     // +   improved by: Theriault
-    // +   improved by: Rafał Kukawski (http://blog.kukawski.pl)
+    // +   improved by: Rafal Kukawski (http://blog.kukawski.pl)
     // +      input by: Martin
     // +      input by: Alex Wilson
     // %        note 1: Uses global: php_js to store the default timezone
