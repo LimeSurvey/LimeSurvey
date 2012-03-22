@@ -1480,7 +1480,7 @@ function SendSubmitNotifications()
         {
             foreach($aRecipient as $sRecipient)
             {
-                $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN 
+                $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
                 if(validate_email($sRecipient))
                 {
                     $aEmailNotificationTo[]=$sRecipient;
@@ -1506,7 +1506,7 @@ function SendSubmitNotifications()
         {
             foreach($aRecipient as $sRecipient)
             {
-                $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN 
+                $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
                 if(validate_email($sRecipient))
                 {
                     $aEmailResponseTo[]=$sRecipient;
@@ -2143,6 +2143,7 @@ function buildsurveysession($previewGroup=false)
                     unset($qfieldmap['lastpage']);
                     unset($qfieldmap['lastpage']);
                     unset($qfieldmap['token']);
+                    unset($qfieldmap['startlanguage']);
                     foreach ($qfieldmap as $tkey=>$tval)
                     {
                         // Assign the swapped question (Might be more than one field)
@@ -2163,8 +2164,47 @@ function buildsurveysession($previewGroup=false)
             }
             reset($randomGroups);
         }
-        $fieldmap=$copyFieldMap;
+        // reset the sequencing counts
+        $gseq=-1;
+        $_gid=-1;
+        $qseq=-1;
+        $_qid=-1;
+        $copyFieldMap2 = array();
+        foreach ($copyFieldMap as $key=>$val)
+        {
+            if (isset($val['random_gid']))
+            {
+                if ($val['gid'] != '' && $val['random_gid'] != '' && $val['random_gid'] != $_gid)
+                {
+                    $_gid = $val['random_gid'];
+                    ++$gseq;
+                }
+            }
+            else
+            {
+                if ($val['gid'] != '' && $val['gid'] != $_gid)
+                {
+                    $_gid = $val['gid'];
+                    ++$gseq;
+                }
+            }
 
+            if ($val['qid'] != '' && $val['qid'] != $_qid)
+            {
+                $_qid = $val['qid'];
+                ++$qseq;
+            }
+            if ($val['gid'] != '' && $val['qid'] != '')
+            {
+                $val['groupSeq'] = $gseq;
+                $val['questionSeq'] = $qseq;
+            }
+            $copyFieldMap2[$key] = $val;
+        }
+        unset($copyFieldMap);
+        $fieldmap=$copyFieldMap2;
+
+        $_SESSION['fieldmap-' . $surveyid . $_SESSION['s_lang']] = $fieldmap;
     }
     //die(print_r($fieldmap));
 
@@ -2869,7 +2909,7 @@ function display_first_page() {
     doHeader();
 
     LimeExpressionManager::StartProcessingPage();
-    LimeExpressionManager::StartProcessingGroup(0, false, $surveyid);
+    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
 
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
