@@ -284,8 +284,7 @@ if ($action == "editquestion" || $action=="addquestion")
     if ($adding)
     {
         // This is needed to properly color-code content if it contains replacements
-        LimeExpressionManager::StartProcessingPage(false,$rooturl);  // so can click on syntax highlighting to edit questions
-        LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
+        LimeExpressionManager::StartProcessingPage(false,$rooturl,true);  // so can click on syntax highlighting to edit questions
     }
     $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -728,8 +727,7 @@ if($action == "orderquestions")
 
     $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";
 
-    LimeExpressionManager::StartProcessingPage(false,$rooturl);  // so can click on syntax highlighting to edit questions
-    LimeExpressionManager::StartProcessingGroup($gid, false, $surveyid);   // will this work?
+    LimeExpressionManager::StartProcessingPage(false,$rooturl,true);  // so can click on syntax highlighting to edit questions
 
     for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
     {
@@ -899,7 +897,7 @@ function questionjavascript($type)
     . "document.getElementById('Validation').style.display = '';\n"
     . "document.getElementById('OtherSelection').style.display ='none';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
-    . "}\n"    
+    . "}\n"
     . "\telse\n"
     . "{\n"
     . "document.getElementById('OtherSelection').style.display = 'none';\n"
