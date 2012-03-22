@@ -2843,6 +2843,55 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
     if (isset($fieldmap)) {
         if ($questionid == false)
         {
+            // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
+            if (isset($_SESSION['fieldmap-' . $surveyid . '-randMaster']))
+            {
+                $masterFieldmap = $_SESSION['fieldmap-' . $surveyid . '-randMaster'];
+                $mfieldmap = $_SESSION[$masterFieldmap];
+
+                foreach ($mfieldmap as $fieldname => $mf)
+                {
+                    if (isset($fieldmap[$fieldname]))
+                    {
+                        $f = $fieldmap[$fieldname];
+                        if (isset($f['question']))
+                        {
+                            $mf['question'] = $f['question'];
+                        }
+                        if (isset($f['subquestion']))
+                        {
+                            $mf['subquestion'] = $f['subquestion'];
+                        }
+                        if (isset($f['subquestion1']))
+                        {
+                            $mf['subquestion1'] = $f['subquestion1'];
+                        }
+                        if (isset($f['subquestion2']))
+                        {
+                            $mf['subquestion2'] = $f['subquestion2'];
+                        }
+                        if (isset($f['group_name']))
+                        {
+                            $mf['group_name'] = $f['group_name'];
+                        }
+                        if (isset($f['answerList']))
+                        {
+                            $mf['answerList'] = $f['answerList'];
+                        }
+                        if (isset($f['defaultvalue']))
+                        {
+                            $mf['defaultvalue'] = $f['defaultvalue'];
+                        }
+                        if (isset($f['help']))
+                        {
+                            $mf['help'] = $f['help'];
+                        }
+                    }
+                    $mfieldmap[$fieldname] = $mf;
+                }
+                $fieldmap = $mfieldmap;
+            }
+
             $_SESSION['fieldmap-' . $surveyid . $clang->langcode]=$fieldmap;
         }
 

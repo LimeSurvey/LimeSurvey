@@ -2205,6 +2205,7 @@ function buildsurveysession($previewGroup=false)
         $fieldmap=$copyFieldMap2;
 
         $_SESSION['fieldmap-' . $surveyid . $_SESSION['s_lang']] = $fieldmap;
+        $_SESSION['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['s_lang'];
     }
     //die(print_r($fieldmap));
 
