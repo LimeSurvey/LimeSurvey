@@ -287,13 +287,9 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     {
         $savetimings="TRUE";
     }
-    //strip trailing comma and new line feed (if any)
-    $createsurvey = rtrim($createsurvey, ",\n");
-    //strip trailing comma and new line feed (if any)
-    $createsurvey = rtrim($createsurvey, ",\n");
 
     //Get list of questions for the base language
-    $fieldmap=createFieldMap($surveyid, 'full', false, false, GetBaseLanguageFromSurveyID($surveyid));
+    $fieldmap=createFieldMap($surveyid, $style='full', $force_refresh=true);
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
         if ($createsurvey!='') {$createsurvey .= ",\n";}
