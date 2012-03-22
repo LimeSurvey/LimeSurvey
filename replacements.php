@@ -827,8 +827,15 @@ function PassthruReplace($line, $thissurvey)
     return $line;
 }
 
+/**
+ * Replacement of old dTexts::run for compatibility issue
+ * To be removed from other scriptq
+ * replace by ReplaceFields function OR
+ * LimeExpressionManager::ProcessString($text,$questionNum);
+ *
+ */
 function dTexts__run($text,$questionNum=NULL)
 {
-//    return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
+    //return LimeExpressionManager::ProcessString($text,$questionNum);
     return $text;
 }
