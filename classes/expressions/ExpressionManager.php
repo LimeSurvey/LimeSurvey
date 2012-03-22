@@ -2906,7 +2906,7 @@ EOD;
         $body .= '</table>';
         $body .= "<script type='text/javascript'>\n";
         $body .= "<!--\n";
-        $body .= "var LEMgid=2;\n";
+        $body .= "var LEMgseq=2;\n";
         $body .= "var LEMmode='group';\n";
         $body .= "function recompute() {\n";
         $body .= implode("\n",$javaScript);
