@@ -1104,12 +1104,6 @@
 
                 $subject=ReplaceFields($subject, $fieldsarray, true);
 
-                if ($thissurvey['anonymized'] == "N")
-                {
-                    // Survey is not anonymous, we can translate insertAns placeholder
-                    $subject=dTexts__run($subject);
-                }
-
                 $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
 
                 if (getEmailFormat($surveyid) == 'html')
@@ -1125,12 +1119,6 @@
                 {
                     $message=$thissurvey['email_confirm'];
                     $message=ReplaceFields($message, $fieldsarray, true);
-
-                    if ($thissurvey['anonymized'] == "N")
-                    {
-                        // Survey is not anonymous, we can translate insertAns placeholder
-                        $message=dTexts__run($message);
-                    }
 
                     if (!$ishtml)
                     {
@@ -1211,7 +1199,7 @@
             {
                 foreach($aRecipient as $sRecipient)
                 {
-                    $sRecipient=dTexts__run($sRecipient);
+                    $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN 
                     if(validateEmailAddress($sRecipient))
                     {
                         $aEmailNotificationTo[]=$sRecipient;
@@ -1237,7 +1225,7 @@
             {
                 foreach($aRecipient as $sRecipient)
                 {
-                    $sRecipient=dTexts__run($sRecipient);
+                    $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN 
                     if(validateEmailAddress($sRecipient))
                     {
                         $aEmailResponseTo[]=$sRecipient;
