@@ -1514,7 +1514,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
         // Update survey permissions
         GiveAllSurveyPermissions($_SESSION['loginID'],$surveyid);
-        //LimeExpressionManager::SetSurveyId($surveyid);
+        LimeExpressionManager::SetSurveyId($surveyid);
 
         $surveyselect = getsurveylist();
 

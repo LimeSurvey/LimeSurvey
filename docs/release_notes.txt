@@ -82,7 +82,6 @@ Changes from 1.92+ (build 120323) to 1.92+ (build 120324) Mar 23, 2012
 -Fixed issue #5934: Generating new Lablesets won't work (magiclko)
 -Fixed issue #5946: SQL error while creating new survey (Carsten Schmitz)
 
-
 Changes from 1.92+ (build 120319) to 1.92+ (build 120323) Mar 23, 2012
 -Fixed issue #5731: Randomization group name seems to block "Test this survey" (Thomas White)
 -Fixed issue #5909: Re-uploading files after deletions and other problems with File Upload question type and Expression Manager (Carsten Schmitz)

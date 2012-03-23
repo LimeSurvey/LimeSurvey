@@ -204,7 +204,7 @@
             }
 
             foreach ($releqns as $key=>$value) {
-                $query = "UPDATE ".db_table_name('questions')." SET relevance=1 WHERE qid=".$key;
+                $query = "UPDATE ".db_table_name('questions')." SET relevance='1' WHERE qid=".$key;
                 db_execute_assoc($query);
             }
             return count($releqns);
