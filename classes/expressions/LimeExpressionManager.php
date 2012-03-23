@@ -6653,7 +6653,8 @@ EOD;
                     $varNameError = array (
                     'message' => $varNameErrorMsg,
                     'gseq' => $varNamesUsed[$rootVarName]['gseq'],
-                    'qid' => $varNamesUsed[$rootVarName]['qid']
+                    'qid' => $varNamesUsed[$rootVarName]['qid'],
+                    'gid' => $gid,
                     );
                     if (!$LEM->sgqaNaming)
                     {
