@@ -449,7 +449,7 @@ if(isset($surveyid))
             require_once("../classes/inputfilter/class.inputfilter_clean.php");
             $myFilter = new InputFilter('','',1,1,1);
         }
-                    
+
         // Remove invalid question attributes on saving
         $qattributes=questionAttributes();
         $attsql="delete from ".db_table_name('question_attributes')." where qid='{$postqid}' and ";
@@ -507,7 +507,7 @@ if(isset($surveyid))
 
         // These are the questions types that have no validation - so zap it accordingly
         if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" ||
-        $_POST['type']== "F" || $_POST['type']== "H" || 
+        $_POST['type']== "F" || $_POST['type']== "H" ||
         $_POST['type']== "X" || $_POST['type']== "")
         {
             $_POST['preg']='';
@@ -1023,7 +1023,7 @@ if(isset($surveyid))
 
 
         //$insertqids=array(); //?
-        $insertqid = array(); 
+        $insertqid = array();
         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
         {
             foreach ($anslangs as $language)
@@ -1514,6 +1514,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
         // Update survey permissions
         GiveAllSurveyPermissions($_SESSION['loginID'],$surveyid);
+        //LimeExpressionManager::SetSurveyId($surveyid);
 
         $surveyselect = getsurveylist();
 
