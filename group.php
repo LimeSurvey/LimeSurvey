@@ -233,17 +233,21 @@ else
     if ($thissurvey['active'] == "Y" && isset($_POST['saveall']))
     {
         // must do this here to process the POSTed values
-        $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
+        //$moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
 
         //showsaveform(); // generates a form and exits, awaiting input
         if($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
         {
+            $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
             showsaveform();
         }
         else
         {
-            $flashmessage = savedsilent();
-            
+            $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false,true,false,false,true);   // by jumping to current step, saves data so far
+            if (!is_null($moveResult))
+            {
+                $flashmessage = $clang->gT('Your survey was successfully saved.');
+            }
         }
     }
 

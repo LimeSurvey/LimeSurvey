@@ -3209,7 +3209,7 @@
         * @param <type> $updatedValues
         * @param <boolean> $finished - true if the survey needs to be finalized
         */
-        private function _UpdateValuesInDatabase($updatedValues, $finished=false)
+        private function _UpdateValuesInDatabase($updatedValues, $finished=false,$setSubmitDate=false)
         {
             // Update these values in the database
             global $connect;
@@ -3404,7 +3404,7 @@
         * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
         * @return <type>
         */
-        static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false) {
+        static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false,$setSubmitDate=false) {
             $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
 
@@ -3435,7 +3435,7 @@
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     $finished=false;
-                    $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished);
+                    $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished,$setSubmitDate);
                     $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                     $LEM->lastMoveResult = array(
                     'finished'=>$finished,
@@ -3467,7 +3467,7 @@
                         if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                         {
                             // redisplay the current group
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false,$setSubmitDate);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                             'finished'=>false,
@@ -3490,7 +3490,7 @@
                         $LEM->currentQset = array();    // reset active list of questions
                         if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
+                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true,$setSubmitDate);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                             'finished'=>true,
@@ -3524,7 +3524,7 @@
                             else
                             {
                                 // display new group
-                                $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                                $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false,$setSubmitDate);
                                 $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                                 $LEM->lastMoveResult = array(
                                 'finished'=>false,
@@ -3559,7 +3559,7 @@
                         if ($grel && ($result['mandViolation'] || !$result['valid']))
                         {
                             // redisplay the current question
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false,$setSubmitDate);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                             'finished'=>false,
@@ -3583,7 +3583,7 @@
                         $LEM->currentQset = array();    // reset active list of questions
                         if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
+                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true,$setSubmitDate);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                             'finished'=>true,
@@ -3637,7 +3637,7 @@
                         else
                         {
                             // display new question
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false,$setSubmitDate);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                             'finished'=>false,
