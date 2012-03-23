@@ -235,7 +235,16 @@ else
         // must do this here to process the POSTed values
         $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
 
-        showsaveform(); // generates a form and exits, awaiting input
+        //showsaveform(); // generates a form and exits, awaiting input
+        if($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
+        {
+            showsaveform();
+        }
+        else
+        {
+            $flashmessage = savedsilent();
+            
+        }
     }
 
     if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
@@ -253,6 +262,7 @@ else
         $LEMskipReprocessing=true;
 
         // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
+        
     }
 
     //Now, we check mandatory questions if necessary

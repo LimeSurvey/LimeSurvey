@@ -189,6 +189,92 @@ global $errormsg;   // since neeeded by savecontrol()
     }
     }
 
+/**
+    * savesilent() saves survey responses when the "Resume later" button
+    * is press but has no interaction. i.e. it does not ask for email,
+    * username or password or capture.
+    *
+    * @return string confirming successful save.
+*/
+function savedsilent()
+{
+    global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep, $modrewrite;
+    submitanswer();
+    // Prepare email
+    $tokenentryquery = 'SELECT * from '.$dbprefix.'tokens_'.$surveyid.' WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
+    $tokenentryresult = db_execute_assoc($tokenentryquery);
+    $tokenentryarray = $tokenentryresult->FetchRow();
+
+    $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
+    $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
+    $subject = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
+    $message = $clang->gT("Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey.","unescaped")."\n\n";
+    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped")."\n";
+    $language = $tokenentryarray['language'];
+
+    if($modrewrite)
+    {
+        $message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
+    }
+    else
+    {
+        $message .= "\n\n$publicurl/index.php?lang=$language&sid=$surveyid&token=$clienttoken";
+    }
+    if (SendEmailMessage(null, $message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
+    {
+        $emailsent="Y";
+    }
+    else
+    {
+        echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
+    }
+    return  $clang->gT('Your survey was successfully saved.');
+}
+
+// submitanswer sets the submitdate
+// Only used by question.php and group.php if next pages
+// should not display due to conditions and generally used by survey.php
+// In this case all answers have already been updated by save.php
+// but movesubmit status was only set after calling save.php
+// ==> thus we need to update submitdate here.
+function submitanswer()
+{
+    global $thissurvey,$timeadjust;
+    global $surveyid, $connect, $clang, $move;
+
+    if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
+    {
+        // In case of anonymized responses survey with no datestamp
+        // then the the answer submitdate gets a conventional timestamp
+        // 1st Jan 1980
+        $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+    }
+    else
+    {
+        $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+    }
+
+    $query = "";
+    if (isset($move) && ($move == "movesubmit") && ($thissurvey['active'] == "Y"))
+    {
+        if (!isset($_SESSION['srid']))
+        { //due to conditions no answer was displayed and yet we must submit
+            $query=createinsertquery();
+            if ($result=$connect->Execute($query))
+            {
+                $tempID=$connect->Insert_ID($thissurvey['tablename'],"id");
+                $_SESSION['srid'] = $tempID;
+            }
+        }
+        $query = "UPDATE {$thissurvey['tablename']} SET ";
+        $query .= " submitdate = ".$connect->DBDate($mysubmitdate);
+        $query .= " WHERE id=" . $_SESSION['srid'];
+    }
+
+    $result=$connect->Execute($query);    // Checked
+    return $result;
+}
+
  /**
  * This functions saves the answer time for question/group and whole survey.
  * [ It compares current time with the time in $_POST['start_time'] ]
