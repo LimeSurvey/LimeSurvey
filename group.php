@@ -246,8 +246,8 @@ else
             $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false,true,false,false,true);   // by jumping to current step, saves data so far
             if (!is_null($moveResult))
             {
-                $flashmessage = $clang->gT('Your survey was successfully saved.');
-            }
+                $flashmessage = savedcontrol();
+            }                        
         }
     }
 
