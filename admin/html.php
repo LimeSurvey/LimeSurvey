@@ -85,7 +85,7 @@ if ($action == "personalsettings")
             $temod1="selected='selected'";
             break;
     }
-    
+
     $cssummary = "<div class='formheader'>"
     . "<strong>".$clang->gT("Your personal settings")."</strong>\n"
     . "</div>\n"
@@ -141,7 +141,7 @@ if ($action == "personalsettings")
     . "<option value='none' {$temod3}>".$clang->gT("Simple template editor")."</option>\n";
     $cssummary .= "</select>\n"
     . "</li>\n";
-    
+
     // Date format
     $cssummary .=  "<li>\n"
     . "<label for='dateformat'>".$clang->gT("Date format").":</label>\n"
@@ -324,7 +324,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
 
         // Survey permission item
-        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surveyinfo['owner_id'] == $_SESSION['loginID'])
+        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surveyinfo['owner_id'] == $_SESSION['loginID'] || bHasSurveyPermission($surveyid,'surveysecurity','read'))
         {
             $surveysummary .= "<li><a href='{$scriptname}?action=surveysecurity&amp;sid={$surveyid}'>"
             . "<img src='{$imageurl}/survey_security_30.png' name='SurveySecurity'/> ".$clang->gT("Survey permissions")."</a></li>\n";
@@ -443,9 +443,9 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             {
                 $surveysummary .= "<li><a href=\"#\" onclick=\"alert('".$clang->gT("Currently there are no conditions configured for this survey.", "js")."');\" >"
                 . "<img src='{$imageurl}/resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' /> ".$clang->gT("Reset Survey Logic")."</a></li>\n";
-            }            
+            }
         }
-        
+
         // EXPRESSION MANAGER TEST SUITE
         if (bHasSurveyPermission($surveyid,'surveycontent','update'))
         {
@@ -1955,18 +1955,24 @@ if($action == "surveysecurity")
                 $surveysecurity .= "<tr>\n";
 
                 $surveysecurity .= "<td>\n";
-                $surveysecurity .= "<form style='display:inline;' method='post' action='$scriptname?sid={$surveyid}'>"
-                ."<input type='image' src='{$imageurl}/token_edit.png' title='".$clang->gT("Edit permissions")."' />"
-                ."<input type='hidden' name='action' value='setsurveysecurity' />"
-                ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
-                ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
-                ."</form>\n";
-                $surveysecurity .= "<form style='display:inline;' method='post' action='$scriptname?sid={$surveyid}'>"
-                ."<input type='image' src='{$imageurl}/token_delete.png' title='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
-                ."<input type='hidden' name='action' value='delsurveysecurity' />"
-                ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
-                ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
-                ."</form>";
+                if (bHasSurveyPermission($surveyid, 'surveysecurity', 'update'))
+                {
+                    $surveysecurity .= "<form style='display:inline;' method='post' action='$scriptname?sid={$surveyid}'>"
+                    ."<input type='image' src='{$imageurl}/token_edit.png' title='".$clang->gT("Edit permissions")."' />"
+                    ."<input type='hidden' name='action' value='setsurveysecurity' />"
+                    ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
+                    ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
+                    ."</form>\n";
+                }
+                if (bHasSurveyPermission($surveyid, 'surveysecurity', 'delete'))
+                {
+                    $surveysecurity .= "<form style='display:inline;' method='post' action='$scriptname?sid={$surveyid}'>"
+                    ."<input type='image' src='{$imageurl}/token_delete.png' title='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+                    ."<input type='hidden' name='action' value='delsurveysecurity' />"
+                    ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
+                    ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
+                    ."</form>";
+                }
 
 
                 $surveysecurity .= "</td>\n";
@@ -2019,21 +2025,24 @@ if($action == "surveysecurity")
             $surveysecurity .= "<tr><td colspan='18'></td></tr>"; //fix error on empty table
         }
         $surveysecurity .= "</tbody>\n"
-        . "</table>\n"
-        . "<form class='form44' action='$scriptname?sid={$surveyid}' method='post'><ul>\n"
-        . "<li><label for='uidselect'>".$clang->gT("User").": </label><select id='uidselect' name='uid'>\n"
-        . sGetSurveyUserlist(false,false)
-        . "</select>\n"
-        . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) {alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
-        . "<input type='hidden' name='action' value='addsurveysecurity' />"
-        . "</li></ul></form>\n"
-        . "<form class='form44' action='$scriptname?sid={$surveyid}' method='post'><ul><li>\n"
-        . "<label for='ugidselect'>".$clang->gT("Groups").": </label><select id='ugidselect' name='ugid'>\n"
-        . getsurveyusergrouplist()
-        . "</select>\n"
-        . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
-        . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
-        . "</li></ul></form>";
+        . "</table>\n";
+        if (bHasSurveyPermission($surveyid, 'surveysecurity', 'delete'))
+        {
+            $surveysecurity.= "<form class='form44' action='$scriptname?sid={$surveyid}' method='post'><ul>\n"
+            . "<li><label for='uidselect'>".$clang->gT("User").": </label><select id='uidselect' name='uid'>\n"
+            . sGetSurveyUserlist(false,false)
+            . "</select>\n"
+            . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) {alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
+            . "<input type='hidden' name='action' value='addsurveysecurity' />"
+            . "</li></ul></form>\n"
+            . "<form class='form44' action='$scriptname?sid={$surveyid}' method='post'><ul><li>\n"
+            . "<label for='ugidselect'>".$clang->gT("Groups").": </label><select id='ugidselect' name='ugid'>\n"
+            . getsurveyusergrouplist()
+            . "</select>\n"
+            . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
+            . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
+            . "</li></ul></form>";
+        }
 
     }
     else
