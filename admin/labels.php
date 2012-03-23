@@ -598,7 +598,15 @@ function modlabelsetanswers($lid)
         $_POST['method'] = $clang->gT("Save");
     }
     
-    $data = json_decode(html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8"));
+    if (get_magic_quotes_gpc())
+    {
+        $data = json_decode(stripslashes(html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8")));
+    }
+    else
+    {
+        $data = json_decode(html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8"));
+    }
+    
     
     if ($ajax){
         $lid = insertlabelset();
@@ -645,9 +653,15 @@ function modlabelsetanswers($lid)
 
                 $sort_order = db_quoteall($index);
                 $lang = db_quoteall($lang);
+                $title = trim($title, "'");
+                
+                if (get_magic_quotes_gpc())
+                {
+                    $title = str_replace("'","\'",$title);
+                }
 
                 $query = "INSERT INTO ".db_table_name('labels')." (lid,code,title,sortorder, assessment_value, language)
-                    VALUES({$lid},{$actualcode},{$title},{$sort_order},{$assessmentvalue},{$lang})";
+                    VALUES({$lid},{$actualcode},'".$title."',{$sort_order},{$assessmentvalue},{$lang})";
 
                 $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
             }
