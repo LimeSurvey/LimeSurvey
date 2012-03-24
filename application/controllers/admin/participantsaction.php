@@ -139,7 +139,15 @@ class participantsaction extends Survey_Common_Action
      */
     function blacklistControl()
     {
-        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'));
+        $aData = array(
+            'blacklistallsurveys' => Yii::app()->getConfig('blacklistallsurveys'),
+            'blacklistnewsurveys' => Yii::app()->getConfig('blacklistnewsurveys'),
+            'blockaddingtosurveys' => Yii::app()->getConfig('blockaddingtosurveys'),
+            'hideblacklisted' => Yii::app()->getConfig('hideblacklisted'),
+            'deleteblacklisted' => Yii::app()->getConfig('deleteblacklisted'),
+            'allowunblacklist' => Yii::app()->getConfig('allowunblacklist')
+        );
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
     }
 
     /**
@@ -418,6 +426,29 @@ class participantsaction extends Survey_Common_Action
         CController::redirect(Yii::app()->getController()->createUrl('admin/participants/userControl'));
     }
 
+    /**
+     * Stores the blacklist setting to the database
+     */
+    function storeBlacklistValues()
+    {
+        $values = Array('blacklistallsurveys', 'blacklistnewsurveys', 'blockaddingtosurveys', 'hideblacklisted', 'deleteblacklisted', 'allowunblacklist', 'userideditable');
+        foreach ($values as $value)
+        {
+            if ($find = Settings_global::model()->findByPk($value))
+            {
+                Settings_global::model()->updateByPk($value, array('stg_value'=>Yii::app()->request->getPost($value)));
+            }
+            else
+            {
+                $stg = new Settings_global;
+                $stg ->stg_name=$value;
+                $stg ->stg_value=Yii::app()->request->getPost($value);
+                $stg->save();
+            }
+        }
+        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/blacklistControl'));
+    }
+    
     /**
      * Receives an ajax call containing the participant id in the fourth segment of the url
      */
