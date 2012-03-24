@@ -106,12 +106,12 @@ class participantsaction extends Survey_Common_Action
         // if user is superadmin, all survey names
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
-            $aSurveyNames = Survey::model()->with('languagesettings', 'owner')->findAll();
+            $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll();
         }
         // otherwise owned by him
         else
         {
-            $aSurveyNames = Survey::model()->with('languagesettings', 'owner')->findAll('owner_id=:uid',array('uid'=>Yii::app()->session['loginID']));
+            $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('survey.owner_id=:uid',array('survey.uid'=>Yii::app()->session['loginID']));
         }
         // data to be passed to view
         $aData = array(
