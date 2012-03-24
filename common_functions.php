@@ -2276,7 +2276,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
         //Get list of questions
     if (is_null($sQuestionLanguage))
     {
-        if (isset($_SESSION['s_lang'])) {
+        if (isset($_SESSION['s_lang'])&& in_array($_SESSION['s_lang'],GetAdditionalLanguagesFromSurveyID($surveyid)) ) {
             $sQuestionLanguage = $_SESSION['s_lang'];
         }
         else {
