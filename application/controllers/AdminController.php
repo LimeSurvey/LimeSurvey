@@ -183,6 +183,7 @@ class AdminController extends LSYii_Controller
         'expressions'      => 'expressions',
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
+        'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
         'kcfinder'         => 'kcfinder',
         'labels'           => 'labels',
