@@ -791,7 +791,7 @@ class SurveyAdmin extends Survey_Common_Action
                     }
                 }
 
-                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'zip'))
+                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'xls' && strtolower($sExtension) != 'zip'))
                 {
                     $aData['sErrorMessage'] = $clang->gT("Import failed. You specified an invalid file type.");
                     $aData['bFailed'] = true;
@@ -847,6 +847,10 @@ class SurveyAdmin extends Survey_Common_Action
                 elseif (isset($sExtension) && strtolower($sExtension) == 'lss')
                 {
                     $aImportResults = XMLImportSurvey($sFullFilepath, null, null, null, (isset($_POST['translinksfields'])));
+                }
+                elseif (isset($sExtension) && strtolower($sExtension) == 'xls')
+                {
+                    $aImportResults = ExcelImportSurvey($sFullFilepath);
                 }
                 elseif (isset($sExtension) && strtolower($sExtension) == 'zip')  // Import a survey archive
                 {

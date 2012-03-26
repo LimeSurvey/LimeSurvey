@@ -1305,10 +1305,57 @@ class export extends Survey_Common_Action {
         {
             lsrccsv_export($iSurveyID);
         }
+        elseif ($action == 'exportstructureexcel')
+        {
+            $this->_exportexcel($iSurveyID);
+        }
         elseif ( $action == "exportarchive" )
         {
             $this->_exportarchive($iSurveyID);
         }
+    }
+
+    /**
+     * Generate and Excel file for the survey structure
+     * @param type $surveyid
+     */
+    private function _exportexcel($surveyid)
+    {
+        $fn = "limesurvey_survey_$surveyid.xls";
+        $this->_addHeaders($fn, "text/csv", 0);
+
+        $data =& LimeExpressionManager::ExcelSurveyExport($surveyid);
+        
+        Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
+
+        // actually generate an Excel workbook
+        $workbook = new xlswriter;
+        $workbook->setVersion(8);
+        $workbook->send($fn);
+
+        $sheet =& $workbook->addWorksheet(); // do not translate/change this - the library does not support any special chars in sheet name
+        $sheet->setInputEncoding('utf-8');
+
+        $rc = -1;    // row counter
+        $cc = -1;    // column counter
+        foreach($data as $row)
+        {
+            ++$rc;
+            $cc=-1;
+            foreach ($row as $col)
+            {
+                // Enclose in \" if begins by =
+                ++$cc;
+                if (substr($col,0,1) ==  "=")
+                {
+                    $col = "\"".$col."\"";
+                }
+                $col = str_replace(array("\t","\n","\r"),array(" "," "," "),$col);
+                $sheet->write($rc, $cc, $col);
+            }
+        }
+        $workbook->close();
+        return;
     }
 
     private function _addHeaders($filename, $content_type, $expires, $pragma = "public")

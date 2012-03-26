@@ -105,7 +105,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
 	function getVisibleAttributes()
     {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names}}_lang.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names}}_lang', '{{participant_attribute_names}}_lang.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names}}.visible = "TRUE" AND {{participant_attribute_names}}_lang.lang = "'.Yii::app()->session['adminlang'].'"')->queryAll();
+        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names}}_lang.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names}}_lang', '{{participant_attribute_names}}_lang.attribute_id = {{participant_attribute_names}}.attribute_id')->where("{{participant_attribute_names}}.visible = 'TRUE' AND {{participant_attribute_names}}_lang.lang = '".Yii::app()->session['adminlang']."'")->queryAll();
     }
 
     function getAllAttributes()
@@ -125,7 +125,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAttributeVisibleID()
     {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names_lang}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND {{participant_attribute_names}}.visible = "TRUE"')->queryAll();
+        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names_lang}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where("{{participant_attribute_names_lang}}.lang = '".Yii::app()->session['adminlang']."' AND {{participant_attribute_names}}.visible = 'TRUE'")->queryAll();
     }
 
     function getParticipantVisibleAttribute($participant_id)
@@ -303,7 +303,7 @@ class ParticipantAttributeNames extends CActiveRecord
     //updates the attribute values in participant_attribute_values
     function saveAttributeValue($data)
     {
-        Yii::app()->db->createCommand()->update('{{participant_attribute_values}}', $data, "attribute_id = :attribute_id AND value_id = :value_id")->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":value_id", $data['value_id'], PDO::PARAM_INT);
+        Yii::app()->db->createCommand()->update('{{participant_attribute_values}}', $data, "attribute_id = :attribute_id AND value_id = :value_id", array(":attribute_id" => $data['attribute_id'], ":value_id" => $data['value_id'])); //->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":value_id", $data['value_id'], PDO::PARAM_INT);
     }
 
     function saveAttributeVisible($attid,$visiblecondition)

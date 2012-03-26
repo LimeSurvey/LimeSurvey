@@ -1,111 +1,77 @@
-<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.js";?>" type="text/javascript"></script>
-<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js"; ?>" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css"; ?>" />
-<title><?php $clang->eT("Blacklist control"); ?></title>
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl."templates/default/template.css"; ?>" />
-<style type="text/css" media="aural tty">
-    progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
-</style>
-<script src="<?php echo $this->createUrl("/templates/default/template.js"); ?>" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->createUrl("'templates/default/favicon.ico"); ?>" />
-<script src="<?php echo Yii::app()->getConfig('generalscripts')."scripts/survey_runtime.js"; ?>" type="text/javascript"></script>
-
-<body class="default lang-en groupbygroup">
-<div class="outerframe">
-<table class="innerframe">
-<tr>
-<td>
-<table class="survey-header-table">
-    <tr>
-        <td class="survey-description">
-            <br />
-            <h2><?php $clang->eT('Blacklist control'); ?></h2>
-            <p></p>
-        </td>
-    </tr>
-    <tr>
-        <td class="graph">
-        </td>
-    </tr>
-    <tr>
-        <td class="language-changer">
-        </td>
-    </tr>
-</table>
-<div id='wrapper'>
-    <p id='tokenmessage'>
+<script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
+<div class='header ui-widget-header'>
+    <strong>
         <?php
-            if($global == 1)
-            {
-                if($is_participant && $is_updated)
-                {
-                    if($blacklist == 'Y')
-                    {
-                        $clang->eT("You have been successfully blacklisted from any survey on this server");
-                    }
-                    else if($blacklist == 'N')
-                        {
-                            $clang->eT("You have been successfully un-blacklisted from any survey on this server");
-                        }
-                }
-                else if($is_participant)
-                    {
-                        if($blacklist == 'Y')
-                        {
-                            $clang->eT("You have already been blacklisted from any survey on this server");
-                        }
-                        else if($blacklist == 'N')
-                            {
-                                $clang->eT("You have already been un-blacklisted from any survey on this server");
-                            }
-
-                }
-                else if(!$is_survey)
-                    {
-                        $clang->eT("Survey is no longer active");
-                    }
-                    else
-                    {
-                        $clang->eT("The URL you are trying to use is either modified, or you have been removed from this server");
-                }
-
-            }
-            else if($local == 1)
-                {
-                    if($is_participant && $is_updated)
-                    {
-                        if($blacklist == 'Y')
-                        {
-                            $clang->eT("You have been successfully blacklisted from this survey");
-                        }
-                        else if($blacklist == 'N')
-                            {
-                                $clang->eT("You have been successfully un-blacklisted from this survey");
-                            }
-                }
-                else if($is_participant)
-                    {
-                        if($blacklist == 'Y')
-                        {
-                            $clang->eT("You have already been blacklisted from this survey");
-                        }
-                        else if($blacklist == 'N')
-                            {
-                                $clang->eT("You have already been un-blacklisted from this survey");
-                            }
-
-                }
-                else
-                {
-                    $clang->eT("The URL you are trying to use is either modified, or you have been removed from this server");
-
-                }
-
-            }
-            else
-            {
-                $clang->eT("You have been successfully blacklisted from this survey");
-            }
+        $clang->eT("Blacklist Settings");
         ?>
-    </p>
+    </strong>
+</div>
+<div id='tabs'>
+    <ul>
+        <li>
+            <a href='#usercontrol'><?php
+        $clang->eT("Blacklist control");
+        ?></a>
+        </li>
+    </ul>
+<div id='usercontrol-1'>
+        <?php
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+        {
+            $attribute = array('class' => 'form44');
+            echo CHtml::beginForm($this->createUrl('/admin/participants/storeBlacklistValues'), 'post', $attribute);
+            $options = array('Y' => 'Yes', 'N' => 'No');
+            ?>
+            <ul>
+                <li>
+                    <label for='blacklistallsurveys' id='blacklistallsurveys'>
+                        <?php $clang->eT('Blacklist all current surveys for participant once the global field is set:'); ?>
+                    </label>
+                    <?php echo CHtml::dropDownList('blacklistallsurveys', $blacklistallsurveys, $options); ?>
+                </li>
+                <li>
+                    <label for='blacklistnewsurveys' id='blacklistnewsurveys'>
+                        <?php $clang->eT('Blacklist participant for any new added survey once the global field is set:'); ?>
+                    </label>
+                    <?php echo CHtml::dropDownList('blacklistnewsurveys', $blacklistnewsurveys, $options); ?>
+                </li>
+                <li>
+                    <label for='blockaddingtosurveys' id='blockaddingtosurveys'>
+                        <?php $clang->eT('Don\'t allow blacklisted participants to be added to new survey:'); ?>
+                    </label>
+                    <?php echo CHtml::dropDownList('blockaddingtosurveys', $blockaddingtosurveys, $options); ?>
+                </li>
+                <li>
+                    <label for='hideblacklisted' id='hideblacklisted'>
+                        <?php $clang->eT('Don\'t show blacklisted participants:'); ?>
+                    </label>
+                    <?php echo CHtml::dropDownList('hideblacklisted', $hideblacklisted, $options); ?>
+                </li>
+                <li>
+                    <label for='deleteblacklisted' id='deleteblacklisted'>
+                        <?php $clang->eT('Delete globally blacklisted participant from the database:'); ?>
+                    </label>
+                    <?php echo CHtml::dropDownList('deleteblacklisted', $deleteblacklisted, $options); ?>
+                </li>
+                <li>
+                    <label for='allowunblacklist' id='allowunblacklist'>
+                        <?php $clang->eT('Allow participant to unblacklist himself/herself:'); ?>
+                    </label>
+                    <?php echo CHtml::dropDownList('allowunblacklist', $allowunblacklist, $options); ?>
+                </li>
+            </ul>
+            <p>
+                <?php
+                echo CHtml::submitButton('submit', array('value' => 'Submit'));
+                ?>
+            </p>
+            <?php
+            echo CHtml::endForm();
+        }
+        else
+        {
+            echo "<div class='messagebox ui-corner-all'>" . $clang->gT("You don't have sufficient permissions.") . "</div>";
+        }
+        ?>
+    </div>
 </div>

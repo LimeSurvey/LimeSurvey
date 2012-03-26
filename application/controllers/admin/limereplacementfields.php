@@ -15,16 +15,22 @@
 class limereplacementfields extends Survey_Common_Action
 {
 
-    public function index($fieldtype, $action, $surveyid = false, $gid = false, $qid = false)
+    public function index()
     {
-        if ($surveyid != false) {
-            $surveyid = sanitize_int($surveyid);
+        if (isset($_GET['surveyid'])) {
+            $surveyid = sanitize_int($_GET['surveyid']);
         }
-        if ($gid != false) {
-            $gid = sanitize_int($gid);
+        if (isset($_GET['gid'])) {
+            $gid = sanitize_int($_GET['gid']);
         }
-        if ($qid != false) {
-            $qid = sanitize_int($qid);
+        if (isset($_GET['qid'])) {
+            $qid = sanitize_int($_GET['qid']);
+        }
+        if (isset($_GET['fieldtype'])) {
+            $fieldtype = $_GET['fieldtype'];
+        }
+        if (isset($_GET['action'])) {
+            $action = $_GET['action'];
         }
 
         $clang = Yii::app()->lang;
