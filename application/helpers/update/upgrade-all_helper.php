@@ -101,9 +101,6 @@ function db_upgrade_all($oldversion) {
         );
         Yii::app()->db->createCommand()->createTable('{{expression_errors}}',$fields);
     }
-
-    if ($oldversion < 155)
-        Yii::app()->db->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_attributecaptions', "text NOT NULL default ''");
 }
 
 function upgrade_question_attributes148()
