@@ -120,15 +120,12 @@
                 <?php $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode'); ?>
                 <li><label for='defaulthtmleditormode'><?php $clang->eT("Default HTML editor mode:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
                     <select name='defaulthtmleditormode' id='defaulthtmleditormode'>
-                        <option value='default'
-                            <?php if ($thisdefaulthtmleditormode=='default') { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Default HTML editor mode"); ?></option>
                         <option value='none'
                             <?php if ($thisdefaulthtmleditormode=='none') { echo "selected='selected'";} ?>
                             ><?php $clang->eT("No HTML editor"); ?></option>
                         <option value='inline'
                             <?php if ($thisdefaulthtmleditormode=='inline') { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Inline HTML editor"); ?></option>
+                            ><?php $clang->eT("Inline HTML editor (default)"); ?></option>
                         <option value='popup'
                             <?php if ($thisdefaulthtmleditormode=='popup') { echo "selected='selected'";} ?>
                             ><?php $clang->eT("Popup HTML editor"); ?></option>
