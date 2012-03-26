@@ -64,66 +64,6 @@ function filetext($templatename,$templatefile,$templates) {
     }
 }
 
-function makegraph($currentstep, $total)
-{
-    Yii::app()->loadHelper('surveytranslator');
-	$clang = Yii::app()->lang;
-    $size = intval(($currentstep-1)/$total*100);
-
-    $graph = '<script type="text/javascript">
-                $(function() {
-                $("#progressbar").progressbar({
-                value: '.$size.'
-                });
-                });';
-    if (getLanguageRTL($clang->langcode))
-    {
-       $graph.='$(document).ready(function() {
-                $("div.ui-progressbar-value").removeClass("ui-corner-left");
-                $("div.ui-progressbar-value").addClass("ui-corner-right");
-                });';
-    }
-    $graph.='</script>
-
-            <div id="progress-wrapper">
-            <span class="hide">'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'</span>
-            <div id="progress-pre">';
-    if (getLanguageRTL($clang->langcode))
-    {
-       $graph.='100%';
-    }
-    else
-    {
-       $graph.='0%';
-    }
-
-    $graph.='</div>
-            <div id="progressbar"></div>
-            <div id="progress-post">';
-    if (getLanguageRTL($clang->langcode))
-    {
-       $graph.='0%';
-    }
-    else
-    {
-       $graph.='100%';
-    }
-    $graph.='</div>
-            </div>';
-
-    if ($size == 0) // Progress bar looks dumb if 0
-    {
-        $graph.='
-        <script type="text/javascript">
-        $(document).ready(function() {
-        $("div.ui-progressbar-value").hide();
-        });
-        </script>';
-    }
-
-    return $graph;
-}
-
 function mkdir_p($target){
    //creates a new directory
    //Returns 1 for success

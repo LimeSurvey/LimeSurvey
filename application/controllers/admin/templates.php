@@ -598,6 +598,7 @@ class templates extends Survey_Common_Action
         global $siteadminname, $siteadminemail;
 
         $clang = $this->getController()->lang;
+        Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
 
         $files = $this->_initfiles($templatename);
