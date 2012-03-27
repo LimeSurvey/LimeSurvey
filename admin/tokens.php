@@ -901,13 +901,13 @@
         $tokenoutput .="<ul><li><a href='#' onclick=\"if( confirm('"
         .$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
         ."<li><a href='#' onclick=\"if ( confirm('"
-        .$clang->gT("Are you sure you want to delete all unique token strings?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token strings")."</a></li>\n";
+        .$clang->gT("Are you sure you want to delete all unique token strings?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token strings").".</a></li>\n";
     }
     if (bHasSurveyPermission($surveyid, 'tokens', 'delete'))
     {
 
         $tokenoutput .="<li><a href='#' onclick=\" if (confirm('"
-        .$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
+        .$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries").".</a></li>\n";
     }
     $tokenoutput .= "</ul></div>\n";
     }
