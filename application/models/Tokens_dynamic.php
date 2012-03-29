@@ -437,7 +437,7 @@ class Tokens_dynamic extends CActiveRecord
 
     function getEmailStatus($sid,$token)
     {
-        $usquery = 'SELECT emailstatus from {{tokens_'.intval($sid).'}} where token=:token"';
+        $usquery = 'SELECT emailstatus from {{tokens_'.intval($sid).'}} where token=:token';
         return Yii::app()->db->createCommand($usquery)->bindParam(":token", $token, PDO::PARAM_STR)->queryRow();
     }
 
