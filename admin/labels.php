@@ -437,7 +437,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
         $labelsoutput .= "<div id='quickadd' name='{$clang->gT('Quick add')}'style='display:none;'><div style='float:left;'>
                       <label for='quickadd'>".$clang->gT('Enter your labels:')."</label>
-                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.')."' rows='30' style='width:570px;'></textarea>
+                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.')."' rows='30' style='width:570px;'></textarea>
                       <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
                       <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>
@@ -597,7 +597,7 @@ function modlabelsetanswers($lid)
     if (!isset($_POST['method'])) {
         $_POST['method'] = $clang->gT("Save");
     }
-    
+
     if (get_magic_quotes_gpc())
     {
         $data = json_decode(stripslashes(html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8")));
@@ -606,8 +606,8 @@ function modlabelsetanswers($lid)
     {
         $data = json_decode(html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8"));
     }
-    
-    
+
+
     if ($ajax){
         $lid = insertlabelset();
     }
@@ -654,7 +654,7 @@ function modlabelsetanswers($lid)
                 $sort_order = db_quoteall($index);
                 $lang = db_quoteall($lang);
                 $title = trim($title, "'");
-                
+
                 if (get_magic_quotes_gpc())
                 {
                     $title = str_replace("'","\'",$title);
