@@ -44,7 +44,7 @@ if (!$exportstyle)
 {
 
     //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-    $excesscols=createFieldMap($surveyid);
+    $excesscols=createFieldMap($surveyid,'full',false,false,$surveybaselang);
     if ($thissurvey['savetimings'] === "Y") {
         //Append survey timings to the fieldmap array
         $excesscols = $excesscols + createTimingsFieldMap($surveyid);
