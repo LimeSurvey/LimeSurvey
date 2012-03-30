@@ -5000,6 +5000,10 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
         if ($aFieldinfo['qid']!=null)
         {
             $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
+            if ($aFieldinfo['type']=='1')
+            {
+               $aFieldMappings[$sFieldname]=$aFieldMappings[$sFieldname].'#'.$aFieldinfo['scale_id'];
+            }
             // now also add a shortened field mapping which is needed for certain kind of condition mappings
             $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid'].'X'.$aFieldinfo['qid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']];
             // Shortened field mapping for timings table
