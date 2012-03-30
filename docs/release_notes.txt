@@ -78,6 +78,16 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+
+Changes from 1.92+ (build 120325) to 1.92+ (build 120330) Mar 30, 2012
+-Fixed issue #5948: Mandatory directive for question is ignored for array (numbers) using checkbox layout (Thomas White)
+-Fixed issue #5952: Error in statistics (Carsten Schmitz)
+-Fixed issue #5957: Cannot check integrity database (Carsten Schmitz)
+-Fixed issue #5962: View Response details does not work correctly if responses are filtered (Carsten Schmitz)
+-Fixed issue: Certain French characters garbled in statistics display and other areas (Carsten Schmitz)
+-Fixed issue: Error if s_lang are not in survey langage (Denis Chenu)
+-Fixed issue: When trying to export to application then not all fields are shown (Carsten Schmitz)
+
 Changes from 1.92+ (build 120324) to 1.92+ (build 120325) Mar 23, 2012
 -Fixed issue #5877: Resume later doesn't work with a survey allowing public registration (magiclko)
 -Fixed issue: MSSQL error on importing survey (Carsten Schmitz)
