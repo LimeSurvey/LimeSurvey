@@ -187,9 +187,9 @@ if ($subaction == "id")
 
     $nfncount = count($fnames)-1;
     //SHOW INDIVIDUAL RECORD
-    $idquery = "SELECT * FROM $surveytable ";
+    $idquery = "SELECT * FROM {$surveytable} s";
     if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
-        $idquery .= "LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
+        $idquery .= "LEFT JOIN {$tokentable} t ON s.token = t.token ";
     if (incompleteAnsFilterstate() == "inc")
         $idquery .= " WHERE (submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";
     elseif (incompleteAnsFilterstate() == "filter")
@@ -197,11 +197,7 @@ if ($subaction == "id")
     else
         $idquery .= " WHERE ";
     if ($id < 1) { $id = 1; }
-    if (isset($_SESSION['sql']) && $_SESSION['sql'])
-    {
-        $idquery .= $_SESSION['sql'];
-    }
-    else {$idquery .= "$surveytable.id = $id";}
+    $idquery .= " s.id = $id";
     $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
     while ($idrow = $idresult->FetchRow())
     {
