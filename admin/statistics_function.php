@@ -81,16 +81,16 @@
         $rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname, $imagedir,
         $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize, $showaggregateddata;
 
-        $fieldmap=createFieldMap($surveyid, "full");
 
         if (is_null($statlangcode))
         {
-            $statlang=$clang;
+            $statlang=GetBaseLanguageFromSurveyID($surveyid);
         }
         else
         {
             $statlang = new limesurvey_lang($statlangcode);
         }
+        $fieldmap=createFieldMap($surveyid, "full", false, false, $statlang->langcode);
 
         /*
         * this variable is used in the function shortencode() which cuts off a question/answer title
@@ -1905,7 +1905,7 @@
                             break;
                     }
                     echo '';
-                    
+
                     //loop thorugh the array which contains all answer data
                     foreach ($alist as $al)
                     {
@@ -2036,7 +2036,7 @@
                         {
                             //store temporarily value of answer count of question type '5' and 'A'.
                             $tempcount = -1; //count can't be less han zero
-                            
+
                             //increase counter
                             $TotalCompleted += $row[0];
 
@@ -2357,7 +2357,7 @@
                             $justcode[]=$al[0];
 
                             //edit labels and put them into antoher array
-                            
+
                             //first check if $tempcount is > 0. If yes, $row[0] has been modified and $tempcount has the original count.
                             if ($tempcount > 0)
                             {
@@ -2369,7 +2369,7 @@
                                 $lbl[] = iconv_wordwrap(FlattenText("$al[1] ($row[0])"), 30, "\n"); // NMO 2009-03-24
                                 $lblrtl[] = utf8_strrev(iconv_wordwrap(FlattenText("$al[1] )$row[0]("), 30, "\n")); // NMO 2009-03-24
                             }
-                            
+
 
                         }	//end while -> loop through results
 
@@ -3286,7 +3286,7 @@
                             }
 
                         }	//end else -> pie charts
-                        
+
                         //introduce new counter
                         if (!isset($ci)) {$ci=0;}
 
