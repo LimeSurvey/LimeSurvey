@@ -15,48 +15,48 @@
     </ul>
     <form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo $this->createUrl("admin/globalsettings"); ?>' method='post'>
         <div id='overview'>
-                <div class='header ui-widget-header'><?php $clang->eT("System overview"); ?></div>
-                <br /><table class='statisticssummary'>
+            <div class='header ui-widget-header'><?php $clang->eT("System overview"); ?></div>
+            <br /><table class='statisticssummary'>
                 <tr>
-                <th ><?php $clang->eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
+                    <th ><?php $clang->eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
                 </tr>
                 <tr>
-                <th ><?php $clang->eT("Surveys"); ?>:</th><td><?php echo $surveycount; ?></td>
+                    <th ><?php $clang->eT("Surveys"); ?>:</th><td><?php echo $surveycount; ?></td>
                 </tr>
                 <tr>
-                <th ><?php $clang->eT("Active surveys"); ?>:</th><td><?php echo $activesurveycount; ?></td>
+                    <th ><?php $clang->eT("Active surveys"); ?>:</th><td><?php echo $activesurveycount; ?></td>
                 </tr>
                 <tr>
-                <th ><?php $clang->eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
+                    <th ><?php $clang->eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
                 </tr>
                 <tr>
-                <th ><?php $clang->eT("Active token tables"); ?>:</th><td><?php echo $activetokens; ?></td>
+                    <th ><?php $clang->eT("Active token tables"); ?>:</th><td><?php echo $activetokens; ?></td>
                 </tr>
                 <tr>
-                <th ><?php $clang->eT("Deactivated token tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
+                    <th ><?php $clang->eT("Deactivated token tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
                 </tr>
-            <?php
-                if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
-                {
-                    $fUsed=calculateTotalFileUploadUsage();
-            ?>
+                <?php
+                    if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
+                    {
+                        $fUsed=calculateTotalFileUploadUsage();
+                    ?>
                     <tr>
-                    <th ><?php $clang->eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed); ?> MB</td>
+                        <th ><?php $clang->eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed); ?> MB</td>
                     </tr>
-            <?php
-                }
-            ?>
-                </table>
+                    <?php
+                    }
+                ?>
+            </table>
             <?php
                 if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
                 {
-            ?>
-                    <p><input type="button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/globalsettings/showphpinfo"); ?>')" value="<?php $clang->eT("Show PHPInfo"); ?>" />
-            <?php
-                }
-            ?>
+                ?>
+                <p><input type="button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/globalsettings/showphpinfo"); ?>')" value="<?php $clang->eT("Show PHPInfo"); ?>" />
+                    <?php
+                    }
+                ?>
 
-            <br /><br/></p><div class='header ui-widget-header'><?php echo $clang->eT("Updates"); ?></div><br/><ul>
+                <br /><br/></p><div class='header ui-widget-header'><?php echo $clang->eT("Updates"); ?></div><br/><ul>
                 <li><label for='updatecheckperiod'><?php echo $clang->eT("Check for updates:"); ?></label>
                     <select name='updatecheckperiod' id='updatecheckperiod'>
                         <option value='0'
@@ -87,10 +87,16 @@
                     <textarea readonly='readonly' style='width:35%; height:60px; overflow: auto;'><?php echo strip_tags($updateinfo['errorhtml']); ?></textarea>
 
                     <?php }
-                    else
+                    elseif ($updatable)
                     {
                         $clang->eT('There is currently no newer LimeSurvey version available.');
-                } ?>
+                    }
+                    else
+                    {
+                        printf($clang->gT('This is an unstable version and cannot be updated using ComfortUpdate. Please check %sour website%s regularly for a newer version.'),"<a href='http://www.limesurvey.org'>","</a>");
+                    }
+
+                ?>
             </p></div>
 
         <div id='general'>

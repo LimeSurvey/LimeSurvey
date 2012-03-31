@@ -390,7 +390,7 @@ class AdminController extends LSYii_Controller
     */
     public function _showadminmenu($surveyid = false)
     {
-        global $homedir, $scriptname, $setfont, $imageurl, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck, $databasetype;
+        global $homedir, $scriptname, $setfont, $imageurl, $debug, $action, $updatebuild, $updateversion, $updatelastcheck, $databasetype;
 
         $clang = $this->lang;
         $data['clang']= $clang;
@@ -399,7 +399,7 @@ class AdminController extends LSYii_Controller
             Yii::app()->session['flashmessage'] = $clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 
-        $data['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && Yii::app()->getConfig("updatelastcheck")>0 && Yii::app()->getConfig("updateavailable")==1);
+        $data['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && Yii::app()->getConfig("updatelastcheck")>0 && Yii::app()->getConfig("updateavailable")==1 && Yii::app()->getConfig("updatable") );
         $data['updateversion'] = Yii::app()->getConfig("updateversion");
         $data['updatebuild'] = Yii::app()->getConfig("updatebuild");
         $data['surveyid'] = $surveyid;
