@@ -48,7 +48,7 @@ $surveyOptions = array(
 'rooturl'=>(isset($rooturl) ? $rooturl : ''),
 'savetimings'=>($thissurvey['savetimings'] == "Y"),
 'surveyls_dateformat'=>(isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
-'startlanguage'=>(isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'),
+'startlanguage'=>(isset($clang->langcode) ? $clang->langcode : $thissurvey['language']),
 'target'=>(isset($uploaddir) ?  "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
 'tempdir'=>(isset($tempdir) ? $tempdir : '/temp/'),
 'timeadjust'=>(isset($timeadjust) ? $timeadjust : 0),
@@ -247,7 +247,7 @@ else
             if (!is_null($moveResult))
             {
                 $flashmessage = savedcontrol();
-            }                        
+            }
         }
     }
 
@@ -266,7 +266,7 @@ else
         $LEMskipReprocessing=true;
 
         // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
-        
+
     }
 
     //Now, we check mandatory questions if necessary
