@@ -169,7 +169,7 @@ $codeids='';
 <div id='quickadd' class='labelsets-update' style='display:none;'>
     <div style='float:left;'>
         <label for='quickadd'><?php $clang->eT('Enter your subquestions:'); ?></label>
-        <textarea id='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
+        <textarea id='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
         <p class=button-list'>
         <button id='btnqareplace' type='button'><?php $clang->eT('Replace'); ?></button>
         <button id='btnqainsert' type='button'><?php $clang->eT('Add'); ?></button>

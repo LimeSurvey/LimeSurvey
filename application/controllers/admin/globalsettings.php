@@ -1,25 +1,25 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
 /**
 * GlobalSettings Controller
- *
- *
- * @package        LimeSurvey
- * @subpackage    Backend
- */
+*
+*
+* @package        LimeSurvey
+* @subpackage    Backend
+*/
 class GlobalSettings extends Survey_Common_Action
 {
 
@@ -33,11 +33,11 @@ class GlobalSettings extends Survey_Common_Action
     }
 
     /**
-     * Shows the index page
-     *
-     * @access public
-     * @return void
-     */
+    * Shows the index page
+    *
+    * @access public
+    * @return void
+    */
     public function index()
     {
         if (!empty($_POST['action'])) {
@@ -56,11 +56,11 @@ class GlobalSettings extends Survey_Common_Action
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');
-        
+
         //save refurl from where global settings screen is called!
-        $refurl = CHttpRequest::getUrlReferrer(); 
+        $refurl = CHttpRequest::getUrlReferrer();
         Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
-        
+
         $data['clang'] = $this->getController()->lang;
         $data['title'] = "hi";
         $data['message'] = "message";
@@ -70,7 +70,8 @@ class GlobalSettings extends Survey_Common_Action
         }
         $data['thisupdatecheckperiod'] = getGlobalSetting('updatecheckperiod');
         $data['updatelastcheck'] = Yii::app()->getConfig("updatelastcheck");
-        $data['updateavailable'] = Yii::app()->getConfig("updateavailable");
+        $data['updateavailable'] = (Yii::app()->getConfig("updateavailable") &&  Yii::app()->getConfig("updatable"));
+        $data['updatable'] = Yii::app()->getConfig("updatable");
         $data['updateinfo'] = Yii::app()->getConfig("updateinfo");
         $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
         if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
@@ -109,7 +110,7 @@ class GlobalSettings extends Survey_Common_Action
         } else {
             $aRestrictToLanguages = implode(' ', $aRestrictToLanguages);
         }
-        
+
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('updatecheckperiod', (int)($_POST['updatecheckperiod']));
@@ -167,7 +168,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
 
         Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");
-        
+
         $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
         CController::redirect($url);
     }
@@ -219,22 +220,22 @@ class GlobalSettings extends Survey_Common_Action
             $activetokens = 0;
         }
         return array(
-            'usercount' => $usercount,
-            'surveycount' => $surveycount,
-            'activesurveycount' => $activesurveycount,
-            'deactivatedsurveys' => $deactivatedsurveys,
-            'activetokens' => $activetokens,
-            'deactivatedtokens' => $deactivatedtokens
+        'usercount' => $usercount,
+        'surveycount' => $surveycount,
+        'activesurveycount' => $activesurveycount,
+        'deactivatedsurveys' => $deactivatedsurveys,
+        'activetokens' => $activetokens,
+        'deactivatedtokens' => $deactivatedtokens
         );
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
+    * Renders template(s) wrapped in header and footer
+    *
+    * @param string $sAction Current action, the folder to fetch views from
+    * @param string|array $aViewUrls View url(s)
+    * @param array $aData Data to be passed on. Optional.
+    */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . "/scripts/jquery/jquery.selectboxes.min.js");
