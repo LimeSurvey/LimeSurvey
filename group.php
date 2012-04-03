@@ -366,6 +366,7 @@ else
 
             //Before doing the "templatereplace()" function, check the $thissurvey['url']
             //field for limereplace stuff, and do transformations!
+            $thissurvey['surveyls_url']=templatereplace($thissurvey['surveyls_url']);   // to do INSERTANS substitutions
             $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
             $content='';

@@ -861,7 +861,11 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<td align='left'>";
         if ($surveyinfo['surveyls_url']!="")
         {
-            $surveysummary .=" <a target='_blank' href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";
+            templatereplace($surveyinfo['surveyls_url']);
+            $_url = htmlspecialchars(strip_tags(LimeExpressionManager::GetLastPrettyPrintExpression()));
+            templatereplace($surveyinfo['surveyls_urldescription']);
+            $_desc = LimeExpressionManager::GetLastPrettyPrintExpression();
+            $surveysummary .=" <a target='_blank' href=\"".$_url."\" title=\"".$_url."\">{$_desc}</a>";
         }
         else
         {
