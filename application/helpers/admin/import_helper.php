@@ -3310,6 +3310,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     }
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
     LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::SetSurveyId($newsid);
 
     $importresults['importversion']=$importversion;
     $importresults['newsid']=$newsid;
@@ -3890,6 +3891,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$newsid);
     $aOldNewFieldmap=reverseTranslateFieldNames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
     $results['FieldReMap']=$aOldNewFieldmap;
+    LimeExpressionManager::SetSurveyId($newsid);
     translateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
     LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
