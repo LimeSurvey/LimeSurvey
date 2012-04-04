@@ -192,21 +192,8 @@ class browse extends Survey_Common_Action
         {
             $iId = 1;
         }
-        if (Yii::app()->request->getPost('sql'))
-        {
-            if (get_magic_quotes_gpc())
-            {
-                $oCriteria->addCondition(stripslashes(Yii::app()->request->getPost('sql')));
-            }
-            else
-            {
-                $oCriteria->addCondition(Yii::app()->request->getPost('sql'));
-            }
-        }
-        else
-        {
-            $oCriteria->addCondition("id = {$iId}");
-        }
+        $oCriteria->addCondition("id = {$iId}");
+
         $iIdresult = Survey_dynamic::model($iSurveyId)->findAll($oCriteria) or die("Couldn't get entry");
         foreach ($iIdresult as $iIdrow)
         {
