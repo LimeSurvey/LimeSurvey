@@ -1,16 +1,16 @@
 <?PHP
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*/
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
 // where based on the current database version the database is upgraded
@@ -124,15 +124,15 @@ function db_upgrade($oldversion) {
     {
         modifyDatabase("","ALTER TABLE prefix_quota ADD autoload_url integer NOT NULL DEFAULT 0"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","CREATE TABLE prefix_quota_languagesettings (
-                            quotals_id serial NOT NULL,
-                            quotals_quota_id integer NOT NULL DEFAULT 0,
-                            quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
-                            quotals_name character varying(200),
-                            quotals_message text NOT NULL,
-                            quotals_url character varying(255),
-                            quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();@ob_flush();
+        quotals_id serial NOT NULL,
+        quotals_quota_id integer NOT NULL DEFAULT 0,
+        quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
+        quotals_name character varying(200),
+        quotals_message text NOT NULL,
+        quotals_url character varying(255),
+        quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","ALTER TABLE ONLY prefix_quota_languagesettings
-  	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();@ob_flush();
+        ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
@@ -193,12 +193,12 @@ function db_upgrade($oldversion) {
         modifyDatabase("", "ALTER TABLE prefix_answers ADD CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid,code,language,scale_id)"); echo $modifyoutput; flush();@ob_flush();
 
         modifyDatabase("", "CREATE TABLE prefix_defaultvalues (
-                              qid integer NOT NULL default '0',
-                              scale_id integer NOT NULL default '0',
-                              sqid integer NOT NULL default '0',
-                              language character varying(20) NOT NULL,
-                              specialtype character varying(20) NOT NULL default '',
-                              defaultvalue text)"); echo $modifyoutput; flush();@ob_flush();
+        qid integer NOT NULL default '0',
+        scale_id integer NOT NULL default '0',
+        sqid integer NOT NULL default '0',
+        language character varying(20) NOT NULL,
+        specialtype character varying(20) NOT NULL default '',
+        defaultvalue text)"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","ALTER TABLE prefix_defaultvalues ADD CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)"); echo $modifyoutput; flush();@ob_flush();
 
         // -Move all 'answers' that are subquestions to the questions table
@@ -211,16 +211,15 @@ function db_upgrade($oldversion) {
         modifyDatabase("", "ALTER TABLE prefix_questions DROP COLUMN lid"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "ALTER TABLE prefix_questions DROP COLUMN lid1"); echo $modifyoutput; flush();@ob_flush();
         // add field for timings and table for extended conditions
-        modifyDatabase("", "ALTER TABLE prefix_surveys ADD savetimings char(1) default 'N'"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "CREATE TABLE prefix_sessions(
-                             sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
-                             expiry TIMESTAMP NOT NULL ,
-                             expireref VARCHAR( 250 ) DEFAULT '',
-                             created TIMESTAMP NOT NULL ,
-                             modified TIMESTAMP NOT NULL ,
-                             sessdata TEXT DEFAULT '',
-                             PRIMARY KEY ( sesskey )
-                             );"); echo $modifyoutput; flush();@ob_flush();
+        sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+        expiry TIMESTAMP NOT NULL ,
+        expireref VARCHAR( 250 ) DEFAULT '',
+        created TIMESTAMP NOT NULL ,
+        modified TIMESTAMP NOT NULL ,
+        sessdata TEXT DEFAULT '',
+        PRIMARY KEY ( sesskey )
+        );"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "create INDEX sess2_expiry on prefix_sessions( expiry );"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "create INDEX sess2_expireref on prefix_sessions ( expireref );"); echo $modifyoutput; flush();@ob_flush();
 
@@ -250,18 +249,18 @@ function db_upgrade($oldversion) {
         modifyDatabase("", "ALTER TABLE prefix_surveys ADD nokeyboard char(1) default 'N'"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "ALTER TABLE prefix_surveys ADD alloweditaftercompletion char(1) default 'N'"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "CREATE TABLE prefix_survey_permissions (
-                            sid integer DEFAULT 0 NOT NULL,
-                            uid integer DEFAULT 0 NOT NULL,
-                            permission character varying(20) NOT NULL,
-                            create_p integer DEFAULT 0 NOT NULL,
-                            read_p integer DEFAULT 0 NOT NULL,
-                            update_p integer DEFAULT 0 NOT NULL,
-                            delete_p integer DEFAULT 0 NOT NULL,
-                            import_p integer DEFAULT 0 NOT NULL,
-                            export_p integer DEFAULT 0 NOT NULL
-                        );"); echo $modifyoutput; flush();@ob_flush();
+        sid integer DEFAULT 0 NOT NULL,
+        uid integer DEFAULT 0 NOT NULL,
+        permission character varying(20) NOT NULL,
+        create_p integer DEFAULT 0 NOT NULL,
+        read_p integer DEFAULT 0 NOT NULL,
+        update_p integer DEFAULT 0 NOT NULL,
+        delete_p integer DEFAULT 0 NOT NULL,
+        import_p integer DEFAULT 0 NOT NULL,
+        export_p integer DEFAULT 0 NOT NULL
+        );"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "ALTER TABLE ONLY prefix_survey_permissions ADD CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission);"); echo $modifyoutput; flush();@ob_flush();
-		upgrade_surveypermissions_table145();
+        upgrade_surveypermissions_table145();
 
         // drop the old survey rights table
         modifyDatabase("", "DROP TABLE prefix_surveys_rights"); echo $modifyoutput; flush();@ob_flush();
@@ -287,11 +286,11 @@ function db_upgrade($oldversion) {
         modifyDatabase("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized SET DEFAULT 'N';"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized SET NOT NULL ;"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "CREATE TABLE prefix_failed_login_attempts (
-                                  id serial PRIMARY KEY NOT NULL,
-                                  ip character varying(37) NOT NULL,
-                                  last_attempt character varying(20) NOT NULL,
-                                  number_attempts integer NOT NULL
-                                );"); echo $modifyoutput; flush();@ob_flush();
+        id serial PRIMARY KEY NOT NULL,
+        ip character varying(37) NOT NULL,
+        last_attempt character varying(20) NOT NULL,
+        number_attempts integer NOT NULL
+        );"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "ALTER TABLE  prefix_surveys_languagesettings ADD surveyls_numberformat integer default 0 NOT NULL"); echo $modifyoutput; flush();@ob_flush();
         upgrade_token_tables145();
         modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
@@ -312,6 +311,7 @@ function db_upgrade($oldversion) {
     }
     if ($oldversion < 148)
     {
+        modifyDatabase("","ALTER TABLE prefix_users ADD participant_panel integer NOT NULL default '0'"); echo $modifyoutput; flush(); @ob_flush();
         modifyDatabase("","CREATE TABLE prefix_participants (
         participant_id character varying( 50 ) NOT NULL,
         firstname character varying( 40 ) NOT NULL,
@@ -344,20 +344,20 @@ function db_upgrade($oldversion) {
         "lang" character varying( 20 ) NOT NULL
         );'); echo $modifyoutput; flush();@ob_flush();
 
-        modifyDatabase("","CREATE TABLE prefix_participant_attribute_values (
-        attribute_id integer NOT NULL,
-        value_id integer NOT NULL AUTO_INCREMENT,
-        value character varying( 20 ) NOT NULL,
-        PRIMARY KEY (value_id)
-        );"); echo $modifyoutput; flush();@ob_flush();
 
-        modifyDatabase("","CREATE TABLE prefix_participant_shares (
-        participant_id character varying( 50 ) NOT NULL,
-        shared_uid integer NOT NULL,
-        date_added date NOT NULL,
-        can_edit character varying( 5 ) NOT NULL,
-        PRIMARY KEY (lang,attribute_id)
-        );"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("",'CREATE TABLE prefix_participant_attribute_values (
+        "value_id" serial PRIMARY KEY NOT NULL,
+        "attribute_id" integer NOT NULL,
+        "value" character varying( 20 ) NOT NULL
+        );'); echo $modifyoutput; flush();ob_flush();
+
+        modifyDatabase("",'CREATE TABLE prefix_participant_shares (
+        "participant_id" character varying( 50 ) NOT NULL,
+        "shared_uid" integer NOT NULL,
+        "date_added" date NOT NULL,
+        "can_edit" character varying( 5 ) NOT NULL,
+        CONSTRAINT prefix_participant_shares_pkey PRIMARY KEY (participant_id,shared_uid)
+        );'); echo $modifyoutput; flush();@ob_flush();
 
         participant_id("","CREATE TABLE prefix_survey_links (
         participant_id character varying( 50 ) NOT NULL,
@@ -436,9 +436,9 @@ function db_upgrade($oldversion) {
     {
         modifyDatabase("", "DROP TABLE prefix_sessions;"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "CREATE TABLE prefix_sessions(
-            id character varying(32) PRIMARY KEY NOT NULL,
-            expire integer DEFAULT NULL,
-            data text
+        id character varying(32) PRIMARY KEY NOT NULL,
+        expire integer DEFAULT NULL,
+        data text
         );"); echo $modifyoutput; flush();@ob_flush();
 
         modifyDatabase("","ALTER TABLE prefix_surveys_languagesettings ADD surveyls_attributecaptions TEXT NULL;"); echo $modifyoutput; flush();@ob_flush();
@@ -585,12 +585,12 @@ function upgrade_tables143()
             modifyDatabase("",$query); echo $modifyoutput; flush();@ob_flush();
             if (!isset($aInsert['qid']))
             {
-               $aQIDReplacements[$row['qid'].'_'.$row['code']]=Yii::app()->db->getLastInsertId();
-               $iSaveSQID=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+                $aQIDReplacements[$row['qid'].'_'.$row['code']]=Yii::app()->db->getLastInsertId();
+                $iSaveSQID=$aQIDReplacements[$row['qid'].'_'.$row['code']];
             }
             else
             {
-               $iSaveSQID=$aInsert['qid'];
+                $iSaveSQID=$aInsert['qid'];
             }
             if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
             {
@@ -661,7 +661,7 @@ function upgrade_tables143()
                 modifyDatabase("",$query); echo $modifyoutput; flush();@ob_flush();
                 if (isset($aInsert['qid']))
                 {
-                   $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=Yii::app()->db->getLastInsertId();
+                    $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=Yii::app()->db->getLastInsertId();
                 }
             }
         }
@@ -687,7 +687,7 @@ function upgrade_tables143()
             {
                 if (!rename($standardtemplaterootdir.DIRECTORY_SEPARATOR.$file,$usertemplaterootdir.DIRECTORY_SEPARATOR.$file))
                 {
-                   echo "There was a problem moving directory '".$standardtemplaterootdir.DIRECTORY_SEPARATOR.$file."' to '".$usertemplaterootdir.DIRECTORY_SEPARATOR.$file."' due to missing permissions. Please do this manually.<br />";
+                    echo "There was a problem moving directory '".$standardtemplaterootdir.DIRECTORY_SEPARATOR.$file."' to '".$usertemplaterootdir.DIRECTORY_SEPARATOR.$file."' due to missing permissions. Please do this manually.<br />";
                 };
             }
         }

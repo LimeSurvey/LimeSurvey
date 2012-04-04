@@ -4398,7 +4398,7 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
         $sNicetext = strip_tags($sNicetext);
     }
     if ($bStripNewLines ){  // strip new lines
-        $sNicetext = preg_replace(array('~\Ru~','/\s{2,}/'),array(' ',' '), $sNicetext);
+        $sNicetext = preg_replace(array('~\Ru~'),array(' '), $sNicetext);
     }
     else // unify newlines to \r\n
     {

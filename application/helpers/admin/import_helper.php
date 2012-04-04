@@ -806,7 +806,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     if (!in_array($sBaseLanguage,$importlanguages))
     {
         $results['fatalerror'] = $clang->gT("The languages of the imported group file must at least include the base language of this survey.");
-        return;
+        return $results;
     }
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
     /*
@@ -3310,6 +3310,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     }
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
     LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::SetSurveyId($newsid);
 
     $importresults['importversion']=$importversion;
     $importresults['newsid']=$newsid;
@@ -3890,6 +3891,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$newsid);
     $aOldNewFieldmap=reverseTranslateFieldNames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
     $results['FieldReMap']=$aOldNewFieldmap;
+    LimeExpressionManager::SetSurveyId($newsid);
     translateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
     LimeExpressionManager::UpgradeConditionsToRelevance($newsid);

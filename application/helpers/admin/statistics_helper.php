@@ -276,10 +276,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
     global $rooturl, $rootdir, $homedir, $homeurl, $scriptname,
     $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
-    
-    //load surveytranslator helper 
+
+    //load surveytranslator helper
     Yii::import('application.helpers.surveytranslator_helper', true);
-    
+
     $imagedir = Yii::app()->getConfig("imagedir");
     $tempdir = Yii::app()->getConfig("tempdir");
     $tempurl = Yii::app()->getConfig("tempurl");
@@ -294,7 +294,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //pick the best font file if font setting is 'auto'
     if (is_null($statlangcode))
     {
-        $statlang=$clang;
+        $statlang =  getBaseLanguageFromSurveyID($surveyid);
     }
     else
     {
@@ -2116,7 +2116,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         break;
                 }
                 echo '';
-                
+
                 //loop thorugh the array which contains all answer data
                 foreach ($alist as $al)
                 {
@@ -2536,7 +2536,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $justcode[]=$al[0];
 
                         //edit labels and put them into antoher array
-                        
+
                         //first check if $tempcount is > 0. If yes, $row[0] has been modified and $tempcount has the original count.
                         if ($tempcount > 0)
                         {
@@ -2553,7 +2553,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     }	//end while -> loop through results
 
                 }	//end foreach -> loop through answer data
-                
+
                 //no filtering of incomplete answers and NO multiple option questions
                 //if ((incompleteAnsFilterState() != "filter") and ($qtype != "M") and ($qtype != "P"))
                 //error_log("TIBO ".print_r($showaggregated_indice_table,true));

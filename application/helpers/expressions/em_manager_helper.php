@@ -197,7 +197,7 @@
 
             $queries = array();
             foreach ($releqns as $key=>$value) {
-                $query = "UPDATE {{questions}} SET relevance='".addslashes($value)."' WHERE qid=".$key;
+                $query = "UPDATE {{questions}} SET relevance='".Yii::app()->db->quoteValue($value)."' WHERE qid=".$key;
                 dbExecuteAssoc($query);
                 $queries[] = $query;
             }
@@ -2329,17 +2329,17 @@
                 . "','sgqa':'" . $sgqa
                 . "','qid':" . $questionNum
                 . ",'gid':" . $groupNum
-//                . ",'mandatory':'" . $mandatory
-//                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
+                //                . ",'mandatory':'" . $mandatory
+                //                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
                 . ",'type':'" . $type
-//                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
-//                . "','readWrite':'" . $readWrite
-//                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
+                //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
+                //                . "','readWrite':'" . $readWrite
+                //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
                 . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
-//                . ",'qseq':" . $questionSeq
+                //                . ",'qseq':" . $questionSeq
                 .$ansList;
 
                 if ($type == 'M' || $type == 'P')
@@ -2692,19 +2692,19 @@
                     $this->subQrelInfo[$questionNum] = array();
                 }
                 $this->subQrelInfo[$questionNum][$rowdivid] = array(
-                    'qid' => $questionNum,
-                    'eqn' => $eqn,
-                    'prettyPrintEqn' => $prettyPrint,
-                    'result' => $result,
-                    'numJsVars' => count($jsVars),
-                    'relevancejs' => $relevanceJS,
-                    'relevanceVars' => $relevanceVars,
-                    'rowdivid' => $rowdivid,
-                    'type'=>$type,
-                    'qtype'=>$qtype,
-                    'sgqa'=>$sgqa,
-                    'hasErrors'=>$hasErrors,
-                    );
+                'qid' => $questionNum,
+                'eqn' => $eqn,
+                'prettyPrintEqn' => $prettyPrint,
+                'result' => $result,
+                'numJsVars' => count($jsVars),
+                'relevancejs' => $relevanceJS,
+                'relevanceVars' => $relevanceVars,
+                'rowdivid' => $rowdivid,
+                'type'=>$type,
+                'qtype'=>$qtype,
+                'sgqa'=>$sgqa,
+                'hasErrors'=>$hasErrors,
+                );
             }
             return $result;
         }
@@ -5876,9 +5876,9 @@ EOD;
                 {
                     foreach  ($updates as $key=>$value)
                     {
-                        $query = "UPDATE {{question_attributes}} SET value='".addslashes($value)."' WHERE qid=".$qid." and attribute='".addslashes($key)."';";
+                        $query = "UPDATE {{question_attributes}} SET value='".Yii::app()->db->quoteValue($value)."' WHERE qid=".$qid." and attribute='".Yii::app()->db->quoteValue($key)."';";
                         $queries[] = $query;
-                        $query = "DELETE FROM {{question_attributes}} WHERE qid=".$qid." and attribute='".addslashes($reverseAttributeMap[$key])."';";
+                        $query = "DELETE FROM {{question_attributes}} WHERE qid=".$qid." and attribute='".Yii::app()->db->quoteValue($reverseAttributeMap[$key])."';";
                         $queries[] = $query;
 
                     }
