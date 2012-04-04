@@ -56,7 +56,7 @@ class SurveyRuntimeHelper {
         'refurl' => (($thissurvey['refurl'] == "Y") ? $_SESSION[$LEMsessid]['refurl'] : NULL),
         'savetimings' => ($thissurvey['savetimings'] == "Y"),
         'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
-        'startlanguage' => (isset($_SESSION[$LEMsessid]['s_lang']) ? $_SESSION[$LEMsessid]['s_lang'] : 'en'),
+        'startlanguage'=>(isset($clang->langcode) ? $clang->langcode : $thissurvey['language']),
         'target' => (isset($uploaddir) ? "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
         'tempdir' => (isset($tempdir) ? $tempdir : '/temp/'),
         'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
