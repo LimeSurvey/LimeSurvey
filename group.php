@@ -244,10 +244,6 @@ else
         else
         {
             $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false,true,false,false,true);   // by jumping to current step, saves data so far
-            if (!is_null($moveResult))
-            {
-                $flashmessage = savedcontrol();
-            }
         }
     }
 
@@ -831,121 +827,121 @@ if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filen
 
 if (isset($_SESSION['grouplist']))
     $_gseq = -1;
-    foreach ($_SESSION['grouplist'] as $gl)
-    {
-        $gid=$gl[0];
-        ++$_gseq;
-        $groupname=$gl[1];
-        $groupdescription=$gl[2];
+foreach ($_SESSION['grouplist'] as $gl)
+{
+    $gid=$gl[0];
+    ++$_gseq;
+    $groupname=$gl[1];
+    $groupdescription=$gl[2];
 
-        if ($surveyMode != 'survey' && $gid != $onlyThisGID) {
+    if ($surveyMode != 'survey' && $gid != $onlyThisGID) {
+        continue;
+    }
+
+    echo "\n\n<!-- START THE GROUP -->\n";
+    echo "\n\n<div id='group-$_gseq'";
+    $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
+    if  ($gnoshow && !$previewgrp)
+    {
+        echo " style='display: none;'";
+    }
+    echo ">\n";
+    echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
+    echo "\n";
+
+    if ($groupdescription)
+    {
+        echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
+    }
+    echo "\n";
+
+    echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
+    $i=0;
+    foreach ($qanda as $qa) // one entry per QID
+    {
+        if ($gid != $qa[6]) {
             continue;
         }
 
-        echo "\n\n<!-- START THE GROUP -->\n";
-        echo "\n\n<div id='group-$_gseq'";
-        $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
-        if  ($gnoshow && !$previewgrp)
+        $qid = $qa[4];
+        $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
+        $lastgrouparray = explode("X",$qa[7]);
+        $lastgroup = $lastgrouparray[0]."X".$lastgrouparray[1]; // id of the last group, derived from question id
+        $lastanswer = $qa[7];
+
+        $q_class = question_class($qinfo['info']['type']);
+
+        $man_class = '';
+        if ($qinfo['info']['mandatory']=='Y') {
+            $man_class .= ' mandatory';
+        }
+
+        if ($qinfo['anyUnanswered'] && $_SESSION['maxstep'] != $_SESSION['step']) {
+            $man_class .= ' missing';
+        }
+
+        $n_q_display = '';
+        if ($qinfo['hidden'] && $qinfo['info']['type'] != '*') {
+            continue;	// skip this one
+        }
+
+        if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*')) {
+            $n_q_display = ' style="display: none;"';
+        }
+
+        $question= $qa[0];
+
+        //===================================================================
+        // The following four variables offer the templating system the
+        // capacity to fully control the HTML output for questions making the
+        // above echo redundant if desired.
+        $question['essentials'] = 'id="question'.$qa[4].'"'.$n_q_display;
+        $question['class'] = $q_class;
+        $question['man_class'] = $man_class;
+        $question['code']=$qa[5];
+        $question['sgq']=$qa[7];
+        $question['aid']=$qinfo['info']['aid'];
+        $question['sqid']=$qinfo['info']['sqid'];
+        $question['type']=$qinfo['info']['type'];
+        //===================================================================
+        $answer=$qa[1];
+
+        $help=$qinfo['info']['help'];   // $qa[2];
+
+        $answer_id = $idlist[$i];
+        //$answer_id = $_SESSION['fieldarray'][$i][1];
+        $i++;
+        $question_template = file_get_contents($thistpl.'/question.pstpl');
+        if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
         {
-            echo " style='display: none;'";
+            // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
+            $question_template = str_replace( '{QUESTION_ESSENTIALS}' , '' , $question_template );
+            $question_template = str_replace( '{QUESTION_CLASS}' , '' , $question_template );
+            echo '
+            <!-- NEW QUESTION -->
+            <div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
+            ';
+            echo templatereplace($question_template,NULL,false,$qa[4]);
+            echo '
+            </div>
+            ';
         }
-        echo ">\n";
-        echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
-        echo "\n";
-
-        if ($groupdescription)
+        else
         {
-            echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
-        }
-        echo "\n";
-
-        echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
-        $i=0;
-        foreach ($qanda as $qa) // one entry per QID
-        {
-            if ($gid != $qa[6]) {
-                continue;
-            }
-
-            $qid = $qa[4];
-            $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
-            $lastgrouparray = explode("X",$qa[7]);
-            $lastgroup = $lastgrouparray[0]."X".$lastgrouparray[1]; // id of the last group, derived from question id
-            $lastanswer = $qa[7];
-
-            $q_class = question_class($qinfo['info']['type']);
-
-            $man_class = '';
-            if ($qinfo['info']['mandatory']=='Y') {
-                $man_class .= ' mandatory';
-            }
-
-            if ($qinfo['anyUnanswered'] && $_SESSION['maxstep'] != $_SESSION['step']) {
-                $man_class .= ' missing';
-            }
-
-            $n_q_display = '';
-            if ($qinfo['hidden'] && $qinfo['info']['type'] != '*') {
-                continue;	// skip this one
-            }
-
-            if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*')) {
-                $n_q_display = ' style="display: none;"';
-            }
-
-            $question= $qa[0];
-
-            //===================================================================
-            // The following four variables offer the templating system the
-            // capacity to fully control the HTML output for questions making the
-            // above echo redundant if desired.
-            $question['essentials'] = 'id="question'.$qa[4].'"'.$n_q_display;
-            $question['class'] = $q_class;
-            $question['man_class'] = $man_class;
-            $question['code']=$qa[5];
-            $question['sgq']=$qa[7];
-            $question['aid']=$qinfo['info']['aid'];
-            $question['sqid']=$qinfo['info']['sqid'];
-            $question['type']=$qinfo['info']['type'];
-            //===================================================================
-            $answer=$qa[1];
-
-            $help=$qinfo['info']['help'];   // $qa[2];
-
-            $answer_id = $idlist[$i];
-            //$answer_id = $_SESSION['fieldarray'][$i][1];
-            $i++;
-            $question_template = file_get_contents($thistpl.'/question.pstpl');
-            if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
-            {
-                // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
-                $question_template = str_replace( '{QUESTION_ESSENTIALS}' , '' , $question_template );
-                $question_template = str_replace( '{QUESTION_CLASS}' , '' , $question_template );
-                echo '
-                <!-- NEW QUESTION -->
-                <div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
-                ';
-                echo templatereplace($question_template,NULL,false,$qa[4]);
-                echo '
-                </div>
-                ';
-            }
-            else
-            {
-                // TMSW - eventually refactor so that only substitutes the QUESTION_** fields - doesn't need full power of template replace
-                // TMSW - also, want to return a string, and call templatereplace once on that result string once all done.
-                echo templatereplace($question_template,NULL,false,$qa[4]);
-            };
-        }
-        if ($surveyMode == 'group') {
-            echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
-        }
-        if ($surveyMode == 'question') {
-            echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
-        }
-        echo "\n\n<!-- END THE GROUP -->\n";
-        echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
-        echo "\n\n</div>\n";
+            // TMSW - eventually refactor so that only substitutes the QUESTION_** fields - doesn't need full power of template replace
+            // TMSW - also, want to return a string, and call templatereplace once on that result string once all done.
+            echo templatereplace($question_template,NULL,false,$qa[4]);
+        };
+    }
+    if ($surveyMode == 'group') {
+        echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+    }
+    if ($surveyMode == 'question') {
+        echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
+    }
+    echo "\n\n<!-- END THE GROUP -->\n";
+    echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
+    echo "\n\n</div>\n";
 
 }
 
