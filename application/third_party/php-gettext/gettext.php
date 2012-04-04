@@ -100,7 +100,6 @@ class gettext_reader {
    */
   function gettext_reader($Reader, $enable_cache = true) {
     // If there isn't a StreamReader, turn on short circuit mode.
-    
     if (! $Reader || isset($Reader->error) ) {
       $this->short_circuit = true;
       return;
@@ -143,7 +142,7 @@ class gettext_reader {
       is_array($this->table_originals) &&
       is_array($this->table_translations))
       return;
-    
+
     /* get original and translations tables */
     if (!is_array($this->table_originals)) {
       $this->STREAM->seekto($this->originals);
@@ -155,7 +154,6 @@ class gettext_reader {
     }
 
     if ($this->enable_cache) {
-        
       $this->cache_translations = array ();
       /* read all strings in the cache */
       for ($i = 0; $i < $this->total; $i++) {
@@ -164,7 +162,6 @@ class gettext_reader {
         $this->STREAM->seekto($this->table_translations[$i * 2 + 2]);
         $translation = $this->STREAM->read($this->table_translations[$i * 2 + 1]);
         $this->cache_translations[$original] = $translation;
-        
       }
     }
   }
@@ -254,12 +251,10 @@ class gettext_reader {
   function translate($string) {
     if ($this->short_circuit)
       return $string;
-
     $this->load_tables();
 
     if ($this->enable_cache) {
       // Caching enabled, get translated string from cache
-      
       if (array_key_exists($string, $this->cache_translations))
         return $this->cache_translations[$string];
       else
@@ -414,12 +409,23 @@ class gettext_reader {
 
   function pgettext($context, $msgid) {
     $key = $context . chr(4) . $msgid;
-    return $this->translate($key);
+    $ret = $this->translate($key);
+    if (strpos($ret, "\004") !== FALSE) {
+      return $msgid;
+    } else {
+      return $ret;
+    }
   }
 
   function npgettext($context, $singular, $plural, $number) {
-    $singular = $context . chr(4) . $singular;
-    return $this->ngettext($singular, $plural, $number);
+    $key = $context . chr(4) . $singular;
+    $ret = $this->ngettext($key, $plural, $number);
+    if (strpos($ret, "\004") !== FALSE) {
+      return $singular;
+    } else {
+      return $ret;
+    }
+
   }
 }
 
