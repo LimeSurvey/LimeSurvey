@@ -4263,7 +4263,6 @@
                     case 'F':
                     case 'J':
                     case 'H':
-                    case ':':
                     case ';':
                     case '1':
                         // In general, if any relevant questions aren't answered, then it violates the mandatory rule
@@ -4272,6 +4271,44 @@
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
                         $mandatoryTip .= $LEM->gT('Please complete all parts').'.';
+                        break;
+                    case ':':
+                        $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                        if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1)
+                        {
+                            // Need to check whether there is at least one checked box per row
+                            foreach ($LEM->subQrelInfo[$qid] as $sq)
+                            {
+                                if ($_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']])
+                                {
+                                    $rowCount=0;
+                                    $numUnanswered=0;
+                                    foreach ($sgqas as $s)
+                                    {
+                                        if (strpos($s, $sq['rowdivid']) !== false)
+                                        {
+                                            ++$rowCount;
+                                            if (array_search($s,$unansweredSQs) !== false) {
+                                                ++$numUnanswered;
+                                            }
+                                        }
+                                    }
+                                    if ($rowCount > 0 && $rowCount == $numUnanswered)
+                                    {
+                                        $qmandViolation = true;
+                                    }
+                                }
+                            }
+                            $mandatoryTip .= $LEM->gT('Please check at least one box per row').'.';
+                        }
+                        else
+                        {
+                            if (count($unansweredSQs) > 0)
+                            {
+                                $qmandViolation = true; // TODO - what about 'other'?
+                            }
+                            $mandatoryTip .= $LEM->gT('Please complete all parts').'.';
+                        }
                         break;
                     case 'R':
                         if (count($unansweredSQs) > 0)

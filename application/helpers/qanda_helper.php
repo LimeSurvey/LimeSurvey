@@ -6024,7 +6024,7 @@ function do_array_multiflexi($ia)
                     }
                     else
                     {
-                        $myvalue = '0';
+                        $myvalue = '';
                         $setmyvalue = '';
                     }
                     $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
