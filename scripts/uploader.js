@@ -296,6 +296,6 @@ function deletefile(fieldname, count) {
     }
     filename=$("#"+fieldname+"_filename_"+count).val();
     name=$("#"+fieldname+"_name_"+count).val();
-    xmlhttp.open('GET','delete.php?sid='+surveyid+'&fieldname='+fieldname+'&filename='+filename+'&name='+encodeURI(name), true);
+    xmlhttp.open('GET',uploadurl+'/delete/1/fieldname/'+fieldname+'/filename/'+filename+'/name/'+encodeURI(name), true);
     xmlhttp.send();
 }

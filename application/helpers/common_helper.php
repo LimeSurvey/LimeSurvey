@@ -7016,7 +7016,7 @@ function getLabelSets($languages = null)
 function getHeader($meta = false)
 {
     global $embedded,$surveyid ;
-    // Not needed ? Yii::app()->loadHelper('surveytranslator');
+    Yii::app()->loadHelper('surveytranslator');
 
     // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
     if (Yii::app()->session['s_lang'] )

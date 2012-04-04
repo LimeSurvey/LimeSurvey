@@ -37,6 +37,49 @@ class UploaderController extends AdminController {
 		    readfile($sFileDir.$sFileName);
 		    exit();
 		}
+		elseif (isset($param['delete'])) {
+		    $sFieldname = $param['fieldname'];
+		    $sFilename = sanitize_filename($param['filename']);
+		    $sOriginalFileName=sanitize_filename($param['name']);
+		    if (substr($sFilename,0,6)=='futmp_')
+		    {
+		        $sFileDir = $tempdir.'/uploads/';
+		    }
+		    elseif(substr($sFilename,0,3)=='fu_'){
+		        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
+		    }
+		    else die('Invalid filename');
+		    
+			if(isset($_SESSION[$sFieldname])) {
+			    $sJSON = $_SESSION[$sFieldname];
+			    $aFiles = json_decode(stripslashes($sJSON),true);
+			
+			    if(substr($sFilename,0,3)=='fu_'){
+			        $iFileIndex=0;
+			        $found=false;
+			        foreach ($aFiles as $aFile)
+			        {
+			           if ($aFile['filename']==$sFilename)
+			           {
+			            $found=true;
+			            break;
+			           }
+			           $iFileIndex++;
+			        }
+			        if ($found==true) unset($aFiles[$iFileIndex]);
+			       $_SESSION[$sFieldname] = str_replace('{','{ ',json_encode($aFiles));
+			    }
+			}
+			$clang = Yii::app()->lang;
+			var_dump($sFileDir.$sFilename);
+		    if (@unlink($sFileDir.$sFilename))
+		    {
+		       echo sprintf($clang->gT('File %s deleted'), $sOriginalFileName);
+		    }
+		    else
+		        echo $clang->gT('Oops, There was an error deleting the file');
+		    exit();
+		}
 
 		if (!isset($surveyid))
 		{
@@ -68,7 +111,7 @@ class UploaderController extends AdminController {
 
 		    $pathinfo = pathinfo($_FILES['uploadfile']['name']);
 		    $ext = $pathinfo['extension'];
-            $randfilename = 'futmp_'.randomChars(15).'.'.$pathinfo['extension'];
+            $randfilename = 'futmp_'.randomChars(15).'_'.$pathinfo['extension'];
             $randfileloc = $sTempUploadDir . $randfilename;
 
 		    // check to see that this file type is allowed
