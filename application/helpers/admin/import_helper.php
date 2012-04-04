@@ -806,7 +806,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     if (!in_array($sBaseLanguage,$importlanguages))
     {
         $results['fatalerror'] = $clang->gT("The languages of the imported group file must at least include the base language of this survey.");
-        return;
+        return $results;
     }
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
     /*
