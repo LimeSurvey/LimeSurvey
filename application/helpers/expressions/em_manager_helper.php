@@ -2331,18 +2331,24 @@
                 . "','sgqa':'" . $sgqa
                 . "','qid':" . $questionNum
                 . ",'gid':" . $groupNum
-                . ",'mandatory':'" . $mandatory
-                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
-                . "','type':'" . $type
-                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
-                . "','readWrite':'" . $readWrite
-                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
+//                . ",'mandatory':'" . $mandatory
+//                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
+                . ",'type':'" . $type
+//                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
+//                . "','readWrite':'" . $readWrite
+//                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
                 . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
-                . ",'qseq':" . $questionSeq
-                .$ansList."}";
+//                . ",'qseq':" . $questionSeq
+                .$ansList;
+
+                if ($type == 'M' || $type == 'P')
+                {
+                    $this->varNameAttr[$jsVarName] .= ",'question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES) . "'";
+                }
+                $this->varNameAttr[$jsVarName] .= "}";
             }
 
             $this->q2subqInfo = $q2subqInfo;

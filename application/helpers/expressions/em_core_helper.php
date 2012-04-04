@@ -552,7 +552,14 @@ class ExpressionManager {
                     if ($this->RDP_isValidVariable($token[0]))
                     {
                         $this->varsUsed[] = $token[0];  // add this variable to list of those used in this equation
-                        $relStatus = $this->GetVarAttribute($token[0],'relevanceStatus',1);
+                        if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$token[0]))
+                        {
+                            $relStatus=1;   // static, so always relevant
+                        }
+                        else
+                        {
+                            $relStatus = $this->GetVarAttribute($token[0],'relevanceStatus',1);
+                        }
                         if ($relStatus==1)
                         {
                             $result = array($this->GetVarAttribute($token[0],NULL,''),$token[1],'NUMBER');
@@ -1076,6 +1083,10 @@ class ExpressionManager {
         $jsNames = array();
         foreach ($names as $name)
         {
+            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
+            {
+                continue;
+            }
             $val = $this->GetVarAttribute($name,'jsName','');
             if ($val != '') {
                 $jsNames[] = $val;
@@ -1107,6 +1118,10 @@ class ExpressionManager {
         {
             foreach ($names as $name)
             {
+                if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
+                {
+                    continue;
+                }
                 $val = $this->GetVarAttribute($name,'jsName','');
                 $gseq = $this->GetVarAttribute($name,'gseq','');
                 if ($val != '' && $gseq == $this->groupSeq) {
@@ -1118,6 +1133,10 @@ class ExpressionManager {
         {
             foreach ($names as $name)
             {
+                if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
+                {
+                    continue;
+                }
                 $val = $this->GetVarAttribute($name,'jsName','');
                 $qseq = $this->GetVarAttribute($name,'qseq','');
                 if ($val != '' && $qseq == $this->questionSeq) {
@@ -1144,6 +1163,10 @@ class ExpressionManager {
         $jsNames = array();
         foreach ($names as $name)
         {
+            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
+            {
+                continue;
+            }
             $val = $this->GetVarAttribute($name,'jsName','');
             if ($val != '') {
                 $jsNames[] = $val;
