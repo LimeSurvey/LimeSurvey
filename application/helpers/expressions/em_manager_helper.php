@@ -6204,7 +6204,12 @@ EOD;
             if (is_null($attr))
             {
                 // then use the requested attribute, if any
-                $attr = (count($args)==2) ? $args[1] : 'code';
+                $_attr = 'code';
+                if (preg_match("/INSERTANS:/",$args[0]))
+                {
+                    $_attr = 'shown';
+                }
+                $attr = (count($args)==2) ? $args[1] : $_attr;
             }
             switch ($attr)
             {
