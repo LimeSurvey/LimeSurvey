@@ -922,7 +922,12 @@ function do_boilerplate($ia)
 
 function do_equation($ia)
 {
-    $answer='<input type="hidden" name="'.$ia[1].'" id="java'.$ia[1].'" value=""/>';
+    $answer='<input type="hidden" name="'.$ia[1].'" id="java'.$ia[1].'" value="';
+    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+    {
+        $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
+    }
+    $answer .= '".>';
     $inputnames[]=$ia[1];
     $mandatory=null;
 
