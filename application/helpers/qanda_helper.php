@@ -72,7 +72,7 @@ function setNoAnswerMode($thissurvey)
 function retrieveAnswers($ia)
 {
     //globalise required config variables
-    global $thissurvey, $gl; //These are set by index.php
+    global $thissurvey; //These are set by index.php
 
     //$clang = Yii::app()->lang;
     $clang = Yii::app()->lang;
@@ -416,7 +416,7 @@ function retrieveAnswers($ia)
     $qtitle = $question_text;
     // =====================================================
 
-    $qanda=array($qtitle, $answer, 'help', $display, $name, $ia[2], $gl[0], $ia[1] );
+    $qanda=array($qtitle, $answer, 'help', $display, $name, $ia[2], $ia[5], $ia[1] );
     //New Return
     return array($qanda, $inputnames);
 }

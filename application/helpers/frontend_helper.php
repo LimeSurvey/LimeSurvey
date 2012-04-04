@@ -1938,6 +1938,7 @@
                     unset($qfieldmap['lastpage']);
                     unset($qfieldmap['lastpage']);
                     unset($qfieldmap['token']);
+                    unset($qfieldmap['startlanguage']);
                     foreach ($qfieldmap as $tkey=>$tval)
                     {
                         // Assign the swapped question (Might be more than one field)
@@ -1958,8 +1959,48 @@
             }
             reset($randomGroups);
         }
-        $fieldmap=$copyFieldMap;
+        // reset the sequencing counts
+        $gseq=-1;
+        $_gid=-1;
+        $qseq=-1;
+        $_qid=-1;
+        $copyFieldMap2 = array();
+        foreach ($copyFieldMap as $key=>$val)
+        {
+            if (isset($val['random_gid']))
+            {
+                if ($val['gid'] != '' && $val['random_gid'] != '' && $val['random_gid'] != $_gid)
+                {
+                    $_gid = $val['random_gid'];
+                    ++$gseq;
+                }
+            }
+            else
+            {
+                if ($val['gid'] != '' && $val['gid'] != $_gid)
+                {
+                    $_gid = $val['gid'];
+                    ++$gseq;
+                }
+            }
 
+            if ($val['qid'] != '' && $val['qid'] != $_qid)
+            {
+                $_qid = $val['qid'];
+                ++$qseq;
+            }
+            if ($val['gid'] != '' && $val['qid'] != '')
+            {
+                $val['groupSeq'] = $gseq;
+                $val['questionSeq'] = $qseq;
+            }
+            $copyFieldMap2[$key] = $val;
+        }
+        unset($copyFieldMap);
+        $fieldmap=$copyFieldMap2;
+
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
     }
 
     // TMSW Conditions->Relevance:  don't need hasconditions, or usedinconditions
@@ -2739,7 +2780,7 @@ function display_first_page() {
     doHeader();
 
     LimeExpressionManager::StartProcessingPage();
-    LimeExpressionManager::StartProcessingGroup(0, false, $surveyid);
+    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
 
     $redata = compact(array_keys(get_defined_vars()));
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2757]');

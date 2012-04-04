@@ -847,16 +847,16 @@ if ($previewgrp)
 {
     // force the group to be visible, even if irrelevant - will not always work
     print <<<END
-    $('#relevanceG' + LEMgid).val(1);
+    $('#relevanceG' + LEMgseq).val(1);
     $(document).ready(function() {
-        $('#group-' + LEMgid).show();
+        $('#group-' + LEMgseq).show();
     });
     $(document).change(function() {
-        $('#group-' + LEMgid).show();
+        $('#group-' + LEMgseq).show();
     });
     $(document).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
-                    $('#group-' + LEMgid).show();
+                    $('#group-' + LEMgseq).show();
                     return true;
                 }
                 return true;
@@ -889,9 +889,11 @@ END;
             echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
         }
 
+        $_gseq = -1;
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
             $gid = $gl[0];
+            ++$_gseq;
             $groupname = $gl[1];
             $groupdescription = $gl[2];
 
@@ -903,8 +905,8 @@ END;
             $redata = compact(array_keys(get_defined_vars()));
 
             echo "\n\n<!-- START THE GROUP -->\n";
-            echo "\n\n<div id='group-$gid'";
-            $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($gid);
+            echo "\n\n<div id='group-$_gseq'";
+            $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
             if  ($gnoshow && !$previewgrp)
             {
                 echo " style='display: none;'";
@@ -923,6 +925,10 @@ END;
 
             foreach ($qanda as $qa) // one entry per QID
             {
+                if ($gid != $qa[6]) {
+                    continue;
+                }
+
                 $qid = $qa[4];
                 $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
                 $lastgrouparray = explode("X", $qa[7]);
@@ -1045,10 +1051,11 @@ END;
                             // show the group label
                             ++$gseq;
                             $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
-                            $grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($stepInfo['gid']);
+                            $grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($gseq);
                             if ($grel)
                             {
-                                echo '<h3>' . flattenText($g[1]) . "</h3>";
+                                $gtitle = LimeExpressionManager::ProcessString($g[1]);
+                                echo '<h3>' . flattenText($gtitle) . "</h3>";
                             }
                             $lastGseq = $stepInfo['gseq'];
                         }
@@ -1068,7 +1075,16 @@ END;
                         $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
                     }
 
-                    $sText = (($surveyMode == 'group') ? flattenText($g[1]) : flattenText($q[3]));
+                    if ($surveyMode == 'group')
+                    {
+                        $indexlabel = LimeExpressionManager::ProcessString($g[1]);
+                    }
+                    else
+                    {
+                        $indexlabel = LimeExpressionManager::ProcessString($q[3]);
+                    }
+
+                    $sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
                     $bGAnsw = !$stepInfo['anyUnanswered'];
 
                     ++$v;

@@ -205,8 +205,7 @@ class Survey_Common_Action extends CAction
             if (!empty($aData['surveyid']))
             {
 
-                LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl);  // so can click on syntax highlighting to edit questions
-                LimeExpressionManager::StartProcessingGroup(!empty($aData['gid']) ? $aData['gid'] : null, false, $aData['surveyid']);  // loads list of replacement values available for this group
+                LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl,true);  // so can click on syntax highlighting to edit questions
 
                 $this->_surveybar($aData['surveyid'], !empty($aData['gid']) ? $aData['gid'] : null);
 

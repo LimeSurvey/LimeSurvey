@@ -36,7 +36,6 @@
         private $groupRelevanceInfo;
         private $sid;
         private $sessid;    // session name
-        private $groupNum;
         private $debugLevel=0;  // sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
         private $knownVars; // collection of variable attributes, indexed by SGQA code
         private $qcode2sgqa;  // maps qcode varname to SGQA code
@@ -58,7 +57,7 @@
         private $questionId2groupSeq;   // map question  # to the group it is within, using an incremental count of group order
         private $groupSeqInfo;  // array of info about each Group, indexed by GroupSeq
 
-        private $gid2relevanceStatus;   // tracks which groups have at least one relevant, non-hidden question
+        private $gseq2relevanceStatus;   // tracks which groups have at least one relevant, non-hidden question
         private $qid2validationEqn;     // maps question # to the validation equation for that question.
 
         private $questionSeq2relevance; // keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
@@ -419,10 +418,10 @@
                 if (!is_null($onlyThisQseq) && $onlyThisQseq != $qinfo['qseq']) {
                     continue;
                 }
-                else if (!$this->allOnOnePage && $this->groupNum != $qinfo['gid']) {
-                        continue; // only need subq relevance for current page.
-                    }
-                    $questionNum = $qinfo['qid'];
+                else if (!$this->allOnOnePage && $this->currentGroupSeq != $qinfo['gseq']) {
+                    continue; // only need subq relevance for current page.
+                }
+                $questionNum = $qinfo['qid'];
                 $type = $qinfo['type'];
                 $hasSubqs = (isset($qinfo['subqs']) && count($qinfo['subqs'] > 0));
                 $qattr = isset($this->qattr[$questionNum]) ? $this->qattr[$questionNum] : array();
@@ -1766,7 +1765,6 @@
         /**
         * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
         * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
-        * TODO:  It should be possible to call this once per survey, and just update the values that change across page (e.g. jsVarName, relevanceStatus)
         *
         * @param <type> $surveyid
         * @param <type> $forceRefresh
@@ -1782,9 +1780,9 @@
                 $forceRefresh=true;
             }
             else if (!$forceRefresh && isset($this->knownVars)) {
-                    return false;   // means that those variables have been cached and no changes needed
-                }
-                $now = microtime(true);
+                return false;   // means that those variables have been cached and no changes needed
+            }
+            $now = microtime(true);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
@@ -1813,7 +1811,7 @@
             $this->groupId2groupSeq = array();
             $this->qid2validationEqn = array();
             $this->groupSeqInfo = array();
-            $this->gid2relevanceStatus = array();
+            $this->gseq2relevanceStatus = array();
 
             // Since building array of allowable answers, need to know preset values for certain question types
             $presets = array();
@@ -2204,7 +2202,7 @@
                         $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
                         'qseq' => $questionSeq,
-                        'gid' => $groupNum,
+                        'gseq' => $groupSeq,
                         'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
                         'varName' => $varName,
                         'type' => $type,
@@ -2428,7 +2426,7 @@
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);
-            $this->numGroups = count($this->groupId2groupSeq);
+            $this->numGroups = count($this->groupSeqInfo);
 
             return true;
         }
@@ -2453,8 +2451,8 @@
             }
             $qid = $var['qid'];
             $qrel = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
-            $gid = $var['gid'];
-            $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
+            $gseq = $var['gseq'];
+            $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
             return ($grel && $qrel && $sqrel);
         }
 
@@ -2467,22 +2465,20 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $qrel = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
-            $groupSeq = (isset($LEM->questionId2groupSeq[$qid]) ? $LEM->questionId2groupSeq[$qid] : -1);
-            $gid = (isset($LEM->gseq2info[$groupSeq]['gid']) ? $LEM->gseq2info[$groupSeq]['gid'] : -1);
-            $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
+            $gseq = (isset($LEM->questionId2groupSeq[$qid]) ? $LEM->questionId2groupSeq[$qid] : -1);
+            $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
             return ($grel && $qrel);
         }
 
         /**
-        * Return whether group $gid is relevant
-        * @param <type> $gid
+        * Return whether group $gseq is relevant
+        * @param <type> $gseq
         * @return boolean
         */
-        static function GroupIsIrrelevantOrHidden($gid)
+        static function GroupIsIrrelevantOrHidden($gseq)
         {
             $LEM =& LimeExpressionManager::singleton();
-            $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
-            $gseq = (isset($LEM->groupId2groupSeq[$gid]) ? $LEM->groupId2groupSeq[$gid] : -1);
+            $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
             $gshow = (isset($LEM->indexGseq[$gseq]['show']) ? $LEM->indexGseq[$gseq]['show'] : true);   // default to true?
             return !($grel && $gshow);
         }
@@ -2503,26 +2499,25 @@
                     continue;
                 }
                 $qid = $rel['qid'];
-                $gid = $rel['gid'];
-                $groupSeq = $rel['gseq'];
+                $gseq = $rel['gseq'];
                 if ($this->allOnOnePage) {
                     ;   // process relevance for all questions
                 }
-                else if ($groupSeq != $this->currentGroupSeq) {
-                        continue;
-                    }
-                    $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
-                $qid,
-                $gid,
-                $rel['jsResultVar'],
-                $rel['type'],
-                $rel['hidden']
-                );
+                else if ($gseq != $this->currentGroupSeq) {
+                    continue;
+                }
+                $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
+                    $qid,
+                    $gseq,
+                    $rel['jsResultVar'],
+                    $rel['type'],
+                    $rel['hidden']
+                    );
                 $_SESSION[$this->sessid]['relevanceStatus'][$qid] = $result;
 
-                if (!isset($grelComputed[$gid])) {
-                    $this->_ProcessGroupRelevance($gid);
-                    $grelComputed[$gid]=true;
+                if (!isset($grelComputed[$gseq])) {
+                    $this->_ProcessGroupRelevance($gseq);
+                    $grelComputed[$gseq]=true;
                 }
             }
             //        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
@@ -2605,7 +2600,7 @@
         * @param <type> $hidden - whether question should always be hidden
         * @return <type>
         */
-        private function _ProcessRelevance($eqn,$questionNum=NULL,$groupNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
+        private function _ProcessRelevance($eqn,$questionNum=NULL,$gseq=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
         {
             // These will be called in the order that questions are supposed to be asked
             // TODO - cache results and generated JavaScript equations?
@@ -2613,7 +2608,7 @@
             {
                 $this->groupRelevanceInfo[] = array(
                 'qid' => $questionNum,
-                'gid' => $groupNum,
+                'gseq' => $gseq,
                 'eqn' => $eqn,
                 'result' => true,
                 'numJsVars' => 0,
@@ -2643,7 +2638,7 @@
                 $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
                 $this->groupRelevanceInfo[] = array(
                 'qid' => $questionNum,
-                'gid' => $groupNum,
+                'gseq' => $gseq,
                 'eqn' => $eqn,
                 'result' => $result,
                 'numJsVars' => count($jsVars),
@@ -2714,10 +2709,9 @@
             return $result;
         }
 
-        private function _ProcessGroupRelevance($gid)
+        private function _ProcessGroupRelevance($groupSeq)
         {
             // These will be called in the order that questions are supposed to be asked
-            $groupSeq = (isset($this->groupId2groupSeq[$gid]) ? $this->groupId2groupSeq[$gid] : -1);
             if ($groupSeq == -1) {
                 return; // invalid group, so ignore
             }
@@ -2726,7 +2720,6 @@
             if (is_null($eqn) || trim($eqn=='') || trim($eqn)=='1')
             {
                 $this->gRelInfo[$groupSeq] = array(
-                'gid' => $gid,
                 'gseq' => $groupSeq,
                 'eqn' => '',
                 'result' => 1,
@@ -2735,7 +2728,7 @@
                 'relevanceVars' => '',
                 'prettyprint'=> '',
                 );
-                $_SESSION[$this->sessid]['relevanceStatus']['G' . $gid] = 1;
+                $_SESSION[$this->sessid]['relevanceStatus']['G' . $groupSeq] = 1;
                 return;
             }
             $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
@@ -2748,17 +2741,16 @@
             $prettyPrint = $this->em->GetPrettyPrintString();
 
             $this->gRelInfo[$groupSeq] = array(
-            'gid' => $gid,
-            'gseq' => $groupSeq,
-            'eqn' => $stringToParse,
-            'result' => $result,
-            'numJsVars' => count($jsVars),
-            'relevancejs' => $relevanceJS,
-            'relevanceVars' => $relevanceVars,
-            'prettyprint'=> $prettyPrint,
-            'hasErrors' => $hasErrors,
-            );
-            $_SESSION[$this->sessid]['relevanceStatus']['G' . $gid] = $result;
+                'gseq' => $groupSeq,
+                'eqn' => $stringToParse,
+                'result' => $result,
+                'numJsVars' => count($jsVars),
+                'relevancejs' => $relevanceJS,
+                'relevanceVars' => $relevanceVars,
+                'prettyprint'=> $prettyPrint,
+                'hasErrors' => $hasErrors,
+                );
+            $_SESSION[$this->sessid]['relevanceStatus']['G' . $groupSeq] = $result;
         }
 
         /**
@@ -2774,8 +2766,9 @@
         /**
         * Should be first function called on each page - sets/clears internally needed variables
         * @param <type> $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
+        * @param <boolean> $initializeVars - if true, initializes the replacement variables to enable syntax highlighting on admin pages         *
         */
-        static function StartProcessingPage($allOnOnePage=false)
+        static function StartProcessingPage($allOnOnePage=false,$initializeVars=false)
         {
             //        $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
@@ -2788,6 +2781,18 @@
             //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
             $LEM->initialized=true;
+
+            if ($initializeVars)
+            {
+                $LEM->em->StartProcessingGroup(
+                    isset($_SESSION['LEMsid']) ? $_SESSION['LEMsid'] : NULL,
+                    '',
+                    true,
+                    $LEM->surveyMode
+                );
+                $LEM->setVariableAndTokenMappingsForExpressionManager($_SESSION['LEMsid']);
+            }
+
         }
 
         /**
@@ -2952,7 +2957,6 @@
                         $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                         $LEM->currentQID=$qInfo['qid'];
                         $LEM->currentGroupSeq=$qInfo['gseq'];
-                        $LEM->groupNum=$qInfo['gid'];
                         if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                             $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                         }
@@ -3171,7 +3175,6 @@
                         $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                         $LEM->currentQID=$qInfo['qid'];
                         $LEM->currentGroupSeq=$qInfo['gseq'];
-                        $LEM->groupNum=$qInfo['gid'];
                         if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                             $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                         }
@@ -3633,7 +3636,6 @@
                         $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                         $LEM->currentQID=$qInfo['qid'];
                         $LEM->currentGroupSeq=$qInfo['gseq'];
-                        $LEM->groupNum=$qInfo['gid'];
                         if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                             $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                         }
@@ -3651,32 +3653,33 @@
                             // then skip this question
                             continue;
                         }
-                        else if (!$grel)
-                            {
-                                continue;
-                            }
-                            else if (!($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq) {
-                                    // if there is a violation while moving forward, need to stop and ask that set of questions
-                                    // if there are no violations, can skip this group as long as changed values are saved.
-                                    continue;
-                                }
-                                else
-                                {
-                                    // display new question
-                                    $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
-                                    $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                                    $LEM->lastMoveResult = array(
-                                    'finished'=>false,
-                                    'message'=>$message,
-                                    'qseq'=>$LEM->currentQuestionSeq,
-                                    'gseq'=>$LEM->currentGroupSeq,
-                                    'seq'=>$LEM->currentQuestionSeq,
-                                    'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                                    'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                                    'unansweredSQs'=>$result['unansweredSQs'],
-                                    'invalidSQs'=>$result['invalidSQs'],
-                                    );
-                                    return $LEM->lastMoveResult;
+                        else if (!$preview && !$grel)
+                        {
+                            continue;
+                        }
+                        else if (!$preview && !($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq)
+                        {
+                            // if there is a violation while moving forward, need to stop and ask that set of questions
+                            // if there are no violations, can skip this group as long as changed values are saved.
+                            continue;
+                        }
+                        else
+                        {
+                            // display new question
+                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                            $LEM->lastMoveResult = array(
+                            'finished'=>false,
+                            'message'=>$message,
+                            'qseq'=>$LEM->currentQuestionSeq,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentQuestionSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
+                            );
+                            return $LEM->lastMoveResult;
                         }
                     }
                     break;
@@ -3774,8 +3777,9 @@
                 return NULL;
             }
             $qInfo = $LEM->questionSeq2relevance[$groupSeqInfo['qstart']];
+            $gseq = $qInfo['gseq'];
             $gid = $qInfo['gid'];
-            $LEM->StartProcessingGroup($gid, $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
+            $LEM->StartProcessingGroup($gseq, $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
 
             $grel=false;  // assume irrelevant until find a relevant question
             $ghidden=true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
@@ -3885,7 +3889,6 @@
             // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
             //////////////////////////////////////////////////////////////////////////
             $currentGroupInfo = array(
-            'gid' => $gid,
             'gseq' => $groupSeq,
             'message' => $debug_message,
             'relevant' => $grel,
@@ -3905,7 +3908,7 @@
             $LEM->indexGseq[$groupSeq] = array(
             'gtext' => $LEM->gseq2info[$groupSeq]['description'],
             'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
-            'gid' => $LEM->gseq2info[$groupSeq]['gid'],
+            'gid' => $LEM->gseq2info[$groupSeq]['gid'], // TODO how used if random?
             'anyUnanswered' => $ganyUnanswered,
             'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
             'valid' => $gvalid,
@@ -3913,7 +3916,7 @@
             'show' => (($grel && !$ghidden) ? true : false),
             );
 
-            $LEM->gid2relevanceStatus[$gid] = $grel;
+            $LEM->gseq2relevanceStatus[$gseq] = $grel;
 
             return $currentGroupInfo;
         }
@@ -3938,6 +3941,7 @@
             $qrel=true;   // assume relevant unless discover otherwise
             $prettyPrintRelEqn='';    //  assume no relevance eqn by default
             $qid=$qInfo['qid'];
+
             $gid=$qInfo['gid'];
             $qhidden = $qInfo['hidden'];
             $debug_qmessage='';
@@ -4712,35 +4716,30 @@
 
         /**
         * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
-        * @param <type> $groupNum - the group number
+        * @param <type> $gseq - the group sequence
         * @param <type> $anonymized - whether anonymized
         * @param <type> $surveyid - the surveyId
         * @param <type> $forceRefresh - whether to force refresh of setting variable and token mappings (should be done rarely)
         */
-        static function StartProcessingGroup($groupNum=NULL,$anonymized=false,$surveyid=NULL,$forceRefresh=false)
+        static function StartProcessingGroup($gseq=NULL,$anonymized=false,$surveyid=NULL,$forceRefresh=false)
         {
             $LEM =& LimeExpressionManager::singleton();
             $LEM->em->StartProcessingGroup(
-            isset($surveyid) ? $surveyid : NULL,
-            '',
-            isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false,
-            $LEM->surveyMode
-            );
+                isset($surveyid) ? $surveyid : NULL,
+                '',
+                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false,
+                $LEM->surveyMode
+                );
             $LEM->groupRelevanceInfo = array();
-            if (!is_null($groupNum))
+            if (!is_null($gseq))
             {
-                $LEM->groupNum = $groupNum;
+                $LEM->currentGroupSeq = $gseq;
 
                 if (!is_null($surveyid))
                 {
                     $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage);
-                    if (isset ($LEM->groupId2groupSeq[$groupNum]))
-                    {
-                        $groupSeq = $LEM->groupId2groupSeq[$groupNum];
-                        $LEM->currentGroupSeq = $groupSeq;
-                        if ($groupSeq > $LEM->maxGroupSeq) {
-                            $LEM->maxGroupSeq = $groupSeq;
-                        }
+                    if ($gseq > $LEM->maxGroupSeq) {
+                        $LEM->maxGroupSeq = $gseq;
                     }
 
                     if (!$LEM->allOnOnePage || ($LEM->allOnOnePage && !$LEM->processedRelevance)) {
@@ -4836,7 +4835,7 @@
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
             if ($LEM->surveyMode == 'group')
             {
-                $jsParts[] = "var LEMgid=" . $LEM->groupNum . ";\n";    // current group num so can compute isOnCurrentPage
+                $jsParts[] = "var LEMgseq=" . $LEM->currentGroupSeq . ";\n";
             }
             if ($LEM->surveyMode == 'question' && isset($LEM->currentQID))
             {
@@ -4857,8 +4856,8 @@
 
             $pageRelevanceInfo=array();
             $qidList = array(); // list of questions used in relevance and tailoring
-            $gidList = array(); // list of groups on this page
-            $gid_qidList = array(); // list of qids using relevance/tailoring within each group
+            $gseqList = array(); // list of gseqs on this page
+            $gseq_qidList = array(); // list of qids using relevance/tailoring within each group
 
             if (is_array($LEM->pageRelevanceInfo))
             {
@@ -4879,10 +4878,10 @@
             {
                 foreach ($pageRelevanceInfo as $arg)
                 {
-                    if (!$LEM->allOnOnePage && $LEM->groupNum != $arg['gid']) {
+                    if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
                         continue;
                     }
-                    $gidList[$arg['gid']] = $arg['gid'];    // so keep them in order
+                    $gseqList[$arg['gseq']] = $arg['gseq'];    // so keep them in order
                     // First check if there is any tailoring  and construct the tailoring JavaScript if needed
                     $tailorParts = array();
                     $relParts = array();    // relevance equation
@@ -4920,11 +4919,11 @@
                     }
 
                     $qidList[$arg['qid']] = $arg['qid'];
-                    if (!isset($gid_qidList[$arg['gid']]))
+                    if (!isset($gseq_qidList[$arg['gseq']]))
                     {
-                        $gid_qidList[$arg['gid']] = array();
+                        $gseq_qidList[$arg['gseq']] = array();
                     }
-                    $gid_qidList[$arg['gid']][$arg['qid']] = '0';   // means the qid is within this gid, but may not have a relevance equation
+                    $gseq_qidList[$arg['gseq']][$arg['qid']] = '0';   // means the qid is within this gseq, but may not have a relevance equation
 
                     // Now check whether any sub-question validation needs to be performed
                     $subqValidations = array();
@@ -5201,13 +5200,13 @@
                     $relJsVarsUsed = array_merge($relJsVarsUsed,$valJsVarsUsed);
                     $relJsVarsUsed = array_unique($relJsVarsUsed);
                     $qrelQIDs = array();
-                    $qrelGIDs = array();    // so that any group-level change is also propagated
+                    $qrelgseqs = array();    // so that any group-level change is also propagated
                     foreach ($relJsVarsUsed as $jsVar)
                     {
                         if ($jsVar != '' && isset($LEM->knownVars[substr($jsVar,4)]['qid']))
                         {
                             $knownVar = $LEM->knownVars[substr($jsVar,4)];
-                            if ($LEM->surveyMode=='group' && $knownVar['gid'] != $LEM->groupNum) {
+                            if ($LEM->surveyMode=='group' && $knownVar['gseq'] != $LEM->currentGroupSeq) {
                                 continue;   // don't make dependent upon off-page variables
                             }
                             $_qid = $knownVar['qid'];
@@ -5215,16 +5214,16 @@
                                 continue;   // don't make dependent upon itself
                             }
                             $qrelQIDs[] = 'relChange' . $_qid;
-                            $qrelGIDs[] = 'relChangeG' . $knownVar['gid'];
+                            $qrelgseqs[] = 'relChangeG' . $knownVar['gseq'];
                         }
                     }
-                    $qrelGIDs[] = 'relChangeG' . $arg['gid'];   // so if current group changes visibility, re-tailor it.
+                    $qrelgseqs[] = 'relChangeG' . $arg['gseq'];   // so if current group changes visibility, re-tailor it.
                     $qrelQIDs = array_unique($qrelQIDs);
-                    $qrelGIDs = array_unique($qrelGIDs);
+                    $qrelgseqs = array_unique($qrelgseqs);
                     if ($LEM->surveyMode=='question')
                     {
                         $qrelQIDs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
-                        $qrelGIDs=array();
+                        $qrelgseqs=array();
                     }
 
                     $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
@@ -5233,29 +5232,29 @@
                     {
                         $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
                     }
-                    if (count($qrelGIDs) > 0)
+                    if (count($qrelgseqs) > 0)
                     {
-                        $qrelJS .= "  if(" . implode(' || ', $qrelGIDs) . "){\n    ;\n  }\n  else";
+                        $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     }
                     $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n    return;\n }\n";
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
                     $relEqns[] = $qrelJS;
 
-                    $gid_qidList[$arg['gid']][$arg['qid']] = '1';   // means has an explicit LEMrel() function
+                    $gseq_qidList[$arg['gseq']][$arg['qid']] = '1';   // means has an explicit LEMrel() function
                 }
             }
 
-            foreach(array_keys($gid_qidList) as $_gid)
+            foreach(array_keys($gseq_qidList) as $_gseq)
             {
-                $relChangeVars[] = "  relChangeG" . $_gid . "=false;\n";
+                $relChangeVars[] = "  relChangeG" . $_gseq . "=false;\n";
             }
             $jsParts[] = implode("",$relChangeVars);
 
             // Process relevance for each group; and if group is relevant, process each contained question in order
             foreach ($LEM->gRelInfo as $gr)
             {
-                if (!array_key_exists($gr['gid'],$gidList)) {
+                if (!array_key_exists($gr['gseq'],$gseqList)) {
                     continue;
                 }
                 if ($gr['relevancejs'] != '')
@@ -5263,11 +5262,11 @@
                     //                $jsParts[] = "\n// Process Relevance for Group " . $gr['gid'];
                     //                $jsParts[] = ": { " . $gr['eqn'] . " }";
                     $jsParts[] = "\nif (" . $gr['relevancejs'] . ") {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gid'] . "').show();\n";
-                    $jsParts[] = "  relChangeG" . $gr['gid'] . "=true;\n";
-                    $jsParts[] = "  $('#relevanceG" . $gr['gid'] . "').val(1);\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').show();\n";
+                    $jsParts[] = "  relChangeG" . $gr['gseq'] . "=true;\n";
+                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
 
-                    $qids = $gid_qidList[$gr['gid']];
+                    $qids = $gseq_qidList[$gr['gseq']];
                     foreach ($qids as $_qid=>$_val)
                     {
                         if ($_val==1)
@@ -5277,14 +5276,14 @@
                     }
 
                     $jsParts[] = "}\nelse {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gid'] . "').hide();\n";
-                    $jsParts[] = "  if ($('#relevanceG" . $gr['gid'] . "').val()=='1') { relChangeG" . $gr['gid'] . "=true; }\n";
-                    $jsParts[] = "  $('#relevanceG" . $gr['gid'] . "').val(0);\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').hide();\n";
+                    $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
+                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
                     $jsParts[] = "}\n";
                 }
                 else
                 {
-                    $qids = $gid_qidList[$gr['gid']];
+                    $qids = $gseq_qidList[$gr['gseq']];
                     foreach ($qids as $_qid=>$_val)
                     {
                         if ($_val == 1)
@@ -5370,7 +5369,7 @@
                     {
                         if ($jsVar == $knownVar['jsName'])
                         {
-                            if ($LEM->surveyMode=='group' && $knownVar['gid'] == $LEM->groupNum) {
+                            if ($LEM->surveyMode=='group' && $knownVar['gseq'] == $LEM->currentGroupSeq) {
                                 if ($knownVar['hidden'] && $knownVar['type'] != '*') {
                                     ;   // need to  declare a hidden variable for non-equation hidden variables so can do dynamic lookup.
                                 }
@@ -5411,15 +5410,15 @@
                 $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
             }
 
-            foreach ($gidList as $gid)
+            foreach ($gseqList as $gseq)
             {
-                if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
-                    $relStatus = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] : 1);
+                if (isset($_SESSION['relevanceStatus'])) {
+                    $relStatus = (isset($_SESSION['relevanceStatus']['G' . $gseq]) ? $_SESSION['relevanceStatus']['G' . $gseq] : 1);
                 }
                 else {
                     $relStatus = 1;
                 }
-                $jsParts[] = "<input type='hidden' id='relevanceG" . $gid . "' name='relevanceG" . $gid .  "' value='" . $relStatus . "'/>\n";
+                $jsParts[] = "<input type='hidden' id='relevanceG" . $gseq . "' name='relevanceG" . $gseq .  "' value='" . $relStatus . "'/>\n";
             }
             foreach ($rowdividList as $key=>$val)
             {
@@ -6040,11 +6039,11 @@ EOD;
             {
                 $relevant=false;
                 $qid = $qinfo['info']['qid'];
-                $gid = $qinfo['info']['gid'];
+                $gseq = $qinfo['info']['gseq'];
                 $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
-                $grelevant = (isset($_POST['relevanceG' . $gid]) ? ($_POST['relevanceG' . $gid] == 1) : false);
+                $grelevant = (isset($_POST['relevanceG' . $gseq]) ? ($_POST['relevanceG' . $gseq] == 1) : false);
                 $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;
-                $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gid] = $grelevant;
+                $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] = $grelevant;
                 foreach (explode('|',$qinfo['sgqa']) as $sq)
                 {
                     $sqrelevant=true;
@@ -6385,16 +6384,16 @@ EOD;
                         return $shown;
                     }
                 case 'relevanceStatus':
-                    $gid = (isset($var['gid'])) ? $var['gid'] : -1;
+                    $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;
                     $qid = (isset($var['qid'])) ? $var['qid'] : -1;
                     $rowdivid = (isset($var['rowdivid']) && $var['rowdivid']!='') ? $var['rowdivid'] : -1;
-                    if ($qid == -1 || $gid == -1) {
+                    if ($qid == -1 || $gseq == -1) {
                         return 1;
                     }
                     if (isset($args[1]) && $args[1]=='NAOK') {
                         return 1;
                     }
-                    $grel = (isset($_SESSION[$this->sessid]['relevanceStatus']['G'.$gid]) ? $_SESSION[$this->sessid]['relevanceStatus']['G'.$gid] : 1);   // true by default
+                    $grel = (isset($_SESSION[$this->sessid]['relevanceStatus']['G'.$gseq]) ? $_SESSION[$this->sessid]['relevanceStatus']['G'.$gseq] : 1);   // true by default
                     $qrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$qid] : 0);
                     $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                     return ($grel && $qrel && $sqrel);
@@ -6500,17 +6499,17 @@ EOD;
                 $moveResult = LimeExpressionManager::JumpTo($qseq+1,true,false,true);
             }
             else if (!is_null($gid))
-                {
-                    $surveyMode='group';
-                    LimeExpressionManager::StartSurvey($sid, 'group', $surveyOptions, false,$LEMdebugLevel);
-                    $gseq = LimeExpressionManager::GetGroupSeq($gid);
-                    $moveResult = LimeExpressionManager::JumpTo($gseq+1,true,false,true);
-                }
-                else
-                {
-                    $surveyMode='survey';
-                    LimeExpressionManager::StartSurvey($sid, 'survey', $surveyOptions, false,$LEMdebugLevel);
-                    $moveResult = LimeExpressionManager::NavigateForwards();
+            {
+                $surveyMode='group';
+                LimeExpressionManager::StartSurvey($sid, 'group', $surveyOptions, false,$LEMdebugLevel);
+                $gseq = LimeExpressionManager::GetGroupSeq($gid);
+                $moveResult = LimeExpressionManager::JumpTo($gseq+1,true,false,true);
+            }
+            else
+            {
+                $surveyMode='survey';
+                LimeExpressionManager::StartSurvey($sid, 'survey', $surveyOptions, false,$LEMdebugLevel);
+                $moveResult = LimeExpressionManager::NavigateForwards();
             }
 
             $qtypes=getQuestionTypeList('','array');
@@ -6711,7 +6710,7 @@ EOD;
                 else
                 {
                     $varNamesUsed[$rootVarName] = array(
-                    'gid'=>$gid,
+                    'gseq'=>$gseq,
                     'qid'=>$qid
                     );
                 }
@@ -6724,8 +6723,9 @@ EOD;
                 {
                     $varNameError = array (
                     'message' => $varNameErrorMsg,
-                    'gid' => $varNamesUsed[$rootVarName]['gid'],
-                    'qid' => $varNamesUsed[$rootVarName]['qid']
+                    'gseq' => $varNamesUsed[$rootVarName]['gseq'],
+                    'qid' => $varNamesUsed[$rootVarName]['qid'],
+                    'gid' => $gid,
                     );
                     if (!$LEM->sgqaNaming)
                     {

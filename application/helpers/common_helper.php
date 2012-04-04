@@ -2188,7 +2188,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $clang = new Limesurvey_lang($sLanguage); ;
 
     //checks to see if fieldmap has already been built for this page.
-    if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh) {
+    if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
@@ -2733,7 +2733,58 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     if (isset($fieldmap)) {
-        Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
+        if ($questionid == false)
+        {
+            // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
+            if (isset(Yii::app()->session['fieldmap-' . $surveyid . '-randMaster']))
+            {
+                $masterFieldmap = Yii::app()->session['fieldmap-' . $surveyid . '-randMaster'];
+                $mfieldmap = Yii::app()->session[$masterFieldmap];
+
+                foreach ($mfieldmap as $fieldname => $mf)
+                {
+                    if (isset($fieldmap[$fieldname]))
+                    {
+                        $f = $fieldmap[$fieldname];
+                        if (isset($f['question']))
+                        {
+                            $mf['question'] = $f['question'];
+                        }
+                        if (isset($f['subquestion']))
+                        {
+                            $mf['subquestion'] = $f['subquestion'];
+                        }
+                        if (isset($f['subquestion1']))
+                        {
+                            $mf['subquestion1'] = $f['subquestion1'];
+                        }
+                        if (isset($f['subquestion2']))
+                        {
+                            $mf['subquestion2'] = $f['subquestion2'];
+                        }
+                        if (isset($f['group_name']))
+                        {
+                            $mf['group_name'] = $f['group_name'];
+                        }
+                        if (isset($f['answerList']))
+                        {
+                            $mf['answerList'] = $f['answerList'];
+                        }
+                        if (isset($f['defaultvalue']))
+                        {
+                            $mf['defaultvalue'] = $f['defaultvalue'];
+                        }
+                        if (isset($f['help']))
+                        {
+                            $mf['help'] = $f['help'];
+                        }
+                    }
+                    $mfieldmap[$fieldname] = $mf;
+                }
+                $fieldmap = $mfieldmap;
+            }
+            Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
+        }
         return $fieldmap;
     }
 }

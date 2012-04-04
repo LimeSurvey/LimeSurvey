@@ -723,8 +723,7 @@ class question extends Survey_Common_Action
             else
             {
                 // This is needed to properly color-code content if it contains replacements
-                LimeExpressionManager::StartProcessingPage(false,Yii::app()->baseUrl);  // so can click on syntax highlighting to edit questions
-                LimeExpressionManager::StartProcessingGroup($gid, ($surveyinfo['anonymized']!="N"), $surveyinfo['sid']);  // loads list of replacement values available for this group
+                LimeExpressionManager::StartProcessingPage(false,Yii::app()->baseUrl,true);  // so can click on syntax highlighting to edit questions
             }
 
             $qtypelist = getQuestionTypeList('', 'array');

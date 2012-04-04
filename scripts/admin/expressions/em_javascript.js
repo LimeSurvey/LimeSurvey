@@ -226,7 +226,7 @@ function LEMval(alias)
         }
     }
     var whichJsName;    // correct name whether on- or off-page
-    if (LEMmode=='survey' || (LEMmode=='group' && attr.gid == LEMgid) || (LEMmode=='question' && attr.qid == LEMqid)) {
+    if (LEMmode=='survey' || (LEMmode=='group' && attr.gseq == LEMgseq) || (LEMmode=='question' && attr.qid == LEMqid)) {
         whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
     }
     else {
