@@ -495,47 +495,47 @@ function db_upgrade($oldversion) {
         [email] varchar(80) NOT NULL,
         [language] varchar(2) NOT NULL,
         [blacklisted] varchar(1) NOT NULL,
-        [owner_uid] int(20) NOT NULL,
+        [owner_uid] integer NOT NULL,
         PRIMARY KEY  ([participant_id])
         );");echo $modifyoutput; flush();@ob_flush();
 
         modifyDatabase("","CREATE TABLE [prefix_participant_attribute] (
         [participant_id] varchar(50) NOT NULL,
-        [attribute_id] int(11) NOT NULL,
+        [attribute_id] integer  NOT NULL,
         [value] varchar(50) NOT NULL,
         PRIMARY KEY  ([participant_id],[attribute_id])
         );");echo $modifyoutput; flush();@ob_flush();
 
         modifyDatabase("","CREATE TABLE [prefix_participant_attribute_names] (
-        [attribute_id] int(11) NOT NULL AUTO_INCREMENT,
+        [attribute_id] integer  NOT NULL IDENTITY (1,1),
         [attribute_type] varchar(4) NOT NULL,
         [visible] char(5) NOT NULL,
         PRIMARY KEY  ([attribute_id],[attribute_type])
         );");echo $modifyoutput; flush();@ob_flush();
 
         modifyDatabase("","CREATE TABLE [prefix_participant_attribute_names_lang] (
-        [attribute_id] int(11) NOT NULL,
+        [attribute_id] integer  NOT NULL,
         [attribute_name] varchar(30) NOT NULL,
         [lang] varchar(20) NOT NULL,
         PRIMARY KEY  ([attribute_id],[lang])
         );");echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","CREATE TABLE [prefix_participant_attribute_values] (
-        [attribute_id] int(11) NOT NULL,
-        [value_id] int(11) NOT NULL AUTO_INCREMENT,
+        [attribute_id] integer  NOT NULL,
+        [value_id] integer  NOT NULL IDENTITY (1,1),
         [value] varchar(20) NOT NULL,
         PRIMARY KEY  ([value_id])
         );");echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","CREATE TABLE [prefix_participant_shares] (
         [participant_id] varchar(50) NOT NULL,
-        [share_uid] int(11) NOT NULL,
+        [share_uid] integer  NOT NULL,
         [date_added] datetime,
         [can_edit] text NOT NULL,
         PRIMARY KEY  ([participant_id],[share_uid])
         );");echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","CREATE TABLE [prefix_survey_links] (
         [participant_id] varchar(50) NOT NULL,
-        [token_id] int(11) NOT NULL,
-        [survey_id] int(11) NOT NULL,
+        [token_id] integer  NOT NULL,
+        [survey_id] integer  NOT NULL,
         [date_created] datetime,
         PRIMARY KEY  ([participant_id],[token_id],[survey_id])
         );");echo $modifyoutput; flush();@ob_flush();
@@ -550,11 +550,11 @@ function db_upgrade($oldversion) {
     if ($oldversion < 149)
     {
         modifyDatabase("","CREATE TABLE [prefix_survey_url_parameters] (
-        [id] int(9) NOT NULL AUTO_INCREMENT,
-        [sid] int(10) NOT NULL,
+        [id] integer NOT NULL IDENTITY (1,1),
+        [sid] integer NOT NULL,
         [parameter] varchar(50) NOT NULL,
-        [targetqid] int(10) NULL,
-        [targetsqid] int(10) NULL,
+        [targetqid] integer NULL,
+        [targetsqid] integer NULL,
         PRIMARY KEY ([id])
         );"); echo $modifyoutput; flush();@ob_flush();
         modify_database("","update `prefix_settings_global` set `stg_value`='149' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
@@ -597,7 +597,7 @@ function db_upgrade($oldversion) {
         modifyDatabase("", "DROP TABLE [prefix_sessions];"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "CREATE TABLE [prefix_sessions](
             [id] char(32) NOT NULL,
-            [expire] int(11) DEFAULT NULL,
+            [expire] integer DEFAULT NULL,
             [data] varchar(max),
             PRIMARY KEY ([id])
         );"); echo $modifyoutput; flush();@ob_flush();
