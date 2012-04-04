@@ -6933,7 +6933,11 @@ function getSubQuestions($sid, $qid, $sLanguage) {
     global $dbprefix, $connect, $clang;
     static $subquestions;
 
-    if (!isset($subquestions[$sid])) {
+    if (!isset($subquestions[$sid]))
+    {
+        $subquestions[$sid]=array();
+    }
+    if (!isset($subquestions[$sid][$sLanguage])) {
 	    $sid = sanitize_int($sid);
 	    $query = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
 	            ." WHERE sq.parent_qid=q.qid AND q.sid=$sid"
@@ -6946,9 +6950,9 @@ function getSubQuestions($sid, $qid, $sLanguage) {
 	    {
 	        $resultset[$row['parent_qid']][] = $row;
 	    }
-	    $subquestions[$sid] = $resultset;
+	    $subquestions[$sid][$sLanguage] = $resultset;
     }
-    if (isset($subquestions[$sid][$qid])) return $subquestions[$sid][$qid];
+    if (isset($subquestions[$sid][$sLanguage][$qid])) return $subquestions[$sid][$sLanguage][$qid];
     return array();
 }
 
