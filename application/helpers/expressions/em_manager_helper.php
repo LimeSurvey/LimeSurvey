@@ -26,7 +26,6 @@
     define('LEM_DEBUG_TIMING',1);
     define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
     define('LEM_DEBUG_VALIDATION_DETAIL',4);
-    define('LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB',8);
     define('LEM_PRETTY_PRINT_ALL_SYNTAX',32);
 
     define('LEM_DEFAULT_PRECISION',12);
@@ -75,7 +74,6 @@
         private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
         private $q2subqInfo;    // mapping of questions to information about their subquestions.
         private $qattr; // array of attributes for each question
-        private $syntaxErrors=array();
         private $subQrelInfo=array();   // list of needed sub-question relevance (e.g. array_filter)
         private $gRelInfo=array();  // array of Group-level relevance status
 
@@ -2568,21 +2566,6 @@
             $stringToParse = $string;   // decode called later htmlspecialchars_decode($string,ENT_QUOTES);
             $qnum = is_null($questionNum) ? 0 : $questionNum;
             $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq, $staticReplacement);
-            $hasErrors = $LEM->em->HasErrors();
-            if ($hasErrors && (($LEM->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
-                $error = array(
-                'errortime' => date('Y-m-d H:i:s'),
-                'sid' => $LEM->sid,
-                'type' => 'Text',
-                'gid' => $LEM->groupNum,
-                'gseq' => $groupSeq,
-                'qid' => $qnum,
-                'qseq' => $questionSeq,
-                'eqn' => $stringToParse,
-                'prettyprint' => $LEM->em->GetLastPrettyPrintExpression(),
-                );
-                $LEM->syntaxErrors[] = $error;
-            }
 
             if ($timeit) {
                 $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
@@ -2648,23 +2631,6 @@
             $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq, $questionSeq);
             $hasErrors = $this->em->HasErrors();
 
-            if ($hasErrors && (($this->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
-                $prettyPrint = $this->em->GetPrettyPrintString();
-                $error = array(
-                'errortime' => date('Y-m-d H:i:s'),
-                'sid' => $this->sid,
-                'type' => 'Relevance',
-                'gid' => $groupNum,
-                'gseq' => $groupSeq,
-                'qid' => $questionNum,
-                'qseq' => $questionSeq,
-                'eqn' => $stringToParse,
-                'prettyprint' => $prettyPrint,
-                'hasErrors' => $hasErrors,
-                );
-                $this->syntaxErrors[] = $error;
-            }
-
             if (!is_null($questionNum) && !is_null($jsResultVar)) { // so if missing either, don't generate JavaScript for this - means off-page relevance.
                 $jsVars = $this->em->GetJSVarsUsed();
                 $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
@@ -2716,42 +2682,28 @@
                 $prettyPrint= $this->em->GetPrettyPrintString();
             }
 
-            if ($hasErrors && (($this->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
-                $error = array(
-                'errortime' => date('Y-m-d H:i:s'),
-                'sid' => $this->sid,
-                'type' => $type,
-                'gid' => $this->groupNum,
-                'gseq' => $groupSeq,
-                'qid' => $questionNum,
-                'qseq' => $questionSeq,
-                'eqn' => $stringToParse,
-                'prettyprint' => $prettyPrint,
-                );
-                $this->syntaxErrors[] = $error;
-            }
-            else if (!is_null($questionNum)) {
-                    $jsVars = $this->em->GetJSVarsUsed();
-                    $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
-                    $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
+            if (!is_null($questionNum)) {
+                $jsVars = $this->em->GetJSVarsUsed();
+                $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
+                $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
 
-                    if (!isset($this->subQrelInfo[$questionNum])) {
-                        $this->subQrelInfo[$questionNum] = array();
-                    }
-                    $this->subQrelInfo[$questionNum][$rowdivid] = array(
-                'qid' => $questionNum,
-                'eqn' => $eqn,
-                'prettyPrintEqn' => $prettyPrint,
-                'result' => $result,
-                'numJsVars' => count($jsVars),
-                'relevancejs' => $relevanceJS,
-                'relevanceVars' => $relevanceVars,
-                'rowdivid' => $rowdivid,
-                'type'=>$type,
-                'qtype'=>$qtype,
-                'sgqa'=>$sgqa,
-                'hasErrors'=>$hasErrors,
-                );
+                if (!isset($this->subQrelInfo[$questionNum])) {
+                    $this->subQrelInfo[$questionNum] = array();
+                }
+                $this->subQrelInfo[$questionNum][$rowdivid] = array(
+                    'qid' => $questionNum,
+                    'eqn' => $eqn,
+                    'prettyPrintEqn' => $prettyPrint,
+                    'result' => $result,
+                    'numJsVars' => count($jsVars),
+                    'relevancejs' => $relevanceJS,
+                    'relevanceVars' => $relevanceVars,
+                    'rowdivid' => $rowdivid,
+                    'type'=>$type,
+                    'qtype'=>$qtype,
+                    'sgqa'=>$sgqa,
+                    'hasErrors'=>$hasErrors,
+                    );
             }
             return $result;
         }
@@ -2784,40 +2736,23 @@
             $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq);
             $hasErrors = $this->em->HasErrors();
 
-            if ($hasErrors && (($this->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
-                $prettyPrint = $this->em->GetPrettyPrintString();
-                $error = array(
-                'errortime' => date('Y-m-d H:i:s'),
-                'sid' => $this->sid,
-                'type' => '',
-                'gid' => $this->groupNum,
-                'gseq' => $groupSeq,
-                'qid' => -1,
-                'qseq' => -1,
-                'eqn' => $stringToParse,
-                'prettyprint' => $prettyPrint,
-                );
-                $this->syntaxErrors[] = $error;
-            }
-            else {
-                $jsVars = $this->em->GetJSVarsUsed();
-                $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
-                $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
-                $prettyPrint = $this->em->GetPrettyPrintString();
+            $jsVars = $this->em->GetJSVarsUsed();
+            $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
+            $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
+            $prettyPrint = $this->em->GetPrettyPrintString();
 
-                $this->gRelInfo[$groupSeq] = array(
-                'gid' => $gid,
-                'gseq' => $groupSeq,
-                'eqn' => $stringToParse,
-                'result' => $result,
-                'numJsVars' => count($jsVars),
-                'relevancejs' => $relevanceJS,
-                'relevanceVars' => $relevanceVars,
-                'prettyprint'=> $prettyPrint,
-                'hasErrors' => $hasErrors,
-                );
-                $_SESSION[$this->sessid]['relevanceStatus']['G' . $gid] = $result;
-            }
+            $this->gRelInfo[$groupSeq] = array(
+            'gid' => $gid,
+            'gseq' => $groupSeq,
+            'eqn' => $stringToParse,
+            'result' => $result,
+            'numJsVars' => count($jsVars),
+            'relevancejs' => $relevanceJS,
+            'relevanceVars' => $relevanceVars,
+            'prettyprint'=> $prettyPrint,
+            'hasErrors' => $hasErrors,
+            );
+            $_SESSION[$this->sessid]['relevanceStatus']['G' . $gid] = $result;
         }
 
         /**
@@ -4833,26 +4768,9 @@
                 }
                 $LEM->debugTimingMsg .= "</table>\n";
             }
-            //        log_message('debug','Total time attributable to EM = ' . $totalTime);
-            //        log_message('debug',print_r($LEM->runtimeTimings,true));
 
             $LEM->runtimeTimings = array(); // reset them
 
-            //        if (count($LEM->syntaxErrors) > 0 && (($LEM->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB))
-            //        {
-            //            foreach ($LEM->syntaxErrors as $err)
-            //            {
-            //                if (!empty($err['prettyPrint']))
-            //                {
-            //                    $err['prettyprint'] = $err['prettyPrint'];
-            //                    unset($err['prettyPrint']);
-            //                }
-            //                $error = new Expression_errors;
-            //                foreach ($err as $k => $v)
-            //                    $error->$k = $v;
-            //                $result = $error->save();
-            //            }
-            //        }
             $LEM->initialized=false;    // so detect calls after done
             $LEM->ParseResultCache=array(); // don't need to persist it in session
             $_SESSION['LEMsingleton']=serialize($LEM);
@@ -5469,27 +5387,6 @@
             return implode('',$jsParts);
         }
 
-        /**
-        * Return array of most recent syntax errors for whatever scope was most recently processed
-        * @return <type>
-        */
-        static function GetSyntaxErrors()
-        {
-            $query = "SELECT * FROM {{expression_errors}}";
-            $data = dbExecuteAssoc($query);
-            return $data->readAll();
-        }
-
-        /**
-        * Truncate the expression_errors table to clear the history of syntax errors.
-        */
-        static function ResetSyntaxErrorLog()
-        {
-            // truncate the table
-            $query = "TRUNCATE TABLE {{expression_errors}}";
-            dbExecuteAssoc($query);
-        }
-
         static function setTempVars($vars)
         {
             $LEM =& LimeExpressionManager::singleton();
@@ -5612,7 +5509,6 @@ EOST;
             }
             print '</table>';
             LimeExpressionManager::FinishProcessingGroup();
-            $LEM->syntaxErrors=array(); // so doesn't try to write test errors to database
             LimeExpressionManager::FinishProcessingPage();
         }
 
