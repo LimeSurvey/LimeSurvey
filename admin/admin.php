@@ -188,6 +188,11 @@ if(isset($_SESSION['loginID']))
         if(bHasSurveyPermission($surveyid,'surveycontent','export'))    {include('export_structure_xml.php');}
         else { include('access_denied.php');}
     }
+    elseif ($action == 'exportstructureexcel')
+    {
+        if(bHasSurveyPermission($surveyid,'surveycontent','export'))    {include('export_structure_excel.php');}
+        else { include('access_denied.php');}
+    }
     elseif ($action == 'exportstructurecsvGroup')
     {
         if(bHasSurveyPermission($surveyid,'surveycontent','export'))    {include('dumpgroup.php');}
