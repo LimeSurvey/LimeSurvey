@@ -114,7 +114,7 @@ class ADODB_mssqlnative extends ADOConnection {
     var $metaColumnsSQL = # xtype==61 is datetime
         "select c.name,t.name,c.length,
 	    (case when c.xusertype=61 then 0 else c.xprec end),
-	    (case when c.xusertype=61 then 0 else c.xscale end) 
+	    (case when c.xusertype=61 then 0 else c.xscale end)
 	    from syscolumns c join systypes t on t.xusertype=c.xusertype join sysobjects o on o.id=c.id where o.name='%s'";
     var $hasTop = 'top';		// support mssql SELECT TOP 10 * FROM TABLE
     var $hasGenID = true;
@@ -177,7 +177,7 @@ class ADODB_mssqlnative extends ADOConnection {
     }
 
     function _affectedrows()
-    {   
+    {
         return @sqlsrv_rows_affected($this->_queryID);
     }
 
@@ -330,7 +330,7 @@ class ADODB_mssqlnative extends ADOConnection {
 
      See http://www.swynk.com/friends/achigrik/SQL70Locks.asp
      */
-	function RowLock($tables,$where,$col='1 as adodbignore') 
+	function RowLock($tables,$where,$col='1 as adodbignore')
     {
 		if ($col == '1 as adodbignore') $col = 'top 1 null as ignore';
         if (!$this->transCnt) $this->BeginTrans();
@@ -501,8 +501,8 @@ class ADODB_mssqlnative extends ADOConnection {
         $sql = "SELECT i.name AS ind_name, C.name AS col_name, USER_NAME(O.uid) AS Owner, c.colid, k.Keyno,
 			CASE WHEN I.indid BETWEEN 1 AND 254 AND (I.status & 2048 = 2048 OR I.Status = 16402 AND O.XType = 'V') THEN 1 ELSE 0 END AS IsPK,
 			CASE WHEN I.status & 2 = 2 THEN 1 ELSE 0 END AS IsUnique
-			FROM dbo.sysobjects o INNER JOIN dbo.sysindexes I ON o.id = i.id 
-			INNER JOIN dbo.sysindexkeys K ON I.id = K.id AND I.Indid = K.Indid 
+			FROM dbo.sysobjects o INNER JOIN dbo.sysindexes I ON o.id = i.id
+			INNER JOIN dbo.sysindexkeys K ON I.id = K.id AND I.Indid = K.Indid
 			INNER JOIN dbo.syscolumns c ON K.id = C.id AND K.colid = C.Colid
 			WHERE LEFT(i.name, 8) <> '_WA_Sys_' AND o.status >= 0 AND O.Name LIKE $table
 			ORDER BY O.name, I.Name, K.keyno";
@@ -602,7 +602,7 @@ class ADODB_mssqlnative extends ADOConnection {
         if ($schema) $schema = "and k.table_catalog like '$schema%'";
 
         $sql = "select distinct k.column_name,ordinal_position from information_schema.key_column_usage k,
-		information_schema.table_constraints tc 
+		information_schema.table_constraints tc
 		where tc.constraint_name = k.constraint_name and tc.constraint_type =
 		'PRIMARY KEY' and k.table_name = '$table' $schema order by ordinal_position ";
 
@@ -731,7 +731,7 @@ class ADORecordset_mssqlnative extends ADORecordSet {
             91 => 'date',
             93 => 'datetime'
             );
-        
+
         $fa = @sqlsrv_field_metadata($this->_queryID);
         if ($fieldOffset != -1) {
             $fa = $fa[$fieldOffset];
@@ -771,7 +771,7 @@ class ADORecordset_mssqlnative extends ADORecordSet {
         return $f;
     }
 
-	
+
     function _seek($row)
     {
         return false;//There is no support for cursors in the driver at this time.  All data is returned via forward-only streams.
@@ -837,7 +837,7 @@ class ADORecordset_mssqlnative extends ADORecordSet {
         if(is_array($this->fields)) {
             foreach($this->fields as $key=>$value) {
                 if (is_object($value) && method_exists($value, 'format')) {//is DateTime object
-                    $this->fields[$key] = $value->format("Y-m-d\TH:i:s\Z");
+                    $this->fields[$key] = $value->format("Y-m-d H:i:s");
                 }
             }
         }
