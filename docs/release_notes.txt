@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.00 alpha 3!
+Welcome to LimeSurvey v2.00 beta 1!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,62 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 2.0a3 to 2.0b1 (build 120406) Apr 5, 2012
++New feature: Added the blacklisting options panel from http://docs.limesurvey.org/img/wiki_up/Screen_shot_5.png. (Aaron Schmitz)
++New feature: Import and Export from a new Excel format with one row each per group, question, sub-question, and answer; and no dependence upon SGQA naming (Thomas White)
+-Fixed issue: Error 500 loading the template editor (Aaron Schmitz)
+-Fixed issue #5806: No label set for quick add // Save as label set don't work Implemented missing actions. (magiclko)
+-Fixed issue #5731: Randomization group name seems to block "Test this survey" (Thomas White)
+-Fixed issue #5877: all Lime replacement fields are broken. (Aaron Schmitz)
+-Fixed issue #5908: The system is unable to find the requested action "printanswers.php". Mostly fixed via http://git.io/5Zn_9g (magiclko)
+-Fixed issue #5920: Can't edit participant attribute value (magiclko)
+-Fixed issue #5942: unable to activate survey after some modification (Denis Chenu)
+-Fixed issue #5948: Mandatory directive for question is ignored for array (numbers) using checkbox layout (Thomas White)
+-Fixed issue #5971: Strange behavior of expression manager - static equation results not visible (Thomas White)
+-Fixed issue #5979: values prefilled via URL are not passed through to end URLFixed issue #05981: EM attributes that should be static generate <span> elements (Thomas White)
+-Fixed issue #5979: values prefilled via URL are not passed through to end URL (Thomas White)
+-Fixed issue #5982: Wrong replacement field properties (Thomas White)
+-Fixed issue #5984: Javascript error with upload question type for italian language (Denis Chenu)
+-Fixed issue #5858: Incorrect date format on detailed admin notification email and print answers (Carsten Schmitz)
+-Fixed issue #5903: Not obvious in installation that you need at least one PDO DB driver installer (Carsten Schmitz)
+-Fixed issue #5904: Database upgrade fails with errors on Postgres (Carsten Schmitz)
+-Fixed issue #5904: Database upgrade fails with errors on Postgres Fixed issue: Missing tables and fields on upgrade (Carsten Schmitz)
+-Fixed issue #5906: Import fails to convert INSERTANS for dual-scale questions (Carsten Schmitz)
+-Fixed issue #5911: Error when entering global settings and using PostGres (Carsten Schmitz)
+-Fixed issue #5912: Error when trying to create new survey and using PostGres (Carsten Schmitz)
+-Fixed issue #5914: Error when entering user administration (Carsten Schmitz)
+-Fixed issue #5917: Bold text not showing when using default template (Carsten Schmitz)
+-Fixed issue #5924: Wrong alignment of subquestion text and radiobuttons in Array questions with RTL languages(Carsten Schmitz)
+-Fixed issue #5927: Default template Yes/No questions & Male/Female alignment (Carsten Schmitz)
+-Fixed issue #5930: File upload question - file deletion does not work (dionet)
+-Fixed issue #5931: Bad HTML tbody tag for array question type Fixed issue : use repeatheadings for array (Denis Chenu)
+-Fixed issue #5932: Default answers to hidden questions are not saved to database (Carsten Schmitz)
+-Fixed issue #5933: Uploaded files with uppercase extensions show placeholder instead of image (Carsten Schmitz)
+-Fixed issue #5939: Error by creating a new question (Carsten Schmitz)
+-Fixed issue #5940: Database error when using Participant panel and PostgreSQL (Carsten Schmitz)
+-Fixed issue #5941: Quotas fail to terminate survey (Carsten Schmitz)
+-Fixed issue #5952: Error in statistics (Carsten Schmitz)
+-Fixed issue #5950: Remove the default global setting for the HTML editor. (Aaron Schmitz)
+-Fixed issue #5960: Startlanguage always saved as English (Carsten Schmitz)
+-Fixed issue #5962: View Response Details does not work correctly if responses are filtered (Carsten Schmitz)
+-Fixed issue #5967: Update link to previous version shown (Carsten Schmitz)
+-Fixed issue #5928: Unable to edit answer or subquestion (Carsten Schmitz)
+-Fixed issue #5969: Trying to import a question group without a matching language gives no proper error (Carsten Schmitz)
+-Fixed issue: Certain French characters garbled in statistics display and other areas (Carsten Schmitz)
+-Fixed issue: Conditions were not properly converted to EM expressions when magicquotes are enabled (Carsten Schmitz)
+-Fixed issue: copy tokens back to participants DB not working (fixed provided by Aniessh Sethh) (jcleeland)
+-Fixed issue: Error in update scripts for MSSQL server (Carsten Schmitz)
+-Fixed issue: javascript tidied up, langage moved out of javascript into view file (and translatable) (jcleeland)
+-Fixed issue: jquery-ui button for rtl langage (Denis Chenu)
+-Fixed issue: MSSQL error on importing survey (Carsten Schmitz)
+-Fixed issue: PHP warning when importing label set without labels (Carsten Schmitz)
+-Fixed issue: Print answers after survey completion not working (Carsten Schmitz)
+-Fixed issue: Problems with using the File Upload question type 
+-Fixed issue: unable to delete answers under some condition (Denis Chenu)
+-Fixed issue: Various errors when using Postgres database (Carsten Schmitz)
+-Fixed issue: Error loading the survey list for adding participants to a survey in the participants panel. (Aaron Schmitz)
+
 
 Changes from 2.0a2 to 2.0a3 (build 120315) Mar 14, 2012
 +New feature #5492: Changing global settings takes you away from survey design Now it "remembers" the referee url and redirect to that url after saving global settings! (magiclko)
