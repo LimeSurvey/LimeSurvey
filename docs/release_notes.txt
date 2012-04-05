@@ -79,6 +79,18 @@ Thank you to everyone who helped with this new release!
 
 
 
+Changes from 1.92+ (build 120330) to 1.92+ (build 120405) April 5, 2012
+-Fixed issue #5877: Resume later doesn't work with a survey allowing public registration (Carsten Schmitz)
+-Fixed issue #5971: Strange behavior of expression manager - static equation results not visible (Thomas White)
+-Fixed issue #5979: values prefilled via URL are not passed through to end URL Dev also syntax highlighted end URL  so can see if it contains typos (Thomas White)
+-Fixed issue #5981: EM attributes that should be static generate <span> elements (Thomas White)
+-Fixed issue #5982: Wrong replacement field properties (Thomas White)
+-Fixed issue #5984: Javascript error with upload question type for italian language Dev: add js option on clang (Denis Chenu)
+-Fixed issue #5960: Start language always saved as English (Carsten Schmitz)
+-Fixed issue #5969: Trying to import a question group without a matching language gives no proper error (Carsten Schmitz)
+-Fixed issue: When there are multiple languages, getSubQuestions() returns wrong values (often a mix of language-specific values) (Thomas White)
+
+
 Changes from 1.92+ (build 120325) to 1.92+ (build 120330) Mar 30, 2012
 -Fixed issue #5948: Mandatory directive for question is ignored for array (numbers) using checkbox layout (Thomas White)
 -Fixed issue #5952: Error in statistics (Carsten Schmitz)
