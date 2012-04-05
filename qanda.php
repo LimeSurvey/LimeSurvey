@@ -3064,8 +3064,8 @@ function do_file_upload($ia)
 
     $answer = "<script type='text/javascript'>
         var translt = {
-             title: '" . $clang->gT('Upload your files') . "',
-             returnTxt: '" . $clang->gT('Return to survey') . "'
+             title: '" . $clang->gT('Upload your files','js') . "',
+             returnTxt: '" . $clang->gT('Return to survey','js') . "',
             };
     </script>\n";
     /*if ($pos)
