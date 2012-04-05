@@ -4424,7 +4424,7 @@ function doFooter()
 
 // This function replaces field names in a text with the related values
 // (e.g. for email and template functions)
-function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true)
+function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true, $staticReplace=true)
 {
 
     if ($bReplaceInsertans)
@@ -4434,7 +4434,7 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true)
         {
             $replacements[substr($key,1,-1)] = $value;
         }
-        $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1);
+        $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1, false, false, $staticReplace);
     }
     else
     {
