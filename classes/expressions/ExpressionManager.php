@@ -155,6 +155,7 @@ class ExpressionManager {
 'exp' => array('exp', 'Math.exp', $this->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
 'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as radix separator, if needed'), 'string fixnum(number)', '', 1),            
 'floor' => array('floor', 'Math.floor', $this->gT('Round fractions down'), 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
+'get' => array('expr_mgr_get', 'getParameterByName', $this->gT('Get varname from the querystring'), 'string get(string varname[, string default])', 'http://us3.php.net/manual/en/reserved.variables.get.php', 1,2),
 'gmdate' => array('gmdate', 'gmdate', $this->gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.gmdate.php', 1,2),
 'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', $this->gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://www.php.net/manual/en/function.html-entity-decode.php', 1),
 'htmlentities' => array('htmlentities', 'htmlentities', $this->gT('Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlentities(string)', 'http://www.php.net/manual/en/function.htmlentities.php', 1),
@@ -2849,6 +2850,11 @@ NULL~NUMBEROFQUESTIONS/=5
 NULL~NUMBEROFQUESTIONS-=6
 NULL~'Tom'='tired'
 NULL~max()
+EMtest~get('action')
+unit~get('subaction')
+unknown~get('foo','unknown')
+1~is_null(get('bar'))
+0~is_null(get('foo','unknown'))
 EOD;
 
         $atests = explode("\n",$tests);
@@ -3204,6 +3210,16 @@ function exprmgr_fixnum($value)
         return $newval;
     }
     return $value;
+}
+
+/**
+ * Get a parameter from the URL query string.
+ * @param type $var
+ * @param type $default
+ * @return NULL if the parameter is not found
+ */
+function expr_mgr_get($var, $default=null) {
+    return isset($_GET[$var]) ? $_GET[$var] : $default;
 }
 
 ?>
