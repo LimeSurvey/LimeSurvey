@@ -78,7 +78,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
            $iFileIndex++;
         }
         if ($found==true) unset($aFiles[$iFileIndex]);
-       $_SESSION[$sFieldname] = str_replace('{','{ ',json_encode($aFiles));
+       $_SESSION[$sFieldname] = ls_json_encode($aFiles);
     }
 
     if (@unlink($sFileDir.$sFilename))

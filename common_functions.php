@@ -7240,5 +7240,16 @@ function fixSubquestions()
 
 }
 
+/**
+ * Need custom version of JSON encode to avoid having Expression Manager mangle it
+ * @param type $val
+ * @return type 
+ */
+function ls_json_encode($val)
+{
+    $ans = json_encode($val);
+    $ans = str_replace(array('{','}'),array('{ ',' }'), $ans);
+    return $ans;
+}
 
 // Closing PHP tag intentionally omitted - yes, it is okay

@@ -267,7 +267,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             }
 
                             $columns[] .= db_quote_id($fieldname);
-                            $values[] .= db_quoteall(json_encode($phparray), true);
+                            $values[] .= db_quoteall(ls_json_encode($phparray), true);
                         }
                         else
                         {
