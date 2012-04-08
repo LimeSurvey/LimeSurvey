@@ -189,7 +189,7 @@ if ($subaction == "id")
     //SHOW INDIVIDUAL RECORD
     $idquery = "SELECT * FROM {$surveytable} s";
     if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
-        $idquery .= "LEFT JOIN {$tokentable} t ON s.token = t.token ";
+        $idquery .= " LEFT JOIN {$tokentable} t ON s.token = t.token ";
     if (incompleteAnsFilterstate() == "inc")
         $idquery .= " WHERE (submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";
     elseif (incompleteAnsFilterstate() == "filter")
