@@ -246,7 +246,7 @@ elseif ($action == "ajaxowneredit"){
         while($rows = $result->FetchRow())
                 $aUsers['newowner'] = $rows['users_name'];
     }
-    $ajaxoutput = json_encode($aUsers) . "\n";
+    $ajaxoutput = ls_json_encode($aUsers) . "\n";
     
 }
 
@@ -260,6 +260,6 @@ elseif ($action == "ajaxgetusers"){
                 $aUsers[] = array($userline['uid'], $userline['user']);
     }
     
-    $ajaxoutput = json_encode($aUsers) . "\n";
+    $ajaxoutput = ls_json_encode($aUsers) . "\n";
 }
 

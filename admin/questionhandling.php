@@ -348,7 +348,7 @@ if ($action == "editquestion" || $action=="addquestion")
     $qCodeToInfo = 'qCodeToInfo = {';
     foreach ($qtypelist as $qtype=>$qdesc){
         $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-        $qCodeToInfo .= " '{$qtype}' : '".json_encode($qdesc)."', \n";
+        $qCodeToInfo .= " '{$qtype}' : '".ls_json_encode($qdesc)."', \n";
     }
     $qTypeOutput = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
@@ -924,7 +924,7 @@ if ($action == "ajaxlabelsetdetails")
         $labels=$connect->GetArray($query);
         $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
     }
-    echo json_encode($resultdata);
+    echo ls_json_encode($resultdata);
 }
 
 
@@ -941,7 +941,7 @@ if ($action == "ajaxlabelsetpicker")
         $language=null;
     }
     $resultdata=getlabelsets($language);
-    echo json_encode($resultdata);
+    echo ls_json_encode($resultdata);
 }
 
 

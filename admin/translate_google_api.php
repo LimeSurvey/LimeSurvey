@@ -61,4 +61,4 @@ try {
 
 }
 
-$ajaxoutput = json_encode($aOutput). "\n";
+$ajaxoutput = ls_json_encode($aOutput). "\n";

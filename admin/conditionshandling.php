@@ -1090,7 +1090,7 @@ if (isset($canswers))
 {
     foreach($canswers as $can)
     {
-        $an=json_encode(FlattenText($can[2]));
+        $an=ls_json_encode(FlattenText($can[2]));
         $conditionsoutput_main_content .= "Fieldnames[$jn]='$can[0]';\n"
         ."Codes[$jn]='$can[1]';\n"
         ."Answers[$jn]={$an};\n";
