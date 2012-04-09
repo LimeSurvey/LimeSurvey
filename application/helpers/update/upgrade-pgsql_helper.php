@@ -470,13 +470,11 @@ function upgrade_token_tables128()
 
 function fixLanguageConsistencyAllSurveys()
 {
-    global $modifyoutput;
-
     $surveyidquery = "SELECT sid, additional_languages FROM ".dbQuoteID('{{surveys}}');
-    $surveyidresult = Yii::app()->createCommand($surveyidquery)->queryAll();
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     foreach ( $surveyidresult as $sv )
     {
-        fixLanguageConsistency($sv['0'],$sv['1']);
+        fixLanguageConsistency($sv[0],$sv[1]);
     }
 }
 

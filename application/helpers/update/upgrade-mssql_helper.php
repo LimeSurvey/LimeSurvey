@@ -666,7 +666,7 @@ function upgrade_token_tables128()
 function fixLanguageConsistencyAllSurveys()
 {
     global $modifyoutput;
-    $surveyidquery = "SELECT sid,additional_languages FROM ".db_table_name('surveys');
+    $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
     $surveyidresult = db_execute_num($surveyidquery);
     while ( $sv = $surveyidresult->FetchRow() )
     {
