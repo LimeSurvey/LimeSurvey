@@ -285,10 +285,10 @@ function activateSurvey($surveyid, $simulate = false)
     {
         $savetimings="TRUE";
     }
-    
+
     //Get list of questions for the base language
     $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
-       
+
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
     {
@@ -489,7 +489,7 @@ function activateSurvey($surveyid, $simulate = false)
                {
 
                 $activateoutput .= "<div class='warningheader'>".
-                    $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the ".Yii::app()->getConfig('rootdir')."upload/surveys directory.") . "</div>";
+                    $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.") . "</div>";
                }
                else
                {

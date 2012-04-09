@@ -1478,7 +1478,7 @@ function lsrccsv_export($iSurveyID)
     // 6. Conditions
     // 7. Label Sets
     // 8. Labels
-    // 9. Question Attributes
+    // 9. Question attributes
     // 10. Assessments
     // 11. Quota
     // 12. Quota Members
@@ -1570,7 +1570,7 @@ function lsrccsv_export($iSurveyID)
     GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language";
     $ldump = BuildCSVFromQuery($lquery);
 
-    //9: Question Attributes
+    //9: Question attributes
     $query = "SELECT DISTINCT {{question_attributes}}.*
     FROM {{question_attributes}}, {{questions}}
     WHERE {{question_attributes}}.qid={{questions}}.qid
@@ -1912,7 +1912,7 @@ function tokensExport($iSurveyID)
     $tokenoutput .="\n";
 
     Yii::import('application.libraries.Date_Time_Converter', true);
-    
+
     $aExportedTokens = array();
 
     foreach($bresult->readAll() as $brow)
@@ -1949,7 +1949,7 @@ function tokensExport($iSurveyID)
         }
         $tokenoutput = substr($tokenoutput,0,-1); // remove last comma
         $tokenoutput .= "\n";
-        
+
         $aExportedTokens[] = $brow['tid'];
     }
     echo $tokenoutput;

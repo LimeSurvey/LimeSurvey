@@ -80,10 +80,10 @@
                         <?php } ?>
                     <?php if($onelanguage) { ?>
                         <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/$surveyid/");?>' >
-                            <img src='<?php echo $imageurl;?>/quality_assurance.png' alt='' width="30" height="30"/> <?php $clang->eT("Survey Logic File");?></a></li>
+                            <img src='<?php echo $imageurl;?>/quality_assurance.png' alt='' width="30" height="30"/> <?php $clang->eT("Survey logic file");?></a></li>
                         <?php } else { ?>
                         <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/$surveyid/");?>' >
-                            <img src='<?php echo $imageurl;?>/quality_assurance.png' alt='' width="30" height="30"/> <?php $clang->eT("Survey Logic File");?></a><ul>
+                            <img src='<?php echo $imageurl;?>/quality_assurance.png' alt='' width="30" height="30"/> <?php $clang->eT("Survey logic file");?></a><ul>
                                 <?php foreach ($languagelist as $tmp_lang) { ?>
                                     <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
                                         <img src='<?php echo $imageurl;?>/quality_assurance.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>

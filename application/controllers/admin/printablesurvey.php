@@ -1866,10 +1866,10 @@ class printablesurvey extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $output = "";
         if(!empty($qidattributes['min_answers'])) {
-            $output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least (%s) items"), $qidattributes['min_answers'])."</p>\n";
+            $output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least %s items."), $qidattributes['min_answers'])."</p>\n";
         }
         if(!empty($qidattributes['max_answers'])) {
-            $output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than (%s) items"),$qidattributes['max_answers'])."</p>\n";
+            $output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than %s items."),$qidattributes['max_answers'])."</p>\n";
         }
         return $output;
     }
@@ -1958,7 +1958,7 @@ class printablesurvey extends Survey_Common_Action
         {
             $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
             $output .= "\n<p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you selected in question *%s* ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
+                ".sprintf($clang->gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
             </p>\n";
         }
         if(!empty($qidattributes['array_filter_exclude']))
@@ -1966,7 +1966,7 @@ class printablesurvey extends Survey_Common_Action
             $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
 
             $output .= "\n    <p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you did not select in question *%s* ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
+                ".sprintf($clang->gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
             </p>\n";
         }
         return $output;

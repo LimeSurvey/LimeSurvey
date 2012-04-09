@@ -110,7 +110,7 @@ class Expressions extends Survey_Common_Action {
                 echo 'Test Evaluation of Strings Containing Expressions';
                 break;
             case 'survey_logic_file':
-                echo 'Survey Logic File';
+                echo 'Survey logic file';
                 break;
             case 'syntax_errors':
                 echo 'Show Log of Syntax Errors';

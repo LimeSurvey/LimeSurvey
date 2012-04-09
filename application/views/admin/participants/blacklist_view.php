@@ -2,7 +2,7 @@
 <div class='header ui-widget-header'>
     <strong>
         <?php
-        $clang->eT("Blacklist Settings");
+        $clang->eT("Blacklist settings");
         ?>
     </strong>
 </div>

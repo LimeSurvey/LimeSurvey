@@ -160,8 +160,8 @@ function retrieveAnswers($ia)
                 if (trim($aQuestionAttributes['min_answers'])!='')
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . sprintf($clang->ngT("Check at least %d item","Check at least %d items",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers'])."</span>";
-                    $question_text['help'] .=' '.sprintf($clang->ngT("Check at least %d item","Check at least %d items",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers']);
+                    . sprintf($clang->ngT("Check at least %d item.","Check at least %d items.",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers'])."</span>";
+                    $question_text['help'] .=' '.sprintf($clang->ngT("Check at least %d item.","Check at least %d items.",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers']);
                 }
             }
             break;
@@ -1670,7 +1670,7 @@ function do_list_radio($ia)
 
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","answer-item radio-item");
         if(substr($wrapper['item-start'],0,4) == "\t<li")
-        { 
+        {
             $startitem = "\t$htmltbody2\n";
         } else {
             $startitem = $wrapper['item-start'];
@@ -3570,7 +3570,7 @@ function do_multiplenumeric($ia)
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
-                    $answer_main .= $dispVal;            
+                    $answer_main .= $dispVal;
                 }
 
                 $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$numbersonly} {$maxlength} />\t{$suffix}\n</span>\n\t</li>\n";
@@ -5381,7 +5381,7 @@ function do_array_multitext($ia)
     $q_table_id = '';
     $q_table_id_HTML = '';
     $numbersonly = '';
-    
+
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -5742,7 +5742,7 @@ function do_array_multiflexi($ia)
     if (trim($aQuestionAttributes['multiflexible_min'])!='' && trim($aQuestionAttributes['multiflexible_max']) ==''){
         $minvalue=$aQuestionAttributes['multiflexible_min'];
         $extraclass .=" minvalue minvalue-".trim($aQuestionAttributes['multiflexible_max']);
-        $maxvalue=$aQuestionAttributes['multiflexible_min'] + 10; 
+        $maxvalue=$aQuestionAttributes['multiflexible_min'] + 10;
     }
     if (trim($aQuestionAttributes['multiflexible_min'])=='' && trim($aQuestionAttributes['multiflexible_max']) ==''){
         if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
@@ -5787,7 +5787,7 @@ function do_array_multiflexi($ia)
     }
 
     $inputboxlayout=false;
-    if ($aQuestionAttributes['input_boxes']!=0 && !$checkboxlayout) // checkboxlayout have the 
+    if ($aQuestionAttributes['input_boxes']!=0 && !$checkboxlayout) // checkboxlayout have the
     {
         $inputboxlayout=true;
         $answertypeclass .=" numberonly text";
@@ -5796,7 +5796,7 @@ function do_array_multiflexi($ia)
     {
         $answertypeclass .=" dropdown";
     }
-    
+
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -6004,7 +6004,7 @@ function do_array_multiflexi($ia)
                         . " value=\"";
                         if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) {
                             $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
-                            $answer .= $dispVal;                            
+                            $answer .= $dispVal;
                         }
                         $answer .= "\" />\n";
                     }

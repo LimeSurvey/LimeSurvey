@@ -49,7 +49,7 @@ else
     var okBtn = "<?php $clang->eT("OK") ?>";
     var noRowSelected = "<?php $clang->eT("You have no row selected") ?>";
     var searchBtn = "<?php $clang->eT("Search") ?>";
-    var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
+    var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.") ?>"; //PLEASE REVIEW
     var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/getSearch_json/surveyid/$surveyid/search"); ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
     var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>";

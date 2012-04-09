@@ -18,19 +18,19 @@
             var okBtn = "<?php $clang->eT("OK") ?>";
             var processed = "<?php $clang->eT("Summary") ?>";
             var summary = "<?php $clang->eT("Upload summary") ?>";
-            var notPairedErrorTxt = "<?php $clang->eT("You have to pair this field with an existing attribute") ?>";
-            var onlyOnePairedErrorTxt = "<?php $clang->eT("Only one CSV attribute is mapped with central attribute") ?>";
-            var cannotAcceptErrorTxt="<?php $clang->eT("This list cannot accept token attributes") ?>";
+            var notPairedErrorTxt = "<?php $clang->eT("You have to pair this field with an existing attribute.") ?>";
+            var onlyOnePairedErrorTxt = "<?php $clang->eT("Only one CSV attribute is mapped with central attribute.") ?>";
+            var cannotAcceptErrorTxt="<?php $clang->eT("This list cannot accept token attributes.") ?>";
             var seperator = "<?php echo $_POST['seperatorused']; ?>";
             var thefilepath = "<?php echo $fullfilepath ?>";
         </script>
     </head>
     <body>
-        <div class='header ui-widget-header'><strong><?php printf($clang->gT("Select which fields to import as attributes with your %s participant(s)"), $linecount); ?></strong></div>
+        <div class='header ui-widget-header'><strong><?php printf($clang->ngT("Select which fields to import as attributes with your participant.","Select which fields to import as attributes with your %s participants.",$linecount), $linecount); ?></strong></div>
         <div class="main">
             <div id="csvattribute" class='container'>
                 <div class="heading"><?php $clang->eT("CSV field names "); ?></div>
-                <div class='instructions'><?php $clang->eT("LimeSurvey has found the following additional fields in your CSV file."); ?></div>
+                <div class='instructions'><?php $clang->eT("The following additional fields were found in your CSV file."); ?></div>
 
                 <ul class="csvatt">
                     <?php

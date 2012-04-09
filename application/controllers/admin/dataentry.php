@@ -2036,187 +2036,34 @@ class dataentry extends Survey_Common_Action
 
                     // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
 
-                    //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
-//                    $explanation = ""; //reset conditions explanation
-//                    $s=0;
-//                    $scenarioquery="SELECT DISTINCT scenario FROM {{conditions}} WHERE {{conditions}}.qid={$deqrow['qid']} ORDER BY scenario";
-//                    $scenarioresult=dbExecuteAssoc($scenarioquery);
-//
-//                    foreach ($scenarioresult->readAll() as $scenariorow)
-//                    {
-//                        if ($s == 0 && $scenarioresult->getRowCount() > 1) { $explanation .= " <br />-------- <i>Scenario {$scenariorow['scenario']}</i> --------<br />";}
-//                        if ($s > 0) { $explanation .= " <br />-------- <i>".$clang->gT("OR")." Scenario {$scenariorow['scenario']}</i> --------<br />";}
-//
-//                        $x=0;
-//                        $distinctquery="SELECT DISTINCT cqid, {{questions}}.title FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions}}.qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']} ORDER BY cqid";
-//                        $distinctresult=dbExecuteAssoc($distinctquery);
-//
-//                        foreach ($distinctresult->readAll() as $distinctrow)
-//                        {
-//                            if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
-//                            $conquery="SELECT cid, cqid, cfieldname, {{questions}}.title, {{questions}}.question, value, {{questions}}.type, method FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions}}.cqid={$distinctrow['cqid']} AND {{conditions}}.qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']}";
-//                            $conresult=dbExecuteAssoc($conquery);
-//                            foreach ($conresult->readAll() as $conrow)
-//                            {
-//                                if ($conrow['method']=="==") {$conrow['method']="= ";} else {$conrow['method']=$conrow['method']." ";}
-//                                switch($conrow['type'])
-//                                {
-//                                    case "Y":
-//                                    switch ($conrow['value'])
-//                                    {
-//                                        case "Y": $conditions[]=$conrow['method']."'".$blang->gT("Yes")."'"; break;
-//                                        case "N": $conditions[]=$conrow['method']."'".$blang->gT("No")."'"; break;
-//                                    }
-//                                    break;
-//                                    case "G":
-//                                    switch($conrow['value'])
-//                                    {
-//                                        case "M": $conditions[]=$conrow['method']."'".$blang->gT("Male")."'"; break;
-//                                        case "F": $conditions[]=$conrow['method']."'".$blang->gT("Female")."'"; break;
-//                                    } // switch
-//                                    break;
-//                                    case "A":
-//                                    case "B":
-//                                        $conditions[]=$conrow['method']."'".$conrow['value']."'";
-//                                        break;
-//                                    case "C":
-//                                    switch($conrow['value'])
-//                                    {
-//                                        case "Y": $conditions[]=$conrow['method']."'".$blang->gT("Yes")."'"; break;
-//                                        case "U": $conditions[]=$conrow['method']."'".$blang->gT("Uncertain")."'"; break;
-//                                        case "N": $conditions[]=$conrow['method']."'".$blang->gT("No")."'"; break;
-//                                    } // switch
-//                                    break;
-//                                    case "1":
-//                                        $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-//                                        $fquery = "SELECT * FROM {{labels}}"
-//                                        . "WHERE lid='{$conrow['lid']}'\n and language='$sDataEntryLanguage' "
-//                                        . "AND code='{$conrow['value']}'";
-//                                        $fresult=dbExecuteAssoc($fquery) or safeDie("$fquery<br />Failed to execute this command in Data entry controller");
-//                                        foreach($fresult->readAll() as $frow)
-//                                        {
-//                                            $postans=$frow['title'];
-//                                            $conditions[]=$conrow['method']."'".$frow['title']."'";
-//                                        } // while
-//                                        break;
-//
-//                                    case "E":
-//                                    switch($conrow['value'])
-//                                    {
-//                                        case "I": $conditions[]=$conrow['method']."'".$blang->gT("Increase")."'"; break;
-//                                        case "D": $conditions[]=$conrow['method']."'".$blang->gT("Decrease")."'"; break;
-//                                        case "S": $conditions[]=$conrow['method']."'".$blang->gT("Same")."'"; break;
-//                                    }
-//                                    break;
-//                                    case "F":
-//                                    case "H":
-//                                    default:
-//                                        $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-//                                        $fquery = "SELECT * FROM {{questions}} "
-//                                        . "WHERE qid='{$conrow['cqid']}'\n and language='$sDataEntryLanguage' "
-//                                        . "AND title='{$conrow['title']}' and scale_id=0";
-//                                        $fresult=dbExecuteAssoc($fquery) or safeDie("$fquery<br />Failed to execute this command in Data Entry controller.");
-//                                        if ($fresult->getRowCount() <= 0) die($fquery);
-//                                        foreach($fresult->readAll() as $frow)
-//                                        {
-//                                            $postans=$frow['title'];
-//                                            $conditions[]=$conrow['method']."'".$frow['title']."'";
-//                                        } // while
-//                                        break;
-//                                } // switch
-//                                $answer_section="";
-//                                switch($conrow['type'])
-//                                {
-//
-//                                    case "1":
-//                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
-//                                        $ansresult=dbExecuteAssoc($ansquery);
-//                                        foreach ($ansresult->readAll() as $ansrow)
-//                                        {
-//                                            $conditions[]=$conrow['method']."'".$ansrow['answer']."'";
-//                                        }
-//                                        $operator=$clang->gT("OR");
-//                                        if (isset($conditions)) $conditions = array_unique($conditions);
-//                                        break;
-//
-//                                    case "A":
-//                                    case "B":
-//                                    case "C":
-//                                    case "E":
-//                                    case "F":
-//                                    case "H":
-//                                    case ":":
-//                                    case ";":
-//                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
-//                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion['aid']}' AND language='{$sDataEntryLanguage}'";
-//                                        $ansresult=dbExecuteAssoc($ansquery);
-//                                        $i=0;
-//                                        foreach ($ansresult->readAll() as $ansrow)
-//                                        {
-//                                            if (isset($conditions) && count($conditions) > 0)
-//                                            {
-//                                                $conditions[sizeof($conditions)-1]="(".$ansrow['answer'].") : ".end($conditions);
-//                                            }
-//                                        }
-//                                        $operator=$blang->gT("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
-//                                        break;
-//                                    default:
-//                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sDataEntryLanguage}'";
-//                                        $ansresult=dbExecuteAssoc($ansquery);
-//                                        foreach ($ansresult->readAll() as $ansrow)
-//                                        {
-//                                            $conditions[]=$conrow['method']."'".$ansrow['answer']."'";
-//                                        }
-//                                        $operator=$blang->gT("OR");
-//                                        if (isset($conditions)) $conditions = array_unique($conditions);
-//                                        break;
-//                                }
-//                            }
-//                            if (isset($conditions) && count($conditions) > 1)
-//                            {
-//                                $conanswers = implode(" ".$operator." ", $conditions);
-//                                $explanation .= " -" . str_replace("{ANSWER}", $conanswers, $blang->gT("to question {QUESTION}, answer {ANSWER}"));
-//                            }
-//                            else
-//                            {
-//                                if(empty($conditions[0])) $conditions[0] = "'".$blang->gT("No Answer")."'";
-//                                $explanation .= " -" . str_replace("{ANSWER}", $conditions[0], $blang->gT("to question {QUESTION}, answer {ANSWER}"));
-//                            }
-//                            unset($conditions);
-//                            $explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}$answer_section'", $explanation);
-//                            $x++;
-//                        }
-//                        $s++;
-//                    }
+                    $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
+                    $relevance = trim($qinfo['info']['relevance']);
+                    $explanation = trim($qinfo['relEqn']);
+                    $validation = trim($qinfo['prettyValidTip']);
+                    $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                    $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
-                $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
-                $relevance = trim($qinfo['info']['relevance']);
-                $explanation = trim($qinfo['relEqn']);
-                $validation = trim($qinfo['prettyValidTip']);
-                $qidattributes=getQuestionAttributeValues($deqrow['qid']);
-                $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
-
-                if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
-                {
-                    $showme = '';
-                    if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
-                    if ($relevance != '' && $relevance != '1') {
-                        $showme = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
+                    if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
+                    {
+                        $showme = '';
+                        if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
+                        if ($relevance != '' && $relevance != '1') {
+                            $showme = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
+                        }
+                        if ($showme != '' && $validation != '') {
+                            $showme .= '<br/>';
+                        }
+                        if ($validation != '') {
+                            $showme .= "[".$blang->gT("The answer(s) must meet these validation criteria:")."]<br />$validation\n";
+                        }
+                        if ($showme != '' && $array_filter_help != '') {
+                            $showme .= '<br/>';
+                        }
+                        if ($array_filter_help != '') {
+                            $showme .= "[".$blang->gT("The answer(s) must meet these array_filter criteria:")."]<br />$array_filter_help\n";
+                        }
+                        $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
                     }
-                    if ($showme != '' && $validation != '') {
-                        $showme .= '<br/>';
-                    }
-                    if ($validation != '') {
-                        $showme .= "[".$blang->gT("The answer(s) must meet these validation criteria:")."]<br />$validation\n";
-                    }
-                    if ($showme != '' && $array_filter_help != '') {
-                        $showme .= '<br/>';
-                    }
-                    if ($array_filter_help != '') {
-                        $showme .= "[".$blang->gT("The answer(s) must meet these array_filter criteria:")."]<br />$array_filter_help\n";
-                    }
-                    $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
-                }
 
                     //END OF GETTING CONDITIONS
 
@@ -2701,8 +2548,8 @@ class dataentry extends Survey_Common_Action
     }
 
     /*
-     * This is a duplicate of the array_filter_help function in printablesurvey.php
-     */
+    * This is a duplicate of the array_filter_help function in printablesurvey.php
+    */
     private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
         $clang = $this->getController()->lang;
         $output = "";
@@ -2710,7 +2557,7 @@ class dataentry extends Survey_Common_Action
         {
             $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
             $output .= "\n<p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you selected in question *%s* ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
+            ".sprintf($clang->gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
             </p>\n";
         }
         if(!empty($qidattributes['array_filter_exclude']))
@@ -2718,19 +2565,19 @@ class dataentry extends Survey_Common_Action
             $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
 
             $output .= "\n    <p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you did not select in question *%s* ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
+            ".sprintf($clang->gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
             </p>\n";
         }
         return $output;
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
+    * Renders template(s) wrapped in header and footer
+    *
+    * @param string $sAction Current action, the folder to fetch views from
+    * @param string|array $aViewUrls View url(s)
+    * @param array $aData Data to be passed on. Optional.
+    */
     protected function _renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array())
     {
         if (!isset($aData['display']['menu_bars']['browse']))

@@ -1536,16 +1536,16 @@
                 {
                     if ($min_answers!='' && $max_answers!='')
                     {
-                        $qtips['num_answers']=sprintf($this->gT("Please select between %s and %s answer(s)"),'{fixnum('.$min_answers.')}','{fixnum('.$max_answers.')}');
+                        $qtips['num_answers']=sprintf($this->ngT("Please select between %s and %s answer.","Please select between %s and %s answers.",$max_answers),'{fixnum('.$min_answers.')}','{fixnum('.$max_answers.')}');
                     }
                     else if ($min_answers!='')
                         {
-                            $qtips['num_answers']=sprintf($this->gT("Please select at least %s answer(s)"),'{fixnum('.$min_answers.')}');
+                            $qtips['num_answers']=sprintf($this->ngT("Please select at least %s answer.","Please select at least %s answers.",$min_answers),'{fixnum('.$min_answers.')}');
 
                         }
                         else if ($max_answers!='')
                             {
-                                $qtips['num_answers']=sprintf($this->gT("Please select at most %s answer(s)"),'{fixnum('.$max_answers.')}');
+                                $qtips['num_answers']=sprintf($this->ngT("Please select at most %s answer.","Please select at most %s answers.",$max_answers),'{fixnum('.$max_answers.')}');
                             }
                 }
 
@@ -1554,16 +1554,16 @@
                 {
                     if ($min_num_value_n!='' && $max_num_value_n!='')
                     {
-                        $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s"),'{fixnum('.$min_num_value_n.')}','{fixnum('.$max_num_value_n.')}');
+                        $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s."),'{fixnum('.$min_num_value_n.')}','{fixnum('.$max_num_value_n.')}');
                     }
                     else if ($min_num_value_n!='')
                         {
-                            $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s"),'{fixnum('.$min_num_value_n.')}');
+                            $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s."),'{fixnum('.$min_num_value_n.')}');
 
                         }
                         else if ($max_num_value_n!='')
                             {
-                                $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s"),'{fixnum('.$max_num_value_n.')}');
+                                $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s."),'{fixnum('.$max_num_value_n.')}');
                             }
                 }
 
@@ -1572,16 +1572,16 @@
                 {
                     if ($multiflexible_min!='' && $multiflexible_max!='')
                     {
-                        $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s"),'{fixnum('.$multiflexible_min.')}','{fixnum('.$multiflexible_max.')}');
+                        $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s."),'{fixnum('.$multiflexible_min.')}','{fixnum('.$multiflexible_max.')}');
                     }
                     else if ($multiflexible_min!='')
                         {
-                            $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s"),'{fixnum('.$multiflexible_min.')}');
+                            $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s."),'{fixnum('.$multiflexible_min.')}');
 
                         }
                         else if ($multiflexible_max!='')
                             {
-                                $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s"),'{fixnum('.$multiflexible_max.')}');
+                                $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s."),'{fixnum('.$multiflexible_max.')}');
                             }
                 }
 
@@ -1594,19 +1594,19 @@
                     }
                     else if ($min_num_value!='')
                         {
-                            $qtips['sum_range']=sprintf($this->gT("The sum must be at least %s"),'{fixnum('.$min_num_value.')}');
+                            $qtips['sum_range']=sprintf($this->gT("The sum must be at least %s."),'{fixnum('.$min_num_value.')}');
 
                         }
                         else if ($max_num_value!='')
                             {
-                                $qtips['sum_range']=sprintf($this->gT("The sum must be at most %s"),'{fixnum('.$max_num_value.')}');
+                                $qtips['sum_range']=sprintf($this->gT("The sum must be at most %s."),'{fixnum('.$max_num_value.')}');
                             }
                 }
 
                 // equals_num_value
                 if ($equals_num_value!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s"),'{fixnum('.$equals_num_value.')}');
+                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
                 }
 
                 // other comment mandatory
@@ -3359,7 +3359,7 @@
                         echo submitfailed('');  // TODO - report SQL error?
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-                            $message .= $this->gT('Error in SQL update.');  // TODO - add  SQL error?
+                            $message .= $this->gT('Error in SQL update');  // TODO - add  SQL error?
                         }
                     }
                     // Save Timings if needed
@@ -5468,7 +5468,7 @@
 <b>Unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age, age % 2);}<br/>Nor '|', '&', '^':  {(sum(2 | 3, 3 & 4, 5 ^ 6)}}<br/>Nor arrays:  {name[2], name['mine']}
 <b>Invalid assignments</b><br/>Assign values to equations or strings:  {(3 + 4)=5}, {'hi'='there'}<br/>Assign read-only vars:  {TOKEN:ATTRIBUTE_1='boss'}, {name='Sally'}
 <b>Values:</b><br/>name={name}; surname={surname}<br/>gender={gender}; age={age}; numPets={numPets}<br/>numKids=INSERTANS:61764X1X3={numKids}={INSERTANS:61764X1X3}<br/>TOKEN:ATTRIBUTE_1={TOKEN:ATTRIBUTE_1}
-<b>Question Attributes:</b><br/>numKids.question={numKids.question}; Question#={numKids.qid}; .relevance={numKids.relevance}
+<b>Question attributes:</b><br/>numKids.question={numKids.question}; Question#={numKids.qid}; .relevance={numKids.relevance}
 <b>Math:</b><br/>5+7={5+7}; 2*pi={2*pi()}; sin(pi/2)={sin(pi()/2)}; max(age,numKids,numPets)={max(age,numKids,numPets)}
 <b>Text Processing:</b><br/>{str_replace('like','love','I like LimeSurvey')}<br/>{ucwords('hi there')}, {name}<br/>{implode('--',name,'this is','a convenient way','way to','concatenate strings')}
 <b>Dates:</b><br/>{name}, the current date/time is: {date('F j, Y, g:i a',time())}
@@ -6524,7 +6524,7 @@ EOD;
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                 return array(
                 'errors'=>1,
-                'html'=>$LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language ') . $_SESSION['LEMlang'],
+                'html'=>sprintf($LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language %s'),$_SESSION['LEMlang'])
                 );
             }
 
@@ -6581,7 +6581,7 @@ EOD;
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
-                    $default = '<br/>(' . $LEM->gT('DEFAULT:') . '  ' . $_default . ')';
+                    $default = '<br/>(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                 }
                 else
                 {
@@ -6589,15 +6589,15 @@ EOD;
                 }
 
                 $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
-                $help = (($q['info']['help'] != '') ? '<hr/>[' . $LEM->gT("HELP:") . ' ' . $q['info']['help'] . ']': '');
-                $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr/>(' . $LEM->gT("TIP:") . ' ' . $q['prettyValidTip'] . ')');
+                $help = (($q['info']['help'] != '') ? '<hr/>[' . $LEM->gT("Help:") . ' ' . $q['info']['help'] . ']': '');
+                $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr/>(' . $LEM->gT("Tip:") . ' ' . $q['prettyValidTip'] . ')');
 
                 //////
                 // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
                 //////
                 $attrTable = '';
                 if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
-                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
+                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
                     foreach ($LEM->qattr[$qid] as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
@@ -6807,7 +6807,7 @@ EOD;
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
                         }
-                        $subQeqn .= '<br/>(' . $LEM->gT('DEFAULT:') . '  ' . $_default . ')';
+                        $subQeqn .= '<br/>(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                     }
 
                     $sqRows .= "<tr class='LEMsubq'>"
@@ -6863,7 +6863,7 @@ EOD;
                 //////
                 // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
                 //////
-                $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->gT("This question has at least %s error(s)"), $errorCount) . "'" : '';
+                $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->ngT("This question has at least %s error.","This question has at least %s errors.",$errorCount), $errorCount) . "'" : '';
 
                 $questionRow = "<tr class='LEMquestion'>"
                 . "<td $errclass>Q-" . $q['info']['qseq'] . "</td>"
@@ -6902,7 +6902,7 @@ EOD;
             }
 
             if (count($allErrors) > 0) {
-                $out = "<p class='LEMerror'>". sprintf($LEM->gT("%s question(s) contain errors that need to be corrected"), count($allErrors)) . "</p>\n" . $out;
+                $out = "<p class='LEMerror'>". sprintf($LEM->ngT("%s question contains errors that need to be corrected","%s questions contain errors that need to be corrected",count($allErrors)), count($allErrors)) . "</p>\n" . $out;
             }
             else {
                 switch ($surveyMode)

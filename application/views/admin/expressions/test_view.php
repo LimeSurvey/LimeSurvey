@@ -37,7 +37,7 @@
         <td>Tests whether navigation properly handles relevant and irrelevant groups</td>
     </tr>
     <tr>
-        <td><a href="<?php echo $this->createUrl('admin/expressions/survey_logic_file'); ?>">Show Survey Logic File</a></td>
+        <td><a href="<?php echo $this->createUrl('admin/expressions/survey_logic_file'); ?>">Show Survey logic file</a></td>
         <td>Shows the logic for the survey (e.g. relevance, validation), and all tailoring</td>
     </tr>
 </table>

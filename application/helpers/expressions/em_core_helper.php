@@ -165,7 +165,7 @@ class ExpressionManager {
 'count' => array('exprmgr_count', 'LEMcount', $this->gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
 'date' => array('date', 'date', $this->gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
 'exp' => array('exp', 'Math.exp', $this->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
-'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as radix separator, if needed'), 'string fixnum(number)', '', 1),
+'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
 'floor' => array('floor', 'Math.floor', $this->gT('Round fractions down'), 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
 'gmdate' => array('gmdate', 'gmdate', $this->gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.gmdate.php', 1,2),
 'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', $this->gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://www.php.net/manual/en/function.html-entity-decode.php', 1),
@@ -574,7 +574,7 @@ class ExpressionManager {
                         $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
                         if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
                         {
-                            $this->RDP_AddError($this->gT("This variable is not declared until a later page"),$token);
+                            $this->RDP_AddError($this->gT("Variable not declared until a later page"),$token);
                             return false;
                         }
                         return true;
@@ -744,7 +744,7 @@ class ExpressionManager {
         while (++$this->RDP_pos < $this->RDP_count)
         {
             $token = $this->RDP_tokens[$this->RDP_pos];
-            $this->RDP_AddError($this->gT("Extra token found after Expressions"),$token);
+            $this->RDP_AddError($this->gT("Extra token found after expressions"),$token);
             $evalStatus = false;
         }
         return $evalStatus;
@@ -760,7 +760,7 @@ class ExpressionManager {
         $funcName = $funcNameToken[0];
         if (!$this->RDP_isValidFunction($funcName))
         {
-            $this->RDP_AddError($this->gT("Undefined Function"), $funcNameToken);
+            $this->RDP_AddError($this->gT("Undefined function"), $funcNameToken);
             return false;
         }
         $token2 = $this->RDP_tokens[++$this->RDP_pos];
@@ -1953,7 +1953,7 @@ class ExpressionManager {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs)
                     {
-                        $this->RDP_AddError(sprintf($this->gT("Function must have at least %s argument(s)"), $minArgs), $funcNameToken);
+                        $this->RDP_AddError(sprintf($this->ngT("Function must have at least %s argument","Function must have at least %s arguments",$minArgs), $minArgs), $funcNameToken);
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
@@ -2049,8 +2049,8 @@ class ExpressionManager {
                     }
 
                 } else {
-                    $this->RDP_AddError(sprintf($this->gT("Function does not support %s arguments. "), $argsPassed)
-                            . sprintf($this->gT("Function supports this many arguments, where -1=unlimited: %s."), implode(',', $numArgsAllowed)), $funcNameToken);
+                    $this->RDP_AddError(sprintf($this->gT("Function does not support %s arguments"), $argsPassed).' '
+                            . sprintf($this->gT("Function supports this many arguments, where -1=unlimited: %s"), implode(',', $numArgsAllowed)), $funcNameToken);
                     return false;
                 }
             }

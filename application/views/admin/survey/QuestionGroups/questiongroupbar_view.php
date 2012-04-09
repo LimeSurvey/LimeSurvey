@@ -29,8 +29,8 @@
             { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
             <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
-                title="<?php $clang->eTview("Survey Logic File for current question group"); ?>">
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question group"); ?>' /></a>
+                title="<?php $clang->eTview("Survey logic file for current question group"); ?>">
+                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey logic file for current question group"); ?>' /></a>
             <?php } ?>
 
         <?php
