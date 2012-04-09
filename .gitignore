@@ -1,2 +1,22 @@
 
 /upload/surveys/*
+/config.php
+/conjoint_minke.php
+/conjoint_save.php
+/omniphon_options.php
+/omniphon_settings.php
+/omniphon_start.php
+/omniphon_start1.php
+/omniphon_start2.php
+/omniphon_style.css
+/omniphon_db.php
+/practice_db_converter.php
+/limesurvey_cronjob_reminders.php
+/practice_db_converter_2.php
+/practice_db_converter1.php
+/practice_db_question_exporter.php
+/practice_tokenforwarding.php
+/practice_tokenforwarding1.php
+/practice_go.php
+/qanda.php
+/upload
