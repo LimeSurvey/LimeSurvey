@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-09 10:56+0100\n"
-"PO-Revision-Date: 2012-04-09 10:56+0100\n"
+"POT-Creation-Date: 2012-04-10 08:44+0100\n"
+"PO-Revision-Date: 2012-04-10 08:44+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <carsten.schmitz@limesurvey.org>\n"
 "MIME-Version: 1.0\n"
@@ -1442,24 +1442,24 @@ msgstr "gewählt"
 msgid "timings"
 msgstr "Timings"
 
-#: application/controllers/admin/participantsaction.php:638
-#: application/controllers/admin/participantsaction.php:652
+#: application/controllers/admin/participantsaction.php:642
+#: application/controllers/admin/participantsaction.php:656
 #, php-format
 msgid "%s participant(s) are to be copied "
 msgstr "%s Teilnehmer sind zu kopieren"
 
-#: application/controllers/admin/participantsaction.php:1687
-#: application/controllers/admin/participantsaction.php:1698
+#: application/controllers/admin/participantsaction.php:1691
+#: application/controllers/admin/participantsaction.php:1702
 #, php-format
 msgid "%s participants have been copied, %s participants have not been copied because they already exist"
 msgstr "%s Teilnehmer wurden kopiert, %s Teilnehmer wurden nicht kopiert, da sie bereits existieren"
 
-#: application/controllers/admin/participantsaction.php:1717
+#: application/controllers/admin/participantsaction.php:1721
 #, php-format
 msgid "%s participants have been copied,%s participants have not been copied because they already exist"
 msgstr "%s Teilnehmer wurden kopiert, %s Teilnehmer wurden nicht kopiert, da sie bereits existieren"
 
-#: application/controllers/admin/participantsaction.php:1674
+#: application/controllers/admin/participantsaction.php:1678
 #, php-format
 msgid "%s participants have been shared"
 msgstr "%s Teilnehmer wurden freigegeben"
@@ -1562,7 +1562,7 @@ msgstr "Neues Beschriftungsset"
 msgid "Database"
 msgstr "Datenbank"
 
-#: application/controllers/admin/participantsaction.php:268
+#: application/controllers/admin/participantsaction.php:269
 msgid "Date"
 msgstr "Datum"
 
@@ -1601,7 +1601,7 @@ msgstr "Verzeichnis konnte nicht nach  `%s` umbenannt werden."
 msgid "Directory with the name `%s` already exists - choose another name"
 msgstr "Ein Verzeichnis mit dem Namen `%s` existiert bereits - wählen Sie einen anderen Namen"
 
-#: application/controllers/admin/participantsaction.php:267
+#: application/controllers/admin/participantsaction.php:268
 msgid "Drop-down list"
 msgstr "Dropdown-Liste"
 
@@ -1649,8 +1649,8 @@ msgstr "E-Mail von Teilnehmer"
 msgid "Export"
 msgstr "Export"
 
-#: application/controllers/admin/participantsaction.php:511
-#: application/controllers/admin/participantsaction.php:531
+#: application/controllers/admin/participantsaction.php:515
+#: application/controllers/admin/participantsaction.php:535
 #, php-format
 msgid "Export %s participant(s) to CSV"
 msgstr "Exportiere %s Teilnehmer in eine CSV-Datei"
@@ -2098,7 +2098,7 @@ msgstr "Vorlagenbeispiel"
 msgid "Template could not be renamed to `%s`."
 msgstr "Vorlage konnte nicht nach  `%s` umbenannt werden."
 
-#: application/controllers/admin/participantsaction.php:269
+#: application/controllers/admin/participantsaction.php:270
 msgid "Text box"
 msgstr "Texteingabefeld"
 
@@ -5874,7 +5874,7 @@ msgstr "Datenbanktyp"
 
 #: application/helpers/update/upgrade-mssql_helper.php:612
 #: application/helpers/update/upgrade-mysql_helper.php:734
-#: application/helpers/update/upgrade-postgres_helper.php:452
+#: application/helpers/update/upgrade-pgsql_helper.php:452
 #, php-format
 msgid "Database update finished (%s)"
 msgstr "Datenbankaktualisierung beendet (%s)"
@@ -8510,11 +8510,15 @@ msgstr "(Automatische Erkennung)"
 msgid "AND"
 msgstr "UND"
 
-#: application/views/admin/participants/displayParticipants_view.php:86
+#: application/views/admin/participants/displayParticipants_view.php:99
+msgid "Access denied"
+msgstr "Zugriff verweigert"
+
+#: application/views/admin/participants/displayParticipants_view.php:104
 msgid "Add participant to Survey"
 msgstr "Füge Teilnehmer zur Umfrage hinzu"
 
-#: application/views/admin/participants/displayParticipants_view.php:90
+#: application/views/admin/participants/displayParticipants_view.php:108
 msgid "Add to survey"
 msgstr "Zur Umfrage hinzufügen"
 
@@ -8522,13 +8526,33 @@ msgstr "Zur Umfrage hinzufügen"
 msgid "Allow participant to unblacklist himself/herself:"
 msgstr "Erlaube Teilnehmer sich selbst von der schwarzen Liste auszutragen:"
 
-#: application/views/admin/participants/displayParticipants_view.php:224
+#: application/views/admin/participants/displayParticipants_view.php:242
 msgid "Allow this user to edit these participants"
 msgstr "Erlaube dem Benutzer diese Teilnehmer zu bearbeiten"
 
 #: application/views/admin/participants/attributeMap_view.php:41
 msgid "Already mapped"
 msgstr "Bereits erfasst"
+
+#: application/views/admin/participants/displayParticipants_view.php:91
+#, fuzzy
+msgid "Attribute Name"
+msgstr "Attribut-Name"
+
+#: application/views/admin/participants/displayParticipants_view.php:93
+#, fuzzy
+msgid "Attribute Possible Values"
+msgstr "Zugangsschlüsse-Tabellen-Attribute"
+
+#: application/views/admin/participants/displayParticipants_view.php:90
+#, fuzzy
+msgid "Attribute Type"
+msgstr "Attribut-Typ"
+
+#: application/views/admin/participants/displayParticipants_view.php:92
+#, fuzzy
+msgid "Attribute Value"
+msgstr "Absoluter Wert"
 
 #: application/views/admin/participants/attributeControl_view.php:10
 #: application/views/admin/participants/participantsPanel_view.php:57
@@ -8566,8 +8590,8 @@ msgid "Blacklist settings"
 msgstr "Schwarze Liste Einstellungen"
 
 #: application/views/admin/participants/displayParticipants_view.php:64
-#: application/views/admin/participants/displayParticipants_view.php:126
-#: application/views/admin/participants/displayParticipants_view.php:148
+#: application/views/admin/participants/displayParticipants_view.php:144
+#: application/views/admin/participants/displayParticipants_view.php:166
 msgid "Blacklisted"
 msgstr "Auf die schwarze Liste gesetzt"
 
@@ -8620,9 +8644,14 @@ msgid "Comma"
 msgstr "Komma"
 
 #: application/views/admin/participants/displayParticipants_view.php:70
-#: application/views/admin/participants/displayParticipants_view.php:155
+#: application/views/admin/participants/displayParticipants_view.php:173
 msgid "Contains"
 msgstr "Enthält"
+
+#: application/views/admin/participants/displayParticipants_view.php:83
+#, fuzzy
+msgid "Date Added"
+msgstr "Benutzer hinzugefügt."
 
 #: application/views/admin/participants/blacklist_view.php:52
 msgid "Delete globally blacklisted participant from the database:"
@@ -8632,19 +8661,19 @@ msgstr "Lösche Teilnehmer auf der globalen schwarzen Liste aus der Datenbank:"
 msgid "Delete label set"
 msgstr "Beschriftungsset löschen"
 
-#: application/views/admin/participants/displayParticipants_view.php:101
+#: application/views/admin/participants/displayParticipants_view.php:119
 msgid "Delete participant(s) from central panel and tokens tables"
 msgstr "Lösche Teilnehmer vom zentralen Teilnehmer-Panel und aus der Zugangsschlüssel-Tabelle"
 
-#: application/views/admin/participants/displayParticipants_view.php:102
+#: application/views/admin/participants/displayParticipants_view.php:120
 msgid "Delete participant(s) from central panel, tokens tables and all associated responses"
 msgstr "Lösche Teilnehmer vom zentralen Teilnehmer-Panel, aus der Zugangsschlüssel-Tabelle und aus allen damit verbundenen Antworten"
 
-#: application/views/admin/participants/displayParticipants_view.php:100
+#: application/views/admin/participants/displayParticipants_view.php:118
 msgid "Delete participant(s) from central participants panel only"
 msgstr "Lösche Teilnehmer nur vom zentralen Teilnehmer-Panel"
 
-#: application/views/admin/participants/displayParticipants_view.php:276
+#: application/views/admin/participants/displayParticipants_view.php:294
 msgid "Display survey token table after adding participants?"
 msgstr "Umfrage Zugangsschlüsseltabelle zeigen nachdem Teilnehmer hinzugefügt wurde?"
 
@@ -8653,7 +8682,7 @@ msgid "Do you really want to delete this label set?"
 msgstr "Sind sie wirklich sicher, dass Sie dieses Beschriftungsset löschen wollen?"
 
 #: application/views/admin/participants/displayParticipants_view.php:72
-#: application/views/admin/participants/displayParticipants_view.php:157
+#: application/views/admin/participants/displayParticipants_view.php:175
 msgid "Does not contain"
 msgstr "Enthält nicht"
 
@@ -8673,7 +8702,7 @@ msgstr "Ziehen Sie ein CSV-Feld auf ein existierendes Teilnehmerattribut unten u
 msgid "Drop a CSV field into this area to create a new participant attribute and import your data into it."
 msgstr "Ziehen Sie ein CSV-Feld auf diesen Bereich um ein neues Teilnehmerattribut zu erzeugen und die Daten in dieses zu importieren."
 
-#: application/views/admin/participants/displayParticipants_view.php:87
+#: application/views/admin/participants/displayParticipants_view.php:105
 msgid "Either you don't own a survey or it doesn't have token table"
 msgstr "Entweder Sie haben keine Umfrage oder diese hat keine Zugangsschlüssel-Tabelle"
 
@@ -8686,7 +8715,7 @@ msgid "Enter your labels:"
 msgstr "Geben Sie ihre Beschriftungen ein:"
 
 #: application/views/admin/participants/displayParticipants_view.php:69
-#: application/views/admin/participants/displayParticipants_view.php:154
+#: application/views/admin/participants/displayParticipants_view.php:172
 msgid "Equals"
 msgstr "Ergibt"
 
@@ -8702,7 +8731,7 @@ msgstr "Fehler: Sie versuchen einen doppelten Beschriftungscode zu speichern."
 msgid "Existing attribute"
 msgstr "Existierendes Attribut"
 
-#: application/views/admin/participants/displayParticipants_view.php:91
+#: application/views/admin/participants/displayParticipants_view.php:109
 msgid "Export CSV"
 msgstr "Exportiere CSV"
 
@@ -8714,7 +8743,7 @@ msgstr "Exportiere Ressourcen als ZIP-Archiv"
 msgid "Export this label set"
 msgstr "Exportiere dieses Beschriftungsset"
 
-#: application/views/admin/participants/displayParticipants_view.php:80
+#: application/views/admin/participants/displayParticipants_view.php:96
 msgid "Export to CSV"
 msgstr "Export nach CSV"
 
@@ -8738,7 +8767,7 @@ msgstr "Filtere leere E-Mail-Adressen:"
 msgid "Flash"
 msgstr "Flash"
 
-#: application/views/admin/participants/displayParticipants_view.php:81
+#: application/views/admin/participants/displayParticipants_view.php:97
 msgid "Full search"
 msgstr "Komplettsuche"
 
@@ -8799,12 +8828,12 @@ msgstr "Lade..."
 msgid "Logout"
 msgstr "Abmeldung"
 
-#: application/views/admin/participants/displayParticipants_view.php:85
+#: application/views/admin/participants/displayParticipants_view.php:103
 msgid "No other user in the system"
 msgstr "Kein anderer Benutzer im System"
 
 #: application/views/admin/participants/displayParticipants_view.php:71
-#: application/views/admin/participants/displayParticipants_view.php:156
+#: application/views/admin/participants/displayParticipants_view.php:174
 msgid "Not equal"
 msgstr "Ungleich"
 
@@ -8813,19 +8842,34 @@ msgid "Only one CSV attribute is mapped with central attribute."
 msgstr "Nur ein CSV-Attribut ist mit Zentralattribut verbunden."
 
 #: application/views/admin/participants/displayParticipants_view.php:67
-#: application/views/admin/participants/displayParticipants_view.php:151
+#: application/views/admin/participants/displayParticipants_view.php:169
 msgid "Owner ID"
 msgstr "Eigentümer-ID"
 
 #: application/views/admin/participants/displayParticipants_view.php:68
-#: application/views/admin/participants/displayParticipants_view.php:126
-#: application/views/admin/participants/displayParticipants_view.php:152
+#: application/views/admin/participants/displayParticipants_view.php:144
+#: application/views/admin/participants/displayParticipants_view.php:170
 msgid "Owner name"
 msgstr "Eigentümername"
+
+#: application/views/admin/participants/displayParticipants_view.php:89
+#, fuzzy
+msgid "Participant ID"
+msgstr "Lösche ID"
 
 #: application/views/admin/participants/participantsPanel_view.php:11
 msgid "Participant panel"
 msgstr "Teilnahme-Panel"
+
+#: application/views/admin/participants/displayParticipants_view.php:87
+#, fuzzy
+msgid "Participant's Attribute Information"
+msgstr "Es sind keine Teilnehmer-Informationen verloren gegangen."
+
+#: application/views/admin/participants/displayParticipants_view.php:84
+#, fuzzy
+msgid "Participant's Survey Information"
+msgstr "Es sind keine Teilnehmer-Informationen verloren gegangen."
 
 #: application/views/admin/participants/summary_view.php:16
 msgid "Participants owned by you"
@@ -8843,23 +8887,23 @@ msgstr "Teilnehmer, die Sie freigegeben haben"
 msgid "Please Choose..."
 msgstr "Bitte auswählen.."
 
-#: application/views/admin/participants/displayParticipants_view.php:92
+#: application/views/admin/participants/displayParticipants_view.php:110
 msgid "Please choose either of the options"
 msgstr "Bitte wählen Sie eine der Optionen"
 
-#: application/views/admin/participants/displayParticipants_view.php:196
+#: application/views/admin/participants/displayParticipants_view.php:214
 msgid "Please select a condition"
 msgstr "Bitte wählen Sie eine Bedingung aus"
 
-#: application/views/admin/participants/displayParticipants_view.php:191
+#: application/views/admin/participants/displayParticipants_view.php:209
 msgid "Please select a field"
 msgstr "Bitte wählen Sie ein Feld aus"
 
-#: application/views/admin/participants/displayParticipants_view.php:94
+#: application/views/admin/participants/displayParticipants_view.php:112
 msgid "Please select a survey to add participants to"
 msgstr "Bitte wählen Sie eine Umfragen aus, der Teilnehmer hinzugefügt werden sollen"
 
-#: application/views/admin/participants/displayParticipants_view.php:201
+#: application/views/admin/participants/displayParticipants_view.php:219
 msgid "Please select at least one participant"
 msgstr "Bitte wählen Sie mindestens einen Teilnehmer"
 
@@ -8877,7 +8921,7 @@ msgstr "Schnelles Hinzufügen..."
 msgid "Quick add..."
 msgstr "Schnelles Hinzufügen..."
 
-#: application/views/admin/participants/displayParticipants_view.php:93
+#: application/views/admin/participants/displayParticipants_view.php:111
 msgid "Remove condition"
 msgstr "Entferne Bedingung"
 
@@ -8886,7 +8930,7 @@ msgid "Replace"
 msgstr "Ersetzen"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:64
-#: application/views/admin/participants/displayParticipants_view.php:79
+#: application/views/admin/participants/displayParticipants_view.php:95
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -8898,7 +8942,7 @@ msgstr "Zur Beschriftungsset-Administration zurückkehren"
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
-#: application/views/admin/participants/displayParticipants_view.php:104
+#: application/views/admin/participants/displayParticipants_view.php:122
 msgid "Search"
 msgstr "Suchen"
 
@@ -8910,15 +8954,15 @@ msgstr "ZIP-Datei auswählen:"
 msgid "Select any attributes you'd like use in your survey by dropping the attribute in the right hand column."
 msgstr "Wählen Sie alle Attribute die sie nutzen möchten, indem Sie zur rechten Spalte mit der Maus schieben."
 
-#: application/views/admin/participants/displayParticipants_view.php:98
+#: application/views/admin/participants/displayParticipants_view.php:116
 msgid "Select one of the three options"
 msgstr "Wählen Sie eine der drei Optionen aus"
 
-#: application/views/admin/participants/displayParticipants_view.php:296
+#: application/views/admin/participants/displayParticipants_view.php:314
 msgid "Select the attribute to be exported"
 msgstr "Wählen Sie das zu exportierende Attribut"
 
-#: application/views/admin/participants/displayParticipants_view.php:246
+#: application/views/admin/participants/displayParticipants_view.php:264
 msgid "Select the survey to which participants are to be added"
 msgstr "Bitte wählen Sie die Umfrage, zu der Teilnehmer hinzugefügt werden sollen"
 
@@ -8929,15 +8973,15 @@ msgid_plural "Select which fields to import as attributes with your %s participa
 msgstr[0] "Wählen Sie die Felder, die als Attribute mit Ihrem Teilnehmer importiert werden sollen."
 msgstr[1] "Wählen Sie die Felder, die als Attribute mit Ihren %s Teilnehmern importiert werden sollen."
 
-#: application/views/admin/participants/displayParticipants_view.php:264
+#: application/views/admin/participants/displayParticipants_view.php:282
 msgid "Select which participants to add to the selected survey"
 msgstr "Wählen Sie die Teilnehmer aus, die zur gewählten Umfrage hinzugefügt werden sollen."
 
 #: application/views/admin/participants/displayParticipants_view.php:60
-#: application/views/admin/participants/displayParticipants_view.php:144
-#: application/views/admin/participants/displayParticipants_view.php:153
-#: application/views/admin/participants/displayParticipants_view.php:210
-#: application/views/admin/participants/displayParticipants_view.php:252
+#: application/views/admin/participants/displayParticipants_view.php:162
+#: application/views/admin/participants/displayParticipants_view.php:171
+#: application/views/admin/participants/displayParticipants_view.php:228
+#: application/views/admin/participants/displayParticipants_view.php:270
 msgid "Select..."
 msgstr "Auswählen..."
 
@@ -8949,7 +8993,7 @@ msgstr "Semikolon"
 msgid "Seperator used:"
 msgstr "Genutztes Trennzeichen:"
 
-#: application/views/admin/participants/displayParticipants_view.php:204
+#: application/views/admin/participants/displayParticipants_view.php:222
 msgid "Share"
 msgstr "Freigabe"
 
@@ -8957,11 +9001,11 @@ msgstr "Freigabe"
 msgid "Share panel"
 msgstr "Freigabe-Panel"
 
-#: application/views/admin/participants/displayParticipants_view.php:84
+#: application/views/admin/participants/displayParticipants_view.php:102
 msgid "Share the selected participants"
 msgstr "Die ausgewählten Teilnehmer freigeben"
 
-#: application/views/admin/participants/displayParticipants_view.php:83
+#: application/views/admin/participants/displayParticipants_view.php:101
 msgid "Sharing participants..."
 msgstr "Teilnehmer freigeben..."
 
@@ -8977,6 +9021,15 @@ msgstr "Erfolgreich CPDB-Einträge erstellt"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
+#: application/views/admin/participants/displayParticipants_view.php:81
+msgid "Survey ID"
+msgstr "Umfrage ID"
+
+#: application/views/admin/participants/displayParticipants_view.php:80
+#, fuzzy
+msgid "Survey Name"
+msgstr "Name der Umfrage"
+
 #: application/views/admin/participants/attributeMapCSV_view.php:33
 msgid "The following additional fields were found in your CSV file."
 msgstr "Die folgenden zusätzlichen Felder wurden in Ihrer CSV-Datei gefunden."
@@ -8985,7 +9038,7 @@ msgstr "Die folgenden zusätzlichen Felder wurden in Ihrer CSV-Datei gefunden."
 msgid "There are no participants to be exported"
 msgstr "Es gibt keine Teilnehmer zu exportieren"
 
-#: application/views/admin/participants/displayParticipants_view.php:292
+#: application/views/admin/participants/displayParticipants_view.php:310
 msgid "This is a shared participant and you are not authorised to edit it"
 msgstr "Dies ist eine freigegebener Teilnehmer und es ist Ihnen nicht erlaubt diesen zu bearbeiten"
 
@@ -9017,7 +9070,7 @@ msgstr "CSV-Datei erfolgreich hochgeladen"
 msgid "Uploaded Resources Management"
 msgstr "Ressourcen Verwaltung"
 
-#: application/views/admin/participants/displayParticipants_view.php:207
+#: application/views/admin/participants/displayParticipants_view.php:225
 msgid "User with whom the participants are to be shared"
 msgstr "Benutzer, mit denen die Teilnehmer geteilt werden"
 
@@ -9030,15 +9083,15 @@ msgstr "Sichtbar im Teilnehmer-Panel"
 msgid "Warnings"
 msgstr "Warnungen"
 
-#: application/views/admin/participants/displayParticipants_view.php:105
-msgid "You can see and edit settings for shared participant in share panel."
-msgstr "Sie können die Einstellungen für freigegebene Teilnahme im Freigabe-Panel einsehen und bearbeiten."
+#: application/views/admin/participants/displayParticipants_view.php:123
+msgid "You can see and edit settings for shared participants in share panel."
+msgstr "Sie können die Einstellungen für freigegebene Teilnehmer im Freigabe-Panel einsehen und bearbeiten."
 
 #: application/views/admin/participants/blacklist_view.php:73
 msgid "You don't have sufficient permissions."
 msgstr "Sie haben nicht die benötigten Rechte."
 
-#: application/views/admin/participants/displayParticipants_view.php:99
+#: application/views/admin/participants/displayParticipants_view.php:117
 msgid "You have no row selected"
 msgstr "Sie haben keine Zeile ausgewählt"
 
@@ -9046,15 +9099,15 @@ msgstr "Sie haben keine Zeile ausgewählt"
 msgid "You have to pair this field with an existing attribute."
 msgstr "Sie müssen diese Feld mit einem existierenden Attribut verpaaren."
 
-#: application/views/admin/participants/displayParticipants_view.php:82
+#: application/views/admin/participants/displayParticipants_view.php:98
 msgid "Your search returned no results"
 msgstr "Ihre Suche erbrachte keine Ergebnisse."
 
-#: application/views/admin/participants/displayParticipants_view.php:269
+#: application/views/admin/participants/displayParticipants_view.php:287
 msgid "all participants"
 msgstr "alle Teilnehmer"
 
-#: application/views/admin/participants/displayParticipants_view.php:268
+#: application/views/admin/participants/displayParticipants_view.php:286
 msgid "all participants in current search"
 msgstr "alle Teilnehmer der aktuellen Suche"
 
@@ -9066,7 +9119,7 @@ msgstr "schwarze Liste,Sprache"
 msgid "firstname, lastname, email"
 msgstr "Vorname, Nachname, Email-Adresse"
 
-#: application/views/admin/participants/displayParticipants_view.php:270
+#: application/views/admin/participants/displayParticipants_view.php:288
 msgid "only the participants I have selected"
 msgstr "nur die Teilnehmer, die ich ausgewählt habe"
 
@@ -11311,10 +11364,6 @@ msgstr "Gültig von"
 msgid "Valid until"
 msgstr "Gültig bis"
 
-#: application/views/admin/token/browse.php:52
-msgid "You can see and edit settings for shared participants in share panel."
-msgstr "Sie können die Einstellungen für freigegebene Teilnehmer im Freigabe-Panel einsehen und bearbeiten."
-
 #: application/views/admin/templates/templatesummary_view.php:38
 msgid "You can't save changes because the template directory is not writable."
 msgstr "Sie können Änderungen nicht speichern, da das Vorlagenverzeichnis nicht schreibbar ist."
@@ -12267,6 +12316,11 @@ msgstr "Ihre bevorzugte Sprache wird während des ganzen Installationsvorgangs b
 msgid "directory"
 msgstr "Verzeichnis"
 
+#~ msgid "You can see and edit settings for shared participant in share panel."
+#~ msgstr ""
+#~ "Sie können die Einstellungen für freigegebene Teilnahme im Freigabe-Panel "
+#~ "einsehen und bearbeiten."
+
 #~ msgid "ERROR"
 #~ msgstr "FEHLER"
 
@@ -12788,14 +12842,6 @@ msgstr "Verzeichnis"
 #, fuzzy
 #~ msgid "Text Box"
 #~ msgstr "Texteingabefeld"
-
-#, fuzzy
-#~ msgid "Attribute Name"
-#~ msgstr "Attributname:"
-
-#, fuzzy
-#~ msgid "Attribute Type"
-#~ msgstr "Attribut-Typ:"
 
 #~ msgid "Add User Group"
 #~ msgstr "Benutzergruppe hinzufügen"
@@ -13770,9 +13816,6 @@ msgstr "Verzeichnis"
 #~ msgid "Survey Import Summary"
 #~ msgstr "Umfragen-Import übersicht"
 
-#~ msgid "Survey Name (ID)"
-#~ msgstr "Umfrage Name (ID)"
-
 #~ msgid "Survey expiration date (MM-DD-YYYY)"
 #~ msgstr "Umfrage Ablauf-Datum  (MM-TT-JJJJ)"
 
@@ -14697,9 +14740,6 @@ msgstr "Verzeichnis"
 
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Stoppe bei Token ID:"
-
-#~ msgid "Survey ID"
-#~ msgstr "Umfrage ID"
 
 #~ msgid "Survey Registration Confirmation"
 #~ msgstr "Registrierungsbestätigung für Teilnahmeumfrage"
