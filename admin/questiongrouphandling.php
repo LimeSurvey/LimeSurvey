@@ -151,7 +151,7 @@ if ($action == "editgroup")
         . "<div class='settingrow'><span class='settingcaption'><label for='relevance'>".$clang->gT("Relevance equation:")."</label></span>\n"
         . "<span class='settingentry'><textarea cols='50' rows='1' id='grelevance' name='grelevance'>".$esrow['grelevance']."</textarea></span>"
         . "</span></div>"
-        . "\t</span></div><div style='clear:both'></div>";
+        . "\n<div style='clear:both'></div>";
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
     $egresult = db_execute_assoc($egquery);
     $i = 1;
