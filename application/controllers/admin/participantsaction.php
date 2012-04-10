@@ -102,16 +102,17 @@ class participantsaction extends Survey_Common_Action
      */
     function displayParticipants()
     {
+        $lang = Yii::app()->session['adminlang'];
         // loads the survey names to be shown in add to survey
         // if user is superadmin, all survey names
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
-            $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll();
+            $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('surveyls_language=:lang', array(':lang'=>$lang));
         }
         // otherwise owned by him
         else
         {
-            $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('survey.owner_id=:uid',array('survey.uid'=>Yii::app()->session['loginID']));
+            $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('survey.owner_id=:uid AND surveyls_language=:lang',array('survey.uid'=>Yii::app()->session['loginID'], ':lang'=>$lang));
         }
         // data to be passed to view
         $aData = array(
@@ -448,7 +449,7 @@ class participantsaction extends Survey_Common_Action
         }
         CController::redirect(Yii::app()->getController()->createUrl('admin/participants/blacklistControl'));
     }
-    
+
     /**
      * Receives an ajax call containing the participant id in the fourth segment of the url
      */
@@ -654,7 +655,7 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-     * Gets the id's of participants to be copied to the indivisual survey
+     * Gets the ids of participants to be copied to the indivisual survey
      */
     function getSearchIDs()
     {
