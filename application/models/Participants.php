@@ -339,7 +339,7 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else
             {
-                
+
                 $command = Yii::app()->db->createCommand()->where($condition[0] . " = :cvalue", array(':cvalue' => $condition[2])); //Yii::app()->db->quoteValue($condition[2])
                 if ($page == 0 && $limit == 0)
                 {
@@ -1188,19 +1188,22 @@ function getParticipantsSearch($condition, $page, $limit)
                 Yii::app()->db->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN ". Yii::app()->db->quoteColumnName($key) ." ". $value['type'] ." ( ".intval($value['constraint'])." )")->query(); // add columns in token's table
             }
         }
-        //Function for pushing associative array
+        //Write each participant to the survey token table
         foreach ($participantid as $key => $participant)
         {
             $writearray = array();
             $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = "' . $participant . '"')->from('{{participants}}');
             $tobeinserted = $participantdata->queryRow();
+            /* Search for matching participant name/email in the survey token table */
             $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')->where('firstname = "' . $tobeinserted['firstname'] . '" AND lastname = "' . $tobeinserted['lastname'] . '" AND email = "' . $tobeinserted['email'] . '"')->queryAll();
             if (count($query) > 0)
             {
+                //Participant already exists in token table - don't copy
                 $duplicate++;
             }
             else
             {
+                //Create a new token entry for this participant
                 $writearray = array('participant_id' => $participant, 'firstname' => $tobeinserted['firstname'], 'lastname' => $tobeinserted['lastname'], 'email' => $tobeinserted['email'], 'emailstatus' => 'OK', 'language' => $tobeinserted['language']);
                 Yii::app()->db->createCommand()->insert('{{tokens_' . $surveyid . '}}', $writearray);
                 $insertedtokenid = Yii::app()->db->getLastInsertID();

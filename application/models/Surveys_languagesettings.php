@@ -137,7 +137,8 @@ class Surveys_languagesettings extends CActiveRecord
     }
     function getSurveyNames($surveyid)
     {
-        return Yii::app()->db->createCommand()->select('surveyls_title')->from('{{surveys_languagesettings}}')->where('surveyls_language = :adminlang AND surveyls_survey_id = :surveyid')->bindParam(":adminlang", Yii::app()->session['adminlang'], PDO::PARAM_STR)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->queryAll();
+        $lang = Yii::app()->session['adminlang'];
+        return Yii::app()->db->createCommand()->select('surveyls_title')->from('{{surveys_languagesettings}}')->where('surveyls_language = :adminlang AND surveyls_survey_id = :surveyid')->bindParam(":adminlang", $lang, PDO::PARAM_STR)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->queryAll();
     }
 
     function updateRecords($data,$condition=FALSE, $xssfiltering = false)

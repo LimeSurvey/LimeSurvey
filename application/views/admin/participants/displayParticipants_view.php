@@ -76,10 +76,28 @@ else
     var orTxt="<?php $clang->eT("OR") ?>";
     /* End search form titles */
 
+    /* Colnames and heading for survey links subgrid */
+    var surveyNameColTxt="<?php $clang->eT("Survey Name")?>";
+    var surveyIdColTxt="<?php $clang->eT("Survey ID") ?>";
+    var tokenIdColTxt="<?php $clang->eT("Token ID") ?>";
+    var dateAddedColTxt="<?php $clang->eT("Date Added") ?>";
+    var linksHeadingTxt="<?php $clang->eT("Participant's Survey Information")?>";
+
+    /* Colnames and heading for attributes subgrid */
+    var attributesHeadingTxt="<?php $clang->eT("Participant's Attribute Information") ?>";
+    var actionsColTxt="<?php $clang->eT("Actions") ?>";
+    var participantIdColTxt="<?php $clang->eT("Participant ID") ?>";
+    var attributeTypeColTxt="<?php $clang->eT("Attribute Type") ?>";
+    var attributeNameColTxt="<?php $clang->eT("Attribute Name") ?>";
+    var attributeValueColTxt="<?php $clang->eT("Attribute Value") ?>";
+    var attributePosValColTxt="<?php $clang->eT("Attribute Possible Values") ?>";
+
     var resetBtn = "<?php $clang->eT("Reset"); ?>";
     var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
     var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
     var noSearchResultsTxt = "<?php $clang->eT("Your search returned no results"); ?>";
+    var accessDeniedTxt = "<?php $clang->eT("Access denied"); ?>";
+    var closeTxt = "<?php $clang->eT("Close"); ?>";
     var spTitle = "<?php $clang->eT("Sharing participants..."); ?>";
     var spAddBtn = "<?php $clang->eT("Share the selected participants"); ?>";
     var sfNoUser = "<?php $clang->eT("No other user in the system"); ?>";

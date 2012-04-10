@@ -136,12 +136,12 @@ $(document).ready(function() {
             if(can_edit == 'false') {
                 var dialog_buttons={};
                 dialog_buttons[okBtn]=function() {
-    		        $( this ).dialog( "close" );
+    		        $( this ).dialog( clostTxt );
 			    };
 			    /* End of building array for button functions */
                 $('#notauthorised').dialog({
     			    modal: true,
-                    title: "Access Denied",
+                    title: accessDeniedTxt,
  			        buttons: dialog_buttons
                 });
             } else {
@@ -169,12 +169,12 @@ $(document).ready(function() {
                 url: surveylinkUrl+'/'+row_id,
                 height: "100%",
                 width: "100%",
-                colNames:['Survey Name','Survey ID','Token ID','Date Added'],
+                colNames:[surveyNameColTxt,surveyIdColTxt,tokenIdColTxt,dateAddedColTxt],
                 colModel:[{ name:'surveyname',index:'surveyname', width:100,align:'center'},
                           { name:'surveyid',index:'surveyid', width:90,align:'center'},
                           { name:'tokenid',index:'tokenid', width:100,align:'center'},
                           { name:'dateadded',index:'added', width:120,align:'center'}],
-                caption: "Participant's Survey Information",
+                caption: linksHeadingTxt,
                 gridComplete: function () {
                     var recs = $("#"+second_subgrid_table_id).jqGrid('getGridParam','reccount');
                     if (recs == 0 || recs == null) {
@@ -192,10 +192,10 @@ $(document).ready(function() {
             pgbuttons:false,
             recordtext:'',
             pgtext:'',
-            caption: "Participant's Attribute Information",
+            caption: attributesHeadingTxt,
             editable:true,
             loadonce : true,
-            colNames: ['Actions','Participant ID','Attribute Type','Attribute Name','Attribute Value','Attribute Possible Values'],
+            colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
             colModel: [ { name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){ }}},
                     { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
                     { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
@@ -216,12 +216,12 @@ $(document).ready(function() {
                 if(can_edit == 'false') {
                     var dialog_buttons={};
                     dialog_buttons[okBtn]=function(){
-                        $( this ).dialog( "close" );
+                        $( this ).dialog( closeTxt );
                     };
                     /* End of building array for button functions */
                     $('#notauthorised').dialog({
                         modal: true,
-                        title: "Access Denied",
+                        title: accessDeniedTxt,
          		        buttons: dialog_buttons
                     });
                 } else {
@@ -392,14 +392,14 @@ $(document).ready(function() {
                                     });
                                 }
                         }}).trigger("reloadGrid");
-                        
+
                     }
                 };
 			    dialog_buttons[cancelBtn]=function(){
                     $( this ).dialog( "close" );
 			    };
 				dialog_buttons[resetBtn]=function(){
-                    
+
 					jQuery("#displayparticipants").jqGrid('setGridParam',{
                         	url:jsonUrl,
                             gridComplete: function(){
@@ -415,9 +415,9 @@ $(document).ready(function() {
                                     });
                                 }
                         }});
-						
+
 						$("#displayparticipants").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
-						
+
 			    };
 			    /* End of building array for button functions */
 	            $("#search").dialog({
