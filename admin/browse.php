@@ -187,7 +187,7 @@ if ($subaction == "id")
 
     $nfncount = count($fnames)-1;
     //SHOW INDIVIDUAL RECORD
-    $idquery = "SELECT * FROM {$surveytable} s";
+    $idquery = "SELECT * FROM {$surveytable} s ";
     if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
         $idquery .= " LEFT JOIN {$tokentable} t ON s.token = t.token ";
     if (incompleteAnsFilterstate() == "inc")
