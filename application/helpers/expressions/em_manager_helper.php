@@ -4830,7 +4830,7 @@
             $jsParts=array();
             $allJsVarsUsed=array();
             $rowdividList=array();   // list of subquestions needing relevance entries
-            $jsParts[] = '<script type="text/javascript" src="'.Yii::app()->getConfig('generalscripts').'admin/expressions/em_javascript.js"></script>';
+            $jsParts[] = '<script type="text/javascript" src="'.Yii::app()->getConfig('generalscripts').'expressions/em_javascript.js"></script>';
             $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
             if ($LEM->surveyMode == 'group')

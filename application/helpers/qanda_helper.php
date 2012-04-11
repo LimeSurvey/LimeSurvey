@@ -3014,6 +3014,7 @@ function do_file_upload($ia)
     ."{$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2>";
 
     $answer =  "<script type='text/javascript'>
+    jsonUrl = '".Yii::app()->getController()->createUrl('uploader/index')."';
     var translt = {
     title: '" . $clang->gT('Upload your files','js') . "',
     returnTxt: '" . $clang->gT('Return to survey','js') . "'
