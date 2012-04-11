@@ -77,11 +77,11 @@ else
     /* End search form titles */
 
     /* Colnames and heading for survey links subgrid */
+    var linksHeadingTxt="<?php $clang->eT("Participant's survey information")?>";
     var surveyNameColTxt="<?php $clang->eT("Survey name")?>";
     var surveyIdColTxt="<?php $clang->eT("Survey ID") ?>";
     var tokenIdColTxt="<?php $clang->eT("Token ID") ?>";
     var dateAddedColTxt="<?php $clang->eT("Date added") ?>";
-    var linksHeadingTxt="<?php $clang->eT("Participant's survey information")?>";
 
     /* Colnames and heading for attributes subgrid */
     var attributesHeadingTxt="<?php $clang->eT("Participant's attribute information") ?>";
