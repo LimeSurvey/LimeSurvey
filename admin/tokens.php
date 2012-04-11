@@ -1973,8 +1973,8 @@
                 $msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
                 $sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
-                $modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
-                $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
+                $msgsubject = str_replace("@@SURVEYURL@@", $barebone_link, $msgsubject);
+                $sendmessage = str_replace("@@SURVEYURL@@", $barebone_link, $sendmessage);
 
                 $customheaders = array( '1' => "X-surveyid: ".$surveyid,
                                         '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
