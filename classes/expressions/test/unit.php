@@ -18,7 +18,7 @@
         <title>ExpressionManager:  Unit Test Core Evaluator</title>
     </head>
     <body onload="recompute()">
-        <script type="text/javascript" src="../classes/expressions/em_javascript.js"></script>
+        <script type="text/javascript" src="../scripts/em_javascript.js"></script>
         <?php
             //            include_once('../ExpressionManager.php');
             ExpressionManager::UnitTestEvaluator();
