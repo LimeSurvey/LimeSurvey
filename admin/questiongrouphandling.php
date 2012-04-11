@@ -62,7 +62,7 @@ if ($action == "addgroup")
         . getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
         . "</li>\n"
         // Group-Level Relevance
-        . "<li><label for='relevance'>".$clang->gT("Relevance equation:")."</label>"
+        . "<li><label for='grelevance'>".$clang->gT("Relevance equation:")."</label>"
         . "<textarea cols='50' rows='1' id='grelevance' name='grelevance'></textarea>"
         . "</li>"
         . "</ul>"
@@ -148,10 +148,10 @@ if ($action == "editgroup")
         . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
         . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
         . "</span></div>"
-        . "<div class='settingrow'><span class='settingcaption'><label for='relevance'>".$clang->gT("Relevance equation:")."</label></span>\n"
+        . "<div class='settingrow'><span class='settingcaption'><label for='grelevance'>".$clang->gT("Relevance equation:")."</label></span>\n"
         . "<span class='settingentry'><textarea cols='50' rows='1' id='grelevance' name='grelevance'>".$esrow['grelevance']."</textarea></span>"
         . "</span></div>"
-        . "\t</span></div><div style='clear:both'></div>";
+        . "\n<div style='clear:both'></div>";
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
     $egresult = db_execute_assoc($egquery);
     $i = 1;
