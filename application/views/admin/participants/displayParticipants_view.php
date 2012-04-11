@@ -77,20 +77,20 @@ else
     /* End search form titles */
 
     /* Colnames and heading for survey links subgrid */
-    var surveyNameColTxt="<?php $clang->eT("Survey Name")?>";
+    var surveyNameColTxt="<?php $clang->eT("Survey name")?>";
     var surveyIdColTxt="<?php $clang->eT("Survey ID") ?>";
     var tokenIdColTxt="<?php $clang->eT("Token ID") ?>";
-    var dateAddedColTxt="<?php $clang->eT("Date Added") ?>";
-    var linksHeadingTxt="<?php $clang->eT("Participant's Survey Information")?>";
+    var dateAddedColTxt="<?php $clang->eT("Date added") ?>";
+    var linksHeadingTxt="<?php $clang->eT("Participant's survey information")?>";
 
     /* Colnames and heading for attributes subgrid */
-    var attributesHeadingTxt="<?php $clang->eT("Participant's Attribute Information") ?>";
+    var attributesHeadingTxt="<?php $clang->eT("Participant's attribute information") ?>";
     var actionsColTxt="<?php $clang->eT("Actions") ?>";
     var participantIdColTxt="<?php $clang->eT("Participant ID") ?>";
-    var attributeTypeColTxt="<?php $clang->eT("Attribute Type") ?>";
-    var attributeNameColTxt="<?php $clang->eT("Attribute Name") ?>";
-    var attributeValueColTxt="<?php $clang->eT("Attribute Value") ?>";
-    var attributePosValColTxt="<?php $clang->eT("Attribute Possible Values") ?>";
+    var attributeTypeColTxt="<?php $clang->eT("Attribute type") ?>";
+    var attributeNameColTxt="<?php $clang->eT("Attribute name") ?>";
+    var attributeValueColTxt="<?php $clang->eT("Attribute value") ?>";
+    var attributePosValColTxt="<?php $clang->eT("Possible attribute values") ?>";
 
     var resetBtn = "<?php $clang->eT("Reset"); ?>";
     var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
@@ -101,7 +101,7 @@ else
     var spTitle = "<?php $clang->eT("Sharing participants..."); ?>";
     var spAddBtn = "<?php $clang->eT("Share the selected participants"); ?>";
     var sfNoUser = "<?php $clang->eT("No other user in the system"); ?>";
-    var addpartTitle = "<?php $clang->eT("Add participant to Survey"); ?>";
+    var addpartTitle = "<?php $clang->eT("Add participant to survey"); ?>";
     var addpartErrorMsg = "<?php $clang->eT("Either you don't own a survey or it doesn't have token table"); ?>";
     var mapButton = "<?php $clang->eT("Next") ?>";
     var error = "<?php $clang->eT("Error") ?>";
