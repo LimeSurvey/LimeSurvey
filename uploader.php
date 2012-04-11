@@ -52,15 +52,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 {
     die("You don't have a valid session !");
 }
-if (isset($_SESSION['s_lang']))
-{
-    $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
-}
-elseif (isset($surveyid) && $surveyid)
-{
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $clang = SetSurveyLanguage( $surveyid, $baselang);
-}
+
 if (isset($_GET['filegetcontents']))
 {
     $sFileName=sanitize_filename($_GET['filegetcontents']);
@@ -85,10 +77,15 @@ $meta = '<script type="text/javascript">
 $meta .='<script type="text/javascript" src="scripts/ajaxupload.js"></script>
 <script type="text/javascript" src="scripts/uploader.js"></script>
 <link type="text/css" href="scripts/uploader.css" rel="stylesheet" />';
-
-$baselang = GetBaseLanguageFromSurveyID($surveyid);
-$clang = new limesurvey_lang($baselang);
-
+if (isset($_SESSION['s_lang']))
+{
+    $language = $_SESSION['s_lang'];
+}
+else
+{
+    $language = GetBaseLanguageFromSurveyID($surveyid);
+}
+$clang = new limesurvey_lang($language);
 $header = getHeader($meta);
 
 echo $header;
