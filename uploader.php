@@ -52,6 +52,15 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 {
     die("You don't have a valid session !");
 }
+if (isset($_SESSION['s_lang']))
+{
+    $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
+}
+elseif (isset($surveyid) && $surveyid)
+{
+    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $clang = SetSurveyLanguage( $surveyid, $baselang);
+}
 if (isset($_GET['filegetcontents']))
 {
     $sFileName=sanitize_filename($_GET['filegetcontents']);
@@ -131,4 +140,3 @@ $body = '
     </body>
 </html>';
 echo $body;
-?>
