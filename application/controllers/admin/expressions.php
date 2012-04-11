@@ -22,7 +22,7 @@ class Expressions extends Survey_Common_Action {
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ExpressionManager:  <?php $this->_printTitle(Yii::app()->request->getQuery('sa', 'index')); ?></title>
         <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'jquery/jquery.js'; ?>"></script>
-        <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'admin/expressions/em_javascript.js'; ?>" /></script>
+        <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'expressions/em_javascript.js'; ?>" /></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'survey_runtime.js'; ?>" /></script>
         <style type="text/css">
             <!--
