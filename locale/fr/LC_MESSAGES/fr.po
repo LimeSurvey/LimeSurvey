@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 1.92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-12 16:20+0100\n"
-"PO-Revision-Date: 2012-04-12 18:37+0100\n"
+"PO-Revision-Date: 2012-04-12 19:14+0100\n"
 "Last-Translator: Denis Chenu <dchenu@gsill.net>\n"
 "Language-Team: Sébastien Gaugry, Guillaume Jaouen, Denis Chenu <translations@limesurvey.org>\n"
 "Language: \n"
@@ -3191,7 +3191,7 @@ msgstr ""
 "ATTENTION :\n"
 "Ceci est sûr seulement si vous avez utilisé l'éditeur de conditions.\n"
 "\n"
-"CEPENDANT, si vous avez spécifié manuellement des équations de filtre, la régénération des codes détruira toute la logique du questionnaire."
+"CEPENDANT, si vous avez spécifié manuellement des équations des filtres conditionnels, la régénération des codes détruira toute la logique du questionnaire."
 
 #: admin/html.php:745
 msgid "Straight"
@@ -3353,7 +3353,7 @@ msgstr "Fermer ce groupe"
 #: admin/html.php:1141
 #: admin/html.php:1495
 msgid "Relevance:"
-msgstr "Filtre : "
+msgstr "Filtre conditionnel : "
 
 #: admin/html.php:1212
 #: admin/html.php:1217
@@ -4543,7 +4543,7 @@ msgstr "Remarque : vous DEVEZ saisir un nouveau code pour la question !"
 #: admin/questionhandling.php:71
 #: admin/questionhandling.php:542
 msgid "Relevance equation:"
-msgstr "Équation du filtre : "
+msgstr "Équation du filtre conditionnel : "
 
 #: admin/questionhandling.php:75
 #: admin/questionhandling.php:493
@@ -11827,7 +11827,7 @@ msgstr "Nom [ID]"
 
 #: classes/expressions/LimeExpressionManager.php:6505
 msgid "Relevance [Validation] (Default)"
-msgstr "Filtre [Validation] (Défaut)"
+msgstr "Filtre conditionnel [Validation] (Défaut)"
 
 #: classes/expressions/LimeExpressionManager.php:6505
 msgid "Text [Help] (Tip)"
