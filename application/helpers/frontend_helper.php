@@ -781,12 +781,7 @@
                 {
                     if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount"))
                     {
-                        $validation = array();
-
-                        $query = "SELECT * FROM {{question_attributes}} WHERE qid = ".$fieldmap[$field]['qid'];
-                        $result = Yii::app()->db->createCommand($query)->query()->readAll();
-                        foreach($result as $row)
-                            $validation[$row['attribute']] = $row['value'];
+                        $validation= getQuestionAttributeValues($fieldmap[$field]['qid']);
 
                         $filecount = 0;
 
