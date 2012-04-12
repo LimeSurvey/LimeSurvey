@@ -1128,8 +1128,8 @@ function makelanguagechanger()
 
         // Changed how language changer works so that posts any currently set values.  This also ensures that token (and other) parmeters are also posted.
         //        $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-        $htmlcode ="<select name=\"select\" class='languagechanger'"
-        . "onchange=\"javascript:$('[name=move]').val('changelang_'+ this.value);$('#limesurvey').submit();\">\n";
+        $htmlcode ="<select name=\"select\" class='languagechanger' "
+        . " onchange=\"javascript:$('[name=move]').val('changelang_'+ this.value);$('#limesurvey').submit();\">\n";
 
         $sAddToURL = "";
         $sTargetURL = "$relativeurl/index.php";
