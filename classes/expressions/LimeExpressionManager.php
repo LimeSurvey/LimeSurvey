@@ -4252,9 +4252,9 @@
                         if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1)
                         {
                             // Need to check whether there is at least one checked box per row
-                            foreach ($LEM->subQrelInfo[$qid] as $sq)
+                            foreach ($LEM->q2subqInfo[$qid]['subqs'] as $sq)
                             {
-                                if ($_SESSION['relevanceStatus'][$sq['rowdivid']])
+                                if (!isset($_SESSION['relevanceStatus'][$sq['rowdivid']]) || $_SESSION['relevanceStatus'][$sq['rowdivid']])
                                 {
                                     $rowCount=0;
                                     $numUnanswered=0;
