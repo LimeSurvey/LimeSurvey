@@ -70,8 +70,7 @@ class UploaderController extends AdminController {
 			       $_SESSION[$sFieldname] = str_replace('{','{ ',json_encode($aFiles));
 			    }
 			}
-			$clang = Yii::app()->lang;
-			var_dump($sFileDir.$sFilename);
+			//var_dump($sFileDir.$sFilename);
 		    if (@unlink($sFileDir.$sFilename))
 		    {
 		       echo sprintf($clang->gT('File %s deleted'), $sOriginalFileName);
@@ -90,7 +89,15 @@ class UploaderController extends AdminController {
 		    //This next line ensures that the $surveyid value is never anything but a number.
 		    $surveyid=sanitize_int($surveyid);
 		}
-
+            if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+            {
+                $sLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
+            }
+            else
+            {
+                $sLanguage='';
+            }
+             $clang = SetSurveyLanguage( $surveyid, $sLanguage);
 		if(isset($param['mode']) && $param['mode'] == "upload")
 		{
 			$clang = Yii::app()->lang;
@@ -122,7 +129,6 @@ class UploaderController extends AdminController {
 		                        "success" => false,
 		                        "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$ext)
 		                    );
-
 		        echo lsJSONEncode($return);
 		        exit ();
 		    }
@@ -137,6 +143,7 @@ class UploaderController extends AdminController {
 		                "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
 		            );
 		            echo lsJSONEncode($return);
+		            exit ();
 		        }
 
 		        else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
@@ -152,9 +159,9 @@ class UploaderController extends AdminController {
 		                        "msg"           => $clang->gT("The file has been successfuly uploaded.")
 		                    );
 		            echo lsJSONEncode($return);
-
 		            // TODO : unlink this file since this is just a preview
 		            // unlink($randfileloc);
+		            exit ();
 		        }
 		    }
 		    else
@@ -168,6 +175,7 @@ class UploaderController extends AdminController {
 		                 "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $maxfilesize)
 		            );
 		            echo lsJSONEncode($return);
+		            exit ();
 		        }
 		        elseif ($iFileUploadTotalSpaceMB>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB))
 		        {
@@ -176,6 +184,7 @@ class UploaderController extends AdminController {
 		                 "msg" => $clang->gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",'unescaped')
 		            );
 		            echo lsJSONEncode($return);
+		            exit ();
 		        }
 		        elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
 		        {
@@ -191,6 +200,7 @@ class UploaderController extends AdminController {
 		            );
 
 		            echo lsJSONEncode($return);
+		            exit ();
 		        }
 		        // if there was some error, report error message
 		        else
@@ -204,6 +214,7 @@ class UploaderController extends AdminController {
 		                            );
 
 		                echo lsJSONEncode($return);
+		                exit ();
 		            }
 		            // check to ensure that the file does not cross the maximum file size
 		            else if ( $_FILES['uploadfile']['error'] == 1 ||  $_FILES['uploadfile']['error'] == 2 || $size > $maxfilesize)
@@ -214,6 +225,7 @@ class UploaderController extends AdminController {
 		                            );
 
 		                echo lsJSONEncode($return);
+		                exit ();
 		            }
 		            else
 		            {
@@ -222,6 +234,7 @@ class UploaderController extends AdminController {
 		                            "msg" => $clang->gT("Unknown error")
 		                        );
 		                echo lsJSONEncode($return);
+		                exit ();
 		            }
 		        }
 		    }

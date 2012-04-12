@@ -2582,9 +2582,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         elseif ($arow['type'] == "|")
         {
-            $abvalue = Question_attributes::model()->findByAttributes(array('attribute' => 'max_num_of_files', 'qid' => $arow['qid']))->getAttribute('value');
-
-            for ($i = 1; $i <= $abvalue; $i++)
+            $qidattributes= getQuestionAttributeValues($arow['qid']);
+            for ($i = 1; $i <= $qidattributes['max_num_of_files']; $i++)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
@@ -2598,7 +2597,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
                     $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['max_files']=$abvalue;
+                    $fieldmap[$fieldname]['max_files']=$qidattributes['max_num_of_files'];
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;

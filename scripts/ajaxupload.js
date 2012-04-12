@@ -188,6 +188,7 @@
      * @return file extenstion
      */    
     function getExt(file){
+        file = file.toLowerCase();
         return (-1 !== file.indexOf('.')) ? file.replace(/.*[.]/, '') : '';
     }
 

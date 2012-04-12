@@ -199,11 +199,10 @@ function passJSON(fieldname, show_title, show_comment, pos) {
     var json = "[";
     var filecount = 0;
     var licount   = parseInt($('#'+fieldname+'_licount').val());
-    var i = 0;
-
+    var i = 1;
     while (i <= licount)
     {
-
+        
         if ($("#"+fieldname+"_li_"+i).is(':visible'))
         {
             if (filecount > 0)
@@ -229,7 +228,6 @@ function passJSON(fieldname, show_title, show_comment, pos) {
 function saveAndExit(fieldname, show_title, show_comment, pos) {
     var filecount = parseInt($('#'+fieldname+'_filecount').val());
     var minfiles  = parseInt($('#'+fieldname+'_minfiles').val());
-
     if (minfiles != 0 && filecount < minfiles)
     {
         var confirmans = confirm(translt.errorNeedMore.replace('%s', (minfiles - filecount)))

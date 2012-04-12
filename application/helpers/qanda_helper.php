@@ -3015,8 +3015,11 @@ function do_file_upload($ia)
 
     $answer =  "<script type='text/javascript'>
     var translt = {
-    title: '" . $clang->gT('Upload your files','js') . "',
-    returnTxt: '" . $clang->gT('Return to survey','js') . "'
+        title: '" . $clang->gT('Upload your files','js') . "',
+        returnTxt: '" . $clang->gT('Return to survey','js') . "',
+        headTitle: '" . $clang->gT('Title','js') . "',
+        headComment: '" . $clang->gT('Comment','js') . "',
+        headFileName: '" . $clang->gT('File name','js') . "'
     };
     </script>\n";
     /*if ($pos)
