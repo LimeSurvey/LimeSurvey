@@ -6514,7 +6514,7 @@ function filterforattributes ($fieldname)
 * @param mixed $surveyid  The survey ID
 * @return array The fieldnames
 */
-function GetAttributeFieldNames($surveyid)
+function GetAttributeFieldNames($surveyid,$filter=true)
 {
     global $dbprefix, $connect;
     if (tableExists('tokens_'.$surveyid) === false)
@@ -6522,7 +6522,11 @@ function GetAttributeFieldNames($surveyid)
         return Array();
     }
     $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
-    return array_filter($tokenfieldnames,'filterforattributes');
+    if ($filter)
+    {
+        return array_filter($tokenfieldnames,'filterforattributes');
+    }
+    return $tokenfieldnames;
 }
 
 /**
