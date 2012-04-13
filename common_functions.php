@@ -6357,7 +6357,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
                                          'Limit' => $survey_quotas['qlimit'],
                                          'Action' => $survey_quotas['action'],
                                          'Message' => $survey_quotas['quotals_message'],
-                                         'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), $surveyinfo),
+                                         'Url' => templatereplace(passthruReplace($survey_quotas['quotals_url']), $surveyinfo),
                                          'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
                                          'AutoloadUrl' => $survey_quotas['autoload_url']));
             $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
