@@ -505,6 +505,8 @@
         $query = db_rename_table(returnglobal('oldtable') , db_table_name_nq("tokens_$surveyid"));
         $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
 
+        LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
+
         $tokenoutput .= "\t</div><div class='messagebox ui-corner-all'>\n"
         ."<div class='header ui-widget-header'>".$clang->gT("Import old tokens")."</div>"
         ."<br />".$clang->gT("A token table has been created for this survey and the old tokens were imported.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
@@ -1371,6 +1373,7 @@
         } else {
             $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
         }
+        LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
 
         $tokenoutput .= '<br />'.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
         ."(\"{$dbprefix}old_tokens_{$surveyid}_$date\")"."<br /><br />\n"
@@ -2268,6 +2271,8 @@
         ."\t\t<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" />\n";
     }
     $tokenoutput .= "\t</div>";
+
+    LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
     }
 
 
