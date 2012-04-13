@@ -2343,6 +2343,12 @@
             {
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+                $this->knownVars['TOKEN:TOKEN'] = array(
+                    'code'=>$_SESSION['token'],
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
             }
             if (isset($_SESSION['thistoken']))
             {
@@ -2380,6 +2386,7 @@
                 $this->knownVars['TOKEN:LASTNAME'] = $blankVal;
                 $this->knownVars['TOKEN:EMAIL'] = $blankVal;
                 $this->knownVars['TOKEN:USESLEFT'] = $blankVal;
+                $this->knownVars['TOKEN:TOKEN'] = $blankVal;
                 for ($i=1;$i<=100;++$i) // TODO - is there a way to know  how many attributes are set?  Looks like max is 100
                 {
                     $this->knownVars['TOKEN:ATTRIBUTE_' . $i] = $blankVal;
@@ -4252,9 +4259,9 @@
                         if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1)
                         {
                             // Need to check whether there is at least one checked box per row
-                            foreach ($LEM->subQrelInfo[$qid] as $sq)
+                            foreach ($LEM->q2subqInfo[$qid]['subqs'] as $sq)
                             {
-                                if ($_SESSION['relevanceStatus'][$sq['rowdivid']])
+                                if (!isset($_SESSION['relevanceStatus'][$sq['rowdivid']]) || $_SESSION['relevanceStatus'][$sq['rowdivid']])
                                 {
                                     $rowCount=0;
                                     $numUnanswered=0;

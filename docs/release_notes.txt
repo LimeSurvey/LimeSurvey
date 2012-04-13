@@ -78,6 +78,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120405) to 1.92+ (build 120412) April 12, 2012
+-Fixed issue #5962: View Response Details does not work correctly if responses are filtered (Statistics) (Thomas White)
+-Fixed issue #5985: Notifications using INSERTANS and/or QCODE don't work with all-in-one presentation of survey (Thomas White)
+-Fixed issue #5992: After upgrade to Version 1.92+ Build 120405 the uploaded file information gets corrupted. (Thomas White)
+-Fixed issue #6002: @@SURVEYURL@@ placeholder fails to translate (Thomas White)
+-Fixed issue #5976: Iterate survey sets all "uses_left" to "1" even if there has been set a larger number previously (Carsten Schmitz)
+-Fixed issue #5997 : upload windows are on default survey langage (Denis Chenu)
+-Fixed issue: Bad HTML in editgroup(Denis Chenu)
+-Fixed issue: Mssqlnative driver gives back weird date format in export (Carsten Schmitz)
+-Fixed issue: With certain Apache configurations then em_javascript.js file was not readable (Carsten Schmitz)
+#Updated translation: Danish  - kindly provided by Søren O'Neill (Carsten Schmitz)
+#Updated translation: Galician - kindly provided by Carlos Neira Cortizas (Carsten Schmitz)
+#Updated translation: German Updated translation: German (informal) (Carsten Schmitz)
+#Updated translation: Greek by Yannis Kaskamanidis (Carsten Schmitz)
+#Updated translation: Spanish (Mexico) (Carsten Schmitz)
+
 
 Changes from 1.92+ (build 120330) to 1.92+ (build 120405) April 5, 2012
 -Fixed issue #5877: Resume later doesn't work with a survey allowing public registration (Carsten Schmitz)
