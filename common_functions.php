@@ -7262,20 +7262,22 @@ function ls_json_encode($val)
 */
 function getIPAddress()
 {
-    $ip='';
     if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
     {
-      $ip=$_SERVER['HTTP_CLIENT_IP'];
+      return $_SERVER['HTTP_CLIENT_IP'];
     }
     elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
     {
-      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+      return $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
     elseif (!empty($_SERVER['REMOTE_ADDR']))
     {
-      $ip=$_SERVER['REMOTE_ADDR'];
+      return $_SERVER['REMOTE_ADDR'];
     }
-    return $ip;
+    else
+    {
+        return '127.0.0.1';
+    }
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
