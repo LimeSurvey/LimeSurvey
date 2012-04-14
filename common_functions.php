@@ -7247,13 +7247,35 @@ function fixSubquestions()
 /**
  * Need custom version of JSON encode to avoid having Expression Manager mangle it
  * @param type $val
- * @return type 
+ * @return type
  */
 function ls_json_encode($val)
 {
     $ans = json_encode($val);
     $ans = str_replace(array('{','}'),array('{ ',' }'), $ans);
     return $ans;
+}
+
+/**
+* This function returns the real IP address under all configurations
+*
+*/
+function getIPAddress()
+{
+    $ip='';
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    {
+      $ip=$_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+    {
+      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    elseif (!empty($_SERVER['REMOTE_ADDR']))
+    {
+      $ip=$_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
