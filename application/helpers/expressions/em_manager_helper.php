@@ -3229,13 +3229,7 @@
                 // Create initial insert row for this record
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 $sdata = array(
-                //"datestamp"=>$today,
-                //"ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''),
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
-                //"token"=>($this->surveyOptions['token']),
-                //"datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : NULL),
-                //"refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL),
-                //"startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION[$LEM->sessid]['datestamp'] : date("Y-m-d H:i:s",0)),
                 );
                 if ($this->surveyOptions['anonymized'] == "N")
                 {
@@ -3251,7 +3245,7 @@
                 }
                 if ($this->surveyOptions['ipaddr'] == "Y")
                 {
-                    $sdata = array_merge($sdata,array("ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '')));
+                    $sdata = array_merge($sdata,array("ipaddr"=>getIPAddress()));
                 }
                 if ($this->surveyOptions['refurl'] == "Y")
                 {
@@ -3307,8 +3301,8 @@
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                     $setter[] = dbQuoteID('datestamp') . "=" . dbQuoteAll($_SESSION[$this->sessid]['datestamp']);
                 }
-                if ($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) {
-                    $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll($_SERVER['REMOTE_ADDR']);
+                if ($this->surveyOptions['ipaddr']) {
+                    $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll(getIPAddress());
                 }
                 if ($finished) {
                     $setter[] = dbQuoteID('submitdate') . "=" . dbQuoteAll($_SESSION[$this->sessid]['datestamp']);

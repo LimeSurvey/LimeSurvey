@@ -968,13 +968,13 @@ function do_5pointchoice($ia)
     if($aQuestionAttributes['slider_rating']==1){
         $css_header_includes[]= '/admin/scripts/rating/jquery.rating.css';
         $js_header_includes[]='/admin/scripts/rating/jquery.rating.js';
-	    $answer.="
-			<script type=\"text/javascript\">
-			document.write('";
-	    $answer.='<ul id="'.$id.'div" class="answers-list stars-wrapper"><li class="item-list answer-star"><input type="radio" id="stars1" name="stars" class="'.$id.'st" value="1"/></li><li class="item-list answer-star"><input type="radio" id="stars2" name="stars" class="'.$id.'st" value="2"/></li><li class="item-list answer-star"><input type="radio" name="stars" id="stars3" class="'.$id.'st" value="3"/></li><li class="item-list answer-star"><input type="radio" id="stars4" name="stars" class="'.$id.'st" value="4"/></li><li class="item-list answer-star"><input type="radio" name="stars" id="stars5" class="'.$id.'st" value="5"/></li><li class="item-list answer-star"></u>';
-	    $answer.="');
-			</script>
-			";
+        $answer.="
+        <script type=\"text/javascript\">
+        document.write('";
+        $answer.='<ul id="'.$id.'div" class="answers-list stars-wrapper"><li class="item-list answer-star"><input type="radio" id="stars1" name="stars" class="'.$id.'st" value="1"/></li><li class="item-list answer-star"><input type="radio" id="stars2" name="stars" class="'.$id.'st" value="2"/></li><li class="item-list answer-star"><input type="radio" name="stars" id="stars3" class="'.$id.'st" value="3"/></li><li class="item-list answer-star"><input type="radio" id="stars4" name="stars" class="'.$id.'st" value="4"/></li><li class="item-list answer-star"><input type="radio" name="stars" id="stars5" class="'.$id.'st" value="5"/></li><li class="item-list answer-star"></u>';
+        $answer.="');
+        </script>
+        ";
         $answer.="
         <script type=\"text/javascript\">
         $('#$id').hide();
@@ -1005,22 +1005,22 @@ function do_5pointchoice($ia)
         }else{
             $value=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         }
-	    $answer.="
-			<script type=\"text/javascript\">
-			document.write('";
-	    $answer.="<div style=\"float:left;\">'+
-    		'<div style=\"text-align:center; margin-bottom:6px; width:370px;\"><div style=\"width:2%; float:left;\">1</div><div style=\"width:46%;float:left;\">2</div><div style=\"width:4%;float:left;\">3</div><div style=\"width:46%;float:left;\">4</div><div style=\"width:2%;float:left;\">5</div></div><br/>'+
-    		'<div id=\"{$id}sliderBg\" style=\"background-image:url(\'{$imageurl}/sliderBg.png\'); text-align:center; background-repeat:no-repeat; height:22px; width:396px;\">'+
-    		'<center>'+
-    		'<div id=\"{$id}slider\" style=\"width:365px;\"></div>'+
-    		'</center>'+
-    		'</div></div>'+
-    		'<div id=\"{$id}emoticon\" style=\"text-align:left; margin:10px; padding-left:10px;\"><img id=\"{$id}img1\" style=\"margin-left:10px;\" src=\".{$imageurl}/emoticons/{$value}.png\"/><img id=\"{$id}img2\" style=\"margin-left:-31px;margin-top:-31px;\" src=\"{$imageurl}/emoticons/{$value}.png\" />'+
-    		'</div>";
-	    $answer.="');
-			</script>
-			";
-	    $answer.="
+        $answer.="
+        <script type=\"text/javascript\">
+        document.write('";
+        $answer.="<div style=\"float:left;\">'+
+        '<div style=\"text-align:center; margin-bottom:6px; width:370px;\"><div style=\"width:2%; float:left;\">1</div><div style=\"width:46%;float:left;\">2</div><div style=\"width:4%;float:left;\">3</div><div style=\"width:46%;float:left;\">4</div><div style=\"width:2%;float:left;\">5</div></div><br/>'+
+        '<div id=\"{$id}sliderBg\" style=\"background-image:url(\'{$imageurl}/sliderBg.png\'); text-align:center; background-repeat:no-repeat; height:22px; width:396px;\">'+
+        '<center>'+
+        '<div id=\"{$id}slider\" style=\"width:365px;\"></div>'+
+        '</center>'+
+        '</div></div>'+
+        '<div id=\"{$id}emoticon\" style=\"text-align:left; margin:10px; padding-left:10px;\"><img id=\"{$id}img1\" style=\"margin-left:10px;\" src=\".{$imageurl}/emoticons/{$value}.png\"/><img id=\"{$id}img2\" style=\"margin-left:-31px;margin-top:-31px;\" src=\"{$imageurl}/emoticons/{$value}.png\" />'+
+        '</div>";
+        $answer.="');
+        </script>
+        ";
+        $answer.="
         <script type=\"text/javascript\">
         $('#$id').hide();
         var value=$value;
@@ -1553,31 +1553,31 @@ function do_list_dropdown($ia)
         $answer .= "</p>";
     }
 
-//    $checkotherscript = "";
-//    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
-//    {
-//        $checkotherscript = "\n<script type='text/javascript'>\n"
-//        . "\t<!--\n"
-//        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-//        . "function ensureOther_{$ia[0]}()\n"
-//        . "{\n"
-//        . "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
-//        . "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
-//        . "\tif (otherval == '-oth-' && othercommentval == '') {\n"
-//        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
-//        . "return false;\n"
-//        . "\t}\n"
-//        . "\telse {\n"
-//        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-//        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-//        . "}\n"
-//        . "\t}\n"
-//        . "}\n"
-//        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-//        . "\t-->\n"
-//        . "</script>\n";
-//    }
-//    $answer = $checkotherscript . $answer;
+    //    $checkotherscript = "";
+    //    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
+    //    {
+    //        $checkotherscript = "\n<script type='text/javascript'>\n"
+    //        . "\t<!--\n"
+    //        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
+    //        . "function ensureOther_{$ia[0]}()\n"
+    //        . "{\n"
+    //        . "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
+    //        . "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
+    //        . "\tif (otherval == '-oth-' && othercommentval == '') {\n"
+    //        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
+    //        . "return false;\n"
+    //        . "\t}\n"
+    //        . "\telse {\n"
+    //        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
+    //        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
+    //        . "}\n"
+    //        . "\t}\n"
+    //        . "}\n"
+    //        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+    //        . "\t-->\n"
+    //        . "</script>\n";
+    //    }
+    //    $answer = $checkotherscript . $answer;
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -1811,33 +1811,33 @@ function do_list_radio($ia)
     $answer .= $wrapper['whole-end'].'
     <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
 
-//    $checkotherscript = "";
-//
-//    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
-//    {
-//        $checkotherscript = "<script type='text/javascript'>\n"
-//        . "\t<!--\n"
-//        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-//        . "function ensureOther_{$ia[0]}()\n"
-//        . "{\n"
-//        . "\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
-//        . "\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
-//        . "\tif (otherval == true && othercommentval == '') {\n"
-//        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
-//        . "return false;\n"
-//        . "\t}\n"
-//        . "\telse {\n"
-//        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-//        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-//        . "}\n"
-//        . "\t}\n"
-//        . "}\n"
-//        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-//        . "\t-->\n"
-//        . "</script>\n";
-//    }
-//
-//    $answer = $checkotherscript . $answer;
+    //    $checkotherscript = "";
+    //
+    //    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
+    //    {
+    //        $checkotherscript = "<script type='text/javascript'>\n"
+    //        . "\t<!--\n"
+    //        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
+    //        . "function ensureOther_{$ia[0]}()\n"
+    //        . "{\n"
+    //        . "\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
+    //        . "\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
+    //        . "\tif (otherval == true && othercommentval == '') {\n"
+    //        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
+    //        . "return false;\n"
+    //        . "\t}\n"
+    //        . "\telse {\n"
+    //        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
+    //        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
+    //        . "}\n"
+    //        . "\t}\n"
+    //        . "}\n"
+    //        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+    //        . "\t-->\n"
+    //        . "</script>\n";
+    //    }
+    //
+    //    $answer = $checkotherscript . $answer;
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -2518,8 +2518,8 @@ function do_multiplechoice($ia)
         $answer .= " onclick='cancelBubbleThis(event);if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; $checkconditionFunction(\"\", \"$myfname\", \"text\"); }";
         $answer .= " if(this.checked===true) { document.getElementById(\"answer$myfname\").focus(); }; LEMflagMandOther(\"$myfname\",this.checked);";
         $answer .= "' />
-		<label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
-		<input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
+        <label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
+        <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2941,36 +2941,36 @@ function do_multiplechoice_withcomments($ia)
     //        //$answer = $minanswscript . $answer;
     //    }
 
-//    $checkotherscript = "";
-//    //if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
-//    if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
-//    {
-//        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
-//        // this means that if it is cehcked We must force the end-user to enter text in the input
-//        // box
-//        $checkotherscript = "<script type='text/javascript'>\n"
-//        . "\t<!--\n"
-//        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-//        . "function ensureOther_{$ia[0]}()\n"
-//        . "{\n"
-//        . "\tothercommentval=document.getElementById('answer".$myfname2."').value;\n"
-//        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
-//        . "\tif (otherval != '' && othercommentval == '') {\n"
-//        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
-//        . "return false;\n"
-//        . "\t}\n"
-//        . "\telse {\n"
-//        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-//        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-//        . "}\n"
-//        . "\t}\n"
-//        . "}\n"
-//        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-//        . "\t-->\n"
-//        . "</script>\n";
-//    }
-//
-//    $answer = $checkotherscript . $answer;
+    //    $checkotherscript = "";
+    //    //if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
+    //    if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
+    //    {
+    //        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
+    //        // this means that if it is cehcked We must force the end-user to enter text in the input
+    //        // box
+    //        $checkotherscript = "<script type='text/javascript'>\n"
+    //        . "\t<!--\n"
+    //        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
+    //        . "function ensureOther_{$ia[0]}()\n"
+    //        . "{\n"
+    //        . "\tothercommentval=document.getElementById('answer".$myfname2."').value;\n"
+    //        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
+    //        . "\tif (otherval != '' && othercommentval == '') {\n"
+    //        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
+    //        . "return false;\n"
+    //        . "\t}\n"
+    //        . "\telse {\n"
+    //        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
+    //        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
+    //        . "}\n"
+    //        . "\t}\n"
+    //        . "}\n"
+    //        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+    //        . "\t-->\n"
+    //        . "</script>\n";
+    //    }
+    //
+    //    $answer = $checkotherscript . $answer;
 
     return array($answer, $inputnames);
 }
@@ -3015,11 +3015,11 @@ function do_file_upload($ia)
 
     $answer =  "<script type='text/javascript'>
     var translt = {
-        title: '" . $clang->gT('Upload your files','js') . "',
-        returnTxt: '" . $clang->gT('Return to survey','js') . "',
-        headTitle: '" . $clang->gT('Title','js') . "',
-        headComment: '" . $clang->gT('Comment','js') . "',
-        headFileName: '" . $clang->gT('File name','js') . "'
+    title: '" . $clang->gT('Upload your files','js') . "',
+    returnTxt: '" . $clang->gT('Return to survey','js') . "',
+    headTitle: '" . $clang->gT('Title','js') . "',
+    headComment: '" . $clang->gT('Comment','js') . "',
+    headFileName: '" . $clang->gT('File name','js') . "'
     };
     </script>\n";
     /*if ($pos)
@@ -3401,14 +3401,14 @@ function do_multiplenumeric($ia)
 
     /*if(!empty($numbersonlyonblur))
     {
-        $numbersonly .= ' onblur="'.implode(';', $numbersonlyonblur).'"';
-        $numbersonly_slider = implode(';', $numbersonlyonblur);
+    $numbersonly .= ' onblur="'.implode(';', $numbersonlyonblur).'"';
+    $numbersonly_slider = implode(';', $numbersonlyonblur);
     }
     else
     {
-        $numbersonly_slider = '';
+    $numbersonly_slider = '';
     }*/
-        $numbersonly_slider = '';
+    $numbersonly_slider = '';
 
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
@@ -3685,28 +3685,28 @@ function do_multiplenumeric($ia)
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
-//        || trim($aQuestionAttributes['num_value_equals_sgqa']) != ''
-//        || trim($aQuestionAttributes['min_num_value_sgqa']) != ''
-//        || trim($aQuestionAttributes['max_num_value_sgqa']) != ''
+        //        || trim($aQuestionAttributes['num_value_equals_sgqa']) != ''
+        //        || trim($aQuestionAttributes['min_num_value_sgqa']) != ''
+        //        || trim($aQuestionAttributes['max_num_value_sgqa']) != ''
         )
         {
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
             if (trim($aQuestionAttributes['equals_num_value']) != '')
             {
                 $answer_main .= "\t<li class='multiplenumerichelp help-item'>\n"
-                    . "<span class=\"label\">".$clang->gT('Remaining: ')."</span>\n"
-                    . "<span id=\"remainingvalue_{$ia[0]}\" class=\"dynamic_remaining\">$prefix\n"
-                    . "{" . $qinfo['sumRemainingEqn'] . "}\n"
-                    . "$suffix</span>\n"
-                    . "\t</li>\n";
+                . "<span class=\"label\">".$clang->gT('Remaining: ')."</span>\n"
+                . "<span id=\"remainingvalue_{$ia[0]}\" class=\"dynamic_remaining\">$prefix\n"
+                . "{" . $qinfo['sumRemainingEqn'] . "}\n"
+                . "$suffix</span>\n"
+                . "\t</li>\n";
             }
 
             $answer_main .= "\t<li class='multiplenumerichelp  help-item'>\n"
-                . "<span class=\"label\">".$clang->gT('Total: ')."</span>\n"
-                . "<span id=\"totalvalue_{$ia[0]}\" class=\"dynamic_sum\">$prefix\n"
-                . "{" . $qinfo['sumEqn'] . "}\n"
-                . "$suffix</span>\n"
-                . "\t</li>\n";
+            . "<span class=\"label\">".$clang->gT('Total: ')."</span>\n"
+            . "<span id=\"totalvalue_{$ia[0]}\" class=\"dynamic_sum\">$prefix\n"
+            . "{" . $qinfo['sumEqn'] . "}\n"
+            . "$suffix</span>\n"
+            . "\t</li>\n";
         }
         $answer .= $question_tip."<ul class=\"subquestions-list questions-list text-list numeric-list\">\n".$answer_main."</ul>\n";
     }
@@ -4037,7 +4037,7 @@ function do_shortfreetext($ia)
         }
         else{
             if ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
-                $currentLatLong = getLatLongFromIp(get_current_ip_address());
+                $currentLatLong = getLatLongFromIp(getIPAddress());
             if (!isset($currentLatLong) || $currentLatLong==false){
                 $floatLat = 0;
                 $floatLng = 0;
@@ -4088,7 +4088,7 @@ function do_shortfreetext($ia)
             elseif ($aQuestionAttributes['location_mapservice']==2)
                 $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
 
-        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
+            if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
             $answer .= "<div class=\"questionhelp\">"
             . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
@@ -6147,8 +6147,8 @@ function do_arraycolumns($ia)
                 $myfname = $ia[1].$anscode[$_i];
                 $trbc = alternation($trbc , 'row');
                 /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-                 containing a list of unanswered questions, the current question must be in the array,
-                 and there must be no answer available for the item in this session. */
+                containing a list of unanswered questions, the current question must be in the array,
+                and there must be no answer available for the item in this session. */
                 if ($ia[6]=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") )
                 {
                     $ld = "<span class=\"errormandatory\">{$ld}</span>";

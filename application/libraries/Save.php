@@ -157,7 +157,7 @@ class Save {
             {
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 $sdata = array("datestamp"=>$today,
-                "ipaddr"=>get_current_ip_address(),
+                "ipaddr"=>getIPAddress(),
                 "startlanguage"=>$_SESSION['survey_'.$surveyid]['s_lang'],
                 "refurl"=>getenv("HTTP_REFERER"));
                 if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
@@ -177,7 +177,7 @@ class Save {
             "identifier"=>$_POST['savename'], // Binding does escape , so no quoting/escaping necessary
             "access_code"=>md5($_POST['savepass']),
             "email"=>$_POST['saveemail'],
-            "ip"=>get_current_ip_address(),
+            "ip"=>getIPAddress(),
             "refurl"=>getenv("HTTP_REFERER"),
             "saved_thisstep"=>$thisstep,
             "status"=>"S",

@@ -567,8 +567,8 @@ function getQuestions($surveyid,$gid,$selectedqid)
         $sQuestionselecter .= "<option value='{$link}'";
         if ($selectedqid == $qrow['qid'])
         {
-                $sQuestionselecter .= " selected='selected'";
-                $qexists=true;
+            $sQuestionselecter .= " selected='selected'";
+            $qexists=true;
         }
         $sQuestionselecter .=">{$qrow['title']}:";
         $sQuestionselecter .= " ";
@@ -1858,9 +1858,9 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
                     if (is_array($files)) {
                         foreach ($files as $file) {
                             $value .= $file->name .
-                                    ' (' . $file->size . 'KB) ' .
-                                    strip_tags($file->title) .
-                                    ' - ' . strip_tags($file->comment) . "<br/>";
+                            ' (' . $file->size . 'KB) ' .
+                            strip_tags($file->title) .
+                            ' - ' . strip_tags($file->comment) . "<br/>";
                         }
                     }
                 }
@@ -3450,13 +3450,13 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Maximum value of the numeric input'),
     "caption"=>$clang->gT('Maximum value'));
 
-//    $qattributes["max_num_value_sgqa"]=array(
-//    "types"=>"K",
-//    'category'=>$clang->gT('Logic'),
-//    'sortorder'=>100,
-//    'inputtype'=>'text',
-//    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
-//    "caption"=>$clang->gT('Max value from SGQA'));
+    //    $qattributes["max_num_value_sgqa"]=array(
+    //    "types"=>"K",
+    //    'category'=>$clang->gT('Logic'),
+    //    'sortorder'=>100,
+    //    'inputtype'=>'text',
+    //    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
+    //    "caption"=>$clang->gT('Max value from SGQA'));
 
     $qattributes["maximum_chars"]=array(
     "types"=>"STUNQK:;",
@@ -3490,13 +3490,13 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Minimum value of the numeric input'),
     "caption"=>$clang->gT('Minimum value'));
 
-//    $qattributes["min_num_value_sgqa"]=array(
-//    "types"=>"K",
-//    'category'=>$clang->gT('Logic'),
-//    'sortorder'=>100,
-//    'inputtype'=>'text',
-//    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
-//    "caption"=>$clang->gT('Minimum value from SGQA'));
+    //    $qattributes["min_num_value_sgqa"]=array(
+    //    "types"=>"K",
+    //    'category'=>$clang->gT('Logic'),
+    //    'sortorder'=>100,
+    //    'inputtype'=>'text',
+    //    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
+    //    "caption"=>$clang->gT('Minimum value from SGQA'));
 
     $qattributes["multiflexible_max"]=array(
     "types"=>":",
@@ -3544,13 +3544,13 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Present answer options in reverse order'),
     "caption"=>$clang->gT('Reverse answer order'));
 
-//    $qattributes["num_value_equals_sgqa"]=array(
-//    "types"=>"K",
-//    'category'=>$clang->gT('Logic'),
-//    'sortorder'=>100,
-//    'inputtype'=>'text',
-//    "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
-//    "caption"=>$clang->gT('Value equals SGQA'));
+    //    $qattributes["num_value_equals_sgqa"]=array(
+    //    "types"=>"K",
+    //    'category'=>$clang->gT('Logic'),
+    //    'sortorder'=>100,
+    //    'inputtype'=>'text',
+    //    "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
+    //    "caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["num_value_int_only"]=array(
     "types"=>"N",
@@ -3847,8 +3847,8 @@ function questionAttributes($returnByName=false)
     'sortorder'=>201,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('None'),
-        1=>$clang->gT('Order - like 3)'),
-        ),
+    1=>$clang->gT('Order - like 3)'),
+    ),
     'default'=>0,
     "help"=>$clang->gT('Accelerator keys for list items'),
     "caption"=>$clang->gT('Prefix for list items'));
@@ -5052,7 +5052,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
             $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
             if ($aFieldinfo['type']=='1')
             {
-               $aFieldMappings[$sFieldname]=$aFieldMappings[$sFieldname].'#'.$aFieldinfo['scale_id'];
+                $aFieldMappings[$sFieldname]=$aFieldMappings[$sFieldname].'#'.$aFieldinfo['scale_id'];
             }
             // now also add a shortened field mapping which is needed for certain kind of condition mappings
             $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid'].'X'.$aFieldinfo['qid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']];
@@ -5590,7 +5590,7 @@ function getSubQuestions($sid, $qid, $sLanguage) {
         {
             $resultset[$row['parent_qid']][] = $row;
         }
-	    $subquestions[$sid][$sLanguage] = $resultset;
+        $subquestions[$sid][$sLanguage] = $resultset;
     }
     if (isset($subquestions[$sid][$sLanguage][$qid])) return $subquestions[$sid][$sLanguage][$qid];
     return array();
@@ -7520,4 +7520,29 @@ function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
 
     return $beg.$ellipsis.$end;
 }
+
+/**
+* This function returns the real IP address under all configurations
+*
+*/
+function getIPAddress()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+    {
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    elseif (!empty($_SERVER['REMOTE_ADDR']))
+    {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+    else
+    {
+        return '127.0.0.1';
+    }
+}
+
 // Closing PHP tag intentionally omitted - yes, it is okay

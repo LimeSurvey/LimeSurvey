@@ -1194,7 +1194,7 @@
             {
                 foreach($aRecipient as $sRecipient)
                 {
-                    $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN 
+                    $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
                     if(validateEmailAddress($sRecipient))
                     {
                         $aEmailNotificationTo[]=$sRecipient;
@@ -1220,7 +1220,7 @@
             {
                 foreach($aRecipient as $sRecipient)
                 {
-                    $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN 
+                    $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
                     if(validateEmailAddress($sRecipient))
                     {
                         $aEmailResponseTo[]=$sRecipient;
@@ -2812,23 +2812,6 @@ function display_first_page() {
     echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
     LimeExpressionManager::FinishProcessingPage();
     doFooter();
-}
-
-function get_current_ip_address()
-{
-    if(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-    {
-        $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    elseif(!empty($_SERVER['REMOTE_ADDR']))
-    {
-        $sIPAddress = $_SERVER['REMOTE_ADDR'];
-    }
-    else{
-        $sIPAddress='';
-    }
-
-    return  $sIPAddress;
 }
 
 function killSurveySession($iSurveyID)
