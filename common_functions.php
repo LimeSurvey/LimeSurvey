@@ -7262,15 +7262,19 @@ function ls_json_encode($val)
 */
 function getIPAddress()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    global $bServerBehindProxy;
+    if ($bServerBehindProxy)
     {
-      return $_SERVER['HTTP_CLIENT_IP'];
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+        {
+          return $_SERVER['HTTP_CLIENT_IP'];
+        }
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+        {
+          return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
     }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
-    {
-      return $_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    elseif (!empty($_SERVER['REMOTE_ADDR']))
+    if (!empty($_SERVER['REMOTE_ADDR']))
     {
       return $_SERVER['REMOTE_ADDR'];
     }
