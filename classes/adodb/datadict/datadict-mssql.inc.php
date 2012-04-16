@@ -88,7 +88,7 @@ class ADODB2_mssql extends ADODB_DataDict {
 
             case 'B': return 'IMAGE';
 
-            case 'D': return 'DATETIME';
+            case 'D': return 'DATE';
 
             case 'TS':
             case 'T': return 'DATETIME';

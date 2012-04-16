@@ -61,23 +61,32 @@ unlink($sFullFilepath);
 
 if (isset($aImportResults))
 {
-    if (count($aImportResults['warnings'])>0)
+    if (isset($aImportResults['fatalerror']))
     {
-        $importlabeloutput .= "<br />\n<div class='warningheader'>".$clang->gT("Warnings")."</div><ul>\n";
-        foreach ($aImportResults['warnings'] as $warning)
-        {
-            $importlabeloutput .= '<li>'.$warning.'</li>';
-        }
-        $importlabeloutput .= "</ul>\n";
+        $importlabeloutput .= "<br />\n<div class='warningheader'>".$clang->gT("Error")."</div>
+        <p>{$aImportResults['fatalerror']}<br>";
     }
+    else
+    {
+        if (count($aImportResults['warnings'])>0)
+        {
+            $importlabeloutput .= "<br />\n<div class='warningheader'>".$clang->gT("Warnings")."</div><ul>\n";
+            foreach ($aImportResults['warnings'] as $warning)
+            {
+                $importlabeloutput .= '<li>'.$warning.'</li>';
+            }
+            $importlabeloutput .= "</ul>\n";
+        }
 
-    $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
-    $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
-    $importlabeloutput .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
-    $importlabeloutput .= "\t<li>".$clang->gT("Labels").": {$aImportResults['labels']}</li></ul>\n";
-    $importlabeloutput .= "<p><strong>".$clang->gT("Import of label set(s) is completed.")."</strong><br /><br />\n";
+        $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
+        $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
+        $importlabeloutput .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
+        $importlabeloutput .= "\t<li>".$clang->gT("Labels").": {$aImportResults['labels']}</li></ul>\n";
+        $importlabeloutput .= "<p><strong>".$clang->gT("Import of label set(s) is completed.")."</strong><br /><br />\n";
+
+    }
     $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('$scriptname?action=labels', '_top')\" />\n";
-    $importlabeloutput .= "</div><br />\n";
+    $importlabeloutput .= "</p></div><br />\n";
 }
 
 
@@ -100,7 +109,8 @@ function CSVImportLabelset($sFullFilepath, $options)
     fclose($handle);
     if (substr($bigarray[0], 0, 27) != "# LimeSurvey Label Set Dump" && substr($bigarray[0], 0, 28) != "# PHPSurveyor Label Set Dump")
     {
-        return $results['fatalerror']=$clang->gT("This file is not a LimeSurvey label set file. Import failed.");
+        $results['fatalerror']=$clang->gT("This file is not a LimeSurvey label set file. Import failed.");
+        return $results;
     }
 
     for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
