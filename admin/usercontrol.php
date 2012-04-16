@@ -100,7 +100,7 @@ if (!isset($_SESSION['loginID']))
         {
             include("database.php");
 
-            $sIp=   $_SERVER['REMOTE_ADDR'];
+            $sIp = getIPAddress();
             $query = "SELECT * FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
             $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
             $result = $connect->query($query);

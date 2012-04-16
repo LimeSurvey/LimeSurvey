@@ -4045,7 +4045,7 @@ function do_shortfreetext($ia)
         }
         else{
             if ((int)($qidattributes['location_nodefaultfromip'])==0)
-                $currentLatLong = getLatLongFromIp($_SERVER['REMOTE_ADDR']);
+                $currentLatLong = getLatLongFromIp(getIPAddress());
             if (!isset($currentLatLong) || $currentLatLong==false){
                 $floatLat = 0;
                 $floatLng = 0;

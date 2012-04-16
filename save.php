@@ -122,7 +122,7 @@ global $errormsg;   // since neeeded by savecontrol()
         {
             $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
             $sdata = array("datestamp"=>$today,
-			"ipaddr"=>$_SERVER['REMOTE_ADDR'],
+			"ipaddr"=>getIPAddress(),
 			"startlanguage"=>$_SESSION['s_lang'],
 			"refurl"=>getenv("HTTP_REFERER"));
             //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
@@ -143,7 +143,7 @@ global $errormsg;   // since neeeded by savecontrol()
 		"identifier"=>$_POST['savename'], // Binding does escape , so no quoting/escaping necessary
 		"access_code"=>md5($_POST['savepass']),
 		"email"=>$_POST['saveemail'],
-		"ip"=>$_SERVER['REMOTE_ADDR'],
+		"ip"=>getIPAddress(),
 		"refurl"=>getenv("HTTP_REFERER"),
 		"saved_thisstep"=>$thisstep,
 		"status"=>"S",
