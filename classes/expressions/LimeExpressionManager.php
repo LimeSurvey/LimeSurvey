@@ -15,63 +15,403 @@
 
     define('LEM_DEFAULT_PRECISION',12);
 
+    /**
+     * LimeExpressionManager provides all of the interfaces between LimeSurvey and the ExpressionManager sub-system.
+     */
     class LimeExpressionManager {
+        /**
+         * LimeExpressionManager is a singleton.  $instance is its storage location.
+         * @var LimeExpressionManager
+         */
         private static $instance;
-        private $em;    // Expression Manager
+        /**
+         * Implements the recursive descent parser that processes expressions
+         * @var ExpressionManager
+         */
+        private $em;
+        /**
+         *
+         * @var type
+         */
         private $groupRelevanceInfo;
+        /**
+         * The survey ID
+         * @var integer
+         */
         private $sid;
-        private $debugLevel=0;  // sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
-        private $knownVars; // collection of variable attributes, indexed by SGQA code
-        private $qcode2sgqa;  // maps qcode varname to SGQA code
-        private $tempVars;  // variables temporarily set for substitution purposes
+        /**
+         * sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
+         * @var type
+         */
+        private $debugLevel=0;
+        /**
+         * Collection of variable attributes, indexed by SGQA code
+         *
+         * Actual variables are stored in this structure:
+         * $knownVars[$sgqa] = array(
+         * 'jsName_on' => // the name of the javascript variable if it is defined on the current page - often 'answerSGQA'
+         * 'jsName' => // the name of the javascript variable when referenced  on different pages - usually 'javaSGQA'
+         * 'readWrite' => // 'Y' for yes, 'N' for no - currently not used
+         * 'hidden' => // 1 if the question attribute 'hidden' is true, otherwise 0
+         * 'question' => // the text of the question (or sub-question)
+         * 'qid' => // the numeric question id - e.g. the Q part of the SGQA name
+         * 'gid' => // the numeric group id - e.g. the G part of the SGQA name
+         * 'grelevance' =>  // the group level relevance string
+         * 'relevance' => // the question level relevance string
+         * 'qcode' => // the qcode-style variable name for this question  (or sub-question)
+         * 'qseq' => // the 0-based index of the question within the survey
+         * 'gseq' => // the 0-based index of the group within the survey
+         * 'type' => // the single character type code for the question
+         * 'sgqa' => // the SGQA name for the variable
+         * 'ansList' => // ansArray converted to a JavaScript fragment - e.g. ",'answers':{ 'M':'Male','F':'Female'}"
+         * 'ansArray' => // PHP array of answer strings, keyed on the answer code = e.g. array['M']='Male';
+         * 'scale_id' => // '0' for most answers.  '1' for second scale within dual-scale questions
+         * 'rootVarName' => // the root code / name / title for the question, without any sub-question or answer-level suffix.  This is from the title column in the questions table
+         * 'subqtext' => // the sub-question text
+         * 'rowdivid' => // the JavaScript ID of the row identifier for a question.  This is used to show/hide entire question rows
+         * 'onlynum' => // 1 if only numbers are allowed for this variable.  If so, then extra processing is needed to ensure that can use comma as a decimal separator
+         * );
+         *
+         * Reserved variables (e.g. TOKEN:xxxx) are stored with this structure:
+         * $knownVars[$token] = array(
+         * 'code' => // the static value for the variable
+         * 'type' => // ''
+         * 'jsName_on' => // ''
+         * 'jsName' => // ''
+         * 'readWrite' => // 'N' - since these are always read-only variables
+         * );
+         *
+         * @var type
+         */
+        private $knownVars;
+        /**
+         * maps qcode varname to SGQA code
+         *
+         * @example ['gender'] = '38612X10X145'
+         * @var type
+         */
+        private $qcode2sgqa;
+        /**
+         * variables temporarily set for substitution purposes
+         *
+         * These are typically the LimeReplacement Fields passed in via templatereplace()
+         * Each has the following structure:  array(
+         * 'code' => // the static value of the variable
+         * 'jsName_on' => // ''
+         * 'jsName' => // ''
+         * 'readWrite'  => // 'N'
+         * );
+         *
+         * @var type
+         */
+        private $tempVars;
+        /**
+         * Array of relevance information for each page (gseq), indexed by gseq.
+         * Within a page, it contains a sequential list of the results of each relevance equation processed
+         * array(
+         * 'qid' => // question id -- e.g. 154
+         * 'gseq' => // 0-based group sequence -- e.g. 2
+         * 'eqn' => // the raw relevance equation parsed -- e.g. "!is_empty(p2_sex)"
+         * 'result' => // the Boolean result of parsing that equation in the current context -- e.g. 0
+         * 'numJsVars' => // the number of dynamic JavaScript variables used in that equation -- e.g. 1
+         * 'relevancejs' => // the actual JavaScript to insert for that relevance equation -- e.g. "LEMif(LEManyNA('p2_sex'),'',( ! LEMempty(LEMval('p2_sex') )))"
+         * 'relevanceVars' => // a pipe-delimited list of JavaScript variables upon which that equation depends -- e.g. "java38612X12X153"
+         * 'jsResultVar' => // the JavaScript variable in which that result will be stored -- e.g. "java38612X12X154"
+         * 'type' => // the single character type of the question -- e.g. 'S'
+         * 'hidden' => // 1 if the question should always be hidden
+         * 'hasErrors' => // 1 if there were parsing errors processing that relevance equation
+         * @var type
+         */
         private $pageRelevanceInfo;
+        /**
+         *
+         * @var type
+         */
         private $pageTailorInfo;
-        private $allOnOnePage=false;    // internally set to true for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
-        private $surveyMode='group';  // survey mode
-        private $surveyOptions=array(); // a set of global survey options passed from LimeSurvey
-        private $qid2code;  // array of mappings of Question # to list of SGQA codes used within it
-        private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
-        private $qcode2sgq; // maps name of the variable to the SGQ name
-        private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
-        private $varNameAttr;   // JavaScript array of mappings of canonical JavaScript variable name to key attributes.
+        /**
+         * internally set to true (1) for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
+         * @var type
+         */
+        private $allOnOnePage=false;
+        /**
+         * survey mode.  One of 'survey', 'group', or 'question'
+         * @var string
+         */
+        private $surveyMode='group';
+        /**
+         * a set of global survey options passed from LimeSurvey
+         *
+         * For example, array(
+         * 'rooturl' => // URL prefix needed to be able to click on a syntax-highlighted variable name and have it open the needed editting window
+         * 'hyperlinkSyntaxHighlighting' => // true if should be able to click on variables to edit them
+         * 'active' => // 0 for inactive, 1 for active survey
+         * 'allowsave' => // 0 for do not allow save; 1 for allow save
+         * 'anonymized' => // 1 for anonymous
+         * 'assessments' => // 1 for use assessments
+         * 'datestamp' => // 1 for use date stamps
+         * 'ipaddr' => // 1 for capture IP address
+         * 'radix' => // '.' for use period as decimal separator; ',' for use comma as decimal separator
+         * 'savetimings' => // "Y" if should save survey timings
+         * 'startlanguage' => // the starting language -- e.g. 'en'
+         * 'surveyls_dateformat' => // the index of the language specific date format -- e.g. 1
+         * 'tablename' => // the name of the table storing the survey data, if active -- e.g. lime_survey_38612
+         * 'target' => // the path for uploading files -- e.g. '/temp/files/'
+         * 'timeadjust' => // the time offset -- e.g. 0
+         * 'tempdir' => // the temporary directory for uploading files -- e.g. '/temp/'
+         * );
+         *
+         * @var type
+         */
+        private $surveyOptions=array();
+        /**
+         * array of mappings of Question # (qid) to pipe-delimited list of SGQA codes used within it
+         *
+         * @example [150] = "38612X11X150|38612X11X150other"
+         * @var type
+         */
+        private $qid2code;
+        /**
+         * array of mappings of JavaScript Variable names to Question number (qid)
+         *
+         * @example ['java38612X13X161other'] = '161'
+         * @var type
+         */
+        private $jsVar2qid;
+        /**
+         * maps name of the variable to the SGQ name (without the A suffix)
+         *
+         * @example ['p1_sex'] = "38612X10X147"
+         * @example ['afDS_sq1_1'] = "26626X37X705sq1#1"
+         * @var type
+         */
+        private $qcode2sgq;
+        /**
+         * array of mappings of knownVar aliases to the JavaScript variable names.
+         * This maps both the SGQA and qcode alias names to the same 2 dimensional array
+         *
+         * @example ['p1_sex'] = array(
+         * 'jsName' => // the JavaScript variable name used by EM -- e.g. "java38612X11X147"
+         * 'jsPart' => // the JavaScript fragment used in EM's ____ array -- e.g. "'p1_sex':'java38612X11X147'"
+         * );
+         * @example ['afDS_sq1_1] = array(
+         * 'jsName' => "java26626X37X705sq1#1"
+         * 'jsPart' => "'afDS_sq1_1':'java26626X37X705sq1#1'"
+         * );
+         * @var type
+         */
+        private $alias2varName;
+        /**
+         * JavaScript array of mappings of canonical JavaScript variable name to key attributes.
+         * These fragments are used to create the JavaScript varNameAttr array.
+         *
+         * @example ['java38612X11X147'] = "'java38612X11X147':{ 'jsName':'java38612X11X147','jsName_on':'java38612X11X147','sgqa':'38612X11X147','qid':147,'gid':11,'type':'G','default':'','rowdivid':'','onlynum':'','gseq':1,'answers':{ 'M':'Male','F':'Female'}}"
+         * @example ['java26626X37X705sq1#1'] = "'java26626X37X705sq1#1':{ 'jsName':'java26626X37X705sq1#1','jsName_on':'java26626X37X705sq1#1','sgqa':'26626X37X705sq1#1','qid':705,'gid':37,'type':'1','default':'','rowdivid':'26626X37X705sq1','onlynum':'','gseq':1,'answers':{ '0~1':'1|Low','0~2':'2|Medium','0~3':'3|High','1~1':'1|Never','1~2':'2|Sometimes','1~3':'3|Always'}}"
+         *
+         * @var type
+         */
+        private $varNameAttr;
 
-        private $qans;  // array of answer lists indexed by qid
-        private $groupId2groupSeq;  // map of gid to 0-based sequence number of groups
-        private $questionId2questionSeq;    // map question # to an incremental count of question order across the whole survey
-        private $questionId2groupSeq;   // map question  # to the group it is within, using an incremental count of group order
-        private $groupSeqInfo;  // array of info about each Group, indexed by GroupSeq
+        /**
+         * array of enumerated answer lists indexed by qid
+         * These use a tilde syntax to indicate which scale the answer is part of.
+         *
+         * @example ['0~4'] = "4|Child" // this means that code 4 in scale 0 has a coded value of 4 and a display value of 'Child'
+         * @example (for [705]): ['1~2'] = '2|Sometimes' // this means that the second scale for this question uses the coded value of 2 to represent 'Sometimes'
+         * @example // TODO - add example from survey using assessments
+         * 
+         * @var type
+         */
+        private $qans;
+        /**
+         * map of gid to 0-based sequence number of groups
+         *
+         * @example [10] = 0 // means that the first group (gseq=0) has gid=10
+         *
+         * @var type
+         */
+        private $groupId2groupSeq;
+        /**
+         * map question # to an incremental count of question order across the whole survey
+         *
+         * @example [157] = 13 // means that that 14th question in the survey has qid=157
+         *
+         * @var type
+         */
+        private $questionId2questionSeq;
+        /**
+         * map question  # to the group it is within, using an incremental count of group order
+         *
+         * @example [157] = 2 // means that qid 157 is in the 3rd page of questions (gseq = 2)
+         *
+         * @var type
+         */
+        private $questionId2groupSeq;
+        /**
+         * array of info about each Group, indexed by GroupSeq
+         *
+         * @example [2] = array(
+         * 'qstart' => 9 // the first qseq within that group
+         * 'qend' => 13 //the last qseq within that group
+         * );
+         *
+         * @var type
+         */
+        private $groupSeqInfo;
 
-        private $gseq2relevanceStatus;   // tracks which groups have at least one relevant, non-hidden question
-        private $qid2validationEqn;     // maps question # to the validation equation for that question.
+        /**
+         * tracks which groups have at least one relevant, non-hidden question
+         *
+         * @example [2] = 0 // means that the third group (gseq==2) is currently irrelevant
+         *
+         * @var type
+         */
+        private $gseq2relevanceStatus;
+        /**
+         * maps question # to the validation equation(s) for that question.
+         * These are grouped by qid then validation type, such as 'value_range', and 'num_answers'
+         *
+         * @example [703]  = array(
+         * 'eqn' => array(
+         *      'value_range' = "((is_empty(26626X34X703.NAOK) || 26626X34X703.NAOK >= (0)) and (is_empty(26626X34X703.NAOK) || 26626X34X703.NAOK <= (5)))"
+         * ),
+         * 'tips' => array(
+         *      'value_range' = "Each answer must be between {fixnum(0)} and {fixnum(5)}"
+         * ),
+         * 'subqValidEqns' = array(
+         *      [] = array(
+         *          'subqValidSelector' => ''   //
+         *          'subqValidEqn' => "(is_empty(26626X34X703.NAOK) || 26626X34X703.NAOK >= (0)) && (is_empty(26626X34X703.NAOK) || 26626X34X703.NAOK <= (5))"
+         * ),
+         * 'sumEqn' => '' // the equation to compute the current sum of the responses
+         * 'sumRemainingEqn' => '' // the equation to how much is left (for the question attribute that lets you specify the exact value of the sum of the answers)
+         * );
+         *
+         * @var type
+         */
+        private $qid2validationEqn;
 
-        private $questionSeq2relevance; // keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
-        private $currentGroupSeq;   // current Group sequence (0-based index)
-        private $currentQuestionSeq;    // for Question-by-Question mode, the 0-based index
-        private $currentQID;        // used in Question-by-Question mode
-        private $currentQset=NULL;   // set of the current set of questions to be displayed, indexed by QID - at least one must be relevant
-        private $lastMoveResult=NULL;   // last result of NavigateForwards, NavigateBackwards, or JumpTo
-        private $indexQseq;         // array of information needed to generate navigation index in question-by-question mode
-        private $indexGseq;         // array of information needed to generate navigation index in group-by-group mode
-        private $gseq2info;         // array of group sequence number to static info
+        /**
+         * keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
+         * @var type
+         */
+        private $questionSeq2relevance;
+        /**
+         * current Group sequence (0-based index)
+         * @var integer
+         */
+        private $currentGroupSeq;
+        /**
+         * for Question-by-Question mode, the 0-based index
+         * @var integer
+         */
+        private $currentQuestionSeq;
+        /**
+         * used in Question-by-Question mode
+         * @var integer
+         */
+        private $currentQID;
+        /**
+         * set of the current set of questions to be displayed, indexed by QID - at least one must be relevant
+         * @var type
+         */
+        private $currentQset=NULL;
+        /**
+         * last result of NavigateForwards, NavigateBackwards, or JumpTo
+         * @var type
+         */
+        private $lastMoveResult=NULL;
+        /**
+         * array of information needed to generate navigation index in question-by-question mode
+         * @var type
+         */
+        private $indexQseq;
+        /**
+         * array of information needed to generate navigation index in group-by-group mode
+         * @var type
+         */
+        private $indexGseq;
+        /**
+         * array of group sequence number to static info
+         * @var type
+         */
+        private $gseq2info;
 
-        private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
-        private $q2subqInfo;    // mapping of questions to information about their subquestions.
-        private $qattr; // array of attributes for each question
-        private $subQrelInfo=array();   // list of needed sub-question relevance (e.g. array_filter)
-        private $gRelInfo=array();  // array of Group-level relevance status
+        /**
+         * the maximum groupSeq reached -  this is needed for Index
+         * @var type
+         */
+        private $maxGroupSeq;
+        /**
+         * mapping of questions to information about their subquestions.
+         * @var type
+         */
+        private $q2subqInfo;
+        /**
+         * array of attributes for each question
+         * @var type
+         */
+        private $qattr;
+        /**
+         * list of needed sub-question relevance (e.g. array_filter)
+         * @var type
+         */
+        private $subQrelInfo=array();
+        /**
+         * array of Group-level relevance status
+         * @var type
+         */
+        private $gRelInfo=array();
 
+        /**
+         * Array of timing information to debug how long it takes for portions of LEM to run.
+         * @var type
+         */
         private $runtimeTimings=array();
+        /**
+         *
+         * @var Boolean
+         */
         private $initialized=false;
+        /**
+         *
+         * @var Boolean
+         */
         private $processedRelevance=false;
+        /**
+         *
+         * @var type
+         */
         private $debugTimingMsg='';
-        private $ParseResultCache;  // temporary variable to reduce need to parse same equation multiple times.  Used for relevance and validation
-        private $multiflexiAnswers; // array of 2nd scale answer lists for types ':' and ';' -- needed for convenient print of logic file
+        /**
+         * temporary variable to reduce need to parse same equation multiple times.  Used for relevance and validation
+         * @var type
+         */
+        private $ParseResultCache;
+        /**
+         * array of 2nd scale answer lists for types ':' and ';' -- needed for convenient print of logic file
+         * @var type
+         */
+        private $multiflexiAnswers;
 
-        private $sgqaNaming = true;    // used to specify whether to  generate equations using SGQA codes or qcodes
+        /**
+         * used to specify whether to  generate equations using SGQA codes or qcodes
+         * @var Boolean
+         */
+        private $sgqaNaming = true;
+        /**
+         * Number of groups in survey (number of possible pages to display)
+         * @var integer
+         */
         private $numGroups=0;
+        /**
+         * Numer of questions in survey (counting display-only ones?)
+         * @var integer
+         */
         private $numQuestions=0;
 
-        // A private constructor; prevents direct creation of object
+        /**
+         * A private constructor; prevents direct creation of object
+         */
         private function __construct()
         {
             self::$instance =& $this;
@@ -83,7 +423,7 @@
 
         /**
         * Ensures there is only one instances of LEM.  Note, if switch between surveys, have to clear this cache
-        * @return <type>
+        * @return LimeExpressionManager
         */
         public static function &singleton()
         {
@@ -111,14 +451,16 @@
             return self::$instance;
         }
 
-        // Prevent users to clone the instance
+        /**
+         * Prevent users to clone the instance
+         */
         public function __clone()
         {
             trigger_error('Clone is not allowed.', E_USER_ERROR);
         }
 
         /**
-        * Tells Expression Manager that something has changed enough that needs to eliminate caching
+         * Tells Expression Manager that something has changed enough that needs to eliminate internal caching
         */
         public static function SetDirtyFlag()
         {
@@ -128,7 +470,7 @@
 
         /**
         * Set the SurveyId - really checks whether the survey you're about to work with is new, and if so, clears the LEM cache
-        * @param <type> $sid
+        * @param <integer> $sid
         */
         public static function SetSurveyId($sid=NULL)
         {
@@ -143,7 +485,7 @@
 
         /**
         * Sets the language for Expression Manager.  If the language has changed, then EM cache must be invalidated and refreshed
-        * @param string $lang
+        * @param <string> $lang
         */
         public static function SetEMLanguage($lang=NULL)
         {
@@ -163,9 +505,9 @@
 
         /**
         * Do bulk-update/save of Conditions to Relevance
-        * @param <type> $surveyId - if NULL, processes the entire database, otherwise just the specified survey
-        * @param <type> $qid - if specified, just updates that one question
-        * @return <type>
+        * @param <integer> $surveyId - if NULL, processes the entire database, otherwise just the specified survey
+        * @param <integer> $qid - if specified, just updates that one question
+        * @return array of query strings
         */
         public static function UpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
@@ -191,8 +533,8 @@
 
         /**
         * This reverses UpgradeConditionsToRelevance().  It removes Relevance for questions that have Conditions
-        * @param <type> $surveyId
-        * @param <type> $qid
+        * @param <integer> $surveyId
+        * @param <integer> $qid
         */
         public static function RevertUpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
@@ -213,9 +555,9 @@
         /**
         * If $qid is set, returns the relevance equation generated from conditions (or NULL if there are no conditions for that $qid)
         * If $qid is NULL, returns an array of relevance equations generated from Conditions, keyed on the question ID
-        * @param <type> $surveyId
-        * @param <type> $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
-        * @return <type>
+        * @param <integer> $surveyId
+        * @param <integer> $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
+        * @return array of generated relevance strings, indexed by $qid
         */
         public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
@@ -373,9 +715,9 @@
 
         /**
         * Return list of relevance equations generated from conditions
-        * @param <type> $surveyId
-        * @param <type> $qid
-        * @return <type>
+        * @param <integer> $surveyId
+        * @param <integer> $qid
+        * @return array of relevance equations, indexed by $qid
         */
         public static function UnitTestConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
@@ -384,10 +726,11 @@
         }
 
         /**
-        * Process all question attributes that apply to EM
-        * (1) Sub-question-level  relevance:  e.g. array_filter, array_filter_exclude
-        * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
-        */
+         * Process all question attributes that apply to EM
+         * (1) Sub-question-level  relevance:  e.g. array_filter, array_filter_exclude
+         * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
+         * @param <integer> $onlyThisQseq - only process these attributes for the specified question
+         */
         public function _CreateSubQLevelRelevanceAndValidationEqns($onlyThisQseq=NULL)
         {
             //        $now = microtime(true);
@@ -1748,10 +2091,10 @@
         * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
         * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
         *
-        * @param <type> $surveyid
-        * @param <type> $forceRefresh
-        * @param <type> $anonymized
-        * @param <type> $allOnOnePage - if true (like for survey_format), uses certain optimizations
+        * @param <integer> $surveyid
+        * @param <Boolean> $forceRefresh
+        * @param <Boolean> $anonymized
+        * @param <Boolean> $allOnOnePage - if true (like for survey_format), uses certain optimizations
         * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
         */
 
@@ -2525,7 +2868,7 @@
         * @param <type> $string - the string to be replaced
         * @param <type> $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
         * @param <type> $replacementFields - optional replacement values
-        * @param boolean $debug - if true,write translations for this page to html-formatted log file
+        * @param <boolean> $debug - if true,write translations for this page to html-formatted log file
         * @param <type> $numRecursionLevels - the number of times to recursively subtitute values in this string
         * @param <type> $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
         * @param <type> $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
