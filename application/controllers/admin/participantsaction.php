@@ -198,7 +198,7 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
 
-            echo lsJSONEncode($aData);
+            echo ls_json_encode($aData);
         }
         // otherwise only the shared participants by that user
         else
@@ -216,7 +216,7 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
 
-            echo lsJSONEncode($aData);
+            echo ls_json_encode($aData);
         }
     }
 
@@ -282,7 +282,7 @@ class participantsaction extends Survey_Common_Action
             $i++;
         }
 
-        echo lsJSONEncode($aData);
+        echo ls_json_encode($aData);
     }
 
     /**
@@ -473,7 +473,7 @@ class participantsaction extends Survey_Common_Action
             $i++;
         }
 
-        echo lsJSONEncode($aData);
+        echo ls_json_encode($aData);
     }
 
     /**
@@ -907,7 +907,7 @@ class participantsaction extends Survey_Common_Action
                     $i++;
                 }
             }
-            echo lsJSONEncode($aData);
+            echo ls_json_encode($aData);
         }
         // Only the owned and shared participants will be visible
         else
@@ -991,7 +991,7 @@ class participantsaction extends Survey_Common_Action
                     $i++;
                 }
             }
-            echo lsJSONEncode($aData);
+            echo ls_json_encode($aData);
         }
     }
 
@@ -1078,7 +1078,7 @@ class participantsaction extends Survey_Common_Action
         			$i++;
         		}
         	}
-            echo lsJSONEncode($aData);
+            echo ls_json_encode($aData);
         }
         // Only the owned and shared participants will be visible
         else
@@ -1128,7 +1128,7 @@ class participantsaction extends Survey_Common_Action
 	                $i++;
 	            }
         	}
-            echo lsJSONEncode($aData);
+            echo ls_json_encode($aData);
         }
     }
 
@@ -1220,7 +1220,7 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
         }
-        echo lsJSONEncode($aData);
+        echo ls_json_encode($aData);
     }
 
     /*

@@ -3,13 +3,13 @@
     
     <?php
     if (isset($mapdata)) {
-        echo ",\"mapdata\":".json_encode($mapdata);
+        echo ",\"mapdata\":".ls_json_encode($mapdata);
     }
     ?>
     
     <?php
     if (isset($chartdata)) {
-        echo ",\"chartdata\":".json_encode($chartdata);
+        echo ",\"chartdata\":".ls_json_encode($chartdata);
     }
     ?>
 }

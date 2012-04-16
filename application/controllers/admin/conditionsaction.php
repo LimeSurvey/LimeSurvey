@@ -1092,7 +1092,7 @@ class conditionsaction extends Survey_Common_Action {
 		{
             foreach($canswers as $can)
             {
-                $an = lsJSONEncode(flattenText($can[2]));
+                $an = ls_json_encode(flattenText($can[2]));
                 $aViewUrls['output'] .= "Fieldnames[$jn]='$can[0]';\n"
 	                . "Codes[$jn]='$can[1]';\n"
 	                . "Answers[$jn]={$an};\n";

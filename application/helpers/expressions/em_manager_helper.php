@@ -6119,7 +6119,7 @@ EOD;
                                                 $phparray[$i]->filename = $sDestinationFileName;
                                             }
                                         }
-                                        $value = str_replace('{','{ ',json_encode($phparray));  // so that EM doesn't try to parse it.
+                                        $value = ls_json_encode($phparray);  // so that EM doesn't try to parse it.
                                     }
                                 }
                                 break;

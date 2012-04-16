@@ -392,7 +392,7 @@ class tokens extends Survey_Common_Action
             }
         }
 
-        echo lsJSONEncode($aData);
+        echo ls_json_encode($aData);
     }
 
     function editToken($iSurveyId)
@@ -482,7 +482,7 @@ class tokens extends Survey_Common_Action
                     $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
                 $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
-            echo lsJSONEncode(var_export($aData));
+            echo ls_json_encode(var_export($aData));
             $token = new Tokens_dynamic;
             foreach ($aData as $k => $v)
                 $token->$k = $v;
@@ -2178,7 +2178,7 @@ class tokens extends Survey_Common_Action
                 $i++;
             }
         }
-        echo lsJSONEncode($aData);
+        echo ls_json_encode($aData);
     }
 
     /**

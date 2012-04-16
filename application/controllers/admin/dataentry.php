@@ -1760,7 +1760,7 @@ class dataentry extends Survey_Common_Action
                                         }
                                     }
 
-                                    $insert_data[$fieldname] = json_encode($phparray);
+                                    $insert_data[$fieldname] = ls_json_encode($phparray);
 
                                 }
                                 else
