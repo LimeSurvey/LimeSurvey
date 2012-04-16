@@ -6223,23 +6223,34 @@ EOD;
                         case 'H': //ARRAY (Flexible) - Column Format
                         case 'F': //ARRAY (Flexible) - Row Format
                         case 'R': //RANKING STYLE
-                            $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
-                            $which_ans = $scale_id . '~' . $code;
-                            $ansArray = $var['ansArray'];
-                            if (is_null($ansArray))
+                            if ($type == 'O' && preg_match('/comment\.value/',$name))
                             {
-                                $value = $default;
+                                $value = $code;
+                            }
+                            else if (($type == 'L' || $type == '!') && preg_match('/_other\.value/',$name))
+                            {
+                                $value = $code;
                             }
                             else
                             {
-                                if (isset($ansArray[$which_ans])) {
-                                    $answerInfo = explode('|',$ansArray[$which_ans]);
-                                    $answer = $answerInfo[0];
+                                $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+                                $which_ans = $scale_id . '~' . $code;
+                                $ansArray = $var['ansArray'];
+                                if (is_null($ansArray))
+                                {
+                                    $value = $default;
                                 }
-                                else {
-                                    $answer = $default;
+                                else
+                                {
+                                    if (isset($ansArray[$which_ans])) {
+                                        $answerInfo = explode('|',$ansArray[$which_ans]);
+                                        $answer = $answerInfo[0];
+                                    }
+                                    else {
+                                        $answer = $default;
+                                    }
+                                    $value = $answer;
                                 }
-                                $value = $answer;
                             }
                             break;
                         default:
@@ -6294,24 +6305,35 @@ EOD;
                             case 'H': //ARRAY (Flexible) - Column Format
                             case 'F': //ARRAY (Flexible) - Row Format
                             case 'R': //RANKING STYLE
-                                $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
-                                $which_ans = $scale_id . '~' . $code;
-                                $ansArray = $var['ansArray'];
-                                if (is_null($ansArray))
+                                if ($type == 'O' && preg_match('/comment$/',$name))
                                 {
-                                    $shown=$code;
+                                    $shown = $code;
+                                }
+                                else if (($type == 'L' || $type == '!') && preg_match('/_other$/',$name))
+                                {
+                                    $shown = $code;
                                 }
                                 else
                                 {
-                                    if (isset($ansArray[$which_ans])) {
-                                        $answerInfo = explode('|',$ansArray[$which_ans]);
-                                        array_shift($answerInfo);
-                                        $answer = join('|',$answerInfo);
+                                    $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+                                    $which_ans = $scale_id . '~' . $code;
+                                    $ansArray = $var['ansArray'];
+                                    if (is_null($ansArray))
+                                    {
+                                        $shown=$code;
                                     }
-                                    else {
-                                        $answer = $code;
+                                    else
+                                    {
+                                        if (isset($ansArray[$which_ans])) {
+                                            $answerInfo = explode('|',$ansArray[$which_ans]);
+                                            array_shift($answerInfo);
+                                            $answer = join('|',$answerInfo);
+                                        }
+                                        else {
+                                            $answer = $code;
+                                        }
+                                        $shown = $answer;
                                     }
-                                    $shown = $answer;
                                 }
                                 break;
                             case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
