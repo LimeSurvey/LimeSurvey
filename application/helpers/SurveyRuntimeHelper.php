@@ -394,8 +394,8 @@ class SurveyRuntimeHelper {
 
                     //Before doing the "templatereplace()" function, check the $thissurvey['url']
                     //field for limereplace stuff, and do transformations!
-                    $thissurvey['surveyls_url']=templatereplace($thissurvey['surveyls_url']);   // to do INSERTANS substitutions
                     $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+                    $thissurvey['surveyls_url']=templatereplace($thissurvey['surveyls_url']);   // to do INSERTANS substitutions
 
                     $content = '';
                     $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"), array(), $redata);
@@ -482,8 +482,8 @@ class SurveyRuntimeHelper {
                     {
                         //Automatically redirect the page to the "url" setting for the survey
 
-                        $url = templatereplace($thissurvey['surveyls_url']);    // TODO - check safety of this - provides access to any replacement value
-                        $url = passthruReplace($url, $thissurvey);
+                        $url = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+                        $url = templatereplace($url);    // TODO - check safety of this - provides access to any replacement value
                         $url = str_replace("{SAVEDID}", $saved_id, $url);               // to activate the SAVEDID in the END URL
                         $url = str_replace("{TOKEN}", $clienttoken, $url);          // to activate the TOKEN in the END URL
                         $url = str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
