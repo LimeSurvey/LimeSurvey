@@ -62,8 +62,8 @@ else
     var firstnameTxt="<?php $clang->eT("First name") ?>";
     var lastnameTxt="<?php $clang->eT("Last name") ?>";
     var blacklistedTxt="<?php $clang->eT("Blacklisted") ?>";
-    var surveysTxt="<?php $clang->eT("Survey Links") ?>";
-    var surveyTxt="<?php $clang->eT("Survey Name") ?>";
+    var surveysTxt="<?php $clang->eT("Survey links") ?>";
+    var surveyTxt="<?php $clang->eT("Survey name") ?>";
     var languageTxt="<?php $clang->eT("Language") ?>";
     var owneridTxt="<?php $clang->eT("Owner ID") ?>";
     var ownernameTxt="<?php $clang->eT("Owner name") ?>";
@@ -165,8 +165,8 @@ echo $colModels;
         'lastname' => $clang->gT("Last name"),
         'email' => $clang->gT("Email"),
         'blacklisted' => $clang->gT("Blacklisted"),
-        'surveys' => $clang->gT("Survey Links"),
-        'survey' => $clang->gT("Survey Name"),
+        'surveys' => $clang->gT("Survey links"),
+        'survey' => $clang->gT("Survey name"),
         'language' => $clang->gT("Language"),
         'owner_uid' => $clang->gT("Owner ID"),
         'owner_name' => $clang->gT("Owner name"));
