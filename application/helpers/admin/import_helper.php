@@ -1939,8 +1939,6 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
 */
 function CSVImportLabelset($sFullFilepath, $options)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
     $clang = Yii::app()->lang;
     $results['labelsets']=0;
     $results['labels']=0;
@@ -1962,7 +1960,8 @@ function CSVImportLabelset($sFullFilepath, $options)
     fclose($handle);
     if (substr($bigarray[0], 0, 27) != "# LimeSurvey Label Set Dump" && substr($bigarray[0], 0, 28) != "# PHPSurveyor Label Set Dump")
     {
-        return $results['fatalerror']=$clang->gT("This file is not a LimeSurvey label set file. Import failed.");
+        $results['fatalerror']=$clang->gT("This file is not a LimeSurvey label set file. Import failed.");
+        return $results;
     }
 
     for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
