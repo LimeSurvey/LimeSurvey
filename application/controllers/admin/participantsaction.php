@@ -469,7 +469,7 @@ class participantsaction extends Survey_Common_Action
         foreach ($records as $row)
         {
             $surveyname = Surveys_languagesettings::getSurveyNames($row['survey_id']);
-            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created']);
+            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created']);
             $i++;
         }
 
@@ -658,15 +658,20 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-     * Gets the ids of participants to be copied to the indivisual survey
+     * Gets the ids of participants to be copied to the individual survey
      */
     function getSearchIDs()
     {
         $searchcondition = basename(Yii::app()->request->getPost('searchcondition')); // get the search condition from the URL
+        /* a search contains posted data inside $_POST['searchcondition'].
+        * Each seperate query is made up of 3 fields, seperated by double-pipes ("|")
+        * EG: fname||eq||jason||lname||ct||c
+        *
+        */
         if ($searchcondition != 'getParticipants_json') // if there is a search condition present
         {
             $participantid = "";
-            $condition = explode("||", $searchcondition);  // explode the condition to teh array
+            $condition = explode("||", $searchcondition);  // explode the condition to the array
             // format for the condition is field||condition||value
             if (count($condition) == 3) // if count is 3 , then it's a single search
             {
@@ -808,7 +813,8 @@ class participantsaction extends Survey_Common_Action
 
     function getParticipantsResults_json()
     {
-    	///admin/participants/getParticipantsResults_json/search/email||contain||com
+    	///admin/participants/getParticipantsResults_json/search/email||contains||com
+        //Possible methods: equal,contains,notequal,notcontains,greaterthan,lessthan
         //First entry is field to search, second method, third value, seperated by double pipe "||"
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
@@ -822,6 +828,7 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $searchcondition = Yii::app()->request->getQuery('search');
+
             $searchcondition = urldecode($searchcondition);
             $finalcondition = array();
             $condition = explode("||", $searchcondition);

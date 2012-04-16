@@ -15,6 +15,7 @@ function addcondition(newcid)
           <option value='email'>"+emailTxt+"</option>\n\
           <option value='blacklisted'>"+blacklistedTxt+"</option>\n\
           <option value='surveys'>"+surveysTxt+"</option>\n\
+          <option value='survey'>"+surveyTxt+"</option>\n\
           <option value='language'>"+languageTxt+"</option>\n\
           <option value='owner_uid'>"+owneridTxt+"</option>\n\
           <option value='owner_name'>"+ownernameTxt+"</option>"+optionstring+"\n\
@@ -73,6 +74,7 @@ $(document).ready(function() {
               <option value='email'>"+emailTxt+"</option>\n\
               <option value='blacklisted'>"+blacklistedTxt+"</option>\n\
               <option value='surveys'>"+surveysTxt+"</option>\n\
+              <option value='survey'>"+surveyTxt+"</option>\n\
               <option value='language'>"+languageTxt+"</option>\n\
               <option value='owner_uid'>"+owneridTxt+"</option>\n\
               <option value='owner_name'>"+ownernameTxt+"</option>"+optionstring+"\n\
@@ -341,7 +343,7 @@ $(document).ready(function() {
             caption:"",
             title: fullSearchTitle,
             buttonicon:'searchicon',
-                onClickButton:function(){
+            onClickButton:function(){
                 var dialog_buttons={};
                 dialog_buttons[searchBtn]=function(){
                     searchconditions="";
@@ -392,7 +394,7 @@ $(document).ready(function() {
                                     });
                                 }
                         }}).trigger("reloadGrid");
-
+                        $(this).dialog("close");
                     }
                 };
 			    dialog_buttons[cancelBtn]=function(){

@@ -62,7 +62,8 @@ else
     var firstnameTxt="<?php $clang->eT("First name") ?>";
     var lastnameTxt="<?php $clang->eT("Last name") ?>";
     var blacklistedTxt="<?php $clang->eT("Blacklisted") ?>";
-    var surveysTxt="<?php $clang->et("Surveys") ?>";
+    var surveysTxt="<?php $clang->eT("Survey Links") ?>";
+    var surveyTxt="<?php $clang->eT("Survey Name") ?>";
     var languageTxt="<?php $clang->eT("Language") ?>";
     var owneridTxt="<?php $clang->eT("Owner ID") ?>";
     var ownernameTxt="<?php $clang->eT("Owner name") ?>";
@@ -82,6 +83,7 @@ else
     var surveyIdColTxt="<?php $clang->eT("Survey ID") ?>";
     var tokenIdColTxt="<?php $clang->eT("Token ID") ?>";
     var dateAddedColTxt="<?php $clang->eT("Date added") ?>";
+    var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSurveyInfo_json/pid/"); ?>";
 
     /* Colnames and heading for attributes subgrid */
     var attributesHeadingTxt="<?php $clang->eT("Participant's attribute information") ?>";
@@ -129,7 +131,6 @@ else
     var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/deleteanswer.png" ?>";
     var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>";
     var delparticipantUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/delParticipant"); ?>";
-    var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSurveyInfo_json/pid/"); ?>";
     var getAttribute_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getAttribute_json/pid/"); ?>";
     var exporttocsv = "<?php echo Yii::app()->getController()->createUrl("admin/participants/exporttocsv/id"); ?>";
     var exporttocsvcount = "<?php echo Yii::app()->getController()->createUrl("admin/participants/exporttocsvcount"); ?>";
@@ -164,7 +165,8 @@ echo $colModels;
         'lastname' => $clang->gT("Last name"),
         'email' => $clang->gT("Email"),
         'blacklisted' => $clang->gT("Blacklisted"),
-        'surveys' => $clang->gT("Surveys"),
+        'surveys' => $clang->gT("Survey Links"),
+        'survey' => $clang->gT("Survey Name"),
         'language' => $clang->gT("Language"),
         'owner_uid' => $clang->gT("Owner ID"),
         'owner_name' => $clang->gT("Owner name"));
@@ -260,38 +262,40 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
         <div class='popupgroup'>
-		  <p>
-            <?php $clang->eT("Select the survey to which participants are to be added"); ?>
-          </p>
+		  <h4>
+            <?php $clang->eT("Survey:"); ?>
+          </h4>
           <p>
             <?php
             if (!empty($surveynames))
             {
-                $option[''] = $clang->gT("Select...");
+                //$option[''] = $clang->gT("Select...");
                 foreach ($surveynames as $row)
                 {
                     $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
                 }
-                echo CHtml::dropDownList('survey_id', 'id="survey_id"', $option);
+                echo CHtml::listBox('survey_id', 'id="survey_id"', $option, array('style'=>'width: 350px', 'size'=>3));
             }
             ?>
           </p>
         </div>
         <div class='popupgroup'>
-		  <p>
-            <?php $clang->eT("Select which participants to add to the selected survey"); ?>
-		  </p>
+		  <h4>
+            <?php $clang->eT("Participants to add:"); ?>
+		  </h4>
           <center>
             <ol id='selectableadd' class='selectable' >
-                <li class='ui-widget-content' id='all'><?php $clang->eT("all participants in current search") ?></li>
-                <li class='ui-widget-content' id='allingrid'><?php $clang->eT("all participants") ?></li>
-                <li class='ui-widget-content' id='selected'><?php $clang->eT("only the participants I have selected") ?></li>
+                <li class='ui-widget-content' id='all' style='cursor: pointer'><?php $clang->eT("all participants in current search") ?></li>
+                <li class='ui-widget-content' id='allingrid' style='cursor: pointer'><?php $clang->eT("all participants") ?></li>
+                <li class='ui-widget-content' id='selected' style='cursor: pointer'><?php $clang->eT("only the participants I have selected") ?></li>
             </ol>
           </center>
         </div>
         <div class='popupgroup'>
+          <h4>
+            <?php $clang->eT("Options:") ?>
+          </h4>
           <p>
-        	<?php $clang->eT("Display survey token table after adding participants?"); ?>
             <?php
             $data = array(
                 'id' => 'redirect',
@@ -301,6 +305,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 
             echo CHtml::checkBox('redirect', TRUE, $data);
             ?>
+            <label for='redirect'><?php $clang->eT("Display survey tokens after adding?"); ?></label>
           </p>
         </div>
     </form>
@@ -311,13 +316,16 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 
 </div>
 <div id="exportcsv" title="exportcsv" style="display:none">
-        <?php $clang->eT("Select the attribute to be exported"); ?><br/><br/>
-    <select id="attributes" name="attributes" multiple="multiple">
-        <?php
-        foreach ($allattributes as $key => $value)
-        {
-            echo "<option value=" . $value['attribute_id'] . ">" . $value['attribute_name'] . "</option>";
-        }
-        ?>
-    </select>
+        <h4><?php $clang->eT("Attributes to export:"); ?></h4>
+        <p>
+            <select id="attributes" name="attributes" multiple="multiple" style='width: 350px' size=7>
+                <?php
+                foreach ($allattributes as $value)
+                {
+                    echo "<option value=" . $value['attribute_id'] . ">" . $value['attribute_name'] . "</option>\n";
+                }
+                ?>
+            </select>
+        </p>
 </div>
+

@@ -160,7 +160,13 @@ class Participants extends CActiveRecord
 
     function getParticipantsOwner($userid)
     {
-        return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.can_edit')->from('{{participants}}')->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')->where('owner_uid = :userid OR share_uid = ' . $userid)->group('{{participants}}.participant_id')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
+        return Yii::app()->db->createCommand()
+            ->select('{{participants}}.*,{{participant_shares}}.can_edit')
+            ->from('{{participants}}')->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
+            ->where('owner_uid = :userid OR share_uid = ' . $userid)
+            ->group('{{participants}}.participant_id')
+            ->bindParam(":userid", $userid, PDO::PARAM_INT)
+            ->queryAll();
     }
 
     function getParticipantsOwnerCount($userid)
@@ -282,6 +288,7 @@ class Participants extends CActiveRecord
 
 function getParticipantsSearch($condition, $page, $limit)
     {
+        $lang = Yii::app()->session['adminlang'];
         $start = $limit * $page - $limit;
         if ($condition[1] == 'equal')
         {
@@ -290,21 +297,55 @@ function getParticipantsSearch($condition, $page, $limit)
                 $resultarray = array();
                 if ($page == 0 && $limit == 0)
                 {
-                    $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
+                    $data = Yii::app()->db->createCommand()
+                        ->select('*')
+                        ->from('{{participants}}')
+                        ->queryAll();
                 }
                 else
                 {
-                    $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->limit(intval($limit), $start)->queryAll();
+                    $data = Yii::app()->db->createCommand()
+                        ->select('*')
+                        ->from('{{participants}}')
+                        ->limit(intval($limit), $start)
+                        ->queryAll();
                 }
                 foreach ($data as $key => $value)
                 {
-					$count = count(Yii::app()->db->createCommand()->where('participant_id = :participant_id')->from('{{survey_links}}')->select('*')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->queryAll());
+					$count = Participants::getSurveyCount($value['participant_id']);
                     if ($count == $condition[2])
                     {
                         array_push($resultarray, $value);
                     }
                 }
                 return $resultarray;
+            }
+            else if ($condition[0] == 'survey') //Searching survey by name or SID
+            {
+                if($page ==0 && $limit == 0)
+                {
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants}}.*, {{surveys_languagesettings}}.surveyls_title')
+                        ->from('{{participants}}')
+                        ->join('{{survey_links}}', '{{participants}}.participant_id={{survey_links}}.participant_id')
+                        ->join('{{surveys_languagesettings}}', '{{survey_links}}.survey_id={{surveys_languagesettings}}.surveyls_survey_id')
+                        ->where('{{surveys_languagesettings}}.surveyls_language=:lang AND {{surveys_languagesettings}}.surveyls_title = :param2')
+                        ->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":param2", $condition[2], PDO::PARAM_STR)
+                        ->queryAll();
+                } else {
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants}}.*, {{surveys_languagesettings}}.surveyls_title')
+                        ->from('{{participants}}')
+                        ->join('{{survey_links}}', '{{participants}}.participant_id={{survey_links}}.participant_id')
+                        ->join('{{surveys_languagesettings}}', '{{survey_links}}.survey_id={{surveys_languagesettings}}.surveyls_survey_id')
+                        ->where('{{surveys_languagesettings}}.surveyls_language=:lang AND {{surveys_languagesettings}}.surveyls_title = :param2')
+                        ->limit(intval($limit), $start)
+                        ->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":param2", $condition[2], PDO::PARAM_STR)
+                        ->queryAll();
+                }
+                return $data;
             }
             else if ($condition[0] == 'owner_name')
             {
@@ -369,13 +410,41 @@ function getParticipantsSearch($condition, $page, $limit)
                 }
                 foreach ($data as $key => $value)
                 {
-                    $count = count(Yii::app()->db->createCommand()->where('participant_id = :participiant_id')->from('{{survey_links}}')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->queryAll());
+                    $count = Participants::getSurveyCount($value['participant_id']);
                     if ($count == $condition[2])
                     {
                         array_push($resultarray, $value);
                     }
                 }
                 return $resultarray;
+            }
+            else if ($condition[0] == 'survey') //Searching survey by name or SID
+            {
+                $param2="%".$condition[2]."%";
+                if($page ==0 && $limit == 0)
+                {
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants}}.*, {{surveys_languagesettings}}.surveyls_title')
+                        ->from('{{participants}}')
+                        ->join('{{survey_links}}', '{{participants}}.participant_id={{survey_links}}.participant_id')
+                        ->join('{{surveys_languagesettings}}', '{{survey_links}}.survey_id={{surveys_languagesettings}}.surveyls_survey_id')
+                        ->where('{{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title LIKE :param2 OR {{survey_links}}.survey_id LIKE :param2)')
+                        ->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":param2", $param2, PDO::PARAM_STR)
+                        ->queryAll();
+                } else {
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants}}.*, {{surveys_languagesettings}}.surveyls_title')
+                        ->from('{{participants}}')
+                        ->join('{{survey_links}}', '{{participants}}.participant_id={{survey_links}}.participant_id')
+                        ->join('{{surveys_languagesettings}}', '{{survey_links}}.survey_id={{surveys_languagesettings}}.surveyls_survey_id')
+                        ->where('{{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title LIKE :param2 OR {{survey_links}}.survey_id LIKE :param2)')
+                        ->limit(intval($limit), $start)
+                        ->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":param2", $param2, PDO::PARAM_STR)
+                        ->queryAll();
+                }
+                return $data;
             }
             else if ($condition[0] == 'owner_name')
             {
@@ -435,13 +504,40 @@ function getParticipantsSearch($condition, $page, $limit)
                 }
                 foreach ($data as $key => $value)
                 {
-                    $count = count(Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->queryAll());
+                    $count = Participants::getSurveyCount($value['participant_id']);
                     if ($count != $condition[2])
                     {
                         array_push($resultarray, $value);
                     }
                 }
                 return $resultarray;
+            }
+            else if ($condition[0] == 'survey') //Searching survey by name or SID
+            {
+                if($page ==0 && $limit == 0)
+                {
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants}}.*, {{surveys_languagesettings}}.surveyls_title')
+                        ->from('{{participants}}')
+                        ->join('{{survey_links}}', '{{participants}}.participant_id={{survey_links}}.participant_id')
+                        ->join('{{surveys_languagesettings}}', '{{survey_links}}.survey_id={{surveys_languagesettings}}.surveyls_survey_id')
+                        ->where('{{surveys_languagesettings}}.surveyls_language=:lang AND {{surveys_languagesettings}}.surveyls_title != :param2')
+                        ->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":param2", $condition[2], PDO::PARAM_STR)
+                        ->queryAll();
+                } else {
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants}}.*, {{surveys_languagesettings}}.surveyls_title')
+                        ->from('{{participants}}')
+                        ->join('{{survey_links}}', '{{participants}}.participant_id={{survey_links}}.participant_id')
+                        ->join('{{surveys_languagesettings}}', '{{survey_links}}.survey_id={{surveys_languagesettings}}.surveyls_survey_id')
+                        ->where('{{surveys_languagesettings}}.surveyls_language=:lang AND {{surveys_languagesettings}}.surveyls_title != :param2')
+                        ->limit(intval($limit), $start)
+                        ->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":param2", $condition[2], PDO::PARAM_STR)
+                        ->queryAll();
+                }
+                return $data;
             }
             else if ($condition[0] == 'owner_name')
             {
@@ -503,13 +599,41 @@ function getParticipantsSearch($condition, $page, $limit)
                 }
                 foreach ($data as $key => $value)
                 {
-                    $count = count(Yii::app()->db->createCommand()->where('participant_id = :participant_id')->from('{{survey_links}}')->select('*')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->queryAll());
+                    $count = Participants::getSurveyCount($value['participant_id']);
                     if ($count != $condition[2])
                     {
                         array_push($resultarray, $value);
                     }
                 }
                 return $resultarray;
+            }
+            else if ($condition[0] == 'survey') //Searching survey by name or SID
+            {
+                $param2="%".$condition[2]."%";
+                if($page ==0 && $limit == 0)
+                {
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants}}.*, {{surveys_languagesettings}}.surveyls_title')
+                        ->from('{{participants}}')
+                        ->join('{{survey_links}}', '{{participants}}.participant_id={{survey_links}}.participant_id')
+                        ->join('{{surveys_languagesettings}}', '{{survey_links}}.survey_id={{surveys_languagesettings}}.surveyls_survey_id')
+                        ->where('{{surveys_languagesettings}}.surveyls_language=:lang AND {{surveys_languagesettings}}.surveyls_title NOT LIKE :param2')
+                        ->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":param2", $param2, PDO::PARAM_STR)
+                        ->queryAll();
+                } else {
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants}}.*, {{surveys_languagesettings}}.surveyls_title')
+                        ->from('{{participants}}')
+                        ->join('{{survey_links}}', '{{participants}}.participant_id={{survey_links}}.participant_id')
+                        ->join('{{surveys_languagesettings}}', '{{survey_links}}.survey_id={{surveys_languagesettings}}.surveyls_survey_id')
+                        ->where('{{surveys_languagesettings}}.surveyls_languages=:lang AND {{surveys_languagesettings}}.surveyls_title NOT LIKE :param2')
+                        ->limit(intval($limit), $start)
+                        ->bindParam(":lang", $lang, PDO::PARAM_STR)
+                        ->bindParam(":param2", $param2, PDO::PARAM_STR)
+                        ->queryAll();
+                }
+                return $data;
             }
             else if ($condition[0] == 'owner_name')
             {
@@ -555,22 +679,29 @@ function getParticipantsSearch($condition, $page, $limit)
         }
         else if ($condition[1] == 'greaterthan')
         {
-            if ($condition[0] == 'surveys')
+            if ($condition[0] == 'surveys') //This is a search using a count of surveys, not the name or SID
             {
                 $resultarray = array();
+
                 if ($page == 0 && $limit == 0)
                 {
-                    $data = $this->db->get('participants');
+                    $data = Yii::app()->db->createCommand()
+                        ->select('{{participants.participant_id}}, count(*) as surveycount')
+                        ->from('{{participants}}')
+                        ->queryAll();
                 }
                 else
                 {
-                    $data = $this->db->get('participants', $limit, $start);
+                    $data = Yii::app()->db->createCommand()
+                        ->select('*')
+                        ->from('{{participants}}')
+                        ->limit($limit, $start)
+                        ->queryAll();
+
                 }
-                foreach ($data->result_array() as $key => $value)
+                foreach ($data as $key => $value)
                 {
-                    $this->db->where('participant_id=:participant_id')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT);
-                    $this->db->from('survey_links');
-                    $count = $this->db->count_all_results();
+                    $count = Participants::getSurveyCount($value['participant_id']);
                     if ($count > $condition[2])
                     {
                         array_push($resultarray, $value);
@@ -628,15 +759,21 @@ function getParticipantsSearch($condition, $page, $limit)
 
                 if ($page == 0 && $limit == 0)
                 {
-                    $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
+                    $data = Yii::app()->db->createCommand()
+                        ->select('*')
+                        ->from('{{participants}}')
+                        ->queryAll();
                 }
                 else
                 {
-                    $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->limit($limit, $start)->queryAll();
+                    $data = Yii::app()->db->createCommand()->select('*')
+                        ->from('{{participants}}')
+                        ->limit($limit, $start)
+                        ->queryAll();
                 }
                 foreach ($data as $key => $value)
                 {
-                    $count = count(Yii::app()->db->createCommand()->where('participant_id = :participant_id')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->from('{{survey_links}}')->select('*')->queryAll());
+                    $count = Participants::getSurveyCount($value['participant_id']);
                     if ($count < $condition[2])
                     {
                         array_push($resultarray, $value);
@@ -688,6 +825,9 @@ function getParticipantsSearch($condition, $page, $limit)
                 }
                 return $data;
             }
+        }
+        else {
+            return array();
         }
     }
 
