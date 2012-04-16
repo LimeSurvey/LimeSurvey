@@ -2386,7 +2386,9 @@
             }
             else
             {
-                // Explicitly set all tokens to blank
+                // Read list of available tokens from the tokens table so that preview and error checking works correctly
+                $attrs = GetAttributeFieldNames($surveyid,false);
+
                 $blankVal = array(
                 'code'=>'',
                 'type'=>'',
@@ -2394,14 +2396,13 @@
                 'jsName'=>'',
                 'readWrite'=>'N',
                 );
-                $this->knownVars['TOKEN:FIRSTNAME'] = $blankVal;
-                $this->knownVars['TOKEN:LASTNAME'] = $blankVal;
-                $this->knownVars['TOKEN:EMAIL'] = $blankVal;
-                $this->knownVars['TOKEN:USESLEFT'] = $blankVal;
-                $this->knownVars['TOKEN:TOKEN'] = $blankVal;
-                for ($i=1;$i<=100;++$i) // TODO - is there a way to know  how many attributes are set?  Looks like max is 100
+                
+                foreach ($attrs as $key)
                 {
-                    $this->knownVars['TOKEN:ATTRIBUTE_' . $i] = $blankVal;
+                    if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/',$key))
+                    {
+                        $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
+                    }
                 }
             }
             // set default value for reserved 'this' variable

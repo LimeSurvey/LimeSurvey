@@ -5203,11 +5203,15 @@ function filterForAttributes ($fieldname)
 * @param mixed $surveyid  The survey ID
 * @return array The fieldnames
 */
-function getAttributeFieldNames($surveyid)
+function GetAttributeFieldNames($surveyid,$filter=true)
 {
     if (!$table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}'))
         return Array();
-    return array_filter(array_keys($table->columns), 'filterForAttributes');
+    if ($filter)
+    {
+        return array_filter(array_keys($table->columns), 'filterForAttributes');
+    }
+    return array_keys($table->columns);
 }
 
 /**

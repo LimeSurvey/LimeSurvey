@@ -934,6 +934,8 @@ class tokens extends Survey_Common_Action
         'title' => sprintf($clang->gT("%s field(s) were successfully added."), $number2add),
         'message' => "<br /><input type='button' value='" . $clang->gT("Back to attribute field management.") . "' onclick=\"window.open('" . $this->getController()->createUrl("/admin/tokens/managetokenattributes/surveyid/$iSurveyId") . "', '_top')\" />"
         )), $aData);
+
+        LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
     }
 
     /**
@@ -1937,6 +1939,8 @@ class tokens extends Survey_Common_Action
             . "<input type='submit' value='"
             . $clang->gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("admin/") . "', '_top')\" />"
             )), $aData);
+            
+            LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
         }
     }
 
@@ -2085,6 +2089,8 @@ class tokens extends Survey_Common_Action
             . "<input type='submit' value='"
             . $clang->gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )));
+
+            LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
         }
         else
         {
