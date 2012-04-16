@@ -172,7 +172,7 @@ class index extends CAction {
             INNER JOIN {{surveys_languagesettings}}
             ON ( surveyls_survey_id = sid  )
             AND (surveyls_language=language)
-            WHERE 
+            WHERE
             active='Y'
             AND listpublic='Y'
             AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
@@ -187,7 +187,7 @@ class index extends CAction {
                 {
                     $querylang="SELECT surveyls_title
                     FROM {{surveys_languagesettings}}
-                    WHERE surveyls_survey_id={$rows['sid']} 
+                    WHERE surveyls_survey_id={$rows['sid']}
                     AND surveyls_language='{$sDisplayLanguage}'";
                     $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
                     if ($resultlang['surveyls_title'] )
@@ -210,19 +210,19 @@ class index extends CAction {
                     $list[]=$link;
                 }
             }
-            
+
             //Check for inactive surveys which allow public registration.
             // TODO add a new template replace {SURVEYREGISTERLIST} ?
             $squery = "SELECT sid, surveyls_title, publicstatistics, language
             FROM {{surveys}}
-            INNER JOIN {{surveys_languagesettings}} 
+            INNER JOIN {{surveys_languagesettings}}
             ON (surveyls_survey_id = sid)
             AND (surveyls_language=language)
             WHERE allowregister='Y'
             AND active='Y'
             AND listpublic='Y'
             AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
-            AND (startdate >= '".date("Y-m-d H:i")."') 
+            AND (startdate >= '".date("Y-m-d H:i")."')
             ORDER BY surveyls_title";
 
             $sresult = dbExecuteAssoc($squery) or safeDie("Couldn't execute $squery");
@@ -235,7 +235,7 @@ class index extends CAction {
                 {
                     $querylang="SELECT surveyls_title
                     FROM {{surveys_languagesettings}}
-                    WHERE surveyls_survey_id={$rows['sid']} 
+                    WHERE surveyls_survey_id={$rows['sid']}
                     AND surveyls_language='{$sDisplayLanguage}'";
                     $resultlang=Yii::app()->db->createCommand($querylang)->queryRow();
                     if ($resultlang['surveyls_title'] )
@@ -430,11 +430,11 @@ class index extends CAction {
 
             if ($errormsg)
             {
-                $_POST['loadall'] = $clang->gT("Load Unfinished Survey");
+                $_POST['loadall'] = $clang->gT("Load unfinished survey");
             }
         }
         //Allow loading of saved survey
-        if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished Survey"))
+        if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load unfinished survey"))
         {
             $redata = compact(array_keys(get_defined_vars()));
             Yii::import("application.libraries.Load_answers");
