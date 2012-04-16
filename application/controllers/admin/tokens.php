@@ -1151,7 +1151,7 @@ class tokens extends Survey_Common_Action
                         $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
                         if ($key == 'SURVEY')
                         {
-                            $fieldsarray["@@SURVEYURL@@"] = $url;
+                            $barebone_link = $url;
                         }
                     }
 
@@ -1161,6 +1161,12 @@ class tokens extends Survey_Common_Action
                     global $maildebug;
                     $modsubject = Replacefields(Yii::app()->request->getPost('subject_' . $emrow['language']), $fieldsarray);
                     $modmessage = Replacefields(Yii::app()->request->getPost('message_' . $emrow['language']), $fieldsarray);
+
+                    if (isset($barebone_link))
+                    {
+                        $modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
+                        $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
+                    }
 
                     if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
