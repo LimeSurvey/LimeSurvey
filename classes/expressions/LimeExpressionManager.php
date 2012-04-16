@@ -3236,7 +3236,7 @@
                 $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 $sdata = array(
                 "datestamp"=>$today,
-                "ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''),
+                "ipaddr"=>(($this->surveyOptions['ipaddr']) ? getIPAddress() : ''),
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 "token"=>($this->surveyOptions['token']),
                 "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
@@ -3295,8 +3295,8 @@
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
                     $setter[] = db_quote_id('datestamp') . "=" . db_quoteall($_SESSION['datestamp']);
                 }
-                if ($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) {
-                    $setter[] = db_quote_id('ipaddr') . "=" . db_quoteall($_SERVER['REMOTE_ADDR']);
+                if ($this->surveyOptions['ipaddr']) {
+                    $setter[] = db_quote_id('ipaddr') . "=" . db_quoteall(getIPAddress());
                 }
                 if ($finished) {
                     $setter[] = db_quote_id('submitdate') . "=" . db_quoteall($_SESSION['datestamp']);
