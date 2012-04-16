@@ -135,7 +135,7 @@ class ADODB2_mssqlnative extends ADODB_DataDict {
      }
      */
 
-    function DropColumnSQL($tabname, $flds)
+    function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
     {
         $tabname = $this->TableName ($tabname);
         if (!is_array($flds))
