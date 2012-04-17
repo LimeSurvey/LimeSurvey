@@ -292,16 +292,43 @@
 
         /**
          * keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
+         * Array is indexed on qseq
+         *
+         * @example [3] = array(
+         * 'relevance' => "!is_empty(num)"  // the question-level relevance equation
+         * 'grelevance' => ""   // the group-level relevance equation
+         * 'qid' => "699" // the question id
+         * 'qseq' => 3  // the 0-index question sequence
+         * 'gseq' => 0  // the 0-index group sequence
+         * 'jsResultVar_on' => 'answer26626X34X699' // the javascript variable holding the input value
+         * 'jsResultVar' => 'java26226X34X699'  // the javascript variable (often hidden) holding the value to be submitted
+         * 'type' => 'N'    // the one character question type
+         * 'hidden' => 0    // 1 if it should be always_hidden
+         * 'gid' => "34"    // group id
+         * 'mandatory' => 'N'   // 'Y' if mandatory
+         * 'eqn' => ""  // TODO ??
+         * 'help' => "" // the help text
+         * 'qtext' => "Enter a larger number than {num}"    // the question text
+         * 'code' => 'afDS_sq5_1' // the full variable name
+         * 'other' => 'N'   // whether the question supports the 'other' option - 'Y' if true
+         * 'rootVarName' => 'afDS'  // the root variable name
+         * 'rowdivid' => '2626X37X705sq5'   // the javascript id for the row - in this case, the 5th sub-question
+         * 'aid' => 'sq5'   // the answer id
+         * 'sqid' => '791' // the sub-question's qid (only populated for some question types)
+         * );
+         *
          * @var type
          */
         private $questionSeq2relevance;
         /**
          * current Group sequence (0-based index)
+         * @example 1
          * @var integer
          */
         private $currentGroupSeq;
         /**
          * for Question-by-Question mode, the 0-based index
+         * @example 3
          * @var integer
          */
         private $currentQuestionSeq;
@@ -312,26 +339,107 @@
         private $currentQID;
         /**
          * set of the current set of questions to be displayed, indexed by QID - at least one must be relevant
+         *
+         * The array has N entries, where N is the number if qids in the Qset.  Each  has the following contents:
+         * @example [705] = array(
+         * 'info' => array()    // this is an exact copy of $questionSeq2relevance[$qseq] -- TODO - remove redundancy
+         * 'relevant' => 1  // 1 if the question is currently relevant
+         * 'hidden' => 0    // 1 if the question is always hidden
+         * 'relEqn' => ''   // the relevance equation -- TODO - how different from ['info']['relevance']?
+         * 'sgqa' => // pipe-separated list of SGQA codes for this question -- e.g. "26626X37X705sq1#0|26626X37X705sq1#1|26626X37X705sq2#0|26626X37X705sq2#1|26626X37X705sq3#0|26626X37X705sq3#1|26626X37X705sq4#0|26626X37X705sq4#1|26626X37X705sq5#0|26626X37X705sq5#1"
+         * 'unansweredSQs' => // pipe-separated list of currently unanswered SGQA codes for this question -- e.g. "26626X37X705sq1#0|26626X37X705sq1#1|26626X37X705sq3#0|26626X37X705sq3#1|26626X37X705sq5#0|26626X37X705sq5#1"
+         * 'valid' => 0 // 1 if the current answers  pass all of the validation criteria for the question
+         * 'validEqn' => // the auto-generated validation criteria, based upon advanced question attributes -- e.g. "((count(if(count(26626X37X705sq1#0.NAOK,26626X37X705sq1#1.NAOK)==2,1,''), if(count(26626X37X705sq2#0.NAOK,26626X37X705sq2#1.NAOK)==2,1,''), if(count(26626X37X705sq3#0.NAOK,26626X37X705sq3#1.NAOK)==2,1,''), if(count(26626X37X705sq4#0.NAOK,26626X37X705sq4#1.NAOK)==2,1,''), if(count(26626X37X705sq5#0.NAOK,26626X37X705sq5#1.NAOK)==2,1,'')) >= (minSelect)) and (count(if(count(26626X37X705sq1#0.NAOK,26626X37X705sq1#1.NAOK)==2,1,''), if(count(26626X37X705sq2#0.NAOK,26626X37X705sq2#1.NAOK)==2,1,''), if(count(26626X37X705sq3#0.NAOK,26626X37X705sq3#1.NAOK)==2,1,''), if(count(26626X37X705sq4#0.NAOK,26626X37X705sq4#1.NAOK)==2,1,''), if(count(26626X37X705sq5#0.NAOK,26626X37X705sq5#1.NAOK)==2,1,'')) <= (maxSelect)))"
+         * 'prettyValidEqn' => // syntax-highlighted version of validEqn, only showing syntax errors
+         * 'validTip' => // html fragment to insert for the validation tip -- e.g. "<div id='vmsg_705_num_answers' class='em_num_answers'>Please select between 1 and 3 answer(s)</div>"
+         * 'prettyValidTip' => // version of validTip that can be parsed by EM to create dynmamic validation -- e.g. "<div id='vmsg_705_num_answers' class='em_num_answers'>Please select between {fixnum(minSelect)} and {fixnum(maxSelect)} answer(s)</div>"
+         * 'validJS' => // JavaScript fragment that can perform validation.  This is the result of parsing validEqn -- e.g. "LEMif(LEManyNA('minSelect', 'maxSelect'),'',(((LEMcount(LEMif(LEMcount(LEMval('26626X37X705sq1#0.NAOK') , LEMval('26626X37X705sq1#1.NAOK') ) == 2, 1, ''), LEMif(LEMcount(LEMval('26626X37X705sq2#0.NAOK') , LEMval('26626X37X705sq2#1.NAOK') ) == 2, 1, ''), LEMif(LEMcount(LEMval('26626X37X705sq3#0.NAOK') , LEMval('26626X37X705sq3#1.NAOK') ) == 2, 1, ''), LEMif(LEMcount(LEMval('26626X37X705sq4#0.NAOK') , LEMval('26626X37X705sq4#1.NAOK') ) == 2, 1, ''), LEMif(LEMcount(LEMval('26626X37X705sq5#0.NAOK') , LEMval('26626X37X705sq5#1.NAOK') ) == 2, 1, '')) >= (LEMval('minSelect') )) && (LEMcount(LEMif(LEMcount(LEMval('26626X37X705sq1#0.NAOK') , LEMval('26626X37X705sq1#1.NAOK') ) == 2, 1, ''), LEMif(LEMcount(LEMval('26626X37X705sq2#0.NAOK') , LEMval('26626X37X705sq2#1.NAOK') ) == 2, 1, ''), LEMif(LEMcount(LEMval('26626X37X705sq3#0.NAOK') , LEMval('26626X37X705sq3#1.NAOK') ) == 2, 1, ''), LEMif(LEMcount(LEMval('26626X37X705sq4#0.NAOK') , LEMval('26626X37X705sq4#1.NAOK') ) == 2, 1, ''), LEMif(LEMcount(LEMval('26626X37X705sq5#0.NAOK') , LEMval('26626X37X705sq5#1.NAOK') ) == 2, 1, '')) <= (LEMval('maxSelect') )))))"
+         * 'invalidSQs' => // current list of subquestions that fail validation criteria -- e.g. "26626X37X705sq1#0|26626X37X705sq1#1|26626X37X705sq2#0|26626X37X705sq2#1|26626X37X705sq3#0|26626X37X705sq3#1|26626X37X705sq4#0|26626X37X705sq4#1|26626X37X705sq5#0|26626X37X705sq5#1"
+         * 'relevantSQs' => // current list of subquestions that are relevant -- e.g. "26626X37X705sq1#0|26626X37X705sq1#1|26626X37X705sq2#0|26626X37X705sq2#1|26626X37X705sq3#0|26626X37X705sq3#1|26626X37X705sq4#0|26626X37X705sq4#1|26626X37X705sq5#0|26626X37X705sq5#1"
+         * 'irrelevantSQs' => // current list of subquestions that are irrelevant -- e.g. "26626X37X705sq2#0|26626X37X705sq2#1|26626X37X705sq4#0|26626X37X705sq4#1"
+         * 'subQrelEqn' => // TODO - ??
+         * 'mandViolation' => 0 // 1 if the question is mandatory and fails the mandatory criteria
+         * 'anyUnanswered' => 1 // 1 if any parts of the question are unanswered
+         * 'mandTip' => '' // message to display if the question fails mandatory criteria
+         * 'message' => '' // TODO ??
+         * 'updatedValues' => // array of values that should be updated for this question, as [$sgqa] = $value
+         * 'sumEqn' => '' //
+         * 'sumRemainingEqn' => '' //
+         * );
+         * 
          * @var type
          */
         private $currentQset=NULL;
         /**
          * last result of NavigateForwards, NavigateBackwards, or JumpTo
+         * Array of status information about last movement, whether at question, group, or survey level
+         *
+         * @example = array(
+         * 'finished' => 0  // 1 if the survey has been completed and needs to be finalized
+         * 'message' => ''  // any error message that needs to be displayed
+         * 'seq' => 1   // the sequence count, using gseq, or qseq units if in 'group' or 'question' mode, respectively
+         * 'mandViolation' => 0 // whether there was any violation of mandatory constraints in the last movement
+         * 'valid' => 0 // 1 if the last movement passed all validation constraints.  0 if there were any validation errors
+         * 'unansweredSQs' => // pipe-separated list of any sub-questions that were not answered
+         * 'invalidSQs' => // pipe-separated list of any sub-questions that failed validation constraints
+         * );
+         * 
          * @var type
          */
         private $lastMoveResult=NULL;
         /**
          * array of information needed to generate navigation index in question-by-question mode
+         * One entry for each question, indexed by qseq
+         *
+         * @example [4] = array(
+         * 'qid' => "700" // the question id
+         * 'qtext' => 'How old are you?' // the question text
+         * 'qcode' => 'age' // the variable name
+         * 'qhelp' => '' // the help text
+         * 'anyUnanswered' => 0 // 1 if there are any sub-questions answered.  Used for index display
+         * 'anyErrors' => 0 // 1 if there are any errors among the sub-questions.  Could be used for index display
+         * 'show' => 1 // 1 if there are any relevant, non-hidden sub-questions.  Only if so, then display the index entry
+         * 'gseq' => 0  // the group sequence
+         * 'gtext' => // text description for the group
+         * 'gname' => 'G1' // the group title
+         * 'gid' => "34" // the group id
+         * 'mandViolation' => 0 // 1 if the question as a whole fails the mandatory criteria
+         * 'valid' => 1 // 0 if any part of the question fails validation criteria.
+         * );
+         * 
          * @var type
          */
         private $indexQseq;
         /**
          * array of information needed to generate navigation index in group-by-group mode
+         * One entry for each group, indexed by gseq
+         *
+         * @example [0] = array(
+         * 'gtext' => // the description for the group
+         * 'gname' => 'G1' // the group title
+         * 'gid' => '34' // the group id
+         * 'anyUnanswered' => 0 // 1 if any questions within the group are unanswered
+         * 'anyErrors' => 0 // 1 if any of the questions within the group fail either validity or mandatory constraints
+         * 'valid' => 1 // 1 if at least question in the group is relevant and non-hidden
+         * 'mandViolation' => 0 // 1 if at least one relevant, non-hidden question in the group fails mandatory constraints
+         * 'show' => 1 // 1 if there is at least one relevant, non-hidden question within the group
+         * );
+         * 
          * @var type
          */
         private $indexGseq;
         /**
          * array of group sequence number to static info
+         * One entry per group, indexed on gseq
+         *
+         * @example [0] = array(
+         * 'group_order' => 0   // gseq
+         * 'gid' => "34" // group id
+         * 'group_name' => 'G2' // the group title
+         * 'description' => // the description of the group (e.g. gtitle)
+         * 'grelevance' => '' // the group-level relevance
+         * );
+         * 
          * @var type
          */
         private $gseq2info;
@@ -343,58 +451,144 @@
         private $maxGroupSeq;
         /**
          * mapping of questions to information about their subquestions.
+         * One entry per question, indexed on qid
+         *
+         * @example [702] = array(
+         * 'qid' => 702 // the question id
+         * 'qseq' => 6 // the question sequence
+         * 'gseq' => 0 // the group sequence
+         * 'sgqa' => '26626X34X702' // the root of the SGQA code (reallly just the SGQ)
+         * 'varName' => 'afSrcFilter_sq1' // the full qcode variable name - note, if there are sub-questions, don't use this one.
+         * 'type' => 'M' // the one-letter question type
+         * 'fieldname' => '26626X34X702sq1' // the fieldname (used as JavaScript variable name, and also as database column name
+         * 'subqs' => array() of sub-questions, where each contains:
+         *     'rowdivid' => '26626X34X702sq1' // the javascript id identifying the question row (so array_filter can hide rows)
+         *     'varName' => 'afSrcFilter_sq1' // the full variable name for the sub-question
+         *     'jsVarName_on' => 'java26626X34X702sq1' // the JavaScript variable name if the variable is defined on the current page
+         *     'jsVarName' => 'java26626X34X702sq1' // the JavaScript variable name to use if the variable is defined on a different page
+         *     'csuffix' => 'sq1' // the SGQ suffix to use for a fieldname
+         *     'sqsuffix' => '_sq1' // the suffix to use for a qcode variable name
+         *  );
+         *
          * @var type
          */
         private $q2subqInfo;
         /**
-         * array of attributes for each question
+         * array of advanced question attributes for each question
+         * Indexed by qid; available for all quetions
+         *
+         * @example [784] = array(
+         * 'array_filter_exclude' => 'afSrcFilter'
+         * 'exclude_all_others' => 'sq5'
+         * 'max_answers' => '3'
+         * 'min_answers' => '1'
+         * 'other_replace_text' => '{afSrcFilter_other}'
+         * );
+         *
          * @var type
          */
         private $qattr;
         /**
          * list of needed sub-question relevance (e.g. array_filter)
+         * Indexed by qid then sgqa; only generated for current group of questions
+         *
+         * @example [708][26626X37X708sq2] = array(
+         * 'qid' => '708' // the question id
+         * 'eqn' => "((26626X34X702sq2 != ''))" // the auto-generated sub-question-level relevance equation
+         * 'prettyPrintEqn' => '' // only generated if there errors - shows syntax highlighting of them
+         * 'result' => 0 // result of processing the sub-question-level relevance equation in the current context
+         * 'numJsVars' => 1 // the number of on-page javascript variables in 'eqn'
+         * 'relevancejs' => // the generated javascript from 'eqn' -- e.g. "LEMif(LEManyNA('26626X34X702sq2'),'',(((LEMval('26626X34X702sq2')  != ""))))"
+         * 'relevanceVars' => "java26626X34X702sq2" // the pipe-separated list of on-page javascript variables in 'eqn'
+         * 'rowdivid' => "26626X37X708sq2" // the javascript id of the question row (so can apply array_filter)
+         * 'type' => 'array_filter' // semicolon delimited list of types of subquestion relevance filters applied
+         * 'qtype' => 'A' // the single character question type
+         * 'sgqa' => "26626X37X708" // the SGQ portion of the fieldname
+         * 'hasErrors' => 0 // 1 if there are any parse errors in the sub-question validation equations
+         * );
+         *
          * @var type
          */
         private $subQrelInfo=array();
         /**
          * array of Group-level relevance status
+         * Indexed by gseq; only shows groups that have been visited
+         *
+         * @example [1] = array(
+         * 'gseq' => 1 // group sequence
+         * 'eqn' => '' // the group-level relevance
+         * 'result' => 1 // result of processing the group-level relevance
+         * 'numJsVars' => 0 // the number of on-page javascript variables in the group-level relevance equation
+         * 'relevancejs' => '' // the javascript version of the relevance equation
+         * 'relevanceVars' => '' // the pipe-delimited list of on-page javascript variable names used within the group-level relevance equation
+         * 'prettyPrint' => '' // a pretty-print version of the group-level relevance equation, only if there are errors
+         * );
+         * 
          * @var type
          */
         private $gRelInfo=array();
 
         /**
          * Array of timing information to debug how long it takes for portions of LEM to run.
+         * Array of timing information (in seconds) for EM to help with debugging
+         *
+         * @example [1] = array(
+         *   [0]="LimeExpressionManager::NavigateForwards"
+         *   [1]=1.7079849243164
+         * );
+         *
          * @var type
          */
         private $runtimeTimings=array();
         /**
-         *
+         * True (1) if calling LimeExpressionManager functions between StartSurvey and FinishProcessingPage
+         * Used (mostly deprecated) to detect calls to LEM which happen outside of the normal processing scope
          * @var Boolean
          */
         private $initialized=false;
         /**
+         * True (1) if have already processed the relevance equations (so don't need to do it again)
          *
          * @var Boolean
          */
         private $processedRelevance=false;
         /**
-         *
+         * Message generated to show debug timing values, if debugLevel includes LEM_DEBUG_TIMING
          * @var type
          */
         private $debugTimingMsg='';
         /**
          * temporary variable to reduce need to parse same equation multiple times.  Used for relevance and validation
+         * Array, indexed on equation, providing the following information:
+         *
+         * @example ['!is_empty(num)'] = array(
+         * 'result' => 1 // result of processing the equation in the current scope
+         * 'prettyPrint' => '' // syntax-highlighted version of equation if there are any errors
+         * 'hasErrors' => 0 // 1 if there are any syntax errors
+         * );
+         * 
          * @var type
          */
         private $ParseResultCache;
         /**
          * array of 2nd scale answer lists for types ':' and ';' -- needed for convenient print of logic file
+         * Indexed on qid; available for all questions
+         *
+         * @example [706] = array(
+         * '1~1' => '1|Never',
+         * '1~2' => '2|Sometimes',
+         * '1~3' => '3|Always'
+         * );
+         *
          * @var type
          */
         private $multiflexiAnswers;
 
         /**
          * used to specify whether to  generate equations using SGQA codes or qcodes
+         * Default is to convert all qcode naming to sgqa naming when generating javascript, as that provides the greatest backwards compatibility
+         * Excel export of survey structure sets this to false so as to force use of qcode naming
+         * 
          * @var Boolean
          */
         private $sgqaNaming = true;
