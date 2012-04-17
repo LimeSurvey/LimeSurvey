@@ -2,6 +2,6 @@
 	<tr>
 		<td class="clear-all" nowrap="nowrap" width="33%">{CLEARALL}</td>
         <td class="save-all" nowrap="nowrap" width="33%">{SAVE}</td>
-		<td class="submit-buttons"nowrap="nowrap" width="33%">{NAVIGATOR}</td>
+		<td class="submit-buttons" nowrap="nowrap" width="33%">{NAVIGATOR}</td>
 	</tr>
 </table>
