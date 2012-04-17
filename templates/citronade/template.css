@@ -46,7 +46,7 @@ table td,table th{border:1px solid #ccc;vertical-align:top;padding:4px}
 article,aside,dialog,figure,footer,header,hgroup,menu,nav,section{display:block}
 ul#surveylist{list-style:none}
 .hide{position:absolute;top:auto;left:-999999px}
-#progress-wrapper{width:252px;font-size:12px;height:20px;margin:0 auto}
+#progress-wrapper{width:252px;font-size:12px;height:20px;}
 #progress-wrapper #progress-pre{float:left;width:45px;text-align:right;margin:0 5px 0 0}
 #progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
 #progress-wrapper .ui-widget-header{background-color:#AAA;background-image:none;border:1px solid #666}
@@ -109,7 +109,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 #footer a:hover, #footer a:focus, #footer a:active {background-color: #E5F8A8;color: #5670A1;} 
 
 /* survey tool decoration */
-#languagechanger select, 
+ .tools select, 
 	.tools input,
 	.tools a,
 	input.submit,
@@ -121,7 +121,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 		{border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
 		-moz-box-shadow: 2px 2px 5px #ccc;-webkit-box-shadow: 2px 2px 5px #ccc;box-shadow: 2px 2px 5px #ccc;
 		}
-#languagechanger select:hover,
+.tools select:hover,
 	.tools input:hover,
 	.tools a:hover,
 	.navigator input:hover,
@@ -130,7 +130,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	input#savebutton:hover,
 	input#loadbutton:hover,
 	input#registercontinue:hover,
-	#languagechanger select:focus,
+	.tools select:focus,
 	.tools input:focus,
 	.tools a:focus,
 	.navigator input:focus,
@@ -142,7 +142,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 		{color:#415479;background:#dcdfe6;border-color:#ABB8D1;
 		-moz-box-shadow: 2px 2px 5px #415479;-webkit-box-shadow: 2px 2px 5px #415479;box-shadow: 2px 2px 5px #415479;
 		}
-#languagechanger select:hover option{background:#FEFEFE;}
+.tools select:hover option{background:#FEFEFE;}
 
 /* for disabled tools */
 .tools input[disabled],
@@ -152,7 +152,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	input#savebutton[disabled],
 	input#loadbutton[disabled],
 	input#registercontinue[disabled],
-	#languagechanger select[disabled]
+	.tools select[disabled]
 	{border:1px solid #dbdbdb;background:#FEFEFE;color:#dbdbdb;cursor:inherit;}
 
 .ie .tools input,
@@ -231,7 +231,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 #head{position:relative;}
 #head h1{display:inline;}
 #head img#logo{vertical-align:middle;}
-
+#head .tools{float:right}
 /* for the footer */
 #content{padding-bottom:4.8em;}
 #footer {text-align:center;padding:0.8em 0 0.4em;margin:0;font-size:0.8em;font-weight:normal;}
@@ -262,7 +262,6 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 /* specific decoration */
 p.url{font-size:1.2em;text-align:center;font-weight:bold}
 table.printouttable{width:99%}
-#languagechanger{margin:0.5em 0;text-align:center}
 /* survey list (home page) */
 #surveylist-container{text-align:center}
 h2#surveytitle{font-size:1.2em;text-align:left;line-height:2em;}
@@ -270,18 +269,18 @@ ul#surveylist li a{color:#5670A1;}
 
 /* Tool button and link */
 /* tools input */
-.tools input,.tools a,.navigator input,.navigator button,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+.tools input,.tools a,.navigator input,.navigator button,input.submit,.tools input,.tools select
 		{font-family:FreeSans,Arial,Helvetica,sans-serif;font-size:1em;vertical-align:middle;}
-tools input,.tools a,input.submit,.navigator input,.navigator button,input#savebutton,input#loadbutton,input#registercontinue
+.tools input,.tools a,input.submit,.navigator input,.navigator button,
 	{box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
-.tools input,.tools a,.navigator input,.navigator button,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input
+.tools input,.tools a,.navigator input,.navigator button,input.submit,.navigator input
 	{margin:0;padding:3px 6px;text-decoration:none;cursor: pointer;}
-#languagechanger select
+.tools select
 		{margin:0;padding:1px 2px;}
 .tools,.navigator,.tools :active,.navigator :active,.tools :focus,.navigator :focus
      { outline: 0 none; }
 .tools ::-moz-focus-inner,.navigator ::-moz-focus-inner {border:0;}
-.tools input,.tools a,.navigator input,.navigator button,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+.tools input,.tools a,.navigator input,.navigator button,input.submit,.tools select
 	{-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
 /* tools list */
 ul.tools{list-style: none ;margin: 0.5em ; padding: 0 ;text-align: left;}
@@ -294,10 +293,9 @@ ul.info a {}
 
 #movenextbtn{background-image:url(go-east.png);background-repeat:no-repeat;background-position:right center;padding:3px 26px 3px 6px;}
 #moveprevbtn{background-image:url(go-west.png);background-repeat:no-repeat;background-position:left center;padding:3px 6px 3px 26px;}
-/* progress */
-#percentcomplete{height:2em;margin:0.5em 0;}
-#progress-wrapper {height: 2em;}
 
+#progress-wrapper {margin:0.5em auto;}
+#languagechanger {margin:0.5em;}
 /*surveylist (home page) */
 #surveylist{margin: 0.5em auto;padding: 0;text-align: left;overflow:auto;display:inline-block;}
 #surveylist li{padding:0.5em 10px;}
@@ -374,7 +372,7 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 	border:1px solid #EEE;color:#444;background-color:#FFF;
 }
 
-.form input[type=text]:focus,input.text,.answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
+.form input[type=text]:focus,input.text:focus,.answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
   background-color:#FFF;border-color:#666;color:#222;
   -moz-box-shadow: 1px 1px 3px #555;
   -webkit-box-shadow: 1px 1px 3px #555;

@@ -137,3 +137,7 @@ table.question tbody th.answertext,table.question tbody th.arraycaptionleft{text
 {
 	float: right;
 }
+
+#movenextbtn{background-image:url(go-west.png);background-repeat:no-repeat;background-position:left center;padding:3px 6px 3px 26px;}
+#moveprevbtn{background-image:url(go-east.png);background-repeat:no-repeat;background-position:right center;padding:3px 26px 3px 6px;}
+#head .tools{float:left}

@@ -23,8 +23,8 @@
 <div id="container">
 	<div id="head">
 		<div class="wrapper">
-			<a href="#" title="Made with LimeSurvey" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt=" " id="logo"/></a>
-			<h1 id="sitename">{SITENAME}</h1>
+			<!--<a href="#" title="Made with LimeSurvey" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt=" " id="logo"/></a>-->
+			<div class="tools">{LANGUAGECHANGER}</div><h1 id="sitename">{SITENAME}</h1>
 		</div>
 	</div>
 <div id="title"><h2 id="surveytitle" class="wrapper">{SURVEYNAME}</h2></div>
