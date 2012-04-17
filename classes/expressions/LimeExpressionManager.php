@@ -3354,6 +3354,7 @@
             $LEM->surveyOptions['anonymized'] = (isset($options['anonymized']) ? $options['anonymized'] : false);
             $LEM->surveyOptions['assessments'] = (isset($options['assessments']) ? $options['assessments'] : false);
             $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
+            $LEM->surveyOptions['deletenonvalues'] = (isset($options['deletenonvalues']) ? ($options['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($options['hyperlinkSyntaxHighlighting']) ? $options['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
             $LEM->surveyOptions['radix'] = (isset($options['radix']) ? $options['radix'] : '.');
@@ -3764,6 +3765,22 @@
         {
             // Update these values in the database
             global $connect;
+
+            if (!$this->surveyOptions['deletenonvalues'])
+            {
+                $nonNullValues = array();
+                foreach($updatedValues as $key=>$value)
+                {
+                    if (!is_null($value))
+                    {
+                        if (isset($value['value']) && !is_null($value['value']))
+                        {
+                            $nonNullValues[$key] = $value;
+                        }
+                    }
+                }
+                $updatedValues = $nonNullValues;
+            }
 
             $message = '';
             $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
