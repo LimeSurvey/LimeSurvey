@@ -17,19 +17,56 @@
  * $Id:$
  */
 
-
-/*
- * The function focusFirst puts the Focus on the first non-hidden element in the Survey. 
- * 
- * Normally this is the first input field (the first answer).
- */
-function focusFirst(Event)
-{
-	$('#limesurvey :input:visible:enabled:first').focus();
+function navbuttonsJqueryUi(){
+    // Just deactivate default jquery-ui button
+}
+// This function deactivate comment on multi with comment
+function autoDisabledComment(){
+  $(".answers-wrapper li input.checkbox").each(function(){
+    if($(this).attr('checked')){
+      $(this).closest('li').find('input:text').attr('readonly','');
+    }else{
+      $(this).closest('li').find('input:text').val('');
+      $(this).closest('li').find('input:text').attr('readonly','readonly');
+    }
+  });
+  $(".answers-wrapper li input.checkbox").click(function(){
+    if($(this).attr('checked')){
+      $(this).closest('li').find('input:text').attr('readonly','');
+      $(this).closest('li').find('input:text').focus();
+    }else{
+      $(this).closest('li').find('input:text').val('');
+      $(this).closest('li').find('input:text').attr('readonly','readonly');
+    }
+  });
 }
 
-// Replace common alert with jquery-ui dialog
+// Add empty class to input text and textarea
+function addClassEmpty(){
+      $('.answers-wrapper input.text[value=""]').addClass('empty');
+      $('.answers-wrapper input[type=text][value=""]').addClass('empty');
+      $('.answers-wrapper textarea').each(function(index) {
+        if ($(this).val() == ""){
+          $(this).addClass('empty');
+        }
+      });
 
+    $("input.text,input[type=text]").live("blur", function(){ 
+      if ($(this).val() == ""){
+        $(this).addClass('empty');
+      }else{
+        $(this).removeClass('empty');
+      }
+    });
+    $("textarea").live("blur", function(){ 
+      if ($(this).val() == ""){
+        $(this).addClass('empty');
+      }else{
+        $(this).removeClass('empty');
+      }
+    });
+}
+// Replace common alert with jquery-ui dialog
 function jalert(text) {
 	var $dialog = $('<div></div>')
 		.html(text)
@@ -42,23 +79,17 @@ function jalert(text) {
 
 	$dialog.dialog('open');
 }
-// Comment this part to have default alert
+// Uncomment this part to replace default alert
 /*function alert(text) {
 	jalert(text);
 }*/
 
-/*
- * The focusFirst function is added to the eventlistener, when the page is loaded.
- * 
- * This can be used to start other functions on pageload as well. Just put it inside the 'ready' function block
- */
-
 
 
 $(document).ready(function(){
-  // focusFirst(); /** Uncomment if you want to use the focusFirst function **/
-  $(".help-wrapper > span,.help-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
-  $(".help-wrapper .error-wrapper > span,.help-wrapper .error-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
+  //autoDisabledComment();
+  addClassEmpty();
+
 })
 
 

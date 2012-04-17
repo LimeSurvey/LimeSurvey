@@ -1,5 +1,3 @@
-
-
 /*** Start jQuery UI Theme Styles ***/
 
 button.ui-button::-moz-focus-inner {
@@ -374,11 +372,9 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 .submit-buttons {
 }
 
-.clear-all {
-}
-
-.save-all {
-}
+.clear-all{text-align:left}
+.save-all{text-align:center}
+.submit-buttons{text-align:right}
 
 .privacy-table {
 	margin: 0 auto;
@@ -701,7 +697,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 .dragDropTable td {
 	vertical-align: top;
 	width: 50%;
-	padding-right: 20px;
+	padding-right: 20px;padding-left:0;
 }
 
 .dragDropTable .dragDropHeader {
