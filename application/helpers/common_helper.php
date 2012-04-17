@@ -5203,11 +5203,15 @@ function filterForAttributes ($fieldname)
 * @param mixed $surveyid  The survey ID
 * @return array The fieldnames
 */
-function getAttributeFieldNames($surveyid)
+function GetAttributeFieldNames($surveyid,$filter=true)
 {
     if (!$table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}'))
         return Array();
-    return array_filter(array_keys($table->columns), 'filterForAttributes');
+    if ($filter)
+    {
+        return array_filter(array_keys($table->columns), 'filterForAttributes');
+    }
+    return array_keys($table->columns);
 }
 
 /**
@@ -7455,11 +7459,13 @@ function fixSubquestions()
 }
 
 /**
-* Must use lsJSONEncode to json_encode content, otherwise LimeExpressionManager will think that the associative arrays are expressions and try to parse them.
+* Must use ls_json_encode to json_encode content, otherwise LimeExpressionManager will think that the associative arrays are expressions and try to parse them.
 */
-function lsJSONEncode($content)
+function ls_json_encode($content)
 {
-    return preg_replace('/\{\"/','{ "',json_encode($content));
+    $ans = json_encode($content);
+    $ans = str_replace(array('{','}'),array('{ ',' }'), $ans);
+    return $ans;
 }
 
 /**

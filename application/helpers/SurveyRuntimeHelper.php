@@ -350,10 +350,6 @@ class SurveyRuntimeHelper {
                     {
                         $assessments = doAssessment($surveyid);
                     }
-                    if ($thissurvey['printanswers'] != 'Y')
-                    {
-                        killSurveySession($surveyid);
-                    }
 
                     sendCacheHeaders();
                     doHeader();
@@ -374,7 +370,8 @@ class SurveyRuntimeHelper {
                     unlink('upload/tmp/'.$_SESSION[$LEMsessid]['files'][$i]['filename']);
                     }
                     */
-                    $completed = $thissurvey['surveyls_endtext'];
+                    // can't kill session before end message, otherwise INSERTANS doesn't work.
+                    $completed = templatereplace($thissurvey['surveyls_endtext']);
                     $completed .= "<br /><strong><font size='2' color='red'>" . $clang->gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                     $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                     if ($thissurvey['printanswers'] == 'Y')
@@ -383,6 +380,11 @@ class SurveyRuntimeHelper {
                         // in other cases the session is cleared at submit time
                         $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . $clang->gT("Clear Responses") . "</a><br /><br />\n";
                     }
+                    if ($thissurvey['printanswers'] != 'Y')
+                    {
+                        killSurveySession($surveyid);
+                    }
+
                 }
                 else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
                 {
@@ -394,8 +396,8 @@ class SurveyRuntimeHelper {
 
                     //Before doing the "templatereplace()" function, check the $thissurvey['url']
                     //field for limereplace stuff, and do transformations!
-                    $thissurvey['surveyls_url']=templatereplace($thissurvey['surveyls_url']);   // to do INSERTANS substitutions
                     $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+                    $thissurvey['surveyls_url']=templatereplace($thissurvey['surveyls_url']);   // to do INSERTANS substitutions
 
                     $content = '';
                     $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"), array(), $redata);
@@ -444,7 +446,7 @@ class SurveyRuntimeHelper {
                     }
                     else
                     {
-                        $completed = $thissurvey['surveyls_endtext'];
+                        $completed = templatereplace($thissurvey['surveyls_endtext']);
                     }
 
                     // Link to Print Answer Preview  **********
@@ -482,8 +484,8 @@ class SurveyRuntimeHelper {
                     {
                         //Automatically redirect the page to the "url" setting for the survey
 
-                        $url = templatereplace($thissurvey['surveyls_url']);    // TODO - check safety of this - provides access to any replacement value
-                        $url = passthruReplace($url, $thissurvey);
+                        $url = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+                        $url = templatereplace($url);    // TODO - check safety of this - provides access to any replacement value
                         $url = str_replace("{SAVEDID}", $saved_id, $url);               // to activate the SAVEDID in the END URL
                         $url = str_replace("{TOKEN}", $clienttoken, $url);          // to activate the TOKEN in the END URL
                         $url = str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL

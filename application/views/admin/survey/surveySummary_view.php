@@ -46,6 +46,17 @@
             ?>
         </td>
 	</tr>
+	<tr>
+		<td>
+			<strong><?php $clang->eT("End message:");?></strong>
+		</td>
+        <td>
+        	<?php
+                templatereplace($surveyinfo['surveyls_endtext']);
+                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+            ?>
+        </td>
+	</tr>
     <tr>
     	<td>
     		<strong><?php $clang->eT("Administrator:");?></strong>

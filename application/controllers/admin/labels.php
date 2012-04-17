@@ -381,7 +381,7 @@ class labels extends Survey_Common_Action
             $output[$row->lid] = $row->getAttribute('label_name');
         }
 
-        echo json_encode($output);
+        echo ls_json_encode($output);
     }
 
     public function ajaxSets()
@@ -422,7 +422,7 @@ class labels extends Survey_Common_Action
                     $res = 'fail';
             }
         }
-        echo json_encode($res);
+        echo ls_json_encode($res);
     }
 
     /**

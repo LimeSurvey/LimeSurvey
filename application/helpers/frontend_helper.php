@@ -839,7 +839,7 @@
                         else
                             $filecount = 0;
 
-                        if ($filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
+                        if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
                         {
                             $filenotvalidated = array();
                             $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");

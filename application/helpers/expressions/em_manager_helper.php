@@ -2356,6 +2356,12 @@
             {
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $_SESSION[$this->sessid]['thistoken']=getTokenData($surveyid, $_SESSION[$this->sessid]['token']);
+                $this->knownVars['TOKEN:TOKEN'] = array(
+                    'code'=>$_SESSION['token'],
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
             }
             if (isset($_SESSION[$this->sessid]['thistoken']))
             {
@@ -2380,7 +2386,9 @@
             }
             else
             {
-                // Explicitly set all tokens to blank
+                // Read list of available tokens from the tokens table so that preview and error checking works correctly
+                $attrs = GetAttributeFieldNames($surveyid,false);
+
                 $blankVal = array(
                 'code'=>'',
                 'type'=>'',
@@ -2388,13 +2396,13 @@
                 'jsName'=>'',
                 'readWrite'=>'N',
                 );
-                $this->knownVars['TOKEN:FIRSTNAME'] = $blankVal;
-                $this->knownVars['TOKEN:LASTNAME'] = $blankVal;
-                $this->knownVars['TOKEN:EMAIL'] = $blankVal;
-                $this->knownVars['TOKEN:USESLEFT'] = $blankVal;
-                for ($i=1;$i<=100;++$i) // TODO - is there a way to know  how many attributes are set?  Looks like max is 100
+                
+                foreach ($attrs as $key)
                 {
-                    $this->knownVars['TOKEN:ATTRIBUTE_' . $i] = $blankVal;
+                    if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/',$key))
+                    {
+                        $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
+                    }
                 }
             }
             // set default value for reserved 'this' variable
@@ -4275,9 +4283,9 @@
                         if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1)
                         {
                             // Need to check whether there is at least one checked box per row
-                            foreach ($LEM->subQrelInfo[$qid] as $sq)
+                            foreach ($LEM->q2subqInfo[$qid]['subqs'] as $sq)
                             {
-                                if ($_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']])
+                                if (!isset($_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]) || $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']])
                                 {
                                     $rowCount=0;
                                     $numUnanswered=0;
@@ -6119,7 +6127,7 @@ EOD;
                                                 $phparray[$i]->filename = $sDestinationFileName;
                                             }
                                         }
-                                        $value = str_replace('{','{ ',json_encode($phparray));  // so that EM doesn't try to parse it.
+                                        $value = ls_json_encode($phparray);  // so that EM doesn't try to parse it.
                                     }
                                 }
                                 break;
@@ -6237,23 +6245,34 @@ EOD;
                         case 'H': //ARRAY (Flexible) - Column Format
                         case 'F': //ARRAY (Flexible) - Row Format
                         case 'R': //RANKING STYLE
-                            $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
-                            $which_ans = $scale_id . '~' . $code;
-                            $ansArray = $var['ansArray'];
-                            if (is_null($ansArray))
+                            if ($type == 'O' && preg_match('/comment\.value/',$name))
                             {
-                                $value = $default;
+                                $value = $code;
+                            }
+                            else if (($type == 'L' || $type == '!') && preg_match('/_other\.value/',$name))
+                            {
+                                $value = $code;
                             }
                             else
                             {
-                                if (isset($ansArray[$which_ans])) {
-                                    $answerInfo = explode('|',$ansArray[$which_ans]);
-                                    $answer = $answerInfo[0];
+                                $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+                                $which_ans = $scale_id . '~' . $code;
+                                $ansArray = $var['ansArray'];
+                                if (is_null($ansArray))
+                                {
+                                    $value = $default;
                                 }
-                                else {
-                                    $answer = $default;
+                                else
+                                {
+                                    if (isset($ansArray[$which_ans])) {
+                                        $answerInfo = explode('|',$ansArray[$which_ans]);
+                                        $answer = $answerInfo[0];
+                                    }
+                                    else {
+                                        $answer = $default;
+                                    }
+                                    $value = $answer;
                                 }
-                                $value = $answer;
                             }
                             break;
                         default:
@@ -6308,24 +6327,35 @@ EOD;
                             case 'H': //ARRAY (Flexible) - Column Format
                             case 'F': //ARRAY (Flexible) - Row Format
                             case 'R': //RANKING STYLE
-                                $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
-                                $which_ans = $scale_id . '~' . $code;
-                                $ansArray = $var['ansArray'];
-                                if (is_null($ansArray))
+                                if ($type == 'O' && preg_match('/comment$/',$name))
                                 {
-                                    $shown=$code;
+                                    $shown = $code;
+                                }
+                                else if (($type == 'L' || $type == '!') && preg_match('/_other$/',$name))
+                                {
+                                    $shown = $code;
                                 }
                                 else
                                 {
-                                    if (isset($ansArray[$which_ans])) {
-                                        $answerInfo = explode('|',$ansArray[$which_ans]);
-                                        array_shift($answerInfo);
-                                        $answer = join('|',$answerInfo);
+                                    $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+                                    $which_ans = $scale_id . '~' . $code;
+                                    $ansArray = $var['ansArray'];
+                                    if (is_null($ansArray))
+                                    {
+                                        $shown=$code;
                                     }
-                                    else {
-                                        $answer = $code;
+                                    else
+                                    {
+                                        if (isset($ansArray[$which_ans])) {
+                                            $answerInfo = explode('|',$ansArray[$which_ans]);
+                                            array_shift($answerInfo);
+                                            $answer = join('|',$answerInfo);
+                                        }
+                                        else {
+                                            $answer = $code;
+                                        }
+                                        $shown = $answer;
                                     }
-                                    $shown = $answer;
                                 }
                                 break;
                             case 'A': //ARRAY (5 POINT CHOICE) radio-buttons

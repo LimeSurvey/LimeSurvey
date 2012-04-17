@@ -271,6 +271,9 @@ function LEMval(alias)
                     if (attr.type == 'O' && varName.match(/comment$/)) {
                         answer = value;
                     }
+                    else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
+                        answer = value;
+                    }
                     else {
                         which_ans = '0~' + value;
                         if (typeof attr.answers[which_ans] === 'undefined') {
@@ -376,13 +379,21 @@ function LEMval(alias)
                     case 'H': //ARRAY (Flexible) - Column Format
                     case 'F': //ARRAY (Flexible) - Row Format
                     case 'R': //RANKING STYLE
-                        which_ans = '0~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
-                            value = '';
+                        if (attr.type == 'O' && varName.match(/comment$/)) {
+//                            value = value;
+                        }
+                        else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
+//                            value = value;
                         }
                         else {
-                            answerParts = attr.answers[which_ans].split('|');
-                            value = answerParts[0];
+                            which_ans = '0~' + value;
+                            if (typeof attr.answers[which_ans] === 'undefined') {
+                                value = '';
+                            }
+                            else {
+                                answerParts = attr.answers[which_ans].split('|');
+                                value = answerParts[0];
+                            }
                         }
                         break;
                     case '1': //Array (Flexible Labels) dual scale  // need scale

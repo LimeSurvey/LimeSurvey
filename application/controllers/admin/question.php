@@ -732,7 +732,7 @@ class question extends Survey_Common_Action
             foreach ($qtypelist as $qtype => $qdesc)
             {
                 $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-                $qCodeToInfo .= " '{$qtype}' : '" . lsJSONEncode($qdesc) . "', \n";
+                $qCodeToInfo .= " '{$qtype}' : '" . ls_json_encode($qdesc) . "', \n";
             }
             $aData['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
@@ -978,7 +978,7 @@ class question extends Survey_Common_Action
             $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
         }
 
-        echo json_encode($resultdata);
+        echo ls_json_encode($resultdata);
     }
 
     /**
@@ -1000,7 +1000,7 @@ class question extends Survey_Common_Action
             $language=null;
         }
         $resultdata=getlabelsets($language);
-        echo json_encode($resultdata);
+        echo ls_json_encode($resultdata);
     }
 
     /**

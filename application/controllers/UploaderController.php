@@ -67,7 +67,7 @@ class UploaderController extends AdminController {
 			           $iFileIndex++;
 			        }
 			        if ($found==true) unset($aFiles[$iFileIndex]);
-			       $_SESSION[$sFieldname] = str_replace('{','{ ',json_encode($aFiles));
+			       $_SESSION[$sFieldname] = ls_json_encode($aFiles);
 			    }
 			}
 			//var_dump($sFileDir.$sFilename);
@@ -129,7 +129,7 @@ class UploaderController extends AdminController {
 		                        "success" => false,
 		                        "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$ext)
 		                    );
-		        echo lsJSONEncode($return);
+		        echo ls_json_encode($return);
 		        exit ();
 		    }
 
@@ -142,7 +142,7 @@ class UploaderController extends AdminController {
 		                "success" => false,
 		                "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
 		            );
-		            echo lsJSONEncode($return);
+		            echo ls_json_encode($return);
 		            exit ();
 		        }
 
@@ -158,7 +158,7 @@ class UploaderController extends AdminController {
 		                        "filename"      => $randfilename,
 		                        "msg"           => $clang->gT("The file has been successfuly uploaded.")
 		                    );
-		            echo lsJSONEncode($return);
+		            echo ls_json_encode($return);
 		            // TODO : unlink this file since this is just a preview
 		            // unlink($randfileloc);
 		            exit ();
@@ -174,7 +174,7 @@ class UploaderController extends AdminController {
 		                "success" => false,
 		                 "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $maxfilesize)
 		            );
-		            echo lsJSONEncode($return);
+		            echo ls_json_encode($return);
 		            exit ();
 		        }
 		        elseif ($iFileUploadTotalSpaceMB>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB))
@@ -183,7 +183,7 @@ class UploaderController extends AdminController {
 		                "success" => false,
 		                 "msg" => $clang->gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",'unescaped')
 		            );
-		            echo lsJSONEncode($return);
+		            echo ls_json_encode($return);
 		            exit ();
 		        }
 		        elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
@@ -199,7 +199,7 @@ class UploaderController extends AdminController {
 		                "msg"     => $clang->gT("The file has been successfuly uploaded.")
 		            );
 
-		            echo lsJSONEncode($return);
+		            echo ls_json_encode($return);
 		            exit ();
 		        }
 		        // if there was some error, report error message
@@ -213,7 +213,7 @@ class UploaderController extends AdminController {
 		                                "msg" => $clang->gT("Sorry, there was an error uploading your file")
 		                            );
 
-		                echo lsJSONEncode($return);
+		                echo ls_json_encode($return);
 		                exit ();
 		            }
 		            // check to ensure that the file does not cross the maximum file size
@@ -224,7 +224,7 @@ class UploaderController extends AdminController {
 		                                "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
 		                            );
 
-		                echo lsJSONEncode($return);
+		                echo ls_json_encode($return);
 		                exit ();
 		            }
 		            else
@@ -233,7 +233,7 @@ class UploaderController extends AdminController {
 		                            "success" => false,
 		                            "msg" => $clang->gT("Unknown error")
 		                        );
-		                echo lsJSONEncode($return);
+		                echo ls_json_encode($return);
 		                exit ();
 		            }
 		        }
