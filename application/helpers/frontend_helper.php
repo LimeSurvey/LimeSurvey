@@ -2818,9 +2818,15 @@ function killSurveySession($iSurveyID)
 {
     // Unset the session
     unset($_SESSION['survey_'.$iSurveyID]);
+}
 
-    // Delete the timers cookie
-    // @todo: Make cookie survey ID aware
+
+/**
+* Resets all question timers by expiring the related cookie - this needs to be called before any output is done
+* @todo Make cookie survey ID aware
+*/
+function resetTimers()
+{
     $cookie=new CHttpCookie('limesurvey_timers', '');
     $cookie->expire = time()- 3600;
     Yii::app()->request->cookies['limesurvey_timers'] = $cookie;

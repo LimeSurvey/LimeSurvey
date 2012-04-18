@@ -342,15 +342,14 @@ class SurveyRuntimeHelper {
                         $_SESSION[$LEMsessid]['insertarray'][] = "refurl";
                     }
                 }
-
-                //COMMIT CHANGES TO DATABASE
+                resetTimers();
+                //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
                 {
                     if ($thissurvey['assessments'] == "Y")
                     {
                         $assessments = doAssessment($surveyid);
                     }
-
                     sendCacheHeaders();
                     doHeader();
 
@@ -376,7 +375,7 @@ class SurveyRuntimeHelper {
                     $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                     if ($thissurvey['printanswers'] == 'Y')
                     {
-                        // ClearAll link is only relevant for survey with printanswers enabled
+                        // 'Clear all' link is only relevant for survey with printanswers enabled
                         // in other cases the session is cleared at submit time
                         $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . $clang->gT("Clear Responses") . "</a><br /><br />\n";
                     }
@@ -845,10 +844,10 @@ class SurveyRuntimeHelper {
                 ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 END;
 
-if ($previewgrp)
-{
-    // force the group to be visible, even if irrelevant - will not always work
-    print <<<END
+        if ($previewgrp)
+        {
+            // force the group to be visible, even if irrelevant - will not always work
+            print <<<END
     $('#relevanceG' + LEMgseq).val(1);
     $(document).ready(function() {
         $('#group-' + LEMgseq).show();
@@ -865,9 +864,9 @@ if ($previewgrp)
             });
 
 END;
-}
+        }
 
-print <<<END
+        print <<<END
             }
         // -->
         </script>
