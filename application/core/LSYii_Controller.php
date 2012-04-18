@@ -114,6 +114,14 @@ abstract class LSYii_Controller extends CController
 
 		enforceSSLMode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
+        if (Yii::app()->getConfig('debug')>0) {//For debug purposes - switch on in config.php
+            @ini_set("display_errors", 1);
+            error_reporting(E_ALL);
+        }
+        if (Yii::app()->getConfig('debug')>1) {//For debug purposes - switch on in config.php
+            error_reporting(E_ALL | E_STRICT);
+        }
+
 		//SET LOCAL TIME
 		$timeadjust = Yii::app()->getConfig("timeadjust");
 		if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}

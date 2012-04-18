@@ -999,6 +999,14 @@ class InstallerController extends CController {
             ."\t"     . ""                                          . "\n"
 
             ."\t"     . "),"                                        . "\n"
+            ."\t"     . "// Use the following config variable to set modified optional settings copied from config-defaults.php". "\n"
+            ."\t"     . "'config'=>array("                          . "\n"
+            ."\t"     . "// debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this". "\n"
+            ."\t"     . "// then please check your error-logs - either in your hosting provider admin panel or in some /logs directory". "\n"
+            ."\t"     . "// on your webspace.". "\n"
+            ."\t"     . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates". "\n"
+            ."\t\t"   . "'debug'=>0"                                . "\n"
+            ."\t"     . ")"                                         . "\n"
             . ");"                                        . "\n"
             . "/* End of file config.php */"              . "\n"
             . "/* Location: ./application/config/config.php */";
