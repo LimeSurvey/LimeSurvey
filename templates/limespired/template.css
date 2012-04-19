@@ -332,8 +332,7 @@ div#wrapper2 {
 }
 
 div#header {
-  background: url(header-bg.png) no-repeat;
-  right-bottom
+  background: url(header-bg.png) no-repeat right bottom;
 }
 
 div#header .rk-1 {
@@ -445,7 +444,7 @@ input.submit:hover {
 }
 
 .survey-survey-percent {
-  padding: 0.2em 0%;
+  padding: 0.2em 0;
 }
 
 #progress-graph {
@@ -468,7 +467,7 @@ input.submit:hover {
 
 #progress-graph div.zero {
   width: 2.6em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 #progress-graph div.graph {
@@ -477,14 +476,14 @@ input.submit:hover {
   border: 1px solid #000;
   margin-top: -1.7em;
   margin-left: 2.6em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 #progress-graph div.cent {
   width: 3em;
   margin-top: -1.5em;
   margin-left: 13.3em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 /*
@@ -566,7 +565,7 @@ span.qnumcode {
 }
 
 .survey-question-help {
-  margin: 12px 0px 0 2px;
+  margin: 12px 0 0 2px;
   clear: both;
 }
 
@@ -594,7 +593,7 @@ table.question {
   width: 96%;
   border: 1px solid #3c9aae;
   padding: 4px;
-  margin: 0 10px 0 10px;
+  margin: 0 10px;
 }
 
 .textarea:focus {
@@ -745,15 +744,15 @@ a.imglink {
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .survey-question-answer ul,.list-radio-flexible .survey-question-answer ul,.list-radio .survey-question-answer ul,.list-with-comment .survey-question-answer ul,.multiple-opt .survey-question-answer ul,.multiple-opt-comments .survey-question-answer ul,.multiple-short-txt .survey-question-answer ul,.numeric-multi .survey-question-answer ul,.yes-no .survey-question-answer ul,.gender .survey-question-answer ul
   {
-  margin-left: 0%;
-  padding-left: 0%;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .choice-5-pt-radio .survey-question-answer li,.list-radio-flexible .survey-question-answer li,.list-radio .survey-question-answer li,.list-with-comment .survey-question-answer li,.multiple-opt .survey-question-answer li,.multiple-opt-comments .survey-question-answer li,.multiple-short-txt .survey-question-answer li,.numeric-multi .survey-question-answer li,.yes-no .survey-question-answer li,.gender .survey-question-answer li
   {
   list-style-type: none;
   text-align: left;
-  margin: 0% 0% 0.5em 0.5em;
+  margin: 0 0 0.5em 0.5em;
 }
 
 .choice-5-pt-radio .survey-question-answer li,.list-radio-flexible .survey-question-answer li,.list-radio .survey-question-answer li,.list-with-comment .survey-question-answer li
@@ -773,7 +772,7 @@ a.imglink {
 
 .choice-5-pt-radio .survey-question-answer ul li,.yes-no .survey-question-answer ul li,.gender .survey-question-answer ul li {
   display: inline;
-  padding: 0% 2em 0% 0%;
+  padding: 0 2em 0 0;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
@@ -834,13 +833,13 @@ a.imglink {
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
-  margin: 0% auto 0% auto;
+  margin: 0 auto;
 }
 
 ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul.cols-5 li,ul.cols-5-ul,ul.cols-6 li,ul.cols-6-ul,ul.cols-7 li,ul.cols-7-ul,ul.cols-8 li,ul.cols-8-ul
   {
   float: left;
-  padding: 0% 0.5em;
+  padding: 0 0.5em;
   white-space: normal
 }
 
@@ -889,16 +888,16 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   width: 47%;
   float: left;
   padding: 0.5em;
-  margin: 0%;
+  margin: 0;
 }
 
 .list-with-comment div.list p {
-  margin: 0%;
+  margin: 0;
   text-align: left;
 }
 
 .list-with-comment p.comment {
-  margin: 0%;
+  margin: 0;
   padding: 0.5em;
   text-align: left;
   float: left;
@@ -961,7 +960,6 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 .dragDropTable .dragDropChoiceList li,
 .dragDropTable .dragDropRankList li {
     margin: 3px;
-
     padding: 10px;
 	min-height: 1.3em;
 	_height: 1.3em; /* IE6 and below hack */
@@ -996,10 +994,10 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /* the prefix */
 .dragDropTable .dragDropRankList li span.DDRnumberprefix,
 .dragDropTable .dragDropChoiceList li span.DDRnumberprefix {
-	padding: 0px 6px;
+	padding: 0 6px;
 	background: #EDFBFF;
 	border: 1px solid #479BB3;
-	margin: 0px 10px 5px 0px;
+	margin: 0 10px 5px 0;
 	float: left;
 	color: #479BB3;
 }
@@ -1020,12 +1018,12 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 
 .multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul {
   display: table;
-  padding: 0%;
+  padding: 0;
   margin: 1em;
 }
 
 .numeric-multi ul {
-  margin: 0% 1em 1.5em 1em;
+  margin: 0 1em 1.5em 1em;
 }
 
 .numeric-multi ul.computed {
@@ -1043,33 +1041,33 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0% 2em;
+  padding: 0.3em 1em 0 2em;
   text-indent: -1.5em;
   display: table-cell;
   vertical-align: baseline;
 }
 
 .multiple-short-txt ul li label,.numeric-multi ul li label {
-  padding: 0.3em 1em 0% 0%;
+  padding: 0.3em 1em 0 0;
   display: table-cell;
   vertical-align: middle;
 }
 
 .numeric-multi ul.computed li label
 .numeric-multi ul.slider.computed li label {
-  padding-right: 0%;
+  padding-right: 0;
 }
 
 .multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span
   {
-  padding: 0.3em 0% 0% 1em;
+  padding: 0.3em 0 0 1em;
   display: table-cell;
   vertical-align: baseline;
   white-space: nowrap;
 }
 
 .multiple-opt-comments ul li span {
-  padding: 0.3em 1em 0% 0%;
+  padding: 0.3em 1em 0 0;
 }
 
 .numeric-multi div.multinum-slider {
@@ -1089,13 +1087,13 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 
 .numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
   {
-  padding: 0.3em 0% 0% 0%;
+  padding: 0.3em 0 0 0;
   display: table-cell;
 }
 
 .numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
   {
-  padding: 0% 0% 0% 0.3em;
+  padding: 0 0 0 0.3em;
   display: table-cell;
 }
 
@@ -1103,7 +1101,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   border: none;
   background-color: #fff;
   color: #222;
-  padding: 0%;
+  padding: 0;
   width: 7em;
 }
 
@@ -1188,7 +1186,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   height: 24px;
   width: 12px;
   top: -6px;
-  left: 0px;
+  left: 0;
   margin-left: -3px;
   background: transparent url(slider-handle.gif) 0 0 no-repeat;
   border-width: 0;
@@ -1323,7 +1321,7 @@ p#tokenmessage {
   width: 80%;
   margin: 8px auto;
   background-color: #F5FEFF;
-  padding: 0px;
+  padding: 0;
   min-width: 690px;
   border: 1px solid #000000;
 }
@@ -1332,14 +1330,14 @@ p#tokenmessage {
   color: #FFF;
   background-color: #00677D;
   text-align: center;
-  padding: 10px 0px;
+  padding: 10px 0;
   height: 96px;
 }
 
 .statsSurveyTitle {
   font-size: 1.1em;
   font-weight: bold;
-  padding: 24px 0px 0px 0px;
+  padding: 24px 0 0 0;
   width: 100%;
   text-align: center;
   font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -1359,7 +1357,7 @@ p#tokenmessage {
 table.statisticstable {
   width: 90%;
   text-align: left;
-  margin: 0px auto;
+  margin: 0 auto;
   padding-bottom: 8px;
   font-family: Verdana, Arial, Helvetica, sans-serif;
   border: 1px solid #999;
@@ -1382,7 +1380,7 @@ table.statisticstable strong {
 
 div.fieldSummary {
   font-size: .9em;
-  padding: 0px 0px 0px 6px;
+  padding: 0 0 0 6px;
   text-align: left;
 }
 

@@ -2494,7 +2494,7 @@ function do_multiplechoice($ia)
         }
     }
     if ($exclude_all_others_auto==1){
-        $answer .= "<script type='text/javascript'>autoArray = ".json_encode($autoArray).";</script>";
+        $answer .= "<script type='text/javascript'>autoArray = ".ls_json_encode($autoArray).";</script>";
     }
     if ($other == 'Y')
     {

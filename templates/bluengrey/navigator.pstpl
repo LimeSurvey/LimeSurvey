@@ -2,6 +2,6 @@
 	<tr>
 	    <td class="save-all">{SAVE}</td> 
 		<td class="submit-buttons" align="center">{NAVIGATOR}</td>
-	    <td class="clear-all" align="right">{CLEARALL}</td> 
+	    <td class="clear-all">{CLEARALL}</td> 
 	</tr>
 </table>

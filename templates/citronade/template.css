@@ -45,9 +45,8 @@ table{border-collapse:separate;border-spacing:0;border:1px solid gray;margin:0}
 table td,table th{border:1px solid #ccc;vertical-align:top;padding:4px}
 article,aside,dialog,figure,footer,header,hgroup,menu,nav,section{display:block}
 ul#surveylist{list-style:none}
-.hide{position:absolute;top:-9999px;left:-9999px}
-.good{color:#090}
-#progress-wrapper{width:252px;font-size:12px;height:20px;margin:0 auto}
+.hide{position:absolute;top:auto;left:-999999px}
+#progress-wrapper{width:252px;font-size:12px;height:20px;}
 #progress-wrapper #progress-pre{float:left;width:45px;text-align:right;margin:0 5px 0 0}
 #progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
 #progress-wrapper .ui-widget-header{background-color:#AAA;background-image:none;border:1px solid #666}
@@ -110,61 +109,61 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 #footer a:hover, #footer a:focus, #footer a:active {background-color: #E5F8A8;color: #5670A1;} 
 
 /* survey tool decoration */
-#languagechanger select, 
+ .tools select, 
 	.tools input,
 	.tools a,
 	input.submit,
 	input#savebutton,
 	input#loadbutton,
 	input#registercontinue,
-	.navigator input
+	.navigator input,
+	.navigator button
 		{border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
-  -moz-box-shadow: 2px 2px 5px #ccc;
-  -webkit-box-shadow: 2px 2px 5px #ccc;
-  box-shadow: 2px 2px 5px #ccc;
-
-}
-#languagechanger select:hover,
+		-moz-box-shadow: 2px 2px 5px #ccc;-webkit-box-shadow: 2px 2px 5px #ccc;box-shadow: 2px 2px 5px #ccc;
+		}
+.tools select:hover,
 	.tools input:hover,
 	.tools a:hover,
 	.navigator input:hover,
+	.navigator button:hover,
 	input.submit:hover,
 	input#savebutton:hover,
 	input#loadbutton:hover,
 	input#registercontinue:hover,
-	#languagechanger select:focus,
+	.tools select:focus,
 	.tools input:focus,
 	.tools a:focus,
 	.navigator input:focus,
+	.navigator button:focus,
 	input.submit:focus,
 	input#savebutton:focus,
 	input#loadbutton:focus,
 	input#registercontinue:focus
 		{color:#415479;background:#dcdfe6;border-color:#ABB8D1;
-  -moz-box-shadow: 2px 2px 5px #415479;
-  -webkit-box-shadow: 2px 2px 5px #415479;
-  box-shadow: 2px 2px 5px #415479;
+		-moz-box-shadow: 2px 2px 5px #415479;-webkit-box-shadow: 2px 2px 5px #415479;box-shadow: 2px 2px 5px #415479;
 		}
-#languagechanger select:hover option{background:#FEFEFE;}
+.tools select:hover option{background:#FEFEFE;}
 
 /* for disabled tools */
 .tools input[disabled],
 	.navigator input[disabled],
+	.navigator button[disabled],
 	input.submit[disabled],
 	input#savebutton[disabled],
 	input#loadbutton[disabled],
 	input#registercontinue[disabled],
-	#languagechanger select[disabled]
+	.tools select[disabled]
 	{border:1px solid #dbdbdb;background:#FEFEFE;color:#dbdbdb;cursor:inherit;}
 
 .ie .tools input,
 	.ie .tools a,
 	.ie .navigator input,
+	.ie .navigator button,
 	.ie input#savebutton,
 	.ie input#loadbutton
 		{height:2em}
 
-.no-js input.saveall,.no-js input.clearall,.no-js input#moveprevbtn  {display:none}
+.no-js input.saveall,.no-js input.clearall,.no-js #moveprevbtn  {display:none}
 /* gloabl information block */
 .note,#tokenmessage{border:#8195BA 1px solid;background:#EEF6FF;}
 
@@ -181,21 +180,17 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .question-wrapper .question-text{font-weight:bold;}
 .question-wrapper .question-text strong,.question-wrapper .question-text b{font-weight:bolder;}/* see for strong and b to add some color */
 .asterisk {display:none}
-.mandatory .asterisk {display:inline;}
-.asterisk {color:#FF8900;padding-right:1em;}
+.mandatory .asterisk {display:inline;display:inline-block;}
+.asterisk {color:#FF8900;}
 .showqnumcode-X .qnumcode {display:none;}
-.qnumcode {font-style:italic;padding-right:1em;}
-
-/* input decoration */
-.form input[type=text],#tokenform input[type=text]
-	{border:1px solid #999;}
-.form input[type=text],#tokenform input:focus,{background-color:#F0F0F0;border-color:#666}
-
+.qnumcode {font-style:italic;}
+/*.asterisk{background:transparent url(exclamation.png) no-repeat center;height:1em;min-height:16px;width:20px;}*/
 
 /* tip color */
 .error{color:#944}
 .good{color:#494}
 .problem{color:#944}
+/* input error after*/
 
 /* If you want some round box, add round style */
 .round{-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
@@ -216,7 +211,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 
 /* index */
 #index .container{margin-top: 2em;border: 1px solid #5670A1;background:#EEF6FF;}
-#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
+#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0;font-size:1.1em;}
 #index .container h2{background:#5670A1;color:#FEFEFE;font-size:1.2em}
 #index .hdr{color:#5670A1;padding:0 0.5em;}
 #index .row{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: underline;}
@@ -225,17 +220,18 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 #index .row:hover, #index .row:focus, #index .row:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
 #index .container .submit{margin:0 auto 0.5em;display:block}
 /* --------------------------------------------- */
-/* More tempate adaptation                       */
+/* More template adaptation                       */
 /* --------------------------------------------- */
-#container{margin:0;text-align:center;} /* Global container */
-
-.wrapper,#content{overflow:auto;position:relative;text-align:left;}
+#container{margin:0;} /* Global container */
+.ie6 #container,.ie7 #container{text-align:center}
+.wrapper,#content{overflow:auto;position:relative;}
+.ie6 .wrapper,.ie6 #content,.ie7 .wrapper,.ie7 #content{text-align:left;}
 #container{min-height:100%;position:relative;}
 
 #head{position:relative;}
 #head h1{display:inline;}
 #head img#logo{vertical-align:middle;}
-
+#head .tools{float:right}
 /* for the footer */
 #content{padding-bottom:4.8em;}
 #footer {text-align:center;padding:0.8em 0 0.4em;margin:0;font-size:0.8em;font-weight:normal;}
@@ -266,7 +262,6 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 /* specific decoration */
 p.url{font-size:1.2em;text-align:center;font-weight:bold}
 table.printouttable{width:99%}
-#languagechanger{margin:0.5em 0;text-align:center}
 /* survey list (home page) */
 #surveylist-container{text-align:center}
 h2#surveytitle{font-size:1.2em;text-align:left;line-height:2em;}
@@ -274,18 +269,18 @@ ul#surveylist li a{color:#5670A1;}
 
 /* Tool button and link */
 /* tools input */
-.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+.tools input,.tools a,.navigator input,.navigator button,input.submit,.tools input,.tools select
 		{font-family:FreeSans,Arial,Helvetica,sans-serif;font-size:1em;vertical-align:middle;}
-tools input,.tools a,input.submit,.navigator input,input#savebutton,input#loadbutton,input#registercontinue
+.tools input,.tools a,input.submit,.navigator input,.navigator button,
 	{box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
-.tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input
+.tools input,.tools a,.navigator input,.navigator button,input.submit,.navigator input
 	{margin:0;padding:3px 6px;text-decoration:none;cursor: pointer;}
-#languagechanger select
+.tools select
 		{margin:0;padding:1px 2px;}
 .tools,.navigator,.tools :active,.navigator :active,.tools :focus,.navigator :focus
      { outline: 0 none; }
 .tools ::-moz-focus-inner,.navigator ::-moz-focus-inner {border:0;}
-.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+.tools input,.tools a,.navigator input,.navigator button,input.submit,.tools select
 	{-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
 /* tools list */
 ul.tools{list-style: none ;margin: 0.5em ; padding: 0 ;text-align: left;}
@@ -296,10 +291,11 @@ ul.info li{margin:0.5em 0;font-size:1.05em;}
 ul.info a {}
 .navigator{text-align:center;}
 
-/* progress */
-#percentcomplete{height:2em;margin:0.5em 0;}
-#progress-wrapper {height: 2em;}
+#movenextbtn{background-image:url(go-east.png);background-repeat:no-repeat;background-position:right center;padding:3px 26px 3px 6px;}
+#moveprevbtn{background-image:url(go-west.png);background-repeat:no-repeat;background-position:left center;padding:3px 6px 3px 26px;}
 
+#progress-wrapper {margin:0.5em auto;}
+#languagechanger {margin:0.5em;}
 /*surveylist (home page) */
 #surveylist{margin: 0.5em auto;padding: 0;text-align: left;overflow:auto;display:inline-block;}
 #surveylist li{padding:0.5em 10px;}
@@ -321,7 +317,7 @@ div.form table table td{padding:0;}
 /* Group decoration */
 .group{margin-bottom: 2em}
 .groupdescription{padding:0 1.5em;margin:0 0 0.5em;}
-.grouptitle{line-height:2em;padding:0 1em;margin:0 0 0em;font-size:1.1em;}
+.grouptitle{line-height:2em;padding:0 1em;margin:0;font-size:1.1em;}
 
 
 /* Question decoration */
@@ -335,9 +331,11 @@ div.form table table td{padding:0;}
 .question-help img{margin:1px 5px 5px 1px;}
 
 /* tip bloc */
-.help-wrapper {font-style:italic;margin:0.5em auto;width:96%;font-size:0.8em;}
+
+.help-wrapper ,.tip{font-style:italic;margin:0.5em auto;width:96%;line-height: 150%;}
+.help-wrapper {font-size:0.8em;}
 .help-wrapper .error,.help-wrapper .error-wrapper{color:#944;font-weight:bold}
-.help-wrapper .success,.help-wrapper .good,.help-wrapper .ok{color:#494}
+.help-wrapper .success,.help-wrapper .good,.help-wrapper .ok{color:#444}
 .help-wrapper .problem{color:#944}
 .help-wrapper .errormandatory{color:#944;font-weight:1em;}
 .help-wrapper .errormandatory br:first,.help-wrapper .errormandatory strong br:first{display:none;}
@@ -345,24 +343,40 @@ div.form table table td{padding:0;}
 
 .help-wrapper .mandatory{display:none;}
 .input-error .help-wrapper .mandatory{display:block;}
-
+.answer-wrapper .tip{text-align:left;font-size:0.8em;}
 /* input error */
-input.error,input.problem{font-weight:bold}/* some width problem : todo :fix it */
 input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 /* input decoration */
-.answers-wrapper input.text,.answers-wrapper textarea,.answers-wrapper input[type=text]
+
+
+.form input[type=text],input.text, .answers-wrapper input.text,.answers-wrapper textarea,.answers-wrapper input[type=text]
 	{margin:3px;padding:2px;}
-.form input[type=text],.answers-wrapper input.text,.answers-wrapper textarea, .answers-wrapper input[type=text]
+.form input[type=text],input.text,.answers-wrapper input.text,.answers-wrapper textarea, .answers-wrapper input[type=text]
 	{border:1px solid #999;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius:3px;}
-.answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
-  background-color:#F0F0F0;border-color:#666;
+
+
+.mandatory .answers-wrapper textarea.empty,.mandatory  .answers-wrapper input[type=text].empty,
+.answers-wrapper textarea.error, .answers-wrapper input[type=text].error{
+	border:1px solid #944;color:#444;background-color:#FEF;
+}
+.answers-wrapper textarea.good, .answers-wrapper input[type=text].good{
+	border:1px solid #494;color:#444
+}
+.answers-wrapper textarea.empty, .answers-wrapper input[type=text].empty{
+	border:1px solid #999;color:#444;background-color:#FFF;
+}
+.answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]{
+  background-color:#FFF;border-color:#EEE;
+}
+.answers-wrapper textarea.empty[disabled], .answers-wrapper input[type=text].empty[disabled]{
+	border:1px solid #EEE;color:#444;background-color:#FFF;
+}
+
+.form input[type=text]:focus,input.text:focus,.answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
+  background-color:#FFF;border-color:#666;color:#222;
   -moz-box-shadow: 1px 1px 3px #555;
   -webkit-box-shadow: 1px 1px 3px #555;
   box-shadow: 1px 1px 3px #555;
-}
-
-.answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]{
-  background-color:#FFF;border-color:#EEE;
 }
 
 /* specific questions color and background*/
@@ -416,8 +430,7 @@ button.ui-button::-moz-focus-inner {
 	line-height: normal;
 }
 
-.ui-button-icon-only { 
-	width: 2.2em; /* To make room for the icon, a width needs to be set here */
+.ui-button-icon-only { width: 2.2em;
 } 
 
 button.ui-button-icon-only { 
@@ -647,7 +660,7 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 ,.gender .answers-wrapper ul li
 {
 	display: inline;
-	padding: 0% 1em 0% 0%;
+	padding: 0 1em 0 0;
 	text-align:left;
 }
  .choice-5-pt-radio .answers-wrapper li
@@ -655,7 +668,7 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 ,.list-radio .answers-wrapper li
 ,.list-with-comment .answers-wrapper li
 {
-	margin-left: 3em;
+	margin-right:0;margin-left: 3em;
 }
 @media screen and (max-width: 640px) {
 	 .choice-5-pt-radio .answers-wrapper li
@@ -669,21 +682,10 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 .list-radio-flexible li{width:auto;}
 .list-radio-flexible ul{width:auto;margin:0 auto 0.5em;}
 
-
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
-{
-	font-size: 80%;
-	font-style: italic;
-}
-
 table.rank{width:98%;table-layout:fixed;}
 table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
 table.rank td{border-width:1px;}
 table.rank table td{border-width:0px;}
-
-
 
 .numeric-multi ul.slider.computed
 {
@@ -703,54 +705,28 @@ table.rank table td{border-width:0px;}
 ,.gender .answers-wrapper ul li
 {
 	display: inline;
-	padding: 0% 2em 0% 0%;
+	padding: 0 2em 0 0;
 	text-align:left;
 }
 
-.date p.question { margin-left: 1em;margin-right: 1em; text-align:center;}
-.date p.question select.day {}
-.date p.question select.month {}
-.date p.question select.year {}
-
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
-{
-	padding-left: 1.5em;
-	font-size: 80%;
-	font-style: italic;
-	line-height: 150%;
-}
-.numeric p.question
+p.question
 {
 	 margin-left: 1em;margin-right: 1em;
 	font-weight: normal;
 	text-align:center;
 }
- .numeric-multi p.tip.error
-,.numeric-multi input.tip.error
-{
-	text-align: left;
-}
- .numeric-multi p.tip.good
-,.numeric-multi input.tip.good
-{
-	text-align: left;
-}
-
 
 table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
 table.rank{margin:0.3em auto;}
 table.rank select{width:99%;min-width:10em;padding-left:0.3em;}
 table.rank td{border:1px solid #D5DBE7}
 table.rank table td{border:0px none #D5DBE7}
-
-/*input{text-align:right}*/
+table.rank input{border:1px solid #999}
 
 
 .list-dropdown-flexible .question, .list-dropdown .question, .language .question
 {
-text-align:center;
+	text-align:center;
 }
 
 .list-with-comment div.list
@@ -764,11 +740,11 @@ text-align:center;
 	width: 47%;
 	float: left;
 	padding: 0.5em;
-	margin: 0%;
+	margin: 0;
 }
 .list-with-comment div.list p
 {
-	margin: 0%;
+	margin: 0;
 	text-align: left;
 }
 .list-with-comment p.comment
@@ -784,11 +760,6 @@ text-align:center;
 	width: 100%;
 }
 
- .multiple-opt-comments td.answer
-,.multiple-short-txt td.answer
-,.numeric-multi td.answer
-{
-}
  .multiple-opt-comments ul
 ,.multiple-short-txt ul
 ,.numeric-multi ul
@@ -799,13 +770,11 @@ text-align:center;
 	width:99%;
 }
 
-
-
-.numeric-multi ul	{	}
+.numeric-multi ul	{}
 .numeric-multi ul.computed
 {
 	float:left;
-	padding-right: 2em;
+	padding-left: 0;padding-right: 2em;
 }
 .numeric-multi ul.slider.computed
 {
@@ -821,9 +790,9 @@ text-align:center;
 	width:99%;
 }
 .numeric-multi ul li
-,.multiple-opt ul li
-,.multiple-opt-comments ul li
-,.multiple-short-txt ul li
+, .multiple-opt ul li
+, .multiple-opt-comments ul li
+, .multiple-short-txt ul li
 {
 	display: block;
 }
@@ -841,83 +810,78 @@ text-align:center;
 	text-align: left;
 }
 
-.numeric-multi ul.multiplenumerichelp span input {
-    border: none;
-    background-color: #fff;
-    color: #222;
-    padding: 0%;
-    width: 7em;
+.numeric-multi .answers-wrapper ul
+, .multiple-short-txt .answers-wrapper ul 
+, .multiple-opt-comments  .answers-wrapper ul
+{
+	display:table;
 }
-.numeric-multi ul li label
-,.multiple-opt-comments ul li span.option
-,.multiple-short-txt ul li label
+.numeric-multi .answers-wrapper ul li
+, .multiple-short-txt .answers-wrapper ul li
+, .multiple-opt-comments  .answers-wrapper ul li
+{
+	display:table-row;
+}
+
+.numeric-multi .answers-wrapper ul li label, .numeric-multi .answers-wrapper ul li span 
+, .multiple-short-txt .answers-wrapper ul li label, .multiple-short-txt .answers-wrapper ul li span
+, .multiple-opt-comments  .answers-wrapper ul .option, .multiple-opt-comments  .answers-wrapper ul .comment
+{
+	display:table-cell;
+	vertical-align:middle;
+	width:50%;
+	padding:0.3em 0.5em 0.7em;
+}
+
+.numeric-multi .answers-wrapper ul li label span
+, .multiple-short-txt .answers-wrapper ul li label span
+{
+	display:inline;
+	width:auto
+}
+
+.numeric-multi .answers-wrapper ul li span span
+, .multiple-short-txt .answers-wrapper ul li span span
+{
+	display:inline-block;
+	width:5em;
+	text-align:center;
+	font-weight:bold;
+}
+.ie6 .numeric-multi ul li label,.ie7 .numeric-multi ul li label
+,.ie6 .multiple-opt-comments ul li span.option,.ie7 .multiple-opt-comments ul li span.option
+,.ie6 .multiple-short-txt ul li label,.ie7 .multiple-short-txt ul li label
 {
 	clear:left;
 	float:left; 
 	width:45%;
-	padding: 0.3em 1em 0% 0%;
+	padding: 0.3em 1em 0 0;
 }
+
 .multiple-opt .answers-wrapper ul li
 , .list-radio .answers-wrapper ul li
 , .list-radio-flexible .answers-wrapper ul li
 {
-	padding-left:30%;
+	padding-right:0;padding-left:40%;
 }
-	
 @media screen and (max-width: 640px) {
-	.numeric-multi ul li label
-	,.multiple-short-txt ul li label
-	{
-		text-align:left;
-	}
-	.numeric-multi ul li label
-	,.multiple-opt-comments ul li span.option
-	,.multiple-short-txt ul li label
-	{
-		width:auto;
-		padding: 0.3em 0 0;
-	}
-
-	.numeric-multi .answers-wrapper ul li
-	, .multiple-short-txt .answers-wrapper ul li
-	, .multiple-opt .answers-wrapper ul li
-	, .multiple-opt-comments  .answers-wrapper ul
-	, .list-radio .answers-wrapper ul li
-	, .list-with-comment .answers-wrapper ul li 
-	, .list-radio-flexible .answers-wrapper ul li 
+	.multiple-opt .answers-wrapper ul li
+	, .list-radio .answers ul li
+	, .list-with-comment .answers ul li 
+	, .list-radio-flexible .answers ul li 
 	{
 		padding-left:0;
-		display:table-row;
-	}
-	.numeric-multi .answers-wrapper ul li
-	, .multiple-short-txt .answers-wrapper ul li
-	, .multiple-opt .answers-wrapper ul li
-	, .multiple-opt-comments  .answers-wrapper ul
-	, .list-radio .answers-wrapper ul li
-	, .list-with-comment .answers-wrapper ul li 
-	, .list-radio-flexible .answers-wrapper ul li 
-	{
-		display:table;
-	}
-	.numeric-multi .answers-wrapper ul li
-	, .multiple-short-txt .answers-wrapper ul li
-	, .multiple-opt .answers-wrapper ul li
-	, .multiple-opt-comments  .answers-wrapper ul
-	, .list-radio .answers-wrapper ul li
-	, .list-with-comment .answers-wrapper ul li 
-	, .list-radio-flexible .answers-wrapper ul li 
-	{
-		display:table;
 	}
 }
 
+
  .text-short input
- ,.text-short textarea
+,.text-short textarea
 ,.text-long textarea
 ,.text-huge textarea
 {
-	margin-left: 1em;
-text-align:left;
+	margin-right: 0;margin-left: 1em;
+    text-align:left;
 }
  .text-short .question
  ,.text-short .answers-wrapper
@@ -926,6 +890,7 @@ text-align:left;
 {
 text-align:center;
 }
+
 
 /* multi column */
   ul.cols-2 , table.cols-2
@@ -1002,108 +967,12 @@ input.text,textarea{
 
 /* Tips / Validation Messages */
 /* If the question is invalid, but has not been submitted, give it a pleasant warning color */
-div.em_num_answers.good {
- color: green;
-}
 
-div.em_num_answers.error {
-  color: #FF00FF;
-  display: block;
-}
-
-div.em_value_range.good {
-  color: green;
-}
-div.em_value_range.error {
-  color: #FF00FF;
-  display: block;
-}
-
-div.em_sum_range.good {
-  color: green;
-}
-div.em_sum_range.error {
-  color: #FF00FF;
-  display: block;
-}
-
-div.em_regex_validation {
-  display: none;
-}
-div.em_regex_validation.good {
-  color: green;
-}
-div.em_regex_validation.error {
-  color: #FF00FF;
-}
-
-div.em_q_fn_validation.good {
-  color: green;
-}
-div.em_q_fn_validation.error {
-  color: #FF00FF;
-}
-
-div.em_sq_fn_validation.good {
-  color: green;
-}
-div.em_sq_fn_validation.error {
-  color: #FF00FF;
-}
-
-div.em_other_comment_mandatory.good {
-  display: none;
-}
-div.em_other_comment_mandatory.error {
-  color: #FF00FF;
-  display: block;
-}
-
-input.em_sq_validation.good, textarea.em_sq_validation.good {
-}
-
-input.em_sq_validation.error, textarea.em_sq_validation.error {
-  color: black;
-  background-color:  pink;
-}
-
-span.dynamic_sum {
-  font-weight: bold;
-  background-color: #d3d3d3;
-}
-span.dynamic_sum.good {
-  color: green;
-}
-span.dynamic_sum.error {
-  color: red;
-}
-
-span.dynamic_remaining {
-  font-weight: bold;
-  background-color: #d3d3d3;
-}
-span.dyanamic_remaining.good {
-  color: green;
-}
-span.dynamic_remaining.error {
-  color: red;
-}
-
-/* If  it is still invalid after submit, flag it in red */
-.input-error div.error {
-  color: red;
-  display: block;
-}
-
-span.hide-tip div.good {
+.hide-tip .good {
     display: none;
 }
-
-span.hide-tip div.error {
-    color: #FF00FF;
+.hide-tip .error {
 }
-
-.input-error span.hide-tip div.error {
-    color: red;
+.input-error .hide-tip .error {
     display: block;
 }

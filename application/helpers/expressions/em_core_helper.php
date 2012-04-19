@@ -3019,6 +3019,27 @@ EOD;
             return $string;
         }
     }
+
+
+    /**
+    * Stub to access LimeSurvey's functions for internationalizing strings
+    *
+    * @param string $single
+    * @param string $plural
+    * @param integer $number
+    */
+    function ngT($single, $plural, $number)
+    {
+        // ultimately should call i8n functiouns
+        global $clang;
+        if (isset($clang)) {
+            return $clang->ngT($single, $plural, $number);
+        }
+        else {
+            return $string;
+        }
+    }
+
 }
 
 /**

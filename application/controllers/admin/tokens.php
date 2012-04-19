@@ -392,7 +392,7 @@ class tokens extends Survey_Common_Action
             }
         }
 
-        echo lsJSONEncode($aData);
+        echo ls_json_encode($aData);
     }
 
     function editToken($iSurveyId)
@@ -482,7 +482,7 @@ class tokens extends Survey_Common_Action
                     $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
                 $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
-            echo lsJSONEncode(var_export($aData));
+            echo ls_json_encode(var_export($aData));
             $token = new Tokens_dynamic;
             foreach ($aData as $k => $v)
                 $token->$k = $v;
@@ -934,6 +934,8 @@ class tokens extends Survey_Common_Action
         'title' => sprintf($clang->gT("%s field(s) were successfully added."), $number2add),
         'message' => "<br /><input type='button' value='" . $clang->gT("Back to attribute field management.") . "' onclick=\"window.open('" . $this->getController()->createUrl("/admin/tokens/managetokenattributes/surveyid/$iSurveyId") . "', '_top')\" />"
         )), $aData);
+
+        LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
     }
 
     /**
@@ -1151,7 +1153,7 @@ class tokens extends Survey_Common_Action
                         $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
                         if ($key == 'SURVEY')
                         {
-                            $fieldsarray["@@SURVEYURL@@"] = $url;
+                            $barebone_link = $url;
                         }
                     }
 
@@ -1161,6 +1163,12 @@ class tokens extends Survey_Common_Action
                     global $maildebug;
                     $modsubject = Replacefields(Yii::app()->request->getPost('subject_' . $emrow['language']), $fieldsarray);
                     $modmessage = Replacefields(Yii::app()->request->getPost('message_' . $emrow['language']), $fieldsarray);
+
+                    if (isset($barebone_link))
+                    {
+                        $modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
+                        $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
+                    }
 
                     if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
@@ -1931,6 +1939,8 @@ class tokens extends Survey_Common_Action
             . "<input type='submit' value='"
             . $clang->gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("admin/") . "', '_top')\" />"
             )), $aData);
+            
+            LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
         }
     }
 
@@ -2079,6 +2089,8 @@ class tokens extends Survey_Common_Action
             . "<input type='submit' value='"
             . $clang->gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )));
+
+            LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
         }
         else
         {
@@ -2178,7 +2190,7 @@ class tokens extends Survey_Common_Action
                 $i++;
             }
         }
-        echo lsJSONEncode($aData);
+        echo ls_json_encode($aData);
     }
 
     /**

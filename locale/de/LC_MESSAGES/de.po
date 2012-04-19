@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-10 08:44+0100\n"
-"PO-Revision-Date: 2012-04-10 08:44+0100\n"
+"POT-Creation-Date: 2012-04-16 14:30+0100\n"
+"PO-Revision-Date: 2012-04-16 14:43+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <carsten.schmitz@limesurvey.org>\n"
 "MIME-Version: 1.0\n"
@@ -405,7 +405,7 @@ msgstr "Alle auswählen"
 msgid "Clear"
 msgstr "Löschen"
 
-#: application/controllers/UploaderController.php:252
+#: application/controllers/UploaderController.php:265
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -638,7 +638,7 @@ msgstr "Konnte Antworten nicht aktualisieren"
 msgid "Female"
 msgstr "weiblich"
 
-#: application/controllers/UploaderController.php:77
+#: application/controllers/UploaderController.php:76
 #, php-format
 msgid "File %s deleted"
 msgstr "Datei %s gelöscht"
@@ -735,7 +735,7 @@ msgstr "ISO 8859-8 Hebräisch"
 msgid "ISO 8859-9 Turkish"
 msgstr "ISO 8859-9 Türkisch"
 
-#: application/controllers/UploaderController.php:258
+#: application/controllers/UploaderController.php:271
 #, php-format
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
 msgstr "Wenn Sie möchten, können Sie %s weitere Datei(en) hochladen - oder zur Umfrage zurückkehren."
@@ -929,7 +929,7 @@ msgstr "Beantworten Sie diese Frage nur für die Einträge die Sie in Frage %s (
 msgid "Only show question {QID} IF"
 msgstr "Zeige die Frage {QID} nur, WENN"
 
-#: application/controllers/UploaderController.php:80
+#: application/controllers/UploaderController.php:79
 msgid "Oops, There was an error deleting the file"
 msgstr "Es gab einen Fehler beim Löschen der Datei."
 
@@ -954,7 +954,7 @@ msgstr "Bitte wählen"
 msgid "Please select..."
 msgstr "Bitte wählen..."
 
-#: application/controllers/UploaderController.php:257
+#: application/controllers/UploaderController.php:270
 #, php-format
 msgid "Please upload %s more file(s)."
 msgstr "Bitte laden Sie %s weitere Datei(en) hoch."
@@ -1074,8 +1074,8 @@ msgstr "Szenario"
 msgid "Scope"
 msgstr "Bereich"
 
-#: application/controllers/UploaderController.php:256
-#: application/controllers/UploaderController.php:284
+#: application/controllers/UploaderController.php:269
+#: application/controllers/UploaderController.php:297
 msgid "Select file"
 msgstr "Datei auswählen"
 
@@ -1087,31 +1087,31 @@ msgstr "Shift-JIS Japanisch"
 msgid "Single checkbox"
 msgstr "Einfaches Ankreuzfeld"
 
-#: application/controllers/UploaderController.php:253
+#: application/controllers/UploaderController.php:266
 msgid "Sorry, no more files can be uploaded!"
 msgstr "Leider können keine weiteren Dateien hochgeladen werden!"
 
-#: application/controllers/UploaderController.php:254
+#: application/controllers/UploaderController.php:267
 #, php-format
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr "Leider können nur %s Dateien für diese Frage hochgeladen werden!"
 
-#: application/controllers/UploaderController.php:203
+#: application/controllers/UploaderController.php:213
 msgid "Sorry, there was an error uploading your file"
 msgstr "Es gab einen Fehler beim Hochladen Ihrer Datei."
 
-#: application/controllers/UploaderController.php:123
+#: application/controllers/UploaderController.php:130
 #, php-format
 msgid "Sorry, this file extension (%s) is not allowed!"
 msgstr "Leider ist diese Dateierweiterung (%s) nicht erlaubt!"
 
-#: application/controllers/UploaderController.php:168
+#: application/controllers/UploaderController.php:175
 #, php-format
 msgid "Sorry, this file is too large. Only files up to %s KB are allowed."
 msgstr "Diese Datei ist leider zu groß. Nur Dateien bis maximal %s KB sind erlaubt."
 
-#: application/controllers/UploaderController.php:137
-#: application/controllers/UploaderController.php:213
+#: application/controllers/UploaderController.php:143
+#: application/controllers/UploaderController.php:224
 #, php-format
 msgid "Sorry, this file is too large. Only files upto %s KB are allowed."
 msgstr "Diese Datei ist leider zu groß. Nur Dateien bis maximal %s KB sind erlaubt."
@@ -1166,13 +1166,13 @@ msgstr "Die Antwort(en) müssen diesen Filterkriterien genügen:"
 msgid "The answer(s) must meet these validation criteria:"
 msgstr "Die Antwort(en) müssen diesen Validierungskriterien genügen:"
 
-#: application/controllers/UploaderController.php:152
-#: application/controllers/UploaderController.php:190
+#: application/controllers/UploaderController.php:159
+#: application/controllers/UploaderController.php:199
 msgid "The file has been successfuly uploaded."
 msgstr "Die Datei wurde erfolgreich hochgeladen."
 
-#: application/controllers/UploaderController.php:259
-#: application/controllers/UploaderController.php:260
+#: application/controllers/UploaderController.php:272
+#: application/controllers/UploaderController.php:273
 msgid "The maximum number of files has been uploaded. You may return back to survey."
 msgstr "Die Maximalanzahl an Dateien wurde hochgeladen. Sie können nun zur Umfrage zurückkehren."
 
@@ -1226,7 +1226,7 @@ msgstr "Die Fragen dieser Umfrage nutzen keine Bedingungen."
 msgid "This surveys uses anonymized responses, so you can't update your response."
 msgstr "Diese Umfrage benutzt anonymisierte Antworten, daher können Sie Ihre Antwort nicht aktualisieren."
 
-#: application/controllers/UploaderController.php:251
+#: application/controllers/UploaderController.php:264
 msgid "Title"
 msgstr "Titel"
 
@@ -1269,7 +1269,7 @@ msgstr "Unsicher"
 msgid "Uncheck all"
 msgstr "Alle abwählen"
 
-#: application/controllers/UploaderController.php:222
+#: application/controllers/UploaderController.php:234
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
@@ -1277,7 +1277,7 @@ msgstr "Unbekannter Fehler"
 msgid "Update condition"
 msgstr "Bedingung aktualisieren"
 
-#: application/controllers/UploaderController.php:255
+#: application/controllers/UploaderController.php:268
 msgid "Uploading"
 msgstr "Am Hochladen"
 
@@ -1302,7 +1302,7 @@ msgstr "Diesen Datensatz anzeigen"
 msgid "Warning"
 msgstr "Warnung!"
 
-#: application/controllers/UploaderController.php:176
+#: application/controllers/UploaderController.php:184
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
 msgstr "Es tut uns leid, aber es gab einen Systemfehler und Ihre Datei wurde nicht gespeichert. Der Umfrageadministrator wurde per Email benachrichtigt."
 
@@ -1344,7 +1344,7 @@ msgstr "Ja"
 msgid "You are about to delete all conditions on this survey's questions"
 msgstr "Sie sind im Begriff alle Bedingungen dieser Umfrage zu löschen."
 
-#: application/controllers/UploaderController.php:287
+#: application/controllers/UploaderController.php:300
 #, php-format
 msgid "You can upload %s under %s KB each."
 msgstr "Sie können %s unter %s KB (pro Datei) hochladen."
@@ -1374,7 +1374,7 @@ msgstr "Sie müssen einen Namen angeben."
 msgid "You must supply a password for this saved session."
 msgstr "Sie müssen ein Passwort angeben."
 
-#: application/controllers/UploaderController.php:261
+#: application/controllers/UploaderController.php:274
 #, php-format
 msgid ""
 "You need to upload %s more files for this question.\n"
@@ -1448,18 +1448,18 @@ msgstr "Timings"
 msgid "%s participant(s) are to be copied "
 msgstr "%s Teilnehmer sind zu kopieren"
 
-#: application/controllers/admin/participantsaction.php:1691
-#: application/controllers/admin/participantsaction.php:1702
+#: application/controllers/admin/participantsaction.php:1698
+#: application/controllers/admin/participantsaction.php:1709
 #, php-format
 msgid "%s participants have been copied, %s participants have not been copied because they already exist"
 msgstr "%s Teilnehmer wurden kopiert, %s Teilnehmer wurden nicht kopiert, da sie bereits existieren"
 
-#: application/controllers/admin/participantsaction.php:1721
+#: application/controllers/admin/participantsaction.php:1728
 #, php-format
 msgid "%s participants have been copied,%s participants have not been copied because they already exist"
 msgstr "%s Teilnehmer wurden kopiert, %s Teilnehmer wurden nicht kopiert, da sie bereits existieren"
 
-#: application/controllers/admin/participantsaction.php:1678
+#: application/controllers/admin/participantsaction.php:1685
 #, php-format
 msgid "%s participants have been shared"
 msgstr "%s Teilnehmer wurden freigegeben"
@@ -2357,39 +2357,39 @@ msgstr "%s Nachrichten wurden überprüft, von denen wurden %s Nachrichten als R
 msgid "%s messages were scanned, none were marked as bounce by the system."
 msgstr "%s Nachrichten wurden überprüft, aber keine wurde als Rückläufer erkannt."
 
-#: application/helpers/common_helper.php:3632
+#: application/helpers/common_helper.php:3631
 msgid "'Other:' comment mandatory"
 msgstr "'Anderes:' Kommentarfeld ist Pflichtfeld"
 
-#: application/helpers/common_helper.php:3986
+#: application/helpers/common_helper.php:3985
 msgid "1st time limit warning CSS style"
 msgstr "CSS Style für die 1. Zeitlimit-Warnnachricht"
 
-#: application/helpers/common_helper.php:3978
+#: application/helpers/common_helper.php:3977
 msgid "1st time limit warning message"
 msgstr "1. Zeitlimit Warnnachricht Anzeigezeit"
 
-#: application/helpers/common_helper.php:3969
+#: application/helpers/common_helper.php:3968
 msgid "1st time limit warning message display time"
 msgstr "1. Zeitlimit-Warnnachricht Anzeigezeit"
 
-#: application/helpers/common_helper.php:3961
+#: application/helpers/common_helper.php:3960
 msgid "1st time limit warning message timer"
 msgstr "1. Zeitlimit-Warnnachricht Zeitgeber"
 
-#: application/helpers/common_helper.php:4019
+#: application/helpers/common_helper.php:4018
 msgid "2nd time limit warning CSS style"
 msgstr "CSS Style für die 2. Zeitlimit-Warnnachricht"
 
-#: application/helpers/common_helper.php:4011
+#: application/helpers/common_helper.php:4010
 msgid "2nd time limit warning message"
 msgstr "2. Zeitlimit Warnnachricht Anzeigezeit"
 
-#: application/helpers/common_helper.php:4002
+#: application/helpers/common_helper.php:4001
 msgid "2nd time limit warning message display time"
 msgstr "2. Zeitlimit-Warnnachricht Anzeigezeit"
 
-#: application/helpers/common_helper.php:3994
+#: application/helpers/common_helper.php:3993
 msgid "2nd time limit warning message timer"
 msgstr "2. Zeitlimit-Warnnachricht Zeitgeber"
 
@@ -2421,19 +2421,19 @@ msgstr "Es wurde eine Teilnehmertabelle für diese Umfrage erstellt."
 msgid "A username was not supplied or the username is invalid."
 msgstr "Es wurde kein Benutzername angegeben oder der Benutzername ist ungültig."
 
-#: application/helpers/common_helper.php:3854
+#: application/helpers/common_helper.php:3853
 msgid "Accelerator keys for list items"
 msgstr "Schnellzugriffstasten für Listeneinträge"
 
-#: application/helpers/common_helper.php:6153
+#: application/helpers/common_helper.php:6152
 msgid "Access denied!"
 msgstr "Zugriff verweigert!"
 
-#: application/helpers/common_helper.php:3888
+#: application/helpers/common_helper.php:3887
 msgid "Action to perform when time limit is up"
 msgstr "Ausgeführte Aktion, wenn das Zeitlimit erreicht wurde"
 
-#: application/helpers/common_helper.php:3357
+#: application/helpers/common_helper.php:3356
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr "Aktivieren Sie diese Option, um eine Karte über dem Eingabefeld anzuzeigen, auf der der Benutzer einen Standort auswählen kann."
 
@@ -2441,11 +2441,11 @@ msgstr "Aktivieren Sie diese Option, um eine Karte über dem Eingabefeld anzuzei
 msgid "Active"
 msgstr "Aktiv"
 
-#: application/helpers/common_helper.php:3671
+#: application/helpers/common_helper.php:3670
 msgid "Add a prefix to the answer field"
 msgstr "Füge einen Präfix zum Antwort-Feld hinzu"
 
-#: application/helpers/common_helper.php:3813
+#: application/helpers/common_helper.php:3812
 msgid "Add a suffix to the answer field"
 msgstr "Füge einen Suffix zum Antwort-Feld hinzu"
 
@@ -2458,28 +2458,28 @@ msgstr "Benutzer hinzufügen"
 msgid "All of the user's surveys were transferred to %s."
 msgstr "Alle Umfragen dieses Benutzers wurden an %s  übertragen."
 
-#: application/helpers/common_helper.php:3578
+#: application/helpers/common_helper.php:3577
 msgid "Allow only numerical input"
 msgstr "Nur numerische Eingabe erlauben"
 
-#: application/helpers/common_helper.php:3642
+#: application/helpers/common_helper.php:3641
 msgid "Allow only numerical input for 'Other' text"
 msgstr "Nur numerische Eingabe für 'Sonstiges'-Eingabefeld erlauben"
 
-#: application/helpers/common_helper.php:4106
+#: application/helpers/common_helper.php:4105
 msgid "Allowed file types"
 msgstr "Zugelassene Dateitypen"
 
-#: application/helpers/common_helper.php:4105
+#: application/helpers/common_helper.php:4104
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr "Erlaubte Dateitypen per Komma getrennt, z.B. pdf,doc,odt"
 
-#: application/helpers/common_helper.php:6255
-#: application/helpers/common_helper.php:6260
+#: application/helpers/common_helper.php:6254
+#: application/helpers/common_helper.php:6259
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr "Dieses Problem kann ausserdem auftreten, wenn Sie in mehrern Browser-Tab/Fenstern gleichzeitig in LimeSurvey arbeiten."
 
-#: application/helpers/common_helper.php:3428
+#: application/helpers/common_helper.php:3427
 msgid "Always hide this question"
 msgstr "Diese Frage immer verstecken"
 
@@ -2491,19 +2491,19 @@ msgstr "Es wurde eine E-Mail mit einem generierten Passwort an den Benutzer vers
 msgid "Answer options"
 msgstr "Antwortoptionen"
 
-#: application/helpers/common_helper.php:3672
+#: application/helpers/common_helper.php:3671
 msgid "Answer prefix"
 msgstr "Antwort-Präfix"
 
-#: application/helpers/common_helper.php:3814
+#: application/helpers/common_helper.php:3813
 msgid "Answer suffix"
 msgstr "Antwort-Suffix"
 
-#: application/helpers/common_helper.php:3087
+#: application/helpers/common_helper.php:3086
 msgid "Answer width"
 msgstr "Antwortbreite"
 
-#: application/helpers/common_helper.php:3804
+#: application/helpers/common_helper.php:3803
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "Antwort|Text-Schieberegler-links|Text-Schieberegler-rechts Trennzeichen"
 
@@ -2548,11 +2548,11 @@ msgstr "Matrix nach Spalte"
 msgid "Array dual scale"
 msgstr "Dual Matrix"
 
-#: application/helpers/common_helper.php:3095
+#: application/helpers/common_helper.php:3094
 msgid "Array filter"
 msgstr "Matrix Filter"
 
-#: application/helpers/common_helper.php:3103
+#: application/helpers/common_helper.php:3102
 msgid "Array filter exclusion"
 msgstr "Matrix Ausschlussfilter"
 
@@ -2560,16 +2560,16 @@ msgstr "Matrix Ausschlussfilter"
 msgid "Arrays"
 msgstr "Matrixfragen"
 
-#: application/helpers/common_helper.php:3112
+#: application/helpers/common_helper.php:3111
 msgid "Assessment value"
 msgstr "Bewertungswert"
 
-#: application/helpers/common_helper.php:5269
+#: application/helpers/common_helper.php:5268
 #, php-format
 msgid "Attribute %s"
 msgstr "Attribute %s"
 
-#: application/helpers/common_helper.php:3268
+#: application/helpers/common_helper.php:3267
 msgid "Auto-check exclusive option if all others are checked"
 msgstr "Markiere Exlusivoption automatisch wenn alle anderen markiert sind"
 
@@ -2578,7 +2578,7 @@ msgstr "Markiere Exlusivoption automatisch wenn alle anderen markiert sind"
 msgid "Back to attribute field management."
 msgstr "Zurück zur Attributfelder-Verwaltung"
 
-#: application/helpers/common_helper.php:3343
+#: application/helpers/common_helper.php:3342
 msgid "Bar chart"
 msgstr "balkendiagramm"
 
@@ -2590,7 +2590,7 @@ msgstr "Normale Bestätigung per Email"
 msgid "Basic email notification is sent to:"
 msgstr "Normale Bestätigung per E-Mail senden an:"
 
-#: application/helpers/common_helper.php:3591
+#: application/helpers/common_helper.php:3590
 msgid "Both rows and columns"
 msgstr "Zeilen und Spalten"
 
@@ -2606,19 +2606,19 @@ msgstr "Einstellungen für Rückläufer wurden gespeichert."
 msgid "By Group"
 msgstr "Nach Gruppen"
 
-#: application/helpers/common_helper.php:3927
+#: application/helpers/common_helper.php:3926
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr "CSS Style für die Nachricht die im Countdown-Zählen während des Countdowns erscheint"
 
-#: application/helpers/common_helper.php:3952
+#: application/helpers/common_helper.php:3951
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "CSS Style für die Zeitlimit-Ablaufnachricht"
 
-#: application/helpers/common_helper.php:3985
+#: application/helpers/common_helper.php:3984
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "CSS Style für die Zeitlimit-Warnnachricht"
 
-#: application/helpers/common_helper.php:4018
+#: application/helpers/common_helper.php:4017
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "CSS Style für die 2. Zeitlimit-Warnnachricht"
 
@@ -2630,20 +2630,20 @@ msgstr "Mit dem LDAP Verzeichnis konnte BIND nicht ausgeführt werden"
 msgid "Can't connect to the LDAP directory"
 msgstr "Mit dem LDAP Verzeichnis konnte nicht verbunden werden"
 
+#: application/helpers/common_helper.php:3118
 #: application/helpers/common_helper.php:3119
-#: application/helpers/common_helper.php:3120
 msgid "Category separator"
 msgstr "Kategorie Trenner"
 
-#: application/helpers/common_helper.php:4046
+#: application/helpers/common_helper.php:4045
 msgid "Change the display style of the month when using select boxes"
 msgstr "Ändere die Darstellung des Monats beim Verwenden von Auswahl-Feldern"
 
-#: application/helpers/common_helper.php:3345
+#: application/helpers/common_helper.php:3344
 msgid "Chart type"
 msgstr "Diagramm-Typ"
 
-#: application/helpers/common_helper.php:3535
+#: application/helpers/common_helper.php:3534
 msgid "Checkbox layout"
 msgstr "Anzeige als Ankreuzfelder"
 
@@ -2655,11 +2655,11 @@ msgstr "Klicken Sie hier um sich anzumelden"
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Wenn Sie auf Ja klicken, wird für alle Teilnehmer ohne eindeutigen Zugangsschlüssel ein entsprechende Schlüssel generiert. OK?"
 
-#: application/helpers/common_helper.php:3128
+#: application/helpers/common_helper.php:3127
 msgid "Code filter"
 msgstr "Code Filter"
 
-#: application/helpers/common_helper.php:3590
+#: application/helpers/common_helper.php:3589
 msgid "Columns"
 msgstr "Spalten"
 
@@ -2709,7 +2709,7 @@ msgstr "Datum Abgeschickt"
 msgid "Date/Time"
 msgstr "Datum/Zeit"
 
-#: application/helpers/common_helper.php:4027
+#: application/helpers/common_helper.php:4026
 msgid "Date/Time format"
 msgstr "Datum/Zeit-Format"
 
@@ -2841,15 +2841,15 @@ msgstr ""
 "Klicken Sie hier um die Umfrage zu starten:\n"
 "{SURVEYURL}"
 
-#: application/helpers/common_helper.php:3862
+#: application/helpers/common_helper.php:3861
 msgid "Default"
 msgstr "Voreinstellung"
 
-#: application/helpers/common_helper.php:3394
+#: application/helpers/common_helper.php:3393
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr "Startkoordinaten der Karte, wenn die Karte das erste Mal gezeigt wird. Format: Breitengrad [Leerzeichen] Längengrad"
 
-#: application/helpers/common_helper.php:3395
+#: application/helpers/common_helper.php:3394
 msgid "Default position"
 msgstr "Startposition"
 
@@ -2878,93 +2878,93 @@ msgstr "Ausführliche Bestätigung per E-Mail mit Ergebnissen senden an:"
 msgid "Detailed email notification with result codes"
 msgstr "Ausführliche Bestätigung per E-Mail mit Ergebnissen"
 
-#: application/helpers/common_helper.php:3886
+#: application/helpers/common_helper.php:3885
 msgid "Disable only"
 msgstr "Nur deaktivieren"
 
-#: application/helpers/common_helper.php:3899
+#: application/helpers/common_helper.php:3898
 msgid "Disable the next button until time limit expires"
 msgstr "Deaktiviere den 'Nächste Seite'-Knopf bis das Zeitlimit abgelaufen ist"
 
-#: application/helpers/common_helper.php:3910
+#: application/helpers/common_helper.php:3909
 msgid "Disable the prev button until the time limit expires"
 msgstr "Deaktiviere den 'Nächste Seite'-Knopf bis das Zeitlimit abgelaufen ist"
 
-#: application/helpers/common_helper.php:3070
-#: application/helpers/common_helper.php:3081
-#: application/helpers/common_helper.php:3116
-#: application/helpers/common_helper.php:3132
-#: application/helpers/common_helper.php:3143
-#: application/helpers/common_helper.php:3151
-#: application/helpers/common_helper.php:3162
-#: application/helpers/common_helper.php:3170
-#: application/helpers/common_helper.php:3178
-#: application/helpers/common_helper.php:3187
-#: application/helpers/common_helper.php:3195
-#: application/helpers/common_helper.php:3204
-#: application/helpers/common_helper.php:3410
-#: application/helpers/common_helper.php:3421
-#: application/helpers/common_helper.php:3504
-#: application/helpers/common_helper.php:3512
-#: application/helpers/common_helper.php:3520
-#: application/helpers/common_helper.php:3528
-#: application/helpers/common_helper.php:3539
-#: application/helpers/common_helper.php:3614
-#: application/helpers/common_helper.php:3647
-#: application/helpers/common_helper.php:3667
-#: application/helpers/common_helper.php:3687
-#: application/helpers/common_helper.php:3713
-#: application/helpers/common_helper.php:3775
-#: application/helpers/common_helper.php:3809
-#: application/helpers/common_helper.php:3818
-#: application/helpers/common_helper.php:3826
-#: application/helpers/common_helper.php:3838
-#: application/helpers/common_helper.php:3847
-#: application/helpers/common_helper.php:4039
+#: application/helpers/common_helper.php:3069
+#: application/helpers/common_helper.php:3080
+#: application/helpers/common_helper.php:3115
+#: application/helpers/common_helper.php:3131
+#: application/helpers/common_helper.php:3142
+#: application/helpers/common_helper.php:3150
+#: application/helpers/common_helper.php:3161
+#: application/helpers/common_helper.php:3169
+#: application/helpers/common_helper.php:3177
+#: application/helpers/common_helper.php:3186
+#: application/helpers/common_helper.php:3194
+#: application/helpers/common_helper.php:3203
+#: application/helpers/common_helper.php:3409
+#: application/helpers/common_helper.php:3420
+#: application/helpers/common_helper.php:3503
+#: application/helpers/common_helper.php:3511
+#: application/helpers/common_helper.php:3519
+#: application/helpers/common_helper.php:3527
+#: application/helpers/common_helper.php:3538
+#: application/helpers/common_helper.php:3613
+#: application/helpers/common_helper.php:3646
+#: application/helpers/common_helper.php:3666
+#: application/helpers/common_helper.php:3686
+#: application/helpers/common_helper.php:3712
+#: application/helpers/common_helper.php:3774
+#: application/helpers/common_helper.php:3808
+#: application/helpers/common_helper.php:3817
+#: application/helpers/common_helper.php:3825
+#: application/helpers/common_helper.php:3837
+#: application/helpers/common_helper.php:3846
+#: application/helpers/common_helper.php:4038
 msgid "Display"
 msgstr "Anzeige"
 
-#: application/helpers/common_helper.php:3960
+#: application/helpers/common_helper.php:3959
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Zeige eine 'Zeitlimitwarnung' wenn nur nich so viele Sekunden beim Ablauf des Countdown vorhanden sind (Warnung wird nicht gezeigt, wenn dies leer gelassen wird)"
 
-#: application/helpers/common_helper.php:3333
+#: application/helpers/common_helper.php:3332
 msgid "Display a chart in the statistics?"
 msgstr "Ein Diagramm in den Statistiken anzeigen?"
 
-#: application/helpers/common_helper.php:3334
+#: application/helpers/common_helper.php:3333
 msgid "Display chart"
 msgstr "Zeige Diagramm"
 
-#: application/helpers/common_helper.php:3139
+#: application/helpers/common_helper.php:3138
 msgid "Display columns"
 msgstr "Anzahl Spalten"
 
-#: application/helpers/common_helper.php:3158
+#: application/helpers/common_helper.php:3157
 msgid "Display dropdown boxes"
 msgstr "Anzeige als Klappboxen"
 
-#: application/helpers/common_helper.php:3323
+#: application/helpers/common_helper.php:3322
 msgid "Display map"
 msgstr "Zeige Diagramm"
 
-#: application/helpers/common_helper.php:3796
+#: application/helpers/common_helper.php:3795
 msgid "Display min and max value under the slider"
 msgstr "Zeige Minimal- und Maximalwerte unter dem Schieberegler"
 
-#: application/helpers/common_helper.php:3147
+#: application/helpers/common_helper.php:3146
 msgid "Display rows"
 msgstr "Anzahl Zeilen"
 
-#: application/helpers/common_helper.php:3797
+#: application/helpers/common_helper.php:3796
 msgid "Display slider min and max value"
 msgstr "Zeige Schieberegler Minimal- und Maximalwerte"
 
-#: application/helpers/common_helper.php:3935
+#: application/helpers/common_helper.php:3934
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr "Zeige zweite Zeitlimitablaufwarnung für diese Anzahl von Sekunden im Countdown bevore die 'Zeilimit Aktion' ausgeführt wird (Standard ist 1 Sekunde wenn diese Einstellung leer ist)"
 
-#: application/helpers/common_helper.php:3993
+#: application/helpers/common_helper.php:3992
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Zeige die zweite Zeitlimitwarunung wenn noch diese Anzahl von Sekunden im Countdown übrig sind (Warnung wird nicht gezeigt wenn diese Einstellung leer ist)"
 
@@ -2977,11 +2977,11 @@ msgstr "Zeige Zugangsschlüssel an"
 msgid "Do survey"
 msgstr "Umfrage ausführen/testen"
 
-#: application/helpers/common_helper.php:3183
+#: application/helpers/common_helper.php:3182
 msgid "Dropdown prefix/suffix"
 msgstr "Präfix/Suffix für Klappbox Listen"
 
-#: application/helpers/common_helper.php:3191
+#: application/helpers/common_helper.php:3190
 msgid "Dropdown separator"
 msgstr "Kategorie Trenner"
 
@@ -2996,7 +2996,7 @@ msgstr "Zugangsschlüssel Eintrag bearbeiten"
 msgid "Editing user"
 msgstr "Benutzer bearbeiten"
 
-#: application/helpers/common_helper.php:5244
+#: application/helpers/common_helper.php:5243
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
@@ -3021,7 +3021,7 @@ msgstr "E-Mailversand an {FIRSTNAME} {LASTNAME} ({EMAIL})  fehlgeschlagen. Fehle
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "E-Mail an {FIRSTNAME} {LASTNAME} ({EMAIL}) nicht versendet: Zugangsschlüssel ist nicht mehr gültig."
 
-#: application/helpers/common_helper.php:4249
+#: application/helpers/common_helper.php:4248
 msgid "Email was not sent because demo-mode is activated."
 msgstr "E-Mail wurde nicht gesendet, da der Demo-Modus aktiv ist."
 
@@ -3029,39 +3029,39 @@ msgstr "E-Mail wurde nicht gesendet, da der Demo-Modus aktiv ist."
 msgid "End message:"
 msgstr "Endnachricht:"
 
-#: application/helpers/common_helper.php:3475
+#: application/helpers/common_helper.php:3474
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Setzen einer minimalen Anzahl von möglichen Antworten (0=Kein Limit)"
 
-#: application/helpers/common_helper.php:3240
+#: application/helpers/common_helper.php:3239
 msgid "Enter a boolean equation to validate each sub-question."
 msgstr "Geben Sie eine Boolean-Gleichung ein, die jede Unterfrage validiert."
 
-#: application/helpers/common_helper.php:3224
+#: application/helpers/common_helper.php:3223
 msgid "Enter a boolean equation to validate the whole question."
 msgstr "Geben Sie eine Boolean-Gleichung für die Validierung der ganzen Frage ein."
 
-#: application/helpers/common_helper.php:3199
+#: application/helpers/common_helper.php:3198
 msgid "Enter a header text for the first scale"
 msgstr "Geben Sie eine Kopfzeile für die erste Skala ein"
 
-#: application/helpers/common_helper.php:3208
+#: application/helpers/common_helper.php:3207
 msgid "Enter a header text for the second scale"
 msgstr "Geben Sie eine Kopfzeile für die zweite Skala ein"
 
-#: application/helpers/common_helper.php:3717
+#: application/helpers/common_helper.php:3716
 msgid "Enter question ID to get subquestion order from a previous question"
 msgstr "Gib die Frage-ID ein, um die Unterfrage-Ordnung einer vorherigen Frage zu erhalten"
 
-#: application/helpers/common_helper.php:3102
+#: application/helpers/common_helper.php:3101
 msgid "Enter the code of a Multiple choice question to exclude the matching answer options in this question."
 msgstr "Geben Sie den Code einer Mehrfachauswahl-Frage ein, um die gewählten Antwortoptionen in dieser Matrixfrage nicht zu zeigen."
 
-#: application/helpers/common_helper.php:3094
+#: application/helpers/common_helper.php:3093
 msgid "Enter the code of a Multiple choice question to only show the matching answer options in this question."
 msgstr "Geben Sie den Code einer Mehrfachauswahl-Frage ein, um nur diese Antwortoptionen in dieser Matrixfrage zu zeigen."
 
-#: application/helpers/common_helper.php:3217
+#: application/helpers/common_helper.php:3216
 msgid "Equals sum value"
 msgstr "Gleich Summenwert"
 
@@ -3073,11 +3073,11 @@ msgstr "Gleichung"
 msgid "Error while updating usertemplates."
 msgstr "Fehler während der Aktualisierung von usertemplates."
 
-#: application/helpers/common_helper.php:3256
+#: application/helpers/common_helper.php:3255
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr "Schließt alle anderen Antwortoptionen wenn eine bestimmte Option gewählt wurde - geben Sie einfach den/die Antwort-Codes (mit Semikolon getrennt) ein"
 
-#: application/helpers/common_helper.php:3257
+#: application/helpers/common_helper.php:3256
 msgid "Exclusive option"
 msgstr "Exklusive Option"
 
@@ -3136,8 +3136,8 @@ msgstr "Dateianzahl"
 msgid "File deleted: %s"
 msgstr "Datei gelöscht: %s"
 
-#: application/helpers/common_helper.php:4051
-#: application/helpers/common_helper.php:4062
+#: application/helpers/common_helper.php:4050
+#: application/helpers/common_helper.php:4061
 msgid "File metadata"
 msgstr "Datei-Metadaten"
 
@@ -3145,7 +3145,7 @@ msgstr "Datei-Metadaten"
 msgid "File upload"
 msgstr "Datei-Upload"
 
-#: application/helpers/common_helper.php:3127
+#: application/helpers/common_helper.php:3126
 msgid "Filter the available answers by this value"
 msgstr "Filtere die verfügbaren Antworten mit diesem Wert"
 
@@ -3159,11 +3159,11 @@ msgstr "Folgende Umfragen sind noch nicht aktiv, aber Sie können sich für dies
 msgid "For further information please contact %s"
 msgstr "Bitte kontaktieren Sie %s für weitere Informationen"
 
-#: application/helpers/common_helper.php:3842
+#: application/helpers/common_helper.php:3841
 msgid "For list dropdown boxes, show up to this many rows"
 msgstr "Für Listen-Dropdows zeige diese Anzahl an Zeilen"
 
-#: application/helpers/common_helper.php:4043
+#: application/helpers/common_helper.php:4042
 msgid "Full names"
 msgstr "Volle Namen"
 
@@ -3171,15 +3171,15 @@ msgstr "Volle Namen"
 msgid "Gender"
 msgstr "Geschlecht"
 
-#: application/helpers/common_helper.php:3716
+#: application/helpers/common_helper.php:3715
 msgid "Get order from previous question"
 msgstr "Nehme Sortierung von vorherigen Fragen"
 
-#: application/helpers/common_helper.php:3386
+#: application/helpers/common_helper.php:3385
 msgid "Get the default location using the user's IP address?"
 msgstr "Ermittle die Startposition anhand der IP-Adresse des Teilnehmers?"
 
-#: application/helpers/common_helper.php:3355
+#: application/helpers/common_helper.php:3354
 msgid "Google Maps"
 msgstr "Google Maps"
 
@@ -3191,23 +3191,23 @@ msgstr "Beschreibung Fragengruppen"
 msgid "Group not found."
 msgstr "Gruppe nicht gefunden."
 
-#: application/helpers/common_helper.php:2836
+#: application/helpers/common_helper.php:2835
 msgid "Group time"
 msgstr "Gruppenzeit"
 
-#: application/helpers/common_helper.php:3200
+#: application/helpers/common_helper.php:3199
 msgid "Header for first scale"
 msgstr "Kopfzeile für erste Skala"
 
-#: application/helpers/common_helper.php:3209
+#: application/helpers/common_helper.php:3208
 msgid "Header for second scale"
 msgstr "Kopfzeile für zweite Skala"
 
-#: application/helpers/common_helper.php:3843
+#: application/helpers/common_helper.php:3842
 msgid "Height of dropdown"
 msgstr "Höhe des Dropdowns"
 
-#: application/helpers/common_helper.php:3375
+#: application/helpers/common_helper.php:3374
 msgid "Height of the map in pixel"
 msgstr "Höhe der Karte in Pixel"
 
@@ -3292,19 +3292,19 @@ msgstr ""
 "Die folgenden Antworten wurden vom Teilnehmer gegeben:\n"
 "{ANSWERTABLE}"
 
-#: application/helpers/common_helper.php:3416
+#: application/helpers/common_helper.php:3415
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Verstecke den Hinweis der normalerweise mit einer Frage gezeigt wird"
 
-#: application/helpers/common_helper.php:3427
+#: application/helpers/common_helper.php:3426
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr "Verstecke diese Frage immer. Die ist nützlich, um Fragen zu verstecken, die durch Vorfüllen von Antworten schon ausgefüllt sind."
 
-#: application/helpers/common_helper.php:3417
+#: application/helpers/common_helper.php:3416
 msgid "Hide tip"
 msgstr "Hinweis verstecken"
 
-#: application/helpers/common_helper.php:3146
+#: application/helpers/common_helper.php:3145
 msgid "How many rows to display"
 msgstr "Anzahl der anzuzeigenden Zeilen"
 
@@ -3320,15 +3320,15 @@ msgstr "IP-Adressen der Antwortenden werden protokolliert."
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: application/helpers/common_helper.php:3387
+#: application/helpers/common_helper.php:3386
 msgid "IP as default location"
 msgstr "IP als Startpunkt"
 
-#: application/helpers/common_helper.php:3111
+#: application/helpers/common_helper.php:3110
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr "Wenn eine der Teilfrage markiert wurde, dann wird für jede markierte Teilfrage dieser Wert addiert."
 
-#: application/helpers/common_helper.php:3267
+#: application/helpers/common_helper.php:3266
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr "Wenn der Teilnehmer alle Optionen markieren, entmarkiere alle und markiere die Option die unter 'Exklusive Option' gesetzt wurde"
 
@@ -3374,31 +3374,31 @@ msgstr "Inaktiv"
 msgid "Initial Superadmin cannot be deleted!"
 msgstr "Ursprungs-Super-Administrator kann nicht gelöscht werden!"
 
-#: application/helpers/common_helper.php:3213
-#: application/helpers/common_helper.php:3440
-#: application/helpers/common_helper.php:3448
-#: application/helpers/common_helper.php:3464
-#: application/helpers/common_helper.php:3480
-#: application/helpers/common_helper.php:3488
-#: application/helpers/common_helper.php:3558
-#: application/helpers/common_helper.php:4023
-#: application/helpers/common_helper.php:4031
+#: application/helpers/common_helper.php:3212
+#: application/helpers/common_helper.php:3439
+#: application/helpers/common_helper.php:3447
+#: application/helpers/common_helper.php:3463
+#: application/helpers/common_helper.php:3479
+#: application/helpers/common_helper.php:3487
+#: application/helpers/common_helper.php:3557
+#: application/helpers/common_helper.php:4022
+#: application/helpers/common_helper.php:4030
 msgid "Input"
 msgstr "Eingabe"
 
-#: application/helpers/common_helper.php:3822
+#: application/helpers/common_helper.php:3821
 msgid "Input box width"
 msgstr "Breite Eingabefeld"
 
-#: application/helpers/common_helper.php:3662
+#: application/helpers/common_helper.php:3661
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "Setzen Sie dies auf Ja wenn Sie einen Seitenumbruch vor dieser Frage in der Druckansicht einfügen wollen."
 
-#: application/helpers/common_helper.php:3663
+#: application/helpers/common_helper.php:3662
 msgid "Insert page break in printable view"
 msgstr "Einfügen eines Seitenumbruchs in der Druckansicht"
 
-#: application/helpers/common_helper.php:3566
+#: application/helpers/common_helper.php:3565
 msgid "Integer only"
 msgstr "Nur ganze Zahlen"
 
@@ -3406,7 +3406,7 @@ msgstr "Nur ganze Zahlen"
 msgid "Invitation email"
 msgstr "Einladungs-E-Mail"
 
-#: application/helpers/common_helper.php:5247
+#: application/helpers/common_helper.php:5246
 msgid "Invitation sent date"
 msgstr "Versanddatum Einladung"
 
@@ -3418,11 +3418,11 @@ msgstr "Einladung versandt an:"
 msgid "Invitation to participate in a survey"
 msgstr "Einladung zur einer Umfrage"
 
-#: application/helpers/common_helper.php:4068
+#: application/helpers/common_helper.php:4067
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr "Muss der Teilnehmer einen Kommentar zur hochgeladenen Datei abgeben?"
 
-#: application/helpers/common_helper.php:4057
+#: application/helpers/common_helper.php:4056
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr "Muss der Teilnehmer einen Titel für die hochgeladene Datei angeben?"
 
@@ -3442,7 +3442,7 @@ msgstr "Es wird Frage für Frage gestellt."
 msgid "It uses cookies for access control."
 msgstr "Es werden Cookies für die Zugriffskontrolle benutzt."
 
-#: application/helpers/common_helper.php:3652
+#: application/helpers/common_helper.php:3651
 msgid "Label for 'Other:' option"
 msgstr "Beschriftung für 'Anderes:'-Option"
 
@@ -3450,11 +3450,11 @@ msgstr "Beschriftung für 'Anderes:'-Option"
 msgid "Language Switch"
 msgstr "Sprachwechsel"
 
-#: application/helpers/common_helper.php:5246
+#: application/helpers/common_helper.php:5245
 msgid "Language code"
 msgstr "Sprachcode"
 
-#: application/helpers/common_helper.php:5248
+#: application/helpers/common_helper.php:5247
 msgid "Last Reminder sent date"
 msgstr "Versanddatum für letzte Erinnerung"
 
@@ -3462,11 +3462,11 @@ msgstr "Versanddatum für letzte Erinnerung"
 msgid "Last page"
 msgstr "Letzte Seite"
 
-#: application/helpers/common_helper.php:3435
+#: application/helpers/common_helper.php:3434
 msgid "Limit the number of possible answers"
 msgstr "Limitiere die Anzahl der ankreuzbaren Antworten"
 
-#: application/helpers/common_helper.php:3876
+#: application/helpers/common_helper.php:3875
 msgid "Limit time to answer question (in seconds)"
 msgstr "Begrenze die Zeit, die der User hat, um diese Frage auszufüllen (in Sekunden)"
 
@@ -3484,37 +3484,37 @@ msgstr "Liste mit Kommentar"
 
 #: application/controllers/survey/index.php:433
 #: application/controllers/survey/index.php:437
-msgid "Load Unfinished Survey"
+msgid "Load unfinished survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
-#: application/helpers/common_helper.php:3275
-#: application/helpers/common_helper.php:3286
-#: application/helpers/common_helper.php:3297
-#: application/helpers/common_helper.php:3308
-#: application/helpers/common_helper.php:3351
-#: application/helpers/common_helper.php:3362
-#: application/helpers/common_helper.php:3371
-#: application/helpers/common_helper.php:3380
-#: application/helpers/common_helper.php:3391
-#: application/helpers/common_helper.php:3399
+#: application/helpers/common_helper.php:3274
+#: application/helpers/common_helper.php:3285
+#: application/helpers/common_helper.php:3296
+#: application/helpers/common_helper.php:3307
+#: application/helpers/common_helper.php:3350
+#: application/helpers/common_helper.php:3361
+#: application/helpers/common_helper.php:3370
+#: application/helpers/common_helper.php:3379
+#: application/helpers/common_helper.php:3390
+#: application/helpers/common_helper.php:3398
 msgid "Location"
 msgstr "Lokation"
 
-#: application/helpers/common_helper.php:3091
-#: application/helpers/common_helper.php:3099
-#: application/helpers/common_helper.php:3107
-#: application/helpers/common_helper.php:3124
-#: application/helpers/common_helper.php:3221
-#: application/helpers/common_helper.php:3229
-#: application/helpers/common_helper.php:3237
-#: application/helpers/common_helper.php:3245
-#: application/helpers/common_helper.php:3253
-#: application/helpers/common_helper.php:3261
-#: application/helpers/common_helper.php:3432
-#: application/helpers/common_helper.php:3472
-#: application/helpers/common_helper.php:3625
-#: application/helpers/common_helper.php:3636
-#: application/helpers/common_helper.php:4110
+#: application/helpers/common_helper.php:3090
+#: application/helpers/common_helper.php:3098
+#: application/helpers/common_helper.php:3106
+#: application/helpers/common_helper.php:3123
+#: application/helpers/common_helper.php:3220
+#: application/helpers/common_helper.php:3228
+#: application/helpers/common_helper.php:3236
+#: application/helpers/common_helper.php:3244
+#: application/helpers/common_helper.php:3252
+#: application/helpers/common_helper.php:3260
+#: application/helpers/common_helper.php:3431
+#: application/helpers/common_helper.php:3471
+#: application/helpers/common_helper.php:3624
+#: application/helpers/common_helper.php:3635
+#: application/helpers/common_helper.php:4109
 msgid "Logic"
 msgstr "Logik "
 
@@ -3522,19 +3522,19 @@ msgstr "Logik "
 msgid "Long Free Text"
 msgstr "Langer freier Text"
 
-#: application/helpers/common_helper.php:3631
+#: application/helpers/common_helper.php:3630
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "Mache das 'Anderes:' Kommentar-Feld zum Pflichtfeld, wenn das Feld 'Anderes:' markiert wurde"
 
-#: application/helpers/common_helper.php:3376
+#: application/helpers/common_helper.php:3375
 msgid "Map height"
 msgstr "Kartenhöhe"
 
-#: application/helpers/common_helper.php:3367
+#: application/helpers/common_helper.php:3366
 msgid "Map width"
 msgstr "Kartenbreite"
 
-#: application/helpers/common_helper.php:3403
+#: application/helpers/common_helper.php:3402
 msgid "Map zoom level"
 msgstr "Karten-Zoomstufe"
 
@@ -3542,109 +3542,109 @@ msgstr "Karten-Zoomstufe"
 msgid "Mask questions"
 msgstr "Maskenfragen"
 
-#: application/helpers/common_helper.php:4088
+#: application/helpers/common_helper.php:4087
 msgid "Max number of files"
 msgstr "Maximalanzahl Dateien"
 
-#: application/helpers/common_helper.php:3436
+#: application/helpers/common_helper.php:3435
 msgid "Maximum answers"
 msgstr "Maximale Antworten"
 
-#: application/helpers/common_helper.php:3468
+#: application/helpers/common_helper.php:3467
 msgid "Maximum characters"
 msgstr "Maximale Zeichen"
 
-#: application/helpers/common_helper.php:3467
+#: application/helpers/common_helper.php:3466
 msgid "Maximum characters allowed"
 msgstr "Maximal erlaubte Zeichen"
 
-#: application/helpers/common_helper.php:4079
+#: application/helpers/common_helper.php:4078
 msgid "Maximum file size allowed (in KB)"
 msgstr "Maximale Dateigröße (in Kbyte)"
 
-#: application/helpers/common_helper.php:4087
+#: application/helpers/common_helper.php:4086
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr "Maximalanzahl an Dateien, die der Teilnehmer für diese Frage hochladen darf"
 
-#: application/helpers/common_helper.php:3444
+#: application/helpers/common_helper.php:3443
 msgid "Maximum sum value"
 msgstr "Maximaler Summenwert"
 
-#: application/helpers/common_helper.php:3443
+#: application/helpers/common_helper.php:3442
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Summe der numerischen Eingabe darf nicht größer sein als dieser Wert"
 
-#: application/helpers/common_helper.php:3452
-#: application/helpers/common_helper.php:3508
+#: application/helpers/common_helper.php:3451
+#: application/helpers/common_helper.php:3507
 msgid "Maximum value"
 msgstr "Maximal-Wert"
 
-#: application/helpers/common_helper.php:3507
+#: application/helpers/common_helper.php:3506
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maximalwert für für Matrix (Multi-Flexi) Fragentyp"
 
-#: application/helpers/common_helper.php:3451
+#: application/helpers/common_helper.php:3450
 msgid "Maximum value of the numeric input"
 msgstr "Maximalwert der numerischen Eingabe"
 
-#: application/helpers/common_helper.php:3174
+#: application/helpers/common_helper.php:3173
 msgid "Maximum year"
 msgstr "Jahr Maximum"
 
-#: application/helpers/common_helper.php:3173
+#: application/helpers/common_helper.php:3172
 msgid "Maximum year value for calendar"
 msgstr "Endjahr für Kalendar"
 
-#: application/helpers/common_helper.php:4097
+#: application/helpers/common_helper.php:4096
 msgid "Min number of files"
 msgstr "Minimalanzahl Dateien"
 
-#: application/helpers/common_helper.php:3476
+#: application/helpers/common_helper.php:3475
 msgid "Minimum answers"
 msgstr "Minimale Antwortanzahl"
 
-#: application/helpers/common_helper.php:4096
+#: application/helpers/common_helper.php:4095
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr "Minimalanzahl an Dateien, die der Teilnehmer für diese Frage hochladen muss"
 
-#: application/helpers/common_helper.php:3484
+#: application/helpers/common_helper.php:3483
 msgid "Minimum sum value"
 msgstr "Minimaler Summenwert"
 
-#: application/helpers/common_helper.php:3492
-#: application/helpers/common_helper.php:3516
+#: application/helpers/common_helper.php:3491
+#: application/helpers/common_helper.php:3515
 msgid "Minimum value"
 msgstr "Minimalwert"
 
-#: application/helpers/common_helper.php:3515
+#: application/helpers/common_helper.php:3514
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Minimalwert für Matrix (Multi Flexi) Fragentyp"
 
-#: application/helpers/common_helper.php:3491
+#: application/helpers/common_helper.php:3490
 msgid "Minimum value of the numeric input"
 msgstr "Minimalwert der numerischen Eingabe"
 
-#: application/helpers/common_helper.php:3166
+#: application/helpers/common_helper.php:3165
 msgid "Minimum year"
 msgstr "Jahr Minimum"
 
-#: application/helpers/common_helper.php:3165
+#: application/helpers/common_helper.php:3164
 msgid "Minimum year value in calendar"
 msgstr "Anfangsjahr für Kalendar"
 
-#: application/helpers/common_helper.php:4035
+#: application/helpers/common_helper.php:4034
 msgid "Minute step interval"
 msgstr "Minutenintervall"
 
-#: application/helpers/common_helper.php:4034
+#: application/helpers/common_helper.php:4033
 msgid "Minute step interval when using select boxes"
 msgstr "Minutenintervall bei der Verwendung von Auswahlfeldern"
 
-#: application/helpers/common_helper.php:4047
+#: application/helpers/common_helper.php:4046
 msgid "Month display style"
 msgstr "Stil der Monatsdarstellung"
 
-#: application/helpers/common_helper.php:3885
+#: application/helpers/common_helper.php:3884
 msgid "Move on without warning"
 msgstr "Gehe weiter ohne Warnung"
 
@@ -3668,7 +3668,7 @@ msgstr "Mehrfachauswahl"
 msgid "Multiple choice with comments"
 msgstr "Mehrfachauswahl mit Kommentar"
 
-#: application/helpers/common_helper.php:3216
+#: application/helpers/common_helper.php:3215
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Summe der numerischen Eingabe muss gleich diesem Wert sein"
 
@@ -3688,7 +3688,7 @@ msgstr "Keine Bestätigung per E-Mail"
 msgid "No question index will be shown with this format."
 msgstr "Eine Fragenübersicht wird in diesem Format nicht gezeigt."
 
-#: application/helpers/common_helper.php:3863
+#: application/helpers/common_helper.php:3862
 msgid "Nominal"
 msgstr "Nominal"
 
@@ -3698,21 +3698,21 @@ msgstr "Nominal"
 #: application/helpers/common_helper.php:593
 #: application/helpers/common_helper.php:1243
 #: application/helpers/common_helper.php:1313
-#: application/helpers/common_helper.php:3850
-#: application/helpers/common_helper.php:7369
-#: application/helpers/common_helper.php:7412
+#: application/helpers/common_helper.php:3849
+#: application/helpers/common_helper.php:7368
+#: application/helpers/common_helper.php:7411
 msgid "None"
 msgstr "Keine"
 
-#: application/helpers/common_helper.php:4044
+#: application/helpers/common_helper.php:4043
 msgid "Numbers"
 msgstr "Zahlen"
 
-#: application/helpers/common_helper.php:3579
+#: application/helpers/common_helper.php:3578
 msgid "Numbers only"
 msgstr "Nur Zahlen"
 
-#: application/helpers/common_helper.php:3643
+#: application/helpers/common_helper.php:3642
 msgid "Numbers only for 'Other'"
 msgstr "Nur numerische Eingabe für 'Sonstiges'"
 
@@ -3720,21 +3720,21 @@ msgstr "Nur numerische Eingabe für 'Sonstiges'"
 msgid "Numerical Input"
 msgstr "Zahleneingabe"
 
-#: application/helpers/common_helper.php:3354
-#: application/helpers/common_helper.php:3588
-#: application/helpers/common_helper.php:3690
+#: application/helpers/common_helper.php:3353
+#: application/helpers/common_helper.php:3587
+#: application/helpers/common_helper.php:3689
 msgid "Off"
 msgstr "Aus"
 
-#: application/helpers/common_helper.php:3851
+#: application/helpers/common_helper.php:3850
 msgid "Order - like 3)"
 msgstr "Reihenfolge - wie 3)"
 
-#: application/helpers/common_helper.php:3864
+#: application/helpers/common_helper.php:3863
 msgid "Ordinal"
 msgstr "Ordinal"
 
-#: application/helpers/common_helper.php:2707
+#: application/helpers/common_helper.php:2706
 msgid "Other comment"
 msgstr "Anderer Kommentar"
 
@@ -3742,11 +3742,11 @@ msgstr "Anderer Kommentar"
 msgid "Participants can save partially finished surveys"
 msgstr "Teilnehmer können teilweise fertiggestellte Umfrage zwischenspeichern."
 
-#: application/helpers/common_helper.php:3343
+#: application/helpers/common_helper.php:3342
 msgid "Pie chart"
 msgstr "Tortendiagramm"
 
-#: application/helpers/common_helper.php:4113
+#: application/helpers/common_helper.php:4112
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr "Platziere Fragen in eine spezifische virtuelle Fragengruppe; alle Fragen innerhalb dieser Grupper erscheinen in zufälliger Reihenfolge."
 
@@ -3763,10 +3763,10 @@ msgstr "Bitte überprüfen Sie Ihre Einstellungen"
 #: application/helpers/common_helper.php:589
 #: application/helpers/common_helper.php:1242
 #: application/helpers/common_helper.php:1312
-#: application/helpers/common_helper.php:6901
-#: application/helpers/common_helper.php:6938
-#: application/helpers/common_helper.php:7368
-#: application/helpers/common_helper.php:7411
+#: application/helpers/common_helper.php:6900
+#: application/helpers/common_helper.php:6937
+#: application/helpers/common_helper.php:7367
+#: application/helpers/common_helper.php:7410
 msgid "Please choose..."
 msgstr "Bitte auswählen.."
 
@@ -3779,31 +3779,31 @@ msgstr "Bitte wählen Sie eine Sprache aus:"
 msgid "Please wait to begin with a new session."
 msgstr "Bitte warten Sie, um eine neue Sitzung starten zu können."
 
-#: application/helpers/common_helper.php:3190
+#: application/helpers/common_helper.php:3189
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Nach-Antwort-Trenner|Klappbox-Trenner"
 
-#: application/helpers/common_helper.php:3855
+#: application/helpers/common_helper.php:3854
 msgid "Prefix for list items"
 msgstr "Präfix für Listeneinträge"
 
-#: application/helpers/common_helper.php:3182
+#: application/helpers/common_helper.php:3181
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Präfix/Suffix für Klappbox Listen"
 
-#: application/helpers/common_helper.php:3545
+#: application/helpers/common_helper.php:3544
 msgid "Present answer options in reverse order"
 msgstr "Zeige Antwortoptionen in umgekehrter Reihenfolge"
 
-#: application/helpers/common_helper.php:3695
+#: application/helpers/common_helper.php:3694
 msgid "Present answers in random order"
 msgstr "Zeige Antworten in zufälliger Reihenfolge"
 
-#: application/helpers/common_helper.php:3620
+#: application/helpers/common_helper.php:3619
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "Zeige als Texteingabefelder anstatt von Auswahlboxen"
 
-#: application/helpers/common_helper.php:3832
+#: application/helpers/common_helper.php:3831
 msgid "Present dropdown control(s) instead of list of radio buttons"
 msgstr "Benutze Aufklapplisten anstelle von einer Liste aus Auswahlknöpfen"
 
@@ -3819,31 +3819,31 @@ msgstr "Frage-Code / ID"
 msgid "Question groups"
 msgstr "Fragengruppen"
 
-#: application/helpers/common_helper.php:2843
+#: application/helpers/common_helper.php:2842
 msgid "Question time"
 msgstr "Fragenzeit"
 
-#: application/helpers/common_helper.php:3225
+#: application/helpers/common_helper.php:3224
 msgid "Question validation equation"
 msgstr "Frage-Validierungsgleichung"
 
-#: application/helpers/common_helper.php:3233
+#: application/helpers/common_helper.php:3232
 msgid "Question validation tip"
 msgstr "Frage Validierungshinweis"
 
-#: application/helpers/common_helper.php:3696
+#: application/helpers/common_helper.php:3695
 msgid "Random answer order"
 msgstr "Zufällige Antwortreihenfolge"
 
-#: application/helpers/common_helper.php:4114
+#: application/helpers/common_helper.php:4113
 msgid "Randomization group name"
 msgstr "Randomisierungsgruppenname"
 
-#: application/helpers/common_helper.php:3691
+#: application/helpers/common_helper.php:3690
 msgid "Randomize on each page load"
 msgstr "Generiere bei jedem Seitenaufruf zufällig"
 
-#: application/helpers/common_helper.php:3692
+#: application/helpers/common_helper.php:3691
 msgid "Randomize once on survey start"
 msgstr "Generiere beim Starten der Umfrage zufällig"
 
@@ -3884,7 +3884,7 @@ msgstr "Erinnerung gesendet an:"
 msgid "Reminder to participate in a survey"
 msgstr "Erinnerung an die Teilnahme an einer Umfrage"
 
-#: application/helpers/common_helper.php:3651
+#: application/helpers/common_helper.php:3650
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "Ersetzt den Text 'Anderes' mit einem eigenen Text"
 
@@ -3912,7 +3912,7 @@ msgstr "Antworten zu dieser Umfrage sind anonymisiert."
 msgid "Responses will be date stamped."
 msgstr "Antworten werden mit einem Zeitstempel versehen."
 
-#: application/helpers/common_helper.php:3565
+#: application/helpers/common_helper.php:3564
 msgid "Restrict input to integer values"
 msgstr "Eingabe auf Ganzzahlwerte beschränken"
 
@@ -3920,44 +3920,44 @@ msgstr "Eingabe auf Ganzzahlwerte beschränken"
 msgid "Return to survey administration"
 msgstr "Zur Umfragen-Administration zurückkehren"
 
-#: application/helpers/common_helper.php:3546
+#: application/helpers/common_helper.php:3545
 msgid "Reverse answer order"
 msgstr "Umgekehrte Antwortreihenfolge"
 
-#: application/helpers/common_helper.php:3589
+#: application/helpers/common_helper.php:3588
 msgid "Rows"
 msgstr "Zeilen"
 
-#: application/helpers/common_helper.php:4370
+#: application/helpers/common_helper.php:4369
 msgid "SMTP debug output:"
 msgstr "SMTP Debug Ausgabe:"
 
-#: application/helpers/common_helper.php:3868
+#: application/helpers/common_helper.php:3867
 msgid "SPSS export scale type"
 msgstr "SPSS Export Skalentyp"
 
-#: application/helpers/common_helper.php:7014
+#: application/helpers/common_helper.php:7013
 #, php-format
 msgid "SQL command failed: %s"
 msgstr "SQL-Anweisung fehlgeschlagen: %s"
 
-#: application/helpers/common_helper.php:3281
+#: application/helpers/common_helper.php:3280
 msgid "Save city"
 msgstr "Stadt speichern?"
 
-#: application/helpers/common_helper.php:3314
+#: application/helpers/common_helper.php:3313
 msgid "Save country"
 msgstr "Land speichern?"
 
-#: application/helpers/common_helper.php:3303
+#: application/helpers/common_helper.php:3302
 msgid "Save postal code"
 msgstr "PLZ speichern?"
 
-#: application/helpers/common_helper.php:3292
+#: application/helpers/common_helper.php:3291
 msgid "Save state"
 msgstr "Bundesland speichern?"
 
-#: application/helpers/common_helper.php:3865
+#: application/helpers/common_helper.php:3864
 msgid "Scale"
 msgstr "Scala"
 
@@ -3969,12 +3969,12 @@ msgstr "Skala 1"
 msgid "Scale 2"
 msgstr "Skala 2"
 
-#: application/helpers/common_helper.php:6255
-#: application/helpers/common_helper.php:6260
+#: application/helpers/common_helper.php:6254
+#: application/helpers/common_helper.php:6259
 msgid "Security alert"
 msgstr "Sicherheits-Hinweis"
 
-#: application/helpers/common_helper.php:3344
+#: application/helpers/common_helper.php:3343
 msgid "Select the type of chart to be displayed"
 msgstr "Wählen Sie den Typ des Diagramms aus, welches angezeigt werden soll"
 
@@ -3986,7 +3986,7 @@ msgstr "Sende Einladungen an die ausgewählten Einträge (sofern diese nicht sch
 msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
 msgstr "Sende Erinnerungsnachrichten an die ausgewählten Einträge (sofern diese schon eine Einladung bekommen haben)"
 
-#: application/helpers/common_helper.php:3867
+#: application/helpers/common_helper.php:3866
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "Setze einen spezifischen SPSS Export-Skalentyp für diese Frage"
 
@@ -3995,7 +3995,7 @@ msgstr "Setze einen spezifischen SPSS Export-Skalentyp für diese Frage"
 msgid "Set template permissions"
 msgstr "Bearbeite Designvorlage-Berechtigungen"
 
-#: application/helpers/common_helper.php:3086
+#: application/helpers/common_helper.php:3085
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "Setze die prozentuale Breite der Antwortspalte"
 
@@ -4009,31 +4009,31 @@ msgstr "Bearbeite Umfrageberechtigungen"
 msgid "Short Free Text"
 msgstr "Kurzer freier Text"
 
-#: application/helpers/common_helper.php:4042
+#: application/helpers/common_helper.php:4041
 msgid "Short names"
 msgstr "Kurznamen"
 
-#: application/helpers/common_helper.php:3322
+#: application/helpers/common_helper.php:3321
 msgid "Show a map in the statistics?"
 msgstr "Zeige Diagramm in der Statistik?"
 
-#: application/helpers/common_helper.php:4069
+#: application/helpers/common_helper.php:4068
 msgid "Show comment"
 msgstr "Zeige Kommentar"
 
-#: application/helpers/common_helper.php:3609
+#: application/helpers/common_helper.php:3608
 msgid "Show grand total"
 msgstr "Zeige Gesamtsumme"
 
-#: application/helpers/common_helper.php:3608
+#: application/helpers/common_helper.php:3607
 msgid "Show grand total for either columns or rows"
 msgstr "Zeige Gesamtsumme für Zeilen oder Spalten"
 
-#: application/helpers/common_helper.php:3683
+#: application/helpers/common_helper.php:3682
 msgid "Show in public statistics"
 msgstr "Zeige in öffentlicher Statistik"
 
-#: application/helpers/common_helper.php:3682
+#: application/helpers/common_helper.php:3681
 msgid "Show statistics of this question in the public statistics page"
 msgstr "Zeige Statistik dieser Frage in der öffentlichen Statistikseite"
 
@@ -4041,15 +4041,15 @@ msgstr "Zeige Statistik dieser Frage in der öffentlichen Statistikseite"
 msgid "Show this token entry"
 msgstr "Zeige diesen Teilnehmer Eintrag"
 
-#: application/helpers/common_helper.php:4058
+#: application/helpers/common_helper.php:4057
 msgid "Show title"
 msgstr "Zeige Titel"
 
-#: application/helpers/common_helper.php:3595
+#: application/helpers/common_helper.php:3594
 msgid "Show totals for"
 msgstr "Zeige Gesamtwerte für"
 
-#: application/helpers/common_helper.php:3594
+#: application/helpers/common_helper.php:3593
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr "Zeige Summen für Zeilen und/oder Spalten"
 
@@ -4057,59 +4057,59 @@ msgstr "Zeige Summen für Zeilen und/oder Spalten"
 msgid "Single choice questions"
 msgstr "Einfachauswahl"
 
-#: application/helpers/common_helper.php:3721
-#: application/helpers/common_helper.php:3732
-#: application/helpers/common_helper.php:3740
-#: application/helpers/common_helper.php:3748
-#: application/helpers/common_helper.php:3756
-#: application/helpers/common_helper.php:3764
-#: application/helpers/common_helper.php:3790
-#: application/helpers/common_helper.php:3801
+#: application/helpers/common_helper.php:3720
+#: application/helpers/common_helper.php:3731
+#: application/helpers/common_helper.php:3739
+#: application/helpers/common_helper.php:3747
+#: application/helpers/common_helper.php:3755
+#: application/helpers/common_helper.php:3763
+#: application/helpers/common_helper.php:3789
+#: application/helpers/common_helper.php:3800
 msgid "Slider"
 msgstr "Schieberegler"
 
+#: application/helpers/common_helper.php:3750
 #: application/helpers/common_helper.php:3751
-#: application/helpers/common_helper.php:3752
 msgid "Slider accuracy"
 msgstr "Schieberegler Genauigkeit"
 
+#: application/helpers/common_helper.php:3758
 #: application/helpers/common_helper.php:3759
-#: application/helpers/common_helper.php:3760
 msgid "Slider initial value"
 msgstr "Schieberegler Anfangswert"
 
-#: application/helpers/common_helper.php:3805
+#: application/helpers/common_helper.php:3804
 msgid "Slider left/right text separator"
 msgstr "Schieberegler links/recht Texttrenner"
 
+#: application/helpers/common_helper.php:3742
 #: application/helpers/common_helper.php:3743
-#: application/helpers/common_helper.php:3744
 msgid "Slider maximum value"
 msgstr "Schieberegler Maximalwert"
 
+#: application/helpers/common_helper.php:3734
 #: application/helpers/common_helper.php:3735
-#: application/helpers/common_helper.php:3736
 msgid "Slider minimum value"
 msgstr "Schieberegler Minimalwert"
 
-#: application/helpers/common_helper.php:3771
+#: application/helpers/common_helper.php:3770
 msgid "Slider starts at the middle position"
 msgstr "Schieberegler startet in der Mittelposition"
 
-#: application/helpers/common_helper.php:6255
-#: application/helpers/common_helper.php:6260
+#: application/helpers/common_helper.php:6254
+#: application/helpers/common_helper.php:6259
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr "Jemand könnte gerade versuchen Ihre LimeSurvey Sitzung zu übernehmen (Verdacht auf CSRF Angriff). Wenn Sie gerade auf einen verdächtigen Link geklickt haben, melden Sie dies bitte Ihrem System Administrator."
 
-#: application/helpers/common_helper.php:3077
+#: application/helpers/common_helper.php:3076
 msgid "Sort answers alphabetically"
 msgstr "Sortiere Antworten alphabetisch"
 
-#: application/helpers/common_helper.php:3076
+#: application/helpers/common_helper.php:3075
 msgid "Sort the answer options alphabetically"
 msgstr "Sortiere Antwortoptionen alphabetisch"
 
-#: application/helpers/common_helper.php:4026
+#: application/helpers/common_helper.php:4025
 msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"
 msgstr "Geben sie ein bestimmte(s) Datums/Zeit-Format an (die <i>d/dd m/mm yy/yyyy H/HH M/MM</i>-Formate und die Zeichen \"-./: \" sind erlaubt für Tag/Monat/Jahr/Stunde/Minute ohne oder mit vorangestellter Null respektive. Standardmäßig ist dies das Umfragedatums-Format"
 
@@ -4117,30 +4117,30 @@ msgstr "Geben sie ein bestimmte(s) Datums/Zeit-Format an (die <i>d/dd m/mm yy/yy
 msgid "Start language"
 msgstr "Start-Sprache"
 
-#: application/helpers/common_helper.php:3318
-#: application/helpers/common_helper.php:3329
-#: application/helpers/common_helper.php:3340
+#: application/helpers/common_helper.php:3317
+#: application/helpers/common_helper.php:3328
+#: application/helpers/common_helper.php:3339
 msgid "Statistics"
 msgstr "Statistiken"
 
+#: application/helpers/common_helper.php:3522
 #: application/helpers/common_helper.php:3523
-#: application/helpers/common_helper.php:3524
 msgid "Step value"
 msgstr "Schrittweite"
 
-#: application/helpers/common_helper.php:3280
+#: application/helpers/common_helper.php:3279
 msgid "Store the city?"
 msgstr "Stadt speichern?"
 
-#: application/helpers/common_helper.php:3313
+#: application/helpers/common_helper.php:3312
 msgid "Store the country?"
 msgstr "Land speichern?"
 
-#: application/helpers/common_helper.php:3302
+#: application/helpers/common_helper.php:3301
 msgid "Store the postal code?"
 msgstr "PLZ speichern?"
 
-#: application/helpers/common_helper.php:3291
+#: application/helpers/common_helper.php:3290
 msgid "Store the state?"
 msgstr "Bundesland speichern?"
 
@@ -4148,11 +4148,11 @@ msgstr "Bundesland speichern?"
 msgid "Straight"
 msgstr "Normal aufsteigend"
 
-#: application/helpers/common_helper.php:3241
+#: application/helpers/common_helper.php:3240
 msgid "Sub-question validation equation"
 msgstr "Unterfragen-Validierungsgleichung"
 
-#: application/helpers/common_helper.php:3249
+#: application/helpers/common_helper.php:3248
 msgid "Sub-question validation tip"
 msgstr "Unterfragen Validierungshinweis"
 
@@ -4185,7 +4185,7 @@ msgstr "Diese Umfrage testen"
 msgid "Text display"
 msgstr "Textanzeige"
 
-#: application/helpers/common_helper.php:3621
+#: application/helpers/common_helper.php:3620
 msgid "Text inputs"
 msgstr "Text Eingabefelder"
 
@@ -4193,19 +4193,19 @@ msgstr "Text Eingabefelder"
 msgid "Text questions"
 msgstr "Textfragen"
 
-#: application/helpers/common_helper.php:3968
+#: application/helpers/common_helper.php:3967
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Die 'Zeitlimitwarnung' wird für diese Anzahl von Sekunden sichtbar sein (wird nicht ausgeblendet wenn diese Einstellung leer gelassen wird)"
 
-#: application/helpers/common_helper.php:4001
+#: application/helpers/common_helper.php:4000
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Die zweite 'Zeitlimitwarnung' wird für diese Anzahl von Sekunden sichtbar sein (wird nicht ausgeblendet wenn diese Einstellung leer gelassen wird)"
 
-#: application/helpers/common_helper.php:4010
+#: application/helpers/common_helper.php:4009
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Die zweite anzuzeigende 'Zeitlimitablauf-Nachricht' (wenn Sie dieses Feld leer lassen, wird eine Standardnachricht gezeigt)"
 
-#: application/helpers/common_helper.php:3138
+#: application/helpers/common_helper.php:3137
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "Die Antwortoptionen werden gleichmässig über die hier gesetzte Anzahl von Spalten verteilt."
 
@@ -4213,23 +4213,23 @@ msgstr "Die Antwortoptionen werden gleichmässig über die hier gesetzte Anzahl 
 msgid "The email address is not valid."
 msgstr "Die E-Mail-Adresse ist nicht gültig."
 
-#: application/helpers/common_helper.php:3770
+#: application/helpers/common_helper.php:3769
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr "Der Schieberegler wird anfangs in der Mittelstellung gezeigt (dies setzt keinen Startwert)"
 
-#: application/helpers/common_helper.php:3977
+#: application/helpers/common_helper.php:3976
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Die als 'Zeitlimitwarnung' anzuzeigende Nachricht (Wenn leer, wird eine Standardnachricht gezeigt)"
 
-#: application/helpers/common_helper.php:3944
+#: application/helpers/common_helper.php:3943
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "Die anzuzeigende Nachricht, wenn das Zeitlimit abgelaufen ist (eine Standardnachricht wird gezeigt, wenn diese Einstellung leer gelassen wird)"
 
-#: application/helpers/common_helper.php:4078
+#: application/helpers/common_helper.php:4077
 msgid "The participant cannot upload a single file larger than this size"
 msgstr "Der Teilnehmer kann keine einzelne Datei größer als diese Datei hochladen"
 
-#: application/helpers/common_helper.php:3483
+#: application/helpers/common_helper.php:3482
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr "Die Summe der numerischen Eingabe muss größer sein als dieser Wert"
 
@@ -4237,7 +4237,7 @@ msgstr "Die Summe der numerischen Eingabe muss größer sein als dieser Wert"
 msgid "The survey you selected does not exist"
 msgstr "Die ausgewählte Umfrage existiert nicht."
 
-#: application/helpers/common_helper.php:3919
+#: application/helpers/common_helper.php:3918
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr "Die Textnachricht die im Countdown-Zähler während des Countdown erscheint"
 
@@ -4273,11 +4273,11 @@ msgstr "Es wurden keine E-Mails versendet, da kein Teilnehmer die folgenden Bedi
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie einen passenden Zugangsschlüssel."
 
-#: application/helpers/common_helper.php:3232
+#: application/helpers/common_helper.php:3231
 msgid "This is a hint text that will be shown to the participant describing the question validation equation."
 msgstr "Die ist ein dem Teilnehmer zu zeigender Hinweis, der die Fragen-Validierungsgleichung beschreibt."
 
-#: application/helpers/common_helper.php:3248
+#: application/helpers/common_helper.php:3247
 msgid "This is a tip shown to the participant describing the sub-question validation equation."
 msgstr "Die ist ein dem Teilnehmer zu zeigender Hinweis, der die Unterfragen-Validierungsgleichung beschreibt."
 
@@ -4289,59 +4289,59 @@ msgstr "Diese Umfrage ist beendet und steht nicht mehr zur Verfügung."
 msgid "This survey is not yet started."
 msgstr "Diese Umfrage ist noch nicht aktiv."
 
-#: application/helpers/common_helper.php:3877
+#: application/helpers/common_helper.php:3876
 msgid "Time limit"
 msgstr "Zeitlimit"
 
-#: application/helpers/common_helper.php:3889
+#: application/helpers/common_helper.php:3888
 msgid "Time limit action"
 msgstr "Zeitlimit Aktion"
 
-#: application/helpers/common_helper.php:3920
+#: application/helpers/common_helper.php:3919
 msgid "Time limit countdown message"
 msgstr "Zeitlimitablauf-Nachricht"
 
-#: application/helpers/common_helper.php:3900
+#: application/helpers/common_helper.php:3899
 msgid "Time limit disable next"
 msgstr "Zeitlimit Deaktivierung Nächster-Knopf"
 
-#: application/helpers/common_helper.php:3911
+#: application/helpers/common_helper.php:3910
 msgid "Time limit disable prev"
 msgstr "Zeitlimit Deaktivierung Zurück-Knopf"
 
-#: application/helpers/common_helper.php:3945
+#: application/helpers/common_helper.php:3944
 msgid "Time limit expiry message"
 msgstr "Zeitlimitablauf-Nachricht"
 
-#: application/helpers/common_helper.php:3936
+#: application/helpers/common_helper.php:3935
 msgid "Time limit expiry message display time"
 msgstr "Zeitlimit Ablaufnachricht Anzeigezeit"
 
-#: application/helpers/common_helper.php:3953
+#: application/helpers/common_helper.php:3952
 msgid "Time limit message CSS style"
 msgstr "Zeitlimit-Nachricht CSS-Stil"
 
-#: application/helpers/common_helper.php:3928
+#: application/helpers/common_helper.php:3927
 msgid "Time limit timer CSS style"
 msgstr "Zeitlimit Timer CSS Stil"
 
-#: application/helpers/common_helper.php:3873
-#: application/helpers/common_helper.php:3881
-#: application/helpers/common_helper.php:3893
-#: application/helpers/common_helper.php:3904
-#: application/helpers/common_helper.php:3915
-#: application/helpers/common_helper.php:3924
-#: application/helpers/common_helper.php:3932
-#: application/helpers/common_helper.php:3940
-#: application/helpers/common_helper.php:3949
-#: application/helpers/common_helper.php:3957
-#: application/helpers/common_helper.php:3965
-#: application/helpers/common_helper.php:3973
-#: application/helpers/common_helper.php:3982
-#: application/helpers/common_helper.php:3990
-#: application/helpers/common_helper.php:3998
-#: application/helpers/common_helper.php:4006
-#: application/helpers/common_helper.php:4015
+#: application/helpers/common_helper.php:3872
+#: application/helpers/common_helper.php:3880
+#: application/helpers/common_helper.php:3892
+#: application/helpers/common_helper.php:3903
+#: application/helpers/common_helper.php:3914
+#: application/helpers/common_helper.php:3923
+#: application/helpers/common_helper.php:3931
+#: application/helpers/common_helper.php:3939
+#: application/helpers/common_helper.php:3948
+#: application/helpers/common_helper.php:3956
+#: application/helpers/common_helper.php:3964
+#: application/helpers/common_helper.php:3972
+#: application/helpers/common_helper.php:3981
+#: application/helpers/common_helper.php:3989
+#: application/helpers/common_helper.php:3997
+#: application/helpers/common_helper.php:4005
+#: application/helpers/common_helper.php:4014
 msgid "Timer"
 msgstr "Timer"
 
@@ -4353,7 +4353,7 @@ msgstr "Schlüsselwort"
 msgid "Token attribute descriptions were successfully updated."
 msgstr "Attribut-Beschreibungen wurden erfolgreich gespeichert."
 
-#: application/helpers/common_helper.php:5245
+#: application/helpers/common_helper.php:5244
 msgid "Token code"
 msgstr "Zugangsschlüssel"
 
@@ -4365,7 +4365,7 @@ msgstr "Zugangsschlüssel-Steuerung"
 msgid "Token mismatch"
 msgstr "Unterschiedliche Zugangsschlüssel"
 
-#: application/helpers/common_helper.php:5249
+#: application/helpers/common_helper.php:5248
 msgid "Total numbers of sent reminders"
 msgstr "Gesamtanzahl versendeter Erinnerungen"
 
@@ -4385,26 +4385,26 @@ msgstr "Unverändert"
 msgid "Uploading LDAP Query"
 msgstr "Lade LDAP Abfrage hoch"
 
-#: application/helpers/common_helper.php:3157
+#: application/helpers/common_helper.php:3156
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "Benutze zugänglichere Klappboxen statt Kalender-Popup"
 
-#: application/helpers/common_helper.php:3534
+#: application/helpers/common_helper.php:3533
 msgid "Use checkbox layout"
 msgstr "Benutze Kontrollkästchen-Layout"
 
-#: application/helpers/common_helper.php:3833
+#: application/helpers/common_helper.php:3832
 msgid "Use dropdown presentation"
 msgstr "Nutze Listenauswahl-Präsentation"
 
-#: application/helpers/common_helper.php:3358
+#: application/helpers/common_helper.php:3357
 msgid "Use mapping service"
 msgstr "Benutze Kartendienst"
 
+#: application/helpers/common_helper.php:3726
 #: application/helpers/common_helper.php:3727
-#: application/helpers/common_helper.php:3728
+#: application/helpers/common_helper.php:3783
 #: application/helpers/common_helper.php:3784
-#: application/helpers/common_helper.php:3785
 msgid "Use slider layout"
 msgstr "Benutze Schieberegler"
 
@@ -4446,7 +4446,7 @@ msgstr "Benutzerregistrierung bei '%s'"
 msgid "User removed."
 msgstr "Benutzer entfernt."
 
-#: application/helpers/common_helper.php:5250
+#: application/helpers/common_helper.php:5249
 msgid "Uses left"
 msgstr "Übrige Nutzungsanzahl"
 
@@ -4454,7 +4454,7 @@ msgstr "Übrige Nutzungsanzahl"
 msgid "View statistics"
 msgstr "Statistik anzeigen"
 
-#: application/helpers/common_helper.php:3884
+#: application/helpers/common_helper.php:3883
 msgid "Warn and move on"
 msgstr "Warne und geh weiter"
 
@@ -4472,19 +4472,19 @@ msgstr "Leider haben Sie dafür keine Berechtigung."
 msgid "Welcome and end text"
 msgstr "Wilkommens- und Abschiedstext"
 
-#: application/helpers/common_helper.php:3821
+#: application/helpers/common_helper.php:3820
 msgid "Width of text input box"
 msgstr "Breite des Texteingabefeldes"
 
-#: application/helpers/common_helper.php:3366
+#: application/helpers/common_helper.php:3365
 msgid "Width of the map in pixel"
 msgstr "Breite der Karte in Pixel"
 
-#: application/helpers/common_helper.php:3781
+#: application/helpers/common_helper.php:3780
 msgid "Yes - slider with emoticon"
 msgstr "Ja - Schieberegler mit Emoticon"
 
-#: application/helpers/common_helper.php:3780
+#: application/helpers/common_helper.php:3779
 msgid "Yes - stars"
 msgstr "Ja - Sterne"
 
@@ -4492,31 +4492,31 @@ msgstr "Ja - Sterne"
 msgid "Yes/No"
 msgstr "Ja/Nein"
 
-#: application/helpers/common_helper.php:6158
+#: application/helpers/common_helper.php:6157
 msgid "You are not allowed dump the database!"
 msgstr "Sie sind nicht berechtigt, die Datenbank zu exportieren!"
 
-#: application/helpers/common_helper.php:6163
+#: application/helpers/common_helper.php:6162
 msgid "You are not allowed export a label set!"
 msgstr "Sie sind nicht berechtigt, Beschriftungs-Sets zu exportieren!"
 
-#: application/helpers/common_helper.php:6188
+#: application/helpers/common_helper.php:6187
 msgid "You are not allowed to activate this survey!"
 msgstr "Sie sind nicht berechtigt diese Umfrage zu aktivieren."
 
-#: application/helpers/common_helper.php:6198
+#: application/helpers/common_helper.php:6197
 msgid "You are not allowed to add a group to this survey!"
 msgstr "Sie sind nicht berechtigt ein Gruppe zu dieser Umfrage hinzuzufügen."
 
-#: application/helpers/common_helper.php:6183
+#: application/helpers/common_helper.php:6182
 msgid "You are not allowed to add new questions for this survey!"
 msgstr "Sie sind nicht berechtigt neue Fragen zu dieser Umfrage hinzuzufügen!"
 
-#: application/helpers/common_helper.php:6220
+#: application/helpers/common_helper.php:6219
 msgid "You are not allowed to browse responses!"
 msgstr "Sie sind nicht berechtigt, sich Ergebnisse anzuschauen."
 
-#: application/helpers/common_helper.php:6168
+#: application/helpers/common_helper.php:6167
 msgid "You are not allowed to change user data!"
 msgstr "Sie sind nicht berechtigt, Benutzer zu bearbeiten!"
 
@@ -4524,51 +4524,51 @@ msgstr "Sie sind nicht berechtigt, Benutzer zu bearbeiten!"
 msgid "You are not allowed to change your own permissions!"
 msgstr "Sie können Ihre eigenen Berechtigungen nicht ändern!"
 
-#: application/helpers/common_helper.php:6173
+#: application/helpers/common_helper.php:6172
 msgid "You are not allowed to create new surveys!"
 msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
 
-#: application/helpers/common_helper.php:6230
+#: application/helpers/common_helper.php:6229
 msgid "You are not allowed to delete this group!"
 msgstr "Sie sind nicht berechtigt diese Gruppe zu löschen!"
 
-#: application/helpers/common_helper.php:6178
+#: application/helpers/common_helper.php:6177
 msgid "You are not allowed to delete this survey!"
 msgstr "Sie sind nicht berechtigt diese Umfrage zu löschen!"
 
-#: application/helpers/common_helper.php:6215
+#: application/helpers/common_helper.php:6214
 msgid "You are not allowed to edit groups in this survey!"
 msgstr "Sie sind nicht berechtigt Gruppen dieser Umfrage zu bearbeiten!"
 
-#: application/helpers/common_helper.php:6210
+#: application/helpers/common_helper.php:6209
 msgid "You are not allowed to edit this survey!"
 msgstr "Sie sind nicht berechtigt diese Umfrage zu bearbeiten!"
 
-#: application/helpers/common_helper.php:6241
+#: application/helpers/common_helper.php:6240
 msgid "You are not allowed to import a group!"
 msgstr "Sie sind nicht berechtigt eine Gruppe zu importieren!"
 
-#: application/helpers/common_helper.php:6235
+#: application/helpers/common_helper.php:6234
 msgid "You are not allowed to import a survey!"
 msgstr "Sie sind nicht berechtigt eine Umfrage zu importieren!"
 
-#: application/helpers/common_helper.php:6204
+#: application/helpers/common_helper.php:6203
 msgid "You are not allowed to order groups in this survey!"
 msgstr "Sie sind nicht berechtigt die Gruppen in dieser Umfrage zu sortieren!"
 
-#: application/helpers/common_helper.php:6265
+#: application/helpers/common_helper.php:6264
 msgid "You are not allowed to perform this operation!"
 msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
 
-#: application/helpers/common_helper.php:6225
+#: application/helpers/common_helper.php:6224
 msgid "You are not allowed to set assessment rules!"
 msgstr "Sie sind nicht berechtigt Bewertungsrichtlinien zu setzen."
 
-#: application/helpers/common_helper.php:6193
+#: application/helpers/common_helper.php:6192
 msgid "You are not allowed to stop this survey!"
 msgstr "Sie sind nicht berechtigt diese Umfrage zu beenden!"
 
-#: application/helpers/common_helper.php:6246
+#: application/helpers/common_helper.php:6245
 msgid "You are not allowed to to import a question!"
 msgstr "Sie sind nicht berechtigt eine Frage zu importieren!"
 
@@ -4616,7 +4616,7 @@ msgstr "Ihre Antworten wurden erfolgreich gespeichert."
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr "Ihr Zugangsschlüssel scheint gültig zu sein, kann aber nur zu einer bestimmten Zeit genutzt werden."
 
-#: application/helpers/common_helper.php:3404
+#: application/helpers/common_helper.php:3403
 msgid "Zoom level"
 msgstr "Karten-Zoomstufe"
 
@@ -4645,7 +4645,7 @@ msgstr "dies ist eine automatisierte E-Mail, die sie darüber informieren soll, 
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} Zugangsschlüssel wurden generiert"
 
-#: application/helpers/qanda_helper.php:5987
+#: application/helpers/qanda_helper.php:5990
 msgid "..."
 msgstr "..."
 
@@ -4670,11 +4670,11 @@ msgstr "Nachdem Sie auf Speichern geklickt haben, können Sie den Browser schlie
 msgid "Albanian"
 msgstr "Albanisch"
 
-#: application/helpers/frontend_helper.php:1329
+#: application/helpers/frontend_helper.php:1324
 msgid "An error occurred saving a response to survey id"
 msgstr "Beim Speichern Ihrer Fragebogen-Zugangsschlüssels ist ein Fehler aufgetreten."
 
-#: application/helpers/frontend_helper.php:1321
+#: application/helpers/frontend_helper.php:1316
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Ein unerwarteter Fehler ist aufgetreten. Ihre Antworten können leider nicht gespeichert werden."
 
@@ -4805,7 +4805,7 @@ msgstr "Kroatisch"
 msgid "Czech"
 msgstr "Tschechisch"
 
-#: application/helpers/frontend_helper.php:1330
+#: application/helpers/frontend_helper.php:1325
 msgid "DATA TO BE ENTERED"
 msgstr "EINZUGEBENDE DATEN"
 
@@ -4826,7 +4826,7 @@ msgstr "Tag"
 msgid "Dec"
 msgstr "Dez"
 
-#: application/helpers/frontend_helper.php:1320
+#: application/helpers/frontend_helper.php:1315
 #: application/helpers/SurveyRuntimeHelper.php:378
 msgid "Did Not Save"
 msgstr "Wurde nicht gespeichert"
@@ -4835,8 +4835,8 @@ msgstr "Wurde nicht gespeichert"
 msgid "Dot (.)"
 msgstr "Punkt (.)"
 
-#: application/helpers/qanda_helper.php:4091
-#: application/helpers/qanda_helper.php:4092
+#: application/helpers/qanda_helper.php:4094
+#: application/helpers/qanda_helper.php:4095
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Ziehen Sie die Nadek per Drag & Drop zur gewünschten Position. Sie können ausserdem die Nadel per Rechtsklick versetzen."
 
@@ -4848,7 +4848,7 @@ msgstr "Niederländisch"
 msgid "Dutch Informal"
 msgstr "Holländisch (Du-Form)"
 
-#: application/helpers/frontend_helper.php:1337
+#: application/helpers/frontend_helper.php:1332
 msgid "ERROR MESSAGE"
 msgstr "FEHLERMELDUNG"
 
@@ -4868,26 +4868,26 @@ msgstr "Geben Sie einen Namen und ein Passwort für diese Umfrage an und klicken
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden erhalten Sie per E-Mail einen Link zu der Umfrage."
 
-#: application/helpers/frontend_helper.php:1339
+#: application/helpers/frontend_helper.php:1334
 msgid "Error saving results"
 msgstr "Fehler beim Speichern der Ergebnisse"
 
-#: application/helpers/qanda_helper.php:5329
-#: application/helpers/qanda_helper.php:5711
-#: application/helpers/qanda_helper.php:6070
-#: application/helpers/qanda_helper.php:6218
-#: application/helpers/qanda_helper.php:6852
+#: application/helpers/qanda_helper.php:5332
+#: application/helpers/qanda_helper.php:5714
+#: application/helpers/qanda_helper.php:6073
+#: application/helpers/qanda_helper.php:6221
+#: application/helpers/qanda_helper.php:6855
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Fehler: Es gibt keine Antwortoptionen für diese Frage oder Sie existieren nicht in dieser Sprache."
 
-#: application/helpers/qanda_helper.php:6212
+#: application/helpers/qanda_helper.php:6215
 msgid "Error: There are no answers defined for this question."
 msgstr "Fehler: Es sind keine Antworten für diese Frage definiert."
 
-#: application/helpers/qanda_helper.php:3200
-#: application/helpers/qanda_helper.php:3513
-#: application/helpers/qanda_helper.php:4749
-#: application/helpers/qanda_helper.php:6623
+#: application/helpers/qanda_helper.php:3203
+#: application/helpers/qanda_helper.php:3516
+#: application/helpers/qanda_helper.php:4752
+#: application/helpers/qanda_helper.php:6626
 msgid "Error: This question has no answers."
 msgstr "Fehler: Diese Frage hat keine Antworten."
 
@@ -4923,6 +4923,10 @@ msgstr "Feb"
 #: application/helpers/admin/import_helper.php:2628
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Diese Datei enthält keine LimeSurvey-Daten im richtigen Format."
+
+#: application/helpers/qanda_helper.php:3022
+msgid "File name"
+msgstr "Dateiname"
 
 #: application/helpers/surveytranslator_helper.php:198
 msgid "Finnish"
@@ -4978,8 +4982,8 @@ msgstr "Isländisch"
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Wenn Sie eine E-Mailadresse angeben, wird Ihnen eine E-Mail mit weiteren Einzelheiten zugesandt."
 
-#: application/helpers/frontend_helper.php:1476
-#: application/helpers/frontend_helper.php:1638
+#: application/helpers/frontend_helper.php:1471
+#: application/helpers/frontend_helper.php:1633
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
 
@@ -5089,9 +5093,9 @@ msgstr "Mai"
 msgid "Month"
 msgstr "Monat"
 
-#: application/helpers/frontend_helper.php:2238
+#: application/helpers/frontend_helper.php:2233
+#: application/helpers/frontend_helper.php:2239
 #: application/helpers/frontend_helper.php:2244
-#: application/helpers/frontend_helper.php:2249
 msgid "Next"
 msgstr "Weiter"
 
@@ -5146,13 +5150,13 @@ msgstr "Ein oder mehrere Fragen sind nicht korrekt beantwortet worden. Sie könn
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr "Ein oder mehrere Dateien sind nicht im korrekten Format oder überschreiten die maximale Dateigröße. Sie können nicht fortfahren, bevor Sie dies korrigiert haben."
 
-#: application/helpers/qanda_helper.php:3653
+#: application/helpers/qanda_helper.php:3656
 msgid "Only numbers may be entered in these fields"
 msgstr "In diese Felder dürfen nur Ziffern eingetragen werden."
 
-#: application/helpers/qanda_helper.php:3904
-#: application/helpers/qanda_helper.php:3905
-#: application/helpers/qanda_helper.php:3909
+#: application/helpers/qanda_helper.php:3907
+#: application/helpers/qanda_helper.php:3908
+#: application/helpers/qanda_helper.php:3912
 msgid "Only numbers may be entered in this field"
 msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden."
 
@@ -5168,11 +5172,11 @@ msgstr "Andere Antwort"
 msgid "Persian"
 msgstr "Persisch"
 
-#: application/helpers/frontend_helper.php:1404
+#: application/helpers/frontend_helper.php:1399
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Bitte bestätigen Sie den Zugang zur Umfrage indem Sie die Sicherheitsfrage unten beantworten und auf Weiter klicken."
 
-#: application/helpers/frontend_helper.php:1657
+#: application/helpers/frontend_helper.php:1652
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Bitte bestätigen Sie den Zugangsschlüssel, indem Sie die Sicherheitsfrage unten beantworten und auf Weiter klicken."
 
@@ -5204,8 +5208,8 @@ msgstr "Portugiesisch"
 msgid "Portuguese (Brazilian)"
 msgstr "Portugiesisch (Brasilien)"
 
-#: application/helpers/frontend_helper.php:2231
-#: application/helpers/frontend_helper.php:2677
+#: application/helpers/frontend_helper.php:2226
+#: application/helpers/frontend_helper.php:2672
 msgid "Previous"
 msgstr "Zurück"
 
@@ -5221,7 +5225,7 @@ msgstr "Panjabi"
 msgid "Question index"
 msgstr "Fragenindex"
 
-#: application/helpers/qanda_helper.php:3694
+#: application/helpers/qanda_helper.php:3697
 msgid "Remaining: "
 msgstr "Verbleibend:"
 
@@ -5256,7 +5260,7 @@ msgstr "Rumänisch"
 msgid "Russian"
 msgstr "Russisch"
 
-#: application/helpers/frontend_helper.php:1335
+#: application/helpers/frontend_helper.php:1330
 msgid "SQL CODE THAT FAILED"
 msgstr "FEHLERHAFTE SQL ANWEISUNG"
 
@@ -5272,15 +5276,15 @@ msgstr "Bisherige Antworten speichern"
 msgid "Saved name"
 msgstr "Gespeicherter Name"
 
-#: application/helpers/frontend_helper.php:1506
-#: application/helpers/frontend_helper.php:1679
+#: application/helpers/frontend_helper.php:1501
+#: application/helpers/frontend_helper.php:1674
 #: application/helpers/replacements_helper.php:520
 #: application/helpers/replacements_helper.php:541
 #: application/helpers/replacements_helper.php:604
 msgid "Security Question"
 msgstr "Sicherheitsfrage"
 
-#: application/helpers/frontend_helper.php:1428
+#: application/helpers/frontend_helper.php:1423
 msgid "Security question:"
 msgstr "Sicherheitsfrage"
 
@@ -5308,13 +5312,13 @@ msgstr "Slovenisch"
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Leider haben Ihre Antworten eine Quote dieser Umfrage überschritten."
 
-#: application/helpers/frontend_helper.php:832
-#: application/helpers/frontend_helper.php:838
+#: application/helpers/frontend_helper.php:827
+#: application/helpers/frontend_helper.php:833
 #, php-format
 msgid "Sorry, only %s extensions are allowed!"
 msgstr "Leider sind nur die Erweiterungen %s erlaubt!"
 
-#: application/helpers/frontend_helper.php:819
+#: application/helpers/frontend_helper.php:814
 #, php-format
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr "Leider ist die hochgeladene Datei (%s) größer als die erlaubte Größe von %s KB."
@@ -5335,7 +5339,7 @@ msgstr "Spanisch (Mexiko)"
 msgid "Start HTML Editor in a Popup Window"
 msgstr "Starte HTML-Editor im Popup-Fenster"
 
-#: application/helpers/frontend_helper.php:2254
+#: application/helpers/frontend_helper.php:2249
 #: application/helpers/replacements_helper.php:328
 #: application/helpers/SurveyRuntimeHelper.php:1103
 msgid "Submit"
@@ -5383,7 +5387,7 @@ msgstr "Die Sprachen in der importierten Gruppendatei müssen mindestens die Bas
 msgid "The languages of the imported question file must at least include the base language of this survey."
 msgstr "Die Sprachen in der importierten Fragendatei müssen mindestens die Basissprache dieser Umfrage enthalten."
 
-#: application/helpers/frontend_helper.php:850
+#: application/helpers/frontend_helper.php:845
 msgid "The minimum number of files has not been uploaded."
 msgstr "Die Minimalanzahlen an Dateien wurde noch nicht hochgeladen."
 
@@ -5395,8 +5399,8 @@ msgstr "Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführ
 msgid "The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory."
 msgstr "Das benötigte Verzeichnis zum Speichern der hochgeladenen Dateien kann nicht angelegt werden. Bitte überprüfe die Dateiberechtigungen des Verzeichnisses /upload/surveys."
 
-#: application/helpers/frontend_helper.php:1550
-#: application/helpers/frontend_helper.php:1595
+#: application/helpers/frontend_helper.php:1545
+#: application/helpers/frontend_helper.php:1590
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
 
@@ -5491,7 +5495,7 @@ msgstr "Diese Frage benötigt Antworten, aber keine sind gesetzt."
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
 
-#: application/helpers/frontend_helper.php:1786
+#: application/helpers/frontend_helper.php:1781
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
 
@@ -5499,7 +5503,7 @@ msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder get
 msgid "This survey is anonymous."
 msgstr "Dies ist eine anonyme Umfrage."
 
-#: application/helpers/frontend_helper.php:2799
+#: application/helpers/frontend_helper.php:2794
 #: application/helpers/SurveyRuntimeHelper.php:1027
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Diese Umfrage ist momentan nicht aktiv. Sie werden sie nicht abschließen können."
@@ -5516,16 +5520,16 @@ msgstr "Verbleibende Zeit"
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr "Um anonym zu bleiben, benutzen Sie bitte ein Psedonym als Benutzernamen, außerdem ist die E-Mailadresse keine Pflichtangabe."
 
-#: application/helpers/frontend_helper.php:1481
-#: application/helpers/frontend_helper.php:1671
+#: application/helpers/frontend_helper.php:1476
+#: application/helpers/frontend_helper.php:1666
 msgid "Token:"
 msgstr "Zugangsschlüssel:"
 
-#: application/helpers/qanda_helper.php:3702
+#: application/helpers/qanda_helper.php:3705
 msgid "Total: "
 msgstr "Gesamt:"
 
-#: application/helpers/frontend_helper.php:1346
+#: application/helpers/frontend_helper.php:1341
 msgid "Try to submit again"
 msgstr "Versuchen Sie das Abschicken erneut"
 
@@ -5627,7 +5631,7 @@ msgstr "Ihre Bewertung"
 msgid "Your Email"
 msgstr "Ihre E-Mail"
 
-#: application/helpers/frontend_helper.php:1324
+#: application/helpers/frontend_helper.php:1319
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Ihre Antworten sind nicht verloren gegangen. Sie wurden per eMail an den Administrator dieser Umfrage geschickt und werden zu einem späteren Zeitpunkt manuell in die Datenbank eingepflegt."
 
@@ -5675,7 +5679,7 @@ msgstr "oder"
 msgid "seconds"
 msgstr "Sekunden"
 
-#: application/helpers/expressions/em_manager_helper.php:6905
+#: application/helpers/expressions/em_manager_helper.php:6899
 #, php-format
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
@@ -5883,8 +5887,8 @@ msgstr "Datenbankaktualisierung beendet (%s)"
 msgid "Database upgrade"
 msgstr "Datenbank aktualisieren"
 
-#: application/helpers/expressions/em_manager_helper.php:6584
-#: application/helpers/expressions/em_manager_helper.php:6810
+#: application/helpers/expressions/em_manager_helper.php:6578
+#: application/helpers/expressions/em_manager_helper.php:6804
 msgid "Default:"
 msgstr "Voreinstellung:"
 
@@ -5914,7 +5918,7 @@ msgstr "Jede Antwort darf maximal %s sein."
 msgid "Each answer must be between %s and %s."
 msgstr "Jede Antwort muss zwischen %s und %s sein."
 
-#: application/helpers/expressions/em_manager_helper.php:3362
+#: application/helpers/expressions/em_manager_helper.php:3356
 msgid "Error in SQL update"
 msgstr "Fehler in SQL Update"
 
@@ -6060,11 +6064,11 @@ msgstr "Den Zahlenwert einer Variable erhalten"
 msgid "Get value of pi"
 msgstr "Erhalte den Wert von pi"
 
-#: application/helpers/expressions/em_manager_helper.php:6592
+#: application/helpers/expressions/em_manager_helper.php:6586
 msgid "Help:"
 msgstr "Hilfetext:"
 
-#: application/helpers/expressions/em_manager_helper.php:4255
+#: application/helpers/expressions/em_manager_helper.php:4249
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr "Wenn Sie '%s' wählen, müssen sie eine Beschreibung angeben."
@@ -6078,7 +6082,7 @@ msgstr "Fügt HTML-Zeilenumbrüche vor alle neuen Zeilen in einer Zeichenkette e
 msgid "Invalid PERL Regular Expression: %s"
 msgstr "Ungültiger PERL Regulärer Ausdruck: %s"
 
-#: application/helpers/expressions/em_manager_helper.php:6527
+#: application/helpers/expressions/em_manager_helper.php:6521
 #, php-format
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr "Ungültige Frage - möglicherweise fehlen Unterfragen oder sprachspezifische Einstellungen für die Sprache %s"
@@ -6120,7 +6124,7 @@ msgstr "%s fehlende rechte Klammern"
 msgid "Moving user templates to new location at %s..."
 msgstr "Verschiebe die Benutzertemplates in neues Verzeichnis (%s)..."
 
-#: application/helpers/expressions/em_manager_helper.php:6532
+#: application/helpers/expressions/em_manager_helper.php:6526
 msgid "Name [ID]"
 msgstr "Name [ID]"
 
@@ -6128,7 +6132,7 @@ msgstr "Name [ID]"
 msgid "Natural logarithm"
 msgstr "Natürlicher Logarithmus"
 
-#: application/helpers/expressions/em_manager_helper.php:6911
+#: application/helpers/expressions/em_manager_helper.php:6905
 msgid "No syntax errors detected in this survey"
 msgstr "Keine Syntax-Fehler gefunden in dieser Umfrage"
 
@@ -6216,11 +6220,11 @@ msgstr "Bitte füllen Sie auch das Kommentarfeld aus."
 msgid "Please be patient..."
 msgstr "Bitte gedulden Sie sich..."
 
-#: application/helpers/expressions/em_manager_helper.php:4306
+#: application/helpers/expressions/em_manager_helper.php:4300
 msgid "Please check at least one box per row"
 msgstr "Bitte wählen Sie mindestens einen Eintrag pro Zeile aus"
 
-#: application/helpers/expressions/em_manager_helper.php:4245
+#: application/helpers/expressions/em_manager_helper.php:4239
 msgid "Please check at least one item."
 msgstr "Bitte machen Sie mindestens ein Kreuz."
 
@@ -6228,12 +6232,12 @@ msgstr "Bitte machen Sie mindestens ein Kreuz."
 msgid "Please check the format of your answer."
 msgstr "Bitte überprüfen Sie das Format Ihrer Antwort."
 
-#: application/helpers/expressions/em_manager_helper.php:4277
-#: application/helpers/expressions/em_manager_helper.php:4314
+#: application/helpers/expressions/em_manager_helper.php:4271
+#: application/helpers/expressions/em_manager_helper.php:4308
 msgid "Please complete all parts"
 msgstr "Bitte beantworten Sie alle Bereiche/Teile der Frage(n)"
 
-#: application/helpers/expressions/em_manager_helper.php:4322
+#: application/helpers/expressions/em_manager_helper.php:4316
 msgid "Please rank all items"
 msgstr "Bitte bringen Sie alle Elemente in eine Rangfolge"
 
@@ -6276,7 +6280,7 @@ msgstr "Schlecht abgeschlossener Ausdruck -  Konstante oder Variable erwartet"
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 and Q1 werden berechnet durch die %s"
 
-#: application/helpers/expressions/em_manager_helper.php:6600
+#: application/helpers/expressions/em_manager_helper.php:6594
 msgid "Question attribute"
 msgstr "Fragenattribut"
 
@@ -6284,7 +6288,7 @@ msgstr "Fragenattribut"
 msgid "Quote meta characters"
 msgstr "Quotiere Meta-Zeichen"
 
-#: application/helpers/expressions/em_manager_helper.php:6532
+#: application/helpers/expressions/em_manager_helper.php:6526
 msgid "Relevance [Validation] (Default)"
 msgstr "Relevanz [Validierung] (Standard)"
 
@@ -6377,7 +6381,7 @@ msgstr "Quadratwurzel"
 msgid "Standard deviation"
 msgstr "Standard Abweichung"
 
-#: application/helpers/expressions/em_manager_helper.php:6725
+#: application/helpers/expressions/em_manager_helper.php:6719
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Ab Version 1.92 können Variablennamen nur Buchstaben, Zahlen und Unterstriche enthalten und dürfen nicht mit einer Zahl beginnen. Dieser Variablename ist veraltet."
 
@@ -6425,7 +6429,7 @@ msgstr "Tabellen-Präfix"
 msgid "Tangent"
 msgstr "Tangens"
 
-#: application/helpers/expressions/em_manager_helper.php:6532
+#: application/helpers/expressions/em_manager_helper.php:6526
 msgid "Text [Help] (Tip)"
 msgstr "Text [Hilfe] (Hinweis)"
 
@@ -6457,30 +6461,30 @@ msgstr "Die Summe muss gleich %s sein."
 msgid "The value of this variable can not be changed"
 msgstr "Der Wert dieser Variable kann nicht geändert werden"
 
-#: application/helpers/expressions/em_manager_helper.php:6914
+#: application/helpers/expressions/em_manager_helper.php:6908
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Diese Gruppe, an sich, enthält keine Syntaxfehler."
 
-#: application/helpers/expressions/em_manager_helper.php:6866
+#: application/helpers/expressions/em_manager_helper.php:6860
 #, php-format
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] "Fehler: Diese Frage hat mindestens %s Fehler."
 msgstr[1] "Fehler: Diese Frage hat mindestens %s Fehler."
 
-#: application/helpers/expressions/em_manager_helper.php:4233
+#: application/helpers/expressions/em_manager_helper.php:4227
 msgid "This question is mandatory"
 msgstr "Bitte beantworten Sie diese Frage"
 
-#: application/helpers/expressions/em_manager_helper.php:6917
+#: application/helpers/expressions/em_manager_helper.php:6911
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "Diese Frage, an sich, enthält keine Syntaxfehler."
 
-#: application/helpers/expressions/em_manager_helper.php:6713
+#: application/helpers/expressions/em_manager_helper.php:6707
 msgid "This variable name has already been used."
 msgstr "Dieser Variablenname wurde schon einmal benutzt."
 
-#: application/helpers/expressions/em_manager_helper.php:6593
+#: application/helpers/expressions/em_manager_helper.php:6587
 msgid "Tip:"
 msgstr "Hinweis:"
 
@@ -6514,11 +6518,11 @@ msgstr "Kann binären Operator nicht auswerten - weniger als 2 Einträge auf dem
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr "Kann unären Operator nicht auswerten - keine Einträge auf Stack"
 
-#: application/helpers/expressions/em_manager_helper.php:3269
+#: application/helpers/expressions/em_manager_helper.php:3263
 msgid "Unable to insert record into survey table"
 msgstr "Konnte Daten nicht im Umfrage Tabelle einfügen:"
 
-#: application/helpers/expressions/em_manager_helper.php:3284
+#: application/helpers/expressions/em_manager_helper.php:3278
 msgid "Unable to insert record into timings table"
 msgstr "Konnte Daten nicht im Timing-Tabelle einfügen"
 
@@ -6549,7 +6553,7 @@ msgstr "Nicht-unterstützte Syntax"
 msgid "Uppercase the first character of each word in a string"
 msgstr "Schreibe den Anfangsbuchstaben jedes Wortes der Zeichenkette groß"
 
-#: application/helpers/expressions/em_manager_helper.php:6600
+#: application/helpers/expressions/em_manager_helper.php:6594
 msgid "Value"
 msgstr "Wert"
 
@@ -8506,19 +8510,19 @@ msgstr "%s Datensätze mit ungültiger E-Mail-Adresse entfernt"
 msgid "(Autodetect)"
 msgstr "(Automatische Erkennung)"
 
-#: application/views/admin/participants/displayParticipants_view.php:75
+#: application/views/admin/participants/displayParticipants_view.php:76
 msgid "AND"
 msgstr "UND"
 
-#: application/views/admin/participants/displayParticipants_view.php:99
+#: application/views/admin/participants/displayParticipants_view.php:101
 msgid "Access denied"
 msgstr "Zugriff verweigert"
 
-#: application/views/admin/participants/displayParticipants_view.php:104
-msgid "Add participant to Survey"
+#: application/views/admin/participants/displayParticipants_view.php:106
+msgid "Add participant to survey"
 msgstr "Füge Teilnehmer zur Umfrage hinzu"
 
-#: application/views/admin/participants/displayParticipants_view.php:108
+#: application/views/admin/participants/displayParticipants_view.php:110
 msgid "Add to survey"
 msgstr "Zur Umfrage hinzufügen"
 
@@ -8526,33 +8530,13 @@ msgstr "Zur Umfrage hinzufügen"
 msgid "Allow participant to unblacklist himself/herself:"
 msgstr "Erlaube Teilnehmer sich selbst von der schwarzen Liste auszutragen:"
 
-#: application/views/admin/participants/displayParticipants_view.php:242
+#: application/views/admin/participants/displayParticipants_view.php:244
 msgid "Allow this user to edit these participants"
 msgstr "Erlaube dem Benutzer diese Teilnehmer zu bearbeiten"
 
 #: application/views/admin/participants/attributeMap_view.php:41
 msgid "Already mapped"
 msgstr "Bereits erfasst"
-
-#: application/views/admin/participants/displayParticipants_view.php:91
-#, fuzzy
-msgid "Attribute Name"
-msgstr "Attribut-Name"
-
-#: application/views/admin/participants/displayParticipants_view.php:93
-#, fuzzy
-msgid "Attribute Possible Values"
-msgstr "Zugangsschlüsse-Tabellen-Attribute"
-
-#: application/views/admin/participants/displayParticipants_view.php:90
-#, fuzzy
-msgid "Attribute Type"
-msgstr "Attribut-Typ"
-
-#: application/views/admin/participants/displayParticipants_view.php:92
-#, fuzzy
-msgid "Attribute Value"
-msgstr "Absoluter Wert"
 
 #: application/views/admin/participants/attributeControl_view.php:10
 #: application/views/admin/participants/participantsPanel_view.php:57
@@ -8561,17 +8545,27 @@ msgid "Attribute management"
 msgstr "Attributverwaltung"
 
 #: application/views/admin/participants/attributeControl_view.php:4
+#: application/views/admin/participants/displayParticipants_view.php:93
 msgid "Attribute name"
 msgstr "Attribut-Name"
 
 #: application/views/admin/participants/attributeControl_view.php:4
+#: application/views/admin/participants/displayParticipants_view.php:92
 msgid "Attribute type"
 msgstr "Attribut-Typ"
+
+#: application/views/admin/participants/displayParticipants_view.php:94
+msgid "Attribute value"
+msgstr "Attributwert"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:44
 #: application/views/admin/participants/attributeMap_view.php:68
 msgid "Attributes to be created"
 msgstr "Zu erstellende Attribute"
+
+#: application/views/admin/participants/displayParticipants_view.php:319
+msgid "Attributes to export:"
+msgstr "Zu exportierende Attribute:"
 
 #: application/views/admin/participants/blacklist_view.php:28
 msgid "Blacklist all current surveys for participant once the global field is set:"
@@ -8590,8 +8584,8 @@ msgid "Blacklist settings"
 msgstr "Schwarze Liste Einstellungen"
 
 #: application/views/admin/participants/displayParticipants_view.php:64
-#: application/views/admin/participants/displayParticipants_view.php:144
-#: application/views/admin/participants/displayParticipants_view.php:166
+#: application/views/admin/participants/displayParticipants_view.php:145
+#: application/views/admin/participants/displayParticipants_view.php:167
 msgid "Blacklisted"
 msgstr "Auf die schwarze Liste gesetzt"
 
@@ -8643,15 +8637,14 @@ msgstr "Code"
 msgid "Comma"
 msgstr "Komma"
 
-#: application/views/admin/participants/displayParticipants_view.php:70
-#: application/views/admin/participants/displayParticipants_view.php:173
+#: application/views/admin/participants/displayParticipants_view.php:71
+#: application/views/admin/participants/displayParticipants_view.php:175
 msgid "Contains"
 msgstr "Enthält"
 
-#: application/views/admin/participants/displayParticipants_view.php:83
-#, fuzzy
-msgid "Date Added"
-msgstr "Benutzer hinzugefügt."
+#: application/views/admin/participants/displayParticipants_view.php:85
+msgid "Date added"
+msgstr "Erstelldatum"
 
 #: application/views/admin/participants/blacklist_view.php:52
 msgid "Delete globally blacklisted participant from the database:"
@@ -8661,28 +8654,28 @@ msgstr "Lösche Teilnehmer auf der globalen schwarzen Liste aus der Datenbank:"
 msgid "Delete label set"
 msgstr "Beschriftungsset löschen"
 
-#: application/views/admin/participants/displayParticipants_view.php:119
+#: application/views/admin/participants/displayParticipants_view.php:121
 msgid "Delete participant(s) from central panel and tokens tables"
 msgstr "Lösche Teilnehmer vom zentralen Teilnehmer-Panel und aus der Zugangsschlüssel-Tabelle"
 
-#: application/views/admin/participants/displayParticipants_view.php:120
+#: application/views/admin/participants/displayParticipants_view.php:122
 msgid "Delete participant(s) from central panel, tokens tables and all associated responses"
 msgstr "Lösche Teilnehmer vom zentralen Teilnehmer-Panel, aus der Zugangsschlüssel-Tabelle und aus allen damit verbundenen Antworten"
 
-#: application/views/admin/participants/displayParticipants_view.php:118
+#: application/views/admin/participants/displayParticipants_view.php:120
 msgid "Delete participant(s) from central participants panel only"
 msgstr "Lösche Teilnehmer nur vom zentralen Teilnehmer-Panel"
 
-#: application/views/admin/participants/displayParticipants_view.php:294
-msgid "Display survey token table after adding participants?"
-msgstr "Umfrage Zugangsschlüsseltabelle zeigen nachdem Teilnehmer hinzugefügt wurde?"
+#: application/views/admin/participants/displayParticipants_view.php:308
+msgid "Display survey tokens after adding?"
+msgstr "Umfrage Zugangsschlüsseltabelle nach Hinzufügen zeigen?"
 
 #: application/views/admin/labels/labelbar_view.php:11
 msgid "Do you really want to delete this label set?"
 msgstr "Sind sie wirklich sicher, dass Sie dieses Beschriftungsset löschen wollen?"
 
-#: application/views/admin/participants/displayParticipants_view.php:72
-#: application/views/admin/participants/displayParticipants_view.php:175
+#: application/views/admin/participants/displayParticipants_view.php:73
+#: application/views/admin/participants/displayParticipants_view.php:177
 msgid "Does not contain"
 msgstr "Enthält nicht"
 
@@ -8702,7 +8695,7 @@ msgstr "Ziehen Sie ein CSV-Feld auf ein existierendes Teilnehmerattribut unten u
 msgid "Drop a CSV field into this area to create a new participant attribute and import your data into it."
 msgstr "Ziehen Sie ein CSV-Feld auf diesen Bereich um ein neues Teilnehmerattribut zu erzeugen und die Daten in dieses zu importieren."
 
-#: application/views/admin/participants/displayParticipants_view.php:105
+#: application/views/admin/participants/displayParticipants_view.php:107
 msgid "Either you don't own a survey or it doesn't have token table"
 msgstr "Entweder Sie haben keine Umfrage oder diese hat keine Zugangsschlüssel-Tabelle"
 
@@ -8714,8 +8707,8 @@ msgstr "Geben Sie eine Beschriftung pro Zeile ein. Sie können einen Code angebe
 msgid "Enter your labels:"
 msgstr "Geben Sie ihre Beschriftungen ein:"
 
-#: application/views/admin/participants/displayParticipants_view.php:69
-#: application/views/admin/participants/displayParticipants_view.php:172
+#: application/views/admin/participants/displayParticipants_view.php:70
+#: application/views/admin/participants/displayParticipants_view.php:174
 msgid "Equals"
 msgstr "Ergibt"
 
@@ -8731,7 +8724,7 @@ msgstr "Fehler: Sie versuchen einen doppelten Beschriftungscode zu speichern."
 msgid "Existing attribute"
 msgstr "Existierendes Attribut"
 
-#: application/views/admin/participants/displayParticipants_view.php:109
+#: application/views/admin/participants/displayParticipants_view.php:111
 msgid "Export CSV"
 msgstr "Exportiere CSV"
 
@@ -8743,7 +8736,7 @@ msgstr "Exportiere Ressourcen als ZIP-Archiv"
 msgid "Export this label set"
 msgstr "Exportiere dieses Beschriftungsset"
 
-#: application/views/admin/participants/displayParticipants_view.php:96
+#: application/views/admin/participants/displayParticipants_view.php:98
 msgid "Export to CSV"
 msgstr "Export nach CSV"
 
@@ -8767,7 +8760,7 @@ msgstr "Filtere leere E-Mail-Adressen:"
 msgid "Flash"
 msgstr "Flash"
 
-#: application/views/admin/participants/displayParticipants_view.php:97
+#: application/views/admin/participants/displayParticipants_view.php:99
 msgid "Full search"
 msgstr "Komplettsuche"
 
@@ -8828,12 +8821,12 @@ msgstr "Lade..."
 msgid "Logout"
 msgstr "Abmeldung"
 
-#: application/views/admin/participants/displayParticipants_view.php:103
+#: application/views/admin/participants/displayParticipants_view.php:105
 msgid "No other user in the system"
 msgstr "Kein anderer Benutzer im System"
 
-#: application/views/admin/participants/displayParticipants_view.php:71
-#: application/views/admin/participants/displayParticipants_view.php:174
+#: application/views/admin/participants/displayParticipants_view.php:72
+#: application/views/admin/participants/displayParticipants_view.php:176
 msgid "Not equal"
 msgstr "Ungleich"
 
@@ -8841,35 +8834,36 @@ msgstr "Ungleich"
 msgid "Only one CSV attribute is mapped with central attribute."
 msgstr "Nur ein CSV-Attribut ist mit Zentralattribut verbunden."
 
-#: application/views/admin/participants/displayParticipants_view.php:67
-#: application/views/admin/participants/displayParticipants_view.php:169
+#: application/views/admin/participants/displayParticipants_view.php:296
+msgid "Options:"
+msgstr "Optionen:"
+
+#: application/views/admin/participants/displayParticipants_view.php:68
+#: application/views/admin/participants/displayParticipants_view.php:171
 msgid "Owner ID"
 msgstr "Eigentümer-ID"
 
-#: application/views/admin/participants/displayParticipants_view.php:68
-#: application/views/admin/participants/displayParticipants_view.php:144
-#: application/views/admin/participants/displayParticipants_view.php:170
+#: application/views/admin/participants/displayParticipants_view.php:69
+#: application/views/admin/participants/displayParticipants_view.php:145
+#: application/views/admin/participants/displayParticipants_view.php:172
 msgid "Owner name"
 msgstr "Eigentümername"
 
-#: application/views/admin/participants/displayParticipants_view.php:89
-#, fuzzy
+#: application/views/admin/participants/displayParticipants_view.php:91
 msgid "Participant ID"
-msgstr "Lösche ID"
+msgstr "Teilnehmer ID"
 
 #: application/views/admin/participants/participantsPanel_view.php:11
 msgid "Participant panel"
 msgstr "Teilnahme-Panel"
 
-#: application/views/admin/participants/displayParticipants_view.php:87
-#, fuzzy
-msgid "Participant's Attribute Information"
-msgstr "Es sind keine Teilnehmer-Informationen verloren gegangen."
+#: application/views/admin/participants/displayParticipants_view.php:89
+msgid "Participant's attribute information"
+msgstr "Teilnehmer-Attributinformation"
 
-#: application/views/admin/participants/displayParticipants_view.php:84
-#, fuzzy
-msgid "Participant's Survey Information"
-msgstr "Es sind keine Teilnehmer-Informationen verloren gegangen."
+#: application/views/admin/participants/displayParticipants_view.php:81
+msgid "Participant's survey information"
+msgstr "Teilnehmer-Umfrageinformation "
 
 #: application/views/admin/participants/summary_view.php:16
 msgid "Participants owned by you"
@@ -8879,6 +8873,10 @@ msgstr "Teilnehmer, die zu Ihnen gehören"
 msgid "Participants shared with you"
 msgstr "Teilnehmer, die mit Ihnen freigegeben wurden"
 
+#: application/views/admin/participants/displayParticipants_view.php:284
+msgid "Participants to add:"
+msgstr "Hinzuzufügende Teilnehmer:"
+
 #: application/views/admin/participants/summary_view.php:32
 msgid "Participants you have shared"
 msgstr "Teilnehmer, die Sie freigegeben haben"
@@ -8887,25 +8885,29 @@ msgstr "Teilnehmer, die Sie freigegeben haben"
 msgid "Please Choose..."
 msgstr "Bitte auswählen.."
 
-#: application/views/admin/participants/displayParticipants_view.php:110
+#: application/views/admin/participants/displayParticipants_view.php:112
 msgid "Please choose either of the options"
 msgstr "Bitte wählen Sie eine der Optionen"
 
-#: application/views/admin/participants/displayParticipants_view.php:214
+#: application/views/admin/participants/displayParticipants_view.php:216
 msgid "Please select a condition"
 msgstr "Bitte wählen Sie eine Bedingung aus"
 
-#: application/views/admin/participants/displayParticipants_view.php:209
+#: application/views/admin/participants/displayParticipants_view.php:211
 msgid "Please select a field"
 msgstr "Bitte wählen Sie ein Feld aus"
 
-#: application/views/admin/participants/displayParticipants_view.php:112
+#: application/views/admin/participants/displayParticipants_view.php:114
 msgid "Please select a survey to add participants to"
 msgstr "Bitte wählen Sie eine Umfragen aus, der Teilnehmer hinzugefügt werden sollen"
 
-#: application/views/admin/participants/displayParticipants_view.php:219
+#: application/views/admin/participants/displayParticipants_view.php:221
 msgid "Please select at least one participant"
 msgstr "Bitte wählen Sie mindestens einen Teilnehmer"
+
+#: application/views/admin/participants/displayParticipants_view.php:95
+msgid "Possible attribute values"
+msgstr "Mögliche Attributwerte"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:66
 #: application/views/admin/participants/attributeMapToken_view.php:75
@@ -8921,7 +8923,7 @@ msgstr "Schnelles Hinzufügen..."
 msgid "Quick add..."
 msgstr "Schnelles Hinzufügen..."
 
-#: application/views/admin/participants/displayParticipants_view.php:111
+#: application/views/admin/participants/displayParticipants_view.php:113
 msgid "Remove condition"
 msgstr "Entferne Bedingung"
 
@@ -8930,7 +8932,7 @@ msgid "Replace"
 msgstr "Ersetzen"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:64
-#: application/views/admin/participants/displayParticipants_view.php:95
+#: application/views/admin/participants/displayParticipants_view.php:97
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -8942,7 +8944,7 @@ msgstr "Zur Beschriftungsset-Administration zurückkehren"
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
-#: application/views/admin/participants/displayParticipants_view.php:122
+#: application/views/admin/participants/displayParticipants_view.php:124
 msgid "Search"
 msgstr "Suchen"
 
@@ -8954,17 +8956,9 @@ msgstr "ZIP-Datei auswählen:"
 msgid "Select any attributes you'd like use in your survey by dropping the attribute in the right hand column."
 msgstr "Wählen Sie alle Attribute die sie nutzen möchten, indem Sie zur rechten Spalte mit der Maus schieben."
 
-#: application/views/admin/participants/displayParticipants_view.php:116
+#: application/views/admin/participants/displayParticipants_view.php:118
 msgid "Select one of the three options"
 msgstr "Wählen Sie eine der drei Optionen aus"
-
-#: application/views/admin/participants/displayParticipants_view.php:314
-msgid "Select the attribute to be exported"
-msgstr "Wählen Sie das zu exportierende Attribut"
-
-#: application/views/admin/participants/displayParticipants_view.php:264
-msgid "Select the survey to which participants are to be added"
-msgstr "Bitte wählen Sie die Umfrage, zu der Teilnehmer hinzugefügt werden sollen"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:29
 #, php-format
@@ -8973,15 +8967,10 @@ msgid_plural "Select which fields to import as attributes with your %s participa
 msgstr[0] "Wählen Sie die Felder, die als Attribute mit Ihrem Teilnehmer importiert werden sollen."
 msgstr[1] "Wählen Sie die Felder, die als Attribute mit Ihren %s Teilnehmern importiert werden sollen."
 
-#: application/views/admin/participants/displayParticipants_view.php:282
-msgid "Select which participants to add to the selected survey"
-msgstr "Wählen Sie die Teilnehmer aus, die zur gewählten Umfrage hinzugefügt werden sollen."
-
 #: application/views/admin/participants/displayParticipants_view.php:60
-#: application/views/admin/participants/displayParticipants_view.php:162
-#: application/views/admin/participants/displayParticipants_view.php:171
-#: application/views/admin/participants/displayParticipants_view.php:228
-#: application/views/admin/participants/displayParticipants_view.php:270
+#: application/views/admin/participants/displayParticipants_view.php:163
+#: application/views/admin/participants/displayParticipants_view.php:173
+#: application/views/admin/participants/displayParticipants_view.php:230
 msgid "Select..."
 msgstr "Auswählen..."
 
@@ -8993,7 +8982,7 @@ msgstr "Semikolon"
 msgid "Seperator used:"
 msgstr "Genutztes Trennzeichen:"
 
-#: application/views/admin/participants/displayParticipants_view.php:222
+#: application/views/admin/participants/displayParticipants_view.php:224
 msgid "Share"
 msgstr "Freigabe"
 
@@ -9001,11 +8990,11 @@ msgstr "Freigabe"
 msgid "Share panel"
 msgstr "Freigabe-Panel"
 
-#: application/views/admin/participants/displayParticipants_view.php:102
+#: application/views/admin/participants/displayParticipants_view.php:104
 msgid "Share the selected participants"
 msgstr "Die ausgewählten Teilnehmer freigeben"
 
-#: application/views/admin/participants/displayParticipants_view.php:101
+#: application/views/admin/participants/displayParticipants_view.php:103
 msgid "Sharing participants..."
 msgstr "Teilnehmer freigeben..."
 
@@ -9021,14 +9010,24 @@ msgstr "Erfolgreich CPDB-Einträge erstellt"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: application/views/admin/participants/displayParticipants_view.php:81
+#: application/views/admin/participants/displayParticipants_view.php:83
 msgid "Survey ID"
 msgstr "Umfrage ID"
 
-#: application/views/admin/participants/displayParticipants_view.php:80
-#, fuzzy
-msgid "Survey Name"
-msgstr "Name der Umfrage"
+#: application/views/admin/participants/displayParticipants_view.php:65
+#: application/views/admin/participants/displayParticipants_view.php:168
+msgid "Survey links"
+msgstr "Umfragelinks"
+
+#: application/views/admin/participants/displayParticipants_view.php:66
+#: application/views/admin/participants/displayParticipants_view.php:82
+#: application/views/admin/participants/displayParticipants_view.php:169
+msgid "Survey name"
+msgstr "Umfragename"
+
+#: application/views/admin/participants/displayParticipants_view.php:266
+msgid "Survey:"
+msgstr "Umfrage:"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:33
 msgid "The following additional fields were found in your CSV file."
@@ -9038,7 +9037,7 @@ msgstr "Die folgenden zusätzlichen Felder wurden in Ihrer CSV-Datei gefunden."
 msgid "There are no participants to be exported"
 msgstr "Es gibt keine Teilnehmer zu exportieren"
 
-#: application/views/admin/participants/displayParticipants_view.php:310
+#: application/views/admin/participants/displayParticipants_view.php:315
 msgid "This is a shared participant and you are not authorised to edit it"
 msgstr "Dies ist eine freigegebener Teilnehmer und es ist Ihnen nicht erlaubt diesen zu bearbeiten"
 
@@ -9070,7 +9069,7 @@ msgstr "CSV-Datei erfolgreich hochgeladen"
 msgid "Uploaded Resources Management"
 msgstr "Ressourcen Verwaltung"
 
-#: application/views/admin/participants/displayParticipants_view.php:225
+#: application/views/admin/participants/displayParticipants_view.php:227
 msgid "User with whom the participants are to be shared"
 msgstr "Benutzer, mit denen die Teilnehmer geteilt werden"
 
@@ -9083,7 +9082,7 @@ msgstr "Sichtbar im Teilnehmer-Panel"
 msgid "Warnings"
 msgstr "Warnungen"
 
-#: application/views/admin/participants/displayParticipants_view.php:123
+#: application/views/admin/participants/displayParticipants_view.php:125
 msgid "You can see and edit settings for shared participants in share panel."
 msgstr "Sie können die Einstellungen für freigegebene Teilnehmer im Freigabe-Panel einsehen und bearbeiten."
 
@@ -9091,7 +9090,7 @@ msgstr "Sie können die Einstellungen für freigegebene Teilnehmer im Freigabe-P
 msgid "You don't have sufficient permissions."
 msgstr "Sie haben nicht die benötigten Rechte."
 
-#: application/views/admin/participants/displayParticipants_view.php:117
+#: application/views/admin/participants/displayParticipants_view.php:119
 msgid "You have no row selected"
 msgstr "Sie haben keine Zeile ausgewählt"
 
@@ -9099,15 +9098,15 @@ msgstr "Sie haben keine Zeile ausgewählt"
 msgid "You have to pair this field with an existing attribute."
 msgstr "Sie müssen diese Feld mit einem existierenden Attribut verpaaren."
 
-#: application/views/admin/participants/displayParticipants_view.php:98
+#: application/views/admin/participants/displayParticipants_view.php:100
 msgid "Your search returned no results"
 msgstr "Ihre Suche erbrachte keine Ergebnisse."
 
-#: application/views/admin/participants/displayParticipants_view.php:287
+#: application/views/admin/participants/displayParticipants_view.php:289
 msgid "all participants"
 msgstr "alle Teilnehmer"
 
-#: application/views/admin/participants/displayParticipants_view.php:286
+#: application/views/admin/participants/displayParticipants_view.php:288
 msgid "all participants in current search"
 msgstr "alle Teilnehmer der aktuellen Suche"
 
@@ -9119,7 +9118,7 @@ msgstr "schwarze Liste,Sprache"
 msgid "firstname, lastname, email"
 msgstr "Vorname, Nachname, Email-Adresse"
 
-#: application/views/admin/participants/displayParticipants_view.php:288
+#: application/views/admin/participants/displayParticipants_view.php:290
 msgid "only the participants I have selected"
 msgstr "nur die Teilnehmer, die ich ausgewählt habe"
 
@@ -12316,6 +12315,38 @@ msgstr "Ihre bevorzugte Sprache wird während des ganzen Installationsvorgangs b
 msgid "directory"
 msgstr "Verzeichnis"
 
+#, fuzzy
+#~ msgid "Survey Links"
+#~ msgstr "Umfrage aktivieren"
+
+#, fuzzy
+#~ msgid "Survey Name"
+#~ msgstr "Name der Umfrage"
+
+#, fuzzy
+#~ msgid "Attribute Name"
+#~ msgstr "Attribut-Name"
+
+#, fuzzy
+#~ msgid "Attribute Possible Values"
+#~ msgstr "Zugangsschlüsse-Tabellen-Attribute"
+
+#, fuzzy
+#~ msgid "Attribute Type"
+#~ msgstr "Attribut-Typ"
+
+#~ msgid "Select the attribute to be exported"
+#~ msgstr "Wählen Sie das zu exportierende Attribut"
+
+#~ msgid "Select the survey to which participants are to be added"
+#~ msgstr ""
+#~ "Bitte wählen Sie die Umfrage, zu der Teilnehmer hinzugefügt werden sollen"
+
+#~ msgid "Select which participants to add to the selected survey"
+#~ msgstr ""
+#~ "Wählen Sie die Teilnehmer aus, die zur gewählten Umfrage hinzugefügt "
+#~ "werden sollen."
+
 #~ msgid "You can see and edit settings for shared participant in share panel."
 #~ msgstr ""
 #~ "Sie können die Einstellungen für freigegebene Teilnahme im Freigabe-Panel "
@@ -13095,9 +13126,6 @@ msgstr "Verzeichnis"
 
 #~ msgid "Auto detected"
 #~ msgstr "Automatisch erkannt"
-
-#~ msgid "Participants panel"
-#~ msgstr "Teilnehmer-Panel"
 
 #~ msgid "This survey has been deleted."
 #~ msgstr "Diese Umfrage wurde gelöscht."

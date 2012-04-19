@@ -427,7 +427,7 @@ class SurveyAdmin extends Survey_Common_Action
             foreach ($result as $rows)
                 $aUsers[] = array($rows['uid'], $rows['users_name']);
         }
-        $ajaxoutput = json_encode($aUsers) . "\n";
+        $ajaxoutput = ls_json_encode($aUsers) . "\n";
         echo $ajaxoutput;
     }
 
@@ -468,7 +468,7 @@ class SurveyAdmin extends Survey_Common_Action
         foreach ($result as $row)
             $aUsers['newowner'] = $row->owner->users_name;
 
-        $ajaxoutput = json_encode($aUsers) . "\n";
+        $ajaxoutput = ls_json_encode($aUsers) . "\n";
 
         echo $ajaxoutput;
     }
@@ -601,7 +601,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aSurveyEntries->rows[] = array('id' => $rows['sid'], 'cell' => $aSurveyEntry);
         }
 
-        echo lsJSONEncode($aSurveyEntries);
+        echo ls_json_encode($aSurveyEntries);
     }
 
     /**
@@ -1380,7 +1380,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData->records = $oResult->getRowCount();
         $aData->total = 1;
 
-        echo lsJSONEncode($aData);
+        echo ls_json_encode($aData);
     }
 
     /**

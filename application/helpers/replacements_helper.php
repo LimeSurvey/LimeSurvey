@@ -1,17 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 /**
 * This function replaces keywords in a text and is mainly intended for templates
 * If you use this functions put your replacement strings into the $replacements variable
@@ -82,12 +82,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $varsPassed[] = $var;
         }
     }
-//    if (count($varsPassed) > 0) {
-//        log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
-//    }
-//    if (isset($redata['question'])) {
-//        LimeExpressionManager::ShowStackTrace('has QID and/or SGA',$allowedvars);
-//    }
+    //    if (count($varsPassed) > 0) {
+    //        log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
+    //    }
+    //    if (isset($redata['question'])) {
+    //        LimeExpressionManager::ShowStackTrace('has QID and/or SGA',$allowedvars);
+    //    }
     //    extract($redata);   // creates variables for each of the keys in the array
 
     // Local over-rides in case not set above
@@ -347,7 +347,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
         . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
 
-		if (returnGlobal('token'))
+        if (returnGlobal('token'))
         {
             $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnGlobal('token')))));
         }
@@ -372,9 +372,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         // Find out if the user has any saved data
         if ($thissurvey['format'] == 'A')
         {
-            if ($thissurvey['tokenanswerspersistence'] != 'Y')
+            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
             {
-                $_saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load Unfinished Survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>"
+                $_saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>"
                 . "\n\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume Later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
             }
             else
@@ -384,9 +384,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }
         elseif (!isset(Yii::app()->session['step']) || !Yii::app()->session['step'])
         {  //First page, show LOAD
-            if ($thissurvey['tokenanswerspersistence'] != 'Y')
+            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
             {
-                $_saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load Unfinished Survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";
+                $_saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";
             }
             else
             {
@@ -551,7 +551,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         else
             $tokensid = $registerdata['sid'];
 
-		$_registerform = "<form method='post' action='".Yii::app()->getController()->createUrl('/register/index/surveyid/'.$tokensid)."'>\n";
+        $_registerform = "<form method='post' action='".Yii::app()->getController()->createUrl('/register/index/surveyid/'.$tokensid)."'>\n";
 
         if (!isset($_REQUEST['lang']))
         {
@@ -594,15 +594,15 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 continue;
 
             $_registerform .= '
-                <tr>
-                    <td align="right">' . $thissurvey['attributecaptions'][$field] . ($attribute['mandatory'] == 'Y' ? '*' : '') . ':</td>
-                    <td align="left"><input class="text" type="text" name="register_' . $field . '" /></td>
-                </tr>';
+            <tr>
+            <td align="right">' . $thissurvey['attributecaptions'][$field] . ($attribute['mandatory'] == 'Y' ? '*' : '') . ':</td>
+            <td align="left"><input class="text" type="text" name="register_' . $field . '" /></td>
+            </tr>';
         }
         if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $thissurvey['usecaptcha']))
         {
-			$_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
-		}
+            $_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+        }
         $_registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='" . $clang->gT("Continue") . "' />"
         . "</td></tr>\n"
         . "</table>\n";
@@ -670,20 +670,20 @@ EOD;
                     $gseq='welcome';
                 }
                 else if ($moveInfo['finished'])
-                {
-                    $gseq='finished';
-                }
-                else if (isset($moveInfo['at_start']) && $moveInfo['at_start'])
-                {
-                    $gseq='welcome';
-                }
-                else if (is_null($_groupname))
-                {
-                    $gseq='printanswers';
-                }
-                else
-                {
-                    $gseq=$moveInfo['gseq']+1;
+                    {
+                        $gseq='finished';
+                    }
+                    else if (isset($moveInfo['at_start']) && $moveInfo['at_start'])
+                        {
+                            $gseq='welcome';
+                        }
+                        else if (is_null($_groupname))
+                            {
+                                $gseq='printanswers';
+                            }
+                            else
+                            {
+                                $gseq=$moveInfo['gseq']+1;
                 }
                 $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
                 $_googleAnalyticsJavaScript = <<<EOD
@@ -732,6 +732,8 @@ EOD;
     $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : '';    // global
     $coreReplacements['NOSURVEYID'] = (isset($surveylist))?$surveylist['nosid']:'';
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
+    $coreReplacements['PASSTHRULABEL'] = '';
+    $coreReplacements['PASSTHRUVALUE'] = '';
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.");
@@ -840,7 +842,7 @@ function tokenReplace($line)
 
 // This function replaces field names in a text with the related values
 // (e.g. for email and template functions)
-function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true)
+function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true, $staticReplace=true)
 {
 
     if ($bReplaceInsertans)
@@ -850,7 +852,7 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true)
         {
             $replacements[substr($key,1,-1)] = $value;
         }
-        $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1);
+        $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1, false, false, $staticReplace);
     }
     else
     {
@@ -898,7 +900,7 @@ function PassthruReplace($line, $thissurvey)
 
 function dTexts__run($text,$questionNum=NULL)
 {
-//    return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
+    //    return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
     return $text;
 }
 

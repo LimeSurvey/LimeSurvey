@@ -1,4 +1,3 @@
-<div id="languagechanger" class="form">{LANGUAGECHANGER}</div>
 <div id="surveylist-container">
 	<h3 id="surveylistheading">{SURVEYLISTHEADING}</h3>
 	<ul id="surveylist">{SURVEYLIST}</ul>

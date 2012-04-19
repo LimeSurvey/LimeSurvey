@@ -13,91 +13,63 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-body{text-align:right;direction:rtl;}
+body{direction:rtl;}
+ul,ol{margin:.75em 32px .75em 0;}
+blockquote{border-left:none 0 #ddd;border-right:solid 2px #ddd;margin:.75em 20px .75em 0;padding:0 10px 0 0}
+dd{margin:.25em 32px .25em 0}
+#progress-wrapper #progress-pre{float:right;text-align:left;margin:0 0 0 5px}
+#progress-wrapper .ui-widget-content{float:left;text-align:right;}
+#progress-wrapper #progress-post{float:right;text-align:right;margin:0 5px 0 0}
+.slider_showmin{float:right;text-align:right;}
+.slider_showmax{float:left;text-align:left;}
+.slider_lefttext{padding-right:0;padding-left:1em;text-align:left;}
+.slider_righttext{padding-left:0;padding-right:1em;}
+.slider_callout{margin-left:0;margin-right:.8em;text-align:left;}
+.ie .ui-slider{float:right;}
+.ie .slider_lefttext  {float: right;}
+.ie .slider_righttext {float: right;}
 
+.ie6 .wrapper,.ie6 #content,.ie7 .wrapper,.ie7 #content{text-align:right;}
+#footer ul#credits li.first{text-align:right;}
+#footer ul#credits li.last{text-align:left;}
+.ie6 #footer ul#credits li,.ie7 #footer ul#credits li{width:33%;display:block;float:right;}
 h2#surveytitle{text-align:right;}
+ul.tools{text-align: right;}
+#surveylist{text-align: right;}
+.question-help img{margin:1px 1px 5px 5px;}
+.answer-wrapper .tip{text-align:right;}
+/* answer table */
+table.question tbody{border-width:0 0 0 1px;}
+table.question thead th{border-width:1px 0 0 1px;}
+table.question thead td,table.question thead th:first-child{border-width:0px 0px 0px 1px;}
+table.question tbody td{border-width:1px 0px 0px 1px;border-style:solid;}
 
-ul.tools{
+table.question tbody th.answertext,table.question tbody th.arraycaptionleft{text-align:left;}
+.answers-wrapper li {
     text-align: right;
-   }
-
-ul.tools li{margin-left:1em;}
-ul#surveylist{
-    text-align: right;
-}
-ul#surveylist li{
-    float:right; 
-    clear:right ;
 }
 
-.wrapper,#content{text-align:right;}
-
-.asterisk {padding-right:0;padding-left:1em;}
-.qnumcode{padding-right:0;padding-left:1em;}
-
-table.question tbody th.answertext,table.question tbody th.arraycaptionright{text-align:left;}
-table.question tbody th.answertextleft{text-align:right;}
-
- .choice-5-pt-radio .answers li
-,.list-radio-flexible .answers li
-,.list-radio .answers li
-,.list-with-comment .answers li
-,.multiple-opt .answers li
-,.multiple-opt-comments .answers li
-,.multiple-short-txt .answers li
-,.numeric-multi .answers li
-,.yes-no .answers li
-,.gender .answers li {
-    text-align: right;
-    margin: 1em 0;
-}
-
- .choice-5-pt-radio li
-,.list-radio-flexible li
-,.list-radio li
-,.list-with-comment li
+ .choice-5-pt-radio .answers-wrapper ul li
+,.yes-no .answers-wrapper ul li
+,.gender .answers-wrapper ul li
 {
-	margin-right: 3em;
-	text-indent: -1.6em;
+	padding: 0 0 0 1em;
+	text-align:right;
 }
-
- .choice-5-pt-radio ul li
-,.yes-no ul li
-,.gender ul li
+ .choice-5-pt-radio .answers-wrapper li
+,.list-radio-flexible .answers-wrapper li
+,.list-radio .answers-wrapper li
+,.list-with-comment .answers-wrapper li
 {
-	padding: 0% 2em 0% 0%;
-text-align:right;
+	margin-right:3em;margin-left: 0;
 }
-
-.date p.question { margin-right: 1em;margin-left: 1em; text-align:center;}
-
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
+ .choice-5-pt-radio .answers-wrapper ul li
+,.yes-no .answers-wrapper ul li
+,.gender .answers-wrapper ul li
 {
-	padding-right: 1.5em;
+	padding: 0 0 0 2em;
+	text-align:right;
 }
-.numeric p.question
-{
-	 margin-right: 1em;margin-left: 1em;
-}
- .numeric-multi p.tip.error
-,.numeric-multi input.tip.error
-{
-	text-align: right;
-}
- .numeric-multi p.tip.good
-,.numeric-multi input.tip.good
-{
-	text-align: right;
-}
-
-
-table.rank select{padding-right:0.3em;}
-
-/* STYLES NOT YET DEFINED - - - - -
-.list-dropdown {}
-*/
 .list-with-comment div.list
 {
 	float: right;
@@ -116,61 +88,56 @@ table.rank select{padding-right:0.3em;}
 	float: right;
 }
 
+.numeric-multi ul	{}
 .numeric-multi ul.computed
 {
 	float:right;
-	padding-left: 2em;
-}
-
-.numeric-multi ul li label
-,.multiple-opt-comments ul li span.option
-,.multiple-short-txt ul li label
-{
-	float:right; 
-	width:45%;
-	padding: 0.3em 1em 0% 0%;
+	padding-left: 2em;padding-right: 0;
 }
 .numeric-multi ul li label
 ,.multiple-short-txt ul li label
 {
 	text-align:left;
 	}
-.multinum-slider{text-align:center;display:inline;}	
 .numeric-multi ul li span.input
 ,.multiple-opt-comments ul li span.comment
 ,.multiple-short-txt ul li span
 {
 	text-align: right;
 }
-
-
-
-.multiple-opt .answers ul li input.checkbox
-, .list-radio .answers ul li input.radio
-, .list-with-comment .answers ul li input.radio 
-, .list-radio-flexible .answers ul li input.radio 
+.ie6 .numeric-multi ul li label,.ie7 .numeric-multi ul li label
+,.ie6 .multiple-opt-comments ul li span.option,.ie7 .multiple-opt-comments ul li span.option
+,.ie6 .multiple-short-txt ul li label,.ie7 .multiple-short-txt ul li label
 {
-	margin-right:45%;
+	clear:right;
+	float:right; 
+	padding: 0.3em 0 0 1em;
 }
-
-
+.multiple-opt .answers-wrapper ul li
+, .list-radio .answers-wrapper ul li
+, .list-radio-flexible .answers-wrapper ul li
+{
+	padding-right:40%;padding-left:0;
+}
  .text-short input
- ,.text-short textarea
+,.text-short textarea
 ,.text-long textarea
 ,.text-huge textarea
 {
-	margin-right: 1em;
-text-align:right;
+	margin-right: 1em;margin-left: 0;
+    text-align:right;
 }
- .text-short .question
- ,.text-short .answers
-,.text-long .answers
-,.text-huge .answers
+  ul.cols-2 li , ul.cols-2-ul
+, ul.cols-3 li , ul.cols-3-ul
+, ul.cols-4 li , ul.cols-4-ul
+, ul.cols-5 li , ul.cols-5-ul
+, ul.cols-6 li , ul.cols-6-ul
+, ul.cols-7 li , ul.cols-7-ul
+, ul.cols-8 li , ul.cols-8-ul
 {
-text-align:center;
+	float: right;
 }
 
-/* Replacement of defautlt jquery-ui */
-.slider_callout { 
-    text-align:left;
-}
+#movenextbtn{background-image:url(go-west.png);background-repeat:no-repeat;background-position:left center;padding:3px 6px 3px 26px;}
+#moveprevbtn{background-image:url(go-east.png);background-repeat:no-repeat;background-position:right center;padding:3px 26px 3px 6px;}
+#head .tools{float:left}

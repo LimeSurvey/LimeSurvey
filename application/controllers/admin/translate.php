@@ -1074,7 +1074,7 @@ class translate extends Survey_Common_Action {
 			'converted' =>  $sOutput
 		);
 
-        return lsJSONEncode($aOutput) . "\n";
+        return ls_json_encode($aOutput) . "\n";
     }
 
     /**

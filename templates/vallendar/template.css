@@ -171,7 +171,7 @@ td.survey-welcome {
 }
 
 table.privacy {
-  margin: 0 auto 0 auto;
+  margin: 0 auto ;
   text-align: center;
   background-color: #EEEEEE;
   width: 75%;
@@ -245,7 +245,7 @@ table.group-name {
 
 table.group {
 	width: 98%;
-	margin: 0 auto 0 auto;
+	margin: 0 auto ;
 	border: 0 none;
 }
 
@@ -331,7 +331,7 @@ table.clearall-result td {
 }
 
 .register-table {
-	margin: 0 auto 0 auto;
+	margin: 0 auto ;
 	width: 100%;
 	border-collapse: collapse;
 }
@@ -353,7 +353,7 @@ table.clearall-result td {
 }
 
 .register-form table.register {
-	margin: 0 auto 0 auto;
+	margin: 0 auto ;
 }
 
 .survey-load {
@@ -377,7 +377,7 @@ table.clearall-result td {
 
 .load-form table,
 .save-form table {
-	margin: 0 auto 0 auto;
+	margin: 0 auto ;
     width: auto;
 }
 
@@ -419,7 +419,7 @@ table.clearall-result td {
 
 .survey-list ul {
 	padding: 0;
-	margin-left: 0;
+	margin-left: 0;margin-right:0;
 }
 
 .survey-list li {
@@ -430,13 +430,6 @@ table.clearall-result td {
 .survey-contact {
 	padding-bottom: 10px;
 }
-
-
- 
-
-
- 
-
 
 .answertextright {
   text-align: left;
@@ -497,7 +490,7 @@ table.clearall-result td {
 }
 
 td.graph {
-  padding: 0.2em 0%;
+  padding: 0.2em 0;
 }
 
 #progress-graph {
@@ -521,7 +514,7 @@ td.graph {
 
 #progress-graph div.zero {
   width: 2.6em;
-  margin-right: 0%;
+  margin-right: 0;margin-left:0;
 }
 
 #progress-graph div.graph {
@@ -530,14 +523,14 @@ td.graph {
   border: 1px solid #17479E;
   margin-top: -1.6em;
   margin-left: 2.6em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 #progress-graph div.cent {
   width: 3em;
   margin-top: -1.6em;
   margin-left: 13.5em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 /*
@@ -649,20 +642,20 @@ table.question tr.array1:hover,table.question tr.array2:hover {
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .survey-question-answer ul,.list-radio-flexible .survey-question-answer ul,.list-radio .survey-question-answer ul,.list-with-comment .survey-question-answer ul,.multiple-opt .survey-question-answer ul,.multiple-opt-comments .survey-question-answer ul,.multiple-short-txt .survey-question-answer ul,.numeric-multi .survey-question-answer ul,.yes-no .survey-question-answer ul,.gender .survey-question-answer ul
   {
-  margin-left: 0%;
-  padding-left: 0%;
+  margin-left: 0;margin-right:0;
+  padding-left: 0;padding-right:0;
 }
 
 .choice-5-pt-radio .survey-question-answer li,.list-radio-flexible .survey-question-answer li,.list-radio .survey-question-answer li,.list-with-comment .survey-question-answer li,.multiple-opt .survey-question-answer li,.multiple-opt-comments .survey-question-answer li,.multiple-short-txt .survey-question-answer li,.numeric-multi .survey-question-answer li,.yes-no li,.gender .survey-question-answer li
   {
   list-style-type: none;
   text-align: left;
-  margin: 0% 0% 0.5em 0.5em;
+  margin: 0 0 0.5em 0.5em;
 }
 
 .choice-5-pt-radio .survey-question-answer li,.list-radio-flexible .survey-question-answer li,.list-radio .survey-question-answer li,.list-with-comment .survey-question-answer li
   {
-  margin-left: 2.5em;
+  margin-left: 2.5em;margin-right:0;
   text-indent: -1.8em;
 }
 
@@ -673,21 +666,21 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 */
 .choice-5-pt-radio .survey-question-answer ul,.yes-no .survey-question-answer ul,.gender .survey-question-answer ul {
   text-align: left;
-  margin-left: 0.7em;
-  padding-left: 0%;
+  margin-left: 0.7em;margin-right:0;
+  padding-left: 0;padding-right:0;
 }
 
 .choice-5-pt-radio .survey-question-answer ul li,.yes-no .survey-question-answer ul li,.gender .survey-question-answer ul li {
   display: inline;
-  padding: 0% 2em 0% 0%;
-  margin-left: 0%;
+  padding: 0 2em 0 0;
+  margin-left: 0;margin-right:0;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
 .date {}
 */
-.date p.question {
-  margin-left: 1em;
+p.question {
+  margin-left: 1em;margin-right:1em;
 }
 
 .date p.question select.day {  
@@ -704,7 +697,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 }
 
 .date p.tip,.numeric-multi p.tip,.numeric p.tip {
-  margin-left: 1.5em;
+  margin-left: 1.5em;margin-right:0;
   font-size: 80%;
   font-style: italic;
   line-height: 150%;
@@ -732,13 +725,13 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
-  margin: 0% auto 0% auto;
+  margin: 0 auto;
 }
 
 ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul.cols-5 li,ul.cols-5-ul,ul.cols-6 li,ul.cols-6-ul,ul.cols-7 li,ul.cols-7-ul,ul.cols-8 li,ul.cols-8-ul
   {
   float: left;
-  padding: 0% 0.5em;
+  padding: 0 0.5em;
   white-space: normal
 }
 
@@ -787,16 +780,16 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   width: 47%;
   float: left;
   padding: 0.5em;
-  margin: 0%;
+  margin: 0;
 }
 
 .list-with-comment div.list p {
-  margin: 0%;
+  margin: 0;
   text-align: left;
 }
 
 .list-with-comment p.comment {
-  margin: 0%;
+  margin: 0;
   padding: 0.5em;
   text-align: left;
   float: left;
@@ -923,17 +916,17 @@ table.rank td.helptext {
 
 .multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul {
   display: table;
-  padding: 0%;
+  padding: 0;
   margin: 1em;
 }
 
 .numeric-multi ul {
-  margin: 0% 1em 1.5em 1em;
+  margin: 0 1em 1.5em 1em;
 }
 
 .numeric-multi ul.computed {
   float: left;
-  padding-right: 2em;
+  padding-right: 2em;padding-left:0;
 }
 
 .numeric-multi ul.slider.computed {
@@ -946,32 +939,32 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0% 2.2em;
+  padding: 0.3em 1em 0 2.2em;
   text-indent: -2.2em;
   display: table-cell;
   vertical-align: baseline;
 }
 
 .numeric-multi ul li label {
-  padding: 0.3em 1em 0% 0%;
+  padding: 0.3em 1em 0 0;
   display: table-cell;
   vertical-align: baseline;
 }
 
 .multiple-short-txt ul li label {
-  padding: 0.3em 1em 0% 0%;
+  padding: 0.3em 1em 0 0;
   display: table-cell;
   vertical-align: middle;
 }
 
 .numeric-multi ul.computed li label
 .numeric-multi ul.slider.computed li label {
-  padding-right: 0%;
+  padding-right: 0;padding-left:0;
 }
 
 .multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span
   {
-  padding: 0.3em 0% 0% 1em;
+  padding: 0.3em 0 0 1em;
   display: table-cell;
   vertical-align: baseline;
   font-size: 80%;
@@ -995,13 +988,13 @@ table.rank td.helptext {
 
 .numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
   {
-  padding: 0.3em 0% 0% 0%;
+  padding: 0.3em 0 0 0;
   display: table-cell;
 }
 
 .numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
   {
-  padding: 0% 0% 0% 0.3em;
+  padding: 0 0 0 0.3em;
   display: table-cell;
 }
 
@@ -1009,7 +1002,7 @@ table.rank td.helptext {
   border: none;
   background-color: #fff;
   color: #222;
-  padding: 0%;
+  padding: 0;
   width: 7em;
 }
 
@@ -1178,7 +1171,7 @@ table.rank td.helptext {
 #tokenform label {
   float: left;
   width: 20em;
-  margin-right: 0.5em;
+  margin-right: 0.5em;margin-left:0;
   text-align: right;
 }
 
@@ -1189,7 +1182,7 @@ table.rank td.helptext {
 
 #tokenform img {
   margin-bottom: -5px;
-  margin-right: 5px;
+  margin-right: 5px;margin-left:0;
 }
 
 p#tokenmessage {
@@ -1207,9 +1200,7 @@ div#wrapper {
 }
 
 #tokenform input.submit {
-  margin-left: 18em;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin:1em 0 1em 18em;
 }
 
 #statsContainer {

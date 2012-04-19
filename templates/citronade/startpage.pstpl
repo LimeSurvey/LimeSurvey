@@ -10,7 +10,6 @@
 	<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
     {TEMPLATECSS}
 	<link rel="stylesheet" type="text/css"  media="print" href="{TEMPLATEURL}print.css" />
-	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
 	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 {GOOGLE_ANALYTICS_JAVASCRIPT}
 </head>
@@ -20,11 +19,12 @@
 <!--[if IE 9 ]> <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie9 no-js"> <![endif]-->
 <!--[if gt IE 9]><!--><body id="body" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} no-js"><!--<![endif]-->
 <script type='text/javascript'>/*<![CDATA[*/(function(H){ H.className=H.className.replace(/\bno-js\b/,'js') })(document.getElementsByTagName('body')[0]);/*]]>*/</script>
+<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
 <div id="container">
 	<div id="head">
 		<div class="wrapper">
-			<a href="#" title="Made with LimeSurvey" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt=" " id="logo"/></a>
-			<h1 id="sitename">{SITENAME}</h1>
+			<!--<a href="#" title="Made with LimeSurvey" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt=" " id="logo"/></a>-->
+			<div class="tools">{LANGUAGECHANGER}</div><h1 id="sitename">{SITENAME}</h1>
 		</div>
 	</div>
 <div id="title"><h2 id="surveytitle" class="wrapper">{SURVEYNAME}</h2></div>

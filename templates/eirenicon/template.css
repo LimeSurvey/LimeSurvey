@@ -196,7 +196,7 @@ span.qnumcode {
 
 #progress-graph div.zero {
   width: 2.6em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 #progress-graph div.graph {
@@ -205,14 +205,14 @@ span.qnumcode {
   border: 1px solid #042455;
   margin-top: -1.7em;
   margin-left: 2.6em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 #progress-graph div.cent {
   width: 3em;
   margin-top: -1.5em;
   margin-left: 13.3em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 /*
@@ -285,7 +285,7 @@ table.question {
 }
 
 .innergraph {
-  direction: ltr;
+
 }
 
 .innergraph,.question {
@@ -357,8 +357,8 @@ td.welcome-content {
 }
 
 .privacy td {
-	text-align: 
-	center; font-size: 100%;
+	text-align: center;
+	font-size: 100%;
 	padding: 20px 0;
 }
 
@@ -637,20 +637,20 @@ table.clearall-result td {
 .choice-5-pt-radio .question-answer ul,.list-radio-flexible .question-answer ul,.list-radio .question-answer ul,.list-with-comment .question-answer ul
   {
   margin-left: 0.75em;
-  padding-left: 0%;
+  padding-left: 0;
 }
 
 .multiple-opt .question-answer ul,.multiple-opt-comments .question-answer ul,.multiple-short-txt .question-answer ul,.numeric-multi .question-answer ul,.yes-no .question-answer ul,.gender .question-answer ul
   {
-  margin-left: 0%;
-  padding-left: 0%;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .choice-5-pt-radio .question-answer li,.list-radio-flexible .question-answer li,.list-radio .question-answer li,.list-with-comment .question-answer li,.multiple-opt .question-answer li,.multiple-opt-comments .question-answer li,.multiple-short-txt .question-answer li,.numeric-multi .question-answer li,.yes-no .question-answer li,.gender .question-answer li
   {
   list-style-type: none;
   text-align: left;
-  margin: 0% 0% 0.5em 0.5em;
+  margin: 0 0 0.5em 0.5em;
 }
 
 .choice-5-pt-radio .question-answer li,.list-radio-flexible .question-answer li,.list-radio .question-answer li,.list-with-comment .question-answer li,.yes-no .question-answer li,.gender .question-answer li
@@ -666,14 +666,14 @@ table.clearall-result td {
 */
 .choice-5-pt-radio .question-answer ul,.yes-no .question-answer ul,.gender .question-answer ul {
   text-align: left;
-  margin-left: 0% auto;
-  padding-left: 0.5em;
+  margin: 0 auto;
+  padding: 0 0.5em;
 }
 
 .choice-5-pt-radio .question-answer ul li,.yes-no .question-answer ul li,.gender .question-answer ul li {
   display: inline;
-  margin-left: 0%;
-  padding: 0% 2em 0% 0%;
+  margin-left: 0;
+  padding: 0 2em 0 0;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
@@ -704,7 +704,7 @@ table.clearall-result td {
 }
 
 .numeric p.question {
-  margin: 0.5em 0.5em 0% 1em;
+  margin: 0.5em 0.5em 0 1em;
   font-size: 80%;
 }
 
@@ -730,13 +730,13 @@ table.clearall-result td {
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
-  margin: 0% auto 0% auto;
+  margin: 0 auto 0 auto;
 }
 
 ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul.cols-5 li,ul.cols-5-ul,ul.cols-6 li,ul.cols-6-ul,ul.cols-7 li,ul.cols-7-ul,ul.cols-8 li,ul.cols-8-ul
   {
   float: left;
-  padding: 0% 0.5em;
+  padding: 0 0.5em;
   white-space: normal
 }
 
@@ -787,16 +787,16 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   width: 47%;
   float: left;
   padding: 0.5em;
-  margin: 0%;
+  margin: 0;
 }
 
 .list-with-comment div.list p {
-  margin: 0%;
+  margin: 0;
   text-align: left;
 }
 
 .list-with-comment p.comment {
-  margin: 0%;
+  margin: 0;
   padding: 0.5em;
   text-align: left;
   float: left;
@@ -808,7 +808,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 }
 
 .ranking table.rank {
-  margin: 0% 1em;
+  margin: 0 1em;
 }
 
 table.rank td.helptext {
@@ -925,12 +925,12 @@ table.rank td.helptext {
 
 .multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul {
   display: table;
-  padding: 0%;
+  padding: 0;
   margin: 0.5em 0.5em 0.5em 0.7em;
 }
 
 .numeric-multi ul {
-  margin: 0% 1em 1.5em 1em;
+  margin: 0 1em 1.5em 1em;
 }
 
 .numeric-multi ul.computed {
@@ -948,33 +948,33 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0% 2.3em;
+  padding: 0.3em 1em 0 2.3em;
   text-indent: -2.3em;
   display: table-cell;
   vertical-align: baseline;
 }
 
 .multiple-short-txt ul li label,.numeric-multi ul li label {
-  padding: 0.3em 1em 0% 0%;
+  padding: 0.3em 1em 0 0;
   display: table-cell;
   vertical-align: middle;
 }
 
 .numeric-multi ul.computed li label
 .numeric-multi ul.slider.computed li label {
-  padding-right: 0%;
+  padding-right: 0;
 }
 
 .multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span
   {
-  padding: 0.3em 0% 0% 1em;
+  padding: 0.3em 0 0 1em;
   display: table-cell;
   vertical-align: baseline;
   white-space: nowrap;
 }
 
 .multiple-opt-comments ul li span {
-  padding: 0.3em 1em 0% 0%;
+  padding: 0.3em 1em 0 0;
 }
 
 .numeric-multi div.multinum-slider {
@@ -994,13 +994,13 @@ table.rank td.helptext {
 
 .numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
   {
-  padding: 0.3em 0% 0% 0%;
+  padding: 0.3em 0 0 0;
   display: table-cell;
 }
 
 .numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
   {
-  padding: 0% 0% 0% 0.3em;
+  padding: 0 0 0 0.3em;
   display: table-cell;
 }
 
@@ -1008,7 +1008,7 @@ table.rank td.helptext {
   border: none;
   background-color: #fff;
   color: #222;
-  padding: 0%;
+  padding: 0;
   width: 7em;
 }
 

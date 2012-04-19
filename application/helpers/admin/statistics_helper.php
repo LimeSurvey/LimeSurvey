@@ -3415,7 +3415,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             break;
         case 'html':
             $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>"
-            ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('imageurl')."';var aGMapData=".json_encode($agmapdata)	.";var aStatData=".json_encode($astatdata)."</script>";
+            ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('imageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
             return $statisticsoutput;
 
             break;
