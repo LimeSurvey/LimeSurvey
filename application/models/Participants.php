@@ -1371,16 +1371,23 @@ function getParticipantsSearch($condition, $page, $limit)
                         }
                     }
                 }
-                if (!empty($mapped))
+                if (!empty($mapped) && !empty($attributesadded))
                 {
                     foreach ($mapped as $key => $value)
                     {
-                        $val = Yii::app()->db->createCommand()->select('value')->where('participant_id = :participant_id AND attribute_id = :attrid')->from('{{participant_attribute}}')->bindParam("participant_id", $participant, PDO::PARAM_STR)->bindParam(":attrid", $attributesadded[$a], PDO::PARAM_INT);
+                        $val = Yii::app()->db->createCommand()
+                            ->select('value')
+                            ->where('participant_id = :participant_id AND attribute_id = :attrid')
+                            ->from('{{participant_attribute}}')
+                            ->bindParam("participant_id", $participant, PDO::PARAM_STR)
+                            ->bindParam(":attrid", $attributesadded[$a], PDO::PARAM_INT);
                         $value = $val->queryRow();
                         if (isset($value['value']))
                         {
                             $data = array($key => $value['value']);
-                            Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data, 'participant_id = :participant_id')->bindParam("participant_id", $participant, PDO::PARAM_STR);
+                            Yii::app()->db->createCommand()
+                                ->update("{{tokens_$surveyid}}", $data, 'participant_id = :participant_id')
+                                ->bindParam("participant_id", $participant, PDO::PARAM_STR);
                         }
                     }
                 }
