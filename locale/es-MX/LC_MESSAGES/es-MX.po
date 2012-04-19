@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 1.92+\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-09 14:45+0100\n"
-"PO-Revision-Date: 2012-04-09 14:46+0100\n"
+"PO-Revision-Date: 2012-04-19 13:19+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1229,7 +1229,7 @@ msgstr "No"
 #: qanda.php:6751
 #: qanda.php:6805
 msgid "No answer"
-msgstr "Sin respuesta"
+msgstr "Elige una respuesta"
 
 #: index.php:443
 msgid "No available surveys"
@@ -1497,7 +1497,7 @@ msgstr "Escoja, por favor"
 #: qanda.php:6731
 #: qanda.php:6785
 msgid "Please choose..."
-msgstr "Por favor elija..."
+msgstr "Elige una respuesta"
 
 #: index.php:1682
 msgid "Please confirm access to survey by answering the security question below and click continue."
@@ -4947,7 +4947,7 @@ msgstr "Ajustar tamaño de la contraseña a:"
 #: admin/editsurveysettings.php:549
 #: admin/editsurveysettings.php:564
 msgid "Show \"No answer\""
-msgstr "Sin respuesta"
+msgstr "Elige una respuesta"
 
 #: admin/editsurveysettings.php:444
 #: admin/editsurveysettings.php:464
@@ -8027,7 +8027,7 @@ msgstr "Por favor, marque TODAS las que correspondan:"
 #: admin/printablesurvey.php:1210
 #: admin/printablesurvey.php:1214
 msgid "Please choose *only one* of the following:"
-msgstr "Por favor elija SOLO una de los siguientes:"
+msgstr "Elige una respuesta"
 
 #: admin/printablesurvey.php:1082
 msgid "Please choose all that apply and provide a comment:"
