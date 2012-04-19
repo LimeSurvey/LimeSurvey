@@ -78,6 +78,26 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120412) to 1.92+ (build 120418) April 18, 2012
+-Fixed issue #5896: Miscellaneous, rarely used, qcode.* attributes showing blank values (Thomas White)
+-Fixed issue #6006: Error in LImeExpressionManage.php anytime using an array (numbers) with checkboxes and Mandatory (Thomas White)
+-Fixed issue #6007: Token variables resolving as 'undefined variable' after Version 1.91+ Build 11026 (Thomas White)
+-Fixed issue #6013: passthru stopped working (Thomas White)
+-Fixed issue #6015: INSERTANS does not work in end message (Thomas White)
+-Fixed issue #6024: $deletenonvalues option no longer working in 1.92+ (Thomas White)
+-Fixed issue #5986: Import label set does not properly show an error for invalid files (Carsten Schmitz)
+-Fixed issue #6016: Load Unfinished Survey button does not display for existing survey (Carsten Schmitz)
+-Fixed issue #6018: Using mssqlnative the "date" question type uses DATETIME type and not DATE (Carsten Schmitz)
+-Fixed issue: Notice when using mssqlnative driver (Carsten Schmitz)
+-Fixed issue: Only set EM variables for {TOKEN:xxxx} when token table exists; and only for declared attributes (Thomas White)
+-Fixed issue: Participant IP address not correctly captured if server is behind proxy (Carsten Schmitz)
+-Fixed issue: Warning if upload file and there is no minimum number of files specified (Thomas White)
+#Updated translation: Czech kindly provided by Slansky Lukas 
+#Updated translation: French kindly provided by Guillaume Jaouen 
+#Updated translation: German 
+#Updated translation: German (informal) (Carsten Schmitz)
+
+
 Changes from 1.92+ (build 120405) to 1.92+ (build 120412) April 12, 2012
 -Fixed issue #5962: View Response Details does not work correctly if responses are filtered (Statistics) (Thomas White)
 -Fixed issue #5985: Notifications using INSERTANS and/or QCODE don't work with all-in-one presentation of survey (Thomas White)
