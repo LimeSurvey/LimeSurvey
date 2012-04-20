@@ -218,7 +218,7 @@
          * @example ['0~4'] = "4|Child" // this means that code 4 in scale 0 has a coded value of 4 and a display value of 'Child'
          * @example (for [705]): ['1~2'] = '2|Sometimes' // this means that the second scale for this question uses the coded value of 2 to represent 'Sometimes'
          * @example // TODO - add example from survey using assessments
-         * 
+         *
          * @var type
          */
         private $qans;
@@ -366,7 +366,7 @@
          * 'sumEqn' => '' //
          * 'sumRemainingEqn' => '' //
          * );
-         * 
+         *
          * @var type
          */
         private $currentQset=NULL;
@@ -383,7 +383,7 @@
          * 'unansweredSQs' => // pipe-separated list of any sub-questions that were not answered
          * 'invalidSQs' => // pipe-separated list of any sub-questions that failed validation constraints
          * );
-         * 
+         *
          * @var type
          */
         private $lastMoveResult=NULL;
@@ -406,7 +406,7 @@
          * 'mandViolation' => 0 // 1 if the question as a whole fails the mandatory criteria
          * 'valid' => 1 // 0 if any part of the question fails validation criteria.
          * );
-         * 
+         *
          * @var type
          */
         private $indexQseq;
@@ -424,7 +424,7 @@
          * 'mandViolation' => 0 // 1 if at least one relevant, non-hidden question in the group fails mandatory constraints
          * 'show' => 1 // 1 if there is at least one relevant, non-hidden question within the group
          * );
-         * 
+         *
          * @var type
          */
         private $indexGseq;
@@ -439,7 +439,7 @@
          * 'description' => // the description of the group (e.g. gtitle)
          * 'grelevance' => '' // the group-level relevance
          * );
-         * 
+         *
          * @var type
          */
         private $gseq2info;
@@ -523,7 +523,7 @@
          * 'relevanceVars' => '' // the pipe-delimited list of on-page javascript variable names used within the group-level relevance equation
          * 'prettyPrint' => '' // a pretty-print version of the group-level relevance equation, only if there are errors
          * );
-         * 
+         *
          * @var type
          */
         private $gRelInfo=array();
@@ -566,7 +566,7 @@
          * 'prettyPrint' => '' // syntax-highlighted version of equation if there are any errors
          * 'hasErrors' => 0 // 1 if there are any syntax errors
          * );
-         * 
+         *
          * @var type
          */
         private $ParseResultCache;
@@ -588,7 +588,7 @@
          * used to specify whether to  generate equations using SGQA codes or qcodes
          * Default is to convert all qcode naming to sgqa naming when generating javascript, as that provides the greatest backwards compatibility
          * Excel export of survey structure sets this to false so as to force use of qcode naming
-         * 
+         *
          * @var Boolean
          */
         private $sgqaNaming = true;
@@ -6912,9 +6912,12 @@ EOD;
                                 break;
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
-                                if ($code == 'Y' && isset($var['question']))
+                                if ($code == 'Y' && isset($var['question']) && !preg_match('/comment$/',$sgqa))
                                 {
                                     $shown = $var['question'];
+                                }
+                                elseif (preg_match('/comment$/',$sgqa) && isset($_SESSION[$sgqa])) {
+                                    $shown = $_SESSION[$sgqa];
                                 }
                                 else
                                 {
