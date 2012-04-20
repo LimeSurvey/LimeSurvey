@@ -446,7 +446,7 @@ function LEMfixnum(value)
 {
     var newval = String(value);
     if (parseFloat(newval) != value) {
-        return htmlspecialchars(value);   // unchanged
+        return value;   // unchanged
     }
     if (LEMradix===',') {
         newval = newval.split('.').join(',');
