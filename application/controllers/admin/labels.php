@@ -274,6 +274,7 @@ class labels extends Survey_Common_Action
                 $criteria->addCondition('lid = :lid');
                 $criteria->addCondition('language = :language');
                 $criteria->params = array(':lid' => $lid, ':language' => $lslanguages[0]);
+                $criteria->group = 'sortorder';
                 $maxresult = Label::model()->find($criteria);
                 $maxsortorder = 1;
                 if (!empty($maxresult))
@@ -305,7 +306,7 @@ class labels extends Survey_Common_Action
                     'clang' => $clang,
                     'lid' => $lid,
                     'maxsortorder' => $maxsortorder,
-                    'msorow' => $maxresult->attributes,
+                //    'msorow' => $maxresult->sortorder,
                     'action' => $action,
                 );
             }
@@ -324,9 +325,6 @@ class labels extends Survey_Common_Action
     {
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
         {
-            if (isset($_POST['sortorder']))
-                $postsortorder = sanitize_int($_POST['sortorder']);
-
             if (isset($_POST['method']) && get_magic_quotes_gpc())
                 $_POST['method'] = stripslashes($_POST['method']);
 

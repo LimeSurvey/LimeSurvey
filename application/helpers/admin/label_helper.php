@@ -1,17 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
 //include_once("login_check.php");
 //Security Checked: POST/GET/SESSION/DB/returnGlobal
@@ -105,18 +105,19 @@ function insertlabelset()
     //postlabel_name = dbQuoteAll($postlabel_name,true);
     //$postlanguageids = dbQuoteAll($postlanguageids,true);
     $data = array(
-    	'label_name' => $postlabel_name,
-  	  'languages' => $postlanguageids
+    'label_name' => $postlabel_name,
+    'languages' => $postlanguageids
     );
 
     //$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$postlabel_name},{$postlanguageids})";
-    if (!$result = Yii::app()->db->createCommand()->insert('{{labelsets}}', $data))
+    $result=Labelsets::model()->insertRecords($data);
+    if (!$result)
     {
         safeDie("Inserting the label set failed:<br />".$query."<br />");
     }
     else
     {
-        return Yii::app()->db->getLastInsertID();
+        return $result;
     }
 
 }
@@ -136,21 +137,21 @@ function modlabelsetanswers($lid)
     if (!isset($_POST['method'])) {
         $_POST['method'] = $clang->gT("Save");
     }
-    
+
     //unescape single quotes
     $labeldata = CHttpRequest::getPost('dataToSend');
     $labeldata = str_replace("\'","'",$labeldata);
-    
-    
+
+
     $data = json_decode($labeldata);
 
     if ($ajax)
         $lid = insertlabelset();
-    
+
     if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'}))
     {
 
-        $query = "DELETE FROM {{labels}} WHERE `lid` = '$lid'";
+        $query = "DELETE FROM {{labels}} WHERE lid = '$lid'";
 
         $result = Yii::app()->db->createCommand($query)->execute();
 
@@ -168,7 +169,7 @@ function modlabelsetanswers($lid)
                 $strTemp = 'text_'.$lang;
                 $title = $codeObj->$strTemp;
 
-				$p = new CHtmlPurifier();
+                $p = new CHtmlPurifier();
 
                 if (Yii::app()->getConfig('filterxsshtml'))
                     $title = $p->purify($title);
@@ -181,18 +182,18 @@ function modlabelsetanswers($lid)
                 $sort_order = $index;
 
                 $insertdata = array(
-	                'lid' => $lid,
-	                'code' => $actualcode,
-	                'title' => $title,
-	                'sortorder' => $sort_order,
-	                'assessment_value' => $assessmentvalue,
-	                'language' => $lang
+                'lid' => $lid,
+                'code' => $actualcode,
+                'title' => $title,
+                'sortorder' => $sort_order,
+                'assessment_value' => $assessmentvalue,
+                'language' => $lang
                 );
 
                 //$query = "INSERT INTO ".db_table_name('labels')." (`lid`,`code`,`title`,`sortorder`, `assessment_value`, `language`)
                 //    VALUES('$lid',$actualcode,$title,$sort_order,$assessmentvalue,$lang)";
 
-            	$result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
+                $result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
             }
         }
 

@@ -75,6 +75,10 @@ class Labelsets extends CActiveRecord
         $lblset = new self;
 		foreach ($data as $k => $v)
 			$lblset->$k = $v;
-		$lblset->save();
+		if ($lblset->save())
+        {
+            return $lblset->lid;
+        }
+        return false;
     }
 }
