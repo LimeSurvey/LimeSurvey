@@ -2878,6 +2878,7 @@
                     if (!$dupfound && !$invalidemail)
                     {
                         if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
+                        if (!isset($writearray['usesleft']) || $writearray['usesleft']=='') $writearray['usesleft'] = 1;
                         if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
                         if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
                         if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}
