@@ -706,7 +706,7 @@
         while ($tkr = $tksr->FetchRow())
         {$tokenoutput .= "<th>".$clang->gT("Total invitations sent")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
 
-        $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE emailstatus = 'optOut'";
+        $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE emailstatus = 'OptOut'";
         $tksr = db_execute_num($tksq);
         while ($tkr = $tksr->FetchRow())
         {$tokenoutput .= "<th>".$clang->gT("Total opted out")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
@@ -1605,10 +1605,12 @@
                         if ( $modrewrite )
                         {
                             $fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+                            $barebone_link=$fieldsarray["{SURVEYURL}"];
                         }
                         else
                         {
                             $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+                            $barebone_link=$fieldsarray["{SURVEYURL}"];
                         }
                     }
                     else
@@ -1847,7 +1849,7 @@
             }
             else
             {
-                $SQLemailstatuscondition = "";
+                $SQLemailstatuscondition = " AND emailstatus <> 'OptOut'";
             }
 
             if (isset($_POST['maxremindercount']) &&
@@ -1951,10 +1953,12 @@
                         if ( $modrewrite )
                         {
                             $fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+                            $barebone_link=$fieldsarray["{SURVEYURL}"];
                         }
                         else
                         {
                             $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+                            $barebone_link=$fieldsarray["{SURVEYURL}"];
                         }
                     }
                     else
@@ -2000,7 +2004,7 @@
                         //
                         $uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
                         //orig: $tokenoutput .= "({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
-                        $tokenoutput .= "({$emrow['tid']}) [".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+                        $tokenoutput .= "({$emrow['tid']}) [".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']} (".htmlspecialchars($to[0]).")]<br />\n";
                     }
                     else
                     {
