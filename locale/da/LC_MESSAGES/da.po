@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey 1.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-10 09:33+0100\n"
-"PO-Revision-Date: 2012-04-10 09:34+0100\n"
+"POT-Creation-Date: 2012-04-20 12:38+0100\n"
+"PO-Revision-Date: 2012-04-20 12:38+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Paw M. K. Gyldenkaerne <pmkg@inbox.com>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "Kommentar skal angives for \"andet\""
 msgid "*"
 msgstr "*"
 
-#: qanda.php:5967
+#: qanda.php:5970
 msgid "..."
 msgstr "..."
 
@@ -123,9 +123,9 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "En uventet fejl opstod - dine svar kan ikke gemmes."
 
 #: qanda.php:1207
-#: qanda.php:4014
-#: qanda.php:4201
-#: qanda.php:4275
+#: qanda.php:4017
+#: qanda.php:4204
+#: qanda.php:4278
 msgid "Answer"
 msgstr "Svar"
 
@@ -211,7 +211,7 @@ msgstr "Evalueringer"
 msgid "At least %d files must be uploaded for this question"
 msgstr "For dette spørgsmål skal mindst %d filer uploades"
 
-#: common_functions.php:6587
+#: common_functions.php:6591
 #, php-format
 msgid "Attribute %s"
 msgstr "Attribut %s"
@@ -316,6 +316,7 @@ msgstr "Kolonner"
 
 #: common_functions.php:2559
 #: common_functions.php:2779
+#: qanda.php:3070
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -355,8 +356,8 @@ msgid "Dec"
 msgstr "dec"
 
 #: common_functions.php:1929
-#: qanda.php:4900
-#: qanda.php:4964
+#: qanda.php:4903
+#: qanda.php:4967
 msgid "Decrease"
 msgstr "Mindskes"
 
@@ -457,8 +458,8 @@ msgstr "Vis \"tidsbegrænsnings-udløbsmeddelelsen\" i dette antal sekunder før
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Vis den anden 'tidsbegrænsningsadvarsel' når der er dette antal sekunder tilbage af nedtællingen (advarslen vil ikke blive vist hvis denne efterlades uudfyldt)"
 
-#: qanda.php:4099
-#: qanda.php:4100
+#: qanda.php:4102
+#: qanda.php:4103
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Træk og slip nålen til ønsket lokalisation. Du må også højre klikke på kortet for at flytte nålen."
 
@@ -485,7 +486,7 @@ msgstr "FEJLMEDDELELSE"
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Du har enten været inaktiv for længe, du har fjernet muligheden for cookies i din browser, eller der opstod et problem med internetforbindelsen."
 
-#: common_functions.php:6560
+#: common_functions.php:6564
 msgid "Email address"
 msgstr "E-mail adresse"
 
@@ -530,22 +531,22 @@ msgstr "Fejl"
 msgid "Error saving results"
 msgstr "Fejl ved gemning af resultater"
 
-#: qanda.php:5336
-#: qanda.php:5716
-#: qanda.php:6050
-#: qanda.php:6197
-#: qanda.php:6831
+#: qanda.php:5339
+#: qanda.php:5719
+#: qanda.php:6053
+#: qanda.php:6200
+#: qanda.php:6834
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Fejl: Der er ikke nogle svarmuligheder for dette spørgsmål og/eller de findes ikke på dette sprog"
 
-#: qanda.php:6191
+#: qanda.php:6194
 msgid "Error: There are no answers defined for this question."
 msgstr "Fejl: Der er ingen svar defineret til dette spørgsmål."
 
-#: qanda.php:3245
-#: qanda.php:3552
-#: qanda.php:4754
-#: qanda.php:6601
+#: qanda.php:3248
+#: qanda.php:3555
+#: qanda.php:4757
+#: qanda.php:6604
 msgid "Error: This question has no answers."
 msgstr "Fejl: Spørgsmålet har ingen svar."
 
@@ -566,30 +567,34 @@ msgid "Feb"
 msgstr "feb"
 
 #: common_functions.php:1913
-#: qanda.php:4360
+#: qanda.php:4363
 msgid "Female"
 msgstr "Kvinde"
 
 #: delete.php:86
-#, fuzzy, php-format
+#, php-format
 msgid "File %s deleted"
 msgstr "Fil slettet: %s"
 
 #: common_functions.php:1953
-#, fuzzy
 msgid "File count"
-msgstr "Filkontrol:"
+msgstr "Antal filer"
 
 #: common_functions.php:4094
 #: common_functions.php:4105
 msgid "File metadata"
 msgstr "Fil metadata"
 
+#: qanda.php:3071
+#, fuzzy
+msgid "File name"
+msgstr "Fulde navn"
+
 #: common_functions.php:266
 msgid "File upload"
 msgstr "Fil upload"
 
-#: common_functions.php:6558
+#: common_functions.php:6562
 msgid "First name"
 msgstr "Fornavn"
 
@@ -604,7 +609,7 @@ msgstr "For yderligere information kontakt %s"
 
 #: common_functions.php:3919
 msgid "For list dropdown boxes, show up to this many rows"
-msgstr "For dropdown bokse med svarlister, vis højst så mange linier"
+msgstr "For rullemenu med svarlister, vis højst så mange linier"
 
 #: qanda.php:1255
 #: qanda.php:1262
@@ -637,9 +642,8 @@ msgid "Header for second scale"
 msgstr "Overskrift for anden skala"
 
 #: common_functions.php:3920
-#, fuzzy
 msgid "Height of dropdown"
-msgstr "Liste (Rullemenu)"
+msgstr "Rullemenu højde"
 
 #: common_functions.php:3469
 msgid "Height of the map in pixel"
@@ -691,8 +695,8 @@ msgid "Inactive"
 msgstr "Inaktiv"
 
 #: common_functions.php:1928
-#: qanda.php:4898
-#: qanda.php:4941
+#: qanda.php:4901
+#: qanda.php:4944
 msgid "Increase"
 msgstr "Øges"
 
@@ -722,11 +726,11 @@ msgstr "Indsæt sideskift i printervenlig fremvisning"
 msgid "Integer only"
 msgstr "Kun tal"
 
-#: group.php:507
+#: group.php:511
 msgid "Invalid group number for this survey: "
 msgstr "Ugyldigt gruppenummer for dette spørgeskema."
 
-#: common_functions.php:6563
+#: common_functions.php:6567
 msgid "Invitation sent date"
 msgstr "Dato for afsendelse af invitation"
 
@@ -758,15 +762,15 @@ msgstr "Etiket for 'Andre:'-valgmulighed"
 msgid "Language Switch"
 msgstr "Sprogvalg"
 
-#: common_functions.php:6562
+#: common_functions.php:6566
 msgid "Language code"
 msgstr "Sprogkode"
 
-#: common_functions.php:6564
+#: common_functions.php:6568
 msgid "Last Reminder sent date"
 msgstr "Dato for afsendelse af sidste rykker:"
 
-#: common_functions.php:6559
+#: common_functions.php:6563
 msgid "Last name"
 msgstr "Efternavn"
 
@@ -848,7 +852,7 @@ msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is act
 msgstr "Gør \"kommentar til andet\"-feltet obligatorisk, når \"andet\"-feltet er blevet markeret"
 
 #: common_functions.php:1912
-#: qanda.php:4368
+#: qanda.php:4371
 msgid "Male"
 msgstr "Mand"
 
@@ -1037,9 +1041,9 @@ msgstr "Næste"
 #: common_functions.php:3983
 #: common_functions.php:4097
 #: common_functions.php:4108
-#: qanda.php:4320
-#: qanda.php:4744
-#: qanda.php:4799
+#: qanda.php:4323
+#: qanda.php:4747
+#: qanda.php:4802
 msgid "No"
 msgstr "Nej"
 
@@ -1052,27 +1056,27 @@ msgstr "Nej"
 #: qanda.php:1796
 #: qanda.php:1930
 #: qanda.php:1993
-#: qanda.php:4331
-#: qanda.php:4378
-#: qanda.php:4468
-#: qanda.php:4532
-#: qanda.php:4621
-#: qanda.php:4669
-#: qanda.php:4747
-#: qanda.php:4819
-#: qanda.php:4903
-#: qanda.php:4982
-#: qanda.php:5083
-#: qanda.php:5105
-#: qanda.php:5179
-#: qanda.php:5312
-#: qanda.php:6083
-#: qanda.php:6084
-#: qanda.php:6369
-#: qanda.php:6444
-#: qanda.php:6549
-#: qanda.php:6751
-#: qanda.php:6805
+#: qanda.php:4334
+#: qanda.php:4381
+#: qanda.php:4471
+#: qanda.php:4535
+#: qanda.php:4624
+#: qanda.php:4672
+#: qanda.php:4750
+#: qanda.php:4822
+#: qanda.php:4906
+#: qanda.php:4985
+#: qanda.php:5086
+#: qanda.php:5108
+#: qanda.php:5182
+#: qanda.php:5315
+#: qanda.php:6086
+#: qanda.php:6087
+#: qanda.php:6372
+#: qanda.php:6447
+#: qanda.php:6552
+#: qanda.php:6754
+#: qanda.php:6808
 msgid "No answer"
 msgstr "Ikke besvaret"
 
@@ -1128,17 +1132,17 @@ msgstr "Fra"
 msgid "One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed"
 msgstr "En eller flere filer har overskredet den tilladte filstørrelse eller er ikke i det rigtige format. Alternativt har du ikke uploadet det nødvendige antal filer. Du kan ikke fortsætte før dette problem er løst."
 
-#: group.php:812
+#: group.php:816
 #: qanda.php:504
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr "Et eller flere obligatorisk spørgsmål er ikke besvaret. Du kan ikke fortsætte, før de er blevet besvaret."
 
-#: group.php:818
+#: group.php:822
 #: qanda.php:533
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr "Et eller flere spørgsmål er besvaret på en ugyldig måde. Du kan ikke fortsætte, før gyldige svar gives."
 
-#: group.php:824
+#: group.php:828
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr "Et eller flere uploadede filer er ikke i den rigtige format/størrelse. Du kan ikke fortsætte indtil de filer er rettet."
 
@@ -1146,12 +1150,12 @@ msgstr "Et eller flere uploadede filer er ikke i den rigtige format/størrelse. 
 msgid "Online Manual"
 msgstr "Online manual"
 
-#: qanda.php:3697
+#: qanda.php:3700
 msgid "Only numbers may be entered in these fields"
 msgstr "Der må kun skrives tal i disse felter"
 
-#: qanda.php:3922
-#: qanda.php:3926
+#: qanda.php:3925
+#: qanda.php:3929
 msgid "Only numbers may be entered in this field"
 msgstr "Der må kun skrives tal i feltet"
 
@@ -1259,7 +1263,7 @@ msgid "Place questions into a specified randomization group, all questions inclu
 msgstr "Placer spørgsmålene i en specificeret randomiseringsgruppe; alle spørgsmål placeret i den specificerede gruppe bliver vist i tilfældig rækkefølge"
 
 #: qanda.php:1499
-#: qanda.php:5292
+#: qanda.php:5295
 msgid "Please choose"
 msgstr "Vælg venligst"
 
@@ -1274,8 +1278,8 @@ msgstr "Vælg venligst"
 #: common_functions.php:4974
 #: qanda.php:1283
 #: qanda.php:1461
-#: qanda.php:6731
-#: qanda.php:6785
+#: qanda.php:6734
+#: qanda.php:6788
 msgid "Please choose..."
 msgstr "Vælg venligst..."
 
@@ -1310,7 +1314,7 @@ msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] "Ranger venligst mindst  %d emne i spørgsmål \"%s\"."
 msgstr[1] "Ranger venligst mindst  %d emner i spørgsmål \"%s\"."
 
-#: group.php:113
+#: group.php:116
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
 msgstr "Brug venligst LimeSurveys navigerings (frem/tilbage) funktion eller brødkrumme indeks. Det ser ud som om du har brugt din browsers 'tilbage'-knap."
 
@@ -1324,9 +1328,8 @@ msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Skilletegn-efter-svar|Skilletegn-mellem-rullemenuer til rullemenuer"
 
 #: common_functions.php:3932
-#, fuzzy
 msgid "Prefix for list items"
-msgstr "Præfiks|Sukkiks for rullemenuer"
+msgstr "Præfiks til listeemner"
 
 #: common_functions.php:3312
 msgid "Prefix|Suffix for dropdown lists"
@@ -1353,7 +1356,7 @@ msgstr "Forrige"
 msgid "Previous session is set to be finished."
 msgstr "Foregående session skal snart afsluttes"
 
-#: group.php:423
+#: group.php:427
 msgid "Print your answers."
 msgstr "Udskriv dine svar."
 
@@ -1361,7 +1364,7 @@ msgstr "Udskriv dine svar."
 msgid "Question"
 msgstr "Spørgsmål"
 
-#: group.php:969
+#: group.php:973
 msgid "Question index"
 msgstr "Spørgsmåls index"
 
@@ -1370,14 +1373,12 @@ msgid "Question time"
 msgstr "Spørgsmålstid"
 
 #: common_functions.php:3353
-#, fuzzy
 msgid "Question validation equation"
-msgstr "Spørgsmålsvalg"
+msgstr "Spørgsmåls validerings logik/ligning"
 
 #: common_functions.php:3361
-#, fuzzy
 msgid "Question validation tip"
-msgstr "Spørgsmålsvalg"
+msgstr "Spørgsmåls validerings tip"
 
 #: common_functions.php:46
 msgid "Quick translation"
@@ -1408,7 +1409,7 @@ msgstr "Rangordning"
 msgid "Referrer URL"
 msgstr "Henvisende URL"
 
-#: qanda.php:3732
+#: qanda.php:3735
 msgid "Remaining: "
 msgstr "Tilbage:"
 
@@ -1462,8 +1463,8 @@ msgid "SQL command failed: %s Reason: %s"
 msgstr "SQL kommanda fejlede: %s Reason: %s"
 
 #: common_functions.php:1930
-#: qanda.php:4899
-#: qanda.php:4952
+#: qanda.php:4902
+#: qanda.php:4955
 msgid "Same"
 msgstr "Uændret"
 
@@ -1483,7 +1484,7 @@ msgstr "Gem postnummer."
 msgid "Save state"
 msgstr "Gem stat"
 
-#: group.php:218
+#: group.php:221
 msgid "Save your responses so far"
 msgstr "Gem dine nuværende svar"
 
@@ -1610,7 +1611,7 @@ msgstr "Beklageligvis er kun %s udvidelser tilladt."
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr "Den uploadet fil (%s) er større end den tilladte filstørrelse på %s KB."
 
-#: group.php:491
+#: group.php:495
 msgid "Sorry. There is no matching survey."
 msgstr "Beklager. Der er intet tilsvarende spørgeskema."
 
@@ -1659,12 +1660,12 @@ msgstr "Under-spørgsmåls validerings logik/ligning"
 msgid "Sub-question validation tip"
 msgstr "Under-spørgsmåls validerings tip"
 
-#: group.php:1032
+#: group.php:1036
 #: index.php:2410
 msgid "Submit"
 msgstr "Send"
 
-#: group.php:529
+#: group.php:533
 msgid "Submit your answers"
 msgstr "Indsend dine svar."
 
@@ -1724,7 +1725,7 @@ msgstr "Tekst spørgsmål"
 msgid "Thank you for registering to participate in this survey."
 msgstr "Mange tak for din tilmelding til undersøgelsen."
 
-#: group.php:410
+#: group.php:414
 msgid "Thank you!"
 msgstr "Tak skal du have!"
 
@@ -1801,7 +1802,7 @@ msgstr "Respondentnøglen, som du har anvendt, er enten ugyldig eller er allered
 msgid "The token you provided doesn't match the one in your session."
 msgstr "Respondentnøglen svarer ikke til den, der benyttes i din session."
 
-#: group.php:530
+#: group.php:534
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr "Der er ikke flere spørgsmål.  Tryk <Indsend>-knappen for at afslutte spørgeskemaet."
 
@@ -1809,7 +1810,7 @@ msgstr "Der er ikke flere spørgsmål.  Tryk <Indsend>-knappen for at afslutte s
 msgid "There is no matching saved survey"
 msgstr "Ingen gemte spørgeskemaer svarer hertil"
 
-#: group.php:512
+#: group.php:516
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr "Denne gruppe indeholder ingen spørgsmål. Du skal tilføje et eller flere spørgsmål før denne gruppe kan vises."
 
@@ -1829,7 +1830,7 @@ msgstr "Denne spørgeskema ser ikke ud til at eksistere."
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Spørgeskemaet har endnu ingen spørgsmål, og kan derfor ikke testes eller fuldføres."
 
-#: group.php:961
+#: group.php:965
 #: index.php:2929
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Spørgeskemaet er pt. ikke aktiveret. Du vil ikke være i stand til at gemme dine svar."
@@ -1910,13 +1911,17 @@ msgstr "Tip som vises brugeren, der beskriver spørgsmålets validerings logik/l
 msgid "Tip to show user describing the sub-question validation equation."
 msgstr "Tip der vises brugeren, der beskriver under-spørgsmålets validerings logik/ligning"
 
+#: qanda.php:3069
+msgid "Title"
+msgstr "Titel"
+
 #: common_functions.php:2344
 #: index.php:1757
 #: index.php:1924
 msgid "Token"
 msgstr "Respondentnøgle"
 
-#: common_functions.php:6561
+#: common_functions.php:6565
 msgid "Token code"
 msgstr "Respondentnøglekontrol"
 
@@ -1932,7 +1937,7 @@ msgstr "Respondentnøgle"
 msgid "Tokens"
 msgstr "Respondentnøgler"
 
-#: common_functions.php:6565
+#: common_functions.php:6569
 msgid "Total numbers of sent reminders"
 msgstr "Samlet antal afsendte rykkere"
 
@@ -1940,7 +1945,7 @@ msgstr "Samlet antal afsendte rykkere"
 msgid "Total time"
 msgstr "Total tid"
 
-#: qanda.php:3739
+#: qanda.php:3742
 msgid "Total: "
 msgstr "Total:"
 
@@ -1949,8 +1954,8 @@ msgid "Try to submit again"
 msgstr "Prøv at genindsende"
 
 #: common_functions.php:1922
-#: qanda.php:4743
-#: qanda.php:4789
+#: qanda.php:4746
+#: qanda.php:4792
 msgid "Uncertain"
 msgstr "Ved ikke"
 
@@ -1972,12 +1977,11 @@ msgstr "Layout for checkbox"
 
 #: common_functions.php:3911
 msgid "Use dropdown boxes"
-msgstr "Brug dropdown bokse"
+msgstr "Brug rullemenu"
 
 #: common_functions.php:3910
-#, fuzzy
 msgid "Use dropdown boxes instead of list of radio buttons"
-msgstr "Brug dobbeltmenu i stedet for dobbeltskala"
+msgstr "Brug rullemenu i stedet for radioknapper"
 
 #: common_functions.php:3452
 msgid "Use mapping service"
@@ -1990,7 +1994,7 @@ msgstr "Brug kortlægningsservice"
 msgid "Use slider layout"
 msgstr "Anvend layout med skydeskala"
 
-#: common_functions.php:6566
+#: common_functions.php:6570
 msgid "Uses left"
 msgstr "Anvendelser tilbage"
 
@@ -2002,7 +2006,7 @@ msgstr "Version"
 msgid "View statistics"
 msgstr "Vis statistik"
 
-#: group.php:435
+#: group.php:439
 msgid "View the statistics for this survey."
 msgstr "Vis statistikker for dette spørgeskema"
 
@@ -2072,9 +2076,9 @@ msgstr "År"
 #: common_functions.php:3984
 #: common_functions.php:4098
 #: common_functions.php:4109
-#: qanda.php:4311
-#: qanda.php:4742
-#: qanda.php:4781
+#: qanda.php:4314
+#: qanda.php:4745
+#: qanda.php:4784
 msgid "Yes"
 msgstr "Ja"
 
@@ -2156,7 +2160,7 @@ msgstr "Dine svar er ikke gået tabt, men er blevet e-mailet til spørgeskemaets
 msgid "Your responses were successfully saved."
 msgstr "Dine svar blev gemt."
 
-#: group.php:411
+#: group.php:415
 msgid "Your survey responses have been recorded."
 msgstr "Dine besvarelser er blevet gemt."
 
@@ -2193,7 +2197,7 @@ msgstr "timer"
 msgid "mins"
 msgstr "minutter"
 
-#: group.php:428
+#: group.php:432
 msgid "or"
 msgstr "eller"
 
@@ -2204,7 +2208,7 @@ msgstr "eller"
 msgid "seconds"
 msgstr "sekunder"
 
-#: replacements.php:674
+#: replacements.php:676
 msgid "A Note On Privacy"
 msgstr "Note om fortrolighed"
 
@@ -2243,11 +2247,10 @@ msgid "Add or delete subquestions or change their codes"
 msgstr "Tilføj eller slet under spørgsmål eller ændre deres svarkoder."
 
 #: admin/activate.php:74
-#, fuzzy
 msgid "Add, remove or edit answer options"
-msgstr "Tilføj nyt svar"
+msgstr "Tilføj, fjern eller rediger svar muligheder"
 
-#: replacements.php:703
+#: replacements.php:705
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr "Efter du har klikket på gem-knappen kan du enten lukke browser-vinduet eller fortsætte med at udfylde spørgeskemaet."
 
@@ -2304,7 +2307,7 @@ msgstr "Advarsel: JavaScript kørsel er slået fra i din browser. Du er muligvis
 msgid "Change survey name or description"
 msgstr "Ændre spørgeskemaets navn eller beskrivelse"
 
-#: replacements.php:709
+#: replacements.php:711
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Tryk 'Indsend' for at fuldføre og gemme dine svar."
 
@@ -2527,31 +2530,29 @@ msgid "Edit this token"
 msgstr "Rediger respondentnøgle"
 
 #: admin/activate.php:74
-#, fuzzy
 msgid "Edit your group names or descriptions"
-msgstr "Ændre spørgeskemaets navn eller beskrivelse"
+msgstr "Rediger dine gruppe navne eller beskrivelser"
 
 #: admin/activate.php:74
-#, fuzzy
 msgid "Edit your questions code/title/text and advanced options"
-msgstr "Redigere (ændre) spørgsmålskode, -tekst eller -type"
+msgstr "Rediger dine spørgsmåls: kode, titel, tekst og avancerede valgmuligheder"
 
 #: admin/browse.php:137
 #: admin/browse.php:475
 msgid "Email"
 msgstr "E-mail"
 
-#: replacements.php:703
+#: replacements.php:705
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Indtast et spørgeskemanavn og en adgangskode, og tryk Gem nedenfor."
 
-#: replacements.php:694
+#: replacements.php:696
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Indtast dine oplysninger nedenfor, og du vil hurtigst muligt få tilsendt en e-mail med et link til dit personlige spørgeskema. "
 
 #: replacements.php:307
 msgid "Exit and Clear Survey"
-msgstr "Afslut og nulstil spørgeskema"
+msgstr "Afbryd og nulstil spørgeskema"
 
 #: admin/browse.php:240
 msgid "Export this Response"
@@ -2675,7 +2676,7 @@ msgstr ""
 "Hvis du ikke ønsker at deltage i undersøgelsen og ikke ønsker at modtage flere invitationer, så venligst klik på følgende link:\n"
 "{OPTOUTURL}"
 
-#: replacements.php:703
+#: replacements.php:705
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Oplysningerne bliver sendt til dig, hvis du angiver en e-mail adresse."
 
@@ -2683,7 +2684,7 @@ msgstr "Oplysningerne bliver sendt til dig, hvis du angiver en e-mail adresse."
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Hvis du ønsker at kontrollere og/eller ændre dine svar, så kan du gøre det nu ved at trykke på [<<tilbage] knappen og gennemse dine svar."
 
-#: uploader.php:96
+#: uploader.php:102
 #, php-format
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
 msgstr "Hvis du ønsker det, kan du uploade %s flere file(r); alternativt kan du gå tilbage til spørgeskemaet."
@@ -2802,7 +2803,7 @@ msgstr "Vælg venligst mindst en fil du vil hente"
 msgid "Please try again."
 msgstr "Venligst prøv igen."
 
-#: uploader.php:95
+#: uploader.php:101
 #, php-format
 msgid "Please upload %s more file(s)."
 msgstr "Venligst upload %s flere file(r)"
@@ -2835,9 +2836,8 @@ msgid "Reminder to participate in a survey"
 msgstr "Påmindelse om deltagelse i spørgeskemaundersøgelse"
 
 #: admin/browse.php:329
-#, fuzzy
 msgid "Remove filter"
-msgstr "Svarfiltre"
+msgstr "Fjern filter"
 
 #: replacements.php:453
 msgid "Repeat Password"
@@ -2864,7 +2864,7 @@ msgstr "Genstart spørgeskemaet"
 #: replacements.php:337
 #: replacements.php:357
 msgid "Resume Later"
-msgstr "Fortsæt senere"
+msgstr "Gem og fortsæt senere"
 
 #: replacements.php:439
 msgid "Return To Survey"
@@ -2886,7 +2886,7 @@ msgstr "Gem"
 msgid "Save Now"
 msgstr "Gem"
 
-#: replacements.php:702
+#: replacements.php:704
 msgid "Save Your Unfinished Survey"
 msgstr "Gem ufuldstændig besvarelse"
 
@@ -2908,8 +2908,8 @@ msgstr "Fokus"
 msgid "Security alert"
 msgstr "Sikkerhedsalarm"
 
-#: uploader.php:94
-#: uploader.php:122
+#: uploader.php:100
+#: uploader.php:128
 msgid "Select file"
 msgstr "Vælg fil"
 
@@ -2962,11 +2962,11 @@ msgstr "Viser filtrerede resultater"
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr "Nogle prøver måske at bruge din LimeSurvey session (CSRF angreb mistænkes). Hvis du lige har klikket på et mistænkeligt link, så rapporter dette til din systemadministrator."
 
-#: uploader.php:91
+#: uploader.php:97
 msgid "Sorry, no more files can be uploaded!"
 msgstr "Beklager. Der kan ikke uploades flere filer!"
 
-#: uploader.php:92
+#: uploader.php:98
 #, php-format
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr "Undskyld, kun %s filer can blive uploadet til dette spørgesmål!"
@@ -3037,12 +3037,12 @@ msgstr "Filen er uploadet."
 msgid "The following problems have been found:"
 msgstr "Følgende problemer blev fundet:"
 
-#: uploader.php:97
-#: uploader.php:98
+#: uploader.php:103
+#: uploader.php:104
 msgid "The maximum number of files has been uploaded. You may return back to survey."
 msgstr "Det maksimale antal filer er uploadet. Du kan vende tilbage til spørgeskemaet."
 
-#: replacements.php:674
+#: replacements.php:676
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Der registreres ingen oplysninger ifm. besvarelsen af de enkelte spørgsmål, som kan identificere dig, medmindre det eksplicit fremgår af et givent spørgsmål. Hvis du har besvaret et spørgeskema, som anvender unikke respondentnøgler, så skal det bemærkes, at ingen respondentnøgler opbevares sammen med dine svar. Respondentnøglerne gemmes i en separat database, og opdateres kun for at indikere at du har (eller ikke har) besvaret spørgeskemaet. Det er ikke muligt at matche respondentnøgler med besvarelser."
 
@@ -3114,7 +3114,7 @@ msgstr "Selvoprettelse er tilladt. En nøgletabel skal oprettes."
 msgid "This survey has not been activated. There are no results to browse."
 msgstr "Spørgeskemaet er ikke blevet aktiveret. Der er ingen resultater at gennemse."
 
-#: replacements.php:674
+#: replacements.php:676
 msgid "This survey is anonymous."
 msgstr "Spørgeskemaet er anonymt."
 
@@ -3129,11 +3129,6 @@ msgstr "Tid statistiker"
 #: admin/browse.php:1078
 msgid "Timings"
 msgstr "Tidsangivelse"
-
-#: uploader.php:89
-#: admin/assessments.php:173
-msgid "Title"
-msgstr "Titel"
 
 #: replacements.php:427
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
@@ -3165,7 +3160,7 @@ msgstr "Skriv 'navnet', som du anvendte til at gemme spørgeskemaet, og adgangsk
 msgid "Unknown error"
 msgstr "Ukendt fejl"
 
-#: uploader.php:93
+#: uploader.php:99
 msgid "Uploading"
 msgstr "Uploader"
 
@@ -3280,7 +3275,7 @@ msgstr "Fra denne skærm kan du åbne et spørgeskema, som du tidligere har gemt
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "Du kan skifte til begrænset adgang ved at initialisere en nøgletabel vha. knappen nedenfor."
 
-#: uploader.php:125
+#: uploader.php:131
 #, php-format
 msgid "You can upload %s under %s KB each."
 msgstr "Du kan uploade %s under %s KB hver"
@@ -3289,7 +3284,7 @@ msgstr "Du kan uploade %s under %s KB hver"
 msgid "You don't have permission to delete this entry."
 msgstr "Beklager, men du har ikke tilladelse til at slette dette."
 
-#: replacements.php:709
+#: replacements.php:711
 msgid "You have completed answering the questions in this survey."
 msgstr "Du har besvaret alle spørgsmål i spørgeskemaet."
 
@@ -3297,11 +3292,11 @@ msgstr "Du har besvaret alle spørgsmål i spørgeskemaet."
 msgid "You have not selected a survey to browse."
 msgstr "Du har ikke valgt et spørgeskema til gennemsyn."
 
-#: replacements.php:694
+#: replacements.php:696
 msgid "You may register for this survey if you wish to take part."
 msgstr "Du har mulighed for registrere dig, hvis du ønsker at deltage."
 
-#: replacements.php:693
+#: replacements.php:695
 msgid "You must be registered to complete this survey"
 msgstr "Registrering er påkrævet for at besvare spørgeskemaet"
 
@@ -3313,7 +3308,7 @@ msgstr "Der skal angives et navn for den gemte session."
 msgid "You must supply a password for this saved session."
 msgstr "Der skal angives en adgangskode for den gemte session."
 
-#: uploader.php:99
+#: uploader.php:105
 #, php-format
 msgid ""
 "You need to upload %s more files for this question.\n"
@@ -3342,7 +3337,7 @@ msgstr "Dine adgangskoder passer ikke."
 msgid "Your survey was successfully saved."
 msgstr "Dit spørgeskema blev gemt."
 
-#: replacements.php:703
+#: replacements.php:705
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Spørgeskemaet vil blive gemt, og kan færdiggøres senere ved at logge ind med det valgte navn og adgangskode."
 
@@ -3729,9 +3724,8 @@ msgid "Decimal separator:"
 msgstr "Decimaltals separator:"
 
 #: admin/editsurveysettings.php:862
-#, fuzzy
 msgid "Default Google Analytics"
-msgstr "Standardscenarie"
+msgstr "Default Google Analytics"
 
 #: admin/conditionshandling.php:1722
 msgid "Default scenario"
@@ -3894,18 +3888,16 @@ msgid "Error: You are trying to use duplicate subquestion codes."
 msgstr "Fejl: Du forsøger at bruge to ens svarkoder."
 
 #: admin/editsurveysettings.php:1020
-#, fuzzy
 msgid "Error: You enter a name for the survey copy."
-msgstr "Fejl: Du skal give spørgeskemaet en titel."
+msgstr "Fejl: Du skal indtaste navnet for spørgeskema kopien"
 
 #: admin/editsurveysettings.php:1077
 msgid "Error: You have to enter a title for this survey."
 msgstr "Fejl: Du skal give spørgeskemaet en titel."
 
 #: admin/editsurveysettings.php:1020
-#, fuzzy
 msgid "Error: You have to select an existing survey."
-msgstr "Fejl: Du skal give spørgeskemaet en titel."
+msgstr "Fejl: Du skal vælge et eksisterende spørgeskema"
 
 #: admin/editsurveysettings.php:1032
 msgid "Exclude answers?"
@@ -4147,9 +4139,8 @@ msgstr "Sprog"
 
 #: admin/exportresults.php:484
 #: admin/exportresults.php:485
-#, fuzzy
 msgid "Last page seen"
-msgstr "Efternavn"
+msgstr "Sidst viste side"
 
 #: admin/conditionshandling.php:63
 #: admin/conditionshandling.php:79
@@ -4276,14 +4267,14 @@ msgid "Only answer this if the following conditions are met:"
 msgstr "Svar kun på dette spørgsmål, hvis følgende betingelse(r) er opfyldt:"
 
 #: admin/dataentry.php:2771
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
-msgstr "Svar kun på dette spørgsmål for de punkter du  ikke valgte i spørgsmål %d ('%s')"
+msgstr "Svar kun på dette spørgsmål for de punkter du  ikke valgte i spørgsmål *%s* ('%s')"
 
 #: admin/dataentry.php:2762
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
-msgstr "Svar kun på dette spørgsmål for de punkter du valgte i spørgsmål %d ('%s')"
+msgstr "Svar kun på dette spørgsmål for de punkter du valgte i spørgsmål *%s* ('%s')"
 
 #: admin/conditionshandling.php:1154
 msgid "Only show question {QID} IF"
@@ -4361,9 +4352,8 @@ msgid "Question codes"
 msgstr "Spørgsmålskoder"
 
 #: admin/database.php:348
-#, fuzzy
 msgid "Question codes were successfully regenerated."
-msgstr "Dine personlige indstillinger blev gemt."
+msgstr "Spørgsmåls koden blev genskabt"
 
 #: admin/database.php:683
 msgid "Question could not be added. You must insert a code in the mandatory field"
@@ -4403,9 +4393,8 @@ msgid "Question was successfully added."
 msgstr "Spørgesmål blev tilføjet succesfuldt."
 
 #: admin/database.php:826
-#, fuzzy
 msgid "Question was successfully copied."
-msgstr "Betingelser blev kopieret"
+msgstr "Spørgsmålet blev kopieret"
 
 #: admin/database.php:863
 msgid "Question was successfully deleted."
@@ -4801,9 +4790,8 @@ msgstr "Nøgletabellen, som er tilknyttet spørgeskemaet, er blevet omdøbt til:
 
 #: admin/editansweroptions.php:121
 #: admin/editsubquestions.php:76
-#, fuzzy
 msgid "There are no label sets which match the survey default language"
-msgstr "Du kan ikke importere et label-sæt, som ikke understøtter det nuværende spørgeskemas standardsprog"
+msgstr "Der findes intet 'label'-sæt som passer til spørgeskemaets standard sprog"
 
 #: admin/dataentry.php:141
 msgid "There is already a recorded answer for this token"
@@ -4846,9 +4834,8 @@ msgid "This survey is NOT anonymous."
 msgstr "Spørgeskemaet er IKKE anonymt."
 
 #: admin/deletesurvey.php:45
-#, fuzzy
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses (including any uploaded files) will be deleted. We recommend that you export the responses (and files) before deleting this survey."
-msgstr "Spørgeskemaet er aktiveret, og der findes en tabel med besvarelser. Hvis du sletter spørgeskemaet, så vil besvarelserne gå tabt. Det anbefales at eksportere besvarelserne inden spørgeskemaet slettes."
+msgstr "Spørgeskemaet er aktiveret, og der findes en tabel med besvarelser. Hvis du sletter spørgeskemaet, så vil besvarelserne (inkl. uploadede filer) gå tabt. Det anbefales at eksportere besvarelserne (of filer) inden spørgeskemaet slettes."
 
 #: admin/dataentry.php:2703
 msgid "This survey is not yet active. Your response cannot be saved"
@@ -4889,9 +4876,8 @@ msgid "Tokens problem - token table missing"
 msgstr "Problem med respondentnøglen - respondentnøgletabellen mangler"
 
 #: admin/editsurveysettings.php:867
-#, fuzzy
 msgid "Track pages within survey"
-msgstr "Antal observationer i alt"
+msgstr "Følg sider i et spørgeskema"
 
 #: admin/dataentry.php:177
 msgid "Try again"
@@ -5113,16 +5099,16 @@ msgstr "Aktiverede spørgeskemaer"
 msgid "Active token tables"
 msgstr "Aktiverede nøgletabeller"
 
-#: admin/html.php:1096
+#: admin/html.php:1108
 msgid "Add New Question to Group"
 msgstr "Tilføj nyt spørgsmål til gruppen"
 
-#: admin/html.php:1529
-#: admin/html.php:2039
+#: admin/html.php:1541
+#: admin/html.php:2051
 msgid "Add User"
 msgstr "Tilføj bruger"
 
-#: admin/html.php:2046
+#: admin/html.php:2058
 msgid "Add User Group"
 msgstr "Tilføj brugergruppe"
 
@@ -5130,15 +5116,15 @@ msgstr "Tilføj brugergruppe"
 msgid "Add new group to survey"
 msgstr "Tilføj gruppe til spørgeskemaet"
 
-#: admin/html.php:2319
+#: admin/html.php:2331
 msgid "Add survey"
 msgstr "Tilføj spørgeskema"
 
-#: admin/html.php:1577
+#: admin/html.php:1589
 msgid "Add user group"
 msgstr "Tilføj brugergruppe"
 
-#: admin/html.php:2208
+#: admin/html.php:2220
 msgid "Administration"
 msgstr "Administration"
 
@@ -5186,7 +5172,7 @@ msgstr "Er du sikker?"
 msgid "Assessment group score"
 msgstr "Evalueringsværdi for gruppe"
 
-#: admin/html.php:2261
+#: admin/html.php:2273
 msgid "Backup Entire Database"
 msgstr "Database backup"
 
@@ -5202,11 +5188,11 @@ msgstr "Bounce indstillinger"
 msgid "By Group"
 msgstr "Gruppevis"
 
-#: admin/html.php:1032
+#: admin/html.php:1044
 msgid "Change Question Order"
 msgstr "Ændre rækkefølgen af spørgsmål"
 
-#: admin/html.php:2247
+#: admin/html.php:2259
 msgid "Check Data Integrity"
 msgstr "Kontroller dataintegritet"
 
@@ -5226,11 +5212,11 @@ msgstr "Vælg 'Kør/All' fra menuen for at gennemføre importen"
 msgid "Close Editor"
 msgstr "Luk editor"
 
-#: admin/html.php:1113
+#: admin/html.php:1125
 msgid "Close this Group"
 msgstr "Luk gruppen"
 
-#: admin/html.php:1384
+#: admin/html.php:1396
 msgid "Close this Question"
 msgstr "Luk spørgsmålet"
 
@@ -5239,7 +5225,7 @@ msgstr "Luk spørgsmålet"
 msgid "Close this survey"
 msgstr "Luk spørgeskemaet"
 
-#: admin/html.php:1400
+#: admin/html.php:1412
 msgid "Code:"
 msgstr "Kode:"
 
@@ -5248,8 +5234,8 @@ msgstr "Kode:"
 msgid "Conditions"
 msgstr "Betingelser"
 
-#: admin/html.php:1303
-#: admin/html.php:1310
+#: admin/html.php:1315
+#: admin/html.php:1322
 msgid "Copy Current Question"
 msgstr "Kopier spørgsmålet"
 
@@ -5261,36 +5247,36 @@ msgstr "Kopiering af spørgeskema fuldført."
 msgid "Corrected time :"
 msgstr "Egentlige tid:"
 
-#: admin/html.php:1654
+#: admin/html.php:1666
 msgid "Could not delete user. User was not supplied."
 msgstr "Kunne ikke slette bruger. Ingen bruger angivet."
 
-#: admin/html.php:1693
+#: admin/html.php:1705
 msgid "Create"
 msgstr "Opret"
 
-#: admin/html.php:2320
+#: admin/html.php:2332
 msgid "Create a new question group inside your survey."
 msgstr "Opret en ny spørgsmåls gruppe i dit spørgeskema."
 
-#: admin/html.php:2319
+#: admin/html.php:2331
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
 msgstr "Opret et nyt spørgeskema ved at klikke på %s-ikonet øverst til højre."
 
-#: admin/html.php:2321
+#: admin/html.php:2333
 msgid "Create one or more questions inside the new question group."
 msgstr "Opret et eller flere spørgsmål i den nye spørgsmåls gruppe."
 
-#: admin/html.php:2294
+#: admin/html.php:2306
 msgid "Create, import, or copy a survey"
 msgstr "Opret, importer eller kopier et spørgeskema"
 
-#: admin/html.php:2235
+#: admin/html.php:2247
 msgid "Create/Edit Groups"
 msgstr "Opret/rediger grupper"
 
-#: admin/html.php:2232
+#: admin/html.php:2244
 msgid "Create/Edit Users"
 msgstr "Opret/rediger brugere"
 
@@ -5336,7 +5322,7 @@ msgstr "Deaktiverede resultattabeller"
 msgid "Deactivated token tables"
 msgstr "Deaktiverede nøgletabeller"
 
-#: admin/html.php:2225
+#: admin/html.php:2237
 msgid "Default Administration Page"
 msgstr "Overordnet administration"
 
@@ -5368,23 +5354,23 @@ msgstr "Standardsprog"
 msgid "Default template:"
 msgstr "Standardskabelon:"
 
-#: admin/html.php:1269
+#: admin/html.php:1281
 msgid "Delete current question"
 msgstr "Slet spørgsmålet"
 
-#: admin/html.php:995
+#: admin/html.php:1007
 msgid "Delete current question group"
 msgstr "Slet spørgsmålsgruppe"
 
-#: admin/html.php:1637
+#: admin/html.php:1649
 msgid "Deleting User"
 msgstr "Sletter bruger"
 
-#: admin/html.php:993
+#: admin/html.php:1005
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr "Sletning af gruppen vil også medføre sletning af alle spørgsmål og svar i den. Er du sikker på, at du vil fortsætte?"
 
-#: admin/html.php:1268
+#: admin/html.php:1280
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr "Sletning af spørgsmålet vil også medføre sletning af alle svar, som det inkluderer. Er du sikker på, at du ønsker at fortsætte?"
 
@@ -5400,7 +5386,7 @@ msgid "Detailed email notification with response data is sent to:"
 msgstr "Detaljeret e-mail-notifikation med svardata bliver sendt til:"
 
 #: admin/html.php:663
-#: admin/html.php:1089
+#: admin/html.php:1101
 msgid "Disabled"
 msgstr "Slået fra"
 
@@ -5421,7 +5407,7 @@ msgstr "Vis besvarelser"
 msgid "Don't force on or off"
 msgstr "Gennemtving ikke til og fra"
 
-#: admin/html.php:2322
+#: admin/html.php:2334
 #, php-format
 msgid "Done. Test your survey using the %s icon."
 msgstr "Færdig.  Test dit spørgeskema ved at bruge %s-ikonet."
@@ -5431,28 +5417,28 @@ msgstr "Færdig.  Test dit spørgeskema ved at bruge %s-ikonet."
 msgid "Download the data and the syntax file."
 msgstr "download data og syntaksfil"
 
-#: admin/html.php:1248
+#: admin/html.php:1260
 msgid "Edit Current Question"
 msgstr "Rediger spørgsmålet"
 
-#: admin/html.php:1359
-#: admin/html.php:1441
+#: admin/html.php:1371
+#: admin/html.php:1453
 msgid "Edit answer options for this question"
 msgstr "Rediger svar indstillinger til spørgsmålet"
 
-#: admin/html.php:972
+#: admin/html.php:984
 msgid "Edit current question group"
 msgstr "Editer aktuel spørgsmålsgruppe"
 
-#: admin/html.php:1373
+#: admin/html.php:1385
 msgid "Edit default answers for this question"
 msgstr "Rediger standart svar til spørgsmålet"
 
-#: admin/html.php:2274
+#: admin/html.php:2286
 msgid "Edit label sets"
 msgstr "Rediger label-sæt"
 
-#: admin/html.php:1965
+#: admin/html.php:1977
 msgid "Edit permissions"
 msgstr "Rediger tilladelser"
 
@@ -5461,21 +5447,21 @@ msgstr "Rediger tilladelser"
 msgid "Edit response URL"
 msgstr "Redigerer besvarelse URL"
 
-#: admin/html.php:1344
-#: admin/html.php:1451
+#: admin/html.php:1356
+#: admin/html.php:1463
 msgid "Edit subquestions for this question"
 msgstr "Rediger under spørgsmål til spørgsmålet"
 
-#: admin/html.php:2060
+#: admin/html.php:2072
 msgid "Edit survey permissions"
 msgstr "Rediger tilladelser for spørgeskema"
 
-#: admin/html.php:1685
+#: admin/html.php:1697
 #, php-format
 msgid "Edit survey permissions for group %s"
 msgstr "Rediger spørgeskema rettigheder for gruppen %s"
 
-#: admin/html.php:1680
+#: admin/html.php:1692
 #, php-format
 msgid "Edit survey permissions for user %s"
 msgstr "Rediger spørgeskema rettigheder for bruger %s"
@@ -5488,7 +5474,7 @@ msgstr "Rediger tekst elementer"
 msgid "Edit the 4th line and complete the filename with a full path to the downloaded data file."
 msgstr "Editer den 4. linie og fyld filnavnet ud med en komplet sti til den downloadede datafil."
 
-#: admin/html.php:2213
+#: admin/html.php:2225
 msgid "Edit your personal preferences"
 msgstr "editer dine personlige præferencer"
 
@@ -5538,7 +5524,7 @@ msgstr "Krypteringstype:"
 msgid "End"
 msgstr "Slut"
 
-#: admin/html.php:860
+#: admin/html.php:872
 msgid "End URL"
 msgstr "Slut URL:"
 
@@ -5570,13 +5556,13 @@ msgstr "Hver uge"
 msgid "Execute This Survey"
 msgstr "Distribuer spørgeskemaet"
 
-#: admin/importlabel.php:243
-#: admin/importlabel.php:349
+#: admin/importlabel.php:253
+#: admin/importlabel.php:359
 #, php-format
 msgid "Existing LID: %s"
 msgstr "Eksisterende LID: %s"
 
-#: admin/html.php:1698
+#: admin/html.php:1710
 msgid "Export"
 msgstr "Eksporter"
 
@@ -5593,11 +5579,11 @@ msgstr "Eksporter en fil i R-syntaks"
 msgid "Export Survey"
 msgstr "Eksporter spørgeskema"
 
-#: admin/html.php:1760
+#: admin/html.php:1772
 msgid "Export Survey Structure"
 msgstr "Eksporter spørgeskemastruktur"
 
-#: admin/html.php:1787
+#: admin/html.php:1799
 msgid "Export To File"
 msgstr "Eksporter til fil"
 
@@ -5605,11 +5591,11 @@ msgstr "Eksporter til fil"
 msgid "Export a VV survey file"
 msgstr "Eksporter en VV spørgeskemafil"
 
-#: admin/html.php:1799
+#: admin/html.php:1811
 msgid "Export group structure"
 msgstr "Eksporter gruppestruktur"
 
-#: admin/html.php:1846
+#: admin/html.php:1858
 msgid "Export question structure"
 msgstr "Eksporter spørgsmålsstruktur"
 
@@ -5634,7 +5620,6 @@ msgid "Export results to application"
 msgstr "Eksporter resultater til program"
 
 #: admin/html.php:468
-#, fuzzy
 msgid "Export survey"
 msgstr "Eksporter spørgeskema"
 
@@ -5642,16 +5627,16 @@ msgstr "Eksporter spørgeskema"
 msgid "Export syntax"
 msgstr "Eksporter syntaks"
 
-#: admin/html.php:1289
+#: admin/html.php:1301
 msgid "Export this question"
 msgstr "Eksporter spørgsmålet"
 
-#: admin/html.php:1018
+#: admin/html.php:1030
 msgid "Export this question group"
 msgstr "Eksporter aktuel spørgsmålsgruppe"
 
-#: admin/html.php:1828
-#: admin/html.php:1875
+#: admin/html.php:1840
+#: admin/html.php:1887
 msgid "Export to file"
 msgstr "Eksporter til fil"
 
@@ -5659,18 +5644,18 @@ msgstr "Eksporter til fil"
 msgid "Expression Manager"
 msgstr "Udtryks håndtering"
 
-#: admin/html.php:1610
-#: admin/html.php:1617
+#: admin/html.php:1622
+#: admin/html.php:1629
 msgid "Failed to add User Group."
 msgstr "Oprettelse af brugergruppe mislykkedes."
 
-#: admin/html.php:1555
-#: admin/html.php:1562
-#: admin/html.php:1623
+#: admin/html.php:1567
+#: admin/html.php:1574
+#: admin/html.php:1635
 msgid "Failed to add user."
 msgstr "Bruger kunne ikke tilføjes."
 
-#: admin/html.php:2120
+#: admin/html.php:2132
 msgid "Failed to update survey permissions!"
 msgstr "Opdatering af spørgeskemarettigheder mislykkedes!"
 
@@ -5706,14 +5691,13 @@ msgstr "Flag"
 msgid "Force HTTPS:"
 msgstr "Gennemtving HTTPS:"
 
-#: admin/html.php:1908
+#: admin/html.php:1920
 msgid "Full name"
 msgstr "Fulde navn"
 
 #: admin/html.php:130
-#, fuzzy
 msgid "Full selector"
-msgstr "Hele spørgsmåls vælger"
+msgstr "Hel-spørgsmåls vælger"
 
 #: admin/html.php:140
 msgid "Full template editor"
@@ -5736,7 +5720,7 @@ msgid "Give focus to the HTML Editor Popup Window"
 msgstr "Flyt fokus til HTML editor Popup vinduet"
 
 #: admin/globalsettings.php:135
-#: admin/html.php:2240
+#: admin/html.php:2252
 msgid "Global settings"
 msgstr "Globale indstillinger"
 
@@ -5754,7 +5738,6 @@ msgid "Go to survey"
 msgstr "Start på spørgeskemaet"
 
 #: admin/globalsettings.php:272
-#, fuzzy
 msgid "Google Analytics API key:"
 msgstr "Google Maps API nøgle:"
 
@@ -5763,7 +5746,6 @@ msgid "Google Maps API key:"
 msgstr "Google Maps API nøgle:"
 
 #: admin/globalsettings.php:274
-#, fuzzy
 msgid "Google Translate API key:"
 msgstr "Google Maps API nøgle:"
 
@@ -5771,7 +5753,7 @@ msgstr "Google Maps API nøgle:"
 msgid "Group member can only see own group:"
 msgstr "Gruppemedlem kan kun se egen gruppe:"
 
-#: admin/html.php:2043
+#: admin/html.php:2055
 #: admin/importgroup.php:79
 msgid "Groups"
 msgstr "Gruppe"
@@ -5785,15 +5767,15 @@ msgstr "HTML editor"
 msgid "HTML editor mode"
 msgstr "Standard HTML-editor indstilling"
 
-#: admin/html.php:1418
+#: admin/html.php:1430
 msgid "Help:"
 msgstr "Hjælp:"
 
-#: admin/html.php:1107
+#: admin/html.php:1119
 msgid "Hide Details of this Group"
 msgstr "Skjul detaljer for gruppen"
 
-#: admin/html.php:1378
+#: admin/html.php:1390
 msgid "Hide Details of this Question"
 msgstr "Skjul detaljer for spørgsmålet"
 
@@ -5802,14 +5784,13 @@ msgstr "Skjul detaljer for spørgsmålet"
 msgid "Hide details of this Survey"
 msgstr "Skjul detaljer for spørgeskemaet"
 
-#: admin/html.php:895
+#: admin/html.php:907
 msgid "Hints"
 msgstr "Vink"
 
 #: admin/fck_LimeReplacementFields.php:173
-#, fuzzy
 msgid "ID of the survey"
-msgstr "Spørgeskemaets URL"
+msgstr "Spørgeskemaets ID"
 
 #: admin/globalsettings.php:352
 msgid "IMAP"
@@ -5855,7 +5836,7 @@ msgstr "Importeringen mislykkedes. Du specificerede en ugyldig filtype."
 msgid "Import of Survey is completed."
 msgstr "Import af spørgeskema fuldført."
 
-#: admin/importlabel.php:78
+#: admin/importlabel.php:85
 msgid "Import of label set(s) is completed."
 msgstr "Import af label-sæt fuldført."
 
@@ -5903,22 +5884,22 @@ msgid "Iterate survey"
 msgstr "Gentag spørgeskema"
 
 #: admin/importlabel.php:55
-#: admin/importlabel.php:75
+#: admin/importlabel.php:82
 msgid "Label set import summary"
 msgstr "Opsummering af label-sæt import"
 
-#: admin/importlabel.php:243
-#: admin/importlabel.php:349
+#: admin/importlabel.php:253
+#: admin/importlabel.php:359
 msgid "Label set was not imported because the same label set already exists."
 msgstr "Label-sættet blev ikke importeret, idet samme label-sæt allerede eksisterer."
 
 #: admin/http_importsurvey.php:174
 #: admin/importgroup.php:85
-#: admin/importlabel.php:76
+#: admin/importlabel.php:83
 msgid "Label sets"
 msgstr "Label-sæt"
 
-#: admin/importlabel.php:77
+#: admin/importlabel.php:84
 msgid "Labels"
 msgstr "Labels"
 
@@ -5940,33 +5921,32 @@ msgstr "Sidste kontrol: %s"
 msgid "Last name from token"
 msgstr "Efternavn fra respondentnøglen"
 
-#: admin/html.php:1764
-#, fuzzy
+#: admin/html.php:1776
 msgid "LimeSurvey XML survey file (*.lss)"
-msgstr "LimeSurvey spørgeskemafil (*.csv)"
+msgstr "LimeSurvey XML spørgeskema-fil (*.lss)"
 
-#: admin/html.php:1805
-#: admin/html.php:1852
+#: admin/html.php:1817
+#: admin/html.php:1864
 msgid "LimeSurvey group file (*.csv)"
 msgstr "LimeSurvey gruppefil (*.csv)"
 
-#: admin/html.php:2252
+#: admin/html.php:2264
 msgid "List Surveys"
 msgstr "Vis spørgeskemaer"
 
-#: admin/html.php:2211
+#: admin/html.php:2223
 msgid "Logged in as:"
 msgstr "Logget ind som:"
 
-#: admin/html.php:2303
+#: admin/html.php:2315
 msgid "Logout"
 msgstr "Log af"
 
-#: admin/html.php:1404
+#: admin/html.php:1416
 msgid "Mandatory Question"
 msgstr "Obligatorisk spørgsmål"
 
-#: admin/html.php:1467
+#: admin/html.php:1479
 msgid "Mandatory:"
 msgstr "Obligatorisk:"
 
@@ -5988,7 +5968,7 @@ msgstr "Navn på spørgeskemaadministrator"
 msgid "Never"
 msgstr "Aldrig"
 
-#: admin/html.php:1072
+#: admin/html.php:1084
 msgid "Next question"
 msgstr "Næste spørgsmål"
 
@@ -6010,12 +5990,12 @@ msgstr "Intet SID (Spørgeskema) blev angivet. Kan ikke importere spørgsmål."
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "Intet SID angivet. Kan ikke dumpe spørgeskema"
 
-#: admin/html.php:1563
-#: admin/html.php:1624
+#: admin/html.php:1575
+#: admin/html.php:1636
 msgid "No Username selected."
 msgstr "Intet brugernavn valgt."
 
-#: admin/html.php:1078
+#: admin/html.php:1090
 msgid "No next question"
 msgstr "Intet næste spørgsmål"
 
@@ -6023,7 +6003,7 @@ msgstr "Intet næste spørgsmål"
 msgid "No next question group"
 msgstr "Ingen næste spørgsmåls gruppe"
 
-#: admin/html.php:1062
+#: admin/html.php:1074
 msgid "No previous question"
 msgstr "Intet foregående spørgsmål"
 
@@ -6047,7 +6027,7 @@ msgstr "Ikke Importeret label-sæt"
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr "Note: Demo mode er aktiveret. Indstillinger markeret med (*) kan ikke ændres."
 
-#: admin/html.php:876
+#: admin/html.php:888
 msgid "Number of questions/groups"
 msgstr "Antal spørgsmål/grupper"
 
@@ -6070,11 +6050,11 @@ msgstr "Kun tidligere siders svar er tilgængelige"
 msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr "Åbn syntaksfilen i SPSS i Unicode-mode"
 
-#: admin/html.php:1458
+#: admin/html.php:1470
 msgid "Option 'Other':"
 msgstr "Valgmulighed 'Andet':"
 
-#: admin/html.php:1405
+#: admin/html.php:1417
 msgid "Optional Question"
 msgstr "Valgfrit spørgsmål"
 
@@ -6107,20 +6087,20 @@ msgstr "Delvise (gemte) svar"
 msgid "Participants can save partially finished surveys"
 msgstr "Respondenter kan gemme delvist gennemførte spørgeskemaer."
 
-#: admin/html.php:1691
+#: admin/html.php:1703
 msgid "Permission"
 msgstr "Rettigheder"
 
-#: admin/html.php:1226
+#: admin/html.php:1238
 #: admin/html_functions.php:54
 msgid "Please select a language:"
 msgstr "Vælg venligst sprog:"
 
-#: admin/html.php:2039
+#: admin/html.php:2051
 msgid "Please select a user first"
 msgstr "Vælg venligst en bruger, inden du går videre"
 
-#: admin/html.php:2046
+#: admin/html.php:2058
 msgid "Please select a user group first"
 msgstr "Vælg venligst en brugergruppe, inden du går videre"
 
@@ -6133,12 +6113,12 @@ msgstr "Popup HTML editor"
 msgid "Presentation"
 msgstr "Præsentation"
 
-#: admin/html.php:1212
-#: admin/html.php:1217
+#: admin/html.php:1224
+#: admin/html.php:1229
 msgid "Preview This Question"
 msgstr "Preview spørgsmålet"
 
-#: admin/html.php:957
+#: admin/html.php:969
 msgid "Preview current question group"
 msgstr "Se forhåndsvisning af denne spørgsmålsgruppe"
 
@@ -6146,7 +6126,7 @@ msgstr "Se forhåndsvisning af denne spørgsmålsgruppe"
 msgid "Previous Answers Fields"
 msgstr "Tidligere svarfelter"
 
-#: admin/html.php:1056
+#: admin/html.php:1068
 msgid "Previous question"
 msgstr "Foregående spørgsmål"
 
@@ -6195,11 +6175,10 @@ msgid "Question groups"
 msgstr "Spørgsmålsgrupper"
 
 #: admin/html.php:127
-#, fuzzy
 msgid "Question type selector"
-msgstr "Spørgsmålsvalg"
+msgstr "Spørgsmålstype valg"
 
-#: admin/html.php:1409
+#: admin/html.php:1421
 msgid "Question:"
 msgstr "Spørgsmål:"
 
@@ -6208,10 +6187,9 @@ msgstr "Spørgsmål:"
 msgid "Quick statistics"
 msgstr "Hurtige statistikker"
 
-#: admin/html.php:2153
-#, fuzzy
+#: admin/html.php:2165
 msgid "Quick-translate survey"
-msgstr "Gentag spørgeskema"
+msgstr "Kvik-oversættelse af spørgeskema"
 
 #: admin/html.php:425
 #: admin/html.php:430
@@ -6232,11 +6210,10 @@ msgstr "Reference-URL vil blive gemt."
 msgid "Regenerate question codes:"
 msgstr "Regenerer spørgesmåls koder:"
 
-#: admin/html.php:1141
-#: admin/html.php:1495
-#, fuzzy
+#: admin/html.php:1153
+#: admin/html.php:1507
 msgid "Relevance:"
-msgstr "Erstat"
+msgstr "Relevans:"
 
 #: admin/fck_LimeReplacementFields.php:122
 #: admin/fck_LimeReplacementFields.php:141
@@ -6246,9 +6223,8 @@ msgstr "Genindlæs URL"
 #: admin/html.php:339
 #: admin/html.php:344
 #: admin/html.php:348
-#, fuzzy
 msgid "Reorder question groups"
-msgstr "Tilføj spørgsmålsgruppe"
+msgstr "Omrokering af spørgsmålsgrupper"
 
 #: admin/globalsettings.php:465
 msgid "Repeating headings in array questions every X subquestions:"
@@ -6268,7 +6244,7 @@ msgid "Responses & statistics"
 msgstr "Besvarelser & statestik"
 
 #: admin/importlabel.php:57
-#: admin/importlabel.php:79
+#: admin/importlabel.php:88
 msgid "Return to label set administration"
 msgstr "Tilbage til label-sæt administration"
 
@@ -6309,9 +6285,9 @@ msgstr "SSL"
 msgid "Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)"
 msgstr "Gem begge i arbejdsmappen til R (brug getwd() og setwd() i R-kommandovindue for at finde og sætte den)"
 
-#: admin/html.php:1780
-#: admin/html.php:1821
-#: admin/html.php:1868
+#: admin/html.php:1792
+#: admin/html.php:1833
+#: admin/html.php:1880
 msgid "Save for Lsrc (*.csv)"
 msgstr "Gem til Lsrc (*.csv)"
 
@@ -6348,15 +6324,15 @@ msgstr "Server type:"
 msgid "Session lifetime (seconds):"
 msgstr "Sessionslevetid (sekunder):"
 
-#: admin/html.php:1602
+#: admin/html.php:1614
 msgid "Set Survey Rights"
 msgstr "Angiv spørgeskemarettigheder"
 
-#: admin/html.php:1326
+#: admin/html.php:1338
 msgid "Set conditions for this question"
 msgstr "Angiv betingelser for spørgsmålet"
 
-#: admin/html.php:1547
+#: admin/html.php:1559
 msgid "Set survey permissions"
 msgstr "Sæt spørgeskema rettigheder"
 
@@ -6364,11 +6340,11 @@ msgstr "Sæt spørgeskema rettigheder"
 msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr "Vis 'intet svar' mulighed for ikke obligatoriske spørgsmål:"
 
-#: admin/html.php:1109
+#: admin/html.php:1121
 msgid "Show Details of this Group"
 msgstr "Vis detaljer for gruppen"
 
-#: admin/html.php:1381
+#: admin/html.php:1393
 msgid "Show Details of this Question"
 msgstr "Vis detaljer for spørgsmålet"
 
@@ -6394,7 +6370,6 @@ msgid "Show summary information"
 msgstr "Vis opsummering"
 
 #: admin/html.php:131
-#, fuzzy
 msgid "Simple selector"
 msgstr "Simpel spørgesmål vælger"
 
@@ -6411,7 +6386,7 @@ msgstr "Værtsmaskinens navn:"
 msgid "Some Question have been disabled"
 msgstr "Nogle spørgsmål er slået fra"
 
-#: admin/html.php:2317
+#: admin/html.php:2329
 msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr "Nogle ret simple trin for at skabe dit eget personlige spørgeskema for første gang:"
 
@@ -6451,7 +6426,7 @@ msgstr "Kronologisk"
 msgid "Subquestions"
 msgstr "Under spørgsmål"
 
-#: admin/html.php:1650
+#: admin/html.php:1662
 msgid "Success!"
 msgstr "Lykkedes!"
 
@@ -6460,9 +6435,8 @@ msgid "Survey"
 msgstr "Spørgeskema"
 
 #: admin/html.php:377
-#, fuzzy
 msgid "Survey  Logic File"
-msgstr "Gendan spørgeskemalogik"
+msgstr "Spørgeskema logik-fil"
 
 #: admin/fck_LimeReplacementFields.php:424
 #, php-format
@@ -6485,7 +6459,7 @@ msgstr "Spørgeskema URL for sprog:"
 msgid "Survey admin can choose"
 msgstr "Spørgeskemaadministratoren kan vælge"
 
-#: admin/html.php:899
+#: admin/html.php:911
 msgid "Survey cannot be activated yet."
 msgstr "Spørgeskemaet kan endnu ikke aktiveres."
 
@@ -6497,7 +6471,7 @@ msgstr "Spørgeskemaet kan ikke aktiveres. Enten har du ikke tilladelse til at a
 msgid "Survey copy summary"
 msgstr "Spørgeskema kopier beskrivelse"
 
-#: admin/html.php:878
+#: admin/html.php:890
 msgid "Survey currently active"
 msgstr "Spørgeskema aktiveret"
 
@@ -6512,15 +6486,13 @@ msgstr "Spørgeskemaets udløbsdato"
 msgid "Survey import summary"
 msgstr "Spørgeskema importerings oversigt"
 
-#: admin/html.php:1257
-#, fuzzy
+#: admin/html.php:1269
 msgid "Survey logic file for current question"
-msgstr "Slet spørgsmålet"
+msgstr "Spørgeskema logik-fil for aktuelle spørgsmål"
 
-#: admin/html.php:981
-#, fuzzy
+#: admin/html.php:993
 msgid "Survey logic file for current question group"
-msgstr "Se forhåndsvisning af denne spørgsmålsgruppe"
+msgstr "Spørgeskema logik-fil for aktuelle spørgsmålsgruppe"
 
 #: admin/fck_LimeReplacementFields.php:435
 #, php-format
@@ -6528,15 +6500,15 @@ msgid "Survey mode is set to %s:"
 msgstr "Spørgeskemaindstilling er sat til %s:"
 
 #: admin/html.php:330
-#: admin/html.php:1902
+#: admin/html.php:1914
 msgid "Survey permissions"
 msgstr "Spørgeskema adgang"
 
-#: admin/html.php:2109
+#: admin/html.php:2121
 msgid "Survey permissions for all users in this group were successfully updated."
 msgstr "Spørgeskemaets rettigheder for alle brugerne i denne gruppe blev succesfuldt opdateret."
 
-#: admin/html.php:2116
+#: admin/html.php:2128
 msgid "Survey permissions were successfully updated."
 msgstr "Spørgeskema rettigheder blev succesfuldt opdateret."
 
@@ -6548,12 +6520,12 @@ msgstr "Visning af spørgeskema kun for administratorer"
 msgid "Survey properties"
 msgstr "Rediger egenskaber for spørgeskema"
 
-#: admin/html.php:892
+#: admin/html.php:904
 msgid "Survey table name"
 msgstr "Spørgeskematabelnavn"
 
 #: admin/globalsettings.php:640
-#: admin/html.php:2285
+#: admin/html.php:2297
 #: admin/http_importsurvey.php:155
 msgid "Surveys"
 msgstr "Spørgeskemaer"
@@ -6571,7 +6543,7 @@ msgstr "TLS"
 msgid "Target survey ID:"
 msgstr "Målspørgeskema ID:"
 
-#: admin/html.php:2281
+#: admin/html.php:2293
 msgid "Template Editor"
 msgstr "Skabeloneditor"
 
@@ -6587,11 +6559,11 @@ msgstr "Test spørgeskemaet"
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr "Test hvis din server har SSL aktiv ved at klikke på dette link."
 
-#: admin/html.php:2322
+#: admin/html.php:2334
 msgid "Test survey"
 msgstr "Test spørgeskemaet"
 
-#: admin/html.php:2266
+#: admin/html.php:2278
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
 msgstr "Database eksport er kun tilgængelig for MySQL databaser. Anvend de respektive backupfunktioner for andre databasetyper for at dumpe databasen."
 
@@ -6613,7 +6585,7 @@ msgstr "Der er for tiden ingen nyere LimeSurvey version tilgængelig."
 msgid "There was an error on update check (%s)"
 msgstr "Der opstod en fejl ved opdateringskontrollen (%s)"
 
-#: admin/importlabel.php:103
+#: admin/importlabel.php:112
 msgid "This file is not a LimeSurvey label set file. Import failed."
 msgstr "Filen er ikke en LimeSurvey label-sæt fil. Import mislykkedes."
 
@@ -6635,7 +6607,7 @@ msgstr "Spørgeskemaet er aktiveret men har en startdato."
 
 #: admin/html.php:247
 #: admin/html.php:663
-#: admin/html.php:1089
+#: admin/html.php:1101
 msgid "This survey is currently active."
 msgstr "Spørgeskemaet er aktiveret"
 
@@ -6681,7 +6653,7 @@ msgstr "Administration af respondentnøgler"
 msgid "Tools"
 msgstr "Værktøjer"
 
-#: admin/html.php:1433
+#: admin/html.php:1445
 msgid "Type:"
 msgstr "Type:"
 
@@ -6694,11 +6666,11 @@ msgstr "URL for deltagere til at framelde sig dette spørgeskema"
 msgid "URL of the survey"
 msgstr "Spørgeskemaets URL"
 
-#: admin/html.php:1695
+#: admin/html.php:1707
 msgid "Update"
 msgstr "Opdater"
 
-#: admin/html.php:2219
+#: admin/html.php:2231
 #, php-format
 msgid "Update available: %s"
 msgstr "Opdatering tilgængelig: %s"
@@ -6715,19 +6687,19 @@ msgstr "Uploaded label-sæt skal have en .lsi endelse"
 msgid "Used/free space for file uploads"
 msgstr "Brugt/fri plads til uploadede filer"
 
-#: admin/html.php:2036
+#: admin/html.php:2048
 msgid "User"
 msgstr "Bruger"
 
-#: admin/html.php:1907
+#: admin/html.php:1919
 msgid "User Group"
 msgstr "Brugergruppe"
 
-#: admin/html.php:1599
+#: admin/html.php:1611
 msgid "User Group added."
 msgstr "Brugergruppe tilføjet."
 
-#: admin/html.php:1545
+#: admin/html.php:1557
 msgid "User added."
 msgstr "Bruger tilføjet."
 
@@ -6735,12 +6707,12 @@ msgstr "Bruger tilføjet."
 msgid "User name:"
 msgstr "Brugernavn:"
 
-#: admin/html.php:1649
-#: admin/html.php:1906
+#: admin/html.php:1661
+#: admin/html.php:1918
 msgid "Username"
 msgstr "Brugernavn"
 
-#: admin/html.php:1556
+#: admin/html.php:1568
 msgid "Username already exists."
 msgstr "Brugernavn findes allerede."
 
@@ -6748,7 +6720,7 @@ msgstr "Brugernavn findes allerede."
 msgid "Users"
 msgstr "Brugere"
 
-#: admin/html.php:1428
+#: admin/html.php:1440
 msgid "Validation:"
 msgstr "Validering:"
 
@@ -6761,7 +6733,7 @@ msgstr "Vis gemte besvarelser som ikke er blevet indsendt"
 msgid "View response URL"
 msgstr "Se besvarelses URL"
 
-#: admin/html.php:1694
+#: admin/html.php:1706
 msgid "View/read"
 msgstr "Se/læs"
 
@@ -6769,16 +6741,16 @@ msgstr "Se/læs"
 msgid "Warning: Before turning on HTTPS, "
 msgstr "Advarsel: Før du aktivere HTTPS,"
 
-#: admin/html.php:2204
+#: admin/html.php:2216
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "Advarsel: Du anvender stadig standard adgangskode ('password'). Skift adgangskode og log ind igen."
 
 #: admin/http_importsurvey.php:186
-#: admin/importlabel.php:66
+#: admin/importlabel.php:73
 msgid "Warnings"
 msgstr "Advarsler"
 
-#: admin/html.php:2316
+#: admin/html.php:2328
 #, php-format
 msgid "Welcome to %s!"
 msgstr "Velkommen til %s!"
@@ -6792,7 +6764,7 @@ msgstr "Advarsel: Du kan importere alle gamle svar med samme antal kolonner som 
 msgid "You can update %smanually%s or use the %s"
 msgstr "Du kan opdatere %si hånden%s eller bruge %s"
 
-#: admin/html.php:1309
+#: admin/html.php:1321
 msgid "You can't copy a question if the survey is active."
 msgstr "Spørgsmål kan ikke kopieres, hvis spørgeskemaet er aktiveret."
 
@@ -6813,28 +6785,26 @@ msgid "You can't import label sets which don't support the current survey's base
 msgstr "Du kan ikke importere et label-sæt, som ikke understøtter det nuværende spørgeskemas standardsprog"
 
 #: admin/html.php:338
-#, fuzzy
 msgid "You can't reorder question groups if the survey is active."
-msgstr "Spørgsmål kan ikke kopieres, hvis spørgeskemaet er aktiveret."
+msgstr "Du kan ikke omroklere spørgsmålsgrupperne, når spørgeskemaet er aktiveret."
 
 #: admin/html.php:347
-#, fuzzy
 msgid "You can't reorder question groups if there is only one group."
-msgstr "Spørgsmål kan ikke kopieres, hvis spørgeskemaet er aktiveret."
+msgstr "Du kan ikke omrokere spørgsmålsgrupperne, når der kun er én gruppe."
 
-#: admin/html.php:1439
+#: admin/html.php:1451
 msgid "You need to add answer options to this question"
 msgstr "Du skal angive svarmuligheder for spørgsmålet"
 
-#: admin/html.php:902
+#: admin/html.php:914
 msgid "You need to add question groups"
 msgstr "Du bliver nød til at tilføje spørgesmålsgrupper"
 
-#: admin/html.php:906
+#: admin/html.php:918
 msgid "You need to add questions"
 msgstr "Du skal tilføje spørgsmål"
 
-#: admin/html.php:1449
+#: admin/html.php:1461
 msgid "You need to add subquestions to this question"
 msgstr "Du skal angive underspørgsmål til dette spørgsmål"
 
@@ -6859,7 +6829,7 @@ msgstr "tjek hvis dette link virker."
 msgid "digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command window"
 msgstr "ciffer:       source(\"%s\", encoding = \"UTF-8\")        i R-kommandovinduet"
 
-#: admin/html.php:1768
+#: admin/html.php:1780
 msgid "queXML Survey XML Format (*.xml)"
 msgstr "queXML Survey XML format (*.xml)"
 
@@ -6875,7 +6845,7 @@ msgstr "Kvotemeddelelse"
 msgid "(Select multiple label sets by using the Ctrl key)"
 msgstr "(Vælg flere 'label sets' vha. Ctrl-tasten)"
 
-#: admin/questionhandling.php:601
+#: admin/questionhandling.php:605
 msgid "...or import a question"
 msgstr "eller importer spørgsmål"
 
@@ -6930,9 +6900,8 @@ msgid "All conditions meet consistency standards"
 msgstr "Betingelserne opfylder integritetskravene."
 
 #: admin/integritycheck.php:192
-#, fuzzy
 msgid "All default values meet consistency standards"
-msgstr "Alle gamle nøgletabeller opfylder integritetskravene."
+msgstr "Alle standardværdier er konsistente."
 
 #: admin/integritycheck.php:412
 msgid "All groups meet consistency standards"
@@ -6955,24 +6924,20 @@ msgid "All questions meet consistency standards"
 msgstr "Spørgsmålene opfylder integritetskravene."
 
 #: admin/integritycheck.php:223
-#, fuzzy
 msgid "All quota language settings meet consistency standards"
-msgstr "Spørgeskemaindstillingerne opfylder integritetskravene."
+msgstr "Alle kvote sprog indstillinger opfylder integritetskravene."
 
 #: admin/integritycheck.php:239
-#, fuzzy
 msgid "All quota members meet consistency standards"
-msgstr "Svarkategorierne opfylder integritetskravene"
+msgstr "alle kvote medlemmer opfylder integritetskravene"
 
 #: admin/integritycheck.php:207
-#, fuzzy
 msgid "All quotas meet consistency standards"
-msgstr "Spørgsmålene opfylder integritetskravene."
+msgstr "Alle kvoter opfylder integritetskravene."
 
 #: admin/integritycheck.php:361
-#, fuzzy
 msgid "All survey language settings meet consistency standards"
-msgstr "Spørgeskemaindstillingerne opfylder integritetskravene."
+msgstr "Alle spørgeskema sprog indstillinger opfylder integritetskravene."
 
 #: admin/integritycheck.php:339
 msgid "All survey settings meet consistency standards"
@@ -6986,13 +6951,13 @@ msgstr "Svar og respondentnøgler er blevet genåbnet."
 msgid "Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?"
 msgstr "Er du helt sikker på, at du vil *slette* nogle ufuldstændige svar og nulstille den færdige tilstand for såvel svar som nøgler?"
 
-#: admin/questiongrouphandling.php:356
-#: admin/questionhandling.php:557
-#: admin/questionhandling.php:755
+#: admin/questiongrouphandling.php:331
+#: admin/questionhandling.php:561
+#: admin/questionhandling.php:759
 msgid "At beginning"
 msgstr "I begyndelsen"
 
-#: admin/questionhandling.php:556
+#: admin/questionhandling.php:560
 msgid "At end"
 msgstr "I slutningen"
 
@@ -7015,9 +6980,9 @@ msgstr "Tilbage"
 msgid "Can't update labels because you are using duplicated codes"
 msgstr "Kunne ikke opdatere labels, da du anvender duplikerede koder"
 
-#: admin/questionhandling.php:474
-#: admin/questionhandling.php:498
-#: admin/questionhandling.php:516
+#: admin/questionhandling.php:478
+#: admin/questionhandling.php:502
+#: admin/questionhandling.php:520
 msgid "Cannot be changed (survey is active)"
 msgstr "Kan ikke ændres (spørgeskemaet er aktivt)"
 
@@ -7053,7 +7018,7 @@ msgstr "Luk vindue"
 
 #: admin/labels.php:231
 #: admin/questiongrouphandling.php:87
-#: admin/questionhandling.php:609
+#: admin/questionhandling.php:613
 msgid "Convert resource links?"
 msgstr "Konverter ressource links?"
 
@@ -7062,14 +7027,12 @@ msgid "Copy Question"
 msgstr "Kopier spørgsmål"
 
 #: admin/questionhandling.php:109
-#, fuzzy
 msgid "Copy advanced settings?"
-msgstr "Vis avancerede indstillinger"
+msgstr "Kopier avancerede indstillinger?"
 
 #: admin/questionhandling.php:106
-#, fuzzy
 msgid "Copy answer options?"
-msgstr "Rediger svarmuligheder"
+msgstr "Kopier svarmuligheder?"
 
 #: admin/import_resources_zip.php:103
 #: admin/import_resources_zip.php:286
@@ -7078,14 +7041,12 @@ msgid "Copy failed"
 msgstr "Kopiering mislykkedes"
 
 #: admin/questionhandling.php:112
-#, fuzzy
 msgid "Copy question"
 msgstr "Kopier spørgsmål"
 
 #: admin/questionhandling.php:103
-#, fuzzy
 msgid "Copy subquestions?"
-msgstr "Kopier spørgsmål"
+msgstr "Kopier under-spørgsmål?"
 
 #: admin/labels.php:157
 msgid "Create New Label Set"
@@ -7233,14 +7194,12 @@ msgid "Deleting questions"
 msgstr "Sletter spørgsmål"
 
 #: admin/integritycheck.php:800
-#, fuzzy
 msgid "Deleting survey language setting"
-msgstr "Kvote sprogindstillinger"
+msgstr "Sletter spørgeskema sprog indstillinger"
 
 #: admin/integritycheck.php:798
-#, fuzzy
 msgid "Deleting survey language settings"
-msgstr "Kvote sprogindstillinger"
+msgstr "Sletter spørgeskema sprog indstillinger"
 
 #: admin/import_resources_zip.php:38
 msgid "Demo Mode Only: Uploading file is disabled in this system."
@@ -7288,9 +7247,8 @@ msgid "Edit quota"
 msgstr "Rediger 'quota'"
 
 #: admin/labels.php:440
-#, fuzzy
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
-msgstr "Indtast ét mærkat per linje. Du kan angive en kode ved at separere koden og mærkatets tekst  med et semikolon eller et tabulatortegn. For flersprogede spørgeskemaer skal du tilføje oversættelsen/oversættelserne på den samme linje, separeret med et semikolon eller mellemrumstegn."
+msgstr "Indtast ét mærkat per linje. Du kan angive kode ved at separere koden og mærkatets tekst  med et semikolon eller et tabulatortegn. For fler-sprogede spørgeskemaer skal du tilføje oversættelsen/oversættelserne på den samme linje, separeret med et semikolon eller mellemrumstegn."
 
 #: admin/labels.php:439
 msgid "Enter your labels:"
@@ -7368,15 +7326,15 @@ msgid "Forgot Your Password?"
 msgstr "Glemt adgangskoden?"
 
 #: admin/integritycheck.php:407
-#, fuzzy, php-format
+#, php-format
 msgid "GID `%s` because there is no matching survey."
-msgstr "Intet matchende spørgeskema."
+msgstr "GID `%s` fordi der ikke findes et tilsvarende spørgeskema."
 
 #: admin/importquestion.php:99
 msgid "Go to question"
 msgstr "til spørgsmål"
 
-#: admin/questionhandling.php:574
+#: admin/questionhandling.php:578
 msgid "Hide advanced settings"
 msgstr "Skjul avancerede indstillinger"
 
@@ -7390,7 +7348,7 @@ msgid "If errors are showing up you might have to execute this script repeatedly
 msgstr "Hvis der opstår fejl, så forsøg at køre scriptet gentagne gange."
 
 #: admin/importquestion.php:19
-#: admin/questionhandling.php:614
+#: admin/questionhandling.php:618
 msgid "Import Question"
 msgstr "Importer spørgsmål"
 
@@ -7477,7 +7435,7 @@ msgstr "Sprog:"
 msgid "Limit"
 msgstr "Grænse"
 
-#: admin/questionhandling.php:576
+#: admin/questionhandling.php:580
 msgid "Loading..."
 msgstr "Henter..."
 
@@ -7569,15 +7527,14 @@ msgstr "Delvis"
 msgid "Passed single-use password was wrong or user doesn't exist"
 msgstr "Overførte enkelt-bruger kodeord var forkert eller brugeren eksisterer ikke"
 
-#: admin/questiongrouphandling.php:351
-#: admin/questionhandling.php:751
+#: admin/questiongrouphandling.php:326
+#: admin/questionhandling.php:755
 msgid "Place after.."
 msgstr "Indsæt efter."
 
 #: admin/printablesurvey.php:1081
-#, fuzzy
 msgid "Please choose *all* that apply and provide a comment:"
-msgstr "Vælg alle som passer og skriv evt. en kommentar:"
+msgstr "Vælg venligst alle som er relevante og indtast en kommentar"
 
 #: admin/printablesurvey.php:1030
 #: admin/printablesurvey.php:1031
@@ -7602,14 +7559,14 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Vælg alle som passer og skriv evt. en kommentar:"
 
 #: admin/printablesurvey.php:1952
-#, fuzzy, php-format
+#, php-format
 msgid "Please choose at least %s item(s)"
-msgstr "Sæt mindst ét kryds."
+msgstr "Vælg venligst mindst %s elementer"
 
 #: admin/printablesurvey.php:1955
-#, fuzzy, php-format
+#, php-format
 msgid "Please choose no more than %s item(s)"
-msgstr "Sæt venligst kryds"
+msgstr "Vælg venligst højest %s elementer"
 
 #: admin/printablesurvey.php:1224
 #: admin/printablesurvey.php:1241
@@ -7676,7 +7633,7 @@ msgstr "Skriv dit svar her:"
 msgid "Please write your answer(s) here:"
 msgstr "Skriv dine svar her:"
 
-#: admin/questionhandling.php:554
+#: admin/questionhandling.php:558
 msgid "Position:"
 msgstr "Position:"
 
@@ -7689,7 +7646,7 @@ msgstr "Spørgsmålsattributer"
 msgid "Question Selection"
 msgstr "Spørgsmålsvalg"
 
-#: admin/questionhandling.php:463
+#: admin/questionhandling.php:467
 msgid "Question Type:"
 msgstr "Spørgsmålstype:"
 
@@ -7698,8 +7655,8 @@ msgid "Question code:"
 msgstr "Spørgsmålskode:"
 
 #: admin/questionhandling.php:75
-#: admin/questionhandling.php:489
-#: admin/questionhandling.php:497
+#: admin/questionhandling.php:493
+#: admin/questionhandling.php:501
 msgid "Question group:"
 msgstr "Spørgsmålsgruppe:"
 
@@ -7752,7 +7709,7 @@ msgstr "Kvotenavn"
 #: admin/questiongrouphandling.php:65
 #: admin/questiongrouphandling.php:151
 #: admin/questionhandling.php:71
-#: admin/questionhandling.php:538
+#: admin/questionhandling.php:542
 msgid "Relevance equation:"
 msgstr "Relevans lining:"
 
@@ -7813,7 +7770,7 @@ msgstr "Gem denne, og opret en ny:"
 msgid "Select Answer"
 msgstr "Vælg svar"
 
-#: admin/questionhandling.php:605
+#: admin/questionhandling.php:609
 msgid "Select LimeSurvey question file (*.lsq/*.csv)"
 msgstr "Vælg en LimeSurvey spørgsmåls fil (*.lsq/*.csv)"
 
@@ -7841,7 +7798,7 @@ msgstr "Fortsæt sletningen?"
 msgid "Show Help"
 msgstr "Vis hjælp"
 
-#: admin/questionhandling.php:574
+#: admin/questionhandling.php:578
 msgid "Show advanced settings"
 msgstr "Vis avancerede indstillinger"
 
@@ -7866,12 +7823,12 @@ msgstr "Indsend spørgeskema"
 #: admin/integritycheck.php:540
 #, php-format
 msgid "Survey ID %d saved at %s"
-msgstr "Spørgeskema ID %d gemt ved %s:"
+msgstr "Spørgeskema ID %d gemt ved %s"
 
 #: admin/integritycheck.php:472
-#, fuzzy, php-format
+#, php-format
 msgid "Survey ID %d saved at %s (%s)"
-msgstr "Spørgeskema ID %d gemt ved %s:"
+msgstr "Spørgeskema ID %d gemt ved %s (%s)"
 
 #: admin/integritycheck.php:542
 #, php-format
@@ -7965,9 +7922,8 @@ msgid "The following questions should be deleted"
 msgstr "Følgende spørgsmål bør slettes"
 
 #: admin/integritycheck.php:353
-#, fuzzy
 msgid "The following survey language settings should be deleted"
-msgstr "Følgende spørgeskemaer bør slettes"
+msgstr "Følgende spørgeskema sprog indstilling bør slettes"
 
 #: admin/integritycheck.php:333
 msgid "The following surveys should be deleted"
@@ -8075,7 +8031,7 @@ msgstr "Håndtering af uploadede ressourcer"
 msgid "Use same default value across languages:"
 msgstr "Brug samme standardværdi ved alle sprog:"
 
-#: admin/questionhandling.php:810
+#: admin/questionhandling.php:814
 msgid "View Question"
 msgstr "Vis spørgsmål"
 
@@ -8125,17 +8081,17 @@ msgstr "tabel"
 msgid "timings"
 msgstr "tider"
 
-#: admin/tokens.php:2906
+#: admin/tokens.php:2918
 #, php-format
 msgid "%s duplicate records removed"
 msgstr "%s duplikatobservationer fjernet"
 
-#: admin/tokens.php:2260
+#: admin/tokens.php:2270
 #, php-format
 msgid "%s field(s) were successfully added."
 msgstr "%s felt(er) blev tilføjet."
 
-#: admin/tokens.php:2918
+#: admin/tokens.php:2930
 #, php-format
 msgid "%s lines had a mismatching number of fields."
 msgstr "%s linier havde et forkert antal felter."
@@ -8150,23 +8106,23 @@ msgstr "%s meddelelser blev skannet, ud af hvilke %s blev markeret som bounces a
 msgid "%s messages were scanned, none were marked as bounce by the system."
 msgstr "%s meddelelser blev skannet, ud af hvilke der ikke blev markeret nogle som bounces af systemet."
 
-#: admin/tokens.php:2897
+#: admin/tokens.php:2909
 #, php-format
 msgid "%s records imported"
 msgstr "%s observationer importeret"
 
-#: admin/tokens.php:2895
+#: admin/tokens.php:2907
 #, php-format
 msgid "%s records in CSV"
 msgstr "%s observationer i CSV"
 
-#: admin/tokens.php:2896
+#: admin/tokens.php:2908
 #, php-format
 msgid "%s records met minumum requirements"
 msgstr "%s observationer opfyldte minimumskrav"
 
-#: admin/tokens.php:2928
-#: admin/tokens.php:3154
+#: admin/tokens.php:2940
+#: admin/tokens.php:3166
 #, php-format
 msgid "%s records with invalid email address removed"
 msgstr "%s observationer med ugyldige e-mail adresser fjernet"
@@ -8193,19 +8149,19 @@ msgstr "3. kvartil (K3)"
 msgid "7bit Swedish"
 msgstr "7bit Svensk"
 
-#: admin/tokens.php:2176
+#: admin/tokens.php:2186
 msgid "<no data>"
 msgstr "<ingen data>"
 
-#: admin/tokens.php:1375
+#: admin/tokens.php:1378
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "En backup af tabellen er blevet lavet. Din systemadministrator kan skaffe adgang til den."
 
-#: admin/tokens.php:1348
+#: admin/tokens.php:1350
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "Hvis du vælger at fortsætte, vil der blive lavet en backup af tabellen. Din systemadministrator vil være i stand til at skaffe adgang til den."
 
-#: admin/tokens.php:510
+#: admin/tokens.php:512
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr "En nøgletabel til spørgeskemaet er blevet oprettet og de gamle nøgler blev importeret."
 
@@ -8237,32 +8193,32 @@ msgstr "Tilføj gruppe"
 msgid "Add New User Group"
 msgstr "Tilføj ny brugergruppe"
 
-#: admin/tokens.php:2602
+#: admin/tokens.php:2614
 msgid "Add another token entry"
 msgstr "Tilføj endnu en respondentnøgle"
 
-#: admin/tokens.php:613
-#: admin/tokens.php:2480
-#: admin/tokens.php:2635
+#: admin/tokens.php:615
+#: admin/tokens.php:2492
+#: admin/tokens.php:2647
 msgid "Add dummy tokens"
 msgstr "Tilføj dummy-respondentnøgler"
 
-#: admin/tokens.php:2196
+#: admin/tokens.php:2206
 msgid "Add fields"
 msgstr "Tilføj felter"
 
-#: admin/tokens.php:609
-#: admin/tokens.php:2609
+#: admin/tokens.php:611
+#: admin/tokens.php:2621
 msgid "Add new token entry"
 msgstr "Tilføj ny respondent"
 
-#: admin/tokens.php:2187
+#: admin/tokens.php:2197
 msgid "Add token attributes"
 msgstr "Tilføj respondentnøgleattributer"
 
-#: admin/tokens.php:2295
-#: admin/tokens.php:2405
-#: admin/tokens.php:2573
+#: admin/tokens.php:2307
+#: admin/tokens.php:2417
+#: admin/tokens.php:2585
 msgid "Add token entry"
 msgstr "Tilføj ny respondent"
 
@@ -8282,14 +8238,13 @@ msgstr "Tilføjer brugergruppe"
 msgid "Adding User to group"
 msgstr "Tilføjer bruger til gruppe"
 
-#: admin/tokens.php:2255
-#, fuzzy
+#: admin/tokens.php:2265
 msgid "Adding attribute fields failed:"
-msgstr "Attributfelt"
+msgstr "Tilføjelse af attribut felter fejlede:"
 
-#: admin/tokens.php:752
-#: admin/tokens.php:757
-#: admin/tokens.php:762
+#: admin/tokens.php:754
+#: admin/tokens.php:759
+#: admin/tokens.php:764
 msgid "All"
 msgstr "Alle"
 
@@ -8302,23 +8257,23 @@ msgstr "Alle betingelser i dette spørgeskema er blevet slettet."
 msgid "All of the user's surveys were transferred to %s."
 msgstr "Alle brugerens spørgeskemaer blev overført til %s."
 
-#: admin/tokens.php:871
+#: admin/tokens.php:873
 msgid "All token entries have been deleted."
 msgstr "Alle respondentnøgler er blevet slettet."
 
-#: admin/tokens.php:880
+#: admin/tokens.php:882
 msgid "All token entries have been set to 'Not invited'."
 msgstr "Alle respondenter er markeret som 'Ikke inviteret'."
 
-#: admin/tokens.php:1782
+#: admin/tokens.php:1788
 msgid "All token entries to whom a reminder email would apply"
 msgstr "Alle respondentnøgler til hvilke en rykker-e-mail ville være brugbar"
 
-#: admin/tokens.php:743
+#: admin/tokens.php:745
 msgid "All tokens"
 msgstr "Vis Respondentnøgler"
 
-#: admin/tokens.php:889
+#: admin/tokens.php:891
 msgid "All unique token numbers have been removed."
 msgstr "Alle unikke respondentnumre er blevet fjernet."
 
@@ -8349,19 +8304,19 @@ msgstr "Svarmuligheder"
 msgid "Answered"
 msgstr "Besvarede"
 
-#: admin/tokens.php:910
+#: admin/tokens.php:912
 msgid "Are you really sure you want to delete ALL token entries?"
 msgstr "Er du sikker på, at du vil slette ALLE respondenter?"
 
-#: admin/tokens.php:902
+#: admin/tokens.php:904
 msgid "Are you really sure you want to reset all invitation records to NO?"
 msgstr "Er du sikker på, at du vil sætte alle invitationsfelter til NEJ?"
 
-#: admin/tokens.php:904
+#: admin/tokens.php:906
 msgid "Are you sure you want to delete all unique token strings?"
 msgstr "Er du sikker på at du vil slette alle unikke respondentnøgler?"
 
-#: admin/tokens.php:1310
+#: admin/tokens.php:1312
 msgid "Are you sure you want to delete the selected entries?"
 msgstr "Er du sikker på, at du vil slette de valgte poster?"
 
@@ -8388,12 +8343,12 @@ msgstr "Evalueringsdetaljer"
 msgid "Assessment heading"
 msgstr "Overskrift for evalueringer"
 
-#: admin/tokens.php:2159
+#: admin/tokens.php:2169
 msgid "Attribute field"
 msgstr "Attributfelt"
 
-#: admin/tokens.php:2303
-#: admin/tokens.php:2435
+#: admin/tokens.php:2315
+#: admin/tokens.php:2447
 msgid "Auto"
 msgstr "Auto"
 
@@ -8401,13 +8356,11 @@ msgstr "Auto"
 msgid "Auto Translate"
 msgstr "Auto Oversæt"
 
-#: admin/tokens.php:3192
-#, fuzzy
+#: admin/tokens.php:3204
 msgid "Auto detect"
-msgstr "Automatisk"
+msgstr "Opdag automatisk"
 
 #: admin/usercontrol.php:350
-#, fuzzy
 msgid "Auto-import of user failed!"
 msgstr "Autoimport af bruger fejlede!"
 
@@ -8431,10 +8384,10 @@ msgstr "Gennemsnitligt antal filer per respondent"
 msgid "Average size per respondent"
 msgstr "Gennemsnitlig størrelse per respondent"
 
-#: admin/tokens.php:2222
-#: admin/tokens.php:2227
-#: admin/tokens.php:2256
-#: admin/tokens.php:2261
+#: admin/tokens.php:2232
+#: admin/tokens.php:2237
+#: admin/tokens.php:2266
+#: admin/tokens.php:2271
 msgid "Back to attribute field management."
 msgstr "Tilbage til administration af attributfelter"
 
@@ -8446,15 +8399,15 @@ msgstr "Big5 Traditionel Kinesisk"
 msgid "Binary pseudo charset"
 msgstr "Binær pseudo tegnsæt"
 
-#: admin/tokens.php:946
+#: admin/tokens.php:948
 msgid "Bounce processing"
 msgstr "Bounce-behandling"
 
-#: admin/tokens.php:804
+#: admin/tokens.php:806
 msgid "Bounce settings have been saved."
 msgstr "Bounce-indstillinger er blevet gemt."
 
-#: admin/tokens.php:816
+#: admin/tokens.php:818
 msgid "Bounce settings to be used"
 msgstr "Bounce-indstillinger der skal bruges"
 
@@ -8468,8 +8421,8 @@ msgstr "Gennemse"
 msgid "But this one isn't."
 msgstr "Men det er denne her ikke."
 
-#: admin/tokens.php:1502
-#: admin/tokens.php:1794
+#: admin/tokens.php:1505
+#: admin/tokens.php:1800
 msgid "Bypass token with failing email addresses"
 msgstr "Overspring respondentnøgler med fejlbehæftede e-mailadresser"
 
@@ -8477,7 +8430,7 @@ msgstr "Overspring respondentnøgler med fejlbehæftede e-mailadresser"
 msgid "CSS & Javascript files:"
 msgstr "CSS og Javascript-filer:"
 
-#: admin/tokens.php:2692
+#: admin/tokens.php:2704
 msgid "CSV input format"
 msgstr "CSV inddataformat"
 
@@ -8492,11 +8445,11 @@ msgstr "CSV inddataformat"
 msgid "Calculation"
 msgstr "Beregning"
 
-#: admin/tokens.php:3165
+#: admin/tokens.php:3177
 msgid "Can't bind to the LDAP directory"
 msgstr "Kan ikke etablere binding til LDAP mappe"
 
-#: admin/tokens.php:3171
+#: admin/tokens.php:3183
 msgid "Can't connect to the LDAP directory"
 msgstr "Kan ikke oprette forbindelse til LDAP mappe"
 
@@ -8504,7 +8457,7 @@ msgstr "Kan ikke oprette forbindelse til LDAP mappe"
 msgid "Changes cannot be saved to a standard template."
 msgstr "Ændringer kan ikke gemmes i en standardskabelon"
 
-#: admin/tokens.php:3199
+#: admin/tokens.php:3211
 msgid "Character set of the file:"
 msgstr "Filens tegnsæt:"
 
@@ -8512,7 +8465,7 @@ msgstr "Filens tegnsæt:"
 msgid "Check or uncheck all items"
 msgstr "Afkryds eller kryds alt"
 
-#: admin/tokens.php:3198
+#: admin/tokens.php:3210
 msgid "Choose the CSV file to upload:"
 msgstr "Vælg CSV-fil som skal importeres:"
 
@@ -8524,7 +8477,7 @@ msgstr "Nulstil alt side"
 msgid "Click here to log in."
 msgstr "Klik her for at logge ind"
 
-#: admin/tokens.php:2074
+#: admin/tokens.php:2084
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Når du trykker 'Ja' vil der blive oprettet respondentnøgler for alle respondenter, som endnu ikke har fået en tildelt en nøgle. OK?"
 
@@ -8532,7 +8485,7 @@ msgstr "Når du trykker 'Ja' vil der blive oprettet respondentnøgler for alle r
 msgid "Closed"
 msgstr "Lukket"
 
-#: admin/tokens.php:3194
+#: admin/tokens.php:3206
 msgid "Comma"
 msgstr "Komma"
 
@@ -8546,10 +8499,10 @@ msgstr "Kommentarer"
 msgid "Completed Page"
 msgstr "Fuldført side"
 
-#: admin/tokens.php:1112
-#: admin/tokens.php:1115
-#: admin/tokens.php:1116
-#: admin/tokens.php:2360
+#: admin/tokens.php:1114
+#: admin/tokens.php:1117
+#: admin/tokens.php:1118
+#: admin/tokens.php:2372
 msgid "Completed?"
 msgstr "Fuldført?"
 
@@ -8610,7 +8563,7 @@ msgstr "Opret spørgeskema"
 msgid "Create User"
 msgstr "Opret bruger"
 
-#: admin/tokens.php:2430
+#: admin/tokens.php:2442
 msgid "Create dummy tokens"
 msgstr "Opret dummy-respondentnøgler"
 
@@ -8622,7 +8575,7 @@ msgstr "Opret ny skabelon"
 msgid "Create new template called:"
 msgstr "Opret ny skabelon med navn:"
 
-#: admin/tokens.php:2070
+#: admin/tokens.php:2080
 msgid "Create tokens"
 msgstr "Opret respondentnøgler"
 
@@ -8674,11 +8627,11 @@ msgstr "Datoen er"
 msgid "Delete Current User Group"
 msgstr "Slet brugergruppen"
 
-#: admin/tokens.php:1351
+#: admin/tokens.php:1353
 msgid "Delete Tokens"
 msgstr "Slet nøgletabel"
 
-#: admin/tokens.php:1342
+#: admin/tokens.php:1344
 msgid "Delete Tokens Table"
 msgstr "Slet nøgletabel"
 
@@ -8688,12 +8641,12 @@ msgstr "Slet nøgletabel"
 msgid "Delete User"
 msgstr "Slet bruger"
 
-#: admin/tokens.php:870
-#: admin/tokens.php:910
+#: admin/tokens.php:872
+#: admin/tokens.php:912
 msgid "Delete all token entries"
 msgstr "Slet alle respondenter"
 
-#: admin/tokens.php:904
+#: admin/tokens.php:906
 msgid "Delete all unique token strings"
 msgstr "Slet alle unikke respondentnøgler"
 
@@ -8701,8 +8654,8 @@ msgstr "Slet alle unikke respondentnøgler"
 msgid "Delete entry"
 msgstr "Slet posten"
 
-#: admin/tokens.php:1306
 #: admin/tokens.php:1308
+#: admin/tokens.php:1310
 msgid "Delete the selected entries"
 msgstr "Slet de valgte poster"
 
@@ -8718,8 +8671,8 @@ msgstr "Slet bruger"
 msgid "Delete this user from group"
 msgstr "Slet denne bruger fra gruppe"
 
-#: admin/tokens.php:1252
 #: admin/tokens.php:1254
+#: admin/tokens.php:1256
 msgid "Delete token entry"
 msgstr "Slet respondent"
 
@@ -8728,7 +8681,6 @@ msgid "Deleting User Group"
 msgstr "Sletter brugergruppe"
 
 #: admin/usercontrol.php:513
-#, fuzzy
 msgid "Deleting user"
 msgstr "Sletter bruger"
 
@@ -8752,32 +8704,32 @@ msgstr "Mappen kunne ikke omdøbes til `%s`."
 msgid "Directory with the name `%s` already exists - choose another name"
 msgstr "Mappe `%s` findes allerede - vælg et andet navn"
 
-#: admin/tokens.php:604
-#: admin/tokens.php:2542
-#: admin/tokens.php:2601
-#: admin/tokens.php:2608
-#: admin/tokens.php:2683
+#: admin/tokens.php:606
+#: admin/tokens.php:2554
+#: admin/tokens.php:2613
+#: admin/tokens.php:2620
+#: admin/tokens.php:2695
 msgid "Display tokens"
 msgstr "Vis Respondentnøgler"
 
-#: admin/tokens.php:1234
 #: admin/tokens.php:1236
+#: admin/tokens.php:1238
 msgid "Do Survey"
 msgstr "Besvar spørgeskema"
 
-#: admin/tokens.php:544
+#: admin/tokens.php:546
 msgid "Do you want to create a token table for this survey?"
 msgstr "Ønsker du at oprette en nøgletabel til spørgeskemaet?"
 
-#: admin/tokens.php:661
+#: admin/tokens.php:663
 msgid "Drop tokens table"
 msgstr "Slet hele nøgletabellen"
 
-#: admin/tokens.php:3146
+#: admin/tokens.php:3158
 msgid "Duplicate records removed"
 msgstr "Duplikatobservationer fjernet"
 
-#: admin/tokens.php:3205
+#: admin/tokens.php:3217
 msgid "Duplicates are determined by:"
 msgstr "Duplikater defineres ved: "
 
@@ -8813,10 +8765,10 @@ msgstr "Rediger tilladelser for skabeloner"
 msgid "Edit this user"
 msgstr "Rediger bruger"
 
-#: admin/tokens.php:1244
 #: admin/tokens.php:1246
-#: admin/tokens.php:2291
-#: admin/tokens.php:2488
+#: admin/tokens.php:1248
+#: admin/tokens.php:2303
+#: admin/tokens.php:2500
 msgid "Edit token entry"
 msgstr "Rediger respondent"
 
@@ -8839,7 +8791,7 @@ msgstr "Rediger bruger"
 msgid "Editing user group (Owner: %s)"
 msgstr "Rediger brugergruppe (Ejer: %s)"
 
-#: admin/tokens.php:2317
+#: admin/tokens.php:2329
 msgid "Email Status"
 msgstr "E-mail status"
 
@@ -8851,9 +8803,9 @@ msgstr "E-mail adresse findes allerede."
 msgid "Email address is not valid."
 msgstr "Ugyldig e-mail adresse."
 
-#: admin/tokens.php:1052
-#: admin/tokens.php:1055
-#: admin/tokens.php:1056
+#: admin/tokens.php:1054
+#: admin/tokens.php:1057
+#: admin/tokens.php:1058
 msgid "Email status"
 msgstr "E-mail-status"
 
@@ -8862,18 +8814,18 @@ msgstr "E-mail-status"
 msgid "Email to %s failed. Error Message:"
 msgstr "E-mail til %s mislykkedes. Fejl meddelelse:"
 
-#: admin/tokens.php:1633
-#: admin/tokens.php:1977
+#: admin/tokens.php:1639
+#: admin/tokens.php:1987
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "E-mail til {FIRSTNAME} {LASTNAME} ({EMAIL}) blev udsat. Respondentnøgle er ikke gyldig endnu."
 
-#: admin/tokens.php:1657
-#: admin/tokens.php:1999
+#: admin/tokens.php:1663
+#: admin/tokens.php:2009
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "EMail til {FIRSTNAME} {LASTNAME} ({EMAIL}) mislykkedes. Fejlmeddelelse:"
 
-#: admin/tokens.php:1637
-#: admin/tokens.php:1981
+#: admin/tokens.php:1643
+#: admin/tokens.php:1991
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "E-mail til {FIRSTNAME} {LASTNAME} ({EMAIL}) blev udeladt: Respondentnøgle er ikke længere gyldig."
 
@@ -8890,11 +8842,11 @@ msgstr "Lig med: "
 msgid "Error while updating usertemplates."
 msgstr "Fejl ved opdatering af brugerskabeloner."
 
-#: admin/tokens.php:2790
+#: admin/tokens.php:2802
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Fejl: Din uploadede fil mangler en eller flere obligatoriske kolonner: 'fornavn', 'efternavn' eller 'e-mail'"
 
-#: admin/tokens.php:2159
+#: admin/tokens.php:2169
 msgid "Example data"
 msgstr "Eksempeldata"
 
@@ -8911,17 +8863,17 @@ msgstr "Eksporter VV-fil"
 msgid "Export template"
 msgstr "Eksporter skabelon"
 
-#: admin/tokens.php:773
+#: admin/tokens.php:775
 msgid "Export tokens"
 msgstr "Eksporter respondentnøgler"
 
-#: admin/tokens.php:637
+#: admin/tokens.php:639
 msgid "Export tokens to CSV file"
 msgstr "Eksporter respondentnøgler til CSV-fil"
 
-#: admin/tokens.php:2546
-#: admin/tokens.php:2606
-#: admin/tokens.php:3141
+#: admin/tokens.php:2558
+#: admin/tokens.php:2618
+#: admin/tokens.php:3153
 msgid "Failed"
 msgstr "Mislykkedes"
 
@@ -8944,20 +8896,19 @@ msgstr "Tilføjelse af bruger mislykkedes."
 msgid "Failed to copy %s to new template directory."
 msgstr "Kunne ikke kopiere %s til ny skabelonmappe."
 
-#: admin/tokens.php:2893
+#: admin/tokens.php:2905
 msgid "Failed to create token entries"
 msgstr "Respondentnøgler kunne ikke oprettes"
 
-#: admin/tokens.php:2743
-#, fuzzy
+#: admin/tokens.php:2755
 msgid "Failed to open the uploaded file!"
-msgstr "Opdatering af label mislykkedes"
+msgstr "Kunne ikke åbne/hente filen!"
 
 #: admin/userrighthandling.php:871
 msgid "Failed to update!"
 msgstr "Opdatering mislykkedes!"
 
-#: admin/tokens.php:2159
+#: admin/tokens.php:2169
 msgid "Field description"
 msgstr "Feltbeskrivelse"
 
@@ -8978,7 +8929,7 @@ msgstr "Nøgletal for %s"
 msgid "File Extension"
 msgstr "Filtype"
 
-#: admin/tokens.php:2693
+#: admin/tokens.php:2705
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
 msgstr "Filen skal være en standard (kommasepareret) CSV-fil med valgfrie dobbelte citationstegn omkring værdierne (standard for OpenOffice og MS Excel). Den første linje skal indeholde overskrifterne (vil blive fjernet). Data bør ordnes som \"fornavn, efternavn, email, [respondentnøgle], [sprogkode], [attribut1], [attribut2]\".  Værdier i parentes [] er valgfrie."
 
@@ -8986,21 +8937,21 @@ msgstr "Filen skal være en standard (kommasepareret) CSV-fil med valgfrie dobbe
 msgid "Files in a standard template cannot be deleted."
 msgstr "Filer i en standardskabelon kan ikke slettes."
 
-#: admin/tokens.php:3203
-#: admin/tokens.php:3254
+#: admin/tokens.php:3215
+#: admin/tokens.php:3266
 msgid "Filter blank email addresses:"
 msgstr "Filtrer blanke e-mail adresser:"
 
-#: admin/tokens.php:769
+#: admin/tokens.php:771
 msgid "Filter by email address"
 msgstr "Filtrer efter e-mail adresser"
 
-#: admin/tokens.php:761
+#: admin/tokens.php:763
 msgid "Filter by language"
 msgstr "Filtrer efter sprog"
 
-#: admin/tokens.php:3204
-#: admin/tokens.php:3255
+#: admin/tokens.php:3216
+#: admin/tokens.php:3267
 msgid "Filter duplicate records:"
 msgstr "Filtrer duplikatobservationer:"
 
@@ -9009,11 +8960,10 @@ msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
 msgstr "For let at kunne åbne denne fil i MS Excel, lav filtypen om til '.tab' eller '.txt'."
 
 #: admin/usercontrol.php:48
-#, fuzzy
 msgid "Forgot password"
 msgstr "Glemt adgangskode"
 
-#: admin/tokens.php:1834
+#: admin/tokens.php:1840
 msgid "From Token ID"
 msgstr "Fra respondentnøgle ID"
 
@@ -9037,7 +8987,7 @@ msgstr "GEOSTD8 Georgisk"
 msgid "General filters"
 msgstr "Generelle filtre"
 
-#: admin/tokens.php:654
+#: admin/tokens.php:656
 msgid "Generate tokens"
 msgstr "Opret respondentnøgler"
 
@@ -9099,7 +9049,7 @@ msgstr "ISO 8859-9 Tyrkisk"
 msgid "Identifier"
 msgstr "Identifikation"
 
-#: admin/tokens.php:1348
+#: admin/tokens.php:1350
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Hvis du sletter denne tabel vil respondentnøgler ikke længere være påkrævet for at få adgang til spørgeskemaet."
 
@@ -9108,11 +9058,11 @@ msgstr "Hvis du sletter denne tabel vil respondentnøgler ikke længere være p�
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
 msgstr "Hvis du har spørgsmål vedrørende denne mail, tag venligst kontakt til siteadministratoren på %s.  "
 
-#: admin/tokens.php:533
+#: admin/tokens.php:535
 msgid "If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
 msgstr "Hvis du initialisere respondentnøgler, så vil spørgeskemaet kun være tilgængeligt for brugere, som har fået tildelt en respondentnøgle."
 
-#: admin/tokens.php:509
+#: admin/tokens.php:511
 msgid "Import old tokens"
 msgstr "Importer gamle nøgler"
 
@@ -9120,11 +9070,11 @@ msgstr "Importer gamle nøgler"
 msgid "Import template ZIP archive"
 msgstr "Importér skabelon fra ZIP arkiv"
 
-#: admin/tokens.php:628
+#: admin/tokens.php:630
 msgid "Import tokens from CSV file"
 msgstr "Importer respondentnøgler fra CSV-fil"
 
-#: admin/tokens.php:630
+#: admin/tokens.php:632
 msgid "Import tokens from LDAP query"
 msgstr "Importer respondentnøgler vha. LDAP-forespørgsel"
 
@@ -9142,7 +9092,7 @@ msgstr "Ugyldigt brugernavn og/eller adgangskode!"
 msgid "Initial Superadmin cannot be deleted!"
 msgstr "Superadministrator kan ikke slettes!"
 
-#: admin/tokens.php:1202
+#: admin/tokens.php:1204
 msgid "Invalid email address:"
 msgstr "Ugyldig e-mail adresse"
 
@@ -9150,22 +9100,22 @@ msgstr "Ugyldig e-mail adresse"
 msgid "Invitation email"
 msgstr "Invitations email"
 
-#: admin/tokens.php:1647
+#: admin/tokens.php:1653
 msgid "Invitation sent to:"
 msgstr "Invitation sendt til:"
 
-#: admin/tokens.php:1082
-#: admin/tokens.php:1085
-#: admin/tokens.php:1086
-#: admin/tokens.php:2342
+#: admin/tokens.php:1084
+#: admin/tokens.php:1087
+#: admin/tokens.php:1088
+#: admin/tokens.php:2354
 msgid "Invitation sent?"
 msgstr "Invitation sendt?"
 
-#: admin/tokens.php:751
+#: admin/tokens.php:753
 msgid "Invitation status:"
 msgstr "Invitation sendt til:"
 
-#: admin/tokens.php:753
+#: admin/tokens.php:755
 msgid "Invited"
 msgstr "Inviteret"
 
@@ -9177,11 +9127,11 @@ msgstr "KOI8-R Relcom Russisk"
 msgid "KOI8-U Ukrainian"
 msgstr "KOI8-U Ukrainsk"
 
-#: admin/tokens.php:3241
+#: admin/tokens.php:3253
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP er slået fra eller der er ikke defineret en LDAP-forespørgsel."
 
-#: admin/tokens.php:2704
+#: admin/tokens.php:2716
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "LDAP-forespørgsler defineres af administratoren i config-ldap.php filen"
 
@@ -9197,11 +9147,11 @@ msgstr "Mindre end:"
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
 msgstr "LimeSurvey er sat op til at bruge webserverautentificering. Det lader imidlertid til, at du ikke er autentificeret"
 
-#: admin/tokens.php:2907
 #: admin/tokens.php:2919
-#: admin/tokens.php:2929
-#: admin/tokens.php:3147
-#: admin/tokens.php:3155
+#: admin/tokens.php:2931
+#: admin/tokens.php:2941
+#: admin/tokens.php:3159
+#: admin/tokens.php:3167
 msgid "List"
 msgstr "Liste"
 
@@ -9239,23 +9189,23 @@ msgstr "Mail til alle medlemmer"
 msgid "Manage Labels"
 msgstr "Labeladministration"
 
-#: admin/tokens.php:621
+#: admin/tokens.php:623
 msgid "Manage additional attribute fields"
 msgstr "Administrer yderligere attributfelter"
 
-#: admin/tokens.php:2155
+#: admin/tokens.php:2165
 msgid "Manage token attribute fields"
 msgstr "Administrer respondentnøgleattributer"
 
-#: admin/tokens.php:2693
+#: admin/tokens.php:2705
 msgid "Mandatory fields:"
 msgstr "Obligatoriske felter:"
 
-#: admin/tokens.php:2140
+#: admin/tokens.php:2150
 msgid "Marked tokens have been deleted."
 msgstr "Markerede symboler er blevet slettet"
 
-#: admin/tokens.php:1804
+#: admin/tokens.php:1810
 msgid "Max reminders"
 msgstr "Max. antal rykkere"
 
@@ -9271,7 +9221,7 @@ msgstr "Medianværdi"
 msgid "Message(s) sent successfully!"
 msgstr "Besked(er) sendt!"
 
-#: admin/tokens.php:1800
+#: admin/tokens.php:1806
 msgid "Min days between reminders"
 msgstr "Mindste antal dage mellem rykkere"
 
@@ -9280,7 +9230,7 @@ msgstr "Mindste antal dage mellem rykkere"
 msgid "Name:"
 msgstr "Navn:"
 
-#: admin/tokens.php:2682
+#: admin/tokens.php:2694
 msgid "New dummy tokens were added."
 msgstr "Nye dummy-respondentnøgler blev tilføjet."
 
@@ -9288,7 +9238,7 @@ msgstr "Nye dummy-respondentnøgler blev tilføjet."
 msgid "New password"
 msgstr "Ny adgangskode"
 
-#: admin/tokens.php:2600
+#: admin/tokens.php:2612
 msgid "New token was added."
 msgstr "Ny respondentnøgle blev tilføjet."
 
@@ -9304,15 +9254,15 @@ msgstr "Intet spørgeskema tilgængeligt - opret venligst et."
 msgid "No of surveys"
 msgstr "Antal af spørgeskemaer"
 
-#: admin/tokens.php:759
+#: admin/tokens.php:761
 msgid "No reminder(s) sent"
 msgstr "Ingen rykker(e) afsendt"
 
-#: admin/tokens.php:1311
+#: admin/tokens.php:1313
 msgid "No tokens selected"
 msgstr "Ingen respondentnøgler valgt"
 
-#: admin/tokens.php:2142
+#: admin/tokens.php:2152
 msgid "No tokens were selected for deletion"
 msgstr "Ingen respondentnøgler blev valgt til sletning"
 
@@ -9333,11 +9283,11 @@ msgstr "Ikke vist"
 msgid "Not enough values for calculation"
 msgstr "Ikke værdier nok til beregning"
 
-#: admin/tokens.php:754
+#: admin/tokens.php:756
 msgid "Not invited"
 msgstr "Ikke inviteret"
 
-#: admin/tokens.php:745
+#: admin/tokens.php:747
 msgid "Not started"
 msgstr "Ikke startet"
 
@@ -9349,7 +9299,7 @@ msgstr "Ikke aktiveret endnu"
 msgid "Note that this assessment section will only show if assessment rules have been set and assessment mode is activated."
 msgstr "Denne evalueringsafsnit vil kun vises, såfremt evalueringsregler er blevet angivet og evaluering er slået til."
 
-#: admin/tokens.php:540
+#: admin/tokens.php:542
 msgid "Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Bemærk: Hvis du slår indstillingen -Anonymiserede svar- til for dette spørgsmål, så vil LimeSurvey kun markere de fuldførte respondentnøgler med et  'J'  i stedet for en dato/tid for at sikre respondenternes anonymitet. "
 
@@ -9379,7 +9329,7 @@ msgstr "Tal større end"
 msgid "Number less than"
 msgstr "Tal mindre end"
 
-#: admin/tokens.php:2192
+#: admin/tokens.php:2202
 msgid "Number of attribute fields to add:"
 msgstr "Venligst angiv antallet af brugerattributfelter, som du gerne vil tilføje: "
 
@@ -9404,7 +9354,7 @@ msgstr "Antal af filer mindre end"
 msgid "Number of records in this query:"
 msgstr "Antal observationer i forespørgslen:"
 
-#: admin/tokens.php:2437
+#: admin/tokens.php:2449
 msgid "Number of tokens"
 msgstr "Antal respondentnøgler"
 
@@ -9412,7 +9362,7 @@ msgstr "Antal respondentnøgler"
 msgid "Open"
 msgstr "Åben"
 
-#: admin/tokens.php:2694
+#: admin/tokens.php:2706
 msgid "Optional fields:"
 msgstr "Valgfrie felter:"
 
@@ -9429,9 +9379,8 @@ msgid "Owner"
 msgstr "Ejer"
 
 #: admin/userrighthandling.php:420
-#, fuzzy
 msgid "Ownership was successfully changed."
-msgstr "Dit spørgeskema blev gemt."
+msgstr "Ejerskab blev ændret."
 
 #: admin/statistics_function.php:230
 msgid "Page"
@@ -9528,11 +9477,11 @@ msgstr "K1 og K3 beregnet vha. %s"
 msgid "Question Page"
 msgstr "Spørgsmålsside"
 
-#: admin/tokens.php:3145
+#: admin/tokens.php:3157
 msgid "Records imported"
 msgstr "Observationer importeret"
 
-#: admin/tokens.php:3144
+#: admin/tokens.php:3156
 msgid "Records met minumum requirements"
 msgstr "Observationer opfyldte minimumskrav"
 
@@ -9544,7 +9493,7 @@ msgstr "Registreringsside"
 msgid "Registration email"
 msgstr "Registrations email"
 
-#: admin/tokens.php:2149
+#: admin/tokens.php:2159
 msgid "Reloading Screen. Please wait."
 msgstr "Genindlæser side. Vent venligst."
 
@@ -9553,17 +9502,17 @@ msgstr "Genindlæser side. Vent venligst."
 msgid "Reloading screen. Please wait."
 msgstr "Genindlæser side. Vent venligst."
 
-#: admin/tokens.php:1768
+#: admin/tokens.php:1774
 msgid "Reminder Email:"
 msgstr "Påmindelses e-mail:"
 
-#: admin/tokens.php:1102
-#: admin/tokens.php:1105
-#: admin/tokens.php:1106
+#: admin/tokens.php:1104
+#: admin/tokens.php:1107
+#: admin/tokens.php:1108
 msgid "Reminder count"
 msgstr "Antal rykkere"
 
-#: admin/tokens.php:2354
+#: admin/tokens.php:2366
 msgid "Reminder count:"
 msgstr "Antal rykkere:"
 
@@ -9571,29 +9520,28 @@ msgstr "Antal rykkere:"
 msgid "Reminder email"
 msgstr "Påmindelses email"
 
-#: admin/tokens.php:1993
+#: admin/tokens.php:2003
 msgid "Reminder sent to:"
 msgstr "Rykker sendt til:"
 
-#: admin/tokens.php:1092
-#: admin/tokens.php:1095
-#: admin/tokens.php:1096
-#: admin/tokens.php:2347
+#: admin/tokens.php:1094
+#: admin/tokens.php:1097
+#: admin/tokens.php:1098
+#: admin/tokens.php:2359
 msgid "Reminder sent?"
 msgstr "Rykker afsendt?"
 
-#: admin/tokens.php:756
+#: admin/tokens.php:758
 msgid "Reminder status:"
 msgstr "Rykker sendt til:"
 
-#: admin/tokens.php:758
+#: admin/tokens.php:760
 msgid "Reminder(s) sent"
 msgstr "Rykker(e) afsendt"
 
-#: admin/tokens.php:888
-#, fuzzy
+#: admin/tokens.php:890
 msgid "Remove unique token numbers"
-msgstr "Slet alle unikke respondentnumre"
+msgstr "Slet alle unikke respondenter"
 
 #: admin/templates.php:866
 msgid "Rename this template"
@@ -9607,10 +9555,9 @@ msgstr "Omdøb skabelonen til:"
 msgid "Reset"
 msgstr "Nulstil"
 
-#: admin/tokens.php:879
-#, fuzzy
+#: admin/tokens.php:881
 msgid "Reset token invitation status"
-msgstr "Invitation sendt til:"
+msgstr "Nulstil respondentnøgle invitations-status"
 
 #: admin/statistics.php:364
 msgid "Response filters"
@@ -9627,11 +9574,11 @@ msgstr "Svarprocent"
 msgid "Responses containing"
 msgstr "Besvarelser indeholdende"
 
-#: admin/tokens.php:571
+#: admin/tokens.php:573
 msgid "Restore"
 msgstr "Gendan"
 
-#: admin/tokens.php:561
+#: admin/tokens.php:563
 msgid "Restore options"
 msgstr "Gendan indstillinger"
 
@@ -9652,7 +9599,7 @@ msgstr "Resultat"
 msgid "Results"
 msgstr "Resultater"
 
-#: admin/tokens.php:3143
+#: admin/tokens.php:3155
 msgid "Results from LDAP Query"
 msgstr "Resultat fra LDAP-forespørgsel"
 
@@ -9676,7 +9623,7 @@ msgstr "Gemte besvarelser:"
 msgid "Screen:"
 msgstr "Skærm:"
 
-#: admin/tokens.php:968
+#: admin/tokens.php:970
 msgid "Search"
 msgstr "Søg"
 
@@ -9688,11 +9635,11 @@ msgstr "Vælg uddataformat"
 msgid "Select template ZIP file:"
 msgstr "Vælg ZIP-fil med skabelon:"
 
-#: admin/tokens.php:3247
+#: admin/tokens.php:3259
 msgid "Select the LDAP query you want to run:"
 msgstr "Vælg den LDAP-forespørgsel, som du ønsker at udføre:"
 
-#: admin/tokens.php:3196
+#: admin/tokens.php:3208
 msgid "Semicolon"
 msgstr "Semikolon"
 
@@ -9700,34 +9647,34 @@ msgstr "Semikolon"
 msgid "Send"
 msgstr "Send"
 
-#: admin/tokens.php:1506
+#: admin/tokens.php:1509
 msgid "Send Invitations"
 msgstr "Send invitationer"
 
-#: admin/tokens.php:1807
+#: admin/tokens.php:1813
 msgid "Send Reminders"
 msgstr "Send rykkere"
 
-#: admin/tokens.php:646
+#: admin/tokens.php:648
 msgid "Send email invitation"
 msgstr "Send invitationsmail"
 
-#: admin/tokens.php:1397
+#: admin/tokens.php:1400
 msgid "Send email invitations"
 msgstr "Send invitationsmail"
 
-#: admin/tokens.php:649
-#: admin/tokens.php:1719
+#: admin/tokens.php:651
+#: admin/tokens.php:1725
 msgid "Send email reminder"
 msgstr "Send rykkermail"
 
-#: admin/tokens.php:1278
 #: admin/tokens.php:1280
+#: admin/tokens.php:1282
 msgid "Send invitation email to this entry"
 msgstr "Send invitationsmail til respondenten"
 
-#: admin/tokens.php:1319
 #: admin/tokens.php:1321
+#: admin/tokens.php:1323
 msgid "Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"
 msgstr "Send invitations-e-mail til de valgte deltagere (hvis de ikke er blevet sendt en invitations-e-mail)"
 
@@ -9735,44 +9682,44 @@ msgstr "Send invitations-e-mail til de valgte deltagere (hvis de ikke er blevet 
 msgid "Send me a copy:"
 msgstr "Send mig en kopi:"
 
-#: admin/tokens.php:1325
 #: admin/tokens.php:1327
+#: admin/tokens.php:1329
 msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
 msgstr "Send påmindelses-e-mail til de valgte deltagere (hvis de allerede er blevet sendt en invitations-e-mail)"
 
-#: admin/tokens.php:1286
 #: admin/tokens.php:1288
+#: admin/tokens.php:1290
 msgid "Send reminder email to this entry"
 msgstr "Send rykkermail til denne post"
 
-#: admin/tokens.php:1777
-#: admin/tokens.php:1790
+#: admin/tokens.php:1783
+#: admin/tokens.php:1796
 msgid "Send reminder to token ID(s):"
 msgstr "Send rykker til repondentid('er):"
 
-#: admin/tokens.php:1820
+#: admin/tokens.php:1826
 msgid "Sending Reminders"
 msgstr "Sender rykkere"
 
-#: admin/tokens.php:1519
+#: admin/tokens.php:1522
 msgid "Sending invitations..."
 msgstr "Sender invitationer..."
 
-#: admin/tokens.php:1521
-#: admin/tokens.php:1835
+#: admin/tokens.php:1524
+#: admin/tokens.php:1841
 msgid "Sending to Token ID"
 msgstr "Sender til respondent ID"
 
-#: admin/tokens.php:1522
-#: admin/tokens.php:1836
+#: admin/tokens.php:1525
+#: admin/tokens.php:1842
 msgid "Sending to Token IDs"
 msgstr "Sender til respondentid'er"
 
-#: admin/tokens.php:1781
+#: admin/tokens.php:1787
 msgid "Sending to:"
 msgstr "Sender til:"
 
-#: admin/tokens.php:3200
+#: admin/tokens.php:3212
 msgid "Separator used:"
 msgstr "Adskillelse brugt:"
 
@@ -9780,7 +9727,7 @@ msgstr "Adskillelse brugt:"
 msgid "Set User Rights"
 msgstr "Brugerrettigheder"
 
-#: admin/tokens.php:902
+#: admin/tokens.php:904
 msgid "Set all entries to 'No invitation sent'."
 msgstr "Sæt alle respondenter til 'Ingen invitation sendt'"
 
@@ -9813,7 +9760,7 @@ msgstr "Shift-JIS Japansk"
 msgid "Show graphs"
 msgstr "Vis grafer"
 
-#: admin/tokens.php:675
+#: admin/tokens.php:677
 msgid "Show help"
 msgstr "Vis hjælp"
 
@@ -9821,11 +9768,11 @@ msgstr "Vis hjælp"
 msgid "Show text responses inline"
 msgstr "Vis tekstsvar på samme linje"
 
-#: admin/tokens.php:2548
+#: admin/tokens.php:2560
 msgid "Show this token entry"
 msgstr "Vis denne respondents besvarelser"
 
-#: admin/tokens.php:600
+#: admin/tokens.php:602
 msgid "Show token summary"
 msgstr "Vis oversigt over respondentnøgler"
 
@@ -9833,39 +9780,39 @@ msgstr "Vis oversigt over respondentnøgler"
 msgid "Some URL description"
 msgstr "URL beskrivelse:"
 
-#: admin/tokens.php:3235
+#: admin/tokens.php:3247
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "LDAP-modulet mangler desværre i din PHP konfiguration."
 
-#: admin/tokens.php:1012
 #: admin/tokens.php:1014
-#: admin/tokens.php:1021
-#: admin/tokens.php:1024
-#: admin/tokens.php:1031
-#: admin/tokens.php:1034
-#: admin/tokens.php:1041
-#: admin/tokens.php:1044
-#: admin/tokens.php:1051
-#: admin/tokens.php:1054
-#: admin/tokens.php:1061
-#: admin/tokens.php:1064
-#: admin/tokens.php:1071
-#: admin/tokens.php:1074
-#: admin/tokens.php:1081
-#: admin/tokens.php:1084
-#: admin/tokens.php:1091
-#: admin/tokens.php:1094
-#: admin/tokens.php:1101
-#: admin/tokens.php:1104
-#: admin/tokens.php:1111
-#: admin/tokens.php:1114
-#: admin/tokens.php:1121
-#: admin/tokens.php:1124
-#: admin/tokens.php:1131
-#: admin/tokens.php:1134
-#: admin/tokens.php:1141
-#: admin/tokens.php:1144
-#: admin/tokens.php:1154
+#: admin/tokens.php:1016
+#: admin/tokens.php:1023
+#: admin/tokens.php:1026
+#: admin/tokens.php:1033
+#: admin/tokens.php:1036
+#: admin/tokens.php:1043
+#: admin/tokens.php:1046
+#: admin/tokens.php:1053
+#: admin/tokens.php:1056
+#: admin/tokens.php:1063
+#: admin/tokens.php:1066
+#: admin/tokens.php:1073
+#: admin/tokens.php:1076
+#: admin/tokens.php:1083
+#: admin/tokens.php:1086
+#: admin/tokens.php:1093
+#: admin/tokens.php:1096
+#: admin/tokens.php:1103
+#: admin/tokens.php:1106
+#: admin/tokens.php:1113
+#: admin/tokens.php:1116
+#: admin/tokens.php:1123
+#: admin/tokens.php:1126
+#: admin/tokens.php:1133
+#: admin/tokens.php:1136
+#: admin/tokens.php:1143
+#: admin/tokens.php:1146
+#: admin/tokens.php:1156
 msgid "Sort by: "
 msgstr "Sorter efter:"
 
@@ -9881,11 +9828,11 @@ msgstr "Standardfiler:"
 msgid "Standard deviation"
 msgstr "Standardafvigelse"
 
-#: admin/tokens.php:1785
+#: admin/tokens.php:1791
 msgid "Start at Token ID:"
 msgstr "Start ved respondent med ID:"
 
-#: admin/tokens.php:748
+#: admin/tokens.php:750
 msgid "Started but not yet completed"
 msgstr "Startet men ikke afsluttet"
 
@@ -9893,8 +9840,8 @@ msgstr "Startet men ikke afsluttet"
 msgid "Statistics report language"
 msgstr "statistik report sprog"
 
-#: admin/tokens.php:1469
-#: admin/tokens.php:1747
+#: admin/tokens.php:1472
+#: admin/tokens.php:1753
 msgid "Subject"
 msgstr "Emne"
 
@@ -9910,7 +9857,7 @@ msgstr "Indsend dit spørgeskema."
 msgid "Subtotals based on displayed questions"
 msgstr "Subtotal baseret på viste spørgesmål"
 
-#: admin/tokens.php:2891
+#: admin/tokens.php:2903
 msgid "Successfully created token entries"
 msgstr "Respondentnøgler oprettet"
 
@@ -9934,7 +9881,7 @@ msgstr "Superadministrator"
 msgid "Survey List Page"
 msgstr "Spørgeskemaets listeside"
 
-#: admin/tokens.php:829
+#: admin/tokens.php:831
 msgid "Survey bounce email:"
 msgstr "Spørgeskema-bounce-e-mail:"
 
@@ -9976,15 +9923,15 @@ msgstr "Opdatering af brugerskabeloner lykkedes."
 msgid "The email address is not valid."
 msgstr "Ugyldig e-mail adresse."
 
-#: admin/tokens.php:564
+#: admin/tokens.php:566
 msgid "The following old token tables could be restored:"
 msgstr "Følgende gamle nøgletabeller kunne gendannes:"
 
-#: admin/tokens.php:2541
+#: admin/tokens.php:2553
 msgid "The token entry was successfully updated."
 msgstr "Nøglebeskrivelsen blev opdateret."
 
-#: admin/tokens.php:1375
+#: admin/tokens.php:1378
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr "Nøgletabellen er blevet fjernet, og respondentnøgler er ikke længere påkrævet for at få adgang til spørgeskemaet."
 
@@ -9992,23 +9939,23 @@ msgstr "Nøgletabellen er blevet fjernet, og respondentnøgler er ikke længere 
 msgid "The user name already exists."
 msgstr "Brugernavn findes allerede."
 
-#: admin/tokens.php:2189
+#: admin/tokens.php:2199
 #, php-format
 msgid "There are %s user attribute fields in this token table"
 msgstr "Der er %s brugerattributfelter i nøgletabellen"
 
-#: admin/tokens.php:1677
-#: admin/tokens.php:2017
+#: admin/tokens.php:1683
+#: admin/tokens.php:2027
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Der er flere uafsendte e-mail, end der kan sendes i ét batch. Forsæt med at sende e-mails ved at trykke nedenfor."
 
-#: admin/tokens.php:1678
-#: admin/tokens.php:2018
+#: admin/tokens.php:1684
+#: admin/tokens.php:2028
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Der er stadig {EMAILCOUNT} e-mails, som skal sendes."
 
-#: admin/tokens.php:2547
-#: admin/tokens.php:2607
+#: admin/tokens.php:2559
+#: admin/tokens.php:2619
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "Der er allerede en indtastning med den respondentnøgle i denne tabel. Den samme nøgle kan ikke bruges til flere indtastninger."
 
@@ -10021,8 +9968,8 @@ msgstr "Der opstod et problem ved forsøg på at slette skabelon '%s'. Venligst 
 msgid "There was an error using the Google API."
 msgstr "Der opstod en fejl ved brug af Google API."
 
-#: admin/tokens.php:1704
-#: admin/tokens.php:2057
+#: admin/tokens.php:1710
+#: admin/tokens.php:2067
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr "Der var ingen berettiget emails til at sende. Dette skyldes, at ingen opfylder kriterierne af:"
 
@@ -10050,11 +9997,10 @@ msgid "This is the survey end message."
 msgstr "Dette er spørgeskemaets slut besked."
 
 #: admin/templates.php:275
-#, fuzzy
 msgid "This name is reserved for a standard template."
-msgstr "Ændringer kan ikke gemmes i en standardskabelon"
+msgstr "Dette navn er reserveret til en standard skabelon"
 
-#: admin/tokens.php:1208
+#: admin/tokens.php:1210
 msgid "This participant opted out of this survey."
 msgstr "Denne deltager frameldte sig dette spørgeskema."
 
@@ -10070,8 +10016,8 @@ msgstr "Spørgeskemaet er pt. ikke aktiveret - klik her for at aktivere spørges
 msgid "This survey is currently not active."
 msgstr "Spørgeskemaet er pt. ikke aktiveret"
 
-#: admin/tokens.php:1403
-#: admin/tokens.php:1724
+#: admin/tokens.php:1406
+#: admin/tokens.php:1730
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
 msgstr "Spørgeskemaet er pt. ikke aktiveret. Deltagere vil ikke være i stand til at gemme deres svar."
 
@@ -10079,35 +10025,35 @@ msgstr "Spørgeskemaet er pt. ikke aktiveret. Deltagere vil ikke være i stand t
 msgid "To:"
 msgstr "Til:"
 
-#: admin/tokens.php:2226
+#: admin/tokens.php:2236
 msgid "Token attribute descriptions were successfully updated."
 msgstr "Respondentnøgleattributer blev opdateret succesfuldt."
 
-#: admin/tokens.php:896
+#: admin/tokens.php:898
 msgid "Token database administration options"
 msgstr "Indstillinger for administration af respondentdatabasen"
 
-#: admin/tokens.php:740
+#: admin/tokens.php:742
 msgid "Token export options"
 msgstr "Indstillinger for eksport af respondentnøgler"
 
-#: admin/tokens.php:2714
+#: admin/tokens.php:2726
 msgid "Token file upload"
 msgstr "Upload af fil med respondentnøgler"
 
-#: admin/tokens.php:2147
+#: admin/tokens.php:2157
 msgid "Token has been deleted."
 msgstr "Respondent er blevet slettet."
 
-#: admin/tokens.php:2439
+#: admin/tokens.php:2451
 msgid "Token length"
 msgstr "Respondentnøglelængde"
 
-#: admin/tokens.php:742
+#: admin/tokens.php:744
 msgid "Token status:"
 msgstr "Respondentnøglestatus:"
 
-#: admin/tokens.php:689
+#: admin/tokens.php:691
 msgid "Token summary"
 msgstr "Oversigt over respondentnøgler"
 
@@ -10119,11 +10065,11 @@ msgstr "Nøgletabel kunne ikke oprettes."
 msgid "Tokens available"
 msgstr "nøgletabel mulig"
 
-#: admin/tokens.php:530
+#: admin/tokens.php:532
 msgid "Tokens have not been initialised for this survey."
 msgstr "Respondentnøgler til spørgeskemaet er ikke blevet initialiserede."
 
-#: admin/tokens.php:705
+#: admin/tokens.php:707
 msgid "Total invitations sent"
 msgstr "Samlet antal invitationer afsendt"
 
@@ -10131,7 +10077,7 @@ msgstr "Samlet antal invitationer afsendt"
 msgid "Total number of files"
 msgstr "Total antal af filer"
 
-#: admin/tokens.php:710
+#: admin/tokens.php:712
 msgid "Total opted out"
 msgstr "Totalt antal frameldte"
 
@@ -10141,7 +10087,7 @@ msgstr "Totalt antal frameldte"
 msgid "Total records in survey:"
 msgstr "Antal observationer i dette spørgeskema:"
 
-#: admin/tokens.php:693
+#: admin/tokens.php:695
 msgid "Total records in this token table"
 msgstr "Antal poster i nøgletabellen"
 
@@ -10149,11 +10095,11 @@ msgstr "Antal poster i nøgletabellen"
 msgid "Total size of files"
 msgstr "Total størrelse af filer"
 
-#: admin/tokens.php:715
+#: admin/tokens.php:717
 msgid "Total surveys completed"
 msgstr "Samlet antal fuldførte spørgeskemaer"
 
-#: admin/tokens.php:700
+#: admin/tokens.php:702
 msgid "Total with no unique Token"
 msgstr "Antal uden unik respondentnøgle"
 
@@ -10199,35 +10145,32 @@ msgstr "Uændret"
 msgid "Update User Group"
 msgstr "Opdater brugergruppe"
 
-#: admin/tokens.php:2217
-#, fuzzy
+#: admin/tokens.php:2227
 msgid "Update token attribute descriptions"
-msgstr "Gem attributbeskrivelser"
+msgstr "Opdater respondent attributbeskrivelser"
 
-#: admin/tokens.php:2251
-#, fuzzy
+#: admin/tokens.php:2261
 msgid "Update token attributes"
-msgstr "Tilføj respondentnøgleattributer"
+msgstr "Opdater respondent attributer"
 
-#: admin/tokens.php:2400
+#: admin/tokens.php:2412
 msgid "Update token entry"
 msgstr "Rediger respondentnøgle"
 
-#: admin/tokens.php:2221
-#, fuzzy
+#: admin/tokens.php:2231
 msgid "Updating token attribute descriptions failed:"
-msgstr "Gem attributbeskrivelser"
+msgstr "Opdatering af respondent attribut beskrivelse fejlede:"
 
 #: admin/templates.php:1009
-#: admin/tokens.php:3220
+#: admin/tokens.php:3232
 msgid "Upload"
 msgstr "Upload"
 
-#: admin/tokens.php:2689
+#: admin/tokens.php:2701
 msgid "Upload CSV File"
 msgstr "Importer CSV-fil"
 
-#: admin/tokens.php:2700
+#: admin/tokens.php:2712
 msgid "Upload LDAP entries"
 msgstr "Upload LDAP poster"
 
@@ -10235,7 +10178,7 @@ msgstr "Upload LDAP poster"
 msgid "Upload a file:"
 msgstr "Upload en fil:"
 
-#: admin/tokens.php:2734
+#: admin/tokens.php:2746
 msgid "Uploaded CSV file successfully"
 msgstr "CSV-fil uploadet"
 
@@ -10243,7 +10186,7 @@ msgstr "CSV-fil uploadet"
 msgid "Uploaded template file"
 msgstr "Uploadet skabelonfil"
 
-#: admin/tokens.php:2949
+#: admin/tokens.php:2961
 msgid "Uploading LDAP Query"
 msgstr "Uploader LDAP-forespørgsel"
 
@@ -10251,11 +10194,11 @@ msgstr "Uploader LDAP-forespørgsel"
 msgid "Use all/manage templates"
 msgstr "Brug all/administrer skabeloner"
 
-#: admin/tokens.php:826
+#: admin/tokens.php:828
 msgid "Use global settings"
 msgstr "Brug globale indstillinger"
 
-#: admin/tokens.php:823
+#: admin/tokens.php:825
 msgid "Use settings below"
 msgstr "Brug nedenstående indstillinger"
 
@@ -10289,22 +10232,22 @@ msgstr "Dine personlige indstillinger blev gemt."
 msgid "User registration at '%s'"
 msgstr "Brugerregistrering ved '%s'"
 
-#: admin/tokens.php:2365
-#: admin/tokens.php:2451
+#: admin/tokens.php:2377
+#: admin/tokens.php:2463
 msgid "Uses left:"
 msgstr "Anvendelser tilbage:"
 
-#: admin/tokens.php:1132
-#: admin/tokens.php:1135
-#: admin/tokens.php:1136
-#: admin/tokens.php:2370
-#: admin/tokens.php:2453
+#: admin/tokens.php:1134
+#: admin/tokens.php:1137
+#: admin/tokens.php:1138
+#: admin/tokens.php:2382
+#: admin/tokens.php:2465
 msgid "Valid from"
 msgstr "Gyldigt fra"
 
-#: admin/tokens.php:1142
-#: admin/tokens.php:1145
-#: admin/tokens.php:1146
+#: admin/tokens.php:1144
+#: admin/tokens.php:1147
+#: admin/tokens.php:1148
 msgid "Valid until"
 msgstr "Gyldig indtil"
 
@@ -10317,13 +10260,13 @@ msgstr "Vis statistik"
 msgid "View summary of all available fields"
 msgstr "Vis oversigt over alle tilgængelige felter"
 
-#: admin/tokens.php:1269
 #: admin/tokens.php:1271
+#: admin/tokens.php:1273
 msgid "View/Update last response"
 msgstr "Se/Opdater seneste besvarelse"
 
-#: admin/tokens.php:1403
-#: admin/tokens.php:1724
+#: admin/tokens.php:1406
+#: admin/tokens.php:1730
 msgid "Warning!"
 msgstr "Advarsel"
 
@@ -10373,7 +10316,7 @@ msgstr "Du er ved at slette alle betingelser i spørgeskemaet"
 msgid "You are not allowed to change your own permissions!"
 msgstr "Du har ikke tilladelse til at ændre dine egne rettigheder!"
 
-#: admin/tokens.php:2332
+#: admin/tokens.php:2344
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr "Du kan lade dette være uudfyldt, og automatisk oprette respondentnøgler ved at bruge 'Opret respondentnøgler'"
 
@@ -10401,11 +10344,11 @@ msgstr "Du har ikke installeret Freetype-biblioteket.  Man skal benytte Freetype
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
 msgstr "Du har ikke installeret GD-biblioteket.  Man skal benytte GD-biblioteket for at kunne vise grafer korrekt."
 
-#: admin/tokens.php:553
+#: admin/tokens.php:555
 msgid "You don't have the permission to activate tokens."
 msgstr "Du har ikke tilladelse til at aktivere respondentnøgler."
 
-#: admin/tokens.php:942
+#: admin/tokens.php:944
 msgid "You have selected not to use any bounce settings"
 msgstr "Du har valgt ikke at bruge nogle bounce-indstillinger"
 
@@ -10426,7 +10369,7 @@ msgstr "Din indbakke er tom"
 msgid "Your user data for accessing %s"
 msgstr "Dine brugerdata til at tilgå %s"
 
-#: admin/tokens.php:2061
+#: admin/tokens.php:2071
 msgid "but not having already completed the survey"
 msgstr "men har endnu ikke færdiggjort spørgeskemaet"
 
@@ -10440,22 +10383,22 @@ msgstr "kopi_af_"
 msgid "cp1252 West European"
 msgstr "cp1252 Vest Europæisk"
 
-#: admin/tokens.php:1708
-#: admin/tokens.php:2059
+#: admin/tokens.php:1714
+#: admin/tokens.php:2069
 msgid "having a token"
 msgstr "som har en respondentnøgle"
 
-#: admin/tokens.php:1705
-#: admin/tokens.php:2058
+#: admin/tokens.php:1711
+#: admin/tokens.php:2068
 msgid "having a valid email address"
 msgstr "at have en gyldig e-mail adresse"
 
-#: admin/tokens.php:1707
+#: admin/tokens.php:1713
 msgid "having already completed the survey"
 msgstr "har allerede besvaret spørgeskemaet."
 
-#: admin/tokens.php:2382
-#: admin/tokens.php:2465
+#: admin/tokens.php:2394
+#: admin/tokens.php:2477
 msgid "hh:mm"
 msgstr "hh:mm"
 
@@ -10466,8 +10409,8 @@ msgstr "hh:mm"
 msgid "minitab method"
 msgstr "Minitab metoden"
 
-#: admin/tokens.php:1706
-#: admin/tokens.php:2060
+#: admin/tokens.php:1712
+#: admin/tokens.php:2070
 msgid "not having been sent an invitation already"
 msgstr "som ikke allerede er blevet sendt en invitation"
 
@@ -10476,8 +10419,8 @@ msgstr "som ikke allerede er blevet sendt en invitation"
 msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
 msgstr "dette er en automatisk e-mail for at meddele, at en bruger er blevet oprettet for dig på site '%s'."
 
-#: admin/tokens.php:2376
-#: admin/tokens.php:2459
+#: admin/tokens.php:2388
+#: admin/tokens.php:2471
 msgid "until"
 msgstr "indtil"
 
@@ -10486,7 +10429,7 @@ msgstr "indtil"
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "Besøg http://us2.php.net/manual/en/ref.image.php for at finde mere information"
 
-#: admin/tokens.php:2123
+#: admin/tokens.php:2133
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} respondentnøgler er blevet oprettet"
 
@@ -10919,7 +10862,7 @@ msgstr "Din LimeSurvey-installation checkes for at se, om opdateringen kan genne
 msgid "Your update key is invalid and was removed. "
 msgstr "Din opdateringsnøgle er ugyldig og blev fjernet."
 
-#: classes/expressions/LimeExpressionManager.php:6877
+#: classes/expressions/LimeExpressionManager.php:7461
 #, php-format
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s spørgsmål indeholder fejl som skal rettes"
@@ -11060,8 +11003,8 @@ msgstr "Kroatisk"
 msgid "Czech"
 msgstr "Tjekkisk"
 
-#: classes/expressions/LimeExpressionManager.php:6556
-#: classes/expressions/LimeExpressionManager.php:6782
+#: classes/expressions/LimeExpressionManager.php:7140
+#: classes/expressions/LimeExpressionManager.php:7366
 msgid "DEFAULT:"
 msgstr "STANDARD:"
 
@@ -11089,20 +11032,20 @@ msgstr "Hollandsk"
 msgid "Dutch Informal"
 msgstr "Uformelt hollandsk"
 
-#: classes/expressions/LimeExpressionManager.php:1543
-#: classes/expressions/LimeExpressionManager.php:1561
-#, fuzzy, php-format
+#: classes/expressions/LimeExpressionManager.php:2080
+#: classes/expressions/LimeExpressionManager.php:2098
+#, php-format
 msgid "Each answer must be at least %s"
-msgstr "Summen af de indtastede værdier skal være mindst %s"
+msgstr "Hvert svar må skal mindst være %s"
 
-#: classes/expressions/LimeExpressionManager.php:1548
-#: classes/expressions/LimeExpressionManager.php:1566
-#, fuzzy, php-format
+#: classes/expressions/LimeExpressionManager.php:2085
+#: classes/expressions/LimeExpressionManager.php:2103
+#, php-format
 msgid "Each answer must be at most %s"
-msgstr "Summen af de indtastede værdier skal være mindst %s"
+msgstr "Hvert svar må højest være %s"
 
-#: classes/expressions/LimeExpressionManager.php:1539
-#: classes/expressions/LimeExpressionManager.php:1557
+#: classes/expressions/LimeExpressionManager.php:2076
+#: classes/expressions/LimeExpressionManager.php:2094
 #, php-format
 msgid "Each answer must be between %s and %s"
 msgstr "Hvert svar skal ligge mellem %s og %s"
@@ -11144,9 +11087,8 @@ msgid "Extra token found after Expressions"
 msgstr "Ekstra symbol (token) fundet efter udtryk"
 
 #: classes/expressions/ExpressionManager.php:438
-#, fuzzy
 msgid "Extra tokens found"
-msgstr "Eksporter respondentnøgler"
+msgstr "Ekstra respondentnøgler fundet"
 
 #: classes/expressions/ExpressionManager.php:207
 msgid "Find first occurrence of a string"
@@ -11267,7 +11209,7 @@ msgstr "Returner værdien af pi"
 msgid "Greek"
 msgstr "Græsk"
 
-#: classes/expressions/LimeExpressionManager.php:6564
+#: classes/expressions/LimeExpressionManager.php:7148
 msgid "HELP:"
 msgstr "HJÆLP:"
 
@@ -11287,7 +11229,7 @@ msgstr "Ungarsk"
 msgid "Icelandic"
 msgstr "Islandsk"
 
-#: classes/expressions/LimeExpressionManager.php:4226
+#: classes/expressions/LimeExpressionManager.php:4788
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr "Hvis du vælger '%s' så skal du give en beskrivelse."
@@ -11301,11 +11243,11 @@ msgid "Inserts HTML line breaks before all newlines in a string"
 msgstr "Indsætter HTML-linjeskift før alle linjeskift i en tekststreng"
 
 #: classes/expressions/ExpressionManager.php:3189
-#, fuzzy, php-format
+#, php-format
 msgid "Invalid PERL Regular Expression: %s"
-msgstr "Konstant værdi eller almindeligt udtryk"
+msgstr "PERL Regular Expression \"%s\" er ikke gyldigt"
 
-#: classes/expressions/LimeExpressionManager.php:6500
+#: classes/expressions/LimeExpressionManager.php:7084
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Ugyldigt spørgsmål - sandsynligtvis pga manglende under-spørgsmåls eller sprog-specifikke indstillinger for sproget"
 
@@ -11371,19 +11313,17 @@ msgstr "Maltesisk"
 msgid "Missing %s closing right parentheses"
 msgstr "Forventede %s afsluttende højre-paranteser"
 
-#: classes/expressions/LimeExpressionManager.php:6505
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:7089
 msgid "Name [ID]"
-msgstr "Navn"
+msgstr "Navn [ID]"
 
 #: classes/expressions/ExpressionManager.php:175
 msgid "Natural logarithm"
 msgstr "Naturlig logaritme"
 
-#: classes/expressions/LimeExpressionManager.php:6883
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:7467
 msgid "No syntax errors detected in this survey"
-msgstr "Du er ikke respondent til dette spørgeskema."
+msgstr "Ingen syntaksfejl fundet i dette spørgeskema"
 
 #: classes/core/surveytranslator.php:429
 msgid "Norwegian (Bokmal)"
@@ -11394,9 +11334,8 @@ msgid "Norwegian (Nynorsk)"
 msgstr "Norsk (Nynorsk)"
 
 #: classes/expressions/ExpressionManager.php:459
-#, fuzzy
 msgid "Not a valid expression"
-msgstr "Eksponentielt udtryk"
+msgstr "Ikke et gyldigt udtryk"
 
 #: classes/expressions/ExpressionManager.php:671
 msgid "Only variables can be assigned values"
@@ -11410,48 +11349,45 @@ msgstr "Udfør padding til en bestemt længde på en tekststreng ved brug af en 
 msgid "Persian"
 msgstr "Farsi"
 
-#: classes/expressions/LimeExpressionManager.php:1597
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:2134
 msgid "Please also fill in the \"other comment\" field."
-msgstr "Skriv din kommentar her"
+msgstr "Udfyld venligst også \"andre kommentarer\" feltet"
 
-#: classes/expressions/LimeExpressionManager.php:4277
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:4839
 msgid "Please check at least one box per row"
-msgstr "Sæt mindst ét kryds."
+msgstr "Sæt venligst mindst ét kryds pr række"
 
-#: classes/expressions/LimeExpressionManager.php:4216
+#: classes/expressions/LimeExpressionManager.php:4778
 msgid "Please check at least one item."
 msgstr "Sæt mindst ét kryds."
 
-#: classes/expressions/LimeExpressionManager.php:1605
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:2142
 msgid "Please check the format of your answer."
-msgstr "Kontroller mappens tilladelser."
+msgstr "Kontrollér venligst dit svars format"
 
-#: classes/expressions/LimeExpressionManager.php:4248
-#: classes/expressions/LimeExpressionManager.php:4285
+#: classes/expressions/LimeExpressionManager.php:4810
+#: classes/expressions/LimeExpressionManager.php:4847
 msgid "Please complete all parts"
 msgstr "Besvar venligst alle dele"
 
-#: classes/expressions/LimeExpressionManager.php:4293
+#: classes/expressions/LimeExpressionManager.php:4855
 msgid "Please rank all items"
 msgstr "Rangorden alle elementer"
 
-#: classes/expressions/LimeExpressionManager.php:1525
-#, fuzzy, php-format
+#: classes/expressions/LimeExpressionManager.php:2062
+#, php-format
 msgid "Please select at least %s answer(s)"
-msgstr "Vælg højst %s svar:"
+msgstr "Vælg venligst mindst %s svar"
 
-#: classes/expressions/LimeExpressionManager.php:1530
-#, fuzzy, php-format
+#: classes/expressions/LimeExpressionManager.php:2067
+#, php-format
 msgid "Please select at most %s answer(s)"
-msgstr "Vælg højst %s svar:"
+msgstr "Vælg venligst højest %s svar"
 
-#: classes/expressions/LimeExpressionManager.php:1521
-#, fuzzy, php-format
+#: classes/expressions/LimeExpressionManager.php:2058
+#, php-format
 msgid "Please select between %s and %s answer(s)"
-msgstr "Sæt mærke ved mellem %d og %d svar"
+msgstr "Vælg venligst mellem %s og %s svar"
 
 #: classes/core/surveytranslator.php:450
 msgid "Polish"
@@ -11475,8 +11411,7 @@ msgstr "Portugisisk (Brasiliansk)"
 msgid "Punjabi"
 msgstr "Punjabi"
 
-#: classes/expressions/LimeExpressionManager.php:6572
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:7156
 msgid "Question Attribute"
 msgstr "Spørgsmålsattributer"
 
@@ -11484,7 +11419,7 @@ msgstr "Spørgsmålsattributer"
 msgid "Quote meta characters"
 msgstr "Sæt anførselstegn om metategn"
 
-#: classes/expressions/LimeExpressionManager.php:6505
+#: classes/expressions/LimeExpressionManager.php:7089
 msgid "Relevance [Validation] (Default)"
 msgstr "Relevans [Validering] (Strandard)"
 
@@ -11545,9 +11480,8 @@ msgid "Serbian"
 msgstr "Serbisk"
 
 #: classes/expressions/ExpressionManager.php:579
-#, fuzzy
 msgid "Should never  get to this line?"
-msgstr "Du vil nok finde det sjovt at lave dette"
+msgstr "Burde aldrig nå til denne linie?"
 
 #: classes/expressions/ExpressionManager.php:191
 msgid "Sine"
@@ -11577,7 +11511,7 @@ msgstr "Spansk (Mexikansk)"
 msgid "Square root"
 msgstr "Kvadratrod"
 
-#: classes/expressions/LimeExpressionManager.php:6697
+#: classes/expressions/LimeExpressionManager.php:7281
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Fra version 1.92 bør variable navne kun indeholde bogstaver, tal og 'underscore' ( _ ) og må ikke starte med et tal. Dette variable navn er ikke længere gyldigt."
 
@@ -11601,7 +11535,7 @@ msgstr "Fjern whitespace (og andre tegn) fra slutningen af en tekststreng"
 msgid "Swedish"
 msgstr "Svensk"
 
-#: classes/expressions/LimeExpressionManager.php:6565
+#: classes/expressions/LimeExpressionManager.php:7149
 msgid "TIP:"
 msgstr "TIP:"
 
@@ -11609,7 +11543,7 @@ msgstr "TIP:"
 msgid "Tangent"
 msgstr "Tangent"
 
-#: classes/expressions/LimeExpressionManager.php:6505
+#: classes/expressions/LimeExpressionManager.php:7089
 msgid "Text [Help] (Tip)"
 msgstr "Tekst [Hjælp] (Tip)"
 
@@ -11617,22 +11551,22 @@ msgstr "Tekst [Hjælp] (Tip)"
 msgid "Thai"
 msgstr "Thailandsk"
 
-#: classes/expressions/LimeExpressionManager.php:1579
-#, fuzzy, php-format
+#: classes/expressions/LimeExpressionManager.php:2116
+#, php-format
 msgid "The sum must be at least %s"
-msgstr "Summen af de indtastede værdier skal være mindst %s"
+msgstr "Summen skal mindst være %s"
 
-#: classes/expressions/LimeExpressionManager.php:1584
-#, fuzzy, php-format
+#: classes/expressions/LimeExpressionManager.php:2121
+#, php-format
 msgid "The sum must be at most %s"
-msgstr "Summen af de indtastede værdier skal være mindst %s"
+msgstr "Summen skal højest være %s"
 
-#: classes/expressions/LimeExpressionManager.php:1575
+#: classes/expressions/LimeExpressionManager.php:2112
 #, php-format
 msgid "The sum must be between %s and %s"
 msgstr "Summen skal ligge mellem %s og %s"
 
-#: classes/expressions/LimeExpressionManager.php:1591
+#: classes/expressions/LimeExpressionManager.php:2128
 #, php-format
 msgid "The sum must equal %s"
 msgstr "Summen skal være lig %s"
@@ -11641,34 +11575,30 @@ msgstr "Summen skal være lig %s"
 msgid "The value of this variable can not be changed"
 msgstr "Denne variables værdi kan ikke ændres"
 
-#: classes/expressions/LimeExpressionManager.php:6886
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:7470
 msgid "This group, by itself, does not contain any syntax errors"
-msgstr "Gruppen indeholder ingen spørgsmål."
+msgstr "Denne gruppe, indeholder ingen syntaksfejl"
 
-#: classes/expressions/LimeExpressionManager.php:6838
-#, fuzzy, php-format
+#: classes/expressions/LimeExpressionManager.php:7422
+#, php-format
 msgid "This question has at least %s error(s)"
-msgstr "Spørgsmålet fremvises altid"
+msgstr "Dette spørgsmål har mindst %s fejl"
 
-#: classes/expressions/LimeExpressionManager.php:4204
+#: classes/expressions/LimeExpressionManager.php:4766
 msgid "This question is mandatory"
 msgstr "Spørgsmålet er obligatorisk"
 
-#: classes/expressions/LimeExpressionManager.php:6889
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:7473
 msgid "This question, by itself, does not contain any syntax errors"
-msgstr "Gruppen indeholder ingen spørgsmål."
+msgstr "Dette spørgsmål indeholder ingen syntaksfejl"
 
 #: classes/expressions/ExpressionManager.php:565
-#, fuzzy
 msgid "This variable is not declared until a later page"
-msgstr "Spørgeskemaet er ikke aktiveret"
+msgstr "Denne variabel erklæres først på en efterfølgende side"
 
-#: classes/expressions/LimeExpressionManager.php:6685
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:7269
 msgid "This variable name has already been used."
-msgstr "E-mailen, som du angav, er allerede registeret."
+msgstr "Variabelnavnet er allerede i brug"
 
 #: classes/expressions/ExpressionManager.php:2263
 msgid "Tried to pop value off of empty stack"
@@ -11690,12 +11620,11 @@ msgstr "Ikke i stand til at evaluere binær operatør - mindre end 2 elementer i
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr "Ikke i stand til at evaluere unær operatøren (enkelt-elements operatør) - ingen elementer i stakken"
 
-#: classes/expressions/LimeExpressionManager.php:3246
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:3808
 msgid "Unable to insert record into survey table: "
-msgstr "Sletter gamle spørgeskemaers svartabeller"
+msgstr "Ikke i stand til at indsætte data i spørgeskema tabellen"
 
-#: classes/expressions/LimeExpressionManager.php:3262
+#: classes/expressions/LimeExpressionManager.php:3824
 msgid "Unable to insert record into timings table "
 msgstr "Ikke i stand til at indsætte data i 'timings' tabellen"
 
@@ -11704,14 +11633,12 @@ msgid "Unbalanced equation - values left on stack"
 msgstr "Uafbalanceret spørgsmål - elementer tilovers i stakken"
 
 #: classes/expressions/ExpressionManager.php:751
-#, fuzzy
 msgid "Undefined Function"
-msgstr "Opret spørgsmål"
+msgstr "Udefineret funktion"
 
 #: classes/expressions/ExpressionManager.php:1679
-#, fuzzy
 msgid "Undefined function"
-msgstr "Opret spørgsmål"
+msgstr "Udefineret funktion"
 
 #: classes/expressions/ExpressionManager.php:572
 #: classes/expressions/ExpressionManager.php:1686
@@ -11724,9 +11651,8 @@ msgid "Unsupported number of arguments: %s"
 msgstr "Ugyldigt antal argumenter: %s"
 
 #: classes/expressions/ExpressionManager.php:1691
-#, fuzzy
 msgid "Unsupported syntax"
-msgstr "Eksporter syntaks"
+msgstr "Ikke-understøttet syntaks"
 
 #: classes/expressions/ExpressionManager.php:215
 msgid "Uppercase the first character of each word in a string"
@@ -11736,14 +11662,13 @@ msgstr "Ændr det først bogstav i hvert ord i en tekststreng til et stort bogst
 msgid "Urdu"
 msgstr "Urdu"
 
-#: classes/expressions/LimeExpressionManager.php:6671
+#: classes/expressions/LimeExpressionManager.php:7255
 msgid "VALIDATION:"
 msgstr "VALIDERING:"
 
-#: classes/expressions/LimeExpressionManager.php:6572
-#, fuzzy
+#: classes/expressions/LimeExpressionManager.php:7156
 msgid "Value"
-msgstr "Mand"
+msgstr "Værdi"
 
 #: classes/core/surveytranslator.php:563
 msgid "Vietnamese"
