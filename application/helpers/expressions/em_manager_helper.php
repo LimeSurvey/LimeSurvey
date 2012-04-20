@@ -2396,7 +2396,7 @@
                 'jsName'=>'',
                 'readWrite'=>'N',
                 );
-                
+
                 foreach ($attrs as $key)
                 {
                     if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/',$key))
@@ -6380,9 +6380,12 @@ EOD;
                                 break;
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
-                                if ($code == 'Y' && isset($var['question']))
+                                if ($code == 'Y' && isset($var['question']) && !preg_match('/comment$/',$sgqa))
                                 {
                                     $shown = $var['question'];
+                                }
+                                elseif (preg_match('/comment$/',$sgqa) && isset($_SESSION[$sgqa])) {
+                                    $shown = $_SESSION[$sgqa];
                                 }
                                 else
                                 {
