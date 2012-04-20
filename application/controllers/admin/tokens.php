@@ -1782,6 +1782,8 @@ class tokens extends Survey_Common_Action
                         {
                             if (!isset($writearray['emailstatus']) || $writearray['emailstatus'] == '')
                                 $writearray['emailstatus'] = "OK";
+                            if (!isset($writearray['usesleft']) || $writearray['usesleft'] == '')
+                                $writearray['usesleft'] = 1;
                             if (!isset($writearray['language']) || $writearray['language'] == "")
                                 $writearray['language'] = $sBaseLanguage;
                             if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == ''))
@@ -1939,7 +1941,7 @@ class tokens extends Survey_Common_Action
             . "<input type='submit' value='"
             . $clang->gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("admin/") . "', '_top')\" />"
             )), $aData);
-            
+
             LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
         }
     }
@@ -2111,7 +2113,7 @@ class tokens extends Survey_Common_Action
             $aData['surveyid'] = $iSurveyId;
             $aData['tcount'] = $tcount;
             $aData['databasetype'] = Yii::app()->db->getDriverName();
-            
+
             $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
     }
