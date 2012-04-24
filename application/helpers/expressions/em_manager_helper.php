@@ -197,7 +197,7 @@
 
             $queries = array();
             foreach ($releqns as $key=>$value) {
-                $query = "UPDATE {{questions}} SET relevance='".Yii::app()->db->quoteValue($value)."' WHERE qid=".$key;
+                $query = "UPDATE {{questions}} SET relevance=".Yii::app()->db->quoteValue($value)." WHERE qid=".$key;
                 dbExecuteAssoc($query);
                 $queries[] = $query;
             }
