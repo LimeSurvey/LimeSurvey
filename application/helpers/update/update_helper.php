@@ -32,6 +32,7 @@ function CheckForDBUpgrades($subaction = null)
         	echo "<div style='width:90%; padding:1% 5%;background-color:#eee;'>";
             $upgradedbtype=Yii::app()->db->getDriverName();
             if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
+            if ($upgradedbtype=='sqlsrv') $upgradedbtype='mssql';
             Yii::app()->loadHelper('update/upgrade-'.$upgradedbtype);
             Yii::app()->loadHelper('update/upgrade-all');
             db_upgrade_all(intval($currentDBVersion));

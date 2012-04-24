@@ -1311,7 +1311,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                     //special treatment for MS SQL databases
                     $sDatabaseType = Yii::app()->db->getDriverName();
-                    if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
+                    if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'sqlsrv')
                     {
                         //standard deviation
                         $query = "SELECT STDEVP(".Yii::app()->db->quoteColumnName($fieldname)."*1) as stdev";
@@ -1338,7 +1338,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                     //special treatment for MS SQL databases
-                    if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
+                    if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'sqlsrv')
                     {
                         //no NULL/empty values please
                         $query .= " FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT NULL";
@@ -2198,7 +2198,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             //get more data
                             $sDatabaseType = Yii::app()->db->getDriverName();
-                            if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
+                            if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'sqlsrv')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
                                 $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
@@ -2215,7 +2215,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //  ==> value is ''
                             // * NoAnswer due to conditions, or a page not displayed
                             //  ==> value is NULL
-                            if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
+                            if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'sqlsrv')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
                                 //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "

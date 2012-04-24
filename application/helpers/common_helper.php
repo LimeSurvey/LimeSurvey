@@ -6533,7 +6533,7 @@ function fixLanguageConsistency($sid, $availlangs='')
 */
 function switchMSSQLIdentityInsert($table,$state)
 {
-    if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
+    if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'mssql_n', 'sqlsrv')))
     {
         if ($state == true)
         {

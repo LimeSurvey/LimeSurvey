@@ -192,7 +192,7 @@ class Statistics_userController extends LSYii_Controller {
 
         $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa WHERE 'g.gid' = 'q.gid' AND 'g.language' = :lang AND 'q.language' = :lang AND 'q.sid' = :surveyid AND 'q.qid' = 'qa.qid' AND 'q.parent_qid' = 0 AND 'qa.attribute' = 'public_statistics'";
         $databasetype = Yii::app()->db->getDriverName();
-        if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
+        if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="sqlsrv")
         {
             $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
         }

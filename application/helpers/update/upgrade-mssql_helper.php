@@ -665,24 +665,28 @@ function upgrade_token_tables128()
 
 function fixLanguageConsistencyAllSurveys()
 {
-    global $modifyoutput;
     $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
-    $surveyidresult = db_execute_num($surveyidquery);
-    while ( $sv = $surveyidresult->FetchRow() )
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
+    foreach ( $surveyidresult as $sv )
     {
         fixLanguageConsistency($sv[0],$sv[1]);
     }
 }
 
 
+// Add the reminders tracking fields
 function upgrade_token_tables134()
 {
     global $modifyoutput;
-    $tokentables = dbGetTablesLike("tokens%");
-    foreach ($tokentables as $sv)
+    $surveyidresult = dbGetTablesLike("tokens%");
+    if (!$surveyidresult) {return "Database Error";}
+    else
     {
-        modifyDatabase("","ALTER TABLE ".$sv." ADD [validfrom] DATETIME"); echo $modifyoutput; flush();@ob_flush();
-        modifyDatabase("","ALTER TABLE ".$sv." ADD [validuntil] DATETIME"); echo $modifyoutput; flush();@ob_flush();
+        foreach ( $surveyidresult as $sv )
+    {
+            modifyDatabase("","ALTER TABLE ".$sv[0]." ADD [validfrom] Datetime"); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("","ALTER TABLE ".$sv[0]." ADD [validuntil] Datetime"); echo $modifyoutput; flush();@ob_flush();
+        }
     }
 }
 
