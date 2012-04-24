@@ -1043,7 +1043,7 @@
                                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                                         //check if there is a dualscale_headerA/B
-                                        $dshresult = $dshresults[$key1][$key];
+                                        $dshresult = $dshresults[$key1][0];
 
                                         //get header
                                         foreach($dshresult as $dshrow)
@@ -1127,7 +1127,7 @@
                                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                                         //check if there is a dualsclae_headerA/B
-                                        $dshresult2 = $dshresults2[$key1][$key];
+                                        $dshresult2 = $dshresults2[$key1][0];
 
                                         //get header
                                         foreach($dshresult2 as $dshrow2)

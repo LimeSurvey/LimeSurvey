@@ -88,7 +88,7 @@ class questiongroup extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['aImportResults'] = $aImportResults;
             $aData['sExtension'] = $sExtension;
-            $aData['display']['menu_bars']['surveysummary'] = 'importgroup';
+            //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'import_view', $aData);
             // TMSW Conditions->Relevance:  call LEM->ConvertConditionsToRelevance() after import
