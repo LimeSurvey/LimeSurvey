@@ -1358,6 +1358,7 @@ class participantsaction extends Survey_Common_Action
         $sFilePath = preg_replace('/\\\/', '/', Yii::app()->getConfig('tempdir')) . "/" . $_FILES['the_file']['name'];
         $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
         $errorinupload = '';
+        $filterblankemails = Yii::app()->request->getPost('filterbea');
 
         if (!$bMoveFileResult)
         {
@@ -1392,7 +1393,8 @@ class participantsaction extends Survey_Common_Action
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
                 'fullfilepath' => $sFilePath,
-                'linecount' => $linecount - 1
+                'linecount' => $linecount - 1,
+                'filterbea' => $filterblankemails
             );
             $this->_renderWrappedTemplate('participants', 'attributeMapCSV', $aData);
         }
@@ -1409,6 +1411,7 @@ class participantsaction extends Survey_Common_Action
         $newarray = Yii::app()->request->getPost('newarray');
         $mappedarray = Yii::app()->request->getPost('mappedarray');
         $sFilePath = Yii::app()->request->getPost('fullfilepath');
+        $filterblankemails = Yii::app()->request->getPost('filterbea');
         $errorinupload = "";
         $tokenlistarray = file($sFilePath);
         $recordcount = 0;
@@ -1555,8 +1558,8 @@ class participantsaction extends Survey_Common_Action
                     }
                 }
             	if (!$dupfound && !$invalidemail) {
-            		//If it isn't a duplicate value or an invalid email, process
-                    //the entry
+            		//If it isn't a duplicate value or an invalid email, process the entry
+
                	    //First, process the known fields
                     if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "") {
                         $uuid = $this->gen_uuid(); //Generate a UUID for the new participant
@@ -1578,10 +1581,12 @@ class participantsaction extends Survey_Common_Action
                     if (isset($writearray['validuntil']) && trim($writearray['validuntil'] == '')) {
                         unset($writearray['validuntil']);
                     }
-                    if ($writearray['email'] == "" || $writearray['firstname'] == "" || $writearray['lastname'] == "") {
+                    $dontimport=false;
+                    if (($filterblankemails == "accept" && $writearray['email'] == "") || $writearray['firstname'] == "" || $writearray['lastname'] == "") {
                     	//The mandatory fields of email, firstname and lastname
 						//must be filled, but one or more are empty
                         $mandatory++;
+                        $dontimport=true;
                     } else {
                         foreach ($writearray as $key => $value) {
                             if (!empty($mappedarray)) {
@@ -1604,8 +1609,12 @@ class participantsaction extends Survey_Common_Action
                             }
                         }
                     }
-                    Participants::model()->insertParticipantCSV($writearray);
-                    $imported++;
+                    //If any of the mandatory fields are blank, then don't import this user
+                    if(!$dontimport)
+                    {
+                        Participants::model()->insertParticipantCSV($writearray);
+                        $imported++;
+                    }
             	}
                 $mincriteria++;
             }
