@@ -935,9 +935,12 @@ class SurveyAdmin extends Survey_Common_Action
 
             if (isset($aImportResults['error']) && $aImportResults['error']) safeDie($aImportResults['error']);
 
-            $aData['action'] = $action;
-            $aData['sLink'] = $this->getController()->createUrl('admin/survey/view/surveyid/' . $aImportResults['newsid']);
-            $aData['aImportResults'] = $aImportResults;
+            if (!$aData['bFailed'])
+            {
+                $aData['action'] = $action;
+                $aData['sLink'] = $this->getController()->createUrl('admin/survey/view/surveyid/' . $aImportResults['newsid']);
+                $aData['aImportResults'] = $aImportResults;
+            }
         }
 
         $this->_renderWrappedTemplate('survey', 'importSurvey_view', $aData);
