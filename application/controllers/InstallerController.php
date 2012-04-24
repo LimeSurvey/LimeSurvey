@@ -217,7 +217,7 @@ class InstallerController extends CController {
 
         if(count($aData['dbtypes'])==0)
         {
-           $bProceed=false;
+            $bProceed=false;
         }
         // after all check, if flag value is true, show next button and sabe step2 status.
         if ($bProceed)
@@ -440,46 +440,46 @@ class InstallerController extends CController {
         {
             case 'mysqli':
             case 'mysql':
-                try
-                {
-                    $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
-                }
-                catch(Exception $e)
-                {
-                  $createDb=false;
-                }
-                break;
+            try
+            {
+                $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+            }
+            catch(Exception $e)
+            {
+                $createDb=false;
+            }
+            break;
             case 'mssql':
             case 'odbc':
-                try
-                {
-                    $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
-                }
-                catch(Exception $e)
-                {
-                  $createDb=false;
-                }
-                break;
+            try
+            {
+                $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
+            }
+            catch(Exception $e)
+            {
+                $createDb=false;
+            }
+            break;
             case 'postgres':
-                try
-                {
-                    $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
-                }
-                catch (Exception $e)
-                {
-                    $createdb = false;
-                }
-                break;
+            try
+            {
+                $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
+            }
+            catch (Exception $e)
+            {
+                $createdb = false;
+            }
+            break;
             default:
-                try
-                {
-                    $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
-                }
-                catch(Exception $e)
-                {
-                  $createDb=false;
-                }
-                break;
+            try
+            {
+                $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
+            }
+            catch(Exception $e)
+            {
+                $createDb=false;
+            }
+            break;
         }
 
         //$this->load->dbforge();
@@ -822,8 +822,11 @@ class InstallerController extends CController {
         // ** optional settings check **
 
         // gd library check
-        $data['gdPresent'] = check_HTML_image(array_key_exists('FreeType Support', gd_info()));
-
+        if (function_exists('gd_info')) {
+            $data['gdPresent'] = check_HTML_image(array_key_exists('FreeType Support', gd_info()));
+        } else {
+            $data['gdPresent'] = check_HTML_image(false);
+        }
         // ldap library check
         check_PHPFunction('ldap_connect', $data['ldapPresent']);
 
@@ -925,7 +928,7 @@ class InstallerController extends CController {
             //}
             //else
             //{
-                $showScriptName = 'true';
+            $showScriptName = 'true';
             //}
 
             $dbdata = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
