@@ -6454,9 +6454,6 @@ EOD;
                 $query = "select distinct a.qid, a.attribute, a.value";
             }
 
-            // TODO - does this need to be filtered by language?
-            $query = "select distinct a.qid, a.attribute, a.value";
-
             $query .= " from ".db_table_name('question_attributes')." as a, ".db_table_name('questions')." as b"
             ." where " . $where
             .$lang
