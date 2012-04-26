@@ -15,7 +15,7 @@
         <tr >
             <td align='center' style='padding:3px;'>
                 <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
-                    <input type='image' src='<?php echo $imageurl;?>/token_edit.png' value='<?php $clang->eT("Edit user");?>' />
+                    <input type='image' src='<?php echo $imageurl;?>/edit_16.png' value='<?php $clang->eT("Edit user");?>' />
                     <input type='hidden' name='action' value='modifyuser' />
                     <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
                 </form>
@@ -55,7 +55,7 @@
                 <td align='center' style='padding:3px;'>
                     <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == Yii::app()->session['loginID'] || (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
                         <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
-                            <input type='image' src='<?php echo $imageurl;?>/token_edit.png' alt='<?php $clang->eT("Edit this user");?>' />
+                            <input type='image' src='<?php echo $imageurl;?>/edit_16.png' alt='<?php $clang->eT("Edit this user");?>' />
                             <input type='hidden' name='action' value='modifyuser' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>

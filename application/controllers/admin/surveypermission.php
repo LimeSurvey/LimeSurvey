@@ -100,7 +100,7 @@ class surveypermission extends Survey_Common_Action {
 
                     $surveysecurity .= "<td>\n";
                     $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/set/surveyid/'.$surveyid)."'>"
-                    ."<input type='image' src='{$imageurl}/token_edit.png' title='".$clang->gT("Edit permissions")."' />"
+                    ."<input type='image' src='{$imageurl}/edit_16.png' title='".$clang->gT("Edit permissions")."' />"
                     ."<input type='hidden' name='action' value='setsurveysecurity' />"
                     ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                     ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"

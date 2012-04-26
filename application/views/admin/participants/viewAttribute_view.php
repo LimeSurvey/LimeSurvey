@@ -121,7 +121,7 @@ $plus = array('src' => Yii::app()->baseUrl . "/images/plus.png",
                 </td>
                 <td>
                     <?php
-                    $edit = array('src' => Yii::app()->getConfig('imageurl') . '/token_edit.png',
+                    $edit = array('src' => Yii::app()->getConfig('imageurl') . '/edit_16.png',
                         'alt' => 'Edit',
                         'width' => '15',
                         'class' => 'edit',

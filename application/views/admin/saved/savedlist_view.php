@@ -20,7 +20,7 @@
 
                     <?php if (hasSurveyPermission($iSurveyId,'responses','update'))
                     { ?>
-                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/token_edit.png'
+                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit_16.png'
                            title='<?php $clang->eT('Edit entry'); ?>' onclick="window.open('<?php echo $this->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" />
                     <?php }
                     if (hasSurveyPermission($iSurveyId,'responses','delete'))

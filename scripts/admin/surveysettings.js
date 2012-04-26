@@ -30,7 +30,7 @@ $(document).ready(function(){
                                     for(var i=0;i < ids.length;i++)
                                     {
                                         var cl = ids[i];
-                                        be = "<image style='cursor:pointer;' src='"+imageUrl+"/token_edit.png' value='E' onclick=\"editParameter('"+cl+"');\" />";
+                                        be = "<image style='cursor:pointer;' src='"+imageUrl+"/edit_16.png' value='E' onclick=\"editParameter('"+cl+"');\" />";
                                         de = "<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\" />";
                                         jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
                                     }
@@ -77,7 +77,7 @@ function saveParameter()
     if ($("#dlgEditParameter").data('action')=='add')
     {
        sGUID=guidGenerator();
-       jQuery("#urlparams").addRowData(sGUID, { act: "<image style='cursor:pointer;' src='"+imageUrl+"/token_edit.png' value='E' onclick=\"editParameter('"+sGUID+"');\" />"
+       jQuery("#urlparams").addRowData(sGUID, { act: "<image style='cursor:pointer;' src='"+imageUrl+"/edit_16.png' value='E' onclick=\"editParameter('"+sGUID+"');\" />"
                                                     +"<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+sGUID+"');\" />",
                                                 id:sGUID,
                                                 sid:$('#id').val(),

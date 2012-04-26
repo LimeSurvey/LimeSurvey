@@ -930,15 +930,15 @@ div.successheader{
 }
 div.errorheader{
     font-weight:bold;
-    color:#800000;
-    background-color: #FFC0C0;
+    color:#fff;
+    background-color: #94D200;
     margin: 5px 0;
     padding:2px;
 }
-div.warningheader{
+div.warningheader, div.messagebox .warningheader{
     font-weight:bold;
-    color:#808000;
-    background-color: #FFC0C0;
+    color:#fff;
+    background-color: #94D200;
     margin: 5px 0;
     padding:2px;
 }
@@ -950,13 +950,6 @@ div.partialheader{
     padding:2px;
 }
 
-div.messagebox .warningheader {
-    font-weight:bold;
-    color:#ee0000;
-    background-color: #ffeeee;
-    margin: 5px 0;
-    padding:2px;
-}
 
 /* Conditions designer interface */
 
@@ -1402,7 +1395,6 @@ table.limetable tbody tr.highlight {
 
 thead th
 {
-    background-color:#E1E7EF;
 }
 
 .usersurveypermissions th{

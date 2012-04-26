@@ -465,6 +465,7 @@ class Survey_Common_Action extends CAction
             $aData['clang'] = $clang;
             $aData['condarray'] = $condarray;
             $aData['sumcount4'] = $sumcount4;
+            $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
             $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
 
             $groupsummary .= $this->getController()->render('/admin/survey/QuestionGroups/questiongroupbar_view', $aData, true);
