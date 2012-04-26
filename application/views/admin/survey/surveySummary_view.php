@@ -4,7 +4,7 @@
 			<strong><?php $clang->eT("Title");?>:</strong>
 		</td>
 		<td class='settingentryhighlight'>
-			<strong><?php echo $surveyinfo['surveyls_title']." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?></strong>
+			<?php echo $surveyinfo['surveyls_title']." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?>
 		</td>
 	</tr>
 	<tr>

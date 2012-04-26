@@ -500,21 +500,21 @@ class SurveyAdmin extends Survey_Common_Action
             // Set status
             if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
-                $aSurveyEntry[] = '<!--a--><img src="' . Yii::app()->getConfig('imageurl') . '/expired.png" alt="' . $clang->gT("This survey is active but expired.") . '" />';
+                $aSurveyEntry[] = '<!--a--><img src="' . Yii::app()->getConfig('adminimageurl') . '/expired.png" alt="' . $clang->gT("This survey is active but expired.") . '" />';
             }
             elseif ($rows['active'] == "Y" && $rows['startdate'] != '' && $rows['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
-                $aSurveyEntry[] = '<!--b--><img src="' . Yii::app()->getConfig('imageurl') . '"/notyetstarted.png" alt="' . $clang->gT("This survey is active but has a start date.") . '" />';
+                $aSurveyEntry[] = '<!--b--><img src="' . Yii::app()->getConfig('adminimageurl') . '"/notyetstarted.png" alt="' . $clang->gT("This survey is active but has a start date.") . '" />';
             }
             elseif ($rows['active'] == "Y")
             {
                 if (hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('imageurl') . '/active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
+                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . '/active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
                 }
                 else
                 {
-                    $aSurveyEntry[] = '<!--d--><img src="' . Yii::app()->getConfig('imageurl') . '/active.png" alt="' . $clang->gT("This survey is currently active.") . '" />';
+                    $aSurveyEntry[] = '<!--d--><img src="' . Yii::app()->getConfig('adminimageurl') . '/active.png" alt="' . $clang->gT("This survey is currently active.") . '" />';
                 }
             }
             else
@@ -524,11 +524,11 @@ class SurveyAdmin extends Survey_Common_Action
 
                 if (count($questionsCountResult) && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('imageurl') . '/inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
+                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . '/inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
                 }
                 else
                 {
-                    $aSurveyEntry[] = '<!--f--><img src="' . Yii::app()->getConfig('imageurl') . '/inactive.png" title="' . $clang->gT("This survey is currently not active.") . '" alt="' . $clang->gT("This survey is currently not active.") . '" />';
+                    $aSurveyEntry[] = '<!--f--><img src="' . Yii::app()->getConfig('adminimageurl') . '/inactive.png" title="' . $clang->gT("This survey is currently not active.") . '" alt="' . $clang->gT("This survey is currently not active.") . '" />';
                 }
             }
 
@@ -1627,7 +1627,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'survey', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/".Yii::app()->getConfig('admintheme')."/superfish.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

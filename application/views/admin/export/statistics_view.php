@@ -129,7 +129,7 @@
     </p>
 
     <div class='header header_statistics'>
-        <img src='<?php echo $imageurl; ?>/plus.gif' align='right' id='showfilter' /><img src='<?php echo $imageurl; ?>/minus.gif' align='right' id='hidefilter' />
+        <img src='<?php echo $imageurl; ?>/maximize.png' align='right' id='showfilter' /><img src='<?php echo $imageurl; ?>/minimize.png' align='right' id='hidefilter' />
         <?php $clang->eT("Response filters"); ?>
     </div>
 

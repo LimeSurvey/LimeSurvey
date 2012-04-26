@@ -9,7 +9,7 @@ html, body {
 body {
     font-family: verdana, arial, sans-serif;
     text-align: left;
-    background-color: #5670A1;
+    background-color: #fefefe;
     color: #666;
     margin: 0;
     font-size: 9pt;
@@ -30,6 +30,11 @@ p {
     clear: left;
     text-align:center;
 }
+
+hr{
+    color:#efefef;
+}
+
 
 /* Wrapper */
 .wrapper {
@@ -86,7 +91,6 @@ fieldset {
 
 legend {
     font-weight: bold;
-    color:#2D466B;
 }
 
 .maintitle {
@@ -355,8 +359,8 @@ textarea {
 }
 
 .settingentryhighlight {
-    color: navy;
-    font-weight: 700;
+    color: #94D200;
+    font-weight: bold;
 }
 
 .statusentryhighlight {

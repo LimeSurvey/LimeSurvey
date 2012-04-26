@@ -1,5 +1,5 @@
 <div class='header header_statistics'>
-        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' align='right'
+        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.png' align='right'
         onclick="window.open('<?php echo $this->createUrl("admin/labels/view/lid/".$lid); ?>', '_top')" />
         <?php if ($action == "newlabelset") { $clang->eT("Create or import new label set(s)");}
         else {$clang->eT("Edit label set"); } ?>

@@ -4,18 +4,18 @@
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' width='40' height='20' border='0' hspace='0' align='left' alt='' />
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
+            <img src='<?php echo $imageurl; ?>blank.gif' width='40' height='20' border='0' hspace='0' align='left' alt='' />
+            <img src='<?php echo $imageurl; ?>seperator.gif' border='0' hspace='0' align='left' alt='' />
             <a href='<?php echo $this->createUrl("admin/labels/editlabelset/lid/".$lid); ?>' title="<?php $clang->eTview("Edit label set"); ?>" >
- 			<img name='EditLabelsetButton' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit label set"); ?>' align='left'  /></a>
+ 			<img name='EditLabelsetButton' src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit label set"); ?>' align='left'  /></a>
  			<a href='#' title='<?php $clang->eTview("Delete label set"); ?>' onclick="if (confirm('<?php $clang->eT("Do you really want to delete this label set?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/labels/process")."?action=deletelabelset&amp;lid=$lid"); ?>}" >
- 			<img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' border='0' alt='<?php $clang->eT("Delete label set"); ?>' align='left' /></a>
- 			<img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
+ 			<img src='<?php echo $imageurl; ?>delete.png' border='0' alt='<?php $clang->eT("Delete label set"); ?>' align='left' /></a>
+ 			<img src='<?php echo $imageurl; ?>seperator.gif' border='0' hspace='0' align='left' alt='' />
  			<a href='<?php echo $this->createUrl("admin/export/dumplabel/lid/$lid");?>' title="<?php $clang->eTview("Export this label set"); ?>" >
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/dumplabel.png' alt='<?php $clang->eT("Export this label set"); ?>' align='left' /></a>
+            <img src='<?php echo $imageurl; ?>dumplabel.png' alt='<?php $clang->eT("Export this label set"); ?>' align='left' /></a>
         </div>
         <div class='menubar-right'>
-            <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close Window"); ?>' href="<?php echo $this->createUrl("admin/labels/view"); ?>" />
+            <input type='image' src='<?php echo $imageurl; ?>close.png' title='<?php $clang->eT("Close Window"); ?>' href="<?php echo $this->createUrl("admin/labels/view"); ?>" />
         </div>
     </div>
 </div>

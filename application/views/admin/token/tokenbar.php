@@ -99,9 +99,8 @@
                 if (hasSurveyPermission($surveyid, 'surveyactivation', 'update') || HasSurveyPermission($surveyid, 'tokens','delete'))
                 {
                 ?>
-                <a href="<?php echo $this->createUrl("admin/tokens/kill/surveyid/$surveyid"); ?>"
-                    title='<?php $clang->eTview("Drop tokens table"); ?>' >
-                    <img name='DeleteParticipantTable' src='<?php echo $imageurl; ?>/delete.png' alt='<?php $clang->eT("Drop tokens table"); ?>' />
+                <a href="<?php echo $this->createUrl("admin/tokens/kill/surveyid/$surveyid"); ?>">
+                    <img name='DeleteParticipantTable' src='<?php echo $imageurl; ?>/delete.png' alt='<?php $clang->eT("Delete tokens table"); ?>' />
                 </a>
                 <?php } ?>
         </div>

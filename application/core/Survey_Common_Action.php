@@ -399,6 +399,7 @@ class Survey_Common_Action extends CAction
             }
             $aData['advancedsettings'] = $DisplayArray;
             $aData['condarray'] = $condarray;
+            $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
             $questionsummary .= $this->getController()->render('/admin/survey/Question/questionbar_view', $aData, true);
         }
         $finaldata['display'] = $questionsummary;
@@ -464,6 +465,7 @@ class Survey_Common_Action extends CAction
             $aData['clang'] = $clang;
             $aData['condarray'] = $condarray;
             $aData['sumcount4'] = $sumcount4;
+            $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
 
             $groupsummary .= $this->getController()->render('/admin/survey/QuestionGroups/questiongroupbar_view', $aData, true);
         }
@@ -510,7 +512,7 @@ class Survey_Common_Action extends CAction
 
         // ACTIVATE SURVEY BUTTON
         $aData['activated'] = $activated;
-        $aData['imageurl'] = Yii::app()->getConfig('imageurl');
+        $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
 
         $condition = array('sid' => $iSurveyId, 'parent_qid' => 0, 'language' => $baselang);
 
@@ -612,6 +614,7 @@ class Survey_Common_Action extends CAction
         $aData['GidPrev'] = $GidPrev = getGidPrevious($iSurveyId, $gid);
 
         $aData['GidNext'] = $GidNext = getGidNext($iSurveyId, $gid);
+        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 
         $this->getController()->render("/admin/survey/surveybar_view", $aData);
     }
