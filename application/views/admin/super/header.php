@@ -10,9 +10,9 @@
     <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts');?>admin_core.js"></script>
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
-    <link rel="stylesheet" type="text/css" media="all" href="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/css/start/jquery-ui.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/printablestyle.css" media="print" />
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/adminstyle.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>printablestyle.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>adminstyle.css" />
     <?php
     if(!empty($css_admin_includes)) {
         foreach ($css_admin_includes as $cssinclude)

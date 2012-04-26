@@ -58,7 +58,8 @@ $config['allowmandbackwards'] =   1;                // Allow moving backwards (i
 $config['deletenonvalues']    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators']   =   0;                // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
-$config['admintheme']         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
+$config['admintheme']         =  'blobblueish';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
+$config['adminthemeiconsize'] =  40;                // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 $config['blacklistallsurveys']     =  'N';          // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']     =  'N';          // Blacklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']     =  'N';         // Don't allow blacklisted participants to be added to new survey
@@ -502,16 +503,18 @@ $config['enableXMLRPCInterface'] = 0;
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
 $config['publicurl']               = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
-$config['homeurl']                 = $config['publicurl']."admin";          // The website location (url) of the admin scripts
-$config['tempurl']                 = $config['publicurl']."tmp";
-$config['imageurl']                = $config['publicurl']."images";         // Location of button bar files for admin script
-$config['uploadurl']               = $config['publicurl']."upload";
-$config['standardtemplaterooturl'] = $config['publicurl']."templates";      // Location of the standard templates
-$config['adminscripts']            = $config['publicurl']."scripts/admin/";
-$config['generalscripts']          = $config['publicurl']."scripts/";
-$config['styleurl']                = $config['publicurl']."styles/";
-$config['sCKEditorURL']            = $config['adminscripts']."/ckeditor.36";
-$config['usertemplaterooturl']     = $config['uploadurl']."/templates";     // Location of the user templates
+$config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
+$config['tempurl']                 = $config['publicurl'].'tmp';
+$config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
+$config['uploadurl']               = $config['publicurl'].'upload';
+$config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // Location of the standard templates
+$config['adminscripts']            = $config['publicurl'].'scripts/admin/';
+$config['generalscripts']          = $config['publicurl'].'scripts/';
+$config['styleurl']                = $config['publicurl'].'styles/';
+$config['sCKEditorURL']            = $config['adminscripts'].'/ckeditor.36';
+$config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
+$config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
+$config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
 
 
 $config['publicdir']               = $config['rootdir'];                                   // The directory path of the public scripts

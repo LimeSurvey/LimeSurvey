@@ -617,7 +617,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     //Question attributes
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'odbc_mssql' || $platform == 'mssql_n' || $platform =='sqlsrv')
+    if ($platform == 'mssql' || $platform =='sqlsrv')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
@@ -1709,7 +1709,7 @@ function groupGetXMLStructure($xml,$gid)
     $iSurveyID=$iSurveyID['sid'];
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'odbc_mssql' || $platform == 'mssql_n' || $platform =='sqlsrv')
+    if ($platform == 'mssql' || $platform =='sqlsrv')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
@@ -1810,7 +1810,7 @@ function questionGetXMLStructure($xml,$gid,$qid)
     $iSurveyID=$iSurveyID['sid'];
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
-    if ($platform == 'odbc_mssql' || $platform == 'mssql_n' || $platform =='sqlsrv')
+    if ($platform == 'mssql' || $platform =='sqlsrv')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
@@ -1838,7 +1838,7 @@ function tokensExport($iSurveyID)
     $databasetype = Yii::app()->db->getDriverName();
     if (trim($_POST['filteremail'])!='')
     {
-        if (in_array($databasetype, array('odbc_mssql', 'mssql_n', 'sqlsrv')))
+        if (in_array($databasetype, array('mssql', 'sqlsrv')))
         {
             $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
         }

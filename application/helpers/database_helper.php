@@ -123,23 +123,21 @@ function dbQuoteID($id)
         case "mysql" :
             return "`".$id."`";
             break;
-        case "mssql_n" :
         case "mssql" :
         case "sqlsrv" :
-        case "odbc_mssql" :
             return "[".$id."]";
             break;
-        case "postgre":
+        case "pgsql":
             return "\"".$id."\"";
             break;
         default:
-            return "`".$id."`";
+            return $id;
     }
 }
 
 function dbRandom()
 {
-    if (Yii::app()->db->getDriverName() == 'odbc_mssql' || Yii::app()->db->getDriverName() == 'mssql_n' || Yii::app()->db->getDriverName() == 'sqlsrv')  {$srandom='NEWID()';}
+    if (Yii::app()->db->getDriverName() == 'mssql' || Yii::app()->db->getDriverName() == 'sqlsrv')  {$srandom='NEWID()';}
     else {$srandom= 0 + lcg_value()*(abs(1));}
     return $srandom;
 

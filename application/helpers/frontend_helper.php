@@ -32,7 +32,7 @@
             }
             $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
 
-            if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'mssql_n', 'sqlsrv')))
+            if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
             {
                 $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
             }
@@ -1884,7 +1884,7 @@
 
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
-    if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'mssql_n', 'sqlsrv')))
+    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
     {
         $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
     }

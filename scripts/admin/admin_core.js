@@ -37,13 +37,12 @@ $(document).ready(function(){
         if($(this).attr('alt') != '')
         {
              $(this).qtip({
-               style: {name: 'cream',
+               style: {name: 'light',
                         tip:true,
-                        color:'#1D2D45',
                         border: {
                              width: 1,
-                             radius: 5,
-                             color: '#EADF95'}
+                             radius: 5
+                        }
                        },
                position: {adjust: {
                         screen: true, scroll:true},
@@ -244,7 +243,7 @@ function qTypeDropdownInit()
                                     }
                             },
                        show: 'mouseover',
-                       hide: 'mouseout'
+                       //hide: 'mouseout'
                 });
 
             });

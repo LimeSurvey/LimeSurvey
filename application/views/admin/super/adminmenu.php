@@ -8,7 +8,7 @@
 	    	{ ?>
 	 			 --  <?php $clang->eT("Logged in as:");?><strong>
 		        <a href="<?php echo $this->createUrl("/admin/user/personalsettings"); ?>" title="<?php $clang->eTview("Edit your personal preferences");?>">
-		        <?php echo Yii::app()->session['user'];?> <img src='<?php echo Yii::app()->getConfig('imageurl');?>/profile_edit.png' alt='<?php $clang->eT("Edit your personal preferences");?>' /></a>
+		        <?php echo Yii::app()->session['user'];?> <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>profile_edit.png' alt='<?php $clang->eT("Edit your personal preferences");?>' /></a>
 		        </strong>
 	        <?php } ?>
 	    </div>
@@ -20,29 +20,29 @@
 	</div>
     <div class='menubar-main'>
     <div class='menubar-left'>
-	    <a href="<?php echo $this->createUrl("/admin"); ?>" title="<?php $clang->eTview("Default Administration Page");?>">
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/home.png' alt='<?php $clang->eT("Default Administration Page");?>' width='40' height='40'/></a>
+	    <a href="<?php echo $this->createUrl("/admin"); ?>" title="<?php $clang->eTview("Default administration page");?>">
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>home.png' alt='<?php $clang->eT("Default administration page");?>' width='' height='<?php echo $iconsize;?>'/></a>
 
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/blank.gif' alt='' width='11' />
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' />
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>blank.gif' alt='' width='11' />
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>seperator.gif' alt='' />
 
 	    <a href="<?php echo $this->createUrl("admin/user/index"); ?>" title="<?php $clang->eTview("Create/Edit Users");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/security.png' alt='<?php $clang->eT("Create/Edit Users");?>' width='40' height='40'/></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>security.png' alt='<?php $clang->eT("Create/Edit Users");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
 
 	    <a href="<?php echo $this->createUrl("admin/usergroups/index"); ?>" title="<?php $clang->eTview("Create/Edit Groups");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/usergroup.png' alt='<?php $clang->eT("Create/Edit Groups");?>' width='40' height='40'/></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>usergroup.png' alt='<?php $clang->eT("Create/Edit Groups");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
 
 		<?php
 		if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
 		{ ?>
 	    <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php $clang->eTview("Global settings");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/global.png' alt='<?php $clang->eT("Global settings");?>' width='40' height='40'/></a>
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' />
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>global.png' alt='<?php $clang->eT("Global settings");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>seperator.gif' alt='' />
 		<?php }
 		if(Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
 		{ ?>
 	    <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>" title="<?php $clang->eTview("Check Data Integrity");?>">
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/checkdb.png' alt='<?php $clang->eT("Check Data Integrity");?>' width='40' height='40'/></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>checkdb.png' alt='<?php $clang->eT("Check Data Integrity");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
 		<?php
         }
 		if(Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
@@ -54,14 +54,14 @@
 				?>
 
 				<a href="<?php echo $this->createUrl("admin/dumpdb"); ?>" title="<?php $clang->eTview("Backup Entire Database");?>" >
-				<img src='<?php echo Yii::app()->getConfig('imageurl');?>/backup.png' alt='<?php $clang->eT("Backup Entire Database");?>' width='40' height='40'/>
+				<img src='<?php echo Yii::app()->getConfig('adminimageurl');?>backup.png' alt='<?php $clang->eT("Backup Entire Database");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/>
 				</a>
 
 	        <?php } else { ?>
-	            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/backup_disabled.png' alt='<?php $clang->eT("The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."); ?>' />
+	            <img src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>backup_disabled.png' alt='<?php $clang->eT("The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."); ?>' />
 	        <?php } ?>
 
-	        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
+	        <img src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>seperator.gif' alt='' />
 
 			<?php
 		}
@@ -70,20 +70,20 @@
 	    ?>
 
 	    <a href="<?php echo $this->createUrl("admin/labels/view"); ?>" title="<?php $clang->eTview("Edit label sets");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/labels.png'  alt='<?php $clang->eT("Edit label sets");?>' width='40' height='40'/></a>
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' />
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>labels.png'  alt='<?php $clang->eT("Edit label sets");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>seperator.gif' alt='' />
 	    <?php }
 	    if(Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		{ ?>
 	    <a href="<?php echo $this->createUrl("admin/templates/view"); ?>" title="<?php $clang->eTview("Template Editor");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/templates.png' alt='<?php $clang->eT("Template Editor");?>' width='40' height='40'/></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>templates.png' alt='<?php $clang->eT("Template Editor");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
 	    <?php } ?>
-            <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' />
+            <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>seperator.gif' alt='' />
         <?php
         if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
 		{ 	 ?>
             <a href="<?php echo $this->createUrl("admin/participants/index"); ?>" title="<?php $clang->eTview("Participant panel");?>" >
-	        <img src='<?php echo Yii::app()->getConfig('imageurl');?>/tokens.png' alt='<?php $clang->eT("Participant panel");?>' width='40' height='40'/></a>
+	        <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>tokens.png' alt='<?php $clang->eT("Participant panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
         <?php } ?>
 	</div>
 	<div class='menubar-right'>
@@ -92,7 +92,7 @@
 	    <?php echo getSurveyList(false, false, $surveyid); ?>
 	    </select>
         <a href="<?php echo $this->createUrl("admin/survey/index"); ?>" title="<?php $clang->eTview("Detailed list of surveys");?>" >
-        <img src='<?php echo Yii::app()->getConfig('imageurl');?>/surveylist.png' alt='<?php $clang->eT("Detailed list of surveys");?>' />
+        <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>surveylist.png' alt='<?php $clang->eT("Detailed list of surveys");?>' />
         </a>
 
 	    <?php
@@ -100,16 +100,16 @@
 		{ ?>
 
 	    <a href="<?php echo $this->createUrl("admin/survey/newsurvey"); ?>" title="<?php $clang->eTview("Create, import, or copy a survey");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/add.png' alt='<?php $clang->eT("Create, import, or copy a survey");?>' /></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>add.png' alt='<?php $clang->eT("Create, import, or copy a survey");?>' /></a>
 	    <?php } ?>
 
 
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' />
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>seperator.gif' alt='' />
 	    <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>" title="<?php $clang->eTview("Logout");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/logout.png' alt='<?php $clang->eT("Logout");?>' /></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>logout.png' alt='<?php $clang->eT("Logout");?>' /></a>
 
 	    <a href="http://docs.limesurvey.org" title="<?php $clang->eTview("LimeSurvey online manual");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/showhelp.png' alt='<?php $clang->eT("LimeSurvey online manual");?>' /></a>
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>showhelp.png' alt='<?php $clang->eT("LimeSurvey online manual");?>' /></a>
 	</div>
 	</div>
 </div>

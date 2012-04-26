@@ -342,7 +342,7 @@ class InstallerController extends CController {
                     }
 
                     // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
-                    if (in_array($model->dbtype, array('odbc_mssql', 'mssql_n', 'sqlsrv'))) {
+                    if (in_array($model->dbtype, array('mssql', 'sqlsrv'))) {
                         @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();     //Checked
                         @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();     //Checked
                     }
@@ -1072,20 +1072,10 @@ class InstallerController extends CController {
                 break;
 
             case 'mssql' :
-            case 'dblib' :
             case 'sqlsrv':
-            case 'sybase':
                 if ($sDatabasePort!=''){$sDatabaseLocation=$sDatabaseLocation.','.$sDatabasePort;}
                 $dsn = $sDatabaseType.":Server={$sDatabaseLocation};Database={$sDatabaseName}";
                 break;
-                /*            case 'sqlite':
-                $dsn = 'sqlite:%1$s/%2$s.sq3';
-                case 'sqlite2':
-                $dsn = 'sqlite2:%1$s/%2$s.sq2';
-                break;         case 'oci':
-                $dsn = 'oci:dbname=//%1$s:%3$s/%2$s';
-                break;
-                */
             default:
                 throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
@@ -1113,15 +1103,8 @@ class InstallerController extends CController {
             case 'pgsql':
                 $sDatabasePort = '5432';
                 break;
-            case 'oci':
-                $sDatabasePort = '1521';
-                break;
             case 'mssql' :
-            case 'dblib' :
             case 'sqlsrv':
-            case 'sybase':
-            case 'sqlite':
-            case 'sqlite2':
             default:
                 $sDatabasePort = '';
         }

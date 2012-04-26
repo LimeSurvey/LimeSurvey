@@ -145,8 +145,8 @@ class Statistics_userController extends LSYii_Controller {
 		if (isset($postlang) && $postlang != null )
             $language = $postlang;
         else
-            $language = Survey::model()->findByPk($surveyid)->language;  
-        
+            $language = Survey::model()->findByPk($surveyid)->language;
+
 
 
 		$chartfontfile = Yii::app()->getConfig("chartfontfile");
@@ -192,7 +192,7 @@ class Statistics_userController extends LSYii_Controller {
 
         $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa WHERE 'g.gid' = 'q.gid' AND 'g.language' = :lang AND 'q.language' = :lang AND 'q.sid' = :surveyid AND 'q.qid' = 'qa.qid' AND 'q.parent_qid' = 0 AND 'qa.attribute' = 'public_statistics'";
         $databasetype = Yii::app()->db->getDriverName();
-        if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="sqlsrv")
+        if ($databasetype=='mssql' || $databasetype=="sqlsrv")
         {
             $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
         }
@@ -414,7 +414,7 @@ class Statistics_userController extends LSYii_Controller {
 		$data['clang'] = $clang;
 		$data['summary'] = $summary;
 		//show some main data at the beginnung
-		// CHANGE JSW_NZ - let's allow html formatted questions to show		
+		// CHANGE JSW_NZ - let's allow html formatted questions to show
 
 
 		//push progress bar from 35 to 40

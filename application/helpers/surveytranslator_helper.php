@@ -28,24 +28,26 @@
     * If $iDateFormat is given only the particual dateformat will be returned
     *
     * @param $iDateFormat integer
+    * @param $sLanguageCode string
     * @returns array
     *
     */
-    function getDateFormatData($iDateFormat=0)
+    function getDateFormatData($iDateFormat=0,$sLanguageCode='en')
     {
+        $clang = new Limesurvey_lang($sLanguageCode);
         $aDateFormats= array(
-        1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'dd.mm.yy', 'dateformat' => 'dd.mm.yyyy'),
-        2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'dd-mm-yy', 'dateformat' => 'dd-mm-yyyy'),
-        3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'yy.mm.dd', 'dateformat' => 'yyyy.mm.dd'),
-        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'd.m.yy',   'dateformat' => 'd.m.yyyy'),
-        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'dd/mm/yy', 'dateformat' => 'dd/mm/yyyy'),
-        6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'yy-mm-dd', 'dateformat' => 'yyyy-mm-dd'),
-        7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'yy/mm/dd', 'dateformat' => 'yyyy/mm/dd'),
-        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yy',   'dateformat' => 'd/m/yyyy'),
-        9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'mm-dd-yy', 'dateformat' => 'mm-dd-yyyy'),
-        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yy', 'dateformat' => 'mm.dd.yyyy'),
-        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yy', 'dateformat' => 'mm/dd/yyyy'),
-        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'd-m-yy',   'dateformat' => 'd-m-yyyy')
+        1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'dd.mm.yy', 'dateformat' => $clang->gT('dd.mm.yyyy')),
+        2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'dd-mm-yy', 'dateformat' => $clang->gT('dd-mm-yyyy')),
+        3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'yy.mm.dd', 'dateformat' => $clang->gT('yyyy.mm.dd')),
+        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'd.m.yy',   'dateformat' => $clang->gT('d.m.yyyy')),
+        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'dd/mm/yy', 'dateformat' => $clang->gT('dd/mm/yyyy')),
+        6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'yy-mm-dd', 'dateformat' => $clang->gT('yyyy-mm-dd')),
+        7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'yy/mm/dd', 'dateformat' => $clang->gT('yyyy/mm/dd')),
+        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yy',   'dateformat' => $clang->gT('d/m/yyyy')),
+        9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'mm-dd-yy', 'dateformat' => $clang->gT('mm-dd-yyyy')),
+        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yy', 'dateformat' => $clang->gT('mm.dd.yyyy')),
+        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yy', 'dateformat' => $clang->gT('mm/dd/yyyy')),
+        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'd-m-yy',   'dateformat' => $clang->gT('d-m-yyyy'))
         );
 
         if ($iDateFormat > 12 || $iDateFormat<0) {
