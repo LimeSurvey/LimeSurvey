@@ -1019,7 +1019,7 @@ class tokens extends Survey_Common_Action
         $aSurveyLangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
         $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
         array_unshift($aSurveyLangs, $sBaseLanguage);
-        $aTokenIds = $this->_getTokenIds($aTokenIds);
+        $aTokenIds = $this->_getTokenIds($aTokenIds, $iSurveyId);
         $aTokenFields = getTokenFieldsAndNames($iSurveyId, true);
         $iAttributes = 0;
         if (getEmailFormat($iSurveyId) == 'html')
@@ -2022,7 +2022,7 @@ class tokens extends Survey_Common_Action
         $this->_renderWrappedTemplate('token', array('tokenbar', 'tokenform'), $aData);
     }
 
-    private function _getTokenIds($aTokenIds)
+    private function _getTokenIds($aTokenIds, $iSurveyId)
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
