@@ -3066,6 +3066,9 @@ function do_file_upload($ia)
         var translt = {
              title: '" . $clang->gT('Upload your files','js') . "',
              returnTxt: '" . $clang->gT('Return to survey','js') . "',
+             headTitle: '" . $clang->gT('Title','js') . "',
+             headComment: '" . $clang->gT('Comment','js') . "',
+             headFileName: '" . $clang->gT('File name','js') . "',
             };
     </script>\n";
     /*if ($pos)
@@ -4042,7 +4045,7 @@ function do_shortfreetext($ia)
         }
         else{
             if ((int)($qidattributes['location_nodefaultfromip'])==0)
-                $currentLatLong = getLatLongFromIp($_SERVER['REMOTE_ADDR']);
+                $currentLatLong = getLatLongFromIp(getIPAddress());
             if (!isset($currentLatLong) || $currentLatLong==false){
                 $floatLat = 0;
                 $floatLng = 0;

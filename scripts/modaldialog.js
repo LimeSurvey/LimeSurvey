@@ -151,10 +151,10 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
         jsonobj = eval('(' + jsonstring + ')');
         display = '<table width="100%"><tr><th align="center" width="20%">&nbsp;</th>';
         if (show_title != 0)
-            display += '<th align="center"><b>Title</b></th>';
+            display += '<th align="center"><b>'+translt.headTitle+'</b></th>';
         if (show_comment != 0)
-            display += '<th align="center"><b>Comment</b></th>';
-        display += '<th align="center"><b>Name</b></th></tr>';
+            display += '<th align="center"><b>'+translt.headComment+'</b></th>';
+        display += '<th align="center"><b>'+translt.headFileName+'</b></th></tr>';
         var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
 
         for (i = 0; i < filecount; i++)

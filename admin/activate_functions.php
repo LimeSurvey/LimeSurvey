@@ -1,33 +1,32 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id: activate_functions.php 12339 2012-02-04 12:48:38Z c_schmitz $
- *	Files Purpose: holds functions to activate a survey and precheck the consistency of the survey
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	Files Purpose: holds functions to activate a survey and precheck the consistency of the survey
+*/
 
 /**
- * fixes the numbering of questions
- * @global $dbprefix $dbprefix
- * @global $connect $connect
- * @global $clang $clang
- * @param <type> $fixnumbering
- */
+* fixes the numbering of questions
+* @global $dbprefix $dbprefix
+* @global $connect $connect
+* @global $clang $clang
+* @param <type> $fixnumbering
+*/
 function fixNumbering($fixnumbering)
 {
 
     global $dbprefix, $connect, $clang, $surveyid;
 
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
- //Fix a question id - requires renumbering a question
+    //Fix a question id - requires renumbering a question
     $oldqid = $fixnumbering;
     $query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC";
     $result = db_select_limit_assoc($query, 1) or safe_die($query."<br />".$connect->ErrorMsg());
@@ -53,9 +52,9 @@ function fixNumbering($fixnumbering)
         foreach ($switcher as $switch)
         {
             $query = "UPDATE {$dbprefix}conditions
-                                              SET cqid=$newqid,
-                                              cfieldname='".str_replace("X".$oldqid, "X".$newqid, $switch['cfieldname'])."'
-                                              WHERE cqid=$oldqid";
+            SET cqid=$newqid,
+            cfieldname='".str_replace("X".$oldqid, "X".$newqid, $switch['cfieldname'])."'
+            WHERE cqid=$oldqid";
             $result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
         }
     }
@@ -69,17 +68,17 @@ function fixNumbering($fixnumbering)
     LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 }
 /**
- * checks consistency of groups
- * @global  $dbprefix
- * @global  $connect
- * @global  $clang
- * @return <type>
- */
+* checks consistency of groups
+* @global  $dbprefix
+* @global  $connect
+* @global  $clang
+* @return <type>
+*/
 function checkGroup($postsid)
 {
     global $dbprefix, $connect, $clang;
 
-     $baselang = GetBaseLanguageFromSurveyID($postsid);
+    $baselang = GetBaseLanguageFromSurveyID($postsid);
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {$dbprefix}questions as q RIGHT JOIN {$dbprefix}groups as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
     $groupresult=db_execute_assoc($groupquery) or safe_die($groupquery."<br />".$connect->ErrorMsg());
     while ($row=$groupresult->FetchRow())
@@ -96,20 +95,20 @@ function checkGroup($postsid)
 
 }
 /**
- * checks questions in a survey for consistency
- * @global <type> $dbprefix
- * @global <type> $connect
- * @global <type> $clang
- * @param <type> $postsid
- * @param <type> $surveyid
- * @return array $faildcheck
- */
+* checks questions in a survey for consistency
+* @global <type> $dbprefix
+* @global <type> $connect
+* @global <type> $clang
+* @param <type> $postsid
+* @param <type> $surveyid
+* @return array $faildcheck
+*/
 function checkQuestions($postsid, $surveyid, $qtypes)
 {
-     global $dbprefix, $connect, $clang;
+    global $dbprefix, $connect, $clang;
 
 
-     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
+    //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
     //	# "L" -> LIST
     //  # "O" -> LIST WITH COMMENT
@@ -118,7 +117,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     //	# "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE
-	//  # "I" -> LANGUAGE SWITCH
+    //  # "I" -> LANGUAGE SWITCH
     //  # ":" -> Array Multi Flexi Numbers
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
@@ -259,22 +258,22 @@ function checkQuestions($postsid, $surveyid, $qtypes)
         return false;
 }
 /**
- * Function to activate a survey
- * @global $dbprefix $dbprefix
- * @global $connect $connect
- * @global $clang $clang
- * @param int $postsid
- * @param int $surveyid
- * @return string
- */
+* Function to activate a survey
+* @global $dbprefix $dbprefix
+* @global $connect $connect
+* @global $clang $clang
+* @param int $postsid
+* @param int $surveyid
+* @return string
+*/
 function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
 {
     global $dbprefix, $connect, $clang, $databasetype,$databasetabletype, $uploaddir;
 
-     $createsurvey='';
-     $activateoutput='';
-     $createsurveytimings='';
-     $createsurveydirectory=false;
+    $createsurvey='';
+    $activateoutput='';
+    $createsurveytimings='';
+    $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM {$dbprefix}surveys WHERE sid={$postsid}";
     $presult=db_execute_assoc($pquery);
@@ -393,7 +392,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     $tabname = "{$dbprefix}survey_{$postsid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 
     $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
-                         'mysqli'=> 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+    'mysqli'=> 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
 
@@ -454,31 +453,43 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
         if ($createsurveydirectory)
             if (!file_exists($uploaddir."/surveys/" . $postsid . "/files"))
             {
-               if (!(mkdir($uploaddir."/surveys/" . $postsid . "/files", 0777, true)))
-               {
-                $activateoutput .= "<div class='warningheader'>".
+                if (!(mkdir($uploaddir."/surveys/" . $postsid . "/files", 0777, true)))
+                {
+                    $activateoutput .= "<div class='warningheader'>".
                     $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory.") . "</div>";
 
-               }
-               else
-               {
-                   file_put_contents($uploaddir."/surveys/" . $postsid . "/files/index.html",'<html><head></head><body></body></html>');
-               }
+                }
+                else
+                {
+                    file_put_contents($uploaddir."/surveys/" . $postsid . "/files/index.html",'<html><head></head><body></body></html>');
+                }
             }
 
-        $acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".$surveyid;
+            $acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".$surveyid;
         $acresult = $connect->Execute($acquery);
+
+        $query=db_select_tables_like("{$dbprefix}old\_tokens\_".$surveyid."\_%");
+        $result=db_execute_num($query) or safe_die("Couldn't get old table list<br />".$query."<br />".$connect->ErrorMsg());
+        $tcount=$result->RecordCount();
+        if ($tcount==0)
+        {
+            $sTokenActivationLink="$scriptname?action=tokens&amp;sid={$postsid}&amp;createtable=Y";
+        }
+        else
+        {
+            $sTokenActivationLink="$scriptname?action=tokens&amp;sid={$postsid}";
+        }
 
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post($sTokenActivationLink)."\" />\n";
         }
         else
         {
             $activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
             $activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post($sTokenActivationLink)."\" />\n";
             $activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".get2post("$scriptname?sid={$postsid}")."\" />\n";
         }
         $activateoutput .= "</div><br />&nbsp;\n";
@@ -504,11 +515,11 @@ function mssql_drop_constraint($fieldname, $tablename)
     // find out the name of the default constraint
     // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
     $dfquery ="SELECT c_obj.name AS constraint_name
-                FROM  sys.sysobjects AS c_obj INNER JOIN
-                      sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
-                      sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
-                      sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
-                WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{$dbprefix}{$tablename}')";
+    FROM  sys.sysobjects AS c_obj INNER JOIN
+    sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
+    sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
+    sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
+    WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{$dbprefix}{$tablename}')";
     $defaultname=$connect->GetRow($dfquery);
     if ($defaultname!=false)
     {
@@ -519,11 +530,11 @@ function mssql_drop_constraint($fieldname, $tablename)
 
 function mssql_drop_primary_index($tablename)
 {
-     global $dbprefix, $connect, $modifyoutput;
+    global $dbprefix, $connect, $modifyoutput;
     // find out the constraint name of the old primary key
     $pkquery = "SELECT CONSTRAINT_NAME "
-              ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
-              ."WHERE     (TABLE_NAME = '{$dbprefix}{$tablename}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+    ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+    ."WHERE     (TABLE_NAME = '{$dbprefix}{$tablename}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
     $primarykey=$connect->GetOne($pkquery);
     if ($primarykey!=false)

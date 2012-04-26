@@ -1128,8 +1128,8 @@ function makelanguagechanger()
 
         // Changed how language changer works so that posts any currently set values.  This also ensures that token (and other) parmeters are also posted.
         //        $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-        $htmlcode ="<select name=\"select\" class='languagechanger'"
-        . "onchange=\"javascript:$('[name=move]').val('changelang_'+ this.value);$('#limesurvey').submit();\">\n";
+        $htmlcode ="<select name=\"select\" class='languagechanger' "
+        . " onchange=\"javascript:$('[name=move]').val('changelang_'+ this.value);$('#limesurvey').submit();\">\n";
 
         $sAddToURL = "";
         $sTargetURL = "$relativeurl/index.php";
@@ -1247,7 +1247,7 @@ function checkUploadedFileValidity($move, $backok=null)
                     else
                         $filecount = 0;
 
-                    if ($filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
+                    if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
                     {
                         $filenotvalidated = array();
                         $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");

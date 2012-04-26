@@ -6357,7 +6357,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
                                          'Limit' => $survey_quotas['qlimit'],
                                          'Action' => $survey_quotas['action'],
                                          'Message' => $survey_quotas['quotals_message'],
-                                         'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), $surveyinfo),
+                                         'Url' => templatereplace(passthruReplace($survey_quotas['quotals_url'], $surveyinfo)),
                                          'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
                                          'AutoloadUrl' => $survey_quotas['autoload_url']));
             $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
@@ -6514,7 +6514,7 @@ function filterforattributes ($fieldname)
 * @param mixed $surveyid  The survey ID
 * @return array The fieldnames
 */
-function GetAttributeFieldNames($surveyid)
+function GetAttributeFieldNames($surveyid,$filter=true)
 {
     global $dbprefix, $connect;
     if (tableExists('tokens_'.$surveyid) === false)
@@ -6522,7 +6522,11 @@ function GetAttributeFieldNames($surveyid)
         return Array();
     }
     $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
-    return array_filter($tokenfieldnames,'filterforattributes');
+    if ($filter)
+    {
+        return array_filter($tokenfieldnames,'filterforattributes');
+    }
+    return $tokenfieldnames;
 }
 
 /**
@@ -7243,13 +7247,41 @@ function fixSubquestions()
 /**
  * Need custom version of JSON encode to avoid having Expression Manager mangle it
  * @param type $val
- * @return type 
+ * @return type
  */
 function ls_json_encode($val)
 {
     $ans = json_encode($val);
     $ans = str_replace(array('{','}'),array('{ ',' }'), $ans);
     return $ans;
+}
+
+/**
+* This function returns the real IP address under all configurations
+*
+*/
+function getIPAddress()
+{
+    global $bServerBehindProxy;
+    if ($bServerBehindProxy)
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+        {
+          return $_SERVER['HTTP_CLIENT_IP'];
+        }
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+        {
+          return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+    }
+    if (!empty($_SERVER['REMOTE_ADDR']))
+    {
+      return $_SERVER['REMOTE_ADDR'];
+    }
+    else
+    {
+        return '127.0.0.1';
+    }
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

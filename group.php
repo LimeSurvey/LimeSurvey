@@ -35,12 +35,15 @@ switch ($thissurvey['format'])
 $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
 $radix = $radix['seperator'];
 
+global $deletenonvalues;    // set in config-defaults.php
+
 $surveyOptions = array(
 'active'=>($thissurvey['active']=='Y'),
 'allowsave'=>($thissurvey['allowsave']=='Y'),
 'anonymized'=>($thissurvey['anonymized']!='N'),
 'assessments'=>($thissurvey['assessments']=='Y'),
 'datestamp'=>($thissurvey['datestamp']=='Y'),
+'deletenonvalues'=>(isset($deletenonvalues)? $deletenonvalues: 1),
 'hyperlinkSyntaxHighlighting'=>(($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),     // TODO set this to true if in admin mode but not if running a survey
 'ipaddr'=>($thissurvey['ipaddr']=='Y'),
 'radix'=>$radix,
@@ -318,10 +321,6 @@ else
             {
                 $assessments = doAssessment($surveyid);
             }
-            if($thissurvey['printanswers'] != 'Y')
-            {
-                killSession();
-            }
 
             sendcacheheaders();
             doHeader();
@@ -342,7 +341,8 @@ else
             unlink('upload/tmp/'.$_SESSION['files'][$i]['filename']);
             }
             */
-            $completed = $thissurvey['surveyls_endtext'];
+            // can't kill session before end message, otherwise INSERTANS doesn't work.
+            $completed = templatereplace($thissurvey['surveyls_endtext']);
             $completed .= "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
             $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
             if ($thissurvey['printanswers'] == 'Y')
@@ -350,6 +350,10 @@ else
                 // ClearAll link is only relevant for survey with printanswers enabled
                 // in other cases the session is cleared at submit time
                 $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+            }
+            if($thissurvey['printanswers'] != 'Y')
+            {
+                killSession();
             }
         }
         else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -362,8 +366,8 @@ else
 
             //Before doing the "templatereplace()" function, check the $thissurvey['url']
             //field for limereplace stuff, and do transformations!
-            $thissurvey['surveyls_url']=templatereplace($thissurvey['surveyls_url']);   // to do INSERTANS substitutions
             $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+            $thissurvey['surveyls_url']=templatereplace($thissurvey['surveyls_url']);   // to do INSERTANS substitutions
 
             $content='';
             $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
@@ -412,7 +416,7 @@ else
             }
             else
             {
-                $completed = $thissurvey['surveyls_endtext'];
+                $completed = templatereplace($thissurvey['surveyls_endtext']);
             }
 
             // Link to Print Answer Preview  **********

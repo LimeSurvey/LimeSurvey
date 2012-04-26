@@ -32,19 +32,19 @@ function focusFirst(Event)
 function autoDisabledComment(){
   $(".answers-wrapper li input.checkbox").each(function(){
     if($(this).attr('checked')){
-      $(this).closest('li').find('input:text').attr('disabled','');
+      $(this).closest('li').find('input:text').attr('readonly','');
     }else{
       $(this).closest('li').find('input:text').val('');
-      $(this).closest('li').find('input:text').attr('disabled','disabled');
+      $(this).closest('li').find('input:text').attr('readonly','readonly');
     }
   });
   $(".answers-wrapper li input.checkbox").click(function(){
     if($(this).attr('checked')){
-      $(this).closest('li').find('input:text').attr('disabled','');
+      $(this).closest('li').find('input:text').attr('readonly','');
       $(this).closest('li').find('input:text').focus();
     }else{
       $(this).closest('li').find('input:text').val('');
-      $(this).closest('li').find('input:text').attr('disabled','disabled');
+      $(this).closest('li').find('input:text').attr('readonly','readonly');
     }
   });
 }
@@ -102,8 +102,8 @@ function jalert(text) {
 
 $(document).ready(function(){
   // focusFirst(); /** Uncomment if you want to use the focusFirst function **/
-  autoDisabledComment();
   addClassEmpty();
+  autoDisabledComment();
   //$(".help-wrapper > span,.help-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
   //$(".help-wrapper .error-wrapper > span,.help-wrapper .error-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
 })

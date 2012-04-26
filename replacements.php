@@ -327,7 +327,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
 
         if ($thissurvey['format'] == 'A')
             {
-            if ($thissurvey['tokenanswerspersistence'] != 'Y')
+            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
                 {
                 $_saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load Unfinished Survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>"
                         . "\n\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume Later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
@@ -339,7 +339,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
             }
         elseif (!isset($_SESSION['step']) || !$_SESSION['step'])
         {  //First page, show LOAD
-            if ($thissurvey['tokenanswerspersistence'] != 'Y')
+            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
             {
                 $_saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load Unfinished Survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";
                 }
@@ -669,6 +669,8 @@ EOD;
 	$coreReplacements['NAVIGATOR'] = $navigator;    // global
 	$coreReplacements['NOSURVEYID'] = $surveylist['nosid']; // global
 	$coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
+    $coreReplacements['PASSTHRULABEL'] = '';
+    $coreReplacements['PASSTHRUVALUE'] = '';
 	$coreReplacements['PERCENTCOMPLETE'] = $percentcomplete;    // global
 	$coreReplacements['PRIVACY'] = $privacy;    // global
 	$coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.");

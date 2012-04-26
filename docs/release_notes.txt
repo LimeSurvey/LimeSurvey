@@ -78,6 +78,58 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120418) to 1.92+ (build 120425) April 25, 2012
+-Fixed issue #5988: Problem displaying words with French accent within Expression Manager (Carsten Schmitz)
+-Fixed issue #6027: Users who have token creation permission can't create token table (Carsten Schmitz)
+-Fixed issue #6035: Insertans not working in multiple options with comments (Carsten Schmitz)
+-Fixed issue #6036: Reminder sent to people which opted out (Carsten Schmitz)
+-Fixed issue #6037: Zero uses left by default when importing tokens from CSV (Carsten Schmitz)
+-Fixed issue #6042: Check for existing token taables after activation -> switch to closed access (Carsten Schmitz)
+-Fixed issue #6043: Errors creating surveys in MSSQL (Carsten Schmitz)
+#Updated translation: Czech (lukas-slansky)
+#Updated translation: Danish  - kindly provided by Søren O'Neill (Carsten Schmitz)
+#Updated translation: Finnish kindly provided by Flo Apps Oy (Carsten Schmitz)
+#Updated translation: German (Carsten Schmitz)
+#Updated translation: Italian - kindly provided by Alberto Danese (Carsten Schmitz)
+#Updated translation: Spanish (Mexico) (Carsten Schmitz)
+
+
+Changes from 1.92+ (build 120412) to 1.92+ (build 120418) April 18, 2012
+-Fixed issue #5896: Miscellaneous, rarely used, qcode.* attributes showing blank values (Thomas White)
+-Fixed issue #6006: Error in LImeExpressionManage.php anytime using an array (numbers) with checkboxes and Mandatory (Thomas White)
+-Fixed issue #6007: Token variables resolving as 'undefined variable' after Version 1.91+ Build 11026 (Thomas White)
+-Fixed issue #6013: passthru stopped working (Thomas White)
+-Fixed issue #6015: INSERTANS does not work in end message (Thomas White)
+-Fixed issue #6024: $deletenonvalues option no longer working in 1.92+ (Thomas White)
+-Fixed issue #5986: Import label set does not properly show an error for invalid files (Carsten Schmitz)
+-Fixed issue #6016: Load Unfinished Survey button does not display for existing survey (Carsten Schmitz)
+-Fixed issue #6018: Using mssqlnative the "date" question type uses DATETIME type and not DATE (Carsten Schmitz)
+-Fixed issue: Notice when using mssqlnative driver (Carsten Schmitz)
+-Fixed issue: Only set EM variables for {TOKEN:xxxx} when token table exists; and only for declared attributes (Thomas White)
+-Fixed issue: Participant IP address not correctly captured if server is behind proxy (Carsten Schmitz)
+-Fixed issue: Warning if upload file and there is no minimum number of files specified (Thomas White)
+#Updated translation: Czech kindly provided by Slansky Lukas 
+#Updated translation: French kindly provided by Guillaume Jaouen 
+#Updated translation: German 
+#Updated translation: German (informal) (Carsten Schmitz)
+
+
+Changes from 1.92+ (build 120405) to 1.92+ (build 120412) April 12, 2012
+-Fixed issue #5962: View Response Details does not work correctly if responses are filtered (Statistics) (Thomas White)
+-Fixed issue #5985: Notifications using INSERTANS and/or QCODE don't work with all-in-one presentation of survey (Thomas White)
+-Fixed issue #5992: After upgrade to Version 1.92+ Build 120405 the uploaded file information gets corrupted. (Thomas White)
+-Fixed issue #6002: @@SURVEYURL@@ placeholder fails to translate (Thomas White)
+-Fixed issue #5976: Iterate survey sets all "uses_left" to "1" even if there has been set a larger number previously (Carsten Schmitz)
+-Fixed issue #5997 : upload windows are on default survey langage (Denis Chenu)
+-Fixed issue: Bad HTML in editgroup(Denis Chenu)
+-Fixed issue: Mssqlnative driver gives back weird date format in export (Carsten Schmitz)
+-Fixed issue: With certain Apache configurations then em_javascript.js file was not readable (Carsten Schmitz)
+#Updated translation: Danish  - kindly provided by Søren O'Neill (Carsten Schmitz)
+#Updated translation: Galician - kindly provided by Carlos Neira Cortizas (Carsten Schmitz)
+#Updated translation: German Updated translation: German (informal) (Carsten Schmitz)
+#Updated translation: Greek by Yannis Kaskamanidis (Carsten Schmitz)
+#Updated translation: Spanish (Mexico) (Carsten Schmitz)
+
 
 Changes from 1.92+ (build 120330) to 1.92+ (build 120405) April 5, 2012
 -Fixed issue #5877: Resume later doesn't work with a survey allowing public registration (Carsten Schmitz)

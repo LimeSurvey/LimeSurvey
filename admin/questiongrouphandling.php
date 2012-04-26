@@ -36,7 +36,7 @@ if ($action == "addgroup")
 		if (bHasSurveyPermission($surveyid,'surveycontent','import'))
     {
         $newgroupoutput .= '<li><a href="#import">'.$clang->gT("Import question group")."</a></li>\n";
-		
+
 	}
 		$newgroupoutput .= "</ul>";
 
@@ -62,7 +62,7 @@ if ($action == "addgroup")
         . getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
         . "</li>\n"
         // Group-Level Relevance
-        . "<li><label for='relevance'>".$clang->gT("Relevance equation:")."</label>"
+        . "<li><label for='grelevance'>".$clang->gT("Relevance equation:")."</label>"
         . "<textarea cols='50' rows='1' id='grelevance' name='grelevance'></textarea>"
         . "</li>"
         . "</ul>"
@@ -93,12 +93,12 @@ if ($action == "addgroup")
         // End Import TABS
         $newgroupoutput.= "</div>";
     }
-	 
+
 
 
     // End of TABS
      $newgroupoutput.= "</div>";
-	
+
 
 }
 
@@ -148,10 +148,10 @@ if ($action == "editgroup")
         . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
         . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
         . "</span></div>"
-        . "<div class='settingrow'><span class='settingcaption'><label for='relevance'>".$clang->gT("Relevance equation:")."</label></span>\n"
+        . "<div class='settingrow'><span class='settingcaption'><label for='grelevance'>".$clang->gT("Relevance equation:")."</label></span>\n"
         . "<span class='settingentry'><textarea cols='50' rows='1' id='grelevance' name='grelevance'>".$esrow['grelevance']."</textarea></span>"
         . "</span></div>"
-        . "\t</span></div><div style='clear:both'></div>";
+        . "\n<div style='clear:both'></div>";
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
     $egresult = db_execute_assoc($egquery);
     $i = 1;
@@ -175,14 +175,14 @@ if ($action == "editgroup")
 
     foreach ($tab_title as $i=>$eachtitle){
         $editgroup .= "\t<li style='clear:none'><a href='#editgrp$i'>$eachtitle</a></li>\n";
-        
+
     }
     $editgroup.="</ul>\n";
 
     foreach ($tab_content as $i=>$eachcontent){
         $editgroup .= "\n<div id='editgrp$i'>$eachcontent</div>";
     }
-    
+
     $editgroup .= "</div>\n\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
     . "\t<input type='hidden' name='action' value='updategroup' />\n"
     . "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
@@ -264,31 +264,6 @@ if ($action == "ordergroups")
         }
 
         $ordergroups = "<div class='header ui-widget-header'>".$clang->gT("Change Group Order")."</div><br />\n";
-
-        // Get groups dependencies regarding conditions
-        // => Get an array of groups containing questions with conditions outside the group
-        // $groupdepsarray[dependent-gid][target-gid]['conditions'][qid-having-conditions]=Array(cids...)
-//        $groupdepsarray = GetGroupDepsForConditions($surveyid);
-//        $nicegroupdeps=array();
-//        if (!is_null($groupdepsarray))
-//        {
-//            $ordergroups .= "<ul class='movableList'><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current survey has questions with conditions outside their own group")."</strong><br /><br /><i>".$clang->gT("Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following groups are concerned").":<ul>\n";
-//            foreach ($groupdepsarray as $depgid => $depgrouprow)
-//            {
-//                foreach($depgrouprow as $targgid => $targrow)
-//                {
-//                    $ordergroups .= "<li>".sprintf($clang->gT("Group %s depends on group %s, see the marked conditions on:"), "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a>", "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ");
-//                    $nicegroupdeps[$depgid]=$targgid;
-//                    foreach($targrow['conditions'] as $depqid => $depqrow)
-//                    {
-//                        $listcid=implode("-",$depqrow);
-//                        $ordergroups .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\"> [".$clang->gT("QID").": ".$depqid."]</a>";
-//                    }
-//                    $ordergroups .= "</li>\n";
-//                }
-//            }
-//            $ordergroups .= "</ul></li></ul>";
-//        }
 
         $ordergroups .= "<form method='post' action=''><ul class='movableList'>";
         //Get the groups from this survey

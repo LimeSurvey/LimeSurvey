@@ -351,7 +351,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 				"identifier"=>$saver['identifier'],
 				"access_code"=>$password,
 				"email"=>$saver['email'],
-				"ip"=>$_SERVER['REMOTE_ADDR'],
+				"ip"=>getIPAddress(),
 				"refurl"=>getenv("HTTP_REFERER"),
 				'saved_thisstep' => 0,
 				"status"=>"S",
@@ -2305,7 +2305,13 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         else
                             $dataentryoutput .= "jsonstr += '\"comment\":\"\",';";
 
-                        $dataentryoutput .= "jsonstr += '\"name\":\"'+$('#".$fieldname."_file_'+i).val()+'\"}';";
+                        $dataentryoutput .= "filename = $('#".$fieldname."_file_'+i).val();";
+                        $dataentryoutput .= "if( filename.indexOf('\\\') != '-1' ) {
+                            file = filename.split('\\\');
+                            var max = file.length;
+                            filename = file[max-1];
+                        }";
+                        $dataentryoutput .= "jsonstr += '\"name\":\"'+filename+'\"}';";
 
                         $dataentryoutput .= "jsonstr += ',';\n
                             filecount++;
