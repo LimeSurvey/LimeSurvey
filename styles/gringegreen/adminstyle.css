@@ -271,7 +271,6 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 td {
     font-size: 10pt;
-    color: #1D2D45;
 }
 
 .btstyle {
@@ -442,10 +441,10 @@ li.cancellink
 
 tr.even
 {
-    background-color: #EFF4F9;
+    background-color: #fff;
 }
 tr.odd,.oddrow {
-    background-color: #E3ECF5;
+    background-color: #EFFBDB;
 }
 
 .choicelist {
@@ -650,7 +649,8 @@ ul.assessmentscope li label:first-child {
 .surveysecurity th,
 .users th,
 .listsurveys th {
-    background-color: #D2E0F2;
+    background-color: #fff;
+    text-align: center;
     font-size:0.8em;
     padding:2px 14px 2px 10px;
 }
@@ -859,7 +859,7 @@ table#user-template-rights tbody tr td:first-child
 
 
 table.statisticstable, table.statisticssummary {
-    background-color:#EEF6FF;
+    background-color:#fff;
     border-collapse:collapse;
     border-width: 0px;
     border-style: none;
@@ -1216,7 +1216,8 @@ thead tr .headerSortDown {
 }
 
 thead tr .headerSortDown, thead tr .headerSortUp {
-    background-color: #8195BA;
+    background-color: #888;
+    color:#fff;
 }
 
 #tokensearch, #tokenrange, #browseresults{
@@ -1350,7 +1351,16 @@ div.right {
     cursor:pointer;
     text-align: center;
     zoom: 1;
+    border: 1px solid #CDF078;
+    background: #EFFBDB url(images/ui-bg_glass_100_effbdb_1x400.png) 50% 50%
+    repeat-x;
 }
+
+.limebutton.ui-state-hover
+{
+    border: 1px solid #94D200;
+}
+
 
 #emailtemplates .ui-tabs-panel .limebutton {
     margin: 3px 20% 10px 30.5%;

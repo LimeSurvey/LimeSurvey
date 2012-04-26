@@ -26,11 +26,8 @@
 	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>blank.gif' alt='' width='11' />
 	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>seperator.gif' alt='' />
 
-	    <a href="<?php echo $this->createUrl("admin/user/index"); ?>" title="<?php $clang->eTview("Create/Edit Users");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>security.png' alt='<?php $clang->eT("Create/Edit Users");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
-
-	    <a href="<?php echo $this->createUrl("admin/usergroups/index"); ?>" title="<?php $clang->eTview("Create/Edit Groups");?>" >
-	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>usergroup.png' alt='<?php $clang->eT("Create/Edit Groups");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
+	    <a href="<?php echo $this->createUrl("admin/user/index"); ?>" title="<?php $clang->eTview("Manage survey administrators");?>" >
+	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>security.png' alt='<?php $clang->eT("Manage survey administrators");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
 
 		<?php
 		if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)

@@ -101,7 +101,6 @@
 
 .ui-widget-content {
   background-color: #fafafa;
-  color: #eee;
 }
 
 .ui-widget-content a {
@@ -122,7 +121,7 @@
 ----------------------------------*/
 .ui-state-default,.ui-widget-content .ui-state-default {
   font-weight: bold;
-  color: #5670A1;
+  color: #666;
   outline: none;
 }
 
@@ -135,7 +134,7 @@
 
 .ui-state-hover,.ui-widget-content .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus
   {
-  background-color: #eee;
+  background-color: #EFFBDB;
   font-weight: bold;
   color: #333;
   outline: none;
@@ -201,7 +200,7 @@
 .ui-icon {
   width: 16px;
   height: 16px;
-  background-image: url(images/ui-icons_056b93_256x240.png);
+  background-image: url(images/ui-icons_94d200_256x240.png);
 }
 
 .ui-widget-content .ui-icon {
@@ -213,7 +212,7 @@
 }
 
 .ui-state-default .ui-icon {
-  background-image: url(images/ui-icons_6da8d5_256x240.png);
+  background-image: url(images/ui-icons_94d200_256x240.png);
 }
 
 .ui-state-hover .ui-icon,.ui-state-focus .ui-icon {
