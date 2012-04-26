@@ -2305,7 +2305,13 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         else
                             $dataentryoutput .= "jsonstr += '\"comment\":\"\",';";
 
-                        $dataentryoutput .= "jsonstr += '\"name\":\"'+$('#".$fieldname."_file_'+i).val()+'\"}';";
+                        $dataentryoutput .= "filename = $('#".$fieldname."_file_'+i).val();";
+                        $dataentryoutput .= "if( filename.indexOf('\\\') != '-1' ) {
+                            file = filename.split('\\\');
+                            var max = file.length;
+                            filename = file[max-1];
+                        }";
+                        $dataentryoutput .= "jsonstr += '\"name\":\"'+filename+'\"}';";
 
                         $dataentryoutput .= "jsonstr += ',';\n
                             filecount++;
