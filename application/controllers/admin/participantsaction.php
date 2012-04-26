@@ -847,6 +847,7 @@ class participantsaction extends Survey_Common_Action
                 $aData->total = ceil($aData->records / $limit);
             }
             $i = 0;
+
             foreach ($records as $row => $value)
             {
                 $username = User::getName($value['owner_uid']); //for conversion of uid to human readable names
@@ -895,7 +896,7 @@ class participantsaction extends Survey_Common_Action
                 $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
                 $i = 0;
                 $count = count($sortedarray[0]);
-                $aData = new stdClass();
+
                 foreach ($sortedarray as $key => $value)
                 {
                     $aData->rows[$i]['id'] = $value[0];
