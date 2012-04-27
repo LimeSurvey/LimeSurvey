@@ -41,9 +41,8 @@
         <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
             { ?>
             <img src='<?php echo $imageurl; ?>seperator.gif' alt=''  />
-            <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')"
-                title="<?php $clang->eTview("Survey logic file for current question"); ?>">
-                <img src='<?php echo $imageurl; ?>quality_assurance.png' alt='<?php $clang->eT("Survey logic file for current question"); ?>' /></a>
+            <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')">
+                <img src='<?php echo $imageurl; ?>quality_assurance.png' alt='<?php $clang->eT("Check survey logic for current question"); ?>' /></a>
             <?php } ?>
 
         <?php if ((($qct == 0 && $activated != "Y") || $activated != "Y") && hasSurveyPermission($surveyid,'surveycontent','delete'))

@@ -6,7 +6,7 @@
 	list-style:		none;
 }
 .sf-menu {
-      height:31px;
+    height:30px;
 	line-height:	1.0;
 }
 .sf-menu ul {
@@ -17,6 +17,10 @@
 .sf-menu ul li {
 	width:			100%;
 }
+.sf-menu ul li img{
+    padding:5px;
+}
+
 .sf-menu li:hover {
 	visibility:		inherit; /* fixes IE7 'sticky bug' */
 }
@@ -73,7 +77,7 @@ ul.sf-menu li li li.sfHover ul {
 	background:		#fff;
 }
 .sf-menu li li li {
-	background:		#9AAEDB;
+	background:		#fff;
 }
 .sf-menu li:hover, .sf-menu li.sfHover,
 .sf-menu a:focus, .sf-menu a:hover, .sf-menu a:active {

@@ -210,7 +210,6 @@ div.menubar .ui-widget-header
 .menubar-right .arrow-wrapper {
     display: inline; /* For IE */
     position: relative;
-    margin: 0 5px 0 5px;
     width: 20px;
     vertical-align: bottom;
 }
@@ -226,7 +225,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 .menubar-right .arrow-wrapper img {
     display: block;
-    margin: 0;
+    margin: 2px;
 }
 
 /* END menubar CSS */
@@ -331,7 +330,7 @@ input[disabled], textarea[disabled], select[disabled], button[disabled] {
 
 textarea {
     font-size: 10px;
-    color: navy;
+    color: #000;
     font-family: verdana, arial, sans-serif;
 }
 

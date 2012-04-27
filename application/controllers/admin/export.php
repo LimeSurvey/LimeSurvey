@@ -1325,7 +1325,7 @@ class export extends Survey_Common_Action {
         $this->_addHeaders($fn, "text/csv", 0);
 
         $data =& LimeExpressionManager::ExcelSurveyExport($surveyid);
-        
+
         Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
 
         // actually generate an Excel workbook
@@ -1377,7 +1377,7 @@ class export extends Survey_Common_Action {
     */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/'.Yii::app()->getConfig("admintheme").'/superfish.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
 
         $aData['display']['menu_bars']['gid_action'] = 'exportstructureGroup';
 
