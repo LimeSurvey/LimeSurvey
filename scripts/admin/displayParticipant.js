@@ -520,101 +520,48 @@ $(document).ready(function() {
     $('#addtosurvey').click(function() {
         var selected = "";
         var myGrid = $("#displayparticipants").jqGrid();
+        /* the rows variable will contain the UUID of individual items that been ticked in the jqGrid */
+        /* if it is empty, then no items have been ticked */
         var rows = myGrid.getGridParam('selarrrow');
-        $('#selectableadd').bind(
-	        "mousedown",
-		    function (e) {
-    		    e.metaKey = false;
-		    }).selectable({
-    		    tolerance: 'fit',
-                selected: function(event, ui) {
-                    if(ui.selected.id == "all") {
-                        $.post(
-    					    getaddtosurveymsg,
-						    {searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
-                            function(data) {
-                                $('#addsurvey').dialog('option', 'title', data);
-                            }
-					    );
-                        selected = "search";
-                    } else if(ui.selected.id == "allingrid") {
-                        $.post(
-					        getaddtosurveymsg,
-						    {searchcondition: 'getParticipants_json'},
-                            function(data) {
-                                $('#addsurvey').dialog('option', 'title', data);
-                            }
-                        );
-                        selected = "all";
-                    } else {
-                        $('#addsurvey').dialog(
-					        'option',
-						    'title',
-						    rows.length+" participants are to be copied"
-					    );
-                        selected = "rows";
-                    }
-                }
-            });
 
-        if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))!='getParticipants_json') {
-            $('#selectableadd').selectable("enable");
-            $('#all').show();
-            if(rows == "") {
-                $('#selected').hide();
-            } else {
-                $('#selected').show();
-            }
-        } else if(rows == "") {
-            $('#selected').hide();
-            if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))=='getParticipants_json') {
-                $('#selectableadd').selectable("disable");
-                $('ol#selectableadd li').eq(1).addClass('ui-selected');
-                selected = "all";
-            }
-        } else if(rows != "") {
-            $('#selectableadd').selectable("enable");
-            if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))=='getParticipants_json') {
-                $('#selected').show();
-                $('#all').hide();
-			}
-            if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))!='getParticipants_json') {
-                $('#all').show();
-                $('#selected').show();
-            }
+        if(rows=="") {
+            var totalitems = myGrid.getGridParam('records');
+            $('#allinview').text(addAllInViewTxt.replace('%s', totalitems));
+            $('#allinview').show();
+            $('#selecteditems').hide();
+        } else {
+            var totalitems = rows.length;
+            $('#selecteditems').text(addSelectedItemsTxt.replace('%s', totalitems));
+            $('#selecteditems').show();
+            $('#allinview').hide();
         }
+
         var dialog_buttons={};
         dialog_buttons[mapButton]=function(){
             var survey_id=$('#survey_id').val();
             var redirect ="";
-            if(survey_id=="") {
+            if(survey_id===null) {
+                /* No survey has been selected */
                 alert(selectSurvey);
             } else {
+                /* Check if user wants to see token table after adding new participants */
                 if(jQuery('#redirect').is(":checked")) {
                     redirect = "redirect";
                 } else {
                     redirect = "";
                 }
-                if(selected == "search") {
+                /* Submit the form with appropriate options depending on whether
+                   individual users are selected, or the whole grid is to be copied */
+                if(rows=="") { /* All in grid */
                     $.post(
-					    getSearchIDs,
-						{ searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
+                        getSearchIDs,
+                        { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
                         function(data) {
                             $('#count').val($('#ui-dialog-title-addsurvey').text());
                             $('#participant_id').val(data);
                             $("#addsurvey").submit();
                         });
-                } else if(selected == "all") {
-                    $.post(
-					    getSearchIDs,
-						{ searchcondition: 'getParticipants_json'},
-                        function(data) {
-                            $('#count').val($('#ui-dialog-title-addsurvey').text());
-                            $('#participant_id').val(data);
-                            $("#addsurvey").submit();
-                        }
-                    );
-                } else {
+                } else { /* Add selected (checked) jqGrid items only */
                     rows = myGrid.getGridParam('selarrrow');
                     $('#count').val($('#ui-dialog-title-addsurvey').text());
                     $('#participant_id').val(rows);
@@ -633,15 +580,7 @@ $(document).ready(function() {
             title : addsurvey,
             modal: true,
             open: function(event, ui) {
-                if(selected == "all") {
-                    $.post(
-		    		    getaddtosurveymsg,
-		    			{ searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
-                        function(data) {
-                            $('#addsurvey').dialog('option', 'title', data);
-                        }
-		    		);
-                }
+                $('#addsurvey').dialog('option', 'title', addsurvey + ' ('+totalitems+')');
             },
             buttons: dialog_buttons
         });
