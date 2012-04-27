@@ -11,8 +11,7 @@
 </div>
 <div class='menubar-main'>
     <div class='menubar-left'>
-        <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='55' height='20' />
-        <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+        <img id='separator16' src='<?php echo $imageurl; ?>seperator.gif' alt='' />
         <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
             {
                 if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
@@ -21,8 +20,7 @@
                     <img src='<?php echo $imageurl; ?>preview.png' alt='<?php $clang->eT("Preview this question"); ?>' /></a>
                 <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
                 <?php } else { ?>
-                <a accesskey='q' id='previewquestion'
-                    title="<?php $clang->eTview("Preview This Question"); ?>">
+                <a accesskey='q' id='previewquestion'>
                     <img src='<?php echo $imageurl; ?>preview.png' title='' alt='<?php $clang->eT("Preview This Question"); ?>' /></a>
                 <img src='<?php echo $imageurl; ?>seperator.gif' alt=''  />
 
@@ -33,8 +31,7 @@
         <?php  if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
 
-            <a href='<?php echo $this->createUrl("admin/question/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'
-                title="<?php $clang->eTview("Edit current question"); ?>">
+            <a href='<?php echo $this->createUrl("admin/question/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'>
                 <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit Current Question"); ?>' /></a>
             <?php } ?>
 
@@ -59,8 +56,7 @@
 
                 { ?>
                 <a href='<?php echo $this->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
-                    onclick="alert('<?php $clang->eT("It's impossible to delete this question because there is at least one question having a condition on it.","js"); ?>')"
-                    title="<?php $clang->eTview("Disabled - Delete current question"); ?>">
+                    onclick="alert('<?php $clang->eT("It's impossible to delete this question because there is at least one question having a condition on it.","js"); ?>')">
                     <img src='<?php echo $imageurl; ?>delete_disabled.png' alt='<?php $clang->eT("Disabled - Delete current question"); ?>' /></a>
                 <?php }
             }
@@ -75,8 +71,7 @@
 
             if(hasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
-            <a href='<?php echo $this->createUrl("admin/export/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>'
-                title="<?php $clang->eTview("Export this question"); ?>" >
+            <a href='<?php echo $this->createUrl("admin/export/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
                 <img src='<?php echo $imageurl; ?>dumpquestion.png' alt='<?php $clang->eT("Export this question"); ?>' /></a>
             <?php } ?>
 
@@ -89,15 +84,13 @@
             {
                 if ($activated != "Y")
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/question/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>'
-                    title="<?php $clang->eTview("Copy Current Question"); ?>" >
+                <a href='<?php echo $this->createUrl("admin/question/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>'>
                     <img src='<?php echo $imageurl; ?>copy.png'  alt='<?php $clang->eT("Copy Current Question"); ?>' /></a>
                 <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
                 <?php }
                 else
                 { ?>
-                <a href='#' title="<?php $clang->eTview("Copy Current Question"); ?>"
-                    onclick="alert('<?php $clang->eT("You can't copy a question if the survey is active.","js"); ?>')">
+                <a href='#' onclick="alert('<?php $clang->eT("You can't copy a question if the survey is active.","js"); ?>')">
                     <img src='<?php echo $imageurl; ?>copy_disabled.png' alt='<?php $clang->eT("Copy Current Question"); ?>' /></a>
                 <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
                 <?php }
@@ -109,8 +102,7 @@
 
             if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-            <a href="<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>"
-                title="<?php $clang->eTview("Set/view conditions for this question"); ?>">
+            <a href="<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
                 <img src='<?php echo $imageurl; ?>conditions.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  /></a>
             <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
             <?php }
@@ -127,8 +119,7 @@
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
-                <a href='<?php echo $this->createUrl('admin/question/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
-                    title='<?php $clang->eTview("Edit subquestions for this question"); ?>'>
+                <a href='<?php echo $this->createUrl('admin/question/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                     <img src='<?php echo $imageurl; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions.png<?php } else {?>subquestions2d.png<?php } ?>' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a>
                 <?php }
             }
@@ -142,8 +133,7 @@
 
             if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
             { ?>
-            <a href='<?php echo $this->createUrl('admin/question/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
-                title="<?php $clang->eTview("Edit answer options for this question"); ?>">
+            <a href='<?php echo $this->createUrl('admin/question/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $imageurl; ?>answers.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a>
             <?php }
             else
@@ -156,8 +146,7 @@
 
             if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
-            <a href='<?php echo $this->createUrl('admin/question/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
-                title="<?php $clang->eTview("Edit default answers for this question"); ?>">
+            <a href='<?php echo $this->createUrl('admin/question/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $imageurl; ?>defaultanswers.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a>
             <?php } ?>
     </div>

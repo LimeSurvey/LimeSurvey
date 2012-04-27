@@ -150,7 +150,8 @@ div.menubar .ui-widget-header
     vertical-align: middle;
     max-height:40px;
     border:0;
-    margin:0 -2px;
+    margin:0;
+    padding:0;
 }
 
 .menubar-title {
@@ -1533,4 +1534,17 @@ ol.organizer {
 
 .ui-jqgrid tr.ui-row-ltr td {
     border:none !important;
+}
+
+#separator4, #separator16{
+   padding-left:51px;
+}
+
+.cke_skin_office2003 .cke_top, .cke_skin_office2003 .cke_bottom, .cke_shared .cke_skin_office2003 {
+    background-color: #EFFBDB !important;
+}
+
+.cke_skin_office2003 .cke_button a:hover, .cke_skin_office2003 .cke_button a:focus, .cke_skin_office2003 .cke_button a:active {
+    background-color: #EFFBDB !important;
+    border: 1px solid #94D200 !important;
 }

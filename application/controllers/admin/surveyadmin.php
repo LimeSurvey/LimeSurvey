@@ -1335,7 +1335,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_expireSurvey($iSurveyId);
         $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
-        Survey::model()->updateSurvey(array('expires' => $dExpirationdate), 'sid= \'' . $iSurveyId . '\'');
+        Survey::model()->updateByPk($iSurveyId,array('expires' => $dExpirationdate));
         $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyId));
     }
 
@@ -1349,7 +1349,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
-        return Survey::model()->updateSurvey(array('expires' => $dExpirationdate), 'sid=\'' . $iSurveyId . '\'');
+        return Survey::model()->updateByPk($iSurveyId,array('expires' => $dExpirationdate));
     }
 
     function getUrlParamsJSON($iSurveyId)

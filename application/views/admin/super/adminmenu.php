@@ -26,7 +26,7 @@
 	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>blank.gif' alt='' width='11' />
 	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>seperator.gif' alt='' />
 
-	    <a href="<?php echo $this->createUrl("admin/user/index"); ?>" title="<?php $clang->eTview("Manage survey administrators");?>" >
+	    <a href="<?php echo $this->createUrl("admin/user/index"); ?>">
 	    <img src='<?php echo Yii::app()->getConfig('adminimageurl');?>security.png' alt='<?php $clang->eT("Manage survey administrators");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
 
 		<?php

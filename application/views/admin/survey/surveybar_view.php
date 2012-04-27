@@ -280,8 +280,7 @@
                         <img src='<?php echo $imageurl; ?>add.png' alt='<?php $clang->eT("Add new group to survey"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <?php }
             } ?>
-            <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
-            <img src='<?php echo $imageurl; ?>blank.gif' width='15' alt='' />
+            <img id='separator3' src='<?php echo $imageurl; ?>seperator.gif' alt='' />
             <input type='image' src='<?php echo $imageurl; ?>minimize.png' title='<?php $clang->eT("Hide details of this Survey"); ?>'
                 alt='<?php $clang->eT("Hide details of this Survey"); ?>' onclick='$("#surveydetails").hide();' />
 

@@ -29,7 +29,7 @@ class conditionsaction extends Survey_Common_Action {
 		$qid = sanitize_int($qid);
 
 		$clang = $this->getController()->lang;
-		$imageurl = Yii::app()->getConfig("imageurl");
+		$imageurl = Yii::app()->getConfig("adminimageurl");
 		Yii::app()->loadHelper("database");
 
 		if( !empty($_POST['subaction']) ) $subaction=Yii::app()->request->getPost('subaction');
