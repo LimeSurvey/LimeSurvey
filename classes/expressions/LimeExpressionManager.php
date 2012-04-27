@@ -6444,10 +6444,17 @@ EOD;
             if (!is_null($lang)) {
                 $lang = " and a.language='".$lang."' and b.language='".$lang."'";
             }
+            global $databasetype;
+            if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n' || $databasetype =='mssqlnative')
+            {
+                $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar)";
+            }
+            else
+            {
+                $query = "select distinct a.qid, a.attribute, a.value";
+            }
 
-            // TODO - does this need to be filtered by language?
-            $query = "select distinct a.qid, a.attribute, a.value"
-            ." from ".db_table_name('question_attributes')." as a, ".db_table_name('questions')." as b"
+            $query .= " from ".db_table_name('question_attributes')." as a, ".db_table_name('questions')." as b"
             ." where " . $where
             .$lang
             ." order by a.qid, a.attribute";

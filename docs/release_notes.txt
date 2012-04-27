@@ -78,6 +78,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120418) to 1.92+ (build 120425) April 25, 2012
+-Fixed issue #5988: Problem displaying words with French accent within Expression Manager (Carsten Schmitz)
+-Fixed issue #6027: Users who have token creation permission can't create token table (Carsten Schmitz)
+-Fixed issue #6035: Insertans not working in multiple options with comments (Carsten Schmitz)
+-Fixed issue #6036: Reminder sent to people which opted out (Carsten Schmitz)
+-Fixed issue #6037: Zero uses left by default when importing tokens from CSV (Carsten Schmitz)
+-Fixed issue #6042: Check for existing token taables after activation -> switch to closed access (Carsten Schmitz)
+-Fixed issue #6043: Errors creating surveys in MSSQL (Carsten Schmitz)
+#Updated translation: Czech (lukas-slansky)
+#Updated translation: Danish  - kindly provided by Søren O'Neill (Carsten Schmitz)
+#Updated translation: Finnish kindly provided by Flo Apps Oy (Carsten Schmitz)
+#Updated translation: German (Carsten Schmitz)
+#Updated translation: Italian - kindly provided by Alberto Danese (Carsten Schmitz)
+#Updated translation: Spanish (Mexico) (Carsten Schmitz)
+
+
 Changes from 1.92+ (build 120412) to 1.92+ (build 120418) April 18, 2012
 -Fixed issue #5896: Miscellaneous, rarely used, qcode.* attributes showing blank values (Thomas White)
 -Fixed issue #6006: Error in LImeExpressionManage.php anytime using an array (numbers) with checkboxes and Mandatory (Thomas White)
