@@ -233,8 +233,6 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #surveydetails, #groupdetails, #questiondetails {
     background-color: #FFF;
     width: 100%;
-    border: 1px solid;
-    border-color: #fff #8195BA #8195BA #D2E0F2;
     margin-top:-2px;
     margin-bottom:4px;
     padding:5px 0;
@@ -446,7 +444,7 @@ tr.even
 {
     background-color: #fff;
 }
-tr.odd,.oddrow {
+tr.odd,.oddrow,.answertable tr.highlight {
     background-color: #EFFBDB;
 }
 
@@ -700,6 +698,11 @@ ul.assessmentscope li label:first-child {
     min-width: 0px;
 }
 
+.answertable {
+    margin:0 auto;
+}
+
+
 .answertable th {
     font-weight:bold;
     font-size: 8pt;
@@ -714,13 +717,16 @@ ul.assessmentscope li label:first-child {
     text-align:right;
 }
 
+.answertable td img {
+    padding-left:2px;
+    padding-right:2px;
+    padding-top:5px;
+}
+
+
 #languagetabs {
     width:60%;
     margin:0 auto;
-}
-
-.answertable tr.highlight {
-    background-color:#EAF2FF;
 }
 
 .badtokenlist {
@@ -922,8 +928,8 @@ div.messagebox .header{
 
 div.successheader{
     font-weight:bold;
-    color:#008000;
-    background-color: #C0FFC0;
+    color:#fff;
+    background-color: #94D200;
     margin: 5px 0;
     padding:2px;
 }
@@ -1520,3 +1526,11 @@ ol.organizer {
 .labelsets-update label{display:block}
 .button-list{text-align:left}
 #gbox_displaysurveys{ margin:0 auto;}
+
+.ui-jqgrid tr.jqgrow {
+    background-color:#fff;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    border:none !important;
+}

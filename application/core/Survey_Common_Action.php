@@ -184,6 +184,8 @@ class Survey_Common_Action extends CAction
     {
         // Gather the data
         $aData['clang'] = $clang = Yii::app()->lang;
+        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
+
         $aData = $this->_addPseudoParams($aData);
         $aViewUrls = (array) $aViewUrls;
         $sViewPath = '/admin/';
