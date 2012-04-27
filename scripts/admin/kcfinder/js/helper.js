@@ -64,11 +64,23 @@ _.getFileExtension = function(filename, toLower) {
 };
 
 _.escapeDirs = function(path) {
+    var fullDirExpr = /^([a-z]+)\:\/\/([^\/^\:]+)(\:(\d+))?\/(.+)$/,
+        prefix = "";
+    if (fullDirExpr.test(path)) {
+        var port = path.replace(fullDirExpr, "$4");
+        prefix = path.replace(fullDirExpr, "$1://$2")
+        if (port.length)
+            prefix += ":" + port;
+        prefix += "/";
+        path = path.replace(fullDirExpr, "$5");
+    }
+
     var dirs = path.split('/');
     var escapePath = '';
     for (var i = 0; i < dirs.length; i++)
         escapePath += encodeURIComponent(dirs[i]) + '/';
-    return escapePath.substr(0, escapePath.length - 1);
+
+    return prefix + escapePath.substr(0, escapePath.length - 1);
 };
 
 _.outerSpace = function(selector, type, mbp) {

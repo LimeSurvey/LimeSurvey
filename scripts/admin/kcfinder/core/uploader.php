@@ -107,25 +107,42 @@ class uploader {
         if (!strlen($this->config['cookiePath']))
             $this->config['cookiePath'] = "/";
 
-        // UPLOAD FOLDER INIT
-        if ($this->config['uploadURL'] == "/") {
-            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
-                ? path::normalize($this->config['uploadDir'])
-                : path::normalize($_SERVER['DOCUMENT_ROOT']);
-            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
-            $this->typeURL = "/{$this->type}";
-        } else {
-            $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
-                ? path::normalize($this->config['uploadURL'])
-                : path::rel2abs_url($this->config['uploadURL']);
-            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
-                ? path::normalize($this->config['uploadDir'])
-                : path::url2fullPath($this->config['uploadURL']);
-            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
-            $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
-        }
-        if (!is_dir($this->config['uploadDir']))
-            @mkdir($this->config['uploadDir'], $this->config['dirPerms']);
+                 // UPLOAD FOLDER INIT
+
+            // FULL URL
+            if (preg_match('/^([a-z]+)\:\/\/([^\/^\:]+)(\:(\d+))?\/(.+)\/?$/',
+                    $this->config['uploadURL'], $patt)
+            ) {
+                list($unused, $protocol, $domain, $unused, $port, $path) = $patt;
+                $path = path::normalize($path);
+                $this->config['uploadURL'] = "$protocol://$domain" . (strlen($port) ? ":$port" : "") . "/$path";
+                $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+                    ? path::normalize($this->config['uploadDir'])
+                    : path::url2fullPath("/$path");
+                $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+                $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
+
+            // SITE ROOT
+            } elseif ($this->config['uploadURL'] == "/") {
+                $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+                    ? path::normalize($this->config['uploadDir'])
+                    : path::normalize($_SERVER['DOCUMENT_ROOT']);
+                $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+                $this->typeURL = "/{$this->type}";
+
+            // ABSOLUTE & RELATIVE
+            } else {
+                $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
+                    ? path::normalize($this->config['uploadURL'])
+                    : path::rel2abs_url($this->config['uploadURL']);
+                $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+                    ? path::normalize($this->config['uploadDir'])
+                    : path::url2fullPath($this->config['uploadURL']);
+                $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+                $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
+            }
+            if (!is_dir($this->config['uploadDir']))
+                @mkdir($this->config['uploadDir'], $this->config['dirPerms']);
 
         // HOST APPLICATIONS INIT
         if (isset($this->get['CKEditorFuncNum']))
