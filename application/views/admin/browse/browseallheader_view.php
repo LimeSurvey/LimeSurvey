@@ -11,16 +11,16 @@
         <?php if (!isset($_POST['sql']))
         { ?>
             <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/0/limit/$limit"); ?>' title='<?php $clang->eTview("Show start..."); ?>' >
-                <img align='left' src='<?php echo $imageurl; ?>/databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
+                <img align='left' src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
             <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$last/limit/$limit"); ?>' title='<?php $clang->eTview("Show previous.."); ?>' >
-                <img align='left'  src='<?php echo $imageurl; ?>/databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
-            <img src='<?php echo $imageurl; ?>/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />
+                <img align='left'  src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
+            <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />
 
             <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>' >
-                <img align='left' src='<?php echo $imageurl; ?>/dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
+                <img align='left' src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
             <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$end/limit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>' >
-                <img align='left' src='<?php echo $imageurl; ?>/dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
-            <img src='<?php echo $imageurl; ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
+                <img align='left' src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
+            <img src='<?php echo $sImageURL; ?>seperator.gif' border='0' hspace='0' align='left' alt='' />
         <?php
         }
         $selectshow = '';
@@ -41,7 +41,7 @@
         }
         ?>
         <form action='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/"); ?>' id='browseresults' method='post'><font size='1' face='verdana'>
-            <img src='<?php echo $imageurl; ?>/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />
+            <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />
             <?php $clang->eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
             &nbsp;&nbsp; <?php $clang->eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
             &nbsp;&nbsp; <input type='submit' value='<?php $clang->eT("Show"); ?>' />
@@ -107,10 +107,10 @@
                 <tr>
                     <td colspan=<?php echo $fncount + 2; ?>>
                         <?php if (hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-                            <img id='imgDeleteMarkedResponses' src='<?php echo Yii::app()->getConfig("imageurl"); ?>/token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
+                            <img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
                         <?php } ?>
                         <?php if (hasFileUploadQuestion($iSurveyId)) { ?>
-                            <img id='imgDownloadMarkedFiles' src='<?php echo Yii::app()->getConfig("imageurl"); ?>/down_all.png' alt='<?php $clang->eT('Download marked files'); ?>' />
+                            <img id='imgDownloadMarkedFiles' src='<?php echo $sImageURL; ?>down_all.png' alt='<?php $clang->eT('Download marked files'); ?>' />
                         <?php } ?>
                     </td>
                 </tr>

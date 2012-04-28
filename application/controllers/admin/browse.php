@@ -490,7 +490,7 @@ class browse extends Survey_Common_Action
         //Create the query
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyId}}}"))
         {
-            $oCriteria->join = "LEFT JOIN {{tokens_{$iSurveyId}}} ON {{survey_{$iSurveyId}}}.token = {{tokens_{$iSurveyId}}}.token";
+            $oCriteria->join = "LEFT JOIN {{tokens_{$iSurveyId}}} ON t.token = {{tokens_{$iSurveyId}}}.token";
         }
 
         if (incompleteAnsFilterState() == "inc")

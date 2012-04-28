@@ -47,7 +47,7 @@
         'style' => 'margin-left:1px',
         'style' => 'margin-right:1px');
 
-    $globalsettings = array('src' => $sImageURL.'token_manage.png',
+    $globalsettings = array('src' => $sImageURL.'global.png',
         'alt' => 'Global participant settings',
         'title' => 'Global participant settings',
         'style' => 'margin-left:5px',

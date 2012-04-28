@@ -127,7 +127,6 @@ div.menubar {
     padding:0;
     margin:3px auto 3px auto;
     width: 99.5%;
-    min-height: 60px;
 }
 
 div.menubar .ui-widget-header
@@ -142,8 +141,6 @@ div.menubar .ui-widget-header
     border-style: solid;
     border-width: 1px;
     padding:0 0.2%;
-    min-height: 43px;
-
 }
 
 .menubar img {
@@ -192,6 +189,17 @@ div.menubar .ui-widget-header
     margin: 0;
     padding: 0;
 
+}
+
+.menubar-left img{
+    float:left;
+    border:0;
+    padding:3px 1px;
+}
+
+.menubar-right img{
+    border:0;
+    padding:2px 1px;
 }
 
 .menubar-right {
@@ -658,7 +666,7 @@ ul.assessmentscope li label:first-child {
 }
 
 .browsetable th {
-    background-color: #D2E0F2;
+    background-color: #fff;
     font-size:9pt;
     padding:2px;
     text-align: center;
@@ -1536,8 +1544,20 @@ ol.organizer {
     border:none !important;
 }
 
+.separator{
+    height:32px;
+}
+
 #separator4, #separator16{
-   padding-left:51px;
+    padding-left:51px;
+}
+
+#separator3{
+    padding-right:8px;
+}
+
+#separator1{
+    padding-left:5px;
 }
 
 .cke_skin_office2003 .cke_top, .cke_skin_office2003 .cke_bottom, .cke_shared .cke_skin_office2003 {

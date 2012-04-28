@@ -404,6 +404,7 @@ class AdminController extends LSYii_Controller
         $data['updatebuild'] = Yii::app()->getConfig("updatebuild");
         $data['surveyid'] = $surveyid;
         $data['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
+        $data['sImageURL'] = Yii::app()->getConfig('adminimageurl');
         $this->render("/admin/super/adminmenu", $data);
 
     }

@@ -93,7 +93,7 @@
                 { ?>
 
                 <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidNext); ?>'>
-                    <img src='<?php echo $imageurl; ?>next_20.png' title='' alt='<?php $clang->eT("Next question"); ?>'/> </a>
+                <img src='<?php echo $imageurl; ?>next_20.png' title='' alt='<?php $clang->eT("Next question"); ?>'/> </a>
                 <?php }
                 else
                 { ?>
