@@ -11,7 +11,7 @@
     <div class='menubar-main'>
     <div class='menubar-left'>
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='55' height='20' />
-    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
+    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/separator.gif' alt='' />
 
     <?php if($ugid && $grpresultcount > 0)
     { ?>
@@ -24,7 +24,7 @@
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='40' height='20' />
     <?php } ?>
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='78' height='20' />
-    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
+    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/separator.gif' alt='' />
 
     <?php if($ugid && $grpresultcount > 0 &&
     Yii::app()->session['loginID'] == $grow['owner_id'])
@@ -51,7 +51,7 @@
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='40' height='20' />
     <?php } ?>
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='92' height='20' />
-    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
+    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/separator.gif' alt='' />
     </div>
     <div class='menubar-right'>
     <label for="ugid"><?php $clang->eT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
@@ -63,7 +63,7 @@
          title='<?php $clang->eTview("Add new user group"); ?>'>
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add new user group"); ?>' /></a>
     <?php } ?>
-    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
+    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/separator.gif' alt='' />
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='82' height='20' />
     </div></div>
     </div>

@@ -7,9 +7,9 @@
             <a href='<?php echo $this->createUrl("/admin/index"); ?>' title="<?php $clang->eTview("Return to survey administration"); ?>" >
                 <img name='Administration' src='<?php echo $sImageURL; ?>home.png' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='11' height='20' alt='' />
-            <img src='<?php echo $sImageURL; ?>seperator.gif' alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='76' height='20' alt='' />
-            <img src='<?php echo $sImageURL; ?>seperator.gif' border='0' hspace='0' alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif' border='0' hspace='0' alt='' />
             <a href='<?php echo $this->createUrl("admin/labels/exportmulti");?>' title="<?php $clang->eTview("Export label set"); ?>" >
                 <img src='<?php echo $sImageURL; ?>dumplabelmulti.png' alt='<?php $clang->eT("Export multiple label sets"); ?>' /></a>
         </div>
@@ -35,7 +35,7 @@
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/newlabelset") ?>', '_top')"
                 title="<?php $clang->eTview("Create or import new label set(s)"); ?>">
                 <img src='<?php echo $sImageURL; ?>add.png' name='AddLabel' alt='<?php $clang->eT("Create or import new label set(s)"); ?>' /></a>
-            <img src='<?php echo $sImageURL; ?>seperator.gif'  alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif'  alt='' />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='5' height='20' alt='' />
 
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/logout");?>', '_top')"

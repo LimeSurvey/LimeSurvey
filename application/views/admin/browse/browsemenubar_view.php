@@ -7,7 +7,7 @@
             <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Return to survey administration"); ?>">
                 <img src='<?php echo $sImageURL; ?>home.png' title='' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='11' />
-            <img src='<?php echo $sImageURL; ?>seperator.gif' alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
 
             <?php if (hasSurveyPermission($surveyid, 'responses', 'read'))
                 { ?>
@@ -48,7 +48,7 @@
                         <img src='<?php echo $sImageURL; ?>timeStatistics.png' alt='<?php $clang->eT("Get time statistics from these responses"); ?>' /></a>
                     <?php }
             } ?>
-            <img src='<?php echo $sImageURL; ?>seperator.gif' alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <?php if (hasSurveyPermission($surveyid, 'responses', 'export'))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/export/exportresults/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Export results to application"); ?>">
@@ -67,7 +67,7 @@
                 <a href='<?php echo $this->createUrl("admin/dataentry/import/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Import responses from a deactivated survey table"); ?>">
                     <img src='<?php echo $sImageURL; ?>importold.png' alt='<?php $clang->eT("Import responses from a deactivated survey table"); ?>' /></a>
                 <?php } ?>
-            <img src='<?php echo $sImageURL; ?>seperator.gif' alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
 
             <?php if (hasSurveyPermission($surveyid, 'responses', 'read'))
                 { ?>

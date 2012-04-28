@@ -5,9 +5,9 @@
     <div class='menubar-main'>
         <div class='menubar-left'>
             <a href="<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>" title='<?php $clang->eTview("Return to survey administration"); ?>'><img src='<?php echo $imageurl; ?>home.png' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
-            <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid"); ?>" title='<?php $clang->eTview("Show token summary"); ?>'><img src='<?php echo $imageurl; ?>summary.png' alt='<?php $clang->eT("Show token summary"); ?>'/></a>
-            <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/tokens/browse/surveyid/$surveyid"); ?>"
                 title='<?php $clang->eTview("Display tokens"); ?>' >
                 <img src='<?php echo $imageurl; ?>document.png' alt='<?php $clang->eT("Display tokens"); ?>' />
@@ -28,7 +28,7 @@
                 if (hasSurveyPermission($surveyid, 'tokens', 'update'))
                 {
                 ?>
-                <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+                <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href="<?php echo $this->createUrl("admin/tokens/managetokenattributes/surveyid/$surveyid"); ?>"
                     title='<?php $clang->eTview("Manage additional attribute fields"); ?>'>
                     <img src='<?php echo $imageurl; ?>token_manage.png' title='' alt='<?php $clang->eT("Manage additional attribute fields"); ?>' />
@@ -38,7 +38,7 @@
                 if (hasSurveyPermission($surveyid, 'tokens', 'import'))
                 {
                 ?>
-                <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+                <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href="<?php echo $this->createUrl("admin/tokens/import/surveyid/$surveyid") ?>"
                     title='<?php $clang->eTview("Import tokens from CSV file"); ?>'>
                     <img src='<?php echo $imageurl; ?>importcsv.png' title='' alt='<?php $clang->eT("Import tokens from CSV file"); ?>' />
@@ -61,7 +61,7 @@
                 if (hasSurveyPermission($surveyid, 'tokens', 'update'))
                 {
                 ?>
-                <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+                <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href='<?php echo $this->createUrl("admin/emailtemplates/index/surveyid/$surveyid"); ?>' title='<?php $clang->eTview("Edit email templates"); ?>'>
                     <img src='<?php echo $imageurl; ?>emailtemplates.png' alt='<?php $clang->eT("Edit email templates"); ?>' />
                 </a>
@@ -73,12 +73,12 @@
                     title='<?php $clang->eTview("Send email reminder"); ?>'>
                     <img src='<?php echo $imageurl; ?>remind.png' alt='<?php $clang->eT("Send email reminder"); ?>' />
                 </a>
-                <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+                <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href="<?php echo $this->createUrl("admin/tokens/tokenify/surveyid/$surveyid"); ?>"
                     title='<?php $clang->eTview("Generate tokens"); ?>'>
                     <img src='<?php echo $imageurl; ?>tokenify.png' alt='<?php $clang->eT("Generate tokens"); ?>' />
                 </a>
-                <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+                <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <?php
                 }
                 if (hasSurveyPermission($surveyid, 'tokens', 'update'))
@@ -88,7 +88,7 @@
                     title='<?php $clang->eTview("Bounce processing settings"); ?>' >
                     <img src='<?php echo $imageurl; ?>bounce_settings.png' alt='<?php $clang->eT("Bounce settings"); ?>' />
                 </a>
-                <img src='<?php echo $imageurl; ?>seperator.gif' alt='' />
+                <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <?php
                 }
                 if (hasSurveyPermission($surveyid, 'surveyactivation', 'update') || HasSurveyPermission($surveyid, 'tokens','delete'))

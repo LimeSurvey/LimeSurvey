@@ -302,8 +302,8 @@ class translate extends Survey_Common_Action {
         $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->languagesettings[0]->attributes);
 
 		$surveyinfo = array_map('flattenText', $surveyinfo);
-		$menutext = ( $surveyinfo['active'] == "N" ) ? $clang->gT("Test This Survey") : $clang->gT("Execute This Survey");
-		$menutext2 = ( $surveyinfo['active'] == "N" ) ? $clang->gTview("Test This Survey") : $clang->gTview("Execute This Survey");
+		$menutext = ( $surveyinfo['active'] == "N" ) ? $clang->gT("Test this survey") : $clang->gT("Execute this survey");
+		$menutext2 = ( $surveyinfo['active'] == "N" ) ? $clang->gTview("Test this survey") : $clang->gTview("Execute this survey");
 
 		if ( count($langs) == 0 )
 		{
@@ -1009,7 +1009,7 @@ class translate extends Survey_Common_Action {
     */
     private function menuSeparator()
     {
-		$image = CHtml::image(Yii::app()->getConfig("imageurl") . "/seperator.gif", '');
+		$image = CHtml::image(Yii::app()->getConfig("imageurl") . "/separator.gif", '');
         return $image;
     }
 

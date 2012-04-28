@@ -401,7 +401,8 @@ class Survey_Common_Action extends CAction
             }
             $aData['advancedsettings'] = $DisplayArray;
             $aData['condarray'] = $condarray;
-            $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
+            $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
+            $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
             $questionsummary .= $this->getController()->render('/admin/survey/Question/questionbar_view', $aData, true);
         }
         $finaldata['display'] = $questionsummary;
@@ -531,13 +532,13 @@ class Survey_Common_Action extends CAction
         // TEST BUTTON
         if (!$activated)
         {
-            $aData['icontext'] = $clang->gT("Test this Survey");
-            $aData['icontext2'] = $clang->gTview("Test this Survey");
+            $aData['icontext'] = $clang->gT("Test this survey");
+            $aData['icontext2'] = $clang->gTview("Test this survey");
         }
         else
         {
-            $aData['icontext'] = $clang->gT("Execute this Survey");
-            $aData['icontext2'] = $clang->gTview("Execute this Survey");
+            $aData['icontext'] = $clang->gT("Execute this survey");
+            $aData['icontext2'] = $clang->gTview("Execute this survey");
         }
 
         $aData['baselang'] = Survey::model()->findByPk($iSurveyId)->language;

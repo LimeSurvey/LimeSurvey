@@ -23,7 +23,7 @@
             <a href='<?php echo $this->createUrl("/admin/browse/time/surveyid/$iSurveyId/start/$end/imit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>'>
                 <img name='DataEnd' align='left' src='<?php echo $imageurl; ?>/dataend.png' alt='<?php $clang->eT("Show last.."); ?>' />
             </a>
-            <img src='<?php echo $imageurl; ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
+            <img src='<?php echo $imageurl; ?>/separator.gif' border='0' hspace='0' align='left' alt='' />
         <?php } ?>
         <form action='<?php echo $this->createUrl("/admin/browse/time/surveyid/{$iSurveyId}"); ?>' id='browseresults' method='post'>
             <font size='1' face='verdana'>

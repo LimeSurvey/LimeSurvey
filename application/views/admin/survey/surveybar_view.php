@@ -31,7 +31,7 @@
                     <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='14' />
                     <?php } ?>
                 <?php } ?>
-            <img src='<?php echo $sImageURL;?>seperator.gif' class='separator' alt=''  />
+            <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt=''  />
         </div>
         <ul class='sf-menu'>
             <?php if($onelanguage) { ?>
@@ -235,7 +235,7 @@
                     <?php echo $groups; ?>
                 </select>
 
-                <span class='arrow-wrapper'>
+                <span class='arrow-wrapper' style='font-size:0;'>
                     <?php if ($GidPrev != "")
                         { ?>
                         <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$GidPrev"); ?>'>
@@ -280,24 +280,21 @@
                         <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Add new group to survey"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <?php }
             } ?>
-            <img id='separator3' src='<?php echo $sImageURL; ?>seperator.gif' class='separator' alt='' />
+            <img id='separator3' src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <input type='image' src='<?php echo $sImageURL; ?>minimize.png' title='<?php $clang->eT("Hide details of this Survey"); ?>'
                 alt='<?php $clang->eT("Hide details of this Survey"); ?>' onclick='$("#surveydetails").hide();' />
 
             <input type='image' src='<?php echo $sImageURL; ?>maximize.png' title='<?php $clang->eT("Show details of this survey"); ?>'
                 alt='<?php $clang->eT("Show details of this survey"); ?>' onclick='$("#surveydetails").show();' />
 
-            <?php if (!$gid)
-                { ?>
 
-                <input type='image' src='<?php echo $sImageURL; ?>close.png' title='<?php $clang->eT("Close this survey"); ?>'
-                    alt='<?php $clang->eT("Close this survey"); ?>' onclick="window.open('<?php echo $this->createUrl("/admin/index"); ?>','_top');" />
-                <?php }
-                else
-                { ?>
-                <img src='<?php echo $sImageURL; ?>blank.gif' width='21' alt='' />
-                <?php } ?>
+            <input type='image' src='<?php echo $sImageURL; ?>close.png' title='<?php $clang->eT("Close this survey"); ?>'
+                alt='<?php $clang->eT("Close this survey"); ?>' onclick="window.open('<?php echo $this->createUrl("/admin/index"); ?>','_top');"
 
+                <?php if (!$gid){?>
+                    style='visibility:hidden;'
+                    <?php } ?>
+                >
         </div>
     </div>
 </div>

@@ -5,12 +5,12 @@
     <div class='menubar-main'>
         <div class='menubar-left'>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='40' height='20' border='0' hspace='0' alt='' />
-            <img src='<?php echo $sImageURL; ?>seperator.gif' border='0' hspace='0' alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif' border='0' hspace='0' alt='' />
             <a href='<?php echo $this->createUrl("admin/labels/editlabelset/lid/".$lid); ?>' title="<?php $clang->eTview("Edit label set"); ?>" >
  			<img name='EditLabelsetButton' src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Edit label set"); ?>'  /></a>
  			<a href='#' title='<?php $clang->eTview("Delete label set"); ?>' onclick="if (confirm('<?php $clang->eT("Do you really want to delete this label set?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/labels/process")."?action=deletelabelset&amp;lid=$lid"); ?>}" >
  			<img src='<?php echo $sImageURL; ?>delete.png' border='0' alt='<?php $clang->eT("Delete label set"); ?>' /></a>
- 			<img src='<?php echo $sImageURL; ?>seperator.gif' border='0' hspace='0' alt='' />
+ 			<img src='<?php echo $sImageURL; ?>separator.gif' border='0' hspace='0' alt='' />
  			<a href='<?php echo $this->createUrl("admin/export/dumplabel/lid/$lid");?>' title="<?php $clang->eTview("Export this label set"); ?>" >
             <img src='<?php echo $sImageURL; ?>dumplabel.png' alt='<?php $clang->eT("Export this label set"); ?>' /></a>
         </div>

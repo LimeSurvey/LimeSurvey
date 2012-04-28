@@ -1524,6 +1524,29 @@ ol.organizer {
     height:auto;
     font-size: 0.8em;
 }
-.labelsets-update label{display:block}
-.button-list{text-align:left}
-#gbox_displaysurveys{ margin:0 auto;}
+.labelsets-update label{
+    display:block
+}
+.button-list{
+    text-align:left
+}
+#gbox_displaysurveys{
+    margin:0 auto;
+}
+
+#separator4, #separator16{
+    padding-left:55px;
+}
+
+#separator3, #separator12{
+    padding-right:18px;
+}
+
+
+#separator1{
+    padding-left:5px;
+}
+
+#browseresults{
+    margin:0;
+}

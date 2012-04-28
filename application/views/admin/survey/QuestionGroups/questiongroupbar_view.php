@@ -7,17 +7,17 @@
 
         <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-            <img id='separator4' src='<?php echo $imageurl; ?>seperator.gif' alt=''  />
+            <img id='separator4' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" target="_blank">
                 <img src='<?php echo $imageurl; ?>preview.png' alt='<?php $clang->eT("Preview current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php }
             else{ ?>
-            <img src='<?php echo $imageurl; ?>seperator.gif' alt=''  />
+            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <?php } ?>
 
         <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-            <img id='separator5' src='<?php echo $imageurl; ?>seperator.gif' alt=''  />
+            <img id='separator5' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a href="<?php echo $this->createUrl('admin/questiongroup/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>"
                 title="<?php $clang->eTview("Edit current question group"); ?>">
                 <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
@@ -25,7 +25,7 @@
 
         <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
             { ?>
-            <img id='separator6' src='<?php echo $imageurl; ?>seperator.gif' alt=''  />
+            <img id='separator6' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
                 <img src='<?php echo $imageurl; ?>quality_assurance.png' alt='<?php $clang->eT("Check survey logic for current question group"); ?>' /></a>
             <?php } ?>
@@ -54,7 +54,7 @@
                 }
                 else
                 { ?>
-                <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' />
+                <img src='<?php echo $imageurl; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>" width='40' />
                 <?php }
             }
             if(hasSurveyPermission($surveyid,'surveycontent','export'))
@@ -114,19 +114,16 @@
                 <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php $clang->eT("Add new question to group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
             <?php } ?>
 
-        <img id='separator12' src='<?php echo $imageurl; ?>seperator.gif' alt=''  />
+        <img id='separator12' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
 
         <input id='MinimizeGroupWindow' type='image' src='<?php echo $imageurl; ?>minimize.png' title='<?php $clang->eT("Hide details of this group"); ?>' alt='<?php $clang->eT("Hide details of this group"); ?>' />
         <input type='image' id='MaximizeGroupWindow' src='<?php echo $imageurl; ?>maximize.png' title='<?php $clang->eT("Show details of this group"); ?>' alt='<?php $clang->eT("Show details of this group"); ?>' />
-        <?php if (!$qid)
-            { ?>
-            <input type='image' src='<?php echo $imageurl; ?>close.png' title='<?php $clang->eT("Close this group"); ?>' alt='<?php $clang->eT("Close this group"); ?>'
-                onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>','_top');" />
-            <?php }
-            else
-            { ?>
-            <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='18' />
-            <?php } ?>
+        <input type='image' src='<?php echo $imageurl; ?>close.png' title='<?php $clang->eT("Close this group"); ?>' alt='<?php $clang->eT("Close this group"); ?>'
+            onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>','_top');"
+            <?php if (!$qid){?>
+                style='visibility:hidden;'
+                <?php } ?>
+            >
     </div></div>
 </div>
 

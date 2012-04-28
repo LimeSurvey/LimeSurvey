@@ -125,8 +125,8 @@ div.menubar {
     background-color: #fefefe;
     clear:left;
     padding:0;
-    margin:3px auto 3px auto;
-    width: 99.5%;
+    margin:0 auto 58px auto !important;
+    width: 99%;
 }
 
 div.menubar .ui-widget-header
@@ -197,7 +197,7 @@ div.menubar .ui-widget-header
     padding:3px 1px;
 }
 
-.menubar-right img{
+.menubar-right > img{
     border:0;
     padding:2px 1px;
 }
@@ -232,9 +232,9 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     display: block;
 }
 
-.menubar-right .arrow-wrapper img {
+.menubar-right .arrow-wrapper img:first-child {
     display: block;
-    margin: 2px;
+    margin-bottom: 2px;
 }
 
 /* END menubar CSS */
@@ -560,8 +560,6 @@ a.optoutemail {
 /* Browse response css */
 
 .browsetable {
-    border: 1px solid;
-    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     clear:left;
 }
 
@@ -681,7 +679,7 @@ ul.assessmentscope li label:first-child {
 
 .browsetable tfoot td {
     text-align: left;
-    background-color: #D2E0F2;
+    background-color: #EFFBDB;
     padding:4px;
 }
 
@@ -813,7 +811,6 @@ ul.assessmentscope li label:first-child {
 
 table.templatecontrol {
     width: 100%;
-    background-color: #EEF6FF;
     border-color: #8195BA;
     border-style: solid;
     border-width: 1px;
@@ -828,7 +825,6 @@ table.templatecontrol select
 .subheader {
     font-size:10px;
     font-weight:bold;
-    background-color: #EEF6FF;
     text-align: left;
 }
 
@@ -1053,7 +1049,7 @@ div.partialheader{
 .data-entry-tbl .data-entry-separator td {
     padding: 0;
     height: 2px;
-    background-color: #D2E0F2;
+    background-color: #EFFBDB;
 }
 
 .data-entry-explanation {
@@ -1233,7 +1229,7 @@ thead tr .headerSortDown, thead tr .headerSortUp {
 
 #tokensearch, #tokenrange, #browseresults{
     display:inline;
-    line-height:40px;
+    line-height:32px;
     vertical-align:middle;
     margin-left: 10px;
 }
@@ -1552,9 +1548,10 @@ ol.organizer {
     padding-left:51px;
 }
 
-#separator3{
-    padding-right:8px;
+#separator3, #separator12{
+    padding-right:12px;
 }
+
 
 #separator1{
     padding-left:5px;
@@ -1567,4 +1564,16 @@ ol.organizer {
 .cke_skin_office2003 .cke_button a:hover, .cke_skin_office2003 .cke_button a:focus, .cke_skin_office2003 .cke_button a:active {
     background-color: #EFFBDB !important;
     border: 1px solid #94D200 !important;
+}
+
+.cke_skin_office2003 .cke_top, .cke_skin_office2003 .cke_bottom, .cke_shared .cke_skin_office2003 {
+    background-color: none !important;
+}
+
+.cke_skin_office2003 .cke_toolbar {
+    background-color: #FFF;
+}
+
+#browseresults{
+    margin:0;
 }

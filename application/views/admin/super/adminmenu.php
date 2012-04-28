@@ -23,7 +23,7 @@
                 <img src='<?php echo $sImageURL;?>home.png' alt='<?php $clang->eT("Default administration page");?>' width='' height='<?php echo $iconsize;?>'/></a>
 
             <img src='<?php echo $sImageURL;?>blank.gif' alt='' width='11' />
-            <img src='<?php echo $sImageURL;?>seperator.gif' id='separator1' class='separator' alt='' />
+            <img src='<?php echo $sImageURL;?>separator.gif' id='separator1' class='separator' alt='' />
 
             <a href="<?php echo $this->createUrl("admin/user/index"); ?>">
                 <img src='<?php echo $sImageURL;?>security.png' alt='<?php $clang->eT("Manage survey administrators");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
@@ -33,7 +33,7 @@
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php $clang->eTview("Global settings");?>" >
                     <img src='<?php echo $sImageURL;?>global.png' alt='<?php $clang->eT("Global settings");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
-                <img src='<?php echo $sImageURL;?>seperator.gif' class='separator' alt='' />
+                <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
                 <?php }
                 if(Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
                 { ?>
@@ -57,7 +57,7 @@
                     <img src='<?php echo $sImageURL; ?>backup_disabled.png' alt='<?php $clang->eT("The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."); ?>' />
                     <?php } ?>
 
-                <img src='<?php echo $sImageURL; ?>seperator.gif' class='separator' alt='' />
+                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
 
                 <?php
                 }
@@ -67,14 +67,14 @@
 
                 <a href="<?php echo $this->createUrl("admin/labels/view"); ?>" title="<?php $clang->eTview("Edit label sets");?>" >
                     <img src='<?php echo $sImageURL;?>labels.png'  alt='<?php $clang->eT("Edit label sets");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
-                <img src='<?php echo $sImageURL;?>seperator.gif' class='separator' alt='' />
+                <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
                 <?php }
                 if(Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/templates/view"); ?>" title="<?php $clang->eTview("Template Editor");?>" >
                     <img src='<?php echo $sImageURL;?>templates.png' alt='<?php $clang->eT("Template Editor");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php } ?>
-            <img src='<?php echo $sImageURL;?>seperator.gif' class='separator' alt='' />
+            <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
             <?php
                 if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
                 { 	 ?>
@@ -100,7 +100,7 @@
                 <?php } ?>
 
 
-            <img src='<?php echo $sImageURL;?>seperator.gif' class='separator' alt='' />
+            <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>" title="<?php $clang->eTview("Logout");?>" >
                 <img src='<?php echo $sImageURL;?>logout.png' alt='<?php $clang->eT("Logout");?>' /></a>
 

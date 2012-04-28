@@ -47,7 +47,7 @@
             <a href='<?php echo $this->createUrl("/admin"); ?>'>
                 <img src='<?php echo $sImageURL; ?>home.png' name='HomeButton' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='60' height='10'  />
-            <img src='<?php echo $sImageURL; ?>seperator.gif' alt=''  />
+            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
 
             <?php
                 if (!is_template_editable($templatename))
@@ -65,7 +65,7 @@
                     <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/templatezip/templatename/' . $templatename) ?>", "_top")'
                         title="<?php $clang->eTview("Export Template"); ?>" >
                         <img name='Export' src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export Template"); ?>' /></a>
-                    <img src='<?php echo $sImageURL; ?>seperator.gif' alt='' border='0' />
+                    <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' border='0' />
                     <a href='#' title="<?php $clang->eTview("Copy Template"); ?>"
                         onclick="javascript: copyprompt('<?php $clang->eT("Please enter the name for the copied template:"); ?>', '<?php echo $clang->gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
                         <img name='MakeCopy' src='<?php echo $sImageURL; ?>copy.png' alt='<?php $clang->eT("Copy Template"); ?>' /></a>
@@ -76,7 +76,7 @@
 
                     <img name='ImportTemplate' src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php echo $clang->gT("Import template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
                     <img name='Export' src='<?php echo $sImageURL; ?>export_disabled.png' alt='<?php echo $clang->gT("Export template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
-                    <img src='<?php echo $sImageURL; ?>seperator.gif' alt='' border='0' />
+                    <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' border='0' />
                     <img name='MakeCopy' src='<?php echo $sImageURL; ?>copy_disabled.png' alt='<?php echo $clang->gT("Copy template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
                     <?php
                 }
@@ -96,7 +96,7 @@
                 { ?>
                     <img name='Export' src='<?php echo $sImageURL; ?>export_disabled.png' alt='<?php echo $clang->gT("Export template").' - '.sprintf($clang->gT("Please change the directory permissions of the folder %s in order to enable this option"),$tempdir); ?>' />
                     <img name='ImportTemplate' src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php echo $clang->gT("Import template").' - '.sprintf($clang->gT("Please change the directory permissions of the folder %s in order to enable this option"),$tempdir); ?>' title='' />
-                    <img src='<?php echo $sImageURL; ?>seperator.gif' alt='' border='0' />
+                    <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' border='0' />
                     <a href='#' title="<?php $clang->eTview("Copy Template"); ?>"
                         onclick="javascript: copyprompt('<?php $clang->eT("Please enter the name for the copied template:"); ?>', '<?php echo $clang->gT("copy_of_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
                         <img name='MakeCopy' src='<?php echo $sImageURL; ?>copy.png' alt='<?php $clang->eT("Copy Template"); ?>' /></a>
@@ -118,7 +118,7 @@
             <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Create new template called:"); ?>', '<?php $clang->eT("NewTemplate"); ?>', 'default', 'copy')"
                 title="<?php $clang->eTview("Create new template"); ?>" >
                 <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Create new template"); ?>' /></a>
-            <img src='<?php echo $sImageURL; ?>seperator.gif' alt='' />
+            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>"
                 title="<?php $clang->eTview("Logout"); ?>" >
                 <img src='<?php echo $sImageURL; ?>logout.png' name='Logout'
