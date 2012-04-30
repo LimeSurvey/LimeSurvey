@@ -100,6 +100,8 @@ $(document).ready(function() {
     });
 
 	var lastSel,lastSel2;
+
+    /* The main jqGrid, displaying Participants */
     jQuery("#displayparticipants").jqGrid({
         align:"center",
         url: jsonUrl,
@@ -166,6 +168,8 @@ $(document).ready(function() {
             second_pager_id = "p_"+second_subgrid_table_id;
             $("#"+subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table><div id='"+pager_id+"' class='scroll'></div>");
             $("#"+subgrid_id).append("<div id='hide_"+second_subgrid_table_id+"'><table id='"+second_subgrid_table_id+"' class='scroll'></table><div id='"+second_pager_id+"' class='scroll'></div>");
+
+            /* Subgrid that displays survey links */
             jQuery("#"+second_subgrid_table_id).jqGrid( {
                 datatype: "json",
                 url: surveylinkUrl+'/'+row_id,
@@ -186,74 +190,80 @@ $(document).ready(function() {
                     }
                 }
             });
-        jQuery("#"+subgrid_table_id).jqGrid({
-            url: getAttribute_json+'/'+row_id,
-            editurl:editAttributevalue,
-            datatype: "json",
-            mtype: "post",
-            pgbuttons:false,
-            recordtext:'',
-            pgtext:'',
-            caption: attributesHeadingTxt,
-            editable:true,
-            loadonce : true,
-            colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
-            colModel: [ { name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){ }}},
-                    { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                    { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                    { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
-                    { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
-                    { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:true,hidden:true}],
-            rowNum:20,
-            pager: pager_id,
-            gridComplete: function () {
-                $('div.ui-inline-del').html('');
-                $('div.ui-inline-edit').html('');
-            },
-            ondblClickRow: function(id,subgrid_id) {
-                var parid = id.split('_');
-                var participant_id = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'participant_id');
-                var lsel = parid[0];
-                var can_edit = $('#displayparticipants').getCell(participant_id,'can_edit');
-                if(can_edit == 'false') {
-                    var dialog_buttons={};
-                    dialog_buttons[okBtn]=function(){
-                        $( this ).dialog( closeTxt );
-                    };
-                    /* End of building array for button functions */
-                    $('#notauthorised').dialog({
-                        modal: true,
-                        title: accessDeniedTxt,
-         		        buttons: dialog_buttons
-                    });
-                } else {
-                    var att_type = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'atttype');
-                    if(att_type=="DP") {
-                        $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
+            /* Subgrid that displays user attributes */
+            jQuery("#"+subgrid_table_id).jqGrid( {
+                url: getAttribute_json+'/'+row_id,
+                editurl:editAttributevalue,
+                datatype: "json",
+                mtype: "post",
+                pgbuttons:false,
+                recordtext:'',
+                pgtext:'',
+                caption: attributesHeadingTxt,
+                editable:true,
+                loadonce : true,
+                colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
+                colModel: [ { name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){ }}},
+                            { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                            { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                            { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
+                            { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
+                            { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:true,hidden:true}],
+                rowNum:20,
+                pager: pager_id,
+                gridComplete: function () {
+                    /* Removes the delete icon from the actions bar */
+                    $('div.ui-inline-del').html('');
+                    /* Removes the edit icon from the actions bar */
+                    //$('div.ui-inline-edit').html('');
+                },
+                ondblClickRow: function(id,subgrid_id) {
+                    var parid = id.split('_');
+                    var participant_id = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'participant_id');
+                    var lsel = parid[0];
+                    var can_edit = $('#displayparticipants').getCell(participant_id,'can_edit');
+                    if(can_edit == 'false') {
+                        var dialog_buttons={};
+                        dialog_buttons[okBtn]=function(){
+                            $( this ).dialog( closeTxt );
+                        };
+                        /* End of building array for button functions */
+                        $('#notauthorised').dialog({
+                            modal: true,
+                            title: accessDeniedTxt,
+         		            buttons: dialog_buttons
+                        });
+                    } else {
+                        var att_type = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'atttype');
+                        if(att_type=="DP") {
+                            $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
+                        }
+                        if(att_type=="DD") {
+                            var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
+                            $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'select',editoptions:{ value:":Select One;"+att_p_values}});
+                        }
+                        if(att_type=="TB") {
+                            $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
+                            $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
+                        }
+                        var attap = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attap');
+                        if(id && id!==lastSel2) {
+                            jQuery("#displayparticipants_"+parid[0]+"_t").saveRow(lastSel2);
+                            lastSel2=id;
+                        }
+                        $.fn.fmatter.rowactions(id,'displayparticipants_'+parid[0]+'_t','edit',0);
+                        jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
+                        jQuery("#displayparticipants_"+parid[0]+"_t").editRow(id,true);
                     }
-                    if(att_type=="DD") {
-                        var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
-                        $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'select',editoptions:{ value:":Select One;"+att_p_values}});
-                    }
-                    if(att_type=="TB") {
-                        $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
-                        $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
-                    }
-                    var attap = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attap');
-                    if(id && id!==lastSel2) {
-                        jQuery("#displayparticipants_"+parid[0]+"_t").saveRow(lastSel2);
-                        lastSel2=id;
-                    }
-                    $.fn.fmatter.rowactions(id,'displayparticipants_'+parid[0]+'_t','edit',0);
-                    jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
-                    jQuery("#displayparticipants_"+parid[0]+"_t").editRow(id,true);
-                }
-            },
-            height: '100%'});
+                },
+                height: '100%'
+            });
         }
     });
     $.jgrid.formatter.integer.thousandsSeparator=''; //Removes the default spacing as a thousands seperator
                                                      //Todo - global setting for all jqGrids to match language/regional number formats
+
+    /* Set up default buttons in the main jqGrid Pager */
     jQuery("#displayparticipants").jqGrid(
         'navGrid',
     	'#pager',
@@ -298,6 +308,7 @@ $(document).ready(function() {
 	    {multipleSearch:true, multipleGroup:true}
     );
 
+    /* Add the CSV Export Button to the main jqGrid Pager */
     $("#displayparticipants").navButtonAdd(
         '#pager',
     	{
@@ -337,6 +348,7 @@ $(document).ready(function() {
 	    }
     );
 
+    /* Add the full Search Button to the main jqGrid Pager */
     $("#displayparticipants").navButtonAdd(
         '#pager',
     	{
