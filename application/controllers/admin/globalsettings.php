@@ -106,8 +106,8 @@ class GlobalSettings extends Survey_Common_Action
 
         $defaultlang = sanitize_languagecode($_POST['defaultlang']);
         $aRestrictToLanguages = explode(' ', sanitize_languagecodeS($_POST['restrictToLanguages']));
-        if (!in_array($defaultLanguage,$aRestrictToLanguages)){ // Force default language in restrictToLanguages
-            $aRestrictToLanguages[]=$defaultLanguage;
+        if (!in_array($defaultlang,$aRestrictToLanguages)){ // Force default language in restrictToLanguages
+            $aRestrictToLanguages[]=$defaultlang;
         }
         if (count(array_diff(array_keys(getLanguageData(false,Yii::app()->session['adminlang'])), $aRestrictToLanguages)) == 0) {
             $aRestrictToLanguages = '';
@@ -176,7 +176,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");
 
         $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-        CController::redirect($url);
+        if($url){CController::redirect($url);}
     }
 
     private function _checkSettings()
