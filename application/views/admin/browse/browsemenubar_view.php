@@ -45,7 +45,7 @@
                 <?php if ($thissurvey['savetimings'] == "Y")
                     { ?>
                     <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/subaction/time"); ?>' title="<?php $clang->eTview("Get time statistics from these responses"); ?>" >
-                        <img src='<?php echo $sImageURL; ?>timeStatistics.png' alt='<?php $clang->eT("Get time statistics from these responses"); ?>' /></a>
+                        <img src='<?php echo $sImageURL; ?>statistics_time.png' alt='<?php $clang->eT("Get time statistics from these responses"); ?>' /></a>
                     <?php }
             } ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
