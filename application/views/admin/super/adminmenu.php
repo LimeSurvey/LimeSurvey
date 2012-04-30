@@ -78,8 +78,8 @@
             <?php
                 if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
                 { 	 ?>
-                <a href="<?php echo $this->createUrl("admin/participants/index"); ?>" title="<?php $clang->eTview("Participant panel");?>" >
-                    <img src='<?php echo $sImageURL;?>tokens.png' alt='<?php $clang->eT("Participant panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
+                <a href="<?php echo $this->createUrl("admin/participants/index"); ?>" title="<?php $clang->eTview("Central participant database/panel");?>" >
+                    <img src='<?php echo $sImageURL;?>cpdb.png' alt='<?php $clang->eT("Central participant database/panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php } ?>
         </div>
         <div class='menubar-right'>
