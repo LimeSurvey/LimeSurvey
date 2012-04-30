@@ -546,6 +546,40 @@ function getTemplateList()
     return $list_of_files;
 }
 
+function getAdminThemeList()
+{
+   // $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+    $standardtemplaterootdir=Yii::app()->getConfig("styledir");
+
+//    if (!$usertemplaterootdir) {die("getTemplateList() no template directory");}
+    if ($handle = opendir($standardtemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+            {
+                $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+            }
+        }
+        closedir($handle);
+    }
+
+/*    if ($handle = opendir($usertemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+            {
+                $list_of_files[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+            }
+        }
+        closedir($handle);
+    }         */
+    ksort($list_of_files);
+
+    return $list_of_files;
+}
+
 
 /**
 * getQuestions() queries the database for an list of all questions matching the current survey and group id

@@ -1,7 +1,7 @@
 body {
-  font-family: verdana, arial, sans-serif;
-  margin: 0;
-  text-align: left;
+    font-family: verdana, arial, sans-serif;
+    margin: 0;
+    text-align: left;
 }
 
 .push {
@@ -11,255 +11,245 @@ body {
 
 
 .footer {
-  margin: 0;
-  padding: 5px;
-  text-align: center;
-  color: #fff;
-  height: 30px;
-  background: #000;
-  clear:both;
+    margin: 0;
+    padding: 5px;
+    text-align: center;
+    color: #fff;
+    height: 30px;
+    background: #000;
+    clear:both;
 }
 
 img {
-  border: 0;
+    border: 0;
 }
 
-th,a,p,div {
-  font-size: 10pt;
+table
+{
+    border: 1px solid #555555;
+    background-color: #fff;
+    border-spacing:1px;
+    font-size:7.7pt;
+}
+
+a,p,div {
+    font-size: 10pt;
+}
+
+p {
+    clear: left;
+    text-align:center;
+}
+
+thead th {
+    background-color: #666;
+    color: #fff;
+    font-size:7.5pt;
+}
+
+thead th:first-child {
+    background-color: #333;
+}
+
+tr.even
+{
+    background-color: #ccc;
+}
+tr.odd,.oddrow {
+    background-color: #eee;
 }
 
 .maintitle {
-  font-size: 14pt;
-  font-weight: bold;
-  color: #FFF;
-  text-align: center;
-  margin: auto;
-  background: black;
+    font-size: 14pt;
+    font-weight: bold;
+    color: #FFF;
+    text-align: center;
+    margin: auto;
+    background: black;
 }
 
 table.menubar {
-  width: 100%;
-  border-color: #555;
-  border-width: 1px;
-  border-style: solid;
-  border-collapse: collapse;
+    width: 100%;
+    border-color: #555;
+    border-width: 1px;
+    border-style: solid;
+    border-collapse: collapse;
 }
 
 .menubar tr:first-child {
-  background: #555;
+    background: #555;
 }
 
 .menubar tr {
-  background: #999;
+    background: #999;
 }
 
 .menubar td:first-child {
-  color: #FFF;
-  font-size: 8pt;
+    color: #FFF;
+    font-size: 8pt;
 }
 
 .outlinetable {
-  border: 1px solid #111;
+    border: 1px solid #111;
 }
 
 .outlinetable td {
-  font-size: 10pt;
-  border: 1px solid #CCC;
-  background: #EEE;
+    font-size: 10pt;
+    border: 1px solid #CCC;
+    background: #EEE;
 }
 
 .outlinetable th {
-  font-size: 10pt;
-  color: #FFF;
-  background: #777;
+    font-size: 10pt;
+    color: #FFF;
+    background: #777;
 }
 
 ul {
-  font-size: 10pt;
-  color: #000;
-}
-
-td {
-  font-size: 10pt;
-  color: #000;
+    font-size: 10pt;
+    color: #000;
 }
 
 .btstyle {
-  font-size: 11px;
+    font-size: 11px;
 }
 
 .standardbtn {
-  height: 20px;
-  color: #000;
-  font-size: 11px;
+    height: 20px;
+    color: #000;
+    font-size: 11px;
 }
 
 .disabledbtn {
-  height: 20px;
-  color: #999;
-  font-size: 11px;
+    height: 20px;
+    color: #999;
+    font-size: 11px;
 }
 
 input,select {
-  color: #000080;
-  background: #EEEFFF;
-  font: 10px verdana, arial, sans-serif;
+    color: #000080;
+    background: #EEEFFF;
+    font: 10px verdana, arial, sans-serif;
+}
+
+input[type="image"]{
+    background-color:transparent;
 }
 
 action {
-  text-align: left;
+    text-align: left;
 }
 
 textarea {
-  font-size: 10px;
-  color: #000080;
-  background: #EEEFFF;
+    font-size: 10px;
+    color: #000080;
+    background: #EEEFFF;
 }
 
 .subtitle {
-  font-size: 10px;
-  color: #FFF;
+    font-size: 10px;
+    color: #FFF;
 }
 
 .listboxsurveys {
-  margin-top: 10px;
-  height: 20px;
-  font-size: 10px;
-  color: #333;
-  background: SILVER;
-  width: 180px;
+    margin-top: 10px;
+    height: 20px;
+    font-size: 10px;
+    color: #333;
+    background: SILVER;
+    width: 180px;
 }
 
-.listboxgroups {
-  margin-top: 10px;
-  height: 20px;
-  font-size: 10px;
-  color: #333;
-  background: SILVER;
-  width: 180px;
-}
-
-.listboxquestions {
-  margin-top: 10px;
-  height: 20px;
-  font-size: 10px;
-  color: #333;
-  background: SILVER;
-  width: 180px;
-}
 
 .saveOrderbtn {
-  border: thin solid #000;
-  text-decoration: none;
-  font-weight: bold;
-  color: #000;
-  margin: 5px;
-  background: #D4D0C8;
+    border: thin solid #000;
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+    margin: 5px;
+    background: #D4D0C8;
 }
 
 .settingentryhighlight {
-  color: #000080;
-  font-weight: bold;
+    color: #000080;
+    font-weight: bold;
 }
 
 .statusentryhighlight {
-  font-size: 10px;
-  color: #F00;
+    font-size: 10px;
+    color: #F00;
 }
 
 .warningtitle {
-  font-weight: bold;
-  color: #F00;
+    font-weight: bold;
+    color: #F00;
 }
 
 .successtitle {
-  font-weight: bold;
-  color: #090;
+    font-weight: bold;
+    color: #090;
 }
 
 .settingentry {
-  float: left;
-  width: 450px;
-  padding-left: 5px;
-  font-size: 13px;
-  text-align: left;
-  clear: right;
-  margin-bottom: 10px;
-}
-
-#dhtmlgoodies_tooltip {
-  border: 1px solid #000;
-  position: absolute;
-  display: none;
-  z-index: 20000;
-  padding: 2px;
-  -moz-border-radius: 5px;
-  background: #FF6;
-  font: 0.8em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
-}
-
-#dhtmlgoodies_tooltipShadow {
-  position: absolute;
-  display: none;
-  z-index: 10000;
-  opacity: 0.7;
-  filter: alpha(opacity = 70);
-  -khtml-opacity: 0.7;
-  -moz-opacity: 0.7;
-  -moz-border-radius: 5px;
-  background: #555;
+    float: left;
+    width: 450px;
+    padding-left: 5px;
+    font-size: 13px;
+    text-align: left;
+    clear: right;
+    margin-bottom: 10px;
 }
 
 
 .testsurvpopup {
-  position: absolute;
-  width: 100px;
-  height: 110px;
-  top: 151px;
-  left: 80px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000;
-  padding: 8px;
-  z-index: 10000;
-  opacity: 0.7;
-  visibility: hidden;
-  filter: alpha(opacity =           95);
-  -khtml-opacity: 0.95;
-  -moz-opacity: 0.95;
-  -moz-border-radius: 6px;
-  background: #FF6;
-  font: 11px arial, verdana, sans-serif;
+    position: absolute;
+    width: 100px;
+    height: 110px;
+    top: 151px;
+    left: 80px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000;
+    padding: 8px;
+    z-index: 10000;
+    opacity: 0.7;
+    visibility: hidden;
+    filter: alpha(opacity =           95);
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -moz-border-radius: 6px;
+    background: #FF6;
+    font: 11px arial, verdana, sans-serif;
 }
 
 .testsurvpopup	td {
-  background: #FF6;
+    background: #FF6;
 }
 
 .testsurvpopup	td:first-child {
-  color: #000;
-  font-size: 10pt;
+    color: #000;
+    font-size: 10pt;
 }
 
 .previewpopup {
-  position: absolute;
-  width: 110px;
-  height: 125px;
-  top: 287px;
-  left: 473px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000;
-  padding: 8px;
-  z-index: 10000;
-  opacity: 0.7;
-  visibility: hidden;
-  filter: alpha(opacity =           95);
-  -khtml-opacity: 0.95;
-  -moz-opacity: 0.95;
-  -moz-border-radius: 6px;
-  background: #FF6;
-  font: 11px arial, verdana, sans-serif;
+    position: absolute;
+    width: 110px;
+    height: 125px;
+    top: 287px;
+    left: 473px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000;
+    padding: 8px;
+    z-index: 10000;
+    opacity: 0.7;
+    visibility: hidden;
+    filter: alpha(opacity =           95);
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -moz-border-radius: 6px;
+    background: #FF6;
+    font: 11px arial, verdana, sans-serif;
 }
 
 
@@ -276,6 +266,10 @@ div.menubar {
     border-width: 1px;
 }
 
+div.menubar a{
+    text-decoration: none;
+
+}
 div.menubar .ui-widget-header
 {
     font-weight:normal;
@@ -346,8 +340,11 @@ div.menubar .ui-widget-header
 .menubar-right {
     background-color: #999;
     float: right;
-    line-height: 1em;
+    line-height: 0em;
     white-space: nowrap;
+    height:20px;
+    margin:0;
+    padding:0;
 }
 
 .menubar-right label{
@@ -362,15 +359,20 @@ div.menubar .ui-widget-header
     font-size: 9px;
 }
 
+.menubar-right *
+{
+    vertical-align: middle;
+}
 .menubar-right .arrow-wrapper {
     display: inline; /* For IE */
-    position:15;
-    vertical-align: bottom;
+    vertical-align: top;
+    height:20px;
 }
 
 html>body .menubar-right .arrow-wrapper { /* For real browsers */
     display: inline-block;
     padding:0 5px;
+    margin:0;
 }
 
 .menubar-right .arrow-wrapper a {
@@ -379,7 +381,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 .menubar-right .arrow-wrapper img:first-child {
     display: block;
-    margin-bottom: 2px;
+    margin: 0;
 }
 
 .separator{
@@ -400,10 +402,12 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 #surveydetails, #groupdetails, #questiondetails {
     width: 100%;
-    margin-top:-2px;
     margin-bottom:4px;
     padding:5px 0;
     clear:left;
+    border:none;
+    background-color:#ddd;
+    font-size:13px;
 }
 
 #surveydetails td:first-child,
@@ -412,13 +416,17 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     width:25%;
     font-weight:bold;
     text-align:right;
-
 }
 
 #surveydetails td+td,
 #groupdetails td+td,
 #questiondetails td+td {
     text-align:left;
+}
+
+#surveydetails tr:last-child td+td {
+    font-size:10px;
+    color:#000080;
 }
 
 .form44 li label:first-child,
@@ -520,4 +528,140 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     list-style-type: none;
     clear:left;
     padding-bottom:7px;
+}
+
+
+div.messagebox {
+    width: 550px;
+    margin:10px auto;
+    border: 1px solid;
+    border-color: #555555;
+    background-color: #fff;
+    text-align: center;
+}
+
+div.messagebox .header{
+    padding:1px;
+    text-align:left;
+    font-size:10px;
+}
+
+div.successheader{
+    color:#008000;
+    margin: 5px 0;
+    padding:2px;
+}
+div.errorheader{
+    font-weight:bold;
+    color:#800000;
+    background-color: #FFC0C0;
+    margin: 5px 0;
+    padding:2px;
+}
+div.warningheader{
+    font-weight:bold;
+    color:#808000;
+    background-color: #FFC0C0;
+    margin: 5px 0;
+    padding:2px;
+}
+div.partialheader{
+    font-weight:bold;
+    color: #CC3300;
+    background-color: #FF9900;
+    margin: 5px 0;
+    padding:2px;
+}
+
+div.messagebox .warningheader {
+    font-weight:bold;
+    color:#ee0000;
+    background-color: #ffeeee;
+    margin: 5px 0;
+    padding:2px;
+}
+
+
+.assessmentlist td form,
+#users td form {
+    display:inline;
+}
+
+#separator4, #separator16{
+    padding-left:40px;
+}
+
+#separator3, #separator12{
+    padding-right:18px;
+}
+#separator2{
+    padding-right:48px;
+}
+
+#separator1{
+
+}
+
+
+#tokensearch, #tokenrange, #browseresults{
+    display:inline;
+    line-height:20px;
+    vertical-align:middle;
+    margin-left: 10px;
+}
+
+#tokensearch input, #tokenrange input, #browseresults input{
+    vertical-align:middle;
+    margin-left: 2px;
+}
+
+#browseresults{
+    margin:0;
+}
+
+
+/* Browse response css */
+
+.browsetable {
+    clear:left;
+}
+
+.browsetable tr:hover {
+    background-color: #ddd;
+}
+.browsetable td span.content{
+    display:block;
+    height:3em;
+    overflow:hidden;
+}
+.browsetable th strong.content{
+    display:block;
+    height:4em;
+    overflow:hidden;
+}
+
+.form30 table.statisticssummary
+{
+    margin:0 auto;
+    float:none;
+}
+
+.statisticssummary thead th
+{
+    background:#D2E0F2;
+}
+
+.statisticssummary th:first-child,
+.statisticstable td:first-child {
+    text-align:right;
+}
+
+.statisticssummary thead th:first-child
+{
+    text-align:center;
+}
+
+.statisticssummary th, .statisticssummary td, .statisticstable td {
+    padding:3px 10px;
+
 }

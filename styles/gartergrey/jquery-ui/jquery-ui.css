@@ -117,54 +117,42 @@
 }
 
 .ui-widget-header a {
-  color: #1D2D45;
 }
 
 /* Interaction states
 ----------------------------------*/
 .ui-state-default,.ui-widget-content .ui-state-default {
-  border: 1px solid #79B7E7;
-  background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50%
-    repeat-x;
-  font-weight: bold;
-  color: #5670A1;
   outline: none;
 }
 
 .ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited
   {
-  color: #5670A1;
+  color: #fff;
   text-decoration: none;
   outline: none;
 }
 
 .ui-state-hover,.ui-widget-content .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus
   {
-  border: 1px solid #79b7e7;
-  background: #d0e5f5 url(images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50%
-    repeat-x;
-  font-weight: bold;
-  color: #1d5987;
   outline: none;
 }
 
 .ui-state-hover a,.ui-state-hover a:hover {
-  color: #1d5987;
-  text-decoration: none;
+  color: #ddd;
+  text-decoration: underline;
   outline: none;
 }
 
 .ui-state-active,.ui-widget-content .ui-state-active {
   border: 1px solid #79b7e7;
-  background: #ffffff url(images/ui-bg_inset-hard_100_ffffff_1x100.png)
-    50% 50% repeat-x;
+  background-color: #EEEFFF;
   font-weight: bold;
-  color: #4e8632;
+  color: #333;
   outline: none;
 }
 
 .ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
-  color: #4e8632;
+  color: #0000ee;
   outline: none;
   text-decoration: none;
 }
@@ -983,8 +971,6 @@
 }
 
 .ui-corner-all {
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
 }
 
 /* Overlays */

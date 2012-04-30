@@ -120,7 +120,26 @@
                                 echo ">$templatename</option>";
                             }
                         ?>
-                    </select></li>
+                    </select>
+                </li>
+                <?php
+
+                    $thisadmintheme=getGlobalSetting('admintheme');
+                    $adminthemes=array_keys(getAdminThemeList());
+
+                ?>
+                <li><label for="admintheme"><?php $clang->eT("Administration template:"); ?></label>
+                    <select name="admintheme" id="admintheme">
+                        <?php
+                            foreach ($adminthemes as $templatename)
+                            {
+                                echo "<option value='{$templatename}'";
+                                if ($thisadmintheme==$templatename) { echo " selected='selected' ";}
+                                echo ">{$templatename}</option>";
+                            }
+                        ?>
+                    </select>
+                </li>
 
 
                 <?php $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode'); ?>

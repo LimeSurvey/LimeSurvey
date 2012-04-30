@@ -100,7 +100,7 @@
                 <?php } ?>
 
 
-            <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
+            <img id='separator2' src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>" title="<?php $clang->eTview("Logout");?>" >
                 <img src='<?php echo $sImageURL;?>logout.png' alt='<?php $clang->eT("Logout");?>' /></a>
 

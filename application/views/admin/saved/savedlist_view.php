@@ -20,12 +20,12 @@
 
                     <?php if (hasSurveyPermission($iSurveyId,'responses','update'))
                     { ?>
-                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit_16.png'
+                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>edit_16.png'
                            title='<?php $clang->eT('Edit entry'); ?>' onclick="window.open('<?php echo $this->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" />
                     <?php }
                     if (hasSurveyPermission($iSurveyId,'responses','delete'))
                     { ?>
-                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/token_delete.png'
+                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>token_delete.png'
                            title='<?php $clang->eT('Delete entry'); ?>' onclick="if (confirm('<?php $clang->eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" />
                     <?php } ?>
 

@@ -21,7 +21,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <td>
 <?php if (hasSurveyPermission($surveyid, 'assessments','update')) { ?>
     <form method='post' action='<?php echo $this->createUrl("admin/assessments/index/surveyid/$surveyid");?>'>
-        <input type='image' src='<?php echo $imageurl;?>/edit_16.png' alt='<?php $clang->eT("Edit");?>' />
+        <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit");?>' />
         <input type='hidden' name='action' value='assessmentedit' />
         <input type='hidden' name='id' value="<?php echo $assess['id'];?>" />
     </form>
