@@ -104,18 +104,22 @@ class GlobalSettings extends Survey_Common_Action
             $maxemails = 1;
         }
 
+        $defaultlang = sanitize_languagecode($_POST['defaultlang']);
         $aRestrictToLanguages = explode(' ', sanitize_languagecodeS($_POST['restrictToLanguages']));
+        if (!in_array($defaultLanguage,$aRestrictToLanguages)){ // Force default language in restrictToLanguages
+            $aRestrictToLanguages[]=$defaultLanguage;
+        }
         if (count(array_diff(array_keys(getLanguageData(false,Yii::app()->session['adminlang'])), $aRestrictToLanguages)) == 0) {
             $aRestrictToLanguages = '';
         } else {
             $aRestrictToLanguages = implode(' ', $aRestrictToLanguages);
         }
-
+        
+        setGlobalSetting('defaultlang', $defaultlang);
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('updatecheckperiod', (int)($_POST['updatecheckperiod']));
         setGlobalSetting('addTitleToLinks', sanitize_paranoid_string($_POST['addTitleToLinks']));
-        setGlobalSetting('defaultlang', sanitize_languagecode($_POST['defaultlang']));
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
         setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string($_POST['defaultquestionselectormode']));
         setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string($_POST['defaulttemplateeditormode']));

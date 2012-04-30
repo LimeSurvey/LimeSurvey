@@ -238,9 +238,9 @@
                 if ($sLanguage==$sSelectedLanguage)
                 {
                     $sHTMLCode .=" selected='selected'";
-
+                    $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
                 }
-                $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false)."</option>\n";
+                $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sLanguage)." - ".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
             }
             $sHTMLCode .= "</select>\n";
             return $sHTMLCode;
@@ -259,22 +259,29 @@
     */
     function makeLanguageChanger($sSelectedLanguage)
     {
-        $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
-        foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
+        if(count(getLanguageDataRestricted())>1)
         {
-            $sHTMLCode .= "<option value='".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$sLanguageID."' ";
-            if($sLanguageID == $sSelectedLanguage)
+            $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
+            foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
             {
-                $sHTMLCode .= " selected='selected' ";
-                $sHTMLCode .= ">{$aLanguageProperties['nativedescription']}</option>\n";
+                $sHTMLCode .= "<option value='".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$sLanguageID."' ";
+                if($sLanguageID == $sSelectedLanguage)
+                {
+                    $sHTMLCode .= " selected='selected' ";
+                    $sHTMLCode .= ">{$aLanguageProperties['nativedescription']}</option>\n";
+                }
+                else
+                {
+                    $sHTMLCode .= ">".$aLanguageProperties['nativedescription'].' - '.$aLanguageProperties['description']."</option>\n";
+                }
             }
-            else
-            {
-                $sHTMLCode .= ">".$aLanguageProperties['nativedescription'].' - '.$aLanguageProperties['description']."</option>\n";
-            }
+            $sHTMLCode .= "</select>\n";
+            return $sHTMLCode;
         }
-        $sHTMLCode .= "</select>\n";
-        return $sHTMLCode;
+        else
+        {
+            return false;
+        }
     }
 
 

@@ -28,11 +28,6 @@ function addLanguages(ui,evt)
 
 function UpdateRestrictedLanguages(){
     aString='';
-    if ($("#includedLanguages option").length==0)
-    {
-        alert (msgAtLeastOneLanguageNeeded);
-        return false;
-    }
     $("#includedLanguages option").each(function(){
        aString=aString+' '+$(this).val();
     });
