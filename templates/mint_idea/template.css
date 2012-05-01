@@ -831,8 +831,14 @@ table.rank td.helptext {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.language {
-  
+.multiple-opt .survey-question-answer li input {
+  vertical-align: top !important;
+  margin-top: 2px;
+}
+
+.multiple-opt .survey-question-answer li label {
+  display: inline-block;
+  width: 90%;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
