@@ -11,9 +11,9 @@
         <div class='menubar-left'>
             <?php if (!isset($_POST['sql']))
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/0/limit/$limit"); ?>' title='<?php $clang->eTview("Show start..."); ?>' >
+                <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/0/limit/$limit"); ?>'>
                     <img align='left' src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
-                <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$last/limit/$limit"); ?>' title='<?php $clang->eTview("Show previous.."); ?>' >
+                <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$last/limit/$limit"); ?>'>
                     <img align='left'  src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' border='0' align='left' alt='' />
 

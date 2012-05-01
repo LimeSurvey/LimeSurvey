@@ -8,8 +8,7 @@
             <?php if(!$activated) { ?>
                 <img src='<?php echo $sImageURL;?>inactive.png' alt='<?php $clang->eT("This survey is currently not active"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
                 <?php if($canactivate) { ?>
-                    <a href="<?php echo $this->createurl("admin/survey/activate/surveyid/$surveyid"); ?>"
-                        title="<?php $clang->eTview("Activate this Survey"); ?>" >
+                    <a href="<?php echo $this->createurl("admin/survey/activate/surveyid/$surveyid"); ?>">
                         <img src='<?php echo $sImageURL; ?>activate.png' alt='<?php $clang->eT("Activate this Survey"); ?>'/></a>
                     <?php } else { ?>
                     <img src='<?php echo $sImageURL; ?>activate_disabled.png'
@@ -24,8 +23,7 @@
                     <img src='<?php echo $sImageURL; ?>active.png' title='' alt='<?php $clang->eT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
                     <?php }
                     if($canactivate) { ?>
-                    <a href="<?php echo $this->createUrl("admin/survey/deactivate/surveyid/$surveyid"); ?>"
-                        title="<?php $clang->eTview("Stop this survey"); ?>" >
+                    <a href="<?php echo $this->createUrl("admin/survey/deactivate/surveyid/$surveyid"); ?>">
                         <img src='<?php echo $sImageURL;?>deactivate.png' alt='<?php $clang->eT("Stop this survey"); ?>' /></a>
                     <?php } else { ?>
                     <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='14' />
@@ -35,11 +33,11 @@
         </div>
         <ul class='sf-menu'>
             <?php if($onelanguage) { ?>
-                <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" title="<?php echo $icontext2;?>" >
+                <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
                         <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
                     </a></li>
                 <?php } else { ?>
-                <li><a href='#' title='<?php echo $icontext2;?>' accesskey='d'>
+                <li><a href='#' accesskey='d'>
                         <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
                     </a><ul>
                         <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y"); ?>'>
@@ -219,8 +217,7 @@
             } ?>
 
             <?php if($tokenmanagement) { ?>
-                <li><a href="<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid"); ?>"
-                        title="<?php $clang->eTview("Token management");?>" >
+                <li><a href="<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid"); ?>">
                         <img src='<?php echo $sImageURL;?>tokens.png' alt='<?php $clang->eT("Token management");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                 </li>
                 <?php } ?>
@@ -275,8 +272,7 @@
                     else
                     { ?>
 
-                    <a href="<?php echo $this->createUrl("admin/questiongroup/add/surveyid/$surveyid"); ?>"
-                        title="<?php $clang->eTview("Add new group to survey"); ?>">
+                    <a href="<?php echo $this->createUrl("admin/questiongroup/add/surveyid/$surveyid"); ?>">
                         <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Add new group to survey"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <?php }
             } ?>

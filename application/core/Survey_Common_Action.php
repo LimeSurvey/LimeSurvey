@@ -533,12 +533,10 @@ class Survey_Common_Action extends CAction
         if (!$activated)
         {
             $aData['icontext'] = $clang->gT("Test this survey");
-            $aData['icontext2'] = $clang->gTview("Test this survey");
         }
         else
         {
             $aData['icontext'] = $clang->gT("Execute this survey");
-            $aData['icontext2'] = $clang->gTview("Execute this survey");
         }
 
         $aData['baselang'] = Survey::model()->findByPk($iSurveyId)->language;

@@ -114,12 +114,11 @@ class GlobalSettings extends Survey_Common_Action
         } else {
             $aRestrictToLanguages = implode(' ', $aRestrictToLanguages);
         }
-        
+
         setGlobalSetting('defaultlang', $defaultlang);
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('updatecheckperiod', (int)($_POST['updatecheckperiod']));
-        setGlobalSetting('addTitleToLinks', sanitize_paranoid_string($_POST['addTitleToLinks']));
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
         setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string($_POST['defaultquestionselectormode']));
         setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string($_POST['defaulttemplateeditormode']));

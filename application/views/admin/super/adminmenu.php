@@ -6,7 +6,7 @@
                 if(Yii::app()->session['loginID'])
                 { ?>
                 --  <?php $clang->eT("Logged in as:");?><strong>
-                    <a href="<?php echo $this->createUrl("/admin/user/personalsettings"); ?>" title="<?php $clang->eTview("Edit your personal preferences");?>">
+                    <a href="<?php echo $this->createUrl("/admin/user/personalsettings"); ?>">
                         <?php echo Yii::app()->session['user'];?> <img src='<?php echo $sImageURL;?>profile_edit.png' alt='<?php $clang->eT("Edit your personal preferences");?>' /></a>
                 </strong>
                 <?php } ?>
@@ -31,13 +31,13 @@
             <?php
                 if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
                 { ?>
-                <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php $clang->eTview("Global settings");?>" >
+                <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>">
                     <img src='<?php echo $sImageURL;?>global.png' alt='<?php $clang->eT("Global settings");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
                 <?php }
                 if(Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
                 { ?>
-                <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>" title="<?php $clang->eTview("Check Data Integrity");?>">
+                <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
                     <img src='<?php echo $sImageURL;?>checkdb.png' alt='<?php $clang->eT("Check Data Integrity");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php
                 }
@@ -49,7 +49,7 @@
 
                     ?>
 
-                    <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>" title="<?php $clang->eTview("Backup Entire Database");?>" >
+                    <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>" >
                         <img src='<?php echo $sImageURL;?>backup.png' alt='<?php $clang->eT("Backup Entire Database");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/>
                     </a>
 
@@ -65,20 +65,20 @@
                 {
                 ?>
 
-                <a href="<?php echo $this->createUrl("admin/labels/view"); ?>" title="<?php $clang->eTview("Edit label sets");?>" >
+                <a href="<?php echo $this->createUrl("admin/labels/view"); ?>" >
                     <img src='<?php echo $sImageURL;?>labels.png'  alt='<?php $clang->eT("Edit label sets");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
                 <?php }
                 if(Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
                 { ?>
-                <a href="<?php echo $this->createUrl("admin/templates/view"); ?>" title="<?php $clang->eTview("Template Editor");?>" >
+                <a href="<?php echo $this->createUrl("admin/templates/view"); ?>">
                     <img src='<?php echo $sImageURL;?>templates.png' alt='<?php $clang->eT("Template Editor");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php } ?>
             <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
             <?php
                 if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
                 { 	 ?>
-                <a href="<?php echo $this->createUrl("admin/participants/index"); ?>" title="<?php $clang->eTview("Central participant database/panel");?>" >
+                <a href="<?php echo $this->createUrl("admin/participants/index"); ?>" >
                     <img src='<?php echo $sImageURL;?>cpdb.png' alt='<?php $clang->eT("Central participant database/panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php } ?>
         </div>
@@ -87,7 +87,7 @@
             <select id='surveylist' name='surveylist' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
                 <?php echo getSurveyList(false, false, $surveyid); ?>
             </select>
-            <a href="<?php echo $this->createUrl("admin/survey/index"); ?>" title="<?php $clang->eTview("Detailed list of surveys");?>" >
+            <a href="<?php echo $this->createUrl("admin/survey/index"); ?>">
                 <img src='<?php echo $sImageURL;?>surveylist.png' alt='<?php $clang->eT("Detailed list of surveys");?>' />
             </a>
 
@@ -95,16 +95,16 @@
                 if(Yii::app()->session['USER_RIGHT_CREATE_SURVEY'] == 1)
                 { ?>
 
-                <a href="<?php echo $this->createUrl("admin/survey/newsurvey"); ?>" title="<?php $clang->eTview("Create, import, or copy a survey");?>" >
+                <a href="<?php echo $this->createUrl("admin/survey/newsurvey"); ?>">
                     <img src='<?php echo $sImageURL;?>add.png' alt='<?php $clang->eT("Create, import, or copy a survey");?>' /></a>
                 <?php } ?>
 
 
             <img id='separator2' src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
-            <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>" title="<?php $clang->eTview("Logout");?>" >
+            <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>" >
                 <img src='<?php echo $sImageURL;?>logout.png' alt='<?php $clang->eT("Logout");?>' /></a>
 
-            <a href="http://docs.limesurvey.org" title="<?php $clang->eTview("LimeSurvey online manual");?>" >
+            <a href="http://docs.limesurvey.org" target="_blank">
                 <img src='<?php echo $sImageURL;?>showhelp.png' alt='<?php $clang->eT("LimeSurvey online manual");?>' /></a>
         </div>
     </div>

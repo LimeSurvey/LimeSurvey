@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php $clang->eT("Data entry"); ?></div>
 <div class='header ui-widget-header'>
-	<?php 
+	<?php
 		if ($subaction == "edit") {
 	            echo sprintf($clang->gT("Editing response (ID %s)"), $id);
 	    } else {
@@ -10,4 +10,4 @@
 </div>
 
 <form method='post' action='<?php echo $this->createUrl('/admin/dataentry/update'); ?>' name='editresponse' id='editresponse'>
-   <table id='responsedetail' width='99%' align='center' cellpadding='0' cellspacing='0'>
+   <table id='responsedetail' width='99%' align='center'>

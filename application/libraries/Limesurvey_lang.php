@@ -43,30 +43,6 @@
             return $this->langcode;
         }
 
-        function gTview($string, $escapemode = 'html')
-        {
-            global $addTitleToLinks;
-            if ( $addTitleToLinks === true)
-            {
-                return $this->gT($string, $escapemode = 'html');
-            }
-            else
-            {
-                return '';
-            }
-        }
-
-        function eTview($string, $escapemode = 'html')
-        {
-            global $addTitleToLinks;
-            if ( $addTitleToLinks === true)
-            {
-                $this->eT($string, $escapemode = 'html');
-            }
-        }
-
-
-
         /**
         * This function translates plural strings to their according language
         *

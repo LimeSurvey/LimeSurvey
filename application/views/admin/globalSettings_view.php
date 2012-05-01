@@ -192,16 +192,6 @@
                             ><?php $clang->eT("Off"); ?></option>
                     </select></li>
 
-                <?php $thisaddTitleToLinks=getGlobalSetting('addTitleToLinks'); ?>
-                <li><label for='addTitleToLinks'><?php $clang->eT("Screen reader compatibility mode:"); ?></label>
-                    <select name='addTitleToLinks' id='addTitleToLinks'>
-                        <option value='1'
-                            <?php if ( $thisaddTitleToLinks == true) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("On"); ?></option>
-                        <option value='0'
-                            <?php if ( $thisaddTitleToLinks == false) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Off"); ?></option>
-                    </select></li>
                 <li><label for='sess_expiration'><?php $clang->eT("Session lifetime (seconds):"); ?></label>
                     <input type='text' size='10' id='sess_expiration' name='sess_expiration' value="<?php echo htmlspecialchars(getGlobalSetting('sess_expiration')); ?>" /></li>
                 <li><label for='ipInfoDbAPIKey'><?php $clang->eT("IP Info DB API Key:"); ?></label>

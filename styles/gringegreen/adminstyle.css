@@ -1463,7 +1463,7 @@ div.translate {
 
 
 ol.organizer {
-    padding: 0 auto;
+    padding: 0;
     list-style-type: none;
     font-weight: bold;
     width:800px;
@@ -1567,7 +1567,7 @@ ol.organizer {
 }
 
 .cke_skin_office2003 .cke_top, .cke_skin_office2003 .cke_bottom, .cke_shared .cke_skin_office2003 {
-    background-color: none !important;
+    background-color: transparent !important;
 }
 
 .cke_skin_office2003 .cke_toolbar {
