@@ -373,7 +373,7 @@ class tokens extends Survey_Common_Action
                 $token['validuntil'] = '';
 
             $aData->rows[$i]['id'] = $token['tid'];
-            $action = '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("optin/local/surveyid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
+            $action = '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
             $action .= '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'token_delete.png" title="' . $clang->gT("Delete token entry") . '" alt="' . $clang->gT("Delete token entry") . '" onclick=\'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}\'>';
 
             if (strtolower($token['emailstatus']) == 'ok')
