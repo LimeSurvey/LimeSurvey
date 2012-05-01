@@ -367,7 +367,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         // Find out if the user has any saved data
         if ($thissurvey['format'] == 'A')
         {
-            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
+            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
             {
                 $_saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>"
                 . "\n\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
@@ -379,7 +379,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }
         elseif (!isset(Yii::app()->session['step']) || !Yii::app()->session['step'])
         {  //First page, show LOAD
-            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
+            if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
             {
                 $_saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load unfinished survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";
             }

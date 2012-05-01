@@ -9,7 +9,7 @@
     var duplicateanswercode='<?php $clang->eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
     var strNoLabelSet='<?php $clang->eT('There are no label sets which match the survey default language','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
-    var ci_path='<?php echo Yii::app()->getConfig('imageurl'); ?>';
+    var sImageURL ='<?php echo Yii::app()->getConfig('imageurl'); ?>';
     var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
     var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
@@ -108,7 +108,7 @@ $codeids='';
                     <?php }
                     elseif ($activated != 'Y' && $first) // If survey is decactivated
                     { ?>
-                        <img class='handle' src='<?php echo Yii::app()->getConfig('imageurl')?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" /><input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='5' size='5'
+                        <img class='handle' src='<?php echo $sImageURL; ?>handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" /><input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='5' size='5'
                          onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                          />
 
@@ -128,8 +128,8 @@ $codeids='';
 
                     <?php if ($activated != 'Y' && $first)
                     { ?>
-                        <img src='<?php echo Yii::app()->getConfig('imageurl')?>/addanswer.png' class='btnaddanswer' />
-                        <img src='<?php echo Yii::app()->getConfig('imageurl')?>/deleteanswer.png' class='btndelanswer' />
+                        <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' />
+                        <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' />
                     <?php } ?>
 
                     </td></tr>

@@ -1,32 +1,32 @@
 // $Id: subquestions.js 9692 2011-01-15 21:31:10Z c_schmitz $
-var labelcache=[];  
+var labelcache=[];
 $(document).ready(function(){
        $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
                                             start:startmove,
                                             update:aftermove,
                                             distance:3});
        $('.btnaddanswer').click(addinput);
-       $('.btndelanswer').click(deleteinput); 
+       $('.btndelanswer').click(deleteinput);
        $('#editsubquestionsform').submit(code_duplicates_check)
        $('#labelsetbrowser').dialog({ autoOpen: false,
                                         modal: true,
                                         width:800,
-                                        title: lsbrowsertitle});   
+                                        title: lsbrowsertitle});
        $('#quickadd').dialog({ autoOpen: false,
                                         modal: true,
                                         width:600,
-                                        title: quickaddtitle});   
-                                        
+                                        title: quickaddtitle});
+
        $('.btnlsbrowser').click(lsbrowser);
        $('#btncancel').click(function(){
            $('#labelsetbrowser').dialog('close');
        });
-     
+
        $('#btnlsreplace').click(transferlabels);
        $('#btnlsinsert').click(transferlabels);
        $('#btnqacancel').click(function(){
            $('#quickadd').dialog('close');
-       });  
+       });
        $('#btnqareplace').click(quickaddlabels);
        $('#btnqainsert').click(quickaddlabels);
        $('#labelsets').click(lspreview);
@@ -38,27 +38,27 @@ $(document).ready(function(){
                                     title: saveaslabletitle});
        $('.bthsaveaslabel').click(getlabel);
        $('#btnlacancel').click(function(){
-          $('#saveaslabel').dialog('close'); 
+          $('#saveaslabel').dialog('close');
        });
        $('input[name=savelabeloption]:radio').click(setlabel);
        flag = [false, false];
        $('#btnsave').click(savelabel);
 
-       updaterowproperties(); 
+       updaterowproperties();
 });
 
 function deleteinput()
 {
 
     // 1.) Check if there is at least one answe
-     
+
     countanswers=$(this).parent().parent().parent().children().length;
     if (countanswers>1)
     {
        // 2.) Remove the table row
-      
-       scale_id=removechars($(this).closest('table').attr('id'));     
-       index = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;            
+
+       scale_id=removechars($(this).closest('table').attr('id'));
+       index = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
        languages=langs.split(';');
 
        var x;
@@ -67,23 +67,23 @@ function deleteinput()
             tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+index+')');
             if (x==0) {
                tablerow.fadeTo(400, 0, function(){
-                       $(this).remove();  
-                       updaterowproperties();       
-               });            
+                       $(this).remove();
+                       updaterowproperties();
+               });
             }
             else {
                 tablerow.remove();
             }
             rowinfo=tablerow.attr('id').split('_');
             $('#deletedqids').val($('#deletedqids').val()+' '+rowinfo[2]);
-        }       
+        }
     }
     else
     {
        $.blockUI({message:"<p><br/>"+strCantDeleteLastAnswer+"</p>"});
-       setTimeout(jQuery.unblockUI,1000);   
+       setTimeout(jQuery.unblockUI,1000);
     }
-    updaterowproperties();     
+    updaterowproperties();
 }
 
 
@@ -92,22 +92,22 @@ function addinput()
   var sID=$('input[name=sid]').val();
   var gID=$('input[name=gid]').val();
   var qID=$('input[name=qid]').val();
-  
-    scale_id=removechars($(this).closest('table').attr('id'));     
-    newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;            
+
+    scale_id=removechars($(this).closest('table').attr('id'));
+    newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
     languages=langs.split(';');
 
     for (x in languages)
     {
-        tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+newposition+')');  
+        tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+newposition+')');
         nextcode=getNextCode($(this).parent().parent().find('.code').val());
-        var randomid='new'+Math.floor(Math.random()*111111)        
+        var randomid='new'+Math.floor(Math.random()*111111)
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="' + ci_path + '/handle.png" /></td><td><input id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" class="code" type="text" maxlength="5" size="5" value="'+htmlspecialchars(nextcode)+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + ci_path + '/edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + ci_path + '/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + ci_path + '/addanswer.png" class="btnaddanswer" /><img src="' + ci_path + '/deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" class="code" type="text" maxlength="5" size="5" value="'+htmlspecialchars(nextcode)+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
         }
         else
         {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+htmlspecialchars(nextcode)+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + ci_path + '/edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + ci_path + '/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+htmlspecialchars(nextcode)+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(newansweroption_text)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
         }
         tablerow.after(inserthtml);
         tablerow.next().find('.btnaddanswer').click(addinput);
@@ -120,33 +120,33 @@ function addinput()
         });
         tablerow.next().find('.code').blur(updatecodes);
     }
-    $('.row_'+newposition).fadeIn('slow');     
+    $('.row_'+newposition).fadeIn('slow');
     $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
-                                                                 
+
     $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
 }
 
 function startmove(event,ui)
 {
-    oldindex = Number($(ui.item[0]).parent().children().index(ui.item[0]))+1;  
+    oldindex = Number($(ui.item[0]).parent().children().index(ui.item[0]))+1;
 }
 
 
 function aftermove(event,ui)
 {
-    // But first we have change the sortorder in translations, too  
-    
+    // But first we have change the sortorder in translations, too
+
 
    var newindex = Number($(ui.item[0]).parent().children().index(ui.item[0]))+1;
-  
-   info=$(ui.item[0]).closest('table').attr('id').split("_"); 
+
+   info=$(ui.item[0]).closest('table').attr('id').split("_");
    languages=langs.split(';');
    var x;
    for (x in languages)
    {
         if (x>0) {
-            tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')');                 
+            tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')');
             tablebody=$('#tabpage_'+languages[x]).find('tbody');
             if (newindex<oldindex)
             {
@@ -158,25 +158,25 @@ function aftermove(event,ui)
                 //tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
             }
         }
-    }           
+    }
     updaterowproperties();
 }
 
-// This function adjusts the alternating table rows 
+// This function adjusts the alternating table rows
 // if the list changed
 function updaterowproperties()
 {
   $('.answertable tbody').each(function(){
       var highlight=true;
       $(this).children('tr').each(function(){
-          
-         $(this).removeClass('highlight'); 
+
+         $(this).removeClass('highlight');
          if (highlight){
              $(this).addClass('highlight');
          }
          highlight=!highlight;
       })
-  })  
+  })
 }
 
 function updatecodes()
@@ -186,31 +186,31 @@ function updatecodes()
 
 function getNextCode(sourcecode)
 {
-    i=1; 
+    i=1;
     found=true;
     foundnumber=-1;
     sclength = sourcecode.length;
     while (i<=sclength && found == true)
     {
         found=is_numeric(sourcecode.substr(sclength-i,i));
-        if (found) 
+        if (found)
         {
             foundnumber=sourcecode.substr(sclength-i,i);
             i++;
-        }   
+        }
     }
-    if (foundnumber==-1) 
+    if (foundnumber==-1)
     {
         return(sourcecode);
     }
-    else 
+    else
     {
-       foundnumber++; 
+       foundnumber++;
        foundnumber=foundnumber+'';
        result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
        return(result);
     }
-    
+
 }
 
 function is_numeric (mixed_var) {
@@ -225,12 +225,12 @@ function popupeditor()
 
 function code_duplicates_check()
 {
-    languages=langs.split(';');    
+    languages=langs.split(';');
     var dupefound=false;
     $('#tabpage_'+languages[0]+' .answertable tbody').each(function(){
         var codearray=[];
         $(this).find('tr .code').each(function(){
-           codearray.push($(this).val());  
+           codearray.push($(this).val());
         })
         if (arrHasDupes(codearray))
         {
@@ -247,34 +247,34 @@ function code_duplicates_check()
 
 function lsbrowser()
 {
-    scale_id=removechars($(this).attr('id'));      
+    scale_id=removechars($(this).attr('id'));
     $('#labelsetbrowser').dialog( 'open' );
     surveyid=$('input[name=sid]').val();
-    /* 
+    /*
     match=0;
     if ($('#languagefilter').attr('checked')==true)
     {
         match=1;
     }*/
     $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
-        var x=0;    
-        $("#labelsets").removeOption(/.*/); 
+        var x=0;
+        $("#labelsets").removeOption(/.*/);
         for (x in json)
         {
-            $('#labelsets').addOption(json[x][0],json[x][1]); 
+            $('#labelsets').addOption(json[x][0],json[x][1]);
             if (x==0){
                 remind=json[x][0];
             }
         }
         if ($('#labelsets > option').size()>0)
         {
-            $('#labelsets').selectOptions(remind); 
-            lspreview();           
+            $('#labelsets').selectOptions(remind);
+            lspreview();
             $('#btnlsreplace').removeClass('ui-state-disabled');
             $('#btnlsinsert').removeClass('ui-state-disabled');
             $('#btnlsreplace').attr('disabled','');
             $('#btnlsinsert').attr('disabled','');
-        } 
+        }
         else
         {
             $("#labelsetpreview").html("<p class='ui-state-highlight ui-corner-all ui-notify-message'>"+strNoLabelSet+"</p>");
@@ -284,7 +284,7 @@ function lsbrowser()
             $('#btnlsinsert').attr('disabled','disabled');
         }
     });
-    
+
 }
 
 // previews the labels in a label set after selecting it in the select box
@@ -294,7 +294,7 @@ function lspreview()
    {
        return;
    }
-    
+
    var lsid=$('#labelsets').val();
    surveyid=$('input[name=sid]').val();
    // check if this label set is already cached
@@ -308,8 +308,8 @@ function lspreview()
               success: function(json){
                     $("#labelsetpreview").tabs('destroy');
                     $("#labelsetpreview").empty();
-                    var tabindex=''; 
-                    var tabbody=''; 
+                    var tabindex='';
+                    var tabbody='';
                     for ( x in json)
                     {
 
@@ -323,9 +323,9 @@ function lspreview()
                             var highlight=true;
                             for (z in lsrows)
                             {
-                                highlight=!highlight; 
+                                highlight=!highlight;
                                 tabbody=tabbody+'<tbody><tr';
-                                if (highlight==true) { 
+                                if (highlight==true) {
                                     tabbody=tabbody+" class='highlight' ";
                                 }
                                 if (lsrows[z].title==null)
@@ -351,7 +351,7 @@ function lspreview()
                     $("#labelsetpreview").tabs();
    }
 
-    
+
 }
 
 /**
@@ -361,15 +361,15 @@ function lspreview()
 function dump(arr,level) {
     var dumped_text = "";
     if(!level) level = 0;
-    
+
     //The padding given at the beginning of the line.
     var level_padding = "";
     for(var j=0;j<level+1;j++) level_padding += "    ";
-    
-    if(typeof(arr) == 'object') { //Array/Hashes/Objects 
+
+    if(typeof(arr) == 'object') { //Array/Hashes/Objects
         for(var item in arr) {
             var value = arr[item];
-            
+
             if(typeof(value) == 'object') { //If it is an array,
                 dumped_text += level_padding + "'" + item + "' ...\n";
                 dumped_text += dump(value,level+1);
@@ -388,25 +388,25 @@ function transferlabels()
   var sID=$('input[name=sid]').val();
   var gID=$('input[name=gid]').val();
   var qID=$('input[name=qid]').val();
-  
+
     surveyid=$('input[name=sid]').val();
     if ($(this).attr('id')=='btnlsreplace')
     {
         var lsreplace=true;
-    } 
+    }
     else
     {
         var lsreplace=false;
     }
-   
+
     if (lsreplace)
     {
        $('.answertable:eq('+scale_id+') tbody tr').each(function(){
-          aRowInfo=this.id.split('_');  
+          aRowInfo=this.id.split('_');
           $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
-       }); 
+       });
     }
-   
+
    var lsid=$('#labelsets').val();
    $.ajax({
           url: lsdetailurl,
@@ -414,7 +414,7 @@ function transferlabels()
           data: {lid:lsid, sid:surveyid},
           cache: true,
           success: function(json){
-                languages=langs.split(';');   
+                languages=langs.split(';');
                 var x;
                 var defaultdata_labels = null;
                 for (x in languages)
@@ -443,24 +443,24 @@ function transferlabels()
                             var k;
                             for (k in lsrows)
                             {
-                                var randomid='new'+Math.floor(Math.random()*111111) 
+                                var randomid='new'+Math.floor(Math.random()*111111)
                                 if (x==0) {
-                                    tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td><img class="handle" src="' + ci_path + '/handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + ci_path + '/edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + ci_path + '/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + ci_path + '/addanswer.png" class="btnaddanswer" /><img src="' + ci_path + '/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
                                 }
                                 else
                                 {
-                                    tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + ci_path + '/edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + ci_path + '/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
+                                    tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
                                 }
                             }
                         }
-                    }                    
+                    }
                     if (lang_x_found_in_label === false)
                     {
                         lsrows=defaultdata_labels[0];
                         k=0;
                         for (k in lsrows)
                         {
-                            tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + ci_path + '/edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + ci_path + '/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
+                            tablerows=tablerows+'<tr class="row_'+k+'_'+scale_id+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
                         }
                     }
                     if (lsreplace) {
@@ -481,13 +481,13 @@ function transferlabels()
                     });
                 }
                 $('#labelsetbrowser').dialog('close');
-                $('.tab-page:first .answertable tbody').sortable('refresh');                       
-                updaterowproperties(); 
+                $('.tab-page:first .answertable tbody').sortable('refresh');
+                updaterowproperties();
 
           }}
    );
-    
-    
+
+
 }
 
 function quickaddlabels()
@@ -495,11 +495,11 @@ function quickaddlabels()
   var sID=$('input[name=sid]').val();
   var gID=$('input[name=gid]').val();
   var qID=$('input[name=qid]').val();
-  
+
     if ($(this).attr('id')=='btnqareplace')
     {
        var lsreplace=true;
-    } 
+    }
     else
     {
        var lsreplace=false;
@@ -508,12 +508,12 @@ function quickaddlabels()
     if (lsreplace)
     {
        $('.answertable:eq('+scale_id+') tbody tr').each(function(){
-          aRowInfo=this.id.split('_');  
+          aRowInfo=this.id.split('_');
           $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
-       }); 
+       });
     }
-    
-    languages=langs.split(';');   
+
+    languages=langs.split(';');
     for (x in languages)
     {
         lsrows=$('#quickaddarea').val().split("\n");
@@ -539,17 +539,17 @@ function quickaddlabels()
                 thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "");
             }
             var randomid='new'+Math.floor(Math.random()*111111)
-             
+
             if (typeof thisrow[parseInt(x)+1]=='undefined')
             {
                 thisrow[parseInt(x)+1]=thisrow[1];
-            }             
+            }
             if (x==0) {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="' + ci_path + '/handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+thisrow[parseInt(x)+1]+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + ci_path + '/edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + ci_path + '/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + ci_path + '/addanswer.png" class="btnaddanswer" /><img src="' + ci_path + '/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+thisrow[parseInt(x)+1]+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
             }
             else
             {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+thisrow[parseInt(x)+1]+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + ci_path + '/edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + ci_path + '/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+thisrow[parseInt(x)+1]+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink"><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td>&nbsp;</td></tr>'
             }
         }
         if (lsreplace) {
@@ -571,8 +571,8 @@ function quickaddlabels()
     }
     $('#quickadd').dialog('close');
     $('#quickaddarea').val('');
-    $('.answertable tbody').sortable('refresh');                       
-    updaterowproperties(); 
+    $('.answertable tbody').sortable('refresh');
+    updaterowproperties();
 }
 
 function getlabel()
@@ -702,7 +702,7 @@ function ajaxreqsave() {
     $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers }, function(data) {
             $("#saveaslabel").dialog('close');
             if(jQuery.parseJSON(data) == "ok")
-            {                
+            {
                 $("#dialog-result").html(lasuccess);
                 $('#dialog-result').dialog({
                     height: 160,
@@ -736,6 +736,6 @@ function ajaxreqsave() {
 function quickadddialog()
 {
     scale_id=removechars($(this).attr('id'));
-    $('#quickadd').dialog('open');    
+    $('#quickadd').dialog('open');
 }
 

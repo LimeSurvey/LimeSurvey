@@ -104,22 +104,27 @@ class GlobalSettings extends Survey_Common_Action
             $maxemails = 1;
         }
 
+        $defaultlang = sanitize_languagecode($_POST['defaultlang']);
         $aRestrictToLanguages = explode(' ', sanitize_languagecodeS($_POST['restrictToLanguages']));
+        if (!in_array($defaultlang,$aRestrictToLanguages)){ // Force default language in restrictToLanguages
+            $aRestrictToLanguages[]=$defaultlang;
+        }
         if (count(array_diff(array_keys(getLanguageData(false,Yii::app()->session['adminlang'])), $aRestrictToLanguages)) == 0) {
             $aRestrictToLanguages = '';
         } else {
             $aRestrictToLanguages = implode(' ', $aRestrictToLanguages);
         }
 
+        setGlobalSetting('defaultlang', $defaultlang);
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('updatecheckperiod', (int)($_POST['updatecheckperiod']));
-        setGlobalSetting('addTitleToLinks', sanitize_paranoid_string($_POST['addTitleToLinks']));
-        setGlobalSetting('defaultlang', sanitize_languagecode($_POST['defaultlang']));
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
         setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string($_POST['defaultquestionselectormode']));
         setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string($_POST['defaulttemplateeditormode']));
         setGlobalSetting('defaulttemplate', sanitize_paranoid_string($_POST['defaulttemplate']));
+        setGlobalSetting('admintheme', sanitize_paranoid_string($_POST['admintheme']));
+        setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
         setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
@@ -170,7 +175,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");
 
         $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-        CController::redirect($url);
+        if($url){CController::redirect($url);}
     }
 
     private function _checkSettings()

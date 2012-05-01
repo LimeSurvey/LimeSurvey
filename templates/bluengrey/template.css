@@ -933,8 +933,14 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.language {
-  
+.multiple-opt .answer li input {
+  vertical-align: top !important;
+  margin-top: 2px;
+}
+
+.multiple-opt .answer li label {
+  display: inline-block;
+  width: 90%;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -1014,30 +1020,16 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
   padding: 0.3em 1em 0 0;
 }
 
-.numeric-multi ul.multiplenumerichelp,.numeric-multi ul.multiplenumerichelp.slider
-  {
-  display: table;
-  font-size: 80%;
+.numeric-multi li.multiplenumerichelp span {
+	text-align: center;
+	background: transparent none;
 }
 
-.numeric-multi ul.multiplenumerichelp li,.numeric-multi ul.multiplenumerichelp.slider li
-  {
-  display: table-row
+.numeric-multi li.multiplenumerichelp span span {
+	display: inline;
+	padding: 0;
 }
 
-.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
-  {
-  padding: 0 0 0 0.3em;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp span input {
-  border: none;
-  background-color: #fff;
-  color: #222;
-  padding: 0;
-  width: 7em;
-}
 
 .numeric input,.text-short input,.text-long textarea,.text-huge textarea
   {

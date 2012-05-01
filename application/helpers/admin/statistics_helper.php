@@ -3350,7 +3350,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 //close table/output
                 if($outputType=='html') {
                     if ($usegraph) {
-                        $sImgUrl = Yii::app()->getConfig('imageurl');
+                        $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
                         $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
                         ."<img class='stats-showgraph' src='$sImgUrl/chart_disabled.png'/>"
@@ -3417,7 +3417,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             break;
         case 'html':
             $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>"
-            ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('imageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
+            ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
             return $statisticsoutput;
 
             break;

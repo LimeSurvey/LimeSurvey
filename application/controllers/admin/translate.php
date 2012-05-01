@@ -256,7 +256,6 @@ class translate extends Survey_Common_Action {
         // Return to survey administration button
         $adminmenu .= $this->menuItem(
 							$clang->gT("Return to survey administration"),
-							$clang->gTview("Return to survey administration"),
 							"Administration",
 							"home.png",
 							$this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}/")
@@ -302,14 +301,12 @@ class translate extends Survey_Common_Action {
         $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->languagesettings[0]->attributes);
 
 		$surveyinfo = array_map('flattenText', $surveyinfo);
-		$menutext = ( $surveyinfo['active'] == "N" ) ? $clang->gT("Test This Survey") : $clang->gT("Execute This Survey");
-		$menutext2 = ( $surveyinfo['active'] == "N" ) ? $clang->gTview("Test This Survey") : $clang->gTview("Execute This Survey");
+		$menutext = ( $surveyinfo['active'] == "N" ) ? $clang->gT("Test this survey") : $clang->gT("Execute this survey");
 
 		if ( count($langs) == 0 )
 		{
 			$survey_button .= $this->menuItem(
 								$menutext,
-								$menutext2,
 								'',
 								"do.png",
 								$menuitem_url . $baselang
@@ -318,13 +315,11 @@ class translate extends Survey_Common_Action {
 		else
 		{
 			$icontext = $clang->gT($menutext);
-			$icontext2 = $clang->gT($menutext);
 
 			$img_tag = CHtml::image($imageurl . '/do.png', $icontext);
 			$survey_button .= CHtml::link($img_tag, '#', array(
 				'id' 		=> 	'dosurvey',
 				'class' 	=> 	'dosurvey',
-				'title' 	=> 	$icontext2,
 				'accesskey' => 	'd'
 			));
 
@@ -990,15 +985,14 @@ class translate extends Survey_Common_Action {
 
     /**
     * menuItem() creates a menu item with text and image in the admin screen menus
-    * @param string $menuText
+    * @param string $jsMenuText
     * @return string
     */
-    private function menuItem($menuText, $jsMenuText, $menuImageText, $menuImageFile, $scriptname)
+    private function menuItem( $jsMenuText, $menuImageText, $menuImageFile, $scriptname)
     {
 		$img_tag = CHtml::image(Yii::app()->getConfig("imageurl") . "/" . $menuImageFile, $jsMenuText, array('name'=>$menuImageText));
 		$menuitem = CHtml::link($img_tag, '#', array(
-			'onclick' => "window.open('{$scriptname}', '_top')",
-			'title' => $menuText
+			'onclick' => "window.open('{$scriptname}', '_top')"
 		));
         return $menuitem;
     }
@@ -1009,7 +1003,7 @@ class translate extends Survey_Common_Action {
     */
     private function menuSeparator()
     {
-		$image = CHtml::image(Yii::app()->getConfig("imageurl") . "/seperator.gif", '');
+		$image = CHtml::image(Yii::app()->getConfig("imageurl") . "/separator.gif", '');
         return $image;
     }
 

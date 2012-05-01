@@ -970,8 +970,14 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.language {
+.multiple-opt .answer li input {
+  vertical-align: top !important;
+  margin-top: 2px;
+}
 
+.multiple-opt .answer li label {
+  display: inline-block;
+  width: 90%;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -1039,28 +1045,14 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin-bottom: 0.2em;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider {
-  display: table;
+.numeric-multi li.multiplenumerichelp span {
+	text-align: center;
+	background: transparent none;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider li {
-  display: table-row;
-}
-
-.numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
-  {
-  padding: 0.3em 0% 0% 0%;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
-  {
-  padding: 0% 0% 0% 0.3em;
-  display: table-cell;
-}
-
-.numeric-multi li.multiplenumerichelp span input {
-
+.numeric-multi li.multiplenumerichelp span span {
+	display: inline;
+	padding: 0;
 }
 
 .text-short input,.text-short textarea,.text-long textarea,.text-huge textarea

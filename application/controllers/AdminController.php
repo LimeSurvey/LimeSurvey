@@ -37,7 +37,8 @@ class AdminController extends LSYii_Controller
         //unset(Yii::app()->session['FileManagerContext']);
 
         $this->user_id = Yii::app()->user->getId();
-
+        Yii::app()->setConfig('adminimageurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/images/');
+        Yii::app()->setConfig('adminstyleurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/');
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid'));}                //Usergroup-ID
         if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid'));}                   //GroupID
@@ -404,6 +405,7 @@ class AdminController extends LSYii_Controller
         $data['updatebuild'] = Yii::app()->getConfig("updatebuild");
         $data['surveyid'] = $surveyid;
         $data['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
+        $data['sImageURL'] = Yii::app()->getConfig('adminimageurl');
         $this->render("/admin/super/adminmenu", $data);
 
     }

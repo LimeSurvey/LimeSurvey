@@ -192,7 +192,7 @@ class labels extends Survey_Common_Action
             if ($sa == "newlabelset")
             {
                 $langids = Yii::app()->session['adminlang'];
-                $tabitem = $clang->gT("Create New Label Set");
+                $tabitem = $clang->gT("Create new label set");
             }
             else
                 $tabitem = $clang->gT("Edit label set");

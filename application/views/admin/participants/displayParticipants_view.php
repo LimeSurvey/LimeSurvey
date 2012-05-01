@@ -204,7 +204,7 @@ echo $colModels;
 </div>
 <br/>
 <table id="displayparticipants"></table> <div id="pager"></div>
-<p><input type="button" name="share" id="share" value="<?php $clang->eT("Share") ?>" /><input type="button" name="addtosurvey" id="addtosurvey" value="<?php $clang->eT("Add to Survey") ?>" />
+<p><input type="button" name="share" id="share" value="<?php $clang->eT("Share") ?>" /><input type="button" name="addtosurvey" id="addtosurvey" value="<?php $clang->eT("Add to survey") ?>" />
 </p>
 </table>
 

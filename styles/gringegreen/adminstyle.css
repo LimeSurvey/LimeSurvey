@@ -125,9 +125,8 @@ div.menubar {
     background-color: #fefefe;
     clear:left;
     padding:0;
-    margin:3px auto 3px auto;
-    width: 99.5%;
-    min-height: 60px;
+    margin:0 auto 58px auto !important;
+    width: 99%;
 }
 
 div.menubar .ui-widget-header
@@ -142,15 +141,14 @@ div.menubar .ui-widget-header
     border-style: solid;
     border-width: 1px;
     padding:0 0.2%;
-    min-height: 43px;
-
 }
 
 .menubar img {
     vertical-align: middle;
     max-height:40px;
     border:0;
-    margin:0 -2px;
+    margin:0;
+    padding:0;
 }
 
 .menubar-title {
@@ -193,6 +191,17 @@ div.menubar .ui-widget-header
 
 }
 
+.menubar-left img{
+    float:left;
+    border:0;
+    padding:3px 1px;
+}
+
+.menubar-right > img{
+    border:0;
+    padding:2px 1px;
+}
+
 .menubar-right {
     float: right;
     line-height: 1em;
@@ -210,7 +219,6 @@ div.menubar .ui-widget-header
 .menubar-right .arrow-wrapper {
     display: inline; /* For IE */
     position: relative;
-    margin: 0 5px 0 5px;
     width: 20px;
     vertical-align: bottom;
 }
@@ -224,9 +232,9 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     display: block;
 }
 
-.menubar-right .arrow-wrapper img {
+.menubar-right .arrow-wrapper img:first-child {
     display: block;
-    margin: 0;
+    margin-bottom: 2px;
 }
 
 /* END menubar CSS */
@@ -234,8 +242,6 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #surveydetails, #groupdetails, #questiondetails {
     background-color: #FFF;
     width: 100%;
-    border: 1px solid;
-    border-color: #fff #8195BA #8195BA #D2E0F2;
     margin-top:-2px;
     margin-bottom:4px;
     padding:5px 0;
@@ -331,7 +337,7 @@ input[disabled], textarea[disabled], select[disabled], button[disabled] {
 
 textarea {
     font-size: 10px;
-    color: navy;
+    color: #000;
     font-family: verdana, arial, sans-serif;
 }
 
@@ -443,11 +449,11 @@ li.cancellink
 }
 
 
-tr.even
+tr.even, .evenrow
 {
     background-color: #fff;
 }
-tr.odd,.oddrow {
+tr.odd,.oddrow,.answertable tr.highlight {
     background-color: #EFFBDB;
 }
 
@@ -515,7 +521,7 @@ a:link, a:visited {
     width: 170px;
 }
 
-.alertbox tr:first-child, .evenrow {
+.alertbox tr:first-child {
     background-color: #EEF6FF;
 }
 
@@ -554,8 +560,6 @@ a.optoutemail {
 /* Browse response css */
 
 .browsetable {
-    border: 1px solid;
-    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     clear:left;
 }
 
@@ -573,6 +577,8 @@ a.optoutemail {
     overflow:hidden;
 }
 
+.conditionlist,
+.conditionlist table,
 .quotalist,
 .addquotaanswer,
 .edituser,
@@ -584,6 +590,37 @@ a.optoutemail {
     margin:0 auto;
 }
 
+
+.conditionlist table
+{
+    width:100%;
+}
+
+
+.conditionlist td:first-child
+{
+    width:90%;
+}
+.conditionlist table td:first-child
+{
+    width:45%;
+    text-align:right;
+}
+
+.conditionlist table td:nth-child(2)
+{
+    width:10%;
+}
+
+.conditionlist table td:nth-child(3)
+{
+    width:35%;
+    text-align:left;
+}
+
+
+.conditionlist,
+.scenarioheader,
 .quotalist,
 .addquotaanswer,
 .assessmentlist {
@@ -660,7 +697,7 @@ ul.assessmentscope li label:first-child {
 }
 
 .browsetable th {
-    background-color: #D2E0F2;
+    background-color: #fff;
     font-size:9pt;
     padding:2px;
     text-align: center;
@@ -675,7 +712,7 @@ ul.assessmentscope li label:first-child {
 
 .browsetable tfoot td {
     text-align: left;
-    background-color: #D2E0F2;
+    background-color: #EFFBDB;
     padding:4px;
 }
 
@@ -701,6 +738,11 @@ ul.assessmentscope li label:first-child {
     min-width: 0px;
 }
 
+.answertable {
+    margin:0 auto;
+}
+
+
 .answertable th {
     font-weight:bold;
     font-size: 8pt;
@@ -715,13 +757,16 @@ ul.assessmentscope li label:first-child {
     text-align:right;
 }
 
+.answertable td img {
+    padding-left:2px;
+    padding-right:2px;
+    padding-top:5px;
+}
+
+
 #languagetabs {
     width:60%;
     margin:0 auto;
-}
-
-.answertable tr.highlight {
-    background-color:#EAF2FF;
 }
 
 .badtokenlist {
@@ -799,7 +844,6 @@ ul.assessmentscope li label:first-child {
 
 table.templatecontrol {
     width: 100%;
-    background-color: #EEF6FF;
     border-color: #8195BA;
     border-style: solid;
     border-width: 1px;
@@ -814,7 +858,6 @@ table.templatecontrol select
 .subheader {
     font-size:10px;
     font-weight:bold;
-    background-color: #EEF6FF;
     text-align: left;
 }
 
@@ -923,8 +966,8 @@ div.messagebox .header{
 
 div.successheader{
     font-weight:bold;
-    color:#008000;
-    background-color: #C0FFC0;
+    color:#fff;
+    background-color: #94D200;
     margin: 5px 0;
     padding:2px;
 }
@@ -1039,7 +1082,7 @@ div.partialheader{
 .data-entry-tbl .data-entry-separator td {
     padding: 0;
     height: 2px;
-    background-color: #D2E0F2;
+    background-color: #EFFBDB;
 }
 
 .data-entry-explanation {
@@ -1219,7 +1262,7 @@ thead tr .headerSortDown, thead tr .headerSortUp {
 
 #tokensearch, #tokenrange, #browseresults{
     display:inline;
-    line-height:40px;
+    line-height:32px;
     vertical-align:middle;
     margin-left: 10px;
 }
@@ -1453,7 +1496,7 @@ div.translate {
 
 
 ol.organizer {
-    padding: 0 auto;
+    padding: 0;
     list-style-type: none;
     font-weight: bold;
     width:800px;
@@ -1521,3 +1564,49 @@ ol.organizer {
 .labelsets-update label{display:block}
 .button-list{text-align:left}
 #gbox_displaysurveys{ margin:0 auto;}
+
+.ui-jqgrid tr.jqgrow {
+    background-color:#fff;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    border:none !important;
+}
+
+.separator{
+    height:32px;
+}
+
+#separator4, #separator16{
+    padding-left:51px;
+}
+
+#separator3, #separator12{
+    padding-right:12px;
+}
+
+
+#separator1{
+    padding-left:5px;
+}
+
+.cke_skin_office2003 .cke_top, .cke_skin_office2003 .cke_bottom, .cke_shared .cke_skin_office2003 {
+    background-color: #EFFBDB !important;
+}
+
+.cke_skin_office2003 .cke_button a:hover, .cke_skin_office2003 .cke_button a:focus, .cke_skin_office2003 .cke_button a:active {
+    background-color: #EFFBDB !important;
+    border: 1px solid #94D200 !important;
+}
+
+.cke_skin_office2003 .cke_top, .cke_skin_office2003 .cke_bottom, .cke_shared .cke_skin_office2003 {
+    background-color: transparent !important;
+}
+
+.cke_skin_office2003 .cke_toolbar {
+    background-color: #FFF;
+}
+
+#browseresults{
+    margin:0;
+}

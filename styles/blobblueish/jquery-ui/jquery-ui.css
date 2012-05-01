@@ -111,7 +111,9 @@
 }
 
 .ui-widget-header {
-  background: #fefefe;
+  border: 1px solid #D2E0F2;
+  background: #D2E0F2 url(images/ui-bg_gloss-wave_90_D2E0F2_500x100.png)
+    50% 50% repeat-x;
   color: #1D2D45;
   font-weight: bold;
 }

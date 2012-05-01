@@ -39,8 +39,8 @@ $config['defaultuser']        =   'admin';          // This is the default usern
 $config['defaultpass']        =   'password';       // This is the default password for the default user when LimeSurvey is installed
 
 // Styling options
-$config['admintheme']         =  'gringegreen';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
-$config['adminthemeiconsize'] =  32;                // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
+$config['admintheme']         =  'gringegreen';     // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
+$config['adminthemeiconsize'] =  32;                // This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
 
 
 // If the user enters password incorrectly
@@ -226,14 +226,6 @@ $config['filterxsshtml'] = true;
 // users that belong to at least one of their groups
 // Otherwise they can see all operators defines in LimeSurvey
 $config['usercontrolSameGroupPolicy'] = true;
-
-// $addTitleToLinks
-// If this option is set to true, then LimeSurvey will add 'title' html element
-// to all links used in menus. This will help screen reader to analyse the
-// menus. Only set this to true if you're using a screen reader because
-// it overlaps with tooltips. This option shouldn't be required anymore
-// for new releases of screen readers.
-$config['addTitleToLinks'] = false;
 
 // $demoMode
 // If this option is set to true, then LimeSurvey will go into demo mode.
@@ -527,6 +519,7 @@ $config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."ima
 $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
+$config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
 
 
 // Computing relative url

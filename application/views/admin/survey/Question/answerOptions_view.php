@@ -23,7 +23,7 @@
     var duplicateanswercode='<?php $clang->eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
     var strNoLabelSet='<?php $clang->eT('There are no label sets which match the survey default language','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
-    var ci_path="<?php echo Yii::app()->getConfig('imageurl'); ?>";
+    var sImageURL ="<?php echo Yii::app()->getConfig('imageurl'); ?>";
     var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
     var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
@@ -98,7 +98,7 @@
 
                     <?php if ($first)
                     { ?>
-                        <img class='handle' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5'
+                        <img class='handle' src='<?php echo $sImageURL; ?>handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5'
                          onkeypress="return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                          />
                     <?php }
@@ -137,8 +137,8 @@
                     <?php echo  getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
 
 
-                    </td><td><img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/addanswer.png' class='btnaddanswer' />
-                    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/deleteanswer.png' class='btndelanswer' />
+                    </td><td><img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' />
+                    <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' />
 
                     </td></tr>
                     <?php $position++;
