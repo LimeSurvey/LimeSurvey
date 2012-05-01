@@ -449,7 +449,7 @@ li.cancellink
 }
 
 
-tr.even
+tr.even, .evenrow
 {
     background-color: #fff;
 }
@@ -521,7 +521,7 @@ a:link, a:visited {
     width: 170px;
 }
 
-.alertbox tr:first-child, .evenrow {
+.alertbox tr:first-child {
     background-color: #EEF6FF;
 }
 
@@ -577,6 +577,8 @@ a.optoutemail {
     overflow:hidden;
 }
 
+.conditionlist,
+.conditionlist table,
 .quotalist,
 .addquotaanswer,
 .edituser,
@@ -588,6 +590,37 @@ a.optoutemail {
     margin:0 auto;
 }
 
+
+.conditionlist table
+{
+    width:100%;
+}
+
+
+.conditionlist td:first-child
+{
+    width:90%;
+}
+.conditionlist table td:first-child
+{
+    width:45%;
+    text-align:right;
+}
+
+.conditionlist table td:nth-child(2)
+{
+    width:10%;
+}
+
+.conditionlist table td:nth-child(3)
+{
+    width:35%;
+    text-align:left;
+}
+
+
+.conditionlist,
+.scenarioheader,
 .quotalist,
 .addquotaanswer,
 .assessmentlist {

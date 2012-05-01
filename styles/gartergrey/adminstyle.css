@@ -51,7 +51,7 @@ thead th:first-child {
     background-color: #333;
 }
 
-tr.even
+tr.even, .evenrow
 {
     background-color: #ccc;
 }
@@ -664,4 +664,52 @@ div.messagebox .warningheader {
 .statisticssummary th, .statisticssummary td, .statisticstable td {
     padding:3px 10px;
 
+}
+
+.conditionlist,
+.conditionlist table,
+.quotalist,
+.addquotaanswer,
+.edituser,
+.users,
+.assessmentlist,
+.listsurveys,
+.surveysecurity {
+    text-align:center;
+    margin:0 auto;
+}
+
+.conditionlist table
+{
+    width:100%;
+}
+
+
+.conditionlist td:first-child
+{
+    width:90%;
+}
+.conditionlist table td:first-child
+{
+    width:45%;
+    text-align:right;
+}
+
+.conditionlist table td:nth-child(2)
+{
+    width:10%;
+}
+
+.conditionlist table td:nth-child(3)
+{
+    width:35%;
+    text-align:left;
+}
+
+.conditionlist,
+.scenarioheader,
+.quotalist,
+.addquotaanswer,
+.assessmentlist {
+    width:90%;
 }

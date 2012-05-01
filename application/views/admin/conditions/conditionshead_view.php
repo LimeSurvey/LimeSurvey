@@ -4,7 +4,7 @@
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <a href="<?php echo $this->createUrl("/admin/survey/view/$surveyid$extraGetParams"); ?>">
+            <a href="<?php echo $this->createUrl("/admin/survey/view/surveyid/{$surveyid}$extraGetParams"); ?>">
                 <img src='<?php echo $sImageURL;?>home.png' alt='<?php $clang->eT("Return to survey administration");?>' /></a>
             <img src='<?php echo $sImageURL;?>blank.gif' alt='' width='11' />
             <img src='<?php echo $sImageURL;?>separator.gif' alt='' />
@@ -24,10 +24,6 @@
             <a href="http://docs.limesurvey.org" target='_blank'>
                 <img src='<?php echo $sImageURL;?>showhelp.png' title='' alt='<?php $clang->eT("LimeSurvey online manual");?>' /></a>
         </div></div></div>
-<p style='margin: 0pt; font-size: 1px; line-height: 1px; height: 1px;'> </p>
-<table>
+<p>
 <?php echo $conditionsoutput_action_error;?>
-
-<tr><td>
-        <?php echo $javascriptpre;?>
-    </td></tr>
+<?php echo $javascriptpre;?>
