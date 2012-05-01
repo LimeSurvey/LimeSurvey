@@ -249,7 +249,7 @@ class browse extends Survey_Common_Action
                             if ($metadata === "size")
                                 $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                             else if ($metadata === "name")
-                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->createUrl("/admin/browse/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
+                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/browse/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
                             else
                                 $answervalue = rawurldecode($phparray[$index][$metadata]);
                         }
