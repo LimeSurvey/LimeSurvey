@@ -1134,34 +1134,14 @@ table.rank td.helptext {
   margin-bottom: 0.2em;
 }
 
-.numeric-multi ul.multiplenumerichelp,.numeric-multi ul.multiplenumerichelp.slider
-  {
-  display: table;
-  font-size: 90%;
+.numeric-multi li.multiplenumerichelp span {
+	text-align: center;
+	background: transparent none;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider li {
-  display: table-row;
-}
-
-.numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
-  {
-  padding: 0.3em 0 0 0;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
-  {
-  padding: 0 0 0 0.5em;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp span input {
-  border: none;
-  background-color: #192D40;
-  color: #e8eaeb;
-  padding: 0;
-  width: 7em;
+.numeric-multi li.multiplenumerichelp span span {
+	display: inline;
+	padding: 0;
 }
 
 .text-short input,.text-short textarea,.text-long textarea,.text-huge textarea
