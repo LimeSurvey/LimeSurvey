@@ -817,29 +817,14 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
   padding-right:1em;padding-left:0;
 }
 
-.numeric-multi ul.multiplenumerichelp,.numeric-multi ul.multiplenumerichelp.slider
-  {
-  display: table;
-  font-size: 80%;
+.numeric-multi li.multiplenumerichelp span {
+	text-align: center;
+	background: transparent none;
 }
 
-.numeric-multi ul.multiplenumerichelp li,.numeric-multi ul.multiplenumerichelp.slider li
-  {
-  display: table-row
-}
-
-.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
-  {
-  padding-right:0.3em;padding-left:0;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp span input {
-  border: none;
-  background-color: #fff;
-  color: #222;
-  padding: 0;
-  width: 7em;
+.numeric-multi li.multiplenumerichelp span span {
+	display: inline;
+	padding: 0;
 }
 
 .numeric input,.text-short input,.text-long textarea,.text-huge textarea
