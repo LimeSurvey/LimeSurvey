@@ -70,6 +70,13 @@
 
         if (isset($result[$sLanguageCode][$bOrderByNative])) return $result[$sLanguageCode][$bOrderByNative];
 
+            // Afrikaans
+            $supportedLanguages['af']['description'] = $clang->gT('Afrikaans');
+            $supportedLanguages['af']['nativedescription'] = 'Afrikaans';
+            $supportedLanguages['af']['rtl'] = false;
+            $supportedLanguages['af']['dateformat'] = 1;
+            $supportedLanguages['af']['radixpoint'] = 1;
+
             // Albanian
             $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
             $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
