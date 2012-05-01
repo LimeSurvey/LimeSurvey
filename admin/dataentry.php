@@ -1248,7 +1248,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             if ($qidattributes['input_boxes']!=0) {
                                 $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
                                 if (!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
-                                $dataentryoutput .= "' size=4 />";
+                                $dataentryoutput .= "' size=\'4\' />";
                             } else {
                                 $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n";
                                 $dataentryoutput .= "<option value=''>...</option>\n";
@@ -1333,11 +1333,11 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 				  //-->
 				  </script>\n";
             $dataentryoutput .= "<table><tr><td align='left'>\n";
-            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
             $dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)."' />\n";
+            $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
             $dataentryoutput .= "\t<tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
             $dataentryoutput .= "</td></tr></table>\n";
-            $dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
+            $dataentryoutput .= "<div id='saveoptions' style='display: none'>\n";
             $dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 				  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
 				  <td><input type='text' name='save_identifier'";
@@ -1901,7 +1901,8 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             .$clang->gT("Other").":"
                             ."<input type='text' name='{$fieldname}other' value='' />\n";
                         }
-                        $dataentryoutput .= "</tr></table>";
+                        //OLD: invalid HTML -> $dataentryoutput .= "</tr></table>";
+                        $dataentryoutput .= "</table>";
                         break;
 
                     case "L": //LIST drop-down/radio-button list
@@ -2355,17 +2356,198 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         $dataentryoutput .= "<tr><td align='center'><input type='hidden' name='".$fieldname."_filecount' id='".$fieldname."_filecount' value='' /></td>\n</tr>\n";
                         $dataentryoutput .= "</table>\n";
                         break;
+
                     case "N": //NUMERICAL TEXT
-                        $dataentryoutput .= "\t<input type='text' name='$fieldname' onkeypress=\"return goodchars(event,'0123456789.,')\" />";
+                        //get question attributes to change some style and validation settings
+                    	$qidattributes = getQuestionAttributes($qid);
+					    if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'])!='') {
+					        $prefix=$qidattributes['prefix'];
+					    }
+					    else
+					    {
+					        $prefix = '';
+					    }
+					    if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'])!='')
+					    {
+					        $suffix=$qidattributes['suffix'];
+					    }
+					    else
+					    {
+					        $suffix = '';
+					    }
+					    if (intval(trim($qidattributes['maximum_chars']))>0 && intval(trim($qidattributes['maximum_chars']))<20) // Limt to 20 chars for numeric
+					    {
+					        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+					        $maxlength= "maxlength='{$maximum_chars}' ";
+					    }
+					    else
+					    {
+					        $maxlength= "maxlength='20' ";
+					    }
+					    if (trim($qidattributes['text_input_width'])!='')
+					    {
+					        $tiwidth=$qidattributes['text_input_width'];
+					    }
+					    else
+					    {
+					        $tiwidth=10;
+					    }
+
+					    if (trim($qidattributes['num_value_int_only'])==1)
+					    {
+					        $acomma="";
+					    }
+					    else
+					    {
+					        $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
+					        $acomma = $acomma['seperator'];
+
+					    }
+					    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+
+					    $dataentryoutput .= $prefix. "<input type='text' size='".$tiwidth."' name='".$fieldname."'
+    					title='".$clang->gT('Only numbers may be entered in this field')."' $maxlength onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" />".$suffix;
                         break;
+
                     case "S": //SHORT FREE TEXT
-                        $dataentryoutput .= "\t<input type='text' name='$fieldname' />\n";
+                    	//get question attributes to change some style and validation settings
+                    	$qidattributes = getQuestionAttributes($qid);
+	                    if ($qidattributes['numbers_only']==1)
+					    {
+					        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+					        $sSeperator = $sSeperator['seperator'];
+					        $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+					    }
+					    else
+					    {
+					        $numbersonly = '';
+					    }
+					    if (intval(trim($qidattributes['maximum_chars']))>0)
+					    {
+					    	// Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+					        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+					        $maxlength= "maxlength='{$maximum_chars}' ";
+					    }
+					    else
+					    {
+					        $maxlength= "";
+					    }
+					    if (trim($qidattributes['text_input_width'])!='')
+					    {
+					        $tiwidth=$qidattributes['text_input_width'];
+					    }
+					    else
+					    {
+					        $tiwidth=50;
+					    }
+                        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'])!='') {
+					        $prefix=$qidattributes['prefix'];
+					    }
+					    else
+					    {
+					        $prefix = '';
+					    }
+					    if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'])!='') {
+					        $suffix=$qidattributes['suffix'];
+					    }
+					    else
+					    {
+					        $suffix = '';
+					    }
+                    	if (trim($qidattributes['display_rows'])!='')
+					    {
+					        //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
+					        $drows=$qidattributes['display_rows'];
+
+					        //if a textarea should be displayed we make it equal width to the long text question
+					        //this looks nicer and more continuous
+					        if($tiwidth == 50)
+					        {
+					            $tiwidth=40;
+					        }
+					        $dataentryoutput .= $prefix."<textarea $numbersonly name='".$fieldname."' rows='".$drows."'
+					        cols='".$tiwidth."' >";
+					        $dataentryoutput .= "</textarea>$suffix\n";
+					    }
+                    	else
+					    {
+					        //no question attribute set, use common input text field
+					       	$dataentryoutput .= $prefix."<input type=\"text\" size=\"$tiwidth\" name=\"$fieldname\" ";
+					        $dataentryoutput .=" {$maxlength} $numbersonly />\n\t$suffix\n\n";
+					    }
                         break;
+
                     case "T": //LONG FREE TEXT
-                        $dataentryoutput .= "\t<textarea cols='40' rows='5' name='$fieldname'></textarea>\n";
+                    	$qidattributes=getQuestionAttributes($qid);
+					    if (trim($qidattributes['display_rows'])!='')
+					    {
+					        $drows=$qidattributes['display_rows'];
+					    }
+					    else
+					    {
+					        $drows=5;
+					    }
+					    if (trim($qidattributes['text_input_width'])!='')
+					    {
+					        $tiwidth=$qidattributes['text_input_width'];
+					    }
+					    else
+					    {
+					        $tiwidth=40;
+					    }
+                        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'])!='') {
+					        $prefix=$qidattributes['prefix'];
+					    }
+					    else
+					    {
+					        $prefix = '';
+					    }
+					    if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'])!='') {
+					        $suffix=$qidattributes['suffix'];
+					    }
+					    else
+					    {
+					        $suffix = '';
+					    }
+					    $dataentryoutput .= $prefix.'<textarea name="'.$fieldname.'" rows="'.$drows.'" cols="'.$tiwidth.'" >';
+					    $dataentryoutput .= "</textarea>$suffix\n";
                         break;
-                    case "U": //LONG FREE TEXT
-                        $dataentryoutput .= "\t<textarea cols='50' rows='70' name='$fieldname'></textarea>\n";
+
+                    case "U": //HUGE FREE TEXT
+                        $qidattributes=getQuestionAttributes($qid);
+
+					    if (trim($qidattributes['display_rows'])!='')
+					    {
+					        $drows=$qidattributes['display_rows'];
+					    }
+					    else
+					    {
+					        $drows=70;
+					    }
+					    if (trim($qidattributes['text_input_width'])!='')
+					    {
+					        $tiwidth=$qidattributes['text_input_width'];
+					    }
+					    else
+					    {
+					        $tiwidth=50;
+					    }
+                        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'])!='') {
+					        $prefix=$qidattributes['prefix'];
+					    }
+					    else
+					    {
+					        $prefix = '';
+					    }
+					    if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'])!='') {
+					        $suffix=$qidattributes['suffix'];
+					    }
+					    else
+					    {
+					        $suffix = '';
+					    }
+					    $dataentryoutput .= $prefix.'<textarea name="'.$fieldname.'" rows="'.$drows.'" cols="'.$tiwidth.'">';
+					    $dataentryoutput .= "</textarea>$suffix\n";
                         break;
                     case "Y": //YES/NO radio-buttons
                         $dataentryoutput .= "\t<select name='$fieldname'>\n";
@@ -2523,7 +2705,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             {
                                 $dataentryoutput .= "<td>\n";
                                 if ($qidattributes['input_boxes']!=0) {
-                                    $dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['title']}_$ld' size=4 />";
+                                    $dataentryoutput .= "\t<input type='text' name='$fieldname{$mearow['title']}_$ld' size='4' />";
                                 } else {
                                     $dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}_$ld'>\n";
                                     $dataentryoutput .= "<option value=''>...</option>\n";

@@ -323,15 +323,30 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['quotals_message_'.$lang]=fix_FCKeditor_text($_POST['quotals_message_'.$lang]);
 
-                //Now save the language to the database:
-                $query = "UPDATE ".db_table_name('quota_languagesettings')."
-				          SET quotals_name='".db_quote($_POST['quota_name'],true)."',
-						  quotals_message='".db_quote($_POST['quotals_message_'.$lang],true)."',
-						  quotals_url='".db_quote($_POST['quotals_url_'.$lang],true)."',
-						  quotals_urldescrip='".db_quote($_POST['quotals_urldescrip_'.$lang],true)."'
-				          WHERE quotals_quota_id =".db_quote($_POST['quota_id'],true)."
-						  AND quotals_language = '$lang'";
-                $connect->Execute($query) or safe_die($connect->ErrorMsg());
+                //Check to see if a matching language exists, and if not, INSERT one (no update possible)
+                $query = "SELECT * FROM ".db_table_name('quota_languagesettings')."
+                          WHERE quotals_quota_id = ".db_quote($_POST['quota_id'], true)."
+                          AND quotals_language = '$lang'";
+                $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+                if ($result->RecordCount() > 0) {
+                    //Now save the language to the database:
+                    $query = "UPDATE ".db_table_name('quota_languagesettings')."
+                              SET quotals_name='".db_quote($_POST['quota_name'],true)."',
+                              quotals_message='".db_quote($_POST['quotals_message_'.$lang],true)."',
+                              quotals_url='".db_quote($_POST['quotals_url_'.$lang],true)."',
+                              quotals_urldescrip='".db_quote($_POST['quotals_urldescrip_'.$lang],true)."'
+                              WHERE quotals_quota_id =".db_quote($_POST['quota_id'],true)."
+                              AND quotals_language = '$lang'";
+                    $connect->Execute($query) or safe_die($connect->ErrorMsg());
+                } else {
+                    /* If there is no matching record for this language, create one */
+                    $query = "INSERT INTO ".db_table_name('quota_languagesettings')."
+                              (quotals_quota_id,quotals_language,quotals_name,quotals_message,quotals_url,quotals_urldescrip)
+                              VALUES ('".db_quote($_POST['quota_id'])."', '$lang', '".db_quote($_POST['quota_name'],true)."',
+                              '".db_quote($_POST['quotals_message_'.$lang],true)."', '".db_quote($_POST['quotals_url_'.$lang],true)."',
+                              '".db_quote($_POST['quotals_urldescrip_'.$lang],true)."')";
+                    $connect->Execute($query) or safe_die($connect->ErrorMsg());
+                }
             }
         } //End insert language based components
 
