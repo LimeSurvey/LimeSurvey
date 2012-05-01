@@ -152,6 +152,13 @@ function getLanguageData($orderbynative=false) {
     if (isset($result[$orderbynative])) return $result[$orderbynative];
 
     if (!isset($supportedLanguages)) {
+    // Afrikaans
+    $supportedLanguages['af']['description'] = $clang->gT('Afrikaans');
+    $supportedLanguages['af']['nativedescription'] = 'Afrikaans';
+    $supportedLanguages['af']['rtl'] = false;
+    $supportedLanguages['af']['dateformat'] = 2;
+    $supportedLanguages['af']['radixpoint'] = 1;
+
     // Albanian
     $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
     $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
