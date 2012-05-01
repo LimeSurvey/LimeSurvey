@@ -58,9 +58,8 @@ if  ($subaction=='unfinalizeanswers')
     $updateres=$connect->Execute($updateqr) or safe_die ("Couldn't reset token completed state<br />$updateqr<br />".$connect->ErrorMsg());
     $iteratesurveyoutput .= "<br />\n";
     $iteratesurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Iterate survey")."</div>\n";
-    $iteratesurveyoutput .=  "<p style='width:100%;'>\n"
+    $iteratesurveyoutput .=  "<p>\n"
     . "<font class='successtitle'>".$clang->gT("Success")."</font><br />\n"
     . $clang->gT("Answers and tokens have been re-opened.")."<br />\n"
-    . "</p>\n"
-    . "<table><tr><td>";
+    . "</p>\n";
 }
