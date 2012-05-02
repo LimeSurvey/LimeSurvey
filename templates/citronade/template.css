@@ -757,9 +757,17 @@ table.rank input{border:1px solid #999}
 }
 .list-with-comment p.comment textarea
 {
-	width: 100%;
+	width: 99%;
 }
-
+@media screen and (max-width: 480px) {
+    .list-with-comment div.list
+    , .list-with-comment p.select
+    , .list-with-comment p.comment
+    {
+	    width: 99%;
+	    float: none;
+    }
+}
  .multiple-opt-comments ul
 ,.multiple-short-txt ul
 ,.numeric-multi ul
@@ -862,15 +870,47 @@ table.rank input{border:1px solid #999}
 , .list-radio .answers-wrapper ul li
 , .list-radio-flexible .answers-wrapper ul li
 {
-	padding-right:0;padding-left:40%;
+	padding-right:0;padding-left:35%;
+}
+.multiple-opt .answers-wrapper ul li label
+, .list-radio .answers-wrapper ul li label
+, .list-radio-flexible .answers-wrapper ul li label
+, .list-with-comment .answers-wrapper ul li label
+{
+display:inline-block;vertical-align: middle;
+}
+
+.multiple-opt .answers-wrapper ul li input.checkbox
+, .list-radio .answers-wrapper ul li input.radio
+, .list-radio-flexible .answers-wrapper ul li input.radio
+, .list-with-comment .answers-wrapper ul li input.radio
+{
+margin-left:-30px;vertical-align: middle;
+}
+.multiple-opt-comments .answers-wrapper ul li input.checkbox
+{
+/*margin-left:-30px;vertical-align: middle;*//* DON'T WORK */
 }
 @media screen and (max-width: 640px) {
 	.multiple-opt .answers-wrapper ul li
-	, .list-radio .answers ul li
-	, .list-with-comment .answers ul li 
-	, .list-radio-flexible .answers ul li 
+	, .list-radio .answers-wrapper ul li
+	, .list-with-comment .answers-wrapper ul li 
+	, .list-radio-flexible .answers-wrapper ul li 
 	{
-		padding-left:0;
+		padding-left:30px;
+	}
+    .multiple-opt-comments  .answers-wrapper ul .comment input
+	    {
+		    width:99%;
+	    }
+}
+@media screen and (max-width: 480px) {
+.numeric-multi .answers-wrapper ul li label, .numeric-multi .answers-wrapper ul li span 
+, .multiple-short-txt .answers-wrapper ul li label, .multiple-short-txt .answers-wrapper ul li span
+, .multiple-opt-comments  .answers-wrapper ul .option, .multiple-opt-comments  .answers-wrapper ul .comment
+	{
+		display:block;
+		width:99%;
 	}
 }
 
