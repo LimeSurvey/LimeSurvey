@@ -1482,7 +1482,7 @@
                                 case 'U': //HUGE FREE TEXT
                                     if ($this->sgqaNaming)
                                     {
-                                        $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
+                                        $subqValidEqn = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
                                     }
                                     else
                                     {

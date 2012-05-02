@@ -287,7 +287,7 @@ function activateSurvey($surveyid, $simulate = false)
     }
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',true,false,getBaseLanguageFromSurveyID($surveyid));
 
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
@@ -299,7 +299,6 @@ function activateSurvey($surveyid, $simulate = false)
                 break;
             case 'id':
                 $createsurvey[$arow['fieldname']] = "INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY";
-                $createsurveytimings .= " `{$arow['fieldname']}` INT NOT NULL PRIMARY,\n";
                 break;
             case "startdate":
             case "datestamp":
@@ -456,24 +455,32 @@ function activateSurvey($surveyid, $simulate = false)
                     }
                 }
             }
+        }
 
-            if (isset($savetimings) && $savetimings=="TRUE")
+        if (isset($savetimings) && $savetimings=="TRUE")
+        {
+            $timingsfieldmap = createTimingsFieldMap($surveyid,"full",false,false,getBaseLanguageFromSurveyID($surveyid));
+
+            $column = array();
+            $column['id'] = $createsurvey['id'];
+            foreach ($timingsfieldmap as $field=>$fielddata)
             {
-                $timingsfieldmap = createTimingsFieldMap($surveyid,"full",false,false,getBaseLanguageFromSurveyID($surveyid));
-                $createsurveytimings .= '`'.implode("` F DEFAULT '0',\n`",array_keys($timingsfieldmap)) . "` F DEFAULT '0'";
-
-
-
-                foreach ($timingsfieldmap as $field=>$fielddata)
-                {
-                    $column[$field] = 'FLOAT';
-                }
-                $command = new CDbCommand(Yii::app()->db);
-                foreach($column as $name => $type)
-                {
-                    $command->addColumn($tabname,$name,$type);
-                }
+                $column[$field] = 'FLOAT';
             }
+
+            $command = new CDbCommand(Yii::app()->db);
+            $tabname = "{{survey_{$surveyid}}}_timings";
+            try
+            {
+                $execresult = $command->createTable($tabname,$column);
+                $execresult = true;
+            }
+            catch (CDbException $e)
+            {
+                echo $e->getMessage();
+                $execresult = false;
+            }
+            
         }
 
         $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";

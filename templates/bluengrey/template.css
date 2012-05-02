@@ -653,7 +653,7 @@ td.clearall-result .warning-text {
   margin: 0 0 0.3em 0.5em;
 }
 
-.choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.yes-no .answers li,.gender .answers li
+.choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.yes-no .answers li,.gender .answers li
   {
   margin-left: 2em;margin-right:0;
   text-indent: -1.7em;
@@ -732,12 +732,14 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
 .list-radio-flexible
 .list-radio
 */
-.list-radio .answer li label {
+.list-radio .answers li label,
+.list-with-comment .answers li label {
   display: inline-block;
   width: 85%;
 }
 
-.list-radio .answer li input {
+.list-radio .answers li input ,
+.list-with-comment .answers li input{
   vertical-align: top !important;
   margin-top: 2px;
 }
