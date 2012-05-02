@@ -395,9 +395,6 @@ function activateSurvey($surveyid, $simulate = false)
 
     }
 
-    print_r($fieldmap);
-    die();
-
     if ($simulate){
         return array('dbengine'=>$CI->db->databasetabletype, 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$arrSim);
     }
