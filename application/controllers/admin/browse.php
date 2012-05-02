@@ -183,7 +183,9 @@ class browse extends Survey_Common_Action
         //SHOW INDIVIDUAL RECORD
         $oCriteria = new CDbCriteria();
         if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyId}}}"))
-            $oCriteria->join = "LEFT JOIN '{{tokens_{$iSurveyId}}}' ON {{surveys_{$iSurveyId}}}.token = {{tokens_{$iSurveyId}}}.token";
+        {
+            $oCriteria = Survey_dynamic::model($iSurveyId)->addTokenCriteria($oCriteria);
+        }
         if (incompleteAnsFilterState() == 'inc')
             $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
         elseif (incompleteAnsFilterState() == 'filter')
@@ -194,7 +196,7 @@ class browse extends Survey_Common_Action
         }
         $oCriteria->addCondition("id = {$iId}");
 
-        $iIdresult = Survey_dynamic::model($iSurveyId)->findAll($oCriteria) or die("Couldn't get entry");
+        $iIdresult = Survey_dynamic::model($iSurveyId)->findAllAsArray($oCriteria) or die("Couldn't get entry");
         foreach ($iIdresult as $iIdrow)
         {
             $iId = $iIdrow['id'];
@@ -490,9 +492,7 @@ class browse extends Survey_Common_Action
         //Create the query
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyId}}}"))
         {
-            $oCriteria->join = "LEFT JOIN {{tokens_{$iSurveyId}}} tokens ON t.token = tokens.token";
-            $oCriteria->select = 't.*, tokens.*';  // Otherwise we don't get records from
-                                                   // the related table
+            $oCriteria = Survey_dynamic::model($iSurveyId)->addTokenCriteria($oCriteria);
         }
 
         if (incompleteAnsFilterState() == "inc")
