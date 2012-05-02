@@ -734,17 +734,17 @@ class conditionsaction extends Survey_Common_Action {
                     //Get question attribute for $canswers
                     $qidattributes=getQuestionAttributeValues($rows['qid'], $rows['type']);
                     if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
-                        $maxvalue=$qidattributes['multiflexible_max'];
+                        $maxvalue=floatval($qidattributes['multiflexible_max']);
                     } else {
                         $maxvalue=10;
                     }
                     if (isset($qidattributes['multiflexible_min']) && trim($qidattributes['multiflexible_min'])!='') {
-                        $minvalue=$qidattributes['multiflexible_min'];
+                        $minvalue=floatval($qidattributes['multiflexible_min']);
                     } else {
                         $minvalue=1;
                     }
                     if (isset($qidattributes['multiflexible_step']) && trim($qidattributes['multiflexible_step'])!='') {
-                        $stepvalue=$qidattributes['multiflexible_step'];
+                        $stepvalue=floatval($qidattributes['multiflexible_step']);
                     } else {
                         $stepvalue=1;
                     }
@@ -796,7 +796,7 @@ class conditionsaction extends Survey_Common_Action {
                             {
                                 for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $ii, $ii);
+                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key, $ii, $ii);
                                 }
                             }
                         }
