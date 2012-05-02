@@ -281,7 +281,7 @@ class conditionsaction extends Survey_Common_Action {
 
                 if (isset($posted_condition_value))
                 {
-                    $conditions_data['value'] = $posted_condition_value;
+                    $condition_data['value'] = $posted_condition_value;
                     $result = Conditions::model()->insertRecords($condition_data);
                 }
             }
@@ -406,12 +406,15 @@ class conditionsaction extends Survey_Common_Action {
             foreach ($result->readAll() as $srow)
             {
                 // new var $update_result == old var $result2
-                $update_result = Conditions::insertRecords(array('scenario'=>$newindex), TRUE,
+                $update_result = Conditions::model()->insertRecords(array('scenario'=>$newindex), TRUE,
                 array( 'qid'=>$qid, 'scenario'=>$srow['scenario'] )
                 );
                 $newindex++;
             }
             LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+            Yii::app()->session['flashmessage'] = $clang->gT("All conditions scenarios were renumbered.");
+
+
 
         }
 
@@ -1156,10 +1159,14 @@ class conditionsaction extends Survey_Common_Action {
             //3: Get other conditions currently set for this question
             $conditionscount = 0;
             $s=0;
-            $scenarioresult = Conditions::model()->findAllByAttributes(array('qid' => $qid), array(
-            'order' => 'scenario',
-            'distinct' => true,
-            ));
+            $criteria=new CDbCriteria;
+            $criteria->select='scenario';  // only select the 'scenario' column
+            $criteria->condition='qid=:qid';
+            $criteria->params=array(':qid'=>$qid);
+            $criteria->order='scenario';
+            $criteria->group='scenario';
+
+            $scenarioresult = Conditions::model()->findAll($criteria);
             $scenariocount=count($scenarioresult);
 
             $showreplace="$questiontitle". $this->_showSpeaker($questiontext);
@@ -1230,8 +1237,8 @@ class conditionsaction extends Survey_Common_Action {
                     $aData['initialCheckbox'] = $initialCheckbox;
                     $aData['scenariotext'] = $scenariotext;
                     $aData['scenarionr'] = $scenarionr;
-
-                    $aViewUrls['output'] = $this->getController()->render('/admin/conditions/includes/conditions_scenario',
+                    if (!isset($aViewUrls['output'])) $aViewUrls['output']='';
+                    $aViewUrls['output'] .= $this->getController()->render('/admin/conditions/includes/conditions_scenario',
                     $aData, TRUE);
 
                     unset($currentfield);
@@ -1292,22 +1299,17 @@ class conditionsaction extends Survey_Common_Action {
                         foreach ($aConditionsMerged as $rows)
                         {
                             if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
-                            $markcidstyle="";
-                            if (array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
-                            // === required cause key 0 would otherwise be interpreted as FALSE
-                            {
-                                $markcidstyle="";
-                            }
-                            else {
+                            $markcidstyle="oddrow";
+                            if (array_search($rows['cid'], $markcidarray) !== FALSE){
                                 // This is the style used when the condition editor is called
                                 // in order to check which conditions prevent a question deletion
-                                $markcidstyle="background-color: #5670A1;";
+                                $markcidstyle="markedrow";
                             }
                             if ($subaction == "editthiscondition" && isset($p_cid) &&
                             $rows['cid'] === $p_cid)
                             {
                                 // Style used when editing a condition
-                                $markcidstyle="background-color: #FCCFFF;";
+                                $markcidstyle="editedrow";
                             }
 
                             if (isset($currentfield) && $currentfield != $rows['cfieldname'])
@@ -1325,7 +1327,7 @@ class conditionsaction extends Survey_Common_Action {
                                 .$clang->gT("or")."</strong></span></td></tr>";
                             }
 
-                            $aViewUrls['output'] .= "\t<tr class='oddrow' style='$markcidstyle'>\n"
+                            $aViewUrls['output'] .= "\t<tr class='{$markcidstyle}'>\n"
                             ."\t<td colspan='2'><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."'>\n"
                             ."<table>\n"
                             ."\t<tr>\n";

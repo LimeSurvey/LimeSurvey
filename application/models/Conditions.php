@@ -114,7 +114,7 @@
                     $criteria->where = $condition;
                 }
 
-                return $record->updateAll($criteria);
+                return $record->updateAll($data,$criteria);
             }
             else
                 return $record->save();

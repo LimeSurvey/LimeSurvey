@@ -161,7 +161,7 @@
 
 /* Interaction Cues
 ----------------------------------*/
-.ui-state-highlight, .ui-widget-content .ui-state-highlight {border: 1px solid #ddd; background: #fbf8bc; color: #363636; }
+.ui-state-highlight, .ui-widget-content .ui-state-highlight {border: 2px solid #85BD00; background: #fff; color: #666; }
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a { }
 
 .ui-state-error,.ui-widget-content .ui-state-error {
@@ -223,7 +223,7 @@
   background-image: url(images/ui-icons_5fab2b_256x240.png);
 }
 
-.ui-state-highlight .ui-icon {background-image: url(images/ui-icons_056b93_256x240.png); }
+.ui-state-highlight .ui-icon {background-image: url(images/ui-icons_94d200_256x240.png); }
 
 .ui-state-error .ui-icon,.ui-state-error-text .ui-icon {
   background-image: url(images/ui-icons_cd0a0a_256x240.png);
