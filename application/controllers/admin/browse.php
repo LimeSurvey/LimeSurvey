@@ -490,7 +490,9 @@ class browse extends Survey_Common_Action
         //Create the query
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyId}}}"))
         {
-            $oCriteria->join = "LEFT JOIN {{tokens_{$iSurveyId}}} ON t.token = {{tokens_{$iSurveyId}}}.token";
+            $oCriteria->join = "LEFT JOIN {{tokens_{$iSurveyId}}} tokens ON t.token = tokens.token";
+            $oCriteria->select = 't.*, tokens.*';  // Otherwise we don't get records from
+                                                   // the related table
         }
 
         if (incompleteAnsFilterState() == "inc")
@@ -517,7 +519,8 @@ class browse extends Survey_Common_Action
         $oCriteria->offset = $start;
         $oCriteria->limit = $limit;
 
-        $dtresult = Survey_dynamic::model($iSurveyId)->findAll($oCriteria);
+        $dtresult = Survey_dynamic::model($iSurveyId)->findAllAsArray($oCriteria);
+
         $dtcount2 = count($dtresult);
         $cells = $fncount + 1;
 
