@@ -231,7 +231,7 @@ class quotas extends Survey_Common_Action
         $oQuota->autoload_url = Yii::app()->request->getPost('autoload_url');
         $oQuota->save();
 
-        //Iterate through each language, and make sure there is a quota message for it
+        //Iterate through each language posted, and make sure there is a quota message for it
         $sError = '';
         foreach ($aLangs as $sLang)
         {

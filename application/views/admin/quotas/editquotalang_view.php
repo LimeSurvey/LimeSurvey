@@ -20,7 +20,7 @@
 								<td align="right"><blockquote>
     								<p><strong><?php $clang->eT("URL description");?>:</strong></p>
   									</blockquote></td>
-								<td align="left"> <input name="quotals_urldescrip_<?php echo $lang;?>" type="text" size="30" maxlength="255" value="'<?php echo $langquotainfo['quotals_urldescrip'];?>" /></td>
+								<td align="left"> <input name="quotals_urldescrip_<?php echo $lang;?>" type="text" size="30" maxlength="255" value="<?php echo $langquotainfo['quotals_urldescrip'];?>" /></td>
 							</tr>
 						</tbody>
 					</table>

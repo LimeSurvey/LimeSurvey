@@ -6536,16 +6536,16 @@ function fixLanguageConsistency($sid, $availlangs='')
         {
             foreach ($langs as $lang)
             {
-                $query = "SELECT id FROM {{quota_languagesettings}} WHERE quotals_quota_id='{$qls['quotals_quota_id']}' AND quotals_language='{$lang}'";
+                $query = "SELECT quotals_id FROM {{quota_languagesettings}} WHERE quotals_quota_id='{$qls['quotals_quota_id']}' AND quotals_language='{$lang}'";
                 $gresult = Yii::app()->db->createCommand($query)->query();
                 if ($gresult->getRowCount() < 1)
                 {
                     $data = array(
                     'quotals_quota_id' => $qls['quotals_quota_id'],
-                    'quotals_name' => $qls['sid'],
-                    'quotals_message' => $qls['scope'],
-                    'quotals_url' => $qls['gid'],
-                    'quotals_urldescrip' => $qls['name'],
+                    'quotals_name' => $qls['quotals_name'],
+                    'quotals_message' => $qls['quotals_message'],
+                    'quotals_url' => $qls['quotals_url'],
+                    'quotals_urldescrip' => $qls['quotals_urldescrip'],
                     'quotals_language' => $lang
                     );
                     Yii::app()->db->createCommand()->insert('{{quota_languagesettings}}', $data);
