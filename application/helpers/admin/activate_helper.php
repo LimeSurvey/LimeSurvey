@@ -287,7 +287,7 @@ function activateSurvey($surveyid, $simulate = false)
     }
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',true,false,getBaseLanguageFromSurveyID($surveyid));
 
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
@@ -394,6 +394,9 @@ function activateSurvey($surveyid, $simulate = false)
         }
 
     }
+
+    print_r($fieldmap);
+    die();
 
     if ($simulate){
         return array('dbengine'=>$CI->db->databasetabletype, 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$arrSim);
