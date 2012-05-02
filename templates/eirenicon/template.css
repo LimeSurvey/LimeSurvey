@@ -525,7 +525,7 @@ table.clearall-result td {
   margin: 0% 0% 0.5em 0.5em;
 }
 
-.choice-5-pt-radio .question-answer li,.list-radio-flexible .question-answer li,.list-radio .question-answer li,.list-with-comment .question-answer li,.yes-no .question-answer li,.gender .question-answer li
+.choice-5-pt-radio .question-answer li,.list-radio-flexible .question-answer li,.yes-no .question-answer li,.gender .question-answer li
   {
   margin-left: 2em;
   text-indent: -2.2em;
@@ -598,6 +598,19 @@ table.clearall-result td {
 .list-radio-flexible
 .list-radio
 */
+.list-radio .question-answer li label,
+.list-with-comment .question-answer li label {
+  display: inline-block;
+  width: 85%;
+}
+
+.list-radio .question-answer li input,
+.list-with-comment .question-answer li input {
+  vertical-align: top !important;
+  margin-top: 1px;
+  margin-top: -3px\9; /* IE9 and below */
+}
+
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
@@ -693,7 +706,8 @@ table.rank td.helptext {
 */
 .multiple-opt .question-answer li input {
   vertical-align: top !important;
-  margin-top: 2px;
+  margin-top: 1px;
+  margin-top: -3px\9; /* IE9 and below */
 }
 
 .multiple-opt .question-answer li label {
