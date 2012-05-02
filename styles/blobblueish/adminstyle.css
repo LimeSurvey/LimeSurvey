@@ -1446,14 +1446,15 @@ thead th
     float:none;
 }
 
-
 .ui-notify {
     width:350px;
     position:fixed;
     top:35px;
     left:50%;
     margin-left: -175px;
+    z-index:1000;
 }
+
 
 div.translate {
     margin: 2px 1px;
@@ -1580,4 +1581,8 @@ ol.organizer {
 
 #browseresults{
     margin:0;
+}
+
+tr.editedrow{
+    background-color: #FCCFFF;
 }

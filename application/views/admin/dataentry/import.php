@@ -11,7 +11,7 @@
 			<label for='oldtable'>
 		 		<?php $clang->eT("Source table:"); ?>
 		 	</label>
-	 		<select name='oldtable'>
+	 		<select id='oldtable' name='oldtable'>
 				<?php echo $optionElements; ?>
 			</select>
 		</li>
@@ -26,7 +26,7 @@
 		</li>
 		</ul>
 		<p>
-			<input type='submit' value='<?php $clang->eT("Import Responses"); ?>' onclick='return confirm("<?php $clang->eT("Are you sure?","js"); ?>")'>&nbsp;
+			<input type='submit' value='<?php $clang->eT("Import Responses"); ?>' onclick='if ($("#oldtable").val()=="") alert("<?php $clang->eT("You need to select a table.","js"); ?>"); return ($("#oldtable").val()!="" && confirm("<?php $clang->eT("Are you sure?","js"); ?>"));'>&nbsp;
 			<input type='hidden' name='subaction' value='import'><br /><br />
 			<div class='messagebox ui-corner-all'><div class='warningheader'><?php echo $clang->gT("Warning").'</div>'.$clang->gT("You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."); ?></div>
 		</p>

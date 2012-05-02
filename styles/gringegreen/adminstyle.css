@@ -1463,6 +1463,7 @@ thead th
     top:35px;
     left:50%;
     margin-left: -175px;
+    z-index:1000;
 }
 
 div.translate {

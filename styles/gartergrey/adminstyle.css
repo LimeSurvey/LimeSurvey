@@ -713,3 +713,16 @@ div.messagebox .warningheader {
 .assessmentlist {
     width:90%;
 }
+
+tr.editedrow{
+    background-color: #FCCFFF;
+}
+
+.ui-notify {
+    width:350px;
+    position:fixed;
+    top:35px;
+    left:50%;
+    margin-left: -175px;
+    z-index:1000;
+}
