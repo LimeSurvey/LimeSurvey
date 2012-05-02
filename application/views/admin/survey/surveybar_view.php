@@ -93,12 +93,12 @@
             <li><a href="#">
                     <img src='<?php echo $sImageURL;?>tools.png' alt='<?php $clang->eT("Tools");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
                     <?php if ($surveydelete) { ?>
-                        <li><a href="<?php echo $this->createUrl("admin/survey/delete/surveyid/$surveyid"); ?>">
+                        <li><a href="<?php echo $this->createUrl("admin/survey/delete/surveyid/{$surveyid}"); ?>">
                             <img src='<?php echo $sImageURL;?>delete_30.png' alt=''/> <?php $clang->eT("Delete survey");?></a></li>
                         <?php } ?>
                     <?php if ($surveytranslate) {
                             if($hasadditionallanguages) { ?>
-                            <li><a href="<?php echo $this->createUrl("admin/translate/index/surveyid/$surveyid");?>">
+                            <li><a href="<?php echo $this->createUrl("admin/translate/index/surveyid/{$surveyid}");?>">
                                 <img src='<?php echo $sImageURL;?>translate_30.png' alt=''/> <?php $clang->eT("Quick-translation");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("Currently there are no additional languages configured for this survey.", "js");?>');" >
@@ -108,6 +108,17 @@
                     <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
                         <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
                             <img src='<?php echo $sImageURL;?>expressionmanager_30.png' alt=''/> <?php $clang->eT("Expression Manager");?></a></li>
+                        <?php } ?>
+                    <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+                        <li>
+                            <?php if ($conditionscount>0){?>
+                                <a href="<?php echo $this->createUrl("/admin/conditions/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
+                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/> <?php $clang->eT("Reset conditions");?></a>
+                                <?php } else {?>
+                                <a href="#" onclick="alert('<?php $clang->eT("Currently there are no conditions configured for this survey.", "js"); ?>');" >
+                                <img src='<?php echo $sImageURL;?>resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' /> <?php $clang->eT("Reset conditions");?></a>
+                                <?php } ?>
+                        </li>
                         <?php } ?>
                 </ul></li>
             <li><a href='#'>
