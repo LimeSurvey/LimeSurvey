@@ -540,7 +540,7 @@ td.clearall-result .warning-text {
   margin-right:0;margin-left:0.5em;
 }
 
-.choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.yes-no .answers li,.gender .answers li
+.choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.yes-no .answers li,.gender .answers li
   {
   margin-left: 2em;margin-right:0;
   text-indent: -1.7em;
@@ -617,12 +617,14 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
 .list-radio-flexible
 .list-radio
 */
-.list-radio .answer li label {
+.list-radio .answers li label,
+.list-with-comment .answers li label {
   display: inline-block;
   width: 85%;
 }
 
-.list-radio .answer li input {
+.list-radio .answers li input ,
+.list-with-comment .answers li input{
   vertical-align: top !important;
   margin-top: 2px;
 }
@@ -732,8 +734,14 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.language {
-  
+.multiple-opt .answers li input {
+  vertical-align: top !important;
+  margin-top: 2px;
+}
+
+.multiple-opt .answers li label {
+  display: inline-block;
+  width: 90%;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -817,29 +825,14 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
   padding-right:1em;padding-left:0;
 }
 
-.numeric-multi ul.multiplenumerichelp,.numeric-multi ul.multiplenumerichelp.slider
-  {
-  display: table;
-  font-size: 80%;
+.numeric-multi li.multiplenumerichelp span {
+	text-align: center;
+	background: transparent none;
 }
 
-.numeric-multi ul.multiplenumerichelp li,.numeric-multi ul.multiplenumerichelp.slider li
-  {
-  display: table-row
-}
-
-.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
-  {
-  padding-right:0.3em;padding-left:0;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp span input {
-  border: none;
-  background-color: #fff;
-  color: #222;
-  padding: 0;
-  width: 7em;
+.numeric-multi li.multiplenumerichelp span span {
+	display: inline;
+	padding: 0;
 }
 
 .numeric input,.text-short input,.text-long textarea,.text-huge textarea

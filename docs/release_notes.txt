@@ -78,6 +78,15 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120425) to 1.92+ (build 120501) May 1, 2012
+-Fixed issue #6008: File upload doesn't work from date entry, not available in response edit (mennodekker)
+-Fixed issue #6045: Firefox 12 vertical scrolling problem in admin view (and other pages) (Carsten Schmitz)
+-Fixed issue #6056 - Quota languages don't update (jcleeland)
+-Fixed issue: Images inserted into HTML emails were not properly linked to the server (Carsten Schmitz)
+-Fixed issue: Fixed several HTML issues for data entry mode 
+-Fixed issue: Partial fix (just data entry - editing data missing) for bug #6044: Use advanced question settings such as numbers_only, display_rows, max_characters, prefix, suffix, ... at data entry screen. (Marcel Minke)
+
+
 Changes from 1.92+ (build 120418) to 1.92+ (build 120425) April 25, 2012
 -Fixed issue #5988: Problem displaying words with French accent within Expression Manager (Carsten Schmitz)
 -Fixed issue #6027: Users who have token creation permission can't create token table (Carsten Schmitz)

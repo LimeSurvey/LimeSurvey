@@ -525,7 +525,7 @@ table.clearall-result td {
   margin: 0% 0% 0.5em 0.5em;
 }
 
-.choice-5-pt-radio .question-answer li,.list-radio-flexible .question-answer li,.list-radio .question-answer li,.list-with-comment .question-answer li,.yes-no .question-answer li,.gender .question-answer li
+.choice-5-pt-radio .question-answer li,.list-radio-flexible .question-answer li,.yes-no .question-answer li,.gender .question-answer li
   {
   margin-left: 2em;
   text-indent: -2.2em;
@@ -598,6 +598,19 @@ table.clearall-result td {
 .list-radio-flexible
 .list-radio
 */
+.list-radio .question-answer li label,
+.list-with-comment .question-answer li label {
+  display: inline-block;
+  width: 85%;
+}
+
+.list-radio .question-answer li input,
+.list-with-comment .question-answer li input {
+  vertical-align: top !important;
+  margin-top: 1px;
+  margin-top: -3px\9; /* IE9 and below */
+}
+
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
@@ -691,8 +704,15 @@ table.rank td.helptext {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.language {
-  
+.multiple-opt .question-answer li input {
+  vertical-align: top !important;
+  margin-top: 1px;
+  margin-top: -3px\9; /* IE9 and below */
+}
+
+.multiple-opt .question-answer li label {
+  display: inline-block;
+  width: 90%;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -762,32 +782,15 @@ table.rank td.helptext {
   margin-bottom: 0.2em;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider {
-  display: table;
+.numeric-multi li.multiplenumerichelp span {
+	text-align: center;
+	background: transparent none;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider li {
-  display: table-row;
-}
-
-.numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
-  {
-  padding: 0.3em 0 0 0;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
-  {
-  padding: 0 0 0 0.3em;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp span input {
-  border: none;
-  background-color: #fff;
-  color: #222;
-  padding: 0;
-  width: 7em;
+.numeric-multi li.multiplenumerichelp span span {
+	display: inline;
+	padding: 0;
+	font-size: 125%;
 }
 
 .text-short input,.text-short textarea,.text-long textarea,.text-huge textarea
