@@ -5172,10 +5172,10 @@ function FixLanguageConsistency($sid, $availlangs='')
                            ." (quotals_quota_id,quotals_language,quotals_name,quotals_message,quotals_url,quotals_urldescrip) VALUES ("
                            . "'".$qls['quotals_quota_id']."',"
                            . "'".$lang."',"
-                           . "'".$qls['quotals_name']."',"
-                           . "'".$qls['quotals_message']."',"
+                           . db_quoteall($qls['quotals_name']).","
+                           . db_quoteall($qls['quotals_message']).","
                            . "'".$qls['quotals_url']."',"
-                           . "'".$qls['quotals_urldescrip']."'"
+                           . db_quoteall($qls['quotals_urldescrip']).""
                            . ")";
                            $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
                            db_switchIDInsert('quota_languagesettings',false);
