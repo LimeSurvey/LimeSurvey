@@ -5164,7 +5164,6 @@ function FixLanguageConsistency($sid, $availlangs='')
         {
             foreach ($langs as $lang)
             {
-                echo $lang;
                 $query = "SELECT quotals_id FROM ".db_table_name('quota_languagesettings')." WHERE quotals_quota_id='{$qls['quotals_quota_id']}' AND quotals_language='{$lang}'";
                 $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
                 if ($gresult->RecordCount() < 1)
