@@ -4634,7 +4634,7 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
 {
     $sNicetext = strip_javascript($sTextToFlatten);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
-    $sNicetext = str_replace('</',' </', $sNicetext);
+    $sNicetext = str_replace('</td',' </td', $sNicetext);
     if ($keepSpan) {
         // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
         $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
