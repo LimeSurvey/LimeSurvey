@@ -704,13 +704,13 @@ table.rank td.helptext {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.multiple-opt .question-answer li input {
+.multiple-opt .question-answer li input, .multiple-opt-comments .question-answer li .option input {
   vertical-align: top !important;
   margin-top: 1px;
   margin-top: -3px\9; /* IE9 and below */
 }
 
-.multiple-opt .question-answer li label {
+.multiple-opt .question-answer li label, .multiple-opt-comments .question-answer li .option label {
   display: inline-block;
   width: 90%;
 }
@@ -746,8 +746,7 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0 2.3em;
-  text-indent: -2.3em;
+  padding: 0 0 0.5em 0.5em;
   display: table-cell;
   vertical-align: baseline;
 }

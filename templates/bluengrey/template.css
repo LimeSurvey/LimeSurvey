@@ -734,18 +734,18 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.multiple-opt .answers li input {
+.multiple-opt .answers li input, .multiple-opt-comments .answers li .option input {
   vertical-align: top !important;
   margin-top: 2px;
 }
 
-.multiple-opt .answers li label {
+.multiple-opt .answers li label, .multiple-opt-comments .answers li .option label {
   display: inline-block;
-  width: 90%;
+  width: 85%;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
-.multiple-opt-comments td.answer,.multiple-short-txt td.answer,.numeric-multi td.answer
+.multiple-opt-comments td.answers,.multiple-short-txt td.answers,.numeric-multi td.answers
   {
   
 }
@@ -753,7 +753,7 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 .multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul,.numeric-multi.slider ul
   {
   display: table;
-  padding: 0%;
+  padding: 0;
   margin: 1em;
 }
 
@@ -785,9 +785,7 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0 1em;
-  padding-left:1.5em;padding-right:1em;
-  text-indent: -1.5em;
+  padding: 0 0 0.3em 0.5em;
   display: table-cell;
   vertical-align: baseline;
 }

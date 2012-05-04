@@ -709,13 +709,13 @@ table.rank td.helptext {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.multiple-opt .survey-question-answer li input {
+.multiple-opt .survey-question-answer li input, .multiple-opt-comments .survey-question-answer li .option input {
   vertical-align: top !important;
   margin-top: 0;
   margin-top: -3px\9; /* IE9 and below */
 }
 
-.multiple-opt .survey-question-answer li label {
+.multiple-opt .survey-question-answer li label, .multiple-opt-comments .survey-question-answer li .option label {
   display: inline-block;
   width: 90%;
 }
@@ -751,8 +751,7 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0 2.2em;
-  text-indent: -2.2em;
+  padding: 0.5em 0 0.5em 0;
   display: table-cell;
   vertical-align: baseline;
 }
@@ -781,6 +780,10 @@ table.rank td.helptext {
   vertical-align: baseline;
   font-size: 80%;
   white-space: nowrap;
+}
+.multiple-opt-comments ul li span.comment
+  {
+  vertical-align: top;
 }
 
 .numeric-multi div.multinum-slider {

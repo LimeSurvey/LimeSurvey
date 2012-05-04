@@ -661,13 +661,7 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 	padding: 0 1em 0 0;
 	text-align:left;
 }
- .choice-5-pt-radio .answers-wrapper li
-,.list-radio-flexible .answers-wrapper li
-,.list-radio .answers-wrapper li
-,.list-with-comment .answers-wrapper li
-{
-	margin-right:0;margin-left: 3em;
-}
+
 @media screen and (max-width: 640px) {
 	 .choice-5-pt-radio .answers-wrapper li
 	,.list-radio-flexible .answers-wrapper li
@@ -873,6 +867,7 @@ table.rank input{border:1px solid #999}
 	padding-right:0;padding-left:35%;
 }
 .multiple-opt .answers-wrapper ul li label
+, .multiple-opt-comments .answers-wrapper ul li label
 , .list-radio .answers-wrapper ul li label
 , .list-radio-flexible .answers-wrapper ul li label
 , .list-with-comment .answers-wrapper ul li label
@@ -880,19 +875,24 @@ table.rank input{border:1px solid #999}
 display:inline-block;vertical-align: middle;
 }
 
+.multiple-opt-comments .answers-wrapper ul li .option
+, .list-with-comment .answers-wrapper ul li
+{
+padding-left:30px;
+}
+
 .multiple-opt .answers-wrapper ul li input.checkbox
+, .multiple-opt-comments .answers-wrapper ul li input.checkbox
 , .list-radio .answers-wrapper ul li input.radio
 , .list-radio-flexible .answers-wrapper ul li input.radio
 , .list-with-comment .answers-wrapper ul li input.radio
 {
 margin-left:-30px;vertical-align: middle;
 }
-.multiple-opt-comments .answers-wrapper ul li input.checkbox
-{
-/*margin-left:-30px;vertical-align: middle;*//* DON'T WORK */
-}
+
 @media screen and (max-width: 640px) {
 	.multiple-opt .answers-wrapper ul li
+	.multiple-opt-comments .answers-wrapper ul li
 	, .list-radio .answers-wrapper ul li
 	, .list-with-comment .answers-wrapper ul li 
 	, .list-radio-flexible .answers-wrapper ul li 

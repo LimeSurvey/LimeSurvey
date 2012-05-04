@@ -2805,7 +2805,6 @@ function do_multiplechoice_withcomments($ia)
         $answer_main .= $startitem;
         $answer_main .= "\t$hiddenfield\n";
         $answer_main .= "<span class=\"option\">\n"
-        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
         . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
         /* If the question has already been ticked, check the checkbox */
@@ -2818,6 +2817,7 @@ function do_multiplechoice_withcomments($ia)
         }
         $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
+        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
         . $ansrow['question']."</label>\n";
 
 //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
@@ -2830,12 +2830,12 @@ function do_multiplechoice_withcomments($ia)
         }
         $answer_main .= "' />\n";
         $fn++;
-        $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment\">\n"
+        $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide\">".$clang->gT("Make a comment on your choice here:")."</label>\n"
         ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
         if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
 //        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
-        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n\t</label>\n</span>\n"
+        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n</span>\n"
 
         . "\t</li>\n";
         // --> END NEW FEATURE - SAVE

@@ -843,15 +843,18 @@ table.rank td.helptext {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.multiple-opt .survey-question-answer li input {
+.multiple-opt .survey-question-answer li input, .multiple-opt-comments .survey-question-answer li .option input {
   vertical-align: top !important;
   margin-top: 5px;
   *margin-top: 2px; /* IE7and below */
 }
 
-.multiple-opt .survey-question-answer li label {
+.multiple-opt .survey-question-answer li label, .multiple-opt-comments .survey-question-answer li .option label {
   display: inline-block;
   width: 90%;
+}
+.multiple-opt-comments .survey-question-answer li .option label {
+  width: 85%;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -885,8 +888,7 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0 1.8em;
-  text-indent: -1.8em;
+  padding: 0 0 0.5em 0.5em;
   display: table-cell;
   vertical-align: baseline;
 }
@@ -914,6 +916,11 @@ table.rank td.helptext {
   display: table-cell;
   vertical-align: baseline;
   white-space: nowrap;
+}
+
+.multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span
+  {
+  vertical-align: top;
 }
 
 .multiple-opt-comments ul li span {
