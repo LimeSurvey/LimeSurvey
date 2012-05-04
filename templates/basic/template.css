@@ -613,9 +613,13 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   display: inline-block;
   width: 85%;
 }
+.list-radio .answer li.other-item label,
+.list-with-comment .answer li.other-item label {
+  width: auto;
+}
 
-.list-radio .answer li input,
-.list-with-comment .answer li input {
+.list-radio .answer li input.radio,
+.list-with-comment .answer li input.radio {
   vertical-align: top !important;
   margin-top: 2px;
   margin-top: -2px\9; /* IE9 and below */
@@ -681,6 +685,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   padding: 0.5em;
   margin: 0%;
 }
+.list-with-comment p.select select{
+  max-width: 99%;
+}
 
 .list-with-comment div.list p {
   margin: 0% 0% 0% 0.6em;
@@ -688,11 +695,15 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 }
 
 .list-with-comment p.comment {
-  margin: 0%;
+  margin: 0;
   padding: 0.5em;
   text-align: left;
   float: left;
   width: 47%;
+  display:block;
+}
+.list-with-comment p.comment label{
+  display:block;
 }
 
 .ranking {
@@ -786,15 +797,18 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.multiple-opt .answer li input {
+.multiple-opt .answer li input.checkbox, .multiple-opt-comments .answer li .option input.checkbox {
   vertical-align: top !important;
   margin-top: 2px;
   margin-top: -2px\9; /* IE9 and below */
 }
 
-.multiple-opt .answer li label {
+.multiple-opt .answer li label, .multiple-opt-comments .answer li .option label {
   display: inline-block;
-  width: 90%;
+  width: 85%;
+}
+.multiple-opt .answer li.other-item label, .multiple-opt-comments .answer li.other-item .option label {
+  width: auto;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -828,8 +842,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0% 1.8em;
-  text-indent: -1.7em;
+  padding:  0 0 0.5em 0.5em;
   display: table-cell;
   vertical-align: baseline;
 }
@@ -853,7 +866,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 
 .multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span
   {
-  padding: 0.3em 0% 0% 1em;
+  padding: 0.3em 0 0 1em;
   display: table-cell;
   vertical-align: baseline;
   white-space: nowrap;

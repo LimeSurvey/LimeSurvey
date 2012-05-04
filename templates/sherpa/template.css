@@ -186,7 +186,7 @@ input.ui-button {
   background-color: #f5f9f9;
 }
 
-.select {
+select.select {
   background-color: #EFEFEF;
   color: #555;
   font-family: arial;
@@ -727,9 +727,13 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   display: inline-block;
   width: 85%;
 }
+.list-radio .survey-question-answer li.other-item label,
+.list-with-comment .survey-question-answer li.other-item label {
+  width: auto;
+}
 
-.list-radio .survey-question-answer li input,
-.list-with-comment .survey-question-answer li input {
+.list-radio .survey-question-answer li input.radio,
+.list-with-comment .survey-question-answer li input.radio {
   vertical-align: top !important;
   margin-top: 2px;
   margin-top: -2px\9; /* IE9 and below */
@@ -799,6 +803,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   float: left;
   padding: 0.5em;
   margin: 0;
+}
+.list-with-comment p.select select{
+  max-width: 99%;
 }
 
 .list-with-comment div.list p {
@@ -922,16 +929,20 @@ table.rank td.helptext {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.multiple-opt .survey-question-answer li input {
+.multiple-opt .survey-question-answer li input.checkbox, .multiple-opt-comments .survey-question-answer li .option input.checkbox {
   vertical-align: top !important;
   margin-top: 2px;
   margin-top: -2px\9; /* IE9 and below */
 }
 
-.multiple-opt .survey-question-answer li label {
+.multiple-opt .survey-question-answer li label, .multiple-opt-comments .survey-question-answer li .option label {
   display: inline-block;
   width: 90%;
 }
+.multiple-opt .survey-question-answer li.other-item label, .multiple-opt-comments .survey-question-answer li.other-item .option label {
+  width: auto;
+}
+
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
 .multiple-opt-comments td.answer,.multiple-short-txt td.answer,.numeric-multi td.answer
@@ -964,12 +975,13 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0 1.8em;
-  text-indent: -1.8em;
+   padding: 0.5em 0 0.5em 0;
   display: table-cell;
   vertical-align: baseline;
 }
-
+.multiple-opt-comments ul li .comment {
+  vertical-align: top;
+}
 .multiple-short-txt ul li label,.numeric-multi ul li label {
   padding: 0.3em 1em 0 0;
   display: table-cell;
@@ -988,6 +1000,10 @@ table.rank td.helptext {
   vertical-align: baseline;
   font-size: 80%;
   white-space: nowrap;
+}
+.multiple-opt-comments ul li span.comment
+  {
+  vertical-align: top;
 }
 
 .numeric-multi div.multinum-slider {

@@ -1847,8 +1847,9 @@ function do_list_radio($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_listwithcomment($ia)
 {
-    global $maxoptionsize, $dropdownthreshold, $thissurvey;
+    global $maxoptionsize, $thissurvey;
     $clang=Yii::app()->lang;
+    $dropdownthreshold = Yii::app()->getConfig("dropdownthreshold");
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -1887,8 +1888,7 @@ function do_listwithcomment($ia)
 
 
     $hint_comment = $clang->gT('Please enter your comment here');
-
-    if (isset($lwcdropdowns) && $lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
+    if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
     {
         $answer .= '<div class="list">
         <ul class="answers-list radio-list">
@@ -2797,7 +2797,6 @@ function do_multiplechoice_withcomments($ia)
         $answer_main .= $startitem;
         $answer_main .= "\t$hiddenfield\n";
         $answer_main .= "<span class=\"option\">\n"
-        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
         . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
         /* If the question has already been ticked, check the checkbox */
@@ -2810,6 +2809,7 @@ function do_multiplechoice_withcomments($ia)
         }
         $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
+        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
         . $ansrow['question']."</label>\n";
 
         //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}

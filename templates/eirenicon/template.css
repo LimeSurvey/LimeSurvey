@@ -732,9 +732,13 @@ table.clearall-result td {
   display: inline-block;
   width: 85%;
 }
+.list-radio .question-answer li.other-item label,
+.list-with-comment .question-answer li.other-item label {
+  width: auto;
+}
 
-.list-radio .question-answer li input,
-.list-with-comment .question-answer li input {
+.list-radio .question-answer li input.radio,
+.list-with-comment .question-answer li input.radio {
   vertical-align: top !important;
   margin-top: 1px;
   margin-top: -3px\9; /* IE9 and below */
@@ -802,7 +806,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   padding: 0.5em;
   margin: 0;
 }
-
+.list-with-comment p.select select{
+  max-width: 99%;
+}
 .list-with-comment div.list p {
   margin: 0;
   text-align: left;
@@ -926,15 +932,20 @@ table.rank td.helptext {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.multiple-opt .question-answer li input {
+.multiple-opt .question-answer li input, .multiple-opt-comments .question-answer li .option input {
   vertical-align: top !important;
   margin-top: 1px;
   margin-top: -3px\9; /* IE9 and below */
 }
-
-.multiple-opt .question-answer li label {
+.multiple-opt-comments .question-answer li .comment {
+  vertical-align: top !important;
+}
+.multiple-opt .question-answer li label , .multiple-opt-comments .question-answer li .option label {
   display: inline-block;
   width: 90%;
+}
+.multiple-opt .question-answer li.other-item label {
+  width: auto;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -968,8 +979,7 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0 2.3em;
-  text-indent: -2.3em;
+  padding: 0.5em 0 0.5em 0;
   display: table-cell;
   vertical-align: baseline;
 }
