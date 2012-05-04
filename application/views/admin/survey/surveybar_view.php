@@ -57,7 +57,7 @@
                         <?php } ?>
                     <?php if($surveysettings) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/survey/editsurveysettings/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $sImageURL;?>surveysettings_30.png' alt=''/> <?php $clang->eT("General settings");?></a></li>
+                            <img src='<?php echo $sImageURL;?>survey_settings_30.png' alt=''/> <?php $clang->eT("General settings");?></a></li>
                         <?php } ?>
                     <?php if($surveysecurity) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/surveypermission/view/surveyid/$surveyid");?>' >

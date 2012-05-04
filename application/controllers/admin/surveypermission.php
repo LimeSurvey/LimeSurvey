@@ -32,7 +32,7 @@ class surveypermission extends Survey_Common_Action {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
         $clang = Yii::app()->lang;
-        $imageurl = Yii::app()->getConfig('imageurl');
+        $imageurl = Yii::app()->getConfig('adminimageurl');
 
         if(hasSurveyPermission($surveyid,'survey','read'))
         {
@@ -52,7 +52,7 @@ class surveypermission extends Survey_Common_Action {
 	            . "<th>".$clang->gT("Full name")."</th>\n";
             foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
             {
-                $surveysecurity.="<th align=\"center\"><img src=\"{$imageurl}/{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
+                $surveysecurity.="<th align=\"center\"><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
             }
             $surveysecurity .= "</tr></thead>\n";
 
@@ -356,7 +356,7 @@ class surveypermission extends Survey_Common_Action {
         $action = $_POST['action'];
 
         $clang = Yii::app()->lang;
-        $imageurl = Yii::app()->getConfig('imageurl');
+        $imageurl = Yii::app()->getConfig('adminimageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : null;
         $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : null;
 
