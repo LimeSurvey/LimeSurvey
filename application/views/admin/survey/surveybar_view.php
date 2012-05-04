@@ -113,10 +113,10 @@
                         <li>
                             <?php if ($conditionscount>0){?>
                                 <a href="<?php echo $this->createUrl("/admin/conditions/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
-                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/> <?php $clang->eT("Reset conditions");?></a>
+                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php $clang->eT("Reset conditions");?></a>
                                 <?php } else {?>
                                 <a href="#" onclick="alert('<?php $clang->eT("Currently there are no conditions configured for this survey.", "js"); ?>');" >
-                                <img src='<?php echo $sImageURL;?>resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' /> <?php $clang->eT("Reset conditions");?></a>
+                                <img src='<?php echo $sImageURL;?>resetsurveylogic_disabled_30.png' alt=''/> <?php $clang->eT("Reset conditions");?></a>
                                 <?php } ?>
                         </li>
                         <?php } ?>

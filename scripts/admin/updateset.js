@@ -49,8 +49,8 @@ $(document).ready(function(){
 
                 $("tbody>tr",$("#tabs>form>div:first")).each(function(trindex,trelement){
 
-                    var tr_code = $(trelement).attr('name');
-
+                    var tr_code = $(trelement).attr('id');
+                    tr_code=tr_code.substr(3);
                     dataToSend['codelist'].push(tr_code);
                     dataToSend[tr_code] = {
                         code: $("#code_"+tr_code).val(),
@@ -142,7 +142,7 @@ function sort_complete(event, ui){
 
 
     $("#tabs div:not(:first) [name="+$(item).attr('name')+"]").each(function(index,element){
-       var backup = "<tr name='"+$(item).attr('name')+"'>"+$(element).html()+"</tr>";
+       var backup = "<tr id='row"+$(item).attr('name')+"'>"+$(element).html()+"</tr>";
 
        if (newposition >= 0)
             $($(element).parent().children()[newposition]).after(backup);
@@ -211,9 +211,9 @@ function add_label(event)
 
 function del_label(event){
 
-    var id = $(event.target).parent().parent().attr('name');
+    var id = $(event.target).parent().parent().attr('id');
 
-    $("[name="+id+"]").remove();
+    $("#"+id).remove();
 
     fix_highlighting();
 
@@ -232,7 +232,7 @@ function createNewLabelTR(alternate,first){
     x = "<tr ";
     if (alternate)
         x = x + "class= 'highlight' ";
-    x = x + "style = 'white-space: nowrap;' name='###next###'>";
+    x = x + "style = 'white-space: nowrap;' id='row###next###'>";
 
     if (!first)
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";

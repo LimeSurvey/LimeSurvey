@@ -23,8 +23,8 @@
             ?>
             <div id='neweditlblset<?php echo $i ?>'>
                 <input type='hidden' class='lslanguage' value='<?php echo $lslanguage ?>' />
-                <table class='answertable' align='center'>
-                    <thead align='center'>
+                <table class='answertable'>
+                    <thead>
                         <tr>
                             <?php
                                 if ($first)
@@ -37,7 +37,7 @@
                             <th><?php $clang->eT("Action") ?></th>
                         </tr>
                     </thead>
-                    <tbody align='center'>
+                    <tbody>
                         <?php
                             $position = 0;
                             $alternate = false;
@@ -49,15 +49,13 @@
                                     $codeids = $codeids . ' ' . $row['sortorder'];
                                 }
                             ?>
-                            <tr style='white-space: nowrap;' name='<?php echo $row['sortorder'] ?>'
-                                <?php
+                            <tr style='white-space: nowrap;' id='row<?php echo $row['sortorder'] ?>'<?php
                                     if ($alternate == true) {
                                     ?> class="highlight" <?php
                                     }
                                     else
                                         $alternate = true;
-                                ?>
-                                >
+                                ?>>
                                 <?php
                                     if (!$first) {
                                     ?>                      <td><?php echo $row['code'] ?></td><td><?php echo $row['assessment_value'] ?></td>
@@ -66,10 +64,10 @@
                                     else
                                     {
                                     ?>
-                                    <td><img src='<?php echo $sImageURL; ?>handle.png' /></td>
+                                    <td><img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td>
                                     <td>
                                         <input type='hidden' class='hiddencode' value='<?php echo $row['code'] ?>' />
-                                        <input type='text'  class='codeval'id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
+                                        <input type='text'  class='codeval' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
                                     </td>
 
                                     <td>
@@ -89,8 +87,8 @@
                                     {
                                     ?>
                                     <td style='text-align:center;'>
-                                        <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' />
-                                        <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' />
+                                        <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php $clang->eT("Insert a new label after this one") ?>' />
+                                        <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php $clang->eT("Delete this label") ?>' />
                                     </td>
                                     <?php
                                     }
@@ -138,7 +136,7 @@
                 <ul style='list-style-type:none; text-align:center'>
                     <li>
                         <label for='the_file'><?php $clang->eT("Select ZIP file:") ?></label>
-                        <input id='the_file' name="the_file" type="file" size="50" />
+                        <input id='the_file' name="the_file" type="file" />
                     </li>
                     <li>
                         <label>&nbsp;</label>
@@ -149,11 +147,11 @@
             </form>
         </div>
     </div>
-    <div id='quickadd' name='<?php $clang->eT('Quick add') ?>' style='display:none;'>
+    <div id='quickadd' style='display:none;'>
         <div style='float:left;'>
-            <label for='quickadd'><?php $clang->eT('Enter your labels:') ?></label>
+            <label for='quickaddarea'><?php $clang->eT('Enter your labels:') ?></label>
             <br />
-            <textarea id='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.') ?>' rows='30' cols='100' style='width:570px;'></textarea>
+            <textarea id='quickaddarea' name='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.') ?>' rows='30' cols='100' style='width:570px;'></textarea>
             <br /><button id='btnqareplace' type='button'><?php $clang->eT('Replace') ?></button>
             <button id='btnqainsert' type='button'><?php $clang->eT('Add') ?></button>
             <button id='btnqacancel' type='button'><?php $clang->eT('Cancel') ?></button>

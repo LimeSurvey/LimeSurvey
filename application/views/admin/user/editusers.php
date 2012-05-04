@@ -1,21 +1,21 @@
 <div class='header ui-widget-header'><?php $clang->eT("User control");?></div><br />
-<table id='users' class='users' width='100%' border='0'>
+<table id='users' class='users'>
     <thead>
         <tr>
             <th><?php $clang->eT("Action");?></th>
 
-            <th width='20%'><?php $clang->eT("Username");?></th>
-            <th width='20%'><?php $clang->eT("Email");?></th>
-            <th width='20%'><?php $clang->eT("Full name");?></th>
+            <th style='width:20%'><?php $clang->eT("Username");?></th>
+            <th style='width:20%'><?php $clang->eT("Email");?></th>
+            <th style='width:20%'><?php $clang->eT("Full name");?></th>
             <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) { ?>
-                <th width='5%'><?php $clang->eT("No of surveys");?></th>
+                <th style='width:5%'><?php $clang->eT("No of surveys");?></th>
                 <?php } ?>
-            <th width='15%'><?php $clang->eT("Created by");?></th>
+            <th style='width:15%'><?php $clang->eT("Created by");?></th>
         </tr></thead><tbody>
         <tr >
-            <td align='center' style='padding:3px;'>
+            <td style='padding:3px;'>
                 <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
-                    <input type='image' src='<?php echo $imageurl;?>edit_16.png' value='<?php $clang->eT("Edit user");?>' />
+                    <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit user");?>' />
                     <input type='hidden' name='action' value='modifyuser' />
                     <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
                 </form>
@@ -31,18 +31,18 @@
 
             </td>
 
-            <td align='center'><strong><?php echo htmlspecialchars($usrhimself['user']);?></strong></td>
-            <td align='center'><strong><?php echo htmlspecialchars($usrhimself['email']);?></strong></td>
-            <td align='center'><strong><?php echo htmlspecialchars($usrhimself['full_name']);?></strong></td>
+            <td><strong><?php echo htmlspecialchars($usrhimself['user']);?></strong></td>
+            <td><strong><?php echo htmlspecialchars($usrhimself['email']);?></strong></td>
+            <td><strong><?php echo htmlspecialchars($usrhimself['full_name']);?></strong></td>
 
             <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) { ?>
-                <td align='center'><strong><?php echo $noofsurveys;?></strong></td>
+                <td><strong><?php echo $noofsurveys;?></strong></td>
                 <?php } ?>
 
             <?php if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { ?>
-                <td align='center'><strong><?php echo $row;?></strong></td>
+                <td><strong><?php echo $row;?></strong></td>
                 <?php } else { ?>
-                <td align='center'><strong>---</strong></td>
+                <td><strong>---</strong></td>
                 <?php } ?>
         </tr>
 
@@ -52,7 +52,7 @@
             ?>
             <tr>
 
-                <td align='center' style='padding:3px;'>
+                <td style='padding:3px;'>
                     <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == Yii::app()->session['loginID'] || (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
                         <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
                             <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php $clang->eT("Edit this user");?>' />
@@ -99,11 +99,11 @@
                         <?php } ?>
 
                 </td>
-                <td align='center'><?php echo $usr['user'];?></td>
-                <td align='center'><a href='mailto:<?php echo $usr['email'];?>'><?php echo $usr['email'];?></a></td>
-                <td align='center'><?php echo $usr['full_name'];?></td>
+                <td><?php echo $usr['user'];?></td>
+                <td><a href='mailto:<?php echo $usr['email'];?>'><?php echo $usr['email'];?></a></td>
+                <td><?php echo $usr['full_name'];?></td>
 
-                <td align='center'><?php echo $noofsurveyslist[$i];?></td>
+                <td><?php echo $noofsurveyslist[$i];?></td>
 
                 <?php $uquery = "SELECT users_name FROM {{users}} WHERE uid=".$usr['parent_id'];
                     $uresult = dbExecuteAssoc($uquery); //Checked
@@ -113,9 +113,9 @@
                     $usr['parent'] = $srow['users_name']; ?>
 
                 <?php if (isset($usr['parent_id'])) { ?>
-                    <td align='center'><?php echo $usr['parent'];?></td>
+                    <td><?php echo $usr['parent'];?></td>
                     <?php } else { ?>
-                    <td align='center'>-----</td>
+                    <td>-----</td>
                     <?php } ?>
 
             </tr>
@@ -126,10 +126,10 @@
     <form action='<?php echo $this->createUrl("admin/user/adduser");?>' method='post'>
         <table class='users'><tr class='oddrow'>
                 <th><?php $clang->eT("Add user:");?></th>
-                <td align='center' width='20%'><input type='text' name='new_user' /></td>
-                <td align='center' width='20%'><input type='text' name='new_email' /></td>
-                <td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='8%'>&nbsp;</td>
-                <td align='center' width='15%'><input type='submit' value='<?php $clang->eT("Add User");?>' />
+                <td style='width:20%'><input type='text' name='new_user' /></td>
+                <td style='width:20%'><input type='text' name='new_email' /></td>
+                <td style='width:20%'><input type='text' name='new_full_name' /></td><td style='width:8%'>&nbsp;</td>
+                <td style='width:15%'><input type='submit' value='<?php $clang->eT("Add User");?>' />
                     <input type='hidden' name='action' value='adduser' /></td>
             </tr></table></form><br />
     <?php } ?>

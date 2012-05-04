@@ -744,6 +744,7 @@ ul.assessmentscope li label:first-child {
 
 .answertable {
     margin:0 auto;
+    text-align:center;
 }
 
 
@@ -761,10 +762,18 @@ ul.assessmentscope li label:first-child {
     text-align:right;
 }
 
+.answertable td *
+{
+    vertical-align: middle;
+}
+
+.answertable a
+{
+    font-size:0;
+}
+
 .answertable td img {
-    padding-left:2px;
-    padding-right:2px;
-    padding-top:5px;
+    padding:4px 2px;
 }
 
 

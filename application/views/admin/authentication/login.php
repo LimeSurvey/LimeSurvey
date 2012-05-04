@@ -34,8 +34,8 @@
             <?php
         }
         ?>
-    </p></form><br />
-    </div>
+    </p><br />
+    </div></form>
 <script type='text/javascript'>
     document.getElementById('user').focus();
 </script>

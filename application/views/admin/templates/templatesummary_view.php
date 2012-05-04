@@ -113,6 +113,6 @@
     <?php }
     else
     { ?>
-    <p><iframe id='previewiframe' src='<?php echo $tempurl; ?>/template_temp_<?php echo $time; ?>.html' width='95%' height='768' name='previewiframe' style='background-color: white;'>Embedded Frame</iframe></p>
+    <p><iframe id='previewiframe' src='<?php echo $tempurl; ?>/template_temp_<?php echo $time; ?>.html' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe></p>
     </div>
     <?php } ?>

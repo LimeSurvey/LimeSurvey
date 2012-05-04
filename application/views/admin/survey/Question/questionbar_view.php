@@ -11,7 +11,7 @@
 </div>
 <div class='menubar-main'>
     <div class='menubar-left'>
-        <img id='separator16' class='separator' src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
+        <img id='separator16' src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
         <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
             {
                 if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
@@ -41,30 +41,18 @@
             <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')">
                 <img src='<?php echo $sImageURL; ?>quality_assurance.png' alt='<?php $clang->eT("Check survey logic for current question"); ?>' /></a>
             <?php } ?>
-
-        <?php if ((($qct == 0 && $activated != "Y") || $activated != "Y") && hasSurveyPermission($surveyid,'surveycontent','delete'))
-            {
-                if (is_null($condarray))
-                { ?>
-                <a href='#'
-                    onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/question/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
-                    <img src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete current question"); ?>'
-                        border='0' hspace='0' /></a>
-                <?php }
-                else
-                // TMSW Conditions->Relevance:  not needed - should be allowed to delete questions even if others depend upon it - use separate view to see exceptions
-
-                { ?>
-                <a href='<?php echo $this->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
-                    onclick="alert('<?php $clang->eT("It's impossible to delete this question because there is at least one question having a condition on it.","js"); ?>')">
-                    <img src='<?php echo $sImageURL; ?>delete_disabled.png' alt='<?php $clang->eT("Disabled - Delete current question"); ?>' /></a>
-                <?php }
-            }
-            else {
-            ?>
-
-            <img src='<?php echo $sImageURL; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>" width='40' />
-
+        <?php if ($activated != "Y")
+            {?>
+            <a href='#'
+                onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/question/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
+                <img style='<?php echo (hasSurveyPermission($surveyid,'surveycontent','delete')?'':'visibility: hidden;');?>' src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete current question"); ?>'
+                    border='0' hspace='0' /></a>
+            <?php }
+            else
+            { ?>
+            <a href='<?php echo $this->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
+                onclick="alert('<?php $clang->eT("You can't delete this question because the survey is currently active.","js"); ?>')">
+                <img src='<?php echo $sImageURL; ?>delete_disabled.png' alt='<?php $clang->eT("Disabled - Delete current question"); ?>' /></a>
             <?php }
 
 

@@ -2,7 +2,7 @@
     <?php $clang->eT("Central participants database summary"); ?>
 </div>
 <br />
-<table align='center' class='statisticssummary'>
+<table class='statisticssummary'>
     <tr>
         <th>
             <?php $clang->eT("Total participants in central table"); ?>

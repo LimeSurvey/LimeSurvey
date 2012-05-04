@@ -45,7 +45,7 @@
     <div class='menubar-main'>
         <div class='menubar-left'>
             <a href='<?php echo $this->createUrl("/admin"); ?>'>
-                <img src='<?php echo $sImageURL; ?>home.png' name='HomeButton' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>home.png' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='60' height='10'  />
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
 
@@ -60,41 +60,41 @@
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir))
                 {?>
                 <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/upload'); ?>", "_top")'>
-                    <img name='ImportTemplate' src='<?php echo $sImageURL; ?>import.png' alt='<?php $clang->eT("Import template"); ?>' title='' /></a>
+                    <img src='<?php echo $sImageURL; ?>import.png' alt='<?php $clang->eT("Import template"); ?>' title='' /></a>
                 <a href='#' onclick='javascript:window.open("<?php echo $this->createUrl('admin/templates/templatezip/templatename/' . $templatename) ?>", "_top")'>
-                    <img name='Export' src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export Template"); ?>' /></a>
-                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' border='0' />
+                    <img src='<?php echo $sImageURL; ?>export.png' alt='<?php $clang->eT("Export Template"); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Please enter the name for the copied template:"); ?>', '<?php echo $clang->gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
-                    <img name='MakeCopy' src='<?php echo $sImageURL; ?>copy.png' alt='<?php $clang->eT("Copy Template"); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>copy.png' alt='<?php $clang->eT("Copy Template"); ?>' /></a>
                 <?php
                 }
                 else
                 { ?>
 
-                <img name='ImportTemplate' src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php echo $clang->gT("Import template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
-                <img name='Export' src='<?php echo $sImageURL; ?>export_disabled.png' alt='<?php echo $clang->gT("Export template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
-                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' border='0' />
-                <img name='MakeCopy' src='<?php echo $sImageURL; ?>copy_disabled.png' alt='<?php echo $clang->gT("Copy template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
+                <img src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php echo $clang->gT("Import template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
+                <img src='<?php echo $sImageURL; ?>export_disabled.png' alt='<?php echo $clang->gT("Export template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
+                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
+                <img src='<?php echo $sImageURL; ?>copy_disabled.png' alt='<?php echo $clang->gT("Copy template").' - '.$clang->gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
                 <?php
                 }
 
                 if (is_template_editable($templatename))
                 { ?>
                 <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
-                    <img name='RenameTemplate' src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Rename this template"); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Rename this template"); ?>' /></a>
                 <a href='#' onclick='if (confirm("<?php $clang->eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/delete/templatename/'.$templatename); ?>", "_top")' >
-                    <img name='DeleteTemplate' src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete this template"); ?>'/></a>
+                    <img src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete this template"); ?>'/></a>
                 <?php
             } ?>
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='20' height='10' />
             <?php
                 if(!is_writable($usertemplaterootdir))
                 { ?>
-                <img name='Export' src='<?php echo $sImageURL; ?>export_disabled.png' alt='<?php echo $clang->gT("Export template").' - '.sprintf($clang->gT("Please change the directory permissions of the folder %s in order to enable this option"),$tempdir); ?>' />
-                <img name='ImportTemplate' src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php echo $clang->gT("Import template").' - '.sprintf($clang->gT("Please change the directory permissions of the folder %s in order to enable this option"),$tempdir); ?>' title='' />
-                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' border='0' />
+                <img src='<?php echo $sImageURL; ?>export_disabled.png' alt='<?php echo $clang->gT("Export template").' - '.sprintf($clang->gT("Please change the directory permissions of the folder %s in order to enable this option"),$tempdir); ?>' />
+                <img src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php echo $clang->gT("Import template").' - '.sprintf($clang->gT("Please change the directory permissions of the folder %s in order to enable this option"),$tempdir); ?>' title='' />
+                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Please enter the name for the copied template:"); ?>', '<?php echo $clang->gT("copy_of_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
-                    <img name='MakeCopy' src='<?php echo $sImageURL; ?>copy.png' alt='<?php $clang->eT("Copy template"); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>copy.png' alt='<?php $clang->eT("Copy template"); ?>' /></a>
                 <?php
             }?>
 
@@ -114,10 +114,9 @@
                 <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Create new template"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>">
-                <img src='<?php echo $sImageURL; ?>logout.png' name='Logout'
-                    alt='<?php $clang->eT("Logout"); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php $clang->eT("Logout"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='20'  />
         </div>
     </div>
 </div>
-<font style='size:12px;line-height:2px;'>&nbsp;&nbsp;</font>
+<p>&nbsp;</p>
