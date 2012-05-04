@@ -2,6 +2,7 @@
 <div id="welcome">
    <span class="survey-name">{SURVEYNAME}</span>
    <p class="survey-description">{SURVEYDESCRIPTION}</p>
+   {LANGUAGECHANGER}
 </div>
 <div id="welcometext">
 			<p>{WELCOME}</p>

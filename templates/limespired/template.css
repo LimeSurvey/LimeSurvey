@@ -240,6 +240,10 @@ input.ui-button {
 .language-changer {
 }
 
+.survey-survey-language.welcome-page select {
+	margin: 0 0 5px 5px;
+}
+
 /* --------------------------------------------------- */
 .numquestions {
   color: green;

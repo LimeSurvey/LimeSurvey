@@ -535,6 +535,10 @@ span.surveywelcome {
 	text-align: center;
 }
 
+select.languagechanger {
+	margin-top: 3px;
+}
+
 table.group {
 	width: 100%;
 	margin: 0 0 2px 0;
