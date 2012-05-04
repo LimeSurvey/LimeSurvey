@@ -593,6 +593,10 @@ hr {
 	font-size: 0.9em;
 }
 
+p.survey-survey-language {
+	margin: 0;
+}
+
 .array1 {
   background-color: #192D40;
   text-align: center;

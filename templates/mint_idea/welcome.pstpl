@@ -5,6 +5,7 @@
           <div class="in">
                         <h2>{SURVEYNAME}</h2>
 			<p>{SURVEYDESCRIPTION}</p>
+            <p class="survey-survey-language">{LANGUAGECHANGER}</p>
 			<p>{WELCOME}</p>
 			<h3>{THEREAREXQUESTIONS}</h3>
 

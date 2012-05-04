@@ -141,6 +141,15 @@ height:12px;
   background-color: #F0F0F0;
 }
 
+.welcome-table td.welcome-language-changer {
+	text-align: center;
+	padding: 0;
+}
+
+.welcome-table td.welcome-language-changer select {
+	margin: 3px 0;
+}
+
 .languagechanger {
   font-size: 1em;
 }

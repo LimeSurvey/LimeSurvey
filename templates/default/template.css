@@ -323,7 +323,7 @@ span.surveydescription {
 
 td.survey-welcome {
 	text-align: center;
-	padding-top: 20px;
+	padding: 10px;
 }
 
 span.surveywelcome {
@@ -374,6 +374,10 @@ span.surveywelcome {
 
 .language-changer {
 	text-align: center;
+}
+
+select.languagechanger {
+	margin-top: 3px;
 }
 
 table.group {

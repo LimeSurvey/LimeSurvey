@@ -312,6 +312,7 @@ input.saveall,input.clearall {
 
 .languagechanger {
   font-size: 1em;
+  margin-top: 5px;
 }
 
 .warning {

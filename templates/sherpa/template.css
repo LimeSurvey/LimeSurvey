@@ -445,6 +445,10 @@ table,tr,td,th {
   font-size: 1em;
 }
 
+.survey-survey-language.welcome-page select {
+	margin: 7px 0;
+}
+
 table,.printouttable {
   width: 100%;
 }

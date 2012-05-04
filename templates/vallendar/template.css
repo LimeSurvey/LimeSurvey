@@ -468,6 +468,14 @@ height:12px;
   margin-top: 5px;
 }
 
+.welcome-table td.language-changer {
+	padding: 0;
+}
+
+.welcome-table td.language-changer select {
+	margin: 5px 0;
+}
+
 table.question {
   width: 100%;
 }
