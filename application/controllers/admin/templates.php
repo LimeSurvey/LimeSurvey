@@ -219,12 +219,12 @@ class templates extends Survey_Common_Action
     */
     public function index($editfile = 'startpage.pstpl', $screenname = 'welcome', $templatename = 'default')
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'templates.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . '/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . '/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . '/codemirror_ui/css/codemirror-ui.css');
-
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'templates.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/css/codemirror-ui.css');
+
 
         $this->_renderWrappedTemplate('templates', $aViewUrls);
 
