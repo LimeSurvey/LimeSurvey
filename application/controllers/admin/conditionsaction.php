@@ -745,6 +745,7 @@ class conditionsaction extends Survey_Common_Action {
                     }
                     if (isset($qidattributes['multiflexible_step']) && trim($qidattributes['multiflexible_step'])!='') {
                         $stepvalue=floatval($qidattributes['multiflexible_step']);
+                        if ($stepvalue==0) $stepvalue=1;
                     } else {
                         $stepvalue=1;
                     }
@@ -1471,7 +1472,7 @@ class conditionsaction extends Survey_Common_Action {
                                 $aData['rows'] = $rows;
                                 $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
 
-                               //$aViewUrls['includes/conditions_edit'][] = $aData;
+                                //$aViewUrls['includes/conditions_edit'][] = $aData;
 
                                 $aViewUrls['output'] .= $this->getController()->render('/admin/conditions/includes/conditions_edit',$aData, TRUE);
 

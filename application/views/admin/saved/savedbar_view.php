@@ -7,9 +7,8 @@
         <div class='menubar-left'>
 
             <a href="<?php echo $this->createUrl("admin/survey/view/surveyid/{$iSurveyId}"); ?>" title="<?php $clang->eT('Return to survey administration'); ?>">
-                <img name="<?php $clang->eT('Administration'); ?>" src="<?php echo Yii::app()->getConfig('imageurl'); ?>/home.png" alt="<?php echo $clang->eT('Return to survey administration'); ?>" align='left'>
+                <img src="<?php echo $sImageURL; ?>/home.png" alt="<?php echo $clang->eT('Return to survey administration'); ?>">
             </a>
-
         </div>
     </div>
 </div>

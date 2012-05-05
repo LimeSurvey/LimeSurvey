@@ -27,7 +27,7 @@
             <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' />
         </li>
         <li id='lifilterduplicatefields'>
-            <label for='filterduplicatefields[]'><?php $clang->eT("Duplicates are determined by:"); ?></label>
+            <label for='filterduplicatefields'><?php $clang->eT("Duplicates are determined by:"); ?></label>
             <?php
                 $aFilterDuplicateFields = array('firstname' => 'firstname', 'lastname' => 'lastname', 'email' => 'email', 'token' => 'token', 'language' => 'language');
                 array_merge($aFilterDuplicateFields, getAttributeFieldNames($iSurveyId));

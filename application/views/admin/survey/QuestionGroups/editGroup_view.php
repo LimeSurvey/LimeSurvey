@@ -29,13 +29,13 @@
 
     </div>
     <ul>
-    <li>
-        <label for='randomization_group'><?php $clang->eT("Randomization group:"); ?></label><input type='text' maxlength='20' size='20' name='randomization_group' id='randomization_group' value="<?php echo $aGroupData[$aBaseLanguage]['randomization_group']; ?>" />
-    </li>
-    <li>
-        <label for='relevance'><?php $clang->eT("Relevance equation:"); ?></label>
-        <textarea cols='50' rows='1' id='grelevance' name='grelevance'><?php echo $aGroupData[$aBaseLanguage]['grelevance']; ?></textarea>
-    </li>
+        <li>
+            <label for='randomization_group'><?php $clang->eT("Randomization group:"); ?></label><input type='text' maxlength='20' size='20' name='randomization_group' id='randomization_group' value="<?php echo $aGroupData[$aBaseLanguage]['randomization_group']; ?>" />
+        </li>
+        <li>
+            <label for='grelevance'><?php $clang->eT("Relevance equation:"); ?></label>
+            <textarea cols='50' rows='1' id='grelevance' name='grelevance'><?php echo $aGroupData[$aBaseLanguage]['grelevance']; ?></textarea>
+        </li>
     </ul>
     <p>
         <input type='submit' class='standardbtn' value='<?php $clang->eT("Save");?>' />

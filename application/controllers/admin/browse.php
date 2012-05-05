@@ -273,7 +273,7 @@ class browse extends Survey_Common_Action
 
         $aViewUrls[] = 'browseidfooter_view';
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     public function index($iSurveyId)
@@ -573,7 +573,7 @@ class browse extends Survey_Common_Action
         }
 
         $aViewUrls[] = 'browseallfooter_view';
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     public function time($iSurveyId)
@@ -803,7 +803,7 @@ class browse extends Survey_Common_Action
 
         $aViewUrls[] = 'browseindex_view';
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     /**
@@ -898,7 +898,7 @@ class browse extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'browse.js');
 

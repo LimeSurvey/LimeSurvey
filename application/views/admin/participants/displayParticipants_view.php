@@ -325,3 +325,4 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
         </p>
 </div>
 
+

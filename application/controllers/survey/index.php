@@ -665,7 +665,7 @@ class index extends CAction {
 
         if (isset($_POST['saveall']) || isset($flashmessage))
         {
-            echo "<script language='JavaScript'> $(document).ready( function() { alert('".$clang->gT("Your responses were successfully saved.","js")."');}) </script>";
+            echo "<script type='text/javascript'> $(document).ready( function() { alert('".$clang->gT("Your responses were successfully saved.","js")."');}) </script>";
         }
     }
 

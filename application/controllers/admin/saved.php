@@ -85,12 +85,14 @@ class saved extends Survey_Common_Action
             'condition' => 'sid=:sid',
             'order' => 'saved_date desc',
             'params' => array(':sid' => $iSurveyId),
-        )) or die($clang->gT("Couldn't summarise saved entries"));
+        ));
 
         if (!empty($aResults))
         {
             return compact('aResults');
         }
+        else
+        {return array('aResults'=>array());}
     }
 
 }

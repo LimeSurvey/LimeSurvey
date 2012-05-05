@@ -17,7 +17,7 @@
                     <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php $clang->eT("Add new token entry"); ?>' />
                 </a>
                 <a href="<?php echo $this->createUrl("admin/tokens/adddummies/surveyid/$surveyid"); ?>">
-                    <img src='<?php echo $imageurl; ?>create_dummy_token.png' title='' alt='<?php $clang->eT("Add dummy tokens"); ?>' />
+                    <img src='<?php echo $imageurl; ?>create_dummy_token.png' title='' alt='<?php $clang->eT("Create dummy tokens"); ?>' />
                 </a>
 
                 <?php

@@ -8,9 +8,9 @@
 <li>
  <label for='filterinc'><?php $clang->eT("Export");?>:</label>
  <select name='filterinc' id='filterinc'>
-  <option value='filter' $selecthide><?php $clang->eT("Completed responses only");?></option>
-  <option value='show' $selectshow><?php $clang->eT("All responses");?></option>
-  <option value='incomplete' $selectinc><?php $clang->eT("Incomplete responses only");?></option>
+  <option value='filter' <?php echo $selecthide;?>><?php $clang->eT("Completed responses only");?></option>
+  <option value='show' <?php echo $selectshow;?>><?php $clang->eT("All responses");?></option>
+  <option value='incomplete' <?php echo $selectinc;?>><?php $clang->eT("Incomplete responses only");?></option>
  </select>
 </li>
 <li>

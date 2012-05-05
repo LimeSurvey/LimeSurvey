@@ -255,7 +255,7 @@ class tokens extends Survey_Common_Action
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/css/jquery.multiselect.filter.css");
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/ui.jqgrid.css");
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')       . "admin/".Yii::app()->getConfig('admintheme')."/displayParticipants.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') . "displayParticipants.css");
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::import('application.libraries.Date_Time_Converter', true);

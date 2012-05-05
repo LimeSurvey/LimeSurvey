@@ -679,7 +679,8 @@ div.messagebox .warningheader {
     margin:0 auto;
 }
 
-.conditionlist table
+.conditionlist table,
+#filterchoices
 {
     width:100%;
 }
@@ -733,4 +734,48 @@ tr.editedrow{
 
 .usersurveypermissions th{
     padding:0 2em;
+}
+
+
+.filtertable  {
+    background:#EEF6FF;
+    text-align:center;
+    margin:5px auto;
+    border:1px #fff solid;
+    padding:3px 10px;
+}
+
+.filtertable td {
+    padding:3px 10px 7px 10px;
+    border-right:1px #fff solid;
+    border-bottom:1px #fff solid;
+    vertical-align: top;
+    border-collapse:collapse !important;
+}
+
+.filtertable td:last-child {
+    border-left:0px #D2E0F2 solid;
+}
+
+.filtertable tr:last-child td {
+    border-top:0px #D2E0F2 solid;
+}
+
+.filtertable span {
+    font-size:10px;
+    font-weight: bold;
+}
+
+.filtertable span.smalltext {
+    font-size:10px;
+    font-weight: normal;
+}
+
+.filtertable textarea {
+    width:210px;
+}
+
+.ui-jqgrid td input[type="image"]
+{
+    padding:2px;
 }

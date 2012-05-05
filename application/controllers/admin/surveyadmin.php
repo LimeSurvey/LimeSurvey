@@ -59,7 +59,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . "/scripts/admin/listsurvey.js");
         $css_admin_includes[] = Yii::app()->getConfig('generalscripts') . "jquery/css/jquery.multiselect.css";
         $css_admin_includes[] = Yii::app()->getConfig('generalscripts') . "jquery/css/jquery.multiselect.filter.css";
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/displayParticipants.css";
+        $css_admin_includes[] = Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css";
         $css_admin_includes[] = Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/ui.jqgrid.css";
         $css_admin_includes[] = Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/css/jquery.ui.datepicker.css";
         $this->getController()->_css_admin_includes($css_admin_includes);

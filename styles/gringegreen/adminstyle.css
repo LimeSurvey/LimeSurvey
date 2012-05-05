@@ -85,7 +85,7 @@ th, p, div {
 fieldset {
     padding:0 6px 0px 6px;
     margin: 3px;
-    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2;
+    border-color:#DDD;
     border-style: solid;
     border-width: 1px;
 }
@@ -596,7 +596,8 @@ a.optoutemail {
 }
 
 
-.conditionlist table
+.conditionlist table,
+#filterchoices
 {
     width:100%;
 }
@@ -1128,7 +1129,6 @@ textarea.updater-changelog {
 #importlabels li label:first-child,
 #exportdialog li label:first-child,
 #importquestion li label:first-child,
-#bouncesettings li label:first-child,
 #importquestion li label:first-child {
     width: 44%;
     text-align: right;
@@ -1202,7 +1202,6 @@ textarea.updater-changelog {
 #addnewquotaform li,
 #importsurveyresources li,
 #labelsetform li,
-#bouncesettings li,
 #exportspss li{
     list-style-type: none;
     clear:left;
@@ -1330,7 +1329,7 @@ div.right {
 }
 
 .statistics-tbl-separator td {
-    background-color:#D2E0F2;
+    background-color:#EFFBDB;
     height:2px;
     padding:0;
 }
@@ -1363,10 +1362,11 @@ div.right {
     width:33%;
 }
 
+/* Statistics filter */
 .filtertable  {
-    background:#EEF6FF;
+    background:#EFFBDB;
     text-align:center;
-    margin:5px 15px;
+    margin:5px auto;
     border:1px #fff solid;
     padding:3px 10px;
 }
@@ -1390,6 +1390,11 @@ div.right {
 .filtertable span {
     font-size:10px;
     font-weight: bold;
+}
+
+.filtertable span.smalltext {
+    font-size:10px;
+    font-weight: normal;
 }
 
 .filtertable textarea {
@@ -1543,8 +1548,8 @@ ol.organizer {
 
 
 .organizer li div  {
-    border: 1px solid #D2E0F2;
-    background-color:#D2E0F2;
+    background-color:#85BD00;
+    color:#fff;
     padding: 3px;
     margin: 0;
     cursor: move;
@@ -1554,7 +1559,8 @@ ol.organizer {
 }
 
 .organizer li ol li div{
-    background-color:#EEF6FF;
+    background-color:#EFFBDB;
+    color:#666;
 }
 
 .textresponses {
@@ -1628,4 +1634,9 @@ ol.organizer {
 
 #browseresults{
     margin:0;
+}
+
+.ui-jqgrid td input[type="image"]
+{
+    padding:2px;
 }

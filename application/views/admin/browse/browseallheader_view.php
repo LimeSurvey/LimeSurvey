@@ -12,15 +12,15 @@
             <?php if (!isset($_POST['sql']))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/0/limit/$limit"); ?>'>
-                    <img align='left' src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
                 <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$last/limit/$limit"); ?>'>
-                    <img align='left'  src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
-                <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' border='0' align='left' alt='' />
+                    <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' alt='' />
 
                 <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>' >
-                    <img align='left' src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
                 <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$end/limit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>' >
-                    <img align='left' src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <?php
                 }
@@ -41,18 +41,16 @@
                     $selectshow = "selected='selected'";
                 }
             ?>
-            <form action='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/"); ?>' id='browseresults' method='post'><font size='1' face='verdana'>
-                    <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' border='0' align='right' alt='' />
+            <form action='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/"); ?>' id='browseresults' method='post'>
+                    <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' alt='' />
                     <?php $clang->eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
                     &nbsp;&nbsp; <?php $clang->eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
                     &nbsp;&nbsp; <input type='submit' value='<?php $clang->eT("Show"); ?>' />
                     &nbsp;&nbsp; <?php $clang->eT("Display:"); ?> <select name='filterinc' onchange='javascript:submit();'>
-                        <option value='show'<?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
-                        <option value='filter'<?php echo $selecthide; ?>><?php $clang->eT("Completed responses only"); ?></option>
-                        <option value='incomplete'<?php echo $selectinc; ?>><?php $clang->eT("Incomplete responses only"); ?></option>
+                        <option value='show' <?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
+                        <option value='filter' <?php echo $selecthide; ?>><?php $clang->eT("Completed responses only"); ?></option>
+                        <option value='incomplete' <?php echo $selectinc; ?>><?php $clang->eT("Incomplete responses only"); ?></option>
                     </select>
-
-                </font>
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='action' value='browse' />
                 <input type='hidden' name='subaction' value='all' />
@@ -69,13 +67,13 @@
 
 <!-- DATA TABLE -->
 <?php if ($fncount < 10) { ?>
-    <table class='browsetable' width='100%'>
+    <table class='browsetable' style='width:100%'>
     <?php } else { ?>
     <table class='browsetable'>
     <?php } ?>
 
 <thead>
-    <tr valign='top'>
+    <tr>
         <th><input type='checkbox' id='selectall'></th>
         <th><?php $clang->eT('Actions'); ?></th>
         <?php
