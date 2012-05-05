@@ -726,3 +726,11 @@ tr.editedrow{
     margin-left: -175px;
     z-index:1000;
 }
+
+.usersurveypermissions {
+    text-align:center;
+}
+
+.usersurveypermissions th{
+    padding:0 2em;
+}

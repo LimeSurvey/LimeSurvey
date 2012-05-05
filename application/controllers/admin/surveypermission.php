@@ -52,7 +52,7 @@ class surveypermission extends Survey_Common_Action {
 	            . "<th>".$clang->gT("Full name")."</th>\n";
             foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
             {
-                $surveysecurity.="<th align=\"center\"><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
+                $surveysecurity.="<th><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
             }
             $surveysecurity .= "</tr></thead>\n";
 
@@ -100,13 +100,13 @@ class surveypermission extends Survey_Common_Action {
 
                     $surveysecurity .= "<td>\n";
                     $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/set/surveyid/'.$surveyid)."'>"
-                    ."<input type='image' src='{$imageurl}edit_16.png' title='".$clang->gT("Edit permissions")."' />"
+                    ."<input type='image' src='{$imageurl}edit_16.png' alt='".$clang->gT("Edit permissions")."' />"
                     ."<input type='hidden' name='action' value='setsurveysecurity' />"
                     ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                     ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
                     ."</form>\n";
                     $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/delete/surveyid/'.$surveyid)."'>"
-                    ."<input type='image' src='{$imageurl}/token_delete.png' title='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+                    ."<input type='image' src='{$imageurl}/token_delete.png' alt='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
                     ."<input type='hidden' name='action' value='delsurveysecurity' />"
                     ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                     ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
@@ -153,14 +153,14 @@ class surveypermission extends Survey_Common_Action {
                         {
                             $insert = "<div>&nbsp;</div>";
                         }
-                        $surveysecurity .= "<td align=\"center\">\n$insert\n</td>\n";
+                        $surveysecurity .= "<td>\n$insert\n</td>\n";
                     }
 
                     $surveysecurity .= "</tr>\n";
                     $row++;
                 }
             } else {
-                $surveysecurity .= "<tr><td colspan='18'></td></tr>"; //fix error on empty table
+                $surveysecurity .= "<tr><td colspan='16'></td></tr>"; //fix error on empty table
             }
 
             $surveysecurity .= "</tbody>\n"
@@ -391,17 +391,17 @@ class surveypermission extends Survey_Common_Action {
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for group %s"),"<span style='font-style:italic'>".$sUsergroupName."</span>")."</div>";
                 }
                 $usersummary .= "<br /><form action='".$this->getController()->createUrl('admin/surveypermission/surveyright/surveyid/'.$surveyid)."' method='post'>\n"
-                . "<table style='margin:0 auto;' border='0' class='usersurveypermissions'><thead>\n";
+                . "<table style='margin:0 auto;' class='usersurveypermissions'><thead>\n";
 
                 $usersummary .= ""
-                . "<tr><th></th><th align='center'>".$clang->gT("Permission")."</th>\n"
-                . "<th align='center'><input type='button' id='btnToggleAdvanced' value='<<' /></th>\n"
-                . "<th align='center' class='extended'>".$clang->gT("Create")."</th>\n"
-                . "<th align='center' class='extended'>".$clang->gT("View/read")."</th>\n"
-                . "<th align='center' class='extended'>".$clang->gT("Update")."</th>\n"
-                . "<th align='center' class='extended'>".$clang->gT("Delete")."</th>\n"
-                . "<th align='center' class='extended'>".$clang->gT("Import")."</th>\n"
-                . "<th align='center' class='extended'>".$clang->gT("Export")."</th>\n"
+                . "<tr><th></th><th>".$clang->gT("Permission")."</th>\n"
+                . "<th><input type='button' id='btnToggleAdvanced' value='<<' /></th>\n"
+                . "<th class='extended'>".$clang->gT("Create")."</th>\n"
+                . "<th class='extended'>".$clang->gT("View/read")."</th>\n"
+                . "<th class='extended'>".$clang->gT("Update")."</th>\n"
+                . "<th class='extended'>".$clang->gT("Delete")."</th>\n"
+                . "<th class='extended'>".$clang->gT("Import")."</th>\n"
+                . "<th class='extended'>".$clang->gT("Export")."</th>\n"
                 . "</tr></thead>\n";
 
                 //content
@@ -411,13 +411,13 @@ class surveypermission extends Survey_Common_Action {
                 foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
                 {
                     $oddcolumn=!$oddcolumn;
-                    $usersummary .= "<tr><td align='center'><img src='{$imageurl}/{$aCRUDPermissions['img']}_30.png' /></td>";
-                    $usersummary .= "<td align='right'>{$aCRUDPermissions['title']}</td>";
-                    $usersummary .= "<td  align='center'><input type=\"checkbox\"  class=\"markrow\" name='all_{$sPermissionKey}' /></td>";
+                    $usersummary .= "<tr><td><img src='{$imageurl}{$aCRUDPermissions['img']}_30.png' alt='{$aCRUDPermissions['description']}'/></td>";
+                    $usersummary .= "<td>{$aCRUDPermissions['title']}</td>";
+                    $usersummary .= "<td ><input type=\"checkbox\"  class=\"markrow\" name='all_{$sPermissionKey}' /></td>";
                     foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
                     {
                         if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue;
-                        $usersummary .= "<td class='extended' align='center'>";
+                        $usersummary .= "<td class='extended'>";
 
                         if ($CRUDValue)
                         {

@@ -7,7 +7,7 @@
             <label for="the_file" id="fileupload">
                 <?php $clang->eT("Choose the file to upload:"); ?>
             </label>
-            <input type="file" name="the_file" size="50" />
+            <input type="file" name="the_file" />
         </li>
         <li>
             <label for="characterset" id="characterset">

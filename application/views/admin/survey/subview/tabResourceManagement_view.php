@@ -20,7 +20,7 @@
         <input type='hidden' name='action' value='importsurveyresources' />
         <ul style='list-style-type:none; text-align:center'>
             <li><label for='the_file'><?php $clang->eT("Select ZIP File:"); ?></label>
-                <input id='the_file' name='the_file' type='file' size='50' /></li>
+                <input id='the_file' name='the_file' type='file' /></li>
             <li><label>&nbsp;</label>
                 <input type='button' value='<?php $clang->eT("Import Resources ZIP Archive"); ?>' <?php echo $ZIPimportAction; ?> /></li>
         </ul>

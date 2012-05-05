@@ -66,7 +66,7 @@
                 </div><ul>
                     <li><label for='the_file'>
                         <?php $clang->eT("Select label set file (*.lsl,*.csv):"); ?></label>
-                        <input id='the_file' name='the_file' type='file' size='35' />
+                        <input id='the_file' name='the_file' type='file'/>
                     </li>
                     <li><label for='checkforduplicates'>
                         <?php $clang->eT("Don't import if label set already exists:"); ?></label>

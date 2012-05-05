@@ -1,12 +1,12 @@
 <?php if (!empty($sError)) { ?>
     <?php echo $sError; ?><br /><br />
-<?php } ?>
+    <?php } ?>
 
 <form id='tokenimport' enctype='multipart/form-data' action='<?php echo $this->createUrl("admin/tokens/import/surveyid/$iSurveyId"); ?>' method='post'>
     <ul>
         <li>
             <label for='the_file'><?php $clang->eT("Choose the CSV file to upload:"); ?></label>
-            <input type='file' id='the_file' name='the_file' size='35' /></li>
+            <input type='file' id='the_file' name='the_file' /></li>
         <li>
             <label for='csvcharset'><?php $clang->eT("Character set of the file:"); ?></label>
             <?php echo CHtml::dropDownList('csvcharset', 'auto', $aEncodings, array('size' => '1')); ?>
@@ -14,8 +14,8 @@
         <li>
             <label for='separator'><?php $clang->eT("Separator used:"); ?> </label>
             <?php
-            $aSeparator = array('auto' => $clang->gT("(Autodetect)"), 'comma' => $clang->gT("Comma"), 'semicolon' => $clang->gT("Semicolon"));
-            echo CHtml::dropDownList('separator', returnGlobal('separator'), $aSeparator, array('size' => '1'));
+                $aSeparator = array('auto' => $clang->gT("(Autodetect)"), 'comma' => $clang->gT("Comma"), 'semicolon' => $clang->gT("Semicolon"));
+                echo CHtml::dropDownList('separator', returnGlobal('separator'), $aSeparator, array('size' => '1'));
             ?>
         </li>
         <li>
@@ -29,9 +29,9 @@
         <li id='lifilterduplicatefields'>
             <label for='filterduplicatefields[]'><?php $clang->eT("Duplicates are determined by:"); ?></label>
             <?php
-            $aFilterDuplicateFields = array('firstname' => 'firstname', 'lastname' => 'lastname', 'email' => 'email', 'token' => 'token', 'language' => 'language');
-            array_merge($aFilterDuplicateFields, getAttributeFieldNames($iSurveyId));
-            echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aFilterDuplicateFields, array('multiple' => 'multiple', 'size' => '5'));
+                $aFilterDuplicateFields = array('firstname' => 'firstname', 'lastname' => 'lastname', 'email' => 'email', 'token' => 'token', 'language' => 'language');
+                array_merge($aFilterDuplicateFields, getAttributeFieldNames($iSurveyId));
+                echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aFilterDuplicateFields, array('multiple' => 'multiple', 'size' => '5'));
             ?>
         </li>
     </ul>

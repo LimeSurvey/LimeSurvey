@@ -5794,6 +5794,20 @@ EOD;
             }
         }
 
+
+        private function ngT($single, $plural, $number, $escapemode = 'html')
+        {
+            // eventually replace this with i8n
+            if (isset(Yii::app()->lang))
+            {
+                return Yii::app()->lang->ngT($single, $plural, $number, $escapemode);
+            }
+            else
+            {
+                return $string;
+            }
+        }
+
         /**
         * Returns true if the survey is using comma as the radix
         * @return type

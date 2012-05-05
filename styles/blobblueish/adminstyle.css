@@ -1434,6 +1434,11 @@ thead th
     background-color:#E1E7EF;
 }
 
+.usersurveypermissions {
+    text-align:center;
+}
+
+
 .usersurveypermissions th{
     padding:0 2em;
 }
@@ -1586,3 +1591,4 @@ ol.organizer {
 tr.editedrow{
     background-color: #FCCFFF;
 }
+

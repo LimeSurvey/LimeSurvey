@@ -29,6 +29,7 @@ ul,ol {
 p {
     clear: left;
     text-align:center;
+    padding-bottom: 1em;
 }
 
 hr{
@@ -1451,6 +1452,10 @@ table.limetable tbody tr.highlight {
 
 thead th
 {
+}
+
+.usersurveypermissions {
+    text-align:center;
 }
 
 .usersurveypermissions th{
