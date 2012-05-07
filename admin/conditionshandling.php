@@ -698,6 +698,7 @@ if ($questionscount > 0)
             }
             if (isset($qidattributes['multiflexible_step']) && trim($qidattributes['multiflexible_step'])!='') {
                 $stepvalue=floatval($qidattributes['multiflexible_step']);
+                if ($stepvalue==0) $stepvalue=1;
             } else {
                 $stepvalue=1;
             }
