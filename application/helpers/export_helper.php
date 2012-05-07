@@ -754,7 +754,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
 */
 function QueXMLCleanup($string)
 {
-    return trim(strip_tags(str_ireplace("<br />","\n",$string)));
+    return html_entity_decode(trim(strip_tags(str_ireplace("<br />","\n",$string),'<p><b><u><i><em>')),ENT_QUOTES,'UTF-8');
 }
 
 /**
@@ -763,20 +763,17 @@ function QueXMLCleanup($string)
 function QueXMLCreateFree($f,$len,$lab="")
 {
     global $dom;
-    $free = $dom->create_element("free");
+    $free = $dom->createElement("free");
 
-    $format = $dom->create_element("format");
-    $format->set_content(QueXMLCleanup($f));
+    $format = $dom->createElement("format",QueXMLCleanup($f));
 
-    $length = $dom->create_element("length");
-    $length->set_content(QueXMLCleanup($len));
+    $length = $dom->createElement("length",QueXMLCleanup($len));
 
-    $label = $dom->create_element("label");
-    $label->set_content(QueXMLCleanup($lab));
+    $label = $dom->createElement("label",QueXMLCleanup($lab));
 
-    $free->append_child($format);
-    $free->append_child($length);
-    $free->append_child($label);
+    $free->appendChild($format);
+    $free->appendChild($length);
+    $free->appendChild($label);
 
 
     return $free;
@@ -788,22 +785,20 @@ function QueXMLCreateFree($f,$len,$lab="")
 function QueXMLFixedArray($array)
 {
     global $dom;
-    $fixed = $dom->create_element("fixed");
+    $fixed = $dom->createElement("fixed");
 
     foreach ($array as $key => $v)
     {
-        $category = $dom->create_element("category");
+        $category = $dom->createElement("category");
 
-        $label = $dom->create_element("label");
-        $label->set_content(QueXMLCleanup("$key"));
+        $label = $dom->createElement("label",QueXMLCleanup("$key"));
 
-        $value= $dom->create_element("value");
-        $value->set_content(QueXMLCleanup("$v"));
+        $value= $dom->createElement("value",QueXMLCleanup("$v"));
 
-        $category->append_child($label);
-        $category->append_child($value);
+        $category->appendChild($label);
+        $category->appendChild($value);
 
-        $fixed->append_child($category);
+        $fixed->appendChild($category);
     }
 
 
@@ -899,66 +894,58 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
 
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
-    $fixed = $dom->create_element("fixed");
+    $fixed = $dom->createElement("fixed");
 
     $nextcode = "";
 
     foreach($QueryResult->readAll() as $Row)
     {
-        $category = $dom->create_element("category");
+        $category = $dom->createElement("category");
 
-        $label = $dom->create_element("label");
-        $label->set_content(QueXMLCleanup($Row['title']));
+        $label = $dom->createElement("label",QueXMLCleanup($Row['title']));
 
-        $value= $dom->create_element("value");
-        $value->set_content(QueXMLCleanup($Row['code']));
+        $value= $dom->createElement("value",QueXMLCleanup($Row['code']));
 
-        $category->append_child($label);
-        $category->append_child($value);
+        $category->appendChild($label);
+        $category->appendChild($value);
 
         $st = QueXMLSkipTo($qid,$Row['code']);
         if ($st !== false)
         {
-            $quexml_skipto = $dom->create_element("quexml_skipto");
-            $quexml_skipto->set_content($st);
-            $category->append_child($quexml_skipto);
+            $quexml_skipto = $dom->createElement("quexml_skipto",$st);
+            $category->appendChild($quexml_skipto);
         }
 
 
-        $fixed->append_child($category);
+        $fixed->appendChild($category);
         $nextcode = $Row['code'];
     }
 
     if ($other)
     {
-        $category = $dom->create_element("category");
+        $category = $dom->createElement("category");
 
-        $label = $dom->create_element("label");
-        $label->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
+        $label = $dom->createElement("label",quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
-        $value= $dom->create_element("value");
+        $value= $dom->createElement("value",'-oth-');
 
-        $value->set_content('-oth-');
+        $category->appendChild($label);
+        $category->appendChild($value);
 
-        $category->append_child($label);
-        $category->append_child($value);
+        $contingentQuestion = $dom->createElement("contingentQuestion");
+        $length = $dom->createElement("length",24);
+        $text = $dom->createElement("text",quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
-        $contingentQuestion = $dom->create_element("contingentQuestion");
-        $length = $dom->create_element("length");
-        $text = $dom->create_element("text");
+        $contingentQuestion->appendChild($text);
+        $contingentQuestion->appendChild($length);
+        $contingentQuestion->setAttribute("varName",$varname . 'other');
 
-        $text->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
-        $length->set_content(24);
-        $contingentQuestion->append_child($text);
-        $contingentQuestion->append_child($length);
-        $contingentQuestion->set_attribute("varName",$varname . 'other');
+        $category->appendChild($contingentQuestion);
 
-        $category->append_child($contingentQuestion);
-
-        $fixed->append_child($category);
+        $fixed->appendChild($category);
     }
 
-    if ($rotate) $fixed->set_attribute("rotate","true");
+    if ($rotate) $fixed->setAttribute("rotate","true");
 
     return $fixed;
 }
@@ -1003,54 +990,49 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 
     foreach($QueryResult->readAll() as $Row)
     {
-        $response = $dom->create_element("response");
+        $response = $dom->createElement("response");
         if ($free == false)
         {
-            $fixed = $dom->create_element("fixed");
-            $category = $dom->create_element("category");
+            $fixed = $dom->createElement("fixed");
+            $category = $dom->createElement("category");
 
-            $label = $dom->create_element("label");
-            $label->set_content(QueXMLCleanup($Row['question']));
+            $label = $dom->createElement("label",QueXMLCleanup($Row['question']));
 
-            $value= $dom->create_element("value");
-            //$value->set_content(QueXMLCleanup($Row['title']));
-            $value->set_content("1");
+            $value= $dom->createElement("value",1);
             $nextcode = $Row['title'];
 
-            $category->append_child($label);
-            $category->append_child($value);
+            $category->appendChild($label);
+            $category->appendChild($value);
 
             $st = QueXMLSkipTo($qid,'Y'," AND c.cfieldname LIKE '+$iSurveyID" . "X" . $Row['gid'] . "X" . $qid . $Row['title'] . "' ");
             if ($st !== false)
             {
-                $quexml_skipto = $dom->create_element("QueXMLSkipTo");
-                $quexml_skipto->set_content($st);
-                $category->append_child($quexml_skipto);
+                $quexml_skipto = $dom->createElement("skipTo",$st);
+                $category->appendChild($quexml_skipto);
             }
 
 
-            $fixed->append_child($category);
+            $fixed->appendChild($category);
 
-            $response->append_child($fixed);
+            $response->appendChild($fixed);
         }
         else
-            $response->append_child(QueXMLCreateFree($free['f'],$free['len'],$Row['question']));
+            $response->appendChild(QueXMLCreateFree($free['f'],$free['len'],$Row['question']));
 
-        $response->set_attribute("varName",$varname . QueXMLCleanup($Row['title']));
+        $response->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
 
-        $question->append_child($response);
+        $question->appendChild($response);
     }
 
     if ($other && $free==false)
     {
-        $response = $dom->create_element("response");
-        $fixed = $dom->create_element("fixed");
-        $category = $dom->create_element("category");
+        $response = $dom->createElement("response");
+        $fixed = $dom->createElement("fixed");
+        $category = $dom->createElement("category");
 
-        $label = $dom->create_element("label");
-        $label->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
+        $label = $dom->createElement("label",quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
-        $value= $dom->create_element("value");
+        $value= $dom->createElement("value",1);
 
         //Get next code
         if (is_numeric($nextcode))
@@ -1058,28 +1040,24 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
         else if (is_string($nextcode))
                 $nextcode = chr(ord($nextcode) + 1);
 
-            $value->set_content(1);
+        $category->appendChild($label);
+        $category->appendChild($value);
 
-        $category->append_child($label);
-        $category->append_child($value);
+        $contingentQuestion = $dom->createElement("contingentQuestion");
+        $length = $dom->createElement("length",24);
+        $text = $dom->createElement("text",quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
-        $contingentQuestion = $dom->create_element("contingentQuestion");
-        $length = $dom->create_element("length");
-        $text = $dom->create_element("text");
+        $contingentQuestion->appendChild($text);
+        $contingentQuestion->appendChild($length);
+        $contingentQuestion->setAttribute("varName",$varname . 'other');
 
-        $text->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
-        $length->set_content(24);
-        $contingentQuestion->append_child($text);
-        $contingentQuestion->append_child($length);
-        $contingentQuestion->set_attribute("varName",$varname . 'other');
+        $category->appendChild($contingentQuestion);
 
-        $category->append_child($contingentQuestion);
+        $fixed->appendChild($category);
+        $response->appendChild($fixed);
+        $response->setAttribute("varName",$varname . QueXMLCleanup($nextcode));
 
-        $fixed->append_child($category);
-        $response->append_child($fixed);
-        $response->set_attribute("varName",$varname . QueXMLCleanup($nextcode));
-
-        $question->append_child($response);
+        $question->appendChild($response);
     }
 
 
@@ -1104,12 +1082,11 @@ function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = fals
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
     foreach($QueryResult->readAll() as $Row)
     {
-        $subQuestion = $dom->create_element("subQuestion");
-        $text = $dom->create_element("text");
-        $text->set_content(QueXMLCleanup($Row['question']));
-        $subQuestion->append_child($text);
-        $subQuestion->set_attribute("varName",$varname . QueXMLCleanup($Row['title']));
-        $question->append_child($subQuestion);
+        $subQuestion = $dom->createElement("subQuestion");
+        $text = $dom->createElement("text",QueXMLCleanup($Row['question']));
+        $subQuestion->appendChild($text);
+        $subQuestion->setAttribute("varName",$varname . QueXMLCleanup($Row['title']));
+        $question->appendChild($subQuestion);
     }
 
     return;
@@ -1126,45 +1103,54 @@ function quexml_export($surveyi, $quexmllan)
 
     $qlang = new limesurvey_lang($quexmllang);
 
-    Yii::app()->loadHelper("admin/domxml_wrapper");
-    $dom = domxml_new_doc("1.0");
+    $dom = new DOMDocument('1.0','UTF-8');
 
     //Title and survey id
-    $questionnaire = $dom->create_element("questionnaire");
-    $title = $dom->create_element("title");
+    $questionnaire = $dom->createElement("questionnaire");
 
     $Query = "SELECT * FROM {{surveys}},{{surveys_languagesettings}} WHERE sid=$iSurveyID and surveyls_survey_id=sid and surveyls_language='".$quexmllang."'";
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
     $Row = $QueryResult->read();
-    $questionnaire->set_attribute("id", $Row['sid']);
-    $title->set_content(QueXMLCleanup($Row['surveyls_title']));
-    $questionnaire->append_child($title);
+    $questionnaire->setAttribute("id", $Row['sid']);
+    $title = $dom->createElement("title",QueXMLCleanup($Row['surveyls_title']));
+    $questionnaire->appendChild($title);
 
     //investigator and datacollector
-    $investigator = $dom->create_element("investigator");
-    $name = $dom->create_element("name");
-    $name = $dom->create_element("firstName");
-    $name = $dom->create_element("lastName");
-    $dataCollector = $dom->create_element("dataCollector");
+    $investigator = $dom->createElement("investigator");
+    $name = $dom->createElement("name");
+    $name = $dom->createElement("firstName");
+    $name = $dom->createElement("lastName");
+    $dataCollector = $dom->createElement("dataCollector");
 
-    $questionnaire->append_child($investigator);
-    $questionnaire->append_child($dataCollector);
+    $questionnaire->appendChild($investigator);
+    $questionnaire->appendChild($dataCollector);
 
     //questionnaireInfo == welcome
     if (!empty($Row['surveyls_welcometext']))
     {
-        $questionnaireInfo = $dom->create_element("questionnaireInfo");
-        $position = $dom->create_element("position");
-        $text = $dom->create_element("text");
-        $administration = $dom->create_element("administration");
-        $position->set_content("before");
-        $text->set_content(QueXMLCleanup($Row['surveyls_welcometext']));
-        $administration->set_content("self");
-        $questionnaireInfo->append_child($position);
-        $questionnaireInfo->append_child($text);
-        $questionnaireInfo->append_child($administration);
-        $questionnaire->append_child($questionnaireInfo);
+        $questionnaireInfo = $dom->createElement("questionnaireInfo");
+        $position = $dom->createElement("position","before");
+        $text = $dom->createElement("text",QueXMLCleanup($Row['surveyls_welcometext']));
+        $administration = $dom->createElement("administration","self");
+        $questionnaireInfo->appendChild($position);
+        $questionnaireInfo->appendChild($text);
+        $questionnaireInfo->appendChild($administration);
+        $questionnaire->appendChild($questionnaireInfo);
     }
+
+    if (!empty($Row['surveyls_endtext']))
+    {
+        $questionnaireInfo = $dom->createElement("questionnaireInfo");
+        $position = $dom->createElement("position","after");
+        $text = $dom->createElement("text",QueXMLCleanup($Row['surveyls_endtext']));
+        $administration = $dom->createElement("administration","self");
+        $questionnaireInfo->appendChild($position);
+        $questionnaireInfo->appendChild($text);
+        $questionnaireInfo->appendChild($administration);
+        $questionnaire->appendChild($questionnaireInfo);
+    }
+
+
 
     //section == group
 
@@ -1177,61 +1163,52 @@ function quexml_export($surveyi, $quexmllan)
     {
         $gid = $Row['gid'];
 
-        $section = $dom->create_element("section");
+        $section = $dom->createElement("section");
 
         if (!empty($Row['group_name']))
         {
-            $sectionInfo = $dom->create_element("sectionInfo");
-            $position = $dom->create_element("position");
-            $text = $dom->create_element("text");
-            $administration = $dom->create_element("administration");
-            $position->set_content("title");
-            $text->set_content(QueXMLCleanup($Row['group_name']));
-            $administration->set_content("self");
-            $sectionInfo->append_child($position);
-            $sectionInfo->append_child($text);
-            $sectionInfo->append_child($administration);
-            $section->append_child($sectionInfo);
+            $sectionInfo = $dom->createElement("sectionInfo");
+            $position = $dom->createElement("position","title");
+            $text = $dom->createElement("text",QueXMLCleanup($Row['group_name']));
+            $administration = $dom->createElement("administration","self");
+            $sectionInfo->appendChild($position);
+            $sectionInfo->appendChild($text);
+            $sectionInfo->appendChild($administration);
+            $section->appendChild($sectionInfo);
         }
 
 
         if (!empty($Row['description']))
         {
-            $sectionInfo = $dom->create_element("sectionInfo");
-            $position = $dom->create_element("position");
-            $text = $dom->create_element("text");
-            $administration = $dom->create_element("administration");
-            $position->set_content("before");
-            $text->set_content(QueXMLCleanup($Row['description']));
-            $administration->set_content("self");
-            $sectionInfo->append_child($position);
-            $sectionInfo->append_child($text);
-            $sectionInfo->append_child($administration);
-            $section->append_child($sectionInfo);
+            $sectionInfo = $dom->createElement("sectionInfo");
+            $position = $dom->createElement("position","before");
+            $text = $dom->createElement("text",QueXMLCleanup($Row['description']));
+            $administration = $dom->createElement("administration","self");
+            $sectionInfo->appendChild($position);
+            $sectionInfo->appendChild($text);
+            $sectionInfo->appendChild($administration);
+            $section->appendChild($sectionInfo);
         }
 
 
 
-        $section->set_attribute("id", $gid);
+        $section->setAttribute("id", $gid);
 
         //boilerplate questions convert to sectionInfo elements
         $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
         $QR = Yii::app()->db->createCommand($Query)->query();
         foreach($QR->readAll() as $RowQ)
         {
-            $sectionInfo = $dom->create_element("sectionInfo");
-            $position = $dom->create_element("position");
-            $text = $dom->create_element("text");
-            $administration = $dom->create_element("administration");
+            $sectionInfo = $dom->createElement("sectionInfo");
+            $position = $dom->createElement("position","before");
+            $text = $dom->createElement("text",QueXMLCleanup($RowQ['question']));
+            $administration = $dom->createElement("administration","self");
 
-            $position->set_content("before");
-            $text->set_content(QueXMLCleanup($RowQ['question']));
-            $administration->set_content("self");
-            $sectionInfo->append_child($position);
-            $sectionInfo->append_child($text);
-            $sectionInfo->append_child($administration);
+            $sectionInfo->appendChild($position);
+            $sectionInfo->appendChild($text);
+            $sectionInfo->appendChild($administration);
 
-            $section->append_child($sectionInfo);
+            $section->appendChild($sectionInfo);
         }
 
 
@@ -1241,7 +1218,7 @@ function quexml_export($surveyi, $quexmllan)
         $QR = Yii::app()->db->createCommand($Query)->query();
         foreach($QR->readAll() as $RowQ)
         {
-            $question = $dom->create_element("question");
+            $question = $dom->createElement("question");
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
 
@@ -1255,9 +1232,8 @@ function quexml_export($surveyi, $quexmllan)
                 $txt = QueXMLCleanup($qt);
                 if (!empty($txt))
                 {
-                    $text = $dom->create_element("text");
-                    $text->set_content($txt);
-                    $question->append_child($text);
+                    $text = $dom->createElement("text",$txt);
+                    $question->appendChild($text);
                 }
             }
 
@@ -1265,24 +1241,21 @@ function quexml_export($surveyi, $quexmllan)
             //directive
             if (!empty($RowQ['help']))
             {
-                $directive = $dom->create_element("directive");
-                $position = $dom->create_element("position");
-                $position->set_content("during");
-                $text = $dom->create_element("text");
-                $text->set_content(QueXMLCleanup($RowQ['help']));
-                $administration = $dom->create_element("administration");
-                $administration->set_content("self");
+                $directive = $dom->createElement("directive");
+                $position = $dom->createElement("position","during");
+                $text = $dom->createElement("text",QueXMLCleanup($RowQ['help']));
+                $administration = $dom->createElement("administration","self");
 
-                $directive->append_child($position);
-                $directive->append_child($text);
-                $directive->append_child($administration);
+                $directive->appendChild($position);
+                $directive->appendChild($text);
+                $directive->appendChild($administration);
 
-                $question->append_child($directive);
+                $question->appendChild($directive);
             }
 
-            $response = $dom->create_element("response");
+            $response = $dom->createElement("response");
             $sgq = $iSurveyID . "X" . $gid . "X" . $qid;
-            $response->set_attribute("varName",$sgq);
+            $response->setAttribute("varName",$sgq);
 
             switch ($type)
             {
@@ -1290,24 +1263,24 @@ function quexml_export($surveyi, $quexmllan)
 
                     break;
                 case "5": //5 POINT CHOICE radio-buttons
-                    $response->append_child(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+                    $question->appendChild($response);
                     break;
                 case "D": //DATE
-                    $response->append_child(QueXMLCreateFree("date","8",""));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFree("date","8",""));
+                    $question->appendChild($response);
                     break;
                 case "L": //LIST drop-down/radio-button list
-                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    $question->appendChild($response);
                     break;
                 case "!": //List - dropdown
-                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    $question->appendChild($response);
                     break;
                 case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    $question->appendChild($response);
                     //no comment - this should be a separate question
                     break;
                 case "R": //RANKING STYLE
@@ -1317,8 +1290,8 @@ function quexml_export($surveyi, $quexmllan)
                     //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
                     //$QROW = mysql_fetch_assoc($QRE);
                     $QROW = $QRE->read();
-                    $response->append_child(QueXMLCreateFree("integer",strlen($QROW['sc']),""));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFree("integer",strlen($QROW['sc']),""));
+                    $question->appendChild($response);
                     break;
                 case "M": //Multiple choice checkbox
                     quexml_create_multi($question,$qid,$sgq,false,false,$other);
@@ -1330,80 +1303,80 @@ function quexml_export($surveyi, $quexmllan)
                     break;
                 case "Q": //MULTIPLE SHORT TEXT
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $question->appendChild($response);
                     break;
                 case "K": //MULTIPLE NUMERICAL
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $question->appendChild($response);
                     break;
                 case "N": //NUMERICAL QUESTION TYPE
-                    $response->append_child(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $question->appendChild($response);
                     break;
                 case "S": //SHORT FREE TEXT
-                    $response->append_child(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","240"),""));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","240"),""));
+                    $question->appendChild($response);
                     break;
                 case "T": //LONG FREE TEXT
-                    $response->append_child(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","40"),""));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","40"),""));
+                    $question->appendChild($response);
                     break;
                 case "U": //HUGE FREE TEXT
-                    $response->append_child(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","80"),""));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","80"),""));
+                    $question->appendChild($response);
                     break;
                 case "Y": //YES/NO radio-buttons
-                    $response->append_child(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
+                    $question->appendChild($response);
                     break;
                 case "G": //GENDER drop-down list
-                    $response->append_child(QueXMLFixedArray(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLFixedArray(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
+                    $question->appendChild($response);
                     break;
                 case "A": //ARRAY (5 POINT CHOICE) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+                    $question->appendChild($response);
                     break;
                 case "B": //ARRAY (10 POINT CHOICE) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
+                    $question->appendChild($response);
                     break;
                 case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("Uncertain") => 'U',$qlang->gT("No") => 'N')));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("Uncertain") => 'U',$qlang->gT("No") => 'N')));
+                    $question->appendChild($response);
                     break;
                 case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(QueXMLFixedArray(array($qlang->gT("Increase") => 'I',$qlang->gT("Same") => 'S',$qlang->gT("Decrease") => 'D')));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLFixedArray(array($qlang->gT("Increase") => 'I',$qlang->gT("Same") => 'S',$qlang->gT("Decrease") => 'D')));
+                    $question->appendChild($response);
                     break;
                 case "F": //ARRAY (Flexible) - Row Format
                     //select subQuestions from answers table where QID
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    $question->appendChild($response);
                     //select fixed responses from
                     break;
                 case "H": //ARRAY (Flexible) - Column Format
                     quexml_create_subQuestions($question,$RowQ['qid'],$sgq);
-                    $response->append_child(QueXMLCreateFixed($qid,true,false,0,$other,$sgq));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLCreateFixed($qid,true,false,0,$other,$sgq));
+                    $question->appendChild($response);
                     break;
                 case "1": //Dualscale multi-flexi array
                     //select subQuestions from answers table where QID
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response = $dom->create_element("response");
-                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-                    $response2 = $dom->create_element("response");
-                    $response2->set_attribute("varName",QueXMLCleanup($sgq) . "_2");
-                    $response2->append_child(QueXMLCreateFixed($qid,false,false,1,$other,$sgq));
-                    $question->append_child($response);
-                    $question->append_child($response2);
+                    $response = $dom->createElement("response");
+                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+                    $response2 = $dom->createElement("response");
+                    $response2->setAttribute("varName",QueXMLCleanup($sgq) . "_2");
+                    $response2->appendChild(QueXMLCreateFixed($qid,false,false,1,$other,$sgq));
+                    $question->appendChild($response);
+                    $question->appendChild($response2);
                     break;
                 case ":": //multi-flexi array numbers
                     quexml_create_subQuestions($question,$qid,$sgq);
@@ -1424,25 +1397,26 @@ function quexml_export($surveyi, $quexmllan)
                     quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => 10, 'lab' => ''));
                     break;
                 case "^": //SLIDER CONTROL - not supported
-                    $response->append_child(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
-                    $question->append_child($response);
+                    $response->appendChild(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
+                    $question->appendChild($response);
                     break;
             } //End Switch
 
 
 
 
-            $section->append_child($question);
+            $section->appendChild($question);
         }
 
 
-        $questionnaire->append_child($section);
+        $questionnaire->appendChild($section);
     }
 
 
-    $dom->append_child($questionnaire);
+    $dom->appendChild($questionnaire);
 
-    return $dom->dump_mem(true,'UTF-8');
+    $dom->formatOutput = true;
+    return $dom->saveXML();
 }
 
 /**
