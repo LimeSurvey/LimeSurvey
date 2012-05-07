@@ -45,8 +45,7 @@
             {?>
             <a href='#'
                 onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/question/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
-                <img style='<?php echo (hasSurveyPermission($surveyid,'surveycontent','delete')?'':'visibility: hidden;');?>' src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete current question"); ?>'
-                    border='0' hspace='0' /></a>
+                <img style='<?php echo (hasSurveyPermission($surveyid,'surveycontent','delete')?'':'visibility: hidden;');?>' src='<?php echo $sImageURL; ?>delete.png' alt='<?php $clang->eT("Delete current question"); ?>'/></a>
             <?php }
             else
             { ?>

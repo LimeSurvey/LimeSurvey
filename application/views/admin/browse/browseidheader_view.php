@@ -1,8 +1,8 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'><?php echo sprintf($clang->gT("View response ID %d"), $id); ?></div>
     <div class='menubar-main'>
-        <img src='<?php echo $sImageURL; ?>/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />
-        <img src='<?php echo $sImageURL; ?>/separator.gif' border='0' hspace='0' align='left' alt='' />
+        <img src='<?php echo $sImageURL; ?>/blank.gif' width='31' height='16' alt='' />
+        <img src='<?php echo $sImageURL; ?>/separator.gif' alt='' />
         <?php if (isset($rlanguage))
         { ?>
             <a href='<?php echo $this->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' title='<?php $clang->eT("Edit this entry"); ?>'>
@@ -25,11 +25,11 @@
 
         <a href='<?php echo $this->createUrl("admin/export/exportresults/surveyid/$surveyid/id/$id"); ?>' title='<?php $clang->eT("Export this Response"); ?>' >
             <img name='ExportAnswer' src='<?php echo $sImageURL; ?>/export.png' alt='<?php $clang->eT("Export this Response"); ?>' align='left' /></a>
-        <img src='<?php echo $sImageURL; ?>/separator.gif' border='0' hspace='0' align='left' alt='' />
-        <img src='<?php echo $sImageURL; ?>/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />
+        <img src='<?php echo $sImageURL; ?>/separator.gif' alt='' />
+        <img src='<?php echo $sImageURL; ?>/blank.gif' width='20' height='20' alt='' />
         <a href='<?php echo $this->createUrl("admin/browse/view/surveyid/$surveyid/id/$last"); ?>' title='<?php $clang->eT("Show previous..."); ?>' >
             <img name='DataBack' align='left' src='<?php echo $sImageURL; ?>/databack.png' alt='<?php $clang->eT("Show previous..."); ?>' /></a>
-        <img src='<?php echo $sImageURL; ?>/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />
+        <img src='<?php echo $sImageURL; ?>/blank.gif' width='13' height='20' alt='' />
         <a href='<?php echo $this->createUrl("admin/browse/view/surveyid/$surveyid/id/$next"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
             <img name='DataForward' align='left' src='<?php echo $sImageURL; ?>/dataforward.png' alt='<?php $clang->eT("Show next..."); ?>' /></a>
     </div>

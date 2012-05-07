@@ -629,25 +629,23 @@ div.messagebox .warningheader {
 .browsetable tr:hover {
     background-color: #ddd;
 }
-.browsetable td span.content{
+.browsetable td span.content {
     display:block;
     height:3em;
     overflow:hidden;
 }
-.browsetable th strong.content{
+.browsetable th strong.content {
     display:block;
     height:4em;
     overflow:hidden;
 }
 
-.form30 table.statisticssummary
-{
+.form30 table.statisticssummary {
     margin:0 auto;
     float:none;
 }
 
-.statisticssummary thead th
-{
+.statisticssummary thead th {
     background:#D2E0F2;
 }
 
@@ -656,8 +654,7 @@ div.messagebox .warningheader {
     text-align:right;
 }
 
-.statisticssummary thead th:first-child
-{
+.statisticssummary thead th:first-child {
     text-align:center;
 }
 
@@ -680,29 +677,24 @@ div.messagebox .warningheader {
 }
 
 .conditionlist table,
-#filterchoices
-{
+#filterchoices {
     width:100%;
 }
 
 
-.conditionlist td:first-child
-{
+.conditionlist td:first-child {
     width:90%;
 }
-.conditionlist table td:first-child
-{
+.conditionlist table td:first-child {
     width:45%;
     text-align:right;
 }
 
-.conditionlist table td:nth-child(2)
-{
+.conditionlist table td:nth-child(2){
     width:10%;
 }
 
-.conditionlist table td:nth-child(3)
-{
+.conditionlist table td:nth-child(3){
     width:35%;
     text-align:left;
 }
@@ -715,7 +707,7 @@ div.messagebox .warningheader {
     width:90%;
 }
 
-tr.editedrow{
+tr.editedrow {
     background-color: #FCCFFF;
 }
 
@@ -732,12 +724,12 @@ tr.editedrow{
     text-align:center;
 }
 
-.usersurveypermissions th{
+.usersurveypermissions th {
     padding:0 2em;
 }
 
 
-.filtertable  {
+.filtertable {
     background:#EEF6FF;
     text-align:center;
     margin:5px auto;
@@ -775,7 +767,6 @@ tr.editedrow{
     width:210px;
 }
 
-.ui-jqgrid td input[type="image"]
-{
+.ui-jqgrid td input[type="image"] {
     padding:2px;
 }

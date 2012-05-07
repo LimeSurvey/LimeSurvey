@@ -765,8 +765,11 @@ class conditionsaction extends Survey_Common_Action {
                     ." AND q.qid=:qid
                     AND sq.scale_id=0
                     ORDER BY sq.question_order";
-
-                    $y_axis_db = Yii::app()->db->createCommand($fquery)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->bindParam(":qid", $rows["qid"], PDO::PARAM_INT)->query();
+                    $sLanguage=Survey::model()->findByPk($surveyid)->language;
+                    $y_axis_db = Yii::app()->db->createCommand($fquery)
+                        ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
+                        ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
+                        ->query();
 
                     // Get the X-Axis
                     $aquery = "SELECT sq.*
@@ -779,7 +782,10 @@ class conditionsaction extends Survey_Common_Action {
                     AND sq.scale_id=1
                     ORDER BY sq.question_order";
 
-                    $x_axis_db=Yii::app()->db->createCommand($aquery)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->bindParam(":qid", $rows[qid], PDO::PARAM_INT)->query() or safeDie ("Couldn't get answers to Array questions<br />$aquery<br />");
+                    $x_axis_db=Yii::app()->db->createCommand($aquery)
+                        ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
+                        ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
+                        ->query() or safeDie ("Couldn't get answers to Array questions<br />$aquery<br />");
 
                     foreach ($x_axis_db->readAll() as $frow)
                     {
@@ -1547,7 +1553,7 @@ class conditionsaction extends Survey_Common_Action {
             else
             { // no condition ==> disable delete all conditions button, and display a simple comment
                 $aViewUrls['output'] = 	CHtml::openTag('tr') . CHtml::tag('td', array(),
-                $clang->gT("This question is always shown.")).CHtml::closeTag('tr');
+                $clang->gT("This question is always shown.")).CHtml::tag('td', array(),'&nbsp;').CHtml::closeTag('tr');
             }
 
             $aViewUrls['output'] .= CHtml::closeTag('table');
@@ -1631,7 +1637,7 @@ class conditionsaction extends Survey_Common_Action {
             else
             {
                 $aViewUrls['output'] .= "<div class='messagebox ui-corner-all'>\n"
-                ."<div class='partialheader'>".$clang->gT("This survey's questions don't use conditions")."</div><br />\n"
+                ."<div class='partialheader'>".$clang->gT("There are no existing conditions in this survey.")."</div><br />\n"
                 ."</div>\n";
             }
 
