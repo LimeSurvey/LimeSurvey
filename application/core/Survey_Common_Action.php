@@ -991,8 +991,8 @@ class Survey_Common_Action extends CAction
     */
     protected function _tempdir($dir, $prefix='', $mode=0700)
     {
-        if (substr($dir, -1) != PATH_SEPARATOR)
-            $dir .= PATH_SEPARATOR;
+        if (substr($dir, -1) != DIRECTORY_SEPARATOR)
+            $dir .= DIRECTORY_SEPARATOR;
 
         do
         {
