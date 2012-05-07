@@ -50,7 +50,7 @@ if (!$subaction == "import")
 		<div class='header ui-widget-header'>
 			".$clang->gT("Import responses from a deactivated survey table")."
 		</div>
-        <form id='personalsettings' method='post'>        
+        <form id='personalsettings' method='post'>
 		<ul>
 		 <li><label for='spansurveyid'>".$clang->gT("Target survey ID:")."</label>
 		 <span id='spansurveyid'> $surveyid<input type='hidden' value='$surveyid' name='sid'></span>
@@ -89,9 +89,9 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
     );
 
 
-    $aFieldsOldTable=array_values($connect->MetaColumnNames($oldtable, true)); 
-    $aFieldsNewTable=array_values($connect->MetaColumnNames($activetable, true)); 
-    
+    $aFieldsOldTable=array_values($connect->MetaColumnNames($oldtable, true));
+    $aFieldsNewTable=array_values($connect->MetaColumnNames($activetable, true));
+
     // Only import fields where the fieldnames are matching
     $aValidFields=array_intersect($aFieldsOldTable,$aFieldsNewTable);
 
@@ -113,17 +113,17 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
         $aSRIDConversions[$iOldID]=$connect->Insert_Id($activetable,"id");
     }
 
-    $_SESSION['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."),$iRecordCount);               
+    $_SESSION['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."),$iRecordCount);
 
     $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
     $sNewTimingsTable=db_table_name_nq("survey_{$surveyid}_timings");
     if (tableExists(sStripDBPrefix($sOldTimingsTable)) && tableExists(sStripDBPrefix($sNewTimingsTable)) && returnglobal('importtimings')=='Y')
     {
        // Import timings
-        $aFieldsOldTimingTable=array_values($connect->MetaColumnNames($sOldTimingsTable, true)); 
-        $aFieldsNewTimingTable=array_values($connect->MetaColumnNames($sNewTimingsTable, true)); 
+        $aFieldsOldTimingTable=array_values($connect->MetaColumnNames($sOldTimingsTable, true));
+        $aFieldsNewTimingTable=array_values($connect->MetaColumnNames($sNewTimingsTable, true));
         $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
-        
+
         $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
         $resultOldValues = db_execute_assoc($queryOldValues) or safe_die("Error:<br />$queryOldValues<br />".$connect->ErrorMsg());
         $iRecordCountT=$resultOldValues->RecordCount();
@@ -132,12 +132,12 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
         {
             if (isset($aSRIDConversions[$row['id']]))
             {
-                $row['id']=$aSRIDConversions[$row['id']];   
+                $row['id']=$aSRIDConversions[$row['id']];
             }
             $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",",array_map("db_quote_id",array_keys($row))).") VALUES (".implode(",",array_map("db_quoteall",array_values($row))).")";
             $result = $connect->Execute($sInsertSQL) or safe_die("Error:<br />$sInsertSQL<br />".$connect->ErrorMsg());
         }
-        $_SESSION['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);               
+        $_SESSION['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
     }
     $importoldresponsesoutput = browsemenubar($clang->gT("Quick statistics"));
 }

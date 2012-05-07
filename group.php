@@ -239,7 +239,7 @@ else
         //$moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
 
         //showsaveform(); // generates a form and exits, awaiting input
-        if($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
+        if(!tableExists('tokens_'.$surveyid) || $thissurvey['anonymized']=='Y' || (tableExists('tokens_'.$surveyid) && $thissurvey['tokenanswerspersistence'] == 'N' ))
         {
             $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
             showsaveform();

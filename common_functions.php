@@ -4634,7 +4634,7 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
 {
     $sNicetext = strip_javascript($sTextToFlatten);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
-    $sNicetext = str_replace('</',' </', $sNicetext);
+    $sNicetext = str_replace('</td',' </td', $sNicetext);
     if ($keepSpan) {
         // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
         $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
@@ -5155,6 +5155,36 @@ function FixLanguageConsistency($sid, $availlangs='')
 
     $baselang = GetBaseLanguageFromSurveyID($sid);
     $sid=sanitize_int($sid);
+
+    $query = "SELECT * FROM ".db_table_name('quota_languagesettings')." join ".db_table_name('quota')." q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
+    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+    if ($result->RecordCount() > 0)
+    {
+        while ($qls = $result->FetchRow())
+        {
+            foreach ($langs as $lang)
+            {
+                $query = "SELECT quotals_id FROM ".db_table_name('quota_languagesettings')." WHERE quotals_quota_id='{$qls['quotals_quota_id']}' AND quotals_language='{$lang}'";
+                $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
+                if ($gresult->RecordCount() < 1)
+                {
+                    $query = "INSERT INTO ".db_table_name('quota_languagesettings')
+                           ." (quotals_quota_id,quotals_language,quotals_name,quotals_message,quotals_url,quotals_urldescrip) VALUES ("
+                           . "'".$qls['quotals_quota_id']."',"
+                           . "'".$lang."',"
+                           . db_quoteall($qls['quotals_name']).","
+                           . db_quoteall($qls['quotals_message']).","
+                           . "'".$qls['quotals_url']."',"
+                           . db_quoteall($qls['quotals_urldescrip']).""
+                           . ")";
+                           $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
+                           db_switchIDInsert('quota_languagesettings',false);
+                }
+            }
+            reset($langs);
+        }
+    }
+
     $query = "SELECT * FROM ".db_table_name('groups')." WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Checked
     if ($result->RecordCount() > 0)
