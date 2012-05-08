@@ -553,6 +553,10 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 //$dataentryoutput .= "<pre>"; print_r($fname);$dataentryoutput .= "</pre>";
                 if (isset($idrow[$fname['fieldname']])) $answer = $idrow[$fname['fieldname']];
                 $question=$fname['question'];
+
+                //get survey details
+                $thissurvey=getSurveyInfo($surveyid);
+
                 $dataentryoutput .= "\t<tr";
                 if ($highlight) $dataentryoutput .=" class='odd'";
                    else $dataentryoutput .=" class='even'";
@@ -605,7 +609,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         for ($x=1; $x<=5; $x++)
                         {
                             $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$x'";
-                            if ($idrow[$fname['fieldname']] == $x) {$dataentryoutput .= " checked";}
+                            if ($idrow[$fname['fieldname']] == $x) {$dataentryoutput .= " checked='checked'";}
                             $dataentryoutput .= " />$x \n";
                         }
                         break;
@@ -925,7 +929,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             else
                             {
                                 $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' value='Y'";
-                                if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+                                if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked='checked'";}
                                 $dataentryoutput .= " />{$fname['subquestion']}<br />\n";
                             }
 
@@ -987,7 +991,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             {
                                 $dataentryoutput .= "\t<tr>\n"
                                 ."<td><input type='checkbox' class='checkboxbtn' name=\"{$fname['fieldname']}\" value='Y'";
-                                if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+                                if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked='checked'";}
                                 $dataentryoutput .= " />{$fname['subquestion']}</td>\n";
                             }
                             $fname=next($fnames);
@@ -1045,22 +1049,230 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             $dataentryoutput .= '<input readonly id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" value ="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></table>';
                         }
                         break;
+
+
                     case "N": //NUMERICAL TEXT
-                        $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
-                        ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
+
+                    	//get question attributes to change some style and validation settings
+                    	$qidattributes = getQuestionAttributes($fname['qid']);
+					    if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'])!='') {
+					        $prefix=$qidattributes['prefix'];
+					    }
+					    else
+					    {
+					        $prefix = '';
+					    }
+					    if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'])!='')
+					    {
+					        $suffix=$qidattributes['suffix'];
+					    }
+					    else
+					    {
+					        $suffix = '';
+					    }
+
+					    if (intval(trim($qidattributes['maximum_chars']))>0 && intval(trim($qidattributes['maximum_chars']))<20) // Limt to 20 chars for numeric
+					    {
+					        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+					        $maxlength= "maxlength='{$maximum_chars}' ";
+					    }
+					    else
+					    {
+					        $maxlength= "maxlength='20' ";
+					    }
+
+					    if (trim($qidattributes['text_input_width'])!='')
+					    {
+					        $tiwidth=$qidattributes['text_input_width'];
+					    }
+					    else
+					    {
+					        $tiwidth=10;
+					    }
+
+					    if (trim($qidattributes['num_value_int_only'])==1)
+					    {
+					        $acomma="";
+					    }
+					    else
+					    {
+					        $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
+					        $acomma = $acomma['seperator'];
+
+					    }
+					    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+
+					    $dataentryoutput .= $prefix. "<input type='text' size='".$tiwidth."' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}'
+    					title='".$clang->gT('Only numbers may be entered in this field')."' $maxlength onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" />".$suffix;
                         break;
+
                     case "S": //SHORT FREE TEXT
-                        $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
-                        .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
+
+                        //get question attributes to change some style and validation settings
+                    	$qidattributes = getQuestionAttributes($fname['qid']);
+
+	                    if ($qidattributes['numbers_only']==1)
+					    {
+					        $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+					        $sSeperator = $sSeperator['seperator'];
+					        $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+					    }
+					    else
+					    {
+					        $numbersonly = '';
+					    }
+
+					    if (intval(trim($qidattributes['maximum_chars']))>0)
+					    {
+					    	// Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+					        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+					        $maxlength= "maxlength='{$maximum_chars}' ";
+					    }
+					    else
+					    {
+					        $maxlength= "";
+					    }
+
+					    if (trim($qidattributes['text_input_width'])!='')
+					    {
+					        $tiwidth=$qidattributes['text_input_width'];
+					    }
+					    else
+					    {
+					        $tiwidth=50;
+					    }
+
+                        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'])!='')
+                        {
+					        $prefix=$qidattributes['prefix'];
+					    }
+					    else
+					    {
+					        $prefix = '';
+					    }
+
+					    if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'])!='')
+					    {
+					        $suffix=$qidattributes['suffix'];
+					    }
+					    else
+					    {
+					        $suffix = '';
+					    }
+
+                    	if (trim($qidattributes['display_rows'])!='')
+					    {
+					        //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
+					        $drows=$qidattributes['display_rows'];
+
+					        //if a textarea should be displayed we make it equal width to the long text question
+					        //this looks nicer and more continuous
+					        if($tiwidth == 50)
+					        {
+					            $tiwidth=40;
+					        }
+
+					        $dataentryoutput .= $prefix."<textarea $numbersonly name='{$fname['fieldname']}' rows='".$drows."' cols='".$tiwidth."' >";
+					        $dataentryoutput .= htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) ."</textarea>$suffix\n";
+					    }
+                    	else
+					    {
+					        //no question attribute set, use common input text field
+					       	$dataentryoutput .= $prefix."<input type=\"text\" size=\"$tiwidth\"
+					       	name='{$fname['fieldname']}' value='"
+                        	.htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' ";
+					        $dataentryoutput .=" {$maxlength} $numbersonly />\n\t$suffix\n\n";
+					    }
                         break;
+
+
                     case "T": //LONG FREE TEXT
-                        $dataentryoutput .= "\t<textarea rows='5' cols='45' name='{$fname['fieldname']}'>"
-                        .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "</textarea>\n";
+
+                    	//get question attributes to change some style and validation settings
+                        $qidattributes=getQuestionAttributes($fname['qid']);
+
+                        if (trim($qidattributes['display_rows'])!='')
+					    {
+					        $drows=$qidattributes['display_rows'];
+					    }
+					    else
+					    {
+					        $drows=5;
+					    }
+
+					    if (trim($qidattributes['text_input_width'])!='')
+					    {
+					        $tiwidth=$qidattributes['text_input_width'];
+					    }
+					    else
+					    {
+					        $tiwidth=40;
+					    }
+
+                        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'])!='')
+                        {
+					        $prefix=$qidattributes['prefix'];
+					    }
+					    else
+					    {
+					        $prefix = '';
+					    }
+
+					    if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'])!='')
+					    {
+					        $suffix=$qidattributes['suffix'];
+					    }
+					    else
+					    {
+					        $suffix = '';
+					    }
+
+					    $dataentryoutput .= $prefix."<textarea name='{$fname['fieldname']}' rows='$drows' cols='$tiwidth' >"
+                        .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) ."</textarea>$suffix\n";
+
                         break;
+
+
                     case "U": //HUGE FREE TEXT
-                        $dataentryoutput .= "\t<textarea rows='50' cols='70' name='{$fname['fieldname']}'>"
-                        .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "</textarea>\n";
+
+                    	//get question attributes to change some style and validation settings
+	                    $qidattributes=getQuestionAttributes($fname['qid']);
+
+					    if (trim($qidattributes['display_rows'])!='')
+					    {
+					        $drows=$qidattributes['display_rows'];
+					    }
+					    else
+					    {
+					        $drows=70;
+					    }
+					    if (trim($qidattributes['text_input_width'])!='')
+					    {
+					        $tiwidth=$qidattributes['text_input_width'];
+					    }
+					    else
+					    {
+					        $tiwidth=50;
+					    }
+                        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'])!='') {
+					        $prefix=$qidattributes['prefix'];
+					    }
+					    else
+					    {
+					        $prefix = '';
+					    }
+					    if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'])!='') {
+					        $suffix=$qidattributes['suffix'];
+					    }
+					    else
+					    {
+					        $suffix = '';
+					    }
+					    $dataentryoutput .= $prefix.'<textarea name="'.$fname['fieldname'].'" rows="'.$drows.'" cols="'.$tiwidth.'">';
+					    $dataentryoutput .= htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "</textarea>$suffix\n";
                         break;
+
+
                     case "Y": //YES/NO radio-buttons
                         $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                         ."<option value=''";
@@ -1085,7 +1297,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             for ($j=1; $j<=5; $j++)
                             {
                                 $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$j'";
-                                if ($idrow[$fname['fieldname']] == $j) {$dataentryoutput .= " checked";}
+                                if ($idrow[$fname['fieldname']] == $j) {$dataentryoutput .= " checked='checked'";}
                                 $dataentryoutput .= " />$j&nbsp;\n";
                             }
                             $dataentryoutput .= "</td>\n"
@@ -1107,7 +1319,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             for ($j=1; $j<=10; $j++)
                             {
                                 $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$j'";
-                                if ($idrow[$fname['fieldname']] == $j) {$dataentryoutput .= " checked";}
+                                if ($idrow[$fname['fieldname']] == $j) {$dataentryoutput .= " checked='checked'";}
                                 $dataentryoutput .= " />$j&nbsp;\n";
                             }
                             $dataentryoutput .= "</td>\n"
@@ -1127,13 +1339,13 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             ."<td align='right'>{$fname['subquestion']}</td>\n"
                             ."<td>\n"
                             ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='Y'";
-                            if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
+                            if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked='checked'";}
                             $dataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
                             ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='U'";
-                            if ($idrow[$fname['fieldname']] == "U") {$dataentryoutput .= " checked";}
+                            if ($idrow[$fname['fieldname']] == "U") {$dataentryoutput .= " checked='checked'";}
                             $dataentryoutput .= " />".$clang->gT("Uncertain")."&nbsp;\n"
                             ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='N'";
-                            if ($idrow[$fname['fieldname']] == "N") {$dataentryoutput .= " checked";}
+                            if ($idrow[$fname['fieldname']] == "N") {$dataentryoutput .= " checked='checked'";}
                             $dataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
                             ."</td>\n"
                             ."\t</tr>\n";
@@ -1152,13 +1364,13 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             ."<td align='right'>{$fname['subquestion']}</td>\n"
                             ."<td>\n"
                             ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='I'";
-                            if ($idrow[$fname['fieldname']] == "I") {$dataentryoutput .= " checked";}
+                            if ($idrow[$fname['fieldname']] == "I") {$dataentryoutput .= " checked='checked'";}
                             $dataentryoutput .= " />Increase&nbsp;\n"
                             ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='S'";
-                            if ($idrow[$fname['fieldname']] == "I") {$dataentryoutput .= " checked";}
+                            if ($idrow[$fname['fieldname']] == "I") {$dataentryoutput .= " checked='checked'";}
                             $dataentryoutput .= " />Same&nbsp;\n"
                             ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='D'";
-                            if ($idrow[$fname['fieldname']] == "D") {$dataentryoutput .= " checked";}
+                            if ($idrow[$fname['fieldname']] == "D") {$dataentryoutput .= " checked='checked'";}
                             $dataentryoutput .= " />Decrease&nbsp;\n"
                             ."</td>\n"
                             ."\t</tr>\n";
@@ -1190,12 +1402,12 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             while ($frow=$fresult->FetchRow())
                             {
                                 $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='{$frow['code']}'";
-                                if ($idrow[$fname['fieldname']] == $frow['code']) {$dataentryoutput .= " checked";}
+                                if ($idrow[$fname['fieldname']] == $frow['code']) {$dataentryoutput .= " checked='checked'";}
                                 $dataentryoutput .= " />".$frow['answer']."&nbsp;\n";
                             }
                             //Add 'No Answer'
                             $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value=''";
-                            if ($idrow[$fname['fieldname']] == '') {$dataentryoutput .= " checked";}
+                            if ($idrow[$fname['fieldname']] == '') {$dataentryoutput .= " checked='checked'";}
                             $dataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
 
                             $dataentryoutput .= "</td>\n"
@@ -2219,7 +2431,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             while ($mearow = $mearesult->FetchRow())
                             {
                                 $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
-                                if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
+                                if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked='checked'";}
                                 $dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
                             }
                             if ($deqrow['other'] == "Y")
