@@ -5938,7 +5938,7 @@ EOD;
                 $query = "select distinct a.qid, a.attribute, a.value";
             }
 
-            $query .= " from ".db_table_name('question_attributes')." as a, ".db_table_name('questions')." as b"
+            $query .= " from {{question_attributes}} as a, {{questions}} as b"
             ." where " . $where
             .$lang
             ." order by a.qid, a.attribute";
