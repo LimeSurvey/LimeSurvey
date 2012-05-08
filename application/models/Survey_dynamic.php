@@ -27,11 +27,18 @@ class Survey_dynamic extends CActiveRecord
      * @return Survey_dynamic
      */
     public static function model($sid = NULL)
-    {
-        if (!is_null($sid))
+    {         
+        $refresh = false;
+        if (!is_null($sid)) {
             self::sid($sid);
-
-        return parent::model(__CLASS__);
+            $refresh = true;
+        }
+        
+        $model = parent::model(__CLASS__);
+        
+        //We need to refresh if we changed sid
+        if ($refresh === true) $model->refreshMetaData();
+        return $model;
     }
 
     /**
