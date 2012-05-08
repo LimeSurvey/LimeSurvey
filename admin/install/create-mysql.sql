@@ -357,17 +357,6 @@ CREATE TABLE `prefix_survey_permissions` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
---
--- Table structure for table survey_url_parameters
---
-CREATE TABLE `prefix_survey_url_parameters` (
-	`id` int(9) NOT NULL AUTO_INCREMENT,
-	`sid` int(11) NOT NULL,
-	`parameter` varchar(50) NOT NULL,
-	`targetqid` int(10) NULL,
-	`targetsqid` int(10) NULL,
-	PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 --
 -- Table structure for table user_groups
