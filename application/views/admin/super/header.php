@@ -26,12 +26,12 @@
     <?php
 
         if ($bIsRTL){?>
-        <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/adminstyle-rtl.css" /><?php
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>adminstyle-rtl.css" /><?php
         }
 
             ?>
-    <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/admin/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo $baseurl;?>styles/admin/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
     <?php echo $firebug ?>
 </head>
 <body>

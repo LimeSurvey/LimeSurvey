@@ -65,7 +65,7 @@
                     echo "<option value='{$index}'";
                     if ($index == Yii::app()->session['dateformat'])
                     {
-                        echo "selected='selected'";
+                        echo " selected='selected'";
                     }
 
                     echo ">" . $dateformatdata['dateformat'] . '</option>';

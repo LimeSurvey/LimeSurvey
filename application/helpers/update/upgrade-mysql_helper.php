@@ -652,19 +652,6 @@ function db_upgrade($oldversion) {
         fixSubquestions();
         modifyDatabase("", "UPDATE `prefix_settings_global` SET `stg_value`='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
-    if ($oldversion < 149)
-    {
-        modifyDatabase("","CREATE TABLE `prefix_survey_url_parameters` (
-        `id` int(9) NOT NULL AUTO_INCREMENT,
-        `sid` int(10) NOT NULL,
-        `parameter` varchar(50) NOT NULL,
-        `targetqid` int(10) NULL,
-        `targetsqid` int(10) NULL,
-        PRIMARY KEY (`id`)
-        ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='149' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-
-    }
     if ($oldversion < 150)
     {
         modifyDatabase("","ALTER TABLE `prefix_questions` ADD `relevance` TEXT;"); echo $modifyoutput; flush();@ob_flush();
@@ -714,6 +701,16 @@ function db_upgrade($oldversion) {
 
     if ($oldversion < 156)
     {
+        modifyDatabase("","DROP TABLE `prefix_survey_url_parameters`");
+        modifyDatabase("","CREATE TABLE `prefix_survey_url_parameters` (
+        `id` int(9) NOT NULL AUTO_INCREMENT,
+        `sid` int(10) NOT NULL,
+        `parameter` varchar(50) NOT NULL,
+        `targetqid` int(10) NULL,
+        `targetsqid` int(10) NULL,
+        PRIMARY KEY (`id`)
+        ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
+
         modifyDatabase("", "DROP TABLE `prefix_sessions`;"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "CREATE TABLE `prefix_sessions`(
             `id` char(32) NOT NULL,

@@ -375,18 +375,6 @@ function db_upgrade($oldversion) {
 
     }
 
-    if ($oldversion < 149)
-    {
-        modifyDatabase("","CREATE TABLE prefix_survey_url_parameters (
-        id serial PRIMARY KEY NOT NULL,
-        sid integer NOT NULL,
-        parameter character varying(50) NOT NULL,
-        targetqid integer NULL,
-        targetsqid integer NULL
-        );"); echo $modifyoutput; flush();@ob_flush();
-        modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='149' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-
-    }
     if ($oldversion < 150)
     {
         modifyDatabase("","ALTER TABLE prefix_questions ADD relevance TEXT;"); echo $modifyoutput; flush();@ob_flush();
@@ -434,6 +422,15 @@ function db_upgrade($oldversion) {
 
     if ($oldversion < 156)
     {
+        modifyDatabase("","DROP TABLE prefix_survey_url_parameters");
+        modifyDatabase("","CREATE TABLE prefix_survey_url_parameters (
+        id serial PRIMARY KEY NOT NULL,
+        sid integer NOT NULL,
+        parameter character varying(50) NOT NULL,
+        targetqid integer NULL,
+        targetsqid integer NULL
+        );"); echo $modifyoutput; flush();@ob_flush();
+
         modifyDatabase("", "DROP TABLE prefix_sessions;"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "CREATE TABLE prefix_sessions(
         id character varying(32) PRIMARY KEY NOT NULL,
