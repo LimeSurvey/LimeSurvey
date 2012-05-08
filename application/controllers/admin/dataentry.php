@@ -701,7 +701,7 @@ class dataentry extends Survey_Common_Action
                                 'onkeypress' => 'return goodchars(event,\''.$goodchars.'\')'
                                 )
                                 );
-                                $aDataentryoutput .= CHtml::hiddenField('dateformat'.$fname['fieldname'], $dateformatdetails['lsdate'],
+                                $aDataentryoutput .= CHtml::hiddenField('dateformat'.$fname['fieldname'], $dateformatdetails['jsdate'],
                                 array( 'id' => "dateformat{$fname['fieldname']}" )
                                 );
                                 // $aDataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return goodchars(event,'".$goodchars."')\"/>\n";
