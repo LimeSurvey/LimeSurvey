@@ -41,10 +41,17 @@ class Tokens_dynamic extends CActiveRecord
 	 */
 	public static function model($sid = null)
 	{
-        if (!is_null($sid))
-            self::sid($sid);
+            $refresh = false;
+            if (!is_null($sid)) {
+                self::sid($sid);
+                $refresh = true;
+            }
 
-		return parent::model(__CLASS__);
+            $model = parent::model(__CLASS__);
+
+            //We need to refresh if we changed sid
+            if ($refresh === true) $model->refreshMetaData();
+            return $model;
 	}
 
 	/**
