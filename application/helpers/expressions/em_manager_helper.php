@@ -5892,9 +5892,9 @@ EOD;
                 {
                     foreach  ($updates as $key=>$value)
                     {
-                        $query = "UPDATE {{question_attributes}} SET value='".Yii::app()->db->quoteValue($value)."' WHERE qid=".$qid." and attribute='".Yii::app()->db->quoteValue($key)."';";
+                        $query = "UPDATE {{question_attributes}} SET value=".Yii::app()->db->quoteValue($value)." WHERE qid=".$qid." and attribute=".Yii::app()->db->quoteValue($key);
                         $queries[] = $query;
-                        $query = "DELETE FROM {{question_attributes}} WHERE qid=".$qid." and attribute='".Yii::app()->db->quoteValue($reverseAttributeMap[$key])."';";
+                        $query = "DELETE FROM {{question_attributes}} WHERE qid=".$qid." and attribute=".Yii::app()->db->quoteValue($reverseAttributeMap[$key]);
                         $queries[] = $query;
 
                     }
