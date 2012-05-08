@@ -352,6 +352,7 @@ class tokens extends Survey_Common_Action
 
         $tokens = Tokens_dynamic::model($iSurveyId)->findAll();
 
+        $aData = new stdClass;
         $aData->page = $page;
         $aData->records = count($tokens);
         $aData->total = ceil($aData->records / $limit);
@@ -1888,7 +1889,7 @@ class tokens extends Survey_Common_Action
             $newtokencount = Tokens_dynamic::model($iSurveyId)->createTokens($iSurveyId);
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Create tokens"),
-            'message' => str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"))
+            'message' => sprintf($clang->ngT('%s tokes has been created.','%s tokens have been created.',$newtokencount),$newtokencount)
             )), $aData);
         }
     }
