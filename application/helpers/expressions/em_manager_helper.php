@@ -5927,9 +5927,18 @@ EOD;
                 $lang = " and a.language='".$lang."' and b.language='".$lang."'";
             }
 
-            // TODO - does this need to be filtered by language?
-            $query = "select distinct a.qid, a.attribute, a.value"
-            ." from {{question_attributes}} as a, {{questions}} as b"
+
+            $databasetype = Yii::app()->db->getDriverName();
+            if ($databasetype=='mssql' || $databasetype=="sqlsrv")
+            {
+                $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar) as value";
+            }
+            else
+            {
+                $query = "select distinct a.qid, a.attribute, a.value";
+            }
+
+            $query .= " from ".db_table_name('question_attributes')." as a, ".db_table_name('questions')." as b"
             ." where " . $where
             .$lang
             ." order by a.qid, a.attribute";
