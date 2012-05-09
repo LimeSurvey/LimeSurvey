@@ -1875,7 +1875,7 @@ class tokens extends Survey_Common_Action
         {
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Create tokens"),
-            'message' => $clang->gT("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?") . "<br /><br />\n"
+            'message' => $clang->gT("Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?") . "<br /><br />\n"
             . "<input type='submit' value='"
             . $clang->gT("Yes") . "' onclick=\"" . convertGETtoPOST($this->getController()->createUrl("admin/tokens/tokenify/surveyid/$iSurveyId") . "?ok=Y") . "\" />\n"
             . "<input type='submit' value='"
@@ -1889,7 +1889,7 @@ class tokens extends Survey_Common_Action
             $newtokencount = Tokens_dynamic::model($iSurveyId)->createTokens($iSurveyId);
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Create tokens"),
-            'message' => sprintf($clang->ngT('%s tokes has been created.','%s tokens have been created.',$newtokencount),$newtokencount)
+            'message' => sprintf($clang->ngT('%s token has been created.','%s tokens have been created.',$newtokencount),$newtokencount)
             )), $aData);
         }
     }

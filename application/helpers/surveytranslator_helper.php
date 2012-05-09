@@ -84,6 +84,13 @@
             $supportedLanguages['sq']['dateformat'] = 1;
             $supportedLanguages['sq']['radixpoint'] = 1;
 
+            // Amharic
+            $supportedLanguages['am']['description'] = $clang->gT('Amharic');
+            $supportedLanguages['am']['nativedescription'] = '&#4768;&#4635;&#4653;&#4763;';
+            $supportedLanguages['am']['rtl'] = false;
+            $supportedLanguages['am']['dateformat'] = 2;
+            $supportedLanguages['am']['radixpoint'] = 1;
+
             // Arabic
             $supportedLanguages['ar']['description'] = $clang->gT('Arabic');
             $supportedLanguages['ar']['nativedescription'] = '&#1593;&#1614;&#1585;&#1614;&#1576;&#1610;&#1618;';
