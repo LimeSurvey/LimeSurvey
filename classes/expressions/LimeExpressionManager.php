@@ -5296,7 +5296,7 @@
         {
             //        $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
-            if ($skipReprocessing)
+            if ($skipReprocessing && $LEM->surveyMode != 'survey')
             {
                 $LEM->pageTailorInfo=array();
                 $LEM->pageRelevanceInfo=array();
