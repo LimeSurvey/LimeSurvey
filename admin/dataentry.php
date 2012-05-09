@@ -1460,16 +1460,17 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             if ($qidattributes['input_boxes']!=0) {
                                 $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
                                 if (!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
-                                $dataentryoutput .= "' size=\'4\' />";
+                                $dataentryoutput .= "' size=\"4\" />";
                             } else {
                                 $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n";
                                 $dataentryoutput .= "<option value=''>...</option>\n";
                                 for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
                                 {
                                     $dataentryoutput .= "<option value='$ii'";
-                                    if($idrow[$fname['fieldname']] == $ii) {$dataentryoutput .= " selected";}
+                                    if($idrow[$fname['fieldname']] == $ii) {$dataentryoutput .= " selected='selected'";}
                                     $dataentryoutput .= ">$ii</option>\n";
                                 }
+                                $dataentryoutput .= "</select>\n";
                             }
 
                             $dataentryoutput .= "</td>\n"
@@ -1508,19 +1509,19 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             } while ($fname=next($fnames));
             }
         $dataentryoutput .= "</table>\n"
-        ."<p>\n";
+        ."\n";
         if (!bHasSurveyPermission($surveyid, 'responses','update'))
         { // if you are not survey owner or super admin you cannot modify responses
-            $dataentryoutput .= "<input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>\n";
+            $dataentryoutput .= "<p><input type='button' value='".$clang->gT("Save")."' disabled='disabled'/></p>\n";
         }
         elseif ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
         {
-            $dataentryoutput .= "
+            $dataentryoutput .= "<p>
 						 <input type='submit' value='".$clang->gT("Save")."' />
 						 <input type='hidden' name='id' value='$id' />
 						 <input type='hidden' name='sid' value='$surveyid' />
 						 <input type='hidden' name='subaction' value='update' />
-						 <input type='hidden' name='language' value='".$sDataEntryLanguage."' />";
+						 <input type='hidden' name='language' value='".$sDataEntryLanguage."' /></p>";
         }
         elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
         {
@@ -3053,7 +3054,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 //Show Save Option
                 $dataentryoutput .= "\t<tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
                 $dataentryoutput .= "</td></tr></table>\n";
-                $dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
+                $dataentryoutput .= "<div id='saveoptions' style='display: none'>\n";
                 $dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 					  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
 					  <td><input type='text' name='save_identifier' /></td></tr>
