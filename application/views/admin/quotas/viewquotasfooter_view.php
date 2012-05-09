@@ -2,8 +2,8 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-    <td><?php echo $totalquotas;?></td>
     <td><?php echo $totalcompleted;?></td>
+    <td><?php echo $totalquotas;?></td>
     <td style="padding: 3px;">
         <?php if (hasSurveyPermission($iSurveyId, 'quotas','create')) { ?>
             <form action="<?php echo $this->createUrl("admin/quotas/newquota/surveyid/$iSurveyId");?>" method="post">

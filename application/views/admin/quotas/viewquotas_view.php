@@ -14,8 +14,8 @@
         <th style="width:20%"><?php $clang->eT("Quota name");?></th>
         <th style="width:20%"><?php $clang->eT("Status");?></th>
         <th style="width:30%"><?php $clang->eT("Quota action");?></th>
-        <th style="width:5%"><?php $clang->eT("Limit");?></th>
         <th style="width:5%"><?php $clang->eT("Completed");?></th>
+        <th style="width:5%"><?php $clang->eT("Limit");?></th>
         <th style="width:20%"><?php $clang->eT("Action");?></th>
     </tr>
 </thead>

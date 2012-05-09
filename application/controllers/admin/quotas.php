@@ -105,7 +105,7 @@ class quotas extends Survey_Common_Action
             {
                 $totalquotas += $aQuotaListing['qlimit'];
                 $completed = getQuotaCompletedCount($iSurveyId, $aQuotaListing['id']);
-                $highlight = ($completed >= $aQuotaListing['qlimit']) ? "" : "style='color: red'"; //Incomplete quotas displayed in red
+                $highlight = ($completed >= $aQuotaListing['qlimit']) ? '' : "style='color: orange'"; //Incomplete quotas displayed in red
                 $totalcompleted = $totalcompleted + $completed;
                 $csvoutput[] = $aQuotaListing['name'] . "," . $aQuotaListing['qlimit'] . "," . $completed . "," . ($aQuotaListing['qlimit'] - $completed) . "\r\n";
 
@@ -420,8 +420,8 @@ class quotas extends Survey_Common_Action
         $sBaseLang = $aData['sBaseLang'];
         $clang = $aData['clang'];
 
-        $aQuestionType = Questions::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
-        $aQuestionType = $aQuestionType['type'];
+        $aQuestion = Questions::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
+        $aQuestionType = $aQuestion['type'];
 
         if ($aQuestionType == 'M')
         {
@@ -430,7 +430,7 @@ class quotas extends Survey_Common_Action
 
             foreach($aResults as $aDbAnsList)
             {
-                $tmparrayans = array('Title' => $aQuestionType['title'], 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
+                $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
                 $aAnswerList[$aDbAnsList['title']] = $tmparrayans;
             }
 
@@ -447,8 +447,8 @@ class quotas extends Survey_Common_Action
 
         if ($aQuestionType == 'G')
         {
-            $aAnswerList = array('M' => array('Title' => $aQuestionType['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
-                'F' => array('Title' => $aQuestionType['title'], 'Display' => $clang->gT("Female"), 'code' => 'F'));
+            $aAnswerList = array('M' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
+                'F' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Female"), 'code' => 'F'));
 
             foreach ($aResults as $aQuotaList)
             {
@@ -464,7 +464,7 @@ class quotas extends Survey_Common_Action
 
             foreach ($aAnsResults as $aDbAnsList)
             {
-                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestionType['title'],
+                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'],
                     'Display' => substr($aDbAnsList['answer'], 0, 40),
                     'code' => $aDbAnsList['code']);
             }
@@ -480,7 +480,7 @@ class quotas extends Survey_Common_Action
             {
                 for ($x = 1; $x < 6; $x++)
                 {
-                    $tmparrayans = array('Title' => $aQuestionType['title'], 'Display' => substr($aDbAnsList['question'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['title']);
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['title']);
                     $aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
                 }
             }
@@ -501,7 +501,7 @@ class quotas extends Survey_Common_Action
             {
                 for ($x = 1; $x < 11; $x++)
                 {
-                    $tmparrayans = array('Title' => $aQuestionType['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['code']);
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['code']);
                     $aAnswerList[$aDbAnsList['code'] . "-" . $x] = $tmparrayans;
                 }
             }
@@ -514,8 +514,8 @@ class quotas extends Survey_Common_Action
 
         if ($aQuestionType == 'Y')
         {
-            $aAnswerList = array('Y' => array('Title' => $aQuestionType['title'], 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
-                'N' => array('Title' => $aQuestionType['title'], 'Display' => $clang->gT("No"), 'code' => 'N'));
+            $aAnswerList = array('Y' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
+                'N' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("No"), 'code' => 'N'));
 
             foreach ($aResults as $aQuotaList)
             {
@@ -530,7 +530,7 @@ class quotas extends Survey_Common_Action
 
             while (list($key, $value) = each($slangs))
             {
-                $tmparrayans = array('Title' => $aQuestionType['title'], 'Display' => getLanguageNameFromCode($value, false), $value);
+                $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value);
                 $aAnswerList[$value] = $tmparrayans;
             }
 

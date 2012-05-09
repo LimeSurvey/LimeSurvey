@@ -3312,10 +3312,7 @@
                 if ($this->surveyOptions['ipaddr']) {
                     $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll(getIPAddress());
                 }
-                if ($finished) {
-                    $setter[] = dbQuoteID('submitdate') . "=" . dbQuoteAll($_SESSION[$this->sessid]['datestamp']);
-                }
-
+  
                 foreach ($updatedValues as $key=>$value)
                 {
                     $val = (is_null($value) ? NULL : $value['value']);
@@ -3405,6 +3402,16 @@
                     {
                         check_quota('enforce',$this->sid);  // will create a page and quit.
                     }
+                    else
+                    {
+                        if ($finished) {
+                            $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET "
+                            .dbQuoteID('submitdate') . "=" . dbQuoteAll($_SESSION['datestamp'])
+                            ." WHERE ID=".$_SESSION[$this->sessid]['srid'];
+                            dbExecuteAssoc($sQuery);   // Checked
+                        }
+                    }
+
                 }
                 if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                     $message .= $query;

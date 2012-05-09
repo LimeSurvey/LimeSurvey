@@ -471,7 +471,7 @@ function fixLanguageConsistencyAllSurveys()
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     foreach ( $surveyidresult as $sv )
     {
-        fixLanguageConsistency($sv[0],$sv[1]);
+        fixLanguageConsistency($sv['sid'],$sv['additional_languages']);
     }
 }
 

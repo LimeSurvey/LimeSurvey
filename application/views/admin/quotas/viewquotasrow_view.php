@@ -20,8 +20,8 @@
                 $clang->eT("Terminate survey with warning");
         } ?>
     </td>
-    <td><?php echo $quotalisting['qlimit'];?></td>
     <td <?php echo $highlight;?>><?php echo $completed;?></td>
+    <td><?php echo $quotalisting['qlimit'];?></td>
     <td style="padding: 3px;">
         <?php if (hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
             <form action="<?php echo $this->createUrl("admin/quotas/editquota/surveyid/$iSurveyId");?>" method="post">
