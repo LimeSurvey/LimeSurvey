@@ -78,6 +78,35 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120501) to 1.92+ (build 120509) May 9, 2012
++New translation: Afrikaans 
++New translation: Amharic - kindly provided by Mezene Worku
+#Updated translation: Polish (elisa-ls)
+#Updated translation: German (Carsten Schmitz)
+#Updated translation: German (informal) (Carsten Schmitz)
+#Updated translation: Persian by M. Farahbod (Carsten Schmitz)
+#Updated translation: Portuguese (Brazil) by Flávio Rodrigues (Carsten Schmitz)
+-Fixed issue #5975: Confirmation screen broken for iterate survey feature (tpartner)
+-Fixed issue #5987: prefix and suffix are misaligned for "total" field at miltiple numeric question (tpartner)
+-Fixed issue #6030: answeroption not left-aligned (tpartner)
+-Fixed issue #6030: answeroption not left-aligned Dev Fixed up CSS for list-radio questions (tpartner)
+-Fixed issue #6044: Use advanced question settings such as numbers_only, display_rows, max_characters, prefix, suffix, ... at data entry screen. (Marcel Minke)
+-Fixed issue #6062: Language selector is missing on survey without description nor welcome message (tpartner)
+-Fixed issue #6075: Content of previous answer is not replaced, instead placeholder of selected answer is shown: eg. {TOKEN:ATTRIBUTE_2} (Thomas White)
+-Fixed issue #6030: answeroption not left-aligned with multiple-opt-comments Dev : move input outside label (Denis Chenu)
+-Fixed issue #6030: Misalign input in multi-line answers / citronade part Dev : fixed some issue with little screen too (Denis Chenu)
+-Fixed issue #6048: Conditions editor produces fatal error: maximum allocated memory (Carsten Schmitz)
+-Fixed issue #6059: EM puts spaces between variables (Carsten Schmitz)
+-Fixed issue #6061: Duplicate codes when adding new answer options/subquestions/labels (Carsten Schmitz)
+-Fixed issue #6065: Error when creating a new survey by copying an existing one (Carsten Schmitz)
+-Fixed issue #6071: Notices if using mssql and changing/importing survey (Carsten Schmitz)
+-Fixed issue: Added quota_languagesettings table to the fixlanguageconsistency() array - when languages are added, matching quota entries are created for each language (jcleeland)
+-Fixed issue: Behaviour change on 'resume later' (Carsten Schmitz)
+-Fixed issue: db_quoteall added to fixlanguageconsistency() function when copying quota translations. (jcleeland)
+-Fixed issue: Submit date set even though participant was screened out by a quota (Carsten Schmitz)
+-Fixed issue: Several HTML fixes for data entry screen (data entry & data edit) (Marcel Minke)
+
+
 Changes from 1.92+ (build 120425) to 1.92+ (build 120501) May 1, 2012
 -Fixed issue #6008: File upload doesn't work from date entry, not available in response edit (mennodekker)
 -Fixed issue #6045: Firefox 12 vertical scrolling problem in admin view (and other pages) (Carsten Schmitz)
