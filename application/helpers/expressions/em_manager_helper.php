@@ -2357,7 +2357,7 @@
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $_SESSION[$this->sessid]['thistoken']=getTokenData($surveyid, $_SESSION[$this->sessid]['token']);
                 $this->knownVars['TOKEN:TOKEN'] = array(
-                    'code'=>$_SESSION['token'],
+                    'code'=>$_SESSION[$this->sessid]['token'],
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
