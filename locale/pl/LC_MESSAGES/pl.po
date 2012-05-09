@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-09 12:52+0100\n"
-"PO-Revision-Date: 2012-05-09 15:30+0100\n"
+"POT-Creation-Date: 2012-05-09 19:22+0100\n"
+"PO-Revision-Date: 2012-05-09 20:06+0100\n"
 "Last-Translator: Elżbieta Lesińska <elales@gazeta.pl>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
@@ -5616,9 +5616,9 @@ msgstr "Zapisano ustawienia osobiste."
 #: C:\LimeSurvey_SG/admin/dataentry.php:78
 #: C:\LimeSurvey_SG/admin/dataentry.php:91
 #: C:\LimeSurvey_SG/admin/dataentry.php:518
-#: C:\LimeSurvey_SG/admin/dataentry.php:1588
-#: C:\LimeSurvey_SG/admin/dataentry.php:1676
-#: C:\LimeSurvey_SG/admin/dataentry.php:1715
+#: C:\LimeSurvey_SG/admin/dataentry.php:1589
+#: C:\LimeSurvey_SG/admin/dataentry.php:1677
+#: C:\LimeSurvey_SG/admin/dataentry.php:1716
 msgid "Data entry"
 msgstr "Wprowadzanie danych"
 
@@ -5662,36 +5662,36 @@ msgstr "Spróbuj ponownie"
 # C:\limesurvey/admin/dataentry.php:1222
 # C:\limesurvey/admin/dataentry.php:2182
 #: C:\LimeSurvey_SG/admin/dataentry.php:181
-#: C:\LimeSurvey_SG/admin/dataentry.php:1554
-#: C:\LimeSurvey_SG/admin/dataentry.php:3058
+#: C:\LimeSurvey_SG/admin/dataentry.php:1555
+#: C:\LimeSurvey_SG/admin/dataentry.php:3059
 msgid "Identifier:"
 msgstr "Identyfikator:"
 
 # C:\limesurvey/admin/dataentry.php:137
 # C:\limesurvey/admin/dataentry.php:2184
 #: C:\LimeSurvey_SG/admin/dataentry.php:183
-#: C:\LimeSurvey_SG/admin/dataentry.php:3060
+#: C:\LimeSurvey_SG/admin/dataentry.php:3061
 msgid "Password:"
 msgstr "Hasło:"
 
 # C:\limesurvey/admin/dataentry.php:139
 # C:\limesurvey/admin/dataentry.php:2186
 #: C:\LimeSurvey_SG/admin/dataentry.php:185
-#: C:\LimeSurvey_SG/admin/dataentry.php:3062
+#: C:\LimeSurvey_SG/admin/dataentry.php:3063
 msgid "Confirm Password:"
 msgstr "Potwierdź hasło:"
 
 # C:\limesurvey/admin/dataentry.php:141
 # C:\limesurvey/admin/dataentry.php:2188
 #: C:\LimeSurvey_SG/admin/dataentry.php:187
-#: C:\LimeSurvey_SG/admin/dataentry.php:3064
+#: C:\LimeSurvey_SG/admin/dataentry.php:3065
 msgid "Email:"
 msgstr "Email:"
 
 # C:\limesurvey/admin/dataentry.php:143
 # C:\limesurvey/admin/dataentry.php:2190
 #: C:\LimeSurvey_SG/admin/dataentry.php:189
-#: C:\LimeSurvey_SG/admin/dataentry.php:3066
+#: C:\LimeSurvey_SG/admin/dataentry.php:3067
 msgid "Start Language:"
 msgstr "Język początkowy:"
 
@@ -5727,7 +5727,7 @@ msgstr "Wysłano email z danymi na temat zapisanej ankiety"
 # C:\limesurvey/admin/tokens.php:1474
 # C:\limesurvey/admin/vvimport.php:104
 #: C:\LimeSurvey_SG/admin/dataentry.php:412
-#: C:\LimeSurvey_SG/admin/dataentry.php:1667
+#: C:\LimeSurvey_SG/admin/dataentry.php:1668
 msgid "Success"
 msgstr "Sukces"
 
@@ -5745,7 +5745,7 @@ msgstr "Dodaj rekord"
 # C:\limesurvey/admin/dataentry.php:390
 # C:\limesurvey/admin/dataentry.php:1351
 #: C:\LimeSurvey_SG/admin/dataentry.php:422
-#: C:\LimeSurvey_SG/admin/dataentry.php:1669
+#: C:\LimeSurvey_SG/admin/dataentry.php:1670
 msgid "View This Record"
 msgstr "Pokaż ten rekord"
 
@@ -5769,49 +5769,49 @@ msgstr "Podgląd odpowiedzi (ID %s)"
 
 # C:\limesurvey/admin/dataentry.php:1216
 # C:\limesurvey/admin/dataentry.php:2176
-#: C:\LimeSurvey_SG/admin/dataentry.php:1549
-#: C:\LimeSurvey_SG/admin/dataentry.php:3048
+#: C:\LimeSurvey_SG/admin/dataentry.php:1550
+#: C:\LimeSurvey_SG/admin/dataentry.php:3049
 msgid "Finalize response submission"
 msgstr "Zapisz i wyślij odpowiedzi"
 
 # C:\limesurvey/admin/dataentry.php:1218
 # C:\limesurvey/admin/dataentry.php:2178
-#: C:\LimeSurvey_SG/admin/dataentry.php:1550
-#: C:\LimeSurvey_SG/admin/dataentry.php:3054
+#: C:\LimeSurvey_SG/admin/dataentry.php:1551
+#: C:\LimeSurvey_SG/admin/dataentry.php:3055
 msgid "Save for further completion by survey user"
 msgstr "Zapisz do późniejszego dokończenia przez użytkownika"
 
 # C:\limesurvey/admin/dataentry.php:1350
-#: C:\LimeSurvey_SG/admin/dataentry.php:1668
+#: C:\LimeSurvey_SG/admin/dataentry.php:1669
 msgid "Record has been updated."
 msgstr "Rekord zaktualizowany"
 
 # C:\limesurvey/admin/dataentry.php:1371
-#: C:\LimeSurvey_SG/admin/dataentry.php:1685
+#: C:\LimeSurvey_SG/admin/dataentry.php:1686
 msgid "Record Deleted"
 msgstr "Rekord usunięty"
 
 # C:\limesurvey/admin/dataentry.php:1432
 # C:\limesurvey/admin/statistics.php:176
-#: C:\LimeSurvey_SG/admin/dataentry.php:1774
+#: C:\LimeSurvey_SG/admin/dataentry.php:1775
 msgid "Datestamp"
 msgstr "Znacznik czasu"
 
 # C:\limesurvey/admin/dataentry.php:1591
-#: C:\LimeSurvey_SG/admin/dataentry.php:1984
+#: C:\LimeSurvey_SG/admin/dataentry.php:1985
 msgid "Only answer this if the following conditions are met:"
 msgstr "Pozwól na udzielanie odpowiedzi, gdy spełnione są warunki:"
 
-#: C:\LimeSurvey_SG/admin/dataentry.php:1990
+#: C:\LimeSurvey_SG/admin/dataentry.php:1991
 msgid "The answer(s) must meet these validation criteria:"
 msgstr "Odpwowiedź(i) muszą spełniać te kryteria walidacyjne:"
 
-#: C:\LimeSurvey_SG/admin/dataentry.php:1996
+#: C:\LimeSurvey_SG/admin/dataentry.php:1997
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr "Odpowiedź(i) muszą spełniać te kryteria array_filter:"
 
 # C:\limesurvey/admin/dataentry.php:1613
-#: C:\LimeSurvey_SG/admin/dataentry.php:2026
+#: C:\LimeSurvey_SG/admin/dataentry.php:2027
 msgid "Help about this question"
 msgstr "Pomoc do tego pytania"
 
@@ -5819,30 +5819,30 @@ msgstr "Pomoc do tego pytania"
 # C:\limesurvey/admin/importlabel.php:215
 # C:\limesurvey/admin/importsurvey.php:1021
 # C:\limesurvey/admin/labels.php:273
-#: C:\LimeSurvey_SG/admin/dataentry.php:2070
+#: C:\LimeSurvey_SG/admin/dataentry.php:2071
 #, php-format
 msgid "Label %s"
 msgstr "Etykieta %s"
 
 # C:\limesurvey/admin/dataentry.php:2218
-#: C:\LimeSurvey_SG/admin/dataentry.php:3103
+#: C:\LimeSurvey_SG/admin/dataentry.php:3104
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Ankieta nie jest jeszcze aktywna. Twoje odpowiedzi nie zostaną zapisane."
 
 # C:\limesurvey/admin/dataentry.php:2228
 # C:\limesurvey/admin/tokens.php:143
-#: C:\LimeSurvey_SG/admin/dataentry.php:3113
+#: C:\LimeSurvey_SG/admin/dataentry.php:3114
 msgid "The survey you selected does not exist"
 msgstr "Wybrana ankieta nie istnieje"
 
 # C:\limesurvey/admin/dataentry.php:1591
-#: C:\LimeSurvey_SG/admin/dataentry.php:3162
+#: C:\LimeSurvey_SG/admin/dataentry.php:3163
 #, php-format
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
 msgstr "Odpowiedz tylko w przypadku pozycji, które zostały zaznaczone w pytaniu *%s* ('%s')"
 
 # C:\limesurvey/admin/dataentry.php:1591
-#: C:\LimeSurvey_SG/admin/dataentry.php:3171
+#: C:\LimeSurvey_SG/admin/dataentry.php:3172
 #, php-format
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
 msgstr "Odpowiedz tylko w przypadku pozycji, które nie zostały zaznaczone w pytaniu *%s* ('%s')"
@@ -10979,8 +10979,9 @@ msgstr "Wymagane"
 #: C:\LimeSurvey_SG/admin/questiongrouphandling.php:151
 #: C:\LimeSurvey_SG/admin/questionhandling.php:71
 #: C:\LimeSurvey_SG/admin/questionhandling.php:542
+#, fuzzy
 msgid "Relevance equation:"
-msgstr "Odniesienie równania:"
+msgstr "Relevance equation:"
 
 # C:\limesurvey/admin/templates.php:185
 # C:\limesurvey/admin/templates.php:245
@@ -11287,7 +11288,7 @@ msgstr "Kwoty dla badania"
 msgid "Status"
 msgstr "Status"
 
-#: C:\LimeSurvey_SG/admin/quota.php:498
+#: C:\LimeSurvey_SG/admin/quota.php:499
 #: C:\LimeSurvey_SG/admin/quota.php:675
 msgid "Limit"
 msgstr "Limit"
@@ -14959,189 +14960,194 @@ msgstr "Kropka (.)"
 msgid "Comma (,)"
 msgstr "Przecinek (,)"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:156
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:157
 msgid "Afrikaans"
 msgstr "Afrykanerski"
 
+# C:\limesurvey/admin/tokens.php:1505
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:164
+msgid "Amharic"
+msgstr "Amharski"
+
 # C:\limesurvey/classes/core/surveytranslator.php:153
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:163
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:171
 msgid "Albanian"
 msgstr "Albański"
 
 # C:\limesurvey/admin/tokens.php:1510
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:170
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:178
 msgid "Arabic"
 msgstr "Arabski"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:177
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:185
 msgid "Basque"
 msgstr "Baskijski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:67
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:184
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:192
 msgid "Belarusian"
 msgstr "Białoruski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:153
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:191
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:199
 msgid "Bosnian"
 msgstr "Bośniacki"
 
 # C:\limesurvey/classes/core/surveytranslator.php:67
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:198
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:206
 msgid "Bulgarian"
 msgstr "Bułgarski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:124
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:205
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:213
 msgid "Catalan"
 msgstr "Kataloński"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:212
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:220
 msgid "Welsh"
 msgstr "Walijski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:75
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:219
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:227
 msgid "Chinese (Simplified)"
 msgstr "Chiński (uproszczony)"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:70
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:226
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:234
 msgid "Chinese (Traditional - Hong Kong)"
 msgstr "Chiński (tradycyjny - Hong Kong)"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:70
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:233
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:241
 msgid "Chinese (Traditional - Taiwan)"
 msgstr "Chiński (tradycyjny - Tajwan)"
 
 # C:\limesurvey/classes/core/surveytranslator.php:79
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:240
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:248
 msgid "Croatian"
 msgstr "Chorwacki"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:247
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:255
 msgid "Czech"
 msgstr "Czeski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:83
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:254
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:262
 msgid "Danish"
 msgstr "Duński"
 
 # C:\limesurvey/classes/core/surveytranslator.php:87
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:261
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:269
 msgid "Dutch"
 msgstr "Holenderski"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:268
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:276
 msgid "Dutch Informal"
 msgstr "Holenderski nieformalny"
 
 # C:\limesurvey/classes/core/surveytranslator.php:91
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:275
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:283
 msgid "English"
 msgstr "Angielski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:153
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:282
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:290
 msgid "Estonian"
 msgstr "Estoński"
 
 # C:\limesurvey/classes/core/surveytranslator.php:95
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:289
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:297
 msgid "Finnish"
 msgstr "Fiński"
 
 # C:\limesurvey/classes/core/surveytranslator.php:100
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:296
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:304
 msgid "French"
 msgstr "Francuski"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:123
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:303
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:311
 msgid "Galician"
 msgstr "Galicyjski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:104
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:310
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:318
 msgid "German"
 msgstr "Niemiecki"
 
 # C:\limesurvey/classes/core/surveytranslator.php:108
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:317
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:325
 msgid "German informal"
 msgstr "Niemiecki nieformalny"
 
 # C:\limesurvey/classes/core/surveytranslator.php:112
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:324
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:332
 msgid "Greek"
 msgstr "Grecki"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:760
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:331
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:339
 msgid "Hindi"
 msgstr "Hinduski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:116
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:338
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:346
 msgid "Hebrew"
 msgstr "Hebrajski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:120
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:345
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:353
 msgid "Hungarian"
 msgstr "Węgierski"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:352
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:360
 msgid "Icelandic"
 msgstr "Islandzki"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:359
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:367
 msgid "Indonesian"
 msgstr "Indonezyjski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:169
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:366
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:374
 msgid "Irish"
 msgstr "Irlandzki"
 
 # C:\limesurvey/classes/core/surveytranslator.php:124
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:373
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:381
 msgid "Italian"
 msgstr "Włoski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:124
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:380
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:388
 msgid "Italian (formal)"
 msgstr "Włoski (formalny)"
 
 # C:\limesurvey/classes/core/surveytranslator.php:128
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:387
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:395
 msgid "Japanese"
 msgstr "Japoński"
 
 # C:\limesurvey/admin/tokens.php:1518
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:394
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:402
 msgid "Korean"
 msgstr "Koreański"
 
 # C:\limesurvey/classes/core/surveytranslator.php:132
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:401
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:409
 msgid "Lithuanian"
 msgstr "Litewski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:79
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:408
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:416
 msgid "Latvian"
 msgstr "Łotewski"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:415
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:423
 msgid "Macedonian"
 msgstr "Macedoński"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:422
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:430
 msgid "Malay"
 msgstr "Malajski"
 
@@ -15161,17 +15167,17 @@ msgstr "Malajski"
 # C:\limesurvey/admin/statistics.php:688
 # C:\limesurvey/admin/statistics.php:1323
 # C:\limesurvey/admin/stats.php:666
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:429
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:437
 msgid "Maltese"
 msgstr "Maltański"
 
 # C:\limesurvey/classes/core/surveytranslator.php:136
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:436
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:444
 msgid "Norwegian (Bokmal)"
 msgstr "Norweski (Bokmal)"
 
 # C:\limesurvey/classes/core/surveytranslator.php:136
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:443
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:451
 msgid "Norwegian (Nynorsk)"
 msgstr "Norweski (Nynorsk)"
 
@@ -15179,88 +15185,88 @@ msgstr "Norweski (Nynorsk)"
 # C:\limesurvey/admin/conditions.php:659
 # C:\limesurvey/admin/html.php:999
 # C:\limesurvey/admin/statistics.php:1630
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:450
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:458
 msgid "Persian"
 msgstr "Perski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:91
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:457
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:465
 msgid "Polish"
 msgstr "Polski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:140
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:464
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:472
 msgid "Portuguese"
 msgstr "Portugalski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:144
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:471
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:479
 msgid "Portuguese (Brazilian)"
 msgstr "Portugalski (Brazylia)"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:478
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:486
 msgid "Punjabi"
 msgstr "Pendżabski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:149
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:485
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:493
 msgid "Russian"
 msgstr "Rosyjski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:153
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:492
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:500
 msgid "Romanian"
 msgstr "Rumuński"
 
 # C:\limesurvey/classes/core/surveytranslator.php:157
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:499
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:507
 msgid "Slovak"
 msgstr "Słowacki"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:506
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:514
 msgid "Sinhala"
 msgstr "Syngaleski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:157
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:513
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:521
 msgid "Slovenian"
 msgstr "Słoweński"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:156
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:520
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:528
 msgid "Serbian"
 msgstr "Serbski"
 
 # C:\limesurvey/classes/core/surveytranslator.php:161
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:527
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:535
 msgid "Spanish"
 msgstr "Hiszpański"
 
 # C:\limesurvey/classes/core/surveytranslator.php:161
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:534
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:542
 msgid "Spanish (Mexico)"
 msgstr "Hiszpański (Meksyk)"
 
 # C:\limesurvey/classes/core/surveytranslator.php:165
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:541
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:549
 msgid "Swedish"
 msgstr "Szwedzki"
 
 # C:\limesurvey/classes/core/surveytranslator.php:169
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:548
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:556
 msgid "Turkish"
 msgstr "Turecki"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:555
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:563
 msgid "Thai"
 msgstr "Tajski"
 
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:563
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:571
 msgid "Urdu"
 msgstr "Urdu"
 
 # C:\limesurvey/classes/core/surveytranslator.php:174
-#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:570
+#: C:\LimeSurvey_SG/classes/core/surveytranslator.php:578
 msgid "Vietnamese"
 msgstr "Wietnamski"
 
@@ -15790,37 +15796,37 @@ msgid "Unable to insert record into timings table "
 msgstr "Nie można wstawić rekordu do tabeli czasów"
 
 # C:\limesurvey/qanda.php:426
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4766
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4772
 msgid "This question is mandatory"
 msgstr "To pytanie jest obligatoryjne"
 
 # C:\limesurvey/qanda.php:443
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4778
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4784
 msgid "Please check at least one item."
 msgstr "Proszę zaznaczyć przynajmniej jeden element"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4788
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4794
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr "Przy wyborze '%s' należy wprowadzić dodatkowy opis."
 
 # C:\limesurvey/qanda.php:436
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4810
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4847
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4816
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4853
 msgid "Please complete all parts"
 msgstr "Prosimy udzielić odpowiedzi na wszystkie części"
 
 # C:\limesurvey/qanda.php:443
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4839
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4845
 msgid "Please check at least one box per row"
 msgstr "Proszę zaznaczyć przynajmniej jeden element w każdym wierszu"
 
 # C:\limesurvey/qanda.php:439
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4855
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:4861
 msgid "Please rank all items"
 msgstr "Należy uporządkować wszystkie elementy"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7094
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7101
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Nieprawidłowe pytanie - prawdopodobnie brak sub-pytań lub ustawień właściwych dla języka"
 
@@ -15828,33 +15834,33 @@ msgstr "Nieprawidłowe pytanie - prawdopodobnie brak sub-pytań lub ustawień w�
 # C:\limesurvey/save.php:296
 # C:\limesurvey/admin/dataentry.php:358
 # C:\limesurvey/admin/userrighthandling.php:693
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7099
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7106
 msgid "Name [ID]"
 msgstr "Nazwa [ID]"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7099
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7106
 msgid "Relevance [Validation] (Default)"
 msgstr "Relewancja [Walidacja] (Domyślnie)"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7099
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7106
 msgid "Text [Help] (Tip)"
 msgstr "Tekst [Pomoc] (Podpowiedź)"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7150
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7376
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7157
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7383
 msgid "DEFAULT:"
 msgstr "DOMYŚLNIE:"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7158
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7165
 msgid "HELP:"
 msgstr "POMOC:"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7159
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7166
 msgid "TIP:"
 msgstr "PODPOWIEDŹ"
 
 # C:\limesurvey/admin/importsurvey.php:1022
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7166
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7173
 msgid "Question Attribute"
 msgstr "Atrybut pytania"
 
@@ -15874,46 +15880,46 @@ msgstr "Atrybut pytania"
 # C:\limesurvey/admin/statistics.php:688
 # C:\limesurvey/admin/statistics.php:1323
 # C:\limesurvey/admin/stats.php:666
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7166
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7173
 msgid "Value"
 msgstr "Wartość"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7265
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7272
 msgid "VALIDATION:"
 msgstr "WALIDACJA:"
 
 # C:\limesurvey/register.php:93
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7279
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7286
 msgid "This variable name has already been used."
 msgstr "Ta nazwa zmiennej była już wykorzystana."
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7291
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7298
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Począwszy od wersji 1.92 nazwy zmiennych powinny zawierać tylko litery, cyfry i podkreślenia; nie mogą zaczynać się od cyfry. Ta nazwa zmiennej jest niedopuszczalna."
 
 # C:\limesurvey/qanda.php:426
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7432
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7439
 #, php-format
 msgid "This question has at least %s error(s)"
 msgstr "To pytanie zawiera co najmniej %s błędów"
 
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7471
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7478
 #, php-format
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s pytań zawiera błędy, które muszą być poprawione"
 
 # C:\limesurvey/admin/access_denied.php:68
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7477
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7484
 msgid "No syntax errors detected in this survey"
 msgstr "W ankiecie nie wykryto błędów składniowych"
 
 # C:\limesurvey/admin/activate.php:114
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7480
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7487
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Ta grupa, sama w sobie, nie zawiera błędów składniowych"
 
 # C:\limesurvey/admin/activate.php:114
-#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7483
+#: C:\LimeSurvey_SG/classes/expressions/LimeExpressionManager.php:7490
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "To pytanie, samo w sobie, nie zawiera błędów składniowych"
 
