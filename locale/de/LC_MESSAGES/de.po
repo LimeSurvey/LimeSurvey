@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-25 12:11+0100\n"
-"PO-Revision-Date: 2012-04-25 12:12+0100\n"
+"POT-Creation-Date: 2012-05-09 16:56+0100\n"
+"PO-Revision-Date: 2012-05-09 16:58+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -211,7 +211,7 @@ msgstr "Bewertungen"
 msgid "At least %d files must be uploaded for this question"
 msgstr "Mindestens %d Dateien müssen für diese Frage hochgeladen werden"
 
-#: common_functions.php:6591
+#: common_functions.php:6621
 #, php-format
 msgid "Attribute %s"
 msgstr "Attribute %s"
@@ -486,7 +486,7 @@ msgstr "FEHLERMELDUNG"
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Entweder sind Sie zu lange inaktiv gewesen, Sie haben Cookies deaktiviert oder es gab ein Problem mit Ihrer Verbindung."
 
-#: common_functions.php:6564
+#: common_functions.php:6594
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
@@ -522,7 +522,7 @@ msgstr "Gleich Summenwert"
 msgid "Equation"
 msgstr "Gleichung"
 
-#: common_functions.php:5830
+#: common_functions.php:5860
 #: index.php:566
 msgid "Error"
 msgstr "Fehler"
@@ -593,7 +593,7 @@ msgstr "Dateiname"
 msgid "File upload"
 msgstr "Datei-Upload"
 
-#: common_functions.php:6562
+#: common_functions.php:6592
 msgid "First name"
 msgstr "Vorname"
 
@@ -729,7 +729,7 @@ msgstr "Nur ganze Zahlen"
 msgid "Invalid group number for this survey: "
 msgstr "Ungültige Gruppennummer für diese Umfrage:"
 
-#: common_functions.php:6567
+#: common_functions.php:6597
 msgid "Invitation sent date"
 msgstr "Versanddatum Einladung"
 
@@ -761,15 +761,15 @@ msgstr "Beschriftung für 'Anderes:'-Option"
 msgid "Language Switch"
 msgstr "Sprachwechsel"
 
-#: common_functions.php:6566
+#: common_functions.php:6596
 msgid "Language code"
 msgstr "Sprachcode"
 
-#: common_functions.php:6568
+#: common_functions.php:6598
 msgid "Last Reminder sent date"
 msgstr "Versanddatum für letzte Erinnerung"
 
-#: common_functions.php:6563
+#: common_functions.php:6593
 msgid "Last name"
 msgstr "Nachname"
 
@@ -841,6 +841,7 @@ msgstr "Logik "
 msgid "Long Free Text"
 msgstr "Langer freier Text"
 
+#: qanda.php:2833
 #: qanda.php:2834
 #: qanda.php:2869
 msgid "Make a comment on your choice here:"
@@ -1048,8 +1049,8 @@ msgstr "Nein"
 
 #: common_functions.php:1906
 #: common_functions.php:1914
-#: common_functions.php:5816
-#: common_functions.php:5821
+#: common_functions.php:5846
+#: common_functions.php:5851
 #: qanda.php:957
 #: qanda.php:1485
 #: qanda.php:1796
@@ -1920,7 +1921,7 @@ msgstr "Titel"
 msgid "Token"
 msgstr "Schlüsselwort"
 
-#: common_functions.php:6565
+#: common_functions.php:6595
 msgid "Token code"
 msgstr "Zugangsschlüssel"
 
@@ -1936,7 +1937,7 @@ msgstr "Zugangsschlüssel:"
 msgid "Tokens"
 msgstr "Zugangsschlüssel"
 
-#: common_functions.php:6569
+#: common_functions.php:6599
 msgid "Total numbers of sent reminders"
 msgstr "Gesamtanzahl versendeter Erinnerungen"
 
@@ -1993,7 +1994,7 @@ msgstr "Benutze Kartendienst"
 msgid "Use slider layout"
 msgstr "Benutze Schieberegler"
 
-#: common_functions.php:6570
+#: common_functions.php:6600
 msgid "Uses left"
 msgstr "Übrige Nutzungsanzahl"
 
@@ -2548,6 +2549,10 @@ msgstr "Geben Sie einen Namen und ein Passwort für diese Umfrage an und klicken
 #: replacements.php:696
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden erhalten Sie per E-Mail einen Link zu der Umfrage."
+
+#: save.php:185
+msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
+msgstr "Fehler: Leider gab es einen Fehler beim E-Mail Versand. Ihre Antworten wurden soweit gespeichert, aber Sie werden keine E-Mail mit Details bekommen. Sie sollten sich den \"Namen\" und Ihr \"Passwort\" daher notieren."
 
 #: replacements.php:307
 msgid "Exit and Clear Survey"
@@ -3370,16 +3375,16 @@ msgstr "Aktion"
 msgid "Add Another Record"
 msgstr "Einen weiteren Datensatz hinzufügen"
 
-#: admin/conditionshandling.php:1010
+#: admin/conditionshandling.php:1011
 msgid "Add and edit conditions"
 msgstr "Bedingungen bearbeiten/hinzufügen"
 
-#: admin/conditionshandling.php:1710
-#: admin/conditionshandling.php:1948
+#: admin/conditionshandling.php:1711
+#: admin/conditionshandling.php:1949
 msgid "Add condition"
 msgstr "Bedingung hinzufügen"
 
-#: admin/conditionshandling.php:1721
+#: admin/conditionshandling.php:1722
 msgid "Add scenario"
 msgstr "Szenario hinzufügen"
 
@@ -3409,7 +3414,7 @@ msgstr "Ausführliche Benachrichtungs-E-Mail:"
 msgid "Administrator:"
 msgstr "Administrator Name:"
 
-#: admin/conditionshandling.php:1046
+#: admin/conditionshandling.php:1047
 msgid "After"
 msgstr "Nach"
 
@@ -3466,7 +3471,7 @@ msgstr "Antwort:"
 msgid "Answers"
 msgstr "Antworten"
 
-#: admin/conditionshandling.php:1913
+#: admin/conditionshandling.php:1914
 msgid "Answers from previous questions"
 msgstr "Antworten vorheriger Fragen"
 
@@ -3478,23 +3483,23 @@ msgstr "Antworten zu dieser Umfrage sind anonymisiert"
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Antworten mit einem Fragecode von '0' oder Leerzeichen sind nicht erlaubt und werden nicht gespeichert."
 
-#: admin/conditionshandling.php:1247
+#: admin/conditionshandling.php:1248
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "Sind Sie sicher, dass Sie allen Bedingungen in diesem Szenario löschen wollen?"
 
-#: admin/conditionshandling.php:1175
+#: admin/conditionshandling.php:1176
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
 msgstr "Sind sie sicher, dass sie alle gewählten Bedingungen löschen wollen?"
 
-#: admin/conditionshandling.php:1497
+#: admin/conditionshandling.php:1498
 msgid "Are you sure you want to delete this condition?"
 msgstr "Sind Sie sicher, dass Sie diese Bedingung löschen wollen?"
 
-#: admin/conditionshandling.php:1183
+#: admin/conditionshandling.php:1184
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
 msgstr "Sind sie wirklich sicher, dass Sie ALLE Szenarien ab 1 neu durchnummerieren wollen?"
 
-#: admin/conditionshandling.php:1925
+#: admin/conditionshandling.php:1926
 msgid "Attributes values from the participant's token"
 msgstr "Attributewerte aus dem Teilnehmer-Zugangsschlüssel"
 
@@ -3516,7 +3521,7 @@ msgstr "Basis-Sprache:"
 msgid "Basic admin notification"
 msgstr "Basis Admin-Benachrichtigung"
 
-#: admin/conditionshandling.php:1016
+#: admin/conditionshandling.php:1017
 msgid "Before"
 msgstr "Vor"
 
@@ -3545,7 +3550,7 @@ msgstr "CSV-Datei (Alle Zeichensätze)"
 msgid "Cannot be changed"
 msgstr "Kann nicht geändert werden"
 
-#: admin/conditionshandling.php:1617
+#: admin/conditionshandling.php:1618
 msgid "Check all"
 msgstr "Alle auswählen"
 
@@ -3561,7 +3566,7 @@ msgstr "Wählen Sie die Spalten, die Sie exportieren wollen. Wählen Sie KEINE a
 msgid "Choose token fields"
 msgstr "Zugangsschlüssel-Felder auswählen"
 
-#: admin/conditionshandling.php:1958
+#: admin/conditionshandling.php:1959
 msgid "Clear"
 msgstr "Löschen"
 
@@ -3576,7 +3581,7 @@ msgstr "Code"
 msgid "Column control"
 msgstr "Spalten Kontrolle"
 
-#: admin/conditionshandling.php:1803
+#: admin/conditionshandling.php:1804
 msgid "Comparison operator"
 msgstr "Vergleichsoperator"
 
@@ -3584,7 +3589,7 @@ msgstr "Vergleichsoperator"
 msgid "Completion state"
 msgstr "Komplettierungsstatus:"
 
-#: admin/conditionshandling.php:998
+#: admin/conditionshandling.php:999
 msgid "Conditions designer"
 msgstr "Bedingungs-Designer"
 
@@ -3602,7 +3607,7 @@ msgid "Conditions successfully copied (some were skipped because they were dupli
 msgstr "Bedingungen wurden erfolgreich kopiert (einige wurden aufgrund von Duplikaten ausgelassen)"
 
 #: admin/dataentry.php:185
-#: admin/dataentry.php:2662
+#: admin/dataentry.php:3062
 msgid "Confirm Password:"
 msgstr "Passwort bestätigen:"
 
@@ -3622,11 +3627,11 @@ msgstr "Bestätigungs-E-Mail Betreff:"
 msgid "Confirmation email:"
 msgstr "Text der Bestätigung-E-Mail:"
 
-#: admin/conditionshandling.php:1879
+#: admin/conditionshandling.php:1880
 msgid "Constant"
 msgstr "Konstante"
 
-#: admin/conditionshandling.php:1895
+#: admin/conditionshandling.php:1896
 msgid "Constant value"
 msgstr "Konstanter Wert"
 
@@ -3651,9 +3656,9 @@ msgstr "Konvertiere Leerzeichen in der Frage zu Unterstrichen"
 msgid "Copy"
 msgstr "Kopieren"
 
-#: admin/conditionshandling.php:1012
-#: admin/conditionshandling.php:1600
-#: admin/conditionshandling.php:1645
+#: admin/conditionshandling.php:1013
+#: admin/conditionshandling.php:1601
+#: admin/conditionshandling.php:1646
 msgid "Copy conditions"
 msgstr "Bedingung kopieren"
 
@@ -3661,7 +3666,7 @@ msgstr "Bedingung kopieren"
 msgid "Copy survey"
 msgstr "Umfrage kopieren"
 
-#: admin/conditionshandling.php:1620
+#: admin/conditionshandling.php:1621
 msgid "Copy the selected conditions to"
 msgstr "Ausgewählte Bedingung kopieren nach"
 
@@ -3669,7 +3674,7 @@ msgstr "Ausgewählte Bedingung kopieren nach"
 msgid "Create, import, or copy survey"
 msgstr "Neue Umfrage erstellen, importieren oder kopieren"
 
-#: admin/conditionshandling.php:1033
+#: admin/conditionshandling.php:1034
 msgid "Current"
 msgstr "Aktiv"
 
@@ -3677,9 +3682,9 @@ msgstr "Aktiv"
 #: admin/dataentry.php:78
 #: admin/dataentry.php:91
 #: admin/dataentry.php:518
-#: admin/dataentry.php:1376
-#: admin/dataentry.php:1464
-#: admin/dataentry.php:1503
+#: admin/dataentry.php:1588
+#: admin/dataentry.php:1676
+#: admin/dataentry.php:1715
 msgid "Data entry"
 msgstr "Dateneingabe"
 
@@ -3704,7 +3709,7 @@ msgstr "Datum gestartet"
 msgid "Date format:"
 msgstr "Datumsformat:"
 
-#: admin/dataentry.php:1562
+#: admin/dataentry.php:1774
 msgid "Datestamp"
 msgstr "Zeitstempel"
 
@@ -3726,7 +3731,7 @@ msgstr "Dezimaltrennzeichen:"
 msgid "Default Google Analytics"
 msgstr "Standard Google Analytics"
 
-#: admin/conditionshandling.php:1722
+#: admin/conditionshandling.php:1723
 msgid "Default scenario"
 msgstr "Standard Szenario"
 
@@ -3734,7 +3739,7 @@ msgstr "Standard Szenario"
 msgid "Default value settings were successfully saved."
 msgstr "Vorgabewerte wurden erfolgreich gespeichert."
 
-#: admin/conditionshandling.php:1177
+#: admin/conditionshandling.php:1178
 msgid "Delete all conditions"
 msgstr "Lösche alle Bedingungen"
 
@@ -3743,11 +3748,11 @@ msgstr "Lösche alle Bedingungen"
 msgid "Delete survey"
 msgstr "Umfrage löschen"
 
-#: admin/conditionshandling.php:1499
+#: admin/conditionshandling.php:1500
 msgid "Delete this condition"
 msgstr "Diese Bedingung löschen"
 
-#: admin/conditionshandling.php:1249
+#: admin/conditionshandling.php:1250
 msgid "Delete this scenario"
 msgstr "Dieses Szenario löschen"
 
@@ -3786,7 +3791,7 @@ msgstr "FEHLER beim Löschen der Umfrage ID"
 msgid "Edit answer options"
 msgstr "Bearbeite Antwortoptionen"
 
-#: admin/conditionshandling.php:1706
+#: admin/conditionshandling.php:1707
 msgid "Edit condition"
 msgstr "Bedingung bearbeiten"
 
@@ -3794,7 +3799,7 @@ msgstr "Bedingung bearbeiten"
 msgid "Edit email templates"
 msgstr "E-Mail Vorlagen bearbeiten"
 
-#: admin/conditionshandling.php:1255
+#: admin/conditionshandling.php:1256
 msgid "Edit scenario"
 msgstr "Szenario bearbeiten"
 
@@ -3810,7 +3815,7 @@ msgstr "Bearbeite Umfrage-Einstellungen"
 msgid "Edit survey text elements"
 msgstr "Bearbeite Umfragetextelemente"
 
-#: admin/conditionshandling.php:1502
+#: admin/conditionshandling.php:1503
 msgid "Edit this condition"
 msgstr "Diese Bedingung bearbeiten"
 
@@ -3829,7 +3834,7 @@ msgid "Email templates successfully saved."
 msgstr "E-Mailvorlagen wurden erfolgreich gespeichert."
 
 #: admin/dataentry.php:187
-#: admin/dataentry.php:2664
+#: admin/dataentry.php:3064
 msgid "Email:"
 msgstr "E-Mail"
 
@@ -3944,8 +3949,8 @@ msgstr "Faxnummer:"
 msgid "Filtered from statistics script"
 msgstr "Gefiltert vom Statistik Skript"
 
-#: admin/dataentry.php:1336
-#: admin/dataentry.php:2648
+#: admin/dataentry.php:1549
+#: admin/dataentry.php:3048
 msgid "Finalize response submission"
 msgstr "Datensatz als vollständig in der Datenbank ablegen"
 
@@ -3965,8 +3970,8 @@ msgstr "Format:"
 msgid "From"
 msgstr "Von"
 
-#: admin/conditionshandling.php:1378
-#: admin/conditionshandling.php:1451
+#: admin/conditionshandling.php:1379
+#: admin/conditionshandling.php:1452
 msgid "From token table"
 msgstr "Von Teilnehmertabelle"
 
@@ -4036,7 +4041,7 @@ msgstr "Gruppe konnte nicht gelöscht werden."
 msgid "Group could not be updated"
 msgstr "Gruppe konnte nicht aktualisiert werden."
 
-#: admin/conditionshandling.php:870
+#: admin/conditionshandling.php:871
 msgid "Group of checkboxes"
 msgstr "Gruppe von Ankreuzfeldern"
 
@@ -4046,7 +4051,7 @@ msgstr "Gruppe von Ankreuzfeldern"
 msgid "Help"
 msgstr "Hilfe"
 
-#: admin/dataentry.php:1814
+#: admin/dataentry.php:2026
 msgid "Help about this question"
 msgstr "Hilfe zu dieser Frage"
 
@@ -4061,8 +4066,8 @@ msgid "Hide both (Forced by the system administrator)"
 msgstr "Beides nicht zeigen (Erzwungen durch Systemadministrator)"
 
 #: admin/dataentry.php:181
-#: admin/dataentry.php:1342
-#: admin/dataentry.php:2658
+#: admin/dataentry.php:1554
+#: admin/dataentry.php:3058
 msgid "Identifier:"
 msgstr "Name:"
 
@@ -4090,8 +4095,8 @@ msgstr "Umfrage importieren"
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "In einer aktiven Umfrage wird eine Tabelle erstellt, welche alle Daten-Eingaben aufnimmt."
 
-#: admin/conditionshandling.php:1382
-#: admin/conditionshandling.php:1455
+#: admin/conditionshandling.php:1383
+#: admin/conditionshandling.php:1456
 msgid "Inexistant token table"
 msgstr "Teilnehmer Tabelle fehlt"
 
@@ -4122,7 +4127,7 @@ msgstr "Virtuelle Tastatur für Geräte ohne Tastatur"
 msgid "Label"
 msgstr "Beschriftung"
 
-#: admin/dataentry.php:1858
+#: admin/dataentry.php:2070
 #, php-format
 msgid "Label %s"
 msgstr "Beschriftung %s"
@@ -4205,7 +4210,7 @@ msgstr "Neue Antwortoption"
 msgid "New question group was saved."
 msgstr "Neue Fragengruppe wurde gespeichert."
 
-#: admin/conditionshandling.php:1229
+#: admin/conditionshandling.php:1230
 msgid "New scenario number"
 msgstr "Neu Szenario Nummer"
 
@@ -4221,7 +4226,7 @@ msgstr "Nein (Erzwungen durch Systemadministrator)"
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "Bedingen konnten nicht kopiert werden (aufgrund von Duplikaten)"
 
-#: admin/conditionshandling.php:1617
+#: admin/conditionshandling.php:1618
 msgid "No questions selected"
 msgstr "Keine Frage ausgewählt"
 
@@ -4235,7 +4240,7 @@ msgstr "Nicht Gewählt"
 msgid "Not equal to"
 msgstr "Ungleich"
 
-#: admin/conditionshandling.php:1440
+#: admin/conditionshandling.php:1441
 msgid "Not found"
 msgstr "Nicht gefunden"
 
@@ -4248,8 +4253,8 @@ msgstr "Achtung: Sollten Sie diese Umfrage aufgrund eines Irrtums aktiviert habe
 msgid "Notification & data management"
 msgstr "Benachrichtigung & Datenverwaltung"
 
-#: admin/conditionshandling.php:1213
-#: admin/conditionshandling.php:1353
+#: admin/conditionshandling.php:1214
+#: admin/conditionshandling.php:1354
 msgid "OR"
 msgstr "ODER"
 
@@ -4261,21 +4266,21 @@ msgstr "Aus (Erzwungen durch Systemadministrator)"
 msgid "On (Forced by the system administrator)"
 msgstr "An (Erzwungen durch Systemadministrator)"
 
-#: admin/dataentry.php:1772
+#: admin/dataentry.php:1984
 msgid "Only answer this if the following conditions are met:"
 msgstr "Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:"
 
-#: admin/dataentry.php:2771
+#: admin/dataentry.php:3171
 #, php-format
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
 msgstr "Beantworten Sie diese Frage nur für die Einträge, die Sie nicht in Frage %s ('%s') gewählt haben"
 
-#: admin/dataentry.php:2762
+#: admin/dataentry.php:3162
 #, php-format
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
 msgstr "Beantworten Sie diese Frage nur für die Einträge die von Ihnen in Frage *%s* ('%s') gewählt wurden"
 
-#: admin/conditionshandling.php:1154
+#: admin/conditionshandling.php:1155
 msgid "Only show question {QID} IF"
 msgstr "Zeige die Frage {QID} nur, WENN"
 
@@ -4292,7 +4297,7 @@ msgid "Participants may print answers?"
 msgstr "Teilnehmer dürfen Antworten ausdrucken?"
 
 #: admin/dataentry.php:183
-#: admin/dataentry.php:2660
+#: admin/dataentry.php:3060
 msgid "Password:"
 msgstr "Passwort:"
 
@@ -4302,11 +4307,11 @@ msgstr "Passwort:"
 msgid "Please select a file to import!"
 msgstr "Bitte wählen Sie eine Datei zum Importieren aus!"
 
-#: admin/conditionshandling.php:1878
+#: admin/conditionshandling.php:1879
 msgid "Predefined"
 msgstr "Vordefiniert"
 
-#: admin/conditionshandling.php:1889
+#: admin/conditionshandling.php:1890
 msgid "Predefined answer options for this question"
 msgstr "Vordefinierte Antwortoptionen für diese Frage"
 
@@ -4320,7 +4325,7 @@ msgstr "Vordefinierte Beschriftungssets..."
 msgid "Presentation & navigation"
 msgstr "Präsentation & Navigation"
 
-#: admin/conditionshandling.php:1745
+#: admin/conditionshandling.php:1746
 msgid "Previous questions"
 msgstr "Vorherige Fragen"
 
@@ -4403,8 +4408,8 @@ msgstr "Frage wurde erfolgreich gelöscht."
 msgid "Question was successfully saved."
 msgstr "Frage wurde erfolgreich gespeichert."
 
-#: admin/conditionshandling.php:1066
-#: admin/conditionshandling.php:1880
+#: admin/conditionshandling.php:1067
+#: admin/conditionshandling.php:1881
 #: admin/exportresults.php:103
 msgid "Questions"
 msgstr "Fragen"
@@ -4426,15 +4431,15 @@ msgstr "Schnelles Hinzufügen von Teilfragen"
 msgid "Range:"
 msgstr "Bereich:"
 
-#: admin/dataentry.php:1473
+#: admin/dataentry.php:1685
 msgid "Record Deleted"
 msgstr "Datensatz wurde gelöscht"
 
-#: admin/dataentry.php:1456
+#: admin/dataentry.php:1668
 msgid "Record has been updated."
 msgstr "Datensatz wurde aktualisiert."
 
-#: admin/conditionshandling.php:1882
+#: admin/conditionshandling.php:1883
 msgid "RegExp"
 msgstr "RegAusdruck"
 
@@ -4448,7 +4453,7 @@ msgstr "Registrierung"
 
 #: admin/conditionshandling.php:69
 #: admin/conditionshandling.php:85
-#: admin/conditionshandling.php:1931
+#: admin/conditionshandling.php:1932
 msgid "Regular expression"
 msgstr "Regulärer Ausdruck"
 
@@ -4464,7 +4469,7 @@ msgstr "Betreff der Erinnerungs-E-Mail:"
 msgid "Remove"
 msgstr "Löschen"
 
-#: admin/conditionshandling.php:1185
+#: admin/conditionshandling.php:1186
 msgid "Renumber scenario automatically"
 msgstr "Szenario automatisch neu durchnummerieren"
 
@@ -4527,8 +4532,8 @@ msgstr "IP-Adresse speichern?"
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
-#: admin/dataentry.php:1338
-#: admin/dataentry.php:2654
+#: admin/dataentry.php:1550
+#: admin/dataentry.php:3054
 msgid "Save for further completion by survey user"
 msgstr "Für weitere Bearbeitung durch Umfrage-Teilnehmer abspeichern"
 
@@ -4540,7 +4545,7 @@ msgstr "Referrer-URL speichern?"
 msgid "Save timings?"
 msgstr "Speichere Timings?"
 
-#: admin/conditionshandling.php:1733
+#: admin/conditionshandling.php:1734
 msgid "Scenario"
 msgstr "Szenario"
 
@@ -4596,7 +4601,7 @@ msgstr "Zeige beides"
 msgid "Show both (Forced by the system administrator)"
 msgstr "Zeige beides  (Erzwungen durch Systemadministrator)"
 
-#: admin/conditionshandling.php:1007
+#: admin/conditionshandling.php:1008
 msgid "Show conditions for this question"
 msgstr "Bedingungen für diese Frage zeigen"
 
@@ -4658,7 +4663,7 @@ msgstr "Zeige nur Fragennummer (Erzwungen durch Systemadministrator)"
 msgid "Show welcome screen?"
 msgstr "Zeige Willkommensseite?"
 
-#: admin/conditionshandling.php:886
+#: admin/conditionshandling.php:887
 msgid "Single checkbox"
 msgstr "Einfaches Ankreuzfeld"
 
@@ -4675,7 +4680,7 @@ msgid "Some example subquestion"
 msgstr "Eine Beispiel-Teilfrage"
 
 #: admin/dataentry.php:189
-#: admin/dataentry.php:2666
+#: admin/dataentry.php:3066
 msgid "Start Language:"
 msgstr "Start-Sprache"
 
@@ -4696,7 +4701,7 @@ msgid "Subquestions were successfully saved."
 msgstr "Teilfragen wurden erfolgreich gespeichert."
 
 #: admin/dataentry.php:412
-#: admin/dataentry.php:1455
+#: admin/dataentry.php:1667
 msgid "Success"
 msgstr "Erfolgreich"
 
@@ -4747,11 +4752,11 @@ msgstr "Designvorlagen-Vorschau"
 msgid "Template:"
 msgstr "Vorlage:"
 
-#: admin/dataentry.php:1784
+#: admin/dataentry.php:1996
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr "Die Antwort(en) müssen diesen Filterkriterien genügen:"
 
-#: admin/dataentry.php:1778
+#: admin/dataentry.php:1990
 msgid "The answer(s) must meet these validation criteria:"
 msgstr "Die Antwort(en) müssen diesen Validierungskriterien genügen:"
 
@@ -4775,7 +4780,7 @@ msgstr "Die Antworten-Tabelle wurde umbenannt zu: "
 msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "Die Antworten dieser Umfrage sind nicht mehr verfügbar in LimeSurvey."
 
-#: admin/dataentry.php:2713
+#: admin/dataentry.php:3113
 msgid "The survey you selected does not exist"
 msgstr "Die ausgewählte Umfrage existiert nicht."
 
@@ -4816,7 +4821,7 @@ msgstr "Diese Option kann nicht gesetzt werden, wenn die Option 'Anonymisierte A
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
 msgstr "Damit werden diese Umfrage und alle verknüpften Gruppen, Fragen, Antworten und Bedingungen gelöscht."
 
-#: admin/conditionshandling.php:1579
+#: admin/conditionshandling.php:1580
 msgid "This question is always shown."
 msgstr "Diese Frage wird immer gezeigt."
 
@@ -4836,11 +4841,11 @@ msgstr "Diese Umfrage ist nicht anonym."
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses (including any uploaded files) will be deleted. We recommend that you export the responses (and files) before deleting this survey."
 msgstr "Diese Umfrage ist aktiv und eine Antworttabelle existiert. Wenn Sie diese Umfrage löschen, werden auch die Antworten (inklusive hochgeladener Dateien) gelöscht. Wir empfehlen Ihnen, dass Sie die Antworten (und Dateien) exportieren, bevor Sie die Umfrage löschen."
 
-#: admin/dataentry.php:2703
+#: admin/dataentry.php:3103
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Diese Umfrage ist noch nicht aktiviert. Ihre Antwort kann nicht abgespeichert werden"
 
-#: admin/conditionshandling.php:1669
+#: admin/conditionshandling.php:1670
 msgid "This survey's questions don't use conditions"
 msgstr "Die Fragen dieser Umfrage nutzen keine Bedingungen."
 
@@ -4864,8 +4869,8 @@ msgstr "Timings werden nicht gespeichert."
 msgid "Token control"
 msgstr "Zugangsschlüssel-Steuerung"
 
-#: admin/conditionshandling.php:1746
-#: admin/conditionshandling.php:1881
+#: admin/conditionshandling.php:1747
+#: admin/conditionshandling.php:1882
 msgid "Token fields"
 msgstr "Zugangsschlüssel-Felder."
 
@@ -4887,15 +4892,15 @@ msgstr "Nochmal versuchen"
 msgid "URL description:"
 msgstr "URL Beschreibung:"
 
-#: admin/conditionshandling.php:1617
+#: admin/conditionshandling.php:1618
 msgid "Uncheck all"
 msgstr "Alle abwählen"
 
-#: admin/conditionshandling.php:1942
+#: admin/conditionshandling.php:1943
 msgid "Update condition"
 msgstr "Bedingung aktualisieren"
 
-#: admin/conditionshandling.php:1236
+#: admin/conditionshandling.php:1237
 msgid "Update scenario"
 msgstr "Szenario aktualisieren"
 
@@ -4923,7 +4928,7 @@ msgid "Use default"
 msgstr "Standardwerte setzen"
 
 #: admin/dataentry.php:422
-#: admin/dataentry.php:1457
+#: admin/dataentry.php:1669
 msgid "View This Record"
 msgstr "Diesen Datensatz anzeigen"
 
@@ -5027,11 +5032,11 @@ msgstr "Ihre Umfrage enthält mehr als 255 Antwortspalten. Tabellenkalkulationsp
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr "Ihre Antworten wurden erfolgreich zwischengespeichert. Sie werden außerdem eine Bestätigungsmail erhalten. Bitte merken Sie sich Ihr Passwort gut, da wir auf Ihre Zugangsdaten nicht zugreifen können."
 
-#: admin/conditionshandling.php:1346
+#: admin/conditionshandling.php:1347
 msgid "and"
 msgstr "und"
 
-#: admin/conditionshandling.php:889
+#: admin/conditionshandling.php:890
 msgid "checked"
 msgstr "Markiert"
 
@@ -5040,11 +5045,11 @@ msgstr "Markiert"
 msgid "equals"
 msgstr "gleich"
 
-#: admin/conditionshandling.php:890
+#: admin/conditionshandling.php:891
 msgid "not checked"
 msgstr "Nicht markiert"
 
-#: admin/conditionshandling.php:1617
+#: admin/conditionshandling.php:1618
 msgid "selected"
 msgstr "gewählt"
 
@@ -6857,16 +6862,16 @@ msgstr "<Kein Vorgabewert>"
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 msgstr "Eine Gruppe in der CSV/SQL-Datei stammt nicht aus der gleichen Umfrage. Der Import der Umfrage wurde gestoppt."
 
-#: admin/quota.php:578
-#: admin/quota.php:684
-#: admin/quota.php:691
-#: admin/quota.php:744
-#: admin/quota.php:751
+#: admin/quota.php:593
+#: admin/quota.php:699
+#: admin/quota.php:706
+#: admin/quota.php:759
+#: admin/quota.php:766
 msgid "Add Answer"
 msgstr "Antwort hinzufügen"
 
-#: admin/quota.php:642
-#: admin/quota.php:852
+#: admin/quota.php:657
+#: admin/quota.php:867
 msgid "Add New Quota"
 msgstr "Neue Quote hinzufügen"
 
@@ -6886,7 +6891,7 @@ msgstr "Alle Gruppenbewertungen sind konsistent."
 msgid "All Survey (Total) assessments meet consistency standards"
 msgstr "Alle Umfrage (Gesamt-) Bewertungen sind konsistent."
 
-#: admin/quota.php:746
+#: admin/quota.php:761
 msgid "All answers are already selected in this quota."
 msgstr "Alle Antworten sind schon für diese Quote ausgewählt."
 
@@ -6960,8 +6965,8 @@ msgstr "Am Anfang"
 msgid "At end"
 msgstr "Am Ende"
 
-#: admin/quota.php:409
-#: admin/quota.php:805
+#: admin/quota.php:424
+#: admin/quota.php:820
 msgid "Autoload URL"
 msgstr "Weiterleitungs-URL:"
 
@@ -7241,7 +7246,7 @@ msgstr "Beschriftungsset bearbeiten"
 msgid "Edit question"
 msgstr "Bearbeite Frage"
 
-#: admin/quota.php:390
+#: admin/quota.php:405
 msgid "Edit quota"
 msgstr "Quote bearbeiten"
 
@@ -7429,8 +7434,8 @@ msgstr "Sprechspezifische Einstellungen fehlen"
 msgid "Languages:"
 msgstr "Sprachen:"
 
-#: admin/quota.php:483
-#: admin/quota.php:660
+#: admin/quota.php:499
+#: admin/quota.php:675
 msgid "Limit"
 msgstr "Limit"
 
@@ -7442,7 +7447,7 @@ msgstr "Lade..."
 msgid "Login"
 msgstr "Anmelden"
 
-#: admin/quota.php:786
+#: admin/quota.php:801
 msgid "New quota"
 msgstr "Neue Quote"
 
@@ -7486,11 +7491,11 @@ msgstr "Keine übereinstimmende Umfrage"
 msgid "No one-time password found for user %s"
 msgstr "Kein Einmalpasswort für Benutzer %s gefunden"
 
-#: admin/quota.php:627
+#: admin/quota.php:642
 msgid "No quotas have been set for this survey"
 msgstr "Es wurden noch keine Quoten für diese Umfrage festgelegt."
 
-#: admin/quota.php:521
+#: admin/quota.php:536
 msgid "Not Active"
 msgstr "Nicht aktiv"
 
@@ -7640,8 +7645,8 @@ msgstr "Position:"
 msgid "Question Attributes"
 msgstr "Fragen-Attribute:"
 
-#: admin/quota.php:684
-#: admin/quota.php:744
+#: admin/quota.php:699
+#: admin/quota.php:759
 msgid "Question Selection"
 msgstr "Fragenauswahl"
 
@@ -7667,13 +7672,13 @@ msgstr "Fragen Import ist abgeschlossen."
 msgid "Question import summary"
 msgstr "Fragen-Importübersicht"
 
-#: admin/quota.php:498
+#: admin/quota.php:513
 msgid "Quick CSV report"
 msgstr "Schneller CSV-Bericht"
 
-#: admin/quota.php:399
-#: admin/quota.php:482
-#: admin/quota.php:798
+#: admin/quota.php:414
+#: admin/quota.php:497
+#: admin/quota.php:813
 msgid "Quota action"
 msgstr "Quoten Aktion"
 
@@ -7688,20 +7693,20 @@ msgstr ""
 "\\n"
 "Eine Quoten.Nachricht für die folgenden Sprachen fehlt"
 
-#: admin/quota.php:396
-#: admin/quota.php:794
+#: admin/quota.php:411
+#: admin/quota.php:809
 msgid "Quota limit"
 msgstr "Quotengrenze"
 
-#: admin/quota.php:437
-#: admin/quota.php:832
+#: admin/quota.php:452
+#: admin/quota.php:847
 msgid "Quota message"
 msgstr "Quotennachricht"
 
-#: admin/quota.php:393
-#: admin/quota.php:480
-#: admin/quota.php:660
-#: admin/quota.php:790
+#: admin/quota.php:408
+#: admin/quota.php:495
+#: admin/quota.php:675
+#: admin/quota.php:805
 msgid "Quota name"
 msgstr "Quoten-Name"
 
@@ -7712,7 +7717,7 @@ msgstr "Quoten-Name"
 msgid "Relevance equation:"
 msgstr "Relevanz-Gleichung:"
 
-#: admin/quota.php:660
+#: admin/quota.php:675
 msgid "Remaining"
 msgstr "Verbleibend"
 
@@ -7757,15 +7762,15 @@ msgstr "Änderungen speichern"
 msgid "Save question group"
 msgstr "Speichere Fragengruppe"
 
-#: admin/quota.php:452
+#: admin/quota.php:467
 msgid "Save quota"
 msgstr "Quote speichern"
 
-#: admin/quota.php:769
+#: admin/quota.php:784
 msgid "Save this, then create another:"
 msgstr "Speichern, dann einen weiteren erstellen:"
 
-#: admin/quota.php:756
+#: admin/quota.php:771
 msgid "Select Answer"
 msgstr "Antwort wählen"
 
@@ -7773,7 +7778,7 @@ msgstr "Antwort wählen"
 msgid "Select LimeSurvey question file (*.lsq/*.csv)"
 msgstr "Wählen Sie eine LimeSurvey Fragen-Datei (*.lsq/*.csv)"
 
-#: admin/quota.php:697
+#: admin/quota.php:712
 msgid "Select Question"
 msgstr "Frage wählen"
 
@@ -7801,16 +7806,16 @@ msgstr "Hilfe anzeigen"
 msgid "Show advanced settings"
 msgstr "Zeige erweiterte Einstellungen"
 
-#: admin/quota.php:686
+#: admin/quota.php:701
 msgid "Sorry there are no supported question types in this survey."
 msgstr "Diese Umfrage enthält leider keine unterstützten Fragetypen."
 
 #: admin/import_functions.php:1021
-#: admin/quota.php:833
+#: admin/quota.php:848
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Leider haben Ihre Antworten eine Quote dieser Umfrage überschritten."
 
-#: admin/quota.php:481
+#: admin/quota.php:496
 msgid "Status"
 msgstr "Status"
 
@@ -7839,12 +7844,12 @@ msgstr "Umfrage-ID %d gespeichert am  %s und enthält %d Datensätze"
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr "Umfrage-ID %d gespeichert am  %s und enthält %d Datensätze (%s)"
 
-#: admin/quota.php:691
-#: admin/quota.php:751
+#: admin/quota.php:706
+#: admin/quota.php:766
 msgid "Survey Quota"
 msgstr "Umfrage Quote"
 
-#: admin/quota.php:475
+#: admin/quota.php:490
 msgid "Survey quotas"
 msgstr "Umfrage Quoten"
 
@@ -7858,15 +7863,15 @@ msgstr "Designvorlage %s nicht gefunden - bitte vor dem Aktivieren überprüfen.
 msgid "Template '%s' does already exist."
 msgstr "Vorlage '%s' existiert bereits."
 
-#: admin/quota.php:402
-#: admin/quota.php:528
-#: admin/quota.php:800
+#: admin/quota.php:417
+#: admin/quota.php:543
+#: admin/quota.php:815
 msgid "Terminate survey"
 msgstr "Umfrage beenden"
 
-#: admin/quota.php:405
-#: admin/quota.php:530
-#: admin/quota.php:801
+#: admin/quota.php:420
+#: admin/quota.php:545
+#: admin/quota.php:816
 msgid "Terminate survey with warning"
 msgstr "Umfrage beenden mit Warnung"
 
@@ -8004,13 +8009,13 @@ msgstr "Fehler Gesamt"
 msgid "Total Imported files"
 msgstr "Anzahl importierte Dateien"
 
-#: admin/quota.php:441
-#: admin/quota.php:836
+#: admin/quota.php:456
+#: admin/quota.php:851
 msgid "URL"
 msgstr "URL"
 
-#: admin/quota.php:445
-#: admin/quota.php:840
+#: admin/quota.php:460
+#: admin/quota.php:855
 msgid "URL description"
 msgstr "URL Beschreibung"
 
@@ -10656,10 +10661,10 @@ msgstr "Datenbank wurde erfolgreich auf Version %s aktualisiert."
 msgid "Database type"
 msgstr "Datenbanktyp"
 
-#: admin/update/upgrade-mssql.php:606
-#: admin/update/upgrade-mssqlnative.php:606
-#: admin/update/upgrade-mysql.php:714
-#: admin/update/upgrade-postgres.php:434
+#: admin/update/upgrade-mssql.php:593
+#: admin/update/upgrade-mssqlnative.php:594
+#: admin/update/upgrade-mysql.php:702
+#: admin/update/upgrade-postgres.php:422
 #, php-format
 msgid "Database update finished (%s)"
 msgstr "Datenbankaktualisierung beendet (%s)"
@@ -10861,7 +10866,7 @@ msgstr "Ihre LimeSurvey Installation wird überprüft ob das Update erfolgreich 
 msgid "Your update key is invalid and was removed. "
 msgstr "Ihr Aktualisierungsschlüssel war ungültig und wurde entfernt."
 
-#: classes/expressions/LimeExpressionManager.php:7474
+#: classes/expressions/LimeExpressionManager.php:7477
 #, php-format
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s Fragen haben Fehler, die korrigiert werden müssen."
@@ -10870,11 +10875,19 @@ msgstr "%s Fragen haben Fehler, die korrigiert werden müssen."
 msgid "Absolute value"
 msgstr "Absoluter Wert"
 
-#: classes/core/surveytranslator.php:156
+#: classes/core/surveytranslator.php:157
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#: classes/core/surveytranslator.php:171
 msgid "Albanian"
 msgstr "Albanisch"
 
-#: classes/core/surveytranslator.php:163
+#: classes/core/surveytranslator.php:164
+msgid "Amharic"
+msgstr "Amharisch"
+
+#: classes/core/surveytranslator.php:178
 msgid "Arabic"
 msgstr "Arabisch"
 
@@ -10894,11 +10907,11 @@ msgstr "Arkustangens"
 msgid "Arc tangent of two variables"
 msgstr "Arkustangens zweier Variablen"
 
-#: classes/core/surveytranslator.php:170
+#: classes/core/surveytranslator.php:185
 msgid "Basque"
 msgstr "Baskisch"
 
-#: classes/core/surveytranslator.php:177
+#: classes/core/surveytranslator.php:192
 msgid "Belarusian"
 msgstr "Belarussisch"
 
@@ -10910,11 +10923,11 @@ msgstr "Binär-sicherer Vergleich von Zeichenketten mit Achtung von Groß- und K
 msgid "Binary safe string comparison"
 msgstr "Binär-sicherer Vergleich von Zeichenketten"
 
-#: classes/core/surveytranslator.php:184
+#: classes/core/surveytranslator.php:199
 msgid "Bosnian"
 msgstr "Bosnisch"
 
-#: classes/core/surveytranslator.php:191
+#: classes/core/surveytranslator.php:206
 msgid "Bulgarian"
 msgstr "Bulgarisch"
 
@@ -10934,19 +10947,19 @@ msgstr "Berechnet den Exponenten von e"
 msgid "Case-insensitive strstr"
 msgstr "strstr ohne Rücksichtnahme auf Groß- und Kleinschreibung"
 
-#: classes/core/surveytranslator.php:198
+#: classes/core/surveytranslator.php:213
 msgid "Catalan"
 msgstr "Katalan"
 
-#: classes/core/surveytranslator.php:212
+#: classes/core/surveytranslator.php:227
 msgid "Chinese (Simplified)"
 msgstr "Chinesisch (Vereinfacht)"
 
-#: classes/core/surveytranslator.php:219
+#: classes/core/surveytranslator.php:234
 msgid "Chinese (Traditional - Hong Kong)"
 msgstr "Chinesisch (Traditionell - Hong Kong)"
 
-#: classes/core/surveytranslator.php:226
+#: classes/core/surveytranslator.php:241
 msgid "Chinese (Traditional - Taiwan)"
 msgstr "Chinesisch - (Traditionell - Taiwan)"
 
@@ -10994,20 +11007,20 @@ msgstr "Cosinus"
 msgid "Count the number of answered questions in the list"
 msgstr "Zähle die Anzahl der beantworteten Fragen in der Liste"
 
-#: classes/core/surveytranslator.php:233
+#: classes/core/surveytranslator.php:248
 msgid "Croatian"
 msgstr "Kroatisch"
 
-#: classes/core/surveytranslator.php:240
+#: classes/core/surveytranslator.php:255
 msgid "Czech"
 msgstr "Tschechisch"
 
-#: classes/expressions/LimeExpressionManager.php:7153
-#: classes/expressions/LimeExpressionManager.php:7379
+#: classes/expressions/LimeExpressionManager.php:7156
+#: classes/expressions/LimeExpressionManager.php:7382
 msgid "DEFAULT:"
 msgstr "Voreinstellung:"
 
-#: classes/core/surveytranslator.php:247
+#: classes/core/surveytranslator.php:262
 msgid "Danish"
 msgstr "Dänisch"
 
@@ -11023,11 +11036,11 @@ msgstr "Zeige Zahlen mit Komma als Dezimaltrennzeichen, wenn benötigt"
 msgid "Dot (.)"
 msgstr "Punkt (.)"
 
-#: classes/core/surveytranslator.php:254
+#: classes/core/surveytranslator.php:269
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: classes/core/surveytranslator.php:261
+#: classes/core/surveytranslator.php:276
 msgid "Dutch Informal"
 msgstr "Holländisch (Du-Form)"
 
@@ -11049,11 +11062,11 @@ msgstr "Jede Antwort darf maximal %s sein"
 msgid "Each answer must be between %s and %s"
 msgstr "Jede Antwort muss zwischen %s und %s sein"
 
-#: classes/core/surveytranslator.php:268
+#: classes/core/surveytranslator.php:283
 msgid "English"
 msgstr "Englisch"
 
-#: classes/core/surveytranslator.php:275
+#: classes/core/surveytranslator.php:290
 msgid "Estonian"
 msgstr "Estnisch"
 
@@ -11133,7 +11146,7 @@ msgstr "Herausfinden, ob eine Variable eine Nummer oder eine nummerische Zeichen
 msgid "Finds whether the type of a variable is float"
 msgstr "Herausfinden, ob der Variablentyp eine Fließkommazahl ist"
 
-#: classes/core/surveytranslator.php:282
+#: classes/core/surveytranslator.php:297
 msgid "Finnish"
 msgstr "Finnisch"
 
@@ -11153,7 +11166,7 @@ msgstr "Formatiere ein(e) lokale(s) Zeit/Datum zu einer Zahl"
 msgid "Format a number with grouped thousands"
 msgstr "Formatiere eine Zahl in die Tausender-Gruppierung"
 
-#: classes/core/surveytranslator.php:289
+#: classes/core/surveytranslator.php:304
 msgid "French"
 msgstr "Französisch"
 
@@ -11172,7 +11185,7 @@ msgstr "Funktion muss mindestens %s Argumente haben"
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr "Funktion unterstützt diese Anzahl an Argmenten (-1 bedeutet unbegrenzt): %s"
 
-#: classes/core/surveytranslator.php:296
+#: classes/core/surveytranslator.php:311
 msgid "Galician"
 msgstr "Galicisch"
 
@@ -11180,11 +11193,11 @@ msgstr "Galicisch"
 msgid "Generate a random integer"
 msgstr "Generiere eine Zufallszahl"
 
-#: classes/core/surveytranslator.php:303
+#: classes/core/surveytranslator.php:318
 msgid "German"
 msgstr "Deutsch (Sie-Form)"
 
-#: classes/core/surveytranslator.php:310
+#: classes/core/surveytranslator.php:325
 msgid "German informal"
 msgstr "Deutsch (Du-Form)"
 
@@ -11204,36 +11217,36 @@ msgstr "Den Zahlenwert einer Variable erhalten"
 msgid "Get value of pi"
 msgstr "Erhalte den Wert von pi"
 
-#: classes/core/surveytranslator.php:317
+#: classes/core/surveytranslator.php:332
 msgid "Greek"
 msgstr "Griechisch"
 
-#: classes/expressions/LimeExpressionManager.php:7161
+#: classes/expressions/LimeExpressionManager.php:7164
 msgid "HELP:"
 msgstr "Hilfe:"
 
-#: classes/core/surveytranslator.php:331
+#: classes/core/surveytranslator.php:346
 msgid "Hebrew"
 msgstr "Hebräisch"
 
-#: classes/core/surveytranslator.php:324
+#: classes/core/surveytranslator.php:339
 msgid "Hindi"
 msgstr "Hindi"
 
-#: classes/core/surveytranslator.php:338
+#: classes/core/surveytranslator.php:353
 msgid "Hungarian"
 msgstr "Ungarisch"
 
-#: classes/core/surveytranslator.php:345
+#: classes/core/surveytranslator.php:360
 msgid "Icelandic"
 msgstr "Isländisch"
 
-#: classes/expressions/LimeExpressionManager.php:4788
+#: classes/expressions/LimeExpressionManager.php:4794
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr "Wenn Sie '%s' wählen, müssen sie eine Beschreibung angeben."
 
-#: classes/core/surveytranslator.php:352
+#: classes/core/surveytranslator.php:367
 msgid "Indonesian"
 msgstr "Indonesisch"
 
@@ -11246,7 +11259,7 @@ msgstr "Fügt HTML-Zeilenumbrüche vor alle neuen Zeilen in einer Zeichenkette e
 msgid "Invalid PERL Regular Expression: %s"
 msgstr "Ungültiger PERL Regulärer Ausdruck: %s"
 
-#: classes/expressions/LimeExpressionManager.php:7097
+#: classes/expressions/LimeExpressionManager.php:7100
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Ungültige Frage - möglicherweise fehlen Unterfragen oder sprachspezifische Einstellungen für diese Sprache"
 
@@ -11255,19 +11268,19 @@ msgstr "Ungültige Frage - möglicherweise fehlen Unterfragen oder sprachspezifi
 msgid "Invalid value(s) on the stack"
 msgstr "Ungültige Werte auf dem Stack"
 
-#: classes/core/surveytranslator.php:359
+#: classes/core/surveytranslator.php:374
 msgid "Irish"
 msgstr "Irisch"
 
-#: classes/core/surveytranslator.php:366
+#: classes/core/surveytranslator.php:381
 msgid "Italian"
 msgstr "Italienisch"
 
-#: classes/core/surveytranslator.php:373
+#: classes/core/surveytranslator.php:388
 msgid "Italian (formal)"
 msgstr "Italienisch (Förmlich)"
 
-#: classes/core/surveytranslator.php:380
+#: classes/core/surveytranslator.php:395
 msgid "Japanese"
 msgstr "Japanisch"
 
@@ -11275,19 +11288,19 @@ msgstr "Japanisch"
 msgid "Join array elements with a string"
 msgstr "Verbinde Feld-Elemente mit einer Zeichenkette"
 
-#: classes/core/surveytranslator.php:387
+#: classes/core/surveytranslator.php:402
 msgid "Korean"
 msgstr "Koreanisch"
 
-#: classes/core/surveytranslator.php:401
+#: classes/core/surveytranslator.php:416
 msgid "Latvian"
 msgstr "Lettisch"
 
-#: classes/core/surveytranslator.php:394
+#: classes/core/surveytranslator.php:409
 msgid "Lithuanian"
 msgstr "Litauisch"
 
-#: classes/core/surveytranslator.php:408
+#: classes/core/surveytranslator.php:423
 msgid "Macedonian"
 msgstr "Mazedonisch"
 
@@ -11299,11 +11312,11 @@ msgstr "Eine Zeichenkette in Kleinbuchstaben umwandeln"
 msgid "Make a string uppercase"
 msgstr "Eine Zeichenkette in Großbuchstaben umwandeln"
 
-#: classes/core/surveytranslator.php:415
+#: classes/core/surveytranslator.php:430
 msgid "Malay"
 msgstr "Malaisisch"
 
-#: classes/core/surveytranslator.php:422
+#: classes/core/surveytranslator.php:437
 msgid "Maltese"
 msgstr "Maltesisch"
 
@@ -11312,7 +11325,7 @@ msgstr "Maltesisch"
 msgid "Missing %s closing right parentheses"
 msgstr "%s fehlende rechte Klammern"
 
-#: classes/expressions/LimeExpressionManager.php:7102
+#: classes/expressions/LimeExpressionManager.php:7105
 msgid "Name [ID]"
 msgstr "Name [ID]"
 
@@ -11320,15 +11333,15 @@ msgstr "Name [ID]"
 msgid "Natural logarithm"
 msgstr "Natürlicher Logarithmus"
 
-#: classes/expressions/LimeExpressionManager.php:7480
+#: classes/expressions/LimeExpressionManager.php:7483
 msgid "No syntax errors detected in this survey"
 msgstr "Keine Syntax-Fehler in dieser Umfrage gefunden "
 
-#: classes/core/surveytranslator.php:429
+#: classes/core/surveytranslator.php:444
 msgid "Norwegian (Bokmal)"
 msgstr "Norwegisch (Bokmal)"
 
-#: classes/core/surveytranslator.php:436
+#: classes/core/surveytranslator.php:451
 msgid "Norwegian (Nynorsk)"
 msgstr "Norwegisch (Nynorsk)"
 
@@ -11344,7 +11357,7 @@ msgstr "Nur Variablen können Werte zugewiesen werden"
 msgid "Pad a string to a certain length with another string"
 msgstr "Fülle eine Zeichenkette bis zu einer bestimmten Länge mit einer anderen Zeichenkette"
 
-#: classes/core/surveytranslator.php:443
+#: classes/core/surveytranslator.php:458
 msgid "Persian"
 msgstr "Persisch"
 
@@ -11352,11 +11365,11 @@ msgstr "Persisch"
 msgid "Please also fill in the \"other comment\" field."
 msgstr "Bitte füllen Sie auch das Kommentarfeld aus."
 
-#: classes/expressions/LimeExpressionManager.php:4839
+#: classes/expressions/LimeExpressionManager.php:4845
 msgid "Please check at least one box per row"
 msgstr "Bitte wählen Sie mindestens einen Eintrag pro Zeile aus"
 
-#: classes/expressions/LimeExpressionManager.php:4778
+#: classes/expressions/LimeExpressionManager.php:4784
 msgid "Please check at least one item."
 msgstr "Bitte machen Sie mindestens ein Kreuz."
 
@@ -11364,12 +11377,12 @@ msgstr "Bitte machen Sie mindestens ein Kreuz."
 msgid "Please check the format of your answer."
 msgstr "Bitte überprüfen Sie das Format Ihrer Antwort."
 
-#: classes/expressions/LimeExpressionManager.php:4810
-#: classes/expressions/LimeExpressionManager.php:4847
+#: classes/expressions/LimeExpressionManager.php:4816
+#: classes/expressions/LimeExpressionManager.php:4853
 msgid "Please complete all parts"
 msgstr "Bitte beantworten Sie alle Bereiche/Teile der Frage(n)"
 
-#: classes/expressions/LimeExpressionManager.php:4855
+#: classes/expressions/LimeExpressionManager.php:4861
 msgid "Please rank all items"
 msgstr "Bitte bringen Sie alle Elemente in eine Rangfolge"
 
@@ -11388,7 +11401,7 @@ msgstr "Bitte wählen Sie maximal %s Antworten"
 msgid "Please select between %s and %s answer(s)"
 msgstr "Markieren Sie zwischen %s und %s Antworten"
 
-#: classes/core/surveytranslator.php:450
+#: classes/core/surveytranslator.php:465
 msgid "Polish"
 msgstr "Polnisch"
 
@@ -11398,19 +11411,19 @@ msgstr "Polnisch"
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr "Schlecht abgeschlossener Ausdruck -  Konstante oder Variable erwartet"
 
-#: classes/core/surveytranslator.php:457
+#: classes/core/surveytranslator.php:472
 msgid "Portuguese"
 msgstr "Portugiesisch"
 
-#: classes/core/surveytranslator.php:464
+#: classes/core/surveytranslator.php:479
 msgid "Portuguese (Brazilian)"
 msgstr "Portugiesisch (Brasilien)"
 
-#: classes/core/surveytranslator.php:471
+#: classes/core/surveytranslator.php:486
 msgid "Punjabi"
 msgstr "Panjabi"
 
-#: classes/expressions/LimeExpressionManager.php:7169
+#: classes/expressions/LimeExpressionManager.php:7172
 msgid "Question Attribute"
 msgstr "Fragenattribut"
 
@@ -11418,7 +11431,7 @@ msgstr "Fragenattribut"
 msgid "Quote meta characters"
 msgstr "Quotiere Meta-Zeichen"
 
-#: classes/expressions/LimeExpressionManager.php:7102
+#: classes/expressions/LimeExpressionManager.php:7105
 msgid "Relevance [Validation] (Default)"
 msgstr "Relevanz [Validierung] (Standard)"
 
@@ -11454,7 +11467,7 @@ msgstr "Gib true(1) zurück, wenn es ein valides Datum des gregorianischen Kalen
 msgid "Reverse a string"
 msgstr "Kehre eine Zeichenkette um"
 
-#: classes/core/surveytranslator.php:485
+#: classes/core/surveytranslator.php:500
 msgid "Romanian"
 msgstr "Rumänisch"
 
@@ -11470,11 +11483,11 @@ msgstr "Aufrunden"
 msgid "Rounds a number to an optional precision"
 msgstr "Rundet eine Zahl auf eine optionale Prezision"
 
-#: classes/core/surveytranslator.php:478
+#: classes/core/surveytranslator.php:493
 msgid "Russian"
 msgstr "Russisch"
 
-#: classes/core/surveytranslator.php:513
+#: classes/core/surveytranslator.php:528
 msgid "Serbian"
 msgstr "Serbisch"
 
@@ -11486,23 +11499,23 @@ msgstr "Sollte niemals zu dieser Zeile kommen?"
 msgid "Sine"
 msgstr "Sinus"
 
-#: classes/core/surveytranslator.php:499
+#: classes/core/surveytranslator.php:514
 msgid "Sinhala"
 msgstr "Singhalesisch"
 
-#: classes/core/surveytranslator.php:492
+#: classes/core/surveytranslator.php:507
 msgid "Slovak"
 msgstr "Slovakisch"
 
-#: classes/core/surveytranslator.php:506
+#: classes/core/surveytranslator.php:521
 msgid "Slovenian"
 msgstr "Slovenisch"
 
-#: classes/core/surveytranslator.php:520
+#: classes/core/surveytranslator.php:535
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: classes/core/surveytranslator.php:527
+#: classes/core/surveytranslator.php:542
 msgid "Spanish (Mexico)"
 msgstr "Spanisch (Mexiko)"
 
@@ -11510,7 +11523,7 @@ msgstr "Spanisch (Mexiko)"
 msgid "Square root"
 msgstr "Quadratwurzel"
 
-#: classes/expressions/LimeExpressionManager.php:7294
+#: classes/expressions/LimeExpressionManager.php:7297
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Ab version 1.92 können Variablennamen nur Buchstaben, Zahlen und Untersctriche enthalten und dürfen nicht mit einer Zahl beginnen. Diese Variablename ist veraltet."
 
@@ -11530,11 +11543,11 @@ msgstr "Entferne Leerzeichen (oder andere Zeichen) vom Anfang einer Zeichenkette
 msgid "Strip whitespace (or other characters) from the end of a string"
 msgstr "Entfernt Leerzeichen (oder andere Zeichen) vom Ende einer Zeichenkette"
 
-#: classes/core/surveytranslator.php:534
+#: classes/core/surveytranslator.php:549
 msgid "Swedish"
 msgstr "Schwedisch"
 
-#: classes/expressions/LimeExpressionManager.php:7162
+#: classes/expressions/LimeExpressionManager.php:7165
 msgid "TIP:"
 msgstr "Hinweis:"
 
@@ -11542,11 +11555,11 @@ msgstr "Hinweis:"
 msgid "Tangent"
 msgstr "Tangens"
 
-#: classes/expressions/LimeExpressionManager.php:7102
+#: classes/expressions/LimeExpressionManager.php:7105
 msgid "Text [Help] (Tip)"
 msgstr "Text [Hilfe] (Hinweis)"
 
-#: classes/core/surveytranslator.php:548
+#: classes/core/surveytranslator.php:563
 msgid "Thai"
 msgstr "Thailändisch"
 
@@ -11574,20 +11587,20 @@ msgstr "Die Summe muss gleich %s sein"
 msgid "The value of this variable can not be changed"
 msgstr "Der Wert dieser Variable kann nicht geändert werden"
 
-#: classes/expressions/LimeExpressionManager.php:7483
+#: classes/expressions/LimeExpressionManager.php:7486
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Diese Gruppe, an sich, enthält keine Syntaxfehler."
 
-#: classes/expressions/LimeExpressionManager.php:7435
+#: classes/expressions/LimeExpressionManager.php:7438
 #, php-format
 msgid "This question has at least %s error(s)"
 msgstr "Fehler: Diese Frage hat mindestens %s Fehler"
 
-#: classes/expressions/LimeExpressionManager.php:4766
+#: classes/expressions/LimeExpressionManager.php:4772
 msgid "This question is mandatory"
 msgstr "Bitte beantworten Sie diese Frage"
 
-#: classes/expressions/LimeExpressionManager.php:7486
+#: classes/expressions/LimeExpressionManager.php:7489
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "Diese Frage, an sich, enthält keine Syntaxfehler."
 
@@ -11595,7 +11608,7 @@ msgstr "Diese Frage, an sich, enthält keine Syntaxfehler."
 msgid "This variable is not declared until a later page"
 msgstr "Diese Variable ist zu diesem Zeitpunkt nicht deklariert, erst auf einer späteren Seite."
 
-#: classes/expressions/LimeExpressionManager.php:7282
+#: classes/expressions/LimeExpressionManager.php:7285
 msgid "This variable name has already been used."
 msgstr "Dieser Variablenname wurde schon einmal benutzt."
 
@@ -11603,7 +11616,7 @@ msgstr "Dieser Variablenname wurde schon einmal benutzt."
 msgid "Tried to pop value off of empty stack"
 msgstr "Versuch einen Wert von einem Stack herunterzunehmen"
 
-#: classes/core/surveytranslator.php:541
+#: classes/core/surveytranslator.php:556
 msgid "Turkish"
 msgstr "Türkisch"
 
@@ -11657,23 +11670,23 @@ msgstr "Nicht-unterstützte Syntax"
 msgid "Uppercase the first character of each word in a string"
 msgstr "Schreibe den Anfangsbuchstaben jedes Wortes der Zeichenkette groß"
 
-#: classes/core/surveytranslator.php:556
+#: classes/core/surveytranslator.php:571
 msgid "Urdu"
 msgstr "Urdu"
 
-#: classes/expressions/LimeExpressionManager.php:7268
+#: classes/expressions/LimeExpressionManager.php:7271
 msgid "VALIDATION:"
 msgstr "Validierung:"
 
-#: classes/expressions/LimeExpressionManager.php:7169
+#: classes/expressions/LimeExpressionManager.php:7172
 msgid "Value"
 msgstr "Wert"
 
-#: classes/core/surveytranslator.php:563
+#: classes/core/surveytranslator.php:578
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
 
-#: classes/core/surveytranslator.php:205
+#: classes/core/surveytranslator.php:220
 msgid "Welsh"
 msgstr "Walisisch"
 
