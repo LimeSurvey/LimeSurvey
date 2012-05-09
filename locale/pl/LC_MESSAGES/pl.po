@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-09 12:52+0100\n"
-"PO-Revision-Date: 2012-05-09 15:21+0100\n"
+"PO-Revision-Date: 2012-05-09 15:30+0100\n"
 "Last-Translator: Elżbieta Lesińska <elales@gazeta.pl>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
@@ -1482,7 +1482,7 @@ msgstr "Maksymalnie znaków"
 
 #: C:\LimeSurvey_SG/common_functions.php:3568
 msgid "Ensure a minimum number of possible answers (0=No limit)"
-msgstr "Zapewnij minimalną liczbę potencjalnych odpowiedzi (0=brak limitu)"
+msgstr "Zapewnij minimalną liczbę możliwych odpowiedzi (0=brak limitu)"
 
 #: C:\LimeSurvey_SG/common_functions.php:3569
 msgid "Minimum answers"
