@@ -1471,7 +1471,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 }
 
             }
-            
+
 
 
             // now translate any links
@@ -1583,6 +1583,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
     LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::SetSurveyId($newsid);
 
     return $results;
 }

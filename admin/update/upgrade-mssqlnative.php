@@ -544,19 +544,7 @@ function db_upgrade($oldversion) {
         fixSubquestions();
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
-    if ($oldversion < 149)
-    {
-        modify_database("","CREATE TABLE [prefix_survey_url_parameters] (
-        [id] integer NOT NULL IDENTITY (1,1),
-        [sid] integer NOT NULL,
-        [parameter] varchar(50) NOT NULL,
-        [targetqid] integer NULL,
-        [targetsqid] integer NULL,
-        PRIMARY KEY ([id])
-        );"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update [prefix_settings_global] set [stg_value]='149' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
 
-    }
     if ($oldversion < 150)
     {
         modify_database("","ALTER TABLE [prefix_questions] ADD [relevance] varchar(max);"); echo $modifyoutput; flush();@ob_flush();
