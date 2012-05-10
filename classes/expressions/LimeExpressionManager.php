@@ -2053,73 +2053,94 @@
                 // min/max answers
                 if ($min_answers!='' || $max_answers!='')
                 {
-                    if ($min_answers!='' && $max_answers!='')
-                    {
-                        $qtips['num_answers']=sprintf($this->gT("Please select between %s and %s answer(s)"),'{fixnum('.$min_answers.')}','{fixnum('.$max_answers.')}');
-                    }
-                    else if ($min_answers!='')
-                        {
-                            $qtips['num_answers']=sprintf($this->gT("Please select at least %s answer(s)"),'{fixnum('.$min_answers.')}');
-
-                        }
-                        else if ($max_answers!='')
-                            {
-                                $qtips['num_answers']=sprintf($this->gT("Please select at most %s answer(s)"),'{fixnum('.$max_answers.')}');
-                            }
+                    $_minA = (($min_answers == '') ? "''" : $min_answers);
+                    $_maxA = (($max_answers == '') ? "''" : $max_answers    );
+                    $qtips['num_answers']=
+                        "{if((is_empty($_minA) && is_empty($_maxA)),".
+                            "'',".
+                            "if(is_empty($_maxA),".
+                                "if(($_minA)==1,".
+                                    "'".$this->gT("Please select at least one answer")."',".
+                                    "sprintf('".$this->gT("Please select at least %s answers")."',fixnum($_minA))".
+                                    "),".
+                                "if(is_empty($_minA),".
+                                    "if(($_maxA)==1,".
+                                        "'".$this->gT("Please select at most one answer")."',".
+                                        "sprintf('".$this->gT("Please select at most %s answers")."',fixnum($_maxA))".
+                                        "),".
+                                    "if(($_minA)==($_maxA),".
+                                        "if(($_minA)==1,".
+                                            "'".$this->gT("Please select one answer")."',".
+                                            "sprintf('".$this->gT("Please select %s answers")."',fixnum($_minA))".
+                                            "),".
+                                        "sprintf('".$this->gT("Please select between %s and %s answers")."',fixnum($_minA),fixnum($_maxA))".
+                                    ")".
+                                ")".
+                            ")".
+                        ")}";
                 }
 
                 // min/max value for each numeric entry
                 if ($min_num_value_n!='' || $max_num_value_n!='')
                 {
-                    if ($min_num_value_n!='' && $max_num_value_n!='')
-                    {
-                        $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s"),'{fixnum('.$min_num_value_n.')}','{fixnum('.$max_num_value_n.')}');
-                    }
-                    else if ($min_num_value_n!='')
-                        {
-                            $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s"),'{fixnum('.$min_num_value_n.')}');
-
-                        }
-                        else if ($max_num_value_n!='')
-                            {
-                                $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s"),'{fixnum('.$max_num_value_n.')}');
-                            }
+                    $_minV = (($min_num_value_n == '') ? "''" : $min_num_value_n);
+                    $_maxV = (($max_num_value_n == '') ? "''" : $max_num_value_n);
+                    $qtips['value_range']=
+                        "{if((is_empty($_minV) && is_empty($_maxV)),".
+                            "'',".
+                            "if(is_empty($_maxV),".
+                                "sprintf('".$this->gT("Each answer must be at least %s")."',fixnum($_minV)),".
+                                "if(is_empty($_minV),".
+                                    "sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)),".
+                                    "if(($_minV)==($_maxV),".
+                                        "sprintf('".$this->gT("Each answer must be %s")."',fixnum($_minV)),".
+                                        "sprintf('".$this->gT("Each answer must be between %s and %s")."',fixnum($_minV),fixnum($_maxV))".
+                                    ")".
+                                ")".
+                            ")".
+                        ")}";
                 }
 
                 // min/max value for each numeric entry - for multi-flexible question type
                 if ($multiflexible_min!='' || $multiflexible_max!='')
                 {
-                    if ($multiflexible_min!='' && $multiflexible_max!='')
-                    {
-                        $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s"),'{fixnum('.$multiflexible_min.')}','{fixnum('.$multiflexible_max.')}');
-                    }
-                    else if ($multiflexible_min!='')
-                        {
-                            $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s"),'{fixnum('.$multiflexible_min.')}');
-
-                        }
-                        else if ($multiflexible_max!='')
-                            {
-                                $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s"),'{fixnum('.$multiflexible_max.')}');
-                            }
+                    $_minV = (($multiflexible_min == '') ? "''" : $multiflexible_min);
+                    $_maxV = (($multiflexible_max == '') ? "''" : $multiflexible_max);
+                    $qtips['value_range']=
+                        "{if((is_empty($_minV) && is_empty($_maxV)),".
+                            "'',".
+                            "if(is_empty($_maxV),".
+                                "sprintf('".$this->gT("Each answer must be at least %s")."',fixnum($_minV)),".
+                                "if(is_empty($_minV),".
+                                    "sprintf('".$this->gT("Each answer must be at most %s")."',fixnum($_maxV)),".
+                                    "if(($_minV)==($_maxV),".
+                                        "sprintf('".$this->gT("Each answer must be %s")."',fixnum($_minV)),".
+                                        "sprintf('".$this->gT("Each answer must be between %s and %s")."',fixnum($_minV),fixnum($_maxV))".
+                                    ")".
+                                ")".
+                            ")".
+                        ")}";
                 }
 
                 // min/max sum value
                 if ($min_num_value!='' || $max_num_value!='')
                 {
-                    if ($min_num_value!='' && $max_num_value!='')
-                    {
-                        $qtips['sum_range']=sprintf($this->gT("The sum must be between %s and %s"),'{fixnum('.$min_num_value.')}','{fixnum('.$max_num_value.')}');
-                    }
-                    else if ($min_num_value!='')
-                        {
-                            $qtips['sum_range']=sprintf($this->gT("The sum must be at least %s"),'{fixnum('.$min_num_value.')}');
-
-                        }
-                        else if ($max_num_value!='')
-                            {
-                                $qtips['sum_range']=sprintf($this->gT("The sum must be at most %s"),'{fixnum('.$max_num_value.')}');
-                            }
+                    $_minV = (($min_num_value == '') ? "''" : $min_num_value);
+                    $_maxV = (($max_num_value == '') ? "''" : $max_num_value);
+                    $qtips['sum_range']=
+                        "{if((is_empty($_minV) && is_empty($_maxV)),".
+                            "'',".
+                            "if(is_empty($_maxV),".
+                                "sprintf('".$this->gT("The sum must be at least %s")."',fixnum($_minV)),".
+                                "if(is_empty($_minV),".
+                                    "sprintf('".$this->gT("The sum must be at most %s")."',fixnum($_maxV)),".
+                                    "if(($_minV)==($_maxV),".
+                                        "sprintf('".$this->gT("The sum must equal %s")."',fixnum($_minV)),".
+                                        "sprintf('".$this->gT("The sum must be between %s and %s")."',fixnum($_minV),fixnum($_maxV))".
+                                    ")".
+                                ")".
+                            ")".
+                        ")}";
                 }
 
                 // equals_num_value
