@@ -1742,6 +1742,7 @@ function ExcelImportSurvey($sFullFilepath)
 
         foreach ($adata as $row)
         {
+            $row = str_replace(chr(0xA0),' ',$row);
             switch($row['class'])
             {
                 case 'G':
