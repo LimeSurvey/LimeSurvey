@@ -4145,6 +4145,8 @@ function XSSFilterArray(&$array)
  * @global type $timeadjust
  * @param type $sFullFilepath
  * @return type
+ *
+ * @author TMSWhite
  */
 function ExcelImportSurvey($sFullFilepath)
 {
@@ -4217,7 +4219,7 @@ function ExcelImportSurvey($sFullFilepath)
         $surveyinfo['datecreated']=new CDbExpression('NOW()');
 
         switchMSSQLIdentityInsert('surveys',true);
-        $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) or safeDie($clang->gT("Error").": Failed to insert survey<br />");
         $results['surveys']++;
         switchMSSQLIdentityInsert('surveys',false);
         $results['newsid']=$iNewSID;
@@ -4230,10 +4232,20 @@ function ExcelImportSurvey($sFullFilepath)
         $aseq=0;    // answer sortorder
 
         // set the language for the survey
+        $_title='Missing Title';
         foreach ($surveyls as $_lang => $insertdata)
         {
             $insertdata['surveyls_survey_id'] = $iNewSID;
             $insertdata['surveyls_language'] = $_lang;
+            if (isset($insertdata['surveyls_title']))
+            {
+                $_title = $insertdata['surveyls_title'];
+            }
+            else
+            {
+                 $insertdata['surveyls_title'] = $_title;
+            }
+
 
             $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
             $results['languages']++;
@@ -4352,7 +4364,8 @@ function ExcelImportSurvey($sFullFilepath)
                                 {
                                     $insertdata = array();
                                     $insertdata['qid'] = $qid;
-                                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);                                    $insertdata['attribute'] = $key;
+                                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                                    $insertdata['attribute'] = $key;
                                     $insertdata['value'] = $val;
                                     $result=Question_attributes::model()->insertRecords($insertdata);
                                     $results['question_attributes']++;
@@ -4383,6 +4396,7 @@ function ExcelImportSurvey($sFullFilepath)
                     else if ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
                     {
                         // only want to set default value for 'other' in these cases - not a real SQ row
+                        // TODO - this isn't working
                         if (isset($row['default']))
                         {
                             $insertdata=array();
@@ -4418,7 +4432,7 @@ function ExcelImportSurvey($sFullFilepath)
                             $qseq = $sqinfo[$fullsqname]['question_order'];
                             $sqid = $sqinfo[$fullsqname]['sqid'];
                             $insertdata['question_order'] = $qseq;
-                            $insertdata['qid'] = $sqid;
+//                            $insertdata['qid'] = $sqid; // this was causing key duplications - removing it seems to have fixed that
                         }
                         else
                         {
