@@ -1758,6 +1758,18 @@ class ExpressionManager {
 //            return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
 //        }
 //        return !empty($result);
+
+        // Check whether any variables are irrelevant - making this comparable to JavaScript which uses LEManyNA(varlist) to do the same thing
+        foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
+        {
+            if (!preg_match("/^.*\.NAOK$/", $var))
+            {
+                if (!LimeExpressionManager::GetVarAttribute($var,'relevanceStatus',false,$groupSeq,$questionSeq))
+                {
+                    return false;
+                }
+            }
+        }
         return (boolean) $result;
     }
 
