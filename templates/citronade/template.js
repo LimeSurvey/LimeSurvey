@@ -41,31 +41,6 @@ function autoDisabledComment(){
   });
 }
 
-// Add empty class to input text and textarea
-function addClassEmpty(){
-      $('.answers-wrapper input.text[value=""]').addClass('empty');
-      $('.answers-wrapper input[type=text][value=""]').addClass('empty');
-      $('.answers-wrapper textarea').each(function(index) {
-        if ($(this).val() == ""){
-          $(this).addClass('empty');
-        }
-      });
-
-    $("input.text,input[type=text]").live("blur", function(){ 
-      if ($(this).val() == ""){
-        $(this).addClass('empty');
-      }else{
-        $(this).removeClass('empty');
-      }
-    });
-    $("textarea").live("blur", function(){ 
-      if ($(this).val() == ""){
-        $(this).addClass('empty');
-      }else{
-        $(this).removeClass('empty');
-      }
-    });
-}
 // Replace common alert with jquery-ui dialog
 function jalert(text) {
 	var $dialog = $('<div></div>')
@@ -88,8 +63,6 @@ function jalert(text) {
 
 $(document).ready(function(){
   //autoDisabledComment();
-  addClassEmpty();
-
 })
 
 
