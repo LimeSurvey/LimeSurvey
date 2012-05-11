@@ -1698,7 +1698,7 @@ function ExcelImportSurvey($sFullFilepath)
 
         db_switchIDInsert('surveys',true);
         $query=$connect->GetInsertSQL($tablename,$surveyinfo);
-        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert survey<br />{$query}<br />\n".$connect->ErrorMsg());
         $results['surveys']++;
         db_switchIDInsert('surveys',false);
         $results['newsid']=$newsid;
@@ -1711,14 +1711,23 @@ function ExcelImportSurvey($sFullFilepath)
         $aseq=0;    // answer sortorder
 
         // set the language for the survey
+        $_title='Missing Title';
         foreach ($surveyls as $_lang => $insertdata)
         {
             $insertdata['surveyls_survey_id'] = $newsid;
             $insertdata['surveyls_language'] = $_lang;
+            if (isset($insertdata['surveyls_title']))
+            {
+                $_title = $insertdata['surveyls_title'];
+            }
+            else
+            {
+                 $insertdata['surveyls_title'] = $_title;
+            }
 
             $tablename=$dbprefix.'surveys_languagesettings';
             $query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert language settings<br />{$query}<br />\n".$connect->ErrorMsg());
             $results['languages']++;
         }
 
@@ -1759,7 +1768,7 @@ function ExcelImportSurvey($sFullFilepath)
 
                     $tablename=$dbprefix.'groups';
                     $query=$connect->GetInsertSQL($tablename,$insertdata);
-                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert group<br />{$query}<br />\n".$connect->ErrorMsg());
 
                     if (!isset($ginfo[$gname]))
                     {
@@ -1804,7 +1813,7 @@ function ExcelImportSurvey($sFullFilepath)
 
                     $tablename=$dbprefix.'questions';
                     $query=$connect->GetInsertSQL($tablename,$insertdata);
-                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert question<br />{$query}<br />\n".$connect->ErrorMsg());
 
                     if (!isset($qinfo[$qname]))
                     {
@@ -1840,10 +1849,11 @@ function ExcelImportSurvey($sFullFilepath)
                                 {
                                     $insertdata = array();
                                     $insertdata['qid'] = $qid;
-                                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);                                    $insertdata['attribute'] = $key;
+                                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                                    $insertdata['attribute'] = $key;
                                     $insertdata['value'] = $val;
                                     $query=$connect->GetInsertSQL($tablename,$insertdata);
-                                    $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                                    $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert attriute<br />{$query}<br />\n".$connect->ErrorMsg());
                                     $results['question_attributes']++;
                                 }
                                 break;
@@ -1859,7 +1869,7 @@ function ExcelImportSurvey($sFullFilepath)
                         $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                         $insertdata['defaultvalue'] = $row['default'];
                         $query=$connect->GetInsertSQL($tablename,$insertdata);
-                        $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                        $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert defaults<br />{$query}<br />\n".$connect->ErrorMsg());
                         $results['defaultvalues']++;
                     }
 
@@ -1874,6 +1884,7 @@ function ExcelImportSurvey($sFullFilepath)
                     else if ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
                     {
                         // only want to set default value for 'other' in these cases - not a real SQ row
+                        // TODO - this isn't working
                         if (isset($row['default']))
                         {
                             $tablename=$dbprefix.'defaultvalues';
@@ -1883,7 +1894,7 @@ function ExcelImportSurvey($sFullFilepath)
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                             $insertdata['defaultvalue'] = $row['default'];
                             $query=$connect->GetInsertSQL($tablename,$insertdata);
-                            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert SQ defaults<br />{$query}<br />\n".$connect->ErrorMsg());
                             $results['defaultvalues']++;
                         }
                     }
@@ -1911,7 +1922,7 @@ function ExcelImportSurvey($sFullFilepath)
                             $qseq = $sqinfo[$fullsqname]['question_order'];
                             $sqid = $sqinfo[$fullsqname]['sqid'];
                             $insertdata['question_order'] = $qseq;
-                            $insertdata['qid'] = $sqid;
+//                            $insertdata['qid'] = $sqid;   // this was causing key duplications - removing it seems to have fixed that
                         }
                         else
                         {
@@ -1920,7 +1931,7 @@ function ExcelImportSurvey($sFullFilepath)
 
                         $tablename=$dbprefix.'questions';
                         $query=$connect->GetInsertSQL($tablename,$insertdata);
-                        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert sub-question<br />{$query}<br />\n".$connect->ErrorMsg());
 
                         if (!isset($sqinfo[$fullsqname]))
                         {
@@ -1941,7 +1952,7 @@ function ExcelImportSurvey($sFullFilepath)
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                             $insertdata['defaultvalue'] = $row['default'];
                             $query=$connect->GetInsertSQL($tablename,$insertdata);
-                            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert defaults<br />{$query}<br />\n".$connect->ErrorMsg());
                             $results['defaultvalues']++;
                         }
                     }
@@ -1958,7 +1969,7 @@ function ExcelImportSurvey($sFullFilepath)
 
                     $tablename=$dbprefix.'answers';
                     $query=$connect->GetInsertSQL($tablename,$insertdata);
-                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+                    $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert answer<br />{$query}<br />\n".$connect->ErrorMsg());
                     $results['answers']++;
                     break;
             }

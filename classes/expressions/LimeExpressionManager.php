@@ -7537,7 +7537,7 @@ EOD;
                 'text',
                 'help',
                 'language',
-                'validaton',
+                'validation',
                 'mandatory',
                 'other',
                 'default',
@@ -7791,7 +7791,16 @@ EOD;
                     $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $q['info']['qseq']);    // $qseq
                     $relevanceEqn = trim(strip_tags($LEM->em->GetPrettyPrintString()));
                     $rootVarName = $q['info']['rootVarName'];
-                    $preg = ((isset($qinfo['preg']) && !is_null($qinfo['preg'])) ? $qinfo['preg'] : '');
+                    $preg = '';
+                    if (isset($LEM->q2subqInfo[$q['info']['qid']]['preg']))
+                    {
+                        $preg = $LEM->q2subqInfo[$q['info']['qid']]['preg'];
+                        if (is_null($preg))
+                        {
+                            $preg = '';
+                        }
+
+                    }
 
                     $row['class'] = 'Q';
                     $row['type/scale'] = $type;
