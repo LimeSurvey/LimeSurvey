@@ -1128,7 +1128,8 @@
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_range',
-                            'eqn' =>  '(' . $mainEqn . ' == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            // Different script for mandatory or non-mandatory question
+                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             'sumRemainingEqn' => $sumRemainingEqn,
@@ -1392,22 +1393,38 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                     if ($this->sgqaNaming)
                                     {
-                                        $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        if(($qinfo['mandatory']=='Y')){
+                                            $sq_name = '('. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        }else{
+                                            $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        }
                                     }
                                     else
                                     {
-                                        $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        if(($qinfo['mandatory']=='Y')){
+                                            $sq_name = '('. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        }else{
+                                            $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        }
                                     }
                                     $subqValidSelector = $sq['jsVarName_on'];
                                     break;
                                 case 'N': //NUMERICAL QUESTION TYPE
                                     if ($this->sgqaNaming)
                                     {
-                                        $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        if(($qinfo['mandatory']=='Y')){
+                                            $sq_name = '('. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        }else{
+                                            $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        }
                                     }
                                     else
                                     {
-                                        $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        if(($qinfo['mandatory']=='Y')){
+                                            $sq_name = '('. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        }else{
+                                            $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
+                                        }
                                     }
                                     $subqValidSelector = '';
                                     break;
@@ -2748,6 +2765,7 @@
                         'qseq' => $questionSeq,
                         'gseq' => $groupSeq,
                         'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                        'mandatory'=>$mandatory,
                         'varName' => $varName,
                         'type' => $type,
                         'fieldname' => $sgqa,

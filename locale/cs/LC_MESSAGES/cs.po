@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey 1.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-16 07:00+0200\n"
-"PO-Revision-Date: 2012-04-24 16:57+0100\n"
+"POT-Creation-Date: 2012-05-11 12:00+0200\n"
+"PO-Revision-Date: 2012-05-11 12:35+0100\n"
 "Last-Translator: LimeSurvey Czech Team <limesurvey.czech@gmail.com>\n"
 "Language-Team: LimeSurvey Czech Team <http://code.google.com/p/limesurvey-czech/>\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,7 @@ msgstr "Zpět ke globálnímu nastavení"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common.php:286
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/admin.php:783
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/admin.php:794
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1071
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1072
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:2319
 msgid "LimeSurvey online manual"
 msgstr "Online příručka LimeSurvey (anglicky)"
@@ -101,8 +101,8 @@ msgstr "Generuji souhrny..."
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/browse.php:478
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:746
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:456
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:484
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:660
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:498
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:675
 msgid "Completed"
 msgstr "Hotovo"
 
@@ -160,12 +160,12 @@ msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Nemůžete pokračovat, dokud nenapíšete nějaký text k jedné nebo více otázkám."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:504
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:813
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:816
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr "Jedna nebo více povinných otázek nebylo zodpovězeno. Nemůžete pokračovat, dokud  na tyto otázky neodpovíte."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:533
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:819
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:822
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr "Jedna nebo více otázek nebyla zodpovězena platným způsobem. Nemůžete pokračovat, dokud nebudou platně zodpovězeny. "
 
@@ -233,8 +233,8 @@ msgstr "vteřin"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:6808
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:1906
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:1914
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:5816
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:5821
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:5846
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:5851
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:738
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:797
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1838
@@ -254,19 +254,19 @@ msgstr "vteřin"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/results.php:338
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/results.php:370
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:679
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:810
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:811
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:833
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:863
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:908
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:917
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:928
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:937
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:962
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:982
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1478
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1199
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1820
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:812
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:834
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:864
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:909
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:918
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:929
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:938
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:963
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:983
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1479
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1411
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2033
 msgid "No answer"
 msgstr "Bez odpovědi"
 
@@ -352,14 +352,15 @@ msgstr "Rok"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:2295
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:2303
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:2308
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1830
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1831
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:586
 msgid "Answer"
 msgstr "Odpověď"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:1255
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:1262
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2394
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2477
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2398
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2481
 #, php-format
 msgid "Format: %s"
 msgstr "Formát: %s"
@@ -378,8 +379,8 @@ msgstr "Formát: %s"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:4938
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:4974
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/labels.php:78
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1867
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1879
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2080
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2092
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/translate_functions.php:148
 msgid "Please choose..."
 msgstr "Vyberte prosím..."
@@ -388,29 +389,29 @@ msgstr "Vyberte prosím..."
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:1652
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:2301
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:2719
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1935
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4232
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2510
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4831
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:1099
 msgid "Other:"
 msgstr "Jiné:"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:1499
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:5295
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:625
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:658
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:727
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:950
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1068
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1834
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1967
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2000
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2239
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2366
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2381
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2402
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2423
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2443
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2603
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:629
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:662
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:731
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:954
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1280
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2047
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2181
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2214
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2453
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2767
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2782
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2803
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2824
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2844
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3004
 msgid "Please choose"
 msgstr "Prosím zvolte"
 
@@ -442,15 +443,15 @@ msgstr "Jiná odpověď"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:841
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:842
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/results.php:339
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:976
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:716
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1895
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1901
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1978
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1984
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2210
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2226
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2270
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:977
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:720
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2108
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2114
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2192
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2198
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2424
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2440
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2484
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:225
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:234
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:331
@@ -463,20 +464,20 @@ msgid "Please enter your comment here"
 msgstr "Zde prosím vložte Váš komentář"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:2160
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:861
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2124
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:865
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2338
 msgid "Remove this item"
 msgstr "Odstranit tuto položku"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:2189
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:883
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2157
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:887
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2371
 msgid "Your Choices"
 msgstr "Vaše možnosti"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:2200
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:888
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2162
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:892
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2376
 msgid "Your Ranking"
 msgstr "Vaše pořadí"
 
@@ -498,6 +499,7 @@ msgstr[2] "Prosím ohodnoťte nejméně %d položek v otázce \"%s\""
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Označili jste pole \"další\" pro otázku \"%s\". Vyplňte prosím také příslušné pole \"další komentář\"."
 
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:2833
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:2834
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:2869
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:992
@@ -533,7 +535,7 @@ msgstr "Název"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:2559
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:2779
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/uploader.php:96
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2003
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2217
 msgid "Comment"
 msgstr "Komentář"
 
@@ -562,6 +564,8 @@ msgstr "Celkem:"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:3925
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:3929
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1106
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2622
 msgid "Only numbers may be entered in this field"
 msgstr "Do tohoto pole může být zapsán pouze číselný údaj"
 
@@ -605,8 +609,8 @@ msgstr "Chytněte a přesuňte špendlík do požadovaného místa. Pro přesun 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:3984
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:4098
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:4109
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1805
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1809
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2380
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2384
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1588
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1718
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:894
@@ -656,23 +660,23 @@ msgstr "Chytněte a přesuňte špendlík do požadovaného místa. Pro přesun 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:511
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:527
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1506
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1802
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2087
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1804
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2091
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:824
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:991
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:652
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:903
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:904
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:387
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:399
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:410
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:459
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:479
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveylist.php:54
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:590
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1071
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1131
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2367
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2424
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:594
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1283
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1343
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2768
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2825
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:897
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:1472
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:1481
@@ -721,8 +725,8 @@ msgstr "Ano"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:3983
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:4097
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:4108
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1806
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1810
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2381
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2385
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1589
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1719
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:898
@@ -772,23 +776,23 @@ msgstr "Ano"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:514
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:530
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1507
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1803
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2089
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1805
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2093
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:830
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:1003
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:654
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:904
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:905
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:390
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:402
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:413
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:460
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:480
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveylist.php:56
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:587
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1074
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1137
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2368
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2426
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:591
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1286
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1349
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2769
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2827
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:893
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:1472
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:1481
@@ -802,7 +806,7 @@ msgstr "Ne"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4363
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:1913
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1802
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2377
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1711
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:915
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:916
@@ -811,9 +815,9 @@ msgstr "Ne"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:883
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:888
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:806
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:912
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:628
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1835
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:913
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:632
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2048
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:33
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:621
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_data_functions.php:240
@@ -822,7 +826,7 @@ msgstr "Žena"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4371
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:1912
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1801
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2376
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1712
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:911
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:912
@@ -831,9 +835,9 @@ msgstr "Žena"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:884
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:888
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:812
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:913
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:631
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1836
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:914
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:635
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2049
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:32
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:621
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_data_functions.php:241
@@ -843,7 +847,7 @@ msgstr "Muž"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4746
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4792
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:1922
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1811
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2386
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1590
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:971
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:972
@@ -854,8 +858,8 @@ msgstr "Muž"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:1354
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:997
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:653
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1134
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2425
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1346
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2826
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:636
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_data_functions.php:250
 msgid "Uncertain"
@@ -864,7 +868,7 @@ msgstr "Nevím"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4901
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4944
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:1928
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1814
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2389
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1607
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:979
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:980
@@ -875,7 +879,7 @@ msgstr "Nevím"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:1393
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:1047
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:657
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2444
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2845
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:641
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_data_functions.php:253
 msgid "Increase"
@@ -884,7 +888,7 @@ msgstr "Zvýšení"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4902
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4955
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:1930
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1815
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2390
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1608
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:983
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:984
@@ -895,7 +899,7 @@ msgstr "Zvýšení"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:1393
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:1052
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:658
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2445
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2846
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:641
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_data_functions.php:254
 msgid "Same"
@@ -904,7 +908,7 @@ msgstr "Stejný"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4903
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/qanda.php:4967
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:1929
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1816
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2391
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1609
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:987
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:988
@@ -915,7 +919,7 @@ msgstr "Stejný"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:1393
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:1057
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:659
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2446
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2847
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_quexml.php:641
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_data_functions.php:255
 msgid "Decrease"
@@ -984,11 +988,12 @@ msgstr "Jméno průzkumu (ID):"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/browse.php:872
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:1664
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:1667
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1741
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:2115
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:2118
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1742
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:2116
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:2119
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:443
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:1212
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:585
 msgid "Question"
 msgstr "Otázka"
 
@@ -1112,7 +1117,7 @@ msgstr "Pole"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:97
 msgid "Mask questions"
-msgstr "Skrýt otázky"
+msgstr "Předpřipravené otázky"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:98
 msgid "Single choice questions"
@@ -1245,7 +1250,7 @@ msgstr "Rovnice"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:631
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveylist.php:79
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:519
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:534
 msgid "Active"
 msgstr "Aktivní"
 
@@ -1316,8 +1321,8 @@ msgstr "Počáteční jazyk:"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1064
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1067
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1068
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2338
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1531
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2342
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1744
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:1757
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:1924
 msgid "Token"
@@ -1336,7 +1341,7 @@ msgstr "Datum začátku"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:474
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:475
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:748
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1576
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1789
 msgid "IP address"
 msgstr "IP adresa"
 
@@ -2332,7 +2337,7 @@ msgstr "Výstup SMTP debug:"
 msgid "SQL command failed: %s Reason: %s"
 msgstr "SQL příkaz se nezdařil: %s  Z důvodu: %s"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:5830
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:5860
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/resetsurveylogic.php:27
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importquestion.php:53
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importquestion.php:78
@@ -2392,17 +2397,18 @@ msgstr "SQL příkaz se nezdařil: %s  Z důvodu: %s"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:412
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:478
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1001
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2741
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3177
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3183
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2745
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3182
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3188
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:119
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:131
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/export_structure_xml.php:50
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:115
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:29
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:54
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:284
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:305
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:66
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:294
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:315
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:305
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:317
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:329
@@ -2434,7 +2440,7 @@ msgstr "SQL příkaz se nezdařil: %s  Z důvodu: %s"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:171
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:172
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:173
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2712
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3113
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/usercontrol.php:846
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dumpgroup.php:39
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/install/createdb.php:64
@@ -2443,7 +2449,7 @@ msgstr "SQL příkaz se nezdařil: %s  Z důvodu: %s"
 msgid "Error"
 msgstr "Chyba"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6562
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6592
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:232
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:434
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:435
@@ -2453,13 +2459,13 @@ msgstr "Chyba"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1024
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1027
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1028
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2317
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2453
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2321
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2457
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/replacements.php:507
 msgid "First name"
 msgstr "Jméno"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6563
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6593
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:233
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:429
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:430
@@ -2469,13 +2475,13 @@ msgstr "Jméno"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1034
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1037
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1038
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2321
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2455
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2325
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2459
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/replacements.php:514
 msgid "Last name"
 msgstr "Příjmení"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6564
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6594
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/saved.php:81
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:234
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:439
@@ -2487,27 +2493,27 @@ msgstr "Příjmení"
 msgid "Email address"
 msgstr "Emailová adresa"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6565
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6595
 msgid "Token code"
 msgstr "Přístupový kód"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6566
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6596
 msgid "Language code"
 msgstr "Kód jazyka"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6567
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6597
 msgid "Invitation sent date"
 msgstr "Datum zaslání pozvánky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6568
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6598
 msgid "Last Reminder sent date"
 msgstr "Datum zaslání poslední připomínky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6569
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6599
 msgid "Total numbers of sent reminders"
 msgstr "Celkový počet zaslaných připomínek"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6570
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6600
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/fck_LimeReplacementFields.php:112
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/fck_LimeReplacementFields.php:129
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/fck_LimeReplacementFields.php:149
@@ -2519,7 +2525,7 @@ msgstr "Celkový počet zaslaných připomínek"
 msgid "Uses left"
 msgstr "Zbývající počet použití"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6591
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/common_functions.php:6621
 #, php-format
 msgid "Attribute %s"
 msgstr "Atribut %s"
@@ -2579,405 +2585,437 @@ msgstr "Tečka (.)"
 msgid "Comma (,)"
 msgstr "Čárka (,)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:156
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:157
+msgid "Afrikaans"
+msgstr "Afrikánština"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:164
+msgid "Amharic"
+msgstr "Amharština"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:171
 msgid "Albanian"
 msgstr "Albánština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:163
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:178
 msgid "Arabic"
 msgstr "Arabština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:170
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:185
 msgid "Basque"
 msgstr "Baskičtina"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:177
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:192
 msgid "Belarusian"
 msgstr "Bělorusky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:184
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:199
 msgid "Bosnian"
 msgstr "Bosenština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:191
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:206
 msgid "Bulgarian"
 msgstr "Bulharština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:198
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:213
 msgid "Catalan"
 msgstr "Katalánština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:205
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:220
 msgid "Welsh"
 msgstr "Velština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:212
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:227
 msgid "Chinese (Simplified)"
 msgstr "Čínština (zjednodušená)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:219
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:234
 msgid "Chinese (Traditional - Hong Kong)"
 msgstr "Čínština (tradiční - Hong Kong)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:226
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:241
 msgid "Chinese (Traditional - Taiwan)"
 msgstr "Čínština (tradiční - Thajsko)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:233
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:248
 msgid "Croatian"
 msgstr "Chorvatština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:240
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:255
 msgid "Czech"
 msgstr "Čeština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:247
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:262
 msgid "Danish"
 msgstr "Dánština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:254
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:269
 msgid "Dutch"
 msgstr "Holandština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:261
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:276
 msgid "Dutch Informal"
 msgstr "Holandština neformální"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:268
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:283
 msgid "English"
 msgstr "Angličtina"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:275
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:290
 msgid "Estonian"
 msgstr "Estonština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:282
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:297
 msgid "Finnish"
 msgstr "Finština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:289
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:304
 msgid "French"
 msgstr "Francouzština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:296
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:311
 msgid "Galician"
 msgstr "Galština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:303
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:318
 msgid "German"
 msgstr "Němčina"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:310
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:325
 msgid "German informal"
 msgstr "Němčina neformální"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:317
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:332
 msgid "Greek"
 msgstr "Řečtina"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:324
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:339
 msgid "Hindi"
 msgstr "Hindština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:331
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:346
 msgid "Hebrew"
 msgstr "Hebrejština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:338
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:353
 msgid "Hungarian"
 msgstr "Maďarština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:345
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:360
 msgid "Icelandic"
 msgstr "Islandština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:352
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:367
 msgid "Indonesian"
 msgstr "Indonéština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:359
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:374
 msgid "Irish"
 msgstr "Irština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:366
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:381
 msgid "Italian"
 msgstr "Italština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:373
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:388
 msgid "Italian (formal)"
 msgstr "Italština-Formální"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:380
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:395
 msgid "Japanese"
 msgstr "Japonština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:387
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:402
 msgid "Korean"
 msgstr "Korejština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:394
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:409
 msgid "Lithuanian"
 msgstr "Litevština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:401
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:416
 msgid "Latvian"
 msgstr "Lotyština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:408
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:423
 msgid "Macedonian"
 msgstr "Makedonština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:415
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:430
 msgid "Malay"
 msgstr "Malajsky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:422
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:437
 msgid "Maltese"
 msgstr "Maltština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:429
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:444
 msgid "Norwegian (Bokmal)"
 msgstr "Norština (Bokmal)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:436
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:451
 msgid "Norwegian (Nynorsk)"
 msgstr "Norština (Nynorsk)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:443
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:458
 msgid "Persian"
 msgstr "Perština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:450
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:465
 msgid "Polish"
 msgstr "Polština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:457
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:472
 msgid "Portuguese"
 msgstr "Portugalština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:464
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:479
 msgid "Portuguese (Brazilian)"
 msgstr "Portugalština (brazilská)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:471
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:486
 msgid "Punjabi"
 msgstr "Punjabi"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:478
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:493
 msgid "Russian"
 msgstr "Ruština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:485
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:500
 msgid "Romanian"
 msgstr "Rumunština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:492
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:507
 msgid "Slovak"
 msgstr "Slovenština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:499
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:514
 msgid "Sinhala"
 msgstr "Sinhalština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:506
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:521
 msgid "Slovenian"
 msgstr "Slovinština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:513
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:528
 msgid "Serbian"
 msgstr "Srbština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:520
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:535
 msgid "Spanish"
 msgstr "Španělština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:527
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:542
 msgid "Spanish (Mexico)"
 msgstr "Španělština (Mexiko)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:534
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:549
 msgid "Swedish"
 msgstr "Švédština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:541
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:556
 msgid "Turkish"
 msgstr "Turečtina"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:548
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:563
 msgid "Thai"
 msgstr "Thajština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:556
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:571
 msgid "Urdu"
 msgstr "Urdu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:563
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/core/surveytranslator.php:578
 msgid "Vietnamese"
 msgstr "Vietnamština"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1521
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2080
+msgid "Please select at least one answer"
+msgstr "Zvolte prosím minimálně jednu odpověď"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2081
 #, php-format
-msgid "Please select between %s and %s answer(s)"
+msgid "Please select at least %s answers"
+msgstr "Zvolte prosím minimálně %s odpovědí"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2085
+msgid "Please select at most one answer"
+msgstr "Zvolte prosím maximálně jednu odpověď"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2086
+#, php-format
+msgid "Please select at most %s answers"
+msgstr "Zvolte prosím maximálně %s odpovědí"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2090
+msgid "Please select one answer"
+msgstr "Zvolte prosím jednu odpověď"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2091
+#, php-format
+msgid "Please select %s answers"
+msgstr "Zvolte prosím %s odpovědí"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2093
+#, php-format
+msgid "Please select between %s and %s answers"
 msgstr "Zvolte prosím minimálně %s a maximálně %s odpovědí"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1525
-#, php-format
-msgid "Please select at least %s answer(s)"
-msgstr "Zvolte prosím maximálně %s odpovědí"
-
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1530
-#, php-format
-msgid "Please select at most %s answer(s)"
-msgstr "Zvolte prosím maximálně %s odpovědí"
-
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1539
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1557
-#, php-format
-msgid "Each answer must be between %s and %s"
-msgstr "Každá odpověď musí být mezi %s a %s"
-
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1543
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1561
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2109
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2130
 #, php-format
 msgid "Each answer must be at least %s"
 msgstr "Každá odpověď musí být minimálně %s"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1548
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1566
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2111
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2132
 #, php-format
 msgid "Each answer must be at most %s"
 msgstr "Každá odpověď musí být maximálně %s"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1575
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2113
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2134
 #, php-format
-msgid "The sum must be between %s and %s"
-msgstr "Součet musí být mezi %s a %s"
+msgid "Each answer must be %s"
+msgstr "Každá odpověď musí být %s"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1579
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2114
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2135
+#, php-format
+msgid "Each answer must be between %s and %s"
+msgstr "Každá odpověď musí být mezi %s a %s"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2151
 #, php-format
 msgid "The sum must be at least %s"
 msgstr "Součet musí být minimálně %s"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1584
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2153
 #, php-format
 msgid "The sum must be at most %s"
 msgstr "Součet musí být maximálně %s"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1591
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2155
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2166
 #, php-format
 msgid "The sum must equal %s"
 msgstr "Součet musí být %s"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1597
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2156
+#, php-format
+msgid "The sum must be between %s and %s"
+msgstr "Součet musí být mezi %s a %s"
+
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2172
 msgid "Please also fill in the \"other comment\" field."
 msgstr "Vyplňte prosím také pole \"další komentář\"."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:1605
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:2180
 msgid "Please check the format of your answer."
 msgstr "Zkontrolujte prosím formát odpovědi."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:3254
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:3847
 msgid "Unable to insert record into survey table: "
 msgstr "Nelze vložit záznam do tabulky průzkumu:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:3270
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:3863
 msgid "Unable to insert record into timings table "
 msgstr "Nelze vložit záznam do časovací tabulky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4212
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4811
 msgid "This question is mandatory"
 msgstr "Na otázku je nutno odpovědět."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4224
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4823
 msgid "Please check at least one item."
 msgstr "Prosím zaškrtněte alespoň jednu položku."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4234
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4833
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr "Zvolíte-li '%s' musíte napsat popis."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4256
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4293
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4855
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4892
 msgid "Please complete all parts"
 msgstr "Prosím dokončete všechny části"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4285
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4884
 msgid "Please check at least one box per row"
 msgstr "Zaškrtněte prosím minimálně jednu položku v řádku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4301
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:4900
 msgid "Please rank all items"
 msgstr "Prosím ohodnoťte všechny položky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6508
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7140
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Chybná otázka - pravděpodobně chybí podotázky nebo specifické nastavení pro některý jazyk"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6513
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7145
 msgid "Name [ID]"
 msgstr "Jméno [ID]"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6513
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7145
 msgid "Relevance [Validation] (Default)"
 msgstr "Relevantnost [Validace] (Výchozí)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6513
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7145
 msgid "Text [Help] (Tip)"
 msgstr "Text [Nápověda] (Tip)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6564
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6790
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7196
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7422
 msgid "DEFAULT:"
 msgstr "VÝCHOZÍ:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6572
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7204
 msgid "HELP:"
 msgstr "NÁPOVĚDA:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6573
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7205
 msgid "TIP:"
 msgstr "TIP:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6580
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7212
 msgid "Question Attribute"
 msgstr "Atributy otázky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6580
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7212
 msgid "Value"
 msgstr "Hodnota"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6679
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7311
 msgid "VALIDATION:"
 msgstr "OVĚŘENÍ:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6693
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7325
 msgid "This variable name has already been used."
 msgstr "Toto jméno proměnné již bylo použito."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6705
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7337
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Od verze 1.92 mohou proměnné obsahovat pouze písmena, číslice a podtržítka, přičemž nemohou začínat číslicí. Tento název proměnné je zastaralý."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6846
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7478
 #, php-format
 msgid "This question has at least %s error(s)"
 msgstr "Tato otázka má minimálně %s chyb"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6885
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7517
 #, php-format
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s otázek obsahuje chyby, které je potřeba opravit"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6891
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7523
 msgid "No syntax errors detected in this survey"
 msgstr "V tomto průzkumu nebyla nalezena žádná chyba syntaxe."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6894
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7526
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Tato skupina neobsahuje žádnou chybu syntaxe."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:6897
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/classes/expressions/LimeExpressionManager.php:7529
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "Tato otázka neobsahuje žádnou chybu syntaxe."
 
@@ -3403,7 +3441,7 @@ msgstr "Správa sad popisků"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/assessments.php:119
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/saved.php:126
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:598
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1003
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1004
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html_functions.php:29
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:810
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/vvimport.php:107
@@ -3423,7 +3461,7 @@ msgstr "Exportovat více sad popisků"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importgroup.php:85
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:80
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:145
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:76
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:83
 msgid "Label sets"
 msgstr "Sady popisků"
 
@@ -3496,8 +3534,8 @@ msgstr "Přidat"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/labels.php:185
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editsurveysettings.php:226
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:556
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:607
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:571
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:622
 msgid "Remove"
 msgstr "Odstranit"
 
@@ -3513,12 +3551,12 @@ msgstr "Tuto položku nemůžete vymazat, potřebujete minimálně jeden jazyk v
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editemailtemplates.php:160
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:276
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:583
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2191
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2195
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/userrighthandling.php:249
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/translate.php:270
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editsurveytextelements.php:104
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1302
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1307
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1515
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1520
 msgid "Save"
 msgstr "Uložit"
 
@@ -3569,7 +3607,7 @@ msgid "Close Window"
 msgstr "Uzavřít okno"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/labels.php:301
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:77
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:84
 msgid "Labels"
 msgstr "Popisky"
 
@@ -3659,13 +3697,13 @@ msgstr "Nahradit"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/resetsurveylogic.php:47
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/assessments.php:280
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1355
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1237
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1238
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editsubquestions.php:248
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editsubquestions.php:255
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editansweroptions.php:248
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editansweroptions.php:256
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/deletesurvey.php:55
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:457
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:472
 msgid "Cancel"
 msgstr "Storno"
 
@@ -3738,12 +3776,12 @@ msgstr "Nevybral(a) jste průzkum ke smazání"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/integritycheck.php:96
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/integritycheck.php:98
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/integritycheck.php:100
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:415
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:414
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/import_functions.php:395
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/deletesurvey.php:29
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/deletesurvey.php:128
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:82
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2714
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3115
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dumpgroup.php:40
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/install/createdb.php:51
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/install/createdb.php:68
@@ -3757,10 +3795,10 @@ msgstr "Hlavní stránka administrátora"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate.php:69
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:531
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1349
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1681
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1710
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2026
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2066
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1683
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1712
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2030
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2070
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/deactivate.php:27
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editsubquestions.php:264
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/deletesurvey.php:37
@@ -3779,7 +3817,7 @@ msgstr "Před pokračováním doporučujeme exportovat celý průzkum z hlavní 
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/resetsurveylogic.php:49
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/assessments.php:194
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2143
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2147
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/userrighthandling.php:470
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:994
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:1708
@@ -3796,8 +3834,8 @@ msgstr "Byly smazány všechny podmínky v tomto průzkumu."
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/login_check.php:85
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:499
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:514
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1686
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2030
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1688
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2034
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/access_denied.php:28
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/access_denied.php:33
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/access_denied.php:38
@@ -3857,8 +3895,8 @@ msgstr "Byly smazány všechny podmínky v tomto průzkumu."
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/usercontrol.php:808
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/usercontrol.php:842
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/usercontrol.php:848
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:687
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:747
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:702
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:762
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:1711
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:1786
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:1953
@@ -3907,7 +3945,7 @@ msgstr "Maximum"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/assessments.php:157
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/assessments.php:185
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveylist.php:155
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:546
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:561
 msgid "Edit"
 msgstr "Editovat"
 
@@ -3941,7 +3979,7 @@ msgstr "SID"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/assessments.php:173
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/assessments.php:271
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1475
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1768
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1770
 msgid "Message"
 msgstr "Zpráva"
 
@@ -3973,14 +4011,14 @@ msgstr "Skupina"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:40
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:385
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1418
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1747
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1749
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questiongrouphandling.php:33
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questiongrouphandling.php:142
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editsubquestions.php:140
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editansweroptions.php:128
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editsurveytextelements.php:44
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:431
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:827
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:446
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:842
 msgid "Base language"
 msgstr "Základní jazyk"
 
@@ -4214,7 +4252,7 @@ msgstr "Není dostatek hodnot pro výpočet"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1768
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics_function.php:1790
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1858
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2071
 #, php-format
 msgid "Label %s"
 msgstr "Popisky %s"
@@ -4266,7 +4304,6 @@ msgstr "Nezobrazeno"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importgroup.php:82
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:65
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:130
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:571
 msgid "Answers"
 msgstr "Odpovědi"
 
@@ -4474,18 +4511,18 @@ msgstr "Nebylo zadané GID (skupina). Nelze importovat otázku"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/import_resources_zip.php:519
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importgroup.php:52
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importgroup.php:76
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2552
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2611
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2693
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3149
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2556
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2615
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2697
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3154
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:53
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:121
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:35
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:74
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:81
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/vvimport.php:129
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/iterate_survey.php:62
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:412
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1455
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1668
 msgid "Success"
 msgstr "Úspěch"
 
@@ -4519,13 +4556,12 @@ msgstr "Přehled importu otázky"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:103
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/http_importsurvey.php:158
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importgroup.php:80
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1066
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1880
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1067
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1881
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:64
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:129
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:1054
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/translate_functions.php:384
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:570
 msgid "Questions"
 msgstr "Otázky"
 
@@ -4617,7 +4653,7 @@ msgstr "Rozsah:"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/exportresults.php:92
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1469
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1750
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1752
 msgid "From"
 msgstr "Od"
 
@@ -4788,8 +4824,8 @@ msgstr "NOVÝ ZÁZNAM"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/browse.php:137
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/browse.php:475
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/login_check.php:162
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2325
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2457
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2329
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2461
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/userrighthandling.php:226
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/userrighthandling.php:438
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/userrighthandling.php:918
@@ -4809,8 +4845,8 @@ msgstr "Přístupový kód"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1074
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1077
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1078
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2347
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2460
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2351
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2464
 msgid "Language"
 msgstr "Jazyk"
 
@@ -5653,7 +5689,7 @@ msgid "quota members"
 msgstr "kvóta úživatelů"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/http_importsurvey.php:182
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1346
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1347
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:88
 msgid "and"
 msgstr "a"
@@ -5664,10 +5700,10 @@ msgid "quota language settings"
 msgstr "Nastavení kvóty pro jazyk"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/http_importsurvey.php:186
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2915
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2920
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:91
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importsurvey.php:152
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:66
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:73
 msgid "Warnings"
 msgstr "Varování"
 
@@ -5825,13 +5861,13 @@ msgid "Please choose no more than %s item(s)"
 msgstr "Prosím vyberte maximálně  %s položek"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:1969
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2762
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3163
 #, php-format
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
 msgstr "Odpovídejte na tuto otázku pouze pro položky, které jste vybral(a) v otázce *%s* ('%s')"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/printablesurvey.php:1978
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2771
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3172
 #, php-format
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
 msgstr "Odpovídejte na tuto otázku pouze pro položky, které jste nevybral(a) v otázce *%s* ('%s')"
@@ -5867,8 +5903,8 @@ msgstr "Předat ovládání do vyskakovacího okénka editoru HTML"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/browse.php:73
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/browse.php:108
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/vvimport.php:320
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1458
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1474
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1671
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1687
 msgid "Browse Responses"
 msgstr "Prohlížet odpovědi"
 
@@ -5946,7 +5982,7 @@ msgid "Please select at least one file for download"
 msgstr "Prosím vyberte pro stažení alespoň jeden soubor."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/browse.php:328
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2715
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2719
 msgid "Note:"
 msgstr "Pozn.:"
 
@@ -6237,7 +6273,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/admin_functions.php:306
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/admin_functions.php:308
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1743
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1745
 msgid ""
 "If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n"
 "{OPTOUTURL}"
@@ -6250,7 +6286,7 @@ msgid "Reminder to participate in a survey"
 msgstr "Připomenutí účasti na průzkumu"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/admin_functions.php:308
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1743
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1745
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -6323,8 +6359,8 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate.php:39
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate.php:67
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate.php:76
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:410
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:450
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:409
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:449
 msgid "Activate Survey"
 msgstr "Aktivovat průzkum"
 
@@ -6997,12 +7033,12 @@ msgstr "Na konci"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:561
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:759
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questiongrouphandling.php:356
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questiongrouphandling.php:331
 msgid "At beginning"
 msgstr "Na začátku"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:566
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1046
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1047
 msgid "After"
 msgstr "Po"
 
@@ -7033,7 +7069,7 @@ msgid "Change Question Order"
 msgstr "Změnit pořadí otázek"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questionhandling.php:755
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questiongrouphandling.php:351
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/questiongrouphandling.php:326
 msgid "Place after.."
 msgstr "Umístit za..."
 
@@ -7042,37 +7078,37 @@ msgid "View Question"
 msgstr "Zobrazit otázku"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveytable_functions.php:170
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:89
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:88
 msgid "This group does not contain any question(s)."
 msgstr "Tato skupina neobsahuje žádnou otázku."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveytable_functions.php:199
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:137
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:136
 msgid "This question is a subquestion type question but has no configured subquestions."
 msgstr "Tato otázka by měla mít dílčí otázky (popisky), neobsahuje však žádné."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveytable_functions.php:209
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:147
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:146
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Tato otázka je s více odpověďmi, neobsahuje však žádné."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveytable_functions.php:219
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:157
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:156
 msgid "This question does not have a question 'type' set."
 msgstr "Tato otázka nemá nastaven typ otázky."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveytable_functions.php:227
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:167
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:166
 msgid "This question requires answers, but none are set."
 msgstr "Otázka vyžaduje odpovědi, ale žádné nejsou nastaveny."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveytable_functions.php:235
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:174
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:173
 msgid "This question requires a second answer set but none is set."
 msgstr "Tato otázka vyžaduje druhou sadu odpovědí, ale žádná není nastavena."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveytable_functions.php:292
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:229
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:228
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Tato otázka má nastavenou podmínku, ale podmínka je založená na otázce, která je za ní."
 
@@ -7298,7 +7334,7 @@ msgid "Main admin screen"
 msgstr "Hlavní stránka administrátora"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:413
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2713
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3114
 msgid "The survey you selected does not exist"
 msgstr "Vybraný průzkum neexistuje"
 
@@ -7335,12 +7371,12 @@ msgid "Do you want to create a token table for this survey?"
 msgstr "Chcete vytvořit tabulku přístupových kódů pro tento průzkum?"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:549
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:475
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:486
 msgid "Initialise tokens"
 msgstr "Inicializovat tabulku přístupových kódů"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:551
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:482
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:493
 msgid "No, thanks."
 msgstr "Děkuji, ne."
 
@@ -7365,21 +7401,21 @@ msgid "Show token summary"
 msgstr "Zobrazit přehled tabulky přístupových kódů"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:606
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2554
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2613
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2620
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2695
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2558
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2617
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2624
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2699
 msgid "Display tokens"
 msgstr "Zobrazit přístupové kódy"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:611
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2621
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2625
 msgid "Add new token entry"
 msgstr "Přidat nový přístupový kód"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:615
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2492
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2647
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2496
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2651
 msgid "Add dummy tokens"
 msgstr "Přidat fiktivní přístupové kódy"
 
@@ -7404,7 +7440,7 @@ msgid "Send email invitation"
 msgstr "Poslat emailové pozvánky"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:651
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1725
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1727
 msgid "Send email reminder"
 msgstr "Poslat email s  připomenutím"
 
@@ -7566,7 +7602,7 @@ msgstr "Uživatelské jméno"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:850
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/globalsettings.php:363
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:183
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2660
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3061
 msgid "Password:"
 msgstr "Heslo:"
 
@@ -7696,14 +7732,14 @@ msgstr "Stav emailu"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1084
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1087
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1088
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2354
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2358
 msgid "Invitation sent?"
 msgstr "Pozvánka odeslána?"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1094
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1097
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1098
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2359
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2363
 msgid "Reminder sent?"
 msgstr "Připomínka odeslána?"
 
@@ -7716,15 +7752,15 @@ msgstr "Počet připomínek"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1114
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1117
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1118
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2372
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2376
 msgid "Completed?"
 msgstr "Dokončeno?"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1134
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1137
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1138
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2382
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2465
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2386
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2469
 msgid "Valid from"
 msgstr "Platné od"
 
@@ -7749,8 +7785,8 @@ msgstr "Vyplnit průzkum"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1246
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1248
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2303
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2500
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2307
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2504
 msgid "Edit token entry"
 msgstr "Editovat záznam přístupového kódu"
 
@@ -7826,22 +7862,22 @@ msgid "Send email invitations"
 msgstr "Poslat emailové pozvánky"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1406
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1730
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1732
 msgid "Warning!"
 msgstr "Varování!"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1406
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1730
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1732
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
 msgstr "Průzkum není aktivován. Účastníci průzkumu nebudou moci vyplnit průzkum."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1472
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1753
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1755
 msgid "Subject"
 msgstr "Předmět"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1505
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1800
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1802
 msgid "Bypass token with failing email addresses"
 msgstr "Přeskočit přístupové kódy s neplatnými emailovými adresami"
 
@@ -7854,471 +7890,471 @@ msgid "Sending invitations..."
 msgstr "Odesílám pozvání ..."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1524
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1841
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1843
 msgid "Sending to Token ID"
 msgstr "Odesílá se na přístupový kód"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1525
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1842
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1844
 msgid "Sending to Token IDs"
 msgstr "Odesílá se na přístupové kódy"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1639
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1987
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1641
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1991
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "Email pro {FIRSTNAME} {LASTNAME} ({EMAIL}) odložen. Přístupový kód ještě není platný."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1643
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1991
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1645
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1995
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "Email pro {FIRSTNAME} {LASTNAME} ({EMAIL}) byl přeskočen. Přístupový kód již není platný."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1653
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1655
 msgid "Invitation sent to:"
 msgstr "Pozvánka zaslána adresátovi:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1663
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2009
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1665
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2013
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "Email pro {FIRSTNAME} {LASTNAME} ({EMAIL}) chyboval. Chybová zpráva:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1683
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2027
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1685
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2031
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Ve frontě čeká více emailů, než může být odesláno v jedné dávce. Pokračujte v odesílání emailů kliknutím níže."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1684
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2028
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1686
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2032
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Stále ještě čeká {EMAILCOUNT} emailů k odeslání."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1710
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2067
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1712
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2071
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr "Nejsou žádné emaily k odeslání. Tato situace nastala, protože záznamy účastníků nebo účastníci:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1711
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2068
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1713
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2072
 msgid "having a valid email address"
 msgstr "nemají platné emailovéí adresy"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1712
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2070
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1714
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2074
 msgid "not having been sent an invitation already"
 msgstr "již jim bylo pozvání zasláno"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1713
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1715
 msgid "having already completed the survey"
 msgstr "již průzkum vyplnili"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1714
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2069
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1716
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2073
 msgid "having a token"
 msgstr "s přístupovým kódem "
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1774
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1776
 msgid "Reminder Email:"
 msgstr "Email s připomínkou:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1783
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1796
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1785
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1798
 msgid "Send reminder to token ID(s):"
 msgstr "Odeslat připomínku přístupovým kódům:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1787
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1789
 msgid "Sending to:"
 msgstr "Odesílá se na:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1788
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1790
 msgid "All token entries to whom a reminder email would apply"
 msgstr "Všechny přístupové kódy, pro které jsou splněny podmínky pro zaslání připomínky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1791
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1793
 msgid "Start at Token ID:"
 msgstr "Začít u přístupového kódu:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1806
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1808
 msgid "Min days between reminders"
 msgstr "Minimálně dní mezi připomínkami"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1810
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1812
 msgid "Max reminders"
 msgstr "Max připomínek"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1813
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1815
 msgid "Send Reminders"
 msgstr "Odeslat připomínky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1826
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1828
 msgid "Sending Reminders"
 msgstr "Odesílám připomínky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1840
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:1842
 msgid "From Token ID"
 msgstr "Od přístupového kódu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2003
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2007
 msgid "Reminder sent to:"
 msgstr "Připomínka odeslána na:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2071
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2075
 msgid "but not having already completed the survey"
 msgstr "ale ještě nedokončil(i) průzkum"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2080
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2084
 msgid "Create tokens"
 msgstr "Vytvořit přístupové kódy"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2084
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2088
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Kliknutím na ano se vytvoří přístupové kódy pro všechny na seznamu, kteří jej ještě nemají vytvořený. Je to v pořádku?"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2133
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2137
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "Bylo vytvořeno {TOKENCOUNT} přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2150
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2154
 msgid "Marked tokens have been deleted."
 msgstr "Označené přístupové kódy byly odstraněny."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2152
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2156
 msgid "No tokens were selected for deletion"
 msgstr "Nebyly vybrány žádné přístupové kódy ke smazání"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2157
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2161
 msgid "Token has been deleted."
 msgstr "Přístupový kód byl smazán."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2159
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2163
 msgid "Reloading Screen. Please wait."
 msgstr "Znovunačítám obrazovku. Počkejte prosím."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2165
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2169
 msgid "Manage token attribute fields"
 msgstr "Správa atributů přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2169
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2173
 msgid "Attribute field"
 msgstr "Pole atributu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2169
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2173
 msgid "Field description"
 msgstr "Popis pole"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2169
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2173
 msgid "Example data"
 msgstr "Příklad dat"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2186
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2190
 msgid "<no data>"
 msgstr "<žádná data>"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2197
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2201
 msgid "Add token attributes"
 msgstr "Přidat atributy přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2199
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2203
 #, php-format
 msgid "There are %s user attribute fields in this token table"
 msgstr "V této tabulce je %s polí atributů přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2202
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2206
 msgid "Number of attribute fields to add:"
 msgstr "Zadejte počet polí atributů uživatelů, které si přejete přidat:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2206
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2210
 msgid "Add fields"
 msgstr "Přidat pole"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2227
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2231
 msgid "Update token attribute descriptions"
 msgstr "Aktualizovat popis atributů přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2231
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2235
 msgid "Updating token attribute descriptions failed:"
 msgstr "Aktualizace popisu atributů přístupových kódů se nezdařila:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2232
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2237
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2266
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2271
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2236
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2241
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2270
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2275
 msgid "Back to attribute field management."
 msgstr "Zpět na správu polí atributů."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2236
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2240
 msgid "Token attribute descriptions were successfully updated."
 msgstr "Popis atributů přístupových kódů byl úspěšně aktualizován."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2261
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2265
 msgid "Update token attributes"
 msgstr "Aktualizovat atributy přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2265
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2269
 msgid "Adding attribute fields failed:"
 msgstr "Přidání polí atributů účastníků se nezdařilo:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2270
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2274
 #, php-format
 msgid "%s field(s) were successfully added."
 msgstr "%s polí bylo úspěšně přidáno."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2307
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2417
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2585
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2311
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2421
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2589
 msgid "Add token entry"
 msgstr "Přidat záznam přístupového kódu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2315
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2447
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2319
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2451
 msgid "Auto"
 msgstr "Auto"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2329
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2333
 msgid "Email Status"
 msgstr "Stav emailu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2344
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2348
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr "Toto můžete nechat prázdné a automaticky vygenerovat přístupové kódy pomocí  'Vytvořit přístupové kódy účastníků'"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2366
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2370
 msgid "Reminder count:"
 msgstr "Počet připomínek"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2377
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2463
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2381
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2467
 msgid "Uses left:"
 msgstr "Počet použití"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2388
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2471
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2392
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2475
 msgid "until"
 msgstr "do"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2394
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2477
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2398
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2481
 msgid "hh:mm"
 msgstr "hh:mm"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2412
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2416
 msgid "Update token entry"
 msgstr "Aktualizovat záznam přístupového kódu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2442
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2446
 msgid "Create dummy tokens"
 msgstr "Vytvořit fiktivní záznamy přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2449
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2453
 msgid "Number of tokens"
 msgstr "Počet přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2451
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2455
 msgid "Token length"
 msgstr "Délka přístupového kódu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2553
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2557
 msgid "The token entry was successfully updated."
 msgstr "Záznam přístupového kódu byl úspěšně aktualizován"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2558
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2618
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3153
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2562
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2622
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3158
 msgid "Failed"
 msgstr "Chyba"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2559
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2619
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2563
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2623
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "V tabulce je již přítomen přístupový kód s touto hodnotou. Stejný kód nemůže být použit vícekrát."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2560
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2564
 msgid "Show this token entry"
 msgstr "Zobrazit tento záznam přístupového kódu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2612
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2616
 msgid "New token was added."
 msgstr "Byl přidán nový přístupový kód."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2614
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2618
 msgid "Add another token entry"
 msgstr "Přidat další záznam přístpového kódu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2694
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2698
 msgid "New dummy tokens were added."
 msgstr "Nové fiktivní přístupové kódy byly přidány."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2701
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2705
 msgid "Upload CSV File"
 msgstr "Nahrát CSV soubor"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2704
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2708
 msgid "CSV input format"
 msgstr "Vstupní formát CSV"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2705
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2709
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
 msgstr "Soubor by měl být standardní CSV (čárkou oddělený) s uvozovkami kolem hodnot (výchozí pro OpenOffice). První řádek musí obsahovat hlavičku (jména polí). Pole mohou být v libovolném pořadí."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2705
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2709
 msgid "Mandatory fields:"
 msgstr "Povinná pole:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2706
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2710
 msgid "Optional fields:"
 msgstr "Volitelná pole:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2712
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2716
 msgid "Upload LDAP entries"
 msgstr "Nahrát LDAP položky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2716
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2720
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "LDAP dotazy jsou definované administrátorem v souboru config-ldap.php"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2726
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2730
 msgid "Token file upload"
 msgstr "Upload souboru s přístupovými kódy"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2746
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2750
 msgid "Uploaded CSV file successfully"
 msgstr "Načtení souboru CSV bylo úspěšné"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2755
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2759
 msgid "Failed to open the uploaded file!"
 msgstr "Otevření načteného souboru se nezdařilo!"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2802
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2806
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Chyba: V načteném souboru chybí jeden nebo více povinných sloupců:  'jméno', 'příjmení' nebo 'email'"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2903
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2908
 msgid "Successfully created token entries"
 msgstr "Záznamy přístupových kódů byly úspěšně vytvořeny"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2905
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2910
 msgid "Failed to create token entries"
 msgstr "Nezdařilo se vytvořit záznamy přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2907
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2912
 #, php-format
 msgid "%s records in CSV"
 msgstr "%s záznamů v CSV"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2908
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2913
 #, php-format
 msgid "%s records met minumum requirements"
 msgstr "%s záznamů splnilo minimální požadavky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2909
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2914
 #, php-format
 msgid "%s records imported"
 msgstr "%s záznamů importováno"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2918
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2923
 #, php-format
 msgid "%s duplicate records removed"
 msgstr "%s duplicitních záznamů odstraněno"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2919
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2931
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2941
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3159
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3167
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2924
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2936
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2946
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3164
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3172
 msgid "List"
 msgstr "Seznam"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2930
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2935
 #, php-format
 msgid "%s lines had a mismatching number of fields."
 msgstr "%s řádků mělo nesouhlasící počet polí."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2940
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3166
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2945
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3171
 #, php-format
 msgid "%s records with invalid email address removed"
 msgstr "%s  záznamů s neplatnou emailovou adresou bylo odstraněno"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2961
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:2966
 msgid "Uploading LDAP Query"
 msgstr "Nahrávám LDAP dotaz"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3155
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3160
 msgid "Results from LDAP Query"
 msgstr "Výsledky z LDAP dotazu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3156
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3161
 msgid "Records met minumum requirements"
 msgstr "Záznamy splňující minimální požadavky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3157
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3162
 msgid "Records imported"
 msgstr "Importované záznamy"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3158
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3163
 msgid "Duplicate records removed"
 msgstr "Byly odstraněny duplicitní záznamy"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3177
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3182
 msgid "Can't bind to the LDAP directory"
 msgstr "Nelze se připojit k LDAP adresáři"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3183
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3188
 msgid "Can't connect to the LDAP directory"
 msgstr "Nelze se spojit s LDAP adresářem"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3204
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3209
 msgid "Auto detect"
 msgstr "Automaticky detekovat"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3206
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3211
 msgid "Comma"
 msgstr "Čárka"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3208
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3213
 msgid "Semicolon"
 msgstr "Středník"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3210
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3215
 msgid "Choose the CSV file to upload:"
 msgstr "Vyberte CSV soubor pro nahrání:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3211
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3216
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/vvimport.php:93
 msgid "Character set of the file:"
 msgstr "Znaková sada souboru:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3212
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3217
 msgid "Separator used:"
 msgstr "Použitý oddělovač:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3215
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3266
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3220
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3271
 msgid "Filter blank email addresses:"
 msgstr "Filtrovat prázdné emailové adresy:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3216
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3267
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3221
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3272
 msgid "Filter duplicate records:"
 msgstr "Filtrovat duplicitní záznamy:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3217
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3222
 msgid "Duplicates are determined by:"
 msgstr "Duplicitní záznamy jsou kontrolovány podle:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3232
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3237
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:1009
 msgid "Upload"
 msgstr "Načíst"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3247
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3252
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Omlouváme se, ale LDAP modul ve Vaší konfiguraci PHP chybí."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3253
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3258
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP je zakázáno nebo není definován LDAP dotaz."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3259
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/tokens.php:3264
 msgid "Select the LDAP query you want to run:"
 msgstr "Vyberte LDAP dotaz, který chcete spustit:"
 
@@ -8456,7 +8492,7 @@ msgstr "Statistiky"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:358
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/statistics.php:1600
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1958
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1959
 msgid "Clear"
 msgstr "Vyčistit"
 
@@ -8540,7 +8576,7 @@ msgstr "je větší, než"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:69
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:85
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1931
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1932
 msgid "Regular expression"
 msgstr "Regulární výraz"
 
@@ -8586,210 +8622,210 @@ msgstr "Podmínky úspěšně zkopírovány"
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "Žádné podmínky nebyly zkopírovány (nalezeny duplikáty)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:870
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:871
 msgid "Group of checkboxes"
 msgstr "Skupina zatrhávacích polí"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:886
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:887
 msgid "Single checkbox"
 msgstr "Samotné zaškrtávací pole"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:889
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:890
 msgid "checked"
 msgstr "zaškrtnuto"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:890
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:891
 msgid "not checked"
 msgstr "nezašktrnuto"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:998
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:999
 msgid "Conditions designer"
 msgstr "Návrhář podmínek"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1007
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1008
 msgid "Show conditions for this question"
 msgstr "Zobrazit podmínky pro tuto otázku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1010
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1011
 msgid "Add and edit conditions"
 msgstr "Přidat a editovat podmínku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1012
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1600
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1645
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1013
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1601
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1646
 msgid "Copy conditions"
 msgstr "Kopírovat podmínky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1016
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1017
 msgid "Before"
 msgstr "Před"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1033
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1034
 msgid "Current"
 msgstr "Aktuální"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1154
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1155
 msgid "Only show question {QID} IF"
 msgstr "Zobrazovat otázku {QID} POKUD"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1175
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1176
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
 msgstr "Opravdu chcete smazat všechny podmínky vybraných otázek?"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1177
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1178
 msgid "Delete all conditions"
 msgstr "Odstranit všechny podmínky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1183
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1184
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
 msgstr "Opravdu chcete přečíslovat všechny scénáře navazujícími čísly od 1?"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1185
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1186
 msgid "Renumber scenario automatically"
 msgstr "Automaticky přečíslovat scénář"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1213
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1353
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1214
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1354
 msgid "OR"
 msgstr "NEBO"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1229
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1230
 msgid "New scenario number"
 msgstr "Nové číslo scénáře"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1236
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1237
 msgid "Update scenario"
 msgstr "Změnit scénář"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1247
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1248
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "Opravdu chcete smazat všechny podmínky v tomto scénáři?"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1249
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1250
 msgid "Delete this scenario"
 msgstr "Smazat tento scénář"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1255
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1256
 msgid "Edit scenario"
 msgstr "Editovat scénář"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1378
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1451
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1379
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1452
 msgid "From token table"
 msgstr "Z tabulky přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1382
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1455
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1383
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1456
 msgid "Inexistant token table"
 msgstr "Neexistující tabulka přístupových kodů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1440
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1441
 msgid "Not found"
 msgstr "Nenalezeno"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1497
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1498
 msgid "Are you sure you want to delete this condition?"
 msgstr "Opravdu chcete smazat tuto podmínku?"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1499
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1500
 msgid "Delete this condition"
 msgstr "Odstranit tuto podmínku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1502
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1503
 msgid "Edit this condition"
 msgstr "Editovat tuto podmínku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1579
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1580
 msgid "This question is always shown."
 msgstr "Tato otázka je zobrazena vždy."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1617
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1618
 msgid "No questions selected"
 msgstr "Není vybrána žádná otázka"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1617
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1618
 msgid "Check all"
 msgstr "Zkontrolovat vše"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1617
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1618
 msgid "Uncheck all"
 msgstr "Odstraň označení všech"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1617
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1618
 msgid "selected"
 msgstr "vybrané"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1620
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1621
 msgid "Copy the selected conditions to"
 msgstr "Kopírovat vybrané podmínky do"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1669
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1670
 msgid "This survey's questions don't use conditions"
 msgstr "Tato otázka nepoužívá podmínky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1706
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1707
 msgid "Edit condition"
 msgstr "Editovat podmínku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1710
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1948
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1711
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1949
 msgid "Add condition"
 msgstr "Přidat podmínku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1721
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1722
 msgid "Add scenario"
 msgstr "Přidat scénář"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1722
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1723
 msgid "Default scenario"
 msgstr "Výchozí scénář"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1733
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1734
 msgid "Scenario"
 msgstr "Scénář"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1745
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1746
 msgid "Previous questions"
 msgstr "Předcházející otázky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1746
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1881
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1747
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1882
 msgid "Token fields"
 msgstr "Pole přístupových kódů"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1803
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1804
 msgid "Comparison operator"
 msgstr "Operátor porovnání"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1878
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1879
 msgid "Predefined"
 msgstr "Předdefinováno"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1879
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1880
 msgid "Constant"
 msgstr "Konstanta"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1882
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1883
 msgid "RegExp"
 msgstr "Regulerní Výraz"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1889
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1890
 msgid "Predefined answer options for this question"
 msgstr "Přednastavené možné odpovědi pro tuto otázku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1895
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1896
 msgid "Constant value"
 msgstr "Konstantní hodnota"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1913
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1914
 msgid "Answers from previous questions"
 msgstr "Odpovědi z předchozích otázek"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1925
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1926
 msgid "Attributes values from the participant's token"
 msgstr "Hodnoty atributů z přístupového kódu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1942
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/conditionshandling.php:1943
 msgid "Update condition"
 msgstr "Změnit podmínku"
 
@@ -8893,7 +8929,7 @@ msgid "Question Attributes"
 msgstr "Atributy otázky"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:55
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:75
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:82
 msgid "Label set import summary"
 msgstr "Shrnutí importu sady popisků"
 
@@ -8902,25 +8938,25 @@ msgid "Uploaded label set file needs to have an .lsl extension."
 msgstr "Načtený soubor popisků musí mít příponu .lsl"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:57
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:79
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:88
 msgid "Return to label set administration"
 msgstr "Návrat k administraci sady popisků"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:78
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:85
 msgid "Import of label set(s) is completed."
 msgstr "Import sady popisků je hotov."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:103
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:112
 msgid "This file is not a LimeSurvey label set file. Import failed."
 msgstr "Tento soubor není souborem sady popisků LimeSurvey. Import byl neúspěšný."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:243
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:349
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:253
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:359
 msgid "Label set was not imported because the same label set already exists."
 msgstr "Tato sada popisků nebyla importována protože stejná sad již existuje."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:243
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:349
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:253
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/importlabel.php:359
 #, php-format
 msgid "Existing LID: %s"
 msgstr "Existující LID: %s"
@@ -9100,7 +9136,7 @@ msgstr "Správa uživatelů"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/userrighthandling.php:916
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/editsubquestions.php:167
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/html.php:1917
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:485
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:500
 msgid "Action"
 msgstr "Akce"
 
@@ -9440,8 +9476,8 @@ msgid "This group description is fairly vacuous, but quite important."
 msgstr "Tento popis skupiny je docela neurčitý, ale důležitý."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:429
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:710
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:773
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:725
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:788
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:2394
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:2400
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:2405
@@ -9459,13 +9495,13 @@ msgid "This is some help text."
 msgstr "Toto je příklad nápovědy."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:434
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:411
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:414
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/replacements.php:711
 msgid "Thank you!"
 msgstr "Děkujeme Vám!"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/templates.php:435
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:412
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:415
 msgid "Your survey responses have been recorded."
 msgstr "Vaše odpovědi byly uloženy."
 
@@ -9991,7 +10027,7 @@ msgid "Show PHPInfo"
 msgstr "Zobrazit PHPInfo"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/surveylist.php:30
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:481
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:496
 msgid "Status"
 msgstr "Stav"
 
@@ -10546,10 +10582,10 @@ msgstr "Uložit změny"
 msgid "You cannot add/remove subquestions or edit their codes because the survey is active."
 msgstr "Nemůžete přidávat nebo upravovat dílčí otázky nebo jejich kódy protože průzkum je aktivní. "
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/update/upgrade-mssql.php:606
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/update/upgrade-mssqlnative.php:606
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/update/upgrade-mysql.php:714
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/update/upgrade-postgres.php:434
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/update/upgrade-mssql.php:593
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/update/upgrade-mssqlnative.php:594
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/update/upgrade-mysql.php:702
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/update/upgrade-postgres.php:422
 #, php-format
 msgid "Database update finished (%s)"
 msgstr "Aktualizace databáze dokončena (%s)"
@@ -10925,43 +10961,43 @@ msgstr "Zadejte své odpovědi:"
 msgid "Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab."
 msgstr "Zadejte jednu odpověď na řádek. Můžete zadat kód tak, že oddělíte kód od textu pomocí středníku nebo tabulátoru. Pro vícejazyčné průzkumy zadáte pžeklady tak, že je na jednom řádku oddělíte středníkem/tabulátorem."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:411
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:410
 msgid "Survey could not be actived."
 msgstr "Průzkum nelze aktivovat."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:413
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:412
 msgid "Database error:"
 msgstr "Chyba databáze:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:451
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:450
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Průzkum byl aktivován. Tabulka s výsledky byla úspěšně vytvořena."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:460
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:459
 msgid "The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory."
 msgstr "Požadovanou složku pro uložení uploadovaného souboru nelze vytvořit. Prosím zkontrolujte nastavené oprávnění složky limesurvey/upload/pro daný průzkum."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:474
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:485
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "Tento průzkum má povolenou veřejnou registraci. Tabulka přístupových kódů musí být také vytvořena."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:479
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:490
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Tento průzkum je nyní aktivní a odpovědi mohou být zadávány."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:480
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:491
 msgid "Open-access mode"
 msgstr "Mód volného přístupu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:480
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:491
 msgid "No invitation code is needed to complete the survey."
 msgstr "K účasti v průzkumu není třeba pozvání ani přístupový kód."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:480
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:491
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "Můžete přepnou na uzavřený průzkum inicializací tabulky přístupových kódů pomocí tlačítka níže."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:481
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/activate_functions.php:492
 msgid "Switch to closed-access mode"
 msgstr "Přepnout na uzavřený přístup"
 
@@ -10991,7 +11027,7 @@ msgid "A group in the CSV/SQL file is not part of the same survey. The import of
 msgstr "Skupina v CSV/SQL souboru není částí stejného průzkumu. Import průzkumu byl zastaven."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/import_functions.php:1021
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:833
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:848
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Omlouváme se, Vaše odpověď přesáhla kvótu definovanou v průzkumu."
 
@@ -11123,9 +11159,9 @@ msgstr "Oddělovač desetinného místa:"
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:78
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:91
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:518
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1376
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1464
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1503
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1589
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1677
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1716
 msgid "Data entry"
 msgstr "Vstup dat"
 
@@ -11173,31 +11209,31 @@ msgid "Try again"
 msgstr "Zkusit znovu"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:181
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1342
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2658
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1555
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3059
 msgid "Identifier:"
 msgstr "Identifikátor:"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:185
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2662
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3063
 msgid "Confirm Password:"
 msgstr "Potvrzení hesla:"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:187
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2664
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3065
 msgid "Email:"
 msgstr "Email:"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:189
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2666
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3067
 msgid "Start Language:"
 msgstr "Počáteční jazyk:"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:198
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1360
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2686
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1573
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3087
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:2410
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:1033
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:1036
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/replacements.php:272
 msgid "Submit"
 msgstr "Odeslat"
@@ -11238,7 +11274,7 @@ msgid "Add Another Record"
 msgstr "Přidat další záznam"
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:422
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1457
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1670
 msgid "View This Record"
 msgstr "Zobrazit tento záznam"
 
@@ -11256,45 +11292,45 @@ msgstr "Editování odpovědi (ID %s)"
 msgid "Viewing response (ID %s)"
 msgstr "Zobrazení odpovědi (ID %s)"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1336
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2648
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1550
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3049
 msgid "Finalize response submission"
 msgstr "Dokončit odeslání odpovědi"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1338
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2654
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1551
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3055
 msgid "Save for further completion by survey user"
 msgstr "Uložit pro pozdější dokončení průzkumu uživatelem"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1456
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1669
 msgid "Record has been updated."
 msgstr "Záznam byl aktualizován."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1473
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1686
 msgid "Record Deleted"
 msgstr "Záznam smazán"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1562
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1775
 msgid "Datestamp"
 msgstr "Časová značka"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1772
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1985
 msgid "Only answer this if the following conditions are met:"
 msgstr "Odpovědět pouze, jsou-li splněny následující podmínky:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1778
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1991
 msgid "The answer(s) must meet these validation criteria:"
 msgstr "Odpovědi musí splňovat následující validační kritéria:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1784
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1997
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr "Odpovědi musí splňovat tato array_filter kritérie:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:1814
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2027
 msgid "Help about this question"
 msgstr "Nápověda k této otázce"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:2703
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/dataentry.php:3104
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Tento průzkum dosud není aktivní. Vaše odpovědi nemohou být uloženy."
 
@@ -12251,133 +12287,133 @@ msgstr ""
 "\\n"
 "Schází zpráva o kvótě pro následující jazyky"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:390
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:405
 msgid "Edit quota"
 msgstr "Změnit kvótu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:393
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:480
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:660
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:790
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:408
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:495
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:675
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:805
 msgid "Quota name"
 msgstr "Jméno kvóty"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:396
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:794
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:411
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:809
 msgid "Quota limit"
 msgstr "Limit kvóty"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:399
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:482
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:798
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:414
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:497
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:813
 msgid "Quota action"
 msgstr "Akce kvóty"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:402
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:528
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:800
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:417
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:543
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:815
 msgid "Terminate survey"
 msgstr "Ukončit průzkum"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:405
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:530
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:801
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:420
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:545
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:816
 msgid "Terminate survey with warning"
 msgstr "Ukončit průzkum s upozorněním"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:409
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:805
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:424
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:820
 msgid "Autoload URL"
 msgstr "Koncová URL:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:437
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:832
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:452
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:847
 msgid "Quota message"
 msgstr "Zpráva o kvótě"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:441
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:836
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:456
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:851
 msgid "URL"
 msgstr "URL"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:445
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:840
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:460
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:855
 msgid "URL description"
 msgstr "Popis URL"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:452
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:467
 msgid "Save quota"
 msgstr "Uložit kvótu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:475
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:490
 msgid "Survey quotas"
 msgstr "Kvóty průzkumu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:483
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:660
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:499
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:675
 msgid "Limit"
 msgstr "Limit"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:498
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:513
 msgid "Quick CSV report"
 msgstr "Rychlý CSV report"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:521
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:536
 msgid "Not Active"
 msgstr "Neaktivní"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:578
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:684
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:691
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:744
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:751
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:593
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:699
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:706
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:759
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:766
 msgid "Add Answer"
 msgstr "Přidat odpověď"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:627
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:642
 msgid "No quotas have been set for this survey"
 msgstr "Pro tento průzkum nebyla nastavena žádná kvóta"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:642
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:852
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:657
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:867
 msgid "Add New Quota"
 msgstr "Přidat novou kvótu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:660
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:675
 msgid "Remaining"
 msgstr "Zbývá"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:684
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:744
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:699
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:759
 msgid "Question Selection"
 msgstr "Výběr otázek"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:686
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:701
 msgid "Sorry there are no supported question types in this survey."
 msgstr "Bohužel v tomto průzkumu nejsou podporované typy odpovědí."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:691
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:751
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:706
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:766
 msgid "Survey Quota"
 msgstr "Kvóta průzkumu"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:697
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:712
 msgid "Select Question"
 msgstr "Vybrat otázku"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:746
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:761
 msgid "All answers are already selected in this quota."
 msgstr "V této kvótě byly již vybrány všechny odpovědi"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:756
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:771
 msgid "Select Answer"
 msgstr "Vybrat odpověď"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:769
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:784
 msgid "Save this, then create another:"
 msgstr "Uložit toto, pak vytvořit další:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:786
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/admin/quota.php:801
 msgid "New quota"
 msgstr "Nová kvóta"
 
@@ -12513,6 +12549,10 @@ msgstr "E-mailová adresa není validní. Nechte prosím pole e-mailu prázdné 
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr "Toto jméno již bylo použito pro uložení průzkumu. K uložení musíte použít jiné jméno."
 
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/save.php:185
+msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
+msgstr "Chyba: Odeslání e-mailové zprávy se nepodařilo. Tato zpráva značí problém s nastavení e-mailu v PHP na serveru. Detaily vašeho průzkumu byly uloženy, ale e-mail s podrobnostmi neobdržíte. Měl(a) byste si pozdamenat \"jméno\" a \"heslo\" pro pozdější použití."
+
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/save.php:188
 msgid "Your survey was successfully saved."
 msgstr "Váš průzkum byl úspěšně uložen."
@@ -12644,7 +12684,7 @@ msgid "The minimum number of files has not been uploaded."
 msgstr "Nebylo nahráno minimum souborů."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:1601
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:343
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:346
 msgid "Did Not Save"
 msgstr "Neuloženo"
 
@@ -12714,7 +12754,7 @@ msgid "This survey does not yet have any questions and cannot be tested or compl
 msgstr "Tento průzkum dosud neobsahuje žádné otázky a nemůže být testován nebo vyplněn."
 
 #: /var/www/virtual/limesurvey.org/scripts/repositories/master/index.php:2929
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:962
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:965
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Průzkum není nyní aktivní. Nebudete moci uložit Vaše odpovědi."
 
@@ -12751,59 +12791,59 @@ msgstr "Při načtení souboru se vyskytla chyba."
 msgid "Unknown error"
 msgstr "Neznámá chyba"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:113
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:116
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
 msgstr "Prosím používejte navigační tlačítka LimeSurvey nebo index. Zdá se, že jste k zobrazení stránky použili zpětné tlačítko prohlížeče."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:218
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:221
 msgid "Save your responses so far"
 msgstr "Uložte dosavadní odpovědi"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:344
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:347
 msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "Vaše odpovědi nemohly být uloženy. Průzkum ještě není aktivní."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:349
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:352
 msgid "Clear Responses"
 msgstr "Vymazat odpovědi"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:424
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:427
 msgid "Print your answers."
 msgstr "Vytisknout své odpovědi."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:429
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:432
 msgid "or"
 msgstr "nebo"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:436
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:439
 msgid "View the statistics for this survey."
 msgstr "Zobrazit statistiky tohoto průzkumu."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:492
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:495
 msgid "Sorry. There is no matching survey."
 msgstr "Omlouváme se, odpovídající průzkum nebyl nalezen."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:508
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:511
 msgid "Invalid group number for this survey: "
 msgstr "Chybné číslo skupiny pro tento průzkum:"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:513
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:516
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr "Tato skupina neobshuje žádnou otázku. Před zobrazením náhledu musíte do skupiny přidat otázky."
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:530
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:533
 msgid "Submit your answers"
 msgstr "Odešlete své odpovědi"
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:531
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:534
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr "Již nejsou další odpovědi. Prosím stlačte tlačítko \"Odeslat\". "
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:825
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:828
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr "Jedno nebo více souborů není v povoleném formátu nebo velikosti. Nemůžete pokračovat, dokud nebudou tyto soubory platné. "
 
-#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:970
+#: /var/www/virtual/limesurvey.org/scripts/repositories/master/group.php:973
 msgid "Question index"
 msgstr "Index otázky"
 
