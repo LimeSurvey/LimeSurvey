@@ -241,8 +241,8 @@ function LEMval(alias)
     switch (suffix) {
         case 'relevanceStatus': {
             grel = qrel = sgqarel = 1;
-            if (!(typeof attr.gid === 'undefined') && !(document.getElementById('relevanceG' + attr.gid) === null)) {
-                grel = parseInt(document.getElementById('relevanceG' + attr.gid).value);
+            if (!(typeof attr.gseq === 'undefined') && !(document.getElementById('relevanceG' + attr.gseq) === null)) {
+                grel = parseInt(document.getElementById('relevanceG' + attr.gseq).value);
             }
             if (!(typeof attr.qid === 'undefined') && !(document.getElementById('relevance' + attr.qid) === null)) {
                 qrel = parseInt(document.getElementById('relevance' + attr.qid).value);

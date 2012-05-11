@@ -5453,6 +5453,7 @@
             $valEqns = array();
             $relEqns = array();
             $relChangeVars = array();
+            $dynamicQinG = array(); // array of questions, per group, that might affect group-level visibility in all-in-one mode
 
             if (is_array($pageRelevanceInfo))
             {
@@ -5766,6 +5767,11 @@
                     $relParts[] = "}\n";
                     if (!($relevance == '' || $relevance == '1'))
                     {
+                        if (!isset($dynamicQinG[$arg['gseq']]))
+                        {
+                            $dynamicQinG[$arg['gseq']] = array();
+                        }
+                        $dynamicQinG[$arg['gseq']][$arg['qid']]=true;
                         $relParts[] = "else {\n";
                         $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                         $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
@@ -5875,6 +5881,27 @@
                         }
                     }
                 }
+
+
+                // Add logic for all-in-one mode to show/hide groups as long as at there is at least one relevant question within the group
+                // Only do this if there is no explicit group-level relevance equation, else may override group-level relevance
+                $dynamicQidsInG = (isset($dynamicQinG[$gr['gseq']]) ? $dynamicQinG[$gr['gseq']] : array());
+                if ($LEM->surveyMode == 'survey' && count($dynamicQidsInG) > 0 && strlen(trim($gr['relevancejs']))== 0)
+                {
+                    // check whether any dependent questions  have changed
+                    $relStatusTest = "($('#relevance" . implode("').val()=='1' || $('#relevance", array_keys($dynamicQidsInG)) . "').val()=='1')";
+
+                    $jsParts[] = "\nif (" . $relStatusTest . ") {\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').show();\n";
+                    $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='0') { relChangeG" . $gr['gseq'] . "=true; }\n";
+                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
+                    $jsParts[] = "}\nelse {\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').hide();\n";
+                    $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
+                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
+                    $jsParts[] = "}\n";
+                }
+                
                 // now make sure any needed variables are accessible
                 $vars = explode('|',$gr['relevanceVars']);
                 if (is_array($vars))
