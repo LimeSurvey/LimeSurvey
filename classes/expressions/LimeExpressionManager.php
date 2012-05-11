@@ -5554,32 +5554,40 @@
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-                        //                    $relParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
-                        $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
-                        $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
-                        $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
-                        $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
-                        $relParts[] = "  }\n  else {\n";
-                        $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
-                        $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";
-                        $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
-                        switch ($sq['qtype'])
+                        if ($sq['result'] == false && !($LEM->surveyMode == 'survey'))
                         {
-                            case 'L': //LIST drop-down/radio-button list
-                                $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
-                                $relParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
-                                if ($listItem == 'other') {
-                                    $relParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
-                                }
-                                $relParts[] = "){\n";
-                                $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
-                                $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
-                                $relParts[] = "    }\n";
-                                break;
-                            default:
-                                break;
+                            // then cascading array filter and can never be active
+                            $relParts[] = "  $('#relevance" . $sq['rowdivid'] . "').val('');\n";
                         }
-                        $relParts[] = "  }\n";
+                        else
+                        {
+                            //                    $relParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
+                            $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                            $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
+                            $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
+                            $relParts[] = "  }\n  else {\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                            $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";
+                            $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
+                            switch ($sq['qtype'])
+                            {
+                                case 'L': //LIST drop-down/radio-button list
+                                    $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
+                                    $relParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
+                                    if ($listItem == 'other') {
+                                        $relParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
+                                    }
+                                    $relParts[] = "){\n";
+                                    $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
+                                    $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
+                                    $relParts[] = "    }\n";
+                                    break;
+                                default:
+                                    break;
+                            }
+                            $relParts[] = "  }\n";
+                        }
 
                         $sqvars = explode('|',$sq['relevanceVars']);
                         if (is_array($sqvars))
@@ -6826,6 +6834,15 @@ EOD;
                     $_attr = 'shown';
                 }
                 $attr = (count($args)==2) ? $args[1] : $_attr;
+            }
+
+            // Like JavaScript, if an answer is irrelevant, always return ''
+            if (preg_match('/^code|NAOK|shown|valueNAOK|value$/',$attr) && isset($var['qid']) && $var['qid']!='')
+            {
+                if  (!$this->_GetVarAttribute($varName,'relevanceStatus',false,$gseq,$qseq))
+                {
+                    return '';
+                }
             }
             switch ($attr)
             {
