@@ -5454,6 +5454,7 @@
             $relEqns = array();
             $relChangeVars = array();
             $dynamicQinG = array(); // array of questions, per group, that might affect group-level visibility in all-in-one mode
+            $GalwaysRelevant = array(); // checks whether a group is always relevant (e.g. has at least one question that is always shown)
 
             if (is_array($pageRelevanceInfo))
             {
@@ -5539,6 +5540,7 @@
                     {
                         // Only show constitutively true relevances if there is tailoring that should be done.
                         $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
+                        $GalwaysRelevant[$arg['gseq']] = true;
                         continue;
                     }
                     $relevance = ($relevance == '') ? '1' : $relevance;
@@ -5886,7 +5888,8 @@
                 // Add logic for all-in-one mode to show/hide groups as long as at there is at least one relevant question within the group
                 // Only do this if there is no explicit group-level relevance equation, else may override group-level relevance
                 $dynamicQidsInG = (isset($dynamicQinG[$gr['gseq']]) ? $dynamicQinG[$gr['gseq']] : array());
-                if ($LEM->surveyMode == 'survey' && count($dynamicQidsInG) > 0 && strlen(trim($gr['relevancejs']))== 0)
+                $GalwaysVisible = (isset($GalwaysRelevant[$gr['gseq']]) ? $GalwaysRelevant[$gr['gseq']] : false);
+                if ($LEM->surveyMode == 'survey' && !$GalwaysVisible && count($dynamicQidsInG) > 0 && strlen(trim($gr['relevancejs']))== 0)
                 {
                     // check whether any dependent questions  have changed
                     $relStatusTest = "($('#relevance" . implode("').val()=='1' || $('#relevance", array_keys($dynamicQidsInG)) . "').val()=='1')";
