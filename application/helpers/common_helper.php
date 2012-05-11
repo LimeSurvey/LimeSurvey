@@ -1766,31 +1766,23 @@ function getSIDGIDQIDAIDType($fieldcode)
 
 /**
 *
-* @param type $surveyid
-* @param type $action
-* @param type $fieldcode
-* @param type $value
-* @param type $format
-* @return type
+* @param type $iSurveyID The Survey ID
+* @param type $sFieldCode Field code of the particular field
+* @param type $sValue The stored response value
+* @param object $oLanguage Initialized limesurvey_lang object for the resulting response data
+* @return string
 */
-function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
+function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
 {
-    $clang = Yii::app()->lang;
-
-    // use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    if  (!isset($action) || (isset($action) && $action!='browse') || $action == NULL )
-    {
-        if ($_SESSION['survey_'.$surveyid]['s_lang']) $s_lang = $_SESSION['survey_'.$surveyid]['s_lang'];  //This one does not work in admin mode when you browse a particular answer
-    }
-
-    //Fieldcode used to determine question, $value used to match against answer code
+    if (is_null($sValue)) return '';
+    $sLanguage = $oLanguage->langcode;
+    //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
-    if (substr_count($fieldcode, "X") > 1) //Only check if it looks like a real fieldcode
+    if (strpos($sFieldCode, "{$iSurveyID}X")===0) //Only check if it looks like a real fieldcode
     {
-        $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
-        if (isset($fieldmap[$fieldcode]))
-            $fields = $fieldmap[$fieldcode];
+        $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage);
+        if (isset($fieldmap[$sFieldCode]))
+            $fields = $fieldmap[$sFieldCode];
         else
             return false;
         //Find out the question type
@@ -1798,11 +1790,11 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
         switch($this_type)
         {
             case 'D':
-                if (trim($value)!='')
+                if (trim($sValue)!='')
                 {
                     $qidattributes = getQuestionAttributeValues($fields['qid']);
-                    $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid);
-                    $value=convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
+                    $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
+                    $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
                 break;
             case "L":
@@ -1811,87 +1803,89 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
             case "^":
             case "I":
             case "R":
-                $result = Answers::model()->getAnswerCode($fields['qid'],$value,$s_lang) or die ("Couldn't get answer type L - getExtendedAnswer() in common_helper.php<br />$query<br />"); //Checked
-
+                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage) or die ("Couldn't get answer type L - getAnswerCode()"); //Checked
                 foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
                 } // while
-                if ($value == "-oth-")
+                if ($sValue == "-oth-")
                 {
-                    $this_answer=$clang->gT("Other");
+                    $this_answer=$oLanguage->gT("Other");
                 }
                 break;
             case "M":
             case "J":
             case "P":
-            switch($value)
+            switch($sValue)
             {
-                case "Y": $this_answer=$clang->gT("Yes"); break;
+                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
             }
             break;
             case "Y":
-            switch($value)
+            switch($sValue)
             {
-                case "Y": $this_answer=$clang->gT("Yes"); break;
-                case "N": $this_answer=$clang->gT("No"); break;
-                default: $this_answer=$clang->gT("No answer");
+                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
+                case "N": $this_answer=$oLanguage->gT("No"); break;
+                default: $this_answer=$oLanguage->gT("No answer");
             }
             break;
             case "G":
-            switch($value)
+            switch($sValue)
             {
-                case "M": $this_answer=$clang->gT("Male"); break;
-                case "F": $this_answer=$clang->gT("Female"); break;
-                default: $this_answer=$clang->gT("No answer");
+                case "M": $this_answer=$oLanguage->gT("Male"); break;
+                case "F": $this_answer=$oLanguage->gT("Female"); break;
+                default: $this_answer=$oLanguage->gT("No answer");
             }
             break;
             case "C":
-            switch($value)
+            switch($sValue)
             {
-                case "Y": $this_answer=$clang->gT("Yes"); break;
-                case "N": $this_answer=$clang->gT("No"); break;
-                case "U": $this_answer=$clang->gT("Uncertain"); break;
+                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
+                case "N": $this_answer=$oLanguage->gT("No"); break;
+                case "U": $this_answer=$oLanguage->gT("Uncertain"); break;
             }
             break;
             case "E":
-            switch($value)
+            switch($sValue)
             {
-                case "I": $this_answer=$clang->gT("Increase"); break;
-                case "D": $this_answer=$clang->gT("Decrease"); break;
-                case "S": $this_answer=$clang->gT("Same"); break;
+                case "I": $this_answer=$oLanguage->gT("Increase"); break;
+                case "D": $this_answer=$oLanguage->gT("Decrease"); break;
+                case "S": $this_answer=$oLanguage->gT("Same"); break;
             }
             break;
             case "F":
             case "H":
             case "1":
-                $fieldtoselect = array('answer');
-                $condition = "qid = {$fields['qid']} AND code=".$value." AND language='".$s_lang."'";
+                $aConditions=array('qid' => $fields['qid'], 'code' => $sValue, 'language' => $sLanguage);
                 if (isset($fields['scale_id']))
                 {
-                    $condition.=" AND scale_id={$fields['scale_id']}";
+                    $iScaleID=$fields['scale_id'];
                 }
-
-                $result = Answers::model()->findAllByAttributes(array('qid' => $fields['qid'], 'code' => $value, 'language' => $s_lang)) or die ("Couldn't get answer type F/H - getExtendedAnswer() in common_helper.php");   //Checked
+                else
+                {
+                    $iScaleID=0;
+                }
+                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID) or die ("Couldn't get answer type L - getAnswerCode()"); //Checked
                 foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
                 } // while
-                if ($value == "-oth-")
+                $this_answer=$row['answer'];
+                if ($sValue == "-oth-")
                 {
-                    $this_answer=$clang->gT("Other");
+                    $this_answer=$oLanguage->gT("Other");
                 }
                 break;
             case "|": //File upload
-                if (substr($fieldcode, -9) == 'filecount') {
-                    $this_answer = $clang->gT("File count");
+                if (substr($sFieldCode, -9) == 'filecount') {
+                    $this_answer = $oLanguage->gT("File count");
                 } else {
                     //Show the filename, size, title and comment -- no link!
-                    $files = json_decode($value);
-                    $value = '';
+                    $files = json_decode($sValue);
+                    $sValue = '';
                     if (is_array($files)) {
                         foreach ($files as $file) {
-                            $value .= $file->name .
+                            $sValue .= $file->name .
                             ' (' . $file->size . 'KB) ' .
                             strip_tags($file->title) .
                             ' - ' . strip_tags($file->comment) . "<br/>";
@@ -1903,59 +1897,23 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
                 ;
         } // switch
     }
-    switch($fieldcode)
+    switch($sFieldCode)
     {
         case 'submitdate':
-            if (trim($value)!='')
+            if (trim($sValue)!='')
             {
-                $dateformatdetails = getDateFormatDataForQID(array('date_format'=>''), $surveyid);
-                $value=convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate'].' H:i:s');
+                $dateformatdetails = getDateFormatDataForQID(array('date_format'=>''), $iSurveyID);
+                $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate'].' H:i:s');
             }
             break;
     }
     if (isset($this_answer))
     {
-        if ($format != 'INSERTANS')
-        {
-            return $this_answer." [$value]";
-        }
-        else
-        {
-            if (strip_tags($this_answer) == "")
-            {
-                switch ($this_type)
-                {// for questions with answers beeing
-                    // answer code, it is safe to return the
-                    // code instead of the blank stripped answer
-                    case "A":
-                    case "B":
-                    case "C":
-                    case "E":
-                    case "F":
-                    case "H":
-                    case "1":
-                    case "M":
-                    case "P":
-                    case "!":
-                    case "5":
-                    case "L":
-                    case "O":
-                        return $value;
-                        break;
-                    default:
-                        return strip_tags($this_answer);
-                        break;
-                }
-            }
-            else
-            {
-                return strip_tags($this_answer);
-            }
-        }
+        return $this_answer." [$sValue]";
     }
     else
     {
-        return $value;
+        return $sValue;
     }
 }
 
@@ -5353,17 +5311,11 @@ function getAttributeValue($surveyid,$attrName,$token)
 /**
 * This function strips any content between and including <style>  & <javascript> tags
 *
-* @param string $content String to clean
+* @param string $sContent String to clean
 * @return string  Cleaned string
 */
-function stripJavaScript($content){
-    $search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
-    '@<style[^>]*?>.*?</style>@siU'    // Strip style tags properly
-    /*               ,'@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
-    '@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments including CDATA
-    */
-    );
-    $text = preg_replace($search, '', $content);
+function stripJavaScript($sContent){
+    $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $sContent);
     return $text;
 }
 
@@ -5820,7 +5772,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 }
                 else
                 {
-                    $answer = getExtendedAnswer($iSurveyID,null,$fname['fieldname'], $idrow[$fname['fieldname']]);
+                    $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
@@ -5828,7 +5780,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         }
         else
         {
-            $answer=getExtendedAnswer($iSurveyID,null,$fname['fieldname'], $idrow[$fname['fieldname']]);
+            $answer=getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
             $aResultTable[$fname['fieldname']]=array($question,'',$answer);
             continue;
         }
@@ -5841,7 +5793,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
 
-        $answer = getExtendedAnswer($iSurveyID,null,$fname['fieldname'], $idrow[$fname['fieldname']]);
+        $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
         $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
     }
     return $aResultTable;

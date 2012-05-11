@@ -115,6 +115,8 @@ class browse extends Survey_Common_Action
     public function view($iSurveyId, $iId, $sBrowseLang = '')
     {
         $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyId, 'browselang' => $sBrowseLang));
+        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
+
         extract($aData);
         $clang = Yii::app()->lang;
         $aViewUrls = array();
@@ -260,7 +262,7 @@ class browse extends Survey_Common_Action
                     }
                     else
                     {
-                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyId, "browse", $fnames[$i][0], $iIdrow[$fnames[$i][0]], ''))), ENT_QUOTES);
+                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyId, $fnames[$i][0], $iIdrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
                     }
                 }
                 $aData['answervalue'] = $answervalue;
@@ -281,6 +283,7 @@ class browse extends Survey_Common_Action
         $aData = $this->_getData($iSurveyId);
         extract($aData);
         $aViewUrls = array();
+        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
 
         /**
          * fnames is used as informational array
@@ -486,7 +489,7 @@ class browse extends Survey_Common_Action
         $fncount = count($fnames);
 
         $start = Yii::app()->request->getParam('start', 0);
-        $limit = Yii::app()->request->getParam('limit', 100);
+        $limit = Yii::app()->request->getParam('limit', 50);
 
         $oCriteria = new CDbCriteria;
         //Create the query
@@ -556,7 +559,7 @@ class browse extends Survey_Common_Action
 
         $aViewUrls[] = 'browseallheader_view';
 
-        $bgcc = 'odd';
+        $bgcc = 'even';
         foreach ($dtresult as $dtrow)
         {
                 if ($bgcc == "even")
@@ -569,6 +572,7 @@ class browse extends Survey_Common_Action
                 }
             $aData['dtrow'] = $dtrow;
             $aData['bgcc'] = $bgcc;
+            $aData['oBrowseLanguage']=$oBrowseLanguage;
             $aViewUrls['browseallrow_view'][] = $aData;
         }
 

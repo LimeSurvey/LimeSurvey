@@ -567,12 +567,12 @@ a.optoutemail {
 .browsetable tr:hover {
     background-color: #C5D0F2;
 }
-.browsetable td span.content{
+.browsetable td span{
     display:block;
     height:3em;
     overflow:hidden;
 }
-.browsetable th strong.content{
+.browsetable th strong{
     display:block;
     height:4em;
     overflow:hidden;

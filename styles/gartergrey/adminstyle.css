@@ -619,7 +619,6 @@ div.messagebox .warningheader {
     margin:0;
 }
 
-
 /* Browse response css */
 
 .browsetable {
@@ -629,12 +628,12 @@ div.messagebox .warningheader {
 .browsetable tr:hover {
     background-color: #ddd;
 }
-.browsetable td span.content {
+.browsetable td span {
     display:block;
     height:3em;
     overflow:hidden;
 }
-.browsetable th strong.content {
+.browsetable th strong {
     display:block;
     height:4em;
     overflow:hidden;

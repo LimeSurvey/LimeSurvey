@@ -8,14 +8,14 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-* 
+*
 * $Id: browse.js 10251 2011-06-10 17:33:49Z tpartner $
 */
 
 $(document).ready(function(){
     var lastSel = 0;
-	 
-    $("#responseTable")
+
+/*    $("#responseTable")
 	    .jqGrid({
 	        url: siteURL + "/admin/browse/" + surveyID + "/grid",
 	        editurl: siteURL + "/admin/browse/" + surveyID + "/grid",
@@ -24,7 +24,7 @@ $(document).ready(function(){
 	        caption: "Responses",
 	        width: "100%",
 	        height: "100%",
-	        rowNum: 25, 
+	        rowNum: 25,
 	        pager: "#responsePager",
 	        editable: true,
 	        colNames: colNames,
@@ -38,17 +38,17 @@ $(document).ready(function(){
 	        rowList: [25,50,100,250,500,1000,5000,10000],
 			ondblClickRow: function(id) {
                 if (lastSel != id) {
-                    $('#responseTable').saveRow(lastSel); 
-                    $('#responseTable').editRow(id, true); 
-                    lastSel=id; 
+                    $('#responseTable').saveRow(lastSel);
+                    $('#responseTable').editRow(id, true);
+                    lastSel=id;
                 }
 		    },
 		    onSelectRow: function(id) {
-			    $('#responseTable').saveRow(lastSel); 
+			    $('#responseTable').saveRow(lastSel);
 		    }
 	    })
 	    .filterToolbar({
- 		 	  'autosearch': true,	
+ 		 	  'autosearch': true,
  		 	  'searchOnEnter': false
  		 })
 	    .navGrid("#responsePager", {
@@ -60,8 +60,8 @@ $(document).ready(function(){
  		 	  'caption': 'Download marked files',
  		 	  'onClickButton': function (rows) {
  		 	  		var rows = $("#responseTable").getGridParam('selarrrow');
- 		 	  		
- 		 	  		if (rows.length <= 0) { 	
+
+ 		 	  		if (rows.length <= 0) {
  		 	  			alert ("Please select some records first!");
  		 	  			return;
 	 		 	  	}
@@ -71,16 +71,16 @@ $(document).ready(function(){
 						'ids': rows
 					});
 			  }
-		 })
+		 })  */
 });
 
 
 /**
     Send a post request to the server to download a file
-    
+
     @param myaction     post action
     @param data         parameters for $_POST
-    
+
 */
 function sendPost(myaction, data)
 {
@@ -88,7 +88,7 @@ function sendPost(myaction, data)
 	document.body.appendChild(myform);
 	myform.action = myaction;
 	myform.method = 'POST';
-	
+
 	for (var key in data) {
         var myel = document.createElement('input');
         myel.type = 'hidden';
@@ -96,7 +96,7 @@ function sendPost(myaction, data)
         myform.appendChild(myel);
         myel.value = data[key];
 	}
-	
+
 	myform.submit();
 }
 
@@ -114,7 +114,7 @@ function getFile(id, field, filename)
 		'fieldname': field,
 		'oper': 'downloadfile',
 		'filename': filename
-	});	
+	});
 }
 
 
