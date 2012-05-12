@@ -4920,6 +4920,9 @@
             $relEqns = array();
             $relChangeVars = array();
 
+            $dynamicQinG = array(); // array of questions, per group, that might affect group-level visibility in all-in-one mode
+            $GalwaysRelevant = array(); // checks whether a group is always relevant (e.g. has at least one question that is always shown)
+
             if (is_array($pageRelevanceInfo))
             {
                 foreach ($pageRelevanceInfo as $arg)
@@ -5003,6 +5006,7 @@
                     {
                         // Only show constitutively true relevances if there is tailoring that should be done.
                         $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
+                        $GalwaysRelevant[$arg['gseq']] = true;
                         continue;
                     }
                     $relevance = ($relevance == '') ? '1' : $relevance;
@@ -5229,6 +5233,11 @@
                     $relParts[] = "}\n";
                     if (!($relevance == '' || $relevance == '1'))
                     {
+                        if (!isset($dynamicQinG[$arg['gseq']]))
+                        {
+                            $dynamicQinG[$arg['gseq']] = array();
+                        }
+                        $dynamicQinG[$arg['gseq']][$arg['qid']]=true;
                         $relParts[] = "else {\n";
                         $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                         $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
@@ -5338,6 +5347,27 @@
                         }
                     }
                 }
+
+                // Add logic for all-in-one mode to show/hide groups as long as at there is at least one relevant question within the group
+                // Only do this if there is no explicit group-level relevance equation, else may override group-level relevance
+                $dynamicQidsInG = (isset($dynamicQinG[$gr['gseq']]) ? $dynamicQinG[$gr['gseq']] : array());
+                $GalwaysVisible = (isset($GalwaysRelevant[$gr['gseq']]) ? $GalwaysRelevant[$gr['gseq']] : false);
+                if ($LEM->surveyMode == 'survey' && !$GalwaysVisible && count($dynamicQidsInG) > 0 && strlen(trim($gr['relevancejs']))== 0)
+                {
+                    // check whether any dependent questions  have changed
+                    $relStatusTest = "($('#relevance" . implode("').val()=='1' || $('#relevance", array_keys($dynamicQidsInG)) . "').val()=='1')";
+
+                    $jsParts[] = "\nif (" . $relStatusTest . ") {\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').show();\n";
+                    $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='0') { relChangeG" . $gr['gseq'] . "=true; }\n";
+                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
+                    $jsParts[] = "}\nelse {\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').hide();\n";
+                    $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
+                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
+                    $jsParts[] = "}\n";
+                }
+
                 // now make sure any needed variables are accessible
                 $vars = explode('|',$gr['relevanceVars']);
                 if (is_array($vars))
@@ -7038,7 +7068,7 @@ EOD;
             'text',
             'help',
             'language',
-            'validaton',
+            'validation',
             'mandatory',
             'other',
             'default',
@@ -7292,7 +7322,15 @@ EOD;
                     $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $q['info']['qseq']);    // $qseq
                     $relevanceEqn = trim(strip_tags($LEM->em->GetPrettyPrintString()));
                     $rootVarName = $q['info']['rootVarName'];
-                    $preg = ((isset($qinfo['preg']) && !is_null($qinfo['preg'])) ? $qinfo['preg'] : '');
+                    $preg = '';
+                    if (isset($LEM->q2subqInfo[$q['info']['qid']]['preg']))
+                    {
+                        $preg = $LEM->q2subqInfo[$q['info']['qid']]['preg'];
+                        if (is_null($preg))
+                        {
+                            $preg = '';
+                        }
+                    }
 
                     $row['class'] = 'Q';
                     $row['type/scale'] = $type;
