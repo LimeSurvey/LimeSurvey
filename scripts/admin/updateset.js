@@ -158,12 +158,20 @@ function sort_complete(event, ui){
 
 function add_label(event)
 {
-
-    next_code=getNextCode($(this).parent().parent().find('.codeval').val());
+    if ($(this).parent().parent().find('.codeval').size()>0)
+        {
+        next_code=getNextCode($(this).parent().parent().find('.codeval').val());
+    }
+    else
+        {
+        next_code='L001';
+    }
     while ($(this).parent().parent().parent().find('input[value="'+next_code+'"]').length>0)
     {
         next_code=getNextCode(next_code);
     }
+
+
     var html = createNewLabelTR(true,true);
 
     if (typeof(event)=="undefined")
