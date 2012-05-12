@@ -684,11 +684,18 @@ div.messagebox .warningheader {
 .conditionlist td:first-child {
     width:90%;
 }
+.detailbrowsetable th:first-child,
+#responsedetail td:first-child,
 .conditionlist table td:first-child {
     width:45%;
     text-align:right;
+    padding-right:1em;
 }
 
+#responsedetail td:first-child
+{
+    font-weight:bold;
+}
 .conditionlist table td:nth-child(2){
     width:10%;
 }

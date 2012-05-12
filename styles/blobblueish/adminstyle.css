@@ -602,10 +602,18 @@ a.optoutemail {
 {
     width:90%;
 }
-.conditionlist table td:first-child
-{
+
+.detailbrowsetable th:first-child,
+#responsedetail td:first-child,
+.conditionlist table td:first-child {
     width:45%;
     text-align:right;
+    padding-right:1em;
+}
+
+#responsedetail td:first-child
+{
+    font-weight:bold;
 }
 
 .conditionlist table td:nth-child(2)

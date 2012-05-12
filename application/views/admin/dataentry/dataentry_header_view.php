@@ -1,6 +1,4 @@
-<div class='header ui-widget-header'><?php $clang->eT("Data entry"); ?></div>
-<div class='header ui-widget-header'>
-	<?php
+<div class='header ui-widget-header'><?php $clang->eT("Data entry"); ?> - <?php
 		if ($subaction == "edit") {
 	            echo sprintf($clang->gT("Editing response (ID %s)"), $id);
 	    } else {

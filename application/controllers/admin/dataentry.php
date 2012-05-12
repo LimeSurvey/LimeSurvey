@@ -586,6 +586,7 @@ class dataentry extends Survey_Common_Action
             'clang' => $clang,
             );
 
+            $aViewUrls[] = 'dataentry_header_view';
             $aViewUrls[] = 'edit';
 
             $highlight = FALSE;
@@ -601,7 +602,7 @@ class dataentry extends Survey_Common_Action
                 }
             }
 
-            $aDataentryoutput = "<table class='dataentrytable'>";
+            $aDataentryoutput = '';
             foreach ($results as $idrow)
             {
                 $fname = reset($fnames);
