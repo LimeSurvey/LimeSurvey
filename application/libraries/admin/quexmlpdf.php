@@ -167,8 +167,8 @@ class quexmlpdf extends pdf {
 
 	/**
 	 * The suffix of the question title. i.e. A15. (the . is the suffix)
-	 * 
-	 * @var mixed  Defaults to ".". 
+	 *
+	 * @var mixed  Defaults to ".".
 	 * @since 2012-01-31
 	 */
 	protected $questionTitleSuffix = ".";
@@ -184,8 +184,8 @@ class quexmlpdf extends pdf {
 
 	/**
 	 * Right margin of question text in MM
-	 * 
-	 * @var mixed  Defaults to 40. 
+	 *
+	 * @var mixed  Defaults to 40.
 	 * @since 2012-01-11
 	 * @see $questionTextWidth
 	 */
@@ -201,16 +201,16 @@ class quexmlpdf extends pdf {
 
 	/**
 	 * Border after a help before directive
-	 * 
-	 * @var mixed  Defaults to 3. 
+	 *
+	 * @var mixed  Defaults to 3.
 	 * @since 2012-01-31
 	 */
 	protected $helpBeforeBorderBottom = 3;
 
 	/**
 	 * Border before a help before directive
-	 * 
-	 * @var mixed  Defaults to 3. 
+	 *
+	 * @var mixed  Defaults to 3.
 	 * @since 2012-01-31
 	 */
 	protected $helpBeforeBorderTop = 3;
@@ -231,8 +231,8 @@ class quexmlpdf extends pdf {
 	 * @var string  Defaults to 10.
 	 * @since 2010-09-20
 	 * Height of the area of a single response where displayed horizontally
-	 * 
-	 * @var string  Defaults to 10.5. 
+	 *
+	 * @var string  Defaults to 10.5.
 	 * @since 2011-12-20
 	 */
 	protected $singleResponseHorizontalHeight = 10.5;
@@ -429,10 +429,10 @@ class quexmlpdf extends pdf {
 	protected $section = array();
 
 	/**
-	 * An array of key: skip target, value: last originating question 
+	 * An array of key: skip target, value: last originating question
 	 * that skips to the target
-	 * 
-	 * @var string  Defaults to array(). 
+	 *
+	 * @var string  Defaults to array().
 	 * @since 2012-01-31
 	 */
 	protected $skipToRegistry = array();
@@ -502,8 +502,8 @@ class quexmlpdf extends pdf {
 
 	/**
 	 * Text colour in grayscale
-	 * 
-	 * @var mixed  Defaults to 0. 
+	 *
+	 * @var mixed  Defaults to 0.
 	 * @since 2012-04-16
 	 */
 	protected $textColour = 0;
@@ -599,16 +599,16 @@ class quexmlpdf extends pdf {
 
 	/**
 	 * A smaller font size for response labels where otherwise will break the line
-	 * 
-	 * @var resource  Defaults to 6. 
+	 *
+	 * @var resource  Defaults to 6.
 	 * @since 2012-03-30
 	 */
 	protected $responseLabelFontSizeSmall = 6.5;
 
 	/**
 	 * Reduce the font size of a response label if any words are longer than this
-	 * 
-	 * @var resource  Defaults to 7. 
+	 *
+	 * @var resource  Defaults to 7.
 	 * @since 2012-03-30
 	 */
 	protected $responseLabelSmallWordLength = 7;
@@ -648,14 +648,14 @@ class quexmlpdf extends pdf {
 	function __construct(CController $controller)
 	{
 		parent::__construct();
-		$this->style = $controller->render('/libraries/quexmlpdf/style_view','',true);
+		$this->style = $controller->render('/admin/export/quexmlpdf_view','',true);
 	}
 
 	/**
 	 * Return the length of the longest word
-	 * 
-	 * @param mixed $txt   
-	 * 
+	 *
+	 * @param mixed $txt
+	 *
 	 * @return int Length of longest word
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2012-03-30
@@ -706,12 +706,12 @@ class quexmlpdf extends pdf {
 
 	/**
 	 * Add a new box group which is a copy of the previous one (if exists)
-	 * 
+	 *
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2012-03-26
 	 */
 	protected function addBoxGroupCopyPrevious()
-	{		
+	{
 		if (isset($this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP]))
 		{
 			$a = $this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP];
@@ -1053,7 +1053,7 @@ class quexmlpdf extends pdf {
 		{
 			$this->SetFillColor($this->lineColour[0]);
 			$this->Polygon(array($x, $y + $this->singleResponseBoxHeight, $boxmid, $y + $this->singleResponseBoxHeight + $this->arrowHeight, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight),'DF',array(),$this->lineColour);
-			$this->setBackground('empty');	
+			$this->setBackground('empty');
 		}
 
 		if ($rightarrow !== false)
@@ -1062,7 +1062,7 @@ class quexmlpdf extends pdf {
 			$boxymid = ($y + ($this->singleResponseBoxHeight / 2.0));
 			$this->SetFillColor($this->lineColour[0]);
 			$this->Polygon(array($x + $this->singleResponseBoxWidth, $y, $x + $this->singleResponseBoxWidth + $this->arrowHeight, $boxymid, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight),'DF',array(),$this->lineColour);
-			$this->setBackground('empty');	
+			$this->setBackground('empty');
 			//Now draw the text
 
 			//Start at $x + singleResponseboxWidth + arrowHeight, $y - siongleresponseboxlinelength and go to $skipcolumnwidth wide and singleresponseareHeight high
@@ -1202,7 +1202,7 @@ class quexmlpdf extends pdf {
 
 					$qtmp['specifier'] .= $ttmp;
 				}
-	
+
 				foreach ($qu->directive as $ttmp)
 				{
 					if ($ttmp->administration == 'self' && $ttmp->position == 'during')
@@ -1257,7 +1257,7 @@ class quexmlpdf extends pdf {
 							$cat['text'] = current($c->label);
 							$cat['value'] = current($c->value);
 							if (isset($c->skipTo))
-							{ 
+							{
 								$cat['skipto'] = current($c->skipTo);
 								//save a skip
 								$this->skipToRegistry[current($c->skipTo) . $this->questionTitleSuffix] = $qtmp['title'];
@@ -1394,7 +1394,7 @@ class quexmlpdf extends pdf {
 				$this->SetAutoPageBreak(false); //Temporarily set so we don't trigger a page break
 				//now draw a background to the bottom of the page
 				$this->fillPageBackground();
-		
+
 				$this->newPage();
 				//retry question here
 				$this->drawInfo($questionnaire['infoafter']);
@@ -1412,7 +1412,7 @@ class quexmlpdf extends pdf {
 
 	/**
 	 * Draw the questionnaire info specified
-	 * 
+	 *
 	 * @param string $text The text to draw in info style
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2011-12-21
@@ -1452,7 +1452,7 @@ class quexmlpdf extends pdf {
 			//Leave a border at the top of the Help Before text
 			if ($this->helpBeforeBorderTop > 0) //question border
 				$this->SetY($this->GetY() + $this->helpBeforeBorderTop,false); //new line
-	
+
 			$this->setBackground('question');
 			$html = "<table><tr><td width=\"" . $this->getMainPageWidth() . "mm\" class=\"questionHelpBefore\">{$question['helptextbefore']}</td><td></td></tr></table>";
 			$this->writeHTMLCell($this->getMainPageWidth(), 1, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
@@ -1976,16 +1976,16 @@ class quexmlpdf extends pdf {
 		{
 			$y = $currentY;
 			$x = ($textwidth + $this->getMainPageX() + ($rwidth * $count));
-			
+
 			// Going to break the line because of long word
 			if ($this->wordLength($r['text']) > $this->responseLabelSmallWordLength)
-				$this->setDefaultFont($this->responseLabelFontSizeSmall);			
+				$this->setDefaultFont($this->responseLabelFontSizeSmall);
 
 			$this->MultiCell($rwidth,$this->responseLabelHeight,$r['text'],0,'C',false,0,$x,$y,true,0,false,true,$this->responseLabelHeight,'B',true);
 
 			//reset font
 			if ($this->wordLength($r['text']) > $this->responseLabelSmallWordLength)
-				$this->setDefaultFont($this->responseLabelFontSize);			
+				$this->setDefaultFont($this->responseLabelFontSize);
 
 			$count++;
 		}
@@ -2008,7 +2008,7 @@ class quexmlpdf extends pdf {
 			//Draw background
 			$html = "<div></div>";
 			$this->setBackground('question');
-			$this->writeHTMLCell($this->getMainPageWidth(), $this->singleResponseHorizontalHeight, $this->getMainPageX(), $currentY, $this->style . $html,0,1,true,true);	
+			$this->writeHTMLCell($this->getMainPageWidth(), $this->singleResponseHorizontalHeight, $this->getMainPageX(), $currentY, $this->style . $html,0,1,true,true);
 			$this->setDefaultFont($this->responseTextFontSize);
 
 			$this->MultiCell($textwidth,$this->singleResponseHorizontalHeight,$s['text'],0,'R',false,0,$this->getMainPageX(),$currentY,true,0,false,true,$this->singleResponseHorizontalHeight,'M',true);
@@ -2085,12 +2085,12 @@ class quexmlpdf extends pdf {
 
 				// Going to break the line because of long word
 				if ($this->wordLength($r['text']) > $this->responseLabelSmallWordLength)
-					$this->setDefaultFont($this->responseLabelFontSizeSmall);			
+					$this->setDefaultFont($this->responseLabelFontSizeSmall);
 
 				$this->MultiCell($rwidth,$this->responseLabelHeight,$r['text'],0,'C',false,0,$x,$y,true,0,false,true,$this->responseLabelHeight,'B',true);
 				if ($this->wordLength($r['text']) > $this->responseLabelSmallWordLength)
-					$this->setDefaultFont($this->responseLabelFontSize);			
-	
+					$this->setDefaultFont($this->responseLabelFontSize);
+
 				if (!empty($r['text'])) $isempty = false;
 				$count++;
 			}
@@ -2217,7 +2217,7 @@ class quexmlpdf extends pdf {
 		}
 
 		$html .= "</table>";
-		
+
 
 		$this->writeHTMLCell($this->getMainPageWidth(), 1, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,true);
 
@@ -2306,7 +2306,7 @@ class quexmlpdf extends pdf {
 		$cl = $this->cornerLength;
 
 		$this->SetDrawColor($this->lineColour[0]);
-	
+
 		$barcodeStyle = array('border' => false, 'padding' => '0', 'bgcolor' => false, 'text' => false, 'stretch' => true);
 		$lineStyle = array('width' => $this->cornerWidth, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
 
@@ -2326,7 +2326,7 @@ class quexmlpdf extends pdf {
 		$this->Line($width - $cb,$height - $cb,$width - $cb - $cl,$height - $cb,$lineStyle);
 		$this->Line($width - $cb,$height - $cb,$width - $cb,$height - ($cb + $cl),$lineStyle);
 
-		$barcodeValue = substr(str_pad($this->questionnaireId,$this->idLength,"0",STR_PAD_LEFT),0,$this->idLength) . substr(str_pad($this->getPage(),$this->pageLength,"0",STR_PAD_LEFT),0,$this->pageLength);	
+		$barcodeValue = substr(str_pad($this->questionnaireId,$this->idLength,"0",STR_PAD_LEFT),0,$this->idLength) . substr(str_pad($this->getPage(),$this->pageLength,"0",STR_PAD_LEFT),0,$this->pageLength);
 
 		//Calc X position of barcode from page width
 		$barcodeX = $width - ($this->barcodeMarginX + $this->barcodeW);
