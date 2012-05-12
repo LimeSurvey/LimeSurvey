@@ -4,7 +4,7 @@
 		<?php if(isset($save) && $errormsg): ?>
 		<?php $clang->eT("Try again"); ?>:
 		<form method='post'>
-			<table class='outlinetable' cellspacing='0' align='center'>
+			<table class='outlinetable'>
 			  	<tr>
 			   		<td align='right'><?php $clang->eT("Identifier:"); ?></td>
 			   		<td>

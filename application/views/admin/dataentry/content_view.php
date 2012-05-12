@@ -204,16 +204,16 @@
             }
             //-->
         </script>
-        <table align='left' border='0' cellspacing='5'>
+        <table>
             <tr>
                 <td align='left' valign='top' width='200'>
                     <strong>
-                        <?php echo $blang->gT("Your Choices"); ?>:</strong><br />
+                        <?php echo $blang->gT("Your choices"); ?>:</strong><br />
                     <?php echo $choicelist; ?>
                 </td>
                 <td align='left'>
                     <strong>
-                        <?php echo $blang->gT("Your Ranking"); ?>:</strong><br />
+                        <?php echo $blang->gT("Your ranking"); ?>:</strong><br />
                     <?php echo $ranklist; ?>
                 </td>
             </tr>
@@ -398,7 +398,7 @@
             } else {
                 $tiwidth = 10;
             }
-            
+
             if (trim($qidattributes['num_value_int_only']) == 1) {
                 $acomma = "";
             } else {
@@ -406,10 +406,10 @@
                 $acomma = $acomma['seperator'];
             }
             $title = $clang->gT('Only numbers may be entered in this field');
-        
+
             echo $prefix; ?><input type='text' name='<?php echo $fieldname; ?>' size='<?php echo $tiwidth; ?>' title='<?php echo $title; ?>' <?php echo $maxlength; ?> onkeypress="return goodchars(event,'-0123456789<?php echo $acomma; ?>')" /><?php echo $suffix;
             break;
-            
+
         case "S": //SHORT FREE TEXT
             if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
@@ -435,7 +435,7 @@
             } else {
                 $tiwidth = 50;
             }
-            
+
             if ($qidattributes['numbers_only']==1)
             {
                 $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -446,7 +446,7 @@
             {
                 $numbersonly = '';
             }
-            
+
             if (trim($qidattributes['display_rows'])!='')
             {
                 //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
@@ -471,13 +471,13 @@
             } else {
                 $drows = 5;
             }
-            
+
             if (trim($qidattributes['text_input_width']) != '') {
                 $tiwidth = $qidattributes['text_input_width'];
             } else {
                 $tiwidth = 40;
             }
-            
+
             if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
             } else {
@@ -491,7 +491,7 @@
             }
             echo $prefix; ?><textarea name='<?php echo $fieldname; ?>' cols='<?php echo $tiwidth; ?>' rows='<?php echo $drows; ?>'></textarea><?php echo $suffix;
             break;
-            
+
         case "U": //HUGE FREE TEXT
             if (trim($qidattributes['display_rows'])!='')
             {
@@ -499,13 +499,13 @@
             } else {
                 $drows = 70;
             }
-            
+
             if (trim($qidattributes['text_input_width']) != '') {
                 $tiwidth = $qidattributes['text_input_width'];
             } else {
                 $tiwidth = 50;
             }
-            
+
             if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
             } else {
@@ -519,7 +519,7 @@
             }
             echo $prefix; ?><textarea name='<?php echo $fieldname; ?>' cols='<?php echo $tiwidth; ?>' rows='<?php echo $drows; ?>'></textarea><?php echo $suffix;
             break;
-            
+
         case "Y": //YES/NO radio-buttons
         ?>
         <select name='<?php echo $fieldname; ?>'>

@@ -1,7 +1,7 @@
 <tr <?php echo $inserthighlight; ?>>
-    <th align='right' width='50%'>
+    <th>
         <?php echo strip_tags(stripJavaScript($fnames[$i][1])); ?></th>
-    <td align='left'>
+    <td>
         <?php echo $answervalue; ?>
     </td>
 </tr>

@@ -601,7 +601,7 @@ class dataentry extends Survey_Common_Action
                 }
             }
 
-            $aDataentryoutput = '';
+            $aDataentryoutput = "<table class='dataentrytable'>";
             foreach ($results as $idrow)
             {
                 $fname = reset($fnames);
@@ -619,11 +619,11 @@ class dataentry extends Survey_Common_Action
 
                     $highlight=!$highlight;
                     $aDataentryoutput .=">\n"
-                    ."<td valign='top' align='right' width='25%'>"
+                    ."<td>"
                     ."\n";
-                    $aDataentryoutput .= "\t<strong>".stripJavaScript($question)."</strong>\n";
+                    $aDataentryoutput .= stripJavaScript($question);
                     $aDataentryoutput .= "</td>\n"
-                    ."<td valign='top' align='left'>\n";
+                    ."<td>\n";
                     //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                     if(isset($fname['qid']) && isset($fname['type']))
                     {
@@ -965,9 +965,9 @@ class dataentry extends Survey_Common_Action
                                 }
                             }
                             $choicelist .= "</select>\n";
-                            $aDataentryoutput .= "\t<table align='left' border='0' cellspacing='5'>\n"
+                            $aDataentryoutput .= "\t<table>\n"
                             ."<tr>\n"
-                            ."\t<td align='left' valign='top' width='200'>\n"
+                            ."\t<td>\n"
                             ."<strong>"
                             .$clang->gT("Your Choices").":</strong><br />\n"
                             .$choicelist
@@ -1093,9 +1093,9 @@ class dataentry extends Survey_Common_Action
                                 for ($i = 0; $i < $qAttributes['max_num_of_files'], isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
-                                        $aDataentryoutput .= '<tr><td width="25%">Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
+                                        $aDataentryoutput .= '<tr><td>Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
                                     if ($qAttributes['show_comment'])
-                                        $aDataentryoutput .= '<tr><td width="25%">Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>';
+                                        $aDataentryoutput .= '<tr><td >Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>';
 
                                     $aDataentryoutput .= '<tr><td>        File name</td><td><input   class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i.'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"]))    .'" /></td></tr>'
                                     .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_size_'.$i.'" name="size" size=50 value="'.htmlspecialchars($metadata[$i]["size"])    .'" /></td></tr>'
@@ -1264,7 +1264,7 @@ class dataentry extends Survey_Common_Action
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
-                                ."<td align='right' valign='top'>{$fname['subquestion']}";
+                                ."<td>{$fname['subquestion']}";
                                 if (isset($fname['scale']))
                                 {
                                     $aDataentryoutput .= " (".$fname['scale'].')';
@@ -1331,7 +1331,7 @@ class dataentry extends Survey_Common_Action
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
-                                . "<td align='right' valign='top'>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
+                                . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
                                 if ($qidattributes['input_boxes']!=0) {
                                     $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
@@ -1362,7 +1362,7 @@ class dataentry extends Survey_Common_Action
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
-                                . "<td align='right' valign='top'>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
+                                . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
                                 $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
                                 if(!empty($idrow[$fname['fieldname']])) {$aDataentryoutput .= $idrow[$fname['fieldname']];}
@@ -1390,7 +1390,7 @@ class dataentry extends Survey_Common_Action
 
             if (!hasSurveyPermission($surveyid, 'responses','update'))
             { // if you are not survey owner or super admin you cannot modify responses
-                $aDataentryoutput .= "<input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>\n";
+                $aDataentryoutput .= "<p><input type='button' value='".$clang->gT("Save")."' disabled='disabled'/></p>\n";
             }
             elseif ($subaction == "edit" && hasSurveyPermission($surveyid,'responses','update'))
             {

@@ -1,5 +1,5 @@
 <div class="tabpage_<?php echo $lang; ?>">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+		<table >
 			<tr>
 				<td valign="top">
 					<table width="100%" border="0">

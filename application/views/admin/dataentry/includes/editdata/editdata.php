@@ -34,13 +34,13 @@
 </table>
 
 <div name='saveoptions' id='saveoptions' style='display: none'>
-	<table align='center' class='outlinetable' cellspacing='0'>
+	<table class='outlinetable'>
     	<tr><td align='right'><?php $clang->eT("Identifier:"); ?></td>
     		<td>
-    			<input type='text' name='save_identifier'" 
-	    			<?php if (returnGlobal('identifier')) { ?> 
+    			<input type='text' name='save_identifier'"
+	    			<?php if (returnGlobal('identifier')) { ?>
 	    				value="<?php echo stripslashes(stripslashes(returnGlobal('identifier'))); ?>"
-	                <?php } ?> /> 
+	                <?php } ?> />
 			</td>
 	    </tr>
    	</table>
