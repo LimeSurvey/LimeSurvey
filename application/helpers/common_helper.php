@@ -3082,7 +3082,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT("Enter the code of a Multiple choice question to only show the matching answer options in this question."),
+    "help"=>$clang->gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
@@ -3090,7 +3090,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT("Enter the code of a Multiple choice question to exclude the matching answer options in this question."),
+    "help"=>$clang->gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter exclusion'));
 
     $qattributes["assessment_value"]=array(

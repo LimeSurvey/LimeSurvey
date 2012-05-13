@@ -614,6 +614,16 @@
         * @var integer
         */
         private $numQuestions=0;
+        /**
+        * String identifier for the active session
+        * @var type
+        */
+        private $sessid;
+        /**
+         * Linked list of array filters
+         * @var array
+         */
+        private $qrootVarName2arrayFilter = array();
 
         /**
         * A private constructor; prevents direct creation of object
@@ -970,67 +980,39 @@
                 // array_filter
                 // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
                 // relevance for Q2_SQ1 is Q1_SQ1!=''
+                $array_filter = NULL;
                 if (isset($qattr['array_filter']) && trim($qattr['array_filter']) != '')
                 {
                     $array_filter = $qattr['array_filter'];
-                    $sgq = ((isset($this->qcode2sgq[$array_filter])) ? $this->qcode2sgq[$array_filter] : $array_filter);
-                    if ($hasSubqs) {
-                        $subqs = $qinfo['subqs'];
-                        foreach ($subqs as $sq) {
-                            $sq_name = NULL;
-                            switch ($type)
-                            {
-                                case '1':   //Array (Flexible Labels) dual scale
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                case 'F': //ARRAY (Flexible) - Row Format
-                                case 'L': //LIST drop-down/radio-button list
-                                case 'M': //Multiple choice checkbox
-                                case 'P': //Multiple choice with comments checkbox + text
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                    if ($this->sgqaNaming)
-                                    {
-                                        $sq_name = $sgq . substr($sq['sqsuffix'],1);
-                                    }
-                                    else
-                                    {
-                                        $sq_name = $array_filter . $sq['sqsuffix'];
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if (!is_null($sq_name)) {
-                                $subQrels[] = array(
-                                'qtype' => $type,
-                                'type' => 'array_filter',
-                                'rowdivid' => $sq['rowdivid'],
-                                'eqn' => '(' . $sq_name . ' != "")',
-                                'qid' => $questionNum,
-                                'sgqa' => $qinfo['sgqa'],
-                                );
-                            }
-                        }
-                    }
+                    $this->qrootVarName2arrayFilter[$qinfo['rootVarName']]['array_filter'] = $array_filter;
                 }
 
                 // array_filter_exclude
                 // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
                 // relevance for Q2_SQ1 is Q1_SQ1==''
+                $array_filter_exclude = NULL;
                 if (isset($qattr['array_filter_exclude']) && trim($qattr['array_filter_exclude']) != '')
                 {
                     $array_filter_exclude = $qattr['array_filter_exclude'];
-                    $sgq = ((isset($this->qcode2sgq[$array_filter_exclude])) ? $this->qcode2sgq[$array_filter_exclude] : $array_filter_exclude);
+                    $this->qrootVarName2arrayFilter[$qinfo['rootVarName']]['array_filter_exclude'] = $array_filter_exclude;
+                }
+
+                // array_filter and array_filter_exclude get processed together
+                if (!is_null($array_filter) || !is_null($array_filter_exclude))
+                {
                     if ($hasSubqs) {
+                        $cascadedAF = array();
+                        $cascadedAFE = array();
+
+                        list($cascadedAF, $cascadedAFE) = $this->_recursivelyFindAntecdentArrayFilters($qinfo['rootVarName'],array(),array());
+
+                        $cascadedAF = array_reverse($cascadedAF);
+                        $cascadedAFE = array_reverse($cascadedAFE);
+
                         $subqs = $qinfo['subqs'];
-                        $sq_names = array();
                         foreach ($subqs as $sq) {
-                            $sq_name = NULL;
+                            $af_names = array();
+                            $afe_names = array();
                             switch ($type)
                             {
                                 case '1':   //Array (Flexible Labels) dual scale
@@ -1048,22 +1030,55 @@
                                 case 'Q': //MULTIPLE SHORT TEXT
                                     if ($this->sgqaNaming)
                                     {
-                                        $sq_name = $sgq . substr($sq['sqsuffix'],1);
+                                        foreach ($cascadedAF as $_caf)
+                                        {
+                                            $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
+                                            $af_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                        }
+                                        foreach ($cascadedAFE as $_cafe)
+                                        {
+                                            $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
+                                            $afe_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                        }
                                     }
                                     else
                                     {
-                                        $sq_name = $array_filter_exclude . $sq['sqsuffix'];
+                                        foreach ($cascadedAF as $_caf)
+                                        {
+                                            $af_names[] = $_caf . $sq['sqsuffix'];
+                                        }
+                                        foreach ($cascadedAFE as $_cafe)
+                                        {
+                                            $afe_names[] = $_cafe . $sq['sqsuffix'];
+                                        }
                                     }
                                     break;
                                 default:
                                     break;
                             }
-                            if (!is_null($sq_name)) {
+                            $af_names = array_unique($af_names);
+                            $afe_names= array_unique($afe_names);
+
+                            if (count($af_names) > 0 || count($afe_names) > 0) {
+                                $afs_eqn = '';
+                                if (count($af_names) > 0)
+                                {
+                                    $afs_eqn .= implode(' != "" && ', $af_names) . ' != ""';
+                                }
+                                if (count($afe_names) > 0)
+                                {
+                                    if ($afs_eqn != '')
+                                    {
+                                        $afs_eqn .= ' && ';
+                                    }
+                                    $afs_eqn .= implode(' == "" && ', array_unique($afe_names)) . ' == ""';
+                                }
+
                                 $subQrels[] = array(
                                 'qtype' => $type,
-                                'type' => 'array_filter_exclude',
+                                'type' => 'array_filter',
                                 'rowdivid' => $sq['rowdivid'],
-                                'eqn' => '(' . $sq_name . ' == "")',
+                                'eqn' => '(' . $afs_eqn . ')',
                                 'qid' => $questionNum,
                                 'sgqa' => $qinfo['sgqa'],
                                 );
@@ -2332,6 +2347,50 @@
         }
 
         /**
+         * Recursively find all questions that logically preceded the current array_filter or array_filter_exclude request
+         * Note, must support:
+         * (a) semicolon-separated list of $qroot codes for either array_filter or array_filter_exclude
+         * (b) mixed history of array_filter and array_filter_exclude values
+         * @param type $qroot - the question root variable name
+         * @param type $aflist - the list of array_filter $qroot codes
+         * @param type $afelist - the list of array_filter_exclude $qroot codes
+         * @return type
+         */
+        private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
+        {
+            if (isset($this->qrootVarName2arrayFilter[$qroot]))
+            {
+                if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter']))
+                {
+                    $_afs = explode(';',$this->qrootVarName2arrayFilter[$qroot]['array_filter']);
+                    foreach ($_afs as $_af)
+                    {
+                        if (in_array($_af,$aflist))
+                        {
+                            continue;
+                        }
+                        $aflist[] = $_af;
+                        list($aflist, $afelist) = $this->_recursivelyFindAntecdentArrayFilters($_af, $aflist, $afelist);
+                    }
+                }
+                if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter_exclude']))
+                {
+                    $_afes = explode(';',$this->qrootVarName2arrayFilter[$qroot]['array_filter_exclude']);
+                    foreach ($_afes as $_afe)
+                    {
+                        if (in_array($_afe,$afelist))
+                        {
+                            continue;
+                        }
+                        $afelist[] = $_afe;
+                        list($aflist, $afelist) = $this->_recursivelyFindAntecdentArrayFilters($_afe, $aflist, $afelist);
+                    }
+                }
+            }
+            return array($aflist, $afelist);
+        }
+
+        /**
         * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
         * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
         *
@@ -2778,6 +2837,7 @@
                         'type' => $type,
                         'fieldname' => $sgqa,
                         'preg' => $preg,
+                        'rootVarName' => $fielddata['title'],
                         );
                     }
                     if (!isset($q2subqInfo[$questionNum]['subqs'])) {
@@ -3433,6 +3493,7 @@
             $LEM->currentQuestionSeq=-1;    // for question-by-question mode
             $LEM->indexGseq=array();
             $LEM->indexQseq=array();
+            $LEM->qrootVarName2arrayFilter=array();
 
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
             {
@@ -5553,7 +5614,7 @@
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-                        //                    $relParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
+
                         $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
                         $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
                         $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
@@ -6843,6 +6904,15 @@ EOD;
                     $_attr = 'shown';
                 }
                 $attr = (count($args)==2) ? $args[1] : $_attr;
+            }
+
+            // Like JavaScript, if an answer is irrelevant, always return ''
+            if (preg_match('/^code|NAOK|shown|valueNAOK|value$/',$attr) && isset($var['qid']) && $var['qid']!='')
+            {
+                if  (!$this->_GetVarAttribute($varName,'relevanceStatus',false,$gseq,$qseq))
+                {
+                    return '';
+                }
             }
             switch ($attr)
             {
