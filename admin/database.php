@@ -1057,7 +1057,7 @@ if(isset($surveyid))
                             db_switchIDInsert('questions',true);
                             $query='INSERT into '.db_table_name('questions').' (qid, sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$insertqid[$scale_id][$position].','.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$scale_id][$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).','.$scale_id.')';
                             $connect->execute($query);
-                            db_switchIDInsert('questions',true);
+                            db_switchIDInsert('questions',false);
                         }
                     }
                     $position++;
