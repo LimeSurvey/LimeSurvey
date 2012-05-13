@@ -7554,10 +7554,22 @@ EOD;
                             $i=1;
                             $_scale = $ansInfo[0];
                         }
+
+                        $subQeqn = '';
+                        $rowdivid = $q['sgqa'] . $ansInfo[1];
+                        if (isset($LEM->subQrelInfo[$qid][$rowdivid]))
+                        {
+                            $sq = $LEM->subQrelInfo[$qid][$rowdivid];
+                            $subQeqn = ' ' . $sq['prettyPrintEqn'];
+                            if ($sq['hasErrors']) {
+                                ++$errorCount;
+                            }
+                        }
+
                         $answerRows .= "<tr class='LEManswer'>"
                         . "<td>A[" . $ansInfo[0] . "]-" . $i++ . "</td>"
                         . "<td><b>" . $ansInfo[1]. "</b></td>"
-                        . "<td>[VALUE: " . $valInfo[0] . "]</td>"
+                        . "<td>[VALUE: " . $valInfo[0] . "]".$subQeqn."</td>"
                         . "<td>" . $valInfo[1] . "</td>"
                         . "</tr>\n";
                     }
