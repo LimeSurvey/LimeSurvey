@@ -4051,7 +4051,6 @@
                             dbExecuteAssoc($sQuery);   // Checked
                         }
                     }
-                    }
 
                 }
                 if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
