@@ -3880,19 +3880,25 @@
             }
 
             $message = '';
-            $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+            if($this->surveyOptions['datestamp']=='Y')
+            {
+                $datestamp=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+            }
+            else
+            {
+                $datestamp=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+            }
+            $_SESSION['datestamp']=$datestamp;
             if ($this->surveyOptions['active'] && !isset($_SESSION['srid']))
             {
                 // Create initial insert row for this record
-                $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 $sdata = array(
-                "datestamp"=>$today,
+                "datestamp"=>$datestamp,
                 "ipaddr"=>(($this->surveyOptions['ipaddr'] && !$this->surveyOptions['anonymized']) ? getIPAddress() : ''),
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 "token"=>($this->surveyOptions['token']),
-                "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
                 "refurl"=>(($this->surveyOptions['refurl'] && !$this->surveyOptions['anonymized']) ? getenv("HTTP_REFERER") : NULL),
-                "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
+                "startdate"=>$datestamp,
                 );
                 //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
                 if ($connect->AutoExecute($this->surveyOptions['tablename'], $sdata,'INSERT'))    // Checked
@@ -4040,7 +4046,7 @@
                     {
                         if ($finished) {
                             $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET "
-                            .db_quote_id('submitdate') . "=" . db_quoteall($_SESSION['datestamp'])
+                            .db_quote_id('submitdate') . "=" . db_quoteall($datestamp)
                             ." WHERE ID=".$_SESSION['srid'];
                             $connect->Execute($sQuery);   // Checked
                         }
