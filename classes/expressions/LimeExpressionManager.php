@@ -3894,10 +3894,10 @@
                 // Create initial insert row for this record
                 $sdata = array(
                 "datestamp"=>$datestamp,
-                "ipaddr"=>(($this->surveyOptions['ipaddr'] && !$this->surveyOptions['anonymized']) ? getIPAddress() : ''),
+                "ipaddr"=>(($this->surveyOptions['ipaddr']) ? getIPAddress() : ''),
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 "token"=>($this->surveyOptions['token']),
-                "refurl"=>(($this->surveyOptions['refurl'] && !$this->surveyOptions['anonymized']) ? getenv("HTTP_REFERER") : NULL),
+                "refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL),
                 "startdate"=>$datestamp,
                 );
                 //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
@@ -3952,7 +3952,7 @@
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
                     $setter[] = db_quote_id('datestamp') . "=" . db_quoteall($_SESSION['datestamp']);
                 }
-                if ($this->surveyOptions['ipaddr']  && !$this->surveyOptions['anonymized']) {
+                if ($this->surveyOptions['ipaddr']) {
                     $setter[] = db_quote_id('ipaddr') . "=" . db_quoteall(getIPAddress());
                 }
 
