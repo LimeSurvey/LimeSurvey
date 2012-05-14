@@ -4037,11 +4037,20 @@
                     else
                     {
                         if ($finished) {
-                            $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET "
-                            .dbQuoteID('submitdate') . "=" . dbQuoteAll($_SESSION['datestamp'])
-                            ." WHERE ID=".$_SESSION[$this->sessid]['srid'];
+                            $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
+                            if($this->surveyOptions['datestamp'])
+                            {
+                                // Replace with date("Y-m-d H:i:s") ? See timeadjust
+                                $sQuery .= dbQuoteID('submitdate') . "=" . dbQuoteAll($_SESSION[$this->sessid]['datestamp']);
+                            }
+                            else
+                            {
+                                $sQuery .= dbQuoteID('submitdate') . "=" . dbQuoteAll(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
+                            }
+                            $sQuery .= " WHERE ID=".$_SESSION[$this->sessid]['srid'];
                             dbExecuteAssoc($sQuery);   // Checked
                         }
+                    }
                     }
 
                 }
