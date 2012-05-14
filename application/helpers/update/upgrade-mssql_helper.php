@@ -547,19 +547,6 @@ function db_upgrade($oldversion) {
         fixSubquestions();
         modifyDatabase("", "UPDATE [prefix_settings_global] SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
-    if ($oldversion < 149)
-    {
-        modifyDatabase("","CREATE TABLE [prefix_survey_url_parameters] (
-        [id] integer NOT NULL IDENTITY (1,1),
-        [sid] integer NOT NULL,
-        [parameter] varchar(50) NOT NULL,
-        [targetqid] integer NULL,
-        [targetsqid] integer NULL,
-        PRIMARY KEY ([id])
-        );"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='149' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-
-    }
     if ($oldversion < 150)
     {
         modifyDatabase("","ALTER TABLE [prefix_questions] ADD [relevance] varchar(max);"); echo $modifyoutput; flush();@ob_flush();
@@ -594,6 +581,16 @@ function db_upgrade($oldversion) {
 
     if ($oldversion < 156)
     {
+        modifyDatabase("","drop TABLE [prefix_survey_url_parameters]");
+        modifyDatabase("","CREATE TABLE [prefix_survey_url_parameters] (
+        [id] integer NOT NULL IDENTITY (1,1),
+        [sid] integer NOT NULL,
+        [parameter] varchar(50) NOT NULL,
+        [targetqid] integer NULL,
+        [targetsqid] integer NULL,
+        PRIMARY KEY ([id])
+        );"); echo $modifyoutput; flush();@ob_flush();
+
         modifyDatabase("", "DROP TABLE [prefix_sessions];"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "CREATE TABLE [prefix_sessions](
             [id] char(32) NOT NULL,
@@ -665,24 +662,28 @@ function upgrade_token_tables128()
 
 function fixLanguageConsistencyAllSurveys()
 {
-    global $modifyoutput;
     $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
-    $surveyidresult = db_execute_num($surveyidquery);
-    while ( $sv = $surveyidresult->FetchRow() )
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
+    foreach ( $surveyidresult as $sv )
     {
-        fixLanguageConsistency($sv[0],$sv[1]);
+        fixLanguageConsistency($sv['sid'],$sv['additional_languages']);
     }
 }
 
 
+// Add the reminders tracking fields
 function upgrade_token_tables134()
 {
     global $modifyoutput;
-    $tokentables = dbGetTablesLike("tokens%");
-    foreach ($tokentables as $sv)
+    $surveyidresult = dbGetTablesLike("tokens%");
+    if (!$surveyidresult) {return "Database Error";}
+    else
     {
-        modifyDatabase("","ALTER TABLE ".$sv." ADD [validfrom] DATETIME"); echo $modifyoutput; flush();@ob_flush();
-        modifyDatabase("","ALTER TABLE ".$sv." ADD [validuntil] DATETIME"); echo $modifyoutput; flush();@ob_flush();
+        foreach ( $surveyidresult as $sv )
+    {
+            modifyDatabase("","ALTER TABLE ".$sv[0]." ADD [validfrom] Datetime"); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("","ALTER TABLE ".$sv[0]." ADD [validuntil] Datetime"); echo $modifyoutput; flush();@ob_flush();
+        }
     }
 }
 

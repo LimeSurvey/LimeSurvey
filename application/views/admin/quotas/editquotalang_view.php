@@ -1,5 +1,5 @@
 <div class="tabpage_<?php echo $lang; ?>">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+		<table >
 			<tr>
 				<td valign="top">
 					<table width="100%" border="0">
@@ -20,7 +20,7 @@
 								<td align="right"><blockquote>
     								<p><strong><?php $clang->eT("URL description");?>:</strong></p>
   									</blockquote></td>
-								<td align="left"> <input name="quotals_urldescrip_<?php echo $lang;?>" type="text" size="30" maxlength="255" value="'<?php echo $langquotainfo['quotals_urldescrip'];?>" /></td>
+								<td align="left"> <input name="quotals_urldescrip_<?php echo $lang;?>" type="text" size="30" maxlength="255" value="<?php echo $langquotainfo['quotals_urldescrip'];?>" /></td>
 							</tr>
 						</tbody>
 					</table>

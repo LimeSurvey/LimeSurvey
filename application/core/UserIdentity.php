@@ -27,22 +27,31 @@ class UserIdentity extends CUserIdentity
     public function authenticate()
     {
         $user = User::model()->findByAttributes(array('users_name' => $this->username));
-        if (gettype($user->password)=='resource')
+
+        if ($user !== null)
         {
-            $sStoredPassword=stream_get_contents($user->password);  // Postgres delivers bytea fields as streams :-o
-        }
-        else{
-            $sStoredPassword=$user->password;
-        }
-        if ($user === null)
-            $this->errorCode = self::ERROR_USERNAME_INVALID;
-        else if ($sStoredPassword !== hash('sha256', $this->password))
-                $this->errorCode = self::ERROR_PASSWORD_INVALID;
+            if (gettype($user->password)=='resource')
+            {
+                $sStoredPassword=stream_get_contents($user->password);  // Postgres delivers bytea fields as streams :-o
+            }
             else
             {
-                $this->id = $user->uid;
-                $this->user = $user;
-                $this->errorCode = self::ERROR_NONE;
+                $sStoredPassword=$user->password;
+            }
+        }
+        if ($user === null)
+        {
+            $this->errorCode = self::ERROR_USERNAME_INVALID;
+        }
+        else if ($sStoredPassword !== hash('sha256', $this->password))
+        {
+            $this->errorCode = self::ERROR_PASSWORD_INVALID;
+        }
+        else
+        {
+            $this->id = $user->uid;
+            $this->user = $user;
+            $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;
     }

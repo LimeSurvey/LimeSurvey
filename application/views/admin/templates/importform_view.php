@@ -5,7 +5,7 @@
     <ul>
         <li>
             <label for='the_file'><?php $clang->eT("Select template ZIP file:") ?></label>
-            <input id='the_file' name='the_file' type="file" size="50" />
+            <input id='the_file' name='the_file' type="file" />
         </li>
         <li>
             <label>&nbsp;</label>

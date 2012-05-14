@@ -117,8 +117,31 @@ table.question tbody th.answertext,table.question tbody th.arraycaptionleft{text
 , .list-radio .answers-wrapper ul li
 , .list-radio-flexible .answers-wrapper ul li
 {
-	padding-right:40%;padding-left:0;
+	padding-right:35%;padding-left:0;
 }
+.multiple-opt .answers-wrapper ul li input.checkbox
+, .multiple-opt-comments .answers-wrapper ul li input.checkbox
+, .list-radio .answers-wrapper ul li input.radio
+, .list-radio-flexible .answers-wrapper ul li input.radio
+, .list-with-comment .answers-wrapper ul li input.radio
+{
+    margin-left:0;margin-right:-30px;
+}
+.multiple-opt-comments .answers-wrapper ul li .option
+, .list-with-comment .answers-wrapper ul li
+{
+	padding-right:30px;padding-left:0;
+}
+
+@media screen and (max-width: 640px) {
+	.multiple-opt .answers-wrapper ul li
+	, .list-radio .answers-wrapper ul li
+	, .list-radio-flexible .answers-wrapper ul li
+	{
+		padding-right:30px;padding-left:0;
+	}
+}
+
  .text-short input
 ,.text-short textarea
 ,.text-long textarea

@@ -67,7 +67,7 @@ class UserAction extends Survey_Common_Action
         for ($i = 1; $i <= count($userlist); $i++)
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
 
-        $aData['imageurl'] = Yii::app()->getConfig("imageurl");
+        $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
@@ -280,7 +280,7 @@ class UserAction extends Survey_Common_Action
         if ($postuserid == Yii::app()->session['loginID'])
         {
             session_destroy;    // user deleted himself
-            $this->redirect($this->createUrl('/admin'));
+            $this->redirect($this->getController()->createUrl('/admin'));
             die();
         }
 

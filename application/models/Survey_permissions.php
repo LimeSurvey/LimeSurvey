@@ -219,4 +219,21 @@ class Survey_permissions extends CActiveRecord
             ORDER BY u.users_name";
         return Yii::app()->db->createCommand($query2)->bindParam(":userid", Yii::app()->user->getId(), PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query(); //Checked
     }
+
+    function copySurveyPermissions($iSurveyIDSource,$iSurveyIDTarget)
+    {
+        $aRows=self::model()->findAll('sid=:sid', array(':sid'=>$iSurveyIDSource));
+        foreach ($aRows as $aRow)
+        {
+            $aRow['sid']=$iSurveyIDTarget;
+            try  {
+                $this->insertSomeRecords($aRow);
+            }
+            catch (Exception $e)
+            {
+                //Ignore
+            }
+        }
+    }
+
 }

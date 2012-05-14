@@ -77,7 +77,7 @@ class Assessments extends Survey_Common_Action
     {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'assessments.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/".Yii::app()->getConfig('admintheme')."/superfish.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

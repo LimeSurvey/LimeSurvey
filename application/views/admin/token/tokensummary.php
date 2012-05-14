@@ -2,7 +2,7 @@
     <?php $clang->eT("Token summary"); ?>
 </div>
 <br />
-<table align='center' class='statisticssummary'>
+<table class='statisticssummary'>
     <tr>
         <th>
             <?php $clang->eT("Total records in this token table"); ?>
@@ -45,7 +45,7 @@
     </tr>
 </table>
 <br />
-<script language='javascript' type='text/javascript'>
+<script type='text/javascript'>
     surveyid = '<?php echo $surveyid; ?>'
 </script>
 <?php /* if (hasSurveyPermission($surveyid, 'tokens', 'update') || hasSurveyPermission($surveyid, 'tokens', 'delete'))

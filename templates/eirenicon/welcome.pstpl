@@ -8,6 +8,11 @@
 		</td>
 	</tr>
 	<tr>
+		 <td class="welcome-language-changer">
+			{LANGUAGECHANGER}
+		</td>
+	</tr>
+	<tr>
 		<td class="welcome-content">
 			<span class="survey-welcome">{WELCOME}</span>
 			<span class="x-questions">{THEREAREXQUESTIONS}</span>

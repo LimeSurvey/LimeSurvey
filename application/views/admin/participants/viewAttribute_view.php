@@ -121,7 +121,7 @@ $plus = array('src' => Yii::app()->baseUrl . "/images/plus.png",
                 </td>
                 <td>
                     <?php
-                    $edit = array('src' => Yii::app()->getConfig('imageurl') . '/token_edit.png',
+                    $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'edit_16.png',
                         'alt' => 'Edit',
                         'width' => '15',
                         'class' => 'edit',
@@ -129,7 +129,7 @@ $plus = array('src' => Yii::app()->baseUrl . "/images/plus.png",
                         'height' => '15',
                         'title' => 'Edit Atribute');
                     echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
-                    $del = array('src' => Yii::app()->getConfig('imageurl') . '/error_notice.png',
+                    $del = array('src' => Yii::app()->getConfig('adminimageurl') . 'error_notice.png',
                         'alt' => 'Delete',
                         'width' => '15',
                         'height' => '15',

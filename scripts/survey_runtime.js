@@ -2,9 +2,9 @@ var DOM1;
 $(document).ready(function()
 {
 
-	// Jquery-ui avigation buttons
+	// Jquery-ui navigation buttons
     navbuttonsJqueryUi();
-
+    addClassEmpty();
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
@@ -154,6 +154,32 @@ function navbuttonsJqueryUi(){
     }
     });
     $('#movesubmitbtn, input.saveall, input.clearall').button();
+}
+
+// Put a empty class on empty answer text item (limit to answers part)
+function addClassEmpty(){
+      $('.answer-item input.text[value=""]').addClass('empty');
+      $('.answer-item input[type=text][value=""]').addClass('empty');
+      $('.answer-item textarea').each(function(index) {
+        if ($(this).val() == ""){
+          $(this).addClass('empty');
+        }
+      });
+
+    $(".answer-item input.text,.text-item input[type=text]").live("blur", function(){ 
+      if ($(this).val() == ""){
+        $(this).addClass('empty');
+      }else{
+        $(this).removeClass('empty');
+      }
+    });
+    $(".answer-item textarea").live("blur", function(){ 
+      if ($(this).val() == ""){
+        $(this).addClass('empty');
+      }else{
+        $(this).removeClass('empty');
+      }
+    });
 }
 
 

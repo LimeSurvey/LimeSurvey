@@ -23,6 +23,7 @@
             var cannotAcceptErrorTxt="<?php $clang->eT("This list cannot accept token attributes.") ?>";
             var seperator = "<?php echo $_POST['seperatorused']; ?>";
             var thefilepath = "<?php echo $fullfilepath ?>";
+            var filterblankemails = "<?php echo $filterbea ?>";
         </script>
     </head>
     <body>

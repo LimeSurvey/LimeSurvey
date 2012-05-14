@@ -535,6 +535,10 @@ span.surveywelcome {
 	text-align: center;
 }
 
+select.languagechanger {
+	margin-top: 3px;
+}
+
 table.group {
 	width: 100%;
 	margin: 0 0 2px 0;
@@ -879,14 +883,22 @@ table.clearall-result td {
 .list-radio-flexible
 .list-radio
 */
-.list-radio .answer li label {
+.list-radio .answer li label,
+.list-with-comment .answer li label {
   display: inline-block;
   width: 85%;
 }
 
-.list-radio .answer li input {
+.list-radio .answer li.other-item label,
+.list-with-comment .answer li.other-item label {
+  width: auto;
+}
+
+.list-radio .answer li input,
+.list-with-comment .answer li input {
   vertical-align: top !important;
   margin-top: 2px;
+  *margin-top: -2px; /* IE7 and below */
 }
 
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
@@ -949,6 +961,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   padding: 0.5em;
   margin: 0%;
 }
+.list-with-comment p.select select{
+  max-width: 99%;
+}
 
 .list-with-comment div.list p {
   margin: 0% 0% 0% 1.1em;
@@ -970,8 +985,17 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.language {
-
+.multiple-opt .answer li input, .multiple-opt-comments .answer li .option input {
+  vertical-align: top !important;
+  margin-top: 2px;
+  *margin-top: -2px; /* IE7 and below */
+}
+.multiple-opt .answer li label, .multiple-opt-comments .answer li .option label {
+  display: inline-block;
+  width: 90%;
+}
+.multiple-opt .answer li.other-item label {
+  width: auto;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
@@ -1039,28 +1063,14 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin-bottom: 0.2em;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider {
-  display: table;
+.numeric-multi li.multiplenumerichelp span {
+	text-align: center;
+	background: transparent none;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider li {
-  display: table-row;
-}
-
-.numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
-  {
-  padding: 0.3em 0% 0% 0%;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
-  {
-  padding: 0% 0% 0% 0.3em;
-  display: table-cell;
-}
-
-.numeric-multi li.multiplenumerichelp span input {
-
+.numeric-multi li.multiplenumerichelp span span {
+	display: inline;
+	padding: 0;
 }
 
 .text-short input,.text-short textarea,.text-long textarea,.text-huge textarea

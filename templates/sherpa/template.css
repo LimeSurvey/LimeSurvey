@@ -186,7 +186,7 @@ input.ui-button {
   background-color: #f5f9f9;
 }
 
-.select {
+select.select {
   background-color: #EFEFEF;
   color: #555;
   font-family: arial;
@@ -578,6 +578,10 @@ text-align:center;
   font-size: 1em;
 }
 
+.survey-survey-language.welcome-page select {
+	margin: 7px 0;
+}
+
 table,.printouttable {
   width: 100%;
 }
@@ -648,9 +652,8 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   margin: 0 0 0.5em 0.5em;
 }
 
-.choice-5-pt-radio .survey-question-answer li,.list-radio-flexible .survey-question-answer li,.list-radio .survey-question-answer li,.list-with-comment .survey-question-answer li
-  {
-  margin-left: 2em;margin-right:0;
+.choice-5-pt-radio .survey-question-answer li,.list-radio-flexible .survey-question-answer li {
+  margin-left: 2em;
   text-indent: -1.8em;
 }
 
@@ -723,6 +726,23 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 .list-radio-flexible
 .list-radio
 */
+.list-radio .survey-question-answer li label,
+.list-with-comment .survey-question-answer li label {
+  display: inline-block;
+  width: 85%;
+}
+.list-radio .survey-question-answer li.other-item label,
+.list-with-comment .survey-question-answer li.other-item label {
+  width: auto;
+}
+
+.list-radio .survey-question-answer li input.radio,
+.list-with-comment .survey-question-answer li input.radio {
+  vertical-align: top !important;
+  margin-top: 2px;
+  margin-top: -2px\9; /* IE9 and below */
+}
+
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
@@ -787,6 +807,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   float: left;
   padding: 0.5em;
   margin: 0;
+}
+.list-with-comment p.select select{
+  max-width: 99%;
 }
 
 .list-with-comment div.list p {
@@ -910,9 +933,20 @@ table.rank td.helptext {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.language {
-  
+.multiple-opt .survey-question-answer li input.checkbox, .multiple-opt-comments .survey-question-answer li .option input.checkbox {
+  vertical-align: top !important;
+  margin-top: 2px;
+  margin-top: -2px\9; /* IE9 and below */
 }
+
+.multiple-opt .survey-question-answer li label, .multiple-opt-comments .survey-question-answer li .option label {
+  display: inline-block;
+  width: 90%;
+}
+.multiple-opt .survey-question-answer li.other-item label, .multiple-opt-comments .survey-question-answer li.other-item .option label {
+  width: auto;
+}
+
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
 .multiple-opt-comments td.answer,.multiple-short-txt td.answer,.numeric-multi td.answer
@@ -945,12 +979,13 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0 1.8em;
-  text-indent: -1.8em;
+   padding: 0.5em 0 0.5em 0;
   display: table-cell;
   vertical-align: baseline;
 }
-
+.multiple-opt-comments ul li .comment {
+  vertical-align: top;
+}
 .multiple-short-txt ul li label,.numeric-multi ul li label {
   padding: 0.3em 1em 0 0;
   display: table-cell;
@@ -970,6 +1005,10 @@ table.rank td.helptext {
   font-size: 80%;
   white-space: nowrap;
 }
+.multiple-opt-comments ul li span.comment
+  {
+  vertical-align: top;
+}
 
 .numeric-multi div.multinum-slider {
   width: auto;
@@ -978,34 +1017,15 @@ table.rank td.helptext {
   margin-bottom: 0.2em;
 }
 
-.numeric-multi ul.multiplenumerichelp,.numeric-multi ul.multiplenumerichelp.slider
-  {
-  display: table;
-  font-size: 90%;
+.numeric-multi li.multiplenumerichelp span {
+	text-align: center;
+	background: transparent none;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider li {
-  display: table-row;
-}
-
-.numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
-  {
-  padding: 0.3em 0 0 0;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
-  {
-  padding: 0 0 0 0.3em;
-  display: table-cell;
-}
-
-.numeric-multi ul.multiplenumerichelp span input {
-  border: none;
-  background-color: #F5F9F9;
-  color: #222;
-  padding: 0;
-  width: 7em;
+.numeric-multi li.multiplenumerichelp span span {
+	display: inline;
+	padding: 0;
+	font-size: 125%;
 }
 
 .text-short input,.text-short textarea,.text-long textarea,.text-huge textarea

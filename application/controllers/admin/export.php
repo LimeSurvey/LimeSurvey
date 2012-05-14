@@ -1043,8 +1043,8 @@ class export extends Survey_Common_Action {
         // Setting the selected language for printout
         $clang = new limesurvey_lang($surveyprintlang);
 
-        Yii::import("application.libraries.admin.queXMLPDF", TRUE);
-        $quexmlpdf = new queXMLPDF($this->getController());
+        Yii::import("application.libraries.admin.quexmlpdf", TRUE);
+        $quexmlpdf = new quexmlpdf($this->getController());
 
         set_time_limit(120);
 
@@ -1069,7 +1069,7 @@ class export extends Survey_Common_Action {
         file_put_contents($f3, $quexml);
         file_put_contents($f4, $clang->gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
 
-        Yii::import('application.libraries.admin.phpzip', TRUE);
+        Yii::import('application.libraries.admin.Phpzip', TRUE);
         $z = new Phpzip;
         $zipfile="$tempdir/quexmlpdf_{$qid}_{$surveyprintlang}.zip";
         $z->Zip($zipdir, $zipfile);
@@ -1325,7 +1325,7 @@ class export extends Survey_Common_Action {
         $this->_addHeaders($fn, "text/csv", 0);
 
         $data =& LimeExpressionManager::ExcelSurveyExport($surveyid);
-        
+
         Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
 
         // actually generate an Excel workbook
@@ -1377,7 +1377,7 @@ class export extends Survey_Common_Action {
     */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/'.Yii::app()->getConfig("admintheme").'/superfish.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
 
         $aData['display']['menu_bars']['gid_action'] = 'exportstructureGroup';
 

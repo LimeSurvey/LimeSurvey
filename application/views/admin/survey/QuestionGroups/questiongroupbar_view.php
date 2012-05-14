@@ -4,33 +4,29 @@
 <div class='menubar-main'>
     <div class='menubar-left'>
 
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='54' height='20'  />
 
         <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
-                title="<?php $clang->eTview("Preview current question group"); ?>" target="_blank">
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/preview.png' alt='<?php $clang->eT("Preview current question group"); ?>' width="40" height="40"/></a>
+            <img id='separator4' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
+            <a href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" target="_blank">
+                <img src='<?php echo $imageurl; ?>preview.png' alt='<?php $clang->eT("Preview current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php }
             else{ ?>
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
+            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <?php } ?>
 
         <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="<?php echo $this->createUrl('admin/questiongroup/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>"
-                title="<?php $clang->eTview("Edit current question group"); ?>">
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="40" height="40"/></a>
+            <img id='separator5' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
+            <a href="<?php echo $this->createUrl('admin/questiongroup/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+                <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php } ?>
 
         <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
             { ?>
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
-                title="<?php $clang->eTview("Survey logic file for current question group"); ?>">
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey logic file for current question group"); ?>' /></a>
+            <img id='separator6' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
+            <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
+                <img src='<?php echo $imageurl; ?>quality_assurance.png' alt='<?php $clang->eT("Check survey logic for current question group"); ?>' /></a>
             <?php } ?>
 
         <?php
@@ -41,30 +37,28 @@
                     if (is_null($condarray))
                     { ?>
 
-                    <a href='#' onclick="if (confirm('<?php $clang->eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroup/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }"
-                        title="<?php $clang->eTview("Delete current question group"); ?>">
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php $clang->eT("Delete current question group"); ?>' title='' width="40" height="40"/></a>
+                    <a href='#' onclick="if (confirm('<?php $clang->eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroup/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }">
+                        <img src='<?php echo $imageurl; ?>delete.png' alt='<?php $clang->eT("Delete current question group"); ?>' title='' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
 
                     <?php }
                     else
                     // TMSW Conditions->Relevance:  Should be allowed to delete group even if there are conditions/relevance, since separate view will show exceptions
 
                     { ?>
-                    <a href='<?php echo $this->createUrl("admin/questiongroup/view/surveyid/$surveyid/gid/$gid"); ?>' onclick="alert('<?php $clang->eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>')"
-                        title="<?php $clang->eTview("Delete current question group"); ?>">
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete_disabled.png' alt='<?php $clang->eT("Delete current question group"); ?>' width="40" height="40"/></a>
+                    <a href='<?php echo $this->createUrl("admin/questiongroup/view/surveyid/$surveyid/gid/$gid"); ?>' onclick="alert('<?php $clang->eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>')">
+                        <img src='<?php echo $imageurl; ?>delete_disabled.png' alt='<?php $clang->eT("Delete current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <?php }
                 }
                 else
                 { ?>
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='40' />
+                <img src='<?php echo $imageurl; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>" width='40' />
                 <?php }
             }
             if(hasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
 
-            <a href='<?php echo $this->createUrl("admin/export/group/surveyid/$surveyid/gid/$gid");?>' title="<?php $clang->eTview("Export this question group"); ?>" >
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/dumpgroup.png' title='' alt='<?php $clang->eT("Export this question group"); ?>' width="40" height="40"/></a>
+            <a href='<?php echo $this->createUrl("admin/export/group/surveyid/$surveyid/gid/$gid");?>'>
+                <img src='<?php echo $imageurl; ?>dumpgroup.png' title='' alt='<?php $clang->eT("Export this question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php } ?>
     </div>
     <div class='menubar-right'>
@@ -82,14 +76,12 @@
                 { ?>
 
                 <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidPrev); ?>'>
-                    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_20.png' title='' alt='<?php $clang->eT("Previous question"); ?>'
-                        width="20" height="20"/></a>
+                    <img src='<?php echo $imageurl; ?>previous_20.png' title='' alt='<?php $clang->eT("Previous question"); ?>'/></a>
                 <?php }
                 else
                 { ?>
 
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_disabled_20.png' title='' alt='<?php $clang->eT("No previous question"); ?>'
-                    width="20" height="20"/>
+                <img src='<?php echo $imageurl; ?>previous_disabled_20.png' title='' alt='<?php $clang->eT("No previous question"); ?>'/>
                 <?php } ?>
 
 
@@ -98,43 +90,36 @@
                 { ?>
 
                 <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidNext); ?>'>
-                    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/next_20.png' title='' alt='<?php $clang->eT("Next question"); ?>'
-                    width="20" height="20"/> </a>
+                <img src='<?php echo $imageurl; ?>next_20.png' title='' alt='<?php $clang->eT("Next question"); ?>'/> </a>
                 <?php }
                 else
                 { ?>
 
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/next_disabled_20.png' title='' alt='<?php $clang->eT("No next question"); ?>'
-                    width="20" height="20"/>
+                <img src='<?php echo $imageurl; ?>next_disabled_20.png' title='' alt='<?php $clang->eT("No next question"); ?>'/>
                 <?php } ?>
         </span>
 
         <?php if ($activated == "Y")
             { ?>
             <a href='#'>
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled").' - '.$clang->gT("This survey is currently active."); ?>' width="40" height="40" /></a>
+                <img src='<?php echo $imageurl; ?>add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled").' - '.$clang->gT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
             <?php }
             elseif(hasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>
-            <a href='<?php echo $this->createUrl("admin/question/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'
-                title="<?php $clang->eTview("Add new question to group"); ?>" >
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' title='' alt='<?php $clang->eT("Add new question to group"); ?>' width="40" height="40" /></a>
+            <a href='<?php echo $this->createUrl("admin/question/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'>
+                <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php $clang->eT("Add new question to group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
             <?php } ?>
 
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
+        <img id='separator12' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
 
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' width='18' alt='' />
-        <input id='MinimizeGroupWindow' type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/minus.gif' title='<?php $clang->eT("Hide details of this group"); ?>' alt='<?php $clang->eT("Hide details of this group"); ?>' />
-        <input type='image' id='MaximizeGroupWindow' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.gif' title='<?php $clang->eT("Show details of this group"); ?>' alt='<?php $clang->eT("Show details of this group"); ?>' />
-        <?php if (!$qid)
-            { ?>
-            <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close this group"); ?>' alt='<?php $clang->eT("Close this group"); ?>'
-                onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>','_top');" />
-            <?php }
-            else
-            { ?>
-            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='18' />
-            <?php } ?>
+        <input id='MinimizeGroupWindow' type='image' src='<?php echo $imageurl; ?>minimize.png' title='<?php $clang->eT("Hide details of this group"); ?>' alt='<?php $clang->eT("Hide details of this group"); ?>' />
+        <input type='image' id='MaximizeGroupWindow' src='<?php echo $imageurl; ?>maximize.png' title='<?php $clang->eT("Show details of this group"); ?>' alt='<?php $clang->eT("Show details of this group"); ?>' />
+        <input type='image' src='<?php echo $imageurl; ?>close.png' title='<?php $clang->eT("Close this group"); ?>' alt='<?php $clang->eT("Close this group"); ?>'
+            onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>','_top');"
+            <?php if (!$qid){?>
+                style='visibility:hidden;'
+                <?php } ?>
+            >
     </div></div>
 </div>
 

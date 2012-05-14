@@ -1,6 +1,6 @@
 <form action="<?php echo $this->createUrl("admin/quotas/modifyquota/surveyid/$iSurveyId");?>" method="post">
     <div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
-        <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+        <table>
             <tr>
                 <td valign="top">
                     <table width="100%" border="0">

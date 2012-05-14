@@ -34,7 +34,7 @@ if ($thissurvey['active'] == "Y")
                     <tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'><?php $clang->eT("Save for further completion by survey user"); ?></label>
                     </td></tr></table>
                     <div name='saveoptions' id='saveoptions' style='display: none'>
-                    <table align='center' class='outlinetable' cellspacing='0'>
+                    <table align='center' class='outlinetable'>
     					  <tr><td align='right'><?php $clang->eT("Identifier:"); ?></td>
     					  <td><input type='text' name='save_identifier' /></td></tr>
     					  <tr><td align='right'><?php $clang->eT("Password:"); ?></td>

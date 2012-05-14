@@ -74,7 +74,7 @@
             <td valign='top'>
                 <form enctype='multipart/form-data' name='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/upload/') ?>' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>
                     <table><tr> <th class='subheader' valign='top' style='border: solid 1 #000080'>
-                            <?php $clang->eT("Upload a file:"); ?></th></tr><tr><td><input name="the_file" type="file" size="30" /><br />
+                            <?php $clang->eT("Upload a file:"); ?></th></tr><tr><td><input name="the_file" type="file" /><br />
                                 <input type='submit' value='<?php $clang->eT("Upload"); ?>'
                                     <?php if (!is_template_editable($templatename))  { ?>
                                         disabled='disabled'
@@ -113,6 +113,6 @@
     <?php }
     else
     { ?>
-    <p><iframe id='previewiframe' src='<?php echo $tempurl; ?>/template_temp_<?php echo $time; ?>.html' width='95%' height='768' name='previewiframe' style='background-color: white;'>Embedded Frame</iframe></p>
+    <p><iframe id='previewiframe' src='<?php echo $tempurl; ?>/template_temp_<?php echo $time; ?>.html' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe></p>
     </div>
     <?php } ?>

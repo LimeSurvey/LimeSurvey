@@ -4,7 +4,7 @@
 		<?php if(isset($save) && $errormsg): ?>
 		<?php $clang->eT("Try again"); ?>:
 		<form method='post'>
-			<table class='outlinetable' cellspacing='0' align='center'>
+			<table class='outlinetable'>
 			  	<tr>
 			   		<td align='right'><?php $clang->eT("Identifier:"); ?></td>
 			   		<td>
@@ -76,18 +76,18 @@
 
 		<?php echo $errormsg; ?>
 
-		<input type='submit' value='<?php $clang->eT("Add Another Record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_top')" />
+		<input type='submit' value='<?php $clang->eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_top')" />
 		<br /><br />
-        <input type='submit' value='<?php $clang->eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/survey/view/'.$surveyid); ?>', '_top')" />
+        <input type='submit' value='<?php $clang->eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/survey/view/surveyid/'.$surveyid); ?>', '_top')" />
         <br /><br />
 
         <?php if(isset($thisid)): ?>
-			<input type='submit' value='<?php $clang->eT("View This Record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/browse/action/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
+			<input type='submit' value='<?php $clang->eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/browse/action/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
 			<br /><br />
         <?php endif; ?>
 
         <?php if(isset($save)): ?>
-        	<input type='submit' value='<?php $clang->eT("Browse Saved Responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/view/surveyid/'.$surveyid.'/all'); ?>', '_top')" />
+        	<input type='submit' value='<?php $clang->eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/view/surveyid/'.$surveyid.'/all'); ?>', '_top')" />
         	<br /><br />
 		<?php endif; ?>
 	</div>

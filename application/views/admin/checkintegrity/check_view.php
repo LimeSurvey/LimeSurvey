@@ -172,13 +172,14 @@
         <?php
             if (isset($orphansurveytables))
             {?>
-            <li><?php $clang->eT("The following old survey tables should be deleted because they contain no records or their parent survey no longer exists:"); ?></li>
-            <ul>
-                <?php
-                    foreach ($orphansurveytables as $surveytable) {?>
-                    <li><?php echo $surveytable;?></li><?php
-                }?>
-            </ul>
+            <li><?php $clang->eT("The following old survey tables should be deleted because they contain no records or their parent survey no longer exists:"); ?>
+                <ul>
+                    <?php
+                        foreach ($orphansurveytables as $surveytable) {?>
+                        <li><?php echo $surveytable;?></li><?php
+                    }?>
+                </ul>
+            </li>
             <?php
             }
             else

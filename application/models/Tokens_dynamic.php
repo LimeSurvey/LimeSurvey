@@ -130,7 +130,11 @@ class Tokens_dynamic extends CActiveRecord
     }
     function updateToken($tid,$newtoken)
     {
-        return Yii::app()->db->createCommand('UPDATE :tablename SET token= :newtoken WHERE tid=:tid')->bindParam(":newtoken", $newtoken, PDO::PARAM_STR)->bindParam(":tid", $tid, PDO::PARAM_INT)->bindParam(":tablename", $this->tableName(), PDO::PARAM_STR)->execute();
+        return Yii::app()->db->createCommand('UPDATE :tablename SET token= :newtoken WHERE tid=:tid')
+        ->bindParam(":newtoken", $newtoken, PDO::PARAM_STR)
+        ->bindParam(":tid", $tid, PDO::PARAM_INT)
+        ->bindParam(":tablename", $this->tableName(), PDO::PARAM_STR)
+        ->execute();
     }
     function selectEmptyTokens($iSurveyID)
     {
@@ -437,8 +441,13 @@ class Tokens_dynamic extends CActiveRecord
 
     function getEmailStatus($sid,$token)
     {
-        $usquery = 'SELECT emailstatus from {{tokens_'.intval($sid).'}} where token=:token"';
-        return Yii::app()->db->createCommand($usquery)->bindParam(":token", $token, PDO::PARAM_STR)->queryRow();
+        $command = Yii::app()->db->createCommand()
+            ->select('emailstatus')
+            ->from('{{tokens_'.intval($sid).'}}')
+            ->where('token=:token')
+            ->bindParam(':token', $token, PDO::PARAM_STR);
+
+        return $command->queryRow();
     }
 
     function updateEmailStatus($sid,$token,$status)

@@ -38,6 +38,11 @@ $config['scriptname']         =   'admin.php';      // The name of the admin scr
 $config['defaultuser']        =   'admin';          // This is the default username when LimeSurvey is installed
 $config['defaultpass']        =   'password';       // This is the default password for the default user when LimeSurvey is installed
 
+// Styling options
+$config['admintheme']         =  'gringegreen';     // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
+$config['adminthemeiconsize'] =  32;                // This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
+
+
 // If the user enters password incorrectly
 $config['maxLoginAttempt']    =   3;                // Lock them out after 3 attempts
 $config['timeOutTime']        =   60 * 10;          // Lock them out for 10 minutes.
@@ -58,7 +63,6 @@ $config['allowmandbackwards'] =   1;                // Allow moving backwards (i
 $config['deletenonvalues']    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators']   =   0;                // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
-$config['admintheme']         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 $config['blacklistallsurveys']     =  'N';          // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']     =  'N';          // Blacklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']     =  'N';         // Don't allow blacklisted participants to be added to new survey
@@ -222,14 +226,6 @@ $config['filterxsshtml'] = true;
 // users that belong to at least one of their groups
 // Otherwise they can see all operators defines in LimeSurvey
 $config['usercontrolSameGroupPolicy'] = true;
-
-// $addTitleToLinks
-// If this option is set to true, then LimeSurvey will add 'title' html element
-// to all links used in menus. This will help screen reader to analyse the
-// menus. Only set this to true if you're using a screen reader because
-// it overlaps with tooltips. This option shouldn't be required anymore
-// for new releases of screen readers.
-$config['addTitleToLinks'] = false;
 
 // $demoMode
 // If this option is set to true, then LimeSurvey will go into demo mode.
@@ -502,16 +498,18 @@ $config['enableXMLRPCInterface'] = 0;
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
 $config['publicurl']               = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
-$config['homeurl']                 = $config['publicurl']."admin";          // The website location (url) of the admin scripts
-$config['tempurl']                 = $config['publicurl']."tmp";
-$config['imageurl']                = $config['publicurl']."images";         // Location of button bar files for admin script
-$config['uploadurl']               = $config['publicurl']."upload";
-$config['standardtemplaterooturl'] = $config['publicurl']."templates";      // Location of the standard templates
-$config['adminscripts']            = $config['publicurl']."scripts/admin/";
-$config['generalscripts']          = $config['publicurl']."scripts/";
-$config['styleurl']                = $config['publicurl']."styles/";
-$config['sCKEditorURL']            = $config['adminscripts']."/ckeditor.36";
-$config['usertemplaterooturl']     = $config['uploadurl']."/templates";     // Location of the user templates
+$config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
+$config['tempurl']                 = $config['publicurl'].'tmp';
+$config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
+$config['uploadurl']               = $config['publicurl'].'upload';
+$config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // Location of the standard templates
+$config['adminscripts']            = $config['publicurl'].'scripts/admin/';
+$config['generalscripts']          = $config['publicurl'].'scripts/';
+$config['styleurl']                = $config['publicurl'].'styles/';
+$config['sCKEditorURL']            = $config['adminscripts'].'/ckeditor.36';
+$config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
+$config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
+$config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
 
 
 $config['publicdir']               = $config['rootdir'];                                   // The directory path of the public scripts
@@ -521,6 +519,7 @@ $config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."ima
 $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
+$config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
 
 
 // Computing relative url

@@ -115,6 +115,8 @@ class browse extends Survey_Common_Action
     public function view($iSurveyId, $iId, $sBrowseLang = '')
     {
         $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyId, 'browselang' => $sBrowseLang));
+        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
+
         extract($aData);
         $clang = Yii::app()->lang;
         $aViewUrls = array();
@@ -183,7 +185,9 @@ class browse extends Survey_Common_Action
         //SHOW INDIVIDUAL RECORD
         $oCriteria = new CDbCriteria();
         if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyId}}}"))
-            $oCriteria->join = "LEFT JOIN '{{tokens_{$iSurveyId}}}' ON {{surveys_{$iSurveyId}}}.token = {{tokens_{$iSurveyId}}}.token";
+        {
+            $oCriteria = Survey_dynamic::model($iSurveyId)->addTokenCriteria($oCriteria);
+        }
         if (incompleteAnsFilterState() == 'inc')
             $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
         elseif (incompleteAnsFilterState() == 'filter')
@@ -194,7 +198,7 @@ class browse extends Survey_Common_Action
         }
         $oCriteria->addCondition("id = {$iId}");
 
-        $iIdresult = Survey_dynamic::model($iSurveyId)->findAll($oCriteria) or die("Couldn't get entry");
+        $iIdresult = Survey_dynamic::model($iSurveyId)->findAllAsArray($oCriteria) or die("Couldn't get entry");
         foreach ($iIdresult as $iIdrow)
         {
             $iId = $iIdrow['id'];
@@ -249,7 +253,7 @@ class browse extends Survey_Common_Action
                             if ($metadata === "size")
                                 $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                             else if ($metadata === "name")
-                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->createUrl("/admin/browse/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
+                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/browse/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
                             else
                                 $answervalue = rawurldecode($phparray[$index][$metadata]);
                         }
@@ -258,7 +262,7 @@ class browse extends Survey_Common_Action
                     }
                     else
                     {
-                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyId, "browse", $fnames[$i][0], $iIdrow[$fnames[$i][0]], ''))), ENT_QUOTES);
+                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyId, $fnames[$i][0], $iIdrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
                     }
                 }
                 $aData['answervalue'] = $answervalue;
@@ -271,7 +275,7 @@ class browse extends Survey_Common_Action
 
         $aViewUrls[] = 'browseidfooter_view';
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     public function index($iSurveyId)
@@ -279,6 +283,7 @@ class browse extends Survey_Common_Action
         $aData = $this->_getData($iSurveyId);
         extract($aData);
         $aViewUrls = array();
+        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
 
         /**
          * fnames is used as informational array
@@ -484,13 +489,13 @@ class browse extends Survey_Common_Action
         $fncount = count($fnames);
 
         $start = Yii::app()->request->getParam('start', 0);
-        $limit = Yii::app()->request->getParam('limit', 100);
+        $limit = Yii::app()->request->getParam('limit', 50);
 
         $oCriteria = new CDbCriteria;
         //Create the query
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyId}}}"))
         {
-            $oCriteria->join = "LEFT JOIN {{tokens_{$iSurveyId}}} ON {{survey_{$iSurveyId}}}.token = {{tokens_{$iSurveyId}}}.token";
+            $oCriteria = Survey_dynamic::model($iSurveyId)->addTokenCriteria($oCriteria);
         }
 
         if (incompleteAnsFilterState() == "inc")
@@ -517,7 +522,8 @@ class browse extends Survey_Common_Action
         $oCriteria->offset = $start;
         $oCriteria->limit = $limit;
 
-        $dtresult = Survey_dynamic::model($iSurveyId)->findAll($oCriteria);
+        $dtresult = Survey_dynamic::model($iSurveyId)->findAllAsArray($oCriteria);
+
         $dtcount2 = count($dtresult);
         $cells = $fncount + 1;
 
@@ -553,7 +559,7 @@ class browse extends Survey_Common_Action
 
         $aViewUrls[] = 'browseallheader_view';
 
-        $bgcc = 'odd';
+        $bgcc = 'even';
         foreach ($dtresult as $dtrow)
         {
                 if ($bgcc == "even")
@@ -566,11 +572,12 @@ class browse extends Survey_Common_Action
                 }
             $aData['dtrow'] = $dtrow;
             $aData['bgcc'] = $bgcc;
+            $aData['oBrowseLanguage']=$oBrowseLanguage;
             $aViewUrls['browseallrow_view'][] = $aData;
         }
 
         $aViewUrls[] = 'browseallfooter_view';
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     public function time($iSurveyId)
@@ -800,7 +807,7 @@ class browse extends Survey_Common_Action
 
         $aViewUrls[] = 'browseindex_view';
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     /**
@@ -895,7 +902,7 @@ class browse extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'browse.js');
 

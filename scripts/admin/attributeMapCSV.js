@@ -112,7 +112,8 @@ $(document).ready(function() {
 		    seperatorused : seperator,
 		    fullfilepath : thefilepath,
 		    newarray : newcurrentarray,
-		    mappedarray : mappedarray
+		    mappedarray : mappedarray,
+            filterbea : filterblankemails
 		}, function(msg){
 		    $('#processing').parent().find("button").each(function() {
 		        if ($(this).text() == okBtn) {

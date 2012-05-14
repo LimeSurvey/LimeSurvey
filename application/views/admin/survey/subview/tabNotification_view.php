@@ -21,8 +21,7 @@
                     } else {
                         $clang->eT("Responses will be date stamped.");
                 } ?>
-                <font size='1' color='red'>&nbsp;(<?php $clang->eT("Cannot be changed"); ?>)
-                </font>
+                <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <input type='hidden' name='datestamp' value="<?php echo $esrow['datestamp']; ?>" />
                 <?php } else { ?>
                 <select id='datestamp' name='datestamp' onchange='alertPrivacy();'>
@@ -49,8 +48,7 @@
                     } else {
                         $clang->eT("Responses will have the IP address logged");
                 } ?>
-                <font size='1' color='red'>&nbsp;(<?php $clang->eT("Cannot be changed"); ?>)
-                </font>
+                <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <input type='hidden' name='ipaddr' value='<?php echo $esrow['ipaddr']; ?>' />
                 <?php } else { ?>
                 <select name='ipaddr' id='ipaddr'>
@@ -78,8 +76,7 @@
                     } else {
                         $clang->eT("Responses will have their referring URL logged.");
                 } ?>
-                <font size='1' color='red'>&nbsp;(<?php $clang->eT("Cannot be changed"); ?>)
-                </font>
+                <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <input type='hidden' name='refurl' value='<?php echo $esrow['refurl']; ?>' />
                 <?php } else { ?>
                 <select name='refurl' id='refurl'>
@@ -102,8 +99,7 @@
                 { ?>
                 <?php if ($esrow['savetimings'] != "Y") {  $clang->eT("Timings will not be saved.");}
                     else { $clang->gT("Timings will be saved.");} ?>
-                <font size='1' color='red'>&nbsp;(<?php $clang->eT("Cannot be changed"); ?>)
-                </font>
+                <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <input type='hidden' name='savetimings' value='<?php echo $esrow['savetimings']; ?>' />
                 <?php }
                 else

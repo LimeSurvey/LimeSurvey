@@ -177,7 +177,7 @@ class Authentication extends Survey_Common_Action
 
         switch ($sMethod) {
             case 'logout' :
-                $sSummary = $clang->gT('You have to login first.');
+                $sSummary = $clang->gT('Please log in first.');
                 break;
 
             case 'login' :

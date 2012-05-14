@@ -102,23 +102,23 @@ class Survey_Common_Action extends CAction
         }
 
         $pseudos = array(
-            'id' => 'iId',
-            'gid' => 'iGroupId',
-            'qid' => 'iQuestionId',
-            'sid' => array('iSurveyId', 'iSurveyID'),
-            'surveyid' => array('iSurveyId', 'iSurveyID'),
-            'srid' => 'iSurveyResponseId',
-            'scid' => 'iSavedControlId',
-            'uid' => 'iUserId',
-            'ugid' => 'iUserGroupId',
-            'fieldname' => 'sFieldName',
-            'fieldtext' => 'sFieldText',
-            'action' => 'sAction',
-            'lang' => 'sLanguage',
-            'browselang' => 'sBrowseLang',
-            'tokenids' => 'aTokenIds',
-            'tokenid' => 'iTokenId',
-            'subaction' => 'sSubAction',
+        'id' => 'iId',
+        'gid' => 'iGroupId',
+        'qid' => 'iQuestionId',
+        'sid' => array('iSurveyId', 'iSurveyID'),
+        'surveyid' => array('iSurveyId', 'iSurveyID'),
+        'srid' => 'iSurveyResponseId',
+        'scid' => 'iSavedControlId',
+        'uid' => 'iUserId',
+        'ugid' => 'iUserGroupId',
+        'fieldname' => 'sFieldName',
+        'fieldtext' => 'sFieldText',
+        'action' => 'sAction',
+        'lang' => 'sLanguage',
+        'browselang' => 'sBrowseLang',
+        'tokenids' => 'aTokenIds',
+        'tokenid' => 'iTokenId',
+        'subaction' => 'sSubAction',
         );
 
         // Foreach pseudo, take the key, if it exists,
@@ -172,18 +172,20 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * Addition of parameters should be avoided if they can be added to $aData
-     *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
+    * Renders template(s) wrapped in header and footer
+    *
+    * Addition of parameters should be avoided if they can be added to $aData
+    *
+    * @param string $sAction Current action, the folder to fetch views from
+    * @param string|array $aViewUrls View url(s)
+    * @param array $aData Data to be passed on. Optional.
+    */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
         // Gather the data
         $aData['clang'] = $clang = Yii::app()->lang;
+        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
+
         $aData = $this->_addPseudoParams($aData);
         $aViewUrls = (array) $aViewUrls;
         $sViewPath = '/admin/';
@@ -399,6 +401,8 @@ class Survey_Common_Action extends CAction
             }
             $aData['advancedsettings'] = $DisplayArray;
             $aData['condarray'] = $condarray;
+            $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
+            $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
             $questionsummary .= $this->getController()->render('/admin/survey/Question/questionbar_view', $aData, true);
         }
         $finaldata['display'] = $questionsummary;
@@ -464,6 +468,8 @@ class Survey_Common_Action extends CAction
             $aData['clang'] = $clang;
             $aData['condarray'] = $condarray;
             $aData['sumcount4'] = $sumcount4;
+            $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
+            $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
 
             $groupsummary .= $this->getController()->render('/admin/survey/QuestionGroups/questiongroupbar_view', $aData, true);
         }
@@ -510,7 +516,6 @@ class Survey_Common_Action extends CAction
 
         // ACTIVATE SURVEY BUTTON
         $aData['activated'] = $activated;
-        $aData['imageurl'] = Yii::app()->getConfig('imageurl');
 
         $condition = array('sid' => $iSurveyId, 'parent_qid' => 0, 'language' => $baselang);
 
@@ -527,13 +532,11 @@ class Survey_Common_Action extends CAction
         // TEST BUTTON
         if (!$activated)
         {
-            $aData['icontext'] = $clang->gT("Test This Survey");
-            $aData['icontext2'] = $clang->gTview("Test This Survey");
+            $aData['icontext'] = $clang->gT("Test this survey");
         }
         else
         {
-            $aData['icontext'] = $clang->gT("Execute This Survey");
-            $aData['icontext2'] = $clang->gTview("Execute This Survey");
+            $aData['icontext'] = $clang->gT("Execute this survey");
         }
 
         $aData['baselang'] = Survey::model()->findByPk($iSurveyId)->language;
@@ -612,6 +615,8 @@ class Survey_Common_Action extends CAction
         $aData['GidPrev'] = $GidPrev = getGidPrevious($iSurveyId, $gid);
 
         $aData['GidNext'] = $GidNext = getGidNext($iSurveyId, $gid);
+        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
+        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
 
         $this->getController()->render("/admin/survey/surveybar_view", $aData);
     }
@@ -874,7 +879,7 @@ class Survey_Common_Action extends CAction
         //BROWSE MENU BAR
         $aData['title'] = $title;
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-        $aData['imageurl'] = Yii::app()->getConfig("imageurl");
+        $aData['sImageURL'] = Yii::app()->getConfig("adminimageurl");
         $aData['clang'] = Yii::app()->lang;
         $aData['surveyid'] = $iSurveyId;
 
@@ -947,15 +952,15 @@ class Survey_Common_Action extends CAction
                         if (!copy($extractdir . "/" . $direntry, $destdir . "/" . $direntry))
                         {
                             $aErrorFilesInfo[] = Array(
-                                "filename" => $direntry,
-                                "status" => $clang->gT("Copy failed")
+                            "filename" => $direntry,
+                            "status" => $clang->gT("Copy failed")
                             );
                         }
                         else
                         {
                             $aImportedFilesInfo[] = Array(
-                                "filename" => $direntry,
-                                "status" => $clang->gT("OK")
+                            "filename" => $direntry,
+                            "status" => $clang->gT("OK")
                             );
                         }
                     }
@@ -963,8 +968,8 @@ class Survey_Common_Action extends CAction
                     {
                         // Extension forbidden
                         $aErrorFilesInfo[] = Array(
-                            "filename" => $direntry,
-                            "status" => $clang->gT("Forbidden Extension")
+                        "filename" => $direntry,
+                        "status" => $clang->gT("Forbidden Extension")
                         );
                     }
                     unlink($extractdir . "/" . $direntry);
@@ -976,18 +981,18 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Creates a temporary directory
-     *
-     * @access protected
-     * @param string $dir
-     * @param string $prefix
-     * @param int $mode
-     * @return string
-     */
+    * Creates a temporary directory
+    *
+    * @access protected
+    * @param string $dir
+    * @param string $prefix
+    * @param int $mode
+    * @return string
+    */
     protected function _tempdir($dir, $prefix='', $mode=0700)
     {
-        if (substr($dir, -1) != PATH_SEPARATOR)
-            $dir .= PATH_SEPARATOR;
+        if (substr($dir, -1) != DIRECTORY_SEPARATOR)
+            $dir .= DIRECTORY_SEPARATOR;
 
         do
         {

@@ -60,14 +60,14 @@ class Answers extends CActiveRecord
     {
         return array(
             'questions' => array(self::HAS_ONE, 'Questions', '',
-                'on' => 't.qid = questions.gid',
+                'on' => 't.qid = questions.qid',
             ),
             'groups' => array(self::HAS_ONE, 'Groups', '', 'through' => 'questions',
                 'on' => 'questions.gid = groups.gid'
             ),
         );
     }
-    
+
     function getAnswers($qid)
     {
 		return Yii::app()->db->createCommand()
@@ -78,15 +78,16 @@ class Answers extends CActiveRecord
 			->query();
     }
 
-    function getAnswerCode($qid, $code, $lang)
+    function getAnswerFromCode($qid, $code, $lang, $iScaleID=0)
     {
-		return Yii::app()->db->createCommand()
-			->select(array('code', 'answer'))
+		return Yii::app()->db->cache(6)->createCommand()
+			->select('answer')
 			->from(self::tableName())
-			->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=0', 'language=:lang'))
+			->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
 			->bindParam(":qid", $qid, PDO::PARAM_INT)
 			->bindParam(":code", $code, PDO::PARAM_STR)
 			->bindParam(":lang", $lang, PDO::PARAM_STR)
+            ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
 			->query();
     }
 

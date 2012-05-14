@@ -217,7 +217,7 @@ class InstallerController extends CController {
 
         if(count($aData['dbtypes'])==0)
         {
-           $bProceed=false;
+            $bProceed=false;
         }
         // after all check, if flag value is true, show next button and sabe step2 status.
         if ($bProceed)
@@ -342,7 +342,7 @@ class InstallerController extends CController {
                     }
 
                     // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
-                    if (in_array($model->dbtype, array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative'))) {
+                    if (in_array($model->dbtype, array('mssql', 'sqlsrv'))) {
                         @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();     //Checked
                         @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();     //Checked
                     }
@@ -440,46 +440,46 @@ class InstallerController extends CController {
         {
             case 'mysqli':
             case 'mysql':
-                try
-                {
-                    $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
-                }
-                catch(Exception $e)
-                {
-                  $createDb=false;
-                }
-                break;
+            try
+            {
+                $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+            }
+            catch(Exception $e)
+            {
+                $createDb=false;
+            }
+            break;
             case 'mssql':
             case 'odbc':
-                try
-                {
-                    $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
-                }
-                catch(Exception $e)
-                {
-                  $createDb=false;
-                }
-                break;
+            try
+            {
+                $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
+            }
+            catch(Exception $e)
+            {
+                $createDb=false;
+            }
+            break;
             case 'postgres':
-                try
-                {
-                    $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
-                }
-                catch (Exception $e)
-                {
-                    $createdb = false;
-                }
-                break;
+            try
+            {
+                $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
+            }
+            catch (Exception $e)
+            {
+                $createdb = false;
+            }
+            break;
             default:
-                try
-                {
-                    $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
-                }
-                catch(Exception $e)
-                {
-                  $createDb=false;
-                }
-                break;
+            try
+            {
+                $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
+            }
+            catch(Exception $e)
+            {
+                $createDb=false;
+            }
+            break;
         }
 
         //$this->load->dbforge();
@@ -543,7 +543,7 @@ class InstallerController extends CController {
             case 'mysql':
                 $sql_file = 'mysql';
                 break;
-            case 'odbc':
+            case 'sqlsrv':
             case 'mssql':
                 $sql_file = 'mssql';
                 break;
@@ -822,8 +822,11 @@ class InstallerController extends CController {
         // ** optional settings check **
 
         // gd library check
-        $data['gdPresent'] = check_HTML_image(array_key_exists('FreeType Support', gd_info()));
-
+        if (function_exists('gd_info')) {
+            $data['gdPresent'] = check_HTML_image(array_key_exists('FreeType Support', gd_info()));
+        } else {
+            $data['gdPresent'] = check_HTML_image(false);
+        }
         // ldap library check
         check_PHPFunction('ldap_connect', $data['ldapPresent']);
 
@@ -925,7 +928,7 @@ class InstallerController extends CController {
             //}
             //else
             //{
-                $showScriptName = 'true';
+            $showScriptName = 'true';
             //}
 
             $dbdata = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
@@ -966,9 +969,13 @@ class InstallerController extends CController {
 
             ."\t"     . "'components' => array("                    . "\n"
             ."\t\t"   . "'db' => array("                            . "\n"
-            ."\t\t\t" . "'connectionString' => '$sDsn',"            . "\n"
-            ."\t\t\t" . "'emulatePrepare' => true,"                 . "\n"
-            ."\t\t\t" . "'username' => '$sDatabaseUser',"           . "\n"
+            ."\t\t\t" . "'connectionString' => '$sDsn',"            . "\n";
+            if ($sDatabaseType!='sqlsrv')
+            {
+                $dbdata .="\t\t\t" . "'emulatePrepare' => true,"    . "\n";
+
+            }
+            $dbdata .="\t\t\t" . "'username' => '$sDatabaseUser',"  . "\n"
             ."\t\t\t" . "'password' => '$sDatabasePwd',"            . "\n"
             ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
             ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n"
@@ -1063,19 +1070,11 @@ class InstallerController extends CController {
                     $dsn.="dbname={$sDatabaseName};";
                 }
                 break;
-            case 'sqlite':
-                $dsn = 'sqlite:%1$s/%2$s.sq3';
-            case 'sqlite2':
-                $dsn = 'sqlite2:%1$s/%2$s.sq2';
-                break;
+
             case 'mssql' :
-            case 'dblib' :
             case 'sqlsrv':
-            case 'sybase':
-                $dsn = $sDatabaseType.':host=%1$s;dbname=%2$s';
-                break;
-            case 'oci':
-                $dsn = 'oci:dbname=//%1$s:%3$s/%2$s';
+                if ($sDatabasePort!=''){$sDatabaseLocation=$sDatabaseLocation.','.$sDatabasePort;}
+                $dsn = $sDatabaseType.":Server={$sDatabaseLocation};Database={$sDatabaseName}";
                 break;
             default:
                 throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
@@ -1104,15 +1103,8 @@ class InstallerController extends CController {
             case 'pgsql':
                 $sDatabasePort = '5432';
                 break;
-            case 'oci':
-                $sDatabasePort = '1521';
-                break;
             case 'mssql' :
-            case 'dblib' :
             case 'sqlsrv':
-            case 'sybase':
-            case 'sqlite':
-            case 'sqlite2':
             default:
                 $sDatabasePort = '';
         }
@@ -1152,7 +1144,10 @@ class InstallerController extends CController {
 
         try {
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
-            $this->connection->emulatePrepare = true;
+            if($sDatabaseType!='sqlsrv'){
+                $this->connection->emulatePrepare = true;
+            }
+
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
             return true;

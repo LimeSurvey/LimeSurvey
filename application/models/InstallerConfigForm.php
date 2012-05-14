@@ -27,22 +27,19 @@ class InstallerConfigForm extends CFormModel
 	public $supported_db_types = array();
 	public $db_names = array(
 		'mysql' => 'MySQL',
-		'mysqli' => 'MySQLi',
-//		'sqlite' => 'SQLite',
-//		'sqlite2' => 'SQLite2',
-		'mssql' => 'Microsoft SQL Server',
-		'dblib' => 'Microsoft SQL Server (dblib)',
-		'sqlsrv' => 'Microsoft SQL Server (sqlsrv)',
-		'sybase' => 'Microsoft SQL Server (sybase)',
+		'mysqli' => 'MySQL (newer driver)',
+        'sqlsrv' => 'Microsoft SQL Server (sqlsrv)',
+		'mssql' => 'Microsoft SQL Server (mssql)',
+//		'dblib' => 'Microsoft SQL Server (dblib)',
+//		'sybase' => 'Microsoft SQL Server (sybase)',
 		'pgsql' => 'PostgreSQL',
-//		'oci' => 'Oracle'
 	);
 
 	// Optional
 	public $adminLoginPwd = 'password';
 	public $confirmPwd = 'password';
 	public $adminLoginName = 'admin';
-	public $adminName = 'Your name';
+	public $adminName = 'Administrator';
 	public $adminEmail = 'your-email@example.net';
 	public $siteName = 'LimeSurvey';
 	public $surveylang = 'en';

@@ -32,7 +32,7 @@
             }
             $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
 
-            if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
+            if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
             {
                 $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
             }
@@ -238,9 +238,9 @@
                 if ($sLanguage==$sSelectedLanguage)
                 {
                     $sHTMLCode .=" selected='selected'";
-
+                    $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
                 }
-                $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false)."</option>\n";
+                $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sLanguage)." - ".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
             }
             $sHTMLCode .= "</select>\n";
             return $sHTMLCode;
@@ -259,22 +259,29 @@
     */
     function makeLanguageChanger($sSelectedLanguage)
     {
-        $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
-        foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
+        if(count(getLanguageDataRestricted())>1)
         {
-            $sHTMLCode .= "<option value='".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$sLanguageID."' ";
-            if($sLanguageID == $sSelectedLanguage)
+            $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
+            foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
             {
-                $sHTMLCode .= " selected='selected' ";
-                $sHTMLCode .= ">{$aLanguageProperties['nativedescription']}</option>\n";
+                $sHTMLCode .= "<option value='".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$sLanguageID."' ";
+                if($sLanguageID == $sSelectedLanguage)
+                {
+                    $sHTMLCode .= " selected='selected' ";
+                    $sHTMLCode .= ">{$aLanguageProperties['nativedescription']}</option>\n";
+                }
+                else
+                {
+                    $sHTMLCode .= ">".$aLanguageProperties['nativedescription'].' - '.$aLanguageProperties['description']."</option>\n";
+                }
             }
-            else
-            {
-                $sHTMLCode .= ">".$aLanguageProperties['nativedescription'].' - '.$aLanguageProperties['description']."</option>\n";
-            }
+            $sHTMLCode .= "</select>\n";
+            return $sHTMLCode;
         }
-        $sHTMLCode .= "</select>\n";
-        return $sHTMLCode;
+        else
+        {
+            return false;
+        }
     }
 
 
@@ -1884,7 +1891,7 @@
 
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
-    if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
+    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv')))
     {
         $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
     }
@@ -2850,7 +2857,7 @@ function UpdateSessionGroupList($surveyid, $language)
 function SetSurveyLanguage($surveyid, $language)
 {
     $surveyid=sanitize_int($surveyid);
-    $defaultlang = Yii::app()->getConfig('defaultlang');
+    $default_language = Yii::app()->getConfig('defaultlang');
 
     if (isset($surveyid) && $surveyid>0)
     {
@@ -2884,7 +2891,7 @@ function SetSurveyLanguage($surveyid, $language)
     {
         $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
         Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new Limesurvey_lang($defaultlang);
+        $clang = new Limesurvey_lang($language);
     }
 
     $oApplication=Yii::app();

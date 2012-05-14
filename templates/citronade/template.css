@@ -51,6 +51,11 @@ ul#surveylist{list-style:none}
 #progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
 #progress-wrapper .ui-widget-header{background-color:#AAA;background-image:none;border:1px solid #666}
 #progress-wrapper #progress-post{float:left;width:45px;text-align:left;margin:0 0 0 5px}
+@media reader {
+    #progressbar,#progress-pre,#progress-post{display:none}
+}
+
+
 .ui-slider{width:15em;display:inline-block;border:1px solid #666;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;margin:.4em 0 .2em}
 .slider_showmin{float:left;width:3em;font-size:.7em;font-weight:400;text-align:left;color:#666;margin:1.4em 0 0}
 .slider_showmax{float:right;width:3em;font-size:.7em;font-weight:400;text-align:right;color:#666;margin:1.4em 0 0}
@@ -663,22 +668,7 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 	padding: 0 1em 0 0;
 	text-align:left;
 }
- .choice-5-pt-radio .answers-wrapper li
-,.list-radio-flexible .answers-wrapper li
-,.list-radio .answers-wrapper li
-,.list-with-comment .answers-wrapper li
-{
-	margin-right:0;margin-left: 3em;
-}
-@media screen and (max-width: 640px) {
-	 .choice-5-pt-radio .answers-wrapper li
-	,.list-radio-flexible .answers-wrapper li
-	,.list-radio .answers-wrapper li
-	,.list-with-comment .answers-wrapper li
-	{
-		margin-left: 0;
-	}
-}
+
 .list-radio-flexible li{width:auto;}
 .list-radio-flexible ul{width:auto;margin:0 auto 0.5em;}
 
@@ -729,25 +719,23 @@ table.rank input{border:1px solid #999}
 	text-align:center;
 }
 
-.list-with-comment div.list
-{
-	width: 47%;
-	float: left;
-	padding: 0.5em;
-}
-.list-with-comment p.select
+.list-with-comment .list, .list-with-comment p.select
 {
 	width: 47%;
 	float: left;
 	padding: 0.5em;
 	margin: 0;
 }
-.list-with-comment div.list p
+.list-with-comment p.select select
+{
+	max-width: 99%;
+}
+.list-with-comment .list p
 {
 	margin: 0;
 	text-align: left;
 }
-.list-with-comment p.comment
+.list-with-comment .comment
 {
 	margin: 0%;
 	padding: 0.5em;
@@ -757,9 +745,17 @@ table.rank input{border:1px solid #999}
 }
 .list-with-comment p.comment textarea
 {
-	width: 100%;
+	width: 99%;
 }
-
+@media screen and (max-width: 480px) {
+    .list-with-comment .list
+    , .list-with-comment .select
+    , .list-with-comment .comment
+    {
+	    width: 99%;
+	    float: none;
+    }
+}
  .multiple-opt-comments ul
 ,.multiple-short-txt ul
 ,.numeric-multi ul
@@ -862,15 +858,49 @@ table.rank input{border:1px solid #999}
 , .list-radio .answers-wrapper ul li
 , .list-radio-flexible .answers-wrapper ul li
 {
-	padding-right:0;padding-left:40%;
+	padding-right:0;padding-left:35%;
 }
+.multiple-opt .answers-wrapper ul li label
+, .multiple-opt-comments .answers-wrapper ul li label
+, .list-radio .answers-wrapper ul li label
+, .list-radio-flexible .answers-wrapper ul li label
+, .list-with-comment .answers-wrapper ul li label
+{
+	display:inline-block;vertical-align: middle;
+}
+.multiple-opt-comments .answers-wrapper ul li .option
+, .list-with-comment .answers-wrapper ul li
+{
+	padding-left:30px;padding-right:0;
+}
+.multiple-opt .answers-wrapper ul li input.checkbox
+, .multiple-opt-comments .answers-wrapper ul li input.checkbox
+, .list-radio .answers-wrapper ul li input.radio
+, .list-radio-flexible .answers-wrapper ul li input.radio
+, .list-with-comment .answers-wrapper ul li input.radio
+{
+	margin-left:-30px;vertical-align: middle;
+}
+
 @media screen and (max-width: 640px) {
 	.multiple-opt .answers-wrapper ul li
-	, .list-radio .answers ul li
-	, .list-with-comment .answers ul li 
-	, .list-radio-flexible .answers ul li 
+	, .list-radio .answers-wrapper ul li
+	, .list-radio-flexible .answers-wrapper ul li
 	{
-		padding-left:0;
+		padding-left:30px;
+	}
+	.multiple-opt-comments  .answers-wrapper ul .comment input
+	{
+		width:99%;
+	}
+}
+@media screen and (max-width: 480px) {
+.numeric-multi .answers-wrapper ul li label, .numeric-multi .answers-wrapper ul li span 
+, .multiple-short-txt .answers-wrapper ul li label, .multiple-short-txt .answers-wrapper ul li span
+, .multiple-opt-comments  .answers-wrapper ul .option, .multiple-opt-comments  .answers-wrapper ul .comment
+	{
+		display:block;
+		width:99%;
 	}
 }
 
@@ -946,6 +976,23 @@ text-align:center;
 , ul.cols-8 li , ul.cols-8-ul li
 {
 	padding: 0 0.5em;margin:0 0 0.5em;
+}
+ ul.cols-2 li input.checkbox, ul.cols-2-ul li input.checkbox
+, ul.cols-2 li input.radio, ul.cols-2-ul li input.radio
+, ul.cols-3 li input.checkbox, ul.cols-3-ul li input.checkbox
+, ul.cols-3 li input.radio, ul.cols-3-ul li input.radio
+, ul.cols-4 li input.checkbox, ul.cols-4-ul li input.checkbox
+, ul.cols-4 li input.radio, ul.cols-4-ul li input.radio
+, ul.cols-5 li input.checkbox , ul.cols-5-ul li input.checkbox
+, ul.cols-5 li input.radio , ul.cols-5-ul li input.radio
+, ul.cols-6 li input.checkbox , ul.cols-6-ul li input.checkbox
+, ul.cols-6 li input.radio , ul.cols-6-ul li input.radio
+, ul.cols-7 li input.checkbox, ul.cols-7-ul li input.checkbox
+, ul.cols-7 li input.radio, ul.cols-7-ul li input.radio
+, ul.cols-8 li input.checkbox, ul.cols-8-ul li input.checkbox
+, ul.cols-8 li input.radio, ul.cols-8-ul li input.radio
+{
+	margin-left: 0 !important;margin-right: 0 !important;
 }
 ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 49.9%; }
 ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 33.3%; }

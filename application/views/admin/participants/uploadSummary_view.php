@@ -28,7 +28,7 @@
             }
             if (!empty($mandatory))
             {
-                $uploadSummary .= "<li>" . sprintf($clang->gT("%s records have blank madatory fields"), $mandatory) . "</li>";
+                $uploadSummary .= "<li>" . sprintf($clang->gT("%s records have empty mandatory fields"), $mandatory) . "</li>";
             }
             $uploadSummary .= "<li>" . sprintf($clang->gT("%s records met minumum requirements"), $mincriteria) . "</li>";
             $uploadSummary .= "<li>" . sprintf($clang->gT("%s records imported"), $imported) . "</li></ul>";

@@ -1228,7 +1228,7 @@ function do_date($ia)
         {
             $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
         }
-        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
+        //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
 
         // Format the date  for output
         if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])!='')
@@ -1847,8 +1847,9 @@ function do_list_radio($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_listwithcomment($ia)
 {
-    global $maxoptionsize, $dropdownthreshold, $thissurvey;
+    global $maxoptionsize, $thissurvey;
     $clang=Yii::app()->lang;
+    $dropdownthreshold = Yii::app()->getConfig("dropdownthreshold");
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -1887,8 +1888,7 @@ function do_listwithcomment($ia)
 
 
     $hint_comment = $clang->gT('Please enter your comment here');
-
-    if (isset($lwcdropdowns) && $lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
+    if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
     {
         $answer .= '<div class="list">
         <ul class="answers-list radio-list">
@@ -2519,7 +2519,7 @@ function do_multiplechoice($ia)
         $answer .= " if(this.checked===true) { document.getElementById(\"answer$myfname\").focus(); }; LEMflagMandOther(\"$myfname\",this.checked);";
         $answer .= "' />
         <label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
-        <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
+        <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2527,9 +2527,9 @@ function do_multiplechoice($ia)
             {
                 $dispVal = str_replace('.',$sSeperator,$dispVal);
             }
-            $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
+            $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
         }
-        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
+        $answer .= "\" onchange='$(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         //        if ($maxansw > 0)
@@ -2797,7 +2797,6 @@ function do_multiplechoice_withcomments($ia)
         $answer_main .= $startitem;
         $answer_main .= "\t$hiddenfield\n";
         $answer_main .= "<span class=\"option\">\n"
-        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
         . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
         /* If the question has already been ticked, check the checkbox */
@@ -2810,6 +2809,7 @@ function do_multiplechoice_withcomments($ia)
         }
         $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
+        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
         . $ansrow['question']."</label>\n";
 
         //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
@@ -3022,11 +3022,8 @@ function do_file_upload($ia)
     headFileName: '" . $clang->gT('File name','js') . "'
     };
     </script>\n";
-    /*if ($pos)
-    $answer .= "<script type='text/javascript' src='{$rooturl}/scripts/modaldialog.js'></script>";
-    else */
-    $answer .= "<script type='text/javascript' src='".Yii::app()->getBaseUrl(true)."/scripts/modaldialog.js'></script>";
-    //$js_header_includes[]= '/scripts/modaldialog.js'; //not working!
+
+    $js_header_includes[]= "<script type='text/javascript' src='".Yii::app()->getBaseUrl(true)."/scripts/modaldialog.js'></script>";
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -3423,7 +3420,7 @@ function do_multiplenumeric($ia)
     {
         $slider_layout=true;
         $extraclass .=" withslider";
-        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
+        //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
         if (trim($aQuestionAttributes['slider_accuracy'])!='')
         {
             //$slider_divisor = 1 / $slider_accuracy['value'];
@@ -3592,7 +3589,7 @@ function do_multiplenumeric($ia)
                     $slider_showmax='';
                 }
 
-                $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
+                //$js_header_includes[] = '/scripts/jquery/jquery-ui.js'; already included by default
                 $js_header_includes[] = '/scripts/jquery/lime-slider.js';
 
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
@@ -3680,7 +3677,7 @@ function do_multiplenumeric($ia)
         //            $answer_main .= $answer_computed;
         //        }
         if($slider_layout){
-            $answer .= "<script type='text/javascript' src='".Yii::app()->baseUrl."/scripts/jquery/lime-slider.js'></script>";
+            $js_header_includes[]= "/scripts/jquery/lime-slider.js";
         }
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''

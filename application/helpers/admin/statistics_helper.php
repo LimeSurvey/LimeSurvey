@@ -535,7 +535,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
                 {
                     //put together some SQL here
-                    $thisquestion = sanitize_int($pv)." IN (";
+                    $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
 
                     foreach ($_POST[$pv] as $condition)
                     {
@@ -567,7 +567,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         // only add condition if answer has been chosen
                         if (in_array($arow[0], $_POST[$pv]))
                         {
-                            $mselects[]=sanitize_int(substr($pv, 1, strlen($pv)).$arow[0])." = 'Y'";
+                            $mselects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)).$arow[0])." = 'Y'";
                         }
                     }
                     if ($mselects)
@@ -586,13 +586,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //value greater than
                     if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                     {
-                        $selects[]=sanitize_int(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
                     }
 
                     //value less than
                     if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                     {
-                        $selects[]=sanitize_int(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
                     }
                 }
 
@@ -601,11 +601,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     {
                         // no. of files greater than
                         if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
-                            $selects[]=sanitize_int(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
 
                         // no. of files less than
                         if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-                        $selects[]=sanitize_int(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
                 }
 
                 //"id" is a built in field, the unique database id key of each response row
@@ -613,11 +613,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 {
                     if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                     {
-                        $selects[]=sanitize_int(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
                     }
                     if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                     {
-                        $selects[]=sanitize_int(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
                     }
                 }
 
@@ -630,7 +630,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $pvParts = explode(",",str_replace('*','%', str_replace(' OR ',',',$_POST[$pv])));
                     if(is_array($pvParts) AND count($pvParts)){
                         foreach($pvParts AS $pvPart){
-                            $selectSubs[]=sanitize_int(substr($pv, 1, strlen($pv)))." LIKE '".trim($pvPart)."'";
+                            $selectSubs[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)))." LIKE '".trim($pvPart)."'";
                         }
                         if(count($selectSubs)){
                             $selects[] = ' ('.implode(' OR ',$selectSubs).') ';
@@ -644,20 +644,20 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //Date equals
                     if (substr($pv, -1, 1) == "eq")
                     {
-                        $selects[]=sanitize_int(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
                     }
                     else
                     {
                         //date less than
                         if (substr($pv, -1, 1) == "less")
                         {
-                            $selects[]= sanitize_int(substr($pv, 1, strlen($pv)-2)) . " >= '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " >= '".$_POST[$pv]."'";
                         }
 
                         //date greater than
                         if (substr($pv, -1, 1) == "more")
                         {
-                            $selects[]= sanitize_int(substr($pv, 1, strlen($pv)-2)) . " <= '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " <= '".$_POST[$pv]."'";
                         }
                     }
                 }
@@ -672,7 +672,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                         $_POST[$pv]=$datetimeobj->convert("Y-m-d");
 
-                        $selects[] = sanitize_int('datestamp')." >= '".$_POST[$pv]." 00:00:00' and ".sanitize_int('datestamp')." <= '".$_POST[$pv]." 23:59:59'";
+                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= '".$_POST[$pv]." 00:00:00' and ".Yii::app()->db->quoteColumnName('datestamp')." <= '".$_POST[$pv]." 23:59:59'";
                     }
                     else
                     {
@@ -681,7 +681,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                             $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= sanitize_int('datestamp')." < '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < '".$_POST[$pv]."'";
                         }
 
                         //timestamp greater than
@@ -689,7 +689,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                             $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= sanitize_int('datestamp')." > '".$_POST[$pv]."'";
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > '".$_POST[$pv]."'";
                         }
                     }
                 }
@@ -1070,7 +1070,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     // 1) Total number of files uploaded
                     // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
                     $fieldname=substr($rt, 1, strlen($rt));
-                    $query = "SELECT SUM(".sanitize_int($fieldname.'_filecount').") as sum, AVG(".sanitize_int($fieldname.'_filecount').") as avg FROM {{survey_$surveyid}}";
+                    $query = "SELECT SUM(".Yii::app()->db->quoteColumnName($fieldname.'_filecount').") as sum, AVG(".Yii::app()->db->quoteColumnName($fieldname.'_filecount').") as avg FROM {{survey_$surveyid}}";
                     $result=Yii::app()->db->createCommand($query)->query();
 
                     $showem = array();
@@ -1194,6 +1194,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
                 else
                 {
+                	$showem = array();
                     //create SGQ identifier
                     list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
 
@@ -1310,41 +1311,41 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                     //special treatment for MS SQL databases
                     $sDatabaseType = Yii::app()->db->getDriverName();
-                    if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
+                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv')
                     {
                         //standard deviation
-                        $query = "SELECT STDEVP(".sanitize_int($fieldname)."*1) as stdev";
+                        $query = "SELECT STDEVP(".Yii::app()->db->quoteColumnName($fieldname)."*1) as stdev";
                     }
 
                     //other databases (MySQL, Postgres)
                     else
                     {
                         //standard deviation
-                        $query = "SELECT STDDEV(".sanitize_int($fieldname).") as stdev";
+                        $query = "SELECT STDDEV(".Yii::app()->db->quoteColumnName($fieldname).") as stdev";
                     }
 
                     //sum
-                    $query .= ", SUM(".sanitize_int($fieldname)."*1) as sum";
+                    $query .= ", SUM(".Yii::app()->db->quoteColumnName($fieldname)."*1) as sum";
 
                     //average
-                    $query .= ", AVG(".sanitize_int($fieldname)."*1) as average";
+                    $query .= ", AVG(".Yii::app()->db->quoteColumnName($fieldname)."*1) as average";
 
                     //min
-                    $query .= ", MIN(".sanitize_int($fieldname)."*1) as minimum";
+                    $query .= ", MIN(".Yii::app()->db->quoteColumnName($fieldname)."*1) as minimum";
 
                     //max
-                    $query .= ", MAX(".sanitize_int($fieldname)."*1) as maximum";
+                    $query .= ", MAX(".Yii::app()->db->quoteColumnName($fieldname)."*1) as maximum";
                     //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                     //special treatment for MS SQL databases
-                    if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
+                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv')
                     {
                         //no NULL/empty values please
-                        $query .= " FROM {{survey_$surveyid}} WHERE ".sanitize_int($fieldname)." IS NOT NULL";
+                        $query .= " FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT NULL";
                         if(!$excludezeros)
                         {
                             //NO ZERO VALUES
-                            $query .= " AND (".sanitize_int($fieldname)." <> 0)";
+                            $query .= " AND (".Yii::app()->db->quoteColumnName($fieldname)." <> 0)";
                         }
                     }
 
@@ -1352,11 +1353,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     else
                     {
                         //no NULL/empty values please
-                        $query .= " FROM {{survey_$surveyid}} WHERE ".sanitize_int($fieldname)." IS NOT NULL";
+                        $query .= " FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT NULL";
                         if(!$excludezeros)
                         {
                             //NO ZERO VALUES
-                            $query .= " AND (".sanitize_int($fieldname)." != 0)";
+                            $query .= " AND (".Yii::app()->db->quoteColumnName($fieldname)." != 0)";
                         }
                     }
 
@@ -1389,11 +1390,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //CALCULATE QUARTILES
 
                     //get data
-                    $query ="SELECT ".sanitize_int($fieldname)." FROM {{survey_$surveyid}} WHERE ".sanitize_int($fieldname)." IS NOT null";
+                    $query ="SELECT ".Yii::app()->db->quoteColumnName($fieldname)." FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
                     //NO ZEROES
                     if(!$excludezeros)
                     {
-                        $query .= " AND ".sanitize_int($fieldname)." != 0";
+                        $query .= " AND ".Yii::app()->db->quoteColumnName($fieldname)." != 0";
                     }
 
                     //filtering enabled?
@@ -1404,12 +1405,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if ($sql != "NULL") {$query .= " AND $sql";}
 
                     //execute query
-                    $result = Yii::app()->db->createCommand($quer)->query();
-                    $querystarter="SELECT ".sanitize_int($fieldname)." FROM {{survey_$surveyid}} WHERE ".sanitize_int($fieldname)." IS NOT null";
+                    $result = Yii::app()->db->createCommand($query)->query();
+                    $querystarter="SELECT ".Yii::app()->db->quoteColumnName($fieldname)." FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
                     //No Zeroes
                     if(!$excludezeros)
                     {
-                        $querystart .= " AND ".sanitize_int($fieldname)." != 0";
+                        $querystart .= " AND ".Yii::app()->db->quoteColumnName($fieldname)." != 0";
                     }
                     //filtering enabled?
                     if (incompleteAnsFilterState() == "inc") {$querystarter .= " AND submitdate is null";}
@@ -1443,7 +1444,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         if ($q1 != $q1b)
                         {
                             //ODD NUMBER
-                            $query = $querystarter . " ORDER BY ".sanitize_int($fieldname)."*1 ";
+                            $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
                             $result=Yii::app()->db->createCommand($query)->limit(2, $q1c)->query();
 
                             foreach ($result->readAll() as $row)
@@ -1464,7 +1465,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         else
                         {
                             //EVEN NUMBER
-                            $query = $querystarter . " ORDER BY ".sanitize_int($fieldname)."*1 ";
+                            $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
                             $result=Yii::app()->db->createCommand($query)->limit(1, $q1c)->query();
 
                             foreach ($result->readAll() as $row)
@@ -1485,7 +1486,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         if ($median != $medianb)
                         {
                             //remainder
-                            $query = $querystarter . " ORDER BY ".sanitize_int($fieldname)."*1 ";
+                            $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
                             $result=Yii::app()->db->createCommand($query)->limit(2, $medianc)->query();
 
                             foreach ($result->readAll() as $row) {$total=$total+$row[$fieldname];}
@@ -1496,7 +1497,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         else
                         {
                             //EVEN NUMBER
-                            $query = $querystarter . " ORDER BY ".sanitize_int($fieldname)."*1 ";
+                            $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
                             $result = Yii::app()->db->createCommand($query)->limit(1, $medianc-1)->query();
 
                             foreach ($result->readAll() as $row)
@@ -1516,7 +1517,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         if ($q3 != $q3b)
                         {
-                            $query = $querystarter . " ORDER BY ".sanitize_int($fieldname)."*1 ";
+                            $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
                             $result = Yii::app()->db->createCommand($query)->limit(2,$q3c)->query();
 
                             foreach ($result->readAll() as $row)
@@ -1536,7 +1537,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         else
                         {
-                            $query = $querystarter . " ORDER BY ".sanitize_int($fieldname)."*1";
+                            $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
                             $result = Yii::app()->db->createCommand($query)->limit(1, $q3c);
 
                             foreach ($result->readAll() as $row)
@@ -1953,7 +1954,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     case "1":	//array (dual scale)
 
                         $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $sSubquestion = flattenText(Yii::app()->db->createCommand($sSubquestionQuery)->query());
+                        $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
+                        $sSubquestion = flattenText($questionDesc["question"]);
 
                         //get question attributes
                         $qidattributes=getQuestionAttributeValues($qqid);
@@ -1965,9 +1967,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qqid}' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, code";
 
                             //header available?
-                            if (trim($qidattributes['dualscale_headerA'])!='') {
+                            if (trim($qidattributes['dualscale_headerA'][$language])!='') {
                                 //output
-                                $labelheader= "[".$qidattributes['dualscale_headerA']."]";
+                                $labelheader= "[".$qidattributes['dualscale_headerA'][$language]."]";
                             }
 
                             //no header
@@ -1987,9 +1989,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qqid}' AND scale_id=1 AND language='{$language}' ORDER BY sortorder, code";
 
                             //header available?
-                            if (trim($qidattributes['dualscale_headerB'])!='') {
+                            if (trim($qidattributes['dualscale_headerB'][$language])!='') {
                                 //output
-                                $labelheader= "[".$qidattributes['dualscale_headerB']."]";
+                                $labelheader= "[".$qidattributes['dualscale_headerB'][$language]."]";
                             }
 
                             //no header
@@ -2131,13 +2133,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                                 // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                                 // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
-                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".sanitize_int(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
+                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
                             }
                             else
                             {
                                 //get data
                                 $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
-                                $query .= ($sDatabaseType == "mysql")?  sanitize_int($al[2])." != ''" : "NOT (".sanitize_int($al[2])." LIKE '')";
+                                $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
                             }
                         }
 
@@ -2158,24 +2160,24 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             if($al[0]=="Answers")
                             {
                                 $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
-                                $query .= ($sDatabaseType == "mysql")?  sanitize_int($al[2])." != ''" : "NOT (".sanitize_int($al[2])." LIKE '')";
+                                $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
                             }
                             //"no answer" handling
                             elseif($al[0]=="NoAnswer")
                             {
                                 $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
-                                $query .= ($sDatabaseType == "mysql")?  sanitize_int($al[2])." = '')" : " (".sanitize_int($al[2])." LIKE ''))";
+                                $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
                             }
                         }
                         elseif ($qtype == "O")
                         {
                             $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
-                            $query .= ($sDatabaseType == "mysql")?  sanitize_int($al[2])." <> '')" : " (".sanitize_int($al[2])." NOT LIKE ''))";
+                            $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
                             // all other question types
                         }
                         else
                         {
-                            $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . sanitize_int($al[2])." =";
+                            $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2])." =";
 
                             //ranking question?
                             if (substr($rt, 0, 1) == "R")
@@ -2196,13 +2198,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             //get more data
                             $sDatabaseType = Yii::app()->db->getDriverName();
-                            if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
+                            if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
-                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".sanitize_int($rt)." as varchar)= '$al[0]'";
+                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
                             }
                             else
-                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . sanitize_int($rt)." = '$al[0]'";
+                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($rt)." = '$al[0]'";
                         }
                         else
                         { // This is for the 'NoAnswer' case
@@ -2213,21 +2215,21 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //  ==> value is ''
                             // * NoAnswer due to conditions, or a page not displayed
                             //  ==> value is NULL
-                            if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
+                            if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
                                 //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
                                 $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                                 //                                    . "OR cast(".sanitize_int($rt)." as varchar) = '' "
-                                . "cast(".sanitize_int($rt)." as varchar) = '' "
-                                . "OR cast(".sanitize_int($rt)." as varchar) = ' ' )";
+                                . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
+                                . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
                             }
                             else
                                 //			    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
                                 $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                                 //								    . "OR ".sanitize_int($rt)." = '' "
-                                . " ".sanitize_int($rt)." = '' "
-                                . "OR ".sanitize_int($rt)." = ' ') ";
+                                . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
+                                . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
                         }
 
                     }
@@ -3348,7 +3350,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 //close table/output
                 if($outputType=='html') {
                     if ($usegraph) {
-                        $sImgUrl = Yii::app()->getConfig('imageurl');
+                        $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
                         $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
                         ."<img class='stats-showgraph' src='$sImgUrl/chart_disabled.png'/>"
@@ -3415,7 +3417,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             break;
         case 'html':
             $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>"
-            ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('imageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
+            ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
             return $statisticsoutput;
 
             break;

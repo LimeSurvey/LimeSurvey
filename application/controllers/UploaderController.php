@@ -240,15 +240,14 @@ class UploaderController extends AdminController {
 		    }
 		return;
 		}
-
-		$meta = '<script type="text/javascript">
+		$meta ='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'jquery/jquery.js"></script>';
+		$meta .= '<script type="text/javascript">
 		    var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";
 		    var surveyid = "'.$surveyid.'";
 		    var fieldname = "'.$param['fieldname'].'";
 		    var questgrppreview  = '.$param['preview'].';
 		</script>';
-
 		$meta .='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/ajaxupload.js"></script>
 		<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/uploader.js"></script>
 		<link type="text/css" href="'.Yii::app()->getConfig("generalscripts").'/uploader.css" rel="stylesheet" />';

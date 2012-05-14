@@ -88,7 +88,7 @@ class questiongroup extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['aImportResults'] = $aImportResults;
             $aData['sExtension'] = $sExtension;
-            $aData['display']['menu_bars']['surveysummary'] = 'importgroup';
+            //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'import_view', $aData);
             // TMSW Conditions->Relevance:  call LEM->ConvertConditionsToRelevance() after import
@@ -409,7 +409,7 @@ class questiongroup extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'survey/QuestionGroups', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/".Yii::app()->getConfig('admintheme')."/superfish.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

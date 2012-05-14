@@ -17,7 +17,7 @@
             {
                 echo "(" . $clang->gT("Base language") . ")";
             }
-            echo "</li>";
+            echo "</a></li>";
         }
         ?>
     </ul>

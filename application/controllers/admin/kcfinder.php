@@ -44,7 +44,14 @@ class kcfinder extends Survey_Common_Action
                 if (hasSurveyPermission($surveyid, 'surveycontent', 'update'))
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
-                    $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");
+                    if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
+                    {
+                        $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createAbsoluteUrl("upload/surveys/{$surveyid}/");
+                    }
+                    else
+                    {
+                        $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");
+                    }
                     $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/surveys/{$surveyid}/";
                 }
             }

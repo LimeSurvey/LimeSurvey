@@ -287,7 +287,7 @@ function activateSurvey($surveyid, $simulate = false)
     }
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',true,false,getBaseLanguageFromSurveyID($surveyid));
 
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
@@ -299,7 +299,6 @@ function activateSurvey($surveyid, $simulate = false)
                 break;
             case 'id':
                 $createsurvey[$arow['fieldname']] = "INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY";
-                $createsurveytimings .= " `{$arow['fieldname']}` INT NOT NULL PRIMARY,\n";
                 break;
             case "startdate":
             case "datestamp":
@@ -441,7 +440,7 @@ function activateSurvey($surveyid, $simulate = false)
             {
                 if ($row['autonumber_start'] > 0)
                 {
-                    if (Yii::app()->db->driverName=='odbc_mssql' || Yii::app()->db->driverName=='odbtp' || Yii::app()->db->driverName=='mssql_n' || Yii::app()->db->driverName=='mssqlnative') {
+                    if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv') {
                         mssql_drop_primary_index('survey_'.$surveyid);
                         mssql_drop_constraint('id','survey_'.$surveyid);
                         $autonumberquery = "alter table {{survey_{$surveyid}}} drop column id ";
@@ -456,24 +455,32 @@ function activateSurvey($surveyid, $simulate = false)
                     }
                 }
             }
+        }
 
-            if (isset($savetimings) && $savetimings=="TRUE")
+        if (isset($savetimings) && $savetimings=="TRUE")
+        {
+            $timingsfieldmap = createTimingsFieldMap($surveyid,"full",false,false,getBaseLanguageFromSurveyID($surveyid));
+
+            $column = array();
+            $column['id'] = $createsurvey['id'];
+            foreach ($timingsfieldmap as $field=>$fielddata)
             {
-                $timingsfieldmap = createTimingsFieldMap($surveyid,"full",false,false,getBaseLanguageFromSurveyID($surveyid));
-                $createsurveytimings .= '`'.implode("` F DEFAULT '0',\n`",array_keys($timingsfieldmap)) . "` F DEFAULT '0'";
-
-
-
-                foreach ($timingsfieldmap as $field=>$fielddata)
-                {
-                    $column[$field] = 'FLOAT';
-                }
-                $command = new CDbCommand(Yii::app()->db);
-                foreach($column as $name => $type)
-                {
-                    $command->addColumn($tabname,$name,$type);
-                }
+                $column[$field] = 'FLOAT';
             }
+
+            $command = new CDbCommand(Yii::app()->db);
+            $tabname = "{{survey_{$surveyid}}}_timings";
+            try
+            {
+                $execresult = $command->createTable($tabname,$column);
+                $execresult = true;
+            }
+            catch (CDbException $e)
+            {
+                echo $e->getMessage();
+                $execresult = false;
+            }
+            
         }
 
         $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
@@ -481,21 +488,19 @@ function activateSurvey($surveyid, $simulate = false)
         $activateoutput .= "<div class='successheader'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
 
         // create the survey directory where the uploaded files can be saved
-        if ($createsurveydirectory)
-            if (!file_exists(Yii::app()->getConfig('rootdir')."upload/surveys/" . $surveyid . "/files") && !(mkdir(Yii::app()->getConfig('rootdir')."upload/surveys/" . $surveyid . "/files", 0777, true)))
-            if (!file_exists(Yii::app()->getConfig('uploaddir')."/surveys/" . $surveyid . "/files"))
+        if ($createsurveydirectory) 
+        {
+            if (!file_exists(Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyid . "/files"))
             {
-               if (!(mkdir(Yii::app()->getConfig('uploaddir')."/surveys/" . $surveyid . "/files", 0777, true)))
-               {
-
-                $activateoutput .= "<div class='warningheader'>".
-                    $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.") . "</div>";
-               }
-               else
-               {
-                   file_put_contents(Yii::app()->getConfig('uploaddir')."/surveys/" . $surveyid . "/files/index.html",'<html><head></head><body></body></html>');
-               }
+                if (!(mkdir(Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyid . "/files", 0777, true)))
+                {
+                    $activateoutput .= "<div class='warningheader'>" .
+                        $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.") . "</div>";
+                } else {
+                    file_put_contents(Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyid . "/files/index.html", '<html><head></head><body></body></html>');
+                }                
             }
+        }
         $acquery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$surveyid;
         $acresult = Yii::app()->db->createCommand($acquery)->query();
 
