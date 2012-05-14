@@ -57,6 +57,7 @@ else
 ?>
 <script type="text/javascript">
     /* Search form titles */
+    var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
     var selectTxt="<?php $clang->eT("Select...") ?>";
     var emailTxt="<?php $clang->eT("Email") ?>";
     var firstnameTxt="<?php $clang->eT("First name") ?>";
@@ -96,7 +97,6 @@ else
 
     var resetBtn = "<?php $clang->eT("Reset"); ?>";
     var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
-    var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
     var noSearchResultsTxt = "<?php $clang->eT("Your search returned no results"); ?>";
     var accessDeniedTxt = "<?php $clang->eT("Access denied"); ?>";
     var closeTxt = "<?php $clang->eT("Close"); ?>";
@@ -130,8 +130,10 @@ else
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editParticipant"); ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
     var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getaddtosurveymsg"); ?>";
-    var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/deleteanswer.png" ?>";
-    var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>";
+    var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
+    var addbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>";
+    var minusbuttonTxt = "<?php $clang->eT("Remove search condition") ?>";
+    var addbuttonTxt = "<?php $clang->eT("Add search condition") ?>";
     var delparticipantUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/delParticipant"); ?>";
     var getAttribute_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getAttribute_json/pid/"); ?>";
     var exporttocsv = "<?php echo Yii::app()->getController()->createUrl("admin/participants/exporttocsv/id"); ?>";
@@ -195,7 +197,7 @@ echo $colModels;
             <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
             <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>  id="addbutton" style="margin-bottom:4px"></td>
+            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>  id="addbutton" style="margin-bottom:4px" alt='<?php $clang->eT("Add search condition"); ?>'></td>
         </tr>
     </table>
     <br/>
