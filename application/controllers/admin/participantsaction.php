@@ -114,13 +114,26 @@ class participantsaction extends Survey_Common_Action
         {
             $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('survey.owner_id=:uid AND surveyls_language=:lang',array('survey.uid'=>Yii::app()->session['loginID'], ':lang'=>$lang));
         }
+        //echo "<pre>"; print_r($aSurveyNames); echo "</pre>";
+        $tSurveyNames=array();
+        foreach($aSurveyNames as $row)
+        {
+            //echo $row['surveyls_survey_id']."<br />";
+            $bTokenExists = tableExists('{{tokens_' . $row['surveyls_survey_id'] . '}}');
+            if ($bTokenExists) //If tokens table exists
+            {
+                $tSurveyNames[]=$row;
+            }
+        }
+
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
             'attributes' => ParticipantAttributeNames::getVisibleAttributes(),
             'allattributes' => ParticipantAttributeNames::getAllAttributes(),
             'attributeValues' => ParticipantAttributeNames::getAllAttributesValues(),
-            'surveynames' => $aSurveyNames
+            'surveynames' => $aSurveyNames,
+            'tokensurveynames' => $tSurveyNames
         );
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');

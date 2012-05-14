@@ -106,7 +106,7 @@ else
     var addpartTitle = "<?php $clang->eT("Add participant to survey"); ?>";
     var addAllInViewTxt="<?php $clang->eT("Add all %s participants in your current list to a survey."); ?>";
     var addSelectedItemsTxt="<?php $clang->eT("Add the %s selected participants to a survey.") ?>";
-    var addpartErrorMsg = "<?php $clang->eT("Either you don't own a survey or it doesn't have token table"); ?>";
+    var addpartErrorMsg = "<?php $clang->eT("No surveys are available. Either you don't have permissions to any surveys or none of your surveys have a token table"); ?>";
     var mapButton = "<?php $clang->eT("Next") ?>";
     var error = "<?php $clang->eT("Error") ?>";
     var addsurvey = "<?php $clang->eT("Add participants to survey") ?>";
@@ -277,10 +277,10 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
           </h4>
           <p>
             <?php
-            if (!empty($surveynames))
+            if (!empty($tokensurveynames))
             {
                 //$option[''] = $clang->gT("Select...");
-                foreach ($surveynames as $row)
+                foreach ($tokensurveynames as $row)
                 {
                     $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
                 }
