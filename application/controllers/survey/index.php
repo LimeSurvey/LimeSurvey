@@ -147,7 +147,7 @@ class index extends CAction {
 
 
         //CHECK FOR REQUIRED INFORMATION (sid)
-        if ($surveyid)
+        if ($surveyid && $surveyExists)
         {
             $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
         }
@@ -261,14 +261,23 @@ class index extends CAction {
                 $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
             }
             Yii::app()->loadConfig('email');
+            if(!$surveyid)
+            {
+                $thissurvey['name']=Yii::app()->getConfig("sitename");
+                $nosid=$clang->gT("You have not provided a survey identification number");
+            }
+            else
+            {
+                $thissurvey['name']=$clang->gT("The survey identification number is invalid");
+                $nosid=$clang->gT("The survey identification number is invalid");
+            }
             $surveylist=array(
-            "nosid"=>$clang->gT("You have not provided a survey identification number"),
+            "nosid"=>$nosid,
             "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail"))),
             "listheading"=>$clang->gT("The following surveys are available:"),
             "list"=>implode("\n",$list),
             );
 
-            $thissurvey['name'] = Yii::app()->getConfig("sitename");
             $thissurvey['templatedir'] = $defaulttemplate;
 
             $data['thissurvey'] = $thissurvey;
