@@ -3887,11 +3887,11 @@
                 $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 $sdata = array(
                 "datestamp"=>$today,
-                "ipaddr"=>(($this->surveyOptions['ipaddr']) ? getIPAddress() : ''),
+                "ipaddr"=>(($this->surveyOptions['ipaddr'] && !$this->surveyOptions['anonymized']) ? getIPAddress() : ''),
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 "token"=>($this->surveyOptions['token']),
                 "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
-                "refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL),
+                "refurl"=>(($this->surveyOptions['refurl'] && !$this->surveyOptions['anonymized']) ? getenv("HTTP_REFERER") : NULL),
                 "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
                 );
                 //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
@@ -3946,7 +3946,7 @@
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
                     $setter[] = db_quote_id('datestamp') . "=" . db_quoteall($_SESSION['datestamp']);
                 }
-                if ($this->surveyOptions['ipaddr']) {
+                if ($this->surveyOptions['ipaddr']  && !$this->surveyOptions['anonymized']) {
                     $setter[] = db_quote_id('ipaddr') . "=" . db_quoteall(getIPAddress());
                 }
 
