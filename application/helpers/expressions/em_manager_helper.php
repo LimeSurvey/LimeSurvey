@@ -2716,6 +2716,7 @@
                     case ':': //ARRAY (Multi Flexi) 1 to 10
                         $onlynum=true;
                         break;
+                    case '*': // Equation
                     case ';': //ARRAY (Multi Flexi) Text
                     case 'Q': //MULTIPLE SHORT TEXT
                     case 'S': //SHORT FREE TEXT

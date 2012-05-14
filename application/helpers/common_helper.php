@@ -3557,7 +3557,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Integer only'));
 
     $qattributes["numbers_only"]=array(
-    "types"=>"Q;S",
+    "types"=>"Q;S*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
