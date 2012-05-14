@@ -3884,11 +3884,11 @@
                     ));
 
                 }
-                if ($this->surveyOptions['ipaddr'] == "Y")
+                if ($this->surveyOptions['ipaddr'] == "Y" && !$this->surveyOptions['anonymized'])
                 {
                     $sdata = array_merge($sdata,array("ipaddr"=>getIPAddress()));
                 }
-                if ($this->surveyOptions['refurl'] == "Y")
+                if ($this->surveyOptions['refurl'] == "Y" && !$this->surveyOptions['anonymized'])
                 {
                     $sdata = array_merge($sdata,array("refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL)));
                 }
@@ -3942,7 +3942,7 @@
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                     $setter[] = dbQuoteID('datestamp') . "=" . dbQuoteAll($_SESSION[$this->sessid]['datestamp']);
                 }
-                if ($this->surveyOptions['ipaddr']) {
+                if ($this->surveyOptions['ipaddr'] && !$this->surveyOptions['anonymized']) {
                     $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll(getIPAddress());
                 }
   
