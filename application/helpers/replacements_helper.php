@@ -127,20 +127,19 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if(stripos ($line,"{TEMPLATECSS}"))
     {
         global $css_header_includes;
+        $_templatecss .="<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css' />\n"; // Remove it after corrected slider
         if (file_exists($templatedir . '/jquery-ui-custom.css'))
         {
-            $_jqueryuicssurl = "{$templateurl}jquery-ui-custom.css";
+            $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$_jqueryuicssurl}' />\n";
         }
         elseif(file_exists($templatedir . '/jquery-ui.css'))
         {
-            $_jqueryuicssurl = "{$templateurl}jquery-ui.css";
+            $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$_jqueryuicssurl}' />\n";
         }
-#        else
-#        { // Review for slider
+        else
+        { 
 #            $_jqueryuicssurl =Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css";
-#        }
-        $_templatecss .="<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css' />\n"; // Remove it after corrected slider
-        $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$_jqueryuicssurl}' />\n";
+        }
         if(Yii::app()->getConfig("css_admin_includes"))
         {
             if(!$js_header_includes){$js_header_includes=array();}
