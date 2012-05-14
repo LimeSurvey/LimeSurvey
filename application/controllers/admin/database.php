@@ -371,7 +371,7 @@ class database extends Survey_Common_Action
             if (strlen(Yii::app()->request->getPost('title')) < 1)
             {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n "
-                ."alert(\"".$clang->gT("The question could not be added. You must enter at least enter a question code.","js")."\")\n "
+                ."alert(\"".$clang->gT("The question could not be added. You must enter at least a question code.","js")."\")\n "
                 ."//-->\n</script>\n";
             }
             else
