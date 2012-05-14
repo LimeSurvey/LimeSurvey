@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: LimeSurvey 1.92\n"
+"Project-Id-Version: LimeSurvey 1.92+\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-09 13:10+0100\n"
-"PO-Revision-Date: 2012-05-09 13:11+0100\n"
+"POT-Creation-Date: 2012-05-14 10:02+0100\n"
+"PO-Revision-Date: 2012-05-14 10:02+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Mezene Worku <mezwor@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: common_functions.php:3725
 msgid "'Other:' comment mandatory"
-msgstr ""
+msgstr "“ሌላ፡” አስፈላጊ አስተያት"
 
 #: qanda.php:319
 #: qanda.php:320
@@ -37,47 +37,47 @@ msgstr ""
 
 #: common_functions.php:4058
 msgid "1st time limit warning CSS style"
-msgstr ""
+msgstr "ለ1ኛ ጊዜ ገደብ ሲኤስኤስ ቅጥ ማስጠንቀቂያ"
 
 #: common_functions.php:4050
 msgid "1st time limit warning message"
-msgstr ""
+msgstr "ለ1ኛ ጊዜ ገደብ ማስጠንቀቂያ መልዕክት"
 
 #: common_functions.php:4042
 msgid "1st time limit warning message display time"
-msgstr ""
+msgstr "ለ1ኛ ጊዜ ገደብ ማስጠንቀቂያ መልዕክት ማሳያ ግዜ"
 
 #: common_functions.php:4034
 msgid "1st time limit warning message timer"
-msgstr ""
+msgstr "ለ1ኛ ጊዜ ገደብ ማስጠንቀቂያ መልዕክት ሰዓት ቆጣሪ"
 
 #: common_functions.php:4090
 msgid "2nd time limit warning CSS style"
-msgstr ""
+msgstr "ለ2ኛ ጊዜ ገደብ ሲኤስኤስ ቅጥ ማስጠንቀቂያ"
 
 #: common_functions.php:4082
 msgid "2nd time limit warning message"
-msgstr ""
+msgstr "ለ2ኛ ጊዜ ገደብ ማስጠንቀቂያ መልክት"
 
 #: common_functions.php:4074
 msgid "2nd time limit warning message display time"
-msgstr ""
+msgstr "ለ2ኛ ጊዜ ገደብ ማስጠንቀቂያ መልዕክት ማሳያ ግዜ"
 
 #: common_functions.php:4066
 msgid "2nd time limit warning message timer"
-msgstr ""
+msgstr "ለ2ኛ ጊዜ ገደብ ማስጠንቀቂያ መልዕክት ሰዓት ቆጣሪ"
 
 #: common_functions.php:110
 msgid "5 Point Choice"
-msgstr ""
+msgstr "ባለ 5 ነጥብ ምርጫ"
 
 #: common_functions.php:3931
 msgid "Accelerator keys for list items"
-msgstr ""
+msgstr "አጥዳፊ ቁልፎች ለዝርዝር ዓይነቶች"
 
 #: common_functions.php:3964
 msgid "Action to perform when time limit is up"
-msgstr ""
+msgstr "የጊዜ ገደብ ሲያበቃ የሚፈጸም ርምጃ"
 
 #: common_functions.php:3451
 msgid "Activate this to show a map above the input field where the user can select a location"
@@ -85,7 +85,7 @@ msgstr ""
 
 #: common_functions.php:631
 msgid "Active"
-msgstr ""
+msgstr "ገባሪ"
 
 #: common_functions.php:3762
 msgid "Add a prefix to the answer field"
@@ -105,7 +105,7 @@ msgstr ""
 
 #: common_functions.php:4149
 msgid "Allowed file types"
-msgstr ""
+msgstr "የተፈቀዱ የፋይል ዓይነቶች"
 
 #: common_functions.php:4148
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
@@ -113,7 +113,7 @@ msgstr ""
 
 #: common_functions.php:3521
 msgid "Always hide this question"
-msgstr ""
+msgstr "ይህን ጥያቄ ሁል-ግዜ ደብቅ"
 
 #: register.php:176
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
@@ -132,7 +132,7 @@ msgstr ""
 #: qanda.php:4204
 #: qanda.php:4278
 msgid "Answer"
-msgstr ""
+msgstr "መልስ"
 
 #: common_functions.php:3763
 msgid "Answer prefix"
@@ -152,27 +152,27 @@ msgstr ""
 
 #: qanda.php:1118
 msgid "Apr"
-msgstr ""
+msgstr "ሚያዝ"
 
 #: common_functions.php:146
 msgid "Array"
-msgstr ""
+msgstr "ድርድር"
 
 #: common_functions.php:122
 msgid "Array (10 Point Choice)"
-msgstr ""
+msgstr "ድርድር (ባለ 10 ነጥብ ምርጫ)"
 
 #: common_functions.php:116
 msgid "Array (5 Point Choice)"
-msgstr ""
+msgstr "ድርድር (ባለ 5 ነጥብ ምርጫ)"
 
 #: common_functions.php:140
 msgid "Array (Increase/Same/Decrease)"
-msgstr ""
+msgstr "ድርድር (ጨምር/አንድ ዓይነት/ቀንስ)"
 
 #: common_functions.php:254
 msgid "Array (Numbers)"
-msgstr ""
+msgstr "ድርድር (ቁጥሮች)"
 
 #: common_functions.php:260
 msgid "Array (Texts)"
@@ -184,7 +184,7 @@ msgstr ""
 
 #: common_functions.php:158
 msgid "Array by column"
-msgstr ""
+msgstr "ድርድር በአምድ"
 
 #: common_functions.php:104
 msgid "Array dual scale"
@@ -200,7 +200,7 @@ msgstr ""
 
 #: common_functions.php:96
 msgid "Arrays"
-msgstr ""
+msgstr "ድርድሮች"
 
 #: common_functions.php:3243
 msgid "Assessment value"
@@ -223,7 +223,7 @@ msgstr ""
 
 #: qanda.php:1122
 msgid "Aug"
-msgstr ""
+msgstr "ነሐሴ"
 
 #: common_functions.php:3396
 msgid "Auto-check exclusive option if all others are checked"
@@ -317,19 +317,19 @@ msgstr ""
 
 #: common_functions.php:3683
 msgid "Columns"
-msgstr ""
+msgstr "አምዶች"
 
 #: common_functions.php:2559
 #: common_functions.php:2779
 #: qanda.php:3070
 msgid "Comment"
-msgstr ""
+msgstr "አስተያየት"
 
 #: index.php:1711
 #: index.php:1786
 #: index.php:1953
 msgid "Continue"
-msgstr ""
+msgstr "ቀጥል"
 
 #: index.php:1611
 msgid "DATA TO BE ENTERED"
@@ -337,7 +337,7 @@ msgstr ""
 
 #: common_functions.php:134
 msgid "Date"
-msgstr ""
+msgstr "ቀን"
 
 #: common_functions.php:2359
 msgid "Date last action"
@@ -354,17 +354,17 @@ msgstr ""
 #: qanda.php:1095
 #: qanda.php:1096
 msgid "Day"
-msgstr ""
+msgstr "ዕለት"
 
 #: qanda.php:1126
 msgid "Dec"
-msgstr ""
+msgstr "ታኅሣ"
 
 #: common_functions.php:1929
 #: qanda.php:4903
 #: qanda.php:4967
 msgid "Decrease"
-msgstr ""
+msgstr "ቀንስ"
 
 #: common_functions.php:3939
 msgid "Default"
@@ -512,11 +512,11 @@ msgid "Enter a header text for the second scale"
 msgstr ""
 
 #: common_functions.php:3233
-msgid "Enter the code of a Multiple choice question to exclude the matching answer options in this question."
+msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
 msgstr ""
 
 #: common_functions.php:3225
-msgid "Enter the code of a Multiple choice question to only show the matching answer options in this question."
+msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
 msgstr ""
 
 #: common_functions.php:3345
@@ -569,7 +569,7 @@ msgstr ""
 
 #: qanda.php:1116
 msgid "Feb"
-msgstr ""
+msgstr "የካቲ"
 
 #: common_functions.php:1913
 #: qanda.php:4363
@@ -748,15 +748,15 @@ msgstr ""
 
 #: qanda.php:1115
 msgid "Jan"
-msgstr ""
+msgstr "ጥር"
 
 #: qanda.php:1121
 msgid "Jul"
-msgstr ""
+msgstr "ሐምሌ"
 
 #: qanda.php:1120
 msgid "Jun"
-msgstr ""
+msgstr "ሰኔ"
 
 #: common_functions.php:3744
 msgid "Label for 'Other:' option"
@@ -875,7 +875,7 @@ msgstr ""
 
 #: qanda.php:1117
 msgid "Mar"
-msgstr ""
+msgstr "መጋቢ"
 
 #: common_functions.php:97
 msgid "Mask questions"
@@ -916,7 +916,7 @@ msgstr ""
 #: common_functions.php:3545
 #: common_functions.php:3601
 msgid "Maximum value"
-msgstr ""
+msgstr "ከፍተኛ እሴት"
 
 #: common_functions.php:3600
 msgid "Maximum value for array(mult-flexible) question type"
@@ -928,7 +928,7 @@ msgstr ""
 
 #: common_functions.php:3305
 msgid "Maximum year"
-msgstr ""
+msgstr "ከፍተኛ አመት"
 
 #: common_functions.php:3304
 msgid "Maximum year value for calendar"
@@ -936,7 +936,7 @@ msgstr ""
 
 #: qanda.php:1119
 msgid "May"
-msgstr ""
+msgstr "ግንቦ"
 
 #: common_functions.php:4140
 msgid "Min number of files"
@@ -952,12 +952,12 @@ msgstr ""
 
 #: common_functions.php:3577
 msgid "Minimum sum value"
-msgstr ""
+msgstr "ዝቅተኛ ድምር እሴት"
 
 #: common_functions.php:3585
 #: common_functions.php:3609
 msgid "Minimum value"
-msgstr ""
+msgstr "ዝቅተኛ እሴት"
 
 #: common_functions.php:3608
 msgid "Minimum value for array(multi-flexible) question type"
@@ -969,7 +969,7 @@ msgstr ""
 
 #: common_functions.php:3297
 msgid "Minimum year"
-msgstr ""
+msgstr "ዝቅተኛ ዓመት"
 
 #: common_functions.php:3296
 msgid "Minimum year value in calendar"
@@ -978,11 +978,11 @@ msgstr ""
 #: qanda.php:1112
 #: qanda.php:1113
 msgid "Month"
-msgstr ""
+msgstr "ወር"
 
 #: common_functions.php:3962
 msgid "Move on without warning"
-msgstr ""
+msgstr "ያለ ማስጠንቀቂያ ቀጥል"
 
 #: common_functions.php:170
 msgid "Multiple Numerical Input"
@@ -990,11 +990,11 @@ msgstr ""
 
 #: common_functions.php:206
 msgid "Multiple Short Text"
-msgstr ""
+msgstr "ምርጫ አጭር ፅሑፍ"
 
 #: common_functions.php:182
 msgid "Multiple choice"
-msgstr ""
+msgstr "ምርጫ"
 
 #: common_functions.php:99
 msgid "Multiple choice questions"
@@ -1012,7 +1012,7 @@ msgstr ""
 #: index.php:2400
 #: index.php:2405
 msgid "Next"
-msgstr ""
+msgstr "ቀጥሎ"
 
 #: common_functions.php:1905
 #: common_functions.php:1921
@@ -1083,7 +1083,7 @@ msgstr ""
 #: qanda.php:6754
 #: qanda.php:6808
 msgid "No answer"
-msgstr ""
+msgstr "መልስ የለም"
 
 #: index.php:443
 msgid "No available surveys"
@@ -1110,7 +1110,7 @@ msgstr ""
 
 #: qanda.php:1125
 msgid "Nov"
-msgstr ""
+msgstr "ኅዳር"
 
 #: common_functions.php:3672
 msgid "Numbers only"
@@ -1126,7 +1126,7 @@ msgstr ""
 
 #: qanda.php:1124
 msgid "Oct"
-msgstr ""
+msgstr "ጥቅም"
 
 #: common_functions.php:3449
 #: common_functions.php:3681
@@ -1516,7 +1516,7 @@ msgstr ""
 
 #: qanda.php:1123
 msgid "Sep"
-msgstr ""
+msgstr "መስከ"
 
 #: common_functions.php:3944
 msgid "Set a specific SPSS export scale type for this question"
@@ -2047,7 +2047,7 @@ msgstr ""
 #: qanda.php:1142
 #: qanda.php:1143
 msgid "Year"
-msgstr ""
+msgstr "ዓመት"
 
 #: common_functions.php:1898
 #: common_functions.php:1904
@@ -2085,7 +2085,7 @@ msgstr ""
 #: qanda.php:4745
 #: qanda.php:4784
 msgid "Yes"
-msgstr ""
+msgstr "አዎ"
 
 #: common_functions.php:3860
 msgid "Yes - slider with emoticon"
@@ -2097,7 +2097,7 @@ msgstr ""
 
 #: common_functions.php:242
 msgid "Yes/No"
-msgstr ""
+msgstr "አዎ/አይደለም"
 
 #: optout.php:57
 msgid "You are not a participant in this survey."
@@ -2204,7 +2204,7 @@ msgstr ""
 
 #: group.php:432
 msgid "or"
-msgstr ""
+msgstr "ወይም"
 
 #: qanda.php:760
 #: qanda.php:778
@@ -2418,7 +2418,7 @@ msgstr ""
 
 #: admin/assessments.php:194
 msgid "Delete"
-msgstr ""
+msgstr "ሰርዝ"
 
 #: admin/browse.php:558
 #: admin/browse.php:898
@@ -2436,7 +2436,7 @@ msgstr ""
 
 #: admin/browse.php:727
 msgid "Display:"
-msgstr ""
+msgstr "አሳይ:"
 
 #: admin/browse.php:315
 #: admin/browse.php:840
@@ -2489,7 +2489,7 @@ msgstr ""
 #: admin/browse.php:137
 #: admin/browse.php:475
 msgid "Email"
-msgstr ""
+msgstr "ኤሌክትሮኒካዊ ሜይል "
 
 #: replacements.php:705
 msgid "Enter a name and password for this survey and click save below."
@@ -2653,11 +2653,11 @@ msgstr ""
 #: admin/assessments.php:173
 #: admin/assessments.php:271
 msgid "Message"
-msgstr ""
+msgstr "መልዕክት"
 
 #: admin/assessments.php:288
 msgid "Message:"
-msgstr ""
+msgstr "መልዕክት፡"
 
 #: admin/assessments.php:145
 #: admin/assessments.php:236
@@ -2667,7 +2667,7 @@ msgstr ""
 #: replacements.php:441
 #: save.php:172
 msgid "Name"
-msgstr ""
+msgstr "ስም"
 
 #: admin/assessments.php:133
 msgid "No SID Provided"
@@ -3518,7 +3518,7 @@ msgid "Conditions successfully copied (some were skipped because they were dupli
 msgstr ""
 
 #: admin/dataentry.php:185
-#: admin/dataentry.php:3062
+#: admin/dataentry.php:3063
 msgid "Confirm Password:"
 msgstr ""
 
@@ -3593,9 +3593,9 @@ msgstr ""
 #: admin/dataentry.php:78
 #: admin/dataentry.php:91
 #: admin/dataentry.php:518
-#: admin/dataentry.php:1588
-#: admin/dataentry.php:1676
-#: admin/dataentry.php:1715
+#: admin/dataentry.php:1589
+#: admin/dataentry.php:1677
+#: admin/dataentry.php:1716
 msgid "Data entry"
 msgstr ""
 
@@ -3620,7 +3620,7 @@ msgstr ""
 msgid "Date format:"
 msgstr ""
 
-#: admin/dataentry.php:1774
+#: admin/dataentry.php:1775
 msgid "Datestamp"
 msgstr ""
 
@@ -3745,7 +3745,7 @@ msgid "Email templates successfully saved."
 msgstr ""
 
 #: admin/dataentry.php:187
-#: admin/dataentry.php:3064
+#: admin/dataentry.php:3065
 msgid "Email:"
 msgstr ""
 
@@ -3860,8 +3860,8 @@ msgstr ""
 msgid "Filtered from statistics script"
 msgstr ""
 
-#: admin/dataentry.php:1549
-#: admin/dataentry.php:3048
+#: admin/dataentry.php:1550
+#: admin/dataentry.php:3049
 msgid "Finalize response submission"
 msgstr ""
 
@@ -3959,7 +3959,7 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: admin/dataentry.php:2026
+#: admin/dataentry.php:2027
 msgid "Help about this question"
 msgstr ""
 
@@ -3974,8 +3974,8 @@ msgid "Hide both (Forced by the system administrator)"
 msgstr ""
 
 #: admin/dataentry.php:181
-#: admin/dataentry.php:1554
-#: admin/dataentry.php:3058
+#: admin/dataentry.php:1555
+#: admin/dataentry.php:3059
 msgid "Identifier:"
 msgstr ""
 
@@ -4035,7 +4035,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: admin/dataentry.php:2070
+#: admin/dataentry.php:2071
 #, php-format
 msgid "Label %s"
 msgstr ""
@@ -4174,16 +4174,16 @@ msgstr ""
 msgid "On (Forced by the system administrator)"
 msgstr ""
 
-#: admin/dataentry.php:1984
+#: admin/dataentry.php:1985
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: admin/dataentry.php:3171
+#: admin/dataentry.php:3172
 #, php-format
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
 msgstr ""
 
-#: admin/dataentry.php:3162
+#: admin/dataentry.php:3163
 #, php-format
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
 msgstr ""
@@ -4205,7 +4205,7 @@ msgid "Participants may print answers?"
 msgstr ""
 
 #: admin/dataentry.php:183
-#: admin/dataentry.php:3060
+#: admin/dataentry.php:3061
 msgid "Password:"
 msgstr ""
 
@@ -4339,11 +4339,11 @@ msgstr ""
 msgid "Range:"
 msgstr ""
 
-#: admin/dataentry.php:1685
+#: admin/dataentry.php:1686
 msgid "Record Deleted"
 msgstr ""
 
-#: admin/dataentry.php:1668
+#: admin/dataentry.php:1669
 msgid "Record has been updated."
 msgstr ""
 
@@ -4440,8 +4440,8 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: admin/dataentry.php:1550
-#: admin/dataentry.php:3054
+#: admin/dataentry.php:1551
+#: admin/dataentry.php:3055
 msgid "Save for further completion by survey user"
 msgstr ""
 
@@ -4588,7 +4588,7 @@ msgid "Some example subquestion"
 msgstr ""
 
 #: admin/dataentry.php:189
-#: admin/dataentry.php:3066
+#: admin/dataentry.php:3067
 msgid "Start Language:"
 msgstr ""
 
@@ -4609,7 +4609,7 @@ msgid "Subquestions were successfully saved."
 msgstr ""
 
 #: admin/dataentry.php:412
-#: admin/dataentry.php:1667
+#: admin/dataentry.php:1668
 msgid "Success"
 msgstr ""
 
@@ -4660,11 +4660,11 @@ msgstr ""
 msgid "Template:"
 msgstr ""
 
-#: admin/dataentry.php:1996
+#: admin/dataentry.php:1997
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: admin/dataentry.php:1990
+#: admin/dataentry.php:1991
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
@@ -4688,7 +4688,7 @@ msgstr ""
 msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr ""
 
-#: admin/dataentry.php:3113
+#: admin/dataentry.php:3114
 msgid "The survey you selected does not exist"
 msgstr ""
 
@@ -4749,7 +4749,7 @@ msgstr ""
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses (including any uploaded files) will be deleted. We recommend that you export the responses (and files) before deleting this survey."
 msgstr ""
 
-#: admin/dataentry.php:3103
+#: admin/dataentry.php:3104
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr ""
 
@@ -4836,7 +4836,7 @@ msgid "Use default"
 msgstr ""
 
 #: admin/dataentry.php:422
-#: admin/dataentry.php:1669
+#: admin/dataentry.php:1670
 msgid "View This Record"
 msgstr ""
 
@@ -7336,7 +7336,7 @@ msgstr ""
 msgid "Languages:"
 msgstr ""
 
-#: admin/quota.php:498
+#: admin/quota.php:499
 #: admin/quota.php:675
 msgid "Limit"
 msgstr ""
@@ -9131,7 +9131,7 @@ msgstr ""
 #: admin/userrighthandling.php:626
 #: admin/userrighthandling.php:646
 msgid "Name:"
-msgstr ""
+msgstr "ስም፡"
 
 #: admin/tokens.php:2698
 msgid "New dummy tokens were added."
@@ -9665,7 +9665,7 @@ msgstr ""
 
 #: admin/tokens.php:677
 msgid "Show help"
-msgstr ""
+msgstr "እገዛ አሳይ"
 
 #: admin/statistics.php:345
 msgid "Show text responses inline"
@@ -9746,11 +9746,11 @@ msgstr ""
 #: admin/tokens.php:1472
 #: admin/tokens.php:1755
 msgid "Subject"
-msgstr ""
+msgstr "ጉዳዩ"
 
 #: admin/userrighthandling.php:668
 msgid "Subject:"
-msgstr ""
+msgstr "ጉዳዩ፡"
 
 #: admin/templates.php:695
 msgid "Submit your survey."
@@ -9774,7 +9774,7 @@ msgstr ""
 #: admin/statistics_function.php:2877
 #: admin/statistics_function.php:2883
 msgid "Sum"
-msgstr ""
+msgstr "ድምር"
 
 #: admin/userrighthandling.php:312
 msgid "SuperAdministrator"
@@ -10765,7 +10765,7 @@ msgstr ""
 msgid "Your update key is invalid and was removed. "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7471
+#: classes/expressions/LimeExpressionManager.php:7625
 #, php-format
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
@@ -10784,11 +10784,11 @@ msgstr ""
 
 #: classes/core/surveytranslator.php:164
 msgid "Amharic"
-msgstr ""
+msgstr "አማርኛ"
 
 #: classes/core/surveytranslator.php:178
 msgid "Arabic"
-msgstr ""
+msgstr "አረብኛ"
 
 #: classes/expressions/ExpressionManager.php:145
 msgid "Arc cosine"
@@ -10914,8 +10914,8 @@ msgstr ""
 msgid "Czech"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7150
-#: classes/expressions/LimeExpressionManager.php:7376
+#: classes/expressions/LimeExpressionManager.php:7292
+#: classes/expressions/LimeExpressionManager.php:7518
 msgid "DEFAULT:"
 msgstr ""
 
@@ -10943,20 +10943,26 @@ msgstr ""
 msgid "Dutch Informal"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2080
-#: classes/expressions/LimeExpressionManager.php:2098
+#: classes/expressions/LimeExpressionManager.php:2124
+#: classes/expressions/LimeExpressionManager.php:2145
+#, php-format
+msgid "Each answer must be %s"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2120
+#: classes/expressions/LimeExpressionManager.php:2141
 #, php-format
 msgid "Each answer must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2085
-#: classes/expressions/LimeExpressionManager.php:2103
+#: classes/expressions/LimeExpressionManager.php:2122
+#: classes/expressions/LimeExpressionManager.php:2143
 #, php-format
 msgid "Each answer must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2076
-#: classes/expressions/LimeExpressionManager.php:2094
+#: classes/expressions/LimeExpressionManager.php:2125
+#: classes/expressions/LimeExpressionManager.php:2146
 #, php-format
 msgid "Each answer must be between %s and %s"
 msgstr ""
@@ -11069,17 +11075,17 @@ msgstr ""
 msgid "French"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2041
+#: classes/expressions/ExpressionManager.php:2053
 #, php-format
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1945
+#: classes/expressions/ExpressionManager.php:1957
 #, php-format
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2042
+#: classes/expressions/ExpressionManager.php:2054
 #, php-format
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
@@ -11120,7 +11126,7 @@ msgstr ""
 msgid "Greek"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7158
+#: classes/expressions/LimeExpressionManager.php:7300
 msgid "HELP:"
 msgstr ""
 
@@ -11140,7 +11146,7 @@ msgstr ""
 msgid "Icelandic"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4788
+#: classes/expressions/LimeExpressionManager.php:4890
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr ""
@@ -11153,12 +11159,12 @@ msgstr ""
 msgid "Inserts HTML line breaks before all newlines in a string"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3189
+#: classes/expressions/ExpressionManager.php:3201
 #, php-format
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7094
+#: classes/expressions/LimeExpressionManager.php:7236
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
@@ -11224,7 +11230,7 @@ msgstr ""
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7099
+#: classes/expressions/LimeExpressionManager.php:7241
 msgid "Name [ID]"
 msgstr ""
 
@@ -11232,7 +11238,7 @@ msgstr ""
 msgid "Natural logarithm"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7477
+#: classes/expressions/LimeExpressionManager.php:7631
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
@@ -11260,44 +11266,61 @@ msgstr ""
 msgid "Persian"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2134
+#: classes/expressions/LimeExpressionManager.php:2183
 msgid "Please also fill in the \"other comment\" field."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4839
+#: classes/expressions/LimeExpressionManager.php:4941
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4778
+#: classes/expressions/LimeExpressionManager.php:4880
 msgid "Please check at least one item."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2142
+#: classes/expressions/LimeExpressionManager.php:2191
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4810
-#: classes/expressions/LimeExpressionManager.php:4847
+#: classes/expressions/LimeExpressionManager.php:4912
+#: classes/expressions/LimeExpressionManager.php:4949
 msgid "Please complete all parts"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4855
+#: classes/expressions/LimeExpressionManager.php:4957
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2062
+#: classes/expressions/LimeExpressionManager.php:2102
 #, php-format
-msgid "Please select at least %s answer(s)"
+msgid "Please select %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2067
+#: classes/expressions/LimeExpressionManager.php:2092
 #, php-format
-msgid "Please select at most %s answer(s)"
+msgid "Please select at least %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2058
+#: classes/expressions/LimeExpressionManager.php:2091
+msgid "Please select at least one answer"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2097
 #, php-format
-msgid "Please select between %s and %s answer(s)"
+msgid "Please select at most %s answers"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2096
+msgid "Please select at most one answer"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2104
+#, php-format
+msgid "Please select between %s and %s answers"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2101
+msgid "Please select one answer"
 msgstr ""
 
 #: classes/core/surveytranslator.php:465
@@ -11322,7 +11345,7 @@ msgstr ""
 msgid "Punjabi"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7166
+#: classes/expressions/LimeExpressionManager.php:7308
 msgid "Question Attribute"
 msgstr ""
 
@@ -11330,7 +11353,7 @@ msgstr ""
 msgid "Quote meta characters"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7099
+#: classes/expressions/LimeExpressionManager.php:7241
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
@@ -11415,6 +11438,7 @@ msgid "Spanish"
 msgstr ""
 
 #: classes/core/surveytranslator.php:542
+#: classes/core/surveytranslator.php:549
 msgid "Spanish (Mexico)"
 msgstr ""
 
@@ -11422,7 +11446,7 @@ msgstr ""
 msgid "Square root"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7291
+#: classes/expressions/LimeExpressionManager.php:7433
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
@@ -11442,11 +11466,11 @@ msgstr ""
 msgid "Strip whitespace (or other characters) from the end of a string"
 msgstr ""
 
-#: classes/core/surveytranslator.php:549
+#: classes/core/surveytranslator.php:556
 msgid "Swedish"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7159
+#: classes/expressions/LimeExpressionManager.php:7301
 msgid "TIP:"
 msgstr ""
 
@@ -11454,30 +11478,31 @@ msgstr ""
 msgid "Tangent"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7099
+#: classes/expressions/LimeExpressionManager.php:7241
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/core/surveytranslator.php:563
+#: classes/core/surveytranslator.php:570
 msgid "Thai"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2116
+#: classes/expressions/LimeExpressionManager.php:2162
 #, php-format
 msgid "The sum must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2121
+#: classes/expressions/LimeExpressionManager.php:2164
 #, php-format
 msgid "The sum must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2112
+#: classes/expressions/LimeExpressionManager.php:2167
 #, php-format
 msgid "The sum must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2128
+#: classes/expressions/LimeExpressionManager.php:2166
+#: classes/expressions/LimeExpressionManager.php:2177
 #, php-format
 msgid "The sum must equal %s"
 msgstr ""
@@ -11486,20 +11511,20 @@ msgstr ""
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7480
+#: classes/expressions/LimeExpressionManager.php:7634
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7432
+#: classes/expressions/LimeExpressionManager.php:7586
 #, php-format
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4766
+#: classes/expressions/LimeExpressionManager.php:4868
 msgid "This question is mandatory"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7483
+#: classes/expressions/LimeExpressionManager.php:7637
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
@@ -11507,15 +11532,15 @@ msgstr ""
 msgid "This variable is not declared until a later page"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7279
+#: classes/expressions/LimeExpressionManager.php:7421
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2263
+#: classes/expressions/ExpressionManager.php:2275
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/core/surveytranslator.php:556
+#: classes/core/surveytranslator.php:563
 msgid "Turkish"
 msgstr ""
 
@@ -11531,11 +11556,11 @@ msgstr ""
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:3808
+#: classes/expressions/LimeExpressionManager.php:3904
 msgid "Unable to insert record into survey table: "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:3824
+#: classes/expressions/LimeExpressionManager.php:3920
 msgid "Unable to insert record into timings table "
 msgstr ""
 
@@ -11556,7 +11581,7 @@ msgstr ""
 msgid "Undefined variable"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2036
+#: classes/expressions/ExpressionManager.php:2048
 #, php-format
 msgid "Unsupported number of arguments: %s"
 msgstr ""
@@ -11569,19 +11594,19 @@ msgstr ""
 msgid "Uppercase the first character of each word in a string"
 msgstr ""
 
-#: classes/core/surveytranslator.php:571
+#: classes/core/surveytranslator.php:578
 msgid "Urdu"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7265
+#: classes/expressions/LimeExpressionManager.php:7407
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7166
+#: classes/expressions/LimeExpressionManager.php:7308
 msgid "Value"
-msgstr ""
+msgstr "እሴት"
 
-#: classes/core/surveytranslator.php:578
+#: classes/core/surveytranslator.php:585
 msgid "Vietnamese"
 msgstr ""
 
