@@ -3,36 +3,16 @@
         <li><label for='anonymized'><?php $clang->eT("Anonymized responses?"); ?>
 
                 <script type="text/javascript"><!--
-                    function alertPrivacy(source)
+                    function alertPrivacy()
                     {
-                       if ( source === undefined ) {
-                          source = '';
-                       }
-                        if ($('#tokenanswerspersistence').val() == 'Y')
+                        if (document.getElementById('tokenanswerspersistence').value == 'Y')
                             {
                             alert('<?php $clang->eT("You can't use Anonymized responses when Token-based answers persistence is enabled.","js"); ?>');
                             document.getElementById('anonymized').value = 'N';
                         }
-                        else if ($('#anonymized').val() == 'Y')
+                        else if (document.getElementById('anonymized').value == 'Y')
                             {
-                            txtalert="";
-                            if(source=='anonymized')
-                            {
-                                txtalert='<?php $clang->eT("Warning"); ?>: <?php $clang->eT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js"); ?>';
-                            }
-                            if($('#ipaddr').val() == 'Y')
-                            {
-                                $('#ipaddr').val('N');
-                                txtalert=txtalert+'\n<?php $clang->eT("Warning"); ?>: <?php $clang->eT("You can not save ip address with Anonymized responses. Save IP Address is set to NO.","js"); ?>';
-                            }
-                            if($('#refurl').val() == 'Y')
-                            {
-                                $('#refurl').val('N');
-                                txtalert=txtalert+'\n<?php $clang->eT("Warning"); ?>: <?php $clang->eT("You can not save referrer URL with Anonymized responses. Save referrer URL is set to NO.","js"); ?>';
-                            }
-                            if(txtalert){
-                                alert(txtalert);
-                            }
+                            alert('<?php $clang->eT("Warning"); ?>: <?php $clang->eT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js"); ?>');
                         }
                     }
                     //--></script></label>
@@ -46,7 +26,7 @@
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <input type='hidden' name='anonymized' value="<?php echo $esrow['anonymized']; ?>" />
                 <?php } else { ?>
-                <select id='anonymized' name='anonymized' onchange='alertPrivacy("anonymized");'>
+                <select id='anonymized' name='anonymized' onchange='alertPrivacy();'>
                     <option value='Y'
                         <?php if ($esrow['anonymized'] == "Y") { ?>
                             selected='selected'

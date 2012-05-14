@@ -51,7 +51,7 @@
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <input type='hidden' name='ipaddr' value='<?php echo $esrow['ipaddr']; ?>' />
                 <?php } else { ?>
-                <select name='ipaddr' id='ipaddr' onchange='alertPrivacy("ipaddr");'>
+                <select name='ipaddr' id='ipaddr'>
                     <option value='Y'
                         <?php if ($esrow['ipaddr'] == "Y") { ?>
                             selected='selected'
@@ -79,7 +79,7 @@
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <input type='hidden' name='refurl' value='<?php echo $esrow['refurl']; ?>' />
                 <?php } else { ?>
-                <select name='refurl' id='refurl' onchange='alertPrivacy("refurl");'>
+                <select name='refurl' id='refurl'>
                     <option value='Y'
                         <?php if ($esrow['refurl'] == "Y") { ?>
                             selected='selected'
