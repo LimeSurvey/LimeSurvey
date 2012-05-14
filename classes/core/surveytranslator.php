@@ -538,9 +538,16 @@ function getLanguageData($orderbynative=false) {
     $supportedLanguages['es']['dateformat'] = 5;
     $supportedLanguages['es']['radixpoint'] = 1;
 
+    // Spanish (Chile)
+    $supportedLanguages['es-CL']['description'] = $clang->gT('Spanish (Mexico)');
+    $supportedLanguages['es-CL']['nativedescription'] = 'Espa&#241;ol chileno';
+    $supportedLanguages['es-CL']['rtl'] = false;
+    $supportedLanguages['es-CL']['dateformat'] = 5;
+    $supportedLanguages['es-CL']['radixpoint'] = 0;
+
     // Spanish (Mexico)
     $supportedLanguages['es-MX']['description'] = $clang->gT('Spanish (Mexico)');
-    $supportedLanguages['es-MX']['nativedescription'] = 'Espa&#241;ol Mejicano';
+    $supportedLanguages['es-MX']['nativedescription'] = 'Espa&#241;ol mejicano';
     $supportedLanguages['es-MX']['rtl'] = false;
     $supportedLanguages['es-MX']['dateformat'] = 5;
     $supportedLanguages['es-MX']['radixpoint'] = 0;
