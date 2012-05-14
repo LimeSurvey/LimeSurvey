@@ -3557,7 +3557,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Integer only'));
 
     $qattributes["numbers_only"]=array(
-    "types"=>"Q;S",
+    "types"=>"Q;S*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -7076,25 +7076,6 @@ function getHeader($meta = false)
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
 
-    $js_header = ''; $css_header='';
-    if(Yii::app()->getConfig("js_admin_includes"))
-    {
-        foreach (Yii::app()->getConfig("js_admin_includes") as $jsinclude)
-        {
-            if (substr($jsinclude,0,4) == 'http')
-                $js_header .= "<script type=\"text/javascript\" src=\"{$jsinclude}\"></script>\n";
-            else
-                $js_header .= "<script type=\"text/javascript\" src=\"".Yii::app()->baseUrl."{$jsinclude}\"></script>\n";
-        }
-    }
-    if(Yii::app()->getConfig("css_admin_includes"))
-    {
-        foreach (Yii::app()->getConfig("css_admin_includes") as $cssinclude)
-        {
-            $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".Yii::app()->baseUrl.$cssinclude."\" />\n";
-        }
-    }
-
     if ( !$embedded )
     {
         $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
@@ -7103,13 +7084,7 @@ function getHeader($meta = false)
         {
             $header.=" dir=\"rtl\" ";
         }
-        $header.= ">\n\t<head>\n"
-        . $css_header
-        . "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/jquery.js\"></script>\n"
-        . "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js\"></script>\n"
-        . "<link href=\"".Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
-        . "<link href=\"".Yii::app()->getConfig('generalscripts')."jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
-        . $js_header;
+        $header.= ">\n\t<head>\n";
 
         if ($meta)
             $header .= $meta;

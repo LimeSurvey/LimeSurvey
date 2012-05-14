@@ -51,6 +51,11 @@ ul#surveylist{list-style:none}
 #progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
 #progress-wrapper .ui-widget-header{background-color:#AAA;background-image:none;border:1px solid #666}
 #progress-wrapper #progress-post{float:left;width:45px;text-align:left;margin:0 0 0 5px}
+@media reader {
+    #progressbar,#progress-pre,#progress-post{display:none}
+}
+
+
 .ui-slider{width:15em;display:inline-block;border:1px solid #666;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;margin:.4em 0 .2em}
 .slider_showmin{float:left;width:3em;font-size:.7em;font-weight:400;text-align:left;color:#666;margin:1.4em 0 0}
 .slider_showmax{float:right;width:3em;font-size:.7em;font-weight:400;text-align:right;color:#666;margin:1.4em 0 0}
