@@ -2857,7 +2857,7 @@ function UpdateSessionGroupList($surveyid, $language)
 function SetSurveyLanguage($surveyid, $language)
 {
     $surveyid=sanitize_int($surveyid);
-    $defaultlang = Yii::app()->getConfig('defaultlang');
+    $default_language = Yii::app()->getConfig('defaultlang');
 
     if (isset($surveyid) && $surveyid>0)
     {
@@ -2891,7 +2891,7 @@ function SetSurveyLanguage($surveyid, $language)
     {
         $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
         Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new Limesurvey_lang($defaultlang);
+        $clang = new Limesurvey_lang($language);
     }
 
     $oApplication=Yii::app();

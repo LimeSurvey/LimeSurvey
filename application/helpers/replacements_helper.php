@@ -122,12 +122,74 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if(!isset($templatedir)) $templatedir = getTemplatePath($templatename);
     if(!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
 
-    if (stripos ($line,"</head>"))
+    // TEMPLATECSS and TEMPLATEJS
+    $_templatecss="";$_templatejs="";
+    if(stripos ($line,"{TEMPLATECSS}"))
     {
-        $line=str_ireplace("</head>",
-        "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."survey_runtime.js\"></script>\n"
-        .useFirebug()
-        ."\t</head>", $line);
+        global $css_header_includes;
+        if (file_exists($templatedir . '/jquery-ui-custom.css'))
+        {
+            $_jqueryuicssurl = "{$templateurl}jquery-ui-custom.css";
+        }
+        elseif(file_exists($templatedir . '/jquery-ui.css'))
+        {
+            $_jqueryuicssurl = "{$templateurl}jquery-ui.css";
+        }
+#        else
+#        { // Review for slider
+#            $_jqueryuicssurl =Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css";
+#        }
+        $_templatecss .="<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css' />\n"; // Remove it after corrected slider
+        $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$_jqueryuicssurl}' />\n";
+        if(Yii::app()->getConfig("css_admin_includes"))
+        {
+            if(!$js_header_includes){$js_header_includes=array();}
+            foreach (Yii::app()->getConfig("css_admin_includes") as $cssinclude)
+            {
+                $css_header_includes[] = $cssinclude;
+            }
+        }
+        $_templatecss .= "<link href='".Yii::app()->getConfig('generalscripts')."jquery/css/start/lime-progress.css' media='all' type='text/css' rel='stylesheet' />\n";
+        if($css_header_includes){
+            $css_header_includes = array_unique($css_header_includes);
+            foreach ($css_header_includes as $cssinclude)
+            {
+                $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->baseUrl.$cssinclude."' />\n";
+            }
+        }
+        $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}template.css' />\n";
+        if (getLanguageRTL($clang->langcode))
+        {
+            $_templatecss.="<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}template-rtl.css' />\n";
+        }
+    }
+    if(stripos ($line,"{TEMPLATEJS}"))
+    {
+        global $js_header_includes;
+        $_jqueryuijsurl=Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js";
+        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.js'></script>\n";
+        $_templatejs.= "<script type='text/javascript' src='{$_jqueryuijsurl}'></script>\n";
+        if(Yii::app()->getConfig("js_admin_includes"))
+        {
+            if(!$js_header_includes){$js_header_includes=array();}
+            foreach (Yii::app()->getConfig("js_admin_includes") as $jsinclude)
+            {
+                    $js_header_includes[]=$jsinclude;
+            }
+        }
+        if($js_header_includes){
+            $js_header_includes = array_unique($js_header_includes);
+            foreach ($js_header_includes as $jsinclude)
+            {
+                if (substr($jsinclude,0,4) == 'http')
+                    $_templatejs .= "<script type='text/javascript' src='{$jsinclude}'></script>\n";
+                else
+                    $_templatejs .= "<script type='text/javascript' src='".Yii::app()->baseUrl.$jsinclude."'></script>\n";
+            }
+        }
+        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."survey_runtime.js'></script>\n";
+        $_templatejs.= "<script type='text/javascript' src='{$templateurl}template.js'></script>\n";
+        $_templatejs.= useFirebug();
     }
 
     // surveyformat
@@ -400,12 +462,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     else
     {
         $_saveall = "";
-    }
-
-    $_templatecss = "<link rel='stylesheet' type='text/css' href='{$templateurl}template.css' />\n";
-    if (getLanguageRTL($clang->langcode))
-    {
-        $_templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}template-rtl.css' />\n";
     }
 
     if(!isset($help)) $help = "";
@@ -776,6 +832,7 @@ EOD;
     $coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : '');
     $coreReplacements['TEMPLATECSS'] = $_templatecss;
+    $coreReplacements['TEMPLATEJS'] = $_templatejs;
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
     if (!$anonymized) $coreReplacements['TOKEN'] = $_token;
