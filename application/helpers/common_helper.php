@@ -5192,12 +5192,12 @@ function filterForAttributes ($fieldname)
 /**
 * Retrieves the attribute field names from the related token table
 *
-* @param mixed $surveyid  The survey ID
+* @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
 */
-function GetAttributeFieldNames($surveyid,$filter=true)
+function GetAttributeFieldNames($iSurveyID,$filter=true)
 {
-    if (!$table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}'))
+    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
         return Array();
     if ($filter)
     {
