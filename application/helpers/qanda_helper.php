@@ -888,7 +888,32 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
     $htmltbody2 .= ($class !== null) ? " class='$class'": "";
     if (isset($_SESSION['relevanceStatus'][$rowname]) && !$_SESSION['relevanceStatus'][$rowname])
     {
-        $htmltbody2 .= " style='display: none'";
+        // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
+        if (isset($aQuestionAttributes['exclude_all_others']))
+        {
+            $disableit=false;
+            foreach(explode(';',trim($aQuestionAttributes['exclude_all_others'])) as $eo)
+            {
+                $eorow = $ia[1] . $eo;
+                if ((!isset($_SESSION['relevanceStatus'][$eorow]) || $_SESSION['relevanceStatus'][$eorow])
+                    && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y"))
+                {
+                    $disableit = true;
+                }
+            }
+            if ($disableit)
+            {
+                $htmltbody2 .= " disabled='disabled'";
+            }
+            else
+            {
+                $htmltbody2 .= " style='display: none'";
+            }
+        }
+        else
+        {
+            $htmltbody2 .= " style='display: none'";
+        }
     }
     $htmltbody2 .= ">\n";
     return array($htmltbody2, "");
