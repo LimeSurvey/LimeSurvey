@@ -90,7 +90,7 @@ function addinput()
     languages=langs.split(';');
 
     nextcode=getNextCode($(this).parent().parent().find('.code').val());
-    while ($(this).parent().parent().parent().find('input[value="'+nextcode+'"]').length>0)
+    while ($(this).parent().parent().parent().find('input[value="'+nextcode+'"]').length>0 && nextcode!=$(this).parent().parent().find('.code').val())
     {
         nextcode=getNextCode(nextcode);
     }
