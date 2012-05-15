@@ -1,15 +1,14 @@
-PHP Deprecated:  Comments starting with '#' are deprecated in /etc/php5/cli/conf.d/mcrypt.ini on line 1 in Unknown on line 0
-# Translation of LimeSurvey 2.0 in Basque
-# This file is distributed under the same license as the LimeSurvey 2.0 package.
+# Translation of LimeSurvey 2.x in Basque
+# This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-14 21:07:04+0000\n"
+"PO-Revision-Date: 2012-05-15 11:33:01+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/0.1\n"
-"Project-Id-Version: LimeSurvey 2.0\n"
+"Project-Id-Version: LimeSurvey 2.x\n"
 
 #: application/views/admin/dataentry/iteratesurvey.php:6
 msgid "Answers and tokens have been re-opened."
@@ -705,9 +704,9 @@ msgstr ""
 
 #: application/helpers/frontend_helper.php:1508
 #: application/helpers/frontend_helper.php:1681
-#: application/helpers/replacements_helper.php:570
-#: application/helpers/replacements_helper.php:591
-#: application/helpers/replacements_helper.php:654
+#: application/helpers/replacements_helper.php:567
+#: application/helpers/replacements_helper.php:588
+#: application/helpers/replacements_helper.php:651
 msgid "Security Question"
 msgstr "Segurtasun Galdera"
 
@@ -987,142 +986,142 @@ msgstr ""
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:340
+#: application/helpers/replacements_helper.php:337
 msgid "There are no questions in this survey"
 msgstr "Inkesta honetan ez dago galderarik."
 
-#: application/helpers/replacements_helper.php:344
+#: application/helpers/replacements_helper.php:341
 msgid "There is 1 question in this survey"
 msgstr "Inkesta honetan galdera 1 dago."
 
-#: application/helpers/replacements_helper.php:348
+#: application/helpers/replacements_helper.php:345
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Inkesta honetan {NUMBEROFQUESTIONS} galdera daude."
 
-#: application/helpers/replacements_helper.php:403
+#: application/helpers/replacements_helper.php:400
 msgid "Exit and Clear Survey"
 msgstr "Inkestatik irten eta berrabiarazi"
 
-#: application/helpers/replacements_helper.php:404
+#: application/helpers/replacements_helper.php:401
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Zure erantzun guztiak ezabatu nahi dituzula ziur al zaude?"
 
-#: application/helpers/replacements_helper.php:434
-#: application/helpers/replacements_helper.php:438
-#: application/helpers/replacements_helper.php:458
+#: application/helpers/replacements_helper.php:431
+#: application/helpers/replacements_helper.php:435
+#: application/helpers/replacements_helper.php:455
 msgid "Resume later"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:497
+#: application/helpers/replacements_helper.php:494
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Zure erantzunen bat aztertu edo/eta aldatu nahi baduzu, orain egin dezakezu [<< Aurrekoa] botoiaren bidez."
 
-#: application/helpers/replacements_helper.php:504
-#: application/helpers/replacements_helper.php:513
+#: application/helpers/replacements_helper.php:501
+#: application/helpers/replacements_helper.php:510
 msgid "Restart this Survey"
 msgstr "Inkesta berrabiarazi"
 
-#: application/helpers/replacements_helper.php:522
+#: application/helpers/replacements_helper.php:519
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr "Jarraituko anonimoak mesedez zure erabiltzaile-izena, helbide elektroniko bat ere ez da beharrezkoa ezizen bat erabili."
 
-#: application/helpers/replacements_helper.php:536
+#: application/helpers/replacements_helper.php:533
 msgid "Return To Survey"
 msgstr "Inkestara itzuli"
 
-#: application/helpers/replacements_helper.php:556
+#: application/helpers/replacements_helper.php:553
 msgid "Repeat Password"
 msgstr "Pasahitza berridatzi"
 
-#: application/helpers/replacements_helper.php:562
+#: application/helpers/replacements_helper.php:559
 msgid "Your Email"
 msgstr "Zure helbide elektronikoa"
 
-#: application/helpers/replacements_helper.php:577
+#: application/helpers/replacements_helper.php:574
 msgid "Saved name"
 msgstr "Izena gorde da"
 
-#: application/helpers/replacements_helper.php:594
+#: application/helpers/replacements_helper.php:591
 msgid "Load Now"
 msgstr "Orain kargatu"
 
-#: application/helpers/replacements_helper.php:761
+#: application/helpers/replacements_helper.php:758
 msgid "Answers Cleared"
 msgstr "Erantzunak ezabatu dira."
 
-#: application/helpers/replacements_helper.php:764
+#: application/helpers/replacements_helper.php:761
 msgid "Your Assessment"
 msgstr "Zure ebaluazioak"
 
-#: application/helpers/replacements_helper.php:765
+#: application/helpers/replacements_helper.php:762
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Oharra: Zure nabigatzaileak ez du JavaScript onartzen. Aktibatzen ez baduzu, seguru asko inkestaren galdera guztiak ezingo dituzu erantzun. Zure nabigatzailearen ezarpenak berrikusi, mesedez."
 
-#: application/helpers/replacements_helper.php:767
+#: application/helpers/replacements_helper.php:764
 msgid "Close this window"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:780
+#: application/helpers/replacements_helper.php:777
 msgid "Load A Previously Saved Survey"
 msgstr "Lehendik Gordetako Inkesta Bat Kargatu"
 
-#: application/helpers/replacements_helper.php:781
+#: application/helpers/replacements_helper.php:778
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Pantaila honetatik lehendik gordetako inkesta bat berreskura dezakezu."
 
-#: application/helpers/replacements_helper.php:781
+#: application/helpers/replacements_helper.php:778
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Inkesta gordetzeko erabili zenuen 'izena' eta pasahitza idatzi."
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "A Note On Privacy"
 msgstr "Pribatutasunari buruzko oharra"
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "This survey is anonymous."
 msgstr "Inkesta hau anonimoa da."
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Inkestan eman dituzun erantzunen erregistroek ezin zaituzte inolaz ere identifikatu, galdera batek esplizituki egiten ez badu. Inkesta honetan gonbidapen-kodearen bidez parte hartzen baduzu, seguru egon zaitezke zure nortasuna ez dela erantzunekin lotuko. Ez dago zure erantzunak zureak direla jakiteko modurik."
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:805
 msgid "You must be registered to complete this survey"
 msgstr "Inkesta hau betetzeko erregistratu behar duzu"
 
-#: application/helpers/replacements_helper.php:809
+#: application/helpers/replacements_helper.php:806
 msgid "You may register for this survey if you wish to take part."
 msgstr "Parte hartu nahi baduzu, inkestan erregistratu behar duzu."
 
-#: application/helpers/replacements_helper.php:809
+#: application/helpers/replacements_helper.php:806
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Zure datuak idatzi eta mezu elektronikoa berehala bidaliko zaizu."
 
-#: application/helpers/replacements_helper.php:817
+#: application/helpers/replacements_helper.php:814
 msgid "Save Your Unfinished Survey"
 msgstr "Amaitu gabeko Inkesta Gorde"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Inkesta honetarako izen eta pasahitza aukeratu eta \"Gorde\" sakatu."
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Zure inkesta izen eta pasahitza horiekin gordeko da. Pasahitz eta izen horietaz baliatuz aurrerago osatu ahal izango duzu."
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Zure helbide elektronikoa ematen badiguzu, mezu bat bidaliko dizugu xehetasun guztiekin."
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr "Beharrik klik gorde botoian ondoren bai dezakezu arakatzailearen leiho hau itxi edo jarraitu inkesta bete."
 
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 msgid "You have completed answering the questions in this survey."
 msgstr "Inkestaren galdera guztiei erantzuna eman diezu"
 
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "\"Bidali\" sakatu prozesua osatu eta zure erantzunak gordetzeko."
 
@@ -7860,7 +7859,7 @@ msgstr ""
 #: application/controllers/survey/index.php:360
 #: application/controllers/survey/index.php:373
 #: application/controllers/survey/index.php:388
-#: application/helpers/replacements_helper.php:224
+#: application/helpers/replacements_helper.php:221
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
@@ -8193,7 +8192,7 @@ msgstr "Gonbidapen-kodearen IDa"
 #: application/controllers/admin/browse.php:131
 #: application/controllers/admin/browse.php:431
 #: application/helpers/common_helper.php:5237
-#: application/helpers/replacements_helper.php:620
+#: application/helpers/replacements_helper.php:617
 #: application/views/admin/export/exportresults_view.php:123
 #: application/views/admin/participants/displayParticipants_view.php:63
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8208,7 +8207,7 @@ msgstr ""
 #: application/controllers/admin/browse.php:132
 #: application/controllers/admin/browse.php:432
 #: application/helpers/common_helper.php:5238
-#: application/helpers/replacements_helper.php:627
+#: application/helpers/replacements_helper.php:624
 #: application/views/admin/export/exportresults_view.php:124
 #: application/views/admin/participants/displayParticipants_view.php:64
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8637,7 +8636,7 @@ msgstr "Inkesta honetako baldintza guztiak ezabatuko dira."
 #: application/helpers/frontend_helper.php:1435
 #: application/helpers/frontend_helper.php:1512
 #: application/helpers/frontend_helper.php:1684
-#: application/helpers/replacements_helper.php:656
+#: application/helpers/replacements_helper.php:653
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:63
 #: application/views/admin/participants/attributeMap_view.php:95
@@ -9478,7 +9477,7 @@ msgid "Thank you for saving your survey in progress.  The following details can 
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1946
-#: application/helpers/replacements_helper.php:544
+#: application/helpers/replacements_helper.php:541
 #: application/libraries/Save.php:206
 msgid "Name"
 msgstr "izena"
@@ -9488,8 +9487,8 @@ msgstr "izena"
 #: application/controllers/admin/useraction.php:136
 #: application/controllers/admin/useraction.php:366
 #: application/controllers/admin/useraction.php:384
-#: application/helpers/replacements_helper.php:550
-#: application/helpers/replacements_helper.php:583
+#: application/helpers/replacements_helper.php:547
+#: application/helpers/replacements_helper.php:580
 #: application/libraries/Save.php:207
 #: application/views/admin/authentication/login.php:8
 #: application/views/admin/user/modifyuser.php:7
@@ -10547,7 +10546,7 @@ msgid "Export"
 msgstr "Esportatu"
 
 #: application/controllers/admin/surveypermission.php:439
-#: application/helpers/replacements_helper.php:573
+#: application/helpers/replacements_helper.php:570
 #: application/views/admin/user/setuserrights.php:119
 msgid "Save Now"
 msgstr "Orain gorde"
@@ -11370,8 +11369,8 @@ msgstr "Ez duzu pasahitzik eman"
 
 #: application/controllers/survey/index.php:442
 #: application/controllers/survey/index.php:446
-#: application/helpers/replacements_helper.php:433
-#: application/helpers/replacements_helper.php:445
+#: application/helpers/replacements_helper.php:430
+#: application/helpers/replacements_helper.php:442
 msgid "Load unfinished survey"
 msgstr ""
 
@@ -11532,7 +11531,7 @@ msgid "Clear Responses"
 msgstr "Erantzunak ezabatu"
 
 #: application/helpers/SurveyRuntimeHelper.php:443
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr ""
@@ -11595,7 +11594,7 @@ msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1104
 #: application/helpers/frontend_helper.php:2256
-#: application/helpers/replacements_helper.php:384
+#: application/helpers/replacements_helper.php:381
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/dataentry/insert.php:41
@@ -13515,7 +13514,7 @@ msgid "SMTP debug output:"
 msgstr ""
 
 #: application/helpers/common_helper.php:5239
-#: application/helpers/replacements_helper.php:634
+#: application/helpers/replacements_helper.php:631
 #: application/views/admin/export/exportresults_view.php:125
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:72
