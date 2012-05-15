@@ -2345,50 +2345,6 @@ function do_multiplechoice($ia)
         $oth_checkconditionFunction = "checkconditions";
     }
 
-    // Check if the max_answers attribute is set
-    //    $maxansw = 0;
-    //    $callmaxanswscriptcheckbox = '';
-    //    $callmaxanswscriptother = '';
-    //    $maxanswscript = '';
-
-    $exclude_all_others_auto = trim($aQuestionAttributes["exclude_all_others_auto"]);
-
-    if ($exclude_all_others_auto=='1'){
-        $autoArray['list'][]=$ia[1];
-        $autoArray[$ia[1]]['parent'] = $ia[1];
-    }
-
-    //    if (((int)$aQuestionAttributes['max_answers']>0) && $exclude_all_others_auto=='0')
-    //    {
-    //        $maxansw=$aQuestionAttributes['max_answers'];
-    //        $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
-    //        $callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
-    //        $maxanswscript = "\t<script type='text/javascript'>\n"
-    //        . "\t<!--\n"
-    //        . "function limitmaxansw_{$ia[0]}(me)\n"
-    //        . "{\n"
-    //        . "\tmax=$maxansw\n"
-    //        . "\tcount=0;\n"
-    //        . "\tif (max == 0) { return count; }\n";
-    //    }
-    //
-    //
-    //    // Check if the min_answers attribute is set
-    //    $minansw=0;
-    //    $minanswscript = "";
-    //
-    //    if ((int)$aQuestionAttributes['min_answers']>0)
-    //    {
-    //        $minansw=trim($aQuestionAttributes["min_answers"]);
-    //        $minanswscript = "<script type='text/javascript'>\n"
-    //        . "\t<!--\n"
-    //        . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
-    //        . "function ensureminansw_{$ia[0]}()\n"
-    //        . "{\n"
-    //        . "\tcount=0;\n"
-    //        ;
-    //    }
-
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
     $qresult = dbExecuteAssoc($qquery);     //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
@@ -2446,15 +2402,6 @@ function do_multiplechoice($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
         $extra_class="";
-        if ($exclude_all_others_auto==1){
-            if ($ansrow['title']==trim($aQuestionAttributes['exclude_all_others'])){
-                $autoArray[$ia[1]]['focus'] = $ia[1].trim($aQuestionAttributes['exclude_all_others']);
-            }
-            else{
-                $autoArray[$ia[1]]['children'][] = $myfname;
-                $extra_class=" excludeallothers";
-            }
-        }
 
         $trbc='';
         /* Check for array_filter */
@@ -2518,9 +2465,7 @@ function do_multiplechoice($ia)
             ++$colcounter;
         }
     }
-    if ($exclude_all_others_auto==1){
-        $answer .= "<script type='text/javascript'>autoArray = ".ls_json_encode($autoArray).";</script>";
-    }
+
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
