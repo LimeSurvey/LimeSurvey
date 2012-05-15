@@ -1,15 +1,14 @@
-PHP Deprecated:  Comments starting with '#' are deprecated in /etc/php5/cli/conf.d/mcrypt.ini on line 1 in Unknown on line 0
-# Translation of LimeSurvey 2.0 in Albanian
-# This file is distributed under the same license as the LimeSurvey 2.0 package.
+# Translation of LimeSurvey 2.x in Albanian
+# This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-14 21:05:36+0000\n"
+"PO-Revision-Date: 2012-05-15 11:31:34+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/0.1\n"
-"Project-Id-Version: LimeSurvey 2.0\n"
+"Project-Id-Version: LimeSurvey 2.x\n"
 
 #: application/views/admin/dataentry/iteratesurvey.php:6
 msgid "Answers and tokens have been re-opened."
@@ -705,9 +704,9 @@ msgstr ""
 
 #: application/helpers/frontend_helper.php:1508
 #: application/helpers/frontend_helper.php:1681
-#: application/helpers/replacements_helper.php:570
-#: application/helpers/replacements_helper.php:591
-#: application/helpers/replacements_helper.php:654
+#: application/helpers/replacements_helper.php:567
+#: application/helpers/replacements_helper.php:588
+#: application/helpers/replacements_helper.php:651
 msgid "Security Question"
 msgstr "Pyetje Sigurie"
 
@@ -987,142 +986,142 @@ msgstr ""
 msgid "Error: There are no answers defined for this question."
 msgstr "Gabim: nuk ka pergjigje per kete pyetje."
 
-#: application/helpers/replacements_helper.php:340
+#: application/helpers/replacements_helper.php:337
 msgid "There are no questions in this survey"
 msgstr "Nuk ka pyetje ne kete kontroll"
 
-#: application/helpers/replacements_helper.php:344
+#: application/helpers/replacements_helper.php:341
 msgid "There is 1 question in this survey"
 msgstr "Ka 1 pyetje ne kete kontroll"
 
-#: application/helpers/replacements_helper.php:348
+#: application/helpers/replacements_helper.php:345
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Ka {NUMBEROFQUESTIONS} pyetje ne kete kontroll."
 
-#: application/helpers/replacements_helper.php:403
+#: application/helpers/replacements_helper.php:400
 msgid "Exit and Clear Survey"
 msgstr "Dil dhe Fshi kontrollin"
 
-#: application/helpers/replacements_helper.php:404
+#: application/helpers/replacements_helper.php:401
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Jeni i sigurte se doni t'i fshini te gjitha pergjigjet tuaja"
 
-#: application/helpers/replacements_helper.php:434
-#: application/helpers/replacements_helper.php:438
-#: application/helpers/replacements_helper.php:458
+#: application/helpers/replacements_helper.php:431
+#: application/helpers/replacements_helper.php:435
+#: application/helpers/replacements_helper.php:455
 msgid "Resume later"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:497
+#: application/helpers/replacements_helper.php:494
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Nese ju doni te kontrolloni ndonje nga pergjigjet, dhe/ose t'i ndryshoni ato, ju mund ta beni ate tani duke klikuar [<< prapa]"
 
-#: application/helpers/replacements_helper.php:504
-#: application/helpers/replacements_helper.php:513
+#: application/helpers/replacements_helper.php:501
+#: application/helpers/replacements_helper.php:510
 msgid "Restart this Survey"
 msgstr "Rifillo kete Ankete"
 
-#: application/helpers/replacements_helper.php:522
+#: application/helpers/replacements_helper.php:519
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:536
+#: application/helpers/replacements_helper.php:533
 msgid "Return To Survey"
 msgstr "Kthehu te anketa"
 
-#: application/helpers/replacements_helper.php:556
+#: application/helpers/replacements_helper.php:553
 msgid "Repeat Password"
 msgstr "Perserit fjalekalimin"
 
-#: application/helpers/replacements_helper.php:562
+#: application/helpers/replacements_helper.php:559
 msgid "Your Email"
 msgstr "Email-i juaj"
 
-#: application/helpers/replacements_helper.php:577
+#: application/helpers/replacements_helper.php:574
 msgid "Saved name"
 msgstr "Emer i ruajtur"
 
-#: application/helpers/replacements_helper.php:594
+#: application/helpers/replacements_helper.php:591
 msgid "Load Now"
 msgstr "Ngarko tani"
 
-#: application/helpers/replacements_helper.php:761
+#: application/helpers/replacements_helper.php:758
 msgid "Answers Cleared"
 msgstr "Pergjigjet u fshine"
 
-#: application/helpers/replacements_helper.php:764
+#: application/helpers/replacements_helper.php:761
 msgid "Your Assessment"
 msgstr "Vleresimi juaj"
 
-#: application/helpers/replacements_helper.php:765
+#: application/helpers/replacements_helper.php:762
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Kujdes: Ekzekutimi i JavaScript eshte c'aktivizuar ne kujtesen tuaj. Ju nuk mund te jeni i afte t'i pergjigjeni te gjitha pyetjeve ne kete kontroll. Te lutem, verifiko parametrat e kujteses tuaj."
 
-#: application/helpers/replacements_helper.php:767
+#: application/helpers/replacements_helper.php:764
 msgid "Close this window"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:780
+#: application/helpers/replacements_helper.php:777
 msgid "Load A Previously Saved Survey"
 msgstr "Ngarko nje Ankete te ruajtur me pare"
 
-#: application/helpers/replacements_helper.php:781
+#: application/helpers/replacements_helper.php:778
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Ju mund te ngarkoni nje ankete qe keni ruajtur me pare nga ekrani"
 
-#: application/helpers/replacements_helper.php:781
+#: application/helpers/replacements_helper.php:778
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Shkruaj 'emrin' qe ju perdooret per ta ruajtur kontrollin, dhe fjalekalimin"
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "A Note On Privacy"
 msgstr "Shenim privat"
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "This survey is anonymous."
 msgstr "Ky kontroll eshte anonim"
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Rekordi i mbajtur i pergjigjeve te kontrollit tuaj nuk permban ndonje informacion te detajuar per ju, pavaresisht se nje pyetje e vecante ne kontroll eshte bere per kete. "
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:805
 msgid "You must be registered to complete this survey"
 msgstr "Ju duhet te jeni i rregjistruar per ta kompletuar kete ankete"
 
-#: application/helpers/replacements_helper.php:809
+#: application/helpers/replacements_helper.php:806
 msgid "You may register for this survey if you wish to take part."
 msgstr "Mund te regjistroheni per kete ankete neqoftese deshironi te merrni pjese."
 
-#: application/helpers/replacements_helper.php:809
+#: application/helpers/replacements_helper.php:806
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Jepni me poshte te detajet tuaja, dhe do ju dergohet menjehere nje email qe permban linkun per te marre pjese ne ankete."
 
-#: application/helpers/replacements_helper.php:817
+#: application/helpers/replacements_helper.php:814
 msgid "Save Your Unfinished Survey"
 msgstr "Ruaj kontrollin tuaj te paperfunduar"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Jep nje emer dhe fjalekalim per kete kontroll dhe kliko ruaj me poshte"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Kontrolli juaj do te ruhet duke perdorur kete emer dhe fjalekalim, dhe mund te perfundoje me vone duke e loguar me te njejtin emer dhe fjalekalim"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "If you give an email address, an email containing the details will be sent to you."
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 msgid "You have completed answering the questions in this survey."
 msgstr "Ju i keni kompletuar pergjigjet e pyetjeve ne kete kontroll"
 
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Kliko ne 'Submit' tani per te kompletuar procesin dhe per te ruajtur pergjigjet tuaja"
 
@@ -7860,7 +7859,7 @@ msgstr "Ose ju keni qene inaktiv per nje kohe te gjate ose ka probleme  me lidhj
 #: application/controllers/survey/index.php:360
 #: application/controllers/survey/index.php:373
 #: application/controllers/survey/index.php:388
-#: application/helpers/replacements_helper.php:224
+#: application/helpers/replacements_helper.php:221
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "Ju lutemi te kontaktoni %s ( %s ) per me teper ndihme."
 
@@ -8195,7 +8194,7 @@ msgstr "Data e lejuar"
 #: application/controllers/admin/browse.php:131
 #: application/controllers/admin/browse.php:431
 #: application/helpers/common_helper.php:5237
-#: application/helpers/replacements_helper.php:620
+#: application/helpers/replacements_helper.php:617
 #: application/views/admin/export/exportresults_view.php:123
 #: application/views/admin/participants/displayParticipants_view.php:63
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8210,7 +8209,7 @@ msgstr ""
 #: application/controllers/admin/browse.php:132
 #: application/controllers/admin/browse.php:432
 #: application/helpers/common_helper.php:5238
-#: application/helpers/replacements_helper.php:627
+#: application/helpers/replacements_helper.php:624
 #: application/views/admin/export/exportresults_view.php:124
 #: application/views/admin/participants/displayParticipants_view.php:64
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8639,7 +8638,7 @@ msgstr ""
 #: application/helpers/frontend_helper.php:1435
 #: application/helpers/frontend_helper.php:1512
 #: application/helpers/frontend_helper.php:1684
-#: application/helpers/replacements_helper.php:656
+#: application/helpers/replacements_helper.php:653
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:63
 #: application/views/admin/participants/attributeMap_view.php:95
@@ -9480,7 +9479,7 @@ msgid "Thank you for saving your survey in progress.  The following details can 
 msgstr "Ju ose dikush  qe eshte duke perdorur adresen tuaj te email-it, ka ruajtur nje ankete ne progres. Detajet e meposhtme mund te perdoren per t'u kthyer ne kete kerkim dhe per te vazhduar ku ju e late."
 
 #: application/controllers/admin/dataentry.php:1946
-#: application/helpers/replacements_helper.php:544
+#: application/helpers/replacements_helper.php:541
 #: application/libraries/Save.php:206
 msgid "Name"
 msgstr "Emri"
@@ -9490,8 +9489,8 @@ msgstr "Emri"
 #: application/controllers/admin/useraction.php:136
 #: application/controllers/admin/useraction.php:366
 #: application/controllers/admin/useraction.php:384
-#: application/helpers/replacements_helper.php:550
-#: application/helpers/replacements_helper.php:583
+#: application/helpers/replacements_helper.php:547
+#: application/helpers/replacements_helper.php:580
 #: application/libraries/Save.php:207
 #: application/views/admin/authentication/login.php:8
 #: application/views/admin/user/modifyuser.php:7
@@ -10549,7 +10548,7 @@ msgid "Export"
 msgstr "Eksporto"
 
 #: application/controllers/admin/surveypermission.php:439
-#: application/helpers/replacements_helper.php:573
+#: application/helpers/replacements_helper.php:570
 #: application/views/admin/user/setuserrights.php:119
 msgid "Save Now"
 msgstr "Ruaj tani"
@@ -11372,8 +11371,8 @@ msgstr "Nuk siguruat nje fjalekalim"
 
 #: application/controllers/survey/index.php:442
 #: application/controllers/survey/index.php:446
-#: application/helpers/replacements_helper.php:433
-#: application/helpers/replacements_helper.php:445
+#: application/helpers/replacements_helper.php:430
+#: application/helpers/replacements_helper.php:442
 msgid "Load unfinished survey"
 msgstr ""
 
@@ -11534,7 +11533,7 @@ msgid "Clear Responses"
 msgstr "Fshi pergjigjet"
 
 #: application/helpers/SurveyRuntimeHelper.php:443
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr ""
@@ -11597,7 +11596,7 @@ msgstr "Indeksi i pyetjeve"
 
 #: application/helpers/SurveyRuntimeHelper.php:1104
 #: application/helpers/frontend_helper.php:2256
-#: application/helpers/replacements_helper.php:384
+#: application/helpers/replacements_helper.php:381
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/dataentry/insert.php:41
@@ -13521,7 +13520,7 @@ msgid "SMTP debug output:"
 msgstr ""
 
 #: application/helpers/common_helper.php:5239
-#: application/helpers/replacements_helper.php:634
+#: application/helpers/replacements_helper.php:631
 #: application/views/admin/export/exportresults_view.php:125
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:72

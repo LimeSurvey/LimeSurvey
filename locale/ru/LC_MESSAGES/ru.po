@@ -1,15 +1,14 @@
-PHP Deprecated:  Comments starting with '#' are deprecated in /etc/php5/cli/conf.d/mcrypt.ini on line 1 in Unknown on line 0
-# Translation of LimeSurvey 2.0 in Russian
-# This file is distributed under the same license as the LimeSurvey 2.0 package.
+# Translation of LimeSurvey 2.x in Russian
+# This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-14 21:06:34+0000\n"
+"PO-Revision-Date: 2012-05-15 11:32:31+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: GlotPress/0.1\n"
-"Project-Id-Version: LimeSurvey 2.0\n"
+"Project-Id-Version: LimeSurvey 2.x\n"
 
 #: application/views/admin/dataentry/iteratesurvey.php:6
 msgid "Answers and tokens have been re-opened."
@@ -708,9 +707,9 @@ msgstr "Маркер доступа:"
 
 #: application/helpers/frontend_helper.php:1508
 #: application/helpers/frontend_helper.php:1681
-#: application/helpers/replacements_helper.php:570
-#: application/helpers/replacements_helper.php:591
-#: application/helpers/replacements_helper.php:654
+#: application/helpers/replacements_helper.php:567
+#: application/helpers/replacements_helper.php:588
+#: application/helpers/replacements_helper.php:651
 msgid "Security Question"
 msgstr "Секретный вопрос"
 
@@ -992,142 +991,142 @@ msgstr "..."
 msgid "Error: There are no answers defined for this question."
 msgstr "Ошибка: ответы на этот вопрос не определены."
 
-#: application/helpers/replacements_helper.php:340
+#: application/helpers/replacements_helper.php:337
 msgid "There are no questions in this survey"
 msgstr "В этом опросе нет вопросов."
 
-#: application/helpers/replacements_helper.php:344
+#: application/helpers/replacements_helper.php:341
 msgid "There is 1 question in this survey"
 msgstr "В этой анкете 1 вопрос"
 
-#: application/helpers/replacements_helper.php:348
+#: application/helpers/replacements_helper.php:345
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Всего вопросов в этой анкете: {NUMBEROFQUESTIONS}."
 
-#: application/helpers/replacements_helper.php:403
+#: application/helpers/replacements_helper.php:400
 msgid "Exit and Clear Survey"
 msgstr "Выйти и очистить заполненную анкету"
 
-#: application/helpers/replacements_helper.php:404
+#: application/helpers/replacements_helper.php:401
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Вы действительно хотите удалить все ваши ответы?"
 
-#: application/helpers/replacements_helper.php:434
-#: application/helpers/replacements_helper.php:438
-#: application/helpers/replacements_helper.php:458
+#: application/helpers/replacements_helper.php:431
+#: application/helpers/replacements_helper.php:435
+#: application/helpers/replacements_helper.php:455
 msgid "Resume later"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:497
+#: application/helpers/replacements_helper.php:494
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Если Вы хотите проверить свои ответы или изменить их, нажмите на кнопку [<< Назад] и просмотрите свои ответы ещё раз."
 
-#: application/helpers/replacements_helper.php:504
-#: application/helpers/replacements_helper.php:513
+#: application/helpers/replacements_helper.php:501
+#: application/helpers/replacements_helper.php:510
 msgid "Restart this Survey"
 msgstr "Перезапустить опрос"
 
-#: application/helpers/replacements_helper.php:522
+#: application/helpers/replacements_helper.php:519
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr "Чтобы остаться анонимом, пожалуйста, используйте псевдоним в качетсве вашего имни пользователя. Также e-mail адрес не обязателен."
 
-#: application/helpers/replacements_helper.php:536
+#: application/helpers/replacements_helper.php:533
 msgid "Return To Survey"
 msgstr "Вернуться к опросу"
 
-#: application/helpers/replacements_helper.php:556
+#: application/helpers/replacements_helper.php:553
 msgid "Repeat Password"
 msgstr "Подтверждение пароля"
 
-#: application/helpers/replacements_helper.php:562
+#: application/helpers/replacements_helper.php:559
 msgid "Your Email"
 msgstr "Ваш E-mail"
 
-#: application/helpers/replacements_helper.php:577
+#: application/helpers/replacements_helper.php:574
 msgid "Saved name"
 msgstr "Сохранённое имя"
 
-#: application/helpers/replacements_helper.php:594
+#: application/helpers/replacements_helper.php:591
 msgid "Load Now"
 msgstr "Загрузить сейчас"
 
-#: application/helpers/replacements_helper.php:761
+#: application/helpers/replacements_helper.php:758
 msgid "Answers Cleared"
 msgstr "Ответы удалены"
 
-#: application/helpers/replacements_helper.php:764
+#: application/helpers/replacements_helper.php:761
 msgid "Your Assessment"
 msgstr "Ваша оценка"
 
-#: application/helpers/replacements_helper.php:765
+#: application/helpers/replacements_helper.php:762
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Внимание: выполнение JavaScript отключено в Вашем броузере. В данном опросе Вы не сможете ответить на все вопросы. Пожалуйста, проверьте настройки броузера."
 
-#: application/helpers/replacements_helper.php:767
+#: application/helpers/replacements_helper.php:764
 msgid "Close this window"
 msgstr "Закрыть окно"
 
-#: application/helpers/replacements_helper.php:780
+#: application/helpers/replacements_helper.php:777
 msgid "Load A Previously Saved Survey"
 msgstr "Загрузить сохраненный опрос"
 
-#: application/helpers/replacements_helper.php:781
+#: application/helpers/replacements_helper.php:778
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Вы можете загрузить сохраненный опрос с этой страницы."
 
-#: application/helpers/replacements_helper.php:781
+#: application/helpers/replacements_helper.php:778
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Введите имя и пароль, которые Вы использовали для сохранения опроса."
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "A Note On Privacy"
 msgstr "Уведомление о конфиденциальности"
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "This survey is anonymous."
 msgstr "Это анонимный опрос."
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Ваши ответы не содержат никакой идентифицирующей Вас информации. Исключение составляют только те вопросы, которые напрямую запрашивают такую информацию. Если Вы отвечали на опрос с использованием маркера доступа, Вы можете быть уверены, что маркер с вашими ответами не сохранен. За этот процесс отвечает отдельная база данных и потому всё, что можно узнать о Вас — заполнили Вы анкету или нет. Технической возможности сопоставить ваши ответы с маркером доступа не существует."
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:805
 msgid "You must be registered to complete this survey"
 msgstr "Вы должны зарегистрироваться для участия в опросе"
 
-#: application/helpers/replacements_helper.php:809
+#: application/helpers/replacements_helper.php:806
 msgid "You may register for this survey if you wish to take part."
 msgstr "Вы можете зарегистрироваться в опросе, если желаете принять в нем участие."
 
-#: application/helpers/replacements_helper.php:809
+#: application/helpers/replacements_helper.php:806
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Для участия в опросе введите Ваши данные ниже, и через некоторое время Вам будет отправлено сообщение со ссылкой на опрос."
 
-#: application/helpers/replacements_helper.php:817
+#: application/helpers/replacements_helper.php:814
 msgid "Save Your Unfinished Survey"
 msgstr "Сохранение незавершенной анкеты"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Введите имя и пароль, затем нажмите кнопку \"Сохранить\"."
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Ваш опрос будет сохранен с использованием этих имени и пароля.<br >Вы сможете вернуться к опросу позже, введя те же имя и пароль."
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Если Вы укажите свой адрес электронной почты, Вам будет отправлено сообщение с детальной информацией."
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr "После нажатия на кнопку сохранения, вы можете закрыть окно браузера, либо продолжить заполнять опрос."
 
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 msgid "You have completed answering the questions in this survey."
 msgstr "Вы ответили на все вопросы в данном опросе."
 
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Нажмите \"Отправить\", чтобы завершеить опрос и сохранить результаты."
 
@@ -7866,7 +7865,7 @@ msgstr "Возможно, Вы слишком долго не совершали
 #: application/controllers/survey/index.php:360
 #: application/controllers/survey/index.php:373
 #: application/controllers/survey/index.php:388
-#: application/helpers/replacements_helper.php:224
+#: application/helpers/replacements_helper.php:221
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "Свяжитесь с %s ( %s ) для дополнительной помощи."
 
@@ -8201,7 +8200,7 @@ msgstr "ID маркера доступа"
 #: application/controllers/admin/browse.php:131
 #: application/controllers/admin/browse.php:431
 #: application/helpers/common_helper.php:5237
-#: application/helpers/replacements_helper.php:620
+#: application/helpers/replacements_helper.php:617
 #: application/views/admin/export/exportresults_view.php:123
 #: application/views/admin/participants/displayParticipants_view.php:63
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8216,7 +8215,7 @@ msgstr "Имя"
 #: application/controllers/admin/browse.php:132
 #: application/controllers/admin/browse.php:432
 #: application/helpers/common_helper.php:5238
-#: application/helpers/replacements_helper.php:627
+#: application/helpers/replacements_helper.php:624
 #: application/views/admin/export/exportresults_view.php:124
 #: application/views/admin/participants/displayParticipants_view.php:64
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8645,7 +8644,7 @@ msgstr ""
 #: application/helpers/frontend_helper.php:1435
 #: application/helpers/frontend_helper.php:1512
 #: application/helpers/frontend_helper.php:1684
-#: application/helpers/replacements_helper.php:656
+#: application/helpers/replacements_helper.php:653
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:63
 #: application/views/admin/participants/attributeMap_view.php:95
@@ -9486,7 +9485,7 @@ msgid "Thank you for saving your survey in progress.  The following details can 
 msgstr "Вы или кто-то другой, используя Ваш адрес E-mail, сохранил незаконченный опрос. Используя приведённые ниже имя, пароль и ссылку, Вы можете вернуться и продолжить опрос с того места, где остановились."
 
 #: application/controllers/admin/dataentry.php:1946
-#: application/helpers/replacements_helper.php:544
+#: application/helpers/replacements_helper.php:541
 #: application/libraries/Save.php:206
 msgid "Name"
 msgstr "Имя"
@@ -9496,8 +9495,8 @@ msgstr "Имя"
 #: application/controllers/admin/useraction.php:136
 #: application/controllers/admin/useraction.php:366
 #: application/controllers/admin/useraction.php:384
-#: application/helpers/replacements_helper.php:550
-#: application/helpers/replacements_helper.php:583
+#: application/helpers/replacements_helper.php:547
+#: application/helpers/replacements_helper.php:580
 #: application/libraries/Save.php:207
 #: application/views/admin/authentication/login.php:8
 #: application/views/admin/user/modifyuser.php:7
@@ -10555,7 +10554,7 @@ msgid "Export"
 msgstr "Экспорт"
 
 #: application/controllers/admin/surveypermission.php:439
-#: application/helpers/replacements_helper.php:573
+#: application/helpers/replacements_helper.php:570
 #: application/views/admin/user/setuserrights.php:119
 msgid "Save Now"
 msgstr "Сохранить сейчас"
@@ -11379,8 +11378,8 @@ msgstr "Вы не ввели пароль"
 
 #: application/controllers/survey/index.php:442
 #: application/controllers/survey/index.php:446
-#: application/helpers/replacements_helper.php:433
-#: application/helpers/replacements_helper.php:445
+#: application/helpers/replacements_helper.php:430
+#: application/helpers/replacements_helper.php:442
 msgid "Load unfinished survey"
 msgstr ""
 
@@ -11541,7 +11540,7 @@ msgid "Clear Responses"
 msgstr "Очистить отзывы"
 
 #: application/helpers/SurveyRuntimeHelper.php:443
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr "Спасибо!"
@@ -11604,7 +11603,7 @@ msgstr "Индекс вопроса"
 
 #: application/helpers/SurveyRuntimeHelper.php:1104
 #: application/helpers/frontend_helper.php:2256
-#: application/helpers/replacements_helper.php:384
+#: application/helpers/replacements_helper.php:381
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/dataentry/insert.php:41
@@ -13530,7 +13529,7 @@ msgid "SMTP debug output:"
 msgstr "Отладочная информация SMTP:"
 
 #: application/helpers/common_helper.php:5239
-#: application/helpers/replacements_helper.php:634
+#: application/helpers/replacements_helper.php:631
 #: application/views/admin/export/exportresults_view.php:125
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:72

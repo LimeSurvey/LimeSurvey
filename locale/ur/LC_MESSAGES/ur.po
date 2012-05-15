@@ -1,15 +1,14 @@
-PHP Deprecated:  Comments starting with '#' are deprecated in /etc/php5/cli/conf.d/mcrypt.ini on line 1 in Unknown on line 0
-# Translation of LimeSurvey 2.0 in Urdu
-# This file is distributed under the same license as the LimeSurvey 2.0 package.
+# Translation of LimeSurvey 2.x in Urdu
+# This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-14 21:06:05+0000\n"
+"PO-Revision-Date: 2012-05-15 11:32:02+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/0.1\n"
-"Project-Id-Version: LimeSurvey 2.0\n"
+"Project-Id-Version: LimeSurvey 2.x\n"
 
 #: application/views/admin/dataentry/iteratesurvey.php:6
 msgid "Answers and tokens have been re-opened."
@@ -705,9 +704,9 @@ msgstr "ٹوکن :"
 
 #: application/helpers/frontend_helper.php:1508
 #: application/helpers/frontend_helper.php:1681
-#: application/helpers/replacements_helper.php:570
-#: application/helpers/replacements_helper.php:591
-#: application/helpers/replacements_helper.php:654
+#: application/helpers/replacements_helper.php:567
+#: application/helpers/replacements_helper.php:588
+#: application/helpers/replacements_helper.php:651
 msgid "Security Question"
 msgstr "سلامتی کا سوا"
 
@@ -987,142 +986,142 @@ msgstr "..."
 msgid "Error: There are no answers defined for this question."
 msgstr "غلطی : اس میں کوئی اس سوال کی وضاحت کا جواب ہیں"
 
-#: application/helpers/replacements_helper.php:340
+#: application/helpers/replacements_helper.php:337
 msgid "There are no questions in this survey"
 msgstr "اس سروے میں کوئی سوال نہیں ہی"
 
-#: application/helpers/replacements_helper.php:344
+#: application/helpers/replacements_helper.php:341
 msgid "There is 1 question in this survey"
 msgstr "اس سروے میں 1 سوال یہ ہے ک"
 
-#: application/helpers/replacements_helper.php:348
+#: application/helpers/replacements_helper.php:345
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "ہیں {NUMBEROFQUESTIONS} اس سروے میں سوالات."
 
-#: application/helpers/replacements_helper.php:403
+#: application/helpers/replacements_helper.php:400
 msgid "Exit and Clear Survey"
 msgstr "باہر نکلیں اور واضح سرو"
 
-#: application/helpers/replacements_helper.php:404
+#: application/helpers/replacements_helper.php:401
 msgid "Are you sure you want to clear all your responses?"
 msgstr "کیا آپ واقعی یہ سب آپ کے جوابات کو صاف کرنا چاہتے ہیں"
 
-#: application/helpers/replacements_helper.php:434
-#: application/helpers/replacements_helper.php:438
-#: application/helpers/replacements_helper.php:458
+#: application/helpers/replacements_helper.php:431
+#: application/helpers/replacements_helper.php:435
+#: application/helpers/replacements_helper.php:455
 msgid "Resume later"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:497
+#: application/helpers/replacements_helper.php:494
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "اگر آپ کا جواب آپ کو دیا ہے کے کسی بھی ، اور / دیکھنے کے لیے یا تبدیلی ان کے چاہتے ہیں ، آپ کو [<<سابقہ) آپ کے جوابات سے بٹن اور براؤز پر کلک کر کے اب یہ کر سکتے ہیں"
 
-#: application/helpers/replacements_helper.php:504
-#: application/helpers/replacements_helper.php:513
+#: application/helpers/replacements_helper.php:501
+#: application/helpers/replacements_helper.php:510
 msgid "Restart this Survey"
 msgstr "اس سروے میں دوبارہ شرو"
 
-#: application/helpers/replacements_helper.php:522
+#: application/helpers/replacements_helper.php:519
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr "گمنام رہنے آپ کا صارف نام کے طور پر تخلص کا استعمال کریں، ایک ای میل ایڈریس بھی ضرورت نہیں ہے."
 
-#: application/helpers/replacements_helper.php:536
+#: application/helpers/replacements_helper.php:533
 msgid "Return To Survey"
 msgstr "واپس سروے کرن"
 
-#: application/helpers/replacements_helper.php:556
+#: application/helpers/replacements_helper.php:553
 msgid "Repeat Password"
 msgstr "دہرا پاس ور"
 
-#: application/helpers/replacements_helper.php:562
+#: application/helpers/replacements_helper.php:559
 msgid "Your Email"
 msgstr "آپ کا ای می"
 
-#: application/helpers/replacements_helper.php:577
+#: application/helpers/replacements_helper.php:574
 msgid "Saved name"
 msgstr "محفوظ نا"
 
-#: application/helpers/replacements_helper.php:594
+#: application/helpers/replacements_helper.php:591
 msgid "Load Now"
 msgstr "اب لوڈ کری"
 
-#: application/helpers/replacements_helper.php:761
+#: application/helpers/replacements_helper.php:758
 msgid "Answers Cleared"
 msgstr "جوابات منظوری دے د"
 
-#: application/helpers/replacements_helper.php:764
+#: application/helpers/replacements_helper.php:761
 msgid "Your Assessment"
 msgstr "آپ کی تشخی"
 
-#: application/helpers/replacements_helper.php:765
+#: application/helpers/replacements_helper.php:762
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "انتباہ : جاوا سکرپٹ عمل کو اپنے براؤزر میں غیر فعال کر دیا ہے. آپ اس سروے میں تمام سوالات کے جواب دینے کے قابل نہیں ہو سکتا. براہ مہربانی اپنے براؤزر کے پیرامیٹرز کی توثیق کریں"
 
-#: application/helpers/replacements_helper.php:767
+#: application/helpers/replacements_helper.php:764
 msgid "Close this window"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:780
+#: application/helpers/replacements_helper.php:777
 msgid "Load A Previously Saved Survey"
 msgstr "لوڈ کا پہلے سے سروے بچا لی"
 
-#: application/helpers/replacements_helper.php:781
+#: application/helpers/replacements_helper.php:778
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "تم ایک سروے کہ آپ نے پہلے ہی اس کی سکرین سے بچا لیا ہے بوجھ کر سکتے ہیں"
 
-#: application/helpers/replacements_helper.php:781
+#: application/helpers/replacements_helper.php:778
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "'نام' ، تم نے اس سروے کو بچانے کے لئے استعمال کیا اور پاس ورڈ میں ٹائپ کریں"
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "A Note On Privacy"
 msgstr "پرائیویسی پر ایک نو"
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "This survey is anonymous."
 msgstr "یہ سروے گمنام ہے"
 
-#: application/helpers/replacements_helper.php:789
+#: application/helpers/replacements_helper.php:786
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "کا ریکارڈ اپنے سروے کے جوابات کے رکھ دیا ہے آپ کے بارے میں کوئی شناخت کی معلومات یہاں تک کہ اس سروے میں ایک مخصوص سوال اس لئے پوچھا ہے پر مشتمل نہیں. اگر آپ ایک سروے اس کا استعمال ایک تم اس سروے تک رسائی کے لئے اجازت دینے کے لئے ٹوکن کی شناخت ، تم آرام کرو کہ آپ کے جوابات کے ساتھ نشان یہ ہے کی شناخت نہیں رکھا ضمانت کر سکتے ہیں کے جواب میں ہے. یہ ایک الگ ڈیٹا بیس میں کامیاب ہو گیا ہے اور صرف اشارہ ملتا ہے کہ آپ (یا نہیں) ہے اس سروے مکمل کر لیا جائے گا اپ ڈیٹ کر دیا. اس سروے میں سروے کے جوابات کے ساتھ شناخت ٹوکن کے ملاپ کی کوئی راہ نہیں ہے"
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:805
 msgid "You must be registered to complete this survey"
 msgstr "آپ اس سروے مکمل کرنے کے لئے رجسٹر ہونا ضروری ہ"
 
-#: application/helpers/replacements_helper.php:809
+#: application/helpers/replacements_helper.php:806
 msgid "You may register for this survey if you wish to take part."
 msgstr "آپ اس سروے کے لئے رجسٹر اگر آپ حصہ لے سکتے ہیں"
 
-#: application/helpers/replacements_helper.php:809
+#: application/helpers/replacements_helper.php:806
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "ذیل میں آپ کی تفصیلات ، اور ایک نے اس سروے میں حصہ لینے کے لئے لنک کو فوری طور پر بھیجا جائے گا پر مشتمل ای میل درج کریں"
 
-#: application/helpers/replacements_helper.php:817
+#: application/helpers/replacements_helper.php:814
 msgid "Save Your Unfinished Survey"
 msgstr "اپنی نامکمل سروے محفوظ کری"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "Enter a name and password for this survey and click save below."
 msgstr "اس سروے کے لئے ایک نام اور پاس ورڈ درج کریں اور کلک کے نیچے محفوظ کر لیں"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "آپ کے سروے کا استعمال کرتے ہوئے کہ نام اور پاس ورڈ ، اور بعد میں اسی نام اور پاس ورڈ کے ساتھ لاگ ان کی طرف سے مکمل کیا جا سکتا ہے کو بچا لیا جائے گا"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "اگر آپ کو ایک ای میل ایڈریس دے ، ایک کی تفصیلات پر مشتمل ای میل آپ کو بھیج دیا جائے گا"
 
-#: application/helpers/replacements_helper.php:818
+#: application/helpers/replacements_helper.php:815
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr "محفوظ کریں بٹن پر کلک کرنے کے بعد آپ اس براؤزر ونڈو یا سروے بھرنے جاری رکھنے کے بند کر سکتے ہیں."
 
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 msgid "You have completed answering the questions in this survey."
 msgstr "آپ اس سروے میں سوالات کے جواب مکمل کر لیا ہے"
 
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "اس پر کلک کریں اب 'عرض' کے عمل کو مکمل کرنے اور محفوظ آپ کے جوابات"
 
@@ -7860,7 +7859,7 @@ msgstr "یا تو تم بہت دیر کے لئے غیر فعال کیا گیا �
 #: application/controllers/survey/index.php:360
 #: application/controllers/survey/index.php:373
 #: application/controllers/survey/index.php:388
-#: application/helpers/replacements_helper.php:224
+#: application/helpers/replacements_helper.php:221
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
@@ -8193,7 +8192,7 @@ msgstr "ٹوکن کی شناخ"
 #: application/controllers/admin/browse.php:131
 #: application/controllers/admin/browse.php:431
 #: application/helpers/common_helper.php:5237
-#: application/helpers/replacements_helper.php:620
+#: application/helpers/replacements_helper.php:617
 #: application/views/admin/export/exportresults_view.php:123
 #: application/views/admin/participants/displayParticipants_view.php:63
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8208,7 +8207,7 @@ msgstr "پہلا نام"
 #: application/controllers/admin/browse.php:132
 #: application/controllers/admin/browse.php:432
 #: application/helpers/common_helper.php:5238
-#: application/helpers/replacements_helper.php:627
+#: application/helpers/replacements_helper.php:624
 #: application/views/admin/export/exportresults_view.php:124
 #: application/views/admin/participants/displayParticipants_view.php:64
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8637,7 +8636,7 @@ msgstr "اس سروے میں تمام شرائط کو خارج کردیا گیا
 #: application/helpers/frontend_helper.php:1435
 #: application/helpers/frontend_helper.php:1512
 #: application/helpers/frontend_helper.php:1684
-#: application/helpers/replacements_helper.php:656
+#: application/helpers/replacements_helper.php:653
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:63
 #: application/views/admin/participants/attributeMap_view.php:95
@@ -9478,7 +9477,7 @@ msgid "Thank you for saving your survey in progress.  The following details can 
 msgstr "ترقی میں اپنا سروے کو بچانے کے لئے آپ کا شکریہ. مندرجہ ذیل تفصیلات کے اس سروے کی طرف لوٹنا ہے اور جاری رہے جہاں آپ نے چھوڑا استعمال کیا جا سکتا. آپ کا حوالہ کے لئے یہ ای میل رکھ دو -- ہم آپ کے لیے پاس ورڈ دوبارہ حاصل نہیں کر سکتے ہیں"
 
 #: application/controllers/admin/dataentry.php:1946
-#: application/helpers/replacements_helper.php:544
+#: application/helpers/replacements_helper.php:541
 #: application/libraries/Save.php:206
 msgid "Name"
 msgstr "نا"
@@ -9488,8 +9487,8 @@ msgstr "نا"
 #: application/controllers/admin/useraction.php:136
 #: application/controllers/admin/useraction.php:366
 #: application/controllers/admin/useraction.php:384
-#: application/helpers/replacements_helper.php:550
-#: application/helpers/replacements_helper.php:583
+#: application/helpers/replacements_helper.php:547
+#: application/helpers/replacements_helper.php:580
 #: application/libraries/Save.php:207
 #: application/views/admin/authentication/login.php:8
 #: application/views/admin/user/modifyuser.php:7
@@ -10547,7 +10546,7 @@ msgid "Export"
 msgstr "برآم"
 
 #: application/controllers/admin/surveypermission.php:439
-#: application/helpers/replacements_helper.php:573
+#: application/helpers/replacements_helper.php:570
 #: application/views/admin/user/setuserrights.php:119
 msgid "Save Now"
 msgstr "اب محفوظ کری"
@@ -11370,8 +11369,8 @@ msgstr "آپ پاس ورڈ فراہم نہیں کی"
 
 #: application/controllers/survey/index.php:442
 #: application/controllers/survey/index.php:446
-#: application/helpers/replacements_helper.php:433
-#: application/helpers/replacements_helper.php:445
+#: application/helpers/replacements_helper.php:430
+#: application/helpers/replacements_helper.php:442
 msgid "Load unfinished survey"
 msgstr ""
 
@@ -11532,7 +11531,7 @@ msgid "Clear Responses"
 msgstr "واضح جوابا"
 
 #: application/helpers/SurveyRuntimeHelper.php:443
-#: application/helpers/replacements_helper.php:823
+#: application/helpers/replacements_helper.php:820
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr "آپ کا شکریہ!"
@@ -11595,7 +11594,7 @@ msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1104
 #: application/helpers/frontend_helper.php:2256
-#: application/helpers/replacements_helper.php:384
+#: application/helpers/replacements_helper.php:381
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/dataentry/insert.php:41
@@ -13519,7 +13518,7 @@ msgid "SMTP debug output:"
 msgstr "SMTP ڈیبگ آؤٹ پٹ :"
 
 #: application/helpers/common_helper.php:5239
-#: application/helpers/replacements_helper.php:634
+#: application/helpers/replacements_helper.php:631
 #: application/views/admin/export/exportresults_view.php:125
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:72

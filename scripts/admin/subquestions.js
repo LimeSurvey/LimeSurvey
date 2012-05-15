@@ -99,7 +99,7 @@ function addinput()
 
 
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-    while ($(this).parent().parent().parent().find('input[value="'+sNextCode+'"]').length>0)
+    while ($(this).parent().parent().parent().find('input[value="'+sNextCode+'"]').length>0 && nextcode!=$(this).parent().parent().find('.code').val())
     {
         sNextCode=getNextCode(sNextCode);
     }
