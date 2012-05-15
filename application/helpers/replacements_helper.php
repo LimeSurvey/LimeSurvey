@@ -127,22 +127,19 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if(stripos ($line,"{TEMPLATECSS}"))
     {
         global $css_header_includes;
+        // TODO: only one jquery-ui.css, but break slider actually
         $_templatecss .="<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css' />\n"; // Remove it after corrected slider
         if (file_exists($templatedir . '/jquery-ui-custom.css'))
         {
-            $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$_jqueryuicssurl}' />\n";
+            $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui-custom.css' />\n";
         }
         elseif(file_exists($templatedir . '/jquery-ui.css'))
         {
-            $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$_jqueryuicssurl}' />\n";
-        }
-        else
-        { 
-#            $_jqueryuicssurl =Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css";
+            $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui.css' />\n";
         }
         if(Yii::app()->getConfig("css_admin_includes"))
         {
-            if(!$js_header_includes){$js_header_includes=array();}
+            if(!$css_header_includes){$css_header_includes=array();}
             foreach (Yii::app()->getConfig("css_admin_includes") as $cssinclude)
             {
                 $css_header_includes[] = $cssinclude;
