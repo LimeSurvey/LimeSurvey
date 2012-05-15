@@ -55,36 +55,6 @@ if (!$publicdir)
     $publicdir=".";
 }
 
-
-// Compute the Session name
-// Session name is based:
-// * on this specific limesurvey installation (Value SessionName in DB)
-// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
-$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
-$usresult = db_execute_assoc($usquery,'',true);          //Checked
-if ($usresult)
-{
-    $usrow = $usresult->FetchRow();
-    $stg_SessionName=$usrow['stg_value'];
-    if ($surveyid)
-    {
-        @session_name($stg_SessionName.'-runtime-'.$surveyid);
-    }
-    else
-    {
-        @session_name($stg_SessionName.'-runtime-publicportal');
-    }
-}
-else
-{
-    session_name("LimeSurveyRuntime-$surveyid");
-}
-session_set_cookie_params(0,$relativeurl.'/');
-if (!isset($_SESSION) || empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
-    @session_start();
-
-
-
 // First check if survey is active
 // if not: copy some vars from the admin session
 // to a new user session
@@ -105,6 +75,129 @@ if ($surveyid)
     {
         $surveyexists=false;
     }
+}
+
+// Compute the Session name
+// Session name is based:
+// * on this specific limesurvey installation (Value SessionName in DB)
+// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked
+if ($usresult)
+{
+    $usrow = $usresult->FetchRow();
+    $stg_SessionName=$usrow['stg_value'];
+    if ($surveyid && $surveyexists)
+    {
+        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+    }
+    else
+    {
+        @session_name($stg_SessionName.'-runtime-publicportal');
+    }
+}
+else
+{
+    session_name("LimeSurveyRuntime-$surveyid");
+}
+session_set_cookie_params(0,$relativeurl.'/');
+if (!isset($_SESSION) || empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
+    @session_start();
+
+if ( $embedded && $embedded_inc != '' )
+{
+    require_once( $embedded_inc );
+}
+//CHECK FOR REQUIRED INFORMATION (sid)
+if (!$surveyid || !$surveyexists)
+{
+    if(isset($_GET['lang']))
+    {
+        $baselang = sanitize_languagecode($_GET['lang']);
+    }
+    elseif (!isset($baselang))
+    {
+        $baselang=$defaultlang;
+    }
+    $clang = new limesurvey_lang($baselang);
+    if(!isset($defaulttemplate))
+    {
+        $defaulttemplate="default";
+    }
+    $languagechanger = makelanguagechanger();
+    //Find out if there are any publicly available surveys
+    $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
+    FROM ".db_table_name('surveys')." AS a
+    INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
+    ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
+    WHERE surveyls_survey_id=a.sid
+    AND surveyls_language=a.language
+    AND a.active='Y'
+    AND a.listpublic='Y'
+    AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
+    AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
+    ORDER BY surveyls_title";
+    $result = db_execute_assoc($query,false,true) or die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
+    $list=array();
+    if($result->RecordCount() > 0)
+    {
+        while($rows = $result->FetchRow())
+        {
+            $result2 = db_execute_assoc("Select surveyls_title from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$rows['sid']} and surveyls_language='$baselang'");
+            if ($result2->RecordCount())
+            {
+                $languagedetails=$result2->FetchRow();
+                $rows['surveyls_title']=$languagedetails['surveyls_title'];
+            }
+            $link = "<li><a href='$rooturl/index.php?sid=".$rows['sid'];
+            if (isset($_GET['lang']))
+            {
+                $link .= "&lang=".sanitize_languagecode($_GET['lang']);
+            }
+            if (isset($_GET['lang']))
+            {
+                $link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);
+            }
+            $link .= "'  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
+            if ($rows['publicstatistics'] == 'Y') $link .= "<a href='{$relativeurl}/statistics_user.php?sid={$rows['sid']}'>(".$clang->gT('View statistics').")</a>";
+            $link .= "</li>\n";
+            $list[]=$link;
+        }
+    }
+    if(count($list) < 1)
+    {
+        $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
+    }
+    
+    if(!$surveyid)
+    {
+        $thissurvey['name']=$sitename;
+        $nosid=$clang->gT("You have not provided a survey identification number");
+    }
+    else
+    {
+        $thissurvey['name']=$clang->gT("The survey identification number is invalid");
+        $nosid=$clang->gT("The survey identification number is invalid");
+    }
+    $surveylist=array(
+    "nosid"=>$clang->gT("You have not provided a survey identification number"),
+    "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail)),
+    "listheading"=>$clang->gT("The following surveys are available:"),
+    "list"=>implode("\n",$list),
+    );
+
+    $thissurvey['templatedir']=$defaulttemplate;
+
+    //A nice exit
+    sendcacheheaders();
+    doHeader();
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
+
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"));
+
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
+    doFooter();
+    exit;
 }
 
 if ($clienttoken != '' && isset($_SESSION['token']) &&
@@ -377,92 +470,7 @@ else
 {
     safe_die('You cannot start this script directly');
 }
-if ( $embedded && $embedded_inc != '' )
-{
-    require_once( $embedded_inc );
-}
 
-//CHECK FOR REQUIRED INFORMATION (sid)
-if (!$surveyid)
-{
-    if(isset($_GET['lang']))
-    {
-        $baselang = sanitize_languagecode($_GET['lang']);
-    }
-    elseif (!isset($baselang))
-    {
-        $baselang=$defaultlang;
-    }
-    $clang = new limesurvey_lang($baselang);
-    if(!isset($defaulttemplate))
-    {
-        $defaulttemplate="default";
-    }
-    $languagechanger = makelanguagechanger();
-    //Find out if there are any publicly available surveys
-    $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-    FROM ".db_table_name('surveys')." AS a
-    INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
-    ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
-    WHERE surveyls_survey_id=a.sid
-    AND surveyls_language=a.language
-    AND a.active='Y'
-    AND a.listpublic='Y'
-    AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
-    AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
-    ORDER BY surveyls_title";
-    $result = db_execute_assoc($query,false,true) or die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
-    $list=array();
-    if($result->RecordCount() > 0)
-    {
-        while($rows = $result->FetchRow())
-        {
-            $result2 = db_execute_assoc("Select surveyls_title from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$rows['sid']} and surveyls_language='$baselang'");
-            if ($result2->RecordCount())
-            {
-                $languagedetails=$result2->FetchRow();
-                $rows['surveyls_title']=$languagedetails['surveyls_title'];
-            }
-            $link = "<li><a href='$rooturl/index.php?sid=".$rows['sid'];
-            if (isset($_GET['lang']))
-            {
-                $link .= "&lang=".sanitize_languagecode($_GET['lang']);
-            }
-            if (isset($_GET['lang']))
-            {
-                $link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);
-            }
-            $link .= "'  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-            if ($rows['publicstatistics'] == 'Y') $link .= "<a href='{$relativeurl}/statistics_user.php?sid={$rows['sid']}'>(".$clang->gT('View statistics').")</a>";
-            $link .= "</li>\n";
-            $list[]=$link;
-        }
-    }
-    if(count($list) < 1)
-    {
-        $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
-    }
-    $surveylist=array(
-    "nosid"=>$clang->gT("You have not provided a survey identification number"),
-    "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail)),
-    "listheading"=>$clang->gT("The following surveys are available:"),
-    "list"=>implode("\n",$list),
-    );
-
-    $thissurvey['name']=$sitename;
-    $thissurvey['templatedir']=$defaulttemplate;
-
-    //A nice exit
-    sendcacheheaders();
-    doHeader();
-    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
-
-    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"));
-
-    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
-    doFooter();
-    exit;
-}
 
 // Get token
 if (!isset($token))
@@ -479,8 +487,6 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
     //Removes any existing timer cookies so timers will start again
     setcookie ("limesurvey_timers", "", time() - 3600);
 }
-
-
 
 //SEE IF SURVEY USES TOKENS AND GROUP TOKENS
 $i = 0; //$tokensexist = 0;
