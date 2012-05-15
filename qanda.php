@@ -2356,10 +2356,10 @@ function do_multiplechoice($ia)
 
     $exclude_all_others_auto = trim($qidattributes["exclude_all_others_auto"]);
 
-    if ($exclude_all_others_auto=='1'){
-        $autoArray['list'][]=$ia[1];
-        $autoArray[$ia[1]]['parent'] = $ia[1];
-    }
+//    if ($exclude_all_others_auto=='1'){
+//        $autoArray['list'][]=$ia[1];
+//        $autoArray[$ia[1]]['parent'] = $ia[1];
+//    }
 
 //    if (((int)$qidattributes['max_answers']>0) && $exclude_all_others_auto=='0')
 //    {
@@ -2450,14 +2450,14 @@ function do_multiplechoice($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
 
-        if ($exclude_all_others_auto==1){
-            if ($ansrow['title']==trim($qidattributes['exclude_all_others'])){
-                $autoArray[$ia[1]]['focus'] = $ia[1].trim($qidattributes['exclude_all_others']);
-            }
-            else{
-                $autoArray[$ia[1]]['children'][] = $myfname;
-            }
-        }
+//        if ($exclude_all_others_auto==1){
+//            if ($ansrow['title']==trim($qidattributes['exclude_all_others'])){
+//                $autoArray[$ia[1]]['focus'] = $ia[1].trim($qidattributes['exclude_all_others']);
+//            }
+//            else{
+//                $autoArray[$ia[1]]['children'][] = $myfname;
+//            }
+//        }
 
         $trbc='';
         /* Check for array_filter */
@@ -2521,9 +2521,9 @@ function do_multiplechoice($ia)
             ++$colcounter;
         }
     }
-    if ($exclude_all_others_auto==1){
-        $answer .= "<script type='text/javascript'>autoArray = ".ls_json_encode($autoArray).";</script>";
-    }
+//    if ($exclude_all_others_auto==1){
+//        $answer .= "<script type='text/javascript'>autoArray = ".ls_json_encode($autoArray).";</script>";
+//    }
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
