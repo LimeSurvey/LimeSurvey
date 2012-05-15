@@ -1,100 +1,103 @@
 <?php if (is_template_editable($templatename)==true)
     { ?>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
+    <?php if ($sEditorFileType=='htmlmixed')
+        {?>
+        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.js" ></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/css/css.js" ></script>
+        <?php }
+    ?>
+    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/<?php echo $sEditorFileType; ?>/<?php echo $sEditorFileType; ?>.js" ></script>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/codemirror-ui.js" ></script>
-    <table class='templatecontrol'>
-        <tr>
-            <th colspan='3'>
-                <strong><?php echo sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?></strong>
-            </th>
-        </tr>
-        <tr><th class='subheader' width='150'>
-            <?php $clang->eT("Standard files:"); ?></th>
-            <td align='center' valign='top' rowspan='3'>
-                <form name='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/templatesavechanges"); ?>'>
-                    <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
-                    <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
-                    <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
-                    <input type='hidden' name='action' value='templatesavechanges' />
+    <script type="text/javascript">
+        var editorfiletype='<?php echo $sEditorFileType; ?>';
+    </script>
+    <div class='header'>
+        <?php echo sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?>
+    </div>
+    <div id='templateleft' style="float:left;padding-left:1em;width:12%;">
+        <div >
+            <?php $clang->eT("Standard files:"); ?><br>
+            <select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+                <?php echo makeoptions($files, "name", "name", $editfile); ?>
+            </select>
+        </div>
+        <div style='margin-top:1em;'>
+            <?php $clang->eT("CSS & Javascript files:"); ?>
+            <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+                <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
+            </select>
+        </div>
+    </div>
 
-                    <textarea name='changes' id='changes' rows='20' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>'>
-                        <?php if (isset($editfile)) {
-                                echo textarea_encode(filetext($templatename,$editfile,$templates));
-                        } ?>
-                    </textarea>
-                    <script type="text/javascript">
-                        var codemirropath = '<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/';
-                    </script>
-                    <?php if (is_writable($templates[$templatename])) { ?>
-                        <input align='right' type='submit' value='<?php $clang->eT("Save changes"); ?>'
-                            <?php if (!is_template_editable($templatename)) { ?>
-                                disabled='disabled' alt='<?php $clang->eT("Changes cannot be saved to a standard template."); ?>'
-                                <?php } ?>
-                            />
-                        <?php }
-                        else
-                        { ?>
-                        <span class="flashmessage"><?php $clang->eT("You can't save changes because the template directory is not writable."); ?></span>
+    <div style='float:left;width:70%; padding:1.3em;' >
+        <form name='editTemplate' id='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/templatesavechanges"); ?>'>
+            <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
+            <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
+            <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
+            <input type='hidden' name='action' value='templatesavechanges' />
+
+            <textarea name='changes' id='changes' rows='20' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>'>
+                <?php if (isset($editfile)) {
+                        echo textarea_encode(filetext($templatename,$editfile,$templates));
+                } ?>
+            </textarea>
+            <script type="text/javascript">
+                var codemirropath = '<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/';
+            </script>
+            <p>
+                <?php if (is_writable($templates[$templatename])) { ?>
+                    <input type='submit' value='<?php $clang->eT("Save changes"); ?>'
+                        <?php if (!is_template_editable($templatename)) { ?>
+                            disabled='disabled' alt='<?php $clang->eT("Changes cannot be saved to a standard template."); ?>'
+                            <?php } ?>
+                        />
+                    <?php }
+                    else
+                    { ?>
+                    <span class="flashmessage"><?php $clang->eT("You can't save changes because the template directory is not writable."); ?></span>
+                    <?php } ?>
+            </p>
+        </form>
+    </div>
+
+    <div style="float:left;">
+        <div>
+            <?php $clang->eT("Other files:"); ?>
+            <form action='<?php echo $this->createUrl("admin/templates/templatefiledelete"); ?>' method='post'>
+                <select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>
+                    <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
+                </select><br>
+                <input type='submit' value='<?php $clang->eT("Delete"); ?>' onclick="javascript:return confirm('<?php $clang->eT("Are you sure you want to delete this file?","js"); ?>')"/>
+                <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
+                <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
+                <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
+                <input type='hidden' name='action' value='templatefiledelete' />
+            </form>
+        </div>
+        <div style='margin-top:1em;'>
+            <form enctype='multipart/form-data' name='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/upload/') ?>' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>
+                <?php $clang->eT("Upload a file:"); ?><br><input style='width:50px;' size=10 name="the_file" type="file" /><br />
+                <input type='submit' value='<?php $clang->eT("Upload"); ?>'
+                    <?php if (!is_template_editable($templatename))  { ?>
+                        disabled='disabled'
                         <?php } ?>
-                    <br />
-                </form></td>
-            <th class='subheader' colspan='2' align='right' width='200'><?php $clang->eT("Other files:"); ?></th></tr>
 
-        <tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
-                    <?php echo makeoptions($files, "name", "name", $editfile); ?>
-                </select><br /><br/>
-                <?php $clang->eT("CSS & Javascript files:"); ?>
-                <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
-                    <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
-                </select>
+                    />
+                <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
+                <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
+                <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
+                <input type='hidden' name='action' value='templateuploadfile' />
+            </form>
+        </div>
+    </div>
 
-            </td>
-            <td valign='top' align='right' width='20%'>
-                <form action='<?php echo $this->createUrl("admin/templates/templatefiledelete"); ?>' method='post'>
-                    <table width='90' align='left' border='0' cellpadding='0' cellspacing='0'><tr><td></td></tr>
-                        <tr><td><select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>
-                                    <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
-                                </select>
-                            </td></tr>
-                        <tr><td>
-                                <input type='submit' value='<?php $clang->eT("Delete"); ?>' onclick="javascript:return confirm('<?php $clang->eT("Are you sure you want to delete this file?","js"); ?>')"
-                                    <?php if (!is_template_editable($templatename))  { ?>
-                                        style='color: #BBBBBB;' disabled='disabled' alt='<?php $clang->eT("Files in a standard template cannot be deleted."); ?>'
-                                        <?php } ?>
-                                    />
-                                <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
-                                <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
-                                <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
-                                <input type='hidden' name='action' value='templatefiledelete' />
-                            </td></tr></table>
-                </form></td>
-        </tr>
-        <tr>
-            <td valign='top'>
-                <form enctype='multipart/form-data' name='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/upload/') ?>' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>
-                    <table><tr> <th class='subheader' valign='top' style='border: solid 1 #000080'>
-                            <?php $clang->eT("Upload a file:"); ?></th></tr><tr><td><input name="the_file" type="file" /><br />
-                                <input type='submit' value='<?php $clang->eT("Upload"); ?>'
-                                    <?php if (!is_template_editable($templatename))  { ?>
-                                        disabled='disabled'
-                                        <?php } ?>
-
-                                    />
-                                <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
-                                <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
-                                <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
-                                <input type='hidden' name='action' value='templateuploadfile' />
-                            </td></tr></table>
-                </form>
-            </td>
-        </tr>
-    </table>
     <?php } ?>
 
 
-<div class='header ui-widget-header'>
-    <strong><?php $clang->eT("Preview:"); ?></strong>
+<div class='header ui-widget-header' style='clear:both;'>
+    <?php $clang->eT("Preview:"); ?>
     <input type='button' value='iPhone' id='iphone' />
     <input type='button' value='640x480' id='x640' />
     <input type='button' value='800x600' id='x800' />

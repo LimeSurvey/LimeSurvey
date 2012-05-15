@@ -3082,7 +3082,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT("Enter the code of a Multiple choice question to only show the matching answer options in this question."),
+    "help"=>$clang->gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
@@ -3090,7 +3090,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT("Enter the code of a Multiple choice question to exclude the matching answer options in this question."),
+    "help"=>$clang->gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter exclusion'));
 
     $qattributes["assessment_value"]=array(
@@ -3557,7 +3557,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Integer only'));
 
     $qattributes["numbers_only"]=array(
-    "types"=>"Q;S",
+    "types"=>"Q;S*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -7076,25 +7076,6 @@ function getHeader($meta = false)
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
 
-    $js_header = ''; $css_header='';
-    if(Yii::app()->getConfig("js_admin_includes"))
-    {
-        foreach (Yii::app()->getConfig("js_admin_includes") as $jsinclude)
-        {
-            if (substr($jsinclude,0,4) == 'http')
-                $js_header .= "<script type=\"text/javascript\" src=\"{$jsinclude}\"></script>\n";
-            else
-                $js_header .= "<script type=\"text/javascript\" src=\"".Yii::app()->baseUrl."{$jsinclude}\"></script>\n";
-        }
-    }
-    if(Yii::app()->getConfig("css_admin_includes"))
-    {
-        foreach (Yii::app()->getConfig("css_admin_includes") as $cssinclude)
-        {
-            $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".Yii::app()->baseUrl.$cssinclude."\" />\n";
-        }
-    }
-
     if ( !$embedded )
     {
         $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
@@ -7103,13 +7084,7 @@ function getHeader($meta = false)
         {
             $header.=" dir=\"rtl\" ";
         }
-        $header.= ">\n\t<head>\n"
-        . $css_header
-        . "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/jquery.js\"></script>\n"
-        . "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js\"></script>\n"
-        . "<link href=\"".Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
-        . "<link href=\"".Yii::app()->getConfig('generalscripts')."jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
-        . $js_header;
+        $header.= ">\n\t<head>\n";
 
         if ($meta)
             $header .= $meta;
@@ -7536,5 +7511,32 @@ function getIPAddress()
         return '127.0.0.1';
     }
 }
+
+
+/**
+* This function tries to find out a valid language code for the language of the browser used
+* If it cannot find it it will return the default language from global settings
+*
+*/
+function getBrowserLanguage()
+{
+        $sLanguage=Yii::app()->getRequest()->getPreferredLanguage();
+        Yii::app()->loadHelper("surveytranslator");
+        $aLanguages=getLanguageData();
+        if (!isset($aLanguages[$sLanguage]))
+        {
+            $sLanguage=str_replace('_','-',$sLanguage);
+            if (!isset($aLanguages[$sLanguage]))
+            {
+                $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
+                if (!isset($aLanguages[$sLanguage]))
+                {
+                   $sLanguage=Yii::app()->getConfig('defaultlang');
+                }
+            }
+        }
+        return $sLanguage;
+}
+
 
 // Closing PHP tag intentionally omitted - yes, it is okay

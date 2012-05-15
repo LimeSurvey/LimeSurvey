@@ -1651,3 +1651,7 @@ ol.organizer {
     padding:2px;
 }
 
+#templateleft select
+{
+    width:140px;
+}

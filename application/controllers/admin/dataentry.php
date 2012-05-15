@@ -98,6 +98,33 @@ class dataentry extends Survey_Common_Action
             }
         }
     }
+    
+    function iteratesurvey()
+    {
+        $aData = array();
+
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        if (!empty($_REQUEST['sid'])) {
+            $surveyid = sanitize_int($_REQUEST['sid']);
+        }
+        $aData['surveyid'] = $surveyid;
+        $aData['clang'] = $this->getController()->lang;
+        $aData['success'] = false;
+        if (hasSurveyPermission($surveyid,'surveyactivation','update'))
+        {
+            if (Yii::app()->request->getParam('unfinalizeanswers') == 'true')
+            {
+                Survey_dynamic::sid($surveyid);
+                Yii::app()->db->createCommand("DELETE from {{survey_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{survey_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
+                // Then set all remaining answers to incomplete state
+                Yii::app()->db->createCommand("UPDATE {{survey_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
+                // Finally, reset the token completed and sent status
+                Yii::app()->db->createCommand("UPDATE {{tokens_$surveyid}} SET sent='N', remindersent='N', remindercount=0, completed='N', usesleft=1 where usesleft=0")->execute();
+                $aData['success']=true;
+            }
+            $this->_renderWrappedTemplate('dataentry', 'iteratesurvey', $aData);
+        }
+    }
 
     private function _handleFileUpload($surveyid, $aData)
     {

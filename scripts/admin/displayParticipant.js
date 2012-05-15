@@ -18,7 +18,7 @@ function addcondition(newcid)
     <option value='survey'>"+surveyTxt+"</option>\n\
     <option value='language'>"+languageTxt+"</option>\n\
     <option value='owner_uid'>"+owneridTxt+"</option>\n\
-    <option value='owner_name'>"+ownernameTxt+"</option>"+optionstring+"\n\
+    <option value='owner_name'>"+ownernameTxt+"</option>\n\
     </select>\n\</td>\n\<td>\n\
     <select name='condition_"+conditionid+"' id='condition_"+conditionid+"'>\n\
     <option>"+selectTxt+"</option>\n\
@@ -30,8 +30,8 @@ function addcondition(newcid)
     <option value='lessthan'>"+lessthanTxt+"</option>\n\
     </select></td>\n\
     <td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
-    <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+">\n\
-    <img src="+addbutton+" id='addbutton' onclick='addcondition();' style='margin-bottom:4px'></td></tr>\n\<tr></tr>";
+    <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" alt='"+minusbuttonTxt+"' />\n\
+    <img src="+addbutton+" id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"' /></td></tr>\n\<tr></tr>";
     //$('#searchtable > tbody > tr').eq(id).after(html);
     $('#searchtable > tbody > tr').eq(conditionid).after(html);
     conditionid++;
@@ -89,8 +89,8 @@ $(document).ready(function() {
         <option value='lessthan'>"+lessthanTxt+"</option>\n\
         </select></td>\n\
         <td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
-        <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+">\n\
-        <img src="+addbutton+" id='addbutton' onclick='addcondition();' style='margin-bottom:4px'></td></tr>\n\<tr></tr>";
+        <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" alt='"+minusbuttonTxt+"' />\n\
+        <img src="+addbutton+" id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"' /></td></tr>\n\<tr></tr>";
         $('#searchtable tr:last').after(html);
     });
 
@@ -265,155 +265,154 @@ $(document).ready(function() {
 
     /* Set up default buttons in the main jqGrid Pager */
     jQuery("#displayparticipants").jqGrid(
-    'navGrid',
-    '#pager',
-    {add:true,del:true,edit:false,refresh: true,search: false},
-    {},
-    {width : 400},
-    {msg:deleteMsg, width : 700,
-        afterShowForm: function($form) {
-            /* This code sets the position of the delete dialog to just below the last selected item */
-            /* Unless this would put the delete dialog off the page, in which case it will be pushed up a bit */
-            var dialog = $form.closest('div.ui-jqdialog'),
-            selRowId = jQuery("#displayparticipants").jqGrid('getGridParam', 'selrow'),
-            selRowCoordinates = $('#'+selRowId).offset();
-            selRowCoordinates.top=selRowCoordinates.top+25;
-            selRowCoordinates.left=50;
-            if(selRowCoordinates.top+325 > $(window).height()) {
-                selRowCoordinates.top=selRowCoordinates.top-325;
-            }
-            dialog.offset(selRowCoordinates);
-        },
-        beforeSubmit : function(postdata, formid) {
-            if(!$('#selectable .ui-selected').attr('id')) {
-                alert(nooptionselected);
-                message = "dummy";
-            } else {
-                $.post(delparticipantUrl, {
-                    participant_id : postdata,
-                    selectedoption : $('#selectable .ui-selected').attr('id')
-                }, function(data) {
-                });
-                success = "dummy";
-                message = "dummy";
-                return[success,message];
-            }
-        }, beforeShowForm:function(form) {
-            $('#selectable').bind("mousedown", function (e) {
-                e.metaKey = false;
-            }).selectable({
-                tolerance: 'fit'
-            })
-    }},
-    {multipleSearch:true, multipleGroup:true}
+        'navGrid',
+        '#pager',
+        {add:true,del:true,edit:false,refresh: true,search: false},
+        {},
+        {width : 400},
+        {msg:deleteMsg, width : 700,
+            afterShowForm: function($form) {
+                /* This code sets the position of the delete dialog to just below the last selected item */
+                /* Unless this would put the delete dialog off the page, in which case it will be pushed up a bit */
+                var dialog = $form.closest('div.ui-jqdialog'),
+                selRowId = jQuery("#displayparticipants").jqGrid('getGridParam', 'selrow'),
+                selRowCoordinates = $('#'+selRowId).offset();
+                selRowCoordinates.top=selRowCoordinates.top+25;
+                selRowCoordinates.left=50;
+                if(selRowCoordinates.top+325 > $(window).height()) {
+                    selRowCoordinates.top=selRowCoordinates.top-325;
+                }
+                dialog.offset(selRowCoordinates);
+            },
+            beforeSubmit : function(postdata, formid) {
+                if(!$('#selectable .ui-selected').attr('id')) {
+                    alert(nooptionselected);
+                    message = "dummy";
+                } else {
+                    $.post(delparticipantUrl, {
+                        participant_id : postdata,
+                        selectedoption : $('#selectable .ui-selected').attr('id')
+                    }, function(data) {
+                    });
+                    success = "dummy";
+                    message = "dummy";
+                    return[success,message];
+                }
+            }, beforeShowForm:function(form) {
+                $('#selectable').bind("mousedown", function (e) {
+                    e.metaKey = false;
+                }).selectable({
+                    tolerance: 'fit'
+                })
+        }},
+        {multipleSearch:true, multipleGroup:true}
     );
 
     /* Add the CSV Export Button to the main jqGrid Pager */
     $("#displayparticipants").navButtonAdd(
-    '#pager',
-    {
-        caption:"",
-        title:exportToCSVTitle,
-        buttonicon:'exporticon',
-        onClickButton:function() {
-            $.post(
-            exporttocsvcount,
-            { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
-            function(data) {
-                titlemsg = data;
-                var dialog_buttons={};
-                dialog_buttons[cancelBtn]=function(){
-                    $(this).dialog("close");
-                };
-                dialog_buttons[exportBtn]=function(){
-                    //$.load(exporttocsv+"/"+$('#attributes').val(),{ } );
-                    var url = jQuery('#displayparticipants').jqGrid('getGridParam', 'url');
-                    $.download(exporttocsv+"/"+$('#attributes').val(),'searchcondition='+url );
-                    $(this).dialog("close");
-                };
-                /* End of building array for button functions */
-                $('#exportcsv').dialog({
-                    modal: true,
-                    title: titlemsg,
-                    buttons: dialog_buttons,
-                    width : 400,
-                    height : 400,
-                    open: function(event, ui) {
-                        $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true}).multiselectfilter();
+        '#pager',
+        {
+            caption:"",
+            title:exportToCSVTitle,
+            buttonicon:'exporticon',
+            onClickButton:function() {
+                $.post(
+                    exporttocsvcount,
+                    { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
+                    function(data) {
+                        titlemsg = data;
+                        var dialog_buttons={};
+                        dialog_buttons[cancelBtn]=function(){
+                            $(this).dialog("close");
+                        };
+                        dialog_buttons[exportBtn]=function(){
+                            //$.load(exporttocsv+"/"+$('#attributes').val(),{ } );
+                            var url = jQuery('#displayparticipants').jqGrid('getGridParam', 'url');
+                            $.download(exporttocsv+"/"+$('#attributes').val(),'searchcondition='+url );
+                            $(this).dialog("close");
+                        };
+                        /* End of building array for button functions */
+                        $('#exportcsv').dialog({
+                            modal: true,
+                            title: titlemsg,
+                            buttons: dialog_buttons,
+                            width : 400,
+                            height : 400,
+                            open: function(event, ui) {
+                                $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true}).multiselectfilter();
+                            }
+                        });
                     }
-                });
+                );
             }
-            );
         }
-    }
     );
 
     /* Add the full Search Button to the main jqGrid Pager */
     $("#displayparticipants").navButtonAdd(
-    '#pager',
-    {
-        caption:"",
-        title: fullSearchTitle,
-        buttonicon:'searchicon',
-        onClickButton:function(){
-            var dialog_buttons={};
-            dialog_buttons[searchBtn]=function(){
-                searchconditions="";
+        '#pager',
+        {
+            caption:"",
+            title: fullSearchTitle,
+            buttonicon:'searchicon',
+            onClickButton:function(){
                 var dialog_buttons={};
-                if($('#field_1').val() == ''){
-                    dialog_buttons[okBtn]=function(){
-                        $( this ).dialog( "close" );
-                    };
-                    /* End of building array for button functions */
-                    $('#fieldnotselected').dialog({
-                        modal: true,
-                        title: error,
-                        buttons: dialog_buttons
-                    });
-                } else if($('#condition_1').val()=="") {
-                    dialog_buttons[okBtn]=function() {
-                        $( this ).dialog( "close" );
-                    };
-                    /* End of building array for button functions */
-                    $('#conditionnotselected').dialog({
-                        modal: true,
-                        title: error,
-                        buttons: dialog_buttons
-                    });
-                } else {
-                    if(conditionid == 1) {
-                        searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
+                dialog_buttons[searchBtn]=function(){
+                    searchconditions="";
+                    var dialog_buttons={};
+                    if($('#field_1').val() == ''){
+                        dialog_buttons[okBtn]=function(){
+                            $( this ).dialog( "close" );
+                        };
+                        /* End of building array for button functions */
+                        $('#fieldnotselected').dialog({
+                            modal: true,
+                            title: error,
+                            buttons: dialog_buttons
+                        });
+                    } else if($('#condition_1').val()=="") {
+                        dialog_buttons[okBtn]=function() {
+                            $( this ).dialog( "close" );
+                        };
+                        /* End of building array for button functions */
+                        $('#conditionnotselected').dialog({
+                            modal: true,
+                            title: error,
+                            buttons: dialog_buttons
+                        });
                     } else {
-                        searchconditions = $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
-                        for( i=2 ; i<=conditionid; i++) {
-                            if($('#field_'+i).val()) {
-                                searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();
+                        if(conditionid == 1) {
+                            searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
+                        } else {
+                            searchconditions = $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
+                            for( i=2 ; i<=conditionid; i++) {
+                                if($('#field_'+i).val()) {
+                                    searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();
+                                }
                             }
                         }
+                        jQuery("#displayparticipants").jqGrid('setGridParam',{
+                            url:jsonSearchUrl+'/'+searchconditions,
+                            gridComplete: function(){
+                                if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
+                                    var dialog_buttons={};
+                                    dialog_buttons[okBtn]=function(){
+                                        $( this ).dialog( "close" );
+                                        };
+                                    $("<p>"+noSearchResultsTxt+"</p>").dialog({
+                                        modal: true,
+                                        buttons: dialog_buttons,
+                                        resizable: false
+                                    });
+                                }
+                            }}).trigger("reloadGrid");
+                        $(this).dialog("close");
                     }
-                    jQuery("#displayparticipants").jqGrid('setGridParam',{
-                        url:jsonSearchUrl+'/'+searchconditions,
-                        gridComplete: function(){
-                            if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
-                                var dialog_buttons={};
-                                dialog_buttons[okBtn]=function(){
-                                    $( this ).dialog( "close" );
-                                };
-                                $("<p>"+noSearchResultsTxt+"</p>").dialog({
-                                    modal: true,
-                                    buttons: dialog_buttons,
-                                    resizable: false
-                                });
-                            }
-                    }}).trigger("reloadGrid");
-                    $(this).dialog("close");
-                }
-            };
-            dialog_buttons[cancelBtn]=function(){
+                };
+                dialog_buttons[cancelBtn]=function(){
                 $( this ).dialog( "close" );
             };
             dialog_buttons[resetBtn]=function(){
-
                 jQuery("#displayparticipants").jqGrid('setGridParam',{
                     url:jsonUrl,
                     gridComplete: function(){
@@ -428,10 +427,9 @@ $(document).ready(function() {
                                 resizable: false
                             });
                         }
-                }});
-
+                    }
+                });
                 $("#displayparticipants").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
-
             };
             /* End of building array for button functions */
             $("#search").dialog({

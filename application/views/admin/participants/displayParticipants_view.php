@@ -57,6 +57,7 @@ else
 ?>
 <script type="text/javascript">
     /* Search form titles */
+    var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
     var selectTxt="<?php $clang->eT("Select...") ?>";
     var emailTxt="<?php $clang->eT("Email") ?>";
     var firstnameTxt="<?php $clang->eT("First name") ?>";
@@ -96,7 +97,6 @@ else
 
     var resetBtn = "<?php $clang->eT("Reset"); ?>";
     var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
-    var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
     var noSearchResultsTxt = "<?php $clang->eT("Your search returned no results"); ?>";
     var accessDeniedTxt = "<?php $clang->eT("Access denied"); ?>";
     var closeTxt = "<?php $clang->eT("Close"); ?>";
@@ -106,7 +106,7 @@ else
     var addpartTitle = "<?php $clang->eT("Add participant to survey"); ?>";
     var addAllInViewTxt="<?php $clang->eT("Add all %s participants in your current list to a survey."); ?>";
     var addSelectedItemsTxt="<?php $clang->eT("Add the %s selected participants to a survey.") ?>";
-    var addpartErrorMsg = "<?php $clang->eT("Either you don't own a survey or it doesn't have token table"); ?>";
+    var addpartErrorMsg = "<?php $clang->eT("No surveys are available. Either you don't have permissions to any surveys or none of your surveys have a token table"); ?>";
     var mapButton = "<?php $clang->eT("Next") ?>";
     var error = "<?php $clang->eT("Error") ?>";
     var addsurvey = "<?php $clang->eT("Add participants to survey") ?>";
@@ -130,8 +130,10 @@ else
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editParticipant"); ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
     var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getaddtosurveymsg"); ?>";
-    var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/deleteanswer.png" ?>";
-    var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>";
+    var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
+    var addbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>";
+    var minusbuttonTxt = "<?php $clang->eT("Remove search condition") ?>";
+    var addbuttonTxt = "<?php $clang->eT("Add search condition") ?>";
     var delparticipantUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/delParticipant"); ?>";
     var getAttribute_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getAttribute_json/pid/"); ?>";
     var exporttocsv = "<?php echo Yii::app()->getController()->createUrl("admin/participants/exporttocsv/id"); ?>";
@@ -195,7 +197,7 @@ echo $colModels;
             <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
             <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>  id="addbutton" style="margin-bottom:4px"></td>
+            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>  id="addbutton" style="margin-bottom:4px" alt='<?php $clang->eT("Add search condition"); ?>'></td>
         </tr>
     </table>
     <br/>
@@ -275,10 +277,10 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
           </h4>
           <p>
             <?php
-            if (!empty($surveynames))
+            if (!empty($tokensurveynames))
             {
                 //$option[''] = $clang->gT("Select...");
-                foreach ($surveynames as $row)
+                foreach ($tokensurveynames as $row)
                 {
                     $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
                 }

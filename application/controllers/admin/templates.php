@@ -222,7 +222,9 @@ class templates extends Survey_Common_Action
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'templates.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/css/css.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/css/codemirror-ui.css');
 
 
@@ -272,10 +274,20 @@ class templates extends Survey_Common_Action
     */
     public function templatefiledelete()
     {
+        $clang = $this->getController()->lang;
         if (returnGlobal('action') == "templatefiledelete") {
             // This is where the temp file is
-            $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $_POST['templatename'] . "/" . returnGlobal('otherfile');
-            unlink($the_full_file_path);
+            $sFileToDelete=preg_replace("[^\w\s\d\.\-_~,;:\[\]\(\]]", '', returnGlobal('otherfile'));
+
+            $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $_POST['templatename'] . "/" . $sFileToDelete;
+            if (@unlink($the_full_file_path))
+            {
+                Yii::app()->session['flashmessage'] = sprintf($clang->gT("The file %s was deleted."), htmlspecialchars($sFileToDelete));
+            }
+            else
+            {
+                Yii::app()->session['flashmessage'] = sprintf($clang->gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete));
+            }
             $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
         }
     }
@@ -508,6 +520,20 @@ class templates extends Survey_Common_Action
             @fclose($fnew);
         }
 
+        $sExtension=substr(strrchr($editfile, '.'), 1);
+        switch ($sExtension)
+        {
+           case 'css':$sEditorFileType='css';
+           break;
+           case 'pstpl':$sEditorFileType='htmlmixed';
+           break;
+           case 'js':$sEditorFileType='javascript';
+           break;
+           default: $sEditorFileType='htmlmixed';
+           break;
+        }
+
+
         $aData['clang'] = $this->getController()->lang;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
@@ -520,6 +546,7 @@ class templates extends Survey_Common_Action
         $aData['otherfiles'] = $otherfiles;
         $aData['tempurl'] = $tempurl;
         $aData['time'] = $time;
+        $aData['sEditorFileType'] = $sEditorFileType;
 
         $aViewUrls['templatesummary_view'][] = $aData;
 

@@ -86,7 +86,7 @@
                 <?php }
                 if (hasSurveyPermission($surveyid, 'responses', 'delete') && $thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/iteratesurvey/surveyid/$surveyid"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/dataentry/iteratesurvey/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>iterate.png' title='' alt='<?php $clang->eT("Iterate survey"); ?>' /></a>
                 <?php } ?>
         </div>

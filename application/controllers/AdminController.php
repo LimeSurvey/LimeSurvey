@@ -103,15 +103,23 @@ class AdminController extends LSYii_Controller
     */
     protected function _sessioncontrol()
     {
+        Yii::import('application.libraries.Limesurvey_lang');
         // From personal settings
         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
-            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('lang');
+            if (Yii::app()->request->getPost('lang')=='auto')
+            {
+                $sLanguage= getBrowserLanguage();
+            }
+            else
+            {
+                $sLanguage=Yii::app()->request->getPost('lang');
+            }
+            Yii::app()->session['adminlang'] = $sLanguage;
         }
 
         if (empty(Yii::app()->session['adminlang']))
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
-        Yii::import('application.libraries.Limesurvey_lang');
         $this->lang = new Limesurvey_lang(Yii::app()->session['adminlang']);
         Yii::app()->setLang($this->lang);
 

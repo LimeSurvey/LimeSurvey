@@ -1228,7 +1228,7 @@ function do_date($ia)
         {
             $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
         }
-        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
+        //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
 
         // Format the date  for output
         if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])!='')
@@ -3022,11 +3022,8 @@ function do_file_upload($ia)
     headFileName: '" . $clang->gT('File name','js') . "'
     };
     </script>\n";
-    /*if ($pos)
-    $answer .= "<script type='text/javascript' src='{$rooturl}/scripts/modaldialog.js'></script>";
-    else */
-    $answer .= "<script type='text/javascript' src='".Yii::app()->getBaseUrl(true)."/scripts/modaldialog.js'></script>";
-    //$js_header_includes[]= '/scripts/modaldialog.js'; //not working!
+
+    $js_header_includes[]= "<script type='text/javascript' src='".Yii::app()->getBaseUrl(true)."/scripts/modaldialog.js'></script>";
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -3423,7 +3420,7 @@ function do_multiplenumeric($ia)
     {
         $slider_layout=true;
         $extraclass .=" withslider";
-        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
+        //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
         if (trim($aQuestionAttributes['slider_accuracy'])!='')
         {
             //$slider_divisor = 1 / $slider_accuracy['value'];
@@ -3592,7 +3589,7 @@ function do_multiplenumeric($ia)
                     $slider_showmax='';
                 }
 
-                $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
+                //$js_header_includes[] = '/scripts/jquery/jquery-ui.js'; already included by default
                 $js_header_includes[] = '/scripts/jquery/lime-slider.js';
 
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
@@ -3680,7 +3677,7 @@ function do_multiplenumeric($ia)
         //            $answer_main .= $answer_computed;
         //        }
         if($slider_layout){
-            $answer .= "<script type='text/javascript' src='".Yii::app()->baseUrl."/scripts/jquery/lime-slider.js'></script>";
+            $js_header_includes[]= "/scripts/jquery/lime-slider.js";
         }
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''

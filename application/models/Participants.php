@@ -367,7 +367,12 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else if (is_numeric($condition[0]))
             {
-                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value = :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR);
+                $command = Yii::app()->db->createCommand()
+                                    ->select('{{participant_attribute}}.*,{{participants}}.*')
+                                    ->from('{{participant_attribute}}')
+                                    ->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')
+                                    ->where('{{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value = :condition_2')
+                                    ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR);
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();

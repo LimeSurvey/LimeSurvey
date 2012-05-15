@@ -4,12 +4,12 @@
 $(document).ready(function(){
 // activate codemirror
 		$('#changes').not('.none').each(function(index) {
-		               var textarea = $(this).get(0) ; 
+		               var textarea = $(this).get(0) ;
 		               var uiOptions = { path : codemirropath, searchMode : 'inline', buttons : ['undo','redo','jump','reindent','about'] }
-		               var codeMirrorOptions = { mode: "javascript" }
+		               var codeMirrorOptions = { mode: editorfiletype }
 		               var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);
 		});
-		
+
     $('#iphone').click(function(){
       $('#previewiframe').css("width", "320px");
       $('#previewiframe').css("height", "396px");

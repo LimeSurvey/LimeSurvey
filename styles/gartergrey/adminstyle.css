@@ -776,3 +776,8 @@ tr.editedrow {
 .ui-jqgrid td input[type="image"] {
     padding:2px;
 }
+
+#templateleft select
+{
+    width:150px;
+}
