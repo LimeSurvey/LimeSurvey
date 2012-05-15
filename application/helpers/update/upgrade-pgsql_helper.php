@@ -366,7 +366,6 @@ function db_upgrade($oldversion) {
         date_created date NOT NULL,
         PRIMARY KEY (participant_id,token_id,survey_id)
         );"); echo $modifyoutput; flush();@ob_flush();
-        modifyDatabase("","ALTER TABLE prefix_user ADD participant_panel integer NOT NULL default '0'"); echo $modifyoutput; flush();@ob_flush();
         // add language field to question_attributes table
         modifyDatabase("","ALTER TABLE prefix_question_attributes ADD language character varying(20)"); echo $modifyoutput; flush();@ob_flush();
         upgrade_question_attributes148();
