@@ -163,7 +163,7 @@ function upgrade_survey_table145()
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
-        Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
+        $oLanguage = new Limesurvey_lang($aSurveyRow['surveyls_language']);
         $oLanguage = Yii::app()->lang;
         $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);

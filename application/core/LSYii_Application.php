@@ -66,7 +66,7 @@ class LSYii_Application extends CWebApplication
 	 */
 	public function loadLibrary($library)
 	{
-		Yii::import('application.libraries.'.$library.'', true);
+		Yii::import('application.libraries.'.$library, true);
 	}
 
 	/**

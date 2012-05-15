@@ -311,8 +311,29 @@ class Authentication extends Survey_Common_Action
             $user->save();
         }
 
+        if ($user->lang=='auto')
+        {
+            $sLanguage=Yii::app()->getRequest()->getPreferredLanguage();
+            Yii::app()->loadHelper("surveytranslator");
+            $aLanguages=getLanguageData();
+            if (!isset($aLanguages[$sLanguage]))
+            {
+                $sLanguage=str_replace('_','-',$sLanguage);
+                if (!isset($aLanguages[$sLanguage]))
+                {
+                    $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
+                    if (!isset($aLanguages[$sLanguage]))
+                    {
+                       $sLanguage=Yii::app()->getConfig('defaultlang');
+                    }
+                }
+
+            }
+            $user->lang=$sLanguage;
+
+        }
         Yii::app()->session['adminlang'] = $user->lang;
-        $this->getController()->lang->limesurvey_lang(array('langcode' => $user->lang));
+        $this->getController()->lang= new limesurvey_lang($user->lang);
     }
 
     /**

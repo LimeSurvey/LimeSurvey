@@ -2,7 +2,12 @@
     { ?>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/css/css.js" ></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/htmlmixed/htmlmixed.js" ></script>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/codemirror-ui.js" ></script>
+    <script type="text/javascript">
+        var editorfiletype='<?php echo $sEditorFileType; ?>';
+    </script>
     <div class='header'>
         <?php echo sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?>
     </div>

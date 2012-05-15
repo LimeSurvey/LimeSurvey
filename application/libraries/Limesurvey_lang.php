@@ -32,8 +32,8 @@
                 trigger_error('langcode param is undefined ', E_USER_WARNING);
 
             Yii::app()->loadHelper('sanitize');
-            $sLanguageCode[0]=sanitize_languagecode($sLanguageCode);
-            $streamer = new FileReader(getcwd().'/locale/'.$sLanguageCode.'/LC_MESSAGES/'.$sLanguageCode.'.mo');
+            $sLanguageCode=sanitize_languagecode($sLanguageCode);
+            $streamer = new FileReader(getcwd().DIRECTORY_SEPARATOR.'locale'.DIRECTORY_SEPARATOR.$sLanguageCode.DIRECTORY_SEPARATOR.'LC_MESSAGES'.DIRECTORY_SEPARATOR.$sLanguageCode.'.mo');
             $this->gettextclass = new gettext_reader($streamer);
             $this->langcode = $sLanguageCode;
         }

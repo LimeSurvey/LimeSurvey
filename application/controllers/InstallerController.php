@@ -626,7 +626,7 @@ class InstallerController extends CController {
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
-                    $this->loadLibrary('admin/sha256','sha256');
+                    $this->loadLibrary('admin/sha256');
                     $this->sha256 = new SHA256;
                     $password_hash = $this->sha256->hashing($defaultpass);
 
@@ -1200,7 +1200,7 @@ class InstallerController extends CController {
             echo $sError.PHP_EOL;
         }
 
-        $this->loadLibrary('admin/sha256','sha256');
+        $this->loadLibrary('admin/sha256');
         $this->sha256 = new SHA256;
         $sPasswordHash = $this->sha256->hashing(Yii::app()->getConfig('defaultpass'));
 

@@ -1608,3 +1608,8 @@ tr.editedrow{
 {
     padding:2px;
 }
+
+#templateleft select
+{
+    width:150px;
+}
