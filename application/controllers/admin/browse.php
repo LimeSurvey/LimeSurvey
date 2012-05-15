@@ -423,8 +423,28 @@ class browse extends Survey_Common_Action
         }
 
         $clang = $aData['clang'];
-        if(isset($aData['all']))
+            $aData['num_total_answers'] = Survey_dynamic::model($iSurveyId)->count();
+            $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyId)->count('submitdate IS NOT NULL');
+
+            $aViewUrls[] = 'browseindex_view';
+            $this->_renderWrappedTemplate('',$aViewUrls, $aData);
+    }
+    function browse($iSurveyId)
+    {
+        $aData = $this->_getData($iSurveyId);
+        extract($aData);
+        $aViewUrls = array();
+        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
+
+        /**
+         * fnames is used as informational array
+         * it containts
+         *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
+         */
+        if (Yii::app()->request->getPost('sql'))
         {
+            $aViewUrls[] = 'browseallfiltered_view';
+        }
             //add token to top of list if survey is not private
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId)) //add token to top of list if survey is not private
             {
@@ -578,17 +598,8 @@ class browse extends Survey_Common_Action
             }
 
             $aViewUrls[] = 'browseallfooter_view';
-        }
-        else
-        {
-            $aData['num_total_answers'] = Survey_dynamic::model($iSurveyId)->count();
-            $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyId)->count('submitdate IS NOT NULL');
-
-            $aViewUrls[] = 'browseindex_view';
-        }
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
-
     public function time($iSurveyId)
     {
         $aData = $this->_getData(array('iSurveyId' => $iSurveyId));
@@ -611,7 +622,7 @@ class browse extends Survey_Common_Action
             }
         }
 
-        $fields = createTimingsFieldMap($iSurveyId, 'full');
+        $fields = createTimingsFieldMap($iSurveyId, 'full',true,false,$aData['language']);
 
         $clang = $aData['clang'];
         foreach ($fields as $fielddetails)
@@ -654,7 +665,7 @@ class browse extends Survey_Common_Action
         $limit = Yii::app()->request->getParam('limit', 50);
 
         //LETS COUNT THE DATA
-        $oCriteria = new CdbCritera();
+        $oCriteria = new CdbCriteria();
         $oCriteria->select = 'tid';
         $oCriteria->join = "INNER JOIN {{survey_{$iSurveyId}}} ON {{survey_{$iSurveyId}_timings}}.id={{survey_{$iSurveyId}}}.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
@@ -666,7 +677,7 @@ class browse extends Survey_Common_Action
         }
 
         //NOW LETS SHOW THE DATA
-        $oCriteria = new CdbCritera();
+        $oCriteria = new CdbCriteria();
         $oCriteria->join = "INNER JOIN {{survey_{$iSurveyId}}} ON {{survey_{$iSurveyId}_timings}}.id = {{survey_{$iSurveyId}}}.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
         $oCriteria->order = "{{survey_{$iSurveyId}}}.id";
