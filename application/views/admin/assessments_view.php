@@ -64,13 +64,22 @@ else {echo "<tr class='evenrow'>\n";} ?>
     if (isset($editdata) && $editdata['scope'] == "G") {echo " checked='checked' ";} ?>/>
     <label for='radiogroup'><?php $clang->eT("Group");?></label></li>
     <li><label for='gid'><?php $clang->eT("Question group");?></label>
-        <select name='gid' id='gid'>
-            <?php
-            foreach ($groups as $groupId => $groupName) {
-                echo '<option value="' . $groupId . '"'.($editId == $groupId ? ' selected' : '').'>' . $groupName . '</option>';
-            }
-            ?>
-        </select></li>
+        <?php 
+        if (isset($groups))
+        { ?>
+	        <select name='gid' id='gid'>
+	            <?php
+	            foreach ($groups as $groupId => $groupName) {
+	                echo '<option value="' . $groupId . '"'.($editId == $groupId ? ' selected' : '').'>' . $groupName . '</option>';
+	            }
+	            ?>
+	        </select>
+    	<?php
+		}
+		else
+			echo $clang->eT("No question group found."); 	 
+    	?> 
+    </li>
     <li><label for='minimum'><?php $clang->eT("Minimum");?></label><input type='text' id='minimum' name='minimum' class='numbersonly'<?php
     if (isset($editdata)) {echo " value='{$editdata['minimum']}' ";} ?>/></li>
     <li><label for='maximum'><?php $clang->eT("Maximum");?></label><input type='text' id='maximum' name='maximum' class='numbersonly'<?php
