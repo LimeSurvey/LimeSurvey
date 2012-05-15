@@ -587,7 +587,6 @@ class UserAction extends Survey_Common_Action
     */
     function personalsettings()
     {
-        $clang = Yii::app()->lang;
 
         // Save Data
         if (Yii::app()->request->getPost("action")) {
@@ -601,7 +600,19 @@ class UserAction extends Survey_Common_Action
 
             $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
 
-            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('lang');
+            if (Yii::app()->request->getPost('lang')=='auto')
+            {
+                $sLanguage= getBrowserLanguage();
+            }
+            else
+            {
+                $sLanguage=Yii::app()->request->getPost('lang');
+            }
+
+            Yii::app()->session['adminlang'] = $sLanguage;
+            Yii::app()->lang=new limesurvey_lang($sLanguage);
+            $clang = Yii::app()->lang;
+
             Yii::app()->session['htmleditormode'] = Yii::app()->request->getPost('htmleditormode');
             Yii::app()->session['questionselectormode'] = Yii::app()->request->getPost('questionselectormode');
             Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');

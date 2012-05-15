@@ -7512,4 +7512,31 @@ function getIPAddress()
     }
 }
 
+
+/**
+* This function tries to find out a valid language code for the language of the browser used
+* If it cannot find it it will return the default language from global settings
+*
+*/
+function getBrowserLanguage()
+{
+        $sLanguage=Yii::app()->getRequest()->getPreferredLanguage();
+        Yii::app()->loadHelper("surveytranslator");
+        $aLanguages=getLanguageData();
+        if (!isset($aLanguages[$sLanguage]))
+        {
+            $sLanguage=str_replace('_','-',$sLanguage);
+            if (!isset($aLanguages[$sLanguage]))
+            {
+                $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
+                if (!isset($aLanguages[$sLanguage]))
+                {
+                   $sLanguage=Yii::app()->getConfig('defaultlang');
+                }
+            }
+        }
+        return $sLanguage;
+}
+
+
 // Closing PHP tag intentionally omitted - yes, it is okay

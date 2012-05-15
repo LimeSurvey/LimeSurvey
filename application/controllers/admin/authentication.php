@@ -305,35 +305,20 @@ class Authentication extends Survey_Common_Action
      */
     private function _setLanguageSettings($user)
     {
+
         if (Yii::app()->request->getPost('loginlang') !== 'default')
         {
             $user->lang = sanitize_languagecode(Yii::app()->request->getPost('loginlang'));
             $user->save();
+            $sLanguage=$user->lang;
         }
 
         if ($user->lang=='auto')
         {
-            $sLanguage=Yii::app()->getRequest()->getPreferredLanguage();
-            Yii::app()->loadHelper("surveytranslator");
-            $aLanguages=getLanguageData();
-            if (!isset($aLanguages[$sLanguage]))
-            {
-                $sLanguage=str_replace('_','-',$sLanguage);
-                if (!isset($aLanguages[$sLanguage]))
-                {
-                    $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
-                    if (!isset($aLanguages[$sLanguage]))
-                    {
-                       $sLanguage=Yii::app()->getConfig('defaultlang');
-                    }
-                }
-
-            }
-            $user->lang=$sLanguage;
-
+            $sLanguage= getBrowserLanguage();
         }
-        Yii::app()->session['adminlang'] = $user->lang;
-        $this->getController()->lang= new limesurvey_lang($user->lang);
+        Yii::app()->session['adminlang'] = $sLanguage;
+        $this->getController()->lang= new limesurvey_lang($sLanguage);
     }
 
     /**
