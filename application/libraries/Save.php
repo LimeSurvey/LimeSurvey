@@ -297,7 +297,7 @@ class Save {
         $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
         ."interviewtime = interviewtime" ." + " .$passedTime .","
         .$setField." = ".$setField." + ".$passedTime
-        ." WHERE id = " .$_SESSION['survey_'.$surveyid]['srid'];
+        ." WHERE id = " .$_SESSION['survey_'.$$thissurvey['sid']]['srid'];
         Yii::app()->db->createCommand($query)->execute();
     }
 }

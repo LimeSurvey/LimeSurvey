@@ -42,7 +42,6 @@ class browse extends Survey_Common_Action
             extract($params);
         }
         $aData = array();
-
         // Set the variables in an array
         $aData['surveyid'] = $aData['iSurveyId'] = (int) $iSurveyId;
         if (!empty($iId))
@@ -52,7 +51,7 @@ class browse extends Survey_Common_Action
         $aData['clang'] = $clang = $this->getController()->lang;
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
         $aData['action'] = Yii::app()->request->getParam('action');
-
+        $aData['all']=Yii::app()->request->getParam('all');
         $oCriteria = new CDbCriteria;
         $oCriteria->select = 'sid, active';
         $oCriteria->join = 'INNER JOIN {{surveys_languagesettings}} as b on (b.surveyls_survey_id=sid and b.surveyls_language=language)';
@@ -424,160 +423,170 @@ class browse extends Survey_Common_Action
         }
 
         $clang = $aData['clang'];
-        //add token to top of list if survey is not private
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId)) //add token to top of list if survey is not private
+        if(isset($aData['all']))
         {
-            $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-            $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-            $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-            $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
-        }
-
-        $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
-        $fields = createFieldMap($iSurveyId, 'full', false, false, $aData['language']);
-
-        foreach ($fields as $fielddetails)
-        {
-            if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
-                continue;
-
-            $question = $fielddetails['question'];
-            if ($fielddetails['type'] != "|")
+            //add token to top of list if survey is not private
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId)) //add token to top of list if survey is not private
             {
-                if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
-                    continue;
-
-                // no headers for time data
-                if ($fielddetails['type'] == 'interview_time')
-                    continue;
-                if ($fielddetails['type'] == 'page_time')
-                    continue;
-                if ($fielddetails['type'] == 'answer_time')
-                    continue;
-                if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
-                    $question .=' (' . $fielddetails['subquestion'] . ')';
-                if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-                    $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
-                if (isset($fielddetails['scale_id']))
-                    $question .='[' . $fielddetails['scale'] . ']';
-                $fnames[] = array($fielddetails['fieldname'], $question);
+                $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+                $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
+                $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
+                $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
             }
-            else
-            {
-                if ($fielddetails['aid'] !== 'filecount')
-                {
-                    $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
 
-                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+            $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
+            $fields = createFieldMap($iSurveyId, 'full', false, false, $aData['language']);
+
+            foreach ($fields as $fielddetails)
+            {
+                if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
+                    continue;
+
+                $question = $fielddetails['question'];
+                if ($fielddetails['type'] != "|")
+                {
+                    if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
+                        continue;
+
+                    // no headers for time data
+                    if ($fielddetails['type'] == 'interview_time')
+                        continue;
+                    if ($fielddetails['type'] == 'page_time')
+                        continue;
+                    if ($fielddetails['type'] == 'answer_time')
+                        continue;
+                    if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
+                        $question .=' (' . $fielddetails['subquestion'] . ')';
+                    if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
+                        $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
+                    if (isset($fielddetails['scale_id']))
+                        $question .='[' . $fielddetails['scale'] . ']';
+                    $fnames[] = array($fielddetails['fieldname'], $question);
+                }
+                else
+                {
+                    if ($fielddetails['aid'] !== 'filecount')
                     {
-                        if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
+                        $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
 
-                        if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+                        for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+                        {
+                            if ($qidattributes['show_title'] == 1)
+                                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
 
-                        $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
-                        //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                            if ($qidattributes['show_comment'] == 1)
+                                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+
+                            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
+                            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
+                            //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                        }
                     }
+                    else
+                        $fnames[] = array($fielddetails['fieldname'], "File count");
                 }
-                else
-                    $fnames[] = array($fielddetails['fieldname'], "File count");
             }
+
+            $fncount = count($fnames);
+
+            $start = Yii::app()->request->getParam('start', 0);
+            $limit = Yii::app()->request->getParam('limit', 50);
+
+            $oCriteria = new CDbCriteria;
+            //Create the query
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyId}}}"))
+            {
+                $oCriteria = Survey_dynamic::model($iSurveyId)->addTokenCriteria($oCriteria);
+            }
+
+            if (incompleteAnsFilterState() == "inc")
+            {
+                $oCriteria->addCondition("`submitdate` IS NULL");
+            }
+            elseif (incompleteAnsFilterState() == "filter")
+            {
+                $oCriteria->addCondition("`submitdate` IS NOT NULL");
+            }
+
+            $dtcount = Survey_dynamic::model($iSurveyId)->count($oCriteria);// or die("Couldn't get response data<br />");
+
+            if ($limit > $dtcount)
+            {
+                $limit = $dtcount;
+            }
+
+            //NOW LETS SHOW THE DATA
+            if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
+                $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
+
+            $oCriteria->order = 'id ' . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
+            $oCriteria->offset = $start;
+            $oCriteria->limit = $limit;
+
+            $dtresult = Survey_dynamic::model($iSurveyId)->findAllAsArray($oCriteria);
+
+            $dtcount2 = count($dtresult);
+            $cells = $fncount + 1;
+
+            //CONTROL MENUBAR
+            $last = $start - $limit;
+            $next = $start + $limit;
+            $end = $dtcount - $limit;
+            if ($end < 0)
+            {
+                $end = 0;
+            }
+            if ($last < 0)
+            {
+                $last = 0;
+            }
+            if ($next >= $dtcount)
+            {
+                $next = $dtcount - $limit;
+            }
+            if ($end < 0)
+            {
+                $end = 0;
+            }
+
+            $aData['dtcount2'] = $dtcount2;
+            $aData['start'] = $start;
+            $aData['limit'] = $limit;
+            $aData['last'] = $last;
+            $aData['next'] = $next;
+            $aData['end'] = $end;
+            $aData['fncount'] = $fncount;
+            $aData['fnames'] = $fnames;
+
+            $aViewUrls[] = 'browseallheader_view';
+
+            $bgcc = 'even';
+            foreach ($dtresult as $dtrow)
+            {
+                    if ($bgcc == "even")
+                    {
+                        $bgcc = "odd";
+                    }
+                    else
+                    {
+                        $bgcc = "even";
+                    }
+                $aData['dtrow'] = $dtrow;
+                $aData['bgcc'] = $bgcc;
+                $aData['oBrowseLanguage']=$oBrowseLanguage;
+                $aViewUrls['browseallrow_view'][] = $aData;
+            }
+
+            $aViewUrls[] = 'browseallfooter_view';
         }
-
-        $fncount = count($fnames);
-
-        $start = Yii::app()->request->getParam('start', 0);
-        $limit = Yii::app()->request->getParam('limit', 50);
-
-        $oCriteria = new CDbCriteria;
-        //Create the query
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyId}}}"))
+        else
         {
-            $oCriteria = Survey_dynamic::model($iSurveyId)->addTokenCriteria($oCriteria);
+            $aData['num_total_answers'] = Survey_dynamic::model($iSurveyId)->count();
+            $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyId)->count('submitdate IS NOT NULL');
+
+            $aViewUrls[] = 'browseindex_view';
         }
-
-        if (incompleteAnsFilterState() == "inc")
-        {
-            $oCriteria->addCondition("`submitdate` IS NULL");
-        }
-        elseif (incompleteAnsFilterState() == "filter")
-        {
-            $oCriteria->addCondition("`submitdate` IS NOT NULL");
-        }
-
-        $dtcount = Survey_dynamic::model($iSurveyId)->count($oCriteria);// or die("Couldn't get response data<br />");
-
-        if ($limit > $dtcount)
-        {
-            $limit = $dtcount;
-        }
-
-        //NOW LETS SHOW THE DATA
-        if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
-            $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
-
-        $oCriteria->order = 'id ' . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
-        $oCriteria->offset = $start;
-        $oCriteria->limit = $limit;
-
-        $dtresult = Survey_dynamic::model($iSurveyId)->findAllAsArray($oCriteria);
-
-        $dtcount2 = count($dtresult);
-        $cells = $fncount + 1;
-
-        //CONTROL MENUBAR
-        $last = $start - $limit;
-        $next = $start + $limit;
-        $end = $dtcount - $limit;
-        if ($end < 0)
-        {
-            $end = 0;
-        }
-        if ($last < 0)
-        {
-            $last = 0;
-        }
-        if ($next >= $dtcount)
-        {
-            $next = $dtcount - $limit;
-        }
-        if ($end < 0)
-        {
-            $end = 0;
-        }
-
-        $aData['dtcount2'] = $dtcount2;
-        $aData['start'] = $start;
-        $aData['limit'] = $limit;
-        $aData['last'] = $last;
-        $aData['next'] = $next;
-        $aData['end'] = $end;
-        $aData['fncount'] = $fncount;
-        $aData['fnames'] = $fnames;
-
-        $aViewUrls[] = 'browseallheader_view';
-
-        $bgcc = 'even';
-        foreach ($dtresult as $dtrow)
-        {
-                if ($bgcc == "even")
-                {
-                    $bgcc = "odd";
-                }
-                else
-                {
-                    $bgcc = "even";
-                }
-            $aData['dtrow'] = $dtrow;
-            $aData['bgcc'] = $bgcc;
-            $aData['oBrowseLanguage']=$oBrowseLanguage;
-            $aViewUrls['browseallrow_view'][] = $aData;
-        }
-
-        $aViewUrls[] = 'browseallfooter_view';
-        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
+            $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
     public function time($iSurveyId)
