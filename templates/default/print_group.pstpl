@@ -1,12 +1,11 @@
+<div class="survey-group{ODD_EVEN}">
+    <h2>{GROUPNAME}</h2>
 
-			<div class="survey-group{ODD_EVEN}">
-				<h2>{GROUPNAME}</h2>
+    <div class="group-desc">
+        {GROUPDESCRIPTION}
+    </div>
 
-				<div class="group-desc">
-{GROUPDESCRIPTION}
-				</div>
-
-{QUESTIONS}
+    {QUESTIONS}
 
 			</div>
 

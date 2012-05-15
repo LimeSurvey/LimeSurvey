@@ -46,7 +46,6 @@
         <div class='menubar-left'>
             <a href='<?php echo $this->createUrl("/admin"); ?>'>
                 <img src='<?php echo $sImageURL; ?>home.png' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
-            <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='60' height='10'  />
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
 
             <?php

@@ -1,9 +1,14 @@
 <?php if (is_template_editable($templatename)==true)
     { ?>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/css/css.js" ></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/htmlmixed/htmlmixed.js" ></script>
+    <?php if ($sEditorFileType=='htmlmixed')
+        {?>
+        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.js" ></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/css/css.js" ></script>
+        <?php }
+    ?>
+    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/<?php echo $sEditorFileType; ?>/<?php echo $sEditorFileType; ?>.js" ></script>
     <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/codemirror-ui.js" ></script>
     <script type="text/javascript">
         var editorfiletype='<?php echo $sEditorFileType; ?>';
@@ -11,7 +16,7 @@
     <div class='header'>
         <?php echo sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?>
     </div>
-    <div id='templateleft' style="float:left;padding-left:1em">
+    <div id='templateleft' style="float:left;padding-left:1em;width:12%;">
         <div >
             <?php $clang->eT("Standard files:"); ?><br>
             <select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
