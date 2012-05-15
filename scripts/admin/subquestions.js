@@ -1,6 +1,17 @@
 // $Id: subquestions.js 9692 2011-01-15 21:31:10Z c_schmitz $
 var labelcache=[];
 $(document).ready(function(){
+    $("body").delegate(".code", "keypress", function(e) {
+        key=e.which;
+        if ( key==null || key==0 || key==8 || key==9  || key==27 )
+            return true;
+        thischar=String.fromCharCode(key);
+        returnvalue=(thischar==thischar.replace(/[^a-zA-Z0-9_]/,''));
+        return returnvalue;
+    });
+    $("body").delegate(".code", "keyup", function() {
+        $(this).val($(this).val().replace(/[^a-zA-Z0-9_]/,''));
+    });
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         start:startmove,
         update:aftermove,
