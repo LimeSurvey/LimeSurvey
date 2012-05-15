@@ -47,10 +47,10 @@ class database extends Survey_Common_Action
 
         if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         {
-                $filter = new CHtmlPurifier();
-                $filter->options = array('URI.AllowedSchemes'=>array(
-                  'http' => true,
-                  'https' => true,
+            $filter = new CHtmlPurifier();
+            $filter->options = array('URI.AllowedSchemes'=>array(
+            'http' => true,
+            'https' => true,
             ));
             $xssfilter = true;
         }
@@ -118,7 +118,7 @@ class database extends Survey_Common_Action
                 {
                     if (Yii::app()->request->getPost($_POST['defaultanswerscale_0_'.$language.'_0']))
                     {
-                       $this->_updateDefaultValues($postqid,0,0,'',$language,Yii::app()->request->getPost['defaultanswerscale_0_'.$language.'_0'],true);
+                        $this->_updateDefaultValues($postqid,0,0,'',$language,Yii::app()->request->getPost['defaultanswerscale_0_'.$language.'_0'],true);
                     }
                 }
             }
@@ -331,8 +331,7 @@ class database extends Survey_Common_Action
                         {
                             if (!isset($insertqid[$scale_id][$position]))
                             {
-                                Questions::model()-> insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
-                                $insertqid[$position]=Yii::app()->db->getLastInsertID();
+                                $insertqid[$position]=Questions::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
                             }
                             else
                             {
@@ -695,143 +694,143 @@ class database extends Survey_Common_Action
                 if (isset($gid) && $gid != "")
                 {
 
-//                    $array_result=checkMoveQuestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
-//                    // If there is no blocking conditions that could prevent this move
-//
-//                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
-//                    {
-                        $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                        $baselang = Survey::model()->findByPk($surveyid)->language;
-                        array_push($questlangs,$baselang);
+                    //                    $array_result=checkMoveQuestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
+                    //                    // If there is no blocking conditions that could prevent this move
+                    //
+                    //                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
+                    //                    {
+                    $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                    $baselang = Survey::model()->findByPk($surveyid)->language;
+                    array_push($questlangs,$baselang);
+                    if ($xssfilter)
+                        $_POST['title'] = $filter->purify($_POST['title']);
+                    else
+                        $_POST['title'] = html_entity_decode(Yii::app()->request->getPost('title'), ENT_QUOTES, "UTF-8");
+
+                    // Fix bug with FCKEditor saving strange BR types
+                    $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
+                    foreach ($questlangs as $qlang)
+                    {
                         if ($xssfilter)
-                            $_POST['title'] = $filter->purify($_POST['title']);
+                        {
+                            $_POST['question_'.$qlang] = $filter->purify($_POST['question_'.$qlang]);
+                            $_POST['help_'.$qlang] = $filter->purify($_POST['help_'.$qlang]);
+                        }
                         else
-                            $_POST['title'] = html_entity_decode(Yii::app()->request->getPost('title'), ENT_QUOTES, "UTF-8");
+                        {
+                            $_POST['question_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('question_'.$qlang), ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('help_'.$qlang), ENT_QUOTES, "UTF-8");
+                        }
 
                         // Fix bug with FCKEditor saving strange BR types
-                        $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
-                        foreach ($questlangs as $qlang)
-                        {
-                            if ($xssfilter)
+                        $_POST['question_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$qlang));
+                        $_POST['help_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$qlang));
+
+                        if (isset($qlang) && $qlang != "")
+                        { // ToDo: Sanitize the POST variables !
+
+                            $udata = array(
+                            'type' => Yii::app()->request->getPost('type'),
+                            'title' => Yii::app()->request->getPost('title'),
+                            'question' => Yii::app()->request->getPost('question_'.$qlang),
+                            'preg' => Yii::app()->request->getPost('preg'),
+                            'help' => Yii::app()->request->getPost('help_'.$qlang),
+                            'gid' => $gid,
+                            'other' => Yii::app()->request->getPost('other'),
+                            'mandatory' => Yii::app()->request->getPost('mandatory'),
+                            'relevance' => Yii::app()->request->getPost('relevance'),
+                            );
+
+                            if ($oldgid!=$gid)
                             {
-                                $_POST['question_'.$qlang] = $filter->purify($_POST['question_'.$qlang]);
-                                $_POST['help_'.$qlang] = $filter->purify($_POST['help_'.$qlang]);
-                            }
-                            else
-                            {
-                                $_POST['question_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('question_'.$qlang), ENT_QUOTES, "UTF-8");
-                                $_POST['help_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('help_'.$qlang), ENT_QUOTES, "UTF-8");
-                            }
 
-                            // Fix bug with FCKEditor saving strange BR types
-                            $_POST['question_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$qlang));
-                            $_POST['help_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$qlang));
-
-                            if (isset($qlang) && $qlang != "")
-                            { // ToDo: Sanitize the POST variables !
-
-                                $udata = array(
-                                'type' => Yii::app()->request->getPost('type'),
-                                'title' => Yii::app()->request->getPost('title'),
-                                'question' => Yii::app()->request->getPost('question_'.$qlang),
-                                'preg' => Yii::app()->request->getPost('preg'),
-                                'help' => Yii::app()->request->getPost('help_'.$qlang),
-                                'gid' => $gid,
-                                'other' => Yii::app()->request->getPost('other'),
-                                'mandatory' => Yii::app()->request->getPost('mandatory'),
-                                'relevance' => Yii::app()->request->getPost('relevance'),
-                                );
-
-                                if ($oldgid!=$gid)
+                                if ( getGroupOrder($surveyid,$oldgid) > getGroupOrder($surveyid,$gid) )
                                 {
+                                    // TMSW Conditions->Relevance:  What is needed here?
 
-                                    if ( getGroupOrder($surveyid,$oldgid) > getGroupOrder($surveyid,$gid) )
-                                    {
-                                        // TMSW Conditions->Relevance:  What is needed here?
-
-                                        // Moving question to a 'upper' group
-                                        // insert question at the end of the destination group
-                                        // this prevent breaking conditions if the target qid is in the dest group
-                                        $insertorder = getMaxQuestionOrder($gid) + 1;
-                                        $udata = array_merge($udata,array('question_order' => $insertorder));
-                                    }
-                                    else
-                                    {
-                                        // Moving question to a 'lower' group
-                                        // insert question at the beginning of the destination group
-                                        shiftOrderQuestions($surveyid,$gid,1); // makes 1 spare room for new question at top of dest group
-                                        $udata = array_merge($udata,array('question_order' => 0));
-                                    }
+                                    // Moving question to a 'upper' group
+                                    // insert question at the end of the destination group
+                                    // this prevent breaking conditions if the target qid is in the dest group
+                                    $insertorder = getMaxQuestionOrder($gid) + 1;
+                                    $udata = array_merge($udata,array('question_order' => $insertorder));
                                 }
-                                $condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
-                                $question = Questions::model()->findByAttributes($condn);
-                                foreach ($udata as $k => $v)
-                                    $question->$k = $v;
-
-                                $uqresult = $question->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
-                                if (!$uqresult)
+                                else
                                 {
-                                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
+                                    // Moving question to a 'lower' group
+                                    // insert question at the beginning of the destination group
+                                    shiftOrderQuestions($surveyid,$gid,1); // makes 1 spare room for new question at top of dest group
+                                    $udata = array_merge($udata,array('question_order' => 0));
                                 }
                             }
+                            $condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
+                            $question = Questions::model()->findByAttributes($condn);
+                            foreach ($udata as $k => $v)
+                                $question->$k = $v;
+
+                            $uqresult = $question->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
+                            if (!$uqresult)
+                            {
+                                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
+                            }
                         }
+                    }
 
 
-                        // Update the group ID on subquestions, too
-                        if ($oldgid!=$gid)
-                        {
-                            Questions::model()->updateAll(array('gid'=>$gid), 'qid=:qid and parent_qid>0', array(':qid'=>$oldqid));
-                            // if the group has changed then fix the sortorder of old and new group
-                            fixSortOrderQuestions($oldgid, $surveyid);
-                            fixSortOrderQuestions($gid, $surveyid);
-                            // If some questions have conditions set on this question's answers
-                            // then change the cfieldname accordingly
-                            fixMovedQuestionConditions($qid, $oldgid, $gid);
-                        }
-                        if ($oldtype != Yii::app()->request->getPost('type'))
-                        {
-                            Questions::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':qid'=>$qid));
-                        }
+                    // Update the group ID on subquestions, too
+                    if ($oldgid!=$gid)
+                    {
+                        Questions::model()->updateAll(array('gid'=>$gid), 'qid=:qid and parent_qid>0', array(':qid'=>$oldqid));
+                        // if the group has changed then fix the sortorder of old and new group
+                        fixSortOrderQuestions($oldgid, $surveyid);
+                        fixSortOrderQuestions($gid, $surveyid);
+                        // If some questions have conditions set on this question's answers
+                        // then change the cfieldname accordingly
+                        fixMovedQuestionConditions($qid, $oldgid, $gid);
+                    }
+                    if ($oldtype != Yii::app()->request->getPost('type'))
+                    {
+                        Questions::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':qid'=>$qid));
+                    }
 
-                        Answers::model()->deleteAllByAttributes(array('qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iAnswerScales));
+                    Answers::model()->deleteAllByAttributes(array('qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iAnswerScales));
 
-                        // Remove old subquestion scales
-                        Questions::model()->deleteAllByAttributes(array('parent_qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
+                    // Remove old subquestion scales
+                    Questions::model()->deleteAllByAttributes(array('parent_qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
 
-                        Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully saved.");
-//                    }
-//                    else
-//                    {
-//
-//                        // There are conditions constraints: alert the user
-//                        $errormsg="";
-//                        if (!is_null($array_result['notAbove']))
-//                        {
-//                            $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
-//                            . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
-//                            . $clang->gT("See conditions:")."\\n";
-//
-//                            foreach ($array_result['notAbove'] as $notAboveCond)
-//                            {
-//                                $errormsg.="- cid:". $notAboveCond[3]."\\n";
-//                            }
-//
-//                        }
-//                        if (!is_null($array_result['notBelow']))
-//                        {
-//                            $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
-//                            . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
-//                            . $clang->gT("See conditions:")."\\n";
-//
-//                            foreach ($array_result['notBelow'] as $notBelowCond)
-//                            {
-//                                $errormsg.="- cid:". $notBelowCond[3]."\\n";
-//                            }
-//                        }
-//
-//                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-//                        $gid= $oldgid; // group move impossible ==> keep display on oldgid
-//                    }
+                    Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully saved.");
+                    //                    }
+                    //                    else
+                    //                    {
+                    //
+                    //                        // There are conditions constraints: alert the user
+                    //                        $errormsg="";
+                    //                        if (!is_null($array_result['notAbove']))
+                    //                        {
+                    //                            $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
+                    //                            . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
+                    //                            . $clang->gT("See conditions:")."\\n";
+                    //
+                    //                            foreach ($array_result['notAbove'] as $notAboveCond)
+                    //                            {
+                    //                                $errormsg.="- cid:". $notAboveCond[3]."\\n";
+                    //                            }
+                    //
+                    //                        }
+                    //                        if (!is_null($array_result['notBelow']))
+                    //                        {
+                    //                            $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
+                    //                            . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
+                    //                            . $clang->gT("See conditions:")."\\n";
+                    //
+                    //                            foreach ($array_result['notBelow'] as $notBelowCond)
+                    //                            {
+                    //                                $errormsg.="- cid:". $notBelowCond[3]."\\n";
+                    //                            }
+                    //                        }
+                    //
+                    //                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
+                    //                        $gid= $oldgid; // group move impossible ==> keep display on oldgid
+                    //                    }
                 }
                 else
                 {
