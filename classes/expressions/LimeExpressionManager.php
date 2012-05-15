@@ -1154,6 +1154,7 @@
                 }
 
                 // exclude_all_others
+                // If any excluded options are true (and relevant), then disable all other input elements for that question
                 if (isset($qattr['exclude_all_others']) && trim($qattr['exclude_all_others']) != '')
                 {
                     $exclusive_options = explode(';',$qattr['exclude_all_others']);
@@ -1208,6 +1209,8 @@
                 }
 
                 // exclude_all_others_auto
+                // if (count(this.relevanceStatus) == count(this)) { set exclusive option value to "Y" and call checkconditions() }
+                // However, note that would need to blank the values, not use relevance, otherwise can't unclick the _auto option without having it re-enable itself
                 //  TODO
 
                 // min_answers
@@ -2236,37 +2239,39 @@
             $order=0;
             foreach ($subQrels as $sq)
             {
-                if (isset($rowdivids[$sq['rowdivid']]))
-                {
-                    $backup = $rowdivids[$sq['rowdivid']];
-                    $rowdivids[$sq['rowdivid']] = array(
-                    'order'=>$backup['order'],
-                    'qid'=>$sq['qid'],
-                    'rowdivid'=>$sq['rowdivid'],
-                    'type'=>$backup['type'] . ';' .$sq['type'],
-                    'qtype'=>$sq['qtype'],
-                    'sgqa'=>$sq['sgqa'],
-                    'eqns' => array_merge($backup['eqns'],array($sq['eqn'])),
-                    );
-                }
-                else
-                {
-                    $rowdivids[$sq['rowdivid']] = array(
-                    'order'=>$order++,
-                    'qid'=>$sq['qid'],
-                    'rowdivid'=>$sq['rowdivid'],
-                    'type'=>$sq['type'],
-                    'qtype'=>$sq['qtype'],
-                    'sgqa'=>$sq['sgqa'],
-                    'eqns'=>array($sq['eqn']),
-                    );
-                }
+                $oldeqn = (isset($rowdivids[$sq['rowdivid']]['eqns']) ? $rowdivids[$sq['rowdivid']]['eqns'] : array());
+                $oldtype = (isset($rowdivids[$sq['rowdivid']]['type']) ? $rowdivids[$sq['rowdivid']]['type'] : '');
+                $neweqn = (($sq['type'] == 'exclude_all_others') ? array() : array($sq['eqn']));
+                $oldeo = (isset($rowdivids[$sq['rowdivid']]['exclusive_options']) ? $rowdivids[$sq['rowdivid']]['exclusive_options'] : array());
+                $neweo = (($sq['type'] == 'exclude_all_others') ? array($sq['eqn']) : array());
+                $rowdivids[$sq['rowdivid']] = array(
+                'order'=>$order++,
+                'qid'=>$sq['qid'],
+                'rowdivid'=>$sq['rowdivid'],
+                'type'=>$sq['type'] . ';' . $oldtype,
+                'qtype'=>$sq['qtype'],
+                'sgqa'=>$sq['sgqa'],
+                'eqns'=>array_merge($oldeqn, $neweqn),
+                'exclusive_options'=>array_merge($oldeo, $neweo),
+                );
             }
 
             foreach ($rowdivids as $sq)
             {
-                $sq['eqn'] = '(' . implode(' and ', array_unique($sq['eqns'])) . ')';   // without array_unique, get duplicate of filters for question types 1, :, and ;
-                $result = $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type'], $sq['qtype'],  $sq['sgqa']);
+                $sq['eqn'] = implode(' and ', array_unique(array_merge($sq['eqns'],$sq['exclusive_options'])));   // without array_unique, get duplicate of filters for question types 1, :, and ;
+                $eos = array_unique($sq['exclusive_options']);
+                $isExclusive = '';
+                $irrelevantAndExclusive = '';
+                if (count($eos) > 0)
+                {
+                    $isExclusive = '!(' . implode(' and ', $eos) . ')';
+                    $noneos = array_unique($sq['eqns']);
+                    if (count($noneos) > 0)
+                    {
+                        $irrelevantAndExclusive = '(' . implode(' and ', $noneos) . ') and ' . $isExclusive;
+                    }
+                }
+                $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type'], $sq['qtype'],  $sq['sgqa'], $isExclusive, $irrelevantAndExclusive);
             }
 
             foreach ($validationEqn as $qid=>$eqns)
@@ -3293,7 +3298,7 @@
         * @param <type> $type - the type of sub-question relevance (e.g. 'array_filter', 'array_filter_exclude')
         * @return <type>
         */
-        private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$rowdivid=NULL, $type=NULL, $qtype=NULL, $sgqa=NULL)
+        private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$rowdivid=NULL, $type=NULL, $qtype=NULL, $sgqa=NULL, $isExclusive='', $irrelevantAndExclusive='')
         {
             // These will be called in the order that questions are supposed to be asked
             if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
@@ -3320,6 +3325,20 @@
                 $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
                 $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
 
+                $isExclusiveJS='';
+                $irrelevantAndExclusiveJS='';
+                // Only need to extract JS, since will already have Vars and error counts from main equation
+                if ($isExclusive != '')
+                {
+                    $this->em->ProcessBooleanExpression($isExclusive,$groupSeq, $questionSeq);
+                    $isExclusiveJS  = $this->em->GetJavaScriptEquivalentOfExpression();
+                }
+                if ($irrelevantAndExclusive != '')
+                {
+                    $this->em->ProcessBooleanExpression($irrelevantAndExclusive,$groupSeq, $questionSeq);
+                    $irrelevantAndExclusiveJS = $this->em->GetJavaScriptEquivalentOfExpression();
+                }
+
                 if (!isset($this->subQrelInfo[$questionNum])) {
                     $this->subQrelInfo[$questionNum] = array();
                 }
@@ -3336,6 +3355,8 @@
                 'qtype'=>$qtype,
                 'sgqa'=>$sgqa,
                 'hasErrors'=>$hasErrors,
+                'isExclusiveJS'=>$isExclusiveJS,
+                'irrelevantAndExclusiveJS'=>$irrelevantAndExclusiveJS,
                 );
             }
             return $result;
@@ -5618,14 +5639,43 @@
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-                        
+
                         $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
                         $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
-                        $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
+                        if ($sq['isExclusiveJS'] != '')
+                        {
+                            $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                            $relParts[] = "    }\n";
+                            $relParts[] = "    else {\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                            $relParts[] = "    }\n";
+                        }
+                        $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
                         $relParts[] = "  }\n  else {\n";
-                        $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
-                        $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";
+                        if ($sq['isExclusiveJS'] != '')
+                        {
+                            if ($sq['irrelevantAndExclusiveJS'] != '')
+                            {
+                                $relParts[] = "    if ( " . $sq['irrelevantAndExclusiveJS'] . " ) {\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                $relParts[] = "    }\n";
+                                $relParts[] = "    else {\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                $relParts[] = "    }\n";
+                            }
+                            else
+                            {
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                            }
+                        }
+                        else
+                        {
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                        }
+                        $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
                         switch ($sq['qtype'])
                         {
@@ -5927,6 +5977,14 @@
                         if ($_val==1)
                         {
                             $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                            if (isset($LEM->qattr[$_qid]['exclude_all_others']))
+                            {
+                                foreach (explode(';',trim($LEM->qattr[$_qid]['exclude_all_others'])) as $eo)
+                                {
+                                    // then need to call the function twice so that cascading of array filter onto an excluded option works
+                                    $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                                }
+                            }
                         }
                     }
 
@@ -5944,6 +6002,14 @@
                         if ($_val == 1)
                         {
                             $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                            if (isset($LEM->qattr[$_qid]['exclude_all_others']))
+                            {
+                                foreach (explode(';',trim($LEM->qattr[$_qid]['exclude_all_others'])) as $eo)
+                                {
+                                    // then need to call the function twice so that cascading of array filter onto an excluded option works
+                                    $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                                }
+                            }
                         }
                     }
                 }
@@ -5968,7 +6034,7 @@
                     $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
                     $jsParts[] = "}\n";
                 }
-                
+
                 // now make sure any needed variables are accessible
                 $vars = explode('|',$gr['relevanceVars']);
                 if (is_array($vars))
