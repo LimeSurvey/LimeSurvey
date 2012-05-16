@@ -1229,8 +1229,8 @@
                 // exclude_all_others_auto
                 // if (count(this.relevanceStatus) == count(this)) { set exclusive option value to "Y" and call checkconditions() }
                 // However, note that would need to blank the values, not use relevance, otherwise can't unclick the _auto option without having it re-enable itself
-                if (isset($qattr['exclude_all_others_auto']) && trim($qattr['exclude_all_others_auto']) != ''
-                        && isset($qattr['exclude_all_others']) && count(explode(';',trim($qattr['exclude_all_others']))) == 1)
+                if (isset($qattr['exclude_all_others_auto']) && trim($qattr['exclude_all_others_auto']) == '1'
+                        && isset($qattr['exclude_all_others']) && trim($qattr['exclude_all_others']) != '' && count(explode(';',trim($qattr['exclude_all_others']))) == 1)
                 {
                     $exclusive_option = trim($qattr['exclude_all_others']);
                     if ($hasSubqs) {
