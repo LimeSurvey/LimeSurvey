@@ -78,6 +78,36 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+
+Changes from 1.92+ (build 120509) to 1.92+ (build 120516) May 16, 2012
++New translation: Spanish (Chile) kindly provided by Victor Pinto (Carsten Schmitz)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Amharic kindly provided by Mezene Worku 
+#Updated translation: Czech (lukas-slansky)
+#Updated translation: German by c_schmitz 
+#Updated translation: Persian - kindly provided by Morteza Farahbod 
+#Updated translation: Turkish - 100% - kindly provided by Kaya Zeren
+-Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
+-Fixed issue #5943: Exclusive option in multiple choice hides all other answer options (Thomas White)
+-Fixed issue #6003: Text truncated after single quote when browsing responses to Multiple short text question. (Thomas White)
+-Fixed issue #6046: Resume later deletes answers from db when all questions are on one page (Thomas White)
+-Fixed issue #6078: Invalid LimeExpressionManager->ngT() calls (TMSWhite)
+-Fixed issue #6086: 1.92+ Build 120509 Conditions do not work with probably good logic (Thomas White)
+-Fixed issue #6087: cascading array filter fails for depth>=3 in group and question modes (Thomas White)
+-Fixed issue #6093: Wrong result when comparing decimal values from equation question types in surveys using comma as decimal point (Thomas White)
+-Fixed issue #6102: "Print your answers" shows EM syntax errors (Thomas White)
+-Fixed issue #6048: Conditions editor produces fatal error: maximum allocated memory (Carsten Schmitz)
+-Fixed issue #6080: Wrong validation for multiple numeric questions 
+-Fixed issue #6085: By pasting a subquestion code can contain a space (Carsten Schmitz)
+-Fixed issue: Misaligned input with multi column on citronade (Denis Chenu)
+-Fixed issue: Array-filter equations not visible for List-type questions in Show Survey Logic file (Thomas White)
+-Fixed issue: Datestamp on not date stamped survey. Dev: use 1980-01-01 for 'All database same value' (Denis Chenu)
+-Fixed issue: Endless javascript loop in answer edit or subquestion edit (Denis Chenu)
+-Fixed issue: Missing translations for jQuery popup calendar (Carsten Schmitz)
+-Fixed issue: Nice exit if surveyid is invalid (Denis Chenu)
+-Fixed issue: Unable to add label in label set administration (Carsten Schmitz)
+
+
 Changes from 1.92+ (build 120501) to 1.92+ (build 120509) May 9, 2012
 +New translation: Afrikaans 
 +New translation: Amharic - kindly provided by Mezene Worku
