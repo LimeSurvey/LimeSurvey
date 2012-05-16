@@ -471,23 +471,32 @@ if(isset($surveyid))
 
             if (isset($_POST[$validAttribute['name']]))
             {
+
                 if ($filterxsshtml)
                 {
-                    $_POST[$validAttribute['name']]=$myFilter->process($_POST[$validAttribute['name']]);
+                    $sAttributeValue=$myFilter->process($_POST[$validAttribute['name']]);
                 }
+                else
+                {
+                    $sAttributeValue=$_POST[$validAttribute['name']];
+                }
+                if ($validAttribute['name']=='multiflexible_step' && trim($sAttributeValue)!='') {
+                    $sAttributeValue=floatval($sAttributeValue);
+                    if ($sAttributeValue==0) $sAttributeValue=1;
+                };
                 $query = "select qaid from ".db_table_name('question_attributes')."
                           WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                 $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                 if ($result->Recordcount()>0)
                 {
                     $query = "UPDATE ".db_table_name('question_attributes')."
-                              SET value='".db_quote($_POST[$validAttribute['name']])."' WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                              SET value='".db_quote($sAttributeValue)."' WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                     $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                 }
                 else
                 {
                     $query = "INSERT into ".db_table_name('question_attributes')."
-                              (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
+                              (qid, value, attribute) values ($qid,'".db_quote($sAttributeValue)."','{$validAttribute['name']}')";
                     $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                 }
             }
