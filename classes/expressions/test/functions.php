@@ -9,7 +9,6 @@ if (!((isset($subaction) && $subaction == 'functions'))) {die("Cannot run this s
     </head>
     <body>
         <?php
-//            include_once('../ExpressionManager.php');
             echo ExpressionManager::ShowAllowableFunctions();
         ?>
     </body>

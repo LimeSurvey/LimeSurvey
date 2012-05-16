@@ -52,7 +52,6 @@ $ia = array(0 => $qid,
 4 => $qrows['type'],
 5 => $qrows['gid'],
 6 => $qrows['mandatory'],
-//7 => $qrows['other']); // ia[7] is conditionsexist not other
 7 => 'N',
 8 => 'N' ); // ia[8] is usedinconditions
 

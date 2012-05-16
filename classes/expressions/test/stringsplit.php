@@ -9,7 +9,6 @@ if (!((isset($subaction) && $subaction == 'stringsplit'))) {die("Cannot run this
     </head>
     <body>
         <?php
-//            include_once('../ExpressionManager.php');
             ExpressionManager::UnitTestStringSplitter();
         ?>
     </body>

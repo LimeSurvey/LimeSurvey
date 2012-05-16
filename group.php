@@ -397,7 +397,6 @@ else
 
             $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
-            //echo $thissurvey['url'];
             //Check for assessments
             if ($thissurvey['assessments']== "Y")
             {
@@ -459,7 +458,6 @@ else
             }
 
 
-            //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
             if($thissurvey['printanswers'] != 'Y')
             {
                 killSession();
@@ -546,18 +544,6 @@ if ($_SESSION['step'] > $_SESSION['maxstep'])
 {
     $_SESSION['maxstep'] = $_SESSION['step'];
 }
-
-// If the survey uses answer persistence and a srid is registered in SESSION
-// then loadanswers from this srid
-/* Only survey mode used this - should all?
-if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
-$thissurvey['anonymized'] == "N" &&
-isset($_SESSION['srid']) &&
-$thissurvey['active'] == "Y")
-{
-loadanswers();
-}
-*/
 
 //******************************************************************************************************
 //PRESENT SURVEY
@@ -699,8 +685,6 @@ else
     <!-- INPUT NAMES -->
     <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 echo sDefaultSubmitHandler();
-
-// <-- END FEATURE - SAVE
 
 if ($surveyMode == 'survey')
 {
@@ -913,7 +897,6 @@ foreach ($_SESSION['grouplist'] as $gl)
         $help=$qinfo['info']['help'];   // $qa[2];
 
         $answer_id = $idlist[$i];
-        //$answer_id = $_SESSION['fieldarray'][$i][1];
         $i++;
         $question_template = file_get_contents($thistpl.'/question.pstpl');
         if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )

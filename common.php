@@ -21,8 +21,6 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run thi
 // Include version information
 require($rootdir.'/version.php');
 require($rootdir."/common_functions.php");
-// Include dTexts
-//require_once(dirname(__FILE__).'/classes/dTexts/dTexts.php');
 
 // Check for most necessary requirements
 // Now check for PHP & db version
