@@ -143,13 +143,14 @@ class index extends CAction {
         {
             $sTempLanguage='';
         }
-        $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
-
 
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {
             $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
+            UpdateSessionGroupList($surveyid, $sTempLanguage);  // to refresh the language strings in the group list session variable
+            UpdateFieldArray();        // to refresh question titles and question text
+
         }
         else
         {
