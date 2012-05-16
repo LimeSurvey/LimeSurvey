@@ -2,13 +2,30 @@
 # This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-15 11:33:04+0000\n"
+"PO-Revision-Date: 2012-05-16 20:54:08+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: GlotPress/0.1\n"
+"X-Poedit-KeywordsList: gT;ngt:1,2;eT;neT:1,2\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: ..\\..\\..\\\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Language: Belarusian\n"
 "Project-Id-Version: LimeSurvey 2.x\n"
+
+#: application/controllers/admin/templates.php:285
+msgid "The file %s was deleted."
+msgstr ""
+
+#: application/controllers/admin/templates.php:289
+msgid "File %s couldn't be deleted. Please check the permissions on the /upload/template folder"
+msgstr ""
+
+#: application/views/admin/assessments_view.php:80
+msgid "No question group found."
+msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:6
 msgid "Answers and tokens have been re-opened."
@@ -442,141 +459,141 @@ msgstr ""
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2107
+#: application/helpers/expressions/em_manager_helper.php:2170
 msgid "Please select at least one answer"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2108
+#: application/helpers/expressions/em_manager_helper.php:2171
 msgid "Please select at least %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2112
+#: application/helpers/expressions/em_manager_helper.php:2175
 msgid "Please select at most one answer"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2113
+#: application/helpers/expressions/em_manager_helper.php:2176
 msgid "Please select at most %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2117
+#: application/helpers/expressions/em_manager_helper.php:2180
 msgid "Please select one answer"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2118
+#: application/helpers/expressions/em_manager_helper.php:2181
 msgid "Please select %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2120
+#: application/helpers/expressions/em_manager_helper.php:2183
 msgid "Please select between %s and %s answers"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2136
-#: application/helpers/expressions/em_manager_helper.php:2157
+#: application/helpers/expressions/em_manager_helper.php:2199
+#: application/helpers/expressions/em_manager_helper.php:2220
 msgid "Each answer must be at least %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2138
-#: application/helpers/expressions/em_manager_helper.php:2159
+#: application/helpers/expressions/em_manager_helper.php:2201
+#: application/helpers/expressions/em_manager_helper.php:2222
 msgid "Each answer must be at most %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2140
-#: application/helpers/expressions/em_manager_helper.php:2161
+#: application/helpers/expressions/em_manager_helper.php:2203
+#: application/helpers/expressions/em_manager_helper.php:2224
 msgid "Each answer must be %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2141
-#: application/helpers/expressions/em_manager_helper.php:2162
+#: application/helpers/expressions/em_manager_helper.php:2204
+#: application/helpers/expressions/em_manager_helper.php:2225
 msgid "Each answer must be between %s and %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2178
+#: application/helpers/expressions/em_manager_helper.php:2241
 msgid "The sum must be at least %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2180
+#: application/helpers/expressions/em_manager_helper.php:2243
 msgid "The sum must be at most %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2182
+#: application/helpers/expressions/em_manager_helper.php:2245
 msgid "The sum must equal %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2183
+#: application/helpers/expressions/em_manager_helper.php:2246
 msgid "The sum must be between %s and %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2193
+#: application/helpers/expressions/em_manager_helper.php:2256
 msgid "The sum must equal %s."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2199
+#: application/helpers/expressions/em_manager_helper.php:2262
 msgid "Please also fill in the \"other comment\" field."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2207
+#: application/helpers/expressions/em_manager_helper.php:2270
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3904
+#: application/helpers/expressions/em_manager_helper.php:3986
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3919
+#: application/helpers/expressions/em_manager_helper.php:4001
 msgid "Unable to insert record into timings table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:3994
+#: application/helpers/expressions/em_manager_helper.php:4076
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4883
+#: application/helpers/expressions/em_manager_helper.php:4965
 msgid "This question is mandatory"
 msgstr "Гэта пытанне з’яўляецца абавязковым"
 
-#: application/helpers/expressions/em_manager_helper.php:4895
+#: application/helpers/expressions/em_manager_helper.php:4977
 msgid "Please check at least one item."
 msgstr "Калі ласка, адзначце хаця бы адзін элемент"
 
-#: application/helpers/expressions/em_manager_helper.php:4905
+#: application/helpers/expressions/em_manager_helper.php:4987
 msgid "If you choose '%s' you must provide a description."
 msgstr "Калі вы вылучыли '%s', апішыце падрабязней."
 
-#: application/helpers/expressions/em_manager_helper.php:4927
-#: application/helpers/expressions/em_manager_helper.php:4964
+#: application/helpers/expressions/em_manager_helper.php:5009
+#: application/helpers/expressions/em_manager_helper.php:5046
 msgid "Please complete all parts"
 msgstr "Калі ласка, запоўніце ўсе часткі"
 
-#: application/helpers/expressions/em_manager_helper.php:4956
+#: application/helpers/expressions/em_manager_helper.php:5038
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4972
+#: application/helpers/expressions/em_manager_helper.php:5054
 msgid "Please rank all items"
 msgstr "Ацаніце ўсе элементы"
 
-#: application/helpers/expressions/em_manager_helper.php:7265
+#: application/helpers/expressions/em_manager_helper.php:7401
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7270
+#: application/helpers/expressions/em_manager_helper.php:7406
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7270
+#: application/helpers/expressions/em_manager_helper.php:7406
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7270
+#: application/helpers/expressions/em_manager_helper.php:7406
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7322
-#: application/helpers/expressions/em_manager_helper.php:7548
+#: application/helpers/expressions/em_manager_helper.php:7458
+#: application/helpers/expressions/em_manager_helper.php:7684
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7330
+#: application/helpers/expressions/em_manager_helper.php:7466
 #: application/views/admin/survey/Question/editQuestion_view.php:44
 #: application/views/admin/survey/Question/editQuestion_view.php:46
 #: application/views/admin/survey/Question/editQuestion_view.php:68
@@ -587,49 +604,49 @@ msgstr ""
 msgid "Help:"
 msgstr "Даведка:"
 
-#: application/helpers/expressions/em_manager_helper.php:7331
+#: application/helpers/expressions/em_manager_helper.php:7467
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7338
+#: application/helpers/expressions/em_manager_helper.php:7474
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7338
+#: application/helpers/expressions/em_manager_helper.php:7474
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7451
+#: application/helpers/expressions/em_manager_helper.php:7587
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7463
+#: application/helpers/expressions/em_manager_helper.php:7599
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7604
+#: application/helpers/expressions/em_manager_helper.php:7740
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: application/helpers/expressions/em_manager_helper.php:7643
+#: application/helpers/expressions/em_manager_helper.php:7779
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: application/helpers/expressions/em_manager_helper.php:7649
+#: application/helpers/expressions/em_manager_helper.php:7785
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7652
+#: application/helpers/expressions/em_manager_helper.php:7788
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7655
+#: application/helpers/expressions/em_manager_helper.php:7791
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
@@ -781,7 +798,7 @@ msgstr "Адзначце ўсе прыдатныя варыянты"
 
 #: application/helpers/qanda_helper.php:207
 #: application/helpers/qanda_helper.php:208
-#: application/helpers/qanda_helper.php:1290
+#: application/helpers/qanda_helper.php:1315
 msgid "Choose your language"
 msgstr "Выберыце мову"
 
@@ -830,164 +847,164 @@ msgstr "мін"
 msgid "seconds"
 msgstr "секунд"
 
-#: application/helpers/qanda_helper.php:1105
-#: application/helpers/qanda_helper.php:1106
+#: application/helpers/qanda_helper.php:1130
+#: application/helpers/qanda_helper.php:1131
 msgid "Day"
 msgstr "Дзень"
 
-#: application/helpers/qanda_helper.php:1122
-#: application/helpers/qanda_helper.php:1123
+#: application/helpers/qanda_helper.php:1147
+#: application/helpers/qanda_helper.php:1148
 msgid "Month"
 msgstr "Месяц"
 
-#: application/helpers/qanda_helper.php:1125
+#: application/helpers/qanda_helper.php:1150
 msgid "Jan"
 msgstr "Сту"
 
-#: application/helpers/qanda_helper.php:1126
+#: application/helpers/qanda_helper.php:1151
 msgid "Feb"
 msgstr "Лют"
 
-#: application/helpers/qanda_helper.php:1127
+#: application/helpers/qanda_helper.php:1152
 msgid "Mar"
 msgstr "Сак"
 
-#: application/helpers/qanda_helper.php:1128
+#: application/helpers/qanda_helper.php:1153
 msgid "Apr"
 msgstr "Кра"
 
-#: application/helpers/qanda_helper.php:1129
+#: application/helpers/qanda_helper.php:1154
 msgid "May"
 msgstr "Тра"
 
-#: application/helpers/qanda_helper.php:1130
+#: application/helpers/qanda_helper.php:1155
 msgid "Jun"
 msgstr "Чэр"
 
-#: application/helpers/qanda_helper.php:1131
+#: application/helpers/qanda_helper.php:1156
 msgid "Jul"
 msgstr "Ліп"
 
-#: application/helpers/qanda_helper.php:1132
+#: application/helpers/qanda_helper.php:1157
 msgid "Aug"
 msgstr "Жні"
 
-#: application/helpers/qanda_helper.php:1133
+#: application/helpers/qanda_helper.php:1158
 msgid "Sep"
 msgstr "Вер"
 
-#: application/helpers/qanda_helper.php:1134
+#: application/helpers/qanda_helper.php:1159
 msgid "Oct"
 msgstr "Кас"
 
-#: application/helpers/qanda_helper.php:1135
+#: application/helpers/qanda_helper.php:1160
 msgid "Nov"
 msgstr "Ліс"
 
-#: application/helpers/qanda_helper.php:1136
+#: application/helpers/qanda_helper.php:1161
 msgid "Dec"
 msgstr "Сне"
 
-#: application/helpers/qanda_helper.php:1152
-#: application/helpers/qanda_helper.php:1153
+#: application/helpers/qanda_helper.php:1177
+#: application/helpers/qanda_helper.php:1178
 msgid "Year"
 msgstr "Год"
 
-#: application/helpers/qanda_helper.php:1263
+#: application/helpers/qanda_helper.php:1288
 msgid "Date picker"
 msgstr "Выбар даты"
 
-#: application/helpers/qanda_helper.php:1264
-#: application/helpers/qanda_helper.php:1271
+#: application/helpers/qanda_helper.php:1289
+#: application/helpers/qanda_helper.php:1296
 #: application/views/admin/token/dummytokenform.php:38
 #: application/views/admin/token/tokenform.php:148
 msgid "Format: %s"
 msgstr "Фармат:  %s"
 
-#: application/helpers/qanda_helper.php:1543
+#: application/helpers/qanda_helper.php:1568
 msgid "Other answer"
 msgstr "Іншы адказ"
 
-#: application/helpers/qanda_helper.php:1890
+#: application/helpers/qanda_helper.php:1915
 msgid "Please enter your comment here"
 msgstr "Калі ласка, увядзіце тут свой каментар"
 
-#: application/helpers/qanda_helper.php:2207
+#: application/helpers/qanda_helper.php:2232
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Націсніце на нажніцы побач з кожным пунктам дзеля выдалення апошняй запісі у вашым спісе рангавання"
 
-#: application/helpers/qanda_helper.php:2218
-#: application/helpers/qanda_helper.php:2233
+#: application/helpers/qanda_helper.php:2243
+#: application/helpers/qanda_helper.php:2258
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] "Калі ласка, размяркуйце не меньш за %d адказ на пытанне \"%s\""
 msgstr[1] "Калі ласка, размяркуйце не меньш за %d адказаў на пытанне \"%s\"."
 msgstr[2] ""
 
-#: application/helpers/qanda_helper.php:2644
+#: application/helpers/qanda_helper.php:2614
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Вы пазначылі \"Іншае\" поле для пытання \"%s\". Калі ласка, запоўніце таксама \"Іншае каментар\" поле ."
 
-#: application/helpers/qanda_helper.php:3014
+#: application/helpers/qanda_helper.php:2984
 msgid "Upload files"
 msgstr "Загрузіць файлы:"
 
-#: application/helpers/qanda_helper.php:3018
+#: application/helpers/qanda_helper.php:2988
 msgid "Upload your files"
 msgstr "Загрузіць вашы файлы:"
 
-#: application/helpers/qanda_helper.php:3019
+#: application/helpers/qanda_helper.php:2989
 msgid "Return to survey"
 msgstr "Вярнуцца да апытання"
 
-#: application/helpers/qanda_helper.php:3022
+#: application/helpers/qanda_helper.php:2992
 msgid "File name"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3200
-#: application/helpers/qanda_helper.php:3513
-#: application/helpers/qanda_helper.php:4749
-#: application/helpers/qanda_helper.php:6623
+#: application/helpers/qanda_helper.php:3170
+#: application/helpers/qanda_helper.php:3483
+#: application/helpers/qanda_helper.php:4719
+#: application/helpers/qanda_helper.php:6593
 msgid "Error: This question has no answers."
 msgstr "Памылка: Гэтае пытанне не мае адказу."
 
-#: application/helpers/qanda_helper.php:3653
+#: application/helpers/qanda_helper.php:3623
 msgid "Only numbers may be entered in these fields"
 msgstr "Толькі лічбы могуць быць уведзеныя ў гэтыя палі"
 
-#: application/helpers/qanda_helper.php:3694
+#: application/helpers/qanda_helper.php:3664
 msgid "Remaining: "
 msgstr "Засталося:"
 
-#: application/helpers/qanda_helper.php:3702
+#: application/helpers/qanda_helper.php:3672
 msgid "Total: "
 msgstr "Усяго:"
 
-#: application/helpers/qanda_helper.php:3904
-#: application/helpers/qanda_helper.php:3905
-#: application/helpers/qanda_helper.php:3909
+#: application/helpers/qanda_helper.php:3874
+#: application/helpers/qanda_helper.php:3875
+#: application/helpers/qanda_helper.php:3879
 #: application/views/admin/dataentry/content_view.php:408
 msgid "Only numbers may be entered in this field"
 msgstr "Толькі лічбы могуць быць уведзены ў гэтым палі"
 
-#: application/helpers/qanda_helper.php:4091
-#: application/helpers/qanda_helper.php:4092
+#: application/helpers/qanda_helper.php:4061
+#: application/helpers/qanda_helper.php:4062
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Перацягніце шпільку ў патрэбная месца. Вы таксама можаце націснуць правай кнопкай мышы на карту, каб перамясціць шпільку."
 
-#: application/helpers/qanda_helper.php:5329
-#: application/helpers/qanda_helper.php:5711
-#: application/helpers/qanda_helper.php:6070
-#: application/helpers/qanda_helper.php:6218
-#: application/helpers/qanda_helper.php:6852
+#: application/helpers/qanda_helper.php:5299
+#: application/helpers/qanda_helper.php:5681
+#: application/helpers/qanda_helper.php:6040
+#: application/helpers/qanda_helper.php:6188
+#: application/helpers/qanda_helper.php:6822
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Памылка: Няма варыянтаў адказу на гэтае пытанне і/або іх не існуе на гэтай мове."
 
-#: application/helpers/qanda_helper.php:5987
+#: application/helpers/qanda_helper.php:5957
 msgid "..."
 msgstr "..."
 
-#: application/helpers/qanda_helper.php:6212
+#: application/helpers/qanda_helper.php:6182
 msgid "Error: There are no answers defined for this question."
 msgstr "Памылка: няма вызначанных адказаў на гэтае пытанне."
 
@@ -1491,7 +1508,7 @@ msgstr "Перамяшчэнне шаблонаў карыстальніка д�
 
 #: application/helpers/update/upgrade-mssql_helper.php:609
 #: application/helpers/update/upgrade-mysql_helper.php:731
-#: application/helpers/update/upgrade-pgsql_helper.php:449
+#: application/helpers/update/upgrade-pgsql_helper.php:448
 msgid "Database update finished (%s)"
 msgstr "Абнаўленне базы дадзеных скончана (%s)"
 
@@ -1652,7 +1669,7 @@ msgid "SID"
 msgstr "SID"
 
 #: application/views/admin/assessments_view.php:13
-#: application/views/admin/assessments_view.php:104
+#: application/views/admin/assessments_view.php:113
 #: application/views/admin/token/email.php:77
 #: application/views/admin/token/remind.php:53
 msgid "Message"
@@ -1664,11 +1681,11 @@ msgstr "Паведамленне"
 msgid "Total"
 msgstr "Усяго"
 
-#: application/views/admin/assessments_view.php:102
+#: application/views/admin/assessments_view.php:111
 msgid "Heading"
 msgstr "Загаловак"
 
-#: application/views/admin/assessments_view.php:118
+#: application/views/admin/assessments_view.php:127
 #: application/views/admin/usergroup/mailUserGroup_view.php:7
 msgid "Message:"
 msgstr "Паведамленне:"
@@ -3577,7 +3594,7 @@ msgstr "Наборы метак:"
 
 #: application/views/admin/labels/labelsetsbar_view.php:41
 #: application/views/admin/super/adminmenu.php:105
-#: application/views/admin/templates/templateeditorbar_view.php:117
+#: application/views/admin/templates/templateeditorbar_view.php:116
 msgid "Logout"
 msgstr "Выхад"
 
@@ -3621,14 +3638,14 @@ msgstr ""
 
 #: application/views/admin/labels/labelview_view.php:104
 #: application/views/admin/survey/Question/answerOptions_view.php:146
-#: application/views/admin/survey/Question/subQuestion_view.php:146
+#: application/views/admin/survey/Question/subQuestion_view.php:145
 msgid "Quick add..."
 msgstr "Хуткае даданне ..."
 
 #: application/views/admin/labels/labelview_view.php:105
 #: application/views/admin/survey/Question/answerOptions_view.php:200
-#: application/views/admin/survey/Question/subQuestion_view.php:198
-#: application/views/admin/templates/templatesummary_view.php:30
+#: application/views/admin/survey/Question/subQuestion_view.php:197
+#: application/views/admin/templates/templatesummary_view.php:51
 msgid "Save changes"
 msgstr "Захаваць змены"
 
@@ -3674,8 +3691,8 @@ msgstr ""
 #: application/views/admin/labels/labelview_view.php:155
 #: application/views/admin/survey/Question/answerOptions_view.php:163
 #: application/views/admin/survey/Question/answerOptions_view.php:175
-#: application/views/admin/survey/Question/subQuestion_view.php:161
-#: application/views/admin/survey/Question/subQuestion_view.php:174
+#: application/views/admin/survey/Question/subQuestion_view.php:160
+#: application/views/admin/survey/Question/subQuestion_view.php:173
 msgid "Replace"
 msgstr "Замяніць"
 
@@ -4609,7 +4626,7 @@ msgstr ""
 #: application/views/admin/survey/Question/answerOptions_view.php:27
 #: application/views/admin/survey/Question/answerOptions_view.php:149
 #: application/views/admin/survey/Question/subQuestion_view.php:13
-#: application/views/admin/survey/Question/subQuestion_view.php:148
+#: application/views/admin/survey/Question/subQuestion_view.php:147
 msgid "Save as label set"
 msgstr "Захаваць як набор пазнак"
 
@@ -4649,12 +4666,12 @@ msgid "Delete this answer option"
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:145
-#: application/views/admin/survey/Question/subQuestion_view.php:145
+#: application/views/admin/survey/Question/subQuestion_view.php:144
 msgid "Predefined label sets..."
 msgstr "Стандартныя наборы метак ..."
 
 #: application/views/admin/survey/Question/answerOptions_view.php:160
-#: application/views/admin/survey/Question/subQuestion_view.php:158
+#: application/views/admin/survey/Question/subQuestion_view.php:157
 msgid "Available label sets:"
 msgstr "Даступныя наборы метак:"
 
@@ -4667,12 +4684,12 @@ msgid "Enter one answer per line. You can provide a code by separating code and 
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:182
-#: application/views/admin/survey/Question/subQuestion_view.php:181
+#: application/views/admin/survey/Question/subQuestion_view.php:180
 msgid "New label set"
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:183
-#: application/views/admin/survey/Question/subQuestion_view.php:182
+#: application/views/admin/survey/Question/subQuestion_view.php:181
 msgid "Replace existing label set"
 msgstr ""
 
@@ -4681,7 +4698,7 @@ msgid "You are about to replace a given label set with the current answer option
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:193
-#: application/views/admin/survey/Question/subQuestion_view.php:191
+#: application/views/admin/survey/Question/subQuestion_view.php:190
 msgid "Sorry, the name you entered for the label set is already in the database. Please select a different name."
 msgstr ""
 
@@ -4976,31 +4993,31 @@ msgstr "X-Шкала"
 msgid "Subquestion"
 msgstr "Падпытанне"
 
-#: application/views/admin/survey/Question/subQuestion_view.php:124
+#: application/views/admin/survey/Question/subQuestion_view.php:123
 msgid "Subquestion:"
 msgstr "Падпытанне:"
 
-#: application/views/admin/survey/Question/subQuestion_view.php:131
+#: application/views/admin/survey/Question/subQuestion_view.php:130
 msgid "Insert a new subquestion after this one"
 msgstr ""
 
-#: application/views/admin/survey/Question/subQuestion_view.php:132
+#: application/views/admin/survey/Question/subQuestion_view.php:131
 msgid "Delete this subquestion"
 msgstr ""
 
-#: application/views/admin/survey/Question/subQuestion_view.php:171
+#: application/views/admin/survey/Question/subQuestion_view.php:170
 msgid "Enter your subquestions:"
 msgstr "Увядзіце падпытанне:"
 
-#: application/views/admin/survey/Question/subQuestion_view.php:172
+#: application/views/admin/survey/Question/subQuestion_view.php:171
 msgid "Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
 msgstr ""
 
-#: application/views/admin/survey/Question/subQuestion_view.php:187
+#: application/views/admin/survey/Question/subQuestion_view.php:186
 msgid "You are about to replace a given label set with the labels of this subquestions. Continue?"
 msgstr ""
 
-#: application/views/admin/survey/Question/subQuestion_view.php:204
+#: application/views/admin/survey/Question/subQuestion_view.php:203
 msgid "You cannot add/remove subquestions or edit their codes because the survey is active."
 msgstr "Вы ня можаце дадаваць/выдаляць падпытанні або змяняць іх кады, таму што апытанне актыўна."
 
@@ -5543,7 +5560,7 @@ msgid "Anonymized responses"
 msgstr "Ананімныя адказы"
 
 #: application/views/admin/survey/listSurveys_view.php:11
-#: application/views/admin/templates/templatesummary_view.php:102
+#: application/views/admin/templates/templatesummary_view.php:105
 msgid "Full"
 msgstr "Поўна"
 
@@ -5781,7 +5798,7 @@ msgstr "Пытанне за пытаннем"
 #: application/views/admin/survey/subview/tabPresentation_view.php:28
 #: application/views/admin/survey/surveySummary_view.php:96
 #: application/views/admin/templates/templateeditorbar_view.php:43
-#: application/views/admin/templates/templateeditorbar_view.php:105
+#: application/views/admin/templates/templateeditorbar_view.php:104
 msgid "Template:"
 msgstr "Шаблон:"
 
@@ -6250,9 +6267,9 @@ msgid "Import template ZIP archive"
 msgstr "Імпарт шаблона з ZIP архіва"
 
 #: application/views/admin/templates/importuploaded_view.php:1
-#: application/views/admin/templates/templateeditorbar_view.php:63
-#: application/views/admin/templates/templateeditorbar_view.php:74
-#: application/views/admin/templates/templateeditorbar_view.php:94
+#: application/views/admin/templates/templateeditorbar_view.php:62
+#: application/views/admin/templates/templateeditorbar_view.php:73
+#: application/views/admin/templates/templateeditorbar_view.php:93
 msgid "Import template"
 msgstr "Імпарт шаблона"
 
@@ -6285,134 +6302,130 @@ msgstr "Гэты тып файла не можа быць загружаны."
 msgid "Template editor"
 msgstr "Рэдактар шаблонаў"
 
-#: application/views/admin/templates/templateeditorbar_view.php:55
+#: application/views/admin/templates/templateeditorbar_view.php:54
 msgid "Note: This is a standard template."
 msgstr "Заўвага: Гэта стандартны шаблон."
 
-#: application/views/admin/templates/templateeditorbar_view.php:56
+#: application/views/admin/templates/templateeditorbar_view.php:55
 msgid "If you want to edit it %s please copy it first%s."
 msgstr "Калі вы хочаце яго адрэдагаваць %s, калі ласка, спачатку скапіруйце яго %s."
 
-#: application/views/admin/templates/templateeditorbar_view.php:56
-#: application/views/admin/templates/templateeditorbar_view.php:68
+#: application/views/admin/templates/templateeditorbar_view.php:55
+#: application/views/admin/templates/templateeditorbar_view.php:67
 msgid "Copy Template"
 msgstr "Капіраваць шаблон"
 
-#: application/views/admin/templates/templateeditorbar_view.php:57
-#: application/views/admin/templates/templateeditorbar_view.php:67
-#: application/views/admin/templates/templateeditorbar_view.php:96
+#: application/views/admin/templates/templateeditorbar_view.php:56
+#: application/views/admin/templates/templateeditorbar_view.php:66
+#: application/views/admin/templates/templateeditorbar_view.php:95
 msgid "Please enter the name for the copied template:"
 msgstr "Калі ласка, увядзіце імя для скапіяванага шаблона:"
 
-#: application/views/admin/templates/templateeditorbar_view.php:57
-#: application/views/admin/templates/templateeditorbar_view.php:67
-#: application/views/admin/templates/templateeditorbar_view.php:96
+#: application/views/admin/templates/templateeditorbar_view.php:56
+#: application/views/admin/templates/templateeditorbar_view.php:66
+#: application/views/admin/templates/templateeditorbar_view.php:95
 msgid "copy_of_"
 msgstr "copy_of_"
 
-#: application/views/admin/templates/templateeditorbar_view.php:65
+#: application/views/admin/templates/templateeditorbar_view.php:64
 msgid "Export Template"
 msgstr "Экспарт шаблона"
 
+#: application/views/admin/templates/templateeditorbar_view.php:73
 #: application/views/admin/templates/templateeditorbar_view.php:74
-#: application/views/admin/templates/templateeditorbar_view.php:75
-#: application/views/admin/templates/templateeditorbar_view.php:77
+#: application/views/admin/templates/templateeditorbar_view.php:76
 msgid "Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."
 msgstr "Калі ласка, зьмяніце права доступу каталогаў /tmp і /upload/templates перад тым, як уключыць гэтую опцыю."
 
-#: application/views/admin/templates/templateeditorbar_view.php:75
-#: application/views/admin/templates/templateeditorbar_view.php:93
+#: application/views/admin/templates/templateeditorbar_view.php:74
+#: application/views/admin/templates/templateeditorbar_view.php:92
 msgid "Export template"
 msgstr "Экспарт шаблона"
 
-#: application/views/admin/templates/templateeditorbar_view.php:77
-#: application/views/admin/templates/templateeditorbar_view.php:97
+#: application/views/admin/templates/templateeditorbar_view.php:76
+#: application/views/admin/templates/templateeditorbar_view.php:96
 msgid "Copy template"
 msgstr "Капіяваць шаблён"
 
-#: application/views/admin/templates/templateeditorbar_view.php:83
+#: application/views/admin/templates/templateeditorbar_view.php:82
 msgid "Rename this template to:"
 msgstr "Перайменаваць гэты шаблон ў:"
 
-#: application/views/admin/templates/templateeditorbar_view.php:84
+#: application/views/admin/templates/templateeditorbar_view.php:83
 msgid "Rename this template"
 msgstr "Перайменаваць гэты шаблон"
 
-#: application/views/admin/templates/templateeditorbar_view.php:85
+#: application/views/admin/templates/templateeditorbar_view.php:84
 msgid "Are you sure you want to delete this template?"
 msgstr "Вы ўпэўнены, што жадаеце выдаліць гэты шаблон?"
 
-#: application/views/admin/templates/templateeditorbar_view.php:86
+#: application/views/admin/templates/templateeditorbar_view.php:85
 msgid "Delete this template"
 msgstr "Выдаліць гэты шаблон"
 
+#: application/views/admin/templates/templateeditorbar_view.php:92
 #: application/views/admin/templates/templateeditorbar_view.php:93
-#: application/views/admin/templates/templateeditorbar_view.php:94
 msgid "Please change the directory permissions of the folder %s in order to enable this option"
 msgstr "Калі ласка, зьмяніце права доступу каталогу %s перад тым, як уключыць гэтую опцыю."
 
-#: application/views/admin/templates/templateeditorbar_view.php:109
+#: application/views/admin/templates/templateeditorbar_view.php:108
 msgid "Screen:"
 msgstr "Старонка:"
 
-#: application/views/admin/templates/templateeditorbar_view.php:113
+#: application/views/admin/templates/templateeditorbar_view.php:112
 msgid "Create new template called:"
 msgstr "Стварыць новы шаблон пад назвай:"
 
-#: application/views/admin/templates/templateeditorbar_view.php:113
+#: application/views/admin/templates/templateeditorbar_view.php:112
 msgid "NewTemplate"
 msgstr "Новы шаблон"
 
-#: application/views/admin/templates/templateeditorbar_view.php:114
+#: application/views/admin/templates/templateeditorbar_view.php:113
 msgid "Create new template"
 msgstr "Стварыць новы шаблон"
 
-#: application/views/admin/templates/templatesummary_view.php:9
+#: application/views/admin/templates/templatesummary_view.php:17
 msgid "Editing template '%s' - File '%s'"
 msgstr "Рэдагаванне шаблона '%s' - файл '%s'"
 
-#: application/views/admin/templates/templatesummary_view.php:13
+#: application/views/admin/templates/templatesummary_view.php:21
 msgid "Standard files:"
 msgstr "Стандартныя файлы:"
 
-#: application/views/admin/templates/templatesummary_view.php:32
+#: application/views/admin/templates/templatesummary_view.php:53
 msgid "Changes cannot be saved to a standard template."
 msgstr "Змены не могуць быць захаваны ў стандартным шаблоне."
 
-#: application/views/admin/templates/templatesummary_view.php:38
+#: application/views/admin/templates/templatesummary_view.php:59
 msgid "You can't save changes because the template directory is not writable."
 msgstr "Вы не можаце захаваць змены, паколькі каталог шаблонаў не даступны для запісу."
 
-#: application/views/admin/templates/templatesummary_view.php:42
+#: application/views/admin/templates/templatesummary_view.php:67
 msgid "Other files:"
 msgstr "Іншыя файлы:"
 
-#: application/views/admin/templates/templatesummary_view.php:47
+#: application/views/admin/templates/templatesummary_view.php:27
 msgid "CSS & Javascript files:"
 msgstr "CSS і Javascript файлы:"
 
-#: application/views/admin/templates/templatesummary_view.php:61
+#: application/views/admin/templates/templatesummary_view.php:72
 msgid "Are you sure you want to delete this file?"
 msgstr "Вы ўпэўнены, што жадаеце выдаліць гэты файл?"
 
-#: application/views/admin/templates/templatesummary_view.php:63
-msgid "Files in a standard template cannot be deleted."
-msgstr "Файлы ў стандартнам шаблоне не могуць быць выдалены."
-
-#: application/views/admin/templates/templatesummary_view.php:77
+#: application/views/admin/templates/templatesummary_view.php:81
 msgid "Upload a file:"
 msgstr "Загрузіць файл:"
 
-#: application/views/admin/templates/templatesummary_view.php:78
+#: application/views/admin/templates/templatesummary_view.php:82
 #: application/views/admin/token/csvupload.php:39
 msgid "Upload"
 msgstr "Загрузіць"
 
-#: application/views/admin/templates/templatesummary_view.php:97
+#: application/views/admin/templates/templatesummary_view.php:100
 msgid "Preview:"
 msgstr "Перадпрагляд:"
 
-#: application/views/admin/templates/templatesummary_view.php:111
+#: application/views/admin/templates/templatesummary_view.php:114
 msgid "Please change the directory permissions of the folder %s in order to preview templates."
 msgstr "Калі ласка, зьмяніце правы доступу каталога %s перад праглядам шаблонаў."
 
@@ -7567,9 +7580,9 @@ msgstr "Усяго запісаў у апытанні"
 #: application/controllers/admin/templates.php:136
 #: application/controllers/survey/index.php:84
 #: application/controllers/survey/index.php:97
-#: application/controllers/survey/index.php:358
-#: application/controllers/survey/index.php:371
-#: application/controllers/survey/index.php:386
+#: application/controllers/survey/index.php:359
+#: application/controllers/survey/index.php:372
+#: application/controllers/survey/index.php:387
 #: application/helpers/admin/import_helper.php:542
 #: application/helpers/admin/import_helper.php:558
 #: application/helpers/admin/import_helper.php:574
@@ -7658,12 +7671,12 @@ msgstr "Галоўная старонка панэлі кіравання"
 msgid "LimeSurvey online manual"
 msgstr "Анлайн кіраўніцтва LimeSurvey"
 
-#: application/controllers/AdminController.php:348
+#: application/controllers/AdminController.php:356
 msgid "Version"
 msgstr "Версія"
 
-#: application/controllers/AdminController.php:400
-#: application/controllers/admin/authentication.php:328
+#: application/controllers/AdminController.php:408
+#: application/controllers/admin/authentication.php:334
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "Увага: Вы ўсё яшчэ карыстаецеся паролем па змаўчанні (password). Калі ласка, зьмяніце ваш пароль і ўвадзіце зноўку."
 
@@ -7859,12 +7872,12 @@ msgid "Either you have been inactive for too long, you have cookies disabled for
 msgstr "Магчыма, вы былі неактыўныя занадта доўга, або ў вашам браўзэры адключаны cookies, або былі праблемы з падключэннем да Інтэрнэту."
 
 #: application/controllers/PrintanswersController.php:76
-#: application/controllers/admin/templates.php:810
+#: application/controllers/admin/templates.php:837
 #: application/controllers/survey/index.php:99
-#: application/controllers/survey/index.php:276
-#: application/controllers/survey/index.php:360
-#: application/controllers/survey/index.php:373
-#: application/controllers/survey/index.php:388
+#: application/controllers/survey/index.php:277
+#: application/controllers/survey/index.php:361
+#: application/controllers/survey/index.php:374
+#: application/controllers/survey/index.php:389
 #: application/helpers/replacements_helper.php:221
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "Калі ласка, звяжыцеся з %s ( %s ) для атрымання дадатковай дапамогі."
@@ -7884,7 +7897,7 @@ msgid "Survey name (ID):"
 msgstr "Назва апытання (ID):"
 
 #: application/controllers/PrintanswersController.php:167
-#: application/controllers/admin/browse.php:618
+#: application/controllers/admin/browse.php:638
 #: application/controllers/admin/conditionsaction.php:1711
 #: application/controllers/admin/conditionsaction.php:2071
 #: application/controllers/admin/conditionsaction.php:2074
@@ -7901,7 +7914,7 @@ msgid "Your answer"
 msgstr "Ваш адказ"
 
 #: application/controllers/RegisterController.php:102
-#: application/controllers/survey/index.php:424
+#: application/controllers/survey/index.php:425
 #: application/helpers/frontend_helper.php:1403
 #: application/helpers/frontend_helper.php:1632
 #: application/libraries/Save.php:134
@@ -7949,9 +7962,9 @@ msgid "Generating summaries ..."
 msgstr "Стварэнне зводак ..."
 
 #: application/controllers/Statistics_userController.php:451
+#: application/controllers/admin/browse.php:134
 #: application/controllers/admin/browse.php:135
-#: application/controllers/admin/browse.php:136
-#: application/controllers/admin/browse.php:436
+#: application/controllers/admin/browse.php:457
 #: application/controllers/admin/dataentry.php:542
 #: application/controllers/admin/quotas.php:156
 #: application/views/admin/quotas/viewquotas_view.php:17
@@ -7998,7 +8011,7 @@ msgid "Unknown error"
 msgstr "Неапазнаная памылка"
 
 #: application/controllers/UploaderController.php:263
-#: application/helpers/qanda_helper.php:3020
+#: application/helpers/qanda_helper.php:2990
 #: application/views/admin/assessments_view.php:13
 #: application/views/admin/labels/labelview_view.php:36
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:16
@@ -8011,7 +8024,7 @@ msgstr "Назва"
 #: application/controllers/UploaderController.php:264
 #: application/helpers/common_helper.php:2445
 #: application/helpers/common_helper.php:2661
-#: application/helpers/qanda_helper.php:3021
+#: application/helpers/qanda_helper.php:2991
 #: application/views/admin/dataentry/content_view.php:139
 msgid "Comment"
 msgstr "Каментар"
@@ -8077,13 +8090,13 @@ msgstr "Група, да якой належыць пытанне"
 
 #: application/controllers/admin/assessments.php:89
 #: application/helpers/admin/statistics_helper.php:1381
-#: application/views/admin/assessments_view.php:74
+#: application/views/admin/assessments_view.php:83
 msgid "Minimum"
 msgstr "Мінімальная"
 
 #: application/controllers/admin/assessments.php:89
 #: application/helpers/admin/statistics_helper.php:1551
-#: application/views/admin/assessments_view.php:76
+#: application/views/admin/assessments_view.php:85
 msgid "Maximum"
 msgstr "Максімальная"
 
@@ -8093,8 +8106,8 @@ msgstr "Максімальная"
 #: application/views/admin/labels/labelview_view.php:156
 #: application/views/admin/survey/Question/answerOptions_view.php:164
 #: application/views/admin/survey/Question/answerOptions_view.php:176
-#: application/views/admin/survey/Question/subQuestion_view.php:162
-#: application/views/admin/survey/Question/subQuestion_view.php:175
+#: application/views/admin/survey/Question/subQuestion_view.php:161
+#: application/views/admin/survey/Question/subQuestion_view.php:174
 #: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:33
 msgid "Add"
 msgstr "Дадаць"
@@ -8107,7 +8120,7 @@ msgstr ""
 msgid "Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
 msgstr ""
 
-#: application/controllers/admin/assessments.php:135
+#: application/controllers/admin/assessments.php:136
 #: application/controllers/admin/surveyadmin.php:548
 #: application/views/admin/assessments_view.php:24
 #: application/views/admin/quotas/viewquotasrow_view.php:28
@@ -8163,17 +8176,17 @@ msgstr "Вітаем %s!"
 msgid "Reloading screen. Please wait."
 msgstr "Абнаўленне экрана. Калі ласка, пачакайце."
 
-#: application/controllers/admin/authentication.php:346
+#: application/controllers/admin/authentication.php:352
 msgid "Incorrect username and/or password!"
 msgstr "Няправільнае імя карыстальніка і/ці пароль!"
 
-#: application/controllers/admin/authentication.php:355
+#: application/controllers/admin/authentication.php:361
 msgid "You have exceeded you maximum login attempts. Please wait %d minutes before trying again"
 msgstr "Вы перавысілі максімальную колькасці спроб увайсці. Калі ласка, пачакайце %d хвілін, перш чым паспрабаць зноў"
 
-#: application/controllers/admin/browse.php:69
-#: application/controllers/admin/browse.php:78
-#: application/controllers/admin/browse.php:910
+#: application/controllers/admin/browse.php:68
+#: application/controllers/admin/browse.php:77
+#: application/controllers/admin/browse.php:930
 #: application/controllers/admin/dataentry.php:1588
 #: application/views/admin/browse/browseallfiltered_view.php:3
 #: application/views/admin/dataentry/delete.php:5
@@ -8181,24 +8194,24 @@ msgstr "Вы перавысілі максімальную колькасці с
 msgid "Browse responses"
 msgstr ""
 
-#: application/controllers/admin/browse.php:70
+#: application/controllers/admin/browse.php:69
 msgid "This survey has not been activated. There are no results to browse."
 msgstr "Гэты агляд актываваны. Няма вынікаў для прагляду."
 
-#: application/controllers/admin/browse.php:79
+#: application/controllers/admin/browse.php:78
 #: application/controllers/admin/checkintegrity.php:591
 #: application/controllers/admin/checkintegrity.php:607
 msgid "There is no matching survey."
 msgstr "Няма адпаведных апытанняў."
 
-#: application/controllers/admin/browse.php:130
-#: application/controllers/admin/browse.php:430
+#: application/controllers/admin/browse.php:129
+#: application/controllers/admin/browse.php:451
 #: application/views/admin/participants/displayParticipants_view.php:85
 msgid "Token ID"
 msgstr "ID маркера доступу"
 
-#: application/controllers/admin/browse.php:131
-#: application/controllers/admin/browse.php:431
+#: application/controllers/admin/browse.php:130
+#: application/controllers/admin/browse.php:452
 #: application/helpers/common_helper.php:5237
 #: application/helpers/replacements_helper.php:617
 #: application/views/admin/export/exportresults_view.php:123
@@ -8212,8 +8225,8 @@ msgstr "ID маркера доступу"
 msgid "First name"
 msgstr "Імя"
 
-#: application/controllers/admin/browse.php:132
-#: application/controllers/admin/browse.php:432
+#: application/controllers/admin/browse.php:131
+#: application/controllers/admin/browse.php:453
 #: application/helpers/common_helper.php:5238
 #: application/helpers/replacements_helper.php:624
 #: application/views/admin/export/exportresults_view.php:124
@@ -8227,8 +8240,8 @@ msgstr "Імя"
 msgid "Last name"
 msgstr "Прозвішча"
 
-#: application/controllers/admin/browse.php:133
-#: application/controllers/admin/browse.php:433
+#: application/controllers/admin/browse.php:132
+#: application/controllers/admin/browse.php:454
 #: application/controllers/admin/useraction.php:150
 #: application/views/admin/authentication/forgotpassword.php:9
 #: application/views/admin/participants/displayParticipants_view.php:62
@@ -8242,17 +8255,17 @@ msgstr "Прозвішча"
 msgid "Email"
 msgstr "E-mail"
 
-#: application/controllers/admin/browse.php:135
+#: application/controllers/admin/browse.php:134
 #: application/views/admin/export/statistics_view.php:86
 msgid "Submission date"
 msgstr "Дата адпаўкі"
 
-#: application/controllers/admin/browse.php:614
+#: application/controllers/admin/browse.php:634
 #: application/helpers/common_helper.php:2820
 msgid "Total time"
 msgstr "Сумарны час"
 
-#: application/controllers/admin/browse.php:616
+#: application/controllers/admin/browse.php:636
 #: application/views/admin/assessments_view.php:65
 msgid "Group"
 msgstr "Група"
@@ -8499,11 +8512,11 @@ msgstr "Скінуць логіку апытання"
 #: application/helpers/export_helper.php:257
 #: application/helpers/export_helper.php:1331
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2451
-#: application/helpers/expressions/em_manager_helper.php:2455
-#: application/helpers/qanda_helper.php:4310
-#: application/helpers/qanda_helper.php:4737
-#: application/helpers/qanda_helper.php:4775
+#: application/helpers/expressions/em_manager_helper.php:2516
+#: application/helpers/expressions/em_manager_helper.php:2520
+#: application/helpers/qanda_helper.php:4280
+#: application/helpers/qanda_helper.php:4707
+#: application/helpers/qanda_helper.php:4745
 #: application/views/admin/dataentry/content_view.php:527
 #: application/views/admin/dataentry/content_view.php:580
 #: application/views/admin/dataentry/import.php:23
@@ -8558,7 +8571,7 @@ msgstr "Так"
 
 #: application/controllers/admin/conditionsaction.php:181
 #: application/controllers/admin/tokens.php:1928
-#: application/views/admin/assessments_view.php:111
+#: application/views/admin/assessments_view.php:120
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/labels/labelview_view.php:157
 #: application/views/admin/participants/attributeMapCSV_view.php:64
@@ -8569,9 +8582,9 @@ msgstr "Так"
 #: application/views/admin/survey/Question/answerOptions_view.php:177
 #: application/views/admin/survey/Question/answerOptions_view.php:185
 #: application/views/admin/survey/Question/subQuestion_view.php:22
-#: application/views/admin/survey/Question/subQuestion_view.php:163
-#: application/views/admin/survey/Question/subQuestion_view.php:176
-#: application/views/admin/survey/Question/subQuestion_view.php:184
+#: application/views/admin/survey/Question/subQuestion_view.php:162
+#: application/views/admin/survey/Question/subQuestion_view.php:175
+#: application/views/admin/survey/Question/subQuestion_view.php:183
 #: application/views/admin/survey/deleteSurvey_view.php:36
 #: application/views/admin/token/browse.php:47
 #: application/views/admin/token/browse.php:59
@@ -8592,7 +8605,7 @@ msgstr ""
 #: application/views/admin/dataentry/import.php:31
 #: application/views/admin/survey/Question/questionbar_view.php:193
 #: application/views/admin/survey/Question/questionbar_view.php:202
-#: application/views/admin/survey/Question/subQuestion_view.php:204
+#: application/views/admin/survey/Question/subQuestion_view.php:203
 #: application/views/admin/survey/activateSurvey_view.php:37
 #: application/views/admin/survey/activateSurvey_view.php:55
 #: application/views/admin/survey/deactivateSurvey_view.php:6
@@ -8617,7 +8630,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:595
 #: application/controllers/admin/tokens.php:2082
 #: application/controllers/admin/tokens.php:2093
-#: application/controllers/admin/useraction.php:713
+#: application/controllers/admin/useraction.php:724
 #: application/helpers/common_helper.php:6148
 #: application/helpers/common_helper.php:6153
 #: application/helpers/common_helper.php:6158
@@ -8685,9 +8698,9 @@ msgstr "Умовы ня могуць быць скапіяваны(з-за ду�
 #: application/helpers/common_helper.php:1845
 #: application/helpers/export_helper.php:259
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2457
-#: application/helpers/qanda_helper.php:4738
-#: application/helpers/qanda_helper.php:4783
+#: application/helpers/expressions/em_manager_helper.php:2522
+#: application/helpers/qanda_helper.php:4708
+#: application/helpers/qanda_helper.php:4753
 #: application/views/admin/dataentry/content_view.php:581
 #: application/views/admin/export/statistics_view.php:677
 msgid "Uncertain"
@@ -8746,11 +8759,11 @@ msgstr "Ня упэўнены"
 #: application/helpers/export_helper.php:258
 #: application/helpers/export_helper.php:1331
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2452
-#: application/helpers/expressions/em_manager_helper.php:2456
-#: application/helpers/qanda_helper.php:4319
-#: application/helpers/qanda_helper.php:4739
-#: application/helpers/qanda_helper.php:4793
+#: application/helpers/expressions/em_manager_helper.php:2517
+#: application/helpers/expressions/em_manager_helper.php:2521
+#: application/helpers/qanda_helper.php:4289
+#: application/helpers/qanda_helper.php:4709
+#: application/helpers/qanda_helper.php:4763
 #: application/views/admin/dataentry/content_view.php:528
 #: application/views/admin/dataentry/content_view.php:582
 #: application/views/admin/dataentry/import.php:24
@@ -8811,9 +8824,9 @@ msgstr "Не"
 #: application/helpers/common_helper.php:1851
 #: application/helpers/export_helper.php:262
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2460
-#: application/helpers/qanda_helper.php:4894
-#: application/helpers/qanda_helper.php:4936
+#: application/helpers/expressions/em_manager_helper.php:2525
+#: application/helpers/qanda_helper.php:4864
+#: application/helpers/qanda_helper.php:4906
 #: application/views/admin/dataentry/content_view.php:598
 #: application/views/admin/export/statistics_view.php:727
 msgid "Increase"
@@ -8827,9 +8840,9 @@ msgstr "Павялічыць"
 #: application/helpers/common_helper.php:1853
 #: application/helpers/export_helper.php:263
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2461
-#: application/helpers/qanda_helper.php:4895
-#: application/helpers/qanda_helper.php:4947
+#: application/helpers/expressions/em_manager_helper.php:2526
+#: application/helpers/qanda_helper.php:4865
+#: application/helpers/qanda_helper.php:4917
 #: application/views/admin/dataentry/content_view.php:599
 #: application/views/admin/export/statistics_view.php:732
 msgid "Same"
@@ -8843,9 +8856,9 @@ msgstr "Такое ж самае"
 #: application/helpers/common_helper.php:1852
 #: application/helpers/export_helper.php:264
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2462
-#: application/helpers/qanda_helper.php:4896
-#: application/helpers/qanda_helper.php:4959
+#: application/helpers/expressions/em_manager_helper.php:2527
+#: application/helpers/qanda_helper.php:4866
+#: application/helpers/qanda_helper.php:4929
 #: application/views/admin/dataentry/content_view.php:600
 #: application/views/admin/export/statistics_view.php:737
 msgid "Decrease"
@@ -8875,32 +8888,32 @@ msgstr "Паменьшыць"
 #: application/helpers/admin/statistics_helper.php:2953
 #: application/helpers/common_helper.php:1829
 #: application/helpers/common_helper.php:1837
-#: application/helpers/qanda_helper.php:963
-#: application/helpers/qanda_helper.php:1489
-#: application/helpers/qanda_helper.php:1790
-#: application/helpers/qanda_helper.php:1923
-#: application/helpers/qanda_helper.php:1986
-#: application/helpers/qanda_helper.php:4330
-#: application/helpers/qanda_helper.php:4374
-#: application/helpers/qanda_helper.php:4466
-#: application/helpers/qanda_helper.php:4528
-#: application/helpers/qanda_helper.php:4619
-#: application/helpers/qanda_helper.php:4664
-#: application/helpers/qanda_helper.php:4742
-#: application/helpers/qanda_helper.php:4813
-#: application/helpers/qanda_helper.php:4899
-#: application/helpers/qanda_helper.php:4977
-#: application/helpers/qanda_helper.php:5080
-#: application/helpers/qanda_helper.php:5103
-#: application/helpers/qanda_helper.php:5173
-#: application/helpers/qanda_helper.php:5305
-#: application/helpers/qanda_helper.php:6103
-#: application/helpers/qanda_helper.php:6104
-#: application/helpers/qanda_helper.php:6392
-#: application/helpers/qanda_helper.php:6467
-#: application/helpers/qanda_helper.php:6571
-#: application/helpers/qanda_helper.php:6772
-#: application/helpers/qanda_helper.php:6826
+#: application/helpers/qanda_helper.php:988
+#: application/helpers/qanda_helper.php:1514
+#: application/helpers/qanda_helper.php:1815
+#: application/helpers/qanda_helper.php:1948
+#: application/helpers/qanda_helper.php:2011
+#: application/helpers/qanda_helper.php:4300
+#: application/helpers/qanda_helper.php:4344
+#: application/helpers/qanda_helper.php:4436
+#: application/helpers/qanda_helper.php:4498
+#: application/helpers/qanda_helper.php:4589
+#: application/helpers/qanda_helper.php:4634
+#: application/helpers/qanda_helper.php:4712
+#: application/helpers/qanda_helper.php:4783
+#: application/helpers/qanda_helper.php:4869
+#: application/helpers/qanda_helper.php:4947
+#: application/helpers/qanda_helper.php:5050
+#: application/helpers/qanda_helper.php:5073
+#: application/helpers/qanda_helper.php:5143
+#: application/helpers/qanda_helper.php:5275
+#: application/helpers/qanda_helper.php:6073
+#: application/helpers/qanda_helper.php:6074
+#: application/helpers/qanda_helper.php:6362
+#: application/helpers/qanda_helper.php:6437
+#: application/helpers/qanda_helper.php:6541
+#: application/helpers/qanda_helper.php:6742
+#: application/helpers/qanda_helper.php:6796
 #: application/views/admin/dataentry/content_view.php:29
 msgid "No answer"
 msgstr "Няма адказу"
@@ -8930,8 +8943,8 @@ msgstr "не выбрана"
 #: application/helpers/common_helper.php:1836
 #: application/helpers/export_helper.php:249
 #: application/helpers/export_helper.php:1335
-#: application/helpers/expressions/em_manager_helper.php:2448
-#: application/helpers/qanda_helper.php:4356
+#: application/helpers/expressions/em_manager_helper.php:2513
+#: application/helpers/qanda_helper.php:4326
 #: application/views/admin/dataentry/content_view.php:54
 #: application/views/admin/export/statistics_view.php:488
 msgid "Female"
@@ -8946,8 +8959,8 @@ msgstr "Жанчына"
 #: application/helpers/common_helper.php:1835
 #: application/helpers/export_helper.php:250
 #: application/helpers/export_helper.php:1335
-#: application/helpers/expressions/em_manager_helper.php:2447
-#: application/helpers/qanda_helper.php:4364
+#: application/helpers/expressions/em_manager_helper.php:2512
+#: application/helpers/qanda_helper.php:4334
 #: application/views/admin/dataentry/content_view.php:55
 #: application/views/admin/export/statistics_view.php:494
 msgid "Male"
@@ -8977,9 +8990,9 @@ msgstr "Мужчына"
 #: application/helpers/export_helper.php:937
 #: application/helpers/export_helper.php:1033
 #: application/helpers/export_helper.php:1048
-#: application/helpers/qanda_helper.php:1756
-#: application/helpers/qanda_helper.php:2512
-#: application/helpers/qanda_helper.php:2843
+#: application/helpers/qanda_helper.php:1781
+#: application/helpers/qanda_helper.php:2482
+#: application/helpers/qanda_helper.php:2813
 #: application/views/admin/dataentry/content_view.php:103
 #: application/views/admin/dataentry/content_view.php:108
 #: application/views/admin/dataentry/content_view.php:123
@@ -9136,13 +9149,13 @@ msgstr "Аператар параўнання"
 #: application/helpers/admin/statistics_helper.php:2476
 #: application/helpers/admin/statistics_helper.php:2484
 #: application/helpers/admin/statistics_helper.php:2489
-#: application/helpers/qanda_helper.php:1217
-#: application/helpers/qanda_helper.php:3903
-#: application/helpers/qanda_helper.php:4006
-#: application/helpers/qanda_helper.php:4099
-#: application/helpers/qanda_helper.php:4201
-#: application/helpers/qanda_helper.php:4202
-#: application/helpers/qanda_helper.php:4277
+#: application/helpers/qanda_helper.php:1242
+#: application/helpers/qanda_helper.php:3873
+#: application/helpers/qanda_helper.php:3976
+#: application/helpers/qanda_helper.php:4069
+#: application/helpers/qanda_helper.php:4171
+#: application/helpers/qanda_helper.php:4172
+#: application/helpers/qanda_helper.php:4247
 msgid "Answer"
 msgstr "Адказ"
 
@@ -9197,8 +9210,8 @@ msgid "Clear"
 msgstr "Ачысціць"
 
 #: application/controllers/admin/database.php:70
-#: application/controllers/admin/database.php:774
-#: application/controllers/admin/database.php:838
+#: application/controllers/admin/database.php:773
+#: application/controllers/admin/database.php:837
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
@@ -9233,50 +9246,50 @@ msgstr "Варыянты адказаў былі паспяхова захава
 msgid "Failed to delete answer"
 msgstr "Не атрымалася выдаліць адказ"
 
-#: application/controllers/admin/database.php:354
+#: application/controllers/admin/database.php:353
 msgid "Subquestions were successfully saved."
 msgstr "Падпытанні былі паспяхова захаваныя."
 
-#: application/controllers/admin/database.php:374
+#: application/controllers/admin/database.php:373
 msgid "The question could not be added. You must enter at least a question code."
 msgstr ""
 
-#: application/controllers/admin/database.php:467
+#: application/controllers/admin/database.php:466
 #: application/views/admin/database/database_view.php:40
 msgid "Question in language %s could not be created."
 msgstr "Пытанне на мове %s ня можа быць створана."
 
-#: application/controllers/admin/database.php:476
+#: application/controllers/admin/database.php:475
 #: application/views/admin/database/database_view.php:46
 msgid "Question could not be created."
 msgstr "Пытанне не можа быць створана."
 
-#: application/controllers/admin/database.php:550
+#: application/controllers/admin/database.php:549
 msgid "Question was successfully added."
 msgstr "Пытанне было паспяхова дададзена."
 
-#: application/controllers/admin/database.php:691
+#: application/controllers/admin/database.php:690
 #: application/views/admin/database/database_view.php:52
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Пытанне не абноўлена. Ёсць умовы для іншых пытанняў, якія залежаць ад адказаў на гэтае пытанне і змяненне тыпу можа выклікаць праблемы. Вы павінны выдаліць ўмовы, перш чым вы зможаце змяніць тып гэтага пытання."
 
-#: application/controllers/admin/database.php:801
+#: application/controllers/admin/database.php:800
 msgid "Question was successfully saved."
 msgstr "Пытанне было паспяхова захавана."
 
-#: application/controllers/admin/database.php:917
+#: application/controllers/admin/database.php:916
 msgid "Survey text elements successfully saved."
 msgstr "Тэкставыя элементы апытання паспяхова захаваны."
 
-#: application/controllers/admin/database.php:1110
+#: application/controllers/admin/database.php:1109
 msgid "Survey settings were successfully saved."
 msgstr "Наладкі апытання былі паспяхова захаваныя."
 
-#: application/controllers/admin/database.php:1114
+#: application/controllers/admin/database.php:1113
 msgid "Error:"
 msgstr ""
 
-#: application/controllers/admin/database.php:1114
+#: application/controllers/admin/database.php:1113
 msgid "Survey could not be updated."
 msgstr ""
 
@@ -9338,8 +9351,8 @@ msgstr "Увод дадзеных"
 #: application/controllers/admin/dataentry.php:844
 #: application/controllers/admin/dataentry.php:1067
 #: application/controllers/admin/dataentry.php:1184
-#: application/helpers/qanda_helper.php:1503
-#: application/helpers/qanda_helper.php:5285
+#: application/helpers/qanda_helper.php:1528
+#: application/helpers/qanda_helper.php:5255
 #: application/views/admin/dataentry/content_view.php:53
 #: application/views/admin/dataentry/content_view.php:118
 #: application/views/admin/dataentry/content_view.php:136
@@ -9355,29 +9368,29 @@ msgstr "Калі ласка, выберыце"
 
 #: application/controllers/admin/dataentry.php:978
 #: application/controllers/admin/dataentry.php:2296
-#: application/helpers/qanda_helper.php:2159
+#: application/helpers/qanda_helper.php:2184
 msgid "Remove this item"
 msgstr "Выдаліць гэты элемент"
 
 #: application/controllers/admin/dataentry.php:1000
-#: application/helpers/qanda_helper.php:2188
+#: application/helpers/qanda_helper.php:2213
 msgid "Your Choices"
 msgstr "Вы абралі"
 
 #: application/controllers/admin/dataentry.php:1005
-#: application/helpers/qanda_helper.php:2199
+#: application/helpers/qanda_helper.php:2224
 msgid "Your Ranking"
 msgstr "Ваша рангаванне"
 
 #: application/controllers/admin/dataentry.php:1421
 #: application/helpers/admin/label_helper.php:138
-#: application/views/admin/assessments_view.php:106
+#: application/views/admin/assessments_view.php:115
 #: application/views/admin/dataentry/includes/editdata/edit.php:1
 #: application/views/admin/emailtemplates/emailtemplates_view.php:145
 #: application/views/admin/labels/editlabel_view.php:50
 #: application/views/admin/survey/Question/answerOptions_view.php:184
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:182
-#: application/views/admin/survey/Question/subQuestion_view.php:183
+#: application/views/admin/survey/Question/subQuestion_view.php:182
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:41
 #: application/views/admin/survey/editLocalSettings_main_view.php:8
 #: application/views/admin/survey/editSurvey_view.php:28
@@ -10025,18 +10038,18 @@ msgstr "Дадаць сваю анкету."
 
 #: application/controllers/admin/printablesurvey.php:155
 #: application/controllers/admin/printablesurvey.php:1790
-#: application/controllers/admin/templates.php:985
+#: application/controllers/admin/templates.php:1012
 msgid "Thank you for completing this survey."
 msgstr "Дзякуем вас за ўдзел у апытанні."
 
 #: application/controllers/admin/printablesurvey.php:167
-#: application/controllers/admin/templates.php:981
+#: application/controllers/admin/templates.php:1008
 msgid "Please fax your completed survey to:"
 msgstr "Калі ласка, вышліце запоўненае апытанне па факсу:"
 
 #: application/controllers/admin/printablesurvey.php:173
 #: application/controllers/admin/printablesurvey.php:1784
-#: application/controllers/admin/templates.php:984
+#: application/controllers/admin/templates.php:1011
 msgid "Please submit by %s"
 msgstr "Калі ласка, адпраўце з дапамогай %s"
 
@@ -10054,8 +10067,8 @@ msgstr "Код пытання:"
 
 #: application/controllers/admin/printablesurvey.php:664
 #: application/controllers/admin/printablesurvey.php:666
-#: application/controllers/admin/templates.php:863
-#: application/controllers/admin/templates.php:958
+#: application/controllers/admin/templates.php:890
+#: application/controllers/admin/templates.php:985
 #: application/helpers/qanda_helper.php:321
 #: application/helpers/qanda_helper.php:322
 msgid "*"
@@ -10071,7 +10084,7 @@ msgstr "*"
 #: application/controllers/admin/printablesurvey.php:825
 #: application/controllers/admin/printablesurvey.php:1054
 #: application/controllers/admin/printablesurvey.php:1058
-#: application/controllers/admin/templates.php:962
+#: application/controllers/admin/templates.php:989
 msgid "Please choose *only one* of the following:"
 msgstr "Калі ласка, выберыце *толькі адзін* варыянт з наступнага:"
 
@@ -10082,10 +10095,10 @@ msgstr "Калі ласка, увядзіце дату:"
 
 #: application/controllers/admin/printablesurvey.php:836
 #: application/controllers/admin/printablesurvey.php:838
-#: application/helpers/qanda_helper.php:2825
-#: application/helpers/qanda_helper.php:2826
-#: application/helpers/qanda_helper.php:2857
-#: application/helpers/qanda_helper.php:2859
+#: application/helpers/qanda_helper.php:2795
+#: application/helpers/qanda_helper.php:2796
+#: application/helpers/qanda_helper.php:2827
+#: application/helpers/qanda_helper.php:2829
 msgid "Make a comment on your choice here:"
 msgstr "Пракаментуйце ваш выбар тут:"
 
@@ -10108,12 +10121,12 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Калі ласка, выберыце усё прыдатныя варыянты і пракаментуйце:"
 
 #: application/controllers/admin/printablesurvey.php:943
-#: application/helpers/expressions/em_manager_helper.php:2580
-#: application/helpers/expressions/em_manager_helper.php:4903
-#: application/helpers/qanda_helper.php:1329
-#: application/helpers/qanda_helper.php:1648
-#: application/helpers/qanda_helper.php:2298
-#: application/helpers/qanda_helper.php:2716
+#: application/helpers/expressions/em_manager_helper.php:2645
+#: application/helpers/expressions/em_manager_helper.php:4985
+#: application/helpers/qanda_helper.php:1354
+#: application/helpers/qanda_helper.php:1673
+#: application/helpers/qanda_helper.php:2323
+#: application/helpers/qanda_helper.php:2686
 msgid "Other:"
 msgstr "Іншае:"
 
@@ -10221,7 +10234,7 @@ msgid "Group could not be deleted"
 msgstr "Група не можа быць выдалена"
 
 #: application/controllers/admin/questiongroup.php:323
-#: application/views/admin/assessments_view.php:85
+#: application/views/admin/assessments_view.php:94
 #: application/views/admin/emailtemplates/emailtemplates_view.php:15
 #: application/views/admin/quotas/newquota_view.php:27
 #: application/views/admin/survey/Question/editQuestion_view.php:23
@@ -10429,7 +10442,7 @@ msgstr "Змяніць правы доступу"
 #: application/controllers/admin/surveypermission.php:109
 #: application/controllers/admin/surveypermission.php:402
 #: application/views/admin/assessments_view.php:32
-#: application/views/admin/templates/templatesummary_view.php:61
+#: application/views/admin/templates/templatesummary_view.php:72
 #: application/views/admin/user/editusers.php:25
 msgid "Delete"
 msgstr "Выдаліць"
@@ -10620,142 +10633,142 @@ msgstr "Забароненае пашырэнне"
 msgid "This ZIP archive contains no valid template files. Import failed."
 msgstr "Гэты архіў ZIP не ўтрымлівае дапушчальных файлаў шаблону. Не атрымалася імпартаваць."
 
-#: application/controllers/admin/templates.php:296
+#: application/controllers/admin/templates.php:308
 msgid "Template could not be renamed to `%s`."
 msgstr "Шаблон не змог быць перайменаваны ў `%s`."
 
-#: application/controllers/admin/templates.php:296
+#: application/controllers/admin/templates.php:308
 msgid "This name is reserved for standard template."
 msgstr "Гэта імя зарэзервавана для стандартнага шаблону"
 
-#: application/controllers/admin/templates.php:298
+#: application/controllers/admin/templates.php:310
 msgid "Directory could not be renamed to `%s`."
 msgstr "Каталог не можа быць пераназваны ў в `%s`."
 
-#: application/controllers/admin/templates.php:298
+#: application/controllers/admin/templates.php:310
 msgid "Maybe you don't have permission."
 msgstr "Магчыма, у вас няма праў доступу."
 
-#: application/controllers/admin/templates.php:332
+#: application/controllers/admin/templates.php:344
 msgid "Failed to copy %s to new template directory."
 msgstr "Не атрымалася скапіяваць %s ў новы каталог шаблонаў."
 
-#: application/controllers/admin/templates.php:339
+#: application/controllers/admin/templates.php:351
 msgid "Directory with the name `%s` already exists - choose another name"
 msgstr "Каталог з імем `%s` ужо існуе - абярыце іншае імя"
 
-#: application/controllers/admin/templates.php:341
+#: application/controllers/admin/templates.php:353
 msgid "Unable to create directory `%s`."
 msgstr "Немагчыма стварыць каталог `%s`."
 
-#: application/controllers/admin/templates.php:341
+#: application/controllers/admin/templates.php:353
 msgid "Please check the directory permissions."
 msgstr "Калі ласка, праверце правы доступу да каталога."
 
-#: application/controllers/admin/templates.php:370
+#: application/controllers/admin/templates.php:382
 msgid "Template '%s' was successfully deleted."
 msgstr "Шаблон '%s' быў паспяхова выдалены."
 
-#: application/controllers/admin/templates.php:373
+#: application/controllers/admin/templates.php:385
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
 msgstr "Існуе праблема выдалення шаблона '%s'. Калі ласка, праверце правы доступу да вашага каталога/файлаў."
 
-#: application/controllers/admin/templates.php:615
+#: application/controllers/admin/templates.php:642
 msgid "Survey List Page"
 msgstr "Старонка са спісам апытанняў"
 
-#: application/controllers/admin/templates.php:616
+#: application/controllers/admin/templates.php:643
 msgid "Welcome Page"
 msgstr "Старонка вітання"
 
-#: application/controllers/admin/templates.php:617
+#: application/controllers/admin/templates.php:644
 msgid "Question Page"
 msgstr "Старонка пытанняў"
 
-#: application/controllers/admin/templates.php:618
+#: application/controllers/admin/templates.php:645
 msgid "Completed Page"
 msgstr "Старонка завяршэння"
 
-#: application/controllers/admin/templates.php:619
+#: application/controllers/admin/templates.php:646
 msgid "Clear All Page"
 msgstr "Ачысціць усе старонкі"
 
-#: application/controllers/admin/templates.php:620
+#: application/controllers/admin/templates.php:647
 msgid "Register Page"
 msgstr "Старонка рэгістрацыі"
 
-#: application/controllers/admin/templates.php:621
+#: application/controllers/admin/templates.php:648
 msgid "Load Page"
 msgstr "Старонка загрузкі"
 
-#: application/controllers/admin/templates.php:622
+#: application/controllers/admin/templates.php:649
 msgid "Save Page"
 msgstr "Старонка захаванія"
 
-#: application/controllers/admin/templates.php:623
+#: application/controllers/admin/templates.php:650
 msgid "Print answers page"
 msgstr "Старонка ўвода адказаў"
 
-#: application/controllers/admin/templates.php:624
+#: application/controllers/admin/templates.php:651
 msgid "Printable survey page"
 msgstr "Версія для друку"
 
-#: application/controllers/admin/templates.php:732
+#: application/controllers/admin/templates.php:759
 msgid "Template Sample"
 msgstr "Імя шаблона"
 
-#: application/controllers/admin/templates.php:734
+#: application/controllers/admin/templates.php:761
 msgid "This is a sample survey description. It could be quite long."
 msgstr "Гэта прыклад апісання апытання. Яно можа быць вельмі працяглым."
 
-#: application/controllers/admin/templates.php:735
+#: application/controllers/admin/templates.php:762
 msgid "But this one isn't."
 msgstr "Але яно не з'яўляецца."
 
-#: application/controllers/admin/templates.php:737
+#: application/controllers/admin/templates.php:764
 msgid "Welcome to this sample survey"
 msgstr "Вітаем у дэманстрацыйным апытанні"
 
-#: application/controllers/admin/templates.php:738
+#: application/controllers/admin/templates.php:765
 msgid "You should have a great time doing this"
 msgstr "Вы павінны мець шмат свабоднага часу, каб рабіць гэта"
 
-#: application/controllers/admin/templates.php:745
+#: application/controllers/admin/templates.php:772
 msgid "Some URL description"
 msgstr "Апісанне URL"
 
-#: application/controllers/admin/templates.php:749
+#: application/controllers/admin/templates.php:776
 msgid "Group 1: The first lot of questions"
 msgstr "Група 1: першы масіў пытанняў"
 
-#: application/controllers/admin/templates.php:750
+#: application/controllers/admin/templates.php:777
 msgid "This group description is fairly vacuous, but quite important."
 msgstr "Гэта апісанне групы незапоўненае, але даволі важнае."
 
-#: application/controllers/admin/templates.php:769
+#: application/controllers/admin/templates.php:796
 msgid "This is some help text."
 msgstr "Гэта прыклад даведачнага тэксту."
 
-#: application/controllers/admin/templates.php:809
-#: application/controllers/survey/index.php:267
+#: application/controllers/admin/templates.php:836
+#: application/controllers/survey/index.php:268
 msgid "You have not provided a survey identification number"
 msgstr "Вы ня далі ідэнтыфікацыонны нумар апытання"
 
-#: application/controllers/admin/templates.php:811
-#: application/controllers/survey/index.php:277
+#: application/controllers/admin/templates.php:838
+#: application/controllers/survey/index.php:278
 msgid "The following surveys are available:"
 msgstr "Наступныя апытанні даступны:"
 
-#: application/controllers/admin/templates.php:859
-#: application/controllers/admin/templates.php:860
+#: application/controllers/admin/templates.php:886
+#: application/controllers/admin/templates.php:887
 msgid "Please explain something in detail:"
 msgstr "Калі ласка, растлумачце падрабязней:"
 
-#: application/controllers/admin/templates.php:982
+#: application/controllers/admin/templates.php:1009
 msgid "Submit your survey."
 msgstr "Адправіць апытанне."
 
-#: application/controllers/admin/templates.php:986
+#: application/controllers/admin/templates.php:1013
 msgid "This is the survey end message."
 msgstr "Гэта паведамлення заканчэння апытання."
 
@@ -11031,10 +11044,10 @@ msgstr "Перавесці на"
 #: application/helpers/common_helper.php:6927
 #: application/helpers/common_helper.php:7332
 #: application/helpers/common_helper.php:7375
-#: application/helpers/qanda_helper.php:1292
-#: application/helpers/qanda_helper.php:1465
-#: application/helpers/qanda_helper.php:6752
-#: application/helpers/qanda_helper.php:6806
+#: application/helpers/qanda_helper.php:1317
+#: application/helpers/qanda_helper.php:1490
+#: application/helpers/qanda_helper.php:6722
+#: application/helpers/qanda_helper.php:6776
 #: application/views/admin/dataentry/content_view.php:84
 #: application/views/admin/dataentry/content_view.php:94
 #: application/views/admin/labels/labelsetsbar_view.php:22
@@ -11244,7 +11257,7 @@ msgstr "Шаблон дазволу быў паспяхова абноўлены
 msgid "Error while updating usertemplates."
 msgstr "Памылка пры абнаўленні шаблонаў карыстальнікаў."
 
-#: application/controllers/admin/useraction.php:609
+#: application/controllers/admin/useraction.php:620
 msgid "Your personal settings were successfully saved."
 msgstr "Вашыя асабістыя наладкі былі паспяхова захаваны."
 
@@ -11339,51 +11352,51 @@ msgstr "Папярэдняя сесія завершана."
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
 msgstr "Ваш браўзэр паведамляе, што быў выкарыстаны раней для адказу на гэтае апытанне. Мы скінем гэту сесію, каб вы змаглі пачаць з самага пачатку."
 
-#: application/controllers/survey/index.php:208
+#: application/controllers/survey/index.php:209
 msgid "View statistics"
 msgstr "Прагляд статыстыкі"
 
-#: application/controllers/survey/index.php:232
+#: application/controllers/survey/index.php:233
 msgid "Following survey(s) are not yet active but you can register for them."
 msgstr "Наступныя апытанні пакуль не актыўны, але вы можаце зарэгістравацца на іх."
 
-#: application/controllers/survey/index.php:261
+#: application/controllers/survey/index.php:262
 msgid "No available surveys"
 msgstr "Няма даступных апытанняў"
 
-#: application/controllers/survey/index.php:271
 #: application/controllers/survey/index.php:272
+#: application/controllers/survey/index.php:273
 msgid "The survey identification number is invalid"
 msgstr ""
 
-#: application/controllers/survey/index.php:359
+#: application/controllers/survey/index.php:360
 msgid "This survey is no longer available."
 msgstr "Гэта апытанне больш не даступна."
 
-#: application/controllers/survey/index.php:372
+#: application/controllers/survey/index.php:373
 msgid "This survey is not yet started."
 msgstr "Гэта апытанне яшчэ не пачалося."
 
-#: application/controllers/survey/index.php:387
+#: application/controllers/survey/index.php:388
 msgid "You have already completed this survey."
 msgstr "Вы ўжо прымалі ўдзел у гэтам апытанні."
 
-#: application/controllers/survey/index.php:408
+#: application/controllers/survey/index.php:409
 msgid "You did not provide a name"
 msgstr "Вы ня ўвялі імя"
 
-#: application/controllers/survey/index.php:412
+#: application/controllers/survey/index.php:413
 msgid "You did not provide a password"
 msgstr "Вы ня ўвялі пароль"
 
-#: application/controllers/survey/index.php:442
-#: application/controllers/survey/index.php:446
+#: application/controllers/survey/index.php:443
+#: application/controllers/survey/index.php:447
 #: application/helpers/replacements_helper.php:430
 #: application/helpers/replacements_helper.php:442
 msgid "Load unfinished survey"
 msgstr ""
 
-#: application/controllers/survey/index.php:486
+#: application/controllers/survey/index.php:487
 #: application/helpers/frontend_helper.php:1477
 #: application/helpers/frontend_helper.php:1551
 #: application/helpers/frontend_helper.php:1596
@@ -11392,23 +11405,23 @@ msgstr ""
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Гэта кантраляванае апытанне. Вам патрэбен дапушчальны маркер доступу для ўдзелу."
 
-#: application/controllers/survey/index.php:487
-#: application/controllers/survey/index.php:518
+#: application/controllers/survey/index.php:488
+#: application/controllers/survey/index.php:519
 #: application/helpers/frontend_helper.php:1553
 #: application/helpers/frontend_helper.php:1598
 #: application/helpers/frontend_helper.php:1789
 msgid "For further information please contact %s"
 msgstr "За дадатковай інфармацыяй звяртайцесь да %s"
 
-#: application/controllers/survey/index.php:516
+#: application/controllers/survey/index.php:517
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr "Прабачце, але вам не дазволена ўваходзіць ў гэтае апытанне."
 
-#: application/controllers/survey/index.php:517
+#: application/controllers/survey/index.php:518
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr "Ваш маркер, здаецца, дапушчальны, аднак можа быць выкарыстаны толькі на працягу пэўнага перыяду часу."
 
-#: application/controllers/survey/index.php:677
+#: application/controllers/survey/index.php:678
 msgid "Your responses were successfully saved."
 msgstr "Вашыя адказы былі паспяхова захаваныя."
 
