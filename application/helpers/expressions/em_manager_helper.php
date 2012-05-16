@@ -7197,7 +7197,6 @@ EOD;
                                             $answerInfo = explode('|',$ansArray[$which_ans]);
                                             array_shift($answerInfo);
                                             $answer = join('|',$answerInfo);
-                                            $answer = $this->ProcessString($answer,$var['qid'],NULL,false,1,1);
                                         }
                                         else {
                                             $answer = $code;
