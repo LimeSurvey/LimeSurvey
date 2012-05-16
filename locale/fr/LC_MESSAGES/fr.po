@@ -2,13 +2,16 @@
 # This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-15 11:33:21+0000\n"
+"PO-Revision-Date: 2012-05-16 19:07+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: GlotPress/0.1\n"
 "Project-Id-Version: LimeSurvey 2.x\n"
+"POT-Creation-Date: \n"
+"Last-Translator: Denis Chenu <dchenu@gsill.net>\n"
+"Language-Team: \n"
 
 #: application/views/admin/dataentry/iteratesurvey.php:6
 msgid "Answers and tokens have been re-opened."
@@ -1502,7 +1505,8 @@ msgstr "Ce nom a déjà été utilisé pour ce questionnaire. Vous devez en choi
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
 msgstr ""
 
-#: application/libraries/Save.php:222 application/libraries/Save.php:261
+#: application/libraries/Save.php:222
+#: application/libraries/Save.php:261
 msgid "Your survey was successfully saved."
 msgstr "Votre questionnaire a été sauvegardé avec succès."
 
@@ -9469,7 +9473,8 @@ msgid "A token entry for the saved survey has been created too."
 msgstr "Une invitation a aussi été créée pour le questionnaire sauvegardé."
 
 #: application/controllers/admin/dataentry.php:1943
-#: application/libraries/Save.php:203 application/libraries/Save.php:244
+#: application/libraries/Save.php:203
+#: application/libraries/Save.php:244
 msgid "Saved Survey Details"
 msgstr "Détails sur le questionnaire sauvegardé"
 
@@ -9499,7 +9504,8 @@ msgid "Password"
 msgstr "Mot de passe "
 
 #: application/controllers/admin/dataentry.php:1948
-#: application/libraries/Save.php:208 application/libraries/Save.php:246
+#: application/libraries/Save.php:208
+#: application/libraries/Save.php:246
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr "Rechargez votre questionnaire en cliquant sur le lien suivant (ou coller le dans votre navigateur) :"
 
@@ -13733,3 +13739,4 @@ msgstr "Fin"
 #: application/helpers/expressions/em_core_helper.php:156
 msgid "Absolute value"
 msgstr ""
+
