@@ -1,6 +1,9 @@
 // $Id: subquestions.js 12442 2012-02-11 00:07:00Z shnoulle $
 var labelcache=[];
 $(document).ready(function(){
+    $("body").delegate(".code", "keyup", function() {
+        $(this).val($(this).val().replace(/[^a-zA-Z0-9_]/,''));
+    });
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         start:startmove,
         update:aftermove,
