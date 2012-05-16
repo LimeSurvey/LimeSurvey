@@ -734,8 +734,8 @@ EOD;
         $doTheseReplacements = $coreReplacements;
     }
 
-    // Now do all of the replacements - either call it twice or do recursion within LimeExpressionManager
-    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 2, 1);
+    // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
+    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1);
     return $line;
 }
 
