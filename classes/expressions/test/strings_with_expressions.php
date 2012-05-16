@@ -9,7 +9,6 @@ if (!((isset($subaction) && $subaction == 'strings_with_expressions'))) {die("Ca
     </head>
     <body>
         <?php
-//            include_once('../LimeExpressionManager.php');
             LimeExpressionManager::UnitTestProcessStringContainingExpressions();
         ?>
     </body>

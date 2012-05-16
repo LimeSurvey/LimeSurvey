@@ -9,10 +9,6 @@ if (!((isset($subaction) && $subaction == 'upgrade_conditions2relevance'))) {die
     </head>
     <body>
         <?php
-//            require_once("../../../config-defaults.php");
-//            require_once("../../../config.php");
-//            require_once("../../../common.php");
-//            include_once('../LimeExpressionManager.php');
             $data = LimeExpressionManager::UpgradeConditionsToRelevance();
             if (is_null($data)) {
                 echo "No conditions found in database";

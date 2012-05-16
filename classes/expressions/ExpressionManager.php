@@ -1350,7 +1350,6 @@ class ExpressionManager {
     public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
     {
         $jsParts = array();
-//        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
         $jsParts[] = "  try{\n";
         $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=LEMfixnum(\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
@@ -1754,10 +1753,6 @@ class ExpressionManager {
         if (is_null($result)) {
             return false;    // if there are errors in the expression, hide it?
         }
-//        if ($result == 'false') {
-//            return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
-//        }
-//        return !empty($result);
 
         // Check whether any variables are irrelevant - making this comparable to JavaScript which uses LEManyNA(varlist) to do the same thing
         foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
@@ -1872,7 +1867,6 @@ class ExpressionManager {
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement)
                 {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
-//                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
                     $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
                     $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
@@ -2333,7 +2327,6 @@ class ExpressionManager {
                         if ($this->RDP_TokenType[$i] == 'DQ_STRING' || $this->RDP_TokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
-//                            $unquotedToken = str_replace(array('\"',"\'","\\\\",'\n','\r','\t'),array('"',"'",'\\',"\n","\n","\t"),substr($token,1,-1));
                             $unquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($token,1,-1));
                             $tokens0[$j][0] = $unquotedToken;
                         }
@@ -2377,7 +2370,6 @@ Can an expression contain a perl regular expression like this {'/^\d{3}-\d{2}-\d
 Since you have more {if((INSERT61764X1X3 > INSERT61764X1X4),'children','pets')} than you do {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')}, do you feel that the {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')} are at a disadvantage?
 Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
 EOD;
-// Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
 
         $em = new ExpressionManager();
 

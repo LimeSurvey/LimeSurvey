@@ -9,7 +9,6 @@ if (!((isset($subaction) && $subaction == 'tokenizer'))) {die("Cannot run this s
     </head>
     <body>
         <?php
-//            include_once('../ExpressionManager.php');
             ExpressionManager::UnitTestTokenizer();
         ?>
     </body>

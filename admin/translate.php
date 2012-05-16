@@ -24,8 +24,6 @@
   $js_admin_includes[]= $homeurl.'/scripts/translation.js';
 
 
-//  $js_admin_includes[]= $homeurl.'/scripts/translation.js';
-
   // TODO need to do some validation here on surveyid
 
   $surveyinfo=getSurveyInfo($surveyid);

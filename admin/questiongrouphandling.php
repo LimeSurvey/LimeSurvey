@@ -303,18 +303,6 @@ if ($action == "ordergroups")
         {
             $downdisabled = "";
             $updisabled = "";
-//            if ( !is_null($groupdepsarray) && $i < $groupcount-1 &&
-//            array_key_exists($ogarray[$i+1]['gid'],$groupdepsarray) &&
-//            array_key_exists($ogarray[$i]['gid'],$groupdepsarray[$ogarray[$i+1]['gid']]) )
-//            {
-//                $downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
-//            }
-//            if ( !is_null($groupdepsarray) && $i !=0  &&
-//            array_key_exists($ogarray[$i]['gid'],$groupdepsarray) &&
-//            array_key_exists($ogarray[$i-1]['gid'],$groupdepsarray[$ogarray[$i]['gid']]) )
-//            {
-//                $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
-//            }
 
             $ordergroups.="<li class='movableNode' id='gid".$ogarray[$i]['gid']."'>\n" ;
 
@@ -332,41 +320,9 @@ if ($action == "ordergroups")
             }
             //Find out if there are any dependencies
             $max_start_order=0;
-//            if ( !is_null($groupdepsarray) && $i!=0 &&
-//            array_key_exists($ogarray[$i]['gid'], $groupdepsarray)) //This should find out if there are any dependencies
-//            {
-//                foreach($groupdepsarray[$ogarray[$i]['gid']] as $key=>$val)
-//                {
-//                    //qet the question_order value for each of the dependencies
-//                    foreach($miniogarray as $mo)
-//                    {
-//                        if($mo['gid'] == $key && $mo['group_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
-//                        {
-//                            $max_start_order = $mo['group_order']; //Set the maximum question condition to this
-//                        }
-//                    }
-//                }
-//            }
             //Find out if any groups use this as a dependency
             $max_end_order=$groupcount+1; //By default, stop the list at the last group
 
-//            if ( !is_null($nicegroupdeps))
-//            {
-//                //to find which question has a dependence on this one
-//                //then stop the list, so you can't move this group past the dependent one
-//                foreach($nicegroupdeps as $gdarray)
-//                {
-//                    if ($ogarray[$i]['gid'] == $gdarray)
-//                    {
-//                        //This group should never get higher than here ($gdarray)!
-//                        //Get the group_order for $gdarray;
-//                        $goquery="SELECT group_order FROM ".db_table_name('groups')." WHERE gid = $gdarray";
-//                        $goresult=db_execute_assoc($goquery) or safe_die($connect->ErrorMsg());
-//                        $gorow = $goresult->FetchRow();
-//                        $max_end_order=$gorow['group_order'];
-//                    }
-//                }
-//            }
             $minipos=$miniogarray[0]['group_order']; //Start at the very first group_order
             foreach($miniogarray as $mo)
             {

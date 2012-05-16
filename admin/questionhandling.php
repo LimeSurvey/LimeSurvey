@@ -710,25 +710,6 @@ if($action == "orderquestions")
     $oqarray = $oqresult->GetArray();
     $minioqarray=$oqarray;
 
-    // Get the condition dependecy array for all questions in this array and group
-//    $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
-//    if (!is_null($questdepsarray))
-//    {
-//        $orderquestions .= "<br/><div class='movableNode' style='margin:0 auto;'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
-//        foreach ($questdepsarray as $depqid => $depquestrow)
-//        {
-//            foreach ($depquestrow as $targqid => $targcid)
-//            {
-//                $listcid=implode("-",$targcid);
-//                $question=arraySearchByKey($depqid, $oqarray, "qid", 1);
-//
-//                $orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">".$question['title'].": ".FlattenText($question['question']). " [QID: ".$depqid."] </a> ";
-//            }
-//            $orderquestions .= "</li>\n";
-//        }
-//        $orderquestions .= "</ul></div>";
-//    }
-
     $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";
 
     LimeExpressionManager::StartProcessingPage(false,$rooturl,true);  // so can click on syntax highlighting to edit questions
@@ -737,16 +718,6 @@ if($action == "orderquestions")
     {
         $downdisabled = "";
         $updisabled = "";
-        //Check if question is relied on as a condition dependency by the next question, and if so, don't allow moving down
-//        if ($i < $questioncount-1)
-//        {
-//            $downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
-//        }
-        //Check if question has a condition dependency on the preceding question, and if so, don't allow moving up
-//        if ($i !=0)
-//        {
-//            $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
-//        }
 
         //Move to location
         $orderquestions.="<li class='movableNode'>\n" ;
@@ -760,38 +731,7 @@ if($action == "orderquestions")
         }
         //Find out if there are any dependencies
         $max_start_order=0;
-//        if ($i!=0) //This should find out if there are any dependencies
-//        {
-//            foreach($questdepsarray[$oqarray[$i]['qid']] as $key=>$val) {
-//                //qet the question_order value for each of the dependencies
-//                foreach($minioqarray as $mo) {
-//                    if($mo['qid'] == $key && $mo['question_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
-//                    {
-//                        $max_start_order = $mo['question_order']; //Set the maximum question condition to this
-//                    }
-//                }
-//            }
-//        }
-//        //Find out if any questions use this as a dependency
         $max_end_order=$questioncount+1;
-//        if ( !is_null($questdepsarray))
-//        {
-//            //There doesn't seem to be any choice but to go through the questdepsarray one at a time
-//            //to find which question has a dependence on this one
-//            foreach($questdepsarray as $qdarray)
-//            {
-//                if (array_key_exists($oqarray[$i]['qid'], $qdarray))
-//                {
-//                    $cqidquery = "SELECT question_order
-//				          FROM ".db_table_name('conditions').", ".db_table_name('questions')."
-//						  WHERE ".db_table_name('conditions').".qid=".db_table_name('questions').".qid
-//						  AND cid=".$qdarray[$oqarray[$i]['qid']][0];
-//                    $cqidresult = db_execute_assoc($cqidquery);
-//                    $cqidrow = $cqidresult->FetchRow();
-//                    $max_end_order=$cqidrow['question_order'];
-//                }
-//            }
-//        }
         $minipos=$minioqarray[0]['question_order']; //Start at the very first question_order
         foreach($minioqarray as $mo)
         {
