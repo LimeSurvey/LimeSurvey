@@ -298,24 +298,24 @@ function activateSurvey($surveyid, $simulate = false)
                 $createsurvey[$arow['fieldname']] = "VARCHAR(20) NOT NULL";
                 break;
             case 'id':
-                $createsurvey[$arow['fieldname']] = "INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY";
+                $createsurvey[$arow['fieldname']] = "pk";
                 break;
             case "startdate":
             case "datestamp":
-                $createsurvey[$arow['fieldname']] = "DATETIME NOT NULL";
+                $createsurvey[$arow['fieldname']] = "datetime NOT NULL";
                 break;
             case "submitdate":
-                $createsurvey[$arow['fieldname']] = "DATETIME";
+                $createsurvey[$arow['fieldname']] = "datetime";
                 break;
             case "lastpage":
-                $createsurvey[$arow['fieldname']] = "INT(10)";
+                $createsurvey[$arow['fieldname']] = "integer";
                 break;
             case "N":  //NUMERICAL
-                $createsurvey[$arow['fieldname']] = "FLOAT";
+                $createsurvey[$arow['fieldname']] = "float";
                 break;
             case "S":  //SHORT TEXT
-                if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')    {$createsurvey[$arow['fieldname']] = "TEXT";}
-                else  {$createsurvey[$arow['fieldname']] = "VARCHAR(255)";}
+                if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')    {$createsurvey[$arow['fieldname']] = "text";}
+                else  {$createsurvey[$arow['fieldname']] = "string";}
                 break;
             case "L":  //LIST (RADIO)
             case "!":  //LIST (DROPDOWN)
@@ -328,21 +328,21 @@ function activateSurvey($surveyid, $simulate = false)
                 }
                 else
                 {
-                    $createsurvey[$arow['fieldname']] = "TEXT";
+                    $createsurvey[$arow['fieldname']] = "text";
                 }
                 break;
             case "K":  // Multiple Numerical
-                $createsurvey[$arow['fieldname']] = "FLOAT(20)";
+                $createsurvey[$arow['fieldname']] = "float";
                 break;
             case "U":  //Huge text
             case "Q":  //Multiple short text
             case "T":  //LONG TEXT
             case ";":  //Multi Flexi
             case ":":  //Multi Flexi
-                $createsurvey[$arow['fieldname']] = "TEXT";
+                $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "D":  //DATE
-                $createsurvey[$arow['fieldname']] = "DATETIME";
+                $createsurvey[$arow['fieldname']] = "datetime";
                 break;
             case "5":  //5 Point Choice
             case "G":  //Gender
@@ -358,15 +358,15 @@ function activateSurvey($surveyid, $simulate = false)
                 if (strpos($arow['fieldname'], "_"))
                     $createsurvey[$arow['fieldname']] = "INT(1)";
                 else
-                   $createsurvey[$arow['fieldname']] = "TEXT";
+                   $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "ipaddress":
                 if ($prow['ipaddr'] == "Y")
-                    $createsurvey[$arow['fieldname']] = "TEXT";
+                    $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "url":
                 if ($prow['refurl'] == "Y")
-                    $createsurvey[$arow['fieldname']] = "TEXT";
+                    $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "token":
                 if ($prow['anonymized'] == "N")
@@ -375,7 +375,7 @@ function activateSurvey($surveyid, $simulate = false)
                 }
                 break;
             case '*': // Equation
-                $createsurvey[$arow['fieldname']] = "TEXT";
+                $createsurvey[$arow['fieldname']] = "text";
                 break;
             default:
                 $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
@@ -480,7 +480,7 @@ function activateSurvey($surveyid, $simulate = false)
                 echo $e->getMessage();
                 $execresult = false;
             }
-            
+
         }
 
         $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
@@ -488,7 +488,7 @@ function activateSurvey($surveyid, $simulate = false)
         $activateoutput .= "<div class='successheader'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
 
         // create the survey directory where the uploaded files can be saved
-        if ($createsurveydirectory) 
+        if ($createsurveydirectory)
         {
             if (!file_exists(Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyid . "/files"))
             {
@@ -498,7 +498,7 @@ function activateSurvey($surveyid, $simulate = false)
                         $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.") . "</div>";
                 } else {
                     file_put_contents(Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyid . "/files/index.html", '<html><head></head><body></body></html>');
-                }                
+                }
             }
         }
         $acquery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$surveyid;
