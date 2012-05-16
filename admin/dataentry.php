@@ -600,7 +600,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                     case "Q":
                     case "K":
                         $dataentryoutput .= "\t{$fname['subquestion']}&nbsp;<input type='text' name='{$fname['fieldname']}' value='"
-                        .$idrow[$fname['fieldname']] . "' />\n";
+                        .htmlspecialchars($idrow[$fname['fieldname']],ENT_QUOTES) . "' />\n";
                         break;
                     case "id":
                         $dataentryoutput .= "<span style='font-weight:bold;'>&nbsp;{$idrow[$fname['fieldname']]}</span>";
