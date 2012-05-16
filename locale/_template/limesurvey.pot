@@ -5,13 +5,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-05-15 11:55:21+00:00\n"
+"POT-Creation-Date: 2012-05-16 21:06:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2012-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
+"X-Poedit-KeywordsList: gT;ngt:1,2;eT;neT:1,2\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: ..\\..\\..\\\n"
+"X-Poedit-SearchPath-0: .\n"
 
 #: admin/access_denied.php:22
 msgid "Access denied!"
@@ -32,9 +36,9 @@ msgstr ""
 #: admin/access_denied.php:109 admin/access_denied.php:114
 #: admin/access_denied.php:123 admin/access_denied.php:128
 #: admin/access_denied.php:135 admin/access_denied.php:139
-#: admin/access_denied.php:143 admin/html.php:1569 admin/html.php:1576
-#: admin/html.php:1623 admin/html.php:1630 admin/html.php:1637
-#: admin/html.php:1668 admin/html.php:2136 admin/login_check.php:48
+#: admin/access_denied.php:143 admin/html.php:1502 admin/html.php:1509
+#: admin/html.php:1556 admin/html.php:1563 admin/html.php:1570
+#: admin/html.php:1601 admin/html.php:2069 admin/login_check.php:48
 #: admin/login_check.php:85 admin/quota.php:702 admin/quota.php:762
 #: admin/resetsurveylogic.php:66 admin/tokens.php:499 admin/tokens.php:514
 #: admin/tokens.php:1688 admin/tokens.php:2034 admin/usercontrol.php:61
@@ -150,7 +154,7 @@ msgstr ""
 #: admin/conditionshandling.php:131 admin/dataentry.php:80
 #: admin/dataentry.php:133 admin/dataentry.php:137 admin/dataentry.php:141
 #: admin/dataentry.php:171 admin/dataentry.php:172 admin/dataentry.php:173
-#: admin/dataentry.php:3113 admin/deletesurvey.php:27 admin/dumpgroup.php:39
+#: admin/dataentry.php:2965 admin/deletesurvey.php:27 admin/dumpgroup.php:39
 #: admin/export_structure_lsrc.php:47 admin/export_structure_xml.php:50
 #: admin/exportresults.php:417 admin/http_importsurvey.php:46
 #: admin/http_importsurvey.php:70 admin/http_importsurvey.php:137
@@ -193,7 +197,7 @@ msgstr ""
 #: admin/tokens.php:398 admin/tokens.php:412 admin/tokens.php:478
 #: admin/tokens.php:1001 admin/tokens.php:2745 admin/tokens.php:3182
 #: admin/tokens.php:3188 admin/usercontrol.php:846 admin/vvimport.php:121
-#: common_functions.php:5860 index.php:572
+#: common_functions.php:5489 index.php:572
 msgid "Error"
 msgstr ""
 
@@ -211,7 +215,7 @@ msgstr ""
 
 #: admin/activate.php:69 admin/deactivate.php:27 admin/deletesurvey.php:37
 #: admin/editsubquestions.php:264 admin/editsurveysettings.php:890
-#: admin/html.php:1451 admin/html.php:1461 admin/importoldresponses.php:78
+#: admin/html.php:1397 admin/html.php:1407 admin/importoldresponses.php:78
 #: admin/resetsurveylogic.php:39 admin/tokens.php:531 admin/tokens.php:1349
 #: admin/tokens.php:1683 admin/tokens.php:1712 admin/tokens.php:2030
 #: admin/tokens.php:2070
@@ -303,7 +307,7 @@ msgid "Database error:"
 msgstr ""
 
 #: admin/activate_functions.php:414 admin/browse.php:33 admin/browse.php:64
-#: admin/browse.php:76 admin/dataentry.php:82 admin/dataentry.php:3115
+#: admin/browse.php:76 admin/dataentry.php:82 admin/dataentry.php:2967
 #: admin/deactivate.php:46 admin/deactivate.php:52 admin/deactivate.php:54
 #: admin/deactivate.php:56 admin/deactivate.php:93 admin/deactivate.php:99
 #: admin/deactivate.php:101 admin/deactivate.php:134 admin/deletesurvey.php:29
@@ -367,7 +371,7 @@ msgid "No, thanks."
 msgstr ""
 
 #: admin/admin.php:783 admin/admin.php:794 admin/conditionshandling.php:1072
-#: admin/html.php:2319 common.php:280 common.php:286
+#: admin/html.php:2252 common.php:278 common.php:284
 msgid "LimeSurvey online manual"
 msgstr ""
 
@@ -545,7 +549,7 @@ msgid "Scope"
 msgstr ""
 
 #: admin/assessments.php:145 admin/assessments.php:208
-#: admin/assessments.php:235 admin/html.php:951 admin/statistics.php:412
+#: admin/assessments.php:235 admin/html.php:948 admin/statistics.php:412
 msgid "Question group"
 msgstr ""
 
@@ -576,7 +580,7 @@ msgid "Assessment rules"
 msgstr ""
 
 #: admin/assessments.php:169 admin/exportresults.php:766 admin/html.php:209
-#: admin/html.php:713 admin/html.php:952 admin/html.php:1212
+#: admin/html.php:713 admin/html.php:949 admin/html.php:1174
 msgid "ID"
 msgstr ""
 
@@ -590,9 +594,9 @@ msgid "SID"
 msgstr ""
 
 #: admin/assessments.php:173 admin/editsurveysettings.php:137
-#: admin/html.php:711 admin/html.php:1140 admin/labels.php:328
+#: admin/html.php:711 admin/html.php:1124 admin/labels.php:328
 #: admin/questiongrouphandling.php:58 admin/questiongrouphandling.php:144
-#: admin/questiongrouphandling.php:162 qanda.php:3069 uploader.php:95
+#: admin/questiongrouphandling.php:162 qanda.php:2706 uploader.php:95
 msgid "Title"
 msgstr ""
 
@@ -601,13 +605,13 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: admin/assessments.php:194 admin/html.php:1708 admin/html.php:1986
+#: admin/assessments.php:194 admin/html.php:1641 admin/html.php:1919
 #: admin/resetsurveylogic.php:49 admin/templates.php:994 admin/tokens.php:2147
 #: admin/userrighthandling.php:470
 msgid "Delete"
 msgstr ""
 
-#: admin/assessments.php:194 admin/browse.php:223 admin/html.php:1986
+#: admin/assessments.php:194 admin/browse.php:223 admin/html.php:1919
 #: admin/saved.php:97 admin/tokens.php:1257 admin/userrighthandling.php:85
 #: admin/userrighthandling.php:470 admin/userrighthandling.php:566
 #: admin/userrighthandling.php:954
@@ -639,7 +643,7 @@ msgstr ""
 #: admin/editemailtemplates.php:160 admin/editsurveysettings.php:1078
 #: admin/editsurveysettings.php:1083 admin/editsurveytextelements.php:104
 #: admin/labels.php:201 admin/labels.php:598 admin/questionhandling.php:276
-#: admin/questionhandling.php:583 admin/tokens.php:2195 admin/translate.php:270
+#: admin/questionhandling.php:583 admin/tokens.php:2195 admin/translate.php:268
 #: admin/userrighthandling.php:249
 msgid "Save"
 msgstr ""
@@ -682,7 +686,7 @@ msgstr ""
 #: admin/exportresults.php:434 admin/exportresults.php:435
 #: admin/exportresults.php:757 admin/tokens.php:1024 admin/tokens.php:1027
 #: admin/tokens.php:1028 admin/tokens.php:2321 admin/tokens.php:2457
-#: common_functions.php:6592 replacements.php:507
+#: common_functions.php:6221 replacements.php:507
 msgid "First name"
 msgstr ""
 
@@ -690,7 +694,7 @@ msgstr ""
 #: admin/exportresults.php:429 admin/exportresults.php:430
 #: admin/exportresults.php:760 admin/tokens.php:1034 admin/tokens.php:1037
 #: admin/tokens.php:1038 admin/tokens.php:2325 admin/tokens.php:2459
-#: common_functions.php:6593 replacements.php:514
+#: common_functions.php:6222 replacements.php:514
 msgid "Last name"
 msgstr ""
 
@@ -870,7 +874,7 @@ msgstr ""
 
 #: admin/browse.php:872 admin/conditionshandling.php:1742
 #: admin/conditionshandling.php:2116 admin/conditionshandling.php:2119
-#: admin/html.php:1212 admin/quota.php:585 admin/statistics.php:1664
+#: admin/html.php:1174 admin/quota.php:585 admin/statistics.php:1664
 #: admin/statistics.php:1667 admin/templates.php:443 printanswers.php:201
 msgid "Question"
 msgstr ""
@@ -995,7 +999,7 @@ msgstr ""
 
 #: admin/conditionshandling.php:652 admin/conditionshandling.php:904
 #: admin/dataentry.php:594 admin/dataentry.php:1283 admin/dataentry.php:1343
-#: admin/dataentry.php:2768 admin/dataentry.php:2825
+#: admin/dataentry.php:2620 admin/dataentry.php:2677
 #: admin/editsurveysettings.php:310 admin/editsurveysettings.php:334
 #: admin/editsurveysettings.php:347 admin/editsurveysettings.php:358
 #: admin/editsurveysettings.php:371 admin/editsurveysettings.php:386
@@ -1016,11 +1020,11 @@ msgstr ""
 #: admin/exportresults.php:963 admin/exportresults.php:964
 #: admin/globalsettings.php:387 admin/globalsettings.php:399
 #: admin/globalsettings.php:410 admin/globalsettings.php:459
-#: admin/globalsettings.php:479 admin/html.php:897 admin/html.php:1472
-#: admin/html.php:1481 admin/importoldresponses.php:71
-#: admin/printablesurvey.php:1211 admin/printablesurvey.php:1215
-#: admin/printablesurvey.php:1332 admin/printablesurvey.php:1349
-#: admin/printablesurvey.php:1354 admin/questionhandling.php:84
+#: admin/globalsettings.php:479 admin/html.php:897 admin/html.php:1418
+#: admin/html.php:1427 admin/importoldresponses.php:71
+#: admin/printablesurvey.php:856 admin/printablesurvey.php:860
+#: admin/printablesurvey.php:977 admin/printablesurvey.php:994
+#: admin/printablesurvey.php:999 admin/questionhandling.php:84
 #: admin/questionhandling.php:94 admin/questionhandling.php:511
 #: admin/questionhandling.php:527 admin/quota.php:163 admin/results.php:231
 #: admin/results.php:243 admin/results.php:247 admin/results.php:286
@@ -1028,42 +1032,42 @@ msgstr ""
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1506 admin/tokens.php:1804 admin/tokens.php:2091
-#: classes/expressions/LimeExpressionManager.php:2435
-#: classes/expressions/LimeExpressionManager.php:2439 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2501
+#: classes/expressions/LimeExpressionManager.php:2505 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
-#: common_functions.php:3205 common_functions.php:3286
-#: common_functions.php:3393 common_functions.php:3406
-#: common_functions.php:3417 common_functions.php:3428
-#: common_functions.php:3439 common_functions.php:3477
-#: common_functions.php:3507 common_functions.php:3518
-#: common_functions.php:3625 common_functions.php:3636
-#: common_functions.php:3656 common_functions.php:3668
-#: common_functions.php:3698 common_functions.php:3711
-#: common_functions.php:3722 common_functions.php:3733
-#: common_functions.php:3752 common_functions.php:3771
-#: common_functions.php:3782 common_functions.php:3804
-#: common_functions.php:3847 common_functions.php:3873
-#: common_functions.php:3908 common_functions.php:3974
-#: common_functions.php:3984 common_functions.php:4098
-#: common_functions.php:4109 qanda.php:4314 qanda.php:4745 qanda.php:4784
+#: common_functions.php:3205 common_functions.php:3278
+#: common_functions.php:3385 common_functions.php:3398
+#: common_functions.php:3409 common_functions.php:3420
+#: common_functions.php:3431 common_functions.php:3469
+#: common_functions.php:3499 common_functions.php:3510
+#: common_functions.php:3601 common_functions.php:3612
+#: common_functions.php:3624 common_functions.php:3636
+#: common_functions.php:3666 common_functions.php:3679
+#: common_functions.php:3690 common_functions.php:3701
+#: common_functions.php:3720 common_functions.php:3739
+#: common_functions.php:3750 common_functions.php:3761
+#: common_functions.php:3804 common_functions.php:3830
+#: common_functions.php:3865 common_functions.php:3931
+#: common_functions.php:3941 common_functions.php:4055
+#: common_functions.php:4066 qanda.php:3771 qanda.php:4193 qanda.php:4232
 msgid "Yes"
 msgstr ""
 
 #: admin/conditionshandling.php:653 admin/dataentry.php:1346
-#: admin/dataentry.php:2826 admin/export_data_functions.php:250
+#: admin/dataentry.php:2678 admin/export_data_functions.php:250
 #: admin/export_structure_quexml.php:636 admin/exportresults.php:971
-#: admin/exportresults.php:972 admin/printablesurvey.php:1333
-#: admin/printablesurvey.php:1350 admin/printablesurvey.php:1354
+#: admin/exportresults.php:972 admin/printablesurvey.php:978
+#: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2441 common_functions.php:1922
-#: qanda.php:4746 qanda.php:4792
+#: classes/expressions/LimeExpressionManager.php:2507 common_functions.php:1922
+#: qanda.php:4194 qanda.php:4239
 msgid "Uncertain"
 msgstr ""
 
 #: admin/conditionshandling.php:654 admin/conditionshandling.php:905
 #: admin/dataentry.php:591 admin/dataentry.php:1286 admin/dataentry.php:1349
-#: admin/dataentry.php:2769 admin/dataentry.php:2827
+#: admin/dataentry.php:2621 admin/dataentry.php:2679
 #: admin/editsurveysettings.php:315 admin/editsurveysettings.php:339
 #: admin/editsurveysettings.php:350 admin/editsurveysettings.php:361
 #: admin/editsurveysettings.php:376 admin/editsurveysettings.php:391
@@ -1084,68 +1088,68 @@ msgstr ""
 #: admin/exportresults.php:967 admin/exportresults.php:968
 #: admin/globalsettings.php:390 admin/globalsettings.php:402
 #: admin/globalsettings.php:413 admin/globalsettings.php:460
-#: admin/globalsettings.php:480 admin/html.php:893 admin/html.php:1472
-#: admin/html.php:1481 admin/importoldresponses.php:72
-#: admin/printablesurvey.php:1212 admin/printablesurvey.php:1216
-#: admin/printablesurvey.php:1334 admin/printablesurvey.php:1351
-#: admin/printablesurvey.php:1354 admin/questionhandling.php:87
+#: admin/globalsettings.php:480 admin/html.php:893 admin/html.php:1418
+#: admin/html.php:1427 admin/importoldresponses.php:72
+#: admin/printablesurvey.php:857 admin/printablesurvey.php:861
+#: admin/printablesurvey.php:979 admin/printablesurvey.php:996
+#: admin/printablesurvey.php:999 admin/questionhandling.php:87
 #: admin/questionhandling.php:97 admin/questionhandling.php:514
 #: admin/questionhandling.php:530 admin/quota.php:164 admin/results.php:233
 #: admin/results.php:248 admin/results.php:331 admin/results.php:362
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1507 admin/tokens.php:1805
-#: admin/tokens.php:2093 classes/expressions/LimeExpressionManager.php:2436
-#: classes/expressions/LimeExpressionManager.php:2440 common_functions.php:1905
+#: admin/tokens.php:2093 classes/expressions/LimeExpressionManager.php:2502
+#: classes/expressions/LimeExpressionManager.php:2506 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3204
-#: common_functions.php:3285 common_functions.php:3392
-#: common_functions.php:3407 common_functions.php:3418
-#: common_functions.php:3429 common_functions.php:3440
-#: common_functions.php:3478 common_functions.php:3506
-#: common_functions.php:3517 common_functions.php:3624
-#: common_functions.php:3635 common_functions.php:3655
-#: common_functions.php:3667 common_functions.php:3697
-#: common_functions.php:3710 common_functions.php:3721
-#: common_functions.php:3732 common_functions.php:3751
-#: common_functions.php:3770 common_functions.php:3781
-#: common_functions.php:3803 common_functions.php:3846
-#: common_functions.php:3858 common_functions.php:3872
-#: common_functions.php:3907 common_functions.php:3973
-#: common_functions.php:3983 common_functions.php:4097
-#: common_functions.php:4108 qanda.php:4323 qanda.php:4747 qanda.php:4802
+#: common_functions.php:3277 common_functions.php:3384
+#: common_functions.php:3399 common_functions.php:3410
+#: common_functions.php:3421 common_functions.php:3432
+#: common_functions.php:3470 common_functions.php:3498
+#: common_functions.php:3509 common_functions.php:3600
+#: common_functions.php:3611 common_functions.php:3623
+#: common_functions.php:3635 common_functions.php:3665
+#: common_functions.php:3678 common_functions.php:3689
+#: common_functions.php:3700 common_functions.php:3719
+#: common_functions.php:3738 common_functions.php:3749
+#: common_functions.php:3760 common_functions.php:3803
+#: common_functions.php:3815 common_functions.php:3829
+#: common_functions.php:3864 common_functions.php:3930
+#: common_functions.php:3940 common_functions.php:4054
+#: common_functions.php:4065 qanda.php:3778 qanda.php:4195 qanda.php:4247
 msgid "No"
 msgstr ""
 
-#: admin/conditionshandling.php:657 admin/dataentry.php:2845
+#: admin/conditionshandling.php:657 admin/dataentry.php:2697
 #: admin/export_data_functions.php:253 admin/export_structure_quexml.php:641
 #: admin/exportresults.php:979 admin/exportresults.php:980
-#: admin/printablesurvey.php:1373 admin/printablesurvey.php:1389
-#: admin/printablesurvey.php:1393 admin/results.php:236 admin/results.php:353
+#: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
+#: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2444 common_functions.php:1928
-#: qanda.php:4901 qanda.php:4944
+#: classes/expressions/LimeExpressionManager.php:2510 common_functions.php:1928
+#: qanda.php:4341 qanda.php:4384
 msgid "Increase"
 msgstr ""
 
-#: admin/conditionshandling.php:658 admin/dataentry.php:2846
+#: admin/conditionshandling.php:658 admin/dataentry.php:2698
 #: admin/export_data_functions.php:254 admin/export_structure_quexml.php:641
 #: admin/exportresults.php:983 admin/exportresults.php:984
-#: admin/printablesurvey.php:1374 admin/printablesurvey.php:1390
-#: admin/printablesurvey.php:1393 admin/results.php:237 admin/results.php:354
+#: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
+#: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2445 common_functions.php:1930
-#: qanda.php:4902 qanda.php:4955
+#: classes/expressions/LimeExpressionManager.php:2511 common_functions.php:1930
+#: qanda.php:4342 qanda.php:4395
 msgid "Same"
 msgstr ""
 
-#: admin/conditionshandling.php:659 admin/dataentry.php:2847
+#: admin/conditionshandling.php:659 admin/dataentry.php:2699
 #: admin/export_data_functions.php:255 admin/export_structure_quexml.php:641
 #: admin/exportresults.php:987 admin/exportresults.php:988
-#: admin/printablesurvey.php:1375 admin/printablesurvey.php:1391
-#: admin/printablesurvey.php:1393 admin/results.php:238 admin/results.php:355
+#: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
+#: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2446 common_functions.php:1929
-#: qanda.php:4903 qanda.php:4967
+#: classes/expressions/LimeExpressionManager.php:2512 common_functions.php:1929
+#: qanda.php:4343 qanda.php:4407
 msgid "Decrease"
 msgstr ""
 
@@ -1155,7 +1159,7 @@ msgstr ""
 #: admin/conditionshandling.php:918 admin/conditionshandling.php:929
 #: admin/conditionshandling.php:938 admin/conditionshandling.php:963
 #: admin/conditionshandling.php:983 admin/conditionshandling.php:1479
-#: admin/dataentry.php:1411 admin/dataentry.php:2033 admin/results.php:224
+#: admin/dataentry.php:1411 admin/dataentry.php:1885 admin/results.php:224
 #: admin/results.php:228 admin/results.php:239 admin/results.php:244
 #: admin/results.php:249 admin/results.php:254 admin/results.php:260
 #: admin/results.php:338 admin/results.php:370
@@ -1164,13 +1168,13 @@ msgstr ""
 #: admin/statistics_function.php:2567 admin/statistics_function.php:2581
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
-#: common_functions.php:1914 common_functions.php:5846
-#: common_functions.php:5851 qanda.php:957 qanda.php:1485 qanda.php:1796
-#: qanda.php:1930 qanda.php:1993 qanda.php:4334 qanda.php:4381 qanda.php:4471
-#: qanda.php:4535 qanda.php:4624 qanda.php:4672 qanda.php:4750 qanda.php:4822
-#: qanda.php:4906 qanda.php:4985 qanda.php:5086 qanda.php:5108 qanda.php:5182
-#: qanda.php:5315 qanda.php:6086 qanda.php:6087 qanda.php:6372 qanda.php:6447
-#: qanda.php:6552 qanda.php:6754 qanda.php:6808
+#: common_functions.php:1914 common_functions.php:5475
+#: common_functions.php:5480 qanda.php:927 qanda.php:1455 qanda.php:1734
+#: qanda.php:1838 qanda.php:1893 qanda.php:3787 qanda.php:3832 qanda.php:3921
+#: qanda.php:3985 qanda.php:4074 qanda.php:4120 qanda.php:4198 qanda.php:4264
+#: qanda.php:4346 qanda.php:4424 qanda.php:4525 qanda.php:4547 qanda.php:4615
+#: qanda.php:4746 qanda.php:5517 qanda.php:5518 qanda.php:5803 qanda.php:5878
+#: qanda.php:5979 qanda.php:6179 qanda.php:6233
 msgid "No answer"
 msgstr ""
 
@@ -1191,33 +1195,33 @@ msgid "not checked"
 msgstr ""
 
 #: admin/conditionshandling.php:913 admin/dataentry.php:632
-#: admin/dataentry.php:2048 admin/export_data_functions.php:240
+#: admin/dataentry.php:1900 admin/export_data_functions.php:240
 #: admin/export_structure_quexml.php:621 admin/exportresults.php:915
-#: admin/exportresults.php:916 admin/printablesurvey.php:883
-#: admin/printablesurvey.php:888 admin/quota.php:33 admin/results.php:253
+#: admin/exportresults.php:916 admin/printablesurvey.php:542
+#: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2432 common_functions.php:1913
-#: qanda.php:4363
+#: classes/expressions/LimeExpressionManager.php:2498 common_functions.php:1913
+#: qanda.php:3815
 msgid "Female"
 msgstr ""
 
 #: admin/conditionshandling.php:914 admin/dataentry.php:635
-#: admin/dataentry.php:2049 admin/export_data_functions.php:241
+#: admin/dataentry.php:1901 admin/export_data_functions.php:241
 #: admin/export_structure_quexml.php:621 admin/exportresults.php:911
-#: admin/exportresults.php:912 admin/printablesurvey.php:884
-#: admin/printablesurvey.php:888 admin/quota.php:32 admin/results.php:252
+#: admin/exportresults.php:912 admin/printablesurvey.php:543
+#: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2431 common_functions.php:1912
-#: qanda.php:4371
+#: classes/expressions/LimeExpressionManager.php:2497 common_functions.php:1912
+#: qanda.php:3823
 msgid "Male"
 msgstr ""
 
 #: admin/conditionshandling.php:977 admin/dataentry.php:720
-#: admin/dataentry.php:2108 admin/dataentry.php:2114 admin/dataentry.php:2192
-#: admin/dataentry.php:2198 admin/dataentry.php:2424 admin/dataentry.php:2440
-#: admin/dataentry.php:2484 admin/export_structure_quexml.php:225
+#: admin/dataentry.php:1960 admin/dataentry.php:1966 admin/dataentry.php:2044
+#: admin/dataentry.php:2050 admin/dataentry.php:2276 admin/dataentry.php:2292
+#: admin/dataentry.php:2336 admin/export_structure_quexml.php:225
 #: admin/export_structure_quexml.php:234 admin/export_structure_quexml.php:331
 #: admin/export_structure_quexml.php:346 admin/exportresults.php:841
 #: admin/exportresults.php:842 admin/results.php:339
@@ -1225,12 +1229,12 @@ msgstr ""
 #: admin/statistics_function.php:1917 admin/statistics_function.php:2049
 #: common_functions.php:1890 common_functions.php:1948
 #: common_functions.php:2530 common_functions.php:2798
-#: common_functions.php:3663 common_functions.php:3677
-#: common_functions.php:3693 common_functions.php:3748
-#: common_functions.php:3767 common_functions.php:3936
-#: common_functions.php:4117 common_functions.php:4126
-#: common_functions.php:4135 common_functions.php:4144 qanda.php:1762
-#: qanda.php:2515 qanda.php:2853
+#: common_functions.php:3631 common_functions.php:3645
+#: common_functions.php:3661 common_functions.php:3716
+#: common_functions.php:3735 common_functions.php:3893
+#: common_functions.php:4074 common_functions.php:4083
+#: common_functions.php:4092 common_functions.php:4101 qanda.php:1700
+#: qanda.php:2355 qanda.php:2595
 msgid "Other"
 msgstr ""
 
@@ -1264,7 +1268,7 @@ msgid "After"
 msgstr ""
 
 #: admin/conditionshandling.php:1067 admin/conditionshandling.php:1881
-#: admin/exportresults.php:103 admin/html.php:1054
+#: admin/exportresults.php:103 admin/html.php:1038
 #: admin/http_importsurvey.php:158 admin/importgroup.php:80
 #: admin/importquestion.php:89 admin/importsurvey.php:64
 #: admin/importsurvey.php:129 admin/translate_functions.php:384
@@ -1412,8 +1416,8 @@ msgstr ""
 #: admin/statistics_function.php:2188 admin/statistics_function.php:2197
 #: admin/statistics_function.php:2202 admin/statistics_function.php:2292
 #: admin/statistics_function.php:2295 admin/statistics_function.php:2303
-#: admin/statistics_function.php:2308 qanda.php:1207 qanda.php:3924
-#: qanda.php:4017 qanda.php:4111 qanda.php:4204 qanda.php:4278
+#: admin/statistics_function.php:2308 qanda.php:1177 qanda.php:3400
+#: qanda.php:3488 qanda.php:3581 qanda.php:3669 qanda.php:3737
 msgid "Answer"
 msgstr ""
 
@@ -1490,7 +1494,7 @@ msgstr ""
 msgid "Question in language %s could not be created."
 msgstr ""
 
-#: admin/database.php:284 admin/database.php:721 admin/database.php:750
+#: admin/database.php:284 admin/database.php:684 admin/database.php:713
 msgid "Question could not be created."
 msgstr ""
 
@@ -1502,7 +1506,7 @@ msgstr ""
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:607 admin/database.php:672
+#: admin/database.php:374 admin/database.php:602 admin/database.php:635
 msgid "Question could not be updated"
 msgstr ""
 
@@ -1514,79 +1518,79 @@ msgstr ""
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr ""
 
-#: admin/database.php:634
+#: admin/database.php:629
 msgid "Question was successfully saved."
 msgstr ""
 
-#: admin/database.php:683
+#: admin/database.php:646
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr ""
 
-#: admin/database.php:826
+#: admin/database.php:789
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:844
+#: admin/database.php:807
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr ""
 
-#: admin/database.php:863
+#: admin/database.php:826
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: admin/database.php:934
+#: admin/database.php:897
 msgid "Failed to update answers"
 msgstr ""
 
-#: admin/database.php:944
+#: admin/database.php:907
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr ""
 
-#: admin/database.php:945
+#: admin/database.php:908
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr ""
 
-#: admin/database.php:948
+#: admin/database.php:911
 msgid "Answer options were successfully saved."
 msgstr ""
 
-#: admin/database.php:979
+#: admin/database.php:942
 msgid "Failed to delete answer"
 msgstr ""
 
-#: admin/database.php:1072
+#: admin/database.php:1035
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: admin/database.php:1235
+#: admin/database.php:1198
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:1240
+#: admin/database.php:1203
 msgid "Survey could not be updated"
 msgstr ""
 
-#: admin/database.php:1265
+#: admin/database.php:1228
 msgid "Email templates successfully saved."
 msgstr ""
 
-#: admin/database.php:1279
+#: admin/database.php:1242
 msgid "ERROR deleting Survey id"
 msgstr ""
 
-#: admin/database.php:1338
+#: admin/database.php:1301
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: admin/database.php:1357
+#: admin/database.php:1320
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: admin/database.php:1513
+#: admin/database.php:1476
 msgid "Survey was successfully added."
 msgstr ""
 
-#: admin/database.php:1542
+#: admin/database.php:1505
 msgid "Your personal settings were successfully saved."
 msgstr ""
 
@@ -1636,29 +1640,29 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
-#: admin/dataentry.php:181 admin/dataentry.php:1555 admin/dataentry.php:3059
+#: admin/dataentry.php:181 admin/dataentry.php:1555 admin/dataentry.php:2911
 msgid "Identifier:"
 msgstr ""
 
-#: admin/dataentry.php:183 admin/dataentry.php:3061
+#: admin/dataentry.php:183 admin/dataentry.php:2913
 #: admin/globalsettings.php:363 admin/tokens.php:850
 msgid "Password:"
 msgstr ""
 
-#: admin/dataentry.php:185 admin/dataentry.php:3063
+#: admin/dataentry.php:185 admin/dataentry.php:2915
 msgid "Confirm Password:"
 msgstr ""
 
-#: admin/dataentry.php:187 admin/dataentry.php:3065
+#: admin/dataentry.php:187 admin/dataentry.php:2917
 msgid "Email:"
 msgstr ""
 
-#: admin/dataentry.php:189 admin/dataentry.php:3067
+#: admin/dataentry.php:189 admin/dataentry.php:2919
 msgid "Start Language:"
 msgstr ""
 
-#: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:3087
-#: group.php:1036 index.php:2416 replacements.php:272
+#: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:2939
+#: group.php:1019 index.php:2416 replacements.php:272
 msgid "Submit"
 msgstr ""
 
@@ -1737,36 +1741,36 @@ msgid "Viewing response (ID %s)"
 msgstr ""
 
 #: admin/dataentry.php:629 admin/dataentry.php:662 admin/dataentry.php:731
-#: admin/dataentry.php:954 admin/dataentry.php:1280 admin/dataentry.php:2047
-#: admin/dataentry.php:2181 admin/dataentry.php:2214 admin/dataentry.php:2453
-#: admin/dataentry.php:2767 admin/dataentry.php:2782 admin/dataentry.php:2803
-#: admin/dataentry.php:2824 admin/dataentry.php:2844 admin/dataentry.php:3004
-#: qanda.php:1499 qanda.php:5295
+#: admin/dataentry.php:954 admin/dataentry.php:1280 admin/dataentry.php:1899
+#: admin/dataentry.php:2033 admin/dataentry.php:2066 admin/dataentry.php:2305
+#: admin/dataentry.php:2619 admin/dataentry.php:2634 admin/dataentry.php:2655
+#: admin/dataentry.php:2676 admin/dataentry.php:2696 admin/dataentry.php:2856
+#: qanda.php:1469 qanda.php:4726
 msgid "Please choose"
 msgstr ""
 
-#: admin/dataentry.php:865 admin/dataentry.php:2338 qanda.php:2160
+#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2059
 msgid "Remove this item"
 msgstr ""
 
-#: admin/dataentry.php:887 admin/dataentry.php:2371 qanda.php:2189
+#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2088
 msgid "Your Choices"
 msgstr ""
 
-#: admin/dataentry.php:892 admin/dataentry.php:2376 qanda.php:2200
+#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2099
 msgid "Your Ranking"
 msgstr ""
 
-#: admin/dataentry.php:1106 admin/dataentry.php:2622 qanda.php:3925
-#: qanda.php:3929
+#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3401
+#: qanda.php:3405
 msgid "Only numbers may be entered in this field"
 msgstr ""
 
-#: admin/dataentry.php:1550 admin/dataentry.php:3049
+#: admin/dataentry.php:1550 admin/dataentry.php:2901
 msgid "Finalize response submission"
 msgstr ""
 
-#: admin/dataentry.php:1551 admin/dataentry.php:3055
+#: admin/dataentry.php:1551 admin/dataentry.php:2907
 msgid "Save for further completion by survey user"
 msgstr ""
 
@@ -1796,55 +1800,55 @@ msgstr ""
 msgid "IP address"
 msgstr ""
 
-#: admin/dataentry.php:1985
+#: admin/dataentry.php:1837
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: admin/dataentry.php:1991
+#: admin/dataentry.php:1843
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
-#: admin/dataentry.php:1997
+#: admin/dataentry.php:1849
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: admin/dataentry.php:2027
+#: admin/dataentry.php:1879
 msgid "Help about this question"
 msgstr ""
 
-#: admin/dataentry.php:2071 admin/statistics_function.php:1768
+#: admin/dataentry.php:1923 admin/statistics_function.php:1768
 #: admin/statistics_function.php:1790
 msgid "Label %s"
 msgstr ""
 
-#: admin/dataentry.php:2080 admin/dataentry.php:2092 admin/labels.php:78
+#: admin/dataentry.php:1932 admin/dataentry.php:1944 admin/labels.php:78
 #: admin/translate_functions.php:148 common_functions.php:646
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
-#: common_functions.php:1411 common_functions.php:4853
-#: common_functions.php:4902 common_functions.php:4938
-#: common_functions.php:4974 qanda.php:1283 qanda.php:1461 qanda.php:6734
-#: qanda.php:6788
+#: common_functions.php:1411 common_functions.php:4810
+#: common_functions.php:4859 common_functions.php:4895
+#: common_functions.php:4931 qanda.php:1253 qanda.php:1431 qanda.php:6159
+#: qanda.php:6213
 msgid "Please choose..."
 msgstr ""
 
-#: admin/dataentry.php:2217 common_functions.php:2559 common_functions.php:2779
-#: qanda.php:3070 uploader.php:96
+#: admin/dataentry.php:2069 common_functions.php:2559 common_functions.php:2779
+#: qanda.php:2707 uploader.php:96
 msgid "Comment"
 msgstr ""
 
-#: admin/dataentry.php:3104
+#: admin/dataentry.php:2956
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr ""
 
-#: admin/dataentry.php:3114 admin/tokens.php:413
+#: admin/dataentry.php:2966 admin/tokens.php:413
 msgid "The survey you selected does not exist"
 msgstr ""
 
-#: admin/dataentry.php:3163 admin/printablesurvey.php:1969
+#: admin/dataentry.php:3015 admin/printablesurvey.php:1597
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
 msgstr ""
 
-#: admin/dataentry.php:3172 admin/printablesurvey.php:1978
+#: admin/dataentry.php:3024 admin/printablesurvey.php:1606
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
 msgstr ""
 
@@ -2164,7 +2168,7 @@ msgstr ""
 msgid "Subquestion"
 msgstr ""
 
-#: admin/editsubquestions.php:167 admin/html.php:1917 admin/labels.php:331
+#: admin/editsubquestions.php:167 admin/html.php:1850 admin/labels.php:331
 #: admin/quota.php:500 admin/userrighthandling.php:434
 #: admin/userrighthandling.php:916
 msgid "Action"
@@ -2216,7 +2220,7 @@ msgstr ""
 msgid "Tokens"
 msgstr ""
 
-#: admin/editsurveysettings.php:97 admin/html.php:1709 admin/vvimport.php:96
+#: admin/editsurveysettings.php:97 admin/html.php:1642 admin/vvimport.php:96
 msgid "Import"
 msgstr ""
 
@@ -2244,7 +2248,7 @@ msgstr ""
 
 #: admin/editsurveysettings.php:139 admin/editsurveysettings.php:141
 #: admin/editsurveytextelements.php:50 admin/editsurveytextelements.php:52
-#: admin/html.php:772 admin/html.php:1144 admin/questiongrouphandling.php:60
+#: admin/html.php:772 admin/html.php:1128 admin/questiongrouphandling.php:60
 #: admin/questiongrouphandling.php:62 admin/questiongrouphandling.php:147
 #: admin/questiongrouphandling.php:149 admin/questiongrouphandling.php:165
 #: admin/questiongrouphandling.php:167 admin/translate_functions.php:238
@@ -2961,7 +2965,7 @@ msgstr ""
 
 #: admin/exportresults.php:234 admin/exportresults.php:439
 #: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1044
-#: admin/tokens.php:1047 admin/tokens.php:1048 common_functions.php:6594
+#: admin/tokens.php:1047 admin/tokens.php:1048 common_functions.php:6223
 #: replacements.php:521
 msgid "Email address"
 msgstr ""
@@ -3046,7 +3050,7 @@ msgstr ""
 #: admin/fck_LimeReplacementFields.php:149
 #: admin/fck_LimeReplacementFields.php:165
 #: admin/fck_LimeReplacementFields.php:222 admin/tokens.php:1124
-#: admin/tokens.php:1127 admin/tokens.php:1128 common_functions.php:6600
+#: admin/tokens.php:1127 admin/tokens.php:1128 common_functions.php:6229
 msgid "Uses left"
 msgstr ""
 
@@ -3180,7 +3184,7 @@ msgstr ""
 msgid "Global settings were saved."
 msgstr ""
 
-#: admin/globalsettings.php:135 admin/html.php:2252
+#: admin/globalsettings.php:135 admin/html.php:2185
 msgid "Global settings"
 msgstr ""
 
@@ -3317,8 +3321,8 @@ msgstr ""
 #: admin/globalsettings.php:253 admin/globalsettings.php:264
 #: admin/globalsettings.php:316 admin/globalsettings.php:328
 #: admin/globalsettings.php:349 admin/globalsettings.php:369
-#: admin/globalsettings.php:442 admin/tokens.php:837 common_functions.php:3449
-#: common_functions.php:3681
+#: admin/globalsettings.php:442 admin/tokens.php:837 common_functions.php:3441
+#: common_functions.php:3649
 msgid "Off"
 msgstr ""
 
@@ -3530,7 +3534,7 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: admin/globalsettings.php:640 admin/html.php:2297
+#: admin/globalsettings.php:640 admin/html.php:2230
 #: admin/http_importsurvey.php:155 admin/importsurvey.php:61
 #: admin/importsurvey.php:123
 msgid "Surveys"
@@ -3577,7 +3581,7 @@ msgid "HTML editor mode"
 msgstr ""
 
 #: admin/html.php:118 admin/html.php:129 admin/html.php:139
-#: admin/login_check.php:229 common_functions.php:3939
+#: admin/login_check.php:229 common_functions.php:3896
 msgid "Default"
 msgstr ""
 
@@ -3636,7 +3640,7 @@ msgstr ""
 msgid "This survey is active but has a start date."
 msgstr ""
 
-#: admin/html.php:247 admin/html.php:663 admin/html.php:1101
+#: admin/html.php:247 admin/html.php:663 admin/html.php:1085
 #: admin/surveylist.php:135
 msgid "This survey is currently active."
 msgstr ""
@@ -3665,7 +3669,7 @@ msgstr ""
 msgid "General settings"
 msgstr ""
 
-#: admin/html.php:330 admin/html.php:1914
+#: admin/html.php:330 admin/html.php:1847
 msgid "Survey permissions"
 msgstr ""
 
@@ -3775,8 +3779,8 @@ msgstr ""
 #: admin/html.php:611 admin/tokens.php:822 admin/tokens.php:856
 #: common_functions.php:651 common_functions.php:654 common_functions.php:1312
 #: common_functions.php:1337 common_functions.php:1412
-#: common_functions.php:3927 common_functions.php:4903
-#: common_functions.php:4939
+#: common_functions.php:3884 common_functions.php:4860
+#: common_functions.php:4896
 msgid "None"
 msgstr ""
 
@@ -3796,7 +3800,7 @@ msgstr ""
 msgid "No next question group"
 msgstr ""
 
-#: admin/html.php:663 admin/html.php:1101
+#: admin/html.php:663 admin/html.php:1085
 msgid "Disabled"
 msgstr ""
 
@@ -3930,149 +3934,149 @@ msgstr ""
 msgid "You need to add questions"
 msgstr ""
 
-#: admin/html.php:969
+#: admin/html.php:966
 msgid "Preview current question group"
 msgstr ""
 
-#: admin/html.php:984
+#: admin/html.php:981
 msgid "Edit current question group"
 msgstr ""
 
-#: admin/html.php:993
+#: admin/html.php:990
 msgid "Survey logic file for current question group"
 msgstr ""
 
-#: admin/html.php:1005
+#: admin/html.php:999
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr ""
 
-#: admin/html.php:1007
+#: admin/html.php:1001
 msgid "Delete current question group"
 msgstr ""
 
-#: admin/html.php:1030
+#: admin/html.php:1016
 msgid "Export this question group"
 msgstr ""
 
-#: admin/html.php:1044 admin/questionhandling.php:707
+#: admin/html.php:1028 admin/questionhandling.php:707
 msgid "Change Question Order"
 msgstr ""
 
-#: admin/html.php:1068
+#: admin/html.php:1052
 msgid "Previous question"
 msgstr ""
 
-#: admin/html.php:1074
+#: admin/html.php:1058
 msgid "No previous question"
 msgstr ""
 
-#: admin/html.php:1084
+#: admin/html.php:1068
 msgid "Next question"
 msgstr ""
 
-#: admin/html.php:1090
+#: admin/html.php:1074
 msgid "No next question"
 msgstr ""
 
-#: admin/html.php:1108
+#: admin/html.php:1092
 msgid "Add New Question to Group"
 msgstr ""
 
-#: admin/html.php:1119
+#: admin/html.php:1103
 msgid "Hide Details of this Group"
 msgstr ""
 
-#: admin/html.php:1121
+#: admin/html.php:1105
 msgid "Show Details of this Group"
 msgstr ""
 
-#: admin/html.php:1125
+#: admin/html.php:1109
 msgid "Close this Group"
 msgstr ""
 
-#: admin/html.php:1153 admin/html.php:1507
+#: admin/html.php:1137 admin/html.php:1440
 msgid "Relevance:"
 msgstr ""
 
-#: admin/html.php:1224 admin/html.php:1229
+#: admin/html.php:1186 admin/html.php:1191
 msgid "Preview This Question"
 msgstr ""
 
-#: admin/html.php:1238 admin/html_functions.php:54
+#: admin/html.php:1200 admin/html_functions.php:54
 #: admin/translate_functions.php:121
 msgid "Please select a language:"
 msgstr ""
 
-#: admin/html.php:1260
+#: admin/html.php:1216
 msgid "Edit Current Question"
 msgstr ""
 
-#: admin/html.php:1269
+#: admin/html.php:1225
 msgid "Survey logic file for current question"
 msgstr ""
 
-#: admin/html.php:1280
+#: admin/html.php:1234
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
-#: admin/html.php:1281
+#: admin/html.php:1235
 msgid "Delete current question"
 msgstr ""
 
-#: admin/html.php:1301
+#: admin/html.php:1247
 msgid "Export this question"
 msgstr ""
 
-#: admin/html.php:1315 admin/html.php:1322
+#: admin/html.php:1261 admin/html.php:1268
 msgid "Copy Current Question"
 msgstr ""
 
-#: admin/html.php:1321
+#: admin/html.php:1267
 msgid "You can't copy a question if the survey is active."
 msgstr ""
 
-#: admin/html.php:1338
+#: admin/html.php:1284
 msgid "Set conditions for this question"
 msgstr ""
 
-#: admin/html.php:1356 admin/html.php:1463
+#: admin/html.php:1302 admin/html.php:1409
 msgid "Edit subquestions for this question"
 msgstr ""
 
-#: admin/html.php:1371 admin/html.php:1453
+#: admin/html.php:1317 admin/html.php:1399
 msgid "Edit answer options for this question"
 msgstr ""
 
-#: admin/html.php:1385
+#: admin/html.php:1331
 msgid "Edit default answers for this question"
 msgstr ""
 
-#: admin/html.php:1390
+#: admin/html.php:1336
 msgid "Hide Details of this Question"
 msgstr ""
 
-#: admin/html.php:1393
+#: admin/html.php:1339
 msgid "Show Details of this Question"
 msgstr ""
 
-#: admin/html.php:1396
+#: admin/html.php:1342
 msgid "Close this Question"
 msgstr ""
 
-#: admin/html.php:1412 admin/questionhandling.php:41
+#: admin/html.php:1358 admin/questionhandling.php:41
 #: admin/questionhandling.php:401
 msgid "Code:"
 msgstr ""
 
-#: admin/html.php:1416
+#: admin/html.php:1362
 msgid "Mandatory Question"
 msgstr ""
 
-#: admin/html.php:1417
+#: admin/html.php:1363
 msgid "Optional Question"
 msgstr ""
 
-#: admin/html.php:1421 admin/questionhandling.php:48
+#: admin/html.php:1367 admin/questionhandling.php:48
 #: admin/questionhandling.php:50 admin/questionhandling.php:404
 #: admin/questionhandling.php:406 admin/questionhandling.php:429
 #: admin/questionhandling.php:431 admin/questionhandling.php:447
@@ -4080,7 +4084,7 @@ msgstr ""
 msgid "Question:"
 msgstr ""
 
-#: admin/html.php:1430 admin/questionhandling.php:52
+#: admin/html.php:1376 admin/questionhandling.php:52
 #: admin/questionhandling.php:54 admin/questionhandling.php:408
 #: admin/questionhandling.php:410 admin/questionhandling.php:433
 #: admin/questionhandling.php:435 admin/questionhandling.php:451
@@ -4088,80 +4092,80 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: admin/html.php:1440 admin/questionhandling.php:65
+#: admin/html.php:1386 admin/questionhandling.php:65
 #: admin/questionhandling.php:536
 msgid "Validation:"
 msgstr ""
 
-#: admin/html.php:1445 admin/questionhandling.php:59
+#: admin/html.php:1391 admin/questionhandling.php:59
 msgid "Type:"
 msgstr ""
 
-#: admin/html.php:1451
+#: admin/html.php:1397
 msgid "You need to add answer options to this question"
 msgstr ""
 
-#: admin/html.php:1461
+#: admin/html.php:1407
 msgid "You need to add subquestions to this question"
 msgstr ""
 
-#: admin/html.php:1470 admin/questionhandling.php:81
+#: admin/html.php:1416 admin/questionhandling.php:81
 #: admin/questionhandling.php:507
 msgid "Option 'Other':"
 msgstr ""
 
-#: admin/html.php:1479 admin/questionhandling.php:93
+#: admin/html.php:1425 admin/questionhandling.php:93
 #: admin/questionhandling.php:526
 msgid "Mandatory:"
 msgstr ""
 
-#: admin/html.php:1541 admin/html.php:2051 admin/userrighthandling.php:612
+#: admin/html.php:1474 admin/html.php:1984 admin/userrighthandling.php:612
 #: admin/userrighthandling.php:978
 msgid "Add User"
 msgstr ""
 
-#: admin/html.php:1557 admin/userrighthandling.php:1066
+#: admin/html.php:1490 admin/userrighthandling.php:1066
 msgid "User added."
 msgstr ""
 
-#: admin/html.php:1559
+#: admin/html.php:1492
 msgid "Set survey permissions"
 msgstr ""
 
-#: admin/html.php:1567 admin/html.php:1574 admin/html.php:1635
+#: admin/html.php:1500 admin/html.php:1507 admin/html.php:1568
 #: admin/userrighthandling.php:1071 admin/userrighthandling.php:1077
 msgid "Failed to add user."
 msgstr ""
 
-#: admin/html.php:1568 admin/userrighthandling.php:1072
+#: admin/html.php:1501 admin/userrighthandling.php:1072
 msgid "Username already exists."
 msgstr ""
 
-#: admin/html.php:1575 admin/html.php:1636 admin/userrighthandling.php:1078
+#: admin/html.php:1508 admin/html.php:1569 admin/userrighthandling.php:1078
 msgid "No Username selected."
 msgstr ""
 
-#: admin/html.php:1589
+#: admin/html.php:1522
 msgid "Add user group"
 msgstr ""
 
-#: admin/html.php:1611
+#: admin/html.php:1544
 msgid "User Group added."
 msgstr ""
 
-#: admin/html.php:1614
+#: admin/html.php:1547
 msgid "Set Survey Rights"
 msgstr ""
 
-#: admin/html.php:1622 admin/html.php:1629
+#: admin/html.php:1555 admin/html.php:1562
 msgid "Failed to add User Group."
 msgstr ""
 
-#: admin/html.php:1649
+#: admin/html.php:1582
 msgid "Deleting User"
 msgstr ""
 
-#: admin/html.php:1661 admin/html.php:1918 admin/login_check.php:161
+#: admin/html.php:1594 admin/html.php:1851 admin/login_check.php:161
 #: admin/login_check.php:223 admin/usercontrol.php:70 admin/usercontrol.php:82
 #: admin/usercontrol.php:464 admin/usercontrol.php:487
 #: admin/usercontrol.php:597 admin/usercontrol.php:688
@@ -4171,234 +4175,234 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: admin/html.php:1662 admin/usercontrol.php:598 admin/usercontrol.php:689
+#: admin/html.php:1595 admin/usercontrol.php:598 admin/usercontrol.php:689
 #: admin/usercontrol.php:701 admin/userrighthandling.php:699
 #: admin/userrighthandling.php:1015
 msgid "Success!"
 msgstr ""
 
-#: admin/html.php:1666 admin/usercontrol.php:638
+#: admin/html.php:1599 admin/usercontrol.php:638
 #: admin/userrighthandling.php:1019
 msgid "Could not delete user. User was not supplied."
 msgstr ""
 
-#: admin/html.php:1692
+#: admin/html.php:1625
 msgid "Edit survey permissions for user %s"
 msgstr ""
 
-#: admin/html.php:1697
+#: admin/html.php:1630
 msgid "Edit survey permissions for group %s"
 msgstr ""
 
-#: admin/html.php:1703
+#: admin/html.php:1636
 msgid "Permission"
 msgstr ""
 
-#: admin/html.php:1705
+#: admin/html.php:1638
 msgid "Create"
 msgstr ""
 
-#: admin/html.php:1706
+#: admin/html.php:1639
 msgid "View/read"
 msgstr ""
 
-#: admin/html.php:1707 admin/labels.php:202 admin/surveylist.php:155
+#: admin/html.php:1640 admin/labels.php:202 admin/surveylist.php:155
 msgid "Update"
 msgstr ""
 
-#: admin/html.php:1710 admin/vvexport.php:57
+#: admin/html.php:1643 admin/vvexport.php:57
 msgid "Export"
 msgstr ""
 
-#: admin/html.php:1745 admin/userrighthandling.php:392 replacements.php:470
+#: admin/html.php:1678 admin/userrighthandling.php:392 replacements.php:470
 msgid "Save Now"
 msgstr ""
 
-#: admin/html.php:1772
+#: admin/html.php:1705
 msgid "Export Survey Structure"
 msgstr ""
 
-#: admin/html.php:1776
+#: admin/html.php:1709
 msgid "LimeSurvey XML survey file (*.lss)"
 msgstr ""
 
-#: admin/html.php:1780
+#: admin/html.php:1713
 msgid "queXML Survey XML Format (*.xml)"
 msgstr ""
 
-#: admin/html.php:1792 admin/html.php:1833 admin/html.php:1880
+#: admin/html.php:1725 admin/html.php:1766 admin/html.php:1813
 msgid "Save for Lsrc (*.csv)"
 msgstr ""
 
-#: admin/html.php:1799
+#: admin/html.php:1732
 msgid "Export To File"
 msgstr ""
 
-#: admin/html.php:1811
+#: admin/html.php:1744
 msgid "Export group structure"
 msgstr ""
 
-#: admin/html.php:1817 admin/html.php:1864
+#: admin/html.php:1750 admin/html.php:1797
 msgid "LimeSurvey group file (*.csv)"
 msgstr ""
 
-#: admin/html.php:1840 admin/html.php:1887
+#: admin/html.php:1773 admin/html.php:1820
 msgid "Export to file"
 msgstr ""
 
-#: admin/html.php:1858
+#: admin/html.php:1791
 msgid "Export question structure"
 msgstr ""
 
-#: admin/html.php:1919 admin/userrighthandling.php:43
+#: admin/html.php:1852 admin/userrighthandling.php:43
 msgid "User Group"
 msgstr ""
 
-#: admin/html.php:1920 admin/userrighthandling.php:227
+#: admin/html.php:1853 admin/userrighthandling.php:227
 #: admin/userrighthandling.php:439
 msgid "Full name"
 msgstr ""
 
-#: admin/html.php:1977
+#: admin/html.php:1910
 msgid "Edit permissions"
 msgstr ""
 
-#: admin/html.php:2048
+#: admin/html.php:1981
 msgid "User"
 msgstr ""
 
-#: admin/html.php:2051
+#: admin/html.php:1984
 msgid "Please select a user first"
 msgstr ""
 
-#: admin/html.php:2055 admin/importgroup.php:79 admin/importsurvey.php:128
+#: admin/html.php:1988 admin/importgroup.php:79 admin/importsurvey.php:128
 msgid "Groups"
 msgstr ""
 
-#: admin/html.php:2058 admin/userrighthandling.php:623
+#: admin/html.php:1991 admin/userrighthandling.php:623
 msgid "Add User Group"
 msgstr ""
 
-#: admin/html.php:2058
+#: admin/html.php:1991
 msgid "Please select a user group first"
 msgstr ""
 
-#: admin/html.php:2072
+#: admin/html.php:2005
 msgid "Edit survey permissions"
 msgstr ""
 
-#: admin/html.php:2121
+#: admin/html.php:2054
 msgid "Survey permissions for all users in this group were successfully updated."
 msgstr ""
 
-#: admin/html.php:2128
+#: admin/html.php:2061
 msgid "Survey permissions were successfully updated."
 msgstr ""
 
-#: admin/html.php:2132
+#: admin/html.php:2065
 msgid "Failed to update survey permissions!"
 msgstr ""
 
-#: admin/html.php:2165
+#: admin/html.php:2098
 msgid "Quick-translate survey"
 msgstr ""
 
-#: admin/html.php:2216 admin/login_check.php:113 admin/usercontrol.php:159
+#: admin/html.php:2149 admin/login_check.php:113 admin/usercontrol.php:159
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr ""
 
-#: admin/html.php:2220
+#: admin/html.php:2153
 msgid "Administration"
 msgstr ""
 
-#: admin/html.php:2223
+#: admin/html.php:2156
 msgid "Logged in as:"
 msgstr ""
 
-#: admin/html.php:2225
+#: admin/html.php:2158
 msgid "Edit your personal preferences"
 msgstr ""
 
-#: admin/html.php:2231
+#: admin/html.php:2164
 msgid "Update available: %s"
 msgstr ""
 
-#: admin/html.php:2237
+#: admin/html.php:2170
 msgid "Default Administration Page"
 msgstr ""
 
-#: admin/html.php:2244
+#: admin/html.php:2177
 msgid "Create/Edit Users"
 msgstr ""
 
-#: admin/html.php:2247
+#: admin/html.php:2180
 msgid "Create/Edit Groups"
 msgstr ""
 
-#: admin/html.php:2259
+#: admin/html.php:2192
 msgid "Check Data Integrity"
 msgstr ""
 
-#: admin/html.php:2264
+#: admin/html.php:2197
 msgid "List Surveys"
 msgstr ""
 
-#: admin/html.php:2273
+#: admin/html.php:2206
 msgid "Backup Entire Database"
 msgstr ""
 
-#: admin/html.php:2278
+#: admin/html.php:2211
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
 msgstr ""
 
-#: admin/html.php:2286
+#: admin/html.php:2219
 msgid "Edit label sets"
 msgstr ""
 
-#: admin/html.php:2293 admin/import_resources_zip.php:404
+#: admin/html.php:2226 admin/import_resources_zip.php:404
 #: admin/import_resources_zip.php:425 admin/import_resources_zip.php:438
 #: admin/import_resources_zip.php:457 admin/import_resources_zip.php:529
 #: admin/import_resources_zip.php:579 admin/templates.php:804
 msgid "Template Editor"
 msgstr ""
 
-#: admin/html.php:2306
+#: admin/html.php:2239
 msgid "Create, import, or copy a survey"
 msgstr ""
 
-#: admin/html.php:2315 admin/labels.php:99 admin/templates.php:840
+#: admin/html.php:2248 admin/labels.php:99 admin/templates.php:840
 msgid "Logout"
 msgstr ""
 
-#: admin/html.php:2328
+#: admin/html.php:2261
 msgid "Welcome to %s!"
 msgstr ""
 
-#: admin/html.php:2329
+#: admin/html.php:2262
 msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr ""
 
-#: admin/html.php:2331
+#: admin/html.php:2264
 msgid "Create a new survey clicking on the %s icon in the upper right."
 msgstr ""
 
-#: admin/html.php:2331
+#: admin/html.php:2264
 msgid "Add survey"
 msgstr ""
 
-#: admin/html.php:2332
+#: admin/html.php:2265
 msgid "Create a new question group inside your survey."
 msgstr ""
 
-#: admin/html.php:2333
+#: admin/html.php:2266
 msgid "Create one or more questions inside the new question group."
 msgstr ""
 
-#: admin/html.php:2334
+#: admin/html.php:2267
 msgid "Done. Test your survey using the %s icon."
 msgstr ""
 
-#: admin/html.php:2334
+#: admin/html.php:2267
 msgid "Test survey"
 msgstr ""
 
@@ -5516,132 +5520,132 @@ msgstr ""
 msgid "Forgot Your Password?"
 msgstr ""
 
-#: admin/printablesurvey.php:125 printanswers.php:172
+#: admin/printablesurvey.php:123 printanswers.php:172
 msgid "PDF Export"
 msgstr ""
 
-#: admin/printablesurvey.php:137
+#: admin/printablesurvey.php:135
 msgid "Database"
 msgstr ""
 
-#: admin/printablesurvey.php:137
+#: admin/printablesurvey.php:135
 msgid "table"
 msgstr ""
 
-#: admin/printablesurvey.php:151 admin/printablesurvey.php:1941
+#: admin/printablesurvey.php:149 admin/printablesurvey.php:1569
 msgid "Submit Your Survey."
 msgstr ""
 
-#: admin/printablesurvey.php:153 admin/printablesurvey.php:1941
+#: admin/printablesurvey.php:151 admin/printablesurvey.php:1569
 #: admin/templates.php:698
 msgid "Thank you for completing this survey."
 msgstr ""
 
-#: admin/printablesurvey.php:167 admin/templates.php:694
+#: admin/printablesurvey.php:165 admin/templates.php:694
 msgid "Please fax your completed survey to:"
 msgstr ""
 
-#: admin/printablesurvey.php:173 admin/printablesurvey.php:1935
+#: admin/printablesurvey.php:171 admin/printablesurvey.php:1563
 #: admin/templates.php:697
 msgid "Please submit by %s"
 msgstr ""
 
-#: admin/printablesurvey.php:773
+#: admin/printablesurvey.php:432
 msgid "Only answer this question if the following conditions are met:"
 msgstr ""
 
-#: admin/printablesurvey.php:793
+#: admin/printablesurvey.php:452
 msgid "ID:"
 msgstr ""
 
-#: admin/printablesurvey.php:794
+#: admin/printablesurvey.php:453
 msgid "Question code:"
 msgstr ""
 
-#: admin/printablesurvey.php:820 admin/printablesurvey.php:822
-#: admin/templates.php:531 admin/templates.php:664 qanda.php:319 qanda.php:320
+#: admin/printablesurvey.php:479 admin/printablesurvey.php:481
+#: admin/templates.php:531 admin/templates.php:664 qanda.php:281 qanda.php:282
 msgid "*"
 msgstr ""
 
-#: admin/printablesurvey.php:855 admin/printablesurvey.php:856
-#: admin/printablesurvey.php:880 admin/printablesurvey.php:887
-#: admin/printablesurvey.php:913 admin/printablesurvey.php:916
-#: admin/printablesurvey.php:980 admin/printablesurvey.php:981
-#: admin/printablesurvey.php:1210 admin/printablesurvey.php:1214
+#: admin/printablesurvey.php:514 admin/printablesurvey.php:515
+#: admin/printablesurvey.php:539 admin/printablesurvey.php:546
+#: admin/printablesurvey.php:572 admin/printablesurvey.php:575
+#: admin/printablesurvey.php:639 admin/printablesurvey.php:640
+#: admin/printablesurvey.php:855 admin/printablesurvey.php:859
 #: admin/templates.php:667
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
-#: admin/printablesurvey.php:872 admin/printablesurvey.php:874
+#: admin/printablesurvey.php:531 admin/printablesurvey.php:533
 msgid "Please enter a date:"
 msgstr ""
 
-#: admin/printablesurvey.php:992 admin/printablesurvey.php:994 qanda.php:2833
-#: qanda.php:2834 qanda.php:2869
+#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2578
+#: qanda.php:2579 qanda.php:2610
 msgid "Make a comment on your choice here:"
 msgstr ""
 
-#: admin/printablesurvey.php:1007
+#: admin/printablesurvey.php:666
 msgid "Please number each box in order of preference from 1 to"
 msgstr ""
 
-#: admin/printablesurvey.php:1009
+#: admin/printablesurvey.php:668
 msgid "Please number each box in order of preference from 1 to "
 msgstr ""
 
-#: admin/printablesurvey.php:1030 admin/printablesurvey.php:1031
+#: admin/printablesurvey.php:689 admin/printablesurvey.php:690
 msgid "Please choose *all* that apply:"
 msgstr ""
 
-#: admin/printablesurvey.php:1081
+#: admin/printablesurvey.php:740
 msgid "Please choose *all* that apply and provide a comment:"
 msgstr ""
 
-#: admin/printablesurvey.php:1082
+#: admin/printablesurvey.php:741
 msgid "Please choose all that apply and provide a comment:"
 msgstr ""
 
-#: admin/printablesurvey.php:1099
-#: classes/expressions/LimeExpressionManager.php:2565
-#: classes/expressions/LimeExpressionManager.php:4895 qanda.php:1320
-#: qanda.php:1652 qanda.php:2301 qanda.php:2719
+#: admin/printablesurvey.php:758
+#: classes/expressions/LimeExpressionManager.php:2631
+#: classes/expressions/LimeExpressionManager.php:4978 qanda.php:1290
+#: qanda.php:1590 qanda.php:2200 qanda.php:2500
 msgid "Other:"
 msgstr ""
 
-#: admin/printablesurvey.php:1120 admin/printablesurvey.php:1135
+#: admin/printablesurvey.php:778 admin/printablesurvey.php:780
 msgid "Please write your answer(s) here:"
 msgstr ""
 
-#: admin/printablesurvey.php:1157 admin/printablesurvey.php:1159
-#: admin/printablesurvey.php:1166 admin/printablesurvey.php:1169
-#: admin/printablesurvey.php:1179 admin/printablesurvey.php:1182
-#: admin/printablesurvey.php:1200 admin/printablesurvey.php:1203
+#: admin/printablesurvey.php:802 admin/printablesurvey.php:804
+#: admin/printablesurvey.php:811 admin/printablesurvey.php:814
+#: admin/printablesurvey.php:824 admin/printablesurvey.php:827
+#: admin/printablesurvey.php:845 admin/printablesurvey.php:848
 msgid "Please write your answer here:"
 msgstr ""
 
-#: admin/printablesurvey.php:1224 admin/printablesurvey.php:1241
-#: admin/printablesurvey.php:1288 admin/printablesurvey.php:1297
-#: admin/printablesurvey.php:1324 admin/printablesurvey.php:1339
-#: admin/printablesurvey.php:1365 admin/printablesurvey.php:1380
-#: admin/printablesurvey.php:1589 admin/printablesurvey.php:1599
-#: admin/printablesurvey.php:1693 admin/printablesurvey.php:1696
-#: admin/printablesurvey.php:1800 admin/printablesurvey.php:1801
+#: admin/printablesurvey.php:869 admin/printablesurvey.php:886
+#: admin/printablesurvey.php:933 admin/printablesurvey.php:942
+#: admin/printablesurvey.php:969 admin/printablesurvey.php:984
+#: admin/printablesurvey.php:1010 admin/printablesurvey.php:1025
+#: admin/printablesurvey.php:1217 admin/printablesurvey.php:1227
+#: admin/printablesurvey.php:1321 admin/printablesurvey.php:1324
+#: admin/printablesurvey.php:1428 admin/printablesurvey.php:1429
 msgid "Please choose the appropriate response for each item:"
 msgstr ""
 
-#: admin/printablesurvey.php:1858
+#: admin/printablesurvey.php:1486
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr ""
 
-#: admin/printablesurvey.php:1939
+#: admin/printablesurvey.php:1567
 msgid "Please fax your completed survey to: %s"
 msgstr ""
 
-#: admin/printablesurvey.php:1952
+#: admin/printablesurvey.php:1580
 msgid "Please choose at least %s item(s)"
 msgstr ""
 
-#: admin/printablesurvey.php:1955
+#: admin/printablesurvey.php:1583
 msgid "Please choose no more than %s item(s)"
 msgstr ""
 
@@ -5682,12 +5686,12 @@ msgstr ""
 msgid "Change Group Order"
 msgstr ""
 
-#: admin/questiongrouphandling.php:326 admin/questionhandling.php:755
+#: admin/questiongrouphandling.php:314 admin/questionhandling.php:726
 msgid "Place after.."
 msgstr ""
 
-#: admin/questiongrouphandling.php:331 admin/questionhandling.php:561
-#: admin/questionhandling.php:759
+#: admin/questiongrouphandling.php:319 admin/questionhandling.php:561
+#: admin/questionhandling.php:730
 msgid "At beginning"
 msgstr ""
 
@@ -5785,7 +5789,7 @@ msgstr ""
 msgid "Hide advanced settings"
 msgstr ""
 
-#: admin/questionhandling.php:580 admin/translate.php:206
+#: admin/questionhandling.php:580 admin/translate.php:204
 msgid "Loading..."
 msgstr ""
 
@@ -5797,7 +5801,7 @@ msgstr ""
 msgid "Select LimeSurvey question file (*.lsq/*.csv)"
 msgstr ""
 
-#: admin/questionhandling.php:814
+#: admin/questionhandling.php:754
 msgid "View Question"
 msgstr ""
 
@@ -6471,11 +6475,11 @@ msgstr ""
 msgid "This is some help text."
 msgstr ""
 
-#: admin/templates.php:434 group.php:414 replacements.php:711
+#: admin/templates.php:434 group.php:413 replacements.php:711
 msgid "Thank you!"
 msgstr ""
 
-#: admin/templates.php:435 group.php:415
+#: admin/templates.php:435 group.php:414
 msgid "Your survey responses have been recorded."
 msgstr ""
 
@@ -6869,7 +6873,7 @@ msgstr ""
 msgid "You don't have the permission to activate tokens."
 msgstr ""
 
-#: admin/tokens.php:557 admin/update/updater.php:612 common.php:278
+#: admin/tokens.php:557 admin/update/updater.php:612 common.php:276
 msgid "Back to main menu"
 msgstr ""
 
@@ -7473,7 +7477,7 @@ msgstr ""
 msgid "until"
 msgstr ""
 
-#: admin/tokens.php:2398 admin/tokens.php:2481 qanda.php:1255 qanda.php:1262
+#: admin/tokens.php:2398 admin/tokens.php:2481 qanda.php:1225 qanda.php:1232
 msgid "Format: %s"
 msgstr ""
 
@@ -7682,27 +7686,27 @@ msgstr ""
 msgid "Select the LDAP query you want to run:"
 msgstr ""
 
-#: admin/translate.php:72 admin/translate_functions.php:67
+#: admin/translate.php:70 admin/translate_functions.php:67
 msgid "Translate survey"
 msgstr ""
 
-#: admin/translate.php:131
+#: admin/translate.php:129
 msgid "There was an error using the Google API."
 msgstr ""
 
-#: admin/translate.php:132
+#: admin/translate.php:130
 msgid "Detailed Error"
 msgstr ""
 
-#: admin/translate.php:134
+#: admin/translate.php:132
 msgid "Loading translations"
 msgstr ""
 
-#: admin/translate.php:205
+#: admin/translate.php:203
 msgid "Auto Translate"
 msgstr ""
 
-#: admin/translate.php:257
+#: admin/translate.php:255
 msgid "Nothing to translate on this page"
 msgstr ""
 
@@ -9045,7 +9049,7 @@ msgid "This variable is not declared until a later page"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:572
-#: classes/expressions/ExpressionManager.php:1686
+#: classes/expressions/ExpressionManager.php:1685
 msgid "Undefined variable"
 msgstr ""
 
@@ -9085,218 +9089,218 @@ msgstr ""
 msgid "Expected right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1670
+#: classes/expressions/ExpressionManager.php:1669
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1679
+#: classes/expressions/ExpressionManager.php:1678
 msgid "Undefined function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1691
+#: classes/expressions/ExpressionManager.php:1690
 msgid "Unsupported syntax"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1699
+#: classes/expressions/ExpressionManager.php:1698
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1957
+#: classes/expressions/ExpressionManager.php:1951
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2048
+#: classes/expressions/ExpressionManager.php:2042
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2053
+#: classes/expressions/ExpressionManager.php:2047
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2054
+#: classes/expressions/ExpressionManager.php:2048
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2275
+#: classes/expressions/ExpressionManager.php:2269
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3201
+#: classes/expressions/ExpressionManager.php:3193
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2091
+#: classes/expressions/LimeExpressionManager.php:2155
 msgid "Please select at least one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2092
+#: classes/expressions/LimeExpressionManager.php:2156
 msgid "Please select at least %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2096
+#: classes/expressions/LimeExpressionManager.php:2160
 msgid "Please select at most one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2097
+#: classes/expressions/LimeExpressionManager.php:2161
 msgid "Please select at most %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2101
+#: classes/expressions/LimeExpressionManager.php:2165
 msgid "Please select one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2102
+#: classes/expressions/LimeExpressionManager.php:2166
 msgid "Please select %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2104
+#: classes/expressions/LimeExpressionManager.php:2168
 msgid "Please select between %s and %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2120
-#: classes/expressions/LimeExpressionManager.php:2141
+#: classes/expressions/LimeExpressionManager.php:2184
+#: classes/expressions/LimeExpressionManager.php:2205
 msgid "Each answer must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2122
-#: classes/expressions/LimeExpressionManager.php:2143
+#: classes/expressions/LimeExpressionManager.php:2186
+#: classes/expressions/LimeExpressionManager.php:2207
 msgid "Each answer must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2124
-#: classes/expressions/LimeExpressionManager.php:2145
+#: classes/expressions/LimeExpressionManager.php:2188
+#: classes/expressions/LimeExpressionManager.php:2209
 msgid "Each answer must be %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2125
-#: classes/expressions/LimeExpressionManager.php:2146
+#: classes/expressions/LimeExpressionManager.php:2189
+#: classes/expressions/LimeExpressionManager.php:2210
 msgid "Each answer must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2162
+#: classes/expressions/LimeExpressionManager.php:2226
 msgid "The sum must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2164
+#: classes/expressions/LimeExpressionManager.php:2228
 msgid "The sum must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2166
-#: classes/expressions/LimeExpressionManager.php:2177
+#: classes/expressions/LimeExpressionManager.php:2230
+#: classes/expressions/LimeExpressionManager.php:2241
 msgid "The sum must equal %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2167
+#: classes/expressions/LimeExpressionManager.php:2231
 msgid "The sum must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2183
+#: classes/expressions/LimeExpressionManager.php:2247
 msgid "Please also fill in the \"other comment\" field."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2191
+#: classes/expressions/LimeExpressionManager.php:2255
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:3911
+#: classes/expressions/LimeExpressionManager.php:3994
 msgid "Unable to insert record into survey table: "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:3927
+#: classes/expressions/LimeExpressionManager.php:4010
 msgid "Unable to insert record into timings table "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4875
+#: classes/expressions/LimeExpressionManager.php:4958
 msgid "This question is mandatory"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4887
+#: classes/expressions/LimeExpressionManager.php:4970
 msgid "Please check at least one item."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4897
+#: classes/expressions/LimeExpressionManager.php:4980
 msgid "If you choose '%s' you must provide a description."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4919
-#: classes/expressions/LimeExpressionManager.php:4956
+#: classes/expressions/LimeExpressionManager.php:5002
+#: classes/expressions/LimeExpressionManager.php:5039
 msgid "Please complete all parts"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4948
+#: classes/expressions/LimeExpressionManager.php:5031
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4964
+#: classes/expressions/LimeExpressionManager.php:5047
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7243
+#: classes/expressions/LimeExpressionManager.php:7380
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7248
+#: classes/expressions/LimeExpressionManager.php:7385
 msgid "Name [ID]"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7248
+#: classes/expressions/LimeExpressionManager.php:7385
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7248
+#: classes/expressions/LimeExpressionManager.php:7385
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7299
-#: classes/expressions/LimeExpressionManager.php:7525
+#: classes/expressions/LimeExpressionManager.php:7436
+#: classes/expressions/LimeExpressionManager.php:7662
 msgid "DEFAULT:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7307
+#: classes/expressions/LimeExpressionManager.php:7444
 msgid "HELP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7308
+#: classes/expressions/LimeExpressionManager.php:7445
 msgid "TIP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7315
+#: classes/expressions/LimeExpressionManager.php:7452
 msgid "Question Attribute"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7315
+#: classes/expressions/LimeExpressionManager.php:7452
 msgid "Value"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7414
+#: classes/expressions/LimeExpressionManager.php:7551
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7428
+#: classes/expressions/LimeExpressionManager.php:7565
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7440
+#: classes/expressions/LimeExpressionManager.php:7577
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7593
+#: classes/expressions/LimeExpressionManager.php:7730
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7632
+#: classes/expressions/LimeExpressionManager.php:7769
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7775
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7641
+#: classes/expressions/LimeExpressionManager.php:7778
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7644
+#: classes/expressions/LimeExpressionManager.php:7781
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
@@ -9573,20 +9577,20 @@ msgid "Question time"
 msgstr ""
 
 #: common_functions.php:3201 common_functions.php:3212
-#: common_functions.php:3247 common_functions.php:3263
-#: common_functions.php:3274 common_functions.php:3282
-#: common_functions.php:3293 common_functions.php:3301
-#: common_functions.php:3309 common_functions.php:3317
-#: common_functions.php:3325 common_functions.php:3333
-#: common_functions.php:3503 common_functions.php:3514
-#: common_functions.php:3597 common_functions.php:3605
-#: common_functions.php:3613 common_functions.php:3621
-#: common_functions.php:3632 common_functions.php:3707
-#: common_functions.php:3740 common_functions.php:3759
-#: common_functions.php:3778 common_functions.php:3854
-#: common_functions.php:3888 common_functions.php:3896
-#: common_functions.php:3904 common_functions.php:3915
-#: common_functions.php:3924
+#: common_functions.php:3247 common_functions.php:3255
+#: common_functions.php:3266 common_functions.php:3274
+#: common_functions.php:3285 common_functions.php:3293
+#: common_functions.php:3301 common_functions.php:3309
+#: common_functions.php:3317 common_functions.php:3325
+#: common_functions.php:3495 common_functions.php:3506
+#: common_functions.php:3573 common_functions.php:3581
+#: common_functions.php:3589 common_functions.php:3597
+#: common_functions.php:3608 common_functions.php:3675
+#: common_functions.php:3708 common_functions.php:3727
+#: common_functions.php:3746 common_functions.php:3811
+#: common_functions.php:3845 common_functions.php:3853
+#: common_functions.php:3861 common_functions.php:3872
+#: common_functions.php:3881
 msgid "Display"
 msgstr ""
 
@@ -9607,12 +9611,12 @@ msgid "Answer width"
 msgstr ""
 
 #: common_functions.php:3222 common_functions.php:3230
-#: common_functions.php:3238 common_functions.php:3349
-#: common_functions.php:3357 common_functions.php:3365
-#: common_functions.php:3373 common_functions.php:3381
-#: common_functions.php:3389 common_functions.php:3525
-#: common_functions.php:3565 common_functions.php:3718
-#: common_functions.php:3729 common_functions.php:4153
+#: common_functions.php:3238 common_functions.php:3341
+#: common_functions.php:3349 common_functions.php:3357
+#: common_functions.php:3365 common_functions.php:3373
+#: common_functions.php:3381 common_functions.php:3517
+#: common_functions.php:3549 common_functions.php:3686
+#: common_functions.php:3697 common_functions.php:4110
 msgid "Logic"
 msgstr ""
 
@@ -9640,834 +9644,834 @@ msgstr ""
 msgid "Category separator"
 msgstr ""
 
-#: common_functions.php:3269
+#: common_functions.php:3261
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr ""
 
-#: common_functions.php:3270
+#: common_functions.php:3262
 msgid "Display columns"
 msgstr ""
 
-#: common_functions.php:3277
+#: common_functions.php:3269
 msgid "How many rows to display"
 msgstr ""
 
-#: common_functions.php:3278
+#: common_functions.php:3270
 msgid "Display rows"
 msgstr ""
 
-#: common_functions.php:3288
+#: common_functions.php:3280
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr ""
 
-#: common_functions.php:3289
+#: common_functions.php:3281
 msgid "Display dropdown boxes"
 msgstr ""
 
-#: common_functions.php:3296
+#: common_functions.php:3288
 msgid "Minimum year value in calendar"
 msgstr ""
 
-#: common_functions.php:3297
+#: common_functions.php:3289
 msgid "Minimum year"
 msgstr ""
 
-#: common_functions.php:3304
+#: common_functions.php:3296
 msgid "Maximum year value for calendar"
 msgstr ""
 
-#: common_functions.php:3305
+#: common_functions.php:3297
 msgid "Maximum year"
 msgstr ""
 
-#: common_functions.php:3312
+#: common_functions.php:3304
 msgid "Prefix|Suffix for dropdown lists"
 msgstr ""
 
-#: common_functions.php:3313
+#: common_functions.php:3305
 msgid "Dropdown prefix/suffix"
 msgstr ""
 
-#: common_functions.php:3320
+#: common_functions.php:3312
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr ""
 
-#: common_functions.php:3321
+#: common_functions.php:3313
 msgid "Dropdown separator"
 msgstr ""
 
-#: common_functions.php:3328
+#: common_functions.php:3320
 msgid "Enter a header text for the first scale"
 msgstr ""
 
-#: common_functions.php:3329
+#: common_functions.php:3321
 msgid "Header for first scale"
 msgstr ""
 
-#: common_functions.php:3336
+#: common_functions.php:3328
 msgid "Enter a header text for the second scale"
 msgstr ""
 
-#: common_functions.php:3337
+#: common_functions.php:3329
 msgid "Header for second scale"
 msgstr ""
 
-#: common_functions.php:3341 common_functions.php:3533
-#: common_functions.php:3541 common_functions.php:3557
-#: common_functions.php:3573 common_functions.php:3581
-#: common_functions.php:3651
+#: common_functions.php:3333 common_functions.php:3525
+#: common_functions.php:3533 common_functions.php:3541
+#: common_functions.php:3557 common_functions.php:3565
+#: common_functions.php:3619
 msgid "Input"
 msgstr ""
 
-#: common_functions.php:3344
+#: common_functions.php:3336
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr ""
 
-#: common_functions.php:3345
+#: common_functions.php:3337
 msgid "Equals sum value"
 msgstr ""
 
-#: common_functions.php:3352
+#: common_functions.php:3344
 msgid "Boolean equation to validate the whole question."
 msgstr ""
 
-#: common_functions.php:3353
+#: common_functions.php:3345
 msgid "Question validation equation"
 msgstr ""
 
-#: common_functions.php:3360
+#: common_functions.php:3352
 msgid "Tip to show user describing the question validation equation."
 msgstr ""
 
-#: common_functions.php:3361
+#: common_functions.php:3353
 msgid "Question validation tip"
 msgstr ""
 
-#: common_functions.php:3368
+#: common_functions.php:3360
 msgid "Boolean equation to validate each sub-question."
 msgstr ""
 
-#: common_functions.php:3369
+#: common_functions.php:3361
 msgid "Sub-question validation equation"
 msgstr ""
 
-#: common_functions.php:3376
+#: common_functions.php:3368
 msgid "Tip to show user describing the sub-question validation equation."
 msgstr ""
 
-#: common_functions.php:3377
+#: common_functions.php:3369
 msgid "Sub-question validation tip"
 msgstr ""
 
-#: common_functions.php:3384
+#: common_functions.php:3376
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr ""
 
-#: common_functions.php:3385
+#: common_functions.php:3377
 msgid "Exclusive option"
 msgstr ""
 
-#: common_functions.php:3395
+#: common_functions.php:3387
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr ""
 
-#: common_functions.php:3396
+#: common_functions.php:3388
 msgid "Auto-check exclusive option if all others are checked"
 msgstr ""
 
-#: common_functions.php:3403 common_functions.php:3414
-#: common_functions.php:3425 common_functions.php:3436
-#: common_functions.php:3446 common_functions.php:3456
-#: common_functions.php:3465 common_functions.php:3474
-#: common_functions.php:3484 common_functions.php:3492
+#: common_functions.php:3395 common_functions.php:3406
+#: common_functions.php:3417 common_functions.php:3428
+#: common_functions.php:3438 common_functions.php:3448
+#: common_functions.php:3457 common_functions.php:3466
+#: common_functions.php:3476 common_functions.php:3484
 msgid "Location"
 msgstr ""
 
-#: common_functions.php:3408
+#: common_functions.php:3400
 msgid "Store the city?"
 msgstr ""
 
-#: common_functions.php:3409
+#: common_functions.php:3401
 msgid "Save city"
 msgstr ""
 
-#: common_functions.php:3419
+#: common_functions.php:3411
 msgid "Store the state?"
 msgstr ""
 
-#: common_functions.php:3420
+#: common_functions.php:3412
 msgid "Save state"
 msgstr ""
 
-#: common_functions.php:3430
+#: common_functions.php:3422
 msgid "Store the postal code?"
 msgstr ""
 
-#: common_functions.php:3431
+#: common_functions.php:3423
 msgid "Save postal code"
 msgstr ""
 
-#: common_functions.php:3441
+#: common_functions.php:3433
 msgid "Store the country?"
 msgstr ""
 
-#: common_functions.php:3442
+#: common_functions.php:3434
 msgid "Save country"
 msgstr ""
 
-#: common_functions.php:3450
+#: common_functions.php:3442
 msgid "Google Maps"
 msgstr ""
 
-#: common_functions.php:3451
+#: common_functions.php:3443
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr ""
 
-#: common_functions.php:3452
+#: common_functions.php:3444
 msgid "Use mapping service"
 msgstr ""
 
-#: common_functions.php:3460
+#: common_functions.php:3452
 msgid "Width of the map in pixel"
 msgstr ""
 
-#: common_functions.php:3461
+#: common_functions.php:3453
 msgid "Map width"
 msgstr ""
 
-#: common_functions.php:3469
+#: common_functions.php:3461
 msgid "Height of the map in pixel"
 msgstr ""
 
-#: common_functions.php:3470
+#: common_functions.php:3462
 msgid "Map height"
 msgstr ""
 
-#: common_functions.php:3479
+#: common_functions.php:3471
 msgid "Get the default location using the user's IP address?"
 msgstr ""
 
-#: common_functions.php:3480
+#: common_functions.php:3472
 msgid "IP as default location"
 msgstr ""
 
-#: common_functions.php:3487
+#: common_functions.php:3479
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr ""
 
-#: common_functions.php:3488
+#: common_functions.php:3480
 msgid "Default position"
 msgstr ""
 
-#: common_functions.php:3496
+#: common_functions.php:3488
 msgid "Map zoom level"
 msgstr ""
 
-#: common_functions.php:3497
+#: common_functions.php:3489
 msgid "Zoom level"
 msgstr ""
 
-#: common_functions.php:3509
+#: common_functions.php:3501
 msgid "Hide the tip that is normally shown with a question"
 msgstr ""
 
-#: common_functions.php:3510
+#: common_functions.php:3502
 msgid "Hide tip"
 msgstr ""
 
-#: common_functions.php:3520
+#: common_functions.php:3512
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr ""
 
-#: common_functions.php:3521
+#: common_functions.php:3513
 msgid "Always hide this question"
 msgstr ""
 
-#: common_functions.php:3528
+#: common_functions.php:3520
 msgid "Limit the number of possible answers"
 msgstr ""
 
-#: common_functions.php:3529
+#: common_functions.php:3521
 msgid "Maximum answers"
 msgstr ""
 
-#: common_functions.php:3536
+#: common_functions.php:3528
 msgid "Maximum sum value of multiple numeric input"
 msgstr ""
 
-#: common_functions.php:3537
+#: common_functions.php:3529
 msgid "Maximum sum value"
 msgstr ""
 
-#: common_functions.php:3544
+#: common_functions.php:3536
 msgid "Maximum value of the numeric input"
 msgstr ""
 
-#: common_functions.php:3545 common_functions.php:3601
+#: common_functions.php:3537 common_functions.php:3577
 msgid "Maximum value"
 msgstr ""
 
-#: common_functions.php:3560
+#: common_functions.php:3544
 msgid "Maximum characters allowed"
 msgstr ""
 
-#: common_functions.php:3561
+#: common_functions.php:3545
 msgid "Maximum characters"
 msgstr ""
 
-#: common_functions.php:3568
+#: common_functions.php:3552
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr ""
 
-#: common_functions.php:3569
+#: common_functions.php:3553
 msgid "Minimum answers"
 msgstr ""
 
-#: common_functions.php:3576
+#: common_functions.php:3560
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr ""
 
-#: common_functions.php:3577
+#: common_functions.php:3561
 msgid "Minimum sum value"
 msgstr ""
 
-#: common_functions.php:3584
+#: common_functions.php:3568
 msgid "Minimum value of the numeric input"
 msgstr ""
 
-#: common_functions.php:3585 common_functions.php:3609
+#: common_functions.php:3569 common_functions.php:3585
 msgid "Minimum value"
 msgstr ""
 
-#: common_functions.php:3600
+#: common_functions.php:3576
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr ""
 
-#: common_functions.php:3608
+#: common_functions.php:3584
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr ""
 
-#: common_functions.php:3616 common_functions.php:3617
+#: common_functions.php:3592 common_functions.php:3593
 msgid "Step value"
 msgstr ""
 
-#: common_functions.php:3627
+#: common_functions.php:3603
 msgid "Use checkbox layout"
 msgstr ""
 
-#: common_functions.php:3628
+#: common_functions.php:3604
 msgid "Checkbox layout"
 msgstr ""
 
-#: common_functions.php:3638
+#: common_functions.php:3614
 msgid "Present answer options in reverse order"
 msgstr ""
 
-#: common_functions.php:3639
+#: common_functions.php:3615
 msgid "Reverse answer order"
 msgstr ""
 
-#: common_functions.php:3658
+#: common_functions.php:3626
 msgid "Restrict input to integer values"
 msgstr ""
 
-#: common_functions.php:3659
+#: common_functions.php:3627
 msgid "Integer only"
 msgstr ""
 
-#: common_functions.php:3671
+#: common_functions.php:3639
 msgid "Allow only numerical input"
 msgstr ""
 
-#: common_functions.php:3672
+#: common_functions.php:3640
 msgid "Numbers only"
 msgstr ""
 
-#: common_functions.php:3682
+#: common_functions.php:3650
 msgid "Rows"
 msgstr ""
 
-#: common_functions.php:3683
+#: common_functions.php:3651
 msgid "Columns"
 msgstr ""
 
-#: common_functions.php:3684
+#: common_functions.php:3652
 msgid "Both rows and columns"
 msgstr ""
 
-#: common_functions.php:3687
+#: common_functions.php:3655
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr ""
 
-#: common_functions.php:3688
+#: common_functions.php:3656
 msgid "Show totals for"
 msgstr ""
 
-#: common_functions.php:3701
+#: common_functions.php:3669
 msgid "Show grand total for either columns or rows"
 msgstr ""
 
-#: common_functions.php:3702
+#: common_functions.php:3670
 msgid "Show grand total"
 msgstr ""
 
-#: common_functions.php:3713
+#: common_functions.php:3681
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr ""
 
-#: common_functions.php:3714
+#: common_functions.php:3682
 msgid "Text inputs"
 msgstr ""
 
-#: common_functions.php:3724
+#: common_functions.php:3692
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr ""
 
-#: common_functions.php:3725
+#: common_functions.php:3693
 msgid "'Other:' comment mandatory"
 msgstr ""
 
-#: common_functions.php:3735
+#: common_functions.php:3703
 msgid "Allow only numerical input for 'Other' text"
 msgstr ""
 
-#: common_functions.php:3736
+#: common_functions.php:3704
 msgid "Numbers only for 'Other'"
 msgstr ""
 
-#: common_functions.php:3743
+#: common_functions.php:3711
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr ""
 
-#: common_functions.php:3744
+#: common_functions.php:3712
 msgid "Label for 'Other:' option"
 msgstr ""
 
-#: common_functions.php:3754
+#: common_functions.php:3722
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr ""
 
-#: common_functions.php:3755
+#: common_functions.php:3723
 msgid "Insert page break in printable view"
 msgstr ""
 
-#: common_functions.php:3762
+#: common_functions.php:3730
 msgid "Add a prefix to the answer field"
 msgstr ""
 
-#: common_functions.php:3763
+#: common_functions.php:3731
 msgid "Answer prefix"
 msgstr ""
 
-#: common_functions.php:3773
+#: common_functions.php:3741
 msgid "Show statistics of this question in the public statistics page"
 msgstr ""
 
-#: common_functions.php:3774
+#: common_functions.php:3742
 msgid "Show in public statistics"
 msgstr ""
 
-#: common_functions.php:3784
+#: common_functions.php:3752
 msgid "Present answers in random order"
 msgstr ""
 
-#: common_functions.php:3785
+#: common_functions.php:3753
 msgid "Random answer order"
 msgstr ""
 
-#: common_functions.php:3800 common_functions.php:3811
-#: common_functions.php:3819 common_functions.php:3827
-#: common_functions.php:3835 common_functions.php:3843
-#: common_functions.php:3869 common_functions.php:3880
+#: common_functions.php:3757 common_functions.php:3768
+#: common_functions.php:3776 common_functions.php:3784
+#: common_functions.php:3792 common_functions.php:3800
+#: common_functions.php:3826 common_functions.php:3837
 msgid "Slider"
 msgstr ""
 
-#: common_functions.php:3806 common_functions.php:3807
-#: common_functions.php:3863 common_functions.php:3864
+#: common_functions.php:3763 common_functions.php:3764
+#: common_functions.php:3820 common_functions.php:3821
 msgid "Use slider layout"
 msgstr ""
 
-#: common_functions.php:3814 common_functions.php:3815
+#: common_functions.php:3771 common_functions.php:3772
 msgid "Slider minimum value"
 msgstr ""
 
-#: common_functions.php:3822 common_functions.php:3823
+#: common_functions.php:3779 common_functions.php:3780
 msgid "Slider maximum value"
 msgstr ""
 
-#: common_functions.php:3830 common_functions.php:3831
+#: common_functions.php:3787 common_functions.php:3788
 msgid "Slider accuracy"
 msgstr ""
 
-#: common_functions.php:3838 common_functions.php:3839
+#: common_functions.php:3795 common_functions.php:3796
 msgid "Slider initial value"
 msgstr ""
 
-#: common_functions.php:3849
+#: common_functions.php:3806
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr ""
 
-#: common_functions.php:3850
+#: common_functions.php:3807
 msgid "Slider starts at the middle position"
 msgstr ""
 
-#: common_functions.php:3859
+#: common_functions.php:3816
 msgid "Yes - stars"
 msgstr ""
 
-#: common_functions.php:3860
+#: common_functions.php:3817
 msgid "Yes - slider with emoticon"
 msgstr ""
 
-#: common_functions.php:3875
+#: common_functions.php:3832
 msgid "Display min and max value under the slider"
 msgstr ""
 
-#: common_functions.php:3876
+#: common_functions.php:3833
 msgid "Display slider min and max value"
 msgstr ""
 
-#: common_functions.php:3883
+#: common_functions.php:3840
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
-#: common_functions.php:3884
+#: common_functions.php:3841
 msgid "Slider left/right text separator"
 msgstr ""
 
-#: common_functions.php:3891
+#: common_functions.php:3848
 msgid "Add a suffix to the answer field"
 msgstr ""
 
-#: common_functions.php:3892
+#: common_functions.php:3849
 msgid "Answer suffix"
 msgstr ""
 
-#: common_functions.php:3899
+#: common_functions.php:3856
 msgid "Width of text input box"
 msgstr ""
 
-#: common_functions.php:3900
+#: common_functions.php:3857
 msgid "Input box width"
 msgstr ""
 
-#: common_functions.php:3910
+#: common_functions.php:3867
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr ""
 
-#: common_functions.php:3911
+#: common_functions.php:3868
 msgid "Use dropdown boxes"
 msgstr ""
 
-#: common_functions.php:3919
+#: common_functions.php:3876
 msgid "For list dropdown boxes, show up to this many rows"
 msgstr ""
 
-#: common_functions.php:3920
+#: common_functions.php:3877
 msgid "Height of dropdown"
 msgstr ""
 
-#: common_functions.php:3928
+#: common_functions.php:3885
 msgid "Order"
 msgstr ""
 
-#: common_functions.php:3931
+#: common_functions.php:3888
 msgid "Accelerator keys for list items"
 msgstr ""
 
-#: common_functions.php:3932
+#: common_functions.php:3889
 msgid "Prefix for list items"
 msgstr ""
 
-#: common_functions.php:3940
+#: common_functions.php:3897
 msgid "Nominal"
 msgstr ""
 
-#: common_functions.php:3941
+#: common_functions.php:3898
 msgid "Ordinal"
 msgstr ""
 
-#: common_functions.php:3942
+#: common_functions.php:3899
 msgid "Scale"
 msgstr ""
 
-#: common_functions.php:3944
+#: common_functions.php:3901
 msgid "Set a specific SPSS export scale type for this question"
 msgstr ""
 
-#: common_functions.php:3945
+#: common_functions.php:3902
 msgid "SPSS export scale type"
 msgstr ""
 
-#: common_functions.php:3950 common_functions.php:3958
-#: common_functions.php:3969 common_functions.php:3980
-#: common_functions.php:3990 common_functions.php:3998
-#: common_functions.php:4006 common_functions.php:4014
-#: common_functions.php:4022 common_functions.php:4030
-#: common_functions.php:4038 common_functions.php:4046
-#: common_functions.php:4054 common_functions.php:4062
-#: common_functions.php:4070 common_functions.php:4078
-#: common_functions.php:4086
+#: common_functions.php:3907 common_functions.php:3915
+#: common_functions.php:3926 common_functions.php:3937
+#: common_functions.php:3947 common_functions.php:3955
+#: common_functions.php:3963 common_functions.php:3971
+#: common_functions.php:3979 common_functions.php:3987
+#: common_functions.php:3995 common_functions.php:4003
+#: common_functions.php:4011 common_functions.php:4019
+#: common_functions.php:4027 common_functions.php:4035
+#: common_functions.php:4043
 msgid "Timer"
 msgstr ""
 
-#: common_functions.php:3953
+#: common_functions.php:3910
 msgid "Limit time to answer question (in seconds)"
 msgstr ""
 
-#: common_functions.php:3954
+#: common_functions.php:3911
 msgid "Time limit"
 msgstr ""
 
-#: common_functions.php:3961
+#: common_functions.php:3918
 msgid "Warn and move on"
 msgstr ""
 
-#: common_functions.php:3962
+#: common_functions.php:3919
 msgid "Move on without warning"
 msgstr ""
 
-#: common_functions.php:3963
+#: common_functions.php:3920
 msgid "Disable only"
 msgstr ""
 
-#: common_functions.php:3964
+#: common_functions.php:3921
 msgid "Action to perform when time limit is up"
 msgstr ""
 
-#: common_functions.php:3965
+#: common_functions.php:3922
 msgid "Time limit action"
 msgstr ""
 
-#: common_functions.php:3975
+#: common_functions.php:3932
 msgid "Disable the next button until time limit expires"
 msgstr ""
 
-#: common_functions.php:3976
+#: common_functions.php:3933
 msgid "Time limit disable next"
 msgstr ""
 
-#: common_functions.php:3985
+#: common_functions.php:3942
 msgid "Disable the prev button until the time limit expires"
 msgstr ""
 
-#: common_functions.php:3986
+#: common_functions.php:3943
 msgid "Time limit disable prev"
 msgstr ""
 
-#: common_functions.php:3993
+#: common_functions.php:3950
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: common_functions.php:3994
+#: common_functions.php:3951
 msgid "Time limit countdown message"
 msgstr ""
 
-#: common_functions.php:4001
+#: common_functions.php:3958
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: common_functions.php:4002
+#: common_functions.php:3959
 msgid "Time limit timer CSS style"
 msgstr ""
 
-#: common_functions.php:4009
+#: common_functions.php:3966
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr ""
 
-#: common_functions.php:4010
+#: common_functions.php:3967
 msgid "Time limit expiry message display time"
 msgstr ""
 
-#: common_functions.php:4017
+#: common_functions.php:3974
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:4018
+#: common_functions.php:3975
 msgid "Time limit expiry message"
 msgstr ""
 
-#: common_functions.php:4025
+#: common_functions.php:3982
 msgid "CSS style for the 'time limit expiry message'"
 msgstr ""
 
-#: common_functions.php:4026
+#: common_functions.php:3983
 msgid "Time limit message CSS style"
 msgstr ""
 
-#: common_functions.php:4033
+#: common_functions.php:3990
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: common_functions.php:4034
+#: common_functions.php:3991
 msgid "1st time limit warning message timer"
 msgstr ""
 
-#: common_functions.php:4041
+#: common_functions.php:3998
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:4042
+#: common_functions.php:3999
 msgid "1st time limit warning message display time"
 msgstr ""
 
-#: common_functions.php:4049
+#: common_functions.php:4006
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: common_functions.php:4050
+#: common_functions.php:4007
 msgid "1st time limit warning message"
 msgstr ""
 
-#: common_functions.php:4057
+#: common_functions.php:4014
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr ""
 
-#: common_functions.php:4058
+#: common_functions.php:4015
 msgid "1st time limit warning CSS style"
 msgstr ""
 
-#: common_functions.php:4065
+#: common_functions.php:4022
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: common_functions.php:4066
+#: common_functions.php:4023
 msgid "2nd time limit warning message timer"
 msgstr ""
 
-#: common_functions.php:4073
+#: common_functions.php:4030
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:4074
+#: common_functions.php:4031
 msgid "2nd time limit warning message display time"
 msgstr ""
 
-#: common_functions.php:4081
+#: common_functions.php:4038
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: common_functions.php:4082
+#: common_functions.php:4039
 msgid "2nd time limit warning message"
 msgstr ""
 
-#: common_functions.php:4089
+#: common_functions.php:4046
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr ""
 
-#: common_functions.php:4090
+#: common_functions.php:4047
 msgid "2nd time limit warning CSS style"
 msgstr ""
 
-#: common_functions.php:4094 common_functions.php:4105
+#: common_functions.php:4051 common_functions.php:4062
 msgid "File metadata"
 msgstr ""
 
-#: common_functions.php:4100
+#: common_functions.php:4057
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr ""
 
-#: common_functions.php:4101
+#: common_functions.php:4058
 msgid "Show title"
 msgstr ""
 
-#: common_functions.php:4111
+#: common_functions.php:4068
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr ""
 
-#: common_functions.php:4112
+#: common_functions.php:4069
 msgid "Show comment"
 msgstr ""
 
-#: common_functions.php:4121
+#: common_functions.php:4078
 msgid "The participant cannot upload a single file larger than this size"
 msgstr ""
 
-#: common_functions.php:4122
+#: common_functions.php:4079
 msgid "Maximum file size allowed (in KB)"
 msgstr ""
 
-#: common_functions.php:4130
+#: common_functions.php:4087
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr ""
 
-#: common_functions.php:4131
+#: common_functions.php:4088
 msgid "Max number of files"
 msgstr ""
 
-#: common_functions.php:4139
+#: common_functions.php:4096
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
-#: common_functions.php:4140
+#: common_functions.php:4097
 msgid "Min number of files"
 msgstr ""
 
-#: common_functions.php:4148
+#: common_functions.php:4105
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: common_functions.php:4149
+#: common_functions.php:4106
 msgid "Allowed file types"
 msgstr ""
 
-#: common_functions.php:4156
+#: common_functions.php:4113
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr ""
 
-#: common_functions.php:4157
+#: common_functions.php:4114
 msgid "Randomization group name"
 msgstr ""
 
-#: common_functions.php:4344
+#: common_functions.php:4301
 msgid "Version"
 msgstr ""
 
-#: common_functions.php:4353
+#: common_functions.php:4310
 msgid "Online Manual"
 msgstr ""
 
-#: common_functions.php:4356
+#: common_functions.php:4313
 msgid "Support this project - Donate to "
 msgstr ""
 
-#: common_functions.php:4359
+#: common_functions.php:4316
 msgid "Visit our website!"
 msgstr ""
 
-#: common_functions.php:4481
+#: common_functions.php:4438
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
-#: common_functions.php:4609
+#: common_functions.php:4566
 msgid "SMTP debug output:"
 msgstr ""
 
-#: common_functions.php:4753
+#: common_functions.php:4710
 msgid "SQL command failed: %s Reason: %s"
 msgstr ""
 
-#: common_functions.php:6595
+#: common_functions.php:6224
 msgid "Token code"
 msgstr ""
 
-#: common_functions.php:6596
+#: common_functions.php:6225
 msgid "Language code"
 msgstr ""
 
-#: common_functions.php:6597
+#: common_functions.php:6226
 msgid "Invitation sent date"
 msgstr ""
 
-#: common_functions.php:6598
+#: common_functions.php:6227
 msgid "Last Reminder sent date"
 msgstr ""
 
-#: common_functions.php:6599
+#: common_functions.php:6228
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: common_functions.php:6621
+#: common_functions.php:6250
 msgid "Attribute %s"
 msgstr ""
 
@@ -10499,55 +10503,55 @@ msgstr ""
 msgid "Clear Responses"
 msgstr ""
 
-#: group.php:427
+#: group.php:426
 msgid "Print your answers."
 msgstr ""
 
-#: group.php:432
+#: group.php:431
 msgid "or"
 msgstr ""
 
-#: group.php:439
+#: group.php:438
 msgid "View the statistics for this survey."
 msgstr ""
 
-#: group.php:495
+#: group.php:493
 msgid "Sorry. There is no matching survey."
 msgstr ""
 
-#: group.php:511
+#: group.php:509
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: group.php:516
+#: group.php:514
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: group.php:533
+#: group.php:531
 msgid "Submit your answers"
 msgstr ""
 
-#: group.php:534
+#: group.php:532
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
-#: group.php:816 qanda.php:504
+#: group.php:800 qanda.php:451
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: group.php:822 qanda.php:533
+#: group.php:806 qanda.php:478
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: group.php:828
+#: group.php:812
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: group.php:965 index.php:2935
+#: group.php:948 index.php:2935
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
-#: group.php:973
+#: group.php:956
 msgid "Question index"
 msgstr ""
 
@@ -10759,181 +10763,181 @@ msgid_plural "Check at least %d items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: qanda.php:175 qanda.php:176 qanda.php:218 qanda.php:219
+#: qanda.php:175 qanda.php:176 qanda.php:199 qanda.php:200
 msgid "Check any that apply"
 msgstr ""
 
-#: qanda.php:205 qanda.php:206 qanda.php:1282
+#: qanda.php:186 qanda.php:187 qanda.php:1252
 msgid "Choose your language"
 msgstr ""
 
-#: qanda.php:249 qanda.php:250
+#: qanda.php:211 qanda.php:212
 msgid "At least %d files must be uploaded for this question"
 msgstr ""
 
-#: qanda.php:497
+#: qanda.php:444
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr ""
 
-#: qanda.php:558
+#: qanda.php:503
 msgid "One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed"
 msgstr ""
 
-#: qanda.php:601
+#: qanda.php:546
 msgid "Your time to answer this question has expired"
 msgstr ""
 
-#: qanda.php:604
+#: qanda.php:549
 msgid "Time remaining"
 msgstr ""
 
-#: qanda.php:605 qanda.php:608
+#: qanda.php:550 qanda.php:553
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
 msgstr ""
 
-#: qanda.php:758 qanda.php:776 qanda.php:807
+#: qanda.php:703 qanda.php:721 qanda.php:752
 msgid "hours"
 msgstr ""
 
-#: qanda.php:759 qanda.php:777 qanda.php:808
+#: qanda.php:704 qanda.php:722 qanda.php:753
 msgid "mins"
 msgstr ""
 
-#: qanda.php:760 qanda.php:778 qanda.php:809 qanda.php:810
+#: qanda.php:705 qanda.php:723 qanda.php:754 qanda.php:755
 msgid "seconds"
 msgstr ""
 
-#: qanda.php:1095 qanda.php:1096
+#: qanda.php:1065 qanda.php:1066
 msgid "Day"
 msgstr ""
 
-#: qanda.php:1112 qanda.php:1113
+#: qanda.php:1082 qanda.php:1083
 msgid "Month"
 msgstr ""
 
-#: qanda.php:1115
+#: qanda.php:1085
 msgid "Jan"
 msgstr ""
 
-#: qanda.php:1116
+#: qanda.php:1086
 msgid "Feb"
 msgstr ""
 
-#: qanda.php:1117
+#: qanda.php:1087
 msgid "Mar"
 msgstr ""
 
-#: qanda.php:1118
+#: qanda.php:1088
 msgid "Apr"
 msgstr ""
 
-#: qanda.php:1119
+#: qanda.php:1089
 msgid "May"
 msgstr ""
 
-#: qanda.php:1120
+#: qanda.php:1090
 msgid "Jun"
 msgstr ""
 
-#: qanda.php:1121
+#: qanda.php:1091
 msgid "Jul"
 msgstr ""
 
-#: qanda.php:1122
+#: qanda.php:1092
 msgid "Aug"
 msgstr ""
 
-#: qanda.php:1123
+#: qanda.php:1093
 msgid "Sep"
 msgstr ""
 
-#: qanda.php:1124
+#: qanda.php:1094
 msgid "Oct"
 msgstr ""
 
-#: qanda.php:1125
+#: qanda.php:1095
 msgid "Nov"
 msgstr ""
 
-#: qanda.php:1126
+#: qanda.php:1096
 msgid "Dec"
 msgstr ""
 
-#: qanda.php:1142 qanda.php:1143
+#: qanda.php:1112 qanda.php:1113
 msgid "Year"
 msgstr ""
 
-#: qanda.php:1254
+#: qanda.php:1224
 msgid "Date picker"
 msgstr ""
 
-#: qanda.php:1539
+#: qanda.php:1504
 msgid "Other answer"
 msgstr ""
 
-#: qanda.php:1896
+#: qanda.php:1804
 msgid "Please enter your comment here"
 msgstr ""
 
-#: qanda.php:2208
+#: qanda.php:2107
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr ""
 
-#: qanda.php:2219 qanda.php:2234
+#: qanda.php:2118 qanda.php:2133
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] ""
 msgstr[1] ""
 
-#: qanda.php:2647
+#: qanda.php:2428
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr ""
 
-#: qanda.php:3063
+#: qanda.php:2700
 msgid "Upload files"
 msgstr ""
 
-#: qanda.php:3067
+#: qanda.php:2704
 msgid "Upload your files"
 msgstr ""
 
-#: qanda.php:3068
+#: qanda.php:2705
 msgid "Return to survey"
 msgstr ""
 
-#: qanda.php:3071
+#: qanda.php:2708
 msgid "File name"
 msgstr ""
 
-#: qanda.php:3248 qanda.php:3555 qanda.php:4757 qanda.php:6604
+#: qanda.php:2885 qanda.php:3140 qanda.php:4205 qanda.php:6029
 msgid "Error: This question has no answers."
 msgstr ""
 
-#: qanda.php:3700
+#: qanda.php:3285
 msgid "Only numbers may be entered in these fields"
 msgstr ""
 
-#: qanda.php:3735
+#: qanda.php:3296
 msgid "Remaining: "
 msgstr ""
 
-#: qanda.php:3742
+#: qanda.php:3303
 msgid "Total: "
 msgstr ""
 
-#: qanda.php:4102 qanda.php:4103
+#: qanda.php:3572 qanda.php:3573
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: qanda.php:5339 qanda.php:5719 qanda.php:6053 qanda.php:6200 qanda.php:6834
+#: qanda.php:4770 qanda.php:5150 qanda.php:5484 qanda.php:5631 qanda.php:6259
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: qanda.php:5970
+#: qanda.php:5401
 msgid "..."
 msgstr ""
 
-#: qanda.php:6194
+#: qanda.php:5625
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
