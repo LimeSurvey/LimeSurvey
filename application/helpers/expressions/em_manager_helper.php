@@ -624,7 +624,12 @@
          * @var array
          */
         private $qrootVarName2arrayFilter = array();
-
+        /**
+         * Array, keyed on qid, to JavaScript needed to implement exclude_all_others_auto
+         * @var type
+         */
+        private $qid2exclusiveAutoJS = array();
+        
         /**
         * A private constructor; prevents direct creation of object
         */
@@ -1224,7 +1229,62 @@
                 // exclude_all_others_auto
                 // if (count(this.relevanceStatus) == count(this)) { set exclusive option value to "Y" and call checkconditions() }
                 // However, note that would need to blank the values, not use relevance, otherwise can't unclick the _auto option without having it re-enable itself
-                //  TODO
+                if (isset($qattr['exclude_all_others_auto']) && trim($qattr['exclude_all_others_auto']) == '1'
+                        && isset($qattr['exclude_all_others']) && trim($qattr['exclude_all_others']) != '' && count(explode(';',trim($qattr['exclude_all_others']))) == 1)
+                {
+                    $exclusive_option = trim($qattr['exclude_all_others']);
+                    if ($hasSubqs) {
+                        $subqs = $qinfo['subqs'];
+                        $sq_names = array();
+                        foreach ($subqs as $sq) {
+                            $sq_name = NULL;
+                            switch ($type)
+                            {
+                                case 'M': //Multiple choice checkbox
+                                    if ($this->sgqaNaming)
+                                    {
+                                        $sq_name = substr($sq['jsVarName'],4);
+                                    }
+                                    else
+                                    {
+                                        $sq_name = $sq['varName'];
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!is_null($sq_name))
+                            {
+                                if ($sq['csuffix'] == $exclusive_option)
+                                {
+                                    $eoVarName = substr($sq['jsVarName'],4);
+                                }
+                                else
+                                {
+                                    $sq_names[] = $sq_name;
+                                }
+                            }
+                        }
+                        if (count($sq_names) > 0) {
+                            $relpart = "LEMsum(LEMval('" . implode(".relevanceStatus'), LEMval('", $sq_names) . ".relevanceStatus'))";
+                            $checkedpart = "LEMcount(LEMval('" . implode("'), LEMval('", $sq_names) . "'))";
+                            $eoRelevantAndUnchecked = "(LEMval('" . $eoVarName . ".relevanceStatus') && LEMval('" . $eoVarName . "')=='')";
+                            $eosaJS = "if (" . $eoRelevantAndUnchecked . " && (" . $relpart . " == " . $checkedpart . ")) {\n";
+                            // Unset all checkboxes and hidden values for this question (irregardless of whether they are array filtered)
+                            $eosaJS .="  $('#question" . $questionNum . " [type=checkbox]').attr('checked',false);\n";
+                            $eosaJS .="  $('#java" . $qinfo['sgqa'] . "other').val('');\n";
+                            $eosaJS .="  $('#answer" . $qinfo['sgqa'] . "other').val('');\n";
+                            $eosaJS .="  $('[id^=java" . $qinfo['sgqa'] . "]').val('');\n";
+                            $eosaJS .="  $('#answer" . $eoVarName . "').attr('checked',true);\n";
+                            $eosaJS .="  $('#java" . $eoVarName . "').val('Y');\n";
+                            $eosaJS .="  LEMrel" . $questionNum . "();\n";
+                            $eosaJS .="  relChange" . $questionNum ."=true;\n";
+                            $eosaJS .="}\n";
+
+                            $this->qid2exclusiveAutoJS[$questionNum] = $eosaJS;
+                        }
+                    }
+                }
 
                 // min_answers
                 // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
@@ -3438,6 +3498,7 @@
             $LEM->allOnOnePage=$allOnOnePage;
             $LEM->processedRelevance=false;
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
+            $LEM->qid2exclusiveAutoJS=array();
 
             //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
@@ -5981,6 +6042,11 @@
                         if ($_val==1)
                         {
                             $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                            if (isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
+                                && isset($LEM->qid2exclusiveAutoJS[$_qid]) && strlen($LEM->qid2exclusiveAutoJS[$_qid]) > 0)
+                            {
+                                $jsParts[] = $LEM->qid2exclusiveAutoJS[$_qid];
+                            }
                             if (isset($LEM->qattr[$_qid]['exclude_all_others']))
                             {
                                 foreach (explode(';',trim($LEM->qattr[$_qid]['exclude_all_others'])) as $eo)
@@ -6006,6 +6072,11 @@
                         if ($_val == 1)
                         {
                             $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                            if (isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
+                                && isset($LEM->qid2exclusiveAutoJS[$_qid]) && strlen($LEM->qid2exclusiveAutoJS[$_qid]) > 0)
+                            {
+                                $jsParts[] = $LEM->qid2exclusiveAutoJS[$_qid];
+                            }
                             if (isset($LEM->qattr[$_qid]['exclude_all_others']))
                             {
                                 foreach (explode(';',trim($LEM->qattr[$_qid]['exclude_all_others'])) as $eo)
