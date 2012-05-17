@@ -279,25 +279,25 @@ class Save {
         {
             $setField = $_POST['lastanswer'];
         }
-        else if (isset($_POST['lastgroup']))
-            {
-                $setField = $_POST['lastgroup'];
-            }
-            $passedTime = round(microtime(true) - $_POST['start_time'],2);
-
+        elseif (isset($_POST['lastgroup']))
+        {
+            $setField = $_POST['lastgroup'];
+        }
+        $passedTime = round(microtime(true) - $_POST['start_time'],2);
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
             $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
-            ."interviewtime = interviewtime" ." + " .$passedTime
-            ." WHERE id = " .$_SESSION['survey_'.$surveyid]['srid'];
-            Yii::app()->db->createCommand($query)->execute();
-            return;
-        }
+            ."interviewtime = IFNULL(interviewtime, 0 ) + " .$passedTime
+            ." WHERE id = " .$_SESSION['survey_'.$thissurvey['sid']]['srid'];
 
-        $setField .= "time";
-        $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
-        ."interviewtime = interviewtime" ." + " .$passedTime .","
-        .$setField." = ".$setField." + ".$passedTime
-        ." WHERE id = " .$_SESSION['survey_'.$$thissurvey['sid']]['srid'];
+        }
+        else
+        {
+            $setField .= "time";
+            $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
+            ."interviewtime =  IFNULL(interviewtime, 0 ) + " .$passedTime .","
+            .$setField." =  IFNULL(".$setField.", 0 ) + ".$passedTime
+            ." WHERE id = " .$_SESSION['survey_'.$thissurvey['sid']]['srid'];
+        }
         Yii::app()->db->createCommand($query)->execute();
     }
 }
