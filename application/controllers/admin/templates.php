@@ -76,8 +76,7 @@ class templates extends Survey_Common_Action
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
-
-
+        
         if ($action == 'templateupload') {
             if (Yii::app()->getConfig('demoMode'))
                 $this->getController()->error($clang->gT("Demo mode: Uploading templates is disabled."));
@@ -168,7 +167,57 @@ class templates extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
     }
-
+    /**
+    * Responsible to import a template file.
+    *
+    * @access public
+    * @return void
+    */
+    public function uploadfile()
+    {
+        $clang = $this->getController()->lang;
+        $action = returnGlobal('action');
+        $editfile = returnGlobal('editfile');
+        $templatename = returnGlobal('templatename');
+        $screenname = returnGlobal('screenname');
+        $files = $this->_initfiles($templatename);
+        $cssfiles = $this->_initcssfiles();
+        $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
+        $tempdir = Yii::app()->getConfig('tempdir');
+        $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
+        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
+        $fullfilepath=$basedestdir."/".$templatename . "/" . $filename;
+        
+        if($action=="templateuploadfile")
+        {
+            if(Yii::app()->getConfig('demoMode'))
+            {
+                $uploadresult = $clang->gT("Demo mode: Uploading template files is disabled.");
+            }
+            elseif($filename!=$_FILES['upload_file']['name'])
+            {
+                $uploadresult = $clang->gT("This filename is not allowed to be uploaded.");
+            }
+            elseif(!in_array(substr(strrchr($filename, '.'),1),explode ( "," , $allowedtemplateuploads )))
+            {
+            
+                $uploadresult = $clang->gT("This file type is not allowed to be uploaded.");
+            }
+            else
+            {
+                  //Uploads the file into the appropriate directory
+                   if (!@move_uploaded_file($_FILES['upload_file']['tmp_name'], $fullfilepath)) {
+                        $uploadresult = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir);
+                   }
+                   else
+                   {
+                        $uploadresult = sprintf($clang->gT("File %s uploaded"),$filename);
+                   }
+            }
+            Yii::app()->session['flashmessage'] = $uploadresult;
+        }
+        $this->getController()->redirect(array("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+    }
     /**
     * Generates a random temp directory
     *
@@ -226,7 +275,6 @@ class templates extends Survey_Common_Action
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminscripts') . 'codemirror_ui/css/codemirror-ui.css');
-
 
         $this->_renderWrappedTemplate('templates', $aViewUrls);
 

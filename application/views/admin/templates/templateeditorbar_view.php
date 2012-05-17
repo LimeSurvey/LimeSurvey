@@ -11,31 +11,38 @@
             sendPost('<?php echo $this->createUrl('admin/templates/template'); ?>'+action,'<?php echo Yii::app()->session['checksessionpost']; ?>',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
         }
     }
-    function checkuploadfiletype(filename)
-    {
-        var allowedtypes=',<?php echo Yii::app()->getConfig('allowedtemplateuploads'); ?>,';
-        var lastdotpos=-1;
-        var ext='';
-        if ((lastdotpos=filename.lastIndexOf('.')) < 0)
-            {
-            alert('<?php $clang->eT('This file type is not allowed to be uploaded.','js'); ?>');
-            return false;
-        }
-        else
-            {
-            ext = ',' + filename.substr(lastdotpos+1) + ',';
-            ext = ext.toLowerCase();
-            if (allowedtypes.indexOf(ext) < 0)
+
+    $(document).ready(function(){
+        $("#importtemplatefile").submit(function(){
+        
+            filename = $("#upload_file").val();
+            if(filename==""){
+                return false; // False click
+            }
+            var allowedtypes=',<?php echo Yii::app()->getConfig('allowedtemplateuploads'); ?>,';
+            var lastdotpos=-1;
+            var ext='';
+            if ((lastdotpos=filename.lastIndexOf('.')) < 0)
                 {
                 alert('<?php $clang->eT('This file type is not allowed to be uploaded.','js'); ?>');
                 return false;
             }
             else
                 {
-                return true;
+                ext = ',' + filename.substr(lastdotpos+1) + ',';
+                ext = ext.toLowerCase();
+                if (allowedtypes.indexOf(ext) < 0)
+                    {
+                    alert('<?php $clang->eT('This file type is not allowed to be uploaded.','js'); ?>');
+                    return false;
+                }
+                else
+                    {
+                    return true;
+                }
             }
-        }
-    }
+        });
+    });
     //-->
 </script>
 <div class='menubar'>
