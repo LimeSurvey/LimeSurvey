@@ -9,8 +9,6 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-*	$Id$
 */
 Yii::import('application.helpers.sanitize_helper', true);
 
@@ -4214,7 +4212,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     global $maildebug, $maildebugbody;
 
-    Yii::app()->loadConfig('email');
     $clang = Yii::app()->lang;
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");

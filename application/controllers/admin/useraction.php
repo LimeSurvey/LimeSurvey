@@ -12,8 +12,6 @@ if (!defined('BASEPATH'))
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
 */
 
 /**
@@ -139,7 +137,6 @@ class UserAction extends Survey_Common_Action
                 $body .= "<a href='" . $this->getController()->createUrl("/admin") . "'>" . $clang->gT("Click here to log in.") . "</a><br /><br />\n";
                 $body .= sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail")) . "<br />\n";
 
-                Yii::app()->loadConfig('email');
                 $subject = sprintf($clang->gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
                 $to = $new_user . " <$new_email>";
                 $from = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";

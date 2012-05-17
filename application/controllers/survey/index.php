@@ -9,8 +9,6 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-*	$Id: SurveyAction.php 12422 2012-02-09 13:23:27Z mennodekker $
 */
 
 class index extends CAction {
@@ -261,7 +259,6 @@ class index extends CAction {
             {
                 $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
             }
-            Yii::app()->loadConfig('email');
             if(!$surveyid)
             {
                 $thissurvey['name']=Yii::app()->getConfig("sitename");
