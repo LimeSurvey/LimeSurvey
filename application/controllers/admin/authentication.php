@@ -306,17 +306,21 @@ class Authentication extends Survey_Common_Action
     private function _setLanguageSettings($user)
     {
 
-        if (Yii::app()->request->getPost('loginlang') !== 'default')
+        if ($user->lang=='auto')
+        {
+            $sLanguage= getBrowserLanguage();
+        }
+        elseif (Yii::app()->request->getPost('loginlang') != 'default')
         {
             $user->lang = sanitize_languagecode(Yii::app()->request->getPost('loginlang'));
             $user->save();
             $sLanguage=$user->lang;
         }
-
-        if ($user->lang=='auto')
+        else
         {
-            $sLanguage= getBrowserLanguage();
+            $sLanguage=$user->lang;
         }
+
         Yii::app()->session['adminlang'] = $sLanguage;
         $this->getController()->lang= new limesurvey_lang($sLanguage);
     }
