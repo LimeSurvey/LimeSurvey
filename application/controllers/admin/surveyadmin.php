@@ -583,7 +583,7 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $tokens = Tokens_dynamic::model($rows['sid'])->count();
                     $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
-                    'condition' => 'completed != "N"'
+                    'condition' => "completed <> 'N'"
                     ));
 
                     $aSurveyEntry[] = $tokens;

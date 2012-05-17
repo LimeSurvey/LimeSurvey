@@ -548,10 +548,10 @@ function getTemplateList()
 
 function getAdminThemeList()
 {
-   // $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+    // $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
     $standardtemplaterootdir=Yii::app()->getConfig("styledir");
 
-//    if (!$usertemplaterootdir) {die("getTemplateList() no template directory");}
+    //    if (!$usertemplaterootdir) {die("getTemplateList() no template directory");}
     if ($handle = opendir($standardtemplaterootdir))
     {
         while (false !== ($file = readdir($handle)))
@@ -564,16 +564,16 @@ function getAdminThemeList()
         closedir($handle);
     }
 
-/*    if ($handle = opendir($usertemplaterootdir))
+    /*    if ($handle = opendir($usertemplaterootdir))
     {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-            {
-                $list_of_files[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-            }
-        }
-        closedir($handle);
+    while (false !== ($file = readdir($handle)))
+    {
+    if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+    {
+    $list_of_files[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+    }
+    }
+    closedir($handle);
     }         */
     ksort($list_of_files);
 
@@ -1774,7 +1774,7 @@ function getSIDGIDQIDAIDType($fieldcode)
 */
 function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
 {
-    if (is_null($sValue)) return '';
+    if (is_null($sValue) || $sValue=='') return '';
     $sLanguage = $oLanguage->langcode;
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
@@ -7520,22 +7520,22 @@ function getIPAddress()
 */
 function getBrowserLanguage()
 {
-        $sLanguage=Yii::app()->getRequest()->getPreferredLanguage();
-        Yii::app()->loadHelper("surveytranslator");
-        $aLanguages=getLanguageData();
+    $sLanguage=Yii::app()->getRequest()->getPreferredLanguage();
+    Yii::app()->loadHelper("surveytranslator");
+    $aLanguages=getLanguageData();
+    if (!isset($aLanguages[$sLanguage]))
+    {
+        $sLanguage=str_replace('_','-',$sLanguage);
         if (!isset($aLanguages[$sLanguage]))
         {
-            $sLanguage=str_replace('_','-',$sLanguage);
+            $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
             if (!isset($aLanguages[$sLanguage]))
             {
-                $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
-                if (!isset($aLanguages[$sLanguage]))
-                {
-                   $sLanguage=Yii::app()->getConfig('defaultlang');
-                }
+                $sLanguage=Yii::app()->getConfig('defaultlang');
             }
         }
-        return $sLanguage;
+    }
+    return $sLanguage;
 }
 
 

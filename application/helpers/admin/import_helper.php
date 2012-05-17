@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
 */
 
 
@@ -4138,17 +4137,17 @@ function XSSFilterArray(&$array)
 }
 
 /**
- * Import survey from an Excel file template that does not require or allow assigning of GID or QID values.
- * NOTE:  This currently only supports import of one language
- * @global type $connect
- * @global type $dbprefix
- * @global type $clang
- * @global type $timeadjust
- * @param type $sFullFilepath
- * @return type
- *
- * @author TMSWhite
- */
+* Import survey from an Excel file template that does not require or allow assigning of GID or QID values.
+* NOTE:  This currently only supports import of one language
+* @global type $connect
+* @global type $dbprefix
+* @global type $clang
+* @global type $timeadjust
+* @param type $sFullFilepath
+* @return type
+*
+* @author TMSWhite
+*/
 function ExcelImportSurvey($sFullFilepath)
 {
     $clang = Yii::app()->lang;
@@ -4244,7 +4243,7 @@ function ExcelImportSurvey($sFullFilepath)
             }
             else
             {
-                 $insertdata['surveyls_title'] = $_title;
+                $insertdata['surveyls_title'] = $_title;
             }
 
 
@@ -4396,19 +4395,19 @@ function ExcelImportSurvey($sFullFilepath)
                         ;   // these are fake rows to show naming of comment and filecount fields
                     }
                     else if ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
-                    {
-                        // only want to set default value for 'other' in these cases - not a real SQ row
-                        // TODO - this isn't working
-                        if (isset($row['default']))
                         {
-                            $insertdata=array();
-                            $insertdata['qid'] = $qid;
-                            $insertdata['specialtype'] = 'other';
-                            $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                            $insertdata['defaultvalue'] = $row['default'];
-                            $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
-                            $results['defaultvalues']++;
-                        }
+                            // only want to set default value for 'other' in these cases - not a real SQ row
+                            // TODO - this isn't working
+                            if (isset($row['default']))
+                            {
+                                $insertdata=array();
+                                $insertdata['qid'] = $qid;
+                                $insertdata['specialtype'] = 'other';
+                                $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                                $insertdata['defaultvalue'] = $row['default'];
+                                $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
+                                $results['defaultvalues']++;
+                            }
                     }
                     else
                     {
@@ -4434,7 +4433,7 @@ function ExcelImportSurvey($sFullFilepath)
                             $qseq = $sqinfo[$fullsqname]['question_order'];
                             $sqid = $sqinfo[$fullsqname]['sqid'];
                             $insertdata['question_order'] = $qseq;
-//                            $insertdata['qid'] = $sqid; // this was causing key duplications - removing it seems to have fixed that
+                            //                            $insertdata['qid'] = $sqid; // this was causing key duplications - removing it seems to have fixed that
                         }
                         else
                         {
