@@ -89,21 +89,25 @@ class Tokens_dynamic extends CActiveRecord
 		$tksr = Yii::app()->db->createCommand($tksq)->query();
 		$tkr = $tksr->read();
 		$data['query1'] = $tkr["count(*)"]." / $tkcount";
+		$data['tkinvalid']= $tkr["count(*)"];
 
 		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE (sent!='N' and sent<>'')";
 		$tksr = Yii::app()->db->createCommand($tksq)->query();
 		$tkr = $tksr->read();
 		$data['query2'] = $tkr["count(*)"]." / $tkcount";
+		$data['tksent']= $tkr["count(*)"];
 
 		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE emailstatus = 'OptOut'";
 		$tksr = Yii::app()->db->createCommand($tksq)->query();
 		$tkr = $tksr->read();
 		$data['query3'] = $tkr["count(*)"]." / $tkcount";
+		$data['tkoptout']= $tkr["count(*)"];
 
 		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE (completed!='N' and completed<>'')";
 		$tksr = Yii::app()->db->createCommand($tksq)->query();
 		$tkr = $tksr->read();
 		$data['query4'] = $tkr["count(*)"]." / $tkcount";
+		$data['tkcompleted']= $tkr["count(*)"];
 
 		return $data;
 	}
