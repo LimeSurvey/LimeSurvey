@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:08:02+0000\n"
+"PO-Revision-Date: 2012-05-17 06:56:10+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1366,7 +1366,7 @@ msgstr "Пытанне не можа быць дададзена. Вы паві�
 msgid "Question in language %s could not be created."
 msgstr "Пытанне на мове %s ня можа быць створана."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Пытанне не можа быць створана."
 
@@ -1378,7 +1378,7 @@ msgstr "Пытанне было паспяхова дададзена."
 msgid "Question codes were successfully regenerated."
 msgstr "Кады пытання былі паспяхова адноўлены."
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Пытанне не можа быць абноўлена"
 
@@ -1386,83 +1386,83 @@ msgstr "Пытанне не можа быць абноўлена"
 msgid "Default value settings were successfully saved."
 msgstr "Значэнні па змаўчанні наладак былі паспяхова захаваныя."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Пытанне не абноўлена. Ёсць умовы для іншых пытанняў, якія залежаць ад адказаў на гэтае пытанне і змяненне тыпу можа выклікаць праблемы. Вы павінны выдаліць ўмовы, перш чым вы зможаце змяніць тып гэтага пытання."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "Пытанне было паспяхова захавана."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Пытанне не можа быць дададзена. Вы павінны ўставіць код у абавязковае поле"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr "Пытанне было паспяхова скапіявана."
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Пытанне не можа быць выдалена. Ёсць умовы для іншых пытанняў, якія залежаць ад гэтага пытання. Выдаліце спачатку ўмовы"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "Пытанне было паспяхова выдалена."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Не атрымалася абнавіць адказы"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Адказы з кодам 0 або без кода недапушчальны, і ня будуць захаваны"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Паўтаральныя коды знойдзены, гэтыя элементы не будуць абнаўлены"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "Варыянты адказаў былі паспяхова захаваныя."
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Не атрымалася выдаліць адказ"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "Падпытанні былі паспяхова захаваныя."
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "Наладкі апытання былі паспяхова захаваныя."
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Апытанне не можа быць абноўлена"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "Шаблоны лістоў паспяхова захаваны."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "Памылка пры выдаленні ID апытання"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "Тэкставыя элементы апытання паспяхова захаваны."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Апытанне не можа быць створана, таму што няма назвы апытання"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "Апытанне было паспяхова дададзена."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "Вашыя асабістыя наладкі былі паспяхова захаваны."
 

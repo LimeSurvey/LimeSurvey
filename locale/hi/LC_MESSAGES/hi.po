@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:15+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:23+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1275,7 +1275,7 @@ msgstr "प्रश्न कहा नहीं जा सका. आप क�
 msgid "Question in language %s could not be created."
 msgstr "भाषा %s में प्रश्न नहीं बनाया जा सकता है."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "सवाल नहीं बनाया जा सकता है."
 
@@ -1287,7 +1287,7 @@ msgstr "प्रश्न सफलतापूर्वक जोड़ा ग
 msgid "Question codes were successfully regenerated."
 msgstr "सवाल कोड सफलतापूर्वक पुनर्जीवित किया गया."
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "सवाल अद्यतन नहीं किया जा सकता है"
 
@@ -1295,83 +1295,83 @@ msgstr "सवाल अद्यतन नहीं किया जा सक�
 msgid "Default value settings were successfully saved."
 msgstr "मूलभूत मान सेटिंग्स सफलतापूर्वक बच गए."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "सवाल अद्यतन नहीं किया जा सकता है. वहाँ अन्य प्रश्न है कि जवाब पर इस सवाल का भरोसा करते हैं और प्रकार का परिवर्तन करने के लिए समस्याएं पैदा करेगा शर्तों रहे हैं. आप इन शर्तों हटाने से पहले आप इस प्रश्न का प्रकार बदल सकते हैं चाहिए."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "प्रश्न सफलतापूर्वक बचाया गया था."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "प्रश्न कहा नहीं जा सका. आप सम्मिलित करना अनिवार्य क्षेत्र में एक कोड"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr "प्रश्न सफलतापूर्वक नकल की थी."
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "सवाल नष्ट नहीं किया जा सकता है. वहाँ अन्य प्रश्न है कि इस सवाल पर निर्भर के लिए शर्तों रहे हैं. आप इस सवाल को नष्ट नहीं जब तक उन शर्तों को हटा रहे हैं कर सकते हैं"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "प्रश्न सफलतापूर्वक नष्ट किया गया."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "के जवाब में असफल अद्यतन"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "0 (शून्य) या रिक्त कोड का एक कोड के साथ उत्तर की अनुमति नहीं कर रहे हैं और सहेजा नहीं जाएगा"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "नकल कोड पाया, इन प्रविष्टियों को अद्यतन नहीं किया जाएगा"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "जवाब विकल्प सफलतापूर्वक बच गए."
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "जवाब देने के लिए हटाने में विफल"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "Subquestions सफलतापूर्वक बच गए."
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "सर्वेक्षण सेटिंग सफलतापूर्वक बच गए."
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "सर्वेक्षण अद्यतन नहीं किया जा सकता है"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "ईमेल सफलतापूर्वक बचाया टेम्पलेट्स."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "त्रुटि को हटाने सर्वेक्षण आईडी"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "सर्वेक्षण पाठ तत्वों को सफलतापूर्वक बचाया."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "सर्वेक्षण क्योंकि यह एक शीर्षक नहीं था बनाया नहीं जा सका"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "सर्वेक्षण में सफलतापूर्वक जोड़ा गया है."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "अपनी व्यक्तिगत सेटिंग्स को सफलतापूर्वक बच गए."
 

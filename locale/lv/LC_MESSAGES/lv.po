@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:23+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:31+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1293,7 +1293,7 @@ msgstr "Jautājums nevarēja tikt pievienots. Jums jāievada vismaz jautājuma k
 msgid "Question in language %s could not be created."
 msgstr ""
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Juatājumu nav izdevies izveidot."
 
@@ -1305,7 +1305,7 @@ msgstr ""
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Jautājumu nav izdevies atjaunināt"
 
@@ -1313,83 +1313,83 @@ msgstr "Jautājumu nav izdevies atjaunināt"
 msgid "Default value settings were successfully saved."
 msgstr "Sākuma vērtību iestatījumi tika veiksmīgi saglabāti."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Grupu nav izdevies atjaunināt.  Citos jautājumos ir nosacījumi, kuri ir saistīti ar šī jautājuma atbildēm, un izmaiņas jautājuma tipā var radīt problēmas.  Vispirms Jums jāizdzēs šie nosacījumu un tad iespējams izmainīt jautājuma tipu."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr ""
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Jautājumu nav iespējams pievienot.  Jums jāievada kods obligātajā laukā"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Jautājumu nav iespējams izdzēst.  Citos jautājumos pastāv nosacījumi, kuri ir pakļauti šim jautājumam.  Jūs nevarat izdzēst šo jautājumu, kamēr nav noņemti šie nosacījumi"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "Jautājums veiksmīgi dzēsts."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Atbldes nav izdevies atjaunināt"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Atbildes ar kodu 0 (nulle) vai tukšs kods nav atļautas un netiks saglabātas"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Duplicēti kodi tika atrasti, šie ieraksti netiks atjaunināti"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "Atbildes iestatījumi tika veiksmīgi saglabāti."
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Nav izdevies izdzēst atbildi"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Aptauja nevarēja tikt atjaunināta"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "Lietotāja epasta šablonu atjaunināšana veiksmīga."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "KĻŪDA dzēšot pētījuma ID"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "Aptaujas teksta elementi veiksmīgi saglabāti."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Aptauja netika izveidota, jo tai nebija virsraksta"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "Aptauja tika veiksmīgi pievienota."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr ""
 

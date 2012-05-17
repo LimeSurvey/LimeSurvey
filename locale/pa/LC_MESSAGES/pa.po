@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:08:03+0000\n"
+"PO-Revision-Date: 2012-05-17 06:56:11+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1275,7 +1275,7 @@ msgstr "ਪ੍ਰਸ਼ਨ ਕਿਹਾ ਨਹੀਂ ਜਾ ਸਕਿਆ . ਤੁ�
 msgid "Question in language %s could not be created."
 msgstr "ਭਾਸ਼ਾ %s ਵਿੱਚ ਪ੍ਰਸ਼ਨ ਨਹੀਂ ਬਣਾਇਆ ਜਾ ਸਕਦਾ ਹੈ . "
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "ਸਵਾਲ ਨਹੀਂ ਬਣਾਇਆ ਜਾ ਸਕਦਾ ਹੈ . "
 
@@ -1287,7 +1287,7 @@ msgstr "ਸਵਾਲ ਰਖ ਦਿਯਾ. "
 msgid "Question codes were successfully regenerated."
 msgstr "ਪ੍ਰਸ਼ਨ ਕੋਡ ਨੂੰ ਸਫਲਤਾਪੂਰਵਕ ਜੁਆਇਆ ਸਨ ."
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "ਸਵਾਲ ਅਦਿਅਤਨ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ"
 
@@ -1295,83 +1295,83 @@ msgstr "ਸਵਾਲ ਅਦਿਅਤਨ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕ�
 msgid "Default value settings were successfully saved."
 msgstr "ਡਿਫਾਲਟ ਮਾਨ  ਸੇਟਿੰਗ ਸਫਲਤਾਪੂਰਵਕ ਸਹੇਜੇ ਗਏ ."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "ਸਵਾਲ ਅਦਿਅਤਨ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ . ਉੱਥੇ ਹੋਰ ਪ੍ਰਸ਼ਨ ਹੈ ਕਿ ਜਵਾਬ ਉੱਤੇ ਇਸ ਸਵਾਲ ਦਾ ਭਰੋਸਾ ਕਰਦੇ ਹਨ ਅਤੇ ਪ੍ਰਕਾਰ ਦਾ ਤਬਦੀਲੀ ਕਰਣ ਲਈ ਸਮੱਸਿਆਵਾਂ ਪੈਦਾ ਕਰੇਗਾ ਸ਼ਰਤਾਂ ਰਹੇ ਹਨ . ਤੁਸੀ ਇਸ ਸ਼ਰਤਾਂ ਹਟਾਣ ਤੋਂ ਪਹਿਲਾਂ ਤੁਸੀ ਇਸ ਪ੍ਰਸ਼ਨ ਦਾ ਪ੍ਰਕਾਰ ਬਦਲ ਸੱਕਦੇ ਹੋ ਚਾਹੀਦਾ ਹੈ . "
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "ਸਵਾਲ ਰਖ ਦਿਯਾ. "
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "ਪ੍ਰਸ਼ਨ ਕਿਹਾ ਨਹੀਂ ਜਾ ਸਕਿਆ . ਤੁਸੀ ਸਮਿੱਲਤ ਕਰਣਾ ਲਾਜ਼ਮੀ ਖੇਤਰ ਵਿੱਚ ਇੱਕ ਕੋਡ"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr "ਸਵਾਲ ਨਕਲ ਕਰ ਦਿਯਾ."
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "ਸਵਾਲ ਨਸ਼ਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ . ਉੱਥੇ ਹੋਰ ਪ੍ਰਸ਼ਨ ਹੈ ਕਿ ਇਸ ਸਵਾਲ ਉੱਤੇ ਨਿਰਭਰ ਲਈ ਸ਼ਰਤਾਂ ਰਹੇ ਹਨ . ਤੁਸੀ ਇਸ ਸਵਾਲ ਨੂੰ ਨਸ਼ਟ ਨਹੀਂ ਜਦੋਂ ਤੱਕ ਉਨ੍ਹਾਂ ਸ਼ਰਤਾਂ ਨੂੰ ਹਟਾ ਰਹੇ ਹਨ ਕਰ ਸੱਕਦੇ ਹੋ"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "ਸਵਾਲ ਹਟਾ ਦਿਯਾ. "
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "ਦੇ ਜਵਾਬ ਵਿੱਚ ਅਸਫਲ ਅਦਿਅਤਨ"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "0 ( ਸਿਫ਼ਰ ) ਜਾਂ ਖਾਲੀ ਕੋਡ ਦਾ ਇੱਕ ਕੋਡ ਦੇ ਨਾਲ ਜਵਾਬ ਦੀ ਆਗਿਆ ਨਹੀਂ ਕਰ ਰਹੇ ਹਨ ਅਤੇ ਸਹੇਜਾ ਨਹੀਂ ਜਾਵੇਗਾ"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "ਨਕਲ ਕੋਡ ਪਾਇਆ , ਇਸ ਪ੍ਰਵਿਸ਼ਟੀਆਂ ਨੂੰ ਅਦਿਅਤਨ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "ਜਵਾਬ ਦੇ ਵਿਕਲਪ ਰਖ ਦਿਏ. "
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "ਜਵਾਬ ਦੇਣ ਲਈ ਹਟਾਣ ਵਿੱਚ ਅਸਫਲ"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "ਨਿਚ ਸਵਾਲ ਰਖ ਦਿਯਾ. "
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "ਸਰਵੇਯ ਸੇਤ੍ਤਿੰਗ੍ਸ  ਰਖ ਦਿਯਾ. "
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "ਸਰਵੇਖਣ ਅਦਿਅਤਨ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "ਏਮਿਲ ਤੇਮ੍ਪ੍ਲੇਟ ਰਖ ਦਿਯਾ. "
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "ਖਾਮੀਂ ਹਟਾਣ ਸਰਵੇਖਣ ਆਈਡੀ"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "ਸਰਵੇਖਣ ਪਾਠ ਤਤਵੋਂ ਸਫਲਤਾਪੂਰਵਕ ਬਚਾਇਆ ."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "ਸਰਵੇਖਣ ਕਿਉਂਕਿ ਇਹ ਇੱਕ ਸਿਰਲੇਖ ਨਹੀਂ ਸੀ ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "ਸਰਵੇਯ  ਰਖ ਦਿਯਾ. "
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "ਆਪਣੀ ਵਿਅਕਤੀਗਤ ਸੇਟਿੰਗਸ ਨੂੰ ਸਫਲਤਾਪੂਰਵਕ ਬੱਚ ਗਏ . "
 

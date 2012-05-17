@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:14+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1303,7 +1303,7 @@ msgstr "Kysymystä ei voitu lisätä. Sinun täytyy syöttää vähintään yksi
 msgid "Question in language %s could not be created."
 msgstr "Kysymystä kielellä %s ei voitu luoda."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Kysymystä ei voitu luoda."
 
@@ -1315,7 +1315,7 @@ msgstr ""
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Kysymystä ei voitu päivittää"
 
@@ -1323,83 +1323,83 @@ msgstr "Kysymystä ei voitu päivittää"
 msgid "Default value settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Kysymystä ei voitu päivittää. Muilla kysymyksillä on ehtoja, jotka riippuvat tämän kysymyksen vastauksista ja tyypin muuttaminen aiheuttaa ongelmia. Poista nämä ehdot ennen kuin muutat kysymyksen tyyppiä."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "Kysymys tallennettiin onnistuneesti."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Kysymystä ei voitu lisätä. Kirjoita koodi pakolliseen kenttään"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Kysymystä ei voitu poistaa. Muilla kysymyksillä on ehtoja, jotka riippuvat tästä kysymyksesta. Et voi poistaa tätä kysymystä ennen kuin nämä ehdot on poistettu"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Vastausten päivitys epäonnistui"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Vastauksia, joiden koodi on 0 (nolla) tai tyhjä ei sallita,  ja niitä ei tallenneta"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Koodit on kopioitu, näitä merkintöjä ei päivitetä"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr ""
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Vastauksen poistaminen epäonnistui"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Kyselyä ei voitu päivittää"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr ""
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "VIRHE poistettaessa kyselyn tunnusta"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Kyselyä ei voitu luoda koska siitä puuttui otsikko"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr ""
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "Henkilökohtaiset asetuksesi tallennettiin onnistuneesti."
 
