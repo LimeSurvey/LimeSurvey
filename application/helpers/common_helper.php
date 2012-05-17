@@ -6952,8 +6952,6 @@ function modifyDatabase($sqlfile='', $sqlstring='')
     global $codeString;
     global $modifyoutput;
 
-    Yii::app()->loadLibrary('admin/sha256','sha256');
-    $sha256 = new sha256;
     $success = true;  // Let's be optimistic
     $modifyoutput='';
 
@@ -6985,7 +6983,7 @@ function modifyDatabase($sqlfile='', $sqlstring='')
                 $command .= $line;
                 $command = str_replace('prefix_', Yii::app()->db->tablePrefix, $command); // Table prefixes
                 $command = str_replace('$defaultuser', Yii::app()->getConfig('defaultuser'), $command);
-                $command = str_replace('$defaultpass', $sha256->hashing(Yii::app()->getConfig('defaultpass')), $command);
+                $command = str_replace('$defaultpass', hash('sha256',Yii::app()->getConfig('defaultpass')), $command);
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
                 $command = str_replace('$defaultlang', Yii::app()->getConfig('defaultlang'), $command);
@@ -7116,13 +7114,6 @@ function getPrintableHeader()
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
-
-    <!--[if lt IE 7]>
-    <script type="text/javascript" src="'.$homeurl.'/scripts/DD_belatedPNG_0.0.8a-min.js"></script>
-    <script>
-    DD_belatedPNG.fix("img");
-    </script>
-    <![endif]-->
     ';
     return $headelements;
 }

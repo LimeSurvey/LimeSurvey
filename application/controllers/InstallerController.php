@@ -37,12 +37,6 @@ class InstallerController extends CController {
     public $lang = null;
 
     /**
-    * Sha256
-    * @var Sha256
-    */
-    private $sha256;
-
-    /**
     * Checks for action specific authorization and then executes an action
     *
     * @access public
@@ -626,10 +620,7 @@ class InstallerController extends CController {
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
-                    $this->loadLibrary('admin/sha256');
-                    $this->sha256 = new SHA256;
-                    $password_hash = $this->sha256->hashing($defaultpass);
-
+                    $password_hash=hash('sha256', $defaultpass);
                     try {
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID()));
 
@@ -1200,9 +1191,7 @@ class InstallerController extends CController {
             echo $sError.PHP_EOL;
         }
 
-        $this->loadLibrary('admin/sha256');
-        $this->sha256 = new SHA256;
-        $sPasswordHash = $this->sha256->hashing(Yii::app()->getConfig('defaultpass'));
+        $sPasswordHash=hash('sha256', Yii::app()->getConfig('defaultpass'));
 
         try {
             $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID()));
