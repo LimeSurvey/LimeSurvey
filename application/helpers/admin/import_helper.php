@@ -3973,7 +3973,8 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
             $aXLMFieldNames[]=(string)$sFieldName;
         }
         // Get a list of all fieldnames in the token table
-        $aTokenFieldNames=$CI->db->list_fields('tokens_'.$iSurveyID);
+        $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyID}}",true);
+        $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate=array_diff($aXLMFieldNames, $aTokenFieldNames);
         foreach ($aFieldsToCreate as $sField)
         {
@@ -3998,7 +3999,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-        $result = Tokens_dynamic::model($iSurveyID)->insertToken($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $result = Tokens_dynamic::model($iSurveyID)->insertToken($iSurveyID,$insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
 
         $results['tokens']++;
     }

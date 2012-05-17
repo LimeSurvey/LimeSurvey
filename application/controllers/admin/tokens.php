@@ -2053,28 +2053,7 @@ class tokens extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if (Yii::app()->request->getPost('createtable') == "Y" && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
-            $fields = array(
-            'tid' => 'int(11) not null auto_increment primary key',
-            'participant_id' => 'VARCHAR(50)',
-            'firstname' => 'VARCHAR(40)',
-            'lastname' => 'VARCHAR(40)',
-            'email' => 'text',
-            'emailstatus' => 'text',
-            'token' => 'VARCHAR(35)',
-            'language' => 'VARCHAR(25)',
-            'blacklisted' => 'CHAR(17)',
-            'sent' => 'VARCHAR(17) DEFAULT "N"',
-            'remindersent' => 'VARCHAR(17) DEFAULT "N"',
-            'remindercount' => 'INT(11) DEFAULT 0',
-            'completed' => 'VARCHAR(17) DEFAULT "N"',
-            'usesleft' => 'INT(11) DEFAULT 1',
-            'validfrom' => 'DATETIME',
-            'validuntil' => 'DATETIME',
-            'mpid' => 'INT(11)'
-            );
-            $comm = Yii::app()->db->createCommand();
-            $comm->createTable("{{tokens_".intval($iSurveyId)."}}", $fields);
-
+            createTokenTable($iSurveyId);
             $this->_renderWrappedTemplate('token', array('message' =>array(
             'title' => $clang->gT("Token control"),
             'message' => $clang->gT("A token table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
