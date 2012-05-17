@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:53+0000\n"
+"PO-Revision-Date: 2012-05-17 06:56:01+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1304,7 +1304,7 @@ msgstr ""
 msgid "Question in language %s could not be created."
 msgstr ""
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Није могуће креирати питање."
 
@@ -1316,7 +1316,7 @@ msgstr "Питања успешно додана."
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Није могуће променити питање"
 
@@ -1324,83 +1324,83 @@ msgstr "Није могуће променити питање"
 msgid "Default value settings were successfully saved."
 msgstr "Подразумеване вредности подешавања су успешно сачувана."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Питање не може бити промењено. Постоје услови/правила за друга питања која се ослањају на одговоре на ово питање и промена типа питања ће проузроковати проблеме. Морате обрисати ове услове/правила пре него што промените тип овог питања."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "Питање је успешно снимљено."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Није могуће додати питање. Морате унети код у обавезно поље"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Питање не може бити обрисано. Постоје услови/правила за друга питања која се ослањају на ово питање. Не можете обрисати ово питање док не уклоните услове/правила."
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "Питање није могуће обрисати"
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Грешка при промени одговора"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Одговори са кодом 0 (нула) или прелазним кодом нису дозвољени, и неће бити снимљени."
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Пронађени су дупликати кодова, ови записи неће бити промењени"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "Опције одговора успешно сачувани"
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Неуспешно брисање одговора"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "Подпитања успешно сачувана."
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "Подешавања анкете су успешно сачувани."
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Анкету није могуће променити"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "Е-мејл шаблони су успешно сачувани."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "ГРЕШКА при брисању id-a анкете"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "Текстуални елементи анкете су успешно сачувани."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Анкету није могуће креирати због недостатка наслова"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "Анкета је успешно додата."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "Ваша лична подешавања су успешно сачувана."
 

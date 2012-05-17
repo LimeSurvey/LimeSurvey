@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:08:06+0000\n"
+"PO-Revision-Date: 2012-05-17 06:56:15+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1303,7 +1303,7 @@ msgstr ""
 msgid "Question in language %s could not be created."
 msgstr ""
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Níorbh fhéidir an cheist a chruthú."
 
@@ -1315,7 +1315,7 @@ msgstr ""
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Níorbh fhéidir an cheist a nuashonrú"
 
@@ -1323,83 +1323,83 @@ msgstr "Níorbh fhéidir an cheist a nuashonrú"
 msgid "Default value settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Níorbh fhéidir an cheist a nuashonrú. Is ann do choinníollacha do cheisteanna eile a bhraitheann ar fhreagraí na ceiste seo agus cruthóidh athrú an chineáil deacrachtaí. Ní mór duit na coinníollacha seo a scriosadh sula n-athraíonn tú cineál na ceiste seo."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr ""
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Níorbh fhéidir an cheist a chur leis. Ní mór duit cód a ionsá sa réimse éigeantach"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Níorbh fhéidir an cheist a scriosadh. Is ann do choinníollacha do cheisteanna eile a bhraitheann ar an gceist seo. Ní féidir leat an cheist seo a scriosadh go dtí go mbainfear na coinníollacha sin"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Teip ar nuashonrú freagraí"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Ní cheadaítear freagraí ag a bhfuil cód 0 (nialas) ná cód bán agus ní shábhálfar iad"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Fuarthas cóid dhúblacha, ní nuashonrófar na hiontrálacha seo"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr ""
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Teip ar scriosadh freagra"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Níorbh fhéidir an suirbhé a nuashonrú."
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr ""
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "EARRÁID agus ID Suirbhé á scriosadh"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr ""
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr ""
 

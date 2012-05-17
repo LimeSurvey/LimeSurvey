@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:41+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:49+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1335,7 +1335,7 @@ msgstr "No s'ha pogut afegir la pregunta. Com a mínim ha d'introduir un codi de
 msgid "Question in language %s could not be created."
 msgstr "No s'ha pogut crear la pregunta en l'idioma %s."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "No s'ha pogut crear la pregunta."
 
@@ -1347,7 +1347,7 @@ msgstr ""
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "No s'ha pogut actualitzar la pregunta"
 
@@ -1355,83 +1355,83 @@ msgstr "No s'ha pogut actualitzar la pregunta"
 msgid "Default value settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "No s'ha pogut actualitzar la pregunta. Hi ha condicions an altres preguntes que depenen de les respostes d'aquesta pregunta i modificant el seu tipo provocaria alguns problemes. Ha d'eliminar les condicions abans de modificar el tipo d'aquesta pregunta."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr ""
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "No s'ha pogut afegir la pregunta. Ha d'introduir un codi en el camp obligatori"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "No s'ha pogut eliminar la pregunta. Hi ha condicions d'altres preguntes que depenen d'aquesta pregunta. No pot eliminar aquesta pregunta fins que no elimini les condicions."
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "No s'han pogut actualitzar les respostes"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Les respostes amb codi 0 (zero) o en blanc no estan permeses i no seran guardades"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Hi ha una duplicitat en els codis, aquestes entrades no seran actualitzades"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr ""
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "No s'ha pogut eliminar la resposta"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "No s'ha pogut actualitzar l'enquesta"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr ""
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "ERROR eliminant l'identificador de l'Enquesta"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "No s'ha pogut crear l'enquesta perquè no té títol."
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr ""
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "La seva configuració personal s'ha desat correctament."
 

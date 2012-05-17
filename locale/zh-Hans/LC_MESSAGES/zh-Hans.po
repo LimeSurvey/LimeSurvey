@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:11+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:18+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1363,7 +1363,7 @@ msgstr "不能添加问题，您至少须输入一个问题编码。"
 msgid "Question in language %s could not be created."
 msgstr "无法以语言%s创建问题。"
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "无法创建问题。"
 
@@ -1375,7 +1375,7 @@ msgstr "问题已成功添加。"
 msgid "Question codes were successfully regenerated."
 msgstr "问题编码已成功重新生成。"
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "无法更新问题"
 
@@ -1383,83 +1383,83 @@ msgstr "无法更新问题"
 msgid "Default value settings were successfully saved."
 msgstr "默认值设置已成功保存。"
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "无法更新问题。有其他问题的条件基于此问题的答案项，更改类型会引起问题。您必须在更改此题类型之前删除这些条件。"
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "问题已成功保存。"
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "不能添加问题，您必须在必须填写的字段中插入码号"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr "问题已成功复制。"
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "无法删除问题，有其他问题的条件基于此题。请在删除此题之前，删除这些条件。"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "问题已成功删除。"
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "更新答案项失败"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "答案项编码为0或空是不允许的，也不会保存。"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "发现重复编码，这些条目无法更新"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "答案选项已成功保存。"
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "删除答案项无效"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "子问题已成功保存。"
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "调查设置已成功保存。"
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "无法更新调查"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "邮件模板已成功保存。"
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "删除调查id时出错"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "调查文本元素已成功保存。"
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "无法创建没有标题的调查"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "调查已成功添加。"
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "成功保存您的个人设置。"
 

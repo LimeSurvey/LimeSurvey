@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:48+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1304,7 +1304,7 @@ msgstr "Otázku nie je možné pridať. Musíte vložiť aspoň kód otázky."
 msgid "Question in language %s could not be created."
 msgstr "Otázka v jazyku %s nemohla byť vytvorená."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Otázka nemohla byť vytvorená."
 
@@ -1316,7 +1316,7 @@ msgstr "Otázka bola úspešne pridaná."
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Otázka nemohla byť aktualizovaná"
 
@@ -1324,83 +1324,83 @@ msgstr "Otázka nemohla byť aktualizovaná"
 msgid "Default value settings were successfully saved."
 msgstr "Nastavenia predvolených hodnôt boli úspešne uložené."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Nie je možné zmeniť otázku. Podmienky iných otázok závisia na odpovediach na túto otázku a zmena typu spôsobí problémy. Najprv musíte zmazať tieto podmienky."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "Otázka bola úspešne uložená."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Otázku nie je možné pridať. Musíte vložiť kód povinného poľa"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Otázku nie je možné zmazať. Podmienky iných otázok na nej závisia. Otázku nie je možné zmazať pokiaľ tieto podmienky nebudú odstránené"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "Otázka bola úspešne vymazaná."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Aktualizácia odpovede zlyhala"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Odpovede s kódom 0 (nula) alebo prázdnym kódom nie sú povolené a nebudú uložené"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Boli nájdené duplicitné kódy, tieto položky nebudú aktualizované"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "Možnosti odpovede boli úspešne uložené."
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Chyba pri mazaní odpovede"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "Podotázky boli úspešne uložené."
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "Nastavenia prieskumu boli úspešne uložené."
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Prieskum nemohol byť aktualizovaný"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "Šablóna emailu úspešne uložená"
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "Chyba pri mazaní ID prieskumu"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "Textové elementy prieskumu boli úspešne uložené."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Prieskum nemohol byť vytvorený pretože nemal názov."
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "Prieskum bol úspešne pridaný."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "Vaše osobné nastavenia boli úspešne uložené."
 

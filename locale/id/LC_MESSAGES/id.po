@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:49+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:57+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1367,7 +1367,7 @@ msgstr "Pertanyaan tidak dapat ditambahkan. Anda harus memasukkan paling tidak k
 msgid "Question in language %s could not be created."
 msgstr "Pertanyaan dalam bahasa %s tidak dapat dibuat."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Pertanyaan tidak dapat dibuat"
 
@@ -1379,7 +1379,7 @@ msgstr "Pertanyaan berhasil ditambahkan."
 msgid "Question codes were successfully regenerated."
 msgstr "Kode pertanyaan berhasil dibuat ulang."
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Pertanyaan tidak dapat diperbarui."
 
@@ -1387,83 +1387,83 @@ msgstr "Pertanyaan tidak dapat diperbarui."
 msgid "Default value settings were successfully saved."
 msgstr "Pengaturan nilai pertanyaan berhasil disimpan."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Pertanyaan tidak dapat diperbarui. Ada kondisi pada pertanyaan lain yang bergantung kepada jawaban pertanyaan ini sehingga perubahan jenis akan menimbulkan masalah. Anda harus menghapus kondisi ini sebelum mengubah jenis pertanyaan ini."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "Pertanyaan berhasil disimpan."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Pertanyaan tidak dapat ditambahkan. Anda harus memasukkan kode ke dalam isian wajib"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr "Pertanyaan berhasil disalin."
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Pertanyaan tidak dapat dihapus. Ada kondisi pertanyaan lain yang bergantung kepada pertanyaan ini. Anda tidak dapat menghapus pertanyaan ini hingga kondisi tersebut dihapus"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "Pertanyaan berhasil dihapus."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Gagal memperbarui jawaban"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Jawaban dengan kode 0 (nol) atau kode kosong tidak diizinkan dan tidak akan disimpan"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Kode duplikat ditemukan dan entri ini tidak akan diperbarui"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "Opsi jawaban berhasil disimpan."
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Gagal menghapus jawaban"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "Subpertanyaan berhasil disimpan."
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "Pengaturan survei berhasil disimpan."
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Survei tidak dapat diperbaharui"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "Templat surel berhasil disimpan."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "GALAT menghapus survei dengan id"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "Elemen teks survei berhasil disimpan."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Survei tidak dapat dibuat karena tidak memiliki judul"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "Survei berhasil ditambahkan."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "Pengaturan pribadi Anda berhasil disimpan."
 

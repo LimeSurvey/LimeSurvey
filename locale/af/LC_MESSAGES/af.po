@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:31+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:39+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1369,7 +1369,7 @@ msgstr "Die vraag kon nie bygevoeg word. Jy moet ten minste 'n vraagkode invoer.
 msgid "Question in language %s could not be created."
 msgstr "Vraag in taal %s kon nie geskep word nie."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Vraag kon nie geskep word nie."
 
@@ -1381,7 +1381,7 @@ msgstr "Vraag is suksesvol bygevoeg."
 msgid "Question codes were successfully regenerated."
 msgstr "Vraagkodes is suksesvol hergenereer."
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Vraag kon nie bygewerk word nie"
 
@@ -1389,83 +1389,83 @@ msgstr "Vraag kon nie bygewerk word nie"
 msgid "Default value settings were successfully saved."
 msgstr "Verstek waarde verstellings suksesvol gestoor."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Vraag kon nie bygewerk word nie. Daar bestaan kondisies in ander vrae wat na hierdie een verwys. Jy kan nie vraag se tipe verander totdat die kondisies verwyder is nie."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "Vraag is suksesvol gestoor."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Vraag kon nie bygevoeg word nie. Voeg 'n kode in in die verpligte veld"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr "Vraag is suksesvol gekopieer."
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Vraag kon nie verwyder word nie. Daar bestaan kondisies in ander vrae wat na hierdie een verwys. Jy kan nie vraag verwyder totdat die kondisies verwyder is nie."
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "Vraag is suksesvol verwyder."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Faal met bywerk van antwoorde"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Antwoord met 'n kode van 0 (zero) of blanko kode nie geldig en sal nie gestoor word nie"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Duplikaat kodes, sal nie bygewerk word nie"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "Vraagopsies is suksesvol gestoor."
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Antwoord nie verwyder"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "Suvrae is suksesvol gestoor."
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "Opname verstellings is suksesvol gestoor."
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Opname kon nie bygewerk word nie"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "E-pos template suksesvol gestoor."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "FOUT met verwyder van opname id"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "Opname teks elemente is suksesvol gestoor."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Opname kon nie geskep word nie, titel/opskrif ontbreek"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "Opname is suksesvol gestoor."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "Jou persoonlike verstellings suksesvol bygewerk."
 

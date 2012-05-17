@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:03+0000\n"
+"PO-Revision-Date: 2012-05-17 06:55:10+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1305,7 +1305,7 @@ msgstr "Câu hỏi không thể thêm. Bạn phải nhập ít nhất mã câu h
 msgid "Question in language %s could not be created."
 msgstr "Câu hỏi dùng ngôn ngữ %s không thể được tạo."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Câu hỏi không thể được tạo ra"
 
@@ -1317,7 +1317,7 @@ msgstr "Câu hỏi đã được tạo thành công."
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Câu hỏi không thể được cập nhật"
 
@@ -1325,83 +1325,83 @@ msgstr "Câu hỏi không thể được cập nhật"
 msgid "Default value settings were successfully saved."
 msgstr "Thiết lập giá trị mặc định đã được lưu thành công."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Câu hỏi không thể được cập nhật. Có những điều kiện cho các câu hỏi khác phụ thuộc vào câu trả lời của câu hỏi này và khi thay đổi loại câu hỏi sẽ gây ra vấn đề này . Bạn phải xóa các điều kiện trước khi đổi kiểu câu hỏi."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "Câu hỏi đã được lưu thành công."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Câu hỏi không thể được thêm. Bạn phải nhập mã trong trường bắt"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Câu hỏi không thể được xóa.Vì có điều kiện cho các câu hỏi khác có liên quan đến câu hỏi này.Bạn không thể xóa câu hỏi này cho đến khi các điều kiện của nó được xóa"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "Câu hỏi đã được xoá thành công."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Cập nhật câu trả lời thất bại"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Câu trả lời với mã là 0 hoặc để trống không được ho phép, và sẽ không được lưu"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Đã tìm thấy mã trùng nhau, những mục này sẽ không được cập nhật."
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "Tuỳ chọn trả lời đã được lưu thành công."
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Xóa câu trả lời thấ bại"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "Câu hỏi phụ đã được lưu thành công."
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "Thiết lập khảo sát đã được được lưu thành công."
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Khảo sát không thể được cập nhật"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "Mẫu mail lưu thành công."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr ""
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "Thành phần chữ khảo sát đã được lưu thành công."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Khảo sát không thể được tạo vì nó không có tiêu đề"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "Khảo sát đã được thêm thành công."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "Thiết lập cá nhân của bạn đã được lưu thành công"
 

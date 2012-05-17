@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:08:01+0000\n"
+"PO-Revision-Date: 2012-05-17 06:56:09+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1303,7 +1303,7 @@ msgstr "Impossibile aggiungere domanda. Inserire un codice nel campo obbligatori
 msgid "Question in language %s could not be created."
 msgstr "Domanda in lingua %s non può essere creata."
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "Impossibile creare domande."
 
@@ -1315,7 +1315,7 @@ msgstr "Domanda stata inserita correttamente."
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "Impossibile aggiornare domanda"
 
@@ -1323,83 +1323,83 @@ msgstr "Impossibile aggiornare domanda"
 msgid "Default value settings were successfully saved."
 msgstr "Il valore di default le impostazioni sono state salvate con successo."
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Impossibile aggiornare domande. Le condizioni di alcune domande dipendono dalla risposta di questa domanda. Cambiare il tipo di domanda causerà dei problemi al sistema. Elimina le condizioni prima di modificare il tipo di domanda."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr "Questione è stato salvato con successo."
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Impossibile aggiungere domanda. Inserire un codice nel campo obbligatorio"
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Impossibile eliminare la domanda. Alcune domande dipendono dalle condizioni imposte a questa domanda. Elimina le condizioni prima di eliminare la domanda"
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "Domanda è stata eliminata."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "Aggiornamento delle risposte fallito"
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Risposte con codice 0 (zero) o vuoto non sono permesse e non saranno salvate"
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Trovati codici duplicati, queste immissioni non saranno aggiornate"
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr "Opzioni di risposta sono state salvate con successo."
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "Eliminazione risposta fallita"
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr "Sotto-domande sono state salvate correttamente."
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr "Impostazioni dell'indagine sono stati salvati con successo."
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "Impossibile aggiornare l'indagine"
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "Modelli di posta elettronica salvato con successo."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "ERRORE nell'eliminazione del'ID dell'Indagine"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr "Elementi di testo sondaggio salvato con successo."
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "Impossibile creare l'indagine. Inserire il titolo"
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "Sondaggio è stato aggiunto correttamente."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr "Login effettuato con successo"
 

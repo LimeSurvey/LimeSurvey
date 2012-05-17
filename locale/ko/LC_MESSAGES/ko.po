@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-16 21:07:56+0000\n"
+"PO-Revision-Date: 2012-05-17 06:56:04+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1305,7 +1305,7 @@ msgstr ""
 msgid "Question in language %s could not be created."
 msgstr ""
 
-#: admin/database.php:284 admin/database.php:684 admin/database.php:713
+#: admin/database.php:284 admin/database.php:693 admin/database.php:722
 msgid "Question could not be created."
 msgstr "질문을 생성할 수 없습니다."
 
@@ -1317,7 +1317,7 @@ msgstr ""
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: admin/database.php:374 admin/database.php:602 admin/database.php:635
+#: admin/database.php:374 admin/database.php:611 admin/database.php:644
 msgid "Question could not be updated"
 msgstr "질문을 업데이트 할 수 없습니다."
 
@@ -1325,83 +1325,83 @@ msgstr "질문을 업데이트 할 수 없습니다."
 msgid "Default value settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:534
+#: admin/database.php:543
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "질문을 업데이트 할 수 없습니다. 이 질문에 대한 응답에 기초하고 있는 다른 질문들과 관련한 조건들이 있으며, 그 질문의 유형을 바꾸는 것은 문제를 야기시킬 수 있습니다. 이 질문의 유형을 변경시키려면 우선 이 조건들을 삭제해야 합니다."
 
-#: admin/database.php:629
+#: admin/database.php:638
 msgid "Question was successfully saved."
 msgstr ""
 
-#: admin/database.php:646
+#: admin/database.php:655
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "질문을 추가할 수 없습니다. 당신은 필수 필드에 코드를 삽입해야합니다."
 
-#: admin/database.php:789
+#: admin/database.php:798
 msgid "Question was successfully copied."
 msgstr ""
 
-#: admin/database.php:807
+#: admin/database.php:816
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "질문을 삭제할 수 없습니다. 이 질문에 관련되는 다른 질문의 조건들이 있습니다. 이러한 조건들을 삭제하기 전까지는 위 질문을 삭제할 수 없습니다."
 
-#: admin/database.php:826
+#: admin/database.php:835
 msgid "Question was successfully deleted."
 msgstr "질문이 성공적으로 삭제되었습니다."
 
-#: admin/database.php:897
+#: admin/database.php:906
 msgid "Failed to update answers"
 msgstr "응답을 업데이트하는 데 실패했습니다."
 
-#: admin/database.php:907
+#: admin/database.php:916
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "0 코드나 공란 코드를 사용하는 응답은 허용되지 않으며, 저장되지 않습니다."
 
-#: admin/database.php:908
+#: admin/database.php:917
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "중복 코드가 발견되었습니다. 따라서 이 기입은 업데이트 되지 않습니다."
 
-#: admin/database.php:911
+#: admin/database.php:920
 msgid "Answer options were successfully saved."
 msgstr ""
 
-#: admin/database.php:942
+#: admin/database.php:951
 msgid "Failed to delete answer"
 msgstr "응답을 삭제하는 데 실패했습니다."
 
-#: admin/database.php:1035
+#: admin/database.php:1044
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: admin/database.php:1198
+#: admin/database.php:1207
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: admin/database.php:1203
+#: admin/database.php:1212
 msgid "Survey could not be updated"
 msgstr "설문을 업데이트 할 수 없습니다."
 
-#: admin/database.php:1228
+#: admin/database.php:1237
 msgid "Email templates successfully saved."
 msgstr "이메일 템플릿이 성공적으로 저장되었습니다."
 
-#: admin/database.php:1242
+#: admin/database.php:1251
 msgid "ERROR deleting Survey id"
 msgstr "오류 - 설문 id 삭제"
 
-#: admin/database.php:1301
+#: admin/database.php:1310
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: admin/database.php:1320
+#: admin/database.php:1329
 msgid "Survey could not be created because it did not have a title"
 msgstr "제목이 없어서 설문을 만들 수 없습니다."
 
-#: admin/database.php:1476
+#: admin/database.php:1485
 msgid "Survey was successfully added."
 msgstr "설문이 성공적으로 추가되었습니다."
 
-#: admin/database.php:1505
+#: admin/database.php:1514
 msgid "Your personal settings were successfully saved."
 msgstr ""
 
