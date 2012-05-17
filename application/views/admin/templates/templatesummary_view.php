@@ -38,7 +38,7 @@
             <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
             <input type='hidden' name='action' value='templatesavechanges' />
 
-            <textarea name='changes' id='changes' rows='20' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>'>
+            <textarea name='changes' id='changes' rows='20' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>' style='width:100%'>
                 <?php if (isset($editfile)) {
                         echo textarea_encode(filetext($templatename,$editfile,$templates));
                 } ?>
@@ -77,8 +77,8 @@
             </form>
         </div>
         <div style='margin-top:1em;'>
-            <form enctype='multipart/form-data' name='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/upload/') ?>' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>
-                <?php $clang->eT("Upload a file:"); ?><br><input style='width:50px;' size=10 name="the_file" type="file" /><br />
+            <form enctype='multipart/form-data' name='importtemplatefile' id='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/uploadfile') ?>' method='post'>
+                <?php $clang->eT("Upload a file:"); ?><br><input style='width:50px;' size=10 name='upload_file' id="upload_file" type="file" /><br />
                 <input type='submit' value='<?php $clang->eT("Upload"); ?>'
                     <?php if (!is_template_editable($templatename))  { ?>
                         disabled='disabled'
