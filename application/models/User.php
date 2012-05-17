@@ -135,12 +135,25 @@ class User extends CActiveRecord
     * @access public
     * @return string
     */
-    public function insertUser($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
+    public static function insertUser($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
     {
-        $tablename = $this->tableName();
-        $data=array('users_name' => $new_user, 'password' => hash('sha256', $new_pass),'full_name' => $new_full_name, 'parent_id' => $parent_user,'lang' => 'auto','email' => $new_email);
-        return Yii::app()->db->createCommand()->insert('{{users}}', $data);
+        $oUser = new self;
+        $oUser->users_name = $new_user;
+        $oUser->password = hash('sha256', $new_pass);
+        $oUser->full_name = $new_full_name;
+        $oUser->parent_id = $parent_user;
+        $oUser->lang = 'auto';
+        $oUser->email = $new_email;
+        if ($oUser->save())
+        {
+            return $oUser->uid;
+
+        }
+        else{
+            return false;
+        }
     }
+
 
     /**
     * Delete user

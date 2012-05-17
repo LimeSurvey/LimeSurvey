@@ -103,15 +103,14 @@ class UserAction extends Survey_Common_Action
         elseif ($valid_email)
         {
             $new_pass = createPassword();
-            $uresult = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+            $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
 
-            if ($uresult) {
+            if ($iNewUID) {
                 // add default template to template rights for user
-                $newqid = Yii::app()->db->getLastInsertID();
-                Templates_rights::model()->insertRecords(array('uid' => $newqid, 'folder' => 'default', 'use' => '1'));
+                Templates_rights::model()->insertRecords(array('uid' => $iNewUID, 'folder' => 'default', 'use' => '1'));
 
                 // add new user to userlist
-                $sresult = User::model()->getAllRecords(array('uid' => $newqid));
+                $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
                 $srow = count($sresult);
 
                 $userlist = getUserList();
@@ -163,7 +162,7 @@ class UserAction extends Survey_Common_Action
 
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Add user"), $sHeader, $classMsg, $extra,
                 $this->getController()->createUrl("admin/user/setUserRights"), $clang->gT("Set user permissions"),
-                array('action' => 'setUserRights', 'user' => $new_user, 'uid' => $newqid));
+                array('action' => 'setUserRights', 'user' => $new_user, 'uid' => $iNewUID));
             }
             else
             {

@@ -48,7 +48,6 @@
 
         <?php for($i=1; $i<=count($usr_arr); $i++) {
                 $usr = $usr_arr[$i];
-                $usr=array_map('htmlspecialchars', $usr);
             ?>
             <tr>
 
@@ -68,7 +67,7 @@
                         <form method='post' action='<?php echo $this->createUrl("admin/user/setUserRights/");?>'>
                             <input type='image' src='<?php echo $imageurl;?>security_16.png' alt='<?php $clang->eT("Set global permissions for this user");?>' />
                             <input type='hidden' name='action' value='setUserRights' />
-                            <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
+                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php }
@@ -77,7 +76,7 @@
                         <form method='post' action='<?php echo $this->createUrl("admin/user/setasadminchild/");?>'>
                             <input type='image' src='<?php echo $imageurl;?>takeownership.png' alt='<?php $clang->eT("Take ownership");?>' />
                             <input type='hidden' name='action' value='setasadminchild' />
-                            <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
+                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php }
@@ -85,7 +84,7 @@
                         <form method='post' action='<?php echo $this->createUrl("admin/user/setusertemplates/");?>'>
                             <input type='image' src='<?php echo $imageurl;?>templatepermissions_small.png' alt='<?php $clang->eT("Set template permissions for this user");?>' />
                             <input type='hidden' name='action' value='setusertemplates' />
-                            <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
+                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php }
@@ -93,15 +92,15 @@
                         <form method='post' action='<?php echo $this->createUrl("admin/user/deluser");?>'>
                             <input type='image' src='<?php echo $imageurl;?>token_delete.png' alt='<?php $clang->eT("Delete this user");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
                             <input type='hidden' name='action' value='deluser' />
-                            <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
+                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php } ?>
 
                 </td>
-                <td><?php echo $usr['user'];?></td>
-                <td><a href='mailto:<?php echo $usr['email'];?>'><?php echo $usr['email'];?></a></td>
-                <td><?php echo $usr['full_name'];?></td>
+                <td><?php echo htmlspecialchars($usr['user']);?></td>
+                <td><a href='mailto:<?php echo htmlspecialchars($usr['email']);?>'><?php echo htmlspecialchars($usr['email']);?></a></td>
+                <td><?php echo htmlspecialchars($usr['full_name']);?></td>
 
                 <td><?php echo $noofsurveyslist[$i];?></td>
 
@@ -113,7 +112,7 @@
                     $usr['parent'] = $srow['users_name']; ?>
 
                 <?php if (isset($usr['parent_id'])) { ?>
-                    <td><?php echo $usr['parent'];?></td>
+                    <td><?php echo htmlspecialchars($usr['parent']);?></td>
                     <?php } else { ?>
                     <td>-----</td>
                     <?php } ?>
