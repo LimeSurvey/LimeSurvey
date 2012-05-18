@@ -625,6 +625,12 @@ class database extends Survey_Common_Action
                 else
                 {
                     $value=Yii::app()->request->getPost($validAttribute['name']);
+
+                    if ($validAttribute['name']=='multiflexible_step' && trim($value)!='') {
+                        $value=floatval($value);
+                        if ($value==0) $value=1;
+                    };
+
                     $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid));
                     if (count($result)>0)
                     {
