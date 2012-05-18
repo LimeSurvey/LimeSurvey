@@ -134,10 +134,9 @@ class Tokens_dynamic extends CActiveRecord
     }
     function updateToken($tid,$newtoken)
     {
-        return Yii::app()->db->createCommand('UPDATE :tablename SET token= :newtoken WHERE tid=:tid')
+        return Yii::app()->db->createCommand("UPDATE {$this->tableName()} SET token = :newtoken WHERE tid = :tid")
         ->bindParam(":newtoken", $newtoken, PDO::PARAM_STR)
         ->bindParam(":tid", $tid, PDO::PARAM_INT)
-        ->bindParam(":tablename", $this->tableName(), PDO::PARAM_STR)
         ->execute();
     }
     function selectEmptyTokens($iSurveyID)
