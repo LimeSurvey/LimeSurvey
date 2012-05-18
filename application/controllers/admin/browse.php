@@ -422,9 +422,14 @@ class browse extends Survey_Common_Action
             }
         }
 
-        $clang = $aData['clang'];
+            $clang = $aData['clang'];
             $aData['num_total_answers'] = Survey_dynamic::model($iSurveyId)->count();
             $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyId)->count('submitdate IS NOT NULL');
+            $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyId . '}}');
+            if($aData['with_token'])
+            {
+                $aData['tokeninfo'] = Tokens_dynamic::model($iSurveyId)->summary();
+            }
 
             $aViewUrls[] = 'browseindex_view';
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
