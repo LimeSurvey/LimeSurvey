@@ -2054,6 +2054,7 @@ class tokens extends Survey_Common_Action
     function _newtokentable($iSurveyId)
     {
         $clang = $this->getController()->lang;
+        Yii::import('application.helpers.admin.token_helper', true);
         if (Yii::app()->request->getPost('createtable') == "Y" && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
             createTokenTable($iSurveyId);
