@@ -300,6 +300,9 @@
             }
             switch($hostencryption) // novalidate-cert to have personal CA , maybe option.
             {
+                case "Off":
+                    $flags.="/notls"; // Really Off
+                    break;
                 case "SSL":
                     $flags.="/ssl/novalidate-cert";
                     break;
