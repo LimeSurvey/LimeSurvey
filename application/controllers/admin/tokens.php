@@ -84,25 +84,26 @@ class tokens extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $thissurvey = getSurveyInfo($iSurveyId);
 
-        if ($thissurvey['bounceprocessing'] != 'N' && !($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') == 'off') && hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if (($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') == 'off')) 
+            && hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
             $bouncetotal = 0;
             $checktotal = 0;
             if ($thissurvey['bounceprocessing'] == 'G')
             {
-                $accounttype = getGlobalSetting('bounceaccounttype');
+                $accounttype=strtoupper(getGlobalSetting('bounceaccounttype'));
                 $hostname = getGlobalSetting('bounceaccounthost');
                 $username = getGlobalSetting('bounceaccountuser');
                 $pass = getGlobalSetting('bounceaccountpass');
-                $hostencryption = getGlobalSetting('bounceencryption');
+                $hostencryption=strtoupper(getGlobalSetting('bounceencryption'));
             }
             else
             {
-                $accounttype = $thissurvey['bounceaccounttype'];
+                $accounttype=strtoupper($thissurvey['bounceaccounttype']);
                 $hostname = $thissurvey['bounceaccounthost'];
                 $username = $thissurvey['bounceaccountuser'];
                 $pass = $thissurvey['bounceaccountpass'];
-                $hostencryption = $thissurvey['bounceaccountencryption'];
+                $hostencryption=strtoupper($thissurvey['bounceaccountencryption']);
             }
 
             @list($hostname, $port) = split(':', $hostname);
@@ -112,7 +113,7 @@ class tokens extends Survey_Common_Action
                 {
                     switch ($hostencryption)
                     {
-                        case "Off":
+                        case "OFF":
                             $hostname = $hostname . ":143";
                             break;
                         case "SSL":
@@ -127,7 +128,7 @@ class tokens extends Survey_Common_Action
                 {
                     switch ($hostencryption)
                     {
-                        case "Off":
+                        case "OFF":
                             $hostname = $hostname . ":110";
                             break;
                         case "SSL":
@@ -152,6 +153,8 @@ class tokens extends Survey_Common_Action
             }
             switch ($hostencryption) // novalidate-cert to have personal CA , maybe option.
             {
+                case "OFF":
+                    $flags.="/notls"; // Really Off
                 case "SSL":
                     $flags.="/ssl/novalidate-cert";
                     break;
