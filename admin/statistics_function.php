@@ -542,16 +542,16 @@
         {
             case "xls":
                 $xlsRow = 0;
-                $sheet->write($xlsRow,0,$statlang->gT("Number of records in this query:"));
+                $sheet->write($xlsRow,0,$statlang->gT("Number of records in this query:",'unescaped'));
                 $sheet->write($xlsRow,1,$results);
                 ++$xlsRow;
-                $sheet->write($xlsRow,0,$statlang->gT("Total records in survey:"));
+                $sheet->write($xlsRow,0,$statlang->gT("Total records in survey:",'unescaped'));
                 $sheet->write($xlsRow,1,$total);
 
                 if($total)
                 {
                     ++$xlsRow;
-                    $sheet->write($xlsRow,0,$statlang->gT("Percentage of total:"));
+                    $sheet->write($xlsRow,0,$statlang->gT("Percentage of total:",'unescaped'));
                     $sheet->write($xlsRow,1,$percent."%");
                 }
 
@@ -561,16 +561,16 @@
                 // add summary to pdf
                 $array = array();
                 //$array[] = array($statlang->gT("Results"),"");
-                $array[] = array($statlang->gT("Number of records in this query:"), $results);
-                $array[] = array($statlang->gT("Total records in survey:"), $total);
+                $array[] = array($statlang->gT("Number of records in this query:",'unescaped'), $results);
+                $array[] = array($statlang->gT("Total records in survey:",'unescaped'), $total);
 
                 if($total)
-                    $array[] = array($statlang->gT("Percentage of total:"), $percent."%");
+                    $array[] = array($statlang->gT("Percentage of total:",'unescaped'), $percent."%");
 
                 $pdf->addPage('P','A4');
 
-                $pdf->Bookmark($pdf->delete_html($statlang->gT("Results")), 0, 0);
-                $pdf->titleintopdf($statlang->gT("Results"),$statlang->gT("Survey")." ".$surveyid);
+                $pdf->Bookmark($pdf->delete_html($statlang->gT("Results",'unescaped')), 0, 0);
+                $pdf->titleintopdf($statlang->gT("Results",'unescaped'),$statlang->gT("Survey",'unescaped')." ".$surveyid);
                 $pdf->tableintopdf($array);
 
                 $pdf->addPage('P','A4');
