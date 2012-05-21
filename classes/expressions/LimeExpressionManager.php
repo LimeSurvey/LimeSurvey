@@ -3963,13 +3963,13 @@
             }
 
             $message = '';
-            if($this->surveyOptions['datestamp']=='Y')
+            if($this->surveyOptions['datestamp']!='Y' && $this->surveyOptions['anonymized']=='Y')
             {
-                $datestamp=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                $datestamp=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
             }
             else
             {
-                $datestamp=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                $datestamp=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             }
             $_SESSION['datestamp']=$datestamp;
             if ($this->surveyOptions['active'] && !isset($_SESSION['srid']))
