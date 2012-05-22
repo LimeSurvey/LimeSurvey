@@ -14,11 +14,11 @@
  */
 
 
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly (access_denied)");}
+include_once("login_check.php");  //Login Check dies also if the script is started directly
 
 if (isset($_SESSION['loginID']))
 {
-
+    include('html.php'); // For showadminmenu
     $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
 
     $action=returnglobal('action');

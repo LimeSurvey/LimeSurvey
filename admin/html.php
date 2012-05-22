@@ -2159,7 +2159,7 @@ function showadminmenu()
         . "</strong>\n";
     }
     $adminmenu  .="</div>\n";
-    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updatelastcheck) && $updatelastcheck>0 && isset($updateavailable) && $updateavailable==1)
+    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1 && isset($updatelastcheck) && $updatelastcheck>0 && isset($updateavailable) && $updateavailable==1)
     {
         $adminmenu  .="<div class='menubar-title-right'><a href='{$scriptname}?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</a></div>';
     }
@@ -2179,7 +2179,7 @@ function showadminmenu()
     $adminmenu .="<a href=\"#\" onclick=\"window.open('{$scriptname}?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" >"
     ."<img src='{$imageurl}/usergroup.png' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
 
-    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     {
         $adminmenu .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global settings")."\" >"
         . "<img src='{$imageurl}/global.png' name='GlobalSettings' alt='". $clang->gT("Global settings")."' /></a>"
@@ -2197,8 +2197,8 @@ function showadminmenu()
     ."<img src='$imageurl/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' />"
     ."</a>" ;
 
-    // db backup & label editor
-    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
+    // db backup : limit only to SUPERADMIN, else user have all access to whole survey's and user information.
+    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         if ($databasetype=='mysql' || $databasetype=='mysqli')
         {

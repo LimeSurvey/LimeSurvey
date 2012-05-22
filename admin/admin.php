@@ -105,7 +105,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'dumpdb')
     {
-        if ($_SESSION['USER_RIGHT_CONFIGURATOR']==1)  {include('dumpdb.php');}
+        if ($_SESSION['USER_RIGHT_SUPERADMIN']==1)  {include('dumpdb.php');}
         else { include('access_denied.php');}
     }
     elseif ($action == 'dumplabel')
