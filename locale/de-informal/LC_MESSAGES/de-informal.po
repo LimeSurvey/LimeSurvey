@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-21 22:00:36+0000\n"
+"PO-Revision-Date: 2012-05-22 22:00:38+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -151,7 +151,7 @@ msgstr "Zum geschlossenen Modus umschalten"
 msgid "No, thanks."
 msgstr "Nein, danke."
 
-#: admin/admin.php:783 admin/admin.php:794 admin/conditionshandling.php:1072
+#: admin/admin.php:786 admin/admin.php:797 admin/conditionshandling.php:1072
 #: admin/html.php:2252 common.php:278 common.php:284
 msgid "LimeSurvey online manual"
 msgstr "LimeSurvey Online Bedienungsanleitung"
@@ -889,9 +889,9 @@ msgstr "Bedingen konnten nicht kopiert werden (aufgrund von Duplikaten)"
 #: admin/exportresults.php:894 admin/exportresults.php:895
 #: admin/exportresults.php:941 admin/exportresults.php:942
 #: admin/exportresults.php:963 admin/exportresults.php:964
-#: admin/globalsettings.php:387 admin/globalsettings.php:399
-#: admin/globalsettings.php:410 admin/globalsettings.php:459
-#: admin/globalsettings.php:479 admin/html.php:897 admin/html.php:1418
+#: admin/globalsettings.php:388 admin/globalsettings.php:400
+#: admin/globalsettings.php:411 admin/globalsettings.php:460
+#: admin/globalsettings.php:480 admin/html.php:897 admin/html.php:1418
 #: admin/html.php:1427 admin/importoldresponses.php:71
 #: admin/printablesurvey.php:856 admin/printablesurvey.php:860
 #: admin/printablesurvey.php:977 admin/printablesurvey.php:994
@@ -957,9 +957,9 @@ msgstr "Unsicher"
 #: admin/exportresults.php:945 admin/exportresults.php:946
 #: admin/exportresults.php:949 admin/exportresults.php:950
 #: admin/exportresults.php:967 admin/exportresults.php:968
-#: admin/globalsettings.php:390 admin/globalsettings.php:402
-#: admin/globalsettings.php:413 admin/globalsettings.php:460
-#: admin/globalsettings.php:480 admin/html.php:893 admin/html.php:1418
+#: admin/globalsettings.php:391 admin/globalsettings.php:403
+#: admin/globalsettings.php:414 admin/globalsettings.php:461
+#: admin/globalsettings.php:481 admin/html.php:893 admin/html.php:1418
 #: admin/html.php:1427 admin/importoldresponses.php:72
 #: admin/printablesurvey.php:857 admin/printablesurvey.php:861
 #: admin/printablesurvey.php:979 admin/printablesurvey.php:996
@@ -1516,7 +1516,7 @@ msgid "Identifier:"
 msgstr "Name:"
 
 #: admin/dataentry.php:183 admin/dataentry.php:2913
-#: admin/globalsettings.php:363 admin/tokens.php:851
+#: admin/globalsettings.php:364 admin/tokens.php:851
 msgid "Password:"
 msgstr "Passwort:"
 
@@ -2070,7 +2070,7 @@ msgid "Edit survey settings"
 msgstr "Bearbeite Umfrage-Einstellungen"
 
 #: admin/editsurveysettings.php:92 admin/editsurveysettings.php:187
-#: admin/exportresults.php:90 admin/globalsettings.php:140
+#: admin/exportresults.php:90 admin/globalsettings.php:141
 msgid "General"
 msgstr "Generell"
 
@@ -2251,7 +2251,7 @@ msgid "Automatically load URL when survey complete?"
 msgstr "URL automatisch laden, wenn die Umfrage abgeschlossen ist?"
 
 #: admin/editsurveysettings.php:444 admin/editsurveysettings.php:464
-#: admin/globalsettings.php:477
+#: admin/globalsettings.php:478
 msgid "Show \"There are X questions in this survey\""
 msgstr "Zeige \"Diese Umfrage besteht aus X Fragen.\""
 
@@ -2284,20 +2284,20 @@ msgid "Hide both (Forced by the system administrator)"
 msgstr "Beides nicht zeigen (Erzwungen durch Systemadministrator)"
 
 #: admin/editsurveysettings.php:501 admin/editsurveysettings.php:538
-#: admin/globalsettings.php:500 admin/globalsettings.php:518
+#: admin/globalsettings.php:501 admin/globalsettings.php:519
 msgid "Show both"
 msgstr "Zeige beides"
 
-#: admin/editsurveysettings.php:502 admin/globalsettings.php:501
+#: admin/editsurveysettings.php:502 admin/globalsettings.php:502
 msgid "Show group name only"
 msgstr "Nur Fragengruppenname zeigen"
 
-#: admin/editsurveysettings.php:503 admin/globalsettings.php:502
+#: admin/editsurveysettings.php:503 admin/globalsettings.php:503
 msgid "Show group description only"
 msgstr "Nur Fragengruppenbeschreibung zeigen"
 
 #: admin/editsurveysettings.php:504 admin/editsurveysettings.php:541
-#: admin/globalsettings.php:503 admin/globalsettings.php:521
+#: admin/globalsettings.php:504 admin/globalsettings.php:522
 msgid "Hide both"
 msgstr "Verstecke beides"
 
@@ -2313,11 +2313,11 @@ msgstr "Zeige nur Fragennummer (Erzwungen durch Systemadministrator)"
 msgid "Show question code only (Forced by the system administrator)"
 msgstr "Zeige nur Fragencode (Erzwungen durch Systemadministrator)"
 
-#: admin/editsurveysettings.php:539 admin/globalsettings.php:519
+#: admin/editsurveysettings.php:539 admin/globalsettings.php:520
 msgid "Show question number only"
 msgstr "Nur Fragennummer anzeigen"
 
-#: admin/editsurveysettings.php:540 admin/globalsettings.php:520
+#: admin/editsurveysettings.php:540 admin/globalsettings.php:521
 msgid "Show question code only"
 msgstr "Nur Fragencode anzeigen"
 
@@ -3051,387 +3051,387 @@ msgstr "Nur Antworten der vorherigen Seiten sind verfügbar"
 msgid "Survey mode is set to %s:"
 msgstr "Umfrage Modus ist auf %s gesetzt:"
 
-#: admin/globalsettings.php:107
+#: admin/globalsettings.php:108
 msgid "Global settings were saved."
 msgstr "Globale Einstellungen wurden gespeichert."
 
-#: admin/globalsettings.php:135 admin/html.php:2185
+#: admin/globalsettings.php:136 admin/html.php:2185
 msgid "Global settings"
 msgstr "Globale Einstellungen"
 
-#: admin/globalsettings.php:139
+#: admin/globalsettings.php:140
 msgid "Overview & update"
 msgstr "Übersicht & Aktualisierung"
 
-#: admin/globalsettings.php:141
+#: admin/globalsettings.php:142
 msgid "Email settings"
 msgstr "E-Mail Einstellungen"
 
-#: admin/globalsettings.php:142 admin/tokens.php:671 admin/tokens.php:805
+#: admin/globalsettings.php:143 admin/tokens.php:671 admin/tokens.php:805
 #: admin/tokens.php:815
 msgid "Bounce settings"
 msgstr "Bounce-Einstellungen"
 
-#: admin/globalsettings.php:143
+#: admin/globalsettings.php:144
 msgid "Security"
 msgstr "Sicherheit"
 
-#: admin/globalsettings.php:144
+#: admin/globalsettings.php:145
 msgid "Presentation"
 msgstr "Präsentation"
 
-#: admin/globalsettings.php:150
+#: admin/globalsettings.php:151
 msgid "Updates"
 msgstr "AKtualisierungen"
 
-#: admin/globalsettings.php:151
+#: admin/globalsettings.php:152
 msgid "Check for updates:"
 msgstr "Nach Updates suchen:"
 
-#: admin/globalsettings.php:155
+#: admin/globalsettings.php:156
 msgid "Never"
 msgstr "Niemals"
 
-#: admin/globalsettings.php:158
+#: admin/globalsettings.php:159
 msgid "Every day"
 msgstr "Jeden Tag"
 
-#: admin/globalsettings.php:161
+#: admin/globalsettings.php:162
 msgid "Every week"
 msgstr "Jede Woche"
 
-#: admin/globalsettings.php:164
+#: admin/globalsettings.php:165
 msgid "Every 2 weeks"
 msgstr "Alle 2 Wochen"
 
-#: admin/globalsettings.php:167
+#: admin/globalsettings.php:168
 msgid "Every month"
 msgstr "Jeden Monat"
 
-#: admin/globalsettings.php:168
+#: admin/globalsettings.php:169
 msgid "Check now"
 msgstr "Jetzt prüfen"
 
-#: admin/globalsettings.php:168
+#: admin/globalsettings.php:169
 msgid "Last check: %s"
 msgstr "Letzte Überprüfung: %s"
 
-#: admin/globalsettings.php:172
+#: admin/globalsettings.php:173
 msgid "There is a LimeSurvey update available: Version %s"
 msgstr "Es ist ein LimeSurvey-Update verfügbar: Version %s"
 
-#: admin/globalsettings.php:173
+#: admin/globalsettings.php:174
 msgid "You can update %smanually%s or use the %s"
 msgstr "Du kannst %smanuell updaten%s oder den %s nutzen."
 
-#: admin/globalsettings.php:173
+#: admin/globalsettings.php:174
 msgid "3-Click ComfortUpdate"
 msgstr "3-Klick ComfortUpdate"
 
-#: admin/globalsettings.php:177
+#: admin/globalsettings.php:178
 msgid "There was an error on update check (%s)"
 msgstr "Es gab einen Fehler bei der Update-Überprüfung (%s)"
 
-#: admin/globalsettings.php:183
+#: admin/globalsettings.php:184
 msgid "There is currently no newer LimeSurvey version available."
 msgstr "Es ist zur Zeit keine neuere LimeSurvey Version verfügbar."
 
-#: admin/globalsettings.php:193
+#: admin/globalsettings.php:194
 msgid "Site name:"
 msgstr "Sitename:"
 
-#: admin/globalsettings.php:195
+#: admin/globalsettings.php:196
 msgid "Default site language:"
 msgstr "Standardsprache:"
 
-#: admin/globalsettings.php:210
+#: admin/globalsettings.php:211
 msgid "Default template:"
 msgstr "Standardvorlage:"
 
-#: admin/globalsettings.php:223
+#: admin/globalsettings.php:224
 msgid "Default HTML editor mode:"
 msgstr "Standard HTML Editor Modus:"
 
-#: admin/globalsettings.php:227
+#: admin/globalsettings.php:228
 msgid "Default HTML editor mode"
 msgstr "Standard HTML Editor Modus"
 
-#: admin/globalsettings.php:230 admin/html.php:121
+#: admin/globalsettings.php:231 admin/html.php:121
 msgid "No HTML editor"
 msgstr "Kein HTML Editor"
 
-#: admin/globalsettings.php:233 admin/html.php:119
+#: admin/globalsettings.php:234 admin/html.php:119
 msgid "Inline HTML editor"
 msgstr "Inline HTML editor"
 
-#: admin/globalsettings.php:236 admin/html.php:120
+#: admin/globalsettings.php:237 admin/html.php:120
 msgid "Popup HTML editor"
 msgstr "Popup HTML Editor"
 
-#: admin/globalsettings.php:240
+#: admin/globalsettings.php:241
 msgid "Time difference (in hours):"
 msgstr "Zeitdifferent (in Stunden):"
 
-#: admin/globalsettings.php:242
+#: admin/globalsettings.php:243
 msgid "Server time:"
 msgstr "Serverzeit:"
 
-#: admin/globalsettings.php:242
+#: admin/globalsettings.php:243
 msgid "Corrected time :"
 msgstr "Korrigierte Zeit:"
 
-#: admin/globalsettings.php:246
+#: admin/globalsettings.php:247
 msgid "PDF export available:"
 msgstr "PDF Export verfügbar:"
 
-#: admin/globalsettings.php:250 admin/globalsettings.php:261
-#: admin/globalsettings.php:441
+#: admin/globalsettings.php:251 admin/globalsettings.php:262
+#: admin/globalsettings.php:442
 msgid "On"
 msgstr "An"
 
-#: admin/globalsettings.php:253 admin/globalsettings.php:264
-#: admin/globalsettings.php:316 admin/globalsettings.php:328
-#: admin/globalsettings.php:349 admin/globalsettings.php:369
-#: admin/globalsettings.php:442 admin/tokens.php:838 common_functions.php:3441
+#: admin/globalsettings.php:254 admin/globalsettings.php:265
+#: admin/globalsettings.php:317 admin/globalsettings.php:329
+#: admin/globalsettings.php:350 admin/globalsettings.php:370
+#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3441
 #: common_functions.php:3649
 msgid "Off"
 msgstr "Aus"
 
-#: admin/globalsettings.php:257
+#: admin/globalsettings.php:258
 msgid "Screen reader compatibility mode:"
 msgstr "Screen reader compatibility mode:"
 
-#: admin/globalsettings.php:266
+#: admin/globalsettings.php:267
 msgid "Session lifetime (seconds):"
 msgstr "Sitzungsdauer (Sekunden):"
 
-#: admin/globalsettings.php:268
+#: admin/globalsettings.php:269
 msgid "IP Info DB API Key:"
 msgstr "IP Info DB API Schlüssel:"
 
-#: admin/globalsettings.php:270
+#: admin/globalsettings.php:271
 msgid "Google Maps API key:"
 msgstr "Google Maps API Schlüssel:"
 
-#: admin/globalsettings.php:272
+#: admin/globalsettings.php:273
 msgid "Google Analytics API key:"
 msgstr "Google Analytics API-Schlüssel:"
 
-#: admin/globalsettings.php:274
+#: admin/globalsettings.php:275
 msgid "Google Translate API key:"
 msgstr "Google Translate API-Schlüssel:"
 
-#: admin/globalsettings.php:286
+#: admin/globalsettings.php:287
 msgid "Default site admin email:"
 msgstr "Standard Admin E-Mailadresse:"
 
-#: admin/globalsettings.php:289
+#: admin/globalsettings.php:290
 msgid "Administrator name:"
 msgstr "Administratorname:"
 
-#: admin/globalsettings.php:291
+#: admin/globalsettings.php:292
 msgid "Email method:"
 msgstr "E-Mail-Methode:"
 
-#: admin/globalsettings.php:295
+#: admin/globalsettings.php:296
 msgid "PHP (default)"
 msgstr "PHP (Standard)"
 
-#: admin/globalsettings.php:298
+#: admin/globalsettings.php:299
 msgid "SMTP"
 msgstr "SMTP"
 
-#: admin/globalsettings.php:301
+#: admin/globalsettings.php:302
 msgid "Sendmail"
 msgstr "Sendmail"
 
-#: admin/globalsettings.php:304
+#: admin/globalsettings.php:305
 msgid "Qmail"
 msgstr "Qmail"
 
-#: admin/globalsettings.php:306
+#: admin/globalsettings.php:307
 msgid "SMTP host:"
 msgstr "SMTP Host"
 
-#: admin/globalsettings.php:307
+#: admin/globalsettings.php:308
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr "Gebe Deinen Hostnamen und Port ein, z.B.: mein.smtp.com:25"
 
-#: admin/globalsettings.php:308
+#: admin/globalsettings.php:309
 msgid "SMTP username:"
 msgstr "SMTP Benutzername:"
 
-#: admin/globalsettings.php:310
+#: admin/globalsettings.php:311
 msgid "SMTP password:"
 msgstr "SMTP Passwort:"
 
-#: admin/globalsettings.php:312
+#: admin/globalsettings.php:313
 msgid "SMTP SSL/TLS:"
 msgstr "SMTP SSL/TLS:"
 
-#: admin/globalsettings.php:319 admin/globalsettings.php:372
+#: admin/globalsettings.php:320 admin/globalsettings.php:373
 #: admin/tokens.php:860
 msgid "SSL"
 msgstr "SSL"
 
-#: admin/globalsettings.php:322 admin/globalsettings.php:375
+#: admin/globalsettings.php:323 admin/globalsettings.php:376
 #: admin/tokens.php:863
 msgid "TLS"
 msgstr "TLS"
 
-#: admin/globalsettings.php:324
+#: admin/globalsettings.php:325
 msgid "SMTP debug mode:"
 msgstr "SMTP Fehlerbehebungsmodus:"
 
-#: admin/globalsettings.php:331
+#: admin/globalsettings.php:332
 msgid "On errors"
 msgstr "Bei Fehlern"
 
-#: admin/globalsettings.php:334
+#: admin/globalsettings.php:335
 msgid "Always"
 msgstr "Immer"
 
-#: admin/globalsettings.php:336
+#: admin/globalsettings.php:337
 msgid "Email batch size:"
 msgstr "Anzahl der E-Mails die pro Durchlauf versendet werden"
 
-#: admin/globalsettings.php:343
+#: admin/globalsettings.php:344
 msgid "Default site bounce email:"
 msgstr "Standard Bounce E-Mailadresse:"
 
-#: admin/globalsettings.php:345 admin/tokens.php:834
+#: admin/globalsettings.php:346 admin/tokens.php:834
 msgid "Server type:"
 msgstr "Servertyp:"
 
-#: admin/globalsettings.php:352 admin/tokens.php:841
+#: admin/globalsettings.php:353 admin/tokens.php:841
 msgid "IMAP"
 msgstr "IMAP"
 
-#: admin/globalsettings.php:355 admin/tokens.php:844
+#: admin/globalsettings.php:356 admin/tokens.php:844
 msgid "POP"
 msgstr "POP"
 
-#: admin/globalsettings.php:358 admin/tokens.php:847
+#: admin/globalsettings.php:359 admin/tokens.php:847
 msgid "Server name & port:"
 msgstr "Servername & Port"
 
-#: admin/globalsettings.php:359 admin/tokens.php:848
+#: admin/globalsettings.php:360 admin/tokens.php:848
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:995"
 msgstr "Gib den Hostnamen und Port ein, z.B.  imap.gmail.com:995"
 
-#: admin/globalsettings.php:361 admin/tokens.php:849
+#: admin/globalsettings.php:362 admin/tokens.php:849
 msgid "User name:"
 msgstr "Benutzername:"
 
-#: admin/globalsettings.php:365 admin/tokens.php:853
+#: admin/globalsettings.php:366 admin/tokens.php:853
 msgid "Encryption type:"
 msgstr "Verschlüsselung:"
 
-#: admin/globalsettings.php:383
+#: admin/globalsettings.php:384
 msgid "Survey preview only for administration users"
 msgstr "Umfragevorschau nur für Administrationsnutzer"
 
-#: admin/globalsettings.php:395
+#: admin/globalsettings.php:396
 msgid "Filter HTML for XSS:"
 msgstr "Filter HTML auf XSS:"
 
-#: admin/globalsettings.php:406
+#: admin/globalsettings.php:407
 msgid "Group member can only see own group:"
 msgstr "Gruppenmitglieder können nur die eigene Gruppe sehen:"
 
-#: admin/globalsettings.php:418
+#: admin/globalsettings.php:419
 msgid "Warning: Before turning on HTTPS, "
 msgstr "Achtung: Bevor Du SSL-Verschlüsselung (https://) aktivierst,"
 
-#: admin/globalsettings.php:420
+#: admin/globalsettings.php:421
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr "Überprüfe ob auf deinem Server SSL aktiviert ist, indem du auf diesen Link klickst."
 
-#: admin/globalsettings.php:421
+#: admin/globalsettings.php:422
 msgid "check if this link works."
 msgstr "überprüfe ob dieser Link funktioniert."
 
-#: admin/globalsettings.php:422
+#: admin/globalsettings.php:423
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
 msgstr "Wenn der Link nicht funktioniert und du schaltest HTTPS ein, dann wirst Du auf LimeSurvey nicht mehr zugreifen können."
 
-#: admin/globalsettings.php:439
+#: admin/globalsettings.php:440
 msgid "Force HTTPS:"
 msgstr "Erzwinge HTTPS:"
 
-#: admin/globalsettings.php:443
+#: admin/globalsettings.php:444
 msgid "Don't force on or off"
 msgstr "Erzwinge weder an noch aus"
 
-#: admin/globalsettings.php:457
+#: admin/globalsettings.php:458
 msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr "Zeige Option 'Keine Antwort' für nicht-Pflichtfragen"
 
-#: admin/globalsettings.php:461 admin/globalsettings.php:481
-#: admin/globalsettings.php:504 admin/globalsettings.php:522
+#: admin/globalsettings.php:462 admin/globalsettings.php:482
+#: admin/globalsettings.php:505 admin/globalsettings.php:523
 msgid "Survey admin can choose"
 msgstr "Umfrageadministrator kann auswählen"
 
-#: admin/globalsettings.php:465
+#: admin/globalsettings.php:466
 msgid "Repeating headings in array questions every X subquestions:"
 msgstr "Wiederhole die Kopfzeilen in Matrixfragen alle x Teilfragen:"
 
-#: admin/globalsettings.php:498
+#: admin/globalsettings.php:499
 msgid "Show question group name and/or description"
 msgstr "Zeige Fragengruppenname und/oder Beschreibung"
 
-#: admin/globalsettings.php:516
+#: admin/globalsettings.php:517
 msgid "Show question number and/or question code"
 msgstr "Zeige Fragennummer und/oder Fragencode"
 
-#: admin/globalsettings.php:534 admin/html.php:162 admin/tokens.php:865
+#: admin/globalsettings.php:535 admin/html.php:162 admin/tokens.php:865
 #: admin/userrighthandling.php:159
 msgid "Save settings"
 msgstr "Einstellungen speichern"
 
-#: admin/globalsettings.php:537
+#: admin/globalsettings.php:538
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr "Achtung: Demo-Modus ist aktiviert. Markierte (*) Einstellungen können nicht geändert werden."
 
-#: admin/globalsettings.php:630
+#: admin/globalsettings.php:631
 msgid "System overview"
 msgstr "Systemübersicht"
 
-#: admin/globalsettings.php:633 admin/update/updater.php:654
+#: admin/globalsettings.php:634 admin/update/updater.php:654
 msgid "Database name"
 msgstr "Datenbank-Name"
 
-#: admin/globalsettings.php:637
+#: admin/globalsettings.php:638
 msgid "Users"
 msgstr "Benutzer"
 
-#: admin/globalsettings.php:640 admin/html.php:2230
+#: admin/globalsettings.php:641 admin/html.php:2230
 #: admin/http_importsurvey.php:155 admin/importsurvey.php:61
 #: admin/importsurvey.php:123
 msgid "Surveys"
 msgstr "Umfragen"
 
-#: admin/globalsettings.php:643
+#: admin/globalsettings.php:644
 msgid "Active surveys"
 msgstr "Aktive Umfragen"
 
-#: admin/globalsettings.php:646
+#: admin/globalsettings.php:647
 msgid "Deactivated result tables"
 msgstr "Inaktive Ergebnis-Tabellen"
 
-#: admin/globalsettings.php:649
+#: admin/globalsettings.php:650
 msgid "Active token tables"
 msgstr "Aktive Zugangsschlüssel-Tabellen"
 
-#: admin/globalsettings.php:652
+#: admin/globalsettings.php:653
 msgid "Deactivated token tables"
 msgstr "Inaktive Zugangsschlüssel-Tabellen"
 
-#: admin/globalsettings.php:659
+#: admin/globalsettings.php:660
 msgid "Used/free space for file uploads"
 msgstr "Benutzter/freier Platz für Datei-Uploads"
 
-#: admin/globalsettings.php:666
+#: admin/globalsettings.php:667
 msgid "Show PHPInfo"
 msgstr "PHPInfo anzeigen"
 
@@ -8982,27 +8982,27 @@ msgstr "Nicht unterstützte Syntax"
 msgid "Missing %s closing right parentheses"
 msgstr "%s fehlende rechte Klammern"
 
-#: classes/expressions/ExpressionManager.php:1951
+#: classes/expressions/ExpressionManager.php:1955
 msgid "Function must have at least %s argument(s)"
 msgstr "Die Funktin muss zumindest %s Argument(e) haben"
 
-#: classes/expressions/ExpressionManager.php:2042
+#: classes/expressions/ExpressionManager.php:2046
 msgid "Unsupported number of arguments: %s"
 msgstr "Anzahl der Argumente nicht unterstützt. %s"
 
-#: classes/expressions/ExpressionManager.php:2047
+#: classes/expressions/ExpressionManager.php:2051
 msgid "Function does not support %s arguments. "
 msgstr "Funktion unterstützt %s Argumente nicht."
 
-#: classes/expressions/ExpressionManager.php:2048
+#: classes/expressions/ExpressionManager.php:2052
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr "Funktion unterstützt %s Arguments, wobei -1=unbeschränkt"
 
-#: classes/expressions/ExpressionManager.php:2269
+#: classes/expressions/ExpressionManager.php:2273
 msgid "Tried to pop value off of empty stack"
 msgstr "Versuch einen Wert von einem leeren Stack herunterzunehmen"
 
-#: classes/expressions/ExpressionManager.php:3193
+#: classes/expressions/ExpressionManager.php:3197
 msgid "Invalid PERL Regular Expression: %s"
 msgstr "Ungültiger Regulärer Ausdruck (PCRE):%s"
 
