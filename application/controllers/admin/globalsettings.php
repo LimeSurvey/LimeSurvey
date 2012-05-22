@@ -93,7 +93,7 @@ class GlobalSettings extends Survey_Common_Action
             return;
         }
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1) {
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
             $this->getController()->redirect($this->getController()->createUrl('/admin'));
         }
         $clang = $this->getController()->lang;

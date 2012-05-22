@@ -29,7 +29,7 @@
                 <img src='<?php echo $sImageURL;?>security.png' alt='<?php $clang->eT("Manage survey administrators");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
 
             <?php
-                if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+                if(Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>">
                     <img src='<?php echo $sImageURL;?>global.png' alt='<?php $clang->eT("Global settings");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
@@ -41,7 +41,7 @@
                     <img src='<?php echo $sImageURL;?>checkdb.png' alt='<?php $clang->eT("Check Data Integrity");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php
                 }
-                if(Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
+                if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
                 {
 
                     if (in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demoMode') == true)
