@@ -1769,8 +1769,12 @@ class ExpressionManager {
 
     /**
      * Start processing a group of substitions - will be incrementally numbered
+     *
+     * @param int $sid
+     * @param string $rooturl
+     * @param boolean $hyperlinkSyntaxHighlighting
+     * @param string $surveyMode survey|group|question
      */
-
     public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=false,$surveyMode='group')
     {
         $this->substitutionNum=0;

@@ -6551,7 +6551,7 @@ EOD;
             }
         }
 
-        public static function ShowStackTrace($msg=NULL,&$args=NULL)
+        public static function ShowStackTrace(&$msg=NULL,&$args=NULL)
         {
             $LEM =& LimeExpressionManager::singleton();
 
