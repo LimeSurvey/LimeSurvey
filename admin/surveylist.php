@@ -8,7 +8,7 @@ if ($action == "listsurveys")
     $js_admin_includes[]='scripts/listsurvey.js';
     $query = " SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a "
     ." INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language "
-    ." INNER JOIN ".db_table_name('users')." as u ON (u.uid=a.owner_id) ";
+    ." LEFT JOIN ".db_table_name('users')." as u ON (u.uid=a.owner_id) ";
 
     if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
     {
@@ -218,13 +218,13 @@ if ($action == "listsurveys")
 elseif ($action == "ajaxowneredit"){
 
     header('Content-type: application/json');
-    
+
     if (isset($_REQUEST['newowner'])) {$intNewOwner=sanitize_int($_REQUEST['newowner']);}
     if (isset($_REQUEST['survey_id'])) {$intSurveyId=sanitize_int($_REQUEST['survey_id']);}
     $owner_id = $_SESSION['loginID'];
 
     header('Content-type: application/json');
-    
+
     $query = "UPDATE ".db_table_name('surveys')." SET owner_id = $intNewOwner WHERE sid=$intSurveyId";
     if (bHasGlobalPermission("USER_RIGHT_SUPERADMIN"))
         $query .=";";
@@ -237,7 +237,7 @@ elseif ($action == "ajaxowneredit"){
     ." INNER JOIN  ".db_table_name('users')." as b ON a.owner_id = b.uid   WHERE sid=$intSurveyId AND owner_id=$intNewOwner;";
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
     $intRecordCount = $result->RecordCount();
-    
+
     $aUsers = array(
         'record_count' => $intRecordCount,
     );
@@ -247,7 +247,7 @@ elseif ($action == "ajaxowneredit"){
                 $aUsers['newowner'] = $rows['users_name'];
     }
     $ajaxoutput = ls_json_encode($aUsers) . "\n";
-    
+
 }
 
 elseif ($action == "ajaxgetusers"){
@@ -259,7 +259,7 @@ elseif ($action == "ajaxgetusers"){
     foreach ($aSeenUsers as $userline) {
                 $aUsers[] = array($userline['uid'], $userline['user']);
     }
-    
+
     $ajaxoutput = ls_json_encode($aUsers) . "\n";
 }
 
