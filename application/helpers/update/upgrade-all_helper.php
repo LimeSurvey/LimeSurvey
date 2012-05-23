@@ -101,6 +101,21 @@ function db_upgrade_all($oldversion) {
         );
         Yii::app()->db->createCommand()->createTable('{{expression_errors}}',$fields);
     }
+    if ($oldversion < 156)
+    {
+        // If a survey has an deleted owner, re-own the survey to the superadmin
+        $surveys = Survey::model();
+        $surveys = $surveys->with(array('owner'))->findAll();
+        foreach ($surveys as $row)
+        {
+           if (!isset($row->owner->attributes))
+           {
+                Survey::model()->updateByPk($row->sid,array('owner_id'=>1));
+           }
+        }
+
+    }
+
 }
 
 function upgrade_question_attributes148()
