@@ -3963,12 +3963,15 @@
             }
 
             $message = '';
-            if($this->surveyOptions['datestamp']!='Y' && $this->surveyOptions['anonymized']=='Y')
+            if($this->surveyOptions['datestamp'] == true && $this->surveyOptions['anonymized']== true)
             {
+                // On anonymous datestamped surveys, set the datestamp to 1-1-1980
                 $datestamp=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
             }
             else
             {
+                // Otherwise, use the real date/time, it will only be saved when the table holds a 
+                // datestamp field
                 $datestamp=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             }
             $_SESSION['datestamp']=$datestamp;
