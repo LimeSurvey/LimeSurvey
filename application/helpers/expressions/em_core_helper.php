@@ -1313,7 +1313,7 @@ class ExpressionManager {
         $nonNAvarsUsed = array();
         foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
         {
-            if (!preg_match("/^.*\.NAOK$/", $var))
+            if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
             {
                 $nonNAvarsUsed[] = $var;
             }
@@ -1773,7 +1773,7 @@ class ExpressionManager {
         // Check whether any variables are irrelevant - making this comparable to JavaScript which uses LEManyNA(varlist) to do the same thing
         foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
         {
-            if (!preg_match("/^.*\.NAOK$/", $var))
+            if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
             {
                 if (!LimeExpressionManager::GetVarAttribute($var,'relevanceStatus',false,$groupSeq,$questionSeq))
                 {
