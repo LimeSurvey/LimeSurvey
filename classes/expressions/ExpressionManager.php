@@ -1302,7 +1302,7 @@ class ExpressionManager {
         $nonNAvarsUsed = array();
         foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
         {
-            if (!preg_match("/^.*\.NAOK$/", $var))
+            if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
             {
                 $nonNAvarsUsed[] = $var;
             }
@@ -1757,7 +1757,7 @@ class ExpressionManager {
         // Check whether any variables are irrelevant - making this comparable to JavaScript which uses LEManyNA(varlist) to do the same thing
         foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
         {
-            if (!preg_match("/^.*\.NAOK$/", $var))
+            if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
             {
                 if (!LimeExpressionManager::GetVarAttribute($var,'relevanceStatus',false,$groupSeq,$questionSeq))
                 {
@@ -1770,8 +1770,12 @@ class ExpressionManager {
 
     /**
      * Start processing a group of substitions - will be incrementally numbered
+     *
+     * @param int $sid
+     * @param string $rooturl
+     * @param boolean $hyperlinkSyntaxHighlighting
+     * @param string $surveyMode survey|group|question
      */
-
     public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=false,$surveyMode='group')
     {
         $this->substitutionNum=0;

@@ -609,10 +609,10 @@
          */
         private $qrootVarName2arrayFilter = array();
         /**
-         * Array, keyed on qid, to JavaScript needed to implement exclude_all_others_auto
+         * Array, keyed on qid, to JavaScript and list of variables needed to implement exclude_all_others_auto
          * @var type 
          */
-        private $qid2exclusiveAutoJS = array();
+        private $qid2exclusiveAuto = array();
 
 
         /**
@@ -1254,11 +1254,18 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            $relpart = "LEMsum(LEMval('" . implode(".relevanceStatus'), LEMval('", $sq_names) . ".relevanceStatus'))";
-                            $checkedpart = "LEMcount(LEMval('" . implode("'), LEMval('", $sq_names) . "'))";
-                            $eoRelevantAndUnchecked = "(LEMval('" . $eoVarName . ".relevanceStatus') && LEMval('" . $eoVarName . "')=='')";
-                            $eosaJS = "if (" . $eoRelevantAndUnchecked . " && (" . $relpart . " == " . $checkedpart . ")) {\n";
+                            $relpart = "sum(" . implode(".relevanceStatus, ", $sq_names) . ".relevanceStatus)";
+                            $checkedpart = "count(" . implode(".NAOK, ", $sq_names) . ".NAOK)";
+                            $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && " . $eoVarName . "=='')";
+                            $eoEqn = "(" . $eoRelevantAndUnchecked . " && (" . $relpart . " == " . $checkedpart . "))";
+
+                            $this->em->ProcessBooleanExpression($eoEqn, $qinfo['gseq'], $qinfo['qseq']);
+
+                            $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
+                            $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
+                            
                             // Unset all checkboxes and hidden values for this question (irregardless of whether they are array filtered)
+                            $eosaJS = "if (" . $relevanceJS . ") {\n";
                             $eosaJS .="  $('#question" . $questionNum . " [type=checkbox]').attr('checked',false);\n";
                             $eosaJS .="  $('#java" . $qinfo['sgqa'] . "other').val('');\n";
                             $eosaJS .="  $('#answer" . $qinfo['sgqa'] . "other').val('');\n";
@@ -1269,7 +1276,11 @@
                             $eosaJS .="  relChange" . $questionNum ."=true;\n";
                             $eosaJS .="}\n";
 
-                            $this->qid2exclusiveAutoJS[$questionNum] = $eosaJS;
+                            $this->qid2exclusiveAuto[$questionNum] = array(
+                                'js'=>$eosaJS,
+                                'relevanceVars'=>$relevanceVars,    // so that EM knows which variables to declare
+                                'rowdivid'=>$eoVarName, // to ensure that EM creates a hidden relevanceSGQA input for the exclusive option
+                                );
                         }
                     }
                 }
@@ -3494,7 +3505,7 @@
                 $LEM->surveyOptions['rooturl'] = $rooturl;
                 $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
             }
-            $LEM->qid2exclusiveAutoJS=array();
+            $LEM->qid2exclusiveAuto=array();
 
             //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
@@ -3963,13 +3974,13 @@
             }
 
             $message = '';
-            if($this->surveyOptions['datestamp']=='Y')
+            if($this->surveyOptions['datestamp']!='Y' && $this->surveyOptions['anonymized']=='Y')
             {
-                $datestamp=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                $datestamp=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
             }
             else
             {
-                $datestamp=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                $datestamp=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             }
             $_SESSION['datestamp']=$datestamp;
             if ($this->surveyOptions['active'] && !isset($_SESSION['srid']))
@@ -6036,13 +6047,23 @@
                     $qids = $gseq_qidList[$gr['gseq']];
                     foreach ($qids as $_qid=>$_val)
                     {
+                        $qid2exclusiveAuto = (isset($LEM->qid2exclusiveAuto[$_qid]) ? $LEM->qid2exclusiveAuto[$_qid] : array());
                         if ($_val==1)
                         {
                             $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
                             if (isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
-                                && isset($LEM->qid2exclusiveAutoJS[$_qid]) && strlen($LEM->qid2exclusiveAutoJS[$_qid]) > 0)
+                                && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0)
                             {
-                                $jsParts[] = $LEM->qid2exclusiveAutoJS[$_qid];
+                                $jsParts[] = $qid2exclusiveAuto['js'];
+                                $vars = explode('|',$qid2exclusiveAuto['relevanceVars']);
+                                if (is_array($vars))
+                                {
+                                    $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                                }
+                                if (!isset($rowdividList[$qid2exclusiveAuto['rowdivid']]))
+                                {
+                                    $rowdividList[$qid2exclusiveAuto['rowdivid']] = true;
+                                }
                             }
                             if (isset($LEM->qattr[$_qid]['exclude_all_others']))
                             {
@@ -6066,13 +6087,23 @@
                     $qids = $gseq_qidList[$gr['gseq']];
                     foreach ($qids as $_qid=>$_val)
                     {
+                        $qid2exclusiveAuto = (isset($LEM->qid2exclusiveAuto[$_qid]) ? $LEM->qid2exclusiveAuto[$_qid] : array());
                         if ($_val == 1)
                         {
                             $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
                             if (isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
-                                && isset($LEM->qid2exclusiveAutoJS[$_qid]) && strlen($LEM->qid2exclusiveAutoJS[$_qid]) > 0)
+                                && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0)
                             {
-                                $jsParts[] = $LEM->qid2exclusiveAutoJS[$_qid];
+                                $jsParts[] = $qid2exclusiveAuto['js'];
+                                $vars = explode('|',$qid2exclusiveAuto['relevanceVars']);
+                                if (is_array($vars))
+                                {
+                                    $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                                }
+                                if (!isset($rowdividList[$qid2exclusiveAuto['rowdivid']]))
+                                {
+                                    $rowdividList[$qid2exclusiveAuto['rowdivid']] = true;
+                                }
                             }
                             if (isset($LEM->qattr[$_qid]['exclude_all_others']))
                             {
@@ -6551,7 +6582,7 @@ EOD;
             }
         }
 
-        public static function ShowStackTrace($msg=NULL,&$args=NULL)
+        public static function ShowStackTrace(&$msg=NULL,&$args=NULL)
         {
             $LEM =& LimeExpressionManager::singleton();
 

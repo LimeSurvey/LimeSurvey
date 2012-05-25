@@ -12,10 +12,11 @@
  *
  * $Id: globalsettings.php 12242 2012-01-27 23:41:13Z c_schmitz $
  */
+
+// Dont use login_check.php : globalsettings included in common.php
+if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 require_once('classes/core/settingsstorage.php');
 
-//Ensure script is not run directly, avoid path disclosure
-if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 injectglobalsettings();
 
 
@@ -46,7 +47,7 @@ function globalsettingssave()
     global $action, $editsurvey, $connect, $scriptname, $clang;
     if (isset($action) && $action == "globalsettingssave")
     {
-        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+        if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         {
             if (sanitize_int($_POST['maxemails'])<1)
             {
@@ -125,7 +126,7 @@ function globalsettingsdisplay()
 
     if (isset($action) && $action == "globalsettings")
     {
-        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+        if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         {
             //save refurl from where global settings screen is called!
             $_SESSION['refurl'] = htmlspecialchars($refurl); //just to be safe!

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-17 06:56:16+0000\n"
+"PO-Revision-Date: 2012-05-24 20:09:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -106,8 +106,8 @@ msgstr "Erro da base de dados:"
 #: admin/integritycheck.php:98 admin/integritycheck.php:100
 #: admin/login_check.php:165 admin/resetsurveylogic.php:29
 #: admin/templates.php:307 admin/templates.php:319 admin/templates.php:331
-#: admin/tokens.php:1368 admin/tokens.php:1370 admin/tokens.php:1372
-#: admin/tokens.php:1381
+#: admin/tokens.php:1369 admin/tokens.php:1371 admin/tokens.php:1373
+#: admin/tokens.php:1382
 msgid "Main Admin Screen"
 msgstr "Administração principal"
 
@@ -123,7 +123,7 @@ msgstr "Não foi possível criar a directoria necessária para guardar os fichei
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "Este inquérito permite registo público. Também é necessário criar uma tabela de códigos."
 
-#: admin/activate_functions.php:486 admin/tokens.php:549
+#: admin/activate_functions.php:486 admin/tokens.php:550
 msgid "Initialise tokens"
 msgstr "Inicializar códigos"
 
@@ -147,11 +147,11 @@ msgstr "Pode mudar para o modo de acesso restrito inicializando uma tabela de c�
 msgid "Switch to closed-access mode"
 msgstr "Mudar para modo de acesso restrito"
 
-#: admin/activate_functions.php:493 admin/tokens.php:551
+#: admin/activate_functions.php:493 admin/tokens.php:552
 msgid "No, thanks."
 msgstr "Não, obrigado."
 
-#: admin/admin.php:783 admin/admin.php:794 admin/conditionshandling.php:1072
+#: admin/admin.php:786 admin/admin.php:797 admin/conditionshandling.php:1072
 #: admin/html.php:2252 common.php:278 common.php:284
 msgid "LimeSurvey online manual"
 msgstr "Manual online do LimeSurvey"
@@ -313,7 +313,7 @@ msgstr ""
 "{SURVEYURL}"
 
 #: admin/admin_functions.php:306 admin/admin_functions.php:308
-#: admin/tokens.php:1745
+#: admin/tokens.php:1746
 msgid ""
 "If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n"
 "{OPTOUTURL}"
@@ -325,7 +325,7 @@ msgstr ""
 msgid "Reminder to participate in a survey"
 msgstr "Lembrete para participar num inquérito"
 
-#: admin/admin_functions.php:308 admin/tokens.php:1745
+#: admin/admin_functions.php:308 admin/tokens.php:1746
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -406,7 +406,7 @@ msgstr "Avaliações"
 
 #: admin/assessments.php:119 admin/conditionshandling.php:1004
 #: admin/dataentry.php:419 admin/html_functions.php:29 admin/labels.php:64
-#: admin/saved.php:126 admin/templates.php:810 admin/tokens.php:598
+#: admin/saved.php:126 admin/templates.php:810 admin/tokens.php:599
 #: admin/translate_functions.php:76 admin/vvimport.php:107
 msgid "Return to survey administration"
 msgstr "Voltar à administração do inquérito"
@@ -460,7 +460,7 @@ msgid "ID"
 msgstr "ID"
 
 #: admin/assessments.php:169 admin/browse.php:540 admin/browse.php:882
-#: admin/editansweroptions.php:157 admin/saved.php:77 admin/tokens.php:1019
+#: admin/editansweroptions.php:157 admin/saved.php:77 admin/tokens.php:1020
 msgid "Actions"
 msgstr "Acções"
 
@@ -475,19 +475,19 @@ msgstr "SID"
 msgid "Title"
 msgstr "Título"
 
-#: admin/assessments.php:173 admin/assessments.php:271 admin/tokens.php:1475
-#: admin/tokens.php:1770
+#: admin/assessments.php:173 admin/assessments.php:271 admin/tokens.php:1476
+#: admin/tokens.php:1771
 msgid "Message"
 msgstr "Mensagem"
 
 #: admin/assessments.php:194 admin/html.php:1641 admin/html.php:1919
-#: admin/resetsurveylogic.php:49 admin/templates.php:994 admin/tokens.php:2147
+#: admin/resetsurveylogic.php:49 admin/templates.php:994 admin/tokens.php:2148
 #: admin/userrighthandling.php:470
 msgid "Delete"
 msgstr "Apagar"
 
 #: admin/assessments.php:194 admin/browse.php:223 admin/html.php:1919
-#: admin/saved.php:97 admin/tokens.php:1257 admin/userrighthandling.php:85
+#: admin/saved.php:97 admin/tokens.php:1258 admin/userrighthandling.php:85
 #: admin/userrighthandling.php:470 admin/userrighthandling.php:566
 #: admin/userrighthandling.php:954
 msgid "Are you sure you want to delete this entry?"
@@ -506,7 +506,7 @@ msgstr "Grupo"
 #: admin/editsurveytextelements.php:44 admin/questiongrouphandling.php:33
 #: admin/questiongrouphandling.php:142 admin/questionhandling.php:40
 #: admin/questionhandling.php:385 admin/quota.php:446 admin/quota.php:842
-#: admin/tokens.php:1418 admin/tokens.php:1749
+#: admin/tokens.php:1419 admin/tokens.php:1750
 msgid "Base language"
 msgstr "Idioma base"
 
@@ -518,7 +518,7 @@ msgstr "Cabeçalho"
 #: admin/editemailtemplates.php:160 admin/editsurveysettings.php:1078
 #: admin/editsurveysettings.php:1083 admin/editsurveytextelements.php:104
 #: admin/labels.php:201 admin/labels.php:598 admin/questionhandling.php:276
-#: admin/questionhandling.php:583 admin/tokens.php:2195 admin/translate.php:268
+#: admin/questionhandling.php:583 admin/tokens.php:2196 admin/translate.php:268
 #: admin/userrighthandling.php:249
 msgid "Save"
 msgstr "Gravar"
@@ -527,7 +527,7 @@ msgstr "Gravar"
 #: admin/deletesurvey.php:55 admin/editansweroptions.php:248
 #: admin/editansweroptions.php:256 admin/editsubquestions.php:248
 #: admin/editsubquestions.php:255 admin/labels.php:443 admin/quota.php:472
-#: admin/resetsurveylogic.php:47 admin/tokens.php:1355
+#: admin/resetsurveylogic.php:47 admin/tokens.php:1356
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -559,22 +559,22 @@ msgstr "Código ID"
 
 #: admin/browse.php:135 admin/browse.php:473 admin/exportresults.php:232
 #: admin/exportresults.php:434 admin/exportresults.php:435
-#: admin/exportresults.php:757 admin/tokens.php:1024 admin/tokens.php:1027
-#: admin/tokens.php:1028 admin/tokens.php:2321 admin/tokens.php:2457
-#: common_functions.php:6221 replacements.php:507
+#: admin/exportresults.php:757 admin/tokens.php:1025 admin/tokens.php:1028
+#: admin/tokens.php:1029 admin/tokens.php:2322 admin/tokens.php:2458
+#: common_functions.php:6214 replacements.php:507
 msgid "First name"
 msgstr "Primeiro nome"
 
 #: admin/browse.php:136 admin/browse.php:474 admin/exportresults.php:233
 #: admin/exportresults.php:429 admin/exportresults.php:430
-#: admin/exportresults.php:760 admin/tokens.php:1034 admin/tokens.php:1037
-#: admin/tokens.php:1038 admin/tokens.php:2325 admin/tokens.php:2459
-#: common_functions.php:6222 replacements.php:514
+#: admin/exportresults.php:760 admin/tokens.php:1035 admin/tokens.php:1038
+#: admin/tokens.php:1039 admin/tokens.php:2326 admin/tokens.php:2460
+#: common_functions.php:6215 replacements.php:514
 msgid "Last name"
 msgstr "Último nome"
 
 #: admin/browse.php:137 admin/browse.php:475 admin/exportresults.php:763
-#: admin/login_check.php:162 admin/tokens.php:2329 admin/tokens.php:2461
+#: admin/login_check.php:162 admin/tokens.php:2330 admin/tokens.php:2462
 #: admin/usercontrol.php:82 admin/usercontrol.php:487
 #: admin/userrighthandling.php:226 admin/userrighthandling.php:438
 #: admin/userrighthandling.php:918
@@ -588,7 +588,7 @@ msgstr "Data de submissão"
 #: admin/browse.php:139 admin/browse.php:140 admin/browse.php:478
 #: admin/dataentry.php:456 admin/exportresults.php:469
 #: admin/exportresults.php:470 admin/exportresults.php:751 admin/quota.php:498
-#: admin/quota.php:675 admin/tokens.php:746 statistics_user.php:441
+#: admin/quota.php:675 admin/tokens.php:747 statistics_user.php:441
 msgid "Completed"
 msgstr "Completo"
 
@@ -616,12 +616,12 @@ msgstr "Descarregue os ficheiros para esta entrada"
 msgid "Export this Response"
 msgstr "Exportar esta resposta"
 
-#: admin/browse.php:245 admin/tokens.php:958
+#: admin/browse.php:245 admin/tokens.php:959
 msgid "Show previous..."
 msgstr "Mostrar anterior..."
 
 #: admin/browse.php:248 admin/browse.php:707 admin/browse.php:955
-#: admin/tokens.php:962
+#: admin/tokens.php:963
 msgid "Show next..."
 msgstr "Mostrar seguinte..."
 
@@ -641,7 +641,7 @@ msgstr "Por favor, seleccione pelo menos um ficheiro a apagar!"
 msgid "Please select at least one file for download"
 msgstr "Por favor, seleccione pelo menos um ficheiro a descarregar!"
 
-#: admin/browse.php:328 admin/tokens.php:2719
+#: admin/browse.php:328 admin/tokens.php:2720
 msgid "Note:"
 msgstr "Nota:"
 
@@ -651,7 +651,7 @@ msgstr "A mostrar resultados filtrados"
 
 #: admin/browse.php:329
 msgid "Remove filter"
-msgstr ""
+msgstr "Remover filtro"
 
 #: admin/browse.php:558 admin/browse.php:898
 msgid "Delete marked responses"
@@ -661,11 +661,11 @@ msgstr "Eliminar respostas seleccionadas"
 msgid "Download marked files"
 msgstr "Descarregue os ficheiros seleccionados"
 
-#: admin/browse.php:694 admin/browse.php:942 admin/tokens.php:937
+#: admin/browse.php:694 admin/browse.php:942 admin/tokens.php:938
 msgid "Data view control"
 msgstr "Controle da vista de dados"
 
-#: admin/browse.php:700 admin/browse.php:948 admin/tokens.php:955
+#: admin/browse.php:700 admin/browse.php:948 admin/tokens.php:956
 msgid "Show start..."
 msgstr "Mostrar início..."
 
@@ -677,7 +677,7 @@ msgstr "Mostrar anterior..."
 msgid "Show next.."
 msgstr "Mostrar seguinte..."
 
-#: admin/browse.php:710 admin/browse.php:958 admin/tokens.php:965
+#: admin/browse.php:710 admin/browse.php:958 admin/tokens.php:966
 msgid "Show last..."
 msgstr "Mostrar última..."
 
@@ -685,15 +685,15 @@ msgstr "Mostrar última..."
 msgid "Show last.."
 msgstr "Mostrar última..."
 
-#: admin/browse.php:724 admin/browse.php:972 admin/tokens.php:978
+#: admin/browse.php:724 admin/browse.php:972 admin/tokens.php:979
 msgid "Records displayed:"
 msgstr "Mostrar registos:"
 
-#: admin/browse.php:725 admin/browse.php:973 admin/tokens.php:979
+#: admin/browse.php:725 admin/browse.php:973 admin/tokens.php:980
 msgid "Starting from:"
 msgstr "Começando desde:"
 
-#: admin/browse.php:726 admin/browse.php:974 admin/tokens.php:980
+#: admin/browse.php:726 admin/browse.php:974 admin/tokens.php:981
 msgid "Show"
 msgstr "Mostrar"
 
@@ -843,12 +843,12 @@ msgstr "Maior do que (Strings)"
 msgid "Conditions manager"
 msgstr "Gestor de condições"
 
-#: admin/conditionshandling.php:120 admin/tokens.php:399
+#: admin/conditionshandling.php:120 admin/tokens.php:400
 msgid "You have not selected a survey"
 msgstr "Não seleccionou um inquérito"
 
 #: admin/conditionshandling.php:121 admin/conditionshandling.php:133
-#: admin/tokens.php:401 admin/tokens.php:415 admin/tokens.php:482
+#: admin/tokens.php:402 admin/tokens.php:416 admin/tokens.php:483
 msgid "Main admin screen"
 msgstr "Administração principal"
 
@@ -893,9 +893,9 @@ msgstr "Não foi possível copiar condições (devido a duplicados)"
 #: admin/exportresults.php:894 admin/exportresults.php:895
 #: admin/exportresults.php:941 admin/exportresults.php:942
 #: admin/exportresults.php:963 admin/exportresults.php:964
-#: admin/globalsettings.php:387 admin/globalsettings.php:399
-#: admin/globalsettings.php:410 admin/globalsettings.php:459
-#: admin/globalsettings.php:479 admin/html.php:897 admin/html.php:1418
+#: admin/globalsettings.php:388 admin/globalsettings.php:400
+#: admin/globalsettings.php:411 admin/globalsettings.php:460
+#: admin/globalsettings.php:480 admin/html.php:897 admin/html.php:1418
 #: admin/html.php:1427 admin/importoldresponses.php:71
 #: admin/printablesurvey.php:856 admin/printablesurvey.php:860
 #: admin/printablesurvey.php:977 admin/printablesurvey.php:994
@@ -906,7 +906,7 @@ msgstr "Não foi possível copiar condições (devido a duplicados)"
 #: admin/results.php:330 admin/results.php:360 admin/statistics.php:824
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
-#: admin/tokens.php:1506 admin/tokens.php:1804 admin/tokens.php:2091
+#: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
 #: classes/expressions/LimeExpressionManager.php:2501
 #: classes/expressions/LimeExpressionManager.php:2505 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
@@ -961,9 +961,9 @@ msgstr "Incerto"
 #: admin/exportresults.php:945 admin/exportresults.php:946
 #: admin/exportresults.php:949 admin/exportresults.php:950
 #: admin/exportresults.php:967 admin/exportresults.php:968
-#: admin/globalsettings.php:390 admin/globalsettings.php:402
-#: admin/globalsettings.php:413 admin/globalsettings.php:460
-#: admin/globalsettings.php:480 admin/html.php:893 admin/html.php:1418
+#: admin/globalsettings.php:391 admin/globalsettings.php:403
+#: admin/globalsettings.php:414 admin/globalsettings.php:461
+#: admin/globalsettings.php:481 admin/html.php:893 admin/html.php:1418
 #: admin/html.php:1427 admin/importoldresponses.php:72
 #: admin/printablesurvey.php:857 admin/printablesurvey.php:861
 #: admin/printablesurvey.php:979 admin/printablesurvey.php:996
@@ -973,8 +973,8 @@ msgstr "Incerto"
 #: admin/results.php:248 admin/results.php:331 admin/results.php:362
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
-#: admin/surveylist.php:56 admin/tokens.php:1507 admin/tokens.php:1805
-#: admin/tokens.php:2093 classes/expressions/LimeExpressionManager.php:2502
+#: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2502
 #: classes/expressions/LimeExpressionManager.php:2506 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3204
 #: common_functions.php:3277 common_functions.php:3384
@@ -1043,8 +1043,8 @@ msgstr "Diminuição"
 #: admin/statistics_function.php:2567 admin/statistics_function.php:2581
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
-#: common_functions.php:1914 common_functions.php:5475
-#: common_functions.php:5480 qanda.php:927 qanda.php:1455 qanda.php:1734
+#: common_functions.php:1914 common_functions.php:5468
+#: common_functions.php:5473 qanda.php:927 qanda.php:1455 qanda.php:1734
 #: qanda.php:1838 qanda.php:1893 qanda.php:3787 qanda.php:3832 qanda.php:3921
 #: qanda.php:3985 qanda.php:4074 qanda.php:4120 qanda.php:4198 qanda.php:4264
 #: qanda.php:4346 qanda.php:4424 qanda.php:4525 qanda.php:4547 qanda.php:4615
@@ -1520,7 +1520,7 @@ msgid "Identifier:"
 msgstr "Identificador:"
 
 #: admin/dataentry.php:183 admin/dataentry.php:2913
-#: admin/globalsettings.php:363 admin/tokens.php:850
+#: admin/globalsettings.php:364 admin/tokens.php:851
 msgid "Password:"
 msgstr "Senha:"
 
@@ -1585,8 +1585,8 @@ msgstr "Foi enviado um email com os detalhes do seu inquérito gravado"
 #: admin/importgroup.php:52 admin/importgroup.php:76 admin/importlabel.php:35
 #: admin/importlabel.php:81 admin/importquestion.php:62
 #: admin/importquestion.php:86 admin/importsurvey.php:53
-#: admin/importsurvey.php:121 admin/iterate_survey.php:62 admin/tokens.php:2556
-#: admin/tokens.php:2615 admin/tokens.php:2697 admin/tokens.php:3154
+#: admin/importsurvey.php:121 admin/iterate_survey.php:62 admin/tokens.php:2557
+#: admin/tokens.php:2616 admin/tokens.php:2698 admin/tokens.php:3155
 #: admin/vvimport.php:129
 msgid "Success"
 msgstr "Sucesso"
@@ -1659,8 +1659,8 @@ msgstr "Registo apagado"
 
 #: admin/dataentry.php:1744 admin/exportresults.php:235
 #: admin/exportresults.php:444 admin/exportresults.php:445
-#: admin/exportresults.php:769 admin/tokens.php:1064 admin/tokens.php:1067
-#: admin/tokens.php:1068 admin/tokens.php:2342 common_functions.php:2344
+#: admin/exportresults.php:769 admin/tokens.php:1065 admin/tokens.php:1068
+#: admin/tokens.php:1069 admin/tokens.php:2343 common_functions.php:2344
 #: index.php:1763 index.php:1930
 msgid "Token"
 msgstr "Código"
@@ -1699,9 +1699,9 @@ msgstr "Etiquetas %s"
 #: admin/dataentry.php:1932 admin/dataentry.php:1944 admin/labels.php:78
 #: admin/translate_functions.php:148 common_functions.php:646
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
-#: common_functions.php:1411 common_functions.php:4810
-#: common_functions.php:4859 common_functions.php:4895
-#: common_functions.php:4931 qanda.php:1253 qanda.php:1431 qanda.php:6159
+#: common_functions.php:1411 common_functions.php:4803
+#: common_functions.php:4852 common_functions.php:4888
+#: common_functions.php:4924 qanda.php:1253 qanda.php:1431 qanda.php:6159
 #: qanda.php:6213
 msgid "Please choose..."
 msgstr "Por favor, seleccione..."
@@ -1715,7 +1715,7 @@ msgstr "Comentário"
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Este inquérito ainda não foi activado. As suas respostas não poderão ser gravadas."
 
-#: admin/dataentry.php:2966 admin/tokens.php:413
+#: admin/dataentry.php:2966 admin/tokens.php:414
 msgid "The survey you selected does not exist"
 msgstr "O inquérito que seleccionou não existe"
 
@@ -1910,7 +1910,7 @@ msgstr "Gravar alterações"
 msgid "This will replace the existing text. Continue?"
 msgstr "Isto vai substituir o texto existente. Continuar?"
 
-#: admin/editemailtemplates.php:37 admin/tokens.php:645
+#: admin/editemailtemplates.php:37 admin/tokens.php:646
 msgid "Edit email templates"
 msgstr "Editar modelos de email"
 
@@ -1970,7 +1970,7 @@ msgid "Detailed admin notification email:"
 msgstr "Email de notificação detalhada do administrador:"
 
 #: admin/editemailtemplates.php:94 admin/editemailtemplates.php:106
-#: admin/editemailtemplates.php:108 admin/tokens.php:1479
+#: admin/editemailtemplates.php:108 admin/tokens.php:1480
 msgid "Invitation email:"
 msgstr "Email de convite:"
 
@@ -2074,7 +2074,7 @@ msgid "Edit survey settings"
 msgstr "Editar configurações do inquérito"
 
 #: admin/editsurveysettings.php:92 admin/editsurveysettings.php:187
-#: admin/exportresults.php:90 admin/globalsettings.php:140
+#: admin/exportresults.php:90 admin/globalsettings.php:141
 msgid "General"
 msgstr "Geral"
 
@@ -2255,7 +2255,7 @@ msgid "Automatically load URL when survey complete?"
 msgstr "Carregar automaticamente o URL depois de completo o inquérito?"
 
 #: admin/editsurveysettings.php:444 admin/editsurveysettings.php:464
-#: admin/globalsettings.php:477
+#: admin/globalsettings.php:478
 msgid "Show \"There are X questions in this survey\""
 msgstr "Mostre \"Existem X questões neste inquérito\""
 
@@ -2288,20 +2288,20 @@ msgid "Hide both (Forced by the system administrator)"
 msgstr "Esconda ambos (Forçado pelo administrador de sistema)"
 
 #: admin/editsurveysettings.php:501 admin/editsurveysettings.php:538
-#: admin/globalsettings.php:500 admin/globalsettings.php:518
+#: admin/globalsettings.php:501 admin/globalsettings.php:519
 msgid "Show both"
 msgstr "Mostre ambos"
 
-#: admin/editsurveysettings.php:502 admin/globalsettings.php:501
+#: admin/editsurveysettings.php:502 admin/globalsettings.php:502
 msgid "Show group name only"
 msgstr "Mostar apenas o nome do grupo"
 
-#: admin/editsurveysettings.php:503 admin/globalsettings.php:502
+#: admin/editsurveysettings.php:503 admin/globalsettings.php:503
 msgid "Show group description only"
 msgstr "Mostre apenas a descrição do grupo"
 
 #: admin/editsurveysettings.php:504 admin/editsurveysettings.php:541
-#: admin/globalsettings.php:503 admin/globalsettings.php:521
+#: admin/globalsettings.php:504 admin/globalsettings.php:522
 msgid "Hide both"
 msgstr "Esconda ambos"
 
@@ -2317,11 +2317,11 @@ msgstr "Mostar apenas o número da pergunta (Forçado pelo administardor do sist
 msgid "Show question code only (Forced by the system administrator)"
 msgstr "Mostre apenas o código da questão (Forçado pelo administrador de sistema)"
 
-#: admin/editsurveysettings.php:539 admin/globalsettings.php:519
+#: admin/editsurveysettings.php:539 admin/globalsettings.php:520
 msgid "Show question number only"
 msgstr "Mostre apenas o número da questão"
 
-#: admin/editsurveysettings.php:540 admin/globalsettings.php:520
+#: admin/editsurveysettings.php:540 admin/globalsettings.php:521
 msgid "Show question code only"
 msgstr "Mostre apenas o código da questão"
 
@@ -2728,7 +2728,7 @@ msgstr "Resposta única"
 msgid "Range:"
 msgstr "Intervalo:"
 
-#: admin/exportresults.php:92 admin/tokens.php:1469 admin/tokens.php:1752
+#: admin/exportresults.php:92 admin/tokens.php:1470 admin/tokens.php:1753
 msgid "From"
 msgstr "De"
 
@@ -2825,8 +2825,8 @@ msgstr "O seu inquérito contém mais do que 255 colunas de respostas. Aplicaç�
 msgid "Choose the columns you wish to export."
 msgstr "Seleccione as colunas que deseja exportar."
 
-#: admin/exportresults.php:226 admin/tokens.php:397 admin/tokens.php:411
-#: admin/tokens.php:426
+#: admin/exportresults.php:226 admin/tokens.php:398 admin/tokens.php:412
+#: admin/tokens.php:427
 msgid "Token control"
 msgstr "Controle de códigos"
 
@@ -2839,8 +2839,8 @@ msgid "Your survey can export associated token data with each response. Select a
 msgstr "O seu inquérito pode exportar dados de códigos associados com cada resposta. Seleccione quaisquer campos adicionais que gostaria de exportar."
 
 #: admin/exportresults.php:234 admin/exportresults.php:439
-#: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1044
-#: admin/tokens.php:1047 admin/tokens.php:1048 common_functions.php:6223
+#: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1045
+#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6216
 #: replacements.php:521
 msgid "Email address"
 msgstr "Endereço de email"
@@ -2881,9 +2881,9 @@ msgstr "Novo registo"
 msgid "NEW RECORD"
 msgstr "NOVO REGISTO"
 
-#: admin/exportresults.php:775 admin/login_check.php:227 admin/tokens.php:1074
-#: admin/tokens.php:1077 admin/tokens.php:1078 admin/tokens.php:2351
-#: admin/tokens.php:2464
+#: admin/exportresults.php:775 admin/login_check.php:227 admin/tokens.php:1075
+#: admin/tokens.php:1078 admin/tokens.php:1079 admin/tokens.php:2352
+#: admin/tokens.php:2465
 msgid "Language"
 msgstr "Idioma"
 
@@ -2924,8 +2924,8 @@ msgstr "Email do código"
 #: admin/fck_LimeReplacementFields.php:129
 #: admin/fck_LimeReplacementFields.php:149
 #: admin/fck_LimeReplacementFields.php:165
-#: admin/fck_LimeReplacementFields.php:222 admin/tokens.php:1124
-#: admin/tokens.php:1127 admin/tokens.php:1128 common_functions.php:6229
+#: admin/fck_LimeReplacementFields.php:222 admin/tokens.php:1125
+#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6222
 msgid "Uses left"
 msgstr "Utilizações em falta"
 
@@ -3055,387 +3055,387 @@ msgstr "Só estão disponíveis as respostas das paginas anteriores"
 msgid "Survey mode is set to %s:"
 msgstr "Modo do inquérito está definido para %s:"
 
-#: admin/globalsettings.php:107
+#: admin/globalsettings.php:108
 msgid "Global settings were saved."
 msgstr "Definições globais foram gravadas."
 
-#: admin/globalsettings.php:135 admin/html.php:2185
+#: admin/globalsettings.php:136 admin/html.php:2185
 msgid "Global settings"
 msgstr "Configurações globais"
 
-#: admin/globalsettings.php:139
+#: admin/globalsettings.php:140
 msgid "Overview & update"
 msgstr "Visão geral e actualização"
 
-#: admin/globalsettings.php:141
+#: admin/globalsettings.php:142
 msgid "Email settings"
 msgstr "Configurações do email"
 
-#: admin/globalsettings.php:142 admin/tokens.php:670 admin/tokens.php:804
-#: admin/tokens.php:814
+#: admin/globalsettings.php:143 admin/tokens.php:671 admin/tokens.php:805
+#: admin/tokens.php:815
 msgid "Bounce settings"
 msgstr "Definições de emails por omissão de retorno (\"bounce\")"
 
-#: admin/globalsettings.php:143
+#: admin/globalsettings.php:144
 msgid "Security"
 msgstr "Segurança"
 
-#: admin/globalsettings.php:144
+#: admin/globalsettings.php:145
 msgid "Presentation"
 msgstr "Apresentação"
 
-#: admin/globalsettings.php:150
+#: admin/globalsettings.php:151
 msgid "Updates"
 msgstr "Actualizações"
 
-#: admin/globalsettings.php:151
+#: admin/globalsettings.php:152
 msgid "Check for updates:"
 msgstr "Verificar por actualizações:"
 
-#: admin/globalsettings.php:155
+#: admin/globalsettings.php:156
 msgid "Never"
 msgstr "Nunca"
 
-#: admin/globalsettings.php:158
+#: admin/globalsettings.php:159
 msgid "Every day"
 msgstr "Todos os dias"
 
-#: admin/globalsettings.php:161
+#: admin/globalsettings.php:162
 msgid "Every week"
 msgstr "Todas as semanas"
 
-#: admin/globalsettings.php:164
+#: admin/globalsettings.php:165
 msgid "Every 2 weeks"
 msgstr "Todas as 2 semanas"
 
-#: admin/globalsettings.php:167
+#: admin/globalsettings.php:168
 msgid "Every month"
 msgstr "Todos os meses"
 
-#: admin/globalsettings.php:168
+#: admin/globalsettings.php:169
 msgid "Check now"
 msgstr "Verificar agora"
 
-#: admin/globalsettings.php:168
+#: admin/globalsettings.php:169
 msgid "Last check: %s"
 msgstr "Última verificação: %s"
 
-#: admin/globalsettings.php:172
+#: admin/globalsettings.php:173
 msgid "There is a LimeSurvey update available: Version %s"
 msgstr "Existe uma actualização disponível do LimeSurvey: Versão %s"
 
-#: admin/globalsettings.php:173
+#: admin/globalsettings.php:174
 msgid "You can update %smanually%s or use the %s"
 msgstr "Pode actualizar %smanualmente%s ou utilizar o %s"
 
-#: admin/globalsettings.php:173
+#: admin/globalsettings.php:174
 msgid "3-Click ComfortUpdate"
 msgstr "3-Clique ComfortUpdate"
 
-#: admin/globalsettings.php:177
+#: admin/globalsettings.php:178
 msgid "There was an error on update check (%s)"
 msgstr "Ocorreu um erro na verificação de actualizações (%s)"
 
-#: admin/globalsettings.php:183
+#: admin/globalsettings.php:184
 msgid "There is currently no newer LimeSurvey version available."
 msgstr "Não existe actualmente disponível nenhuma versão mais recente do LimeSurvey."
 
-#: admin/globalsettings.php:193
+#: admin/globalsettings.php:194
 msgid "Site name:"
 msgstr "Nome do sítio web:"
 
-#: admin/globalsettings.php:195
+#: admin/globalsettings.php:196
 msgid "Default site language:"
 msgstr "Idioma por omissão:"
 
-#: admin/globalsettings.php:210
+#: admin/globalsettings.php:211
 msgid "Default template:"
 msgstr "Modelo por omissão:"
 
-#: admin/globalsettings.php:223
+#: admin/globalsettings.php:224
 msgid "Default HTML editor mode:"
 msgstr "Modo de edição HTML por omissão:"
 
-#: admin/globalsettings.php:227
+#: admin/globalsettings.php:228
 msgid "Default HTML editor mode"
 msgstr "Modo de edição HTML por omissão"
 
-#: admin/globalsettings.php:230 admin/html.php:121
+#: admin/globalsettings.php:231 admin/html.php:121
 msgid "No HTML editor"
 msgstr "Sem editor HTML"
 
-#: admin/globalsettings.php:233 admin/html.php:119
+#: admin/globalsettings.php:234 admin/html.php:119
 msgid "Inline HTML editor"
 msgstr "Editor HTML na mesma página"
 
-#: admin/globalsettings.php:236 admin/html.php:120
+#: admin/globalsettings.php:237 admin/html.php:120
 msgid "Popup HTML editor"
 msgstr "Editor HTML numa nova janela"
 
-#: admin/globalsettings.php:240
+#: admin/globalsettings.php:241
 msgid "Time difference (in hours):"
 msgstr "Diferença horária (em horas):"
 
-#: admin/globalsettings.php:242
+#: admin/globalsettings.php:243
 msgid "Server time:"
 msgstr "Tempo do servidor:"
 
-#: admin/globalsettings.php:242
+#: admin/globalsettings.php:243
 msgid "Corrected time :"
 msgstr "Tempo correcto :"
 
-#: admin/globalsettings.php:246
+#: admin/globalsettings.php:247
 msgid "PDF export available:"
 msgstr "Exportação para PDF disponível:"
 
-#: admin/globalsettings.php:250 admin/globalsettings.php:261
-#: admin/globalsettings.php:441
+#: admin/globalsettings.php:251 admin/globalsettings.php:262
+#: admin/globalsettings.php:442
 msgid "On"
 msgstr "Ligado"
 
-#: admin/globalsettings.php:253 admin/globalsettings.php:264
-#: admin/globalsettings.php:316 admin/globalsettings.php:328
-#: admin/globalsettings.php:349 admin/globalsettings.php:369
-#: admin/globalsettings.php:442 admin/tokens.php:837 common_functions.php:3441
+#: admin/globalsettings.php:254 admin/globalsettings.php:265
+#: admin/globalsettings.php:317 admin/globalsettings.php:329
+#: admin/globalsettings.php:350 admin/globalsettings.php:370
+#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3441
 #: common_functions.php:3649
 msgid "Off"
 msgstr "Desligado"
 
-#: admin/globalsettings.php:257
+#: admin/globalsettings.php:258
 msgid "Screen reader compatibility mode:"
 msgstr "Modo de compatibilidade com leitores de ecrã:"
 
-#: admin/globalsettings.php:266
+#: admin/globalsettings.php:267
 msgid "Session lifetime (seconds):"
 msgstr "Duração da sessão (segundos):"
 
-#: admin/globalsettings.php:268
+#: admin/globalsettings.php:269
 msgid "IP Info DB API Key:"
 msgstr "Informação de IP da chave da API da BD:"
 
-#: admin/globalsettings.php:270
+#: admin/globalsettings.php:271
 msgid "Google Maps API key:"
 msgstr "Chave da API da Google Maps"
 
-#: admin/globalsettings.php:272
+#: admin/globalsettings.php:273
 msgid "Google Analytics API key:"
 msgstr ""
 
-#: admin/globalsettings.php:274
+#: admin/globalsettings.php:275
 msgid "Google Translate API key:"
 msgstr ""
 
-#: admin/globalsettings.php:286
+#: admin/globalsettings.php:287
 msgid "Default site admin email:"
 msgstr "Email por omissão do administrador:"
 
-#: admin/globalsettings.php:289
+#: admin/globalsettings.php:290
 msgid "Administrator name:"
 msgstr "Nome do administrador:"
 
-#: admin/globalsettings.php:291
+#: admin/globalsettings.php:292
 msgid "Email method:"
 msgstr "Método do email:"
 
-#: admin/globalsettings.php:295
+#: admin/globalsettings.php:296
 msgid "PHP (default)"
 msgstr "PHP (por omissão)"
 
-#: admin/globalsettings.php:298
+#: admin/globalsettings.php:299
 msgid "SMTP"
 msgstr "SMTP"
 
-#: admin/globalsettings.php:301
+#: admin/globalsettings.php:302
 msgid "Sendmail"
 msgstr "Sendmail"
 
-#: admin/globalsettings.php:304
+#: admin/globalsettings.php:305
 msgid "Qmail"
 msgstr "Qmail"
 
-#: admin/globalsettings.php:306
+#: admin/globalsettings.php:307
 msgid "SMTP host:"
 msgstr "Servidor SMTP:"
 
-#: admin/globalsettings.php:307
+#: admin/globalsettings.php:308
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr "Digite o servidor e porto, por exemplo: my.smtp.com:25"
 
-#: admin/globalsettings.php:308
+#: admin/globalsettings.php:309
 msgid "SMTP username:"
 msgstr "Utilizador SMTP:"
 
-#: admin/globalsettings.php:310
+#: admin/globalsettings.php:311
 msgid "SMTP password:"
 msgstr "Senha SMTP:"
 
-#: admin/globalsettings.php:312
+#: admin/globalsettings.php:313
 msgid "SMTP SSL/TLS:"
 msgstr "SMTP SSL/TLS:"
 
-#: admin/globalsettings.php:319 admin/globalsettings.php:372
-#: admin/tokens.php:859
+#: admin/globalsettings.php:320 admin/globalsettings.php:373
+#: admin/tokens.php:860
 msgid "SSL"
 msgstr "SSL"
 
-#: admin/globalsettings.php:322 admin/globalsettings.php:375
-#: admin/tokens.php:862
+#: admin/globalsettings.php:323 admin/globalsettings.php:376
+#: admin/tokens.php:863
 msgid "TLS"
 msgstr "TLS"
 
-#: admin/globalsettings.php:324
+#: admin/globalsettings.php:325
 msgid "SMTP debug mode:"
 msgstr "Modo de depuração SMTP:"
 
-#: admin/globalsettings.php:331
+#: admin/globalsettings.php:332
 msgid "On errors"
 msgstr "Em caso de erros"
 
-#: admin/globalsettings.php:334
+#: admin/globalsettings.php:335
 msgid "Always"
 msgstr "Sempre"
 
-#: admin/globalsettings.php:336
+#: admin/globalsettings.php:337
 msgid "Email batch size:"
 msgstr "Número de emails a enviar de cada vez:"
 
-#: admin/globalsettings.php:343
+#: admin/globalsettings.php:344
 msgid "Default site bounce email:"
 msgstr "Email por omissão de retorno (\"bounce\"):"
 
-#: admin/globalsettings.php:345 admin/tokens.php:833
+#: admin/globalsettings.php:346 admin/tokens.php:834
 msgid "Server type:"
 msgstr "Tipo do servidor:"
 
-#: admin/globalsettings.php:352 admin/tokens.php:840
+#: admin/globalsettings.php:353 admin/tokens.php:841
 msgid "IMAP"
 msgstr "IMAP"
 
-#: admin/globalsettings.php:355 admin/tokens.php:843
+#: admin/globalsettings.php:356 admin/tokens.php:844
 msgid "POP"
 msgstr "POP"
 
-#: admin/globalsettings.php:358 admin/tokens.php:846
+#: admin/globalsettings.php:359 admin/tokens.php:847
 msgid "Server name & port:"
 msgstr "Nome e porta do servidor:"
 
-#: admin/globalsettings.php:359 admin/tokens.php:847
+#: admin/globalsettings.php:360 admin/tokens.php:848
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:995"
 msgstr "Digite o nome do servidor e porta, por exemplo:  imap.gmail.com:995"
 
-#: admin/globalsettings.php:361 admin/tokens.php:848
+#: admin/globalsettings.php:362 admin/tokens.php:849
 msgid "User name:"
 msgstr "Nome de utilizador:"
 
-#: admin/globalsettings.php:365 admin/tokens.php:852
+#: admin/globalsettings.php:366 admin/tokens.php:853
 msgid "Encryption type:"
 msgstr "Tipo de encriptação:"
 
-#: admin/globalsettings.php:383
+#: admin/globalsettings.php:384
 msgid "Survey preview only for administration users"
 msgstr "Pré-visualização do inquérito apenas para administradores"
 
-#: admin/globalsettings.php:395
+#: admin/globalsettings.php:396
 msgid "Filter HTML for XSS:"
 msgstr "Filtrar HTML por XSS:"
 
-#: admin/globalsettings.php:406
+#: admin/globalsettings.php:407
 msgid "Group member can only see own group:"
 msgstr "Membro do grupo só pode ver o próprio grupo:"
 
-#: admin/globalsettings.php:418
+#: admin/globalsettings.php:419
 msgid "Warning: Before turning on HTTPS, "
 msgstr "Aviso: Antes de ligar o HTTPS,"
 
-#: admin/globalsettings.php:420
+#: admin/globalsettings.php:421
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr "Verifique se o seu servidor tem o SSL activo cliquando neste endereço."
 
-#: admin/globalsettings.php:421
+#: admin/globalsettings.php:422
 msgid "check if this link works."
 msgstr "verifique se este endereço funciona."
 
-#: admin/globalsettings.php:422
+#: admin/globalsettings.php:423
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
 msgstr "Se o endereço não funciona e voçe liga o HTTP, então o LimeSurvey vai deixar de funcionar e não vai ser possível aceder-lhe"
 
-#: admin/globalsettings.php:439
+#: admin/globalsettings.php:440
 msgid "Force HTTPS:"
 msgstr "Forçe o HTTPS:"
 
-#: admin/globalsettings.php:443
+#: admin/globalsettings.php:444
 msgid "Don't force on or off"
 msgstr "Não forçe ligado ou desligado"
 
-#: admin/globalsettings.php:457
+#: admin/globalsettings.php:458
 msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr "Mostrar a opção 'sem resposta' para perguntas não obrigatórias:"
 
-#: admin/globalsettings.php:461 admin/globalsettings.php:481
-#: admin/globalsettings.php:504 admin/globalsettings.php:522
+#: admin/globalsettings.php:462 admin/globalsettings.php:482
+#: admin/globalsettings.php:505 admin/globalsettings.php:523
 msgid "Survey admin can choose"
 msgstr "Administrador do inquérito pode escolher"
 
-#: admin/globalsettings.php:465
+#: admin/globalsettings.php:466
 msgid "Repeating headings in array questions every X subquestions:"
 msgstr "Cabeçalhos repetidos nas perguntas da matriz em cada X perguntas secundárias:"
 
-#: admin/globalsettings.php:498
+#: admin/globalsettings.php:499
 msgid "Show question group name and/or description"
 msgstr "Mostre os nomes ou descrições dos grupos de perguntas"
 
-#: admin/globalsettings.php:516
+#: admin/globalsettings.php:517
 msgid "Show question number and/or question code"
 msgstr "Mostre os números ou códigos dos grupos de perguntas"
 
-#: admin/globalsettings.php:534 admin/html.php:162 admin/tokens.php:864
+#: admin/globalsettings.php:535 admin/html.php:162 admin/tokens.php:865
 #: admin/userrighthandling.php:159
 msgid "Save settings"
 msgstr "Gravar definições"
 
-#: admin/globalsettings.php:537
+#: admin/globalsettings.php:538
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr "Nota: O modo de demonstração está activado. Os parâmetros marcados com (*) não poderão ser alterados."
 
-#: admin/globalsettings.php:630
+#: admin/globalsettings.php:631
 msgid "System overview"
 msgstr "Visão geral do sistema"
 
-#: admin/globalsettings.php:633 admin/update/updater.php:654
+#: admin/globalsettings.php:634 admin/update/updater.php:654
 msgid "Database name"
 msgstr "Nome da Base de Dados"
 
-#: admin/globalsettings.php:637
+#: admin/globalsettings.php:638
 msgid "Users"
 msgstr "Utilizadores"
 
-#: admin/globalsettings.php:640 admin/html.php:2230
+#: admin/globalsettings.php:641 admin/html.php:2230
 #: admin/http_importsurvey.php:155 admin/importsurvey.php:61
 #: admin/importsurvey.php:123
 msgid "Surveys"
 msgstr "inquéritos"
 
-#: admin/globalsettings.php:643
+#: admin/globalsettings.php:644
 msgid "Active surveys"
 msgstr "Inquéritos activos"
 
-#: admin/globalsettings.php:646
+#: admin/globalsettings.php:647
 msgid "Deactivated result tables"
 msgstr "Tabelas de resultados desactivadas"
 
-#: admin/globalsettings.php:649
+#: admin/globalsettings.php:650
 msgid "Active token tables"
 msgstr "Tabelas de códigos activas"
 
-#: admin/globalsettings.php:652
+#: admin/globalsettings.php:653
 msgid "Deactivated token tables"
 msgstr "Tabelas de códigos desactivadas"
 
-#: admin/globalsettings.php:659
+#: admin/globalsettings.php:660
 msgid "Used/free space for file uploads"
 msgstr "Espaço livre/utilizado para submissão de ficheiros"
 
-#: admin/globalsettings.php:666
+#: admin/globalsettings.php:667
 msgid "Show PHPInfo"
 msgstr "Mostrar PHPInfo"
 
@@ -3651,11 +3651,11 @@ msgstr "Gestão de códigos"
 msgid "Question groups"
 msgstr "Grupo de perguntas"
 
-#: admin/html.php:611 admin/tokens.php:822 admin/tokens.php:856
+#: admin/html.php:611 admin/tokens.php:823 admin/tokens.php:857
 #: common_functions.php:651 common_functions.php:654 common_functions.php:1312
 #: common_functions.php:1337 common_functions.php:1412
-#: common_functions.php:3884 common_functions.php:4860
-#: common_functions.php:4896
+#: common_functions.php:3884 common_functions.php:4853
+#: common_functions.php:4889
 msgid "None"
 msgstr "Nenhum"
 
@@ -4447,7 +4447,7 @@ msgid "quota language settings"
 msgstr "configurações da quota da linguagem"
 
 #: admin/http_importsurvey.php:186 admin/importlabel.php:73
-#: admin/importsurvey.php:91 admin/importsurvey.php:152 admin/tokens.php:2920
+#: admin/importsurvey.php:91 admin/importsurvey.php:152 admin/tokens.php:2921
 msgid "Warnings"
 msgstr "Avisos"
 
@@ -6528,7 +6528,7 @@ msgstr "Ficheiros dum modelo standard não podem ser apagados."
 msgid "Upload a file:"
 msgstr "Submeter um ficheiro:"
 
-#: admin/templates.php:1009 admin/tokens.php:3237
+#: admin/templates.php:1009 admin/tokens.php:3238
 msgid "Upload"
 msgstr "Submeter"
 
@@ -6692,872 +6692,872 @@ msgstr "Japonês EUC-JP"
 msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicódigo"
 
-#: admin/tokens.php:355
+#: admin/tokens.php:356
 msgid "%s messages were scanned out of which %s were marked as bounce by the system."
 msgstr "Foram verificadas %s mensagens das quais %s foram marcadas pelos sistema como sendo de retorno"
 
-#: admin/tokens.php:359
+#: admin/tokens.php:360
 msgid "%s messages were scanned, none were marked as bounce by the system."
 msgstr "Foram verificadas %s mensagens, em que nenhuma delas foi marcada pela sistema como sendo de retorno"
 
-#: admin/tokens.php:364
+#: admin/tokens.php:365
 msgid "Your inbox is empty."
 msgstr "A sua caixa de entrada está vazia."
 
-#: admin/tokens.php:373
+#: admin/tokens.php:374
 msgid "Please check your settings"
 msgstr "Por favor, verifique as suas configurações"
 
-#: admin/tokens.php:378 index.php:391
+#: admin/tokens.php:379 index.php:391
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "Pedimos desculpa, mas não tem permissões para efectuar esta acção."
 
-#: admin/tokens.php:477
+#: admin/tokens.php:478
 msgid "Token table could not be created."
 msgstr "Não foi possível criar a tabela de códigos."
 
-#: admin/tokens.php:497
+#: admin/tokens.php:498
 msgid "A token table has been created for this survey."
 msgstr "Foi criada uma tabela de códigos para este inquérito."
 
-#: admin/tokens.php:511
+#: admin/tokens.php:512
 msgid "Import old tokens"
 msgstr "Importar códigos antigos"
 
-#: admin/tokens.php:512
+#: admin/tokens.php:513
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr "Foi criada uma tabela de códigos para este inquérito e os códigos antigos foram importados."
 
-#: admin/tokens.php:532
+#: admin/tokens.php:533
 msgid "Tokens have not been initialised for this survey."
 msgstr "Não há códigos inicializados para este inquérito."
 
-#: admin/tokens.php:535
+#: admin/tokens.php:536
 msgid "If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
 msgstr "Se inicializou códigos para este inquérito, então este inquérito só estará acessível a utilizadores que forneçam um código, tanto manualmente como por endereço (URL)."
 
-#: admin/tokens.php:542
+#: admin/tokens.php:543
 msgid "Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Nota: Se activar a opção -Respostas Anónimas- para este inquérito, então o LimeSurvey marcará os seus códigos completos somente com um 'S'/'Y' em vez da data/hora, para assegurar o anonimato dos participantes."
 
-#: admin/tokens.php:546
+#: admin/tokens.php:547
 msgid "Do you want to create a token table for this survey?"
 msgstr "Deseja criar uma tabela de códigos para este inquérito?"
 
-#: admin/tokens.php:555
+#: admin/tokens.php:556
 msgid "You don't have the permission to activate tokens."
 msgstr "Você não tem permissões para activar o uso de códigos."
 
-#: admin/tokens.php:557 admin/update/updater.php:612 common.php:276
+#: admin/tokens.php:558 admin/update/updater.php:612 common.php:276
 msgid "Back to main menu"
 msgstr "De volta ao menu principal"
 
-#: admin/tokens.php:563
+#: admin/tokens.php:564
 msgid "Restore options"
 msgstr "Opções de restauro"
 
-#: admin/tokens.php:566
+#: admin/tokens.php:567
 msgid "The following old token tables could be restored:"
 msgstr "As seguintes tabelas antigas de códigos podem ser restauradas:"
 
-#: admin/tokens.php:573
+#: admin/tokens.php:574
 msgid "Restore"
 msgstr "Restaurar"
 
-#: admin/tokens.php:602
+#: admin/tokens.php:603
 msgid "Show token summary"
 msgstr "Mostrar resumo dos códigos"
 
-#: admin/tokens.php:606 admin/tokens.php:2558 admin/tokens.php:2617
-#: admin/tokens.php:2624 admin/tokens.php:2699
+#: admin/tokens.php:607 admin/tokens.php:2559 admin/tokens.php:2618
+#: admin/tokens.php:2625 admin/tokens.php:2700
 msgid "Display tokens"
 msgstr "Mostrar códigos"
 
-#: admin/tokens.php:611 admin/tokens.php:2625
+#: admin/tokens.php:612 admin/tokens.php:2626
 msgid "Add new token entry"
 msgstr "Adicionar um novo código"
 
-#: admin/tokens.php:615 admin/tokens.php:2496 admin/tokens.php:2651
+#: admin/tokens.php:616 admin/tokens.php:2497 admin/tokens.php:2652
 msgid "Add dummy tokens"
 msgstr "Adicionar código falso"
 
-#: admin/tokens.php:623
+#: admin/tokens.php:624
 msgid "Manage additional attribute fields"
 msgstr "Gerir campos de atributos adicionais"
 
-#: admin/tokens.php:630
+#: admin/tokens.php:631
 msgid "Import tokens from CSV file"
 msgstr "Importar códigos de um ficheiro CSV"
 
-#: admin/tokens.php:632
+#: admin/tokens.php:633
 msgid "Import tokens from LDAP query"
 msgstr "Importar códigos de um servidor LDAP"
 
-#: admin/tokens.php:639
+#: admin/tokens.php:640
 msgid "Export tokens to CSV file"
 msgstr "Exportar códigos para um ficheiro CSV"
 
-#: admin/tokens.php:648
+#: admin/tokens.php:649
 msgid "Send email invitation"
 msgstr "Enviar email com convite"
 
-#: admin/tokens.php:651 admin/tokens.php:1727
+#: admin/tokens.php:652 admin/tokens.php:1728
 msgid "Send email reminder"
 msgstr "Enviar email com lembrete"
 
-#: admin/tokens.php:656
+#: admin/tokens.php:657
 msgid "Generate tokens"
 msgstr "Gerar códigos"
 
-#: admin/tokens.php:663
+#: admin/tokens.php:664
 msgid "Drop tokens table"
 msgstr "Apagar tabela de códigos"
 
-#: admin/tokens.php:677
+#: admin/tokens.php:678
 msgid "Show help"
 msgstr "Mostrar ajuda"
 
-#: admin/tokens.php:691
+#: admin/tokens.php:692
 msgid "Token summary"
 msgstr "Resumo dos códigos"
 
-#: admin/tokens.php:695
+#: admin/tokens.php:696
 msgid "Total records in this token table"
 msgstr "Total de registos nesta tabela de códigos"
 
-#: admin/tokens.php:702
+#: admin/tokens.php:703
 msgid "Total with no unique Token"
 msgstr "Total sem código único"
 
-#: admin/tokens.php:707
+#: admin/tokens.php:708
 msgid "Total invitations sent"
 msgstr "Total de convites enviados"
 
-#: admin/tokens.php:712
+#: admin/tokens.php:713
 msgid "Total opted out"
 msgstr "Total recusas de participação"
 
-#: admin/tokens.php:717
+#: admin/tokens.php:718
 msgid "Total surveys completed"
 msgstr "Total de inquéritos completos"
 
-#: admin/tokens.php:742
+#: admin/tokens.php:743
 msgid "Token export options"
 msgstr "Opções de exportação de códigos"
 
-#: admin/tokens.php:744
+#: admin/tokens.php:745
 msgid "Token status:"
 msgstr "Estado dos códigos:"
 
-#: admin/tokens.php:745
+#: admin/tokens.php:746
 msgid "All tokens"
 msgstr "Todos os códigos"
 
-#: admin/tokens.php:747
+#: admin/tokens.php:748
 msgid "Not started"
 msgstr "Não iniciado"
 
-#: admin/tokens.php:750
+#: admin/tokens.php:751
 msgid "Started but not yet completed"
 msgstr "Iniciado, mas ainda não concluído"
 
-#: admin/tokens.php:753
+#: admin/tokens.php:754
 msgid "Invitation status:"
 msgstr "Estado do convite:"
 
-#: admin/tokens.php:754 admin/tokens.php:759 admin/tokens.php:764
+#: admin/tokens.php:755 admin/tokens.php:760 admin/tokens.php:765
 msgid "All"
 msgstr "Todos"
 
-#: admin/tokens.php:755
+#: admin/tokens.php:756
 msgid "Invited"
 msgstr "Convidado"
 
-#: admin/tokens.php:756
+#: admin/tokens.php:757
 msgid "Not invited"
 msgstr "Não convidado"
 
-#: admin/tokens.php:758
+#: admin/tokens.php:759
 msgid "Reminder status:"
 msgstr "Estado do lembrete:"
 
-#: admin/tokens.php:760
+#: admin/tokens.php:761
 msgid "Reminder(s) sent"
 msgstr "Lembrete(s) enviado(s)"
 
-#: admin/tokens.php:761
+#: admin/tokens.php:762
 msgid "No reminder(s) sent"
 msgstr "Lembrete(s) não enviado(s)"
 
-#: admin/tokens.php:763
+#: admin/tokens.php:764
 msgid "Filter by language"
 msgstr "Filtrar por idioma"
 
-#: admin/tokens.php:771
+#: admin/tokens.php:772
 msgid "Filter by email address"
 msgstr "Filtrar por endereços de email"
 
-#: admin/tokens.php:775
+#: admin/tokens.php:776
 msgid "Export tokens"
 msgstr "Exportar códigos"
 
-#: admin/tokens.php:806
+#: admin/tokens.php:807
 msgid "Bounce settings have been saved."
 msgstr "Foram gravadas as definições de email de omissão de retorno (\"bounce\")."
 
-#: admin/tokens.php:818
+#: admin/tokens.php:819
 msgid "Bounce settings to be used"
 msgstr "Definições de email de omissão de retorno (\"bounce\") a ser usadas"
 
-#: admin/tokens.php:825
+#: admin/tokens.php:826
 msgid "Use settings below"
 msgstr "Usar definições abaixo"
 
-#: admin/tokens.php:828
+#: admin/tokens.php:829
 msgid "Use global settings"
 msgstr "Usar definições globais"
 
-#: admin/tokens.php:831
+#: admin/tokens.php:832
 msgid "Survey bounce email:"
 msgstr "Email por omissão de retorno (\"bounce\") do inquérito:"
 
-#: admin/tokens.php:872 admin/tokens.php:912
+#: admin/tokens.php:873 admin/tokens.php:913
 msgid "Delete all token entries"
 msgstr "Apagar todos os códigos"
 
-#: admin/tokens.php:873
+#: admin/tokens.php:874
 msgid "All token entries have been deleted."
 msgstr "Todos os códigos foram apagados."
 
-#: admin/tokens.php:881
+#: admin/tokens.php:882
 msgid "Reset token invitation status"
 msgstr "Redefinir o estado de convite dos tokens"
 
-#: admin/tokens.php:882
+#: admin/tokens.php:883
 msgid "All token entries have been set to 'Not invited'."
 msgstr "Todos os códigos foram marcados como 'Não convidado'."
 
-#: admin/tokens.php:890
+#: admin/tokens.php:891
 msgid "Remove unique token numbers"
 msgstr "Remover números de códigos únicos"
 
-#: admin/tokens.php:891
+#: admin/tokens.php:892
 msgid "All unique token numbers have been removed."
 msgstr "Todos os números com código único foram removidos."
 
-#: admin/tokens.php:898
+#: admin/tokens.php:899
 msgid "Token database administration options"
 msgstr "Opções de administração da base de dados de códigos"
 
-#: admin/tokens.php:904
+#: admin/tokens.php:905
 msgid "Are you really sure you want to reset all invitation records to NO?"
 msgstr "Tem mesmo a certeza que pretende redefinir todos os registos de convites para NÃO?"
 
-#: admin/tokens.php:904
+#: admin/tokens.php:905
 msgid "Set all entries to 'No invitation sent'."
 msgstr "Definir todos os registos com 'Convite Não Enviado'."
 
-#: admin/tokens.php:906
+#: admin/tokens.php:907
 msgid "Are you sure you want to delete all unique token strings?"
 msgstr "Tem a certeza que deseja apagar todos os tokens de caracteres únicos?"
 
-#: admin/tokens.php:906
+#: admin/tokens.php:907
 msgid "Delete all unique token strings"
 msgstr "Apagar todos os tokens de caracteres únicos"
 
-#: admin/tokens.php:912
+#: admin/tokens.php:913
 msgid "Are you really sure you want to delete ALL token entries?"
 msgstr "Tem a certeza que quer mesmo apagar TODOS os códigos?"
 
-#: admin/tokens.php:944
+#: admin/tokens.php:945
 msgid "You have selected not to use any bounce settings"
 msgstr "Determinou não utilizar nenhumas definições de email de omissão de retorno (\"bounce\")"
 
-#: admin/tokens.php:948
+#: admin/tokens.php:949
 msgid "Bounce processing"
 msgstr "Processamento de mensagens de retorno em curso"
 
-#: admin/tokens.php:970
+#: admin/tokens.php:971
 msgid "Search"
 msgstr "Procurar"
 
-#: admin/tokens.php:1014 admin/tokens.php:1016 admin/tokens.php:1023
-#: admin/tokens.php:1026 admin/tokens.php:1033 admin/tokens.php:1036
-#: admin/tokens.php:1043 admin/tokens.php:1046 admin/tokens.php:1053
-#: admin/tokens.php:1056 admin/tokens.php:1063 admin/tokens.php:1066
-#: admin/tokens.php:1073 admin/tokens.php:1076 admin/tokens.php:1083
-#: admin/tokens.php:1086 admin/tokens.php:1093 admin/tokens.php:1096
-#: admin/tokens.php:1103 admin/tokens.php:1106 admin/tokens.php:1113
-#: admin/tokens.php:1116 admin/tokens.php:1123 admin/tokens.php:1126
-#: admin/tokens.php:1133 admin/tokens.php:1136 admin/tokens.php:1143
-#: admin/tokens.php:1146 admin/tokens.php:1156
+#: admin/tokens.php:1015 admin/tokens.php:1017 admin/tokens.php:1024
+#: admin/tokens.php:1027 admin/tokens.php:1034 admin/tokens.php:1037
+#: admin/tokens.php:1044 admin/tokens.php:1047 admin/tokens.php:1054
+#: admin/tokens.php:1057 admin/tokens.php:1064 admin/tokens.php:1067
+#: admin/tokens.php:1074 admin/tokens.php:1077 admin/tokens.php:1084
+#: admin/tokens.php:1087 admin/tokens.php:1094 admin/tokens.php:1097
+#: admin/tokens.php:1104 admin/tokens.php:1107 admin/tokens.php:1114
+#: admin/tokens.php:1117 admin/tokens.php:1124 admin/tokens.php:1127
+#: admin/tokens.php:1134 admin/tokens.php:1137 admin/tokens.php:1144
+#: admin/tokens.php:1147 admin/tokens.php:1157
 msgid "Sort by: "
 msgstr "Ordenar por: "
 
-#: admin/tokens.php:1054 admin/tokens.php:1057 admin/tokens.php:1058
+#: admin/tokens.php:1055 admin/tokens.php:1058 admin/tokens.php:1059
 msgid "Email status"
 msgstr "Estado do email"
 
-#: admin/tokens.php:1084 admin/tokens.php:1087 admin/tokens.php:1088
-#: admin/tokens.php:2358
+#: admin/tokens.php:1085 admin/tokens.php:1088 admin/tokens.php:1089
+#: admin/tokens.php:2359
 msgid "Invitation sent?"
 msgstr "Convite enviado?"
 
-#: admin/tokens.php:1094 admin/tokens.php:1097 admin/tokens.php:1098
-#: admin/tokens.php:2363
+#: admin/tokens.php:1095 admin/tokens.php:1098 admin/tokens.php:1099
+#: admin/tokens.php:2364
 msgid "Reminder sent?"
 msgstr "Lembrete enviado?"
 
-#: admin/tokens.php:1104 admin/tokens.php:1107 admin/tokens.php:1108
+#: admin/tokens.php:1105 admin/tokens.php:1108 admin/tokens.php:1109
 msgid "Reminder count"
 msgstr "Contador de lembretes"
 
-#: admin/tokens.php:1114 admin/tokens.php:1117 admin/tokens.php:1118
-#: admin/tokens.php:2376
+#: admin/tokens.php:1115 admin/tokens.php:1118 admin/tokens.php:1119
+#: admin/tokens.php:2377
 msgid "Completed?"
 msgstr "Completo?"
 
-#: admin/tokens.php:1134 admin/tokens.php:1137 admin/tokens.php:1138
-#: admin/tokens.php:2386 admin/tokens.php:2469
+#: admin/tokens.php:1135 admin/tokens.php:1138 admin/tokens.php:1139
+#: admin/tokens.php:2387 admin/tokens.php:2470
 msgid "Valid from"
 msgstr "Válido desde"
 
-#: admin/tokens.php:1144 admin/tokens.php:1147 admin/tokens.php:1148
+#: admin/tokens.php:1145 admin/tokens.php:1148 admin/tokens.php:1149
 msgid "Valid until"
 msgstr "Válida até"
 
-#: admin/tokens.php:1204
+#: admin/tokens.php:1205
 msgid "Invalid email address:"
 msgstr "Endereço de email inválido:"
 
-#: admin/tokens.php:1210
+#: admin/tokens.php:1211
 msgid "This participant opted out of this survey."
 msgstr "Este participante optou por ser excluído deste inquérito."
 
-#: admin/tokens.php:1236 admin/tokens.php:1238
+#: admin/tokens.php:1237 admin/tokens.php:1239
 msgid "Do Survey"
 msgstr "Responder ao inquérito"
 
-#: admin/tokens.php:1246 admin/tokens.php:1248 admin/tokens.php:2307
-#: admin/tokens.php:2504
+#: admin/tokens.php:1247 admin/tokens.php:1249 admin/tokens.php:2308
+#: admin/tokens.php:2505
 msgid "Edit token entry"
 msgstr "Editar código"
 
-#: admin/tokens.php:1254 admin/tokens.php:1256
+#: admin/tokens.php:1255 admin/tokens.php:1257
 msgid "Delete token entry"
 msgstr "Apagar código"
 
-#: admin/tokens.php:1271 admin/tokens.php:1273
+#: admin/tokens.php:1272 admin/tokens.php:1274
 msgid "View/Update last response"
 msgstr "Ver/Actualizar última resposta"
 
-#: admin/tokens.php:1280 admin/tokens.php:1282
+#: admin/tokens.php:1281 admin/tokens.php:1283
 msgid "Send invitation email to this entry"
 msgstr "Enviar convite por email para este registo"
 
-#: admin/tokens.php:1288 admin/tokens.php:1290
+#: admin/tokens.php:1289 admin/tokens.php:1291
 msgid "Send reminder email to this entry"
 msgstr "Enviar lembrete por email para este registo"
 
-#: admin/tokens.php:1308 admin/tokens.php:1310
+#: admin/tokens.php:1309 admin/tokens.php:1311
 msgid "Delete the selected entries"
 msgstr "Apagar as entradas seleccionadas"
 
-#: admin/tokens.php:1312
+#: admin/tokens.php:1313
 msgid "Are you sure you want to delete the selected entries?"
 msgstr "Tem a certeza que quer apagar as entradas seleccionadas?"
 
-#: admin/tokens.php:1313
+#: admin/tokens.php:1314
 msgid "No tokens selected"
 msgstr "Não foram seleccionados códigos"
 
-#: admin/tokens.php:1321 admin/tokens.php:1323
+#: admin/tokens.php:1322 admin/tokens.php:1324
 msgid "Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"
 msgstr "Envie convites por email para as entradas seleccionadas (se não lhes foi ainda enviado um convite)"
 
-#: admin/tokens.php:1327 admin/tokens.php:1329
+#: admin/tokens.php:1328 admin/tokens.php:1330
 msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
 msgstr "Envie lembretes por email para as entradas seleccionadas (se já receberam um convite por email)"
 
-#: admin/tokens.php:1344
+#: admin/tokens.php:1345
 msgid "Delete Tokens Table"
 msgstr "Eliminar tabela de códigos"
 
-#: admin/tokens.php:1350
+#: admin/tokens.php:1351
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Se apagar esta tabela já não serão necessários códigos para aceder a este inquérito."
 
-#: admin/tokens.php:1350
+#: admin/tokens.php:1351
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "Se continuar, será efectuada uma cópia de segurança desta tabela. O seu administrador de sistema poderá aceder a esta tabela. "
 
-#: admin/tokens.php:1353
+#: admin/tokens.php:1354
 msgid "Delete Tokens"
 msgstr "Apagar códigos"
 
-#: admin/tokens.php:1378
+#: admin/tokens.php:1379
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr "A tabela de códigos foi apagada e já não são necessários códigos para aceder a este inquérito. "
 
-#: admin/tokens.php:1378
+#: admin/tokens.php:1379
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "Foi efectuada uma cópia de segurança desta tabela, e pode ser acedida pelo seu administrador de sistemas."
 
-#: admin/tokens.php:1400
+#: admin/tokens.php:1401
 msgid "Send email invitations"
 msgstr "Enviar convites por email"
 
-#: admin/tokens.php:1406 admin/tokens.php:1732
+#: admin/tokens.php:1407 admin/tokens.php:1733
 msgid "Warning!"
 msgstr "Aviso!"
 
-#: admin/tokens.php:1406 admin/tokens.php:1732
+#: admin/tokens.php:1407 admin/tokens.php:1733
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
 msgstr "Este inquérito ainda não está activado, e portanto, os participantes não serão capazes de preencher o inquérito."
 
-#: admin/tokens.php:1472 admin/tokens.php:1755
+#: admin/tokens.php:1473 admin/tokens.php:1756
 msgid "Subject"
 msgstr "Assunto"
 
-#: admin/tokens.php:1505 admin/tokens.php:1802
+#: admin/tokens.php:1506 admin/tokens.php:1803
 msgid "Bypass token with failing email addresses"
 msgstr "Ignorar códigos com endereço de email inválido"
 
-#: admin/tokens.php:1509
+#: admin/tokens.php:1510
 msgid "Send Invitations"
 msgstr "Enviar convites"
 
-#: admin/tokens.php:1522
+#: admin/tokens.php:1523
 msgid "Sending invitations..."
 msgstr "A enviar convites..."
 
-#: admin/tokens.php:1524 admin/tokens.php:1843
+#: admin/tokens.php:1525 admin/tokens.php:1844
 msgid "Sending to Token ID"
 msgstr "A enviar para o código ID"
 
-#: admin/tokens.php:1525 admin/tokens.php:1844
+#: admin/tokens.php:1526 admin/tokens.php:1845
 msgid "Sending to Token IDs"
 msgstr "A enviar para os Token ID"
 
-#: admin/tokens.php:1641 admin/tokens.php:1991
+#: admin/tokens.php:1642 admin/tokens.php:1992
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "Email para {FIRSTNAME} {LASTNAME} ({EMAIL}) retido: Código ainda não é válido."
 
-#: admin/tokens.php:1645 admin/tokens.php:1995
+#: admin/tokens.php:1646 admin/tokens.php:1996
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "Email para {FIRSTNAME} {LASTNAME} ({EMAIL}) passou à frente: Código já não é válido."
 
-#: admin/tokens.php:1655
+#: admin/tokens.php:1656
 msgid "Invitation sent to:"
 msgstr "Convite enviado para:"
 
-#: admin/tokens.php:1665 admin/tokens.php:2013
+#: admin/tokens.php:1666 admin/tokens.php:2014
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "Falhou o envio de email para {FIRSTNAME} {LASTNAME} ({EMAIL}). Mensagem de erro:"
 
-#: admin/tokens.php:1685 admin/tokens.php:2031
+#: admin/tokens.php:1686 admin/tokens.php:2032
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Existem mais emails pendentes do que as que podem ser enviadas de uma só vez. Continue com o envio clicando abaixo."
 
-#: admin/tokens.php:1686 admin/tokens.php:2032
+#: admin/tokens.php:1687 admin/tokens.php:2033
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Existem {EMAILCOUNT} emails que ainda não foram enviados."
 
-#: admin/tokens.php:1712 admin/tokens.php:2071
+#: admin/tokens.php:1713 admin/tokens.php:2072
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr "Não houve emails válidos para enviar. Isto aconteceu porque nenhum satisfez os critérios:"
 
-#: admin/tokens.php:1713 admin/tokens.php:2072
+#: admin/tokens.php:1714 admin/tokens.php:2073
 msgid "having a valid email address"
 msgstr "ter um endereço de email válido"
 
-#: admin/tokens.php:1714 admin/tokens.php:2074
+#: admin/tokens.php:1715 admin/tokens.php:2075
 msgid "not having been sent an invitation already"
 msgstr "Não foram enviados convites ainda"
 
-#: admin/tokens.php:1715
+#: admin/tokens.php:1716
 msgid "having already completed the survey"
 msgstr "tendo já completado o inquérito"
 
-#: admin/tokens.php:1716 admin/tokens.php:2073
+#: admin/tokens.php:1717 admin/tokens.php:2074
 msgid "having a token"
 msgstr "tendo um código"
 
-#: admin/tokens.php:1776
+#: admin/tokens.php:1777
 msgid "Reminder Email:"
 msgstr "Email de lembrete:"
 
-#: admin/tokens.php:1785 admin/tokens.php:1798
+#: admin/tokens.php:1786 admin/tokens.php:1799
 msgid "Send reminder to token ID(s):"
 msgstr "Enviar lembretes para token(s) ID(s):"
 
-#: admin/tokens.php:1789
+#: admin/tokens.php:1790
 msgid "Sending to:"
 msgstr "A enviar para:"
 
-#: admin/tokens.php:1790
+#: admin/tokens.php:1791
 msgid "All token entries to whom a reminder email would apply"
 msgstr "Todas as entradas token para quem um e-mail de lembrete seria aplicável"
 
-#: admin/tokens.php:1793
+#: admin/tokens.php:1794
 msgid "Start at Token ID:"
 msgstr "Iniciar no código ID:"
 
-#: admin/tokens.php:1808
+#: admin/tokens.php:1809
 msgid "Min days between reminders"
 msgstr "Mínimo de dias entre lembretes"
 
-#: admin/tokens.php:1812
+#: admin/tokens.php:1813
 msgid "Max reminders"
 msgstr "Máximo de lembretes"
 
-#: admin/tokens.php:1815
+#: admin/tokens.php:1816
 msgid "Send Reminders"
 msgstr "Enviar lembretes"
 
-#: admin/tokens.php:1828
+#: admin/tokens.php:1829
 msgid "Sending Reminders"
 msgstr "A enviar lembretes"
 
-#: admin/tokens.php:1842
+#: admin/tokens.php:1843
 msgid "From Token ID"
 msgstr "Do código ID"
 
-#: admin/tokens.php:2007
+#: admin/tokens.php:2008
 msgid "Reminder sent to:"
 msgstr "Lembrete enviado para:"
 
-#: admin/tokens.php:2075
+#: admin/tokens.php:2076
 msgid "but not having already completed the survey"
 msgstr "mas ainda não tendo completado já o inquérito"
 
-#: admin/tokens.php:2084
+#: admin/tokens.php:2085
 msgid "Create tokens"
 msgstr "Criar códigos"
 
-#: admin/tokens.php:2088
+#: admin/tokens.php:2089
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Clicando em 'Sim' irá gerar códigos para todos nesta lista de códigos que ainda não tenham um. Está correcto?"
 
-#: admin/tokens.php:2137
+#: admin/tokens.php:2138
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "Foram criados {TOKENCOUNT} códigos"
 
-#: admin/tokens.php:2154
+#: admin/tokens.php:2155
 msgid "Marked tokens have been deleted."
 msgstr "Os tokens marcados foram excluídos."
 
-#: admin/tokens.php:2156
+#: admin/tokens.php:2157
 msgid "No tokens were selected for deletion"
 msgstr "Não foram seleccionados códigos para eliminar"
 
-#: admin/tokens.php:2161
+#: admin/tokens.php:2162
 msgid "Token has been deleted."
 msgstr "O código foi apagado."
 
-#: admin/tokens.php:2163
+#: admin/tokens.php:2164
 msgid "Reloading Screen. Please wait."
 msgstr "A recarregar. Por favor, aguarde."
 
-#: admin/tokens.php:2169
+#: admin/tokens.php:2170
 msgid "Manage token attribute fields"
 msgstr "Gerir campos de atributos do código"
 
-#: admin/tokens.php:2173
+#: admin/tokens.php:2174
 msgid "Attribute field"
 msgstr "Campo do atributo"
 
-#: admin/tokens.php:2173
+#: admin/tokens.php:2174
 msgid "Field description"
 msgstr "Descrição do campo"
 
-#: admin/tokens.php:2173
+#: admin/tokens.php:2174
 msgid "Example data"
 msgstr "Dados de exemplo"
 
-#: admin/tokens.php:2190
+#: admin/tokens.php:2191
 msgid "<no data>"
 msgstr "<sem dados>"
 
-#: admin/tokens.php:2201
+#: admin/tokens.php:2202
 msgid "Add token attributes"
 msgstr "Adicionar atributos ao código"
 
-#: admin/tokens.php:2203
+#: admin/tokens.php:2204
 msgid "There are %s user attribute fields in this token table"
 msgstr "Existem %s campos de atributos de utilizadores nesta tabela de códigos"
 
-#: admin/tokens.php:2206
+#: admin/tokens.php:2207
 msgid "Number of attribute fields to add:"
 msgstr "Número de campos de atributos para adicionar:"
 
-#: admin/tokens.php:2210
+#: admin/tokens.php:2211
 msgid "Add fields"
 msgstr "Adicionar campos"
 
-#: admin/tokens.php:2231
+#: admin/tokens.php:2232
 msgid "Update token attribute descriptions"
 msgstr "Actualizar descrições dos atributos dos códigos"
 
-#: admin/tokens.php:2235
+#: admin/tokens.php:2236
 msgid "Updating token attribute descriptions failed:"
 msgstr "A actualização das descrições do atributo do token falhou:"
 
-#: admin/tokens.php:2236 admin/tokens.php:2241 admin/tokens.php:2270
-#: admin/tokens.php:2275
+#: admin/tokens.php:2237 admin/tokens.php:2242 admin/tokens.php:2271
+#: admin/tokens.php:2276
 msgid "Back to attribute field management."
 msgstr "Voltar à gestão de campos de atributos."
 
-#: admin/tokens.php:2240
+#: admin/tokens.php:2241
 msgid "Token attribute descriptions were successfully updated."
 msgstr "As descrições do atributo do token foram actualizadas com sucesso."
 
-#: admin/tokens.php:2265
+#: admin/tokens.php:2266
 msgid "Update token attributes"
 msgstr "Actualizar atributos do código"
 
-#: admin/tokens.php:2269
+#: admin/tokens.php:2270
 msgid "Adding attribute fields failed:"
 msgstr "A adição de campos de atributos falhou:"
 
-#: admin/tokens.php:2274
+#: admin/tokens.php:2275
 msgid "%s field(s) were successfully added."
 msgstr "%s campo(s) foram adicionados com sucesso."
 
-#: admin/tokens.php:2311 admin/tokens.php:2421 admin/tokens.php:2589
+#: admin/tokens.php:2312 admin/tokens.php:2422 admin/tokens.php:2590
 msgid "Add token entry"
 msgstr "Adicionar um novo código"
 
-#: admin/tokens.php:2319 admin/tokens.php:2451
+#: admin/tokens.php:2320 admin/tokens.php:2452
 msgid "Auto"
 msgstr "Automático"
 
-#: admin/tokens.php:2333
+#: admin/tokens.php:2334
 msgid "Email Status"
 msgstr "Estado do email"
 
-#: admin/tokens.php:2348
+#: admin/tokens.php:2349
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr "Pode deixar este campo em branco e gerar códigos automaticamente seleccionando 'Criar Códigos'"
 
-#: admin/tokens.php:2370
+#: admin/tokens.php:2371
 msgid "Reminder count:"
 msgstr "Contador de lembretes:"
 
-#: admin/tokens.php:2381 admin/tokens.php:2467
+#: admin/tokens.php:2382 admin/tokens.php:2468
 msgid "Uses left:"
 msgstr "Utilizações em falta:"
 
-#: admin/tokens.php:2392 admin/tokens.php:2475
+#: admin/tokens.php:2393 admin/tokens.php:2476
 msgid "until"
 msgstr "até"
 
-#: admin/tokens.php:2398 admin/tokens.php:2481 qanda.php:1225 qanda.php:1232
+#: admin/tokens.php:2399 admin/tokens.php:2482 qanda.php:1225 qanda.php:1232
 msgid "Format: %s"
 msgstr "Formato: %s"
 
-#: admin/tokens.php:2398 admin/tokens.php:2481
+#: admin/tokens.php:2399 admin/tokens.php:2482
 msgid "hh:mm"
 msgstr "hh:mm"
 
-#: admin/tokens.php:2416
+#: admin/tokens.php:2417
 msgid "Update token entry"
 msgstr "Actualizar código"
 
-#: admin/tokens.php:2446
+#: admin/tokens.php:2447
 msgid "Create dummy tokens"
 msgstr "Criar códigos falsos"
 
-#: admin/tokens.php:2453
+#: admin/tokens.php:2454
 msgid "Number of tokens"
 msgstr "Número de códigos"
 
-#: admin/tokens.php:2455
+#: admin/tokens.php:2456
 msgid "Token length"
 msgstr "Tamanho do código"
 
-#: admin/tokens.php:2557
+#: admin/tokens.php:2558
 msgid "The token entry was successfully updated."
 msgstr "O código foi actualizado com sucesso."
 
-#: admin/tokens.php:2562 admin/tokens.php:2622 admin/tokens.php:3158
+#: admin/tokens.php:2563 admin/tokens.php:2623 admin/tokens.php:3159
 msgid "Failed"
 msgstr "Falhou"
 
-#: admin/tokens.php:2563 admin/tokens.php:2623
+#: admin/tokens.php:2564 admin/tokens.php:2624
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "Já existe um registo na tabela com esse mesmo código. O mesmo código não pode ser utilizado mais que uma vez."
 
-#: admin/tokens.php:2564
+#: admin/tokens.php:2565
 msgid "Show this token entry"
 msgstr "Mostrar o registo deste código"
 
-#: admin/tokens.php:2616
+#: admin/tokens.php:2617
 msgid "New token was added."
 msgstr "Foi adicionado um novo código"
 
-#: admin/tokens.php:2618
+#: admin/tokens.php:2619
 msgid "Add another token entry"
 msgstr "Adicionar uma nova entrada token"
 
-#: admin/tokens.php:2698
+#: admin/tokens.php:2699
 msgid "New dummy tokens were added."
 msgstr "Foram adicionados novos códigos falsos"
 
-#: admin/tokens.php:2705
+#: admin/tokens.php:2706
 msgid "Upload CSV File"
 msgstr "Submeter ficheiro CSV"
 
-#: admin/tokens.php:2708
+#: admin/tokens.php:2709
 msgid "CSV input format"
 msgstr "Formato de entrada do CSV"
 
-#: admin/tokens.php:2709
+#: admin/tokens.php:2710
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
 msgstr "O ficheiro deve ser um CSV standard (delimitado por vírgulas), opcionalmente com os valores entre aspas (opção por omissão para OpenOffice e Excel). A primeira linha deve conter a informação do cabeçalho. Os dados podem estar em qualquer ordem."
 
-#: admin/tokens.php:2709
+#: admin/tokens.php:2710
 msgid "Mandatory fields:"
 msgstr "Campos obrigatórios:"
 
-#: admin/tokens.php:2710
+#: admin/tokens.php:2711
 msgid "Optional fields:"
 msgstr "Campos opcionais:"
 
-#: admin/tokens.php:2716
+#: admin/tokens.php:2717
 msgid "Upload LDAP entries"
 msgstr "Submeter registos LDAP"
 
-#: admin/tokens.php:2720
+#: admin/tokens.php:2721
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "As consultas LDAP são definidas pelo administrador no ficheiro config-ldap.php"
 
-#: admin/tokens.php:2730
+#: admin/tokens.php:2731
 msgid "Token file upload"
 msgstr "Submeter ficheiro de códigos"
 
-#: admin/tokens.php:2750
+#: admin/tokens.php:2751
 msgid "Uploaded CSV file successfully"
 msgstr "Ficheiro CSV submetido com sucesso"
 
-#: admin/tokens.php:2759
+#: admin/tokens.php:2760
 msgid "Failed to open the uploaded file!"
 msgstr "Falha ao abrir ficheiro submetido!"
 
-#: admin/tokens.php:2806
+#: admin/tokens.php:2807
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Erro: No ficheiro submetido faltam uma ou mais colunas obrigatórias: 'firstname', 'lastname' ou 'email'"
 
-#: admin/tokens.php:2908
+#: admin/tokens.php:2909
 msgid "Successfully created token entries"
 msgstr "Códigos criados com sucesso"
 
-#: admin/tokens.php:2910
+#: admin/tokens.php:2911
 msgid "Failed to create token entries"
 msgstr "Falha ao criar códigos"
 
-#: admin/tokens.php:2912
+#: admin/tokens.php:2913
 msgid "%s records in CSV"
 msgstr "%s registos no CSV"
 
-#: admin/tokens.php:2913
+#: admin/tokens.php:2914
 msgid "%s records met minumum requirements"
 msgstr "%s registos satisfizeram os requisitos mínimo"
 
-#: admin/tokens.php:2914
+#: admin/tokens.php:2915
 msgid "%s records imported"
 msgstr "%s registos importados"
 
-#: admin/tokens.php:2923
+#: admin/tokens.php:2924
 msgid "%s duplicate records removed"
 msgstr "%s registos duplicados removidos"
 
-#: admin/tokens.php:2924 admin/tokens.php:2936 admin/tokens.php:2946
-#: admin/tokens.php:3164 admin/tokens.php:3172
+#: admin/tokens.php:2925 admin/tokens.php:2937 admin/tokens.php:2947
+#: admin/tokens.php:3165 admin/tokens.php:3173
 msgid "List"
 msgstr "Lista"
 
-#: admin/tokens.php:2935
+#: admin/tokens.php:2936
 msgid "%s lines had a mismatching number of fields."
 msgstr "%s linhas tinham um número de campos não correspondentes."
 
-#: admin/tokens.php:2945 admin/tokens.php:3171
+#: admin/tokens.php:2946 admin/tokens.php:3172
 msgid "%s records with invalid email address removed"
 msgstr "%s registos com endereço de email inválido removidos"
 
-#: admin/tokens.php:2966
+#: admin/tokens.php:2967
 msgid "Uploading LDAP Query"
 msgstr "A submeter consulta LDAP"
 
-#: admin/tokens.php:3160
+#: admin/tokens.php:3161
 msgid "Results from LDAP Query"
 msgstr "Resultados da consulta LDAP"
 
-#: admin/tokens.php:3161
+#: admin/tokens.php:3162
 msgid "Records met minumum requirements"
 msgstr "Registos satisfizeram os requisitos mínimos"
 
-#: admin/tokens.php:3162
+#: admin/tokens.php:3163
 msgid "Records imported"
 msgstr "Registos importados"
 
-#: admin/tokens.php:3163
+#: admin/tokens.php:3164
 msgid "Duplicate records removed"
 msgstr "Registos duplicados removidos"
 
-#: admin/tokens.php:3182
+#: admin/tokens.php:3183
 msgid "Can't bind to the LDAP directory"
 msgstr "Impossível associar (bind) ao directório LDAP"
 
-#: admin/tokens.php:3188
+#: admin/tokens.php:3189
 msgid "Can't connect to the LDAP directory"
 msgstr "Impossível ligar ao directório LDAP"
 
-#: admin/tokens.php:3209
+#: admin/tokens.php:3210
 msgid "Auto detect"
 msgstr "Detecção automática"
 
-#: admin/tokens.php:3211
+#: admin/tokens.php:3212
 msgid "Comma"
 msgstr "Vírgula"
 
-#: admin/tokens.php:3213
+#: admin/tokens.php:3214
 msgid "Semicolon"
 msgstr "Ponto e vírgula"
 
-#: admin/tokens.php:3215
+#: admin/tokens.php:3216
 msgid "Choose the CSV file to upload:"
 msgstr "Seleccione o ficheiro CSV a submeter:"
 
-#: admin/tokens.php:3216 admin/vvimport.php:93
+#: admin/tokens.php:3217 admin/vvimport.php:93
 msgid "Character set of the file:"
 msgstr "Código de caracteres do ficheiro:"
 
-#: admin/tokens.php:3217
+#: admin/tokens.php:3218
 msgid "Separator used:"
 msgstr "Separador usado:"
 
-#: admin/tokens.php:3220 admin/tokens.php:3271
+#: admin/tokens.php:3221 admin/tokens.php:3272
 msgid "Filter blank email addresses:"
 msgstr "Filtrar endereços de email vazios:"
 
-#: admin/tokens.php:3221 admin/tokens.php:3272
+#: admin/tokens.php:3222 admin/tokens.php:3273
 msgid "Filter duplicate records:"
 msgstr "Filtrar registos duplicados:"
 
-#: admin/tokens.php:3222
+#: admin/tokens.php:3223
 msgid "Duplicates are determined by:"
 msgstr "Os duplicados são determinados por:"
 
-#: admin/tokens.php:3252
+#: admin/tokens.php:3253
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Lamentamos, mas o módulo LDAP não existe na configuração do PHP."
 
-#: admin/tokens.php:3258
+#: admin/tokens.php:3259
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "O LDAP está desactivado ou não existem consultas LDAP definidas."
 
-#: admin/tokens.php:3264
+#: admin/tokens.php:3265
 msgid "Select the LDAP query you want to run:"
 msgstr "Seleccione a consulta LDAP que quer executar:"
 
@@ -8726,7 +8726,7 @@ msgstr ""
 
 #: classes/expressions/ExpressionManager.php:175
 msgid "Natural logarithm"
-msgstr ""
+msgstr "Logaritmo natural"
 
 #: classes/expressions/ExpressionManager.php:176
 msgid "Strip whitespace (or other characters) from the beginning of a string"
@@ -8734,11 +8734,11 @@ msgstr ""
 
 #: classes/expressions/ExpressionManager.php:177
 msgid "Find highest value"
-msgstr ""
+msgstr "Localizar o valor mais elevado"
 
 #: classes/expressions/ExpressionManager.php:178
 msgid "Find lowest value"
-msgstr ""
+msgstr "Localizar o valor mais baixo"
 
 #: classes/expressions/ExpressionManager.php:179
 msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
@@ -8754,11 +8754,11 @@ msgstr ""
 
 #: classes/expressions/ExpressionManager.php:182
 msgid "Get value of pi"
-msgstr ""
+msgstr "Obter o valor de pi"
 
 #: classes/expressions/ExpressionManager.php:183
 msgid "Exponential expression"
-msgstr ""
+msgstr "Expressão exponencial"
 
 #: classes/expressions/ExpressionManager.php:184
 msgid "Convert a quoted-printable string to an 8 bit string"
@@ -8774,7 +8774,7 @@ msgstr ""
 
 #: classes/expressions/ExpressionManager.php:187
 msgid "Generate a random integer"
-msgstr ""
+msgstr "Gerar um inteiro aleatório"
 
 #: classes/expressions/ExpressionManager.php:188
 msgid "Compare a string to a regular expression pattern"
@@ -8790,7 +8790,7 @@ msgstr ""
 
 #: classes/expressions/ExpressionManager.php:191
 msgid "Sine"
-msgstr ""
+msgstr "Seno"
 
 #: classes/expressions/ExpressionManager.php:192
 msgid "Return a formatted string"
@@ -8798,7 +8798,7 @@ msgstr ""
 
 #: classes/expressions/ExpressionManager.php:193
 msgid "Square root"
-msgstr ""
+msgstr "Raiz quadrada"
 
 #: classes/expressions/ExpressionManager.php:194
 msgid "Calculate the Sample Standard Deviation for the list of numbers"
@@ -8858,11 +8858,11 @@ msgstr ""
 
 #: classes/expressions/ExpressionManager.php:208
 msgid "Make a string lowercase"
-msgstr ""
+msgstr "Converter para minúsculas"
 
 #: classes/expressions/ExpressionManager.php:209
 msgid "Make a string uppercase"
-msgstr ""
+msgstr "Converter para maiúsculas"
 
 #: classes/expressions/ExpressionManager.php:210
 msgid "Return part of a string"
@@ -8870,11 +8870,11 @@ msgstr ""
 
 #: classes/expressions/ExpressionManager.php:211
 msgid "Calculate the sum of values in an array"
-msgstr ""
+msgstr "Calcular a soma de valor num array"
 
 #: classes/expressions/ExpressionManager.php:212
 msgid "Tangent"
-msgstr ""
+msgstr "Tangente"
 
 #: classes/expressions/ExpressionManager.php:213
 msgid "Return current UNIX timestamp"
@@ -8980,110 +8980,110 @@ msgstr ""
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1951
+#: classes/expressions/ExpressionManager.php:1955
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2042
+#: classes/expressions/ExpressionManager.php:2046
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2047
+#: classes/expressions/ExpressionManager.php:2051
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2048
+#: classes/expressions/ExpressionManager.php:2052
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2269
+#: classes/expressions/ExpressionManager.php:2273
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3193
+#: classes/expressions/ExpressionManager.php:3197
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
 #: classes/expressions/LimeExpressionManager.php:2155
 msgid "Please select at least one answer"
-msgstr ""
+msgstr "Seleccione pelo menos uma resposta "
 
 #: classes/expressions/LimeExpressionManager.php:2156
 msgid "Please select at least %s answers"
-msgstr ""
+msgstr "Seleccione pelo menos %s respostas "
 
 #: classes/expressions/LimeExpressionManager.php:2160
 msgid "Please select at most one answer"
-msgstr ""
+msgstr "Seleccione no máximo uma resposta "
 
 #: classes/expressions/LimeExpressionManager.php:2161
 msgid "Please select at most %s answers"
-msgstr ""
+msgstr "Seleccione no máximo %s respostas "
 
 #: classes/expressions/LimeExpressionManager.php:2165
 msgid "Please select one answer"
-msgstr ""
+msgstr "Seleccione uma resposta "
 
 #: classes/expressions/LimeExpressionManager.php:2166
 msgid "Please select %s answers"
-msgstr ""
+msgstr "Seleccione %s respostas "
 
 #: classes/expressions/LimeExpressionManager.php:2168
 msgid "Please select between %s and %s answers"
-msgstr ""
+msgstr "Seleccione entre %s e %s respostas "
 
 #: classes/expressions/LimeExpressionManager.php:2184
 #: classes/expressions/LimeExpressionManager.php:2205
 msgid "Each answer must be at least %s"
-msgstr ""
+msgstr "Cada resposta deverá ser no mínimo %s"
 
 #: classes/expressions/LimeExpressionManager.php:2186
 #: classes/expressions/LimeExpressionManager.php:2207
 msgid "Each answer must be at most %s"
-msgstr ""
+msgstr "Cada resposta deverá ser no máximo %s"
 
 #: classes/expressions/LimeExpressionManager.php:2188
 #: classes/expressions/LimeExpressionManager.php:2209
 msgid "Each answer must be %s"
-msgstr ""
+msgstr "Cada resposta deverá ser %s"
 
 #: classes/expressions/LimeExpressionManager.php:2189
 #: classes/expressions/LimeExpressionManager.php:2210
 msgid "Each answer must be between %s and %s"
-msgstr ""
+msgstr "Cada resposta deverá estar compreendida entre %s e %s"
 
 #: classes/expressions/LimeExpressionManager.php:2226
 msgid "The sum must be at least %s"
-msgstr ""
+msgstr "A soma deverá ser no mínimo %s"
 
 #: classes/expressions/LimeExpressionManager.php:2228
 msgid "The sum must be at most %s"
-msgstr ""
+msgstr "A soma deverá ser no máximo %s"
 
 #: classes/expressions/LimeExpressionManager.php:2230
 #: classes/expressions/LimeExpressionManager.php:2241
 msgid "The sum must equal %s"
-msgstr ""
+msgstr "A soma deve totalizar %s"
 
 #: classes/expressions/LimeExpressionManager.php:2231
 msgid "The sum must be between %s and %s"
-msgstr ""
+msgstr "A soma deverá estar compreendida entre %s e %s"
 
 #: classes/expressions/LimeExpressionManager.php:2247
 msgid "Please also fill in the \"other comment\" field."
-msgstr ""
+msgstr "Preencha também o campo \"other comment\"."
 
 #: classes/expressions/LimeExpressionManager.php:2255
 msgid "Please check the format of your answer."
-msgstr ""
+msgstr "Verifique o formato da sua resposta."
 
 #: classes/expressions/LimeExpressionManager.php:3994
 msgid "Unable to insert record into survey table: "
-msgstr ""
+msgstr "Incapaz de inserir registo na tabela do inquérito: "
 
 #: classes/expressions/LimeExpressionManager.php:4010
 msgid "Unable to insert record into timings table "
-msgstr ""
+msgstr "Incapaz de inserir registo na tabela dos tempos"
 
 #: classes/expressions/LimeExpressionManager.php:4958
 msgid "This question is mandatory"
@@ -9104,7 +9104,7 @@ msgstr "Por favor, complete todas as partes"
 
 #: classes/expressions/LimeExpressionManager.php:5031
 msgid "Please check at least one box per row"
-msgstr ""
+msgstr "Seleccione pelo menos uma caixa por linha"
 
 #: classes/expressions/LimeExpressionManager.php:5047
 msgid "Please rank all items"
@@ -9145,7 +9145,7 @@ msgstr ""
 
 #: classes/expressions/LimeExpressionManager.php:7452
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 #: classes/expressions/LimeExpressionManager.php:7551
 msgid "VALIDATION:"
@@ -9153,11 +9153,11 @@ msgstr ""
 
 #: classes/expressions/LimeExpressionManager.php:7565
 msgid "This variable name has already been used."
-msgstr ""
+msgstr "O nome desta variável já foi utilizado."
 
 #: classes/expressions/LimeExpressionManager.php:7577
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
-msgstr ""
+msgstr "Desde a versão 1.92 os nomes das variáveis devem conter apenas letras, números, underscores e não podem começar com números. O nome desta variável está obsoleto."
 
 #: classes/expressions/LimeExpressionManager.php:7730
 msgid "This question has at least %s error(s)"
@@ -9393,7 +9393,7 @@ msgstr "Submissão de ficheiro"
 
 #: common_functions.php:272
 msgid "Equation"
-msgstr ""
+msgstr "Equação"
 
 #: common_functions.php:1267
 msgid "No email notification"
@@ -10314,39 +10314,39 @@ msgstr "Apoie este projecto - faça um donativo para "
 msgid "Visit our website!"
 msgstr "Visite o nosso sítio web!"
 
-#: common_functions.php:4438
+#: common_functions.php:4431
 msgid "Email was not sent because demo-mode is activated."
 msgstr "O email não foi enviado porque o modo de demonstração está activo."
 
-#: common_functions.php:4566
+#: common_functions.php:4559
 msgid "SMTP debug output:"
 msgstr "Resultado de depuração SMTP:"
 
-#: common_functions.php:4710
+#: common_functions.php:4703
 msgid "SQL command failed: %s Reason: %s"
 msgstr "Comando de SQL falhou: %s Razão: %s"
 
-#: common_functions.php:6224
+#: common_functions.php:6217
 msgid "Token code"
 msgstr "Código"
 
-#: common_functions.php:6225
+#: common_functions.php:6218
 msgid "Language code"
 msgstr "Código do idioma"
 
-#: common_functions.php:6226
+#: common_functions.php:6219
 msgid "Invitation sent date"
 msgstr "Data de envio do convite"
 
-#: common_functions.php:6227
+#: common_functions.php:6220
 msgid "Last Reminder sent date"
 msgstr "Data de envio do último lembrete"
 
-#: common_functions.php:6228
+#: common_functions.php:6221
 msgid "Total numbers of sent reminders"
 msgstr "Número total de lembretes enviados"
 
-#: common_functions.php:6250
+#: common_functions.php:6243
 msgid "Attribute %s"
 msgstr "Atributo %s"
 
@@ -10635,8 +10635,8 @@ msgstr "Clique num item na lista à esquerda, começando com o item de maior cla
 #: qanda.php:161 qanda.php:162
 msgid "Check at least %d item"
 msgid_plural "Check at least %d items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Seleccione pelo menos %d item"
+msgstr[1] "Seleccione pelo menos %d items"
 
 #: qanda.php:175 qanda.php:176 qanda.php:199 qanda.php:200
 msgid "Check any that apply"
@@ -10782,7 +10782,7 @@ msgstr "Regresse ao inquérito"
 
 #: qanda.php:2708
 msgid "File name"
-msgstr ""
+msgstr "Nome do ficheiro"
 
 #: qanda.php:2885 qanda.php:3140 qanda.php:4205 qanda.php:6029
 msgid "Error: This question has no answers."
@@ -10978,7 +10978,7 @@ msgstr "Por favor, tente novamente."
 
 #: save.php:99
 msgid "The email address is not valid. Please leave the email field blank or give a valid email address."
-msgstr ""
+msgstr "O endereço de e-mail não é válido. Deixe o campo em branco ou introduza um endereço de e-mail válido."
 
 #: save.php:115
 msgid "This name has already been used for this survey. You must use a unique save name."
@@ -11103,8 +11103,8 @@ msgstr "Não lhe é permitido descarregar a base de dados!"
 #: admin/html.php:1556 admin/html.php:1563 admin/html.php:1570
 #: admin/html.php:1601 admin/html.php:2069 admin/login_check.php:48
 #: admin/login_check.php:85 admin/quota.php:702 admin/quota.php:762
-#: admin/resetsurveylogic.php:66 admin/tokens.php:499 admin/tokens.php:514
-#: admin/tokens.php:1688 admin/tokens.php:2034 admin/usercontrol.php:61
+#: admin/resetsurveylogic.php:66 admin/tokens.php:500 admin/tokens.php:515
+#: admin/tokens.php:1689 admin/tokens.php:2035 admin/usercontrol.php:61
 #: admin/usercontrol.php:84 admin/usercontrol.php:90 admin/usercontrol.php:145
 #: admin/usercontrol.php:251 admin/usercontrol.php:260
 #: admin/usercontrol.php:351 admin/usercontrol.php:367
@@ -11257,10 +11257,10 @@ msgstr "Activar inquérito"
 #: admin/importsurvey.php:115 admin/install/createdb.php:64
 #: admin/install/createdb.php:101 admin/resetsurveylogic.php:27
 #: admin/templates.php:305 admin/templates.php:317 admin/templates.php:329
-#: admin/tokens.php:398 admin/tokens.php:412 admin/tokens.php:478
-#: admin/tokens.php:1001 admin/tokens.php:2745 admin/tokens.php:3182
-#: admin/tokens.php:3188 admin/usercontrol.php:846 admin/vvimport.php:121
-#: common_functions.php:5489 index.php:572
+#: admin/tokens.php:399 admin/tokens.php:413 admin/tokens.php:479
+#: admin/tokens.php:1002 admin/tokens.php:2746 admin/tokens.php:3183
+#: admin/tokens.php:3189 admin/usercontrol.php:846 admin/vvimport.php:121
+#: common_functions.php:5482 index.php:572
 msgid "Error"
 msgstr "Erro"
 
@@ -11279,9 +11279,9 @@ msgstr "O inquérito não poderá ser activado até serem resolvidos estes probl
 #: admin/activate.php:69 admin/deactivate.php:27 admin/deletesurvey.php:37
 #: admin/editsubquestions.php:264 admin/editsurveysettings.php:890
 #: admin/html.php:1397 admin/html.php:1407 admin/importoldresponses.php:78
-#: admin/resetsurveylogic.php:39 admin/tokens.php:531 admin/tokens.php:1349
-#: admin/tokens.php:1683 admin/tokens.php:1712 admin/tokens.php:2030
-#: admin/tokens.php:2070
+#: admin/resetsurveylogic.php:39 admin/tokens.php:532 admin/tokens.php:1350
+#: admin/tokens.php:1684 admin/tokens.php:1713 admin/tokens.php:2031
+#: admin/tokens.php:2071
 msgid "Warning"
 msgstr "Aviso"
 
