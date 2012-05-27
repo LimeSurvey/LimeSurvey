@@ -610,7 +610,7 @@
         private $qrootVarName2arrayFilter = array();
         /**
          * Array, keyed on qid, to JavaScript and list of variables needed to implement exclude_all_others_auto
-         * @var type 
+         * @var type
          */
         private $qid2exclusiveAuto = array();
 
@@ -776,6 +776,7 @@
             $relOrList = array();
             foreach($query->GetRows() as $row)
             {
+                $row['method']=trim($row['method']); //For Postgres
                 if ($row['qid'] != $_qid)
                 {
                     // output the values for prior question is there was one
@@ -1263,7 +1264,7 @@
 
                             $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
                             $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
-                            
+
                             // Unset all checkboxes and hidden values for this question (irregardless of whether they are array filtered)
                             $eosaJS = "if (" . $relevanceJS . ") {\n";
                             $eosaJS .="  $('#question" . $questionNum . " [type=checkbox]').attr('checked',false);\n";
