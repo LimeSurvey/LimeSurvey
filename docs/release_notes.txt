@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.00 beta 1!
+Welcome to LimeSurvey v2.00 Release Candidate 2!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,72 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 2.0RC1 to 2.0RC2 (build 120528) May 28, 2012
+#Updated translation: Czech (lukas-slansky)
+#Updated translation: Dutch by Nickko Updated translation: Dutch (Informal) by Nickko (root)
+#Updated translation: French (France) by DenisChenu 
+#Updated translation: French (France) by Nickko Updated translation: German (Informal) by c_schmitz (root)
+#Updated translation: German (Informal) by c_schmitz (root)
+#Updated translation: German by c_schmitz 
+#Updated translation: German, Portuguese, Slovenian (LimeSurvey Translations)
++New feature #5762: empty class on empty input type text (Denis Chenu)
++New feature #5807: ability to replace survey_runtime.js function in template Fixed issue : time_limit attribute javascript error Dev : add only one css/js file if needed for question Dev : use css_header_includes and js_header_includes array from qanda Dev : TODO remove double call to jquery-ui.css, problem with slider (Denis Chenu)
++New feature #6073: token information on the browse index (Denis Chenu)
++New feature: New translation: Spanish (Chile) kindly provided by Victor Pinto (Carsten Schmitz)
+-Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
+-Fixed issue #5943: Exclusive option in multiple choice hide all other answer options (Thomas White)
+-Fixed issue #6001: Assessment creation when there is no question group (Daniel Klischies)
+-Fixed issue #6073: survey summary is not implemented 
+-Fixed issue #6077: Error on listing surveys (Carsten Schmitz)
+-Fixed issue #6078: Invalid LimeExpressionManager->ngT() calls (Thomas White)
+-Fixed issue #6080: wrong validation for multiple numeric questions Fixed issue : misaligned input with multi column on citronade (Denis Chenu)
+-Fixed issue #6083: Uploading a file takes me to upload template Zip archive (Denis Chenu)
+-Fixed issue #6084: When changing language during a survey not all texts were also properly switched (Carsten Schmitz)
+-Fixed issue #6085: By pasting a subquestion code can contain a space (Carsten Schmitz)
+-Fixed issue #6086: 1.92+ Build 120509 Conditions do not work with probably good logic (Thomas White)
+-Fixed issue #6087: Cascading array filter fails for depth>=3 in group and question modes (Thomas White)
+-Fixed issue #6088: Saving a subquestion using Postgres shows error (Carsten Schmitz)
+-Fixed issue #6089: Checking database integrity fails on PostgreSQL (Carsten Schmitz)
+-Fixed issue #6090: Activating a survey gives a database error on PostgreSQL (Carsten Schmitz)
+-Fixed issue #6092: Fatal error: Allowed memory size of .. when editing a result (Carsten Schmitz)
+-Fixed issue #6093: Wrong result when comparing decimal values from equation question types in surveys using comma as decimal point (Thomas White)
+-Fixed issue #6102: "Print your answers" shows EM syntax errors (Thomas White)
+-Fixed issue #6105: Can't view responses/statistics on this survey (Carsten Schmitz)
+-Fixed issue #6107: Changing user settings doesn't work (Carsten Schmitz)
+-Fixed issue #6108: E-Mail Settings in admin are ignored (Carsten Schmitz)
+-Fixed issue #6114: Encryption really off for bounce managment Dev: put notls for bounceencryption=="Off" (Denis Chenu)
+-Fixed issue #6117: Crash when generating tokens for items token list that have not been issued one (Denis Chenu)
+-Fixed issue #6118: Crash when initializing tokens table (Denis Chenu)
+-Fixed issue #6119: Apostrophe bug in statistics PDF and Excel output (Carsten Schmitz)
+-Fixed issue #6124: User with limited rights is allowed to export complete MySQL DB 
+-Fixed issue #6125: Install fails when no DBO driver is installed instead of warning in requirements (Carsten Schmitz)
+-Fixed issue #6126: Install fails with certain PHP versions after the database was populated (Carsten Schmitz)
+-Fixed issue #6136: Relevance evaluation with Postgres fails when using regular expressions (Carsten Schmitz)
+-Fixed issue: Browser language was not auto-detected even if set in the user profile to do so (Carsten Schmitz)
+-Fixed issue: Datestamp on not date stamped survey (Denis Chenu)
+-Fixed issue: Endless javascript loop in answer edit or subquestion edit Dev : actually getnextcode return source if source is an only text. Maybe another solution (Denis Chenu)
+-Fixed issue: Excel import fails if Excel text fields contain ASCII non-breaking space  (0xA0) (Thomas White)
+-Fixed issue: Excel import/export issues (Thomas White)
+-Fixed issue: Mangeled view when editing a response (Carsten Schmitz)
+-Fixed issue: Missing iterate survey functionality (Aaron Schmitz)
+-Fixed issue: Missing text and icons in search dialog, javascript code tidying (jcleeland)
+-Fixed issue: Missing translations for jQuery popup calendar (Carsten Schmitz)
+-Fixed issue: Navigation bar visible when testing a survey (Carsten Schmitz)
+-Fixed issue: Nice exit if surveyid is invalid (Denis Chenu)
+-Fixed issue: participants 'add survey' feature couldn't tell which surveys have tokens tables and threw error when attempting to add participants to survey without table. Also tidied Tokens_dynamic.php model file. (jcleeland)
+-Fixed issue: Question creation failing because of a static function being declared as non-static (Daniel Klischies)
+-Fixed issue: Removed feature: PDF global setting (Carsten Schmitz)
+-Fixed issue: Save timings (Denis Chenu)
+-Fixed issue: Slowness and display issues with response browsing (speedup by 75%) (Carsten Schmitz)
+-Fixed issue: Small error in Postgres on update (Carsten Schmitz)
+-Fixed issue: Survey archive format not properly importing (Carsten Schmitz)
+-Fixed issue: Survey list not working properly when a survey has no proper owner. Dev On upgrade from an earlier version all invalid owner IDs are fixed (Carsten Schmitz)
+-Fixed issue: Template editor not using syntax highlighting according to file type (Carsten Schmitz)
+-Fixed issue: Unable to add label in label set administration (Carsten Schmitz)
+-Fixed issue: Unable to end survey with save timing TODO: browse save timing / clean browse code (Denis Chenu)
+-Fixed issue: User with configurator access don't have acces to global settings (Denis Chenu)
 
 
 Changes from 2.0b1 to 2.0RC1 (build 120510) May 10, 2012
