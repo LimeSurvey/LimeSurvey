@@ -40,7 +40,7 @@ $importerror=false; // Put a var for continue
 
 if ($action == 'importsurvey')
 {
-    $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['tmp_name'];
+    $the_full_file_path = $tempdir . "/" . sRandomChars(20).'_'.$_FILES['the_file']['name'];
     if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
     {
         $importsurvey .= "<div class='errorheader'>".$clang->gT("Error")."</div>\n";
