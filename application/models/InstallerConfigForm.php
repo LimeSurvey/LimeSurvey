@@ -45,7 +45,11 @@ class InstallerConfigForm extends CFormModel
 	public $surveylang = 'en';
 
 	public function __construct($scenario = 'database') {
-		$drivers = CDbConnection::getAvailableDrivers();
+        $drivers=array();
+        if (extension_loaded('pdo'))
+        {
+            $drivers=CDbConnection::getAvailableDrivers();
+        }
 		foreach($drivers as $driver) {
 			if (isset($this->db_names[$driver]))
 				$this->supported_db_types[$driver] = $this->db_names[$driver];
