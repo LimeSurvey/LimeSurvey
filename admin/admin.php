@@ -45,9 +45,6 @@ else
     $refurl =  "";
 }
 LimeExpressionManager::SetSurveyId($surveyid);  // must be called early - it clears internal cache if a new survey is being used
-if (!is_null($surveyid)) {
-    SetSurveyLanguage($surveyid, '');        // just to make sure we have a language for EM
-}
 
 if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {

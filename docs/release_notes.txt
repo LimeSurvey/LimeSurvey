@@ -78,6 +78,34 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120529) to 1.92+ (build 120530) May 28, 2012
+-Fixed issue #6133: Race condition with concurrent upload of similar "survey structure" (Carsten Schmitz)
+
+Changes from 1.92+ (build 120526) to 1.92+ (build 120529) May 28, 2012
+-Fixed issue #6106: Mandatory error shown when testing a question (Carsten Schmitz)
+-Fixed issue #6133: Race condition with concurrent upload of similar "survey structure" (Carsten Schmitz)
+-Fixed issue #6136: Relevance evaluation with Postgres fails when using regular expressions (Carsten Schmitz)
+-Fixed issue: Admin language switching to survey language (Carsten Schmitz)
+
+Changes from 1.92+ (build 120517) to 1.92+ (build 120526) May 26, 2012
+#Updated translation: Dutch by Nickko 
+#Updated translation: Dutch (Informal) by Nickko (root)
+#Updated translation: French by Denis Chenu, Nickko 
+#Updated translation: German (Informal) by c_schmitz (root)
+#Updated translation: German by c_schmitz 
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Dutch
+#Updated translation: Portuguese
+#Updated translation: Slovenian
+-Fixed issue #6122: EM seems to be holding a cache in admin dev: only set language when a surveyid is set (mennodekker)
+-Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
+-Fixed issue #6114: Mail encryption really off for bounce managment (Denis Chenu)
+-Fixed issue #6119: Apostrophe bug in statistics PDF and Excel output (Carsten Schmitz)
+-Fixed issue #6124: User with limited rights is allowed to export complete MySQL DB 
+-Fixed issue: User with configurator access doesn't have acces to global settings (Denis Chenu)
+-Fixed issue: Survey list does not show surveys having deleted owners (Carsten Schmitz)
+
+
 Changes from 1.92+ (build 120516) to 1.92+ (build 120517) May 17, 2012
 -Fixed issue: Missing translations / texts
 

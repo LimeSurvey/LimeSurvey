@@ -283,7 +283,7 @@ function retrieveAnswers($ia)
     }
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    if (($_SESSION['step'] != $_SESSION['maxstep']) || ($_SESSION['step'] == $_SESSION['prevstep'])) {
+    if (($_SESSION['step'] != $_SESSION['maxstep']) || ($_SESSION['step'] == $_SESSION['prevstep']) && returnglobal('action')!='previewquestion') {
         $mandatory_msg = mandatory_message($ia);
     }
     else {
