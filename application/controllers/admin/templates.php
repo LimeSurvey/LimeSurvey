@@ -920,7 +920,8 @@ class templates extends Survey_Common_Action
                 'class' => 'list-radio',
                 'man_class' => '',
                 'input_error_class' => '',
-                'number' => '1'
+                'number' => '1',
+                'type' => 'L'
                 );
                 $aData['question'] = $question;
 
@@ -943,7 +944,8 @@ class templates extends Survey_Common_Action
                 'class' => 'text-long',
                 'man_class' => 'mandatory',
                 'input_error_class' => '',
-                'number' => '2'
+                'number' => '2',
+                'type' => 'T'
                 );
                 $aData['question'] = $question;
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
