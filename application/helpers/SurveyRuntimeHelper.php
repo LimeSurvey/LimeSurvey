@@ -916,7 +916,7 @@ END;
             echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"), array(), $redata);
             echo "\n";
 
-            if ($groupdescription)
+            if ($groupdescription && !$previewquestion)
             {
                 echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"), array(), $redata);
             }
@@ -1014,7 +1014,7 @@ END;
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         LimeExpressionManager::FinishProcessingPage();
 
-        if (!$previewgrp)
+        if (!$previewgrp && !$previewquestion)
         {
             $navigator = surveymover(); //This gets globalised in the templatereplace function
             $redata = compact(array_keys(get_defined_vars()));
