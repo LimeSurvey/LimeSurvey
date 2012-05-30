@@ -181,17 +181,6 @@
                         <?php $clang->eT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time :").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                     </span></li>
 
-                <?php $thisusepdfexport=getGlobalSetting('usepdfexport'); ?>
-                <li><label for='usepdfexport'><?php $clang->eT("PDF export available:"); ?></label>
-                    <select name='usepdfexport' id='usepdfexport'>
-                        <option value='1'
-                            <?php if ( $thisusepdfexport == true) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("On"); ?></option>
-                        <option value='0'
-                            <?php if ( $thisusepdfexport == false) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Off"); ?></option>
-                    </select></li>
-
                 <li><label for='sess_expiration'><?php $clang->eT("Session lifetime (seconds):"); ?></label>
                     <input type='text' size='10' id='sess_expiration' name='sess_expiration' value="<?php echo htmlspecialchars(getGlobalSetting('sess_expiration')); ?>" /></li>
                 <li><label for='ipInfoDbAPIKey'><?php $clang->eT("IP Info DB API Key:"); ?></label>

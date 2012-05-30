@@ -114,7 +114,7 @@ class ParticipantAttributeNames extends CActiveRecord
                                               ->from('{{participant_attribute_names}}')
                                               ->order('{{participant_attribute_names}}.attribute_id', 'desc')
                                               ->join('{{participant_attribute_names}}_lang', '{{participant_attribute_names}}_lang.attribute_id = {{participant_attribute_names}}.attribute_id')
-                                              ->where('{{participant_attribute_names}}_lang.lang = "'.Yii::app()->session['adminlang'].'"')
+                                              ->where("{{participant_attribute_names}}_lang.lang = '".Yii::app()->session['adminlang']."'")
                                               ->queryAll();
     }
 

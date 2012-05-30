@@ -238,7 +238,6 @@
                 if ($sLanguage==$sSelectedLanguage)
                 {
                     $sHTMLCode .=" selected='selected'";
-                    $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
                 }
                 $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sLanguage)." - ".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
             }

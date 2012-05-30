@@ -441,6 +441,9 @@ function db_upgrade($oldversion) {
         modifyDatabase("","ALTER TABLE prefix_surveys ADD sendconfirmation CHAR(1) default 'Y'"); echo $modifyoutput; flush();@ob_flush();
         upgrade_survey_table156();
 
+        modifyDatabase("","ALTER TABLE prefix_conditions ALTER COLUMN method TYPE character varying(5)"); echo $modifyoutput; flush();@ob_flush();
+
+
         modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='156' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
 

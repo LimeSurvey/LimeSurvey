@@ -38,10 +38,7 @@ class PrintanswersController extends LSYii_Controller {
         global $siteadminname, $siteadminemail;
         Yii::app()->loadHelper("frontend");
 
-        if(Yii::app()->getConfig('usepdfexport'))
-        {
-            Yii::import('application.libraries.admin.pdf');
-        }
+        Yii::import('application.libraries.admin.pdf');
 
         $surveyid = (int)($surveyid);
         Yii::app()->loadHelper('database');
@@ -130,10 +127,7 @@ class PrintanswersController extends LSYii_Controller {
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
         //SHOW HEADER
         $printoutput = '';
-        if(Yii::app()->getConfig('usepdfexport') == 1)
-        {
-            $printoutput .= "<form action='".Yii::app()->getController()->createUrl('printanswers/view/surveyid/'.$surveyid.'/printableexport/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
-        }
+        $printoutput .= "<form action='".Yii::app()->getController()->createUrl('printanswers/view/surveyid/'.$surveyid.'/printableexport/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
         if($printableexport == 'pdf')
         {
             require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');

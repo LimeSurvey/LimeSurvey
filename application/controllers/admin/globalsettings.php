@@ -169,7 +169,6 @@ class GlobalSettings extends Survey_Common_Action
             $savetime = '+' . $savetime;
         }
         setGlobalSetting('timeadjust', $savetime);
-        setGlobalSetting('usepdfexport', strip_tags($_POST['usepdfexport']));
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
 
         Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");
