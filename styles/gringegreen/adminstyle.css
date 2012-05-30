@@ -1006,7 +1006,7 @@ div.errorheader{
 div.warningheader, div.messagebox .warningheader{
     font-weight:bold;
     color:#fff;
-    background-color: #94D200;
+    background-color: #FFD800;
     margin: 5px 0;
     padding:2px;
 }
