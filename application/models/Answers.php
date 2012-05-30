@@ -109,7 +109,14 @@ class Answers extends CActiveRecord
         $ans = new self;
 		foreach ($data as $k => $v)
 			$ans->$k = $v;
-		return $ans->save();
+		try
+		{
+			return $ans->save();
+		}
+		catch(Exception $e)
+		{
+			return false;
+		}
     }
 
     /**

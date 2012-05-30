@@ -4159,7 +4159,7 @@ function ExcelImportSurvey($sFullFilepath)
     $results['error']=false;
     $baselang = 'en';   // TODO set proper default
 
-    try {
+//    try {
         $data = new Spreadsheet_Excel_Reader($sFullFilepath);
         $adata = $data->dumptonamedarray();
 
@@ -4260,8 +4260,10 @@ function ExcelImportSurvey($sFullFilepath)
             $baselang = $surveyinfo['language'];    // the base language
         }
 
+		  $rownumber = 1;
         foreach ($adata as $row)
         {
+        		$rownumber += 1;
             $row = str_replace(chr(0xA0),' ',$row);
             switch($row['class'])
             {
@@ -4330,8 +4332,13 @@ function ExcelImportSurvey($sFullFilepath)
                         $insertdata['question_order'] = $qseq;
                     }
 
-                    $newqid = Questions::model()->insertRecords($insertdata) or safeDie ($clang->gT("Error").": Failed to insert question<br />");
+                    $result = Questions::model()->insertRecords($insertdata); //or safeDie ($clang->gT("Error").": Failed to insert question<br />");
+                    if(!$result){
+                    	 $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
+                    	 break;
+                    }
 
+						  $newqid = $result;
                     if (!isset($qinfo[$qname]))
                     {
                         $results['questions']++;
@@ -4474,15 +4481,18 @@ function ExcelImportSurvey($sFullFilepath)
                     $insertdata['assessment_value'] = (isset($row['relevance']) ? $row['relevance'] : '');
                     $insertdata['sortorder'] = ++$aseq;
 
-                    $result = Answers::model()->insertRecords($insertdata) or safeDie("Error: Failed to insert answer<br />");
+                    $result = Answers::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
+                    if(!$result){
+                    	 $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert answer").". ".$clang->gT("Excel row number ").$rownumber;
+                    }
                     $results['answers']++;
                     break;
             }
 
         }
-    }
-    catch (Exception $e) {
-        $results['error'] = $e->getMessage();
-    }
+//    }
+//    catch (Exception $e) {
+//        $results['error'] = $e->getMessage();
+//    }
     return $results;
 }

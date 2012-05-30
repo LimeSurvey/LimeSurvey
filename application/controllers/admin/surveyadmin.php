@@ -941,7 +941,7 @@ class SurveyAdmin extends Survey_Common_Action
                 unlink($sFullFilepath);
             }
 
-            if (isset($aImportResults['error']) && $aImportResults['error']) safeDie($aImportResults['error']);
+//            if (isset($aImportResults['error']) && $aImportResults['error']) safeDie($aImportResults['error']);
 
             if (!$aData['bFailed'])
             {
