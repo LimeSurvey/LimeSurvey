@@ -19,7 +19,7 @@ include_once("login_check.php");
 // Enable 'Convert resource links and INSERTANS fields?' if selected
 if ( (isset($_POST['copysurveytranslinksfields']) && $_POST['copysurveytranslinksfields'] == "on")  || (isset($_POST['translinksfields']) && $_POST['translinksfields'] == "on"))
 {
-    $sTransLinks = true;    
+    $sTransLinks = true;
 }
 
 // Start the HTML
@@ -40,14 +40,14 @@ $importerror=false; // Put a var for continue
 
 if ($action == 'importsurvey')
 {
-    $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
+    $the_full_file_path = $tempdir . "/" . sRandomChars(20).'_'.$_FILES['the_file']['name'];
     if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
     {
         $importsurvey .= "<div class='errorheader'>".$clang->gT("Error")."</div>\n";
         $importsurvey .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir)."<br /><br />\n";
         $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br /><br />\n";
         $importerror=true;
-    } 
+    }
     else
     {
         $importsurvey .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
@@ -149,13 +149,13 @@ if (!$importerror)
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
     if ($action == 'importsurvey')
     {
-        $importsurvey .= "<strong>".$clang->gT("Survey copy summary")."</strong><br />\n";        
+        $importsurvey .= "<strong>".$clang->gT("Survey copy summary")."</strong><br />\n";
     }
     elseif($action == 'copysurvey')
     {
-        $importsurvey .= "<strong>".$clang->gT("Survey import summary")."</strong><br />\n";        
+        $importsurvey .= "<strong>".$clang->gT("Survey import summary")."</strong><br />\n";
     }
-    
+
     $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$aImportResults['surveys']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Languages").": {$aImportResults['languages']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Question groups").": {$aImportResults['groups']}</li>\n";
@@ -163,15 +163,15 @@ if (!$importerror)
     $importsurvey .= "\t<li>".$clang->gT("Answers").": {$aImportResults['answers']}</li>\n";
     if (isset($aImportResults['subquestions']))
     {
-        $importsurvey .= "\t<li>".$clang->gT("Subquestions").": {$aImportResults['subquestions']}</li>\n";     
+        $importsurvey .= "\t<li>".$clang->gT("Subquestions").": {$aImportResults['subquestions']}</li>\n";
     }
     if (isset($aImportResults['defaultvalues']))
     {
-        $importsurvey .= "\t<li>".$clang->gT("Default answers").": {$aImportResults['defaultvalues']}</li>\n";     
+        $importsurvey .= "\t<li>".$clang->gT("Default answers").": {$aImportResults['defaultvalues']}</li>\n";
     }
     if (isset($aImportResults['conditions']))
     {
-        $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";     
+        $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";
     }
     if (isset($aImportResults['labelsets']))
     {
@@ -184,8 +184,8 @@ if (!$importerror)
     $importsurvey .= "\t<li>".$clang->gT("Question attributes").": {$aImportResults['question_attributes']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Assessments").": {$aImportResults['assessments']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Quotas").": {$aImportResults['quota']} ({$aImportResults['quotamembers']} ".$clang->gT("quota members")." ".$clang->gT("and")." {$aImportResults['quotals']} ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
-    
-    if (count($aImportResults['importwarnings'])>0) 
+
+    if (count($aImportResults['importwarnings'])>0)
     {
         $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">";
         foreach ($aImportResults['importwarnings'] as $warning)
@@ -194,23 +194,23 @@ if (!$importerror)
         }
         $importsurvey .= "</ul><br />\n";
     }
-    
+
     if ($action == 'importsurvey')
     {
         $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
-        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";       
+        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
     }
     elseif($action == 'copysurvey')
     {
         $importsurvey .= "<strong>".$clang->gT("Copy of survey is completed.")."</strong><br />\n"
-        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n"; 
-    }    
+        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
+    }
 
     if ($action == 'importsurvey')
     {
-        unlink($sFullFilepath);    
+        unlink($sFullFilepath);
     }
-    
+
 }
     // end of traitment an close message box
     $importsurvey .= "</div><br />\n";
