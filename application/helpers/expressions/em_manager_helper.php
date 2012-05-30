@@ -3954,11 +3954,11 @@
                 $sdata = array(
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 );
-                if ($this->surveyOptions['anonymized'] == "N")
+                if ($this->surveyOptions['anonymized'] == false)
                 {
                     $sdata = array_merge($sdata,array("token"=>($this->surveyOptions['token'])));
                 }
-                if ($this->surveyOptions['datestamp'] == "Y")
+                if ($this->surveyOptions['datestamp'] == true)
                 {
                     $sdata = array_merge($sdata, array(
                     "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : NULL),
@@ -3966,11 +3966,11 @@
                     ));
 
                 }
-                if ($this->surveyOptions['ipaddr'] == "Y")
+                if ($this->surveyOptions['ipaddr'] == true)
                 {
                     $sdata = array_merge($sdata,array("ipaddr"=>getIPAddress()));
                 }
-                if ($this->surveyOptions['refurl'] == "Y")
+                if ($this->surveyOptions['refurl'] == true)
                 {
                     $sdata = array_merge($sdata,array("refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL)));
                 }
