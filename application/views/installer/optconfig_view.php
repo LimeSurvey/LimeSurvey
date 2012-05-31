@@ -68,9 +68,9 @@
 <?php
 foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
 {
-	$languages[htmlspecialchars($langkey)] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
+	$languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
 }
-echo CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'encode' => false, 'en' => array('selected' => true)));
+echo CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'encode' => false, 'options'=>array('en' => array('selected' => true))));
 ?>
 </td>
 </tr>

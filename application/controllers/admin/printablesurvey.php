@@ -118,17 +118,6 @@ class printablesurvey extends Survey_Common_Action
             $surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
         }
 
-        $pdf_form='';
-        if(Yii::app()->getConfig('usepdfexport') == 1 && !in_array($surveyprintlang,Yii::app()->getConfig('notsupportlanguages')))
-        {
-            $pdf_form = '
-            <form action="'.$this->getController()->createUrl('admin/printablesurvey/surveyid/'.$surveyid.'/lang/'.$surveyprintlang.'/').'" method="post">
-                <input type="submit" value="'.$clang->gT('PDF export').'"/>
-                <input type="hidden" name="checksessionbypost" value="'.htmlspecialchars(Yii::app()->session['checksessionpost']).'"/>
-                <input type="hidden" name="printableexport" value="true"/>
-            </form>
-            ';
-        }
 
         $headelements = getPrintableHeader();
 
@@ -153,7 +142,6 @@ class printablesurvey extends Survey_Common_Action
         ,'SUBMIT_TEXT' => $clang->gT("Submit Your Survey.")
         ,'SUBMIT_BY' => $surveyexpirydate
         ,'THANKS' => $clang->gT("Thank you for completing this survey.")
-        ,'PDF_FORM' => $pdf_form
         ,'HEADELEMENTS' => $headelements
         ,'TEMPLATEURL' => PRINT_TEMPLATE_URL
         ,'FAXTO' => $surveyfaxto

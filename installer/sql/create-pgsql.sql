@@ -47,7 +47,7 @@ CREATE TABLE prefix_conditions (
     scenario integer DEFAULT 1 NOT NULL,
     cqid integer DEFAULT 0 NOT NULL,
     cfieldname character varying(50) DEFAULT ''::character varying NOT NULL,
-    method character(5) DEFAULT ''::bpchar NOT NULL,
+    method character varying(5) DEFAULT ''::character varying NOT NULL,
     value character varying(255) DEFAULT ''::character varying NOT NULL,
     CONSTRAINT prefix_conditions_pkey PRIMARY KEY (cid)
 );

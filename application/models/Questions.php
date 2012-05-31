@@ -208,8 +208,17 @@
             $questions = new self;
             foreach ($data as $k => $v)
                 $questions->$k = $v;
-            if  (!$questions->save()) return false;
-            else return $questions->qid;
+//            if  (!$questions->save()) return false;
+//            else return $questions->qid;
+            try
+            {
+            	$questions->save();
+            	return $questions->qid;
+            }
+            catch(Exception $e)
+            {
+            	return false;
+        		}
         }
 
         public static function deleteAllById($questionsIds)

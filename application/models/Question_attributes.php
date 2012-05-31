@@ -61,7 +61,7 @@ class Question_attributes extends CActiveRecord
 			->query();
     }
 
-	public function insertRecords($data)
+	public static function insertRecords($data)
     {
         $attrib = new self;
 		foreach ($data as $k => $v)

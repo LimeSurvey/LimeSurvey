@@ -93,7 +93,7 @@ class GlobalSettings extends Survey_Common_Action
             return;
         }
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1) {
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
             $this->getController()->redirect($this->getController()->createUrl('/admin'));
         }
         $clang = $this->getController()->lang;
@@ -169,7 +169,6 @@ class GlobalSettings extends Survey_Common_Action
             $savetime = '+' . $savetime;
         }
         setGlobalSetting('timeadjust', $savetime);
-        setGlobalSetting('usepdfexport', strip_tags($_POST['usepdfexport']));
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
 
         Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");

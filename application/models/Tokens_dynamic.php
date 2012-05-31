@@ -69,48 +69,33 @@ class Tokens_dynamic extends CActiveRecord
 		return 'tid';
 	}
 
-	/**
-	 * Returnvs a summary of this table
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function summary()
-	{
-		$sid = self::$sid;
+    /**
+     * Returns summary information of this token table
+     *
+     * @access public
+     * @return array
+     */
+    public function summary()
+    {
+        $sid = self::$sid;
+        if(Yii::app()->db->schema->getTable("{{tokens_$sid}}")){
+            $data=Yii::app()->db->createCommand()
+                ->select("COUNT(*) as tkcount, 
+                            SUM(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE 0 END) as tkinvalid, 
+                            SUM(CASE WHEN (sent!='N' and sent<>'') THEN 1 ELSE 0 END) as tksent, 
+                            SUM(CASE WHEN (emailstatus = 'OptOut') THEN 1 ELSE 0 END) as tkoptout,
+                            SUM(CASE WHEN (completed!='N' and completed<>'') THEN 1 ELSE 0 END) as tkcompleted
+                            ")
+                ->from("{{tokens_$sid}}")
+                ->queryRow();
+        }
+        else
+        {
+            $data=false;
+        }
 
-		$tksq = "SELECT count(tid) FROM {{tokens_$sid}}";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$tkcount = $tkr["count(tid)"];
-		$data['tkcount']=$tkcount;
-
-		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE token IS NULL OR token=''";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$data['query1'] = $tkr["count(*)"]." / $tkcount";
-		$data['tkinvalid']= $tkr["count(*)"];
-
-		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE (sent!='N' and sent<>'')";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$data['query2'] = $tkr["count(*)"]." / $tkcount";
-		$data['tksent']= $tkr["count(*)"];
-
-		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE emailstatus = 'OptOut'";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$data['query3'] = $tkr["count(*)"]." / $tkcount";
-		$data['tkoptout']= $tkr["count(*)"];
-
-		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE (completed!='N' and completed<>'')";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$data['query4'] = $tkr["count(*)"]." / $tkcount";
-		$data['tkcompleted']= $tkr["count(*)"];
-
-		return $data;
-	}
+        return $data;
+    }
 
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
@@ -134,10 +119,9 @@ class Tokens_dynamic extends CActiveRecord
     }
     function updateToken($tid,$newtoken)
     {
-        return Yii::app()->db->createCommand('UPDATE :tablename SET token= :newtoken WHERE tid=:tid')
+        return Yii::app()->db->createCommand("UPDATE {$this->tableName()} SET token = :newtoken WHERE tid = :tid")
         ->bindParam(":newtoken", $newtoken, PDO::PARAM_STR)
         ->bindParam(":tid", $tid, PDO::PARAM_INT)
-        ->bindParam(":tablename", $this->tableName(), PDO::PARAM_STR)
         ->execute();
     }
     function selectEmptyTokens($iSurveyID)

@@ -37,8 +37,6 @@ class tokens extends Survey_Common_Action
             die("no permissions"); // TODO Replace
         }
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "admin/tokens.js");
-
         Yii::app()->loadHelper("surveytranslator");
 
         //$dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -2054,6 +2052,7 @@ class tokens extends Survey_Common_Action
     function _newtokentable($iSurveyId)
     {
         $clang = $this->getController()->lang;
+        Yii::import('application.helpers.admin.token_helper', true);
         if (Yii::app()->request->getPost('createtable') == "Y" && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
             createTokenTable($iSurveyId);

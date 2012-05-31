@@ -182,9 +182,9 @@ class RankingQuestion extends QuestionModule
         . "\t</td>\n"
         . "</tr>\n"
         . "<tr>\n"
-        . "\t<td colspan='2' class='rank helptext'><font size='1'>\n"
+        . "\t<td colspan='2' class='rank helptext'>\n"
         . "".$clang->gT("Click on the scissors next to each item on the right to remove the last entry in your ranked list")
-        . "\t</font size='1'></td>\n"
+        . "\t</td>\n"
         . "</tr>\n"
         . "\t</table>\n";
 
