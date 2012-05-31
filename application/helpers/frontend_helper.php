@@ -2280,7 +2280,6 @@ function doAssessment($surveyid, $returndataonly=false)
     WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
     ORDER BY scope, id";
     if ($result = dbExecuteAssoc($query))   //Checked
-
     {
         if ($result->count() > 0)
         {
@@ -2307,41 +2306,29 @@ function doAssessment($surveyid, $returndataonly=false)
             $groups=array();
             foreach($fieldmap as $field)
             {
-                if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P',":")))
+                if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
                 {
                     $fieldmap[$field['fieldname']]['assessment_value']=0;
                     if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
                     {
-                        if ($field['type']==':') //Multiflexi numbers  - result is the assessment value
-
+                        if (($field['type'] == "M") || ($field['type'] == "P")) //Multiflexi choice  - result is the assessment attribute value
                         {
-                            $fieldmap[$field['fieldname']]['assessment_value']=$_SESSION['survey_'.$surveyid][$field['fieldname']];
-                            $total=$total+$_SESSION['survey_'.$surveyid][$field['fieldname']];
+                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
+                            {
+                                $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
+                                $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
+                                $total=$total+(int)$aAttributes['assessment_value'];
+                            }
                         }
-                        else
+                        else  // Single choice question
                         {
-
                             $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".dbQuoteAll($_SESSION['survey_'.$surveyid][$field['fieldname']]);
                             $usresult = dbExecuteAssoc($usquery);          //Checked
                             if ($usresult)
                             {
                                 $usrow = $usresult->read();
-
-                                if (($field['type'] == "M") || ($field['type'] == "P"))
-                                {
-                                    if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")     // for Multiple choice type questions
-                                    {
-                                        $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
-                                        $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
-                                        $total=$total+$usrow['assessment_value'];
-                                    }
-                                }
-                                else     // any other type of question
-
-                                {
-                                    $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
-                                    $total=$total+$usrow['assessment_value'];
-                                }
+                                $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
+                                $total=$total+$usrow['assessment_value'];
                             }
                         }
                     }
@@ -2362,10 +2349,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         //$grouptotal=$grouptotal+$field['answer'];
                         if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']]))
                         {
-                            if (($field['type'] == "M") and ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")) 	// for Multiple choice type questions
-                                $grouptotal=$grouptotal+$field['assessment_value'];
-                            else																		// any other type of question
-                                $grouptotal=$grouptotal+$field['assessment_value'];
+                            $grouptotal=$grouptotal+$field['assessment_value'];
                         }
                     }
                 }
