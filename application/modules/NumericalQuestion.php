@@ -93,5 +93,11 @@ class NumericalQuestion extends QuestionModule
     {
         return array("em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_num_value_n","maximum_chars","min_num_value_n","num_value_int_only","page_break","prefix","public_statistics","suffix","text_input_width","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Numerical Input"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+    }
 }
 ?>

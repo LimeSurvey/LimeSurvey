@@ -358,7 +358,8 @@ class Survey_Common_Action extends CAction
                     $aData['tmp_survlangs'] = $tmp_survlangs;
                 }
             }
-            $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
+            $q = objectizeQuestion($qrrow['type']); //AJS
+            $aData['qproperties']=$q->questionProperties();
             if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action == "copyquestion")
             {
                 $qshowstyle = "style='display: none'";

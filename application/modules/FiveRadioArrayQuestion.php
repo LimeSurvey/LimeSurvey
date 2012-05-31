@@ -147,5 +147,11 @@ class FiveRadioArrayQuestion extends RadioArrayQuestion
     {
         return array("answer_width","array_filter","array_filter_exclude","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Array (5 Point Choice)"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0);
+    }
 }
 ?>

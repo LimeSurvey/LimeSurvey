@@ -34,5 +34,11 @@ class LanguageQuestion extends QuestionModule
     {
         return array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Language Switch"),'group' => $clang->gT("Mask questions"),'hasdefaultvalues' => 0,'subquestions' => 0,'assessable' => 0,'answerscales' => 0);
+    }
 }
 ?>

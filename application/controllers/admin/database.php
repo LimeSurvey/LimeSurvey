@@ -71,12 +71,11 @@ class database extends Survey_Common_Action
             }
 
             $resrow = Questions::model()->findByAttributes(array('qid'=>$qid));
-            $questiontype = $resrow['type'];
-
-            $qtproperties=getQuestionTypeList('','array');
-            if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subquestions']==0)
+            $q = objectizeQuestion($resrow['type']); //AJS
+            $qproperties=$q->questionProperties();
+            if ($qproperties['answerscales']>0 && $qproperties['subquestions']==0)
             {
-                for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
+                for ($scale_id=0;$scale_id<$qproperties['answerscales'];$scale_id++)
                 {
                     foreach ($questlangs as $language)
                     {
@@ -91,7 +90,7 @@ class database extends Survey_Common_Action
                     }
                 }
             }
-            if ($qtproperties[$questiontype]['subquestions']>0)
+            if ($qproperties['subquestions']>0)
             {
 
                 foreach ($questlangs as $language)
@@ -99,7 +98,7 @@ class database extends Survey_Common_Action
 
                     $sqresult = Questions::model()->findByAttributes(array('sid'=>$surveyid, 'gid'=>$gid, 'parent_qid'=>$qid, 'language'=>$language, 'scale_id'=>0));
 
-                    for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
+                    for ($scale_id=0;$scale_id<$qproperties['subquestions'];$scale_id++)
                     {
 
                         foreach ($sqresult as $aSubquestionrow)
@@ -112,7 +111,7 @@ class database extends Survey_Common_Action
                     }
                 }
             }
-            if ($qtproperties[$questiontype]['answerscales']==0 && $qtproperties[$questiontype]['subquestions']==0)
+            if ($qproperties['answerscales']==0 && $qproperties['subquestions']==0)
             {
                 foreach ($questlangs as $language)
                 {
@@ -146,9 +145,9 @@ class database extends Survey_Common_Action
             array_unshift($alllanguages,$baselang);
 
             $resrow = Questions::model()->findByAttributes(array('qid'=>$qid));
-            $questiontype = $resrow['type'];    // Checked)
-            $qtypes=getQuestionTypeList('','array');
-            $scalecount=$qtypes[$questiontype]['answerscales'];
+            $q = objectizeQuestion($resrow['type']); //AJS
+            $qproperties=$q->questionProperties();
+            $scalecount=$qproperties['answerscales'];
 
             $count=0;
             $invalidCode = 0;
@@ -243,9 +242,9 @@ class database extends Survey_Common_Action
             array_unshift($anslangs,$baselang);
 
             $row = Questions::model()->findByAttributes(array('qid'=>$qid));
-            $questiontype = $row['type'];    // Checked
-            $qtypes=getQuestionTypeList('','array');
-            $scalecount=$qtypes[$questiontype]['subquestions'];
+            $q = objectizeQuestion($resrow['type']); //AJS
+            $qproperties=$q->questionProperties();
+            $scalecount=$qproperties['answerscales'];
 
             $clang = $this->getController()->lang;
             // First delete any deleted ids
@@ -653,11 +652,11 @@ class database extends Survey_Common_Action
                 }
             }
 
-
-            $qtypes=getQuestionTypeList('','array');
             // These are the questions types that have no answers and therefore we delete the answer in that case
-            $iAnswerScales = $qtypes[Yii::app()->request->getPost('type')]['answerscales'];
-            $iSubquestionScales = $qtypes[Yii::app()->request->getPost('type')]['subquestions'];
+            $q = objectizeQuestion(Yii::app()->request->getPost('type')); //AJS
+            $qproperties=$q->questionProperties();
+            $iAnswerScales = $qproperties['answerscales'];
+            $iSubquestionScales = $qproperties['subquestions'];
 
             // These are the questions types that have the other option therefore we set everything else to 'No Other'
             if ((Yii::app()->request->getPost('type')!= "L") && (Yii::app()->request->getPost('type')!= "!") && (Yii::app()->request->getPost('type')!= "P") && (Yii::app()->request->getPost('type')!="M"))

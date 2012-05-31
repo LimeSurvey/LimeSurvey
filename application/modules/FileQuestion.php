@@ -176,5 +176,11 @@ class FileQuestion extends QuestionModule
     {
         return array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","show_title","show_comment","max_filesize","max_num_of_files","min_num_of_files","allowed_filetypes","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("File upload"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+    }
 }
 ?>

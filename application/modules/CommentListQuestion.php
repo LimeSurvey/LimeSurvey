@@ -170,5 +170,11 @@ class CommentListQuestion extends ListQuestion
     {
         return array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("List with comment"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+    }
 }
 ?>

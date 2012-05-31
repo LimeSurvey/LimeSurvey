@@ -179,5 +179,11 @@ class CommentCheckQuestion extends CheckQuestion
     {
         return array("array_filter","array_filter_exclude","assessment_value","exclude_all_others","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Multiple choice with comments"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0);
+    }
 }
 ?>

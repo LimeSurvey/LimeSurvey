@@ -259,5 +259,11 @@ class SelectQuestion extends ListQuestion
     {
         return array("alphasort","category_separator","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_replace_text","page_break","public_statistics","random_order","parent_order","dropdown_size","dropdown_prefix","scale_export","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("List (Dropdown)"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+    }
 }
 ?>

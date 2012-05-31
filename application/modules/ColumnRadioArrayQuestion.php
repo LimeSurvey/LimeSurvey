@@ -142,5 +142,11 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
     {
         return array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Array by column"),'group' => $clang->gT('Arrays'),'hasdefaultvalues' => 0,'subquestions' => 1,'assessable' => 1,'answerscales' => 1);
+    }
 }
 ?>

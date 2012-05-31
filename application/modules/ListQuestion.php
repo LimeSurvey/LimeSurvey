@@ -262,5 +262,11 @@ class ListQuestion extends QuestionModule
     {
         return array("alphasort","array_filter","array_filter_exclude","display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("List (Radio)"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+    }
 }
 ?>

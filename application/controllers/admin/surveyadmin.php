@@ -370,7 +370,6 @@ class SurveyAdmin extends Survey_Common_Action
         if (!isset($aData['aSurveysettings']['active']) || $aData['aSurveysettings']['active'] == 'Y')
             $this->getController()->error('Survey not active');
 
-        $qtypes = getQuestionTypeList('', 'array');
         Yii::app()->loadHelper("admin/activate");
 
         if (empty($_POST['ok']))
@@ -382,7 +381,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             // Check consistency for groups and questions
             $failedgroupcheck = checkGroup($iSurveyID);
-            $failedcheck = checkQuestions($iSurveyID, $iSurveyID, $qtypes);
+            $failedcheck = checkQuestions($iSurveyID, $iSurveyID);
 
             $aData['failedcheck'] = $failedcheck;
             $aData['failedgroupcheck'] = $failedgroupcheck;

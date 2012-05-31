@@ -129,7 +129,8 @@ class question extends Survey_Common_Action
             'gid' => $gid,
             'language' => $baselang
         ))->attributes;
-        $qtproperties = getQuestionTypeList('', 'array');
+        $q = objectizeQuestion($questionrow['type']); //AJS
+        $qproperties=$q->questionProperties();
 
         $langopts = array();
         foreach ($questlangs as $language)
@@ -138,9 +139,9 @@ class question extends Survey_Common_Action
             $langopts[$language][$questionrow['type']] = array();
 
             // If there are answerscales
-            if ($qtproperties[$questionrow['type']]['answerscales'] > 0)
+            if ($qproperties['answerscales'] > 0)
             {
-                for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['answerscales']; $scale_id++)
+                for ($scale_id = 0; $scale_id < $qproperties['answerscales']; $scale_id++)
                 {
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
@@ -178,10 +179,10 @@ class question extends Survey_Common_Action
             }
 
             // If there are subquestions and no answerscales
-            if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
-                    $qtproperties[$questionrow['type']]['subquestions'] > 0)
+            if ($qproperties['answerscales'] == 0 &&
+                    $qproperties['subquestions'] > 0)
             {
-                for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['subquestions']; $scale_id++)
+                for ($scale_id = 0; $scale_id < $qproperties['subquestions']; $scale_id++)
                 {
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
@@ -289,11 +290,11 @@ class question extends Survey_Common_Action
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
         $qrow = Questions::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
-        $qtype = $qrow['type'];
 
-        $qtypes = getQuestionTypeList('', 'array');
+        $q = objectizeQuestion($qrow['type']); //AJS
+        $qproperties=$q->questionProperties();
 
-        $scalecount = $qtypes[$qtype]['answerscales'];
+        $scalecount = $qproperties['answerscales'];
 
         $clang = $this->getController()->lang;
 
@@ -389,7 +390,7 @@ class question extends Survey_Common_Action
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings[0]->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
-        $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
+        $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qproperties['assessable'] == 1);
         $aData['assessmentvisible'] = $assessmentvisible;
 
         $aViewUrls['answerOptions_view'][] = $aData;
@@ -450,9 +451,9 @@ class question extends Survey_Common_Action
 
         $resultrow = Questions::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
 
-        $sQuestiontype = $resultrow['type'];
-        $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
-        $iScaleCount = $aQuestiontypeInfo[$sQuestiontype]['subquestions'];
+        $q = objectizeQuestion($resultrow['type']); //AJS
+        $qproperties=$q->questionProperties();
+        $iScaleCount = $qproperties['subquestions'];
 
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
         {
@@ -578,10 +579,11 @@ class question extends Survey_Common_Action
          * The following line decides if the assessment input fields are visible or not
          * for some question types the assessment values is set in the label set instead of the answers
          */
-        $qtypes = getQuestionTypeList('', 'array');
         Yii::app()->loadHelper('surveytranslator');
 
-        $aData['scalecount'] = $scalecount = $qtypes[$qtype]['subquestions'];
+        $q = objectizeQuestion($qtype); //AJS
+        $qproperties=$q->questionProperties();
+        $aData['scalecount'] = $scalecount = $qproperties['subquestions'];
 
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findByAttributes(array('sid' => $surveyid));
         if ($sumresult1 == null)

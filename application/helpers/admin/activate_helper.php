@@ -95,7 +95,7 @@ function checkGroup($postsid)
  * @param <type> $surveyid
  * @return array $faildcheck
  */
-function checkQuestions($postsid, $surveyid, $qtypes)
+function checkQuestions($postsid, $surveyid)
 {
     $clang = Yii::app()->lang;
 
@@ -117,7 +117,9 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow)
     {
-        if ($qtypes[$chkrow['type']]['subquestions']>0)
+        $q = objectizeQuestion($chkrow['type']); //AJS
+        $qproperties=$q->questionProperties();
+        if ($qproperties['subquestions']>0)
         {
             $chaquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$chkrow['qid']} ORDER BY question_order";
             $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
@@ -127,7 +129,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
                 $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a subquestion type question but has no configured subquestions."), $chkrow['gid']);
             }
         }
-        if ($qtypes[$chkrow['type']]['answerscales']>0)
+        if ($qproperties['answerscales']>0)
         {
             $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
             $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();

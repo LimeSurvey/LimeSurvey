@@ -194,5 +194,11 @@ class MultitextQuestion extends QuestionModule
     {
         return array("array_filter","array_filter_exclude","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Multiple Short Text"),'group' => $clang->gT("Text questions"),'subquestions' => 1,'hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+    }
 }
 ?>

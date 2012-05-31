@@ -352,5 +352,11 @@ class CheckQuestion extends QuestionModule
     {
         return array("array_filter","array_filter_exclude","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Multiple choice"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0);
+    }
 }
 ?>

@@ -618,5 +618,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
     {
         return array("answer_width","array_filter","array_filter_exclude","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
     }
+    
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Array dual scale"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'assessable' => 1,'hasdefaultvalues' => 0,'answerscales' => 2);
+    }
 }
 ?>

@@ -87,6 +87,7 @@ abstract class QuestionModule
         return '';
     }
     
-    abstract public function availableAttributes();
+    abstract public function availableAttributes();    
+    abstract public function questionProperties();
 }
 ?>

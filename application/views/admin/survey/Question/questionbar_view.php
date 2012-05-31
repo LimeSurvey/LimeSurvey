@@ -104,10 +104,10 @@
 
             if(hasSurveyPermission($surveyid,'surveycontent','read'))
             {
-                if ($qtypes[$qrrow['type']]['subquestions'] >0)
+                if ($qproperties['subquestions'] >0)
                 { ?>
                 <a href='<?php echo $this->createUrl('admin/question/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
-                    <img src='<?php echo $sImageURL; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions.png<?php } else {?>subquestions2d.png<?php } ?>' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?><?php if ($qproperties['subquestions']==1){?>subquestions.png<?php } else {?>subquestions2d.png<?php } ?>' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a>
                 <?php }
             }
             else
@@ -118,7 +118,7 @@
 
 
 
-            if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
+            if(hasSurveyPermission($surveyid,'surveycontent','read') && $qproperties['answerscales'] > 0)
             { ?>
             <a href='<?php echo $this->createUrl('admin/question/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>answers.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' /></a>
@@ -131,7 +131,7 @@
 
 
 
-            if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
+            if(hasSurveyPermission($surveyid,'surveycontent','read') && $qproperties['hasdefaultvalues'] >0)
             { ?>
             <a href='<?php echo $this->createUrl('admin/question/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>defaultanswers.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' /></a>
@@ -184,9 +184,9 @@
         <?php } ?>
 
     <tr><td><strong>
-            <?php $clang->eT("Type:"); ?></strong></td><td><?php echo $qtypes[$qrrow['type']]['description']; ?>
+            <?php $clang->eT("Type:"); ?></strong></td><td><?php echo $qproperties['description']; ?>
         </td></tr>
-    <?php if ($qct == 0 && $qtypes[$qrrow['type']]['answerscales'] >0)
+    <?php if ($qct == 0 && $qproperties['answerscales'] >0)
         { ?>
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
@@ -195,12 +195,12 @@
         <?php }
 
 
-        if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
+        if($sqct == 0 && $qproperties['subquestions'] >0)
         { ?>
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
                     <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
-                        <img src='<?php echo $sImageURL; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions_20<?php } else {?>subquestions2d_20<?php } ?>.png' title='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
+                        <img src='<?php echo $sImageURL; ?><?php if ($qproperties['subquestions']==1){?>subquestions_20<?php } else {?>subquestions2d_20<?php } ?>.png' title='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
         <?php }
 
         if ($qrrow['type'] == "M" or $qrrow['type'] == "P")

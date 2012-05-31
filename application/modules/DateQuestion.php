@@ -217,5 +217,11 @@ class DateQuestion extends QuestionModule
     {
         return array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Date/Time"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+    }
 }
 ?>

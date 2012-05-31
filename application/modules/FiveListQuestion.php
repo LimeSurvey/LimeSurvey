@@ -132,5 +132,11 @@ class FiveListQuestion extends QuestionModule
     {
         return array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","slider_rating","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("5 Point Choice"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+    }
 }
 ?>

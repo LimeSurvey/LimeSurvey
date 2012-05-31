@@ -325,5 +325,11 @@ class RadioArrayQuestion extends ArrayQuestion
     {
         return array("answer_width","array_filter","array_filter_exclude","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
     }
+
+    public function questionProperties()
+    {
+        $clang=Yii::app()->lang;
+        return array('description' => $clang->gT("Array"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 1);
+    }
 }
 ?>
