@@ -95,6 +95,9 @@ div.menubar input {
 	margin-right: 30%;
 }
 
+#frmglobalsettings table.statisticssummary {
+	margin-right: auto;
+}
 
 #surveydetails td + td, #groupdetails td + td, #questiondetails td + td {
     text-align: right;
