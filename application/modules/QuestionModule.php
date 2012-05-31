@@ -33,7 +33,7 @@ abstract class QuestionModule
 
         //Now read available attributes, make sure we do this only once per request to save
         //processing cycles and memory
-        $attributes = questionAttributes(true); //AJS remove true eventually
+        $attributes = questionAttributes();
         $available = $this->availableAttributes();
 
         $aResultAttributes = array();

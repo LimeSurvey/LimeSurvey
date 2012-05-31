@@ -965,7 +965,7 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
     {
 
 
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=questionAttributes();
 
         foreach ($xml->question_attributes->rows->row as $row)
         {
@@ -1852,7 +1852,7 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
     {
 
 
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=questionAttributes();
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -3644,7 +3644,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     {
 
 
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=questionAttributes();
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();

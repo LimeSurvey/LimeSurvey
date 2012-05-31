@@ -53,7 +53,7 @@ function setNoAnswerMode($thissurvey)
 */
 function retrieveAnswers($ia) //AJS
 {
-    $q = objectizeQuestion($ia); //AJS
+    $q = ia2Question($ia); //AJS
     
     //globalise required config variables
     global $thissurvey; //These are set by index.php

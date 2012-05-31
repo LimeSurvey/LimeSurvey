@@ -2943,75 +2943,19 @@ function buildLabelSetCheckSumArray()
 */
 function getQuestionAttributeValues($iQID)
 {
-    static $cache = array();
-    static $availableattributesarr = null;
+    static $cache;
     $iQID = sanitize_int($iQID);
 
     if (isset($cache[$iQID])) {
         return $cache[$iQID];
     }
     $row = Questions::model()->findByAttributes(array('qid' => $iQID)); //, 'parent_qid' => 0), array('group' => 'type')
-    if (empty($row)) // Question was deleted while running the survey
-    {
-        $cache[$iQID] = false;
-        return false;
-    }
-    else
-    {
-        $row = $row->getAttributes();
-    }
-    $type = $row['type'];
-    $surveyid = $row['sid'];
+    $row = $row->getAttributes();
+    $type = $row['type']; //AJS
+    $q = objectizeQuestion($type); //AJS
+    $q->id = $iQID;
 
-    $aLanguages = array_merge((array)Survey::model()->findByPk($surveyid)->language, Survey::model()->findByPk($surveyid)->additionalLanguages);
-
-    //Now read available attributes, make sure we do this only once per request to save
-    //processing cycles and memory
-    if (is_null($availableattributesarr)) $availableattributesarr = questionAttributes();
-    if (isset($availableattributesarr[$type]))
-    {
-        $aAvailableAttributes = $availableattributesarr[$type];
-    }
-    else
-    {
-        $cache[$iQID] = array();
-        return array();
-    }
-
-    $aResultAttributes = array();
-    foreach($aAvailableAttributes as $attribute){
-        if ($attribute['i18n'])
-        {
-            foreach ($aLanguages as $sLanguage)
-            {
-                $aResultAttributes[$attribute['name']][$sLanguage]=$attribute['default'];
-            }
-        }
-        else
-        {
-            $aResultAttributes[$attribute['name']]=$attribute['default'];
-        }
-    }
-
-    $result = Question_attributes::model()->findAllByAttributes(array('qid' => $iQID));
-    foreach ($result as $row)
-    {
-        $row = $row->attributes;
-        if (!isset($aAvailableAttributes[$row['attribute']]))
-        {
-            continue; // Sort out attributes not belonging to this question
-        }
-        if (!($aAvailableAttributes[$row['attribute']]['i18n']))
-        {
-            $aResultAttributes[$row['attribute']]=$row['value'];
-        }
-        elseif(!empty($row['language']))
-        {
-            $aResultAttributes[$row['attribute']][$row['language']]=$row['value'];
-        }
-    }
-    $cache[$iQID] = $aResultAttributes;
-    return $aResultAttributes;
+    return $cache[$iQID] = $q->getAttributeValues();
 }
 
 /**
@@ -3044,7 +2988,7 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
 *
 * @param mixed $returnByName If set to true the array will be by attribute name
 */
-function questionAttributes($returnByName=false)
+function questionAttributes()
 {
     $clang = Yii::app()->lang;
     //For each question attribute include a key:
@@ -3055,7 +2999,6 @@ function questionAttributes($returnByName=false)
     // If you insert a new attribute please do it in correct alphabetical order!
 
     $qattributes["alphasort"]=array(
-    "types"=>"!LO",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3066,7 +3009,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Sort answers alphabetically'));
 
     $qattributes["answer_width"]=array(
-    "types"=>"ABCEF1:;",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'integer',
@@ -3076,7 +3018,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;MPLKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3084,7 +3025,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
-    "types"=>"1ABCEF:;MPLKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3092,7 +3032,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter exclusion'));
 
     $qattributes["assessment_value"]=array(
-    "types"=>"MP",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'default'=>'1',
@@ -3101,7 +3040,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Assessment value'));
 
     $qattributes["category_separator"]=array(
-    "types"=>"!",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3109,7 +3047,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Category separator'));
 
     $qattributes["display_columns"]=array(
-    "types"=>"GLM",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'integer',
@@ -3120,7 +3057,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Display columns'));
 
     $qattributes["display_rows"]=array(
-    "types"=>"QSTU",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3128,7 +3064,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Display rows'));
 
     $qattributes["dropdown_dates"]=array(
-    "types"=>"D",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3139,7 +3074,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Display dropdown boxes'));
 
     $qattributes["dropdown_dates_year_min"]=array(
-    "types"=>"D",
     'category'=>$clang->gT('Display'),
     'sortorder'=>110,
     'inputtype'=>'text',
@@ -3147,7 +3081,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum year'));
 
     $qattributes["dropdown_dates_year_max"]=array(
-    "types"=>"D",
     'category'=>$clang->gT('Display'),
     'sortorder'=>111,
     'inputtype'=>'text',
@@ -3155,7 +3088,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum year'));
 
     $qattributes["dropdown_prepostfix"]=array(
-    "types"=>"1",
     'category'=>$clang->gT('Display'),
     'sortorder'=>112,
     'inputtype'=>'text',
@@ -3164,7 +3096,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Dropdown prefix/suffix'));
 
     $qattributes["dropdown_separators"]=array(
-    "types"=>"1",
     'category'=>$clang->gT('Display'),
     'sortorder'=>120,
     'inputtype'=>'text',
@@ -3172,7 +3103,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Dropdown separator'));
 
     $qattributes["dualscale_headerA"]=array(
-    "types"=>"1",
     'category'=>$clang->gT('Display'),
     'sortorder'=>110,
     'inputtype'=>'text',
@@ -3181,7 +3111,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Header for first scale'));
 
     $qattributes["dualscale_headerB"]=array(
-    "types"=>"1",
     'category'=>$clang->gT('Display'),
     'sortorder'=>111,
     'inputtype'=>'text',
@@ -3190,7 +3119,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Header for second scale'));
 
     $qattributes["equals_num_value"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3198,7 +3126,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Equals sum value'));
 
     $qattributes["em_validation_q"]=array(
-    "types"=>";:STUNKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>200,
     'inputtype'=>'textarea',
@@ -3206,7 +3133,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Question validation equation'));
 
     $qattributes["em_validation_q_tip"]=array(
-    "types"=>";:STUNKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>210,
     'inputtype'=>'textarea',
@@ -3214,7 +3140,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Question validation tip'));
 
     $qattributes["em_validation_sq"]=array(
-    "types"=>";:KQSTUN",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>220,
     'inputtype'=>'textarea',
@@ -3222,7 +3147,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Sub-question validation equation'));
 
     $qattributes["em_validation_sq_tip"]=array(
-    "types"=>";:KQSTUN",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>230,
     'inputtype'=>'textarea',
@@ -3230,7 +3154,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Sub-question validation tip'));
 
     $qattributes["exclude_all_others"]=array(
-    "types"=>"MP",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>130,
     'inputtype'=>'text',
@@ -3238,7 +3161,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Exclusive option'));
 
     $qattributes["exclude_all_others_auto"]=array(
-    "types"=>"M",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>131,
     'inputtype'=>'singleselect',
@@ -3251,7 +3173,6 @@ function questionAttributes($returnByName=false)
     // Map Options
 
     $qattributes["location_city"]=array(
-    "types"=>"S",
     'readonly_when_active'=>true,
     'category'=>$clang->gT('Location'),
     'sortorder'=>100,
@@ -3262,7 +3183,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Save city"));
 
     $qattributes["location_state"]=array(
-    "types"=>"S",
     'readonly_when_active'=>true,
     'category'=>$clang->gT('Location'),
     'sortorder'=>100,
@@ -3273,7 +3193,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Save state"));
 
     $qattributes["location_postal"]=array(
-    "types"=>"S",
     'readonly_when_active'=>true,
     'category'=>$clang->gT('Location'),
     'sortorder'=>100,
@@ -3284,7 +3203,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Save postal code"));
 
     $qattributes["location_country"]=array(
-    "types"=>"S",
     'readonly_when_active'=>true,
     'category'=>$clang->gT('Location'),
     'sortorder'=>100,
@@ -3295,7 +3213,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Save country"));
 
     $qattributes["statistics_showmap"]=array(
-    "types"=>"S",
     'category'=>$clang->gT('Statistics'),
     'inputtype'=>'singleselect',
     'sortorder'=>100,
@@ -3306,7 +3223,6 @@ function questionAttributes($returnByName=false)
     );
 
     $qattributes["statistics_showgraph"]=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Statistics'),
     'inputtype'=>'singleselect',
     'sortorder'=>101,
@@ -3317,7 +3233,6 @@ function questionAttributes($returnByName=false)
     );
 
     $qattributes["statistics_graphtype"]=array(
-    "types"=>'15ABCDEFGHIKLNOQRSTUXY!:;|*',
     'category'=>$clang->gT('Statistics'),
     'inputtype'=>'singleselect',
     'sortorder'=>102,
@@ -3328,7 +3243,6 @@ function questionAttributes($returnByName=false)
     );
 
     $qattributes["location_mapservice"]=array(
-    "types"=>"S",
     'category'=>$clang->gT('Location'),
     'sortorder'=>90,
     'inputtype'=>'singleselect',
@@ -3339,7 +3253,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Use mapping service"));
 
     $qattributes["location_mapwidth"]=array(
-    "types"=>"S",
     'category'=>$clang->gT('Location'),
     'sortorder'=>102,
     'inputtype'=>'text',
@@ -3348,7 +3261,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Map width"));
 
     $qattributes["location_mapheight"]=array(
-    "types"=>"S",
     'category'=>$clang->gT('Location'),
     'sortorder'=>103,
     'inputtype'=>'text',
@@ -3357,7 +3269,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Map height"));
 
     $qattributes["location_nodefaultfromip"]=array(
-    "types"=>"S",
     'category'=>$clang->gT('Location'),
     'sortorder'=>91,
     'inputtype'=>'singleselect',
@@ -3368,7 +3279,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("IP as default location"));
 
     $qattributes["location_defaultcoordinates"]=array(
-    "types"=>"S",
     'category'=>$clang->gT('Location'),
     'sortorder'=>101,
     'inputtype'=>'text',
@@ -3376,7 +3286,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Default position'));
 
     $qattributes["location_mapzoom"]=array(
-    "types"=>"S",
     'category'=>$clang->gT('Location'),
     'sortorder'=>101,
     'inputtype'=>'text',
@@ -3387,7 +3296,6 @@ function questionAttributes($returnByName=false)
     // End Map Options
 
     $qattributes["hide_tip"]=array(
-    "types"=>"15ABCDEFGHIKLMNOPQRSTUXY!:;|",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3398,7 +3306,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Hide tip'));
 
     $qattributes['hidden']=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUXY!:;|*',
     'category'=>$clang->gT('Display'),
     'sortorder'=>101,
     'inputtype'=>'singleselect',
@@ -3409,7 +3316,6 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT('Always hide this question'));
 
     $qattributes["max_answers"]=array(
-    "types"=>"MPR1:;ABCEFKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>11,
     'inputtype'=>'integer',
@@ -3417,7 +3323,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum answers'));
 
     $qattributes["max_num_value"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3425,7 +3330,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum sum value'));
 
     $qattributes["max_num_value_n"]=array(
-    "types"=>"NK",
     'category'=>$clang->gT('Input'),
     'sortorder'=>110,
     'inputtype'=>'integer',
@@ -3433,7 +3337,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum value'));
 
     $qattributes["maximum_chars"]=array(
-    "types"=>"STUNQK:;",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3441,7 +3344,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum characters'));
 
     $qattributes["min_answers"]=array(
-    "types"=>"MPR1:;ABCEFKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>10,
     'inputtype'=>'integer',
@@ -3449,7 +3351,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum answers'));
 
     $qattributes["min_num_value"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3457,7 +3358,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum sum value'));
 
     $qattributes["min_num_value_n"]=array(
-    "types"=>"NK",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'integer',
@@ -3465,7 +3365,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum value'));
 
     $qattributes["multiflexible_max"]=array(
-    "types"=>":",
     'category'=>$clang->gT('Display'),
     'sortorder'=>112,
     'inputtype'=>'text',
@@ -3473,7 +3372,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum value'));
 
     $qattributes["multiflexible_min"]=array(
-    "types"=>":",
     'category'=>$clang->gT('Display'),
     'sortorder'=>110,
     'inputtype'=>'text',
@@ -3481,7 +3379,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum value'));
 
     $qattributes["multiflexible_step"]=array(
-    "types"=>":",
     'category'=>$clang->gT('Display'),
     'sortorder'=>111,
     'inputtype'=>'text',
@@ -3489,7 +3386,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Step value'));
 
     $qattributes["multiflexible_checkbox"]=array(
-    "types"=>":",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3500,7 +3396,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Checkbox layout'));
 
     $qattributes["reverse"]=array(
-    "types"=>"D:",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3511,7 +3406,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Reverse answer order'));
 
     $qattributes["num_value_int_only"]=array(
-    "types"=>"N",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3523,7 +3417,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Integer only'));
 
     $qattributes["numbers_only"]=array(
-    "types"=>"Q;S*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3537,7 +3430,6 @@ function questionAttributes($returnByName=false)
     );
 
     $qattributes['show_totals'] =	array(
-    'types' =>	';',
     'category' =>	$clang->gT('Other'),
     'sortorder' =>	100,
     'inputtype'	=> 'singleselect',
@@ -3553,7 +3445,6 @@ function questionAttributes($returnByName=false)
     );
 
     $qattributes['show_grand_total'] =	array(
-    'types' =>	';',
     'category' =>	$clang->gT('Other'),
     'sortorder' =>	100,
     'inputtype' =>	'singleselect',
@@ -3567,7 +3458,6 @@ function questionAttributes($returnByName=false)
     );
 
     $qattributes["input_boxes"]=array(
-    "types"=>":",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3578,7 +3468,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Text inputs"));
 
     $qattributes["other_comment_mandatory"]=array(
-    "types"=>"PL!",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3589,7 +3478,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("'Other:' comment mandatory"));
 
     $qattributes["other_numbers_only"]=array(
-    "types"=>"LMP",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3600,7 +3488,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Numbers only for 'Other'"));
 
     $qattributes["other_replace_text"]=array(
-    "types"=>"LMP!",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3609,7 +3496,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Label for 'Other:' option"));
 
     $qattributes["page_break"]=array(
-    "types"=>"15ABCDEFGHKLMNOPQRSTUXY!:;|*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3620,7 +3506,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Insert page break in printable view'));
 
     $qattributes["prefix"]=array(
-    "types"=>"KNQS",
     'category'=>$clang->gT('Display'),
     'sortorder'=>10,
     'inputtype'=>'text',
@@ -3629,7 +3514,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer prefix'));
 
     $qattributes["public_statistics"]=array(
-    "types"=>"15ABCEFGHKLMNOPRY!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>80,
     'inputtype'=>'singleselect',
@@ -3640,7 +3524,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Show in public statistics'));
 
     $qattributes["random_order"]=array(
-    "types"=>"!ABCEFHKLMOPQR1:;",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3653,7 +3536,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Random answer order'));
 
     $qattributes["parent_order"]=array(
-    "types"=>"!ABCEFHKLMOPQR1:;",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3661,7 +3543,6 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Enter question ID to get subquestion order from a previous question'));
 
     $qattributes["slider_layout"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Slider'),
     'sortorder'=>1,
     'inputtype'=>'singleselect',
@@ -3672,7 +3553,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Use slider layout'));
 
     $qattributes["slider_min"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Slider'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3680,7 +3560,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Slider minimum value'));
 
     $qattributes["slider_max"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Slider'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3688,7 +3567,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Slider maximum value'));
 
     $qattributes["slider_accuracy"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Slider'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3696,7 +3574,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Slider accuracy'));
 
     $qattributes["slider_default"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Slider'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3704,7 +3581,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Slider initial value'));
 
     $qattributes["slider_middlestart"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Slider'),
     'sortorder'=>10,
     'inputtype'=>'singleselect',
@@ -3715,7 +3591,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Slider starts at the middle position'));
 
     $qattributes["slider_rating"]=array(
-    "types"=>"5",
     'category'=>$clang->gT('Display'),
     'sortorder'=>90,
     'inputtype'=>'singleselect',
@@ -3730,7 +3605,6 @@ function questionAttributes($returnByName=false)
 
 
     $qattributes["slider_showminmax"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Slider'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3741,7 +3615,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Display slider min and max value'));
 
     $qattributes["slider_separator"]=array(
-    "types"=>"K",
     'category'=>$clang->gT('Slider'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3749,7 +3622,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Slider left/right text separator'));
 
     $qattributes["suffix"]=array(
-    "types"=>"KNQS",
     'category'=>$clang->gT('Display'),
     'sortorder'=>11,
     'inputtype'=>'text',
@@ -3758,7 +3630,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer suffix'));
 
     $qattributes["text_input_width"]=array(
-    "types"=>"KNSTUQ;",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3766,7 +3637,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Input box width'));
 
     $qattributes["use_dropdown"]=array(
-    "types"=>"1FO",
     'category'=>$clang->gT('Display'),
     'sortorder'=>112,
     'inputtype'=>'singleselect',
@@ -3778,7 +3648,6 @@ function questionAttributes($returnByName=false)
 
 
     $qattributes["dropdown_size"]=array(
-    "types"=>"!",   // TODO add these later?  "1F",
     'category'=>$clang->gT('Display'),
     'sortorder'=>200,
     'inputtype'=>'text',
@@ -3787,7 +3656,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Height of dropdown'));
 
     $qattributes["dropdown_prefix"]=array(
-    "types"=>"!",   // TODO add these later?  "1F",
     'category'=>$clang->gT('Display'),
     'sortorder'=>201,
     'inputtype'=>'singleselect',
@@ -3799,7 +3667,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Prefix for list items'));
 
     $qattributes["scale_export"]=array(
-    "types"=>"CEFGHLMOPY1!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3813,7 +3680,6 @@ function questionAttributes($returnByName=false)
 
     //Timer attributes
     $qattributes["time_limit"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>90,
     "inputtype"=>"integer",
@@ -3821,7 +3687,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit"));
 
     $qattributes["time_limit_action"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>92,
     'inputtype'=>'singleselect',
@@ -3833,7 +3698,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit action"));
 
     $qattributes["time_limit_disable_next"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>94,
     "inputtype"=>"singleselect",
@@ -3844,7 +3708,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit disable next"));
 
     $qattributes["time_limit_disable_prev"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>96,
     "inputtype"=>"singleselect",
@@ -3855,7 +3718,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit disable prev"));
 
     $qattributes["time_limit_countdown_message"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>98,
     "inputtype"=>"textarea",
@@ -3864,7 +3726,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit countdown message"));
 
     $qattributes["time_limit_timer_style"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>100,
     "inputtype"=>"textarea",
@@ -3872,7 +3733,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit timer CSS style"));
 
     $qattributes["time_limit_message_delay"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>102,
     "inputtype"=>"integer",
@@ -3880,7 +3740,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit expiry message display time"));
 
     $qattributes["time_limit_message"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>104,
     "inputtype"=>"textarea",
@@ -3889,7 +3748,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit expiry message"));
 
     $qattributes["time_limit_message_style"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>106,
     "inputtype"=>"textarea",
@@ -3897,7 +3755,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit message CSS style"));
 
     $qattributes["time_limit_warning"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>108,
     "inputtype"=>"integer",
@@ -3905,7 +3762,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning message timer"));
 
     $qattributes["time_limit_warning_display_time"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>110,
     "inputtype"=>"integer",
@@ -3913,7 +3769,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning message display time"));
 
     $qattributes["time_limit_warning_message"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>112,
     "inputtype"=>"textarea",
@@ -3922,7 +3777,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning message"));
 
     $qattributes["time_limit_warning_style"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>114,
     "inputtype"=>"textarea",
@@ -3930,7 +3784,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning CSS style"));
 
     $qattributes["time_limit_warning_2"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>116,
     "inputtype"=>"integer",
@@ -3938,7 +3791,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("2nd time limit warning message timer"));
 
     $qattributes["time_limit_warning_2_display_time"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>118,
     "inputtype"=>"integer",
@@ -3946,7 +3798,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("2nd time limit warning message display time"));
 
     $qattributes["time_limit_warning_2_message"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>120,
     "inputtype"=>"textarea",
@@ -3955,7 +3806,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("2nd time limit warning message"));
 
     $qattributes["time_limit_warning_2_style"]=array(
-    "types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>122,
     "inputtype"=>"textarea",
@@ -3963,7 +3813,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("2nd time limit warning CSS style"));
 
     $qattributes["date_format"]=array(
-    "types"=>"D",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     "inputtype"=>"text",
@@ -3971,7 +3820,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Date/Time format"));
 
     $qattributes["dropdown_dates_minute_step"]=array(
-    "types"=>"D",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     "inputtype"=>"integer",
@@ -3979,7 +3827,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Minute step interval"));
 
     $qattributes["dropdown_dates_month_style"]=array(
-    "types"=>"D",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     "inputtype"=>"singleselect",
@@ -3991,7 +3838,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Month display style"));
 
     $qattributes["show_title"]=array(
-    "types"=>"|",
     'category'=>$clang->gT('File metadata'),
     'sortorder'=>124,
     "inputtype"=>"singleselect",
@@ -4002,7 +3848,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Show title"));
 
     $qattributes["show_comment"]=array(
-    "types"=>"|",
     'category'=>$clang->gT('File metadata'),
     'sortorder'=>126,
     "inputtype"=>"singleselect",
@@ -4014,7 +3859,6 @@ function questionAttributes($returnByName=false)
 
 
     $qattributes["max_filesize"]=array(
-    "types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>128,
     "inputtype"=>"integer",
@@ -4023,7 +3867,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Maximum file size allowed (in KB)"));
 
     $qattributes["max_num_of_files"]=array(
-    "types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
     "inputtype"=>"integer",
@@ -4032,7 +3875,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Max number of files"));
 
     $qattributes["min_num_of_files"]=array(
-    "types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>132,
     "inputtype"=>"integer",
@@ -4041,7 +3883,6 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Min number of files"));
 
     $qattributes["allowed_filetypes"]=array(
-    "types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>134,
     "inputtype"=>"text",
@@ -4050,37 +3891,33 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Allowed file types"));
 
     $qattributes["random_group"]=array(
-    "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
     "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
     "caption"=>$clang->gT("Randomization group name"));
 
-    //This builds a more useful array (don't modify)
-    if ($returnByName==false)
+    return $qattributes;
+}
+
+function linkedAttributes($q)
+{
+    $available = $q->availableAttributes();
+    $attributes = questionAttributes();
+    foreach($available as $qname)
     {
-        foreach($qattributes as $qname=>$qvalue)
-        {
-            for ($i=0; $i<=strlen($qvalue['types'])-1; $i++)
-            {
-                $qat[substr($qvalue['types'], $i, 1)][$qname]=array("name"=>$qname,
-                "inputtype"=>$qvalue['inputtype'],
-                "category"=>$qvalue['category'],
-                "sortorder"=>$qvalue['sortorder'],
-                "i18n"=>isset($qvalue['i18n'])?$qvalue['i18n']:false,
-                "readonly"=>isset($qvalue['readonly_when_active'])?$qvalue['readonly_when_active']:false,
-                "options"=>isset($qvalue['options'])?$qvalue['options']:'',
-                "default"=>isset($qvalue['default'])?$qvalue['default']:'',
-                "help"=>$qvalue['help'],
-                "caption"=>$qvalue['caption']);
-            }
-        }
-        return $qat;
+        $result[$qname]=array("name"=>$qname,
+        "inputtype"=>$attributes[$qname]['inputtype'],
+        "category"=>$attributes[$qname]['category'],
+        "sortorder"=>$attributes[$qname]['sortorder'],
+        "i18n"=>isset($attributes[$qname]['i18n'])?$attributes[$qname]['i18n']:false,
+        "readonly"=>isset($attributes[$qname]['readonly_when_active'])?$attributes[$qname]['readonly_when_active']:false,
+        "options"=>isset($attributes[$qname]['options'])?$attributes[$qname]['options']:'',
+        "default"=>isset($attributes[$qname]['default'])?$attributes[$qname]['default']:'',
+        "help"=>$attributes[$qname]['help'],
+        "caption"=>$attributes[$qname]['caption']);
     }
-    else {
-        return $qattributes;
-    }
+    return $result;
 }
 
 function categorySort($a, $b)
@@ -7480,103 +7317,79 @@ function getBrowserLanguage()
     }
     return $sLanguage;
 }
-
-function objectizeQuestion($ia) //AJS
+function type2Name($type) //AJS
 {
-Yii::import('application.modules.*', true);
-    switch ($ia[4])
+    switch ($type)
     {
         case '1':
-            $q = new DualRadioArrayQuestion;
-            break;
+            return "DualRadioArray";
         case '5':
-            $q = new FiveListQuestion;
-            break;
+            return "FiveList";
         case 'A':
-            $q = new FiveRadioArrayQuestion;
-            break;
+            return "FiveRadioArray";
         case 'B':
-            $q = new TenRadioArrayQuestion;
-            break;
+            return "TenRadioArray";
         case 'C':
-            $q = new YNRadioArrayQuestion;
-            break;
+            return "YNRadioArray";
         case 'D':
-            $q = new DateQuestion;
-            break;
+            return "Date";
         case 'E':
-            $q = new IDRadioArrayQuestion;
-            break;
+            return "IDRadioArray";
         case 'F':
-            $q = new RadioArrayQuestion;//?????
-            break;
+            return "RadioArray";
         case 'G':
-            $q = new GenderQuestion;
-            break;
+            return "Gender";
         case 'H':
-            $q = new ColumnRadioArrayQuestion;
-            break;
+            return "ColumnRadioArray";
         case 'I':
-            $q = new LanguageQuestion;
-            break;
+            return "Language";
         case 'K':
-            $q = new MultinumericalQuestion;
-            break;
+            return "Multinumerical";
         case 'L':
-            $q = new ListQuestion;
-            break;
+            return "List";
         case 'M':
-            $q = new CheckQuestion;
-            break;
+            return "Check";
         case 'N':
-            $q = new NumericalQuestion;
-            break;
+            return "Numerical";
         case 'O':
-            $q = new CommentListQuestion;
-            break;
+            return "CommentList";
         case 'P':
-            $q = new CommentCheckQuestion;
-            break;
+            return "CommentCheck";
         case 'Q':
-            $q = new MultitextQuestion;
-            break;
+            return "Multitext";
         case 'R':
-            $q = new RankingQuestion;
-            break;
+            return "Ranking";
         case 'S':
-            $q = new ShortTextQuestion;
-            break;
+            return "ShortText";
         case 'T':
-            $q = new LongTextQuestion;
-            break;
+            return "LongText";
         case 'U':
-            $q = new HugeTextQuestion;
-            break;
+            return "HugeText";
         case 'X':
-            $q = new DisplayQuestion;
-            break;
+            return "Display";
         case 'Y':
-            $q = new YNQuestion;
-            break;
+            return "YN";
         case '!':
-            $q = new SelectQuestion;
-            break;
+            return "Select";
         case ':':
-            $q = new NumberArrayQuestion; //?????
-            break;
+            return "NumberArray";
         case ';':
-            $q = new TextArrayQuestion; //??????
-            break;
+            return "TextArray";
         case '|':
-            $q = new FileQuestion;
-            break;
+            return "File";
         case '*':
-            $q = new EquationQuestion;
-            break;
-        default:
-            $q = null;
+            return "Equation";
     }
-    
+}
+function objectizeQuestion($type) //AJS
+{
+    Yii::import('application.modules.*');
+    $name = type2Name($type).'Question';
+    return new $name;
+}
+function ia2Question($ia) //AJS
+{
+    $q = objectizeQuestion($ia[4]);
     $q->id = $ia[0];
     $q->fieldname = $ia[1];
     $q->title = $ia[2];

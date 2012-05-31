@@ -130,7 +130,7 @@ function upgrade_question_attributes148()
 
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$surveyid}";
         $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=questionAttributes();
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])

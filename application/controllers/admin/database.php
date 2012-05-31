@@ -527,16 +527,15 @@ class database extends Survey_Common_Action
                             }
                         }
                     } else {
-                        $qattributes = questionAttributes();
-                        $validAttributes = $qattributes[Yii::app()->request->getPost('type')];
-                        foreach ($validAttributes as $validAttribute)
+                        $q = objectizeQuestion(Yii::app()->request->getPost('type')); //AJS
+                        foreach ($q->availableAttributes() as $validAttribute)
                         {
-                            if (Yii::app()->request->getPost($validAttribute['name']))
+                            if (Yii::app()->request->getPost($validAttribute))
                             {
                                 $data = array(
                                 'qid' => $qid,
-                                'value' => Yii::app()->request->getPost($validAttribute['name']),
-                                'attribute' => $validAttribute['name']
+                                'value' => Yii::app()->request->getPost($validAttribute),
+                                'attribute' => $validAttribute
                                 );
 
                                 Question_attributes::insertRecords($data);
@@ -573,7 +572,7 @@ class database extends Survey_Common_Action
             $oldgid=$cqr['gid'];
 
             // Remove invalid question attributes on saving
-            $qattributes=questionAttributes();
+            $qattributes=linkedAttributes();
 
             $criteria = new CDbCriteria;
             $criteria->compare('qid',$qid);

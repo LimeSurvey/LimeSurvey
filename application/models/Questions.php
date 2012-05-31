@@ -107,6 +107,7 @@
         */
         public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage=null)
         {
+            $q = objectizeQuestion($sQuestionType); //AJS
             if (is_null($sLanguage))
             {
                 $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
@@ -117,10 +118,11 @@
             }
             if ($iQuestionID != 0)
             {
-                $aAttributeValues = getQuestionAttributeValues($iQuestionID, $sQuestionType);
+                $q->id = $iQuestionID;
+                $aAttributeValues = $q->getAttributeValues();
             }
-            $aAttributeNames = questionAttributes();
-            $aAttributeNames = $aAttributeNames[$sQuestionType];
+
+            $aAttributeNames = linkedAttributes($q);
             uasort($aAttributeNames, 'categorySort');
             foreach ($aAttributeNames as $iKey => $aAttribute)
             {
