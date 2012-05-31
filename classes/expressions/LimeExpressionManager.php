@@ -6821,7 +6821,7 @@ EOD;
             ." FROM ".db_table_name('answers')." AS a, ".db_table_name('questions')." as q"
             ." WHERE ".$where
             .$lang
-            ." ORDER BY qid, scale_id, sortorder";
+            ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
             $data = db_execute_assoc($query);
 

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-24 20:08:58+0000\n"
+"PO-Revision-Date: 2012-05-31 06:06:58+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -151,10 +151,10 @@ msgstr "Prestavi na omejen dostop"
 msgid "No, thanks."
 msgstr "Ne hvala."
 
-#: admin/admin.php:786 admin/admin.php:797 admin/conditionshandling.php:1072
+#: admin/admin.php:787 admin/admin.php:798 admin/conditionshandling.php:1072
 #: admin/html.php:2252 common.php:278 common.php:284
 msgid "LimeSurvey online manual"
-msgstr "LimeSurvey Spletni Vodič"
+msgstr "Spletni vodič LimeSurvey"
 
 #: admin/admin_functions.php:263
 msgid "Response submission for survey {SURVEYNAME} with results"
@@ -182,6 +182,25 @@ msgid ""
 "The following answers were given by the participant:\n"
 "{ANSWERTABLE}"
 msgstr ""
+"Pozdravljeni,\n"
+"\n"
+"na vašo anketo '{SURVEYNAME}' je bil podan nov odgovor.\n"
+"\n"
+"Kliknite povezavo, da osvežite anketo:\n"
+"{RELOADURL}\n"
+"\n"
+"Kliknite povezavo za pregled posameznega odgovora:\n"
+"{VIEWRESPONSEURL}\n"
+"\n"
+"Kliknite povezavo za urejanje posameznega odgovora:\n"
+"{EDITRESPONSEURL}\n"
+"\n"
+"Statistike najdete na naslovu:\n"
+"{STATISTICSURL}\n"
+"\n"
+"\n"
+"Udeleženci so podali sledeče odgovore:\n"
+"{ANSWERTABLE}"
 
 #: admin/admin_functions.php:301
 msgid "Response submission for survey {SURVEYNAME}"
@@ -205,6 +224,21 @@ msgid ""
 "View statistics by clicking here:\n"
 "{STATISTICSURL}"
 msgstr ""
+"Pozdravljeni,\n"
+"\n"
+"na vašo anketo '{SURVEYNAME}' je bil podan nov odgovor.\n"
+"\n"
+"Kliknite povezavo, da osvežite anketo:\n"
+"{RELOADURL}\n"
+"\n"
+"Kliknite povezavo za pregled posameznega odgovora:\n"
+"{VIEWRESPONSEURL}\n"
+"\n"
+"Kliknite povezavo za urejanje posameznega odgovora:\n"
+"{EDITRESPONSEURL}\n"
+"\n"
+"Statistike najdete na naslovu:\n"
+"{STATISTICSURL}"
 
 #: admin/admin_functions.php:303
 msgid "Confirmation of your participation in our survey"
@@ -395,12 +429,12 @@ msgstr "Skupina vprašanj"
 #: admin/assessments.php:145 admin/assessments.php:236
 #: admin/statistics_function.php:1172
 msgid "Minimum"
-msgstr "Minimum"
+msgstr "Najmanj"
 
 #: admin/assessments.php:145 admin/assessments.php:239
 #: admin/statistics_function.php:1346
 msgid "Maximum"
-msgstr "Maksimum"
+msgstr "Največ"
 
 #: admin/assessments.php:146 admin/editansweroptions.php:247
 #: admin/editansweroptions.php:255 admin/editsubquestions.php:247
@@ -871,8 +905,8 @@ msgstr "Pogojev ni bilo mogoče kopirati (zaradi duplikatov)"
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2501
-#: classes/expressions/LimeExpressionManager.php:2505 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2513
+#: classes/expressions/LimeExpressionManager.php:2517 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
 #: common_functions.php:3205 common_functions.php:3278
 #: common_functions.php:3385 common_functions.php:3398
@@ -890,7 +924,7 @@ msgstr "Pogojev ni bilo mogoče kopirati (zaradi duplikatov)"
 #: common_functions.php:3941 common_functions.php:4055
 #: common_functions.php:4066 qanda.php:3771 qanda.php:4193 qanda.php:4232
 msgid "Yes"
-msgstr "da"
+msgstr "Da"
 
 #: admin/conditionshandling.php:653 admin/dataentry.php:1346
 #: admin/dataentry.php:2678 admin/export_data_functions.php:250
@@ -899,7 +933,7 @@ msgstr "da"
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2507 common_functions.php:1922
+#: classes/expressions/LimeExpressionManager.php:2519 common_functions.php:1922
 #: qanda.php:4194 qanda.php:4239
 msgid "Uncertain"
 msgstr "neodločen"
@@ -938,8 +972,8 @@ msgstr "neodločen"
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2502
-#: classes/expressions/LimeExpressionManager.php:2506 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2514
+#: classes/expressions/LimeExpressionManager.php:2518 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3204
 #: common_functions.php:3277 common_functions.php:3384
 #: common_functions.php:3399 common_functions.php:3410
@@ -957,7 +991,7 @@ msgstr "neodločen"
 #: common_functions.php:3940 common_functions.php:4054
 #: common_functions.php:4065 qanda.php:3778 qanda.php:4195 qanda.php:4247
 msgid "No"
-msgstr "ne"
+msgstr "Ne"
 
 #: admin/conditionshandling.php:657 admin/dataentry.php:2697
 #: admin/export_data_functions.php:253 admin/export_structure_quexml.php:641
@@ -965,10 +999,10 @@ msgstr "ne"
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2510 common_functions.php:1928
+#: classes/expressions/LimeExpressionManager.php:2522 common_functions.php:1928
 #: qanda.php:4341 qanda.php:4384
 msgid "Increase"
-msgstr "povečalo"
+msgstr "Povečaj"
 
 #: admin/conditionshandling.php:658 admin/dataentry.php:2698
 #: admin/export_data_functions.php:254 admin/export_structure_quexml.php:641
@@ -976,10 +1010,10 @@ msgstr "povečalo"
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2511 common_functions.php:1930
+#: classes/expressions/LimeExpressionManager.php:2523 common_functions.php:1930
 #: qanda.php:4342 qanda.php:4395
 msgid "Same"
-msgstr "ostalo enako"
+msgstr "Enako"
 
 #: admin/conditionshandling.php:659 admin/dataentry.php:2699
 #: admin/export_data_functions.php:255 admin/export_structure_quexml.php:641
@@ -987,10 +1021,10 @@ msgstr "ostalo enako"
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2512 common_functions.php:1929
+#: classes/expressions/LimeExpressionManager.php:2524 common_functions.php:1929
 #: qanda.php:4343 qanda.php:4407
 msgid "Decrease"
-msgstr "zmanjšalo"
+msgstr "Zmanjšaj"
 
 #: admin/conditionshandling.php:679 admin/conditionshandling.php:811
 #: admin/conditionshandling.php:812 admin/conditionshandling.php:834
@@ -1040,7 +1074,7 @@ msgstr "ni izbrano"
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2498 common_functions.php:1913
+#: classes/expressions/LimeExpressionManager.php:2510 common_functions.php:1913
 #: qanda.php:3815
 msgid "Female"
 msgstr "ženski"
@@ -1052,7 +1086,7 @@ msgstr "ženski"
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2497 common_functions.php:1912
+#: classes/expressions/LimeExpressionManager.php:2509 common_functions.php:1912
 #: qanda.php:3823
 msgid "Male"
 msgstr "moški"
@@ -1603,7 +1637,7 @@ msgstr "Vaša razvrstitev"
 #: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3401
 #: qanda.php:3405
 msgid "Only numbers may be entered in this field"
-msgstr "V to polje lahko vpisujete samo številke"
+msgstr "V to polje lahko vnesete samo številke"
 
 #: admin/dataentry.php:1550 admin/dataentry.php:2901
 msgid "Finalize response submission"
@@ -1627,7 +1661,7 @@ msgstr "Zapis izbrisan"
 #: admin/tokens.php:1069 admin/tokens.php:2343 common_functions.php:2344
 #: index.php:1763 index.php:1930
 msgid "Token"
-msgstr "Dostopno geslo"
+msgstr "Žeton"
 
 #: admin/dataentry.php:1775
 msgid "Datestamp"
@@ -1637,7 +1671,7 @@ msgstr "Datum"
 #: admin/exportresults.php:475 admin/exportresults.php:748 admin/saved.php:79
 #: common_functions.php:2387
 msgid "IP address"
-msgstr "IP naslov"
+msgstr "Naslov IP"
 
 #: admin/dataentry.php:1837
 msgid "Only answer this if the following conditions are met:"
@@ -1645,11 +1679,11 @@ msgstr "Odgovarjanje mogoče samo, če je zadoščeno naslednjim pogojem:"
 
 #: admin/dataentry.php:1843
 msgid "The answer(s) must meet these validation criteria:"
-msgstr "Odgovor(i) morajo ustrezati naslednjim validacijskim kriterijem:"
+msgstr "Odgovor(i) morajo ustrezati naslednjim kriterijem preverjanja:"
 
 #: admin/dataentry.php:1849
 msgid "The answer(s) must meet these array_filter criteria:"
-msgstr ""
+msgstr "Odgovori morajo zadoščati sledečim kriterijem: "
 
 #: admin/dataentry.php:1879
 msgid "Help about this question"
@@ -1668,7 +1702,7 @@ msgstr "Odgovori %s"
 #: common_functions.php:4924 qanda.php:1253 qanda.php:1431 qanda.php:6159
 #: qanda.php:6213
 msgid "Please choose..."
-msgstr "Prosimo, izberite..."
+msgstr "Prosimo, izberite ..."
 
 #: admin/dataentry.php:2069 common_functions.php:2559 common_functions.php:2779
 #: qanda.php:2707 uploader.php:96
@@ -1685,11 +1719,11 @@ msgstr "Anketa, ki ste jo izbrali ne obstaja"
 
 #: admin/dataentry.php:3015 admin/printablesurvey.php:1597
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
-msgstr ""
+msgstr "Na to vprašanje odgovorite samo za elemente, ki ste jih izbrali v vprašanju *%s* ('%s')"
 
 #: admin/dataentry.php:3024 admin/printablesurvey.php:1606
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
-msgstr ""
+msgstr "Na to vprašanje odgovorite samo za elemente, ki jih niste izbrali v vprašanju *%s* ('%s')"
 
 #: admin/deactivate.php:25 admin/deactivate.php:34 admin/deactivate.php:111
 msgid "Deactivate Survey"
@@ -1757,7 +1791,7 @@ msgstr "Izbrisana bo celotna anketa in vse pripadajoče skupine, vprašanja, odg
 
 #: admin/deletesurvey.php:40
 msgid "It will also delete any resources/files that have been uploaded for this survey."
-msgstr ""
+msgstr "To bo izbrisalo tudi pripadajoče datoteke, če so bile priložene tej anketi."
 
 #: admin/deletesurvey.php:41
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
@@ -1864,7 +1898,7 @@ msgstr "Vnesi tvoje odgovore:"
 
 #: admin/editansweroptions.php:253
 msgid "Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab."
-msgstr ""
+msgstr "Vnesite en odgovor za vsako vrstico. Kodo vnesete tako, da kodo in odgovor ločite s podpičjem ali tabulatorjem. Za večjezične ankete lahko dodate prevod v isti vrstici, ločen s podpičjem ali tabulatorjem."
 
 #: admin/editansweroptions.php:259 admin/editsubquestions.php:258
 msgid "Save changes"
@@ -2023,7 +2057,7 @@ msgstr "Vnesite vaša podvprašanja:"
 
 #: admin/editsubquestions.php:252
 msgid "Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab."
-msgstr ""
+msgstr "Vnesite eno podvprašanje za vsako vrstico. Kodo vnesete tako, da kodo in podvprašanje ločite s podpičjem ali tabulatorjem. Za večjezične ankete lahko dodate prevod v isti vrstici, ločen s podpičjem ali tabulatorjem."
 
 #: admin/editsubquestions.php:264
 msgid "You cannot add/remove subquestions or edit their codes because the survey is active."
@@ -2192,7 +2226,7 @@ msgstr "Prikaži gumb [<< Nazaj]"
 
 #: admin/editsurveysettings.php:343
 msgid "Show question index / allow jumping"
-msgstr ""
+msgstr "Prikaži indeks vprašanj / dovoli preskoke"
 
 #: admin/editsurveysettings.php:354
 msgid "Keyboard-less operation"
@@ -2419,7 +2453,7 @@ msgstr "Privzeto: Google Analytics"
 
 #: admin/editsurveysettings.php:867
 msgid "Track pages within survey"
-msgstr ""
+msgstr "Sledi strani znotraj ankete"
 
 #: admin/editsurveysettings.php:877
 msgid "Anonymized responses?"
@@ -2427,11 +2461,11 @@ msgstr "Anonimni odzivi?"
 
 #: admin/editsurveysettings.php:885
 msgid "You can't use Anonymized responses when Token-based answers persistence is enabled."
-msgstr ""
+msgstr "Ne morete uporabiti anonimnih odgovorov, če uporabite odgovore, ki slonijo na žetonih."
 
 #: admin/editsurveysettings.php:890
 msgid "If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr ""
+msgstr "Če vključite anonimne odgovore in ustvarite tabelo žetonov, bo LimeSurvey označil vse žetone samo z 'Y' namesto z datumom in uro in tako zagotovil anonimnost udeležencev."
 
 #: admin/editsurveysettings.php:898 admin/html.php:716
 msgid "This survey is NOT anonymous."
@@ -2455,7 +2489,7 @@ msgstr "Omogoči persistentnost odgovorov na podlagi gesel?"
 
 #: admin/editsurveysettings.php:934
 msgid "This option can't be set if the `Anonymized responses` option is active."
-msgstr ""
+msgstr "Ta možnost ne more biti izbrana, če je izbrana možnost 'Anonimni odgovori'."
 
 #: admin/editsurveysettings.php:948
 msgid "Allow public registration?"
@@ -2463,11 +2497,11 @@ msgstr "Omogoči javno registracijo uporabnikov za sodelovanje v anketi?"
 
 #: admin/editsurveysettings.php:964
 msgid "Use HTML format for token emails?"
-msgstr "Uporabite HTML za emaile z gesli?"
+msgstr "Uporabite HTML za e-sporočila z žetoni?"
 
 #: admin/editsurveysettings.php:965
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
-msgstr "Če zamenjate način za e-maile boste morali pregledati predloge za e-maile in jih prilagoditi novemu formatu"
+msgstr "Če zamenjate način za e-sporočila, boste morali pregledati predloge za e-sporočil in jih prilagoditi novi obliki"
 
 #: admin/editsurveysettings.php:980
 msgid "Set token length to:"
@@ -2535,15 +2569,15 @@ msgstr "Prebrskaj naložene vire"
 
 #: admin/editsurveysettings.php:1061 admin/labels.php:429
 msgid "Export Resources As ZIP Archive"
-msgstr "Izvozi ZIP arhiv z viri"
+msgstr "Izvozi arhiv ZIP z viri"
 
 #: admin/editsurveysettings.php:1062 admin/labels.php:430
 msgid "Select ZIP File:"
-msgstr "Izberi ZIP datoteko:"
+msgstr "Izberi datoteko ZIP:"
 
 #: admin/editsurveysettings.php:1065 admin/labels.php:433
 msgid "Import Resources ZIP Archive"
-msgstr "Uvozi ZIP arhiv z viri"
+msgstr "Uvozi arhiv ZIP z viri"
 
 #: admin/editsurveysettings.php:1077
 msgid "Error: You have to enter a title for this survey."
@@ -2617,11 +2651,11 @@ msgstr "Prenesi podatke in datoteko s sintakso."
 
 #: admin/export_data_r.php:121
 msgid "Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)"
-msgstr "Shranite oboje v delovni direktorij R-ja (uporabite getwd() in setwd() v R ukaznem oknu za preverjejanje in nastavljanje)"
+msgstr "Shranite oboje v delovno mapo R-ja (uporabite getwd() in setwd() v R ukaznem oknu za preverjanje in nastavljanje)"
 
 #: admin/export_data_r.php:122
 msgid "digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command window"
-msgstr ""
+msgstr "števka:      source(\"%s\", encoding = \"UTF-8\")        v ukaznem oknu R"
 
 #: admin/export_data_r.php:124
 msgid "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
@@ -3130,7 +3164,7 @@ msgstr "Brez HTML urejevalnika"
 
 #: admin/globalsettings.php:234 admin/html.php:119
 msgid "Inline HTML editor"
-msgstr "Vkomponiran HTML urejevalnik"
+msgstr "Vgrajeni urejevalnik HTML"
 
 #: admin/globalsettings.php:237 admin/html.php:120
 msgid "Popup HTML editor"
@@ -3175,7 +3209,7 @@ msgstr "Življenjska doba seje (v sekundah):"
 
 #: admin/globalsettings.php:269
 msgid "IP Info DB API Key:"
-msgstr ""
+msgstr "Informacije IP DB API ključ:"
 
 #: admin/globalsettings.php:271
 msgid "Google Maps API key:"
@@ -3342,7 +3376,7 @@ msgstr "Administrator ankete lahko izbere"
 
 #: admin/globalsettings.php:466
 msgid "Repeating headings in array questions every X subquestions:"
-msgstr ""
+msgstr "Ponavljaj naslov v polju vprašanj vsakih X podvprašanj:"
 
 #: admin/globalsettings.php:499
 msgid "Show question group name and/or description"
@@ -3514,11 +3548,11 @@ msgstr "Dovoljenja ankete"
 
 #: admin/html.php:338
 msgid "You can't reorder question groups if the survey is active."
-msgstr "Ne morete presortirati vprašanj če anketa ni aktivna"
+msgstr "Ne morete ponovno urediti vrstnega reda vprašanj, če anketa ni aktivna"
 
 #: admin/html.php:339 admin/html.php:344 admin/html.php:348
 msgid "Reorder question groups"
-msgstr ""
+msgstr "Ponovno razvrsti skupine vprašanj"
 
 #: admin/html.php:347
 msgid "You can't reorder question groups if there is only one group."
@@ -3527,7 +3561,7 @@ msgstr "Ne morete ponovno razvrstiti skupin vprašanja če je samo ena skupina."
 #: admin/html.php:357 admin/http_importsurvey.php:182 admin/importsurvey.php:88
 #: common_functions.php:36
 msgid "Quotas"
-msgstr "kvote"
+msgstr "Kvote"
 
 #: admin/html.php:371
 msgid "Email templates"
@@ -3535,7 +3569,7 @@ msgstr "Predloge e-pošte"
 
 #: admin/html.php:377
 msgid "Survey  Logic File"
-msgstr ""
+msgstr "Logična datoteka ankete"
 
 #: admin/html.php:405
 msgid "Tools"
@@ -3547,7 +3581,7 @@ msgstr "Hitri prevod"
 
 #: admin/html.php:429
 msgid "Currently there are no additional languages configured for this survey."
-msgstr "Trenutno ni navoljo dodatnih jezikov za to anketo"
+msgstr "Trenutno ni na voljo dodatnih jezikov za to anketo"
 
 #: admin/html.php:440
 msgid "Reset conditions"
@@ -3563,7 +3597,7 @@ msgstr "Ponastavi anketno logiko"
 
 #: admin/html.php:453
 msgid "Expression Manager"
-msgstr ""
+msgstr "Upravljalnik izrazov"
 
 #: admin/html.php:462
 msgid "Display / Export"
@@ -3629,7 +3663,7 @@ msgstr "Prejšnja skupina vprašanj"
 
 #: admin/html.php:635
 msgid "No previous question group"
-msgstr "Ni prejšne skupine vprašanj"
+msgstr "Ni prejšnje skupine vprašanj"
 
 #: admin/html.php:644
 msgid "Next question group"
@@ -3673,11 +3707,11 @@ msgstr "Prikaz celotne ankete na eni strani."
 
 #: admin/html.php:722
 msgid "No question index will be shown with this format."
-msgstr ""
+msgstr "Pri tej obliki ni prikazan indeks vprašanja."
 
 #: admin/html.php:723
 msgid "A question index will be shown; participants will be able to jump between viewed questions."
-msgstr ""
+msgstr "Prikazan bo indeks vprašanja; udeleženci bodo lahko preskakovali med pregledanimi vprašanji."
 
 #: admin/html.php:726
 msgid "IP Addresses will be logged"
@@ -3720,6 +3754,12 @@ msgid ""
 "\n"
 "HOWEVER, if you manually specified any relevance equations, regenerating the question codes will break all of that survey logic."
 msgstr ""
+"Ste prepričani, da želite ponovno ustvariti kode vprašanj?\n"
+"\n"
+"OPOZORILO:\n"
+"To je varno samo, če uporabljate pogojni urejevalnik.\n"
+"\n"
+"Če ste ročno določili ustreznost vprašanj, bo ponovno ustvarjanje kod pokvarilo logiko ankete."
 
 #: admin/html.php:745
 msgid "Straight"
@@ -3783,7 +3823,7 @@ msgstr "Uredi trenutno skupino vprašanj"
 
 #: admin/html.php:990
 msgid "Survey logic file for current question group"
-msgstr ""
+msgstr "Logična datoteka ankete za trenutno skupino vprašanj"
 
 #: admin/html.php:999
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
@@ -3807,7 +3847,7 @@ msgstr "Prejšnje vprašanje"
 
 #: admin/html.php:1058
 msgid "No previous question"
-msgstr "Ni prejšniga vprašanja"
+msgstr "Ni prejšnjega vprašanja"
 
 #: admin/html.php:1068
 msgid "Next question"
@@ -3852,7 +3892,7 @@ msgstr "Uredi trenutno vprašanje"
 
 #: admin/html.php:1225
 msgid "Survey logic file for current question"
-msgstr ""
+msgstr "Logična datoteka ankete za trenutno vprašanje"
 
 #: admin/html.php:1234
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
@@ -4789,7 +4829,7 @@ msgstr "LimeSurvey nastavitve"
 
 #: admin/install/index.php:37
 msgid "Welcome to LimeSurvey Setup!"
-msgstr "Dobrodošli v LimeSurvey namestitvi!"
+msgstr "Dobrodošli v namestitvi LimeSurvey!"
 
 #: admin/install/index.php:38
 msgid "The database defined in config.php does not exist."
@@ -4863,7 +4903,7 @@ msgstr "Vse privzete vrednosti so konsistentne"
 
 #: admin/integritycheck.php:203
 msgid "There are %s orphaned quota entries which can be deleted."
-msgstr ""
+msgstr "Obstaja %s osirotelih vnosov, ki ji lahko izbrišete."
 
 #: admin/integritycheck.php:207
 msgid "All quotas meet consistency standards"
@@ -4879,11 +4919,11 @@ msgstr "Vse jezikovne nastavitve kvot so konsistentne"
 
 #: admin/integritycheck.php:235
 msgid "There are %s orphaned quota members which can be deleted."
-msgstr ""
+msgstr "Obstaja %s osirotelih članov, ki ji lahko izbrišete."
 
 #: admin/integritycheck.php:239
 msgid "All quota members meet consistency standards"
-msgstr ""
+msgstr "Vsi člani zadostujejo pogojem"
 
 #: admin/integritycheck.php:255 admin/integritycheck.php:382
 msgid "No matching survey"
@@ -5279,7 +5319,7 @@ msgstr "Napaka: uporabiti želite podvojene kode odgovorov."
 
 #: admin/labels.php:371
 msgid "Label:"
-msgstr "Labela:"
+msgstr "Oznaka:"
 
 #: admin/labels.php:388 admin/templates.php:964
 msgid "Save Changes"
@@ -5299,7 +5339,7 @@ msgstr "Vnesi oznake:"
 
 #: admin/labels.php:440
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
-msgstr ""
+msgstr "Vnesite eno oznako na vrstico. Kodo vnesete tako, da ločite kodo in oznako s podpičjem ali tabulatorjem. Za večjezične ankete dodate prevod v isto vrstico, ločeno s podpičjem ali s tabulatorjem."
 
 #: admin/labels.php:510
 msgid "Failed to Copy already defined labels to added languages"
@@ -5422,7 +5462,7 @@ msgstr "Prosimo, vpišite datum:"
 #: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2578
 #: qanda.php:2579 qanda.php:2610
 msgid "Make a comment on your choice here:"
-msgstr "Pojasnite vašo izbiro:"
+msgstr "Vnesite komentar:"
 
 #: admin/printablesurvey.php:666
 msgid "Please number each box in order of preference from 1 to"
@@ -5438,15 +5478,15 @@ msgstr "Prosimo, izberite *vse* odgovore, ki ustrezajo:"
 
 #: admin/printablesurvey.php:740
 msgid "Please choose *all* that apply and provide a comment:"
-msgstr ""
+msgstr "Izberite *vse* ki ustrezajo in vnesite komentar:"
 
 #: admin/printablesurvey.php:741
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Izberite vse ustrezne odgovore in podajte komentar:"
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2631
-#: classes/expressions/LimeExpressionManager.php:4978 qanda.php:1290
+#: classes/expressions/LimeExpressionManager.php:2643
+#: classes/expressions/LimeExpressionManager.php:4993 qanda.php:1290
 #: qanda.php:1590 qanda.php:2200 qanda.php:2500
 msgid "Other:"
 msgstr "Drugo:"
@@ -5646,7 +5686,7 @@ msgstr "Poglej vprašanje"
 
 #: admin/quexmlsurvey.php:74
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
-msgstr ""
+msgstr "Ta arhiv vsebuje datoteko PDF ankete, datoteko queXML in datoteko queXF XML, ki jo lahko uporabite s programom http://quexf.sourceforge.net/ za procesiranje skeniranih anket."
 
 #: admin/quota.php:248 admin/quota.php:303
 msgid "Quota could not be added.\\n\\nIt is missing a quota message for the following languages"
@@ -5900,7 +5940,7 @@ msgstr "Prikaži grafikone"
 
 #: admin/statistics.php:345
 msgid "Show text responses inline"
-msgstr ""
+msgstr "Besedilne odgovore prikaži vmes"
 
 #: admin/statistics.php:352
 msgid "Select output format"
@@ -6234,7 +6274,7 @@ msgstr "Predloga '%s' je bila uspešno zbrisana."
 
 #: admin/templates.php:212
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
-msgstr "Pri izbrisu predloge '%s' je prišlo do težav. Preverite pravice direktorija/datoteke."
+msgstr "Pri izbrisu predloge '%s' je prišlo do težav. Preverite pravice mape/datoteke."
 
 #: admin/templates.php:257 admin/templates.php:383 admin/templates.php:394
 #: admin/templates.php:405
@@ -6658,11 +6698,11 @@ msgstr "UTF-8 Unicode"
 
 #: admin/tokens.php:356
 msgid "%s messages were scanned out of which %s were marked as bounce by the system."
-msgstr ""
+msgstr "%s sporočil je bilo pregledanih, od katerih je sistem %s označil kot zavržene."
 
 #: admin/tokens.php:360
 msgid "%s messages were scanned, none were marked as bounce by the system."
-msgstr ""
+msgstr "%s sporočil je bilo pregledanih, nobeno ni bilo označeno kot zavrženo."
 
 #: admin/tokens.php:365
 msgid "Your inbox is empty."
@@ -6714,7 +6754,7 @@ msgstr "Žal nimate pravic za aktiviranje žetonov."
 
 #: admin/tokens.php:558 admin/update/updater.php:612 common.php:276
 msgid "Back to main menu"
-msgstr "Nazaj v glavni meni"
+msgstr "Nazaj na glavni meni"
 
 #: admin/tokens.php:564
 msgid "Restore options"
@@ -6883,7 +6923,7 @@ msgstr "Uporabi glavne nastavitve"
 
 #: admin/tokens.php:832
 msgid "Survey bounce email:"
-msgstr ""
+msgstr "E-naslov zavrženih odgovorov:"
 
 #: admin/tokens.php:873 admin/tokens.php:913
 msgid "Delete all token entries"
@@ -6939,7 +6979,7 @@ msgstr "Niste izbrali da boste uporabljali katere odbijajoče nastavitve"
 
 #: admin/tokens.php:949
 msgid "Bounce processing"
-msgstr ""
+msgstr "Procesiranje zavrženih"
 
 #: admin/tokens.php:971
 msgid "Search"
@@ -7471,11 +7511,11 @@ msgstr "Podvojeni zapisi odstranjeni"
 
 #: admin/tokens.php:3183
 msgid "Can't bind to the LDAP directory"
-msgstr "Ne morem se povezati (bind) na LDAP direktorij"
+msgstr "Ne morem se povezati (bind) na imenik LDAP"
 
 #: admin/tokens.php:3189
 msgid "Can't connect to the LDAP directory"
-msgstr "Ne morem se povezati (connect) na LDAP direktorij"
+msgstr "Ne morem se povezati na imenik LDAP"
 
 #: admin/tokens.php:3210
 msgid "Auto detect"
@@ -7499,7 +7539,7 @@ msgstr "Kodni nabor datoteke:"
 
 #: admin/tokens.php:3218
 msgid "Separator used:"
-msgstr ""
+msgstr "Uporabljeno ločilo:"
 
 #: admin/tokens.php:3221 admin/tokens.php:3272
 msgid "Filter blank email addresses:"
@@ -7559,7 +7599,7 @@ msgstr "Naslov ankete in opis"
 
 #: admin/translate_functions.php:264
 msgid "Welcome and end text"
-msgstr "Dobrodošli in poslovitveni tekst"
+msgstr "Dobrodošli in poslovitveno besedilo"
 
 #: admin/translate_functions.php:348
 msgid "Group description"
@@ -7874,7 +7914,7 @@ msgstr "Prijavljeni"
 
 #: admin/usercontrol.php:223 admin/usercontrol.php:394
 msgid "Welcome %s!"
-msgstr "Dobrodošli v %s!"
+msgstr "Dobrodošli %s!"
 
 #: admin/usercontrol.php:235 admin/usercontrol.php:402
 msgid "Reloading screen. Please wait."
@@ -7882,7 +7922,7 @@ msgstr "Ponovno nalagam zaslon. Počakajte."
 
 #: admin/usercontrol.php:266
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
-msgstr "LimeSurvey je nastavljen za uporabo avtentikacije prek spletnega strežnika. Izgleda, da se še niste prijavili"
+msgstr "LimeSurvey je nastavljen za uporabo avtentikacije prek spletnega strežnika. Kaže, da se še niste prijavili"
 
 #: admin/usercontrol.php:267
 msgid "Please contact your system administrator"
@@ -7967,7 +8007,7 @@ msgstr "Osnovnega Superadministratorja ni mogoče izbrisati!"
 
 #: admin/usercontrol.php:601
 msgid "All of the user's surveys were transferred to %s."
-msgstr "Vse uporabnikove ankete so bile prenešene na %s."
+msgstr "Vse uporabnikove ankete so bile prenesene na %s."
 
 #: admin/usercontrol.php:608
 msgid "Transfer the user's surveys to: "
@@ -8574,7 +8614,7 @@ msgstr "Arc kosinus"
 
 #: classes/expressions/ExpressionManager.php:146
 msgid "addslashes"
-msgstr ""
+msgstr "dodaj poševnico"
 
 #: classes/expressions/ExpressionManager.php:147
 msgid "Arc sine"
@@ -8614,7 +8654,7 @@ msgstr "Izračuna eksponent vrednosti e"
 
 #: classes/expressions/ExpressionManager.php:156
 msgid "Display numbers with comma as radix separator, if needed"
-msgstr ""
+msgstr "Če je potrebno, prikaži števila, ki imajo kot ločilo decimalk vejico."
 
 #: classes/expressions/ExpressionManager.php:157
 msgid "Round fractions down"
@@ -8626,19 +8666,19 @@ msgstr "Uredi GMT datum/čas"
 
 #: classes/expressions/ExpressionManager.php:159
 msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Pretvori vse entitete HTML v primeren znak (vedno uporabi ENT_QUOTES in UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:160
 msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Pretvori vse primerne znake v entitete HTML (vedno uporabi ENT_QUOTES in UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:161
 msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Pretvori posebne znake v entitete HTML (vedno uporabi ENT_QUOTES in UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:162
 msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Pretvori posebne entitete HTML v znake (vedno uporabi ENT_QUOTES in UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:163
 msgid "Format a local time/date as integer"
@@ -8646,11 +8686,11 @@ msgstr "Uredi lokalni čas/datum kot celo število"
 
 #: classes/expressions/ExpressionManager.php:164
 msgid "Conditional processing"
-msgstr ""
+msgstr "Pogojno procesiranje"
 
 #: classes/expressions/ExpressionManager.php:165
 msgid "Join array elements with a string"
-msgstr ""
+msgstr "Spoji elemente polja z nizom"
 
 #: classes/expressions/ExpressionManager.php:166
 msgid "Get the integer value of a variable"
@@ -8662,7 +8702,7 @@ msgstr "Ugotovi ali je vrednost spremenljivke prazna"
 
 #: classes/expressions/ExpressionManager.php:168
 msgid "Finds whether the type of a variable is float"
-msgstr ""
+msgstr "Poišče, če je vrsta spremenljivke plavajoča"
 
 #: classes/expressions/ExpressionManager.php:169
 msgid "Find whether the type of a variable is integer"
@@ -8706,11 +8746,11 @@ msgstr "Najdi najnižjo vrednost"
 
 #: classes/expressions/ExpressionManager.php:179
 msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
-msgstr ""
+msgstr "Uporabi unix timestamp za datum (vseh 6 argumentov je opcijskih)"
 
 #: classes/expressions/ExpressionManager.php:180
 msgid "Inserts HTML line breaks before all newlines in a string"
-msgstr ""
+msgstr "Vstavi prelome vrstic HTML pred vse znake za novo vrstico v nizu"
 
 #: classes/expressions/ExpressionManager.php:181
 msgid "Format a number with grouped thousands"
@@ -8726,15 +8766,15 @@ msgstr "Eksponentna enačba"
 
 #: classes/expressions/ExpressionManager.php:184
 msgid "Convert a quoted-printable string to an 8 bit string"
-msgstr ""
+msgstr "Pretvori niz v narekovajih v 8 bitni niz"
 
 #: classes/expressions/ExpressionManager.php:185
 msgid "Convert a 8 bit string to a quoted-printable string"
-msgstr ""
+msgstr "Pretvori 8 bitni niz v niz v narekovajih"
 
 #: classes/expressions/ExpressionManager.php:186
 msgid "Quote meta characters"
-msgstr ""
+msgstr "Meta znake daj v narekovaje"
 
 #: classes/expressions/ExpressionManager.php:187
 msgid "Generate a random integer"
@@ -8742,7 +8782,7 @@ msgstr "Ustvari naključno celo število"
 
 #: classes/expressions/ExpressionManager.php:188
 msgid "Compare a string to a regular expression pattern"
-msgstr ""
+msgstr "Primerjaj niz z vzorcem regularnega izraza"
 
 #: classes/expressions/ExpressionManager.php:189
 msgid "Rounds a number to an optional precision"
@@ -8770,7 +8810,7 @@ msgstr "Izračunaj vzorčni standardni odklon seznama števil"
 
 #: classes/expressions/ExpressionManager.php:195
 msgid "Pad a string to a certain length with another string"
-msgstr ""
+msgstr "Dopolni niz do določene dolžine z drugim nizom"
 
 #: classes/expressions/ExpressionManager.php:196
 msgid "Repeat a string"
@@ -8782,11 +8822,11 @@ msgstr "Nadomesti vsa zaporedja, enaka iskalnemu z nadomestnim zaporedjem (zamen
 
 #: classes/expressions/ExpressionManager.php:198
 msgid "Binary safe case-insensitive string comparison"
-msgstr ""
+msgstr "Dvojiško varna primerjava niza, ne razlikuj velikih in malih črk"
 
 #: classes/expressions/ExpressionManager.php:199
 msgid "Binary safe string comparison"
-msgstr ""
+msgstr "Dvojiško varna primerjava niza"
 
 #: classes/expressions/ExpressionManager.php:200
 msgid "Strip HTML and PHP tags from a string"
@@ -8798,35 +8838,35 @@ msgstr "Poišči položaj prvega nahajališča zaporedja (case insensitive)"
 
 #: classes/expressions/ExpressionManager.php:202
 msgid "Un-quotes a quoted string"
-msgstr ""
+msgstr "Odstrani nizu narekovaje"
 
 #: classes/expressions/ExpressionManager.php:203
 msgid "Case-insensitive strstr"
-msgstr ""
+msgstr "Niz, ki ne razlikuje med velikostjo črk"
 
 #: classes/expressions/ExpressionManager.php:204
 msgid "Get string length"
-msgstr "izračunaj dolžino zaporedja"
+msgstr "Izračunaj dolžino zaporedja"
 
 #: classes/expressions/ExpressionManager.php:205
 msgid "Find position of first occurrence of a string"
-msgstr "najdi položaj prve pojave zaporedja"
+msgstr "Najdi položaj prve pojavitve zaporedja"
 
 #: classes/expressions/ExpressionManager.php:206
 msgid "Reverse a string"
-msgstr "obrni zaporedje"
+msgstr "Obrni zaporedje"
 
 #: classes/expressions/ExpressionManager.php:207
 msgid "Find first occurrence of a string"
-msgstr "najdi prvo pojavo zaporedja"
+msgstr "Najdi prvo pojavitev zaporedja"
 
 #: classes/expressions/ExpressionManager.php:208
 msgid "Make a string lowercase"
-msgstr "spremeni zaporedje v male začetnice"
+msgstr "Spremeni zaporedje v male začetnice"
 
 #: classes/expressions/ExpressionManager.php:209
 msgid "Make a string uppercase"
-msgstr "spremeni zaporedje v velike začetnice"
+msgstr "Spremeni zaporedje v velike začetnice"
 
 #: classes/expressions/ExpressionManager.php:210
 msgid "Return part of a string"
@@ -8842,7 +8882,7 @@ msgstr "Tangenta"
 
 #: classes/expressions/ExpressionManager.php:213
 msgid "Return current UNIX timestamp"
-msgstr ""
+msgstr "Vrni trenutni sistemski čas"
 
 #: classes/expressions/ExpressionManager.php:214
 msgid "Strip whitespace (or other characters) from the beginning and end of a string"
@@ -8854,16 +8894,16 @@ msgstr "Uveljavi veliko začetnico vsaki besedi v zaporedju"
 
 #: classes/expressions/ExpressionManager.php:243
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
-msgstr ""
+msgstr "Ne morem ovrednotiti binarnega operatorja - na skladu sta manj kot 2 vnosa"
 
 #: classes/expressions/ExpressionManager.php:250
 #: classes/expressions/ExpressionManager.php:389
 msgid "Invalid value(s) on the stack"
-msgstr ""
+msgstr "Neveljavne vrednosti na skladu"
 
 #: classes/expressions/ExpressionManager.php:383
 msgid "Unable to evaluate unary operator - no entries on stack"
-msgstr ""
+msgstr "Ne morem ovrednotiti unarnega operatorja - na skladu ni vnosov"
 
 #: classes/expressions/ExpressionManager.php:438
 msgid "Extra tokens found"
@@ -8871,11 +8911,11 @@ msgstr "Najdeni dodatni žetoni"
 
 #: classes/expressions/ExpressionManager.php:453
 msgid "Unbalanced equation - values left on stack"
-msgstr ""
+msgstr "Nepravilna enačba - na skladu so ostale vrednosti"
 
 #: classes/expressions/ExpressionManager.php:459
 msgid "Not a valid expression"
-msgstr "neveljavni izraz"
+msgstr "Neveljavni izraz"
 
 #: classes/expressions/ExpressionManager.php:520
 #: classes/expressions/ExpressionManager.php:948
@@ -8894,7 +8934,7 @@ msgstr "Nedefinirana spremenljivka"
 
 #: classes/expressions/ExpressionManager.php:579
 msgid "Should never  get to this line?"
-msgstr ""
+msgstr "Naj nikoli ne pride do te vrstice?"
 
 #: classes/expressions/ExpressionManager.php:665
 msgid "The value of this variable can not be changed"
@@ -8914,7 +8954,7 @@ msgstr "Najden dodaten žeton za izrazi"
 
 #: classes/expressions/ExpressionManager.php:751
 msgid "Undefined Function"
-msgstr "nedefinirana funkcija"
+msgstr "Nedefinirana funkcija"
 
 #: classes/expressions/ExpressionManager.php:757
 msgid "Expected left parentheses after function name"
@@ -8962,190 +9002,190 @@ msgstr "Funkcija podpira toliko argumentov: %s (-1 pomeni neskončno)"
 
 #: classes/expressions/ExpressionManager.php:2273
 msgid "Tried to pop value off of empty stack"
-msgstr ""
+msgstr "Poskus pridobivanja vrednosti s praznega sklada"
 
 #: classes/expressions/ExpressionManager.php:3197
 msgid "Invalid PERL Regular Expression: %s"
-msgstr ""
+msgstr "Neveljaven regularni izraz PERL: %s"
 
-#: classes/expressions/LimeExpressionManager.php:2155
+#: classes/expressions/LimeExpressionManager.php:2167
 msgid "Please select at least one answer"
 msgstr "Prosim, izberite vsaj en odgovor"
 
-#: classes/expressions/LimeExpressionManager.php:2156
+#: classes/expressions/LimeExpressionManager.php:2168
 msgid "Please select at least %s answers"
 msgstr "Prosim, izberite vsaj %s odgovorov"
 
-#: classes/expressions/LimeExpressionManager.php:2160
+#: classes/expressions/LimeExpressionManager.php:2172
 msgid "Please select at most one answer"
 msgstr "Prosim, izberite največ en odgovor"
 
-#: classes/expressions/LimeExpressionManager.php:2161
+#: classes/expressions/LimeExpressionManager.php:2173
 msgid "Please select at most %s answers"
 msgstr "Prosim, izberite največ %s odgovorov"
 
-#: classes/expressions/LimeExpressionManager.php:2165
+#: classes/expressions/LimeExpressionManager.php:2177
 msgid "Please select one answer"
 msgstr "Prosim, izberite en odgovor"
 
-#: classes/expressions/LimeExpressionManager.php:2166
+#: classes/expressions/LimeExpressionManager.php:2178
 msgid "Please select %s answers"
 msgstr "Prosim, izberite %s odgovorov"
 
-#: classes/expressions/LimeExpressionManager.php:2168
+#: classes/expressions/LimeExpressionManager.php:2180
 msgid "Please select between %s and %s answers"
 msgstr "Prosim, izberite med %s in %s odgovorov"
 
-#: classes/expressions/LimeExpressionManager.php:2184
-#: classes/expressions/LimeExpressionManager.php:2205
+#: classes/expressions/LimeExpressionManager.php:2196
+#: classes/expressions/LimeExpressionManager.php:2217
 msgid "Each answer must be at least %s"
 msgstr "Vsak odgovor mora biti vsaj %s"
 
-#: classes/expressions/LimeExpressionManager.php:2186
-#: classes/expressions/LimeExpressionManager.php:2207
+#: classes/expressions/LimeExpressionManager.php:2198
+#: classes/expressions/LimeExpressionManager.php:2219
 msgid "Each answer must be at most %s"
 msgstr "Vsak odgovor mora biti največ %s"
 
-#: classes/expressions/LimeExpressionManager.php:2188
-#: classes/expressions/LimeExpressionManager.php:2209
+#: classes/expressions/LimeExpressionManager.php:2200
+#: classes/expressions/LimeExpressionManager.php:2221
 msgid "Each answer must be %s"
 msgstr "Vsak odgovor mora biti %s"
 
-#: classes/expressions/LimeExpressionManager.php:2189
-#: classes/expressions/LimeExpressionManager.php:2210
+#: classes/expressions/LimeExpressionManager.php:2201
+#: classes/expressions/LimeExpressionManager.php:2222
 msgid "Each answer must be between %s and %s"
 msgstr "Vsak odgovor mora biti med %s in %s"
 
-#: classes/expressions/LimeExpressionManager.php:2226
+#: classes/expressions/LimeExpressionManager.php:2238
 msgid "The sum must be at least %s"
 msgstr "Vsota mora biti vsaj %s"
 
-#: classes/expressions/LimeExpressionManager.php:2228
+#: classes/expressions/LimeExpressionManager.php:2240
 msgid "The sum must be at most %s"
 msgstr "Vsota mora biti največ %s"
 
-#: classes/expressions/LimeExpressionManager.php:2230
-#: classes/expressions/LimeExpressionManager.php:2241
+#: classes/expressions/LimeExpressionManager.php:2242
+#: classes/expressions/LimeExpressionManager.php:2253
 msgid "The sum must equal %s"
 msgstr "Vsota mora biti %s"
 
-#: classes/expressions/LimeExpressionManager.php:2231
+#: classes/expressions/LimeExpressionManager.php:2243
 msgid "The sum must be between %s and %s"
 msgstr "Vsota mora biti med %s in %s"
 
-#: classes/expressions/LimeExpressionManager.php:2247
+#: classes/expressions/LimeExpressionManager.php:2259
 msgid "Please also fill in the \"other comment\" field."
-msgstr ""
+msgstr "Izpolnite tudi polje \"drugi komentar\"."
 
-#: classes/expressions/LimeExpressionManager.php:2255
+#: classes/expressions/LimeExpressionManager.php:2267
 msgid "Please check the format of your answer."
 msgstr "Prosim, preveri format odgovora."
 
-#: classes/expressions/LimeExpressionManager.php:3994
+#: classes/expressions/LimeExpressionManager.php:4009
 msgid "Unable to insert record into survey table: "
 msgstr "Ni bilo mož vstaviti zapisa v tabelo ankete"
 
-#: classes/expressions/LimeExpressionManager.php:4010
+#: classes/expressions/LimeExpressionManager.php:4025
 msgid "Unable to insert record into timings table "
-msgstr "Ni bilo mož vstaviti zapisa v tabelo časovnic"
+msgstr "Ni bilo moč vstaviti zapisa v tabelo časovnic"
 
-#: classes/expressions/LimeExpressionManager.php:4958
+#: classes/expressions/LimeExpressionManager.php:4973
 msgid "This question is mandatory"
 msgstr "Na to vprašanje morate obvezno odgovoriti"
 
-#: classes/expressions/LimeExpressionManager.php:4970
+#: classes/expressions/LimeExpressionManager.php:4985
 msgid "Please check at least one item."
 msgstr "Prosimo, izberite vsaj eno izmed možnosti."
 
-#: classes/expressions/LimeExpressionManager.php:4980
+#: classes/expressions/LimeExpressionManager.php:4995
 msgid "If you choose '%s' you must provide a description."
 msgstr "Če izberete '%s' morate dodati opis."
 
-#: classes/expressions/LimeExpressionManager.php:5002
-#: classes/expressions/LimeExpressionManager.php:5039
+#: classes/expressions/LimeExpressionManager.php:5017
+#: classes/expressions/LimeExpressionManager.php:5054
 msgid "Please complete all parts"
 msgstr "Prosimo, odgovorite na vsa vprašanja"
 
-#: classes/expressions/LimeExpressionManager.php:5031
+#: classes/expressions/LimeExpressionManager.php:5046
 msgid "Please check at least one box per row"
 msgstr "Prosim, označi vsaj en odgovor v vrsti"
 
-#: classes/expressions/LimeExpressionManager.php:5047
+#: classes/expressions/LimeExpressionManager.php:5062
 msgid "Please rank all items"
 msgstr "Prosimo, razvrstite vse možnosti"
 
-#: classes/expressions/LimeExpressionManager.php:7380
+#: classes/expressions/LimeExpressionManager.php:7415
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Neveljavno vprašanje - najbrž manjkajo podvprašanja ali lokalne nastavitve za jezik"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Name [ID]"
 msgstr "Ime [ID]"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Relevance [Validation] (Default)"
-msgstr "Relevantnost [Validacija] (Privzeto)"
+msgstr "Ustreznost [Preverjanje] (Privzeto)"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Text [Help] (Tip)"
 msgstr "Besedilo [Pomoč] (Namig)"
 
-#: classes/expressions/LimeExpressionManager.php:7436
-#: classes/expressions/LimeExpressionManager.php:7662
+#: classes/expressions/LimeExpressionManager.php:7471
+#: classes/expressions/LimeExpressionManager.php:7697
 msgid "DEFAULT:"
 msgstr "PRIVZETO:"
 
-#: classes/expressions/LimeExpressionManager.php:7444
+#: classes/expressions/LimeExpressionManager.php:7479
 msgid "HELP:"
 msgstr "POMOČ:"
 
-#: classes/expressions/LimeExpressionManager.php:7445
+#: classes/expressions/LimeExpressionManager.php:7480
 msgid "TIP:"
 msgstr "NAMIG:"
 
-#: classes/expressions/LimeExpressionManager.php:7452
+#: classes/expressions/LimeExpressionManager.php:7487
 msgid "Question Attribute"
-msgstr ""
+msgstr "Atribut vprašanja"
 
-#: classes/expressions/LimeExpressionManager.php:7452
+#: classes/expressions/LimeExpressionManager.php:7487
 msgid "Value"
 msgstr "Vrednost"
 
-#: classes/expressions/LimeExpressionManager.php:7551
+#: classes/expressions/LimeExpressionManager.php:7586
 msgid "VALIDATION:"
-msgstr "VALIDACIJA:"
+msgstr "PREVERJANJE:"
 
-#: classes/expressions/LimeExpressionManager.php:7565
+#: classes/expressions/LimeExpressionManager.php:7600
 msgid "This variable name has already been used."
-msgstr "Spremenljivka  stem imenom že obstaja."
+msgstr "Spremenljivka s tem imenom že obstaja."
 
-#: classes/expressions/LimeExpressionManager.php:7577
+#: classes/expressions/LimeExpressionManager.php:7612
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
-msgstr ""
+msgstr "Od različice 1.92 naprej lahko imena spremenljivk vsebujejo samo črke, številke in podčrtaj in se ne smejo začeti s številko. To ime spremenljivke ni več veljavno."
 
-#: classes/expressions/LimeExpressionManager.php:7730
+#: classes/expressions/LimeExpressionManager.php:7765
 msgid "This question has at least %s error(s)"
 msgstr "To vprašanje vsebuje vsaj %s napak"
 
-#: classes/expressions/LimeExpressionManager.php:7769
+#: classes/expressions/LimeExpressionManager.php:7804
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s vprašanj vsebuje napake in jih je potrebno popraviti"
 
-#: classes/expressions/LimeExpressionManager.php:7775
+#: classes/expressions/LimeExpressionManager.php:7810
 msgid "No syntax errors detected in this survey"
 msgstr "V anketi ni napak sintakse"
 
-#: classes/expressions/LimeExpressionManager.php:7778
+#: classes/expressions/LimeExpressionManager.php:7813
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Ta skupina je brez napak sintakse"
 
-#: classes/expressions/LimeExpressionManager.php:7781
+#: classes/expressions/LimeExpressionManager.php:7816
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "To vprašanje je brez napak sintakse"
 
 #: classes/expressions/test/survey_logic_file.php:138
 msgid "Logic File for Survey # "
-msgstr ""
+msgstr "Logična datoteka za Anketo # "
 
 #: common_functions.php:35
 msgid "Permission to create/view/update/delete assessments rules for a survey"
@@ -9241,15 +9281,15 @@ msgstr "Vprašanja z eno izbiro"
 
 #: common_functions.php:99
 msgid "Multiple choice questions"
-msgstr "Vprašanja z večimi izbirami"
+msgstr "Vprašanja z več izbirami"
 
 #: common_functions.php:100
 msgid "Text questions"
-msgstr "Vprašanja z tekstom"
+msgstr "Vprašanja z besedilom"
 
 #: common_functions.php:104
 msgid "Array dual scale"
-msgstr ""
+msgstr "Dvojna velikost polja"
 
 #: common_functions.php:110
 msgid "5 Point Choice"
@@ -9277,7 +9317,7 @@ msgstr "Lestvica (povečalo/ostalo enako/zmanjšalo)"
 
 #: common_functions.php:146
 msgid "Array"
-msgstr "Lestvica"
+msgstr "Polje"
 
 #: common_functions.php:152
 msgid "Gender"
@@ -9285,7 +9325,7 @@ msgstr "Spol"
 
 #: common_functions.php:158
 msgid "Array by column"
-msgstr "Lestvica po stolpcih"
+msgstr "Polje po stolpcih"
 
 #: common_functions.php:164
 msgid "Language Switch"
@@ -9293,11 +9333,11 @@ msgstr "Zamenjava jezika"
 
 #: common_functions.php:170
 msgid "Multiple Numerical Input"
-msgstr "Več kratkih številskih odgovorov"
+msgstr "Več številskih odgovorov"
 
 #: common_functions.php:176
 msgid "List (Radio)"
-msgstr "Seznam (izbirni gumbi)"
+msgstr "Seznam (izbirni gumb)"
 
 #: common_functions.php:182
 msgid "Multiple choice"
@@ -9305,7 +9345,7 @@ msgstr "Več možnosti"
 
 #: common_functions.php:188
 msgid "Numerical Input"
-msgstr "Številski odgovor"
+msgstr "Številski vnos"
 
 #: common_functions.php:194
 msgid "List with comment"
@@ -9313,11 +9353,11 @@ msgstr "Seznam s komentarjem"
 
 #: common_functions.php:200
 msgid "Multiple choice with comments"
-msgstr "Več možnosti z odgovorom"
+msgstr "Več možnosti s komentarjem"
 
 #: common_functions.php:206
 msgid "Multiple Short Text"
-msgstr "Več kratkih tekstovnih vnosov"
+msgstr "Več kratkih besedilnih vnosov"
 
 #: common_functions.php:218
 msgid "Short Free Text"
@@ -9333,7 +9373,7 @@ msgstr "Ogromno besedilo"
 
 #: common_functions.php:236
 msgid "Text display"
-msgstr "Prikaz teksta"
+msgstr "Prikaz besedila"
 
 #: common_functions.php:242
 msgid "Yes/No"
@@ -9341,15 +9381,15 @@ msgstr "Da/Ne"
 
 #: common_functions.php:248
 msgid "List (Dropdown)"
-msgstr "Seznam (padajoč seznam)"
+msgstr "Seznam (izbirni seznam)"
 
 #: common_functions.php:254
 msgid "Array (Numbers)"
-msgstr "Lestvica (številke)"
+msgstr "Polja (številke)"
 
 #: common_functions.php:260
 msgid "Array (Texts)"
-msgstr "Lestvica (besedila)"
+msgstr "Polja (besedila)"
 
 #: common_functions.php:266
 msgid "File upload"
@@ -9443,7 +9483,7 @@ msgstr "Uredi odgovore po abecedi"
 
 #: common_functions.php:3217
 msgid "Set the percentage width of the answer column (1-100)"
-msgstr "Širina stolpca za odgovore v procentih (1-100)"
+msgstr "Širina stolpca za odgovore v odstotkih (1-100)"
 
 #: common_functions.php:3218
 msgid "Answer width"
@@ -9461,15 +9501,15 @@ msgstr "Logika"
 
 #: common_functions.php:3225
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
-msgstr ""
+msgstr "Vnesite kode vprašanj z več možnostmi (ločene s podpičjem) da prikažete samo odgovarjajoče odgovore v tem vprašanju."
 
 #: common_functions.php:3226
 msgid "Array filter"
-msgstr "Filter polij"
+msgstr "Filter polj"
 
 #: common_functions.php:3233
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
-msgstr ""
+msgstr "Vnesite kode vprašanj z več možnostmi (ločene s podpičjem) da izločite odgovarjajoče odgovore v tem vprašanju."
 
 #: common_functions.php:3234
 msgid "Array filter exclusion"
@@ -9477,7 +9517,7 @@ msgstr "Izločitveni filter polij"
 
 #: common_functions.php:3242
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
-msgstr ""
+msgstr "Če je katero od podvprašanj označeno, bo ta vrednost dodana vsakemu od označenih podvprašanj."
 
 #: common_functions.php:3250 common_functions.php:3251
 msgid "Category separator"
@@ -9501,11 +9541,11 @@ msgstr "Prikaži vrstice"
 
 #: common_functions.php:3280
 msgid "Use accessible dropdown boxes instead of calendar popup"
-msgstr ""
+msgstr "Uporabi spustni seznam namesto pojavnega okna koledarja"
 
 #: common_functions.php:3281
 msgid "Display dropdown boxes"
-msgstr "Prikaži spuščajoče kvadrate"
+msgstr "Prikaži spustne sezname"
 
 #: common_functions.php:3288
 msgid "Minimum year value in calendar"
@@ -9525,7 +9565,7 @@ msgstr "Najvišje leto"
 
 #: common_functions.php:3304
 msgid "Prefix|Suffix for dropdown lists"
-msgstr "Predpona|Pripona za padajoče menije"
+msgstr "Predpona|Pripona za spustne sezname"
 
 #: common_functions.php:3305
 msgid "Dropdown prefix/suffix"
@@ -9560,11 +9600,11 @@ msgstr "Naslov za drugo skalo"
 #: common_functions.php:3557 common_functions.php:3565
 #: common_functions.php:3619
 msgid "Input"
-msgstr "Odgovor"
+msgstr "Vnos"
 
 #: common_functions.php:3336
 msgid "Multiple numeric inputs sum must equal this value"
-msgstr "Vsota večih številskih vnosov mora biti enaka tej vrednosti"
+msgstr "Vsota več številskih vnosov mora biti enaka tej vrednosti"
 
 #: common_functions.php:3337
 msgid "Equals sum value"
@@ -9572,35 +9612,35 @@ msgstr "Enako vrednosti vsote"
 
 #: common_functions.php:3344
 msgid "Boolean equation to validate the whole question."
-msgstr ""
+msgstr "Logična enačba za preverjanje celotnega vprašanja."
 
 #: common_functions.php:3345
 msgid "Question validation equation"
-msgstr "Enačba za validacijo vprašanja"
+msgstr "Enačba za preverjanje vprašanja"
 
 #: common_functions.php:3352
 msgid "Tip to show user describing the question validation equation."
-msgstr "Namig za enačbo za validacijo vprašanja, ki ga pokažem uporabniku."
+msgstr "Namig za enačbo za preverjanje vprašanja, ki se prikaže uporabniku."
 
 #: common_functions.php:3353
 msgid "Question validation tip"
-msgstr "Namig za validacijo vprašanja"
+msgstr "Namig za preverjanje vprašanja"
 
 #: common_functions.php:3360
 msgid "Boolean equation to validate each sub-question."
-msgstr ""
+msgstr "Logična enačba za preverjanje vsakega podvprašanja."
 
 #: common_functions.php:3361
 msgid "Sub-question validation equation"
-msgstr "Enačba za validacijo podvprašanja"
+msgstr "Enačba za preverjanje podvprašanja"
 
 #: common_functions.php:3368
 msgid "Tip to show user describing the sub-question validation equation."
-msgstr "Namig za enačbo za validacijo podvprašanja, ki ga pokažem uporabniku."
+msgstr "Namig za enačbo za preverjanje podvprašanja, ki se prikaže uporabniku."
 
 #: common_functions.php:3369
 msgid "Sub-question validation tip"
-msgstr "Namig za validacijo podvprašanja"
+msgstr "Namig za preverjanje podvprašanja"
 
 #: common_functions.php:3376
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
@@ -9612,11 +9652,11 @@ msgstr "Izključujoča možnost"
 
 #: common_functions.php:3387
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
-msgstr ""
+msgstr "Če uporabnik označi vse možnosti, odznači vse in označi nabor možnosti v nastavitvi \"Izključujoča možnost\""
 
 #: common_functions.php:3388
 msgid "Auto-check exclusive option if all others are checked"
-msgstr ""
+msgstr "Samodejno označi izključujočo možnost, če so vse druge označene."
 
 #: common_functions.php:3395 common_functions.php:3406
 #: common_functions.php:3417 common_functions.php:3428
@@ -9628,7 +9668,7 @@ msgstr "Lokacija"
 
 #: common_functions.php:3400
 msgid "Store the city?"
-msgstr "Sharnim mesto?"
+msgstr "Shranim mesto?"
 
 #: common_functions.php:3401
 msgid "Save city"
@@ -9664,15 +9704,15 @@ msgstr "Google zemljevidi"
 
 #: common_functions.php:3443
 msgid "Activate this to show a map above the input field where the user can select a location"
-msgstr ""
+msgstr "Aktivirajte to, da prikažete zemljevid nad vnosnim poljem, kjer uporabnik lahko izbere lokacijo"
 
 #: common_functions.php:3444
 msgid "Use mapping service"
-msgstr ""
+msgstr "Uporabi servis mapiranja"
 
 #: common_functions.php:3452
 msgid "Width of the map in pixel"
-msgstr "Širina zemljevida v pikslih"
+msgstr "Širina zemljevida v pikah"
 
 #: common_functions.php:3453
 msgid "Map width"
@@ -9680,7 +9720,7 @@ msgstr "Širina zemljevida"
 
 #: common_functions.php:3461
 msgid "Height of the map in pixel"
-msgstr "Višina zemljevida v pixlih"
+msgstr "Višina zemljevida v pikah"
 
 #: common_functions.php:3462
 msgid "Map height"
@@ -9688,11 +9728,11 @@ msgstr "Višina zemljevida"
 
 #: common_functions.php:3471
 msgid "Get the default location using the user's IP address?"
-msgstr "Dobi privzeto lokacijo na podlagi uporabnikovega IP naslova?"
+msgstr "Dobi privzeto lokacijo na podlagi uporabnikovega naslova IP?"
 
 #: common_functions.php:3472
 msgid "IP as default location"
-msgstr "IP kot "
+msgstr "IP kot privzeta lokacija"
 
 #: common_functions.php:3479
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
@@ -9700,7 +9740,7 @@ msgstr "Privzete koordinate zemljevida ko se naloži prva stran. Format: geograf
 
 #: common_functions.php:3480
 msgid "Default position"
-msgstr "Privzet pozicija"
+msgstr "Privzeti položaj"
 
 #: common_functions.php:3488
 msgid "Map zoom level"
@@ -9716,11 +9756,11 @@ msgstr "Skrij namig, ki je navadno prikazan z geslom"
 
 #: common_functions.php:3502
 msgid "Hide tip"
-msgstr "Skrij namige"
+msgstr "Skrij namig"
 
 #: common_functions.php:3512
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
-msgstr "Kadarkoli skrij to vprašanje. To je uporabno, ko želite vključiti podatke s pomočjo predizpolnjenih odgovorov."
+msgstr "Skrij to vprašanje. To je uporabno, ko želite vključiti podatke s pomočjo predizpolnjenih odgovorov."
 
 #: common_functions.php:3513
 msgid "Always hide this question"
@@ -9736,7 +9776,7 @@ msgstr "Največ odgovorov"
 
 #: common_functions.php:3528
 msgid "Maximum sum value of multiple numeric input"
-msgstr "Največja vsota vrednosti večih številskih vnosov"
+msgstr "Največja vsota vrednosti več številskih vnosov"
 
 #: common_functions.php:3529
 msgid "Maximum sum value"
@@ -9768,7 +9808,7 @@ msgstr "Najmanj odgovorov"
 
 #: common_functions.php:3560
 msgid "The sum of the multiple numeric inputs must be greater than this value"
-msgstr "Vsota večih numeričnih vnosov mmora biti večja od te vrednosti"
+msgstr "Vsota več numeričnih vnosov mora biti večja od te vrednosti"
 
 #: common_functions.php:3561
 msgid "Minimum sum value"
@@ -9800,7 +9840,7 @@ msgstr "Uporabi ureditev potrditvenih polij"
 
 #: common_functions.php:3604
 msgid "Checkbox layout"
-msgstr "Ureditev polja odkljukat"
+msgstr "Položaj potrditvenega polja"
 
 #: common_functions.php:3614
 msgid "Present answer options in reverse order"
@@ -9812,7 +9852,7 @@ msgstr "Nasprotni vrstni red odgovorov"
 
 #: common_functions.php:3626
 msgid "Restrict input to integer values"
-msgstr "Omkeji vnos na celoštevilčne vrednosti"
+msgstr "Omeji vnos na celoštevilčne vrednosti"
 
 #: common_functions.php:3627
 msgid "Integer only"
@@ -9836,11 +9876,11 @@ msgstr "Stolpci"
 
 #: common_functions.php:3652
 msgid "Both rows and columns"
-msgstr "Oboje kolone in vrste"
+msgstr "Stolpci in vrstice"
 
 #: common_functions.php:3655
 msgid "Show totals for either rows, columns or both rows and columns"
-msgstr "Pokaži vsote le za vrste ali stolpce ali pa za oboje"
+msgstr "Pokaži vsote le za vrstice, le za stolpce ali pa za oboje"
 
 #: common_functions.php:3656
 msgid "Show totals for"
@@ -9848,7 +9888,7 @@ msgstr "Pokaži skupaj za"
 
 #: common_functions.php:3669
 msgid "Show grand total for either columns or rows"
-msgstr "Pokaži vsote le za vrste ali stolpce"
+msgstr "Pokaži vsote le za vrstice ali le za stolpce"
 
 #: common_functions.php:3670
 msgid "Show grand total"
@@ -9856,11 +9896,11 @@ msgstr "Pokaži skupno vsoto"
 
 #: common_functions.php:3681
 msgid "Present as text input boxes instead of dropdown lists"
-msgstr "Predstavi kot tekstovna vnosna polja namesto padajočih seznamov."
+msgstr "Predstavi kot besedilna vnosna polja namesto spustnih seznamov"
 
 #: common_functions.php:3682
 msgid "Text inputs"
-msgstr "Tekstovni vnosi"
+msgstr "Besedilni vnosi"
 
 #: common_functions.php:3692
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
@@ -9880,11 +9920,11 @@ msgstr "Samo števila za 'Drugo'"
 
 #: common_functions.php:3711
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
-msgstr "Zamenja labelo 'drugo' z besedilom"
+msgstr "Zamenja oznako  'drugo' z besedilom"
 
 #: common_functions.php:3712
 msgid "Label for 'Other:' option"
-msgstr "Labela za 'Drugo:' možnost"
+msgstr "Oznaka za možnost 'Drugo:'"
 
 #: common_functions.php:3722
 msgid "Insert a page break before this question in printable view by setting this to Yes."
@@ -9928,7 +9968,7 @@ msgstr "Drsnik"
 #: common_functions.php:3763 common_functions.php:3764
 #: common_functions.php:3820 common_functions.php:3821
 msgid "Use slider layout"
-msgstr "Uporabi ureditev z drsnikom"
+msgstr "Uporabi postavitev z drsnikom"
 
 #: common_functions.php:3771 common_functions.php:3772
 msgid "Slider minimum value"
@@ -9964,11 +10004,11 @@ msgstr "Da - drsnik z emocijami"
 
 #: common_functions.php:3832
 msgid "Display min and max value under the slider"
-msgstr "Prikaži minimalni in maksimalno vrednosto pod drsnikom"
+msgstr "Prikaži najmanjšo in največjo vrednost pod drsnikom"
 
 #: common_functions.php:3833
 msgid "Display slider min and max value"
-msgstr "Prikaži minimalno in maksimalno vrednost drsnika"
+msgstr "Prikaži najmanjšo in največjo vrednost drsnika"
 
 #: common_functions.php:3840
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
@@ -9996,19 +10036,19 @@ msgstr "Širina vnosnega polja"
 
 #: common_functions.php:3867
 msgid "Use dropdown boxes instead of list of radio buttons"
-msgstr "Uporabi dropdown izbiro namesto seznama radio gumbov"
+msgstr "Uporabi spustne sezname namesto seznama izbirnih gumbov"
 
 #: common_functions.php:3868
 msgid "Use dropdown boxes"
-msgstr "Uporabi dropdown izbiro"
+msgstr "Uporabi spustne sezname"
 
 #: common_functions.php:3876
 msgid "For list dropdown boxes, show up to this many rows"
-msgstr "V dropdown izbiri pokaži toliko vrstic"
+msgstr "V spustnem seznamu izbiri prikaži toliko vrstic"
 
 #: common_functions.php:3877
 msgid "Height of dropdown"
-msgstr "Višina dropdown izbire"
+msgstr "Višina spustnega seznama"
 
 #: common_functions.php:3885
 msgid "Order"
@@ -10016,7 +10056,7 @@ msgstr "Vrstni red"
 
 #: common_functions.php:3888
 msgid "Accelerator keys for list items"
-msgstr ""
+msgstr "Bljižnične tipke za elemente seznama"
 
 #: common_functions.php:3889
 msgid "Prefix for list items"
@@ -10108,15 +10148,15 @@ msgstr "Opozorilo odštevanja časovne omejitve"
 
 #: common_functions.php:3958
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
-msgstr "CSS stil za sporočilo, ki je prikazano v števcu med odštevanjem časovne omejitve"
+msgstr "Slog CSS  za sporočilo, ki je prikazano v števcu med odštevanjem časovne omejitve"
 
 #: common_functions.php:3959
 msgid "Time limit timer CSS style"
-msgstr "CSS stil števca časovne omejitve"
+msgstr "Slog števca CSS časovne omejitve"
 
 #: common_functions.php:3966
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
-msgstr "Prikaži 'sporočilo o poteku časovne omejitve', ko je še toliko sekund pred 'akcijo časovne omejitve' (privzeto na 1 sekundo, če je prazno)"
+msgstr "Prikaži 'sporočilo o poteku časovne omejitve', ko je še toliko sekund pred 'akcijo časovne omejitve' (privzeto je 1 sekundo, če je prazno)"
 
 #: common_functions.php:3967
 msgid "Time limit expiry message display time"
@@ -10132,11 +10172,11 @@ msgstr "Sporočilo preteka časovne omejitve"
 
 #: common_functions.php:3982
 msgid "CSS style for the 'time limit expiry message'"
-msgstr "CSS stil za sporočilo o 'preteku časovne omejitve'"
+msgstr "Slog CSS za sporočilo o 'preteku časovne omejitve'"
 
 #: common_functions.php:3983
 msgid "Time limit message CSS style"
-msgstr "CSS stil sporočila o časovni omejitvi"
+msgstr "Slog CSS sporočila o časovni omejitvi"
 
 #: common_functions.php:3990
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
@@ -10144,7 +10184,7 @@ msgstr "Prikaži 'sporočilo o omejenem času', ko je še toliko sekund do konca
 
 #: common_functions.php:3991
 msgid "1st time limit warning message timer"
-msgstr "Štoparica za prvo opozorilo prekoračitve časa"
+msgstr "Odštevalnik za prvo opozorilo prekoračitve časa"
 
 #: common_functions.php:3998
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
@@ -10164,11 +10204,11 @@ msgstr "Prvo opozorilo prekoračitve časa"
 
 #: common_functions.php:4014
 msgid "CSS style used when the 'time limit warning' message is displayed"
-msgstr "CSS stil za opozorilo o časovni omejitvi"
+msgstr "Slog CSS za opozorilo o časovni omejitvi"
 
 #: common_functions.php:4015
 msgid "1st time limit warning CSS style"
-msgstr "CSS stil prvega opozorila prekoračitve časa"
+msgstr "Slog CSS prvega opozorila prekoračitve časa"
 
 #: common_functions.php:4022
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
@@ -10176,7 +10216,7 @@ msgstr "Prikaži drugo 'sporočilo o omejenem času', ko je še toliko sekund do
 
 #: common_functions.php:4023
 msgid "2nd time limit warning message timer"
-msgstr "Štoparica za drugo opozorilo prekoračitve časa"
+msgstr "Odštevalnik za drugo opozorilo prekoračitve časa"
 
 #: common_functions.php:4030
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
@@ -10196,11 +10236,11 @@ msgstr "Drugo opozorilo prekoračitve časa"
 
 #: common_functions.php:4046
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
-msgstr "CSS stil za drugo opozorilo o časovni omejitvi"
+msgstr "Slog CSS za drugo opozorilo o časovni omejitvi"
 
 #: common_functions.php:4047
 msgid "2nd time limit warning CSS style"
-msgstr "Drugo časovno opozorilo CSS stila"
+msgstr "Slog CSS drugega časovnega opozorila"
 
 #: common_functions.php:4051 common_functions.php:4062
 msgid "File metadata"
@@ -10220,7 +10260,7 @@ msgstr "Naj bo udeleženec primoran podati komentar naložene datoteke?"
 
 #: common_functions.php:4069
 msgid "Show comment"
-msgstr "Prikaži naslov"
+msgstr "Prikaži komentar"
 
 #: common_functions.php:4078
 msgid "The participant cannot upload a single file larger than this size"
@@ -10236,7 +10276,7 @@ msgstr "Največje število datotek, ki jih udeleženec lahko naloži za to vpra�
 
 #: common_functions.php:4088
 msgid "Max number of files"
-msgstr "Maksimalno število datotek"
+msgstr "Največje število datotek"
 
 #: common_functions.php:4096
 msgid "Minimum number of files that the participant must upload for this question"
@@ -10244,23 +10284,23 @@ msgstr "Najmanjše število datotek, ki jih mora udeleženec naložiti za to vpr
 
 #: common_functions.php:4097
 msgid "Min number of files"
-msgstr "Minimalno število datotek"
+msgstr "Najmanjše število datotek"
 
 #: common_functions.php:4105
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
-msgstr "Dovoljeni tipi datotek (vrednosti, ločene z vejico - npr. pdf,doc,odt)"
+msgstr "Dovoljene vrste datotek (vrednosti, ločene z vejico - npr. pdf,doc,odt)"
 
 #: common_functions.php:4106
 msgid "Allowed file types"
-msgstr "Dovoljeni tipi datotek"
+msgstr "Dovoljene vrste datotek"
 
 #: common_functions.php:4113
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
-msgstr ""
+msgstr "Postavi vprašanje v določeno naključno skupino, vsa vprašanja v tej skupini se bodo prikazala v naključnem vrstnem redu"
 
 #: common_functions.php:4114
 msgid "Randomization group name"
-msgstr ""
+msgstr "Ime naključne skupine"
 
 #: common_functions.php:4301
 msgid "Version"
@@ -10268,7 +10308,7 @@ msgstr "Različica"
 
 #: common_functions.php:4310
 msgid "Online Manual"
-msgstr "Online Navodila"
+msgstr "Spletni priročnik"
 
 #: common_functions.php:4313
 msgid "Support this project - Donate to "
@@ -10280,7 +10320,7 @@ msgstr "Obiščite našo spletno stran!"
 
 #: common_functions.php:4431
 msgid "Email was not sent because demo-mode is activated."
-msgstr "E-mail ni bil poslan ker je vključen demonstracijski način ankete"
+msgstr "Sporočilo ni bilo poslano, ker je vključen demonstracijski način ankete."
 
 #: common_functions.php:4559
 msgid "SMTP debug output:"
@@ -10292,7 +10332,7 @@ msgstr "SQL ukaz neuspešen: %s Razlog: %s"
 
 #: common_functions.php:6217
 msgid "Token code"
-msgstr "Koda gesla"
+msgstr "Žeton"
 
 #: common_functions.php:6218
 msgid "Language code"
@@ -10300,19 +10340,19 @@ msgstr "Koda jezika"
 
 #: common_functions.php:6219
 msgid "Invitation sent date"
-msgstr "Povabilo poslano na"
+msgstr "Datum vabila"
 
 #: common_functions.php:6220
 msgid "Last Reminder sent date"
-msgstr "Opomnik nazadnje poslan na"
+msgstr "Datum zadnjega poslanega opomnika"
 
 #: common_functions.php:6221
 msgid "Total numbers of sent reminders"
-msgstr "Skupno število poslanih opomnikov."
+msgstr "Skupno število poslanih opomnikov"
 
 #: common_functions.php:6243
 msgid "Attribute %s"
-msgstr "Lastnost %s"
+msgstr "Atribut %s"
 
 #: delete.php:86
 msgid "File %s deleted"
@@ -10320,7 +10360,7 @@ msgstr "Datoteka %s je bila izbrisana"
 
 #: delete.php:89
 msgid "Oops, There was an error deleting the file"
-msgstr "Ups, prišlo je do napake pri brisanju te datoteke."
+msgstr "Ups, prišlo je do napake pri brisanju datoteke"
 
 #: group.php:116
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
@@ -10360,7 +10400,7 @@ msgstr "Oprostite. Takšna anketa ne obstaja."
 
 #: group.php:509
 msgid "Invalid group number for this survey: "
-msgstr ""
+msgstr "Napačna številka skupine za to anketo: "
 
 #: group.php:514
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
@@ -10496,7 +10536,7 @@ msgstr "Podatki se ne ujemajo z nobeno izmed shranjenih anket"
 
 #: index.php:1228
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
-msgstr "Naložena datoteka (%s) je večja od maks. dovoljenih %s KB."
+msgstr "Naložena datoteka (%s) je večja od največ dovoljenih %s KB."
 
 #: index.php:1241 index.php:1247
 msgid "Sorry, only %s extensions are allowed!"
@@ -10590,11 +10630,11 @@ msgstr "Ime ankete (ID):"
 #: qanda.php:131 qanda.php:132 qanda.php:140 qanda.php:141 qanda.php:149
 #: qanda.php:150
 msgid "Choose one of the following answers"
-msgstr "Prosimo, izberite enega od naslednjih odgovorov"
+msgstr "Izberite enega od naslednjih odgovorov"
 
 #: qanda.php:157
 msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
-msgstr "Izberite odgovor na seznamu na levi, začenši z najvišje ocenjenim in nadaljujte do najnižje ocenjenega elementa."
+msgstr "Izberite odgovor iz seznama na levi, začenši z najvišje ocenjenim in nadaljujte do najnižje ocenjenega elementa."
 
 #: qanda.php:161 qanda.php:162
 msgid "Check at least %d item"
@@ -10606,23 +10646,23 @@ msgstr[3] "Preveri vsaj %d stvari"
 
 #: qanda.php:175 qanda.php:176 qanda.php:199 qanda.php:200
 msgid "Check any that apply"
-msgstr "Možnih je več odgovorov"
+msgstr "Označite vse, ki ustrezajo"
 
 #: qanda.php:186 qanda.php:187 qanda.php:1252
 msgid "Choose your language"
-msgstr "Izberi jezik"
+msgstr "Izberite jezik"
 
 #: qanda.php:211 qanda.php:212
 msgid "At least %d files must be uploaded for this question"
-msgstr "Vsaj %d datotek more biti naloženih za to vprašanje"
+msgstr "Vsaj %d datotek mora biti naloženih za to vprašanje"
 
 #: qanda.php:444
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr "Nadaljevanje ni mogoče preden ne vnesete teksta za eno ali več vprašanj."
+msgstr "Nadaljevanje ni mogoče preden ne vnesete besedila za eno ali več vprašanj."
 
 #: qanda.php:503
 msgid "One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed"
-msgstr "Ena ali več datotek so presegli velikost datoteke/niso pravilnega formata ali pa ni bilo naloženo minimalno število datotek. Ne moreš nadaljevati dokler tega ne popraviš."
+msgstr "Ena ali več datotek so presegli velikost datoteke/niso pravilnega formata ali pa ni bilo naloženo minimalno število datotek. Ne morete nadaljevati, dokler tega ne popravite."
 
 #: qanda.php:546
 msgid "Your time to answer this question has expired"
@@ -10714,7 +10754,7 @@ msgstr "Izbiralnik datuma"
 
 #: qanda.php:1504
 msgid "Other answer"
-msgstr "Drug odgovor"
+msgstr "Drugi odgovor"
 
 #: qanda.php:1804
 msgid "Please enter your comment here"
@@ -10722,19 +10762,19 @@ msgstr "Prosimo, vpišite svoj komentar"
 
 #: qanda.php:2107
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
-msgstr "Kliknite na škarje poleg vsakega elementa na desni za odstranitev zadnji element v spisku"
+msgstr "Kliknite na škarje poleg vsakega elementa na desni za odstranitev zadnjega elementa v seznamu"
 
 #: qanda.php:2118 qanda.php:2133
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
-msgstr[0] "Prosim rangirajte vsaj %d možnost za vprašanje \"%s\""
-msgstr[1] "Prosim rangirajte vsaj %d možnosti za vprašanje \"%s\""
-msgstr[2] "Prosim rangirajte vsaj %d možnosti za vprašanje \"%s\""
-msgstr[3] "Prosim rangirajte vsaj %d možnosti za vprašanje \"%s\""
+msgstr[0] "Razvrstite vsaj %d možnost za vprašanje \"%s\""
+msgstr[1] "Razvrstite vsaj %d možnosti za vprašanje \"%s\"."
+msgstr[2] "Razvrstite vsaj %d možnosti za vprašanje \"%s\"."
+msgstr[3] "Razvrstite vsaj %d možnosti za vprašanje \"%s\"."
 
 #: qanda.php:2428
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr "Izbrali ste polje \"drugo\" za vprašanje \"%s\". Izpolnite tudi polje \"komentar drugo\"."
+msgstr "Izbrali ste polje \"drugo\" za vprašanje \"%s\". Izpolnite tudi polje \"drugi komentar\"."
 
 #: qanda.php:2700
 msgid "Upload files"
@@ -10754,11 +10794,11 @@ msgstr "Ime datoteke"
 
 #: qanda.php:2885 qanda.php:3140 qanda.php:4205 qanda.php:6029
 msgid "Error: This question has no answers."
-msgstr "Napaka: To vprašanje nima odgovorov."
+msgstr "Napaka: to vprašanje nima odgovorov."
 
 #: qanda.php:3285
 msgid "Only numbers may be entered in these fields"
-msgstr "V ta polja lahko vpisujete samo številke"
+msgstr "V ta polja lahko vnesete samo številke"
 
 #: qanda.php:3296
 msgid "Remaining: "
@@ -10770,7 +10810,7 @@ msgstr "Skupaj: "
 
 #: qanda.php:3572 qanda.php:3573
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
-msgstr "Povleci in spusti žebljiček na željeno lokacijo. Žebljiček premakneš tudi z desnim klikom."
+msgstr "Povleci in spusti žebljiček na želeno lokacijo. Žebljiček lahko premakneš tudi z desnim klikom."
 
 #: qanda.php:4770 qanda.php:5150 qanda.php:5484 qanda.php:5631 qanda.php:6259
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
@@ -10782,7 +10822,7 @@ msgstr "..."
 
 #: qanda.php:5625
 msgid "Error: There are no answers defined for this question."
-msgstr "Napaka: To vprašanje še nima nobenega odgovora."
+msgstr "Napaka: to vprašanje nima določenega še nobenega odgovora."
 
 #: register.php:79
 msgid "The email you used is not valid. Please try again."
@@ -10790,7 +10830,7 @@ msgstr "Ta elektronski naslov ni veljaven. Prosimo, poskusite znova."
 
 #: register.php:94
 msgid "The email you used has already been registered."
-msgstr "Elektronski naslov, ki ste ga vpisali je bil že uporabljen v tej anketi."
+msgstr "Elektronski naslov, ki ste ga vpisali, je bil že uporabljen v tej anketi."
 
 #: register.php:176
 msgid "Thank you for registering to participate in this survey."
@@ -10798,7 +10838,7 @@ msgstr "Najlepša hvala za registracijo za sodelovanje v anketi."
 
 #: register.php:176
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
-msgstr "Na e-mail naslov, ki ste ga navedli je bilo poslano sporočilo z navodili za dostop do ankete. Za nadaljevanje ankete sledite povezavi v sporočilu, ki ga boste prejeli v tem sporočilu."
+msgstr "Na e-mail naslov, ki ste ga navedli, je bilo poslano sporočilo z navodili za dostop do ankete. Za nadaljevanje ankete sledite povezavi v sporočilu, ki ga boste prejeli."
 
 #: register.php:176
 msgid "Survey Administrator"
@@ -10970,7 +11010,7 @@ msgstr "Pojdi nazaj"
 
 #: statistics_user.php:384
 msgid "Getting questions and answers ..."
-msgstr "Pridobivam vprašanja in odgovore..."
+msgstr "Pridobivam vprašanja in odgovore ..."
 
 #: statistics_user.php:400
 msgid "Total records in survey"
@@ -10978,7 +11018,7 @@ msgstr "Skupno število zapisov v anketi"
 
 #: statistics_user.php:413
 msgid "Generating summaries ..."
-msgstr "Generiram osnovne statistike..."
+msgstr "Ustvarjam osnovne statistike ..."
 
 #: upload.php:87
 msgid "Sorry, this file extension (%s) is not allowed!"
@@ -11030,11 +11070,11 @@ msgstr "Prosim, naložite še %s datotek."
 
 #: uploader.php:102
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
-msgstr "Če želite lahko naložite še %s datotek; v nasprotnem se lahko vrnete na anketo"
+msgstr "Če želite lahko naložite še %s datotek; v nasprotnem se lahko vrnete na anketo."
 
 #: uploader.php:103 uploader.php:104
 msgid "The maximum number of files has been uploaded. You may return back to survey."
-msgstr "Maksimalno število datotek je bilo naloženih. Lahko se vrnete na anketo."
+msgstr "Največje število datotek je bilo naloženih. Lahko se vrnete na anketo."
 
 #: uploader.php:105
 msgid ""
@@ -11042,11 +11082,11 @@ msgid ""
 "Are you sure you want to exit?"
 msgstr ""
 "Za to vprašanje morate naložiti še %s datotek. \n"
-"Ste prepričani, da želite oditi?"
+"Ste prepričani, da želite zapreti?"
 
 #: uploader.php:131
 msgid "You can upload %s under %s KB each."
-msgstr ""
+msgstr "%s lahko prenesete, če je vsaka manjša od %s KB."
 
 #: admin/access_denied.php:22
 msgid "Access denied!"

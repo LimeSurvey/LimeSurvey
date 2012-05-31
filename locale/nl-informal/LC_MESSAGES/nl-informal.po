@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-20 22:00:35+0000\n"
+"PO-Revision-Date: 2012-05-31 06:07:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -151,7 +151,7 @@ msgstr "Wijzigen in besloten toegangsmode"
 msgid "No, thanks."
 msgstr "Nee, bedankt."
 
-#: admin/admin.php:783 admin/admin.php:794 admin/conditionshandling.php:1072
+#: admin/admin.php:787 admin/admin.php:798 admin/conditionshandling.php:1072
 #: admin/html.php:2252 common.php:278 common.php:284
 msgid "LimeSurvey online manual"
 msgstr "LimeSurvey Online Handleiding"
@@ -462,7 +462,7 @@ msgstr "Bewerkingen"
 
 #: admin/assessments.php:169 admin/surveylist.php:31
 msgid "SID"
-msgstr "ID"
+msgstr "SID"
 
 #: admin/assessments.php:173 admin/editsurveysettings.php:137
 #: admin/html.php:711 admin/html.php:1124 admin/labels.php:328
@@ -647,7 +647,7 @@ msgstr "Gefilterde Resultaten Tonen"
 
 #: admin/browse.php:329
 msgid "Remove filter"
-msgstr ""
+msgstr "Verwijder filter"
 
 #: admin/browse.php:558 admin/browse.php:898
 msgid "Delete marked responses"
@@ -889,9 +889,9 @@ msgstr "Geen conditie  kon worden gekopieerd (dubbel)"
 #: admin/exportresults.php:894 admin/exportresults.php:895
 #: admin/exportresults.php:941 admin/exportresults.php:942
 #: admin/exportresults.php:963 admin/exportresults.php:964
-#: admin/globalsettings.php:387 admin/globalsettings.php:399
-#: admin/globalsettings.php:410 admin/globalsettings.php:459
-#: admin/globalsettings.php:479 admin/html.php:897 admin/html.php:1418
+#: admin/globalsettings.php:388 admin/globalsettings.php:400
+#: admin/globalsettings.php:411 admin/globalsettings.php:460
+#: admin/globalsettings.php:480 admin/html.php:897 admin/html.php:1418
 #: admin/html.php:1427 admin/importoldresponses.php:71
 #: admin/printablesurvey.php:856 admin/printablesurvey.php:860
 #: admin/printablesurvey.php:977 admin/printablesurvey.php:994
@@ -903,8 +903,8 @@ msgstr "Geen conditie  kon worden gekopieerd (dubbel)"
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2501
-#: classes/expressions/LimeExpressionManager.php:2505 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2513
+#: classes/expressions/LimeExpressionManager.php:2517 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
 #: common_functions.php:3205 common_functions.php:3278
 #: common_functions.php:3385 common_functions.php:3398
@@ -931,7 +931,7 @@ msgstr "Ja"
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2507 common_functions.php:1922
+#: classes/expressions/LimeExpressionManager.php:2519 common_functions.php:1922
 #: qanda.php:4194 qanda.php:4239
 msgid "Uncertain"
 msgstr "Weet niet"
@@ -957,9 +957,9 @@ msgstr "Weet niet"
 #: admin/exportresults.php:945 admin/exportresults.php:946
 #: admin/exportresults.php:949 admin/exportresults.php:950
 #: admin/exportresults.php:967 admin/exportresults.php:968
-#: admin/globalsettings.php:390 admin/globalsettings.php:402
-#: admin/globalsettings.php:413 admin/globalsettings.php:460
-#: admin/globalsettings.php:480 admin/html.php:893 admin/html.php:1418
+#: admin/globalsettings.php:391 admin/globalsettings.php:403
+#: admin/globalsettings.php:414 admin/globalsettings.php:461
+#: admin/globalsettings.php:481 admin/html.php:893 admin/html.php:1418
 #: admin/html.php:1427 admin/importoldresponses.php:72
 #: admin/printablesurvey.php:857 admin/printablesurvey.php:861
 #: admin/printablesurvey.php:979 admin/printablesurvey.php:996
@@ -970,8 +970,8 @@ msgstr "Weet niet"
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2502
-#: classes/expressions/LimeExpressionManager.php:2506 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2514
+#: classes/expressions/LimeExpressionManager.php:2518 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3204
 #: common_functions.php:3277 common_functions.php:3384
 #: common_functions.php:3399 common_functions.php:3410
@@ -997,7 +997,7 @@ msgstr "Nee"
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2510 common_functions.php:1928
+#: classes/expressions/LimeExpressionManager.php:2522 common_functions.php:1928
 #: qanda.php:4341 qanda.php:4384
 msgid "Increase"
 msgstr "Toenemend"
@@ -1008,7 +1008,7 @@ msgstr "Toenemend"
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2511 common_functions.php:1930
+#: classes/expressions/LimeExpressionManager.php:2523 common_functions.php:1930
 #: qanda.php:4342 qanda.php:4395
 msgid "Same"
 msgstr "Zelfde"
@@ -1019,7 +1019,7 @@ msgstr "Zelfde"
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2512 common_functions.php:1929
+#: classes/expressions/LimeExpressionManager.php:2524 common_functions.php:1929
 #: qanda.php:4343 qanda.php:4407
 msgid "Decrease"
 msgstr "Afnemend"
@@ -1072,7 +1072,7 @@ msgstr "niet aangevinkt"
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2498 common_functions.php:1913
+#: classes/expressions/LimeExpressionManager.php:2510 common_functions.php:1913
 #: qanda.php:3815
 msgid "Female"
 msgstr "Vrouwelijk"
@@ -1084,7 +1084,7 @@ msgstr "Vrouwelijk"
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2497 common_functions.php:1912
+#: classes/expressions/LimeExpressionManager.php:2509 common_functions.php:1912
 #: qanda.php:3823
 msgid "Male"
 msgstr "Mannelijk"
@@ -1516,7 +1516,7 @@ msgid "Identifier:"
 msgstr "Identificatie:"
 
 #: admin/dataentry.php:183 admin/dataentry.php:2913
-#: admin/globalsettings.php:363 admin/tokens.php:851
+#: admin/globalsettings.php:364 admin/tokens.php:851
 msgid "Password:"
 msgstr "Wachtwoord:"
 
@@ -1677,11 +1677,11 @@ msgstr "Beantwoord deze vraag alleen als aan de volgende condities is voldaan:"
 
 #: admin/dataentry.php:1843
 msgid "The answer(s) must meet these validation criteria:"
-msgstr ""
+msgstr "De antwoorden moet voldoen aan:"
 
 #: admin/dataentry.php:1849
 msgid "The answer(s) must meet these array_filter criteria:"
-msgstr ""
+msgstr "De antwoorden moeten voldoen aan deze \"array_filter' voorwaarden:"
 
 #: admin/dataentry.php:1879
 msgid "Help about this question"
@@ -1717,11 +1717,11 @@ msgstr "De vragenlijst die je hebt geselecteerd bestaat niet"
 
 #: admin/dataentry.php:3015 admin/printablesurvey.php:1597
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
-msgstr ""
+msgstr "Beantwoord deze vraag alleen voor de geselecteerde items in vraag %s ('%s')"
 
 #: admin/dataentry.php:3024 admin/printablesurvey.php:1606
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
-msgstr ""
+msgstr "Beantwoord deze vraag alleen voor de niet geselecteerde items in vraag %s ('%s')"
 
 #: admin/deactivate.php:25 admin/deactivate.php:34 admin/deactivate.php:111
 msgid "Deactivate Survey"
@@ -1857,7 +1857,7 @@ msgstr "Error: antwoord code komt reeds voor."
 
 #: admin/editansweroptions.php:121 admin/editsubquestions.php:76
 msgid "There are no label sets which match the survey default language"
-msgstr ""
+msgstr "Er is geen labelset voor de taal van de vragenlijst"
 
 #: admin/editansweroptions.php:137
 msgid "Answer scale %s"
@@ -2070,7 +2070,7 @@ msgid "Edit survey settings"
 msgstr "Wijzig instellingen vragenlijst"
 
 #: admin/editsurveysettings.php:92 admin/editsurveysettings.php:187
-#: admin/exportresults.php:90 admin/globalsettings.php:140
+#: admin/exportresults.php:90 admin/globalsettings.php:141
 msgid "General"
 msgstr "Algemeen"
 
@@ -2216,7 +2216,7 @@ msgstr "Welkomstpagina tonen?"
 
 #: admin/editsurveysettings.php:323
 msgid "Navigation delay (seconds):"
-msgstr "Vetraging navigatie (sec):"
+msgstr "Vertraging navigatie (sec):"
 
 #: admin/editsurveysettings.php:328
 msgid "Show [<< Prev] button"
@@ -2251,7 +2251,7 @@ msgid "Automatically load URL when survey complete?"
 msgstr "URL automatisch laden na afronding vragenlijst?"
 
 #: admin/editsurveysettings.php:444 admin/editsurveysettings.php:464
-#: admin/globalsettings.php:477
+#: admin/globalsettings.php:478
 msgid "Show \"There are X questions in this survey\""
 msgstr "Toon \"Er zijn X vragen in deze vragenlijst\""
 
@@ -2284,20 +2284,20 @@ msgid "Hide both (Forced by the system administrator)"
 msgstr "Verberg beide (bepaald door beheerder)"
 
 #: admin/editsurveysettings.php:501 admin/editsurveysettings.php:538
-#: admin/globalsettings.php:500 admin/globalsettings.php:518
+#: admin/globalsettings.php:501 admin/globalsettings.php:519
 msgid "Show both"
 msgstr "Toon beide"
 
-#: admin/editsurveysettings.php:502 admin/globalsettings.php:501
+#: admin/editsurveysettings.php:502 admin/globalsettings.php:502
 msgid "Show group name only"
 msgstr "Toon alleen groepsnaam"
 
-#: admin/editsurveysettings.php:503 admin/globalsettings.php:502
+#: admin/editsurveysettings.php:503 admin/globalsettings.php:503
 msgid "Show group description only"
 msgstr "Toon alleen groepsbeschrijving"
 
 #: admin/editsurveysettings.php:504 admin/editsurveysettings.php:541
-#: admin/globalsettings.php:503 admin/globalsettings.php:521
+#: admin/globalsettings.php:504 admin/globalsettings.php:522
 msgid "Hide both"
 msgstr "Verberg beide"
 
@@ -2313,11 +2313,11 @@ msgstr "Toon alleen vraagnummer (bepaald door beheerder)"
 msgid "Show question code only (Forced by the system administrator)"
 msgstr "Toon alleen vraagcode (bepaald door beheerder)"
 
-#: admin/editsurveysettings.php:539 admin/globalsettings.php:519
+#: admin/editsurveysettings.php:539 admin/globalsettings.php:520
 msgid "Show question number only"
 msgstr "Toon alleen vraagnummer"
 
-#: admin/editsurveysettings.php:540 admin/globalsettings.php:520
+#: admin/editsurveysettings.php:540 admin/globalsettings.php:521
 msgid "Show question code only"
 msgstr "Alleen vraagcodes tonen"
 
@@ -2435,23 +2435,23 @@ msgstr "Afdrukken van antwoorden door respondenten toegestaan?"
 
 #: admin/editsurveysettings.php:846
 msgid "Google Analytics API Key for this Survey?"
-msgstr ""
+msgstr "Google Analytics API Key voor deze vragenlijst?"
 
 #: admin/editsurveysettings.php:851
 msgid "Google Analytics Style for this Survey?"
-msgstr ""
+msgstr "Google Analytics Style voor deze vragenlijst?"
 
 #: admin/editsurveysettings.php:857
 msgid "Do not use Google Analytics"
-msgstr ""
+msgstr "Google Analytics niet gebruiken"
 
 #: admin/editsurveysettings.php:862
 msgid "Default Google Analytics"
-msgstr ""
+msgstr "Standaard Google Analytics"
 
 #: admin/editsurveysettings.php:867
 msgid "Track pages within survey"
-msgstr ""
+msgstr "Pagina's binnen de enquête volgen"
 
 #: admin/editsurveysettings.php:877
 msgid "Anonymized responses?"
@@ -3051,387 +3051,387 @@ msgstr "Alleen antwoorden op vorige pagina's zijn beschikbaar"
 msgid "Survey mode is set to %s:"
 msgstr "Vragenlijst modus is gewijzigd naar %s:"
 
-#: admin/globalsettings.php:107
+#: admin/globalsettings.php:108
 msgid "Global settings were saved."
 msgstr "Instellingen opgeslagen."
 
-#: admin/globalsettings.php:135 admin/html.php:2185
+#: admin/globalsettings.php:136 admin/html.php:2185
 msgid "Global settings"
 msgstr "Instellingen"
 
-#: admin/globalsettings.php:139
+#: admin/globalsettings.php:140
 msgid "Overview & update"
 msgstr "Overzicht & bijwerken"
 
-#: admin/globalsettings.php:141
+#: admin/globalsettings.php:142
 msgid "Email settings"
 msgstr "E-mail instellingen"
 
-#: admin/globalsettings.php:142 admin/tokens.php:671 admin/tokens.php:805
+#: admin/globalsettings.php:143 admin/tokens.php:671 admin/tokens.php:805
 #: admin/tokens.php:815
 msgid "Bounce settings"
 msgstr "Bounce instellingen"
 
-#: admin/globalsettings.php:143
+#: admin/globalsettings.php:144
 msgid "Security"
 msgstr "Veiligheid"
 
-#: admin/globalsettings.php:144
+#: admin/globalsettings.php:145
 msgid "Presentation"
 msgstr "Presentatie"
 
-#: admin/globalsettings.php:150
+#: admin/globalsettings.php:151
 msgid "Updates"
 msgstr "Nieuw"
 
-#: admin/globalsettings.php:151
+#: admin/globalsettings.php:152
 msgid "Check for updates:"
 msgstr "Controleer op nieuwe versie:"
 
-#: admin/globalsettings.php:155
+#: admin/globalsettings.php:156
 msgid "Never"
 msgstr "Nooit"
 
-#: admin/globalsettings.php:158
+#: admin/globalsettings.php:159
 msgid "Every day"
 msgstr "Elke dag"
 
-#: admin/globalsettings.php:161
+#: admin/globalsettings.php:162
 msgid "Every week"
 msgstr "Elke week"
 
-#: admin/globalsettings.php:164
+#: admin/globalsettings.php:165
 msgid "Every 2 weeks"
 msgstr "Elke 2 weken"
 
-#: admin/globalsettings.php:167
+#: admin/globalsettings.php:168
 msgid "Every month"
 msgstr "Elke maand"
 
-#: admin/globalsettings.php:168
+#: admin/globalsettings.php:169
 msgid "Check now"
 msgstr "Controleer nu"
 
-#: admin/globalsettings.php:168
+#: admin/globalsettings.php:169
 msgid "Last check: %s"
 msgstr "Laatste controle: %s"
 
-#: admin/globalsettings.php:172
+#: admin/globalsettings.php:173
 msgid "There is a LimeSurvey update available: Version %s"
 msgstr "Er is een nieuwe LimeSurvey versie beschikbaar. Versie %s"
 
-#: admin/globalsettings.php:173
+#: admin/globalsettings.php:174
 msgid "You can update %smanually%s or use the %s"
 msgstr "Je kan %shandmatig upgraden%s of gebruik maken van de %s"
 
-#: admin/globalsettings.php:173
+#: admin/globalsettings.php:174
 msgid "3-Click ComfortUpdate"
 msgstr "3-Klik ComfortUpdate"
 
-#: admin/globalsettings.php:177
+#: admin/globalsettings.php:178
 msgid "There was an error on update check (%s)"
 msgstr "Er is een fout opgetreden bij de wijzigingscontrole (%s)"
 
-#: admin/globalsettings.php:183
+#: admin/globalsettings.php:184
 msgid "There is currently no newer LimeSurvey version available."
 msgstr "Je hebt de meest recente versie van LimeSurvey."
 
-#: admin/globalsettings.php:193
+#: admin/globalsettings.php:194
 msgid "Site name:"
 msgstr "Naam website:"
 
-#: admin/globalsettings.php:195
+#: admin/globalsettings.php:196
 msgid "Default site language:"
 msgstr "Standaardtaal"
 
-#: admin/globalsettings.php:210
+#: admin/globalsettings.php:211
 msgid "Default template:"
 msgstr "Standaardsjabloon"
 
-#: admin/globalsettings.php:223
+#: admin/globalsettings.php:224
 msgid "Default HTML editor mode:"
 msgstr "Standaard HTML Editor methode"
 
-#: admin/globalsettings.php:227
+#: admin/globalsettings.php:228
 msgid "Default HTML editor mode"
 msgstr "Standaard HTML Editor methode"
 
-#: admin/globalsettings.php:230 admin/html.php:121
+#: admin/globalsettings.php:231 admin/html.php:121
 msgid "No HTML editor"
 msgstr "Geen HTML editor"
 
-#: admin/globalsettings.php:233 admin/html.php:119
+#: admin/globalsettings.php:234 admin/html.php:119
 msgid "Inline HTML editor"
 msgstr "Inline HTML editor"
 
-#: admin/globalsettings.php:236 admin/html.php:120
+#: admin/globalsettings.php:237 admin/html.php:120
 msgid "Popup HTML editor"
 msgstr "Popup HTML editor"
 
-#: admin/globalsettings.php:240
+#: admin/globalsettings.php:241
 msgid "Time difference (in hours):"
 msgstr "Tijdsverschil (in uren):"
 
-#: admin/globalsettings.php:242
+#: admin/globalsettings.php:243
 msgid "Server time:"
 msgstr "Server tijd:"
 
-#: admin/globalsettings.php:242
+#: admin/globalsettings.php:243
 msgid "Corrected time :"
 msgstr "Tijd verbonden :"
 
-#: admin/globalsettings.php:246
+#: admin/globalsettings.php:247
 msgid "PDF export available:"
 msgstr "PDF export beschikbaar:"
 
-#: admin/globalsettings.php:250 admin/globalsettings.php:261
-#: admin/globalsettings.php:441
+#: admin/globalsettings.php:251 admin/globalsettings.php:262
+#: admin/globalsettings.php:442
 msgid "On"
 msgstr "Aan"
 
-#: admin/globalsettings.php:253 admin/globalsettings.php:264
-#: admin/globalsettings.php:316 admin/globalsettings.php:328
-#: admin/globalsettings.php:349 admin/globalsettings.php:369
-#: admin/globalsettings.php:442 admin/tokens.php:838 common_functions.php:3441
+#: admin/globalsettings.php:254 admin/globalsettings.php:265
+#: admin/globalsettings.php:317 admin/globalsettings.php:329
+#: admin/globalsettings.php:350 admin/globalsettings.php:370
+#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3441
 #: common_functions.php:3649
 msgid "Off"
 msgstr "Uit"
 
-#: admin/globalsettings.php:257
+#: admin/globalsettings.php:258
 msgid "Screen reader compatibility mode:"
 msgstr "Scherm compatibiliteitsmethode:"
 
-#: admin/globalsettings.php:266
+#: admin/globalsettings.php:267
 msgid "Session lifetime (seconds):"
 msgstr "Tijdsduur sessie (seconden):"
 
-#: admin/globalsettings.php:268
+#: admin/globalsettings.php:269
 msgid "IP Info DB API Key:"
 msgstr "IP Info DB API Key:"
 
-#: admin/globalsettings.php:270
+#: admin/globalsettings.php:271
 msgid "Google Maps API key:"
 msgstr "Google Maps API key:"
 
-#: admin/globalsettings.php:272
+#: admin/globalsettings.php:273
 msgid "Google Analytics API key:"
-msgstr ""
+msgstr "Google Analytics API key:"
 
-#: admin/globalsettings.php:274
+#: admin/globalsettings.php:275
 msgid "Google Translate API key:"
-msgstr ""
+msgstr "Google Translate API key:"
 
-#: admin/globalsettings.php:286
+#: admin/globalsettings.php:287
 msgid "Default site admin email:"
 msgstr "Standaard e-mailadres website:"
 
-#: admin/globalsettings.php:289
+#: admin/globalsettings.php:290
 msgid "Administrator name:"
 msgstr "Beheerder:"
 
-#: admin/globalsettings.php:291
+#: admin/globalsettings.php:292
 msgid "Email method:"
 msgstr "E-mail methode:"
 
-#: admin/globalsettings.php:295
+#: admin/globalsettings.php:296
 msgid "PHP (default)"
 msgstr "PHP (standaard)"
 
-#: admin/globalsettings.php:298
+#: admin/globalsettings.php:299
 msgid "SMTP"
 msgstr "SMTP"
 
-#: admin/globalsettings.php:301
+#: admin/globalsettings.php:302
 msgid "Sendmail"
 msgstr "Sendmail"
 
-#: admin/globalsettings.php:304
+#: admin/globalsettings.php:305
 msgid "Qmail"
 msgstr "Qmail"
 
-#: admin/globalsettings.php:306
+#: admin/globalsettings.php:307
 msgid "SMTP host:"
 msgstr "SMTP host:"
 
-#: admin/globalsettings.php:307
+#: admin/globalsettings.php:308
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr "Geef hostnaam en poort (bijv.: mijn.smtp.com:25)"
 
-#: admin/globalsettings.php:308
+#: admin/globalsettings.php:309
 msgid "SMTP username:"
 msgstr "SMTP gebruikersnaam:"
 
-#: admin/globalsettings.php:310
+#: admin/globalsettings.php:311
 msgid "SMTP password:"
 msgstr "SMTP wachtwoord:"
 
-#: admin/globalsettings.php:312
+#: admin/globalsettings.php:313
 msgid "SMTP SSL/TLS:"
 msgstr "SMTP SSL/TLS:"
 
-#: admin/globalsettings.php:319 admin/globalsettings.php:372
+#: admin/globalsettings.php:320 admin/globalsettings.php:373
 #: admin/tokens.php:860
 msgid "SSL"
 msgstr "SSL"
 
-#: admin/globalsettings.php:322 admin/globalsettings.php:375
+#: admin/globalsettings.php:323 admin/globalsettings.php:376
 #: admin/tokens.php:863
 msgid "TLS"
 msgstr "TLS"
 
-#: admin/globalsettings.php:324
+#: admin/globalsettings.php:325
 msgid "SMTP debug mode:"
 msgstr "SMTP debug mode:"
 
-#: admin/globalsettings.php:331
+#: admin/globalsettings.php:332
 msgid "On errors"
 msgstr "Bij fouten"
 
-#: admin/globalsettings.php:334
+#: admin/globalsettings.php:335
 msgid "Always"
 msgstr "Altijd"
 
-#: admin/globalsettings.php:336
+#: admin/globalsettings.php:337
 msgid "Email batch size:"
 msgstr "E-mail batch grootte:"
 
-#: admin/globalsettings.php:343
+#: admin/globalsettings.php:344
 msgid "Default site bounce email:"
 msgstr "E-mailadres bij fout e-mailadres:"
 
-#: admin/globalsettings.php:345 admin/tokens.php:834
+#: admin/globalsettings.php:346 admin/tokens.php:834
 msgid "Server type:"
 msgstr "Server type:"
 
-#: admin/globalsettings.php:352 admin/tokens.php:841
+#: admin/globalsettings.php:353 admin/tokens.php:841
 msgid "IMAP"
 msgstr "IMAP"
 
-#: admin/globalsettings.php:355 admin/tokens.php:844
+#: admin/globalsettings.php:356 admin/tokens.php:844
 msgid "POP"
 msgstr "POP"
 
-#: admin/globalsettings.php:358 admin/tokens.php:847
+#: admin/globalsettings.php:359 admin/tokens.php:847
 msgid "Server name & port:"
 msgstr "Server naam & poort:"
 
-#: admin/globalsettings.php:359 admin/tokens.php:848
+#: admin/globalsettings.php:360 admin/tokens.php:848
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:995"
 msgstr "Geef je hostnaam en poort op (bijv.: mijn.smtp.com:25)"
 
-#: admin/globalsettings.php:361 admin/tokens.php:849
+#: admin/globalsettings.php:362 admin/tokens.php:849
 msgid "User name:"
 msgstr "Gebruikersnaam:"
 
-#: admin/globalsettings.php:365 admin/tokens.php:853
+#: admin/globalsettings.php:366 admin/tokens.php:853
 msgid "Encryption type:"
 msgstr "Type versleuteling:"
 
-#: admin/globalsettings.php:383
+#: admin/globalsettings.php:384
 msgid "Survey preview only for administration users"
 msgstr "Voorvertonen vragenlijst alleen voor beheerders"
 
-#: admin/globalsettings.php:395
+#: admin/globalsettings.php:396
 msgid "Filter HTML for XSS:"
 msgstr "Filter HTML op XSS:"
 
-#: admin/globalsettings.php:406
+#: admin/globalsettings.php:407
 msgid "Group member can only see own group:"
 msgstr "Groepsleden kunnen alleen hun eigen groep zien:"
 
-#: admin/globalsettings.php:418
+#: admin/globalsettings.php:419
 msgid "Warning: Before turning on HTTPS, "
 msgstr "Waarschuwing: Voordat HTTPS wordt ingeschakeld,"
 
-#: admin/globalsettings.php:420
+#: admin/globalsettings.php:421
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr "Klik op deze link om te testen of je server SSL ingeschakeld heeft. "
 
-#: admin/globalsettings.php:421
+#: admin/globalsettings.php:422
 msgid "check if this link works."
 msgstr "controleer of de link werkt."
 
-#: admin/globalsettings.php:422
+#: admin/globalsettings.php:423
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
 msgstr "Als de link niet werkt en je schakelt HTTPS in, dan kun je LimeSurvey niet benaderen."
 
-#: admin/globalsettings.php:439
+#: admin/globalsettings.php:440
 msgid "Force HTTPS:"
 msgstr "Forceer  HTTPS:"
 
-#: admin/globalsettings.php:443
+#: admin/globalsettings.php:444
 msgid "Don't force on or off"
 msgstr "Niet forceren aan of uit"
 
-#: admin/globalsettings.php:457
+#: admin/globalsettings.php:458
 msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr "Gebruik optie 'geen antwoord' bij niet verplichte vragen:"
 
-#: admin/globalsettings.php:461 admin/globalsettings.php:481
-#: admin/globalsettings.php:504 admin/globalsettings.php:522
+#: admin/globalsettings.php:462 admin/globalsettings.php:482
+#: admin/globalsettings.php:505 admin/globalsettings.php:523
 msgid "Survey admin can choose"
 msgstr "Beheerder vragenlijst kan kiezen"
 
-#: admin/globalsettings.php:465
+#: admin/globalsettings.php:466
 msgid "Repeating headings in array questions every X subquestions:"
 msgstr "Herhaal kopregels in arrayvragen na elke X subvragen:"
 
-#: admin/globalsettings.php:498
+#: admin/globalsettings.php:499
 msgid "Show question group name and/or description"
 msgstr "Toon groepsnaam en/of beschrijving"
 
-#: admin/globalsettings.php:516
+#: admin/globalsettings.php:517
 msgid "Show question number and/or question code"
 msgstr "Toon vraagnummer en/of vraagcode"
 
-#: admin/globalsettings.php:534 admin/html.php:162 admin/tokens.php:865
+#: admin/globalsettings.php:535 admin/html.php:162 admin/tokens.php:865
 #: admin/userrighthandling.php:159
 msgid "Save settings"
 msgstr "Instellingen bewaren"
 
-#: admin/globalsettings.php:537
+#: admin/globalsettings.php:538
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr "NB: Dit is een demo. Instellingen die met een sterretje zijn aangegeven kunnen niet worden gewijzigd."
 
-#: admin/globalsettings.php:630
+#: admin/globalsettings.php:631
 msgid "System overview"
 msgstr "Overzicht systeem"
 
-#: admin/globalsettings.php:633 admin/update/updater.php:654
+#: admin/globalsettings.php:634 admin/update/updater.php:654
 msgid "Database name"
 msgstr "Naam database"
 
-#: admin/globalsettings.php:637
+#: admin/globalsettings.php:638
 msgid "Users"
 msgstr "Gebruikers"
 
-#: admin/globalsettings.php:640 admin/html.php:2230
+#: admin/globalsettings.php:641 admin/html.php:2230
 #: admin/http_importsurvey.php:155 admin/importsurvey.php:61
 #: admin/importsurvey.php:123
 msgid "Surveys"
 msgstr "Vragenlijsten"
 
-#: admin/globalsettings.php:643
+#: admin/globalsettings.php:644
 msgid "Active surveys"
 msgstr "Actieve vragenlijsten"
 
-#: admin/globalsettings.php:646
+#: admin/globalsettings.php:647
 msgid "Deactivated result tables"
 msgstr "Inactieve resultaattabellen"
 
-#: admin/globalsettings.php:649
+#: admin/globalsettings.php:650
 msgid "Active token tables"
 msgstr "Actieve toegangscodetabellen"
 
-#: admin/globalsettings.php:652
+#: admin/globalsettings.php:653
 msgid "Deactivated token tables"
 msgstr "Inactieve toegangscodetabellen"
 
-#: admin/globalsettings.php:659
+#: admin/globalsettings.php:660
 msgid "Used/free space for file uploads"
 msgstr "Gebruikte/beschikbare ruimte voor uploaden bestanden"
 
-#: admin/globalsettings.php:666
+#: admin/globalsettings.php:667
 msgid "Show PHPInfo"
 msgstr "Toon PHPInfo"
 
@@ -3458,27 +3458,27 @@ msgstr "Standaard"
 
 #: admin/html.php:127
 msgid "Question type selector"
-msgstr ""
+msgstr "Vraagtype keuzelijst"
 
 #: admin/html.php:130
 msgid "Full selector"
-msgstr ""
+msgstr "Uitgebreide keuzelijst"
 
 #: admin/html.php:131
 msgid "Simple selector"
-msgstr ""
+msgstr "Beknopte keuzelijst"
 
 #: admin/html.php:137
 msgid "Template editor mode"
-msgstr ""
+msgstr "Sjabloon bewerker mode"
 
 #: admin/html.php:140
 msgid "Full template editor"
-msgstr ""
+msgstr "Volledige sjabloonbewerker"
 
 #: admin/html.php:141
 msgid "Simple template editor"
-msgstr ""
+msgstr "Eenvoudige sjabloonbewerker"
 
 #: admin/html.php:147
 msgid "Date format"
@@ -3567,7 +3567,7 @@ msgstr "E-mailsjablonen"
 
 #: admin/html.php:377
 msgid "Survey  Logic File"
-msgstr ""
+msgstr "Survey  Logic File"
 
 #: admin/html.php:405
 msgid "Tools"
@@ -3591,11 +3591,11 @@ msgstr "Er zijn geen condities in deze vragenlijst."
 
 #: admin/html.php:445 admin/resetsurveylogic.php:22
 msgid "Reset Survey Logic"
-msgstr "Verwijder condities"
+msgstr "Reset Survey Logic"
 
 #: admin/html.php:453
 msgid "Expression Manager"
-msgstr ""
+msgstr "Expressie Manager"
 
 #: admin/html.php:462
 msgid "Display / Export"
@@ -3752,6 +3752,12 @@ msgid ""
 "\n"
 "HOWEVER, if you manually specified any relevance equations, regenerating the question codes will break all of that survey logic."
 msgstr ""
+"Wil je de vraagcodes opnieuw aanmaken?\n"
+"\n"
+"Waarschuwing:\n"
+"Dit is veilig als je alleen de Condities editor gebruikt.\n"
+"\n"
+"Echter, als je handmatig relevantie vergelijkingen ingevoerd hebt, moet je deze handmatig wijzigen."
 
 #: admin/html.php:745
 msgid "Straight"
@@ -3815,7 +3821,7 @@ msgstr "Wijzig huidige groep"
 
 #: admin/html.php:990
 msgid "Survey logic file for current question group"
-msgstr ""
+msgstr "Survey logic file voor huidige vraaggroep"
 
 #: admin/html.php:999
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
@@ -3867,7 +3873,7 @@ msgstr "Sluit deze groep af"
 
 #: admin/html.php:1137 admin/html.php:1440
 msgid "Relevance:"
-msgstr ""
+msgstr "Relevantie:"
 
 #: admin/html.php:1186 admin/html.php:1191
 msgid "Preview This Question"
@@ -3884,7 +3890,7 @@ msgstr "Bewerk huidige vraag"
 
 #: admin/html.php:1225
 msgid "Survey logic file for current question"
-msgstr ""
+msgstr "Survey logic file voor huidige vraag"
 
 #: admin/html.php:1234
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
@@ -5206,7 +5212,7 @@ msgstr "Antwoorden wissen en status voldaan"
 
 #: admin/iterate_survey.php:63
 msgid "Answers and tokens have been re-opened."
-msgstr "Antwoorden en toegangscodes werden heropend."
+msgstr "Antwoorden en toegangscodes zijn heropend."
 
 #: admin/labels.php:59
 msgid "Label Sets Administration"
@@ -5214,7 +5220,7 @@ msgstr "Labelsetbeheer"
 
 #: admin/labels.php:70 admin/labels.php:123
 msgid "Export multiple label sets"
-msgstr "Exporteer meerdere labelset"
+msgstr "Exporteer meerdere labelsets"
 
 #: admin/labels.php:93 admin/labels.php:157
 msgid "Create or import new label set(s)"
@@ -5246,7 +5252,7 @@ msgstr "Maak nieuwe labelset aan"
 
 #: admin/labels.php:158
 msgid "Edit Label Set"
-msgstr ""
+msgstr "Wijzig labelset"
 
 #: admin/labels.php:158 admin/labels.php:267
 msgid "Edit label set"
@@ -5303,7 +5309,7 @@ msgstr "Exporteer deze labelset"
 
 #: admin/labels.php:275
 msgid "Close Window"
-msgstr ""
+msgstr "Sluit venster"
 
 #: admin/labels.php:302
 msgid "Error: You are trying to use duplicate label codes."
@@ -5327,11 +5333,11 @@ msgstr ""
 
 #: admin/labels.php:439
 msgid "Enter your labels:"
-msgstr ""
+msgstr "Geef uw labels:"
 
 #: admin/labels.php:440
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
-msgstr ""
+msgstr "Voer per regel één label in. Voer een code in door de code en het label te scheiden met een puntkomma of een tab. Voeg voor enquêtes in meerdere talen de vertaling toe op dezelfde regel gescheiden door een puntkomma of een tab."
 
 #: admin/labels.php:510
 msgid "Failed to Copy already defined labels to added languages"
@@ -5347,7 +5353,7 @@ msgstr "Bijwerken van de labelset mislukt"
 
 #: admin/labels.php:671
 msgid "Labels sucessfully updated"
-msgstr ""
+msgstr "Labels gewijzigd"
 
 #: admin/labels.php:676
 msgid "Can't update labels because you are using duplicated codes"
@@ -5470,15 +5476,15 @@ msgstr "Selecteer alles wat voldoet"
 
 #: admin/printablesurvey.php:740
 msgid "Please choose *all* that apply and provide a comment:"
-msgstr ""
+msgstr "Selecteer alle toepasselijke antwoorden en geef je commentaar:"
 
 #: admin/printablesurvey.php:741
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Selecteer alle toepasselijke antwoorden en geef je commentaar"
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2631
-#: classes/expressions/LimeExpressionManager.php:4978 qanda.php:1290
+#: classes/expressions/LimeExpressionManager.php:2643
+#: classes/expressions/LimeExpressionManager.php:4993 qanda.php:1290
 #: qanda.php:1590 qanda.php:2200 qanda.php:2500
 msgid "Other:"
 msgstr "Andere:"
@@ -5514,11 +5520,11 @@ msgstr "Fax je ingevulde vragenlijst naar: %s"
 
 #: admin/printablesurvey.php:1580
 msgid "Please choose at least %s item(s)"
-msgstr ""
+msgstr "Kies minimaal %s item(s)"
 
 #: admin/printablesurvey.php:1583
 msgid "Please choose no more than %s item(s)"
-msgstr ""
+msgstr "Kies niet meer dan %s item(s)"
 
 #: admin/questiongrouphandling.php:28
 msgid "Add question group"
@@ -5932,7 +5938,7 @@ msgstr "Toon grafieken"
 
 #: admin/statistics.php:345
 msgid "Show text responses inline"
-msgstr ""
+msgstr "Toon tekst responses in overzicht"
 
 #: admin/statistics.php:352
 msgid "Select output format"
@@ -6126,7 +6132,7 @@ msgstr "Opmerkingen"
 
 #: admin/statistics_function.php:2067
 msgid "'Other' Responses"
-msgstr ""
+msgstr "'Andere' Responses"
 
 #: admin/statistics_function.php:2089 admin/statistics_function.php:2107
 #: admin/statistics_function.php:2143 admin/statistics_function.php:2148
@@ -6558,7 +6564,7 @@ msgstr "Big5 Traditioneel Chinees"
 
 #: admin/tokens.php:58 admin/vvimport.php:25
 msgid "Binary pseudo charset"
-msgstr "Binary pseudo karakterset"
+msgstr "Binaire pseudo karakterset"
 
 #: admin/tokens.php:59 admin/vvimport.php:26
 msgid "Windows Central European"
@@ -6698,7 +6704,7 @@ msgstr "%s berichten zijn gecontroleerd, er zijn geen problemen."
 
 #: admin/tokens.php:365
 msgid "Your inbox is empty."
-msgstr "Uw Postvak IN is leeg."
+msgstr "Je Postvak IN is leeg."
 
 #: admin/tokens.php:374
 msgid "Please check your settings"
@@ -8354,11 +8360,11 @@ msgstr "Komma (,)"
 
 #: classes/core/surveytranslator.php:157
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: classes/core/surveytranslator.php:164
 msgid "Amharic"
-msgstr ""
+msgstr "Amharic"
 
 #: classes/core/surveytranslator.php:171
 msgid "Albanian"
@@ -8598,7 +8604,7 @@ msgstr "Vietnamees"
 
 #: classes/expressions/ExpressionManager.php:144
 msgid "Absolute value"
-msgstr ""
+msgstr "Absolute waarde"
 
 #: classes/expressions/ExpressionManager.php:145
 msgid "Arc cosine"
@@ -8622,131 +8628,131 @@ msgstr "Arc tangent van twee variabelen"
 
 #: classes/expressions/ExpressionManager.php:150
 msgid "Round fractions up"
-msgstr ""
+msgstr "Naar boven afronden"
 
 #: classes/expressions/ExpressionManager.php:151
 msgid "Returns true(1) if it is a valid date in gregorian calendar"
-msgstr ""
+msgstr "Geeft waar (1) als het een geldige datum is"
 
 #: classes/expressions/ExpressionManager.php:152
 msgid "Cosine"
-msgstr ""
+msgstr "Cosinus"
 
 #: classes/expressions/ExpressionManager.php:153
 msgid "Count the number of answered questions in the list"
-msgstr ""
+msgstr "Tel de beantwoorde vragen in de lijst"
 
 #: classes/expressions/ExpressionManager.php:154
 msgid "Format a local date/time"
-msgstr ""
+msgstr "Formateer de locale datum/tijd"
 
 #: classes/expressions/ExpressionManager.php:155
 msgid "Calculates the exponent of e"
-msgstr ""
+msgstr "Bereken de e-exponent"
 
 #: classes/expressions/ExpressionManager.php:156
 msgid "Display numbers with comma as radix separator, if needed"
-msgstr ""
+msgstr "Indien nodig, toon een getal met een komma"
 
 #: classes/expressions/ExpressionManager.php:157
 msgid "Round fractions down"
-msgstr ""
+msgstr "Naar beneden afronden"
 
 #: classes/expressions/ExpressionManager.php:158
 msgid "Format a GMT date/time"
-msgstr ""
+msgstr "Formateer een GMT datum/tijd"
 
 #: classes/expressions/ExpressionManager.php:159
 msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Zet alle HTML code om in tekst (gebruik altijd ENT_QOUTES en UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:160
 msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Zet alle HTML tekst om in HTML code (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:161
 msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Zet speciale HTML code om in tekst (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:162
 msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Zet speciale HTML-code om in tekst (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:163
 msgid "Format a local time/date as integer"
-msgstr ""
+msgstr "Geef de locale tijd/datum als een getal"
 
 #: classes/expressions/ExpressionManager.php:164
 msgid "Conditional processing"
-msgstr ""
+msgstr "Voorwaardelijke verwerking"
 
 #: classes/expressions/ExpressionManager.php:165
 msgid "Join array elements with a string"
-msgstr ""
+msgstr "Koppel de array elementen met een tekst"
 
 #: classes/expressions/ExpressionManager.php:166
 msgid "Get the integer value of a variable"
-msgstr ""
+msgstr "Geef de waarde van een variabele als getal"
 
 #: classes/expressions/ExpressionManager.php:167
 msgid "Determine whether a variable is considered to be empty"
-msgstr ""
+msgstr "Bepaal of een variabele leeg is"
 
 #: classes/expressions/ExpressionManager.php:168
 msgid "Finds whether the type of a variable is float"
-msgstr ""
+msgstr "Zoek uit of het type van een variabele een float is"
 
 #: classes/expressions/ExpressionManager.php:169
 msgid "Find whether the type of a variable is integer"
-msgstr ""
+msgstr "Zoek uit of het type variabele een getal is"
 
 #: classes/expressions/ExpressionManager.php:170
 msgid "Finds whether a value is not a number"
-msgstr ""
+msgstr "Bepaalt of een waarde geen nummer is"
 
 #: classes/expressions/ExpressionManager.php:171
 msgid "Finds whether a variable is NULL"
-msgstr ""
+msgstr "Bepaalt of een waarde NULL is"
 
 #: classes/expressions/ExpressionManager.php:172
 msgid "Finds whether a variable is a number or a numeric string"
-msgstr ""
+msgstr "Bepaalt of een variabele een getal of een numerieke tekst is"
 
 #: classes/expressions/ExpressionManager.php:173
 msgid "Find whether the type of a variable is string"
-msgstr ""
+msgstr "Bepaalt of een variabele een tekst is"
 
 #: classes/expressions/ExpressionManager.php:174
 msgid "Return comma-separated list of values"
-msgstr ""
+msgstr "Geef een kommagescheidenlijst van waarden"
 
 #: classes/expressions/ExpressionManager.php:175
 msgid "Natural logarithm"
-msgstr "Natuurlijk logarithme"
+msgstr "Natuurlijk logaritme"
 
 #: classes/expressions/ExpressionManager.php:176
 msgid "Strip whitespace (or other characters) from the beginning of a string"
-msgstr ""
+msgstr "Verwijder whitespace (of andere karakters) van het begin van een stuk tekst"
 
 #: classes/expressions/ExpressionManager.php:177
 msgid "Find highest value"
-msgstr ""
+msgstr "Vind de hoogste waarde"
 
 #: classes/expressions/ExpressionManager.php:178
 msgid "Find lowest value"
-msgstr ""
+msgstr "Vind de laagste waarde"
 
 #: classes/expressions/ExpressionManager.php:179
 msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
-msgstr ""
+msgstr "Haal een UNIX timestamp op voor een datum (elk van de 6 argumenten is optioneel)"
 
 #: classes/expressions/ExpressionManager.php:180
 msgid "Inserts HTML line breaks before all newlines in a string"
-msgstr ""
+msgstr "Voeg HTML regelovergang toe voor elke nieuwe regel in de tekst."
 
 #: classes/expressions/ExpressionManager.php:181
 msgid "Format a number with grouped thousands"
-msgstr ""
+msgstr "Geef met een symbool duizendtallen aan in een getal"
 
 #: classes/expressions/ExpressionManager.php:182
 msgid "Get value of pi"
@@ -8754,430 +8760,430 @@ msgstr "Krijg de waarde van pi"
 
 #: classes/expressions/ExpressionManager.php:183
 msgid "Exponential expression"
-msgstr ""
+msgstr "Exponentiële expressie"
 
 #: classes/expressions/ExpressionManager.php:184
 msgid "Convert a quoted-printable string to an 8 bit string"
-msgstr ""
+msgstr "Zet een geciteerd en printbaar stuk tekst om naar een 8 bit string"
 
 #: classes/expressions/ExpressionManager.php:185
 msgid "Convert a 8 bit string to a quoted-printable string"
-msgstr ""
+msgstr "Zet een 8 bit string om naar een geciteerd printbare tekst"
 
 #: classes/expressions/ExpressionManager.php:186
 msgid "Quote meta characters"
-msgstr ""
+msgstr "Gebruik quotes voor metakarakters"
 
 #: classes/expressions/ExpressionManager.php:187
 msgid "Generate a random integer"
-msgstr "Genereen een willkeurige integer"
+msgstr "Genereer een willekeurig getal"
 
 #: classes/expressions/ExpressionManager.php:188
 msgid "Compare a string to a regular expression pattern"
-msgstr ""
+msgstr "Vergelijk een tekst met een reguliere expressie"
 
 #: classes/expressions/ExpressionManager.php:189
 msgid "Rounds a number to an optional precision"
-msgstr ""
+msgstr "Rond een getal af met een aantal decimalen"
 
 #: classes/expressions/ExpressionManager.php:190
 msgid "Strip whitespace (or other characters) from the end of a string"
-msgstr ""
+msgstr "Verwijder whitespace (of andere tekens) van het einde van een tekst"
 
 #: classes/expressions/ExpressionManager.php:191
 msgid "Sine"
-msgstr ""
+msgstr "Sinus"
 
 #: classes/expressions/ExpressionManager.php:192
 msgid "Return a formatted string"
-msgstr ""
+msgstr "Geef een geformateerde tekst terug"
 
 #: classes/expressions/ExpressionManager.php:193
 msgid "Square root"
-msgstr ""
+msgstr "Wortel"
 
 #: classes/expressions/ExpressionManager.php:194
 msgid "Calculate the Sample Standard Deviation for the list of numbers"
-msgstr ""
+msgstr "Bepaal de standaarddeviatie van een rij getallen"
 
 #: classes/expressions/ExpressionManager.php:195
 msgid "Pad a string to a certain length with another string"
-msgstr ""
+msgstr "Plak een tekst tot een specifieke lengte aan een andere tekst"
 
 #: classes/expressions/ExpressionManager.php:196
 msgid "Repeat a string"
-msgstr ""
+msgstr "Herhaal een string"
 
 #: classes/expressions/ExpressionManager.php:197
 msgid "Replace all occurrences of the search string with the replacement string"
-msgstr ""
+msgstr "Vervang alle voorkomens van een tekst door een andere tekst"
 
 #: classes/expressions/ExpressionManager.php:198
 msgid "Binary safe case-insensitive string comparison"
-msgstr ""
+msgstr "Binair veilige hoofdletteronhankelijke tekstvergelijking"
 
 #: classes/expressions/ExpressionManager.php:199
 msgid "Binary safe string comparison"
-msgstr ""
+msgstr "Binair veilige tekstvergelijking"
 
 #: classes/expressions/ExpressionManager.php:200
 msgid "Strip HTML and PHP tags from a string"
-msgstr ""
+msgstr "Verwijder de HTML en PHP tags uit een tekst"
 
 #: classes/expressions/ExpressionManager.php:201
 msgid "Find position of first occurrence of a case-insensitive string"
-msgstr ""
+msgstr "Vind de plaats van het eerste voorkomen in een niet hoofdlettergevoelige tekst"
 
 #: classes/expressions/ExpressionManager.php:202
 msgid "Un-quotes a quoted string"
-msgstr ""
+msgstr "Verwijder de aanhalingstekens"
 
 #: classes/expressions/ExpressionManager.php:203
 msgid "Case-insensitive strstr"
-msgstr ""
+msgstr "Hoofdlettergevoelige strstr"
 
 #: classes/expressions/ExpressionManager.php:204
 msgid "Get string length"
-msgstr ""
+msgstr "Bepaal lengte tekst"
 
 #: classes/expressions/ExpressionManager.php:205
 msgid "Find position of first occurrence of a string"
-msgstr ""
+msgstr "Vind de positie van het eerste voorkomen van een tekst in een tekst"
 
 #: classes/expressions/ExpressionManager.php:206
 msgid "Reverse a string"
-msgstr ""
+msgstr "Keer een string om"
 
 #: classes/expressions/ExpressionManager.php:207
 msgid "Find first occurrence of a string"
-msgstr ""
+msgstr "Zoek eerste voorkomen van een tekst in een tekst"
 
 #: classes/expressions/ExpressionManager.php:208
 msgid "Make a string lowercase"
-msgstr ""
+msgstr "Zet een tekst om naar kleine letters"
 
 #: classes/expressions/ExpressionManager.php:209
 msgid "Make a string uppercase"
-msgstr ""
+msgstr "Zet een tekst om naar hoofdletters"
 
 #: classes/expressions/ExpressionManager.php:210
 msgid "Return part of a string"
-msgstr ""
+msgstr "Geef een deel van een tekst terug"
 
 #: classes/expressions/ExpressionManager.php:211
 msgid "Calculate the sum of values in an array"
-msgstr ""
+msgstr "Bepaal de som van de waarden in het array"
 
 #: classes/expressions/ExpressionManager.php:212
 msgid "Tangent"
-msgstr ""
+msgstr "Tangens"
 
 #: classes/expressions/ExpressionManager.php:213
 msgid "Return current UNIX timestamp"
-msgstr ""
+msgstr "Geeft huidige UNIX timestamp"
 
 #: classes/expressions/ExpressionManager.php:214
 msgid "Strip whitespace (or other characters) from the beginning and end of a string"
-msgstr ""
+msgstr "Verwijder whitespace (of andere tekens) van het begin en het einde van een tekst"
 
 #: classes/expressions/ExpressionManager.php:215
 msgid "Uppercase the first character of each word in a string"
-msgstr ""
+msgstr "Maak van elk woord in een tekst de eerste letter een hoofdletter"
 
 #: classes/expressions/ExpressionManager.php:243
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
-msgstr ""
+msgstr "Binaire operatie niet mogelijk - minder dan twee gegevens aangeleverd"
 
 #: classes/expressions/ExpressionManager.php:250
 #: classes/expressions/ExpressionManager.php:389
 msgid "Invalid value(s) on the stack"
-msgstr ""
+msgstr "Ongeldige waarde(s) aangeleverd"
 
 #: classes/expressions/ExpressionManager.php:383
 msgid "Unable to evaluate unary operator - no entries on stack"
-msgstr ""
+msgstr "Binaire operatie niet mogelijk - geen gegevens aangeleverd"
 
 #: classes/expressions/ExpressionManager.php:438
 msgid "Extra tokens found"
-msgstr ""
+msgstr "Extra toegangscodes gevonden"
 
 #: classes/expressions/ExpressionManager.php:453
 msgid "Unbalanced equation - values left on stack"
-msgstr ""
+msgstr "Vergelijking niet evenwichtig - aangeleverde gegevens nog beschikbaar"
 
 #: classes/expressions/ExpressionManager.php:459
 msgid "Not a valid expression"
-msgstr ""
+msgstr "Geen geldige expressie"
 
 #: classes/expressions/ExpressionManager.php:520
 #: classes/expressions/ExpressionManager.php:948
 #: classes/expressions/ExpressionManager.php:1029
 msgid "Poorly terminated expression - expected a constant or variable"
-msgstr ""
+msgstr "Expressie bevat geen constante of variabele"
 
 #: classes/expressions/ExpressionManager.php:565
 msgid "This variable is not declared until a later page"
-msgstr ""
+msgstr "Deze variabele is pas later aangemaakt"
 
 #: classes/expressions/ExpressionManager.php:572
 #: classes/expressions/ExpressionManager.php:1685
 msgid "Undefined variable"
-msgstr ""
+msgstr "Onbekende variabele"
 
 #: classes/expressions/ExpressionManager.php:579
 msgid "Should never  get to this line?"
-msgstr ""
+msgstr "Deze regel is niet bereikbaar?"
 
 #: classes/expressions/ExpressionManager.php:665
 msgid "The value of this variable can not be changed"
-msgstr ""
+msgstr "De waarde van deze variabele kan niet gewijzigd worden "
 
 #: classes/expressions/ExpressionManager.php:671
 msgid "Only variables can be assigned values"
-msgstr ""
+msgstr "Alleen een variabele kan een waarde krijgen"
 
 #: classes/expressions/ExpressionManager.php:727
 msgid "Expected expressions separated by commas"
-msgstr ""
+msgstr "Expressies moeten gescheiden worden met een komma "
 
 #: classes/expressions/ExpressionManager.php:735
 msgid "Extra token found after Expressions"
-msgstr ""
+msgstr "Expressies moeten gescheiden worden met een komma "
 
 #: classes/expressions/ExpressionManager.php:751
 msgid "Undefined Function"
-msgstr ""
+msgstr "Onbekende Functie"
 
 #: classes/expressions/ExpressionManager.php:757
 msgid "Expected left parentheses after function name"
-msgstr ""
+msgstr "Na de functienaam moet een linkerhaak komen"
 
 #: classes/expressions/ExpressionManager.php:781
 msgid "Extra comma found in function"
-msgstr ""
+msgstr "Extra komma gevonden in functie"
 
 #: classes/expressions/ExpressionManager.php:965
 msgid "Expected right parentheses"
-msgstr ""
+msgstr "De rechterhaak ontbreekt"
 
 #: classes/expressions/ExpressionManager.php:1669
 msgid "Extra right parentheses detected"
-msgstr ""
+msgstr "Er is een extra rechterhaak gevonden"
 
 #: classes/expressions/ExpressionManager.php:1678
 msgid "Undefined function"
-msgstr ""
+msgstr "Onbekende functie"
 
 #: classes/expressions/ExpressionManager.php:1690
 msgid "Unsupported syntax"
-msgstr ""
+msgstr "Deze syntax wordt niet ondersteund"
 
 #: classes/expressions/ExpressionManager.php:1698
 msgid "Missing %s closing right parentheses"
-msgstr ""
+msgstr "Er ontbreken %s rechterhaakjes (sluithaakjes)"
 
-#: classes/expressions/ExpressionManager.php:1951
+#: classes/expressions/ExpressionManager.php:1955
 msgid "Function must have at least %s argument(s)"
-msgstr ""
+msgstr "Functie moet minstens %s parameter(s) hebben"
 
-#: classes/expressions/ExpressionManager.php:2042
+#: classes/expressions/ExpressionManager.php:2046
 msgid "Unsupported number of arguments: %s"
-msgstr ""
+msgstr "Onjuist aantal parameters: %s"
 
-#: classes/expressions/ExpressionManager.php:2047
+#: classes/expressions/ExpressionManager.php:2051
 msgid "Function does not support %s arguments. "
-msgstr ""
+msgstr "Functie ondersteunt niet %s parameters."
 
-#: classes/expressions/ExpressionManager.php:2048
+#: classes/expressions/ExpressionManager.php:2052
 msgid "Function supports this many arguments, where -1=unlimited: %s."
-msgstr ""
+msgstr "Functie ondersteunt dit aantal parameters, -1=onbeperkt: %s."
 
-#: classes/expressions/ExpressionManager.php:2269
+#: classes/expressions/ExpressionManager.php:2273
 msgid "Tried to pop value off of empty stack"
-msgstr ""
+msgstr "De stack is leeg, dus pop is nu niet mogelijk"
 
-#: classes/expressions/ExpressionManager.php:3193
+#: classes/expressions/ExpressionManager.php:3197
 msgid "Invalid PERL Regular Expression: %s"
-msgstr ""
+msgstr "Ongeldige PERL Reguliere Expressie: %s"
 
-#: classes/expressions/LimeExpressionManager.php:2155
+#: classes/expressions/LimeExpressionManager.php:2167
 msgid "Please select at least one answer"
-msgstr ""
-
-#: classes/expressions/LimeExpressionManager.php:2156
-msgid "Please select at least %s answers"
-msgstr ""
-
-#: classes/expressions/LimeExpressionManager.php:2160
-msgid "Please select at most one answer"
-msgstr ""
-
-#: classes/expressions/LimeExpressionManager.php:2161
-msgid "Please select at most %s answers"
-msgstr ""
-
-#: classes/expressions/LimeExpressionManager.php:2165
-msgid "Please select one answer"
-msgstr ""
-
-#: classes/expressions/LimeExpressionManager.php:2166
-msgid "Please select %s answers"
-msgstr ""
+msgstr "Kies tenminste één antwoord"
 
 #: classes/expressions/LimeExpressionManager.php:2168
+msgid "Please select at least %s answers"
+msgstr "Kies tenminste %s antwoorden"
+
+#: classes/expressions/LimeExpressionManager.php:2172
+msgid "Please select at most one answer"
+msgstr "Kies maximaal één antwoord"
+
+#: classes/expressions/LimeExpressionManager.php:2173
+msgid "Please select at most %s answers"
+msgstr "Kies maximaal %s antwoorden"
+
+#: classes/expressions/LimeExpressionManager.php:2177
+msgid "Please select one answer"
+msgstr "Kies één antwoord"
+
+#: classes/expressions/LimeExpressionManager.php:2178
+msgid "Please select %s answers"
+msgstr "Kies %s antwoorden"
+
+#: classes/expressions/LimeExpressionManager.php:2180
 msgid "Please select between %s and %s answers"
-msgstr ""
+msgstr "Kies tussen de %s en %s antwoorden"
 
-#: classes/expressions/LimeExpressionManager.php:2184
-#: classes/expressions/LimeExpressionManager.php:2205
+#: classes/expressions/LimeExpressionManager.php:2196
+#: classes/expressions/LimeExpressionManager.php:2217
 msgid "Each answer must be at least %s"
-msgstr ""
+msgstr "Elk antwoord moet tenminste %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2186
-#: classes/expressions/LimeExpressionManager.php:2207
+#: classes/expressions/LimeExpressionManager.php:2198
+#: classes/expressions/LimeExpressionManager.php:2219
 msgid "Each answer must be at most %s"
-msgstr ""
+msgstr "Elk antwoord mag maximaal %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2188
-#: classes/expressions/LimeExpressionManager.php:2209
+#: classes/expressions/LimeExpressionManager.php:2200
+#: classes/expressions/LimeExpressionManager.php:2221
 msgid "Each answer must be %s"
-msgstr ""
+msgstr "Elk antwoord moet %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2189
-#: classes/expressions/LimeExpressionManager.php:2210
+#: classes/expressions/LimeExpressionManager.php:2201
+#: classes/expressions/LimeExpressionManager.php:2222
 msgid "Each answer must be between %s and %s"
-msgstr ""
+msgstr "Elk antwoord moet tussen %s en %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2226
+#: classes/expressions/LimeExpressionManager.php:2238
 msgid "The sum must be at least %s"
-msgstr ""
+msgstr "De som moet minimaal %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2228
+#: classes/expressions/LimeExpressionManager.php:2240
 msgid "The sum must be at most %s"
-msgstr ""
+msgstr "Elk antwoord moet tenminste %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2230
-#: classes/expressions/LimeExpressionManager.php:2241
+#: classes/expressions/LimeExpressionManager.php:2242
+#: classes/expressions/LimeExpressionManager.php:2253
 msgid "The sum must equal %s"
-msgstr ""
+msgstr "De som moet gelijk zijn aan %s"
 
-#: classes/expressions/LimeExpressionManager.php:2231
+#: classes/expressions/LimeExpressionManager.php:2243
 msgid "The sum must be between %s and %s"
-msgstr ""
+msgstr "De som moet tussen %s en %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2247
+#: classes/expressions/LimeExpressionManager.php:2259
 msgid "Please also fill in the \"other comment\" field."
-msgstr ""
+msgstr "Vul ook \"other comment\" veld in."
 
-#: classes/expressions/LimeExpressionManager.php:2255
+#: classes/expressions/LimeExpressionManager.php:2267
 msgid "Please check the format of your answer."
-msgstr ""
+msgstr "Kijk het formaat van het antwoord na."
 
-#: classes/expressions/LimeExpressionManager.php:3994
+#: classes/expressions/LimeExpressionManager.php:4009
 msgid "Unable to insert record into survey table: "
-msgstr ""
+msgstr "Record kan niet worden opgevoerd in de 'survey tabel':"
 
-#: classes/expressions/LimeExpressionManager.php:4010
+#: classes/expressions/LimeExpressionManager.php:4025
 msgid "Unable to insert record into timings table "
-msgstr ""
+msgstr "Record kan niet worden opgevoerd in de 'timings tabel'"
 
-#: classes/expressions/LimeExpressionManager.php:4958
+#: classes/expressions/LimeExpressionManager.php:4973
 msgid "This question is mandatory"
 msgstr "Dit is een verplichte vraag"
 
-#: classes/expressions/LimeExpressionManager.php:4970
+#: classes/expressions/LimeExpressionManager.php:4985
 msgid "Please check at least one item."
-msgstr "Kies minimaal een item"
+msgstr "Kies minimaal een item."
 
-#: classes/expressions/LimeExpressionManager.php:4980
+#: classes/expressions/LimeExpressionManager.php:4995
 msgid "If you choose '%s' you must provide a description."
 msgstr "Als je '%s' kiest, moet je een omschrijving geven."
 
-#: classes/expressions/LimeExpressionManager.php:5002
-#: classes/expressions/LimeExpressionManager.php:5039
+#: classes/expressions/LimeExpressionManager.php:5017
+#: classes/expressions/LimeExpressionManager.php:5054
 msgid "Please complete all parts"
 msgstr "Vul alle onderdelen in"
 
-#: classes/expressions/LimeExpressionManager.php:5031
+#: classes/expressions/LimeExpressionManager.php:5046
 msgid "Please check at least one box per row"
-msgstr ""
+msgstr "Selecteer minstens een veld per rij"
 
-#: classes/expressions/LimeExpressionManager.php:5047
+#: classes/expressions/LimeExpressionManager.php:5062
 msgid "Please rank all items"
 msgstr "Rangschik alle opties"
 
-#: classes/expressions/LimeExpressionManager.php:7380
+#: classes/expressions/LimeExpressionManager.php:7415
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
-msgstr ""
+msgstr "Fout in de vraag - mogelijk ontbreekt een subvraag of een taalinstelling"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Name [ID]"
-msgstr ""
+msgstr "Name [ID]"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Relevance [Validation] (Default)"
-msgstr ""
+msgstr "Relevantie [Controle] (Standaard)"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Text [Help] (Tip)"
-msgstr ""
+msgstr "Tekst [Help] (Tip)"
 
-#: classes/expressions/LimeExpressionManager.php:7436
-#: classes/expressions/LimeExpressionManager.php:7662
+#: classes/expressions/LimeExpressionManager.php:7471
+#: classes/expressions/LimeExpressionManager.php:7697
 msgid "DEFAULT:"
-msgstr ""
+msgstr "Standaard:"
 
-#: classes/expressions/LimeExpressionManager.php:7444
+#: classes/expressions/LimeExpressionManager.php:7479
 msgid "HELP:"
-msgstr ""
+msgstr "Help:"
 
-#: classes/expressions/LimeExpressionManager.php:7445
+#: classes/expressions/LimeExpressionManager.php:7480
 msgid "TIP:"
-msgstr ""
+msgstr "Tip:"
 
-#: classes/expressions/LimeExpressionManager.php:7452
+#: classes/expressions/LimeExpressionManager.php:7487
 msgid "Question Attribute"
-msgstr ""
+msgstr "Vraag Attribuut"
 
-#: classes/expressions/LimeExpressionManager.php:7452
+#: classes/expressions/LimeExpressionManager.php:7487
 msgid "Value"
-msgstr ""
+msgstr "Waarde"
 
-#: classes/expressions/LimeExpressionManager.php:7551
+#: classes/expressions/LimeExpressionManager.php:7586
 msgid "VALIDATION:"
-msgstr ""
+msgstr "Validatie:"
 
-#: classes/expressions/LimeExpressionManager.php:7565
+#: classes/expressions/LimeExpressionManager.php:7600
 msgid "This variable name has already been used."
-msgstr ""
+msgstr "Vraagcode is al in gebruik"
 
-#: classes/expressions/LimeExpressionManager.php:7577
+#: classes/expressions/LimeExpressionManager.php:7612
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
-msgstr ""
+msgstr "Gebruik vanaf versie 1.92 geen naam voor een variabele die met een cijfer begint, een naam mag ook alleen letters, cijfers en underscores bevatten."
 
-#: classes/expressions/LimeExpressionManager.php:7730
+#: classes/expressions/LimeExpressionManager.php:7765
 msgid "This question has at least %s error(s)"
-msgstr ""
+msgstr "Deze vraag heeft minstens %s fout(en)"
 
-#: classes/expressions/LimeExpressionManager.php:7769
+#: classes/expressions/LimeExpressionManager.php:7804
 msgid "%s question(s) contain errors that need to be corrected"
-msgstr ""
+msgstr "%s vraag/vragen met fouten die aangepast moeten worden"
 
-#: classes/expressions/LimeExpressionManager.php:7775
+#: classes/expressions/LimeExpressionManager.php:7810
 msgid "No syntax errors detected in this survey"
-msgstr ""
+msgstr "Geen fouten gevonden in de vragenlijst"
 
-#: classes/expressions/LimeExpressionManager.php:7778
+#: classes/expressions/LimeExpressionManager.php:7813
 msgid "This group, by itself, does not contain any syntax errors"
-msgstr ""
+msgstr "Deze groep bevat geen fouten"
 
-#: classes/expressions/LimeExpressionManager.php:7781
+#: classes/expressions/LimeExpressionManager.php:7816
 msgid "This question, by itself, does not contain any syntax errors"
-msgstr ""
+msgstr "Deze vraag bevat geen fouten"
 
 #: classes/expressions/test/survey_logic_file.php:138
 msgid "Logic File for Survey # "
-msgstr ""
+msgstr "Logic File voor Vragenlijst # "
 
 #: common_functions.php:35
 msgid "Permission to create/view/update/delete assessments rules for a survey"
@@ -9405,7 +9411,7 @@ msgstr "E-mail bevestiging met resultaten (codes)"
 
 #: common_functions.php:1953
 msgid "File count"
-msgstr ""
+msgstr "Aantal bestanden"
 
 #: common_functions.php:2312
 msgid "Date submitted"
@@ -9493,7 +9499,7 @@ msgstr "Logisch"
 
 #: common_functions.php:3225
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
-msgstr ""
+msgstr "Vul de vraagcode(s) van meerkeuze vragen in, gescheiden door puntkomma's om alleen de overeenkomstige antwoordmogelijkheden te tonen in deze vraag."
 
 #: common_functions.php:3226
 msgid "Array filter"
@@ -9501,7 +9507,7 @@ msgstr "Array filter"
 
 #: common_functions.php:3233
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
-msgstr ""
+msgstr "Vul de vraagcode(s) van meerkeuze vragen in, gescheiden door puntkomma's om de overeenkomstige antwoordmogelijkheden NIET te tonen in deze vraag."
 
 #: common_functions.php:3234
 msgid "Array filter exclusion"
@@ -9604,35 +9610,35 @@ msgstr "Is gelijk aan de waarde van de som"
 
 #: common_functions.php:3344
 msgid "Boolean equation to validate the whole question."
-msgstr ""
+msgstr "Boolean vergelijking om de vraag te controleren."
 
 #: common_functions.php:3345
 msgid "Question validation equation"
-msgstr ""
+msgstr "Vraag controle vergelijking"
 
 #: common_functions.php:3352
 msgid "Tip to show user describing the question validation equation."
-msgstr ""
+msgstr "Tip voor de gebruiker om de controlevraag te beschrijven."
 
 #: common_functions.php:3353
 msgid "Question validation tip"
-msgstr ""
+msgstr "Vraag controle tip"
 
 #: common_functions.php:3360
 msgid "Boolean equation to validate each sub-question."
-msgstr ""
+msgstr "Boolean vergelijking om elke subvraag te controleren."
 
 #: common_functions.php:3361
 msgid "Sub-question validation equation"
-msgstr ""
+msgstr "Subvraag controle vergelijking"
 
 #: common_functions.php:3368
 msgid "Tip to show user describing the sub-question validation equation."
-msgstr ""
+msgstr "Tip voor de gebruiker om de controlevraag te beschrijven."
 
 #: common_functions.php:3369
 msgid "Sub-question validation tip"
-msgstr ""
+msgstr "Subvraag controle tip"
 
 #: common_functions.php:3376
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
@@ -9668,7 +9674,7 @@ msgstr "Plaats opslaan"
 
 #: common_functions.php:3411
 msgid "Store the state?"
-msgstr "Staat opslaan?"
+msgstr "Provincie opslaan?"
 
 #: common_functions.php:3412
 msgid "Save state"
@@ -9728,7 +9734,7 @@ msgstr "IP als standaardlocatie"
 
 #: common_functions.php:3479
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
-msgstr "Begin coordinaten kaart bij laden pagina (Formaat: breedtegraad spatie lengtegraad)"
+msgstr "Begin coördinaten kaart bij laden pagina (Formaat: breedtegraad spatie lengtegraad)"
 
 #: common_functions.php:3480
 msgid "Default position"
@@ -9896,7 +9902,7 @@ msgstr "Tekstinvoer"
 
 #: common_functions.php:3692
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
-msgstr "Maak opmerking bij 'Anders:' verplicht als 'Andere:' is gekozen"
+msgstr "Maak opmerking bij 'Andere:' verplicht als 'Andere:' is gekozen"
 
 #: common_functions.php:3693
 msgid "'Other:' comment mandatory"
@@ -10036,11 +10042,11 @@ msgstr "Gebruik dropdown veld"
 
 #: common_functions.php:3876
 msgid "For list dropdown boxes, show up to this many rows"
-msgstr ""
+msgstr "Voor dropdowns, het maximaal aantal rijen "
 
 #: common_functions.php:3877
 msgid "Height of dropdown"
-msgstr ""
+msgstr "Hoogte van dropdown"
 
 #: common_functions.php:3885
 msgid "Order"
@@ -10048,11 +10054,11 @@ msgstr "Volgorde"
 
 #: common_functions.php:3888
 msgid "Accelerator keys for list items"
-msgstr ""
+msgstr "Sneltoetsen"
 
 #: common_functions.php:3889
 msgid "Prefix for list items"
-msgstr ""
+msgstr "Prefix van items in de lijst"
 
 #: common_functions.php:3897
 msgid "Nominal"
@@ -10256,7 +10262,7 @@ msgstr "Toon opmerkingen"
 
 #: common_functions.php:4078
 msgid "The participant cannot upload a single file larger than this size"
-msgstr "De participant kan geen bestand laden groter dan"
+msgstr "De deelnemer kan geen bestand laden groter dan"
 
 #: common_functions.php:4079
 msgid "Maximum file size allowed (in KB)"
@@ -10264,7 +10270,7 @@ msgstr "Maximale bestandsgrootte (in KB)"
 
 #: common_functions.php:4087
 msgid "Maximum number of files that the participant can upload for this question"
-msgstr "Het maximale aantal door de participant te laden bestanden voor deze vraag"
+msgstr "Het maximale aantal door de deelnemer te laden bestanden voor deze vraag"
 
 #: common_functions.php:4088
 msgid "Max number of files"
@@ -10272,7 +10278,7 @@ msgstr "Maximum aantal bestanden"
 
 #: common_functions.php:4096
 msgid "Minimum number of files that the participant must upload for this question"
-msgstr "Het minimale aantal door de participant te laden bestanden voor deze vraag"
+msgstr "Het minimale aantal door de deelnemer te laden bestanden voor deze vraag"
 
 #: common_functions.php:4097
 msgid "Min number of files"
@@ -10356,7 +10362,7 @@ msgstr "Er is een fout opgetreden bij het verwijderen van het bestand"
 
 #: group.php:116
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
-msgstr ""
+msgstr "Gebruik de navigatieknoppen of de index. Mogelijk heeft u de terug-knop van de browser gebruikt."
 
 #: group.php:221
 msgid "Save your responses so far"
@@ -10392,11 +10398,11 @@ msgstr "Sorry. Er is geen vragenlijst met dit nummer."
 
 #: group.php:509
 msgid "Invalid group number for this survey: "
-msgstr ""
+msgstr "Ongeldig groepsnummer voor deze vragenlijst:"
 
 #: group.php:514
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
-msgstr ""
+msgstr "Deze groep bevat geen vragen. Voeg eerst vragen toe "
 
 #: group.php:531
 msgid "Submit your answers"
@@ -10436,7 +10442,7 @@ msgstr "Geen vragenlijsten beschikbaar"
 
 #: index.php:179 index.php:180
 msgid "The survey identification number is invalid"
-msgstr ""
+msgstr "Het nummer van de vragenlijst is ongeldig"
 
 #: index.php:219
 msgid "Token mismatch"
@@ -10762,7 +10768,7 @@ msgstr[1] "Rangschik minstens %d items voor vraag \"%s\"."
 
 #: qanda.php:2428
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr "Je hebt 'Anders' aangevinkt bij vraag \"%s\". Vul dan ook de bijbehorende opmerking in."
+msgstr "Je hebt 'Andere' aangevinkt bij vraag \"%s\". Vul dan ook de bijbehorende opmerking in."
 
 #: qanda.php:2700
 msgid "Upload files"
@@ -10778,7 +10784,7 @@ msgstr "Terug naar de vragenlijst"
 
 #: qanda.php:2708
 msgid "File name"
-msgstr ""
+msgstr "Bestandsnaam"
 
 #: qanda.php:2885 qanda.php:3140 qanda.php:4205 qanda.php:6029
 msgid "Error: This question has no answers."
@@ -10798,7 +10804,7 @@ msgstr "Totaal:"
 
 #: qanda.php:3572 qanda.php:3573
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
-msgstr "Sleep en plaats de pin naar de gewenste locatie. U kunt op rechtsklikken op de kaart."
+msgstr "Sleep en plaats de pin naar de gewenste locatie. U kunt rechtsklikken op de kaart."
 
 #: qanda.php:4770 qanda.php:5150 qanda.php:5484 qanda.php:5631 qanda.php:6259
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
@@ -10974,7 +10980,7 @@ msgstr "Probeer het nog eens."
 
 #: save.php:99
 msgid "The email address is not valid. Please leave the email field blank or give a valid email address."
-msgstr ""
+msgstr "Het e-mailadres is niet geldig. Laat dit veld leeg of vul een geldig e-mailadres in."
 
 #: save.php:115
 msgid "This name has already been used for this survey. You must use a unique save name."
@@ -10982,7 +10988,7 @@ msgstr "Deze naam is reeds gebruikt voor een opgeslagen sessie van deze vragenli
 
 #: save.php:185
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
-msgstr ""
+msgstr "Fout: E-mail mislukt, mogelijk is er een probleem met het instellen van e-mail in PHP op de server. Je vragenlijstgegevens zijn opgeslagen, maar je krijgt geen bevestiging. Noteer de  \"name\" en \"password\" die je net gebruikt hebt voor toekomstig gebruik."
 
 #: save.php:188
 msgid "Your survey was successfully saved."
