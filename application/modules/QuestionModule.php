@@ -71,11 +71,6 @@ abstract class QuestionModule
         }
         return $this->attributes=$aResultAttributes;
     }
-
-    public function getInputNames()
-    {
-        return array($this->fieldname);
-    }
       
     public function getTitle()
     {

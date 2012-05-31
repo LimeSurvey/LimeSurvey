@@ -171,29 +171,6 @@ class CommentCheckQuestion extends CheckQuestion
         return $answer;
     }
     
-    public function getInputNames()
-    {
-        $aQuestionAttributes = $this->getAttributeValues();
-    
-        $ansresult = $this->getChildren();
-        
-        foreach ($ansresult as $ansrow)
-        {
-            $inputnames[] = $this->fieldname.$ansrow['title'];
-            $inputnames[] = $this->fieldname.$ansrow['title']."comment";
-        }
-        
-        $qresult = $this->getOther();
-        $other = $qresult[0]['other'];
-        
-        if ($other == 'Y')
-        {
-            $inputnames[] = $this->fieldname.'other';
-            $inputnames[] = $this->fieldname.'othercomment';
-        }
-        return $inputnames;
-    }
-    
     //public function getTitle() - inherited
     
     //public function getHelp() - inherited

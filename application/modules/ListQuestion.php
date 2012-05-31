@@ -227,20 +227,6 @@ class ListQuestion extends QuestionModule
         return $answer;
     }
     
-    public function getInputNames()
-    {
-        $other = $this->getOther();
-        
-        if (count($other) && $other[count($other)-1]['other']=='Y')
-        {
-            $inputnames[] = $this->fieldname.'other';
-        }
-        
-        $inputnames[] = $this->fieldname;
-        
-        return $inputnames;
-    }
-    
     protected function getOther()
     {
         if ($this->other) return $this->other;

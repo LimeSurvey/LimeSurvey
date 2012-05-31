@@ -97,7 +97,6 @@ function retrieveAnswers($ia) //AJS
     $qtitle = $q->getTitle();
     $question_text['help'] = $q->getHelp();
     $answer = $q->getAnswerHTML();
-    $inputnames = $q->getInputNames();
 
     if ($q->mandatory == 'Y')
     {
@@ -199,9 +198,7 @@ function retrieveAnswers($ia) //AJS
     $qtitle = $question_text;
     // =====================================================
 
-    $qanda=array($qtitle, $answer, 'help', $display, $name, $q->title, $q->gid, $q->fieldname );
-    //New Return
-    return array($qanda, $inputnames);
+    return array($qtitle, $answer, 'help', $display, $name, $q->title, $q->gid, $q->fieldname );
 }
 
 function mandatory_message($q)

@@ -276,27 +276,6 @@ class CheckQuestion extends QuestionModule
         return $answer;
     }
     
-    public function getInputNames()
-    {
-        $aQuestionAttributes = $this->getAttributeValues();
-
-        $ansresult = $this->getChildren();
-        
-        foreach ($ansresult as $ansrow)
-        {
-            $inputnames[]=$this->fieldname.$ansrow['title'];
-        }
-         
-        $qresult = $this->getOther();
-        $other = $qresult[0]['other'];
-        
-        if ($other == 'Y')
-        {
-            $inputnames[]=$this->fieldname.'other';
-        }
-        return $inputnames;
-    }
-    
     protected function getChildren()
     {
         if ($this->children) return $this->children;
@@ -341,7 +320,7 @@ class CheckQuestion extends QuestionModule
     {
         $clang=Yii::app()->lang;
         $aQuestionAttributes = $this->getAttributeValues();
-        if (count($this->getInputNames()) > 1 && $aQuestionAttributes['hide_tip']==0)
+        if (count($this->getChildren()) > 0 && $aQuestionAttributes['hide_tip']==0)
         {
             $maxansw=trim($aQuestionAttributes['max_answers']);
             $minansw=trim($aQuestionAttributes['min_answers']);
@@ -357,7 +336,7 @@ class CheckQuestion extends QuestionModule
     {
         $clang=Yii::app()->lang;
         $aQuestionAttributes = $this->getAttributeValues();
-        if (count($this->getInputNames()) > 1 && $aQuestionAttributes['hide_tip']==0)
+        if (count($this->getChildren()) > 0 && $aQuestionAttributes['hide_tip']==0)
         {
             $maxansw=trim($aQuestionAttributes['max_answers']);
             $minansw=trim($aQuestionAttributes['min_answers']);

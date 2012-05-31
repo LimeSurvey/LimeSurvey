@@ -176,16 +176,6 @@ class MultitextQuestion extends QuestionModule
         return $answer;
     }
     
-    public function getInputNames()
-    {
-        foreach ($this->getChildren() as $ansrow)
-        {
-            $inputnames[] = $this->fieldname.$ansrow['title'];
-        }
-        
-        return $inputnames;
-    }
-    
     protected function getChildren()
     {
         if ($this->children) return $this->children;

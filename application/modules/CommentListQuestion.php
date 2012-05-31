@@ -161,11 +161,6 @@ class CommentListQuestion extends ListQuestion
         }
         return $answer;
     }
-    
-    public function getInputNames()
-    {
-        return array($this->fieldname,$this->fieldname.'comment');
-    }
         
     //public function getTitle() - inherited
     

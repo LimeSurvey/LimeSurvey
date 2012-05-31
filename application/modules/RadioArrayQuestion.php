@@ -321,17 +321,6 @@ class RadioArrayQuestion extends ArrayQuestion
         return $answer;
     }
     
-    public function getInputNames()
-    {
-        
-        foreach ($this->getChildren() as $ansrow)
-        {
-            $inputnames[] = $this->fieldname.$ansrow['title'];
-        }
-        
-        return $inputnames;
-    }
-    
     public function availableAttributes()
     {
         return array("answer_width","array_filter","array_filter_exclude","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

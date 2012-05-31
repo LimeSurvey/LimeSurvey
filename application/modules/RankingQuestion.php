@@ -229,26 +229,6 @@ class RankingQuestion extends QuestionModule
         return $answer;
     }
     
-    public function getInputNames()
-    {
-        $aQuestionAttributes = $this->getAttributeValues();
-        $ansresult = $this->getAnswers();
-        $anscount = count($ansresult);
-        if (trim($aQuestionAttributes["max_answers"])!='')
-        {
-            $max_answers=trim($aQuestionAttributes["max_answers"]);
-        } else {
-            $max_answers=$anscount;
-        }
-        
-        for ($i=1; $i<=$max_answers; $i++)
-        {
-            $names[] = $this->fieldname.$i;
-        }
-        
-        return $names;
-    }
-    
     protected function getAnswers()
     {
         if ($this->answers) return $this->answers;
@@ -265,7 +245,8 @@ class RankingQuestion extends QuestionModule
     {
         $clang=Yii::app()->lang;
         $aQuestionAttributes = $this->getAttributeValues();
-        if (count($this->getInputNames()) > 1 && $aQuestionAttributes['hide_tip']==0 && trim($aQuestionAttributes['min_answers'])!='')
+        $max_answers = trim($aQuestionAttributes["max_answers"])!=''?trim($aQuestionAttributes["max_answers"]):count($this->getAnswers());
+        if ($max_answers > 1 && $aQuestionAttributes['hide_tip']==0 && trim($aQuestionAttributes['min_answers'])!='')
         {
            return $this->text."<br />\n<span class=\"questionhelp\">".sprintf($clang->ngT("Check at least %d item.","Check at least %d items.",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers'])."</span>";
         }
@@ -277,7 +258,8 @@ class RankingQuestion extends QuestionModule
         $clang=Yii::app()->lang;
         $aQuestionAttributes = $this->getAttributeValues();
         $help = '';
-        if (count($this->getInputNames()) > 1 && $aQuestionAttributes['hide_tip']==0)
+        $max_answers = trim($aQuestionAttributes["max_answers"])!=''?trim($aQuestionAttributes["max_answers"]):count($this->getAnswers());
+        if ($max_answers > 1 && $aQuestionAttributes['hide_tip']==0)
         {
             $help = $clang->gT("Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item.");
             if (trim($aQuestionAttributes['min_answers'])!='')

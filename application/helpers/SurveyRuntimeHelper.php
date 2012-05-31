@@ -620,9 +620,6 @@ class SurveyRuntimeHelper {
         Yii::app()->getController()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
 
-        //Iterate through the questions about to be displayed:
-        $inputnames = array();
-
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
             $gid = $gl[0];
@@ -638,7 +635,7 @@ class SurveyRuntimeHelper {
             }
 
             // TMSW - could iterate through LEM::currentQset instead
-            foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia)
+            foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia) //AJS
             {
                 ++$qnumber;
                 $ia[9] = $qnumber; // incremental question count;
@@ -658,16 +655,12 @@ class SurveyRuntimeHelper {
                     //Get the answers/inputnames
                     // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
                     // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                    list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia, $surveyid);
+                    $plus_qanda = retrieveAnswers($ia, $surveyid);
                     if ($plus_qanda)
                     {
                         $plus_qanda[] = $ia[4];
                         $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
                         $qanda[] = $plus_qanda;
-                    }
-                    if ($plus_inputnames)
-                    {
-                        $inputnames = addtoarray_single($inputnames, $plus_inputnames);
                     }
 
                     //Display the "mandatory" popup if necessary
@@ -747,16 +740,10 @@ class SurveyRuntimeHelper {
             }
         }
 
-        $hiddenfieldnames = implode("|", $inputnames);
-
         if (isset($upload_file) && $upload_file)
-            echo "<form enctype=\"multipart/form-data\" method='post' action='" . Yii::app()->getController()->createUrl("survey/index") . "' id='limesurvey' name='limesurvey' autocomplete='off'>
-            <!-- INPUT NAMES -->
-            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+            echo "<form enctype=\"multipart/form-data\" method='post' action='" . Yii::app()->getController()->createUrl("survey/index") . "' id='limesurvey' name='limesurvey' autocomplete='off'>";
         else
-            echo "<form method='post' action='" . Yii::app()->getController()->createUrl("survey/index") . "' id='limesurvey' name='limesurvey' autocomplete='off'>
-            <!-- INPUT NAMES -->
-            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+            echo "<form method='post' action='" . Yii::app()->getController()->createUrl("survey/index") . "' id='limesurvey' name='limesurvey' autocomplete='off'>";
         echo sDefaultSubmitHandler();
 
         // <-- END FEATURE - SAVE

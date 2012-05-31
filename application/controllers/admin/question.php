@@ -1071,7 +1071,7 @@ class question extends Survey_Common_Action
         $qseq = LimeExpressionManager::GetQuestionSeq($qid);
         $moveResult = LimeExpressionManager::JumpTo($qseq + 1, true, false, true);
 
-        $answers = retrieveAnswers($ia,$surveyid);
+        $answers = retrieveAnswers($ia);
 
         if (!$thissurvey['template'])
             $thistpl = getTemplatePath(Yii::app()->getConfig('defaulttemplate'));
@@ -1153,15 +1153,15 @@ class question extends Survey_Common_Action
 EOD;
 
 
-        $answer = $answers[0][1];
-//        $help = $answers[0][2];
+        $answer = $answers[1];
+//        $help = $answers[2];
 
         $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
         $help = $qinfo['info']['help'];
 
 
-        $question = $answers[0][0];
-        $question['code'] = $answers[0][5];
+        $question = $answers[0];
+        $question['code'] = $answers[5];
         $question['class'] = getQuestionClass($qrows['type']);
         $question['essentials'] = 'id="question' . $qrows['qid'] . '"';
         $question['sgq'] = $ia[1];

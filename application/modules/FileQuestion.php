@@ -124,13 +124,6 @@ class FileQuestion extends QuestionModule
         </script>';
         return $answer;
     }
-     
-    public function getInputNames()
-    {
-        $inputnames[] = $this->fieldname;
-        $inputnames[] = $this->fieldname."_filecount";
-        return $inputnames;
-    }
     
     public function getTitle()
     {

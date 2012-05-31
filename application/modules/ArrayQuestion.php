@@ -2,20 +2,6 @@
 abstract class ArrayQuestion extends QuestionModule
 {
     protected $children;
-    public function getInputNames()
-    {
-        $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
-        $lresult = dbExecuteAssoc($lquery);
-        
-        foreach ($this->getChildren() as $ansrow)
-        {
-            foreach ($lresult->readAll() as $lrow)
-            {
-                $inputnames[] = $this->fieldname.$ansrow['title'].'_'.$lrow['title'];
-            }
-        }
-        return $inputnames;
-    }
     
     protected function getChildren()
     {

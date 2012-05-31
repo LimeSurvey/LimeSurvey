@@ -243,21 +243,6 @@ class SelectQuestion extends ListQuestion
 
         return $answer;
     }
-        
-    public function getInputNames()
-    {
-        $other = $this->getOther();
-        
-        if (count($other) && $other[0]['other']=='Y')
-        {
-            $inputnames[] = $this->fieldname.'other';
-            $inputnames[] = $this->fieldname.'other';
-        }
-        
-        $inputnames[] = $this->fieldname;
-        
-        return $inputnames;
-    }
     
     protected function getOther()
     {

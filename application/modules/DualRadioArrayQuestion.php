@@ -614,16 +614,6 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $answer;
     }
     
-    public function getInputNames()
-    {
-        foreach ($this->getChildren() as $ansrow)
-        {
-            $inputnames[] = $this->fieldname.$ansrow['title']."#0";
-            $inputnames[] = $this->fieldname.$ansrow['title']."#1";
-        }
-        return $inputnames;
-    }
-    
     public function availableAttributes()
     {
         return array("answer_width","array_filter","array_filter_exclude","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
