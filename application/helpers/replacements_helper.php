@@ -669,10 +669,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     // Assessments
+    $assessmenthtml="";
     if (isset($surveyid) && !is_null($surveyid) && function_exists('doAssessment'))
     {
         $assessmentdata = doAssessment($surveyid, true);
         $_assessment_current_total = $assessmentdata['total'];
+        if(stripos ($line,"{ASSESSMENTS}")){
+            $assessmenthtml=doAssessment($surveyid, false);
+        }
     }
     else
     {
@@ -756,7 +760,7 @@ EOD;
     $coreReplacements['AID'] = isset($questiondetails['aid']) ? $questiondetails['aid'] : '';
     $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
     $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
-    $coreReplacements['ASSESSMENTS'] = isset($assessments) ? $assessments : '';    // global
+    $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
     $coreReplacements['ASSESSMENT_HEADING'] = $clang->gT("Your Assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = "<noscript><span class='warningjs'>".$clang->gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>";
