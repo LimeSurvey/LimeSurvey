@@ -47,22 +47,30 @@ ul,ol {
     float: left;
 }
 
+#separator1 {
+    padding-left: 0;
+    padding-right: 3px;
+}
+
+#separator2 {
+    padding-left: 10px;
+}
+
 #separator3, 
 #separator12 {
-    padding-right: 1px;
-    padding-left: 12px;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 #separator4, 
 #separator16 {
     padding-left: 1px;
-    padding-right: 51px;
+    padding-right: 50px;
 }
 
 div.menubar input {
-    margin-left: 0;
-    margin-right: -5px;
-
+    margin-left: 2px;
+	margin-top: 5px;
 }
 
 .header, .formheader, .headertwo {
@@ -95,6 +103,9 @@ div.menubar input {
 	margin-right: 30%;
 }
 
+#frmglobalsettings table.statisticssummary {
+	margin-right: auto;
+}
 
 #surveydetails td + td, #groupdetails td + td, #questiondetails td + td {
     text-align: right;
