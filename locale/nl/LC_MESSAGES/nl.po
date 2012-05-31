@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-24 20:08:59+0000\n"
+"PO-Revision-Date: 2012-05-31 06:07:02+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -151,7 +151,7 @@ msgstr "Wijzigen in besloten toegangsmode"
 msgid "No, thanks."
 msgstr "Nee, bedankt."
 
-#: admin/admin.php:786 admin/admin.php:797 admin/conditionshandling.php:1072
+#: admin/admin.php:787 admin/admin.php:798 admin/conditionshandling.php:1072
 #: admin/html.php:2252 common.php:278 common.php:284
 msgid "LimeSurvey online manual"
 msgstr "LimeSurvey Online Handleiding"
@@ -838,7 +838,7 @@ msgstr "Groter dan (Teksten)"
 
 #: admin/conditionshandling.php:117 admin/conditionshandling.php:129
 msgid "Conditions manager"
-msgstr ""
+msgstr "Conditie manager"
 
 #: admin/conditionshandling.php:120 admin/tokens.php:400
 msgid "You have not selected a survey"
@@ -904,8 +904,8 @@ msgstr "Geen conditie konden worden gekopieerd (dubbel)"
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2501
-#: classes/expressions/LimeExpressionManager.php:2505 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2513
+#: classes/expressions/LimeExpressionManager.php:2517 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
 #: common_functions.php:3205 common_functions.php:3278
 #: common_functions.php:3385 common_functions.php:3398
@@ -932,7 +932,7 @@ msgstr "Ja"
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2507 common_functions.php:1922
+#: classes/expressions/LimeExpressionManager.php:2519 common_functions.php:1922
 #: qanda.php:4194 qanda.php:4239
 msgid "Uncertain"
 msgstr "Onzeker"
@@ -971,8 +971,8 @@ msgstr "Onzeker"
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2502
-#: classes/expressions/LimeExpressionManager.php:2506 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2514
+#: classes/expressions/LimeExpressionManager.php:2518 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3204
 #: common_functions.php:3277 common_functions.php:3384
 #: common_functions.php:3399 common_functions.php:3410
@@ -998,7 +998,7 @@ msgstr "Nee"
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2510 common_functions.php:1928
+#: classes/expressions/LimeExpressionManager.php:2522 common_functions.php:1928
 #: qanda.php:4341 qanda.php:4384
 msgid "Increase"
 msgstr "Toenemend"
@@ -1009,7 +1009,7 @@ msgstr "Toenemend"
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2511 common_functions.php:1930
+#: classes/expressions/LimeExpressionManager.php:2523 common_functions.php:1930
 #: qanda.php:4342 qanda.php:4395
 msgid "Same"
 msgstr "Zelfde"
@@ -1020,7 +1020,7 @@ msgstr "Zelfde"
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2512 common_functions.php:1929
+#: classes/expressions/LimeExpressionManager.php:2524 common_functions.php:1929
 #: qanda.php:4343 qanda.php:4407
 msgid "Decrease"
 msgstr "Afnemend"
@@ -1073,7 +1073,7 @@ msgstr "niet aangevinkt"
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2498 common_functions.php:1913
+#: classes/expressions/LimeExpressionManager.php:2510 common_functions.php:1913
 #: qanda.php:3815
 msgid "Female"
 msgstr "Vrouwelijk"
@@ -1085,7 +1085,7 @@ msgstr "Vrouwelijk"
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2497 common_functions.php:1912
+#: classes/expressions/LimeExpressionManager.php:2509 common_functions.php:1912
 #: qanda.php:3823
 msgid "Male"
 msgstr "Mannelijk"
@@ -1678,11 +1678,11 @@ msgstr "Beantwoord deze vraag alleen als aan de volgende voorwaarden is voldaan:
 
 #: admin/dataentry.php:1843
 msgid "The answer(s) must meet these validation criteria:"
-msgstr ""
+msgstr "De antwoorden moet voldoen aan:"
 
 #: admin/dataentry.php:1849
 msgid "The answer(s) must meet these array_filter criteria:"
-msgstr ""
+msgstr "De antwoorden moeten voldoen aan deze \"array_filter' voorwaarden:"
 
 #: admin/dataentry.php:1879
 msgid "Help about this question"
@@ -1718,11 +1718,11 @@ msgstr "De enquête die u heeft geselecteerd bestaat niet"
 
 #: admin/dataentry.php:3015 admin/printablesurvey.php:1597
 msgid "Only answer this question for the items you selected in question *%s* ('%s')"
-msgstr "Beantwoord deze vraag alleen voor de door u geselecteerde items in vraag %d ('%s')"
+msgstr "Beantwoord deze vraag alleen voor de door u geselecteerde items in vraag %s ('%s')"
 
 #: admin/dataentry.php:3024 admin/printablesurvey.php:1606
 msgid "Only answer this question for the items you did not select in question *%s* ('%s')"
-msgstr "Beantwoord deze vraag alleen voor de door u niet geselecteerde items in vraag %d ('%s')"
+msgstr "Beantwoord deze vraag alleen voor de door u niet geselecteerde items in vraag %s ('%s')"
 
 #: admin/deactivate.php:25 admin/deactivate.php:34 admin/deactivate.php:111
 msgid "Deactivate Survey"
@@ -1798,7 +1798,7 @@ msgstr "Wij raden u aan de enquête te exporteren vanuit het hoofdmenu voordat u
 
 #: admin/deletesurvey.php:45
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses (including any uploaded files) will be deleted. We recommend that you export the responses (and files) before deleting this survey."
-msgstr ""
+msgstr "Deze enquête is actief en er bestaat een responstabel. Als je deze enquête verwijdert, zullen ook de antwoorden worden verwijderd. Het wordt  aanbevolen deze eerst te exporteren."
 
 #: admin/deletesurvey.php:50
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
@@ -1858,7 +1858,7 @@ msgstr "Error: antwoord code komt reeds voor."
 
 #: admin/editansweroptions.php:121 admin/editsubquestions.php:76
 msgid "There are no label sets which match the survey default language"
-msgstr ""
+msgstr "Er is geen labelset voor de taal van de enquête"
 
 #: admin/editansweroptions.php:137
 msgid "Answer scale %s"
@@ -2056,7 +2056,7 @@ msgstr "Vul uw subvragen in:"
 
 #: admin/editsubquestions.php:252
 msgid "Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab."
-msgstr "Vul per regel een subvraag in. U kunt een code opgeven door tussen de code en de subvraag een puntkomma of een tab te zetten. Voor meertalige vragenlijstn kunt u de vertaling op dezelfde regel toevoegen, gescheiden door een puntkomma."
+msgstr "Vul per regel een subvraag in. U kunt een code opgeven door tussen de code en de subvraag een puntkomma of een tab te zetten. Voor meertalige vragenlijsten kunt u de vertaling op dezelfde regel toevoegen, gescheiden door een puntkomma."
 
 #: admin/editsubquestions.php:264
 msgid "You cannot add/remove subquestions or edit their codes because the survey is active."
@@ -2295,7 +2295,7 @@ msgstr "Alleen groepsnaam tonen"
 
 #: admin/editsurveysettings.php:503 admin/globalsettings.php:503
 msgid "Show group description only"
-msgstr "Toon alleen groep beschrijving"
+msgstr "Toon alleen groepsbeschrijving"
 
 #: admin/editsurveysettings.php:504 admin/editsurveysettings.php:541
 #: admin/globalsettings.php:504 admin/globalsettings.php:522
@@ -2436,23 +2436,23 @@ msgstr "Deelnemer kan opslaan en later hervatten?"
 
 #: admin/editsurveysettings.php:846
 msgid "Google Analytics API Key for this Survey?"
-msgstr ""
+msgstr "Google Analytics API Key voor deze enquête?"
 
 #: admin/editsurveysettings.php:851
 msgid "Google Analytics Style for this Survey?"
-msgstr ""
+msgstr "Google Analytics Style voor deze enquête?"
 
 #: admin/editsurveysettings.php:857
 msgid "Do not use Google Analytics"
-msgstr ""
+msgstr "Google Analytics niet gebruiken"
 
 #: admin/editsurveysettings.php:862
 msgid "Default Google Analytics"
-msgstr ""
+msgstr "Standaard Google Analytics"
 
 #: admin/editsurveysettings.php:867
 msgid "Track pages within survey"
-msgstr ""
+msgstr "Pagina's binnen de enquête volgen"
 
 #: admin/editsurveysettings.php:877
 msgid "Anonymized responses?"
@@ -2527,11 +2527,11 @@ msgstr "Importeer enquête"
 
 #: admin/editsurveysettings.php:1020
 msgid "Error: You have to select an existing survey."
-msgstr ""
+msgstr "Fout: U moet een bestaande enquête selecteren."
 
 #: admin/editsurveysettings.php:1020
 msgid "Error: You enter a name for the survey copy."
-msgstr ""
+msgstr "Fout: U moet een naam voor de kopie van de survey invoeren."
 
 #: admin/editsurveysettings.php:1022
 msgid "Select survey to copy:"
@@ -3200,7 +3200,7 @@ msgstr "Uit"
 
 #: admin/globalsettings.php:258
 msgid "Screen reader compatibility mode:"
-msgstr "Schermlezer compatibiliteit:"
+msgstr "Scherm compatibiliteitsmethode:"
 
 #: admin/globalsettings.php:267
 msgid "Session lifetime (seconds):"
@@ -3208,19 +3208,19 @@ msgstr "Tijdsduur sessie (seconden):"
 
 #: admin/globalsettings.php:269
 msgid "IP Info DB API Key:"
-msgstr "IP Informatie DB API sleutel:"
+msgstr "IP Informatie DB API Key:"
 
 #: admin/globalsettings.php:271
 msgid "Google Maps API key:"
-msgstr "Google Maps API sleutel:"
+msgstr "Google Maps API key:"
 
 #: admin/globalsettings.php:273
 msgid "Google Analytics API key:"
-msgstr ""
+msgstr "Google Analytics API key:"
 
 #: admin/globalsettings.php:275
 msgid "Google Translate API key:"
-msgstr ""
+msgstr "Google Translate API key:"
 
 #: admin/globalsettings.php:287
 msgid "Default site admin email:"
@@ -3568,7 +3568,7 @@ msgstr "E-mailsjablonen"
 
 #: admin/html.php:377
 msgid "Survey  Logic File"
-msgstr ""
+msgstr "Survey  Logic File"
 
 #: admin/html.php:405
 msgid "Tools"
@@ -3596,7 +3596,7 @@ msgstr "Herstel Survey Logic"
 
 #: admin/html.php:453
 msgid "Expression Manager"
-msgstr ""
+msgstr "Expressie Manager"
 
 #: admin/html.php:462
 msgid "Display / Export"
@@ -3753,6 +3753,12 @@ msgid ""
 "\n"
 "HOWEVER, if you manually specified any relevance equations, regenerating the question codes will break all of that survey logic."
 msgstr ""
+"Wilt u de vraagcodes opnieuw aanmaken?\n"
+"\n"
+"Waarschuwing:\n"
+"Dit is veilig als u alleen de Condities editor gebruikt.\n"
+"\n"
+"Echter, als u handmatig relevantie vergelijkingen ingevoerd hebt, dient u deze handmatig te wijzigen."
 
 #: admin/html.php:745
 msgid "Straight"
@@ -3816,7 +3822,7 @@ msgstr "Wijzig huidige groep"
 
 #: admin/html.php:990
 msgid "Survey logic file for current question group"
-msgstr ""
+msgstr "Survey logic file voor huidige vraaggroep"
 
 #: admin/html.php:999
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
@@ -3868,7 +3874,7 @@ msgstr "Sluit deze groep af"
 
 #: admin/html.php:1137 admin/html.php:1440
 msgid "Relevance:"
-msgstr ""
+msgstr "Relevantie:"
 
 #: admin/html.php:1186 admin/html.php:1191
 msgid "Preview This Question"
@@ -3885,7 +3891,7 @@ msgstr "Bewerk huidige vraag"
 
 #: admin/html.php:1225
 msgid "Survey logic file for current question"
-msgstr ""
+msgstr "Survey logic file voor huidige vraaggroep"
 
 #: admin/html.php:1234
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
@@ -4201,7 +4207,7 @@ msgstr "Nieuwe versie beschikbaar : %s"
 
 #: admin/html.php:2170
 msgid "Default Administration Page"
-msgstr ""
+msgstr "Beheer"
 
 #: admin/html.php:2177
 msgid "Create/Edit Users"
@@ -4503,7 +4509,7 @@ msgstr "Dit bestand is geen LimeSurvey enquête in XML-vorm."
 
 #: admin/import_resources_zip.php:32
 msgid "Import survey resources"
-msgstr "Import enquête resources"
+msgstr "Import enquête hulpmiddelen"
 
 #: admin/import_resources_zip.php:38
 msgid "Demo Mode Only: Uploading file is disabled in this system."
@@ -4680,7 +4686,7 @@ msgstr "Samenvatting van de import van de labelset"
 
 #: admin/importlabel.php:56
 msgid "Uploaded label set file needs to have an .lsl extension."
-msgstr "Het ge-uploaded label set bestand moet de extentie .lsl hebben."
+msgstr "Het ge-uploaded label set bestand moet de extensie .lsl hebben."
 
 #: admin/importlabel.php:57 admin/importlabel.php:88
 msgid "Return to label set administration"
@@ -4866,7 +4872,7 @@ msgstr "Er is geen \"CFIELDNAME\" veld!"
 
 #: admin/integritycheck.php:146
 msgid "The following conditions should be deleted"
-msgstr ""
+msgstr "De volgende voorwaarde moet worden verwijderd"
 
 #: admin/integritycheck.php:148 admin/integritycheck.php:274
 #: admin/integritycheck.php:284 admin/integritycheck.php:309
@@ -4876,7 +4882,7 @@ msgstr "omdat"
 
 #: admin/integritycheck.php:154
 msgid "All conditions meet consistency standards"
-msgstr ""
+msgstr "Alle condities zijn consistent"
 
 #: admin/integritycheck.php:173
 msgid "There are %s orphaned question attributes."
@@ -4900,7 +4906,7 @@ msgstr "Er zijn %s quota die niet gebruikt worden en die dus verwijderd kunnen w
 
 #: admin/integritycheck.php:207
 msgid "All quotas meet consistency standards"
-msgstr ""
+msgstr "Alle quota waarden zijn consistent"
 
 #: admin/integritycheck.php:219
 msgid "There are %s orphaned quota language settings which can be deleted."
@@ -4908,7 +4914,7 @@ msgstr "Er zijn %s taalinstellingen die niet gebruikt worden en dus verwijderd k
 
 #: admin/integritycheck.php:223
 msgid "All quota language settings meet consistency standards"
-msgstr ""
+msgstr "Alle quota taalinstellingen zijn consistent"
 
 #: admin/integritycheck.php:235
 msgid "There are %s orphaned quota members which can be deleted."
@@ -4916,7 +4922,7 @@ msgstr "Er zijn %s quota leden die niet gebruikt worden en die dus verwijderd ku
 
 #: admin/integritycheck.php:239
 msgid "All quota members meet consistency standards"
-msgstr ""
+msgstr "Alle quota leden zijn consistent"
 
 #: admin/integritycheck.php:255 admin/integritycheck.php:382
 msgid "No matching survey"
@@ -4928,15 +4934,15 @@ msgstr "Er is geen bijbehorende groep"
 
 #: admin/integritycheck.php:273 admin/integritycheck.php:283
 msgid "The following assessments should be deleted"
-msgstr ""
+msgstr "De volgende toetsen moeten worden verwijderd"
 
 #: admin/integritycheck.php:279
 msgid "All Survey (Total) assessments meet consistency standards"
-msgstr ""
+msgstr "Alle onderzoekswaardes voldoen aan de consistentie standaarden"
 
 #: admin/integritycheck.php:289
 msgid "All Group assessments meet consistency standards"
-msgstr ""
+msgstr "Alle groep toetsen zijn consistent"
 
 #: admin/integritycheck.php:302
 msgid "No matching question"
@@ -4968,7 +4974,7 @@ msgstr "De volgende taalinstellingen van de vragenlijst moeten worden verwijderd
 
 #: admin/integritycheck.php:355
 msgid "SLID `%s` because the related survey is missing."
-msgstr ""
+msgstr "SLID `%s` omdat de gerelateerde enquête ontbreekt."
 
 #: admin/integritycheck.php:361
 msgid "All survey language settings meet consistency standards"
@@ -4976,7 +4982,7 @@ msgstr "Alle taalinstellingen van de vragenlijst zijn consistent"
 
 #: admin/integritycheck.php:387
 msgid "The following questions should be deleted"
-msgstr "De volgende vraagen moeten worden verwijderd"
+msgstr "De volgende vragen moeten worden verwijderd"
 
 #: admin/integritycheck.php:393
 msgid "All questions meet consistency standards"
@@ -5183,31 +5189,31 @@ msgstr "Belangrijke voorschriften"
 
 #: admin/iterate_survey.php:31
 msgid "Click on the following button if you want to"
-msgstr ""
+msgstr "Klik op de volgende knop als U"
 
 #: admin/iterate_survey.php:33
 msgid "Delete all incomplete answers that correspond to a token for which a completed answers is already recorded"
-msgstr ""
+msgstr "Verwijder alle onvolledige antwoorden die overeenkomen met een toegangscode waarvoor een volledig antwoord reeds is geregistreerd"
 
 #: admin/iterate_survey.php:34
 msgid "Reset the completed answers to the incomplete state"
-msgstr ""
+msgstr "Initialiseer de ingegeven antwoorden naar niet-ingegeven status"
 
 #: admin/iterate_survey.php:35
 msgid "Reset all your tokens to the 'not used' state"
-msgstr ""
+msgstr "Initialiseer al uw toegangscodes naar de 'niet gebruikte' status"
 
 #: admin/iterate_survey.php:37
 msgid "Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?"
-msgstr ""
+msgstr "Wilt U dat de onvolledige antwoorden *verwijderen* en de voldane staat van zowel antwoorden als toegangscodes verwijderen?"
 
 #: admin/iterate_survey.php:37
 msgid "Reset answers and token completed state"
-msgstr ""
+msgstr "Antwoorden wissen en status voldaan"
 
 #: admin/iterate_survey.php:63
 msgid "Answers and tokens have been re-opened."
-msgstr ""
+msgstr "Antwoorden en toegangscodes zijn heropend."
 
 #: admin/labels.php:59
 msgid "Label Sets Administration"
@@ -5328,11 +5334,11 @@ msgstr "Snel toevoegen"
 
 #: admin/labels.php:439
 msgid "Enter your labels:"
-msgstr "Geef uw antwoorden:"
+msgstr "Geef uw labels:"
 
 #: admin/labels.php:440
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
-msgstr ""
+msgstr "Voer per regel één label in. Voer een code in door de code en het label te scheiden met een puntkomma of een tab. Voeg voor enquêtes in meerdere talen de vertaling toe op dezelfde regel gescheiden door een puntkomma of een tab."
 
 #: admin/labels.php:510
 msgid "Failed to Copy already defined labels to added languages"
@@ -5478,8 +5484,8 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Selecteer alle toepasselijke antwoorden en geef uw commentaar:"
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2631
-#: classes/expressions/LimeExpressionManager.php:4978 qanda.php:1290
+#: classes/expressions/LimeExpressionManager.php:2643
+#: classes/expressions/LimeExpressionManager.php:4993 qanda.php:1290
 #: qanda.php:1590 qanda.php:2200 qanda.php:2500
 msgid "Other:"
 msgstr "Andere:"
@@ -5683,7 +5689,7 @@ msgstr "Dit archief bevat een PDF van de enquête, het queXML bestand van de enq
 
 #: admin/quota.php:248 admin/quota.php:303
 msgid "Quota could not be added.\\n\\nIt is missing a quota message for the following languages"
-msgstr ""
+msgstr "Quota kon niet worden toegevoegd.\\n\\nQuota bericht ontbreekt voor de volgende talen"
 
 #: admin/quota.php:405
 msgid "Edit quota"
@@ -5933,7 +5939,7 @@ msgstr "Toon grafieken"
 
 #: admin/statistics.php:345
 msgid "Show text responses inline"
-msgstr ""
+msgstr "Toon tekst responses in overzicht"
 
 #: admin/statistics.php:352
 msgid "Select output format"
@@ -6127,7 +6133,7 @@ msgstr "Opmerkingen"
 
 #: admin/statistics_function.php:2067
 msgid "'Other' Responses"
-msgstr ""
+msgstr "'Andere' Responses"
 
 #: admin/statistics_function.php:2089 admin/statistics_function.php:2107
 #: admin/statistics_function.php:2143 admin/statistics_function.php:2148
@@ -6292,7 +6298,7 @@ msgstr "Sjabloon kan  niet worden hernoemd naar`%s`."
 
 #: admin/templates.php:275
 msgid "This name is reserved for a standard template."
-msgstr ""
+msgstr "Dit is de naam van het standaard sjabloon"
 
 #: admin/templates.php:279
 msgid "Directory could not be renamed to `%s`."
@@ -6559,7 +6565,7 @@ msgstr "Big5 Traditioneel Chinees"
 
 #: admin/tokens.php:58 admin/vvimport.php:25
 msgid "Binary pseudo charset"
-msgstr "Binary pseudo karakterset"
+msgstr "Binaire pseudo karakterset"
 
 #: admin/tokens.php:59 admin/vvimport.php:26
 msgid "Windows Central European"
@@ -6699,7 +6705,7 @@ msgstr "%s berichten zijn gescand, geen enkele is gemarkeerd als bounce door het
 
 #: admin/tokens.php:365
 msgid "Your inbox is empty."
-msgstr ""
+msgstr "Uw Postvak IN is leeg."
 
 #: admin/tokens.php:374
 msgid "Please check your settings"
@@ -7964,7 +7970,7 @@ msgstr "U kunt met de volgende gegevens inloggen op de website: "
 
 #: admin/usercontrol.php:474
 msgid "Please ask your LimeSurvey administrator for your password."
-msgstr ""
+msgstr "Neem voor uw wachtwoord contact op met de beheerder."
 
 #: admin/usercontrol.php:478
 msgid "Click here to log in."
@@ -8623,11 +8629,11 @@ msgstr "Arc tangent van twee variabelen"
 
 #: classes/expressions/ExpressionManager.php:150
 msgid "Round fractions up"
-msgstr "Round up fracties"
+msgstr "Naar boven afronden"
 
 #: classes/expressions/ExpressionManager.php:151
 msgid "Returns true(1) if it is a valid date in gregorian calendar"
-msgstr "Geeft waar (1) als het een geldige datum in gregoriaanse kalender"
+msgstr "Geeft waar (1) als het een geldige datum is"
 
 #: classes/expressions/ExpressionManager.php:152
 msgid "Cosine"
@@ -8635,23 +8641,23 @@ msgstr "Cosinus"
 
 #: classes/expressions/ExpressionManager.php:153
 msgid "Count the number of answered questions in the list"
-msgstr "Tel het getal van de beantwoorde vragen in de lijst op"
+msgstr "Tel de beantwoorde vragen in de lijst"
 
 #: classes/expressions/ExpressionManager.php:154
 msgid "Format a local date/time"
-msgstr "Formateer een locale datum/tijd"
+msgstr "Formateer de locale datum/tijd"
 
 #: classes/expressions/ExpressionManager.php:155
 msgid "Calculates the exponent of e"
-msgstr "Calculeer de exponenten van e"
+msgstr "Bereken de e-exponent"
 
 #: classes/expressions/ExpressionManager.php:156
 msgid "Display numbers with comma as radix separator, if needed"
-msgstr ""
+msgstr "Indien nodig, toon een getal met een komma"
 
 #: classes/expressions/ExpressionManager.php:157
 msgid "Round fractions down"
-msgstr "Ronde fracties beneden"
+msgstr "Naar beneden afronden"
 
 #: classes/expressions/ExpressionManager.php:158
 msgid "Format a GMT date/time"
@@ -8659,23 +8665,23 @@ msgstr "Formateer een GMT datum/tijd"
 
 #: classes/expressions/ExpressionManager.php:159
 msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
-msgstr "Converteer alle HTML entiteiten naar hun toepasselijke karakters (gebruik altijs ENT_QOUTES en UTF-8)"
+msgstr "Converteer alle HTML code naar tekst (gebruik altijd ENT_QOUTES en UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:160
 msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr "Converteer alle toepasselijk tekens voor HTML entiteiten (gebruik altijd ENT_QUOTES en UTF-8)"
+msgstr "Converteer alle HTML tekst naar HTML code (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:161
 msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr "Converteer speciale letters naar HTML entiteiten (gebruik altijd ENT_QUOTES en UTF-8)"
+msgstr "Converteer speciale teksten naar HTML code (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:162
 msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
-msgstr "Converteer speciale HTML entiteiten terug naar letters (gebruik altjd ENT_QUOTES en UTF-8)"
+msgstr "Converteer speciale HTML code terug naar tekst (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: classes/expressions/ExpressionManager.php:163
 msgid "Format a local time/date as integer"
-msgstr "Formateer een locale tijd/datum als een integere"
+msgstr "Geef de locale tijd/datum als een getal"
 
 #: classes/expressions/ExpressionManager.php:164
 msgid "Conditional processing"
@@ -8683,15 +8689,15 @@ msgstr "Voorwaardelijke verwerking"
 
 #: classes/expressions/ExpressionManager.php:165
 msgid "Join array elements with a string"
-msgstr "Verbind de array elementen met een stuk tekst"
+msgstr "Koppel de array elementen met een tekst"
 
 #: classes/expressions/ExpressionManager.php:166
 msgid "Get the integer value of a variable"
-msgstr "Krijg een integere waarde van een variabele"
+msgstr "Geef de waarde van een variabele als getal"
 
 #: classes/expressions/ExpressionManager.php:167
 msgid "Determine whether a variable is considered to be empty"
-msgstr "Determineer of een variabele overwegens is om leeg te zijn"
+msgstr "Bepaal of een variabele leeg is"
 
 #: classes/expressions/ExpressionManager.php:168
 msgid "Finds whether the type of a variable is float"
@@ -8699,39 +8705,39 @@ msgstr "Zoek uit of het type van een variabele een float is"
 
 #: classes/expressions/ExpressionManager.php:169
 msgid "Find whether the type of a variable is integer"
-msgstr "Zoek uit of het type variabel is als integer"
+msgstr "Zoek uit of het type variabele een getal is"
 
 #: classes/expressions/ExpressionManager.php:170
 msgid "Finds whether a value is not a number"
-msgstr "Vind of een waarde is geen nummer"
+msgstr "Bepaalt of een waarde geen nummer is"
 
 #: classes/expressions/ExpressionManager.php:171
 msgid "Finds whether a variable is NULL"
-msgstr "Vind of het variabele is met NULL"
+msgstr "Bepaalt of een waarde NULL is"
 
 #: classes/expressions/ExpressionManager.php:172
 msgid "Finds whether a variable is a number or a numeric string"
-msgstr "Vind of het een variabel nummer is of een numeriek stuk tekst"
+msgstr "Bepaalt of een variabele een getal of een numerieke tekst is"
 
 #: classes/expressions/ExpressionManager.php:173
 msgid "Find whether the type of a variable is string"
-msgstr "Vind of het type een mogelijk stuk tekst is"
+msgstr "Bepaalt of een variabele een getal of een numerieke tekst is"
 
 #: classes/expressions/ExpressionManager.php:174
 msgid "Return comma-separated list of values"
-msgstr "Breng comma-appart lijst van waarden"
+msgstr "Geef een kommagescheidenlijst van waarden"
 
 #: classes/expressions/ExpressionManager.php:175
 msgid "Natural logarithm"
-msgstr "Natuurlijk logarithme"
+msgstr "Natuurlijk logaritme"
 
 #: classes/expressions/ExpressionManager.php:176
 msgid "Strip whitespace (or other characters) from the beginning of a string"
-msgstr "Strip whitespace (of andere karakters) van het begin van een stuk tekst"
+msgstr "Verwijder whitespace (of andere karakters) van het begin van een stuk tekst"
 
 #: classes/expressions/ExpressionManager.php:177
 msgid "Find highest value"
-msgstr "Vinde de hoogste waarde"
+msgstr "Vind de hoogste waarde"
 
 #: classes/expressions/ExpressionManager.php:178
 msgid "Find lowest value"
@@ -8739,15 +8745,15 @@ msgstr "Vind de laagste waarde"
 
 #: classes/expressions/ExpressionManager.php:179
 msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
-msgstr "Krijg UNIX timestamp voor een datum (elke van de 6 argumenten zijn optioneel)"
+msgstr "Haal een UNIX timestamp op voor een datum (elk van de 6 argumenten is optioneel)"
 
 #: classes/expressions/ExpressionManager.php:180
 msgid "Inserts HTML line breaks before all newlines in a string"
-msgstr "Voeg HTML zin in voor alle nieuwe zinnen"
+msgstr "Voeg HTML regelovergang toe voor elke nieuwe regel in de tekst."
 
 #: classes/expressions/ExpressionManager.php:181
 msgid "Format a number with grouped thousands"
-msgstr "Formateer een nummer met een groepeerde duizend"
+msgstr "Geef met een symbool duizendtallen aan in een getal"
 
 #: classes/expressions/ExpressionManager.php:182
 msgid "Get value of pi"
@@ -8759,31 +8765,31 @@ msgstr "Exponentiële expressie"
 
 #: classes/expressions/ExpressionManager.php:184
 msgid "Convert a quoted-printable string to an 8 bit string"
-msgstr "Converteer ene geciteerd en printbaar stuk tekst aan een 8 bit stuk tekst"
+msgstr "Converteer een geciteerd en printbare tekst naar een 8 bit string"
 
 #: classes/expressions/ExpressionManager.php:185
 msgid "Convert a 8 bit string to a quoted-printable string"
-msgstr "Vergelijk een 8 bit stuk tekst van een geciteerd afprinbare stuke tekst"
+msgstr "Converteer een 8 bit string naar een geciteerd printbare tekst"
 
 #: classes/expressions/ExpressionManager.php:186
 msgid "Quote meta characters"
-msgstr "Maximum karakters"
+msgstr "Gebruik quotes voor metakarakters"
 
 #: classes/expressions/ExpressionManager.php:187
 msgid "Generate a random integer"
-msgstr "Genereer een willkeurige integer"
+msgstr "Genereer een willkeurig getal"
 
 #: classes/expressions/ExpressionManager.php:188
 msgid "Compare a string to a regular expression pattern"
-msgstr "Vergelijk een stuk tekst met een gewone expressie patroon"
+msgstr "Vergelijk een tekst met een reguliere expressie"
 
 #: classes/expressions/ExpressionManager.php:189
 msgid "Rounds a number to an optional precision"
-msgstr "Ron een nummer af naar een mogelijk precies getal"
+msgstr "Rond een getal af met een aantal decimalen"
 
 #: classes/expressions/ExpressionManager.php:190
 msgid "Strip whitespace (or other characters) from the end of a string"
-msgstr "Strip whitespace (of andere tekens) van het einde van een stuk tekst"
+msgstr "Verwijder whitespace (of andere tekens) van het einde van een tekst"
 
 #: classes/expressions/ExpressionManager.php:191
 msgid "Sine"
@@ -8791,19 +8797,19 @@ msgstr "Sinus"
 
 #: classes/expressions/ExpressionManager.php:192
 msgid "Return a formatted string"
-msgstr "Keer terug naar een geformateerd stuk tekst"
+msgstr "Geef een geformateerde tekst terug"
 
 #: classes/expressions/ExpressionManager.php:193
 msgid "Square root"
-msgstr "vierkantswortel"
+msgstr "Wortel"
 
 #: classes/expressions/ExpressionManager.php:194
 msgid "Calculate the Sample Standard Deviation for the list of numbers"
-msgstr "Calculeer de Sample standaard deviation voor de lijst nummers"
+msgstr "Bepaal de standaarddeviatie van een rij getallen"
 
 #: classes/expressions/ExpressionManager.php:195
 msgid "Pad a string to a certain length with another string"
-msgstr "Pad een stuk tekst van een specifieke lengte men aan ander stuk tekst"
+msgstr "Plak een tekst tot een specifieke lengte aan een andere tekst"
 
 #: classes/expressions/ExpressionManager.php:196
 msgid "Repeat a string"
@@ -8811,374 +8817,374 @@ msgstr "Herhaal een string"
 
 #: classes/expressions/ExpressionManager.php:197
 msgid "Replace all occurrences of the search string with the replacement string"
-msgstr "Verrander alle gebeurtenissen van het stuk tekst met de verrvangings tekst"
+msgstr "Vervang alle voorkomens van een tekst door een andere tekst"
 
 #: classes/expressions/ExpressionManager.php:198
 msgid "Binary safe case-insensitive string comparison"
-msgstr "Binaire beveiliging instensieve stuk tekst vergelijking"
+msgstr "Binair veilige hoofdletteronhankelijke tekstvergelijking"
 
 #: classes/expressions/ExpressionManager.php:199
 msgid "Binary safe string comparison"
-msgstr "Binaire beveiligde stuk tekst vergelijking"
+msgstr "Binair veilige tekstvergelijking"
 
 #: classes/expressions/ExpressionManager.php:200
 msgid "Strip HTML and PHP tags from a string"
-msgstr "Verwijder de HTML en PHP van het stuk tekst"
+msgstr "Verwijder de HTML en PHP tags uit een tekst"
 
 #: classes/expressions/ExpressionManager.php:201
 msgid "Find position of first occurrence of a case-insensitive string"
-msgstr "Vind de plaats van de eerste  gebeurende van een niet hoofdlettergevoelig stuk tekst"
+msgstr "Vind de plaats van het eerste voorkomen in een niet hoofdlettergevoelige tekst"
 
 #: classes/expressions/ExpressionManager.php:202
 msgid "Un-quotes a quoted string"
-msgstr "ongeciteerd een gegeciteerde stuk tekst"
+msgstr "Verwijder de aanhalingstekens"
 
 #: classes/expressions/ExpressionManager.php:203
 msgid "Case-insensitive strstr"
-msgstr "niet hoofdlettergevoelig strstr"
+msgstr "Hoofdlettergevoelige strstr"
 
 #: classes/expressions/ExpressionManager.php:204
 msgid "Get string length"
-msgstr "Krijg string lengte"
+msgstr "Bepaal lengte tekst"
 
 #: classes/expressions/ExpressionManager.php:205
 msgid "Find position of first occurrence of a string"
-msgstr "Vind de plaats van de eerste  gebeurende van een stuk tekst"
+msgstr "Vind de positie van het eerste voorkomen van een tekst in een tekst"
 
 #: classes/expressions/ExpressionManager.php:206
 msgid "Reverse a string"
-msgstr "Herhaal een string"
+msgstr "Keer een string om"
 
 #: classes/expressions/ExpressionManager.php:207
 msgid "Find first occurrence of a string"
-msgstr "zoek naar de plaats waar een stukje tekst voor het eerst voorkomt"
+msgstr "Zoek eerste voorkomen van een tekst in een tekst"
 
 #: classes/expressions/ExpressionManager.php:208
 msgid "Make a string lowercase"
-msgstr "Maak een stuk tekst  zonder hoofdletters"
+msgstr "Zet een tekst om naar kleine letters"
 
 #: classes/expressions/ExpressionManager.php:209
 msgid "Make a string uppercase"
-msgstr "Maak een stuk tekst met hoofdletters"
+msgstr "Zet een tekst om naar hoofdletters"
 
 #: classes/expressions/ExpressionManager.php:210
 msgid "Return part of a string"
-msgstr "Breng een deel van een string terug"
+msgstr "Geef een deel van een tekst terug"
 
 #: classes/expressions/ExpressionManager.php:211
 msgid "Calculate the sum of values in an array"
-msgstr "Calculeer de som van de waarden in de array"
+msgstr "Bepaal de som van de waarden in het array"
 
 #: classes/expressions/ExpressionManager.php:212
 msgid "Tangent"
-msgstr "tangens"
+msgstr "Tangens"
 
 #: classes/expressions/ExpressionManager.php:213
 msgid "Return current UNIX timestamp"
-msgstr "Hervat momentele UNIX timestamp"
+msgstr "Geeft huidige UNIX timestamp"
 
 #: classes/expressions/ExpressionManager.php:214
 msgid "Strip whitespace (or other characters) from the beginning and end of a string"
-msgstr "Strip whitespace (of een ander teken) van het begin tot het einde van een zin"
+msgstr "Verwijder whitespace (of andere tekens) van het begin en het einde van een tekst"
 
 #: classes/expressions/ExpressionManager.php:215
 msgid "Uppercase the first character of each word in a string"
-msgstr "De eerste letter van elk eerste woord in elke zin moet een hoofdletter zijn"
+msgstr "Maak van elk woord in een tekst de eerste letter een hoofdletter"
 
 #: classes/expressions/ExpressionManager.php:243
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
-msgstr ""
+msgstr "Binaire operatie niet mogelijk - minder dan twee gegevens aangeleverd"
 
 #: classes/expressions/ExpressionManager.php:250
 #: classes/expressions/ExpressionManager.php:389
 msgid "Invalid value(s) on the stack"
-msgstr ""
+msgstr "Ongeldige waarde(s) aangeleverd"
 
 #: classes/expressions/ExpressionManager.php:383
 msgid "Unable to evaluate unary operator - no entries on stack"
-msgstr ""
+msgstr "Binaire operatie niet mogelijk - geen gegevens aangeleverd"
 
 #: classes/expressions/ExpressionManager.php:438
 msgid "Extra tokens found"
-msgstr ""
+msgstr "Extra toegangscodes gevonden"
 
 #: classes/expressions/ExpressionManager.php:453
 msgid "Unbalanced equation - values left on stack"
-msgstr ""
+msgstr "Vergelijking niet evenwichtig - aangeleverde gegevens nog beschikbaar"
 
 #: classes/expressions/ExpressionManager.php:459
 msgid "Not a valid expression"
-msgstr ""
+msgstr "Geen geldige expressie"
 
 #: classes/expressions/ExpressionManager.php:520
 #: classes/expressions/ExpressionManager.php:948
 #: classes/expressions/ExpressionManager.php:1029
 msgid "Poorly terminated expression - expected a constant or variable"
-msgstr ""
+msgstr "Expressie bevat geen constante of variabele"
 
 #: classes/expressions/ExpressionManager.php:565
 msgid "This variable is not declared until a later page"
-msgstr ""
+msgstr "Deze variabele is pas later aangemaakt"
 
 #: classes/expressions/ExpressionManager.php:572
 #: classes/expressions/ExpressionManager.php:1685
 msgid "Undefined variable"
-msgstr ""
+msgstr "Onbekende variabele"
 
 #: classes/expressions/ExpressionManager.php:579
 msgid "Should never  get to this line?"
-msgstr ""
+msgstr "Deze regel is niet bereikbaar?"
 
 #: classes/expressions/ExpressionManager.php:665
 msgid "The value of this variable can not be changed"
-msgstr ""
+msgstr "De waarde van deze variabele kan niet gewijzigd worden"
 
 #: classes/expressions/ExpressionManager.php:671
 msgid "Only variables can be assigned values"
-msgstr ""
+msgstr "Alleen een variabele kan een waarde krijgen"
 
 #: classes/expressions/ExpressionManager.php:727
 msgid "Expected expressions separated by commas"
-msgstr ""
+msgstr "Expressies moeten gescheiden worden met een komma "
 
 #: classes/expressions/ExpressionManager.php:735
 msgid "Extra token found after Expressions"
-msgstr ""
+msgstr "Expressies moeten gescheiden worden met een komma "
 
 #: classes/expressions/ExpressionManager.php:751
 msgid "Undefined Function"
-msgstr ""
+msgstr "Onbekende Functie"
 
 #: classes/expressions/ExpressionManager.php:757
 msgid "Expected left parentheses after function name"
-msgstr ""
+msgstr "Na de functienaam moet een linkerhaak komen"
 
 #: classes/expressions/ExpressionManager.php:781
 msgid "Extra comma found in function"
-msgstr ""
+msgstr "Extra komma gevonden in functie"
 
 #: classes/expressions/ExpressionManager.php:965
 msgid "Expected right parentheses"
-msgstr ""
+msgstr "De rechterhaak ontbreekt"
 
 #: classes/expressions/ExpressionManager.php:1669
 msgid "Extra right parentheses detected"
-msgstr ""
+msgstr "Er is een extra rechterhaak gevonden"
 
 #: classes/expressions/ExpressionManager.php:1678
 msgid "Undefined function"
-msgstr ""
+msgstr "Onbekende functie"
 
 #: classes/expressions/ExpressionManager.php:1690
 msgid "Unsupported syntax"
-msgstr ""
+msgstr "Deze syntax wordt niet ondersteund"
 
 #: classes/expressions/ExpressionManager.php:1698
 msgid "Missing %s closing right parentheses"
-msgstr ""
+msgstr "Er ontbreken %s rechterhaakjes (sluithaakjes)"
 
 #: classes/expressions/ExpressionManager.php:1955
 msgid "Function must have at least %s argument(s)"
-msgstr ""
+msgstr "Functie moet minstens %s parameter(s) hebben"
 
 #: classes/expressions/ExpressionManager.php:2046
 msgid "Unsupported number of arguments: %s"
-msgstr ""
+msgstr "Onjuist aantal parameters: %s"
 
 #: classes/expressions/ExpressionManager.php:2051
 msgid "Function does not support %s arguments. "
-msgstr ""
+msgstr "Functie ondersteunt niet %s parameters."
 
 #: classes/expressions/ExpressionManager.php:2052
 msgid "Function supports this many arguments, where -1=unlimited: %s."
-msgstr ""
+msgstr "Functie ondersteunt dit aantal parameters, -1=onbeperkt: %s."
 
 #: classes/expressions/ExpressionManager.php:2273
 msgid "Tried to pop value off of empty stack"
-msgstr ""
+msgstr "De stack is leeg, dus pop is nu niet mogelijk"
 
 #: classes/expressions/ExpressionManager.php:3197
 msgid "Invalid PERL Regular Expression: %s"
-msgstr ""
+msgstr "Ongeldige PERL Reguliere Expressie: %s"
 
-#: classes/expressions/LimeExpressionManager.php:2155
+#: classes/expressions/LimeExpressionManager.php:2167
 msgid "Please select at least one answer"
-msgstr "Kiest tenminste één antwoord"
+msgstr "Kies tenminste één antwoord"
 
-#: classes/expressions/LimeExpressionManager.php:2156
+#: classes/expressions/LimeExpressionManager.php:2168
 msgid "Please select at least %s answers"
 msgstr "Kies tenminste %s antwoorden"
 
-#: classes/expressions/LimeExpressionManager.php:2160
+#: classes/expressions/LimeExpressionManager.php:2172
 msgid "Please select at most one answer"
-msgstr "Kies maximimaal één antwoord"
+msgstr "Kies maximaal één antwoord"
 
-#: classes/expressions/LimeExpressionManager.php:2161
+#: classes/expressions/LimeExpressionManager.php:2173
 msgid "Please select at most %s answers"
 msgstr "Kies maximaal %s antwoorden"
 
-#: classes/expressions/LimeExpressionManager.php:2165
+#: classes/expressions/LimeExpressionManager.php:2177
 msgid "Please select one answer"
 msgstr "Kies één antwoord"
 
-#: classes/expressions/LimeExpressionManager.php:2166
+#: classes/expressions/LimeExpressionManager.php:2178
 msgid "Please select %s answers"
 msgstr "Kies %s antwoorden"
 
-#: classes/expressions/LimeExpressionManager.php:2168
+#: classes/expressions/LimeExpressionManager.php:2180
 msgid "Please select between %s and %s answers"
-msgstr "Kies tussen %s en %s antwoorden"
+msgstr "Kies tussen de %s en %s antwoorden"
 
-#: classes/expressions/LimeExpressionManager.php:2184
-#: classes/expressions/LimeExpressionManager.php:2205
+#: classes/expressions/LimeExpressionManager.php:2196
+#: classes/expressions/LimeExpressionManager.php:2217
 msgid "Each answer must be at least %s"
 msgstr "Elk antwoord moet tenminste %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2186
-#: classes/expressions/LimeExpressionManager.php:2207
+#: classes/expressions/LimeExpressionManager.php:2198
+#: classes/expressions/LimeExpressionManager.php:2219
 msgid "Each answer must be at most %s"
-msgstr "Elk antwoord max maximaal %s zijn"
+msgstr "Elk antwoord mag maximaal %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2188
-#: classes/expressions/LimeExpressionManager.php:2209
+#: classes/expressions/LimeExpressionManager.php:2200
+#: classes/expressions/LimeExpressionManager.php:2221
 msgid "Each answer must be %s"
 msgstr "Elk antwoord moet %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2189
-#: classes/expressions/LimeExpressionManager.php:2210
+#: classes/expressions/LimeExpressionManager.php:2201
+#: classes/expressions/LimeExpressionManager.php:2222
 msgid "Each answer must be between %s and %s"
 msgstr "Elk antwoord moet tussen %s en %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2226
+#: classes/expressions/LimeExpressionManager.php:2238
 msgid "The sum must be at least %s"
 msgstr "De som moet minimaal %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2228
+#: classes/expressions/LimeExpressionManager.php:2240
 msgid "The sum must be at most %s"
 msgstr "De som moet maximaal %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2230
-#: classes/expressions/LimeExpressionManager.php:2241
+#: classes/expressions/LimeExpressionManager.php:2242
+#: classes/expressions/LimeExpressionManager.php:2253
 msgid "The sum must equal %s"
 msgstr "De som moet gelijk zijn aan %s"
 
-#: classes/expressions/LimeExpressionManager.php:2231
+#: classes/expressions/LimeExpressionManager.php:2243
 msgid "The sum must be between %s and %s"
 msgstr "De som moet tussen %s en %s zijn"
 
-#: classes/expressions/LimeExpressionManager.php:2247
+#: classes/expressions/LimeExpressionManager.php:2259
 msgid "Please also fill in the \"other comment\" field."
-msgstr ""
+msgstr "Vul ook \"other comment\" veld in."
 
-#: classes/expressions/LimeExpressionManager.php:2255
+#: classes/expressions/LimeExpressionManager.php:2267
 msgid "Please check the format of your answer."
-msgstr ""
+msgstr "Controleer het formaat van uw antwoord."
 
-#: classes/expressions/LimeExpressionManager.php:3994
+#: classes/expressions/LimeExpressionManager.php:4009
 msgid "Unable to insert record into survey table: "
-msgstr ""
+msgstr "Record kan niet worden opgevoerd in de 'survey tabel':"
 
-#: classes/expressions/LimeExpressionManager.php:4010
+#: classes/expressions/LimeExpressionManager.php:4025
 msgid "Unable to insert record into timings table "
-msgstr ""
+msgstr "Record kan niet worden opgevoerd in de 'timings tabel'"
 
-#: classes/expressions/LimeExpressionManager.php:4958
+#: classes/expressions/LimeExpressionManager.php:4973
 msgid "This question is mandatory"
 msgstr "Dit is een verplichte vraag"
 
-#: classes/expressions/LimeExpressionManager.php:4970
+#: classes/expressions/LimeExpressionManager.php:4985
 msgid "Please check at least one item."
 msgstr "Kies minimaal een item."
 
-#: classes/expressions/LimeExpressionManager.php:4980
+#: classes/expressions/LimeExpressionManager.php:4995
 msgid "If you choose '%s' you must provide a description."
 msgstr "Als u '%s' kiest, moet u een omschrijving geven."
 
-#: classes/expressions/LimeExpressionManager.php:5002
-#: classes/expressions/LimeExpressionManager.php:5039
+#: classes/expressions/LimeExpressionManager.php:5017
+#: classes/expressions/LimeExpressionManager.php:5054
 msgid "Please complete all parts"
 msgstr "Vul alle onderdelen in"
 
-#: classes/expressions/LimeExpressionManager.php:5031
+#: classes/expressions/LimeExpressionManager.php:5046
 msgid "Please check at least one box per row"
-msgstr ""
+msgstr "Selecteer minstens een veld per rij"
 
-#: classes/expressions/LimeExpressionManager.php:5047
+#: classes/expressions/LimeExpressionManager.php:5062
 msgid "Please rank all items"
 msgstr "Rangschik alle opties"
 
-#: classes/expressions/LimeExpressionManager.php:7380
+#: classes/expressions/LimeExpressionManager.php:7415
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
-msgstr ""
+msgstr "Fout in de vraag - mogelijk ontbreekt een subvraag of een taalinstelling"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Name [ID]"
-msgstr ""
+msgstr "Name [ID]"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Relevance [Validation] (Default)"
-msgstr ""
+msgstr "Relevantie [Validatie] (Standaard)"
 
-#: classes/expressions/LimeExpressionManager.php:7385
+#: classes/expressions/LimeExpressionManager.php:7420
 msgid "Text [Help] (Tip)"
 msgstr "Tekst [Help] (Tip)"
 
-#: classes/expressions/LimeExpressionManager.php:7436
-#: classes/expressions/LimeExpressionManager.php:7662
+#: classes/expressions/LimeExpressionManager.php:7471
+#: classes/expressions/LimeExpressionManager.php:7697
 msgid "DEFAULT:"
 msgstr "Standaard:"
 
-#: classes/expressions/LimeExpressionManager.php:7444
+#: classes/expressions/LimeExpressionManager.php:7479
 msgid "HELP:"
 msgstr "Help:"
 
-#: classes/expressions/LimeExpressionManager.php:7445
+#: classes/expressions/LimeExpressionManager.php:7480
 msgid "TIP:"
 msgstr "Tip:"
 
-#: classes/expressions/LimeExpressionManager.php:7452
+#: classes/expressions/LimeExpressionManager.php:7487
 msgid "Question Attribute"
-msgstr ""
+msgstr "Vraag Attribuut"
 
-#: classes/expressions/LimeExpressionManager.php:7452
+#: classes/expressions/LimeExpressionManager.php:7487
 msgid "Value"
 msgstr "Waarde"
 
-#: classes/expressions/LimeExpressionManager.php:7551
+#: classes/expressions/LimeExpressionManager.php:7586
 msgid "VALIDATION:"
 msgstr "Validatie:"
 
-#: classes/expressions/LimeExpressionManager.php:7565
+#: classes/expressions/LimeExpressionManager.php:7600
 msgid "This variable name has already been used."
 msgstr "Vraagcode is al in gebruik"
 
-#: classes/expressions/LimeExpressionManager.php:7577
+#: classes/expressions/LimeExpressionManager.php:7612
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
-msgstr ""
+msgstr "Vanaf versie 1.92 wordt het gebruik van een naam van een variabele die met een cijfer begint ontraden, een naam mag ook alleen letters, cijfers en underscores bevatten."
 
-#: classes/expressions/LimeExpressionManager.php:7730
+#: classes/expressions/LimeExpressionManager.php:7765
 msgid "This question has at least %s error(s)"
-msgstr ""
+msgstr "Deze vraag heeft minstens %s fout(en)"
 
-#: classes/expressions/LimeExpressionManager.php:7769
+#: classes/expressions/LimeExpressionManager.php:7804
 msgid "%s question(s) contain errors that need to be corrected"
-msgstr ""
+msgstr "%s vraag/vragen met fouten die aangepast moeten worden"
 
-#: classes/expressions/LimeExpressionManager.php:7775
+#: classes/expressions/LimeExpressionManager.php:7810
 msgid "No syntax errors detected in this survey"
-msgstr ""
+msgstr "Geen fouten gevonden in de enquête"
 
-#: classes/expressions/LimeExpressionManager.php:7778
+#: classes/expressions/LimeExpressionManager.php:7813
 msgid "This group, by itself, does not contain any syntax errors"
-msgstr ""
+msgstr "Deze groep bevat geen fouten"
 
-#: classes/expressions/LimeExpressionManager.php:7781
+#: classes/expressions/LimeExpressionManager.php:7816
 msgid "This question, by itself, does not contain any syntax errors"
-msgstr ""
+msgstr "Deze vraag bevat geen fouten"
 
 #: classes/expressions/test/survey_logic_file.php:138
 msgid "Logic File for Survey # "
-msgstr ""
+msgstr "Logic File voor Enquête # "
 
 #: common_functions.php:35
 msgid "Permission to create/view/update/delete assessments rules for a survey"
@@ -9605,35 +9611,35 @@ msgstr "Is gelijk aan de waarde van de som"
 
 #: common_functions.php:3344
 msgid "Boolean equation to validate the whole question."
-msgstr ""
+msgstr "Boolean vergelijking om de vraag te valideren."
 
 #: common_functions.php:3345
 msgid "Question validation equation"
-msgstr ""
+msgstr "Vraag validatie vergelijking"
 
 #: common_functions.php:3352
 msgid "Tip to show user describing the question validation equation."
-msgstr ""
+msgstr "Tip voor de gebruiker om de validatievraag te beschrijven."
 
 #: common_functions.php:3353
 msgid "Question validation tip"
-msgstr ""
+msgstr "Vraag validatie tip"
 
 #: common_functions.php:3360
 msgid "Boolean equation to validate each sub-question."
-msgstr ""
+msgstr "Boolean vergelijking om elke subvraag te valideren."
 
 #: common_functions.php:3361
 msgid "Sub-question validation equation"
-msgstr ""
+msgstr "Subvraag validatie vergelijking"
 
 #: common_functions.php:3368
 msgid "Tip to show user describing the sub-question validation equation."
-msgstr ""
+msgstr "Tip voor de gebruiker om de validatievraag te beschrijven."
 
 #: common_functions.php:3369
 msgid "Sub-question validation tip"
-msgstr ""
+msgstr "Subvraag validatie tip"
 
 #: common_functions.php:3376
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
@@ -9845,11 +9851,11 @@ msgstr "Omgekeerde antwoord volgorde"
 
 #: common_functions.php:3626
 msgid "Restrict input to integer values"
-msgstr "Beperk invoer tot \"integer\" waarden"
+msgstr "Beperk invoer tot gehele getallen"
 
 #: common_functions.php:3627
 msgid "Integer only"
-msgstr "Alleen Integer"
+msgstr "Alleen getallen"
 
 #: common_functions.php:3639
 msgid "Allow only numerical input"
@@ -10037,11 +10043,11 @@ msgstr "Gebruik dropdown lijst"
 
 #: common_functions.php:3876
 msgid "For list dropdown boxes, show up to this many rows"
-msgstr ""
+msgstr "Voor dropdowns, het maximaal aantal rijen"
 
 #: common_functions.php:3877
 msgid "Height of dropdown"
-msgstr ""
+msgstr "Hoogte van dropdown"
 
 #: common_functions.php:3885
 msgid "Order"
@@ -10049,11 +10055,11 @@ msgstr "Volgorde"
 
 #: common_functions.php:3888
 msgid "Accelerator keys for list items"
-msgstr ""
+msgstr "Sneltoetsen"
 
 #: common_functions.php:3889
 msgid "Prefix for list items"
-msgstr ""
+msgstr "Prefix van items in de lijst"
 
 #: common_functions.php:3897
 msgid "Nominal"
@@ -10357,7 +10363,7 @@ msgstr "Er is een fout opgetreden bij het verwijderen van het bestand"
 
 #: group.php:116
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
-msgstr ""
+msgstr "Gebruik de navigatieknoppen of de index. Mogelijk heeft u de terug-knop van de browser gebruikt."
 
 #: group.php:221
 msgid "Save your responses so far"
@@ -10393,11 +10399,11 @@ msgstr "Sorry. Er is geen enquête met dit nummer."
 
 #: group.php:509
 msgid "Invalid group number for this survey: "
-msgstr ""
+msgstr "Ongeldig groepsnummer voor deze vragenlijst:"
 
 #: group.php:514
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
-msgstr ""
+msgstr "Deze groep bevat geen vragen. Voeg eerst vragen toe "
 
 #: group.php:531
 msgid "Submit your answers"
@@ -10437,7 +10443,7 @@ msgstr "Geen enquêtes beschikbaar"
 
 #: index.php:179 index.php:180
 msgid "The survey identification number is invalid"
-msgstr ""
+msgstr "Het nummer van de enquête is ongeldig"
 
 #: index.php:219
 msgid "Token mismatch"
@@ -10975,7 +10981,7 @@ msgstr "Probeert u het nog eens."
 
 #: save.php:99
 msgid "The email address is not valid. Please leave the email field blank or give a valid email address."
-msgstr ""
+msgstr "Het e-mailadres is niet geldig. Laat dit veld leeg of vul een geldig e-mailadres in."
 
 #: save.php:115
 msgid "This name has already been used for this survey. You must use a unique save name."
@@ -10983,7 +10989,7 @@ msgstr "Deze naam is reeds gebruikt voor een opgeslagen sessie van deze enquête
 
 #: save.php:185
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
-msgstr ""
+msgstr "Fout: E-mail mislukt, mogelijk is er een probleem met het instellen van e-mail in PHP op de server. Uw vragenlijstgegevens zijn opgeslagen, maar u ontvangt geen bevestiging. Noteer de  \"name\" en \"password\" die u net gebruikt heeft voor toekomstig gebruik."
 
 #: save.php:188
 msgid "Your survey was successfully saved."
