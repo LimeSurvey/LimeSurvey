@@ -6839,7 +6839,7 @@ EOD;
             ." FROM {{answers}} AS a, {{questions}} as q"
             ." WHERE ".$where
             .$lang
-            ." ORDER BY qid, scale_id, sortorder";
+            ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
             $data = dbExecuteAssoc($query);
 

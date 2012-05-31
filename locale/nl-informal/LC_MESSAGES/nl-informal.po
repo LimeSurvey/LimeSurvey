@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-20 22:05:45+0000\n"
+"PO-Revision-Date: 2012-05-31 06:08:06+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,6 +14,19 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Language: Dutch\n"
 "Project-Id-Version: LimeSurvey 2.x\n"
+
+#: application/helpers/admin/import_helper.php:4336
+msgid "Could not insert question"
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4336
+#: application/helpers/admin/import_helper.php:4485
+msgid "Excel row number "
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4485
+msgid "Could not insert answer"
+msgstr ""
 
 #: application/controllers/admin/templates.php:195
 msgid "Demo mode: Uploading template files is disabled."
@@ -41,35 +54,35 @@ msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:6
 msgid "Answers and tokens have been re-opened."
-msgstr ""
+msgstr "Antwoorden en toegangscodes zijn heropend."
 
 #: application/views/admin/dataentry/iteratesurvey.php:8
 msgid "Important instructions"
-msgstr ""
+msgstr "Belangrijke voorschriften"
 
 #: application/views/admin/dataentry/iteratesurvey.php:9
 msgid "Click on the following button if you want to"
-msgstr ""
+msgstr "Klik op de volgende knop als je"
 
 #: application/views/admin/dataentry/iteratesurvey.php:11
 msgid "Delete all incomplete answers that correspond to a token for which a completed answers is already recorded"
-msgstr ""
+msgstr "Verwijder alle onvolledige antwoorden die overeenkomen met een toegangscode waarvoor een volledig antwoord reeds is geregistreerd"
 
 #: application/views/admin/dataentry/iteratesurvey.php:12
 msgid "Reset the completed answers to the incomplete state"
-msgstr ""
+msgstr "Initialiseer de ingegeven antwoorden naar niet-ingegeven status"
 
 #: application/views/admin/dataentry/iteratesurvey.php:13
 msgid "Reset all your tokens to the 'not used' state"
-msgstr ""
+msgstr "Initialiseer al je toegangscodes naar de 'niet gebruikte' status"
 
 #: application/views/admin/dataentry/iteratesurvey.php:16
 msgid "Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?"
-msgstr ""
+msgstr "Ben je zeker dat je de onvolledige antwoorden wil *verwijderen* en de voldane staat van zowel antwoorden als toegangscodes wilt verwijderen?"
 
 #: application/views/admin/dataentry/iteratesurvey.php:16
 msgid "Reset answers and token completed state"
-msgstr ""
+msgstr "Antwoorden wissen en status voldaan"
 
 #: application/helpers/expressions/em_core_helper.php:157
 msgid "Arc cosine"
@@ -93,27 +106,27 @@ msgstr "Arc tangent van twee variabelen"
 
 #: application/helpers/expressions/em_core_helper.php:162
 msgid "Round fractions up"
-msgstr ""
+msgstr "Naar boven afronden"
 
 #: application/helpers/expressions/em_core_helper.php:163
 msgid "Returns true(1) if it is a valid date in gregorian calendar"
-msgstr ""
+msgstr "Geeft waar (1) als het een geldige datum is"
 
 #: application/helpers/expressions/em_core_helper.php:164
 msgid "Cosine"
-msgstr ""
+msgstr "Cosinus"
 
 #: application/helpers/expressions/em_core_helper.php:165
 msgid "Count the number of answered questions in the list"
-msgstr ""
+msgstr "Tel de beantwoorde vragen in de lijst"
 
 #: application/helpers/expressions/em_core_helper.php:166
 msgid "Format a local date/time"
-msgstr ""
+msgstr "Formateer de locale datum/tijd"
 
 #: application/helpers/expressions/em_core_helper.php:167
 msgid "Calculates the exponent of e"
-msgstr ""
+msgstr "Bereken de e-exponent"
 
 #: application/helpers/expressions/em_core_helper.php:168
 msgid "Display numbers with comma as decimal separator, if needed"
@@ -121,103 +134,103 @@ msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:169
 msgid "Round fractions down"
-msgstr ""
+msgstr "Naar beneden afronden"
 
 #: application/helpers/expressions/em_core_helper.php:170
 msgid "Format a GMT date/time"
-msgstr ""
+msgstr "Formateer een GMT datum/tijd"
 
 #: application/helpers/expressions/em_core_helper.php:171
 msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Zet alle HTML code om in tekst (gebruik altijd ENT_QOUTES en UTF-8)"
 
 #: application/helpers/expressions/em_core_helper.php:172
 msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Zet alle HTML tekst om in HTML code (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: application/helpers/expressions/em_core_helper.php:173
 msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Zet speciale HTML code om in tekst (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: application/helpers/expressions/em_core_helper.php:174
 msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Zet speciale HTML-code om in tekst (gebruik altijd ENT_QUOTES en UTF-8)"
 
 #: application/helpers/expressions/em_core_helper.php:175
 msgid "Format a local time/date as integer"
-msgstr ""
+msgstr "Geef de locale tijd/datum als een getal"
 
 #: application/helpers/expressions/em_core_helper.php:176
 msgid "Conditional processing"
-msgstr ""
+msgstr "Voorwaardelijke verwerking"
 
 #: application/helpers/expressions/em_core_helper.php:177
 msgid "Join array elements with a string"
-msgstr ""
+msgstr "Koppel de array elementen met een tekst"
 
 #: application/helpers/expressions/em_core_helper.php:178
 msgid "Get the integer value of a variable"
-msgstr ""
+msgstr "Geef de waarde van een variabele als getal"
 
 #: application/helpers/expressions/em_core_helper.php:179
 msgid "Determine whether a variable is considered to be empty"
-msgstr ""
+msgstr "Bepaal of een variabele leeg is"
 
 #: application/helpers/expressions/em_core_helper.php:180
 msgid "Finds whether the type of a variable is float"
-msgstr ""
+msgstr "Zoek uit of het type van een variabele een float is"
 
 #: application/helpers/expressions/em_core_helper.php:181
 msgid "Find whether the type of a variable is integer"
-msgstr ""
+msgstr "Zoek uit of het type variabele een getal is"
 
 #: application/helpers/expressions/em_core_helper.php:182
 msgid "Finds whether a value is not a number"
-msgstr ""
+msgstr "Bepaalt of een waarde geen nummer is"
 
 #: application/helpers/expressions/em_core_helper.php:183
 msgid "Finds whether a variable is NULL"
-msgstr ""
+msgstr "Bepaalt of een waarde NULL is"
 
 #: application/helpers/expressions/em_core_helper.php:184
 msgid "Finds whether a variable is a number or a numeric string"
-msgstr ""
+msgstr "Bepaalt of een variabele een getal of een numerieke tekst is"
 
 #: application/helpers/expressions/em_core_helper.php:185
 msgid "Find whether the type of a variable is string"
-msgstr ""
+msgstr "Bepaalt of een variabele een tekst is"
 
 #: application/helpers/expressions/em_core_helper.php:186
 msgid "Return comma-separated list of values"
-msgstr ""
+msgstr "Geef een kommagescheidenlijst van waarden"
 
 #: application/helpers/expressions/em_core_helper.php:187
 msgid "Natural logarithm"
-msgstr "Natuurlijk logarithme"
+msgstr "Natuurlijk logaritme"
 
 #: application/helpers/expressions/em_core_helper.php:188
 msgid "Strip whitespace (or other characters) from the beginning of a string"
-msgstr ""
+msgstr "Verwijder whitespace (of andere karakters) van het begin van een stuk tekst"
 
 #: application/helpers/expressions/em_core_helper.php:189
 msgid "Find highest value"
-msgstr ""
+msgstr "Vind de hoogste waarde"
 
 #: application/helpers/expressions/em_core_helper.php:190
 msgid "Find lowest value"
-msgstr ""
+msgstr "Vind de laagste waarde"
 
 #: application/helpers/expressions/em_core_helper.php:191
 msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
-msgstr ""
+msgstr "Haal een UNIX timestamp op voor een datum (elk van de 6 argumenten is optioneel)"
 
 #: application/helpers/expressions/em_core_helper.php:192
 msgid "Inserts HTML line breaks before all newlines in a string"
-msgstr ""
+msgstr "Voeg HTML regelovergang toe voor elke nieuwe regel in de tekst."
 
 #: application/helpers/expressions/em_core_helper.php:193
 msgid "Format a number with grouped thousands"
-msgstr ""
+msgstr "Geef met een symbool duizendtallen aan in een getal"
 
 #: application/helpers/expressions/em_core_helper.php:194
 msgid "Get value of pi"
@@ -225,166 +238,166 @@ msgstr "Krijg de waarde van pi"
 
 #: application/helpers/expressions/em_core_helper.php:195
 msgid "Exponential expression"
-msgstr ""
+msgstr "Exponentiële expressie"
 
 #: application/helpers/expressions/em_core_helper.php:196
 msgid "Convert a quoted-printable string to an 8 bit string"
-msgstr ""
+msgstr "Zet een geciteerd en printbaar stuk tekst om naar een 8 bit string"
 
 #: application/helpers/expressions/em_core_helper.php:197
 msgid "Convert a 8 bit string to a quoted-printable string"
-msgstr ""
+msgstr "Zet een 8 bit string om naar een geciteerd printbare tekst"
 
 #: application/helpers/expressions/em_core_helper.php:198
 msgid "Quote meta characters"
-msgstr ""
+msgstr "Gebruik quotes voor metakarakters"
 
 #: application/helpers/expressions/em_core_helper.php:199
 msgid "Generate a random integer"
-msgstr "Genereen een willkeurige integer"
+msgstr "Genereer een willekeurig getal"
 
 #: application/helpers/expressions/em_core_helper.php:200
 msgid "Compare a string to a regular expression pattern"
-msgstr ""
+msgstr "Vergelijk een tekst met een reguliere expressie"
 
 #: application/helpers/expressions/em_core_helper.php:201
 msgid "Rounds a number to an optional precision"
-msgstr ""
+msgstr "Rond een getal af met een aantal decimalen"
 
 #: application/helpers/expressions/em_core_helper.php:202
 msgid "Strip whitespace (or other characters) from the end of a string"
-msgstr ""
+msgstr "Verwijder whitespace (of andere tekens) van het einde van een tekst"
 
 #: application/helpers/expressions/em_core_helper.php:203
 msgid "Sine"
-msgstr ""
+msgstr "Sinus"
 
 #: application/helpers/expressions/em_core_helper.php:204
 msgid "Return a formatted string"
-msgstr ""
+msgstr "Geef een geformateerde tekst terug"
 
 #: application/helpers/expressions/em_core_helper.php:205
 msgid "Square root"
-msgstr ""
+msgstr "Wortel"
 
 #: application/helpers/expressions/em_core_helper.php:206
 msgid "Calculate the Sample Standard Deviation for the list of numbers"
-msgstr ""
+msgstr "Bepaal de standaarddeviatie van een rij getallen"
 
 #: application/helpers/expressions/em_core_helper.php:207
 msgid "Pad a string to a certain length with another string"
-msgstr ""
+msgstr "Plak een tekst tot een specifieke lengte aan een andere tekst"
 
 #: application/helpers/expressions/em_core_helper.php:208
 msgid "Repeat a string"
-msgstr ""
+msgstr "Herhaal een string"
 
 #: application/helpers/expressions/em_core_helper.php:209
 msgid "Replace all occurrences of the search string with the replacement string"
-msgstr ""
+msgstr "Vervang alle voorkomens van een tekst door een andere tekst"
 
 #: application/helpers/expressions/em_core_helper.php:210
 msgid "Binary safe case-insensitive string comparison"
-msgstr ""
+msgstr "Binair veilige hoofdletteronhankelijke tekstvergelijking"
 
 #: application/helpers/expressions/em_core_helper.php:211
 msgid "Binary safe string comparison"
-msgstr ""
+msgstr "Binair veilige tekstvergelijking"
 
 #: application/helpers/expressions/em_core_helper.php:212
 msgid "Strip HTML and PHP tags from a string"
-msgstr ""
+msgstr "Verwijder de HTML en PHP tags uit een tekst"
 
 #: application/helpers/expressions/em_core_helper.php:213
 msgid "Find position of first occurrence of a case-insensitive string"
-msgstr ""
+msgstr "Vind de plaats van het eerste voorkomen in een niet hoofdlettergevoelige tekst"
 
 #: application/helpers/expressions/em_core_helper.php:214
 msgid "Un-quotes a quoted string"
-msgstr ""
+msgstr "Verwijder de aanhalingstekens"
 
 #: application/helpers/expressions/em_core_helper.php:215
 msgid "Case-insensitive strstr"
-msgstr ""
+msgstr "Hoofdlettergevoelige strstr"
 
 #: application/helpers/expressions/em_core_helper.php:216
 msgid "Get string length"
-msgstr ""
+msgstr "Bepaal lengte tekst"
 
 #: application/helpers/expressions/em_core_helper.php:217
 msgid "Find position of first occurrence of a string"
-msgstr ""
+msgstr "Vind de positie van het eerste voorkomen van een tekst in een tekst"
 
 #: application/helpers/expressions/em_core_helper.php:218
 msgid "Reverse a string"
-msgstr ""
+msgstr "Keer een string om"
 
 #: application/helpers/expressions/em_core_helper.php:219
 msgid "Find first occurrence of a string"
-msgstr ""
+msgstr "Zoek eerste voorkomen van een tekst in een tekst"
 
 #: application/helpers/expressions/em_core_helper.php:220
 msgid "Make a string lowercase"
-msgstr ""
+msgstr "Zet een tekst om naar kleine letters"
 
 #: application/helpers/expressions/em_core_helper.php:221
 msgid "Make a string uppercase"
-msgstr ""
+msgstr "Zet een tekst om naar hoofdletters"
 
 #: application/helpers/expressions/em_core_helper.php:222
 msgid "Return part of a string"
-msgstr ""
+msgstr "Geef een deel van een tekst terug"
 
 #: application/helpers/expressions/em_core_helper.php:223
 msgid "Calculate the sum of values in an array"
-msgstr ""
+msgstr "Bepaal de som van de waarden in het array"
 
 #: application/helpers/expressions/em_core_helper.php:224
 msgid "Tangent"
-msgstr ""
+msgstr "Tangens"
 
 #: application/helpers/expressions/em_core_helper.php:225
 msgid "Return current UNIX timestamp"
-msgstr ""
+msgstr "Geeft huidige UNIX timestamp"
 
 #: application/helpers/expressions/em_core_helper.php:226
 msgid "Strip whitespace (or other characters) from the beginning and end of a string"
-msgstr ""
+msgstr "Verwijder whitespace (of andere tekens) van het begin en het einde van een tekst"
 
 #: application/helpers/expressions/em_core_helper.php:227
 msgid "Uppercase the first character of each word in a string"
-msgstr ""
+msgstr "Maak van elk woord in een tekst de eerste letter een hoofdletter"
 
 #: application/helpers/expressions/em_core_helper.php:255
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
-msgstr ""
+msgstr "Binaire operatie niet mogelijk - minder dan twee gegevens aangeleverd"
 
 #: application/helpers/expressions/em_core_helper.php:262
 #: application/helpers/expressions/em_core_helper.php:401
 msgid "Invalid value(s) on the stack"
-msgstr ""
+msgstr "Ongeldige waarde(s) aangeleverd"
 
 #: application/helpers/expressions/em_core_helper.php:395
 msgid "Unable to evaluate unary operator - no entries on stack"
-msgstr ""
+msgstr "Binaire operatie niet mogelijk - geen gegevens aangeleverd"
 
 #: application/helpers/expressions/em_core_helper.php:450
 msgid "Extra tokens found"
-msgstr ""
+msgstr "Extra toegangscodes gevonden"
 
 #: application/helpers/expressions/em_core_helper.php:465
 msgid "Unbalanced equation - values left on stack"
-msgstr ""
+msgstr "Vergelijking niet evenwichtig - aangeleverde gegevens nog beschikbaar"
 
 #: application/helpers/expressions/em_core_helper.php:471
 msgid "Not a valid expression"
-msgstr ""
+msgstr "Geen geldige expressie"
 
 #: application/helpers/expressions/em_core_helper.php:532
 #: application/helpers/expressions/em_core_helper.php:960
 #: application/helpers/expressions/em_core_helper.php:1041
 msgid "Poorly terminated expression - expected a constant or variable"
-msgstr ""
+msgstr "Expressie bevat geen constante of variabele"
 
 #: application/helpers/expressions/em_core_helper.php:577
 msgid "Variable not declared until a later page"
@@ -393,23 +406,23 @@ msgstr ""
 #: application/helpers/expressions/em_core_helper.php:584
 #: application/helpers/expressions/em_core_helper.php:1698
 msgid "Undefined variable"
-msgstr ""
+msgstr "Onbekende variabele"
 
 #: application/helpers/expressions/em_core_helper.php:591
 msgid "Should never  get to this line?"
-msgstr ""
+msgstr "Deze regel is niet bereikbaar?"
 
 #: application/helpers/expressions/em_core_helper.php:677
 msgid "The value of this variable can not be changed"
-msgstr ""
+msgstr "De waarde van deze variabele kan niet gewijzigd worden "
 
 #: application/helpers/expressions/em_core_helper.php:683
 msgid "Only variables can be assigned values"
-msgstr ""
+msgstr "Alleen een variabele kan een waarde krijgen"
 
 #: application/helpers/expressions/em_core_helper.php:739
 msgid "Expected expressions separated by commas"
-msgstr ""
+msgstr "Expressies moeten gescheiden worden met een komma "
 
 #: application/helpers/expressions/em_core_helper.php:747
 msgid "Extra token found after expressions"
@@ -418,31 +431,31 @@ msgstr ""
 #: application/helpers/expressions/em_core_helper.php:763
 #: application/helpers/expressions/em_core_helper.php:1691
 msgid "Undefined function"
-msgstr ""
+msgstr "Onbekende functie"
 
 #: application/helpers/expressions/em_core_helper.php:769
 msgid "Expected left parentheses after function name"
-msgstr ""
+msgstr "Na de functienaam moet een linkerhaak komen"
 
 #: application/helpers/expressions/em_core_helper.php:793
 msgid "Extra comma found in function"
-msgstr ""
+msgstr "Extra komma gevonden in functie"
 
 #: application/helpers/expressions/em_core_helper.php:977
 msgid "Expected right parentheses"
-msgstr ""
+msgstr "De rechterhaak ontbreekt"
 
 #: application/helpers/expressions/em_core_helper.php:1682
 msgid "Extra right parentheses detected"
-msgstr ""
+msgstr "Er is een extra rechterhaak gevonden"
 
 #: application/helpers/expressions/em_core_helper.php:1703
 msgid "Unsupported syntax"
-msgstr ""
+msgstr "Deze syntax wordt niet ondersteund"
 
 #: application/helpers/expressions/em_core_helper.php:1711
 msgid "Missing %s closing right parentheses"
-msgstr ""
+msgstr "Er ontbreken %s rechterhaakjes (sluithaakjes)"
 
 #: application/helpers/expressions/em_core_helper.php:1968
 msgid "Function must have at least %s argument"
@@ -452,7 +465,7 @@ msgstr[1] ""
 
 #: application/helpers/expressions/em_core_helper.php:2059
 msgid "Unsupported number of arguments: %s"
-msgstr ""
+msgstr "Onjuist aantal parameters: %s"
 
 #: application/helpers/expressions/em_core_helper.php:2064
 msgid "Function does not support %s arguments"
@@ -464,147 +477,147 @@ msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:2286
 msgid "Tried to pop value off of empty stack"
-msgstr ""
+msgstr "De stack is leeg, dus pop is nu niet mogelijk"
 
 #: application/helpers/expressions/em_core_helper.php:3235
 msgid "Invalid PERL Regular Expression: %s"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:2170
-msgid "Please select at least one answer"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:2171
-msgid "Please select at least %s answers"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:2175
-msgid "Please select at most one answer"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:2176
-msgid "Please select at most %s answers"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:2180
-msgid "Please select one answer"
-msgstr ""
+msgstr "Ongeldige PERL Reguliere Expressie: %s"
 
 #: application/helpers/expressions/em_manager_helper.php:2181
+msgid "Please select at least one answer"
+msgstr "Kies tenminste één antwoord"
+
+#: application/helpers/expressions/em_manager_helper.php:2182
+msgid "Please select at least %s answers"
+msgstr "Kies tenminste %s antwoorden"
+
+#: application/helpers/expressions/em_manager_helper.php:2186
+msgid "Please select at most one answer"
+msgstr "Kies maximaal één antwoord"
+
+#: application/helpers/expressions/em_manager_helper.php:2187
+msgid "Please select at most %s answers"
+msgstr "Kies maximaal %s antwoorden"
+
+#: application/helpers/expressions/em_manager_helper.php:2191
+msgid "Please select one answer"
+msgstr "Kies één antwoord"
+
+#: application/helpers/expressions/em_manager_helper.php:2192
 msgid "Please select %s answers"
-msgstr ""
+msgstr "Kies %s antwoorden"
 
-#: application/helpers/expressions/em_manager_helper.php:2183
+#: application/helpers/expressions/em_manager_helper.php:2194
 msgid "Please select between %s and %s answers"
-msgstr ""
+msgstr "Kies tussen de %s en %s antwoorden"
 
-#: application/helpers/expressions/em_manager_helper.php:2199
-#: application/helpers/expressions/em_manager_helper.php:2220
+#: application/helpers/expressions/em_manager_helper.php:2210
+#: application/helpers/expressions/em_manager_helper.php:2231
 msgid "Each answer must be at least %s"
-msgstr ""
+msgstr "Elk antwoord moet tenminste %s zijn"
 
-#: application/helpers/expressions/em_manager_helper.php:2201
-#: application/helpers/expressions/em_manager_helper.php:2222
+#: application/helpers/expressions/em_manager_helper.php:2212
+#: application/helpers/expressions/em_manager_helper.php:2233
 msgid "Each answer must be at most %s"
-msgstr ""
+msgstr "Elk antwoord mag maximaal %s zijn"
 
-#: application/helpers/expressions/em_manager_helper.php:2203
-#: application/helpers/expressions/em_manager_helper.php:2224
+#: application/helpers/expressions/em_manager_helper.php:2214
+#: application/helpers/expressions/em_manager_helper.php:2235
 msgid "Each answer must be %s"
-msgstr ""
+msgstr "Elk antwoord moet %s zijn"
 
-#: application/helpers/expressions/em_manager_helper.php:2204
-#: application/helpers/expressions/em_manager_helper.php:2225
+#: application/helpers/expressions/em_manager_helper.php:2215
+#: application/helpers/expressions/em_manager_helper.php:2236
 msgid "Each answer must be between %s and %s"
-msgstr ""
+msgstr "Elk antwoord moet tussen %s en %s zijn"
 
-#: application/helpers/expressions/em_manager_helper.php:2241
+#: application/helpers/expressions/em_manager_helper.php:2252
 msgid "The sum must be at least %s"
-msgstr ""
+msgstr "De som moet minimaal %s zijn"
 
-#: application/helpers/expressions/em_manager_helper.php:2243
+#: application/helpers/expressions/em_manager_helper.php:2254
 msgid "The sum must be at most %s"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:2245
-msgid "The sum must equal %s"
-msgstr ""
-
-#: application/helpers/expressions/em_manager_helper.php:2246
-msgid "The sum must be between %s and %s"
-msgstr ""
+msgstr "Elk antwoord moet tenminste %s zijn"
 
 #: application/helpers/expressions/em_manager_helper.php:2256
+msgid "The sum must equal %s"
+msgstr "De som moet gelijk zijn aan %s"
+
+#: application/helpers/expressions/em_manager_helper.php:2257
+msgid "The sum must be between %s and %s"
+msgstr "De som moet tussen %s en %s zijn"
+
+#: application/helpers/expressions/em_manager_helper.php:2267
 msgid "The sum must equal %s."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2262
+#: application/helpers/expressions/em_manager_helper.php:2273
 msgid "Please also fill in the \"other comment\" field."
-msgstr ""
+msgstr "Vul ook \"other comment\" veld in."
 
-#: application/helpers/expressions/em_manager_helper.php:2270
+#: application/helpers/expressions/em_manager_helper.php:2281
 msgid "Please check the format of your answer."
-msgstr ""
+msgstr "Kijk het formaat van het antwoord na."
 
-#: application/helpers/expressions/em_manager_helper.php:3986
+#: application/helpers/expressions/em_manager_helper.php:3997
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4001
+#: application/helpers/expressions/em_manager_helper.php:4012
 msgid "Unable to insert record into timings table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4076
+#: application/helpers/expressions/em_manager_helper.php:4087
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4965
+#: application/helpers/expressions/em_manager_helper.php:4976
 msgid "This question is mandatory"
 msgstr "Dit is een verplichte vraag"
 
-#: application/helpers/expressions/em_manager_helper.php:4977
+#: application/helpers/expressions/em_manager_helper.php:4988
 msgid "Please check at least one item."
-msgstr "Kies minimaal een item"
+msgstr "Kies minimaal een item."
 
-#: application/helpers/expressions/em_manager_helper.php:4987
+#: application/helpers/expressions/em_manager_helper.php:4998
 msgid "If you choose '%s' you must provide a description."
 msgstr "Als je '%s' kiest, moet je een omschrijving geven."
 
-#: application/helpers/expressions/em_manager_helper.php:5009
-#: application/helpers/expressions/em_manager_helper.php:5046
+#: application/helpers/expressions/em_manager_helper.php:5020
+#: application/helpers/expressions/em_manager_helper.php:5057
 msgid "Please complete all parts"
 msgstr "Vul alle onderdelen in"
 
-#: application/helpers/expressions/em_manager_helper.php:5038
+#: application/helpers/expressions/em_manager_helper.php:5049
 msgid "Please check at least one box per row"
-msgstr ""
+msgstr "Selecteer minstens een veld per rij"
 
-#: application/helpers/expressions/em_manager_helper.php:5054
+#: application/helpers/expressions/em_manager_helper.php:5065
 msgid "Please rank all items"
 msgstr "Rangschik alle opties"
 
-#: application/helpers/expressions/em_manager_helper.php:7401
+#: application/helpers/expressions/em_manager_helper.php:7432
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7406
+#: application/helpers/expressions/em_manager_helper.php:7437
 msgid "Name [ID]"
-msgstr ""
+msgstr "Name [ID]"
 
-#: application/helpers/expressions/em_manager_helper.php:7406
+#: application/helpers/expressions/em_manager_helper.php:7437
 msgid "Relevance [Validation] (Default)"
-msgstr ""
+msgstr "Relevantie [Controle] (Standaard)"
 
-#: application/helpers/expressions/em_manager_helper.php:7406
+#: application/helpers/expressions/em_manager_helper.php:7437
 msgid "Text [Help] (Tip)"
-msgstr ""
+msgstr "Tekst [Help] (Tip)"
 
-#: application/helpers/expressions/em_manager_helper.php:7458
-#: application/helpers/expressions/em_manager_helper.php:7684
+#: application/helpers/expressions/em_manager_helper.php:7489
+#: application/helpers/expressions/em_manager_helper.php:7715
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7466
+#: application/helpers/expressions/em_manager_helper.php:7497
 #: application/views/admin/survey/Question/editQuestion_view.php:44
 #: application/views/admin/survey/Question/editQuestion_view.php:46
 #: application/views/admin/survey/Question/editQuestion_view.php:68
@@ -615,49 +628,49 @@ msgstr ""
 msgid "Help:"
 msgstr "Help:"
 
-#: application/helpers/expressions/em_manager_helper.php:7467
+#: application/helpers/expressions/em_manager_helper.php:7498
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7474
+#: application/helpers/expressions/em_manager_helper.php:7505
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7474
+#: application/helpers/expressions/em_manager_helper.php:7505
 msgid "Value"
-msgstr ""
+msgstr "Waarde"
 
-#: application/helpers/expressions/em_manager_helper.php:7587
+#: application/helpers/expressions/em_manager_helper.php:7618
 msgid "This variable name has already been used."
-msgstr ""
+msgstr "Vraagcode is al in gebruik"
 
-#: application/helpers/expressions/em_manager_helper.php:7599
+#: application/helpers/expressions/em_manager_helper.php:7630
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
-msgstr ""
+msgstr "Gebruik vanaf versie 1.92 geen naam voor een variabele die met een cijfer begint, een naam mag ook alleen letters, cijfers en underscores bevatten."
 
-#: application/helpers/expressions/em_manager_helper.php:7740
+#: application/helpers/expressions/em_manager_helper.php:7771
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:7779
+#: application/helpers/expressions/em_manager_helper.php:7810
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/helpers/expressions/em_manager_helper.php:7785
+#: application/helpers/expressions/em_manager_helper.php:7816
 msgid "No syntax errors detected in this survey"
-msgstr ""
+msgstr "Geen fouten gevonden in de vragenlijst"
 
-#: application/helpers/expressions/em_manager_helper.php:7788
+#: application/helpers/expressions/em_manager_helper.php:7819
 msgid "This group, by itself, does not contain any syntax errors"
-msgstr ""
+msgstr "Deze groep bevat geen fouten"
 
-#: application/helpers/expressions/em_manager_helper.php:7791
+#: application/helpers/expressions/em_manager_helper.php:7822
 msgid "This question, by itself, does not contain any syntax errors"
-msgstr ""
+msgstr "Deze vraag bevat geen fouten"
 
 #: application/helpers/frontend_helper.php:56
 msgid "There is no matching saved survey"
@@ -667,93 +680,93 @@ msgstr "Er is geen vragenlijst gevonden bij deze naam"
 msgid "You have completed %s%% of this survey"
 msgstr "Je hebt %s%% van deze vragenlijst ingevuld"
 
-#: application/helpers/frontend_helper.php:821
+#: application/helpers/frontend_helper.php:820
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr "Het geuploade bestand (%s) is groter dan toegestaan (%s KB)."
 
-#: application/helpers/frontend_helper.php:834
-#: application/helpers/frontend_helper.php:840
+#: application/helpers/frontend_helper.php:833
+#: application/helpers/frontend_helper.php:839
 msgid "Sorry, only %s extensions are allowed!"
 msgstr "Alleen bestandstype (%s) is toegestaan!"
 
-#: application/helpers/frontend_helper.php:852
+#: application/helpers/frontend_helper.php:851
 msgid "The minimum number of files has not been uploaded."
 msgstr "Het minimum aantal bestanden is nog niet geupload."
 
-#: application/helpers/frontend_helper.php:1323
+#: application/helpers/frontend_helper.php:1322
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Door een onverwachte fout is je respons niet bewaard."
 
-#: application/helpers/frontend_helper.php:1326
+#: application/helpers/frontend_helper.php:1325
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Je respons is niet verloren. Het is doorgestuurd naar de beheerder van de vragenlijst. De respons zal op een later tijdstip worden ingevoerd."
 
-#: application/helpers/frontend_helper.php:1331
+#: application/helpers/frontend_helper.php:1330
 msgid "An error occurred saving a response to survey id"
 msgstr "Er is een fout opgetreden bij het bewaren van de respons op vragenlijst nr"
 
-#: application/helpers/frontend_helper.php:1332
+#: application/helpers/frontend_helper.php:1331
 msgid "DATA TO BE ENTERED"
 msgstr "IN TE VOEREN GEGEVENS"
 
-#: application/helpers/frontend_helper.php:1337
+#: application/helpers/frontend_helper.php:1336
 msgid "SQL CODE THAT FAILED"
 msgstr "DE SQL CODE WAAROP HET MISLIEP"
 
-#: application/helpers/frontend_helper.php:1339
+#: application/helpers/frontend_helper.php:1338
 msgid "ERROR MESSAGE"
 msgstr "FOUTMELDING"
 
-#: application/helpers/frontend_helper.php:1341
+#: application/helpers/frontend_helper.php:1340
 msgid "Error saving results"
 msgstr "Fout met het opslaan van de resultaten"
 
-#: application/helpers/frontend_helper.php:1348
+#: application/helpers/frontend_helper.php:1347
 msgid "Try to submit again"
 msgstr "Probeer opnieuw in te sturen"
 
-#: application/helpers/frontend_helper.php:1406
+#: application/helpers/frontend_helper.php:1405
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Bevestig alstublieft je toegang tot de vragenlijst door het beantwoorden van de veiligheidsvraag hieronder en klik op 'Doorgaan'."
 
-#: application/helpers/frontend_helper.php:1430
+#: application/helpers/frontend_helper.php:1429
 msgid "Security question:"
 msgstr "Veiligheidsvraag:"
 
-#: application/helpers/frontend_helper.php:1478
-#: application/helpers/frontend_helper.php:1640
+#: application/helpers/frontend_helper.php:1477
+#: application/helpers/frontend_helper.php:1639
 #: application/views/entertoken_view.php:9
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Indien je een toegangscode hebt ontvangen, vul deze dan hier in en klik op 'Verder'."
 
-#: application/helpers/frontend_helper.php:1483
-#: application/helpers/frontend_helper.php:1673
+#: application/helpers/frontend_helper.php:1482
+#: application/helpers/frontend_helper.php:1672
 msgid "Token:"
 msgstr "Toegangscode:"
 
-#: application/helpers/frontend_helper.php:1508
-#: application/helpers/frontend_helper.php:1681
+#: application/helpers/frontend_helper.php:1507
+#: application/helpers/frontend_helper.php:1680
 #: application/helpers/replacements_helper.php:567
 #: application/helpers/replacements_helper.php:588
 #: application/helpers/replacements_helper.php:651
 msgid "Security Question"
 msgstr "Veiligheidsvraag"
 
-#: application/helpers/frontend_helper.php:1552
-#: application/helpers/frontend_helper.php:1597
+#: application/helpers/frontend_helper.php:1551
+#: application/helpers/frontend_helper.php:1596
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "De code die je hebt ingegeven is ongeldig of ze werd reeds gebruikt."
 
-#: application/helpers/frontend_helper.php:1659
+#: application/helpers/frontend_helper.php:1658
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Bevestig je toegangscode door onderstaande veiligheidsvraag te beantwoorden en klik op 'Verder'."
 
-#: application/helpers/frontend_helper.php:1788
+#: application/helpers/frontend_helper.php:1787
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Er zijn nog geen vragen aangemaakt voor deze vragenlijst en er valt dus niets te testen of in te vullen."
 
-#: application/helpers/frontend_helper.php:2233
-#: application/helpers/frontend_helper.php:2679
+#: application/helpers/frontend_helper.php:2232
+#: application/helpers/frontend_helper.php:2678
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:87
 #: application/views/installer/dbsettings_view.php:29
@@ -763,9 +776,9 @@ msgstr "Er zijn nog geen vragen aangemaakt voor deze vragenlijst en er valt dus 
 msgid "Previous"
 msgstr "Vorige"
 
-#: application/helpers/frontend_helper.php:2240
-#: application/helpers/frontend_helper.php:2246
-#: application/helpers/frontend_helper.php:2251
+#: application/helpers/frontend_helper.php:2239
+#: application/helpers/frontend_helper.php:2245
+#: application/helpers/frontend_helper.php:2250
 #: application/views/admin/participants/displayParticipants_view.php:110
 #: application/views/admin/quotas/newanswer_view.php:33
 #: application/views/admin/quotas/newanswertwo_view.php:45
@@ -788,7 +801,7 @@ msgstr "Kies een van de volgende antwoorden"
 
 #: application/helpers/qanda_helper.php:159
 msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
-msgstr ""
+msgstr "Klik een optie uit de lijst links. Begin met de optie die het meest toepasselijk is en ga door tot de minst toepasselijke optie."
 
 #: application/helpers/qanda_helper.php:163
 #: application/helpers/qanda_helper.php:164
@@ -931,7 +944,7 @@ msgstr "Formaat: %s"
 
 #: application/helpers/qanda_helper.php:1568
 msgid "Other answer"
-msgstr "Anders antwoord"
+msgstr "Ander antwoord"
 
 #: application/helpers/qanda_helper.php:1915
 msgid "Please enter your comment here"
@@ -950,7 +963,7 @@ msgstr[1] "Rangschik minstens %d items voor vraag \"%s\"."
 
 #: application/helpers/qanda_helper.php:2614
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr "Je hebt 'Anders' aangevinkt bij vraag \"%s\". Vul dan ook de bijbehorende opmerking in."
+msgstr "Je hebt 'Andere' aangevinkt bij vraag \"%s\". Vul dan ook de bijbehorende opmerking in."
 
 #: application/helpers/qanda_helper.php:2984
 msgid "Upload files"
@@ -966,7 +979,7 @@ msgstr "Terug naar de vragenlijst"
 
 #: application/helpers/qanda_helper.php:2992
 msgid "File name"
-msgstr ""
+msgstr "Bestandsnaam"
 
 #: application/helpers/qanda_helper.php:3170
 #: application/helpers/qanda_helper.php:3483
@@ -997,7 +1010,7 @@ msgstr "In dit veld kunnen alleen cijfers worden ingevoerd"
 #: application/helpers/qanda_helper.php:4061
 #: application/helpers/qanda_helper.php:4062
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
-msgstr "Sleep en plaats de pin naar de gewenste locatie. U kunt op rechtsklikken op de kaart."
+msgstr "Sleep en plaats de pin naar de gewenste locatie. U kunt rechtsklikken op de kaart."
 
 #: application/helpers/qanda_helper.php:5299
 #: application/helpers/qanda_helper.php:5681
@@ -1204,7 +1217,7 @@ msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:74
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: application/helpers/surveytranslator_helper.php:81
 msgid "Albanian"
@@ -1212,7 +1225,7 @@ msgstr "Albanees"
 
 #: application/helpers/surveytranslator_helper.php:88
 msgid "Amharic"
-msgstr ""
+msgstr "Amharic"
 
 #: application/helpers/surveytranslator_helper.php:95
 msgid "Arabic"
@@ -1515,7 +1528,7 @@ msgstr "Verplaatsen sjablonen gebruiker naar locatie %s..."
 
 #: application/helpers/update/upgrade-mssql_helper.php:609
 #: application/helpers/update/upgrade-mysql_helper.php:731
-#: application/helpers/update/upgrade-pgsql_helper.php:448
+#: application/helpers/update/upgrade-pgsql_helper.php:451
 msgid "Database update finished (%s)"
 msgstr "Database update afgerond (%s)"
 
@@ -1529,7 +1542,7 @@ msgstr "Deze naam is reeds gebruikt voor een opgeslagen sessie van deze vragenli
 
 #: application/libraries/Save.php:219
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
-msgstr ""
+msgstr "Fout: E-mail mislukt, mogelijk is er een probleem met het instellen van e-mail in PHP op de server. Je vragenlijstgegevens zijn opgeslagen, maar je krijgt geen bevestiging. Noteer de  \"name\" en \"password\" die je net gebruikt hebt voor toekomstig gebruik."
 
 #: application/libraries/Save.php:222 application/libraries/Save.php:261
 msgid "Your survey was successfully saved."
@@ -1539,13 +1552,13 @@ msgstr "Je vragenlijst is opgeslagen."
 msgid "Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey."
 msgstr "Bedankt voor het opslaan van de nog niet volledig ingevulde vragenlijst. Je kunt op elk moment verder gaan met het invullen vanwaar je was door de link in deze e-mail te gebruiken (of met een link in een andere e-mail m.b.t. deze vragenlijst) ."
 
-#: application/models/InstallerConfigForm.php:76
+#: application/models/InstallerConfigForm.php:80
 msgid "Passwords do not match!"
 msgstr "Paswoorden komen niet overeen"
 
 #: application/models/Survey_permissions.php:65
 #: application/views/admin/survey/copySurvey_view.php:46
-#: application/views/admin/survey/importSurvey_view.php:50
+#: application/views/admin/survey/importSurvey_view.php:59
 #: application/views/admin/survey/surveybar_view.php:73
 msgid "Assessments"
 msgstr "Beoordelingen"
@@ -1556,7 +1569,7 @@ msgstr "Recht om beoordelingsregels van een vragenlijst te beheren"
 
 #: application/models/Survey_permissions.php:66
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:51
+#: application/views/admin/survey/importSurvey_view.php:60
 #: application/views/admin/survey/surveybar_view.php:69
 msgid "Quotas"
 msgstr "Quota"
@@ -1566,7 +1579,7 @@ msgid "Permission to create/view/update/delete quota rules for a survey"
 msgstr "Recht om de quota van een vragenlijst te beheren"
 
 #: application/models/Survey_permissions.php:67
-#: application/views/admin/survey/importSurvey_view.php:59
+#: application/views/admin/survey/importSurvey_view.php:68
 #: application/views/admin/survey/surveybar_view.php:185
 msgid "Responses"
 msgstr "Responses"
@@ -1673,7 +1686,7 @@ msgstr "Bewerkingen"
 #: application/views/admin/assessments_view.php:9
 #: application/views/admin/survey/listSurveys_view.php:11
 msgid "SID"
-msgstr "ID"
+msgstr "SID"
 
 #: application/views/admin/assessments_view.php:13
 #: application/views/admin/assessments_view.php:113
@@ -2275,7 +2288,7 @@ msgstr "Identificatie:"
 
 #: application/views/admin/dataentry/active_html_view.php:40
 #: application/views/admin/dataentry/insert.php:15
-#: application/views/admin/globalSettings_view.php:287
+#: application/views/admin/globalSettings_view.php:276
 #: application/views/admin/token/bounce.php:48
 msgid "Password:"
 msgstr "Wachtwoord:"
@@ -2652,41 +2665,41 @@ msgstr "(Iconv extensie niet geinstalleerd)"
 msgid "CSV File (All charsets)"
 msgstr "CSV bestand (alle karaktersets)"
 
-#: application/views/admin/export/exportresults_view.php:66
+#: application/views/admin/export/exportresults_view.php:65
 msgid "PDF"
 msgstr "PDF"
 
-#: application/views/admin/export/exportresults_view.php:73
+#: application/views/admin/export/exportresults_view.php:71
 msgid "Column control"
 msgstr "Beheer kolomopmaak"
 
-#: application/views/admin/export/exportresults_view.php:82
+#: application/views/admin/export/exportresults_view.php:80
 msgid "Choose Columns"
 msgstr "Kies kolommen"
 
-#: application/views/admin/export/exportresults_view.php:85
-#: application/views/admin/export/exportresults_view.php:91
-#: application/views/admin/export/exportresults_view.php:119
+#: application/views/admin/export/exportresults_view.php:83
+#: application/views/admin/export/exportresults_view.php:89
+#: application/views/admin/export/exportresults_view.php:117
 msgid "Help"
 msgstr "Help"
 
-#: application/views/admin/export/exportresults_view.php:86
+#: application/views/admin/export/exportresults_view.php:84
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
 msgstr "Je vragenlijst bevat meer dan 255 kolommen met antwoorden. Bepaalde spreadsheet programma's, zoals Excel, kunnen slechts 255 kolommen inlezen. Selecteer hieronder de kolommen die u wilt exporteren."
 
-#: application/views/admin/export/exportresults_view.php:92
+#: application/views/admin/export/exportresults_view.php:90
 msgid "Choose the columns you wish to export."
 msgstr "Kies de kolommen die je wilt exporteren."
 
-#: application/views/admin/export/exportresults_view.php:118
+#: application/views/admin/export/exportresults_view.php:116
 msgid "Choose token fields"
 msgstr "Kies velden toegangscode"
 
-#: application/views/admin/export/exportresults_view.php:120
+#: application/views/admin/export/exportresults_view.php:118
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr "Je vragenlijst kan de gegevens van de toegangscodes bij elke respons exporteren. Selecteer eventueel de extra velden die u wenst te exporteren."
 
-#: application/views/admin/export/exportresults_view.php:136
+#: application/views/admin/export/exportresults_view.php:134
 #: application/views/admin/export/spss_view.php:19
 msgid "Export data"
 msgstr "Exporteer gegevens"
@@ -2979,7 +2992,7 @@ msgstr "Gebruikers"
 #: application/views/admin/globalSettings_view.php:24
 #: application/views/admin/participants/displayParticipants_view.php:149
 #: application/views/admin/survey/copySurvey_view.php:20
-#: application/views/admin/survey/importSurvey_view.php:24
+#: application/views/admin/survey/importSurvey_view.php:33
 msgid "Surveys"
 msgstr "Vragenlijsten"
 
@@ -3108,7 +3121,7 @@ msgstr ""
 #: application/views/admin/globalSettings_view.php:166
 #: application/views/admin/user/personalsettings.php:43
 msgid "Simple selector"
-msgstr ""
+msgstr "Beknopte keuzelijst"
 
 #: application/views/admin/globalSettings_view.php:169
 msgid "Template editor:"
@@ -3135,202 +3148,197 @@ msgstr "Server tijd:"
 msgid "Corrected time :"
 msgstr "Tijd verbonden :"
 
-#: application/views/admin/globalSettings_view.php:185
-msgid "PDF export available:"
-msgstr "PDF export beschikbaar:"
-
-#: application/views/admin/globalSettings_view.php:189
-#: application/views/admin/globalSettings_view.php:359
+#: application/views/admin/globalSettings_view.php:348
 msgid "On"
 msgstr "Aan"
 
-#: application/views/admin/globalSettings_view.php:195
+#: application/views/admin/globalSettings_view.php:184
 msgid "Session lifetime (seconds):"
 msgstr "Tijdsduur sessie (seconden):"
 
-#: application/views/admin/globalSettings_view.php:197
+#: application/views/admin/globalSettings_view.php:186
 msgid "IP Info DB API Key:"
 msgstr "IP Info DB API Key:"
 
-#: application/views/admin/globalSettings_view.php:199
+#: application/views/admin/globalSettings_view.php:188
 msgid "Google Maps API key:"
 msgstr "Google Maps API key:"
 
-#: application/views/admin/globalSettings_view.php:201
+#: application/views/admin/globalSettings_view.php:190
 msgid "Google Analytics API key:"
-msgstr ""
+msgstr "Google Analytics API key:"
 
-#: application/views/admin/globalSettings_view.php:203
+#: application/views/admin/globalSettings_view.php:192
 msgid "Google Translate API key:"
-msgstr ""
+msgstr "Google Translate API key:"
 
-#: application/views/admin/globalSettings_view.php:209
+#: application/views/admin/globalSettings_view.php:198
 msgid "Default site admin email:"
 msgstr "Standaard e-mailadres website:"
 
-#: application/views/admin/globalSettings_view.php:212
+#: application/views/admin/globalSettings_view.php:201
 msgid "Administrator name:"
 msgstr "Beheerder:"
 
-#: application/views/admin/globalSettings_view.php:214
+#: application/views/admin/globalSettings_view.php:203
 msgid "Email method:"
 msgstr "E-mail methode:"
 
-#: application/views/admin/globalSettings_view.php:218
+#: application/views/admin/globalSettings_view.php:207
 msgid "PHP (default)"
 msgstr "PHP (standaard)"
 
-#: application/views/admin/globalSettings_view.php:221
+#: application/views/admin/globalSettings_view.php:210
 msgid "SMTP"
 msgstr "SMTP"
 
-#: application/views/admin/globalSettings_view.php:224
+#: application/views/admin/globalSettings_view.php:213
 msgid "Sendmail"
 msgstr "Sendmail"
 
-#: application/views/admin/globalSettings_view.php:227
+#: application/views/admin/globalSettings_view.php:216
 msgid "Qmail"
 msgstr "Qmail"
 
-#: application/views/admin/globalSettings_view.php:229
+#: application/views/admin/globalSettings_view.php:218
 msgid "SMTP host:"
 msgstr "SMTP host:"
 
-#: application/views/admin/globalSettings_view.php:230
+#: application/views/admin/globalSettings_view.php:219
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr "Geef hostnaam en poort (bijv.: mijn.smtp.com:25)"
 
-#: application/views/admin/globalSettings_view.php:231
+#: application/views/admin/globalSettings_view.php:220
 msgid "SMTP username:"
 msgstr "SMTP gebruikersnaam:"
 
-#: application/views/admin/globalSettings_view.php:233
+#: application/views/admin/globalSettings_view.php:222
 msgid "SMTP password:"
 msgstr "SMTP wachtwoord:"
 
-#: application/views/admin/globalSettings_view.php:235
+#: application/views/admin/globalSettings_view.php:224
 msgid "SMTP SSL/TLS:"
 msgstr "SMTP SSL/TLS:"
 
-#: application/views/admin/globalSettings_view.php:242
-#: application/views/admin/globalSettings_view.php:296
+#: application/views/admin/globalSettings_view.php:231
+#: application/views/admin/globalSettings_view.php:285
 #: application/views/admin/token/bounce.php:63
 msgid "SSL"
 msgstr "SSL"
 
-#: application/views/admin/globalSettings_view.php:245
-#: application/views/admin/globalSettings_view.php:299
+#: application/views/admin/globalSettings_view.php:234
+#: application/views/admin/globalSettings_view.php:288
 #: application/views/admin/token/bounce.php:69
 msgid "TLS"
 msgstr "TLS"
 
-#: application/views/admin/globalSettings_view.php:247
+#: application/views/admin/globalSettings_view.php:236
 msgid "SMTP debug mode:"
 msgstr "SMTP debug mode:"
 
-#: application/views/admin/globalSettings_view.php:254
+#: application/views/admin/globalSettings_view.php:243
 msgid "On errors"
 msgstr "Bij fouten"
 
-#: application/views/admin/globalSettings_view.php:257
+#: application/views/admin/globalSettings_view.php:246
 msgid "Always"
 msgstr "Altijd"
 
-#: application/views/admin/globalSettings_view.php:259
+#: application/views/admin/globalSettings_view.php:248
 msgid "Email batch size:"
 msgstr "E-mail batch grootte:"
 
-#: application/views/admin/globalSettings_view.php:266
+#: application/views/admin/globalSettings_view.php:255
 msgid "Default site bounce email:"
 msgstr "E-mailadres bij fout e-mailadres:"
 
-#: application/views/admin/globalSettings_view.php:268
+#: application/views/admin/globalSettings_view.php:257
 #: application/views/admin/token/bounce.php:28
 msgid "Server type:"
 msgstr "Server type:"
 
-#: application/views/admin/globalSettings_view.php:275
+#: application/views/admin/globalSettings_view.php:264
 #: application/views/admin/token/bounce.php:35
 msgid "IMAP"
 msgstr "IMAP"
 
-#: application/views/admin/globalSettings_view.php:278
+#: application/views/admin/globalSettings_view.php:267
 #: application/views/admin/token/bounce.php:41
 msgid "POP"
 msgstr "POP"
 
-#: application/views/admin/globalSettings_view.php:281
+#: application/views/admin/globalSettings_view.php:270
 #: application/views/admin/token/bounce.php:43
 msgid "Server name & port:"
 msgstr "Server naam & poort:"
 
-#: application/views/admin/globalSettings_view.php:282
+#: application/views/admin/globalSettings_view.php:271
 #: application/views/admin/token/bounce.php:45
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:995"
 msgstr "Geef je hostnaam en poort op (bijv.: mijn.smtp.com:25)"
 
-#: application/views/admin/globalSettings_view.php:284
+#: application/views/admin/globalSettings_view.php:273
 #: application/views/admin/token/bounce.php:46
 msgid "User name:"
 msgstr "Gebruikersnaam:"
 
-#: application/views/admin/globalSettings_view.php:289
+#: application/views/admin/globalSettings_view.php:278
 #: application/views/admin/token/bounce.php:50
 msgid "Encryption type:"
 msgstr "Type versleuteling:"
 
-#: application/views/admin/globalSettings_view.php:305
+#: application/views/admin/globalSettings_view.php:294
 msgid "Survey preview only for administration users"
 msgstr "Voorvertonen vragenlijst alleen voor beheerders"
 
-#: application/views/admin/globalSettings_view.php:316
+#: application/views/admin/globalSettings_view.php:305
 msgid "Filter HTML for XSS:"
 msgstr "Filter HTML op XSS:"
 
-#: application/views/admin/globalSettings_view.php:327
+#: application/views/admin/globalSettings_view.php:316
 msgid "Group member can only see own group:"
 msgstr "Groepsleden kunnen alleen hun eigen groep zien:"
 
-#: application/views/admin/globalSettings_view.php:339
+#: application/views/admin/globalSettings_view.php:328
 msgid "Warning: Before turning on HTTPS, "
 msgstr "Waarschuwing: Voordat HTTPS wordt ingeschakeld,"
 
-#: application/views/admin/globalSettings_view.php:341
+#: application/views/admin/globalSettings_view.php:330
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr "Klik op deze link om te testen of je server SSL ingeschakeld heeft. "
 
-#: application/views/admin/globalSettings_view.php:342
+#: application/views/admin/globalSettings_view.php:331
 msgid "check if this link works."
 msgstr "controleer of de link werkt."
 
-#: application/views/admin/globalSettings_view.php:343
+#: application/views/admin/globalSettings_view.php:332
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
 msgstr "Als de link niet werkt en je schakelt HTTPS in, dan kun je LimeSurvey niet benaderen."
 
-#: application/views/admin/globalSettings_view.php:357
+#: application/views/admin/globalSettings_view.php:346
 msgid "Force HTTPS:"
 msgstr "Forceer  HTTPS:"
 
-#: application/views/admin/globalSettings_view.php:361
+#: application/views/admin/globalSettings_view.php:350
 msgid "Don't force on or off"
 msgstr "Niet forceren aan of uit"
 
-#: application/views/admin/globalSettings_view.php:371
+#: application/views/admin/globalSettings_view.php:360
 msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr "Gebruik optie 'geen antwoord' bij niet verplichte vragen:"
 
-#: application/views/admin/globalSettings_view.php:375
-#: application/views/admin/globalSettings_view.php:396
-#: application/views/admin/globalSettings_view.php:412
-#: application/views/admin/globalSettings_view.php:431
+#: application/views/admin/globalSettings_view.php:364
+#: application/views/admin/globalSettings_view.php:385
+#: application/views/admin/globalSettings_view.php:401
+#: application/views/admin/globalSettings_view.php:420
 msgid "Survey admin can choose"
 msgstr "Beheerder vragenlijst kan kiezen"
 
-#: application/views/admin/globalSettings_view.php:379
+#: application/views/admin/globalSettings_view.php:368
 msgid "Repeating headings in array questions every X subquestions:"
 msgstr "Herhaal kopregels in arrayvragen na elke X subvragen:"
 
-#: application/views/admin/globalSettings_view.php:392
+#: application/views/admin/globalSettings_view.php:381
 #: application/views/admin/survey/subview/tabPresentation_view.php:214
 #: application/views/admin/survey/subview/tabPresentation_view.php:219
 #: application/views/admin/survey/subview/tabPresentation_view.php:224
@@ -3338,57 +3346,57 @@ msgstr "Herhaal kopregels in arrayvragen na elke X subvragen:"
 msgid "Show \"There are X questions in this survey\""
 msgstr "Toon \"Er zijn X vragen in deze vragenlijst\""
 
-#: application/views/admin/globalSettings_view.php:406
+#: application/views/admin/globalSettings_view.php:395
 msgid "Show question group name and/or description"
 msgstr "Toon groepsnaam en/of beschrijving"
 
-#: application/views/admin/globalSettings_view.php:408
-#: application/views/admin/globalSettings_view.php:427
+#: application/views/admin/globalSettings_view.php:397
+#: application/views/admin/globalSettings_view.php:416
 #: application/views/admin/survey/subview/tabPresentation_view.php:289
 #: application/views/admin/survey/subview/tabPresentation_view.php:334
 msgid "Show both"
 msgstr "Toon beide"
 
-#: application/views/admin/globalSettings_view.php:409
+#: application/views/admin/globalSettings_view.php:398
 #: application/views/admin/survey/subview/tabPresentation_view.php:290
 msgid "Show group name only"
 msgstr "Toon alleen groepsnaam"
 
-#: application/views/admin/globalSettings_view.php:410
+#: application/views/admin/globalSettings_view.php:399
 #: application/views/admin/survey/subview/tabPresentation_view.php:291
 msgid "Show group description only"
 msgstr "Toon alleen groepsbeschrijving"
 
-#: application/views/admin/globalSettings_view.php:411
-#: application/views/admin/globalSettings_view.php:430
+#: application/views/admin/globalSettings_view.php:400
+#: application/views/admin/globalSettings_view.php:419
 #: application/views/admin/survey/subview/tabPresentation_view.php:292
 #: application/views/admin/survey/subview/tabPresentation_view.php:337
 msgid "Hide both"
 msgstr "Verberg beide"
 
-#: application/views/admin/globalSettings_view.php:425
+#: application/views/admin/globalSettings_view.php:414
 msgid "Show question number and/or question code"
 msgstr "Toon vraagnummer en/of vraagcode"
 
-#: application/views/admin/globalSettings_view.php:428
+#: application/views/admin/globalSettings_view.php:417
 #: application/views/admin/survey/subview/tabPresentation_view.php:335
 msgid "Show question number only"
 msgstr "Toon alleen vraagnummer"
 
-#: application/views/admin/globalSettings_view.php:429
+#: application/views/admin/globalSettings_view.php:418
 #: application/views/admin/survey/subview/tabPresentation_view.php:336
 msgid "Show question code only"
 msgstr "Alleen vraagcodes tonen"
 
-#: application/views/admin/globalSettings_view.php:440
+#: application/views/admin/globalSettings_view.php:429
 msgid "Default site language:"
 msgstr "Standaardtaal"
 
-#: application/views/admin/globalSettings_view.php:456
+#: application/views/admin/globalSettings_view.php:445
 msgid "Available languages:"
 msgstr "Beschikbare talen:"
 
-#: application/views/admin/globalSettings_view.php:469
+#: application/views/admin/globalSettings_view.php:458
 #: application/views/admin/labels/editlabel_view.php:35
 #: application/views/admin/quotas/viewquotasrow_view.php:36
 #: application/views/admin/quotas/viewquotasrowsub_view.php:9
@@ -3396,18 +3404,18 @@ msgstr "Beschikbare talen:"
 msgid "Remove"
 msgstr "Verwijder"
 
-#: application/views/admin/globalSettings_view.php:486
+#: application/views/admin/globalSettings_view.php:475
 msgid "XML-RPC interface enabled:"
 msgstr "XML-RPC interface geactiveerd:"
 
-#: application/views/admin/globalSettings_view.php:503
+#: application/views/admin/globalSettings_view.php:492
 #: application/views/admin/token/bounce.php:71
 #: application/views/admin/user/personalsettings.php:79
 #: application/views/admin/user/setusertemplates.php:24
 msgid "Save settings"
 msgstr "Instellingen bewaren"
 
-#: application/views/admin/globalSettings_view.php:506
+#: application/views/admin/globalSettings_view.php:495
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr "NB: Dit is een demo. Instellingen die met een sterretje zijn aangegeven kunnen niet worden gewijzigd."
 
@@ -3474,7 +3482,7 @@ msgstr "U dient minimaal 1 labelset te selecteren."
 #: application/views/admin/labels/exportmulti_view.php:7
 #: application/views/admin/labels/labelsetsbar_view.php:14
 msgid "Export multiple label sets"
-msgstr "Exporteer meerdere labelset"
+msgstr "Exporteer meerdere labelsets"
 
 #: application/views/admin/labels/exportmulti_view.php:9
 msgid "Please choose the label sets you want to export:"
@@ -3495,7 +3503,7 @@ msgstr "Importeren labelset"
 #: application/views/admin/labels/import_view.php:24
 #: application/views/admin/participants/uploadSummary_view.php:37
 #: application/views/admin/survey/copySurvey_view.php:51
-#: application/views/admin/survey/importSurvey_view.php:66
+#: application/views/admin/survey/importSurvey_view.php:75
 #: application/views/admin/token/csvpost.php:22
 msgid "Warnings"
 msgstr "Waarschuwingen"
@@ -3508,7 +3516,7 @@ msgstr "Samenvatting van de import van de labelset"
 #: application/views/admin/survey/Question/import_view.php:16
 #: application/views/admin/survey/QuestionGroups/import_view.php:17
 #: application/views/admin/survey/copySurvey_view.php:39
-#: application/views/admin/survey/importSurvey_view.php:44
+#: application/views/admin/survey/importSurvey_view.php:53
 msgid "Label sets"
 msgstr "Labelsets"
 
@@ -3689,11 +3697,11 @@ msgstr ""
 
 #: application/views/admin/labels/labelview_view.php:152
 msgid "Enter your labels:"
-msgstr ""
+msgstr "Geef uw labels:"
 
 #: application/views/admin/labels/labelview_view.php:154
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
-msgstr ""
+msgstr "Voer per regel één label in. Voer een code in door de code en het label te scheiden met een puntkomma of een tab. Voeg voor enquêtes in meerdere talen de vertaling toe op dezelfde regel gescheiden door een puntkomma of een tab."
 
 #: application/views/admin/labels/labelview_view.php:155
 #: application/views/admin/survey/Question/answerOptions_view.php:163
@@ -4523,7 +4531,7 @@ msgstr "Back-up gehele database"
 
 #: application/views/admin/super/adminmenu.php:57
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
-msgstr ""
+msgstr "Het exporteren van de database is alleen beschikbaar voor MySQL databases. Voor andere typen dien je gebruik te maken van een geschikt back-up mechanisme."
 
 #: application/views/admin/super/adminmenu.php:69
 msgid "Edit label sets"
@@ -4627,7 +4635,7 @@ msgstr "Error: antwoord code komt reeds voor."
 #: application/views/admin/survey/Question/answerOptions_view.php:24
 #: application/views/admin/survey/Question/subQuestion_view.php:10
 msgid "There are no label sets which match the survey default language"
-msgstr ""
+msgstr "Er is geen labelset voor de taal van de vragenlijst"
 
 #: application/views/admin/survey/Question/answerOptions_view.php:27
 #: application/views/admin/survey/Question/answerOptions_view.php:149
@@ -4715,7 +4723,7 @@ msgstr "Een nieuwe vraag toevoegen"
 #: application/views/admin/survey/Question/editQuestion_view.php:13
 #: application/views/admin/survey/Question/editQuestion_view.php:242
 msgid "Copy question"
-msgstr ""
+msgstr "Kopieer vraag"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:15
 msgid "Edit question"
@@ -4727,7 +4735,7 @@ msgstr "Fout: U dient een vraagcode in te vullen."
 
 #: application/views/admin/survey/Question/editQuestion_view.php:38
 msgid "Note: You MUST enter a new question code!"
-msgstr ""
+msgstr "Opmerking: je MOET een nieuwe vraagcode voor de vraag opgeven"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:40
 #: application/views/admin/survey/Question/editQuestion_view.php:42
@@ -4757,7 +4765,7 @@ msgstr "Vragen groep:"
 #: application/views/admin/survey/Question/editQuestion_view.php:136
 #: application/views/admin/survey/Question/questionbar_view.php:210
 msgid "Option 'Other':"
-msgstr "Optie 'Anders':"
+msgstr "Optie 'Andere':"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:159
 #: application/views/admin/survey/Question/questionbar_view.php:225
@@ -4790,15 +4798,15 @@ msgstr "Aan het begin"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:207
 msgid "Copy subquestions?"
-msgstr ""
+msgstr "Subvragen kopieren?"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:211
 msgid "Copy answer options?"
-msgstr ""
+msgstr "Antwoordopties kopieren?"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:215
 msgid "Copy advanced settings?"
-msgstr ""
+msgstr "Speciale instellingen kopieren?"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:224
 msgid "Show advanced settings"
@@ -4849,7 +4857,7 @@ msgstr "Standaard antwoord waarde"
 
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:54
 msgid "Default value for option 'Other':"
-msgstr "Standaardwaarde voor keuze 'Anders':"
+msgstr "Standaardwaarde voor keuze 'Andere':"
 
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:165
 msgid "Use same default value across languages:"
@@ -5078,7 +5086,7 @@ msgstr "Samenvatting import vragengroep"
 
 #: application/views/admin/survey/QuestionGroups/import_view.php:13
 #: application/views/admin/survey/copySurvey_view.php:35
-#: application/views/admin/survey/importSurvey_view.php:40
+#: application/views/admin/survey/importSurvey_view.php:49
 msgid "Conditions"
 msgstr "Condities"
 
@@ -5162,7 +5170,7 @@ msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:149
 msgid "Relevance:"
-msgstr ""
+msgstr "Relevantie:"
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:171
 msgid "Questions with conditions to this group"
@@ -5254,47 +5262,47 @@ msgid "Survey import summary"
 msgstr "Samenvatting importeren vragenlijst"
 
 #: application/views/admin/survey/copySurvey_view.php:21
-#: application/views/admin/survey/importSurvey_view.php:25
+#: application/views/admin/survey/importSurvey_view.php:34
 msgid "Languages"
 msgstr "Talen"
 
 #: application/views/admin/survey/copySurvey_view.php:31
-#: application/views/admin/survey/importSurvey_view.php:36
+#: application/views/admin/survey/importSurvey_view.php:45
 msgid "Default answers"
 msgstr "Standaard antwoorden"
 
 #: application/views/admin/survey/copySurvey_view.php:43
-#: application/views/admin/survey/importSurvey_view.php:48
+#: application/views/admin/survey/importSurvey_view.php:57
 msgid "Not imported label sets"
 msgstr "Niet geimporteerde labelsets"
 
 #: application/views/admin/survey/copySurvey_view.php:43
-#: application/views/admin/survey/importSurvey_view.php:48
+#: application/views/admin/survey/importSurvey_view.php:57
 msgid "(Label sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "(De labelsets zijn niet geimporteerd, omdat je geen rechten hebt om nieuwe labelsets aan te maken.)"
 
 #: application/views/admin/survey/copySurvey_view.php:45
-#: application/views/admin/survey/importSurvey_view.php:28
+#: application/views/admin/survey/importSurvey_view.php:37
 msgid "Question attributes"
 msgstr "Vraagattributen:"
 
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:51
+#: application/views/admin/survey/importSurvey_view.php:60
 msgid "quota members"
 msgstr "Quota onderdelen"
 
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:51
+#: application/views/admin/survey/importSurvey_view.php:60
 msgid "quota language settings"
 msgstr "Quota taalinstellingen"
 
 #: application/views/admin/survey/copySurvey_view.php:60
-#: application/views/admin/survey/importSurvey_view.php:82
+#: application/views/admin/survey/importSurvey_view.php:91
 msgid "Copy of survey is completed."
 msgstr "Vragenlijst is gekopieerd."
 
 #: application/views/admin/survey/copySurvey_view.php:62
-#: application/views/admin/survey/importSurvey_view.php:84
+#: application/views/admin/survey/importSurvey_view.php:93
 msgid "Go to survey"
 msgstr "Ga naar vragenlijst"
 
@@ -5529,11 +5537,11 @@ msgstr "Totaal aantal geimporteerde bestanden:"
 msgid "Total Errors"
 msgstr "Totaal aantal fouten"
 
-#: application/views/admin/survey/importSurvey_view.php:57
+#: application/views/admin/survey/importSurvey_view.php:66
 msgid "Response import summary"
 msgstr "Samenvatting import vraag"
 
-#: application/views/admin/survey/importSurvey_view.php:78
+#: application/views/admin/survey/importSurvey_view.php:87
 msgid "Import of survey is completed."
 msgstr "Import van de enquête is voltooid."
 
@@ -5751,11 +5759,11 @@ msgstr ""
 
 #: application/views/admin/survey/subview/tabNotification_view.php:158
 msgid "Do not use Google Analytics"
-msgstr ""
+msgstr "Google Analytics niet gebruiken"
 
 #: application/views/admin/survey/subview/tabNotification_view.php:163
 msgid "Default Google Analytics"
-msgstr ""
+msgstr "Standaard Google Analytics"
 
 #: application/views/admin/survey/subview/tabNotification_view.php:168
 msgid "Survey name-[SID]/Group name"
@@ -5822,7 +5830,7 @@ msgstr "Welkomstpagina tonen?"
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:69
 msgid "Navigation delay (seconds):"
-msgstr "Vetraging navigatie (sec):"
+msgstr "Vertraging navigatie (sec):"
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:74
 msgid "Show [<< Prev] button"
@@ -6132,7 +6140,7 @@ msgstr "Er zijn nu geen andere talen ingesteld voor deze vragenlijst."
 
 #: application/views/admin/survey/surveybar_view.php:110
 msgid "Expression Manager"
-msgstr ""
+msgstr "Expressie Manager"
 
 #: application/views/admin/survey/surveybar_view.php:116
 #: application/views/admin/survey/surveybar_view.php:119
@@ -6556,15 +6564,15 @@ msgstr ""
 
 #: application/views/admin/token/csvpost.php:3
 msgid "Failed to open the uploaded file!"
-msgstr ""
+msgstr "Het geuploade bestand kan niet geopend worden!"
 
 #: application/views/admin/token/csvpost.php:6
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
-msgstr ""
+msgstr "Fout: Het geuploade bestand mist een of meer van de verplichte velden: 'firstname', 'lastname' of 'e-mail'"
 
 #: application/views/admin/token/csvpost.php:9
 msgid "Successfully created token entries"
-msgstr ""
+msgstr "Toegangscodes aangemaakt"
 
 #: application/views/admin/token/csvpost.php:28
 #: application/views/admin/token/csvpost.php:42
@@ -6572,36 +6580,36 @@ msgstr ""
 #: application/views/admin/token/ldappost.php:14
 #: application/views/admin/token/ldappost.php:22
 msgid "List"
-msgstr ""
+msgstr "Lijst"
 
 #: application/views/admin/token/csvpost.php:41
 msgid "%s lines had a mismatching number of fields."
-msgstr ""
+msgstr "%s regels hebben een verkeerd aantal velden."
 
 #: application/views/admin/token/csvupload.php:8
 msgid "Choose the CSV file to upload:"
-msgstr ""
+msgstr "Kies het te uploaden CSV bestand:"
 
 #: application/views/admin/token/csvupload.php:15
 msgid "Separator used:"
-msgstr ""
+msgstr "Gebruikt scheidingsteken:"
 
 #: application/views/admin/token/csvupload.php:26
 #: application/views/admin/token/ldapform.php:35
 msgid "Filter duplicate records:"
-msgstr ""
+msgstr "Filter dubbele records:"
 
 #: application/views/admin/token/csvupload.php:30
 msgid "Duplicates are determined by:"
-msgstr ""
+msgstr "Iets is dubbel als:"
 
 #: application/views/admin/token/csvupload.php:47
 msgid "Mandatory fields:"
-msgstr ""
+msgstr "Verplichte velden:"
 
 #: application/views/admin/token/csvupload.php:48
 msgid "Optional fields:"
-msgstr ""
+msgstr "Optionele velden:"
 
 #: application/views/admin/token/dummytokenform.php:2
 #: application/views/admin/token/tokenbar.php:20
@@ -6752,15 +6760,15 @@ msgstr "Exporteer toegangscodes"
 
 #: application/views/admin/token/ldapform.php:7
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
-msgstr ""
+msgstr "Sorry, maar de LDAP module is niet aanwezig in de PHP configuratie."
 
 #: application/views/admin/token/ldapform.php:15
 msgid "LDAP is disabled or no LDAP query defined."
-msgstr ""
+msgstr "LDAP is uitgeschakeld of er is geen LDAP zoekopdracht gedefinieerd"
 
 #: application/views/admin/token/ldapform.php:24
 msgid "Select the LDAP query you want to run:"
-msgstr ""
+msgstr "Selecteer de LDAP zoekopdracht die je wilt laten uitvoeren:"
 
 #: application/views/admin/token/ldapform.php:46
 msgid "Note"
@@ -6776,15 +6784,15 @@ msgstr ""
 
 #: application/views/admin/token/ldappost.php:11
 msgid "Records met minumum requirements"
-msgstr ""
+msgstr "Gegevens voldoen aan minimumvereisten"
 
 #: application/views/admin/token/ldappost.php:12
 msgid "Records imported"
-msgstr ""
+msgstr "Totaal aantal geimporteerde records:"
 
 #: application/views/admin/token/ldappost.php:13
 msgid "Duplicate records removed"
-msgstr ""
+msgstr "Dubbele gegevens verwijderd"
 
 #: application/views/admin/token/managetokenattributes.php:1
 msgid "Manage token attribute fields"
@@ -7248,11 +7256,11 @@ msgstr "Inline HTML editor"
 
 #: application/views/admin/user/personalsettings.php:38
 msgid "Question type selector"
-msgstr ""
+msgstr "Vraagtype keuzelijst"
 
 #: application/views/admin/user/personalsettings.php:42
 msgid "Full selector"
-msgstr ""
+msgstr "Uitgebreide keuzelijst"
 
 #: application/views/admin/user/personalsettings.php:49
 msgid "Template editor mode"
@@ -7582,7 +7590,7 @@ msgid "Total records in survey"
 msgstr "Totaal aantal responses in deze vragenlijst"
 
 #: application/controllers/AdminController.php:66
-#: application/controllers/PrintanswersController.php:74
+#: application/controllers/PrintanswersController.php:71
 #: application/controllers/admin/dataentry.php:1669
 #: application/controllers/admin/dataentry.php:1674
 #: application/controllers/admin/dataentry.php:1679
@@ -7623,10 +7631,11 @@ msgstr "Totaal aantal responses in deze vragenlijst"
 #: application/helpers/admin/import_helper.php:4001
 #: application/helpers/admin/import_helper.php:4062
 #: application/helpers/admin/import_helper.php:4117
-#: application/helpers/admin/import_helper.php:4222
-#: application/helpers/admin/import_helper.php:4290
-#: application/helpers/admin/import_helper.php:4333
-#: application/helpers/admin/import_helper.php:4443
+#: application/helpers/admin/import_helper.php:4221
+#: application/helpers/admin/import_helper.php:4291
+#: application/helpers/admin/import_helper.php:4336
+#: application/helpers/admin/import_helper.php:4449
+#: application/helpers/admin/import_helper.php:4485
 #: application/views/admin/dataentry/active_html_view.php:93
 #: application/views/admin/dataentry/warning_header.php:1
 #: application/views/admin/error_view.php:3
@@ -7662,7 +7671,7 @@ msgid "Back"
 msgstr "Terug"
 
 #: application/controllers/AdminController.php:86
-#: application/controllers/admin/tokens.php:1946
+#: application/controllers/admin/tokens.php:1944
 #: application/helpers/admin/activate_helper.php:429
 #: application/helpers/admin/import_helper.php:2619
 #: application/views/admin/authentication/forgotpassword.php:15
@@ -7671,7 +7680,7 @@ msgstr "Terug"
 #: application/views/admin/survey/copySurvey_view.php:8
 #: application/views/admin/survey/deleteSurvey_view.php:11
 #: application/views/admin/survey/importSurvey_view.php:7
-#: application/views/admin/survey/importSurvey_view.php:16
+#: application/views/admin/survey/importSurvey_view.php:25
 msgid "Main Admin Screen"
 msgstr "Hoofd beheerscherm"
 
@@ -7875,15 +7884,15 @@ msgstr "Je bent al verwijderd uit deze vragenlijst."
 msgid "You have been successfully removed from this survey."
 msgstr "Je bent verwijderd uit deze vragenlijst."
 
-#: application/controllers/PrintanswersController.php:75
+#: application/controllers/PrintanswersController.php:72
 msgid "We are sorry but your session has expired."
 msgstr "Tot onze spijt is je sessie verlopen."
 
-#: application/controllers/PrintanswersController.php:75
+#: application/controllers/PrintanswersController.php:72
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Of je bent te lang inactief geweest, of je hebt cookies geweigerd in je browser, of er waren problemen met je verbinding."
 
-#: application/controllers/PrintanswersController.php:76
+#: application/controllers/PrintanswersController.php:73
 #: application/controllers/admin/templates.php:885
 #: application/controllers/survey/index.php:97
 #: application/controllers/survey/index.php:274
@@ -7894,21 +7903,20 @@ msgstr "Of je bent te lang inactief geweest, of je hebt cookies geweigerd in je 
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "Neem contact op met %s ( %s ) voor hulp."
 
-#: application/controllers/PrintanswersController.php:135
-#: application/controllers/admin/printablesurvey.php:126
+#: application/controllers/PrintanswersController.php:130
 msgid "PDF export"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:146
+#: application/controllers/PrintanswersController.php:140
 #: application/views/admin/templates/templateeditor_printoutput_view.php:1
 msgid "Survey name (ID)"
 msgstr "Naam vragenlijst (ID)"
 
-#: application/controllers/PrintanswersController.php:148
+#: application/controllers/PrintanswersController.php:142
 msgid "Survey name (ID):"
 msgstr "Naam vragenlijst (ID):"
 
-#: application/controllers/PrintanswersController.php:167
+#: application/controllers/PrintanswersController.php:161
 #: application/controllers/admin/browse.php:643
 #: application/controllers/admin/conditionsaction.php:1711
 #: application/controllers/admin/conditionsaction.php:2071
@@ -7920,15 +7928,15 @@ msgstr "Naam vragenlijst (ID):"
 msgid "Question"
 msgstr "Vraag"
 
-#: application/controllers/PrintanswersController.php:167
+#: application/controllers/PrintanswersController.php:161
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
 msgid "Your answer"
 msgstr "Je antwoord"
 
 #: application/controllers/RegisterController.php:102
 #: application/controllers/survey/index.php:422
-#: application/helpers/frontend_helper.php:1403
-#: application/helpers/frontend_helper.php:1632
+#: application/helpers/frontend_helper.php:1402
+#: application/helpers/frontend_helper.php:1631
 #: application/libraries/Save.php:134
 msgid "The answer to the security question is incorrect."
 msgstr "Het antwoord op de veiligheidsvraag is fout."
@@ -7986,11 +7994,11 @@ msgstr "Voltooid"
 
 #: application/controllers/UploaderController.php:76
 msgid "File %s deleted"
-msgstr ""
+msgstr "Bestand %s verwijderd"
 
 #: application/controllers/UploaderController.php:79
 msgid "Oops, There was an error deleting the file"
-msgstr ""
+msgstr "Er is een fout opgetreden bij het verwijderen van het bestand"
 
 #: application/controllers/UploaderController.php:130
 msgid "Sorry, this file extension (%s) is not allowed!"
@@ -8111,7 +8119,7 @@ msgid "Maximum"
 msgstr "Maximum"
 
 #: application/controllers/admin/assessments.php:90
-#: application/views/admin/globalSettings_view.php:469
+#: application/views/admin/globalSettings_view.php:458
 #: application/views/admin/labels/editlabel_view.php:35
 #: application/views/admin/labels/labelview_view.php:156
 #: application/views/admin/survey/Question/answerOptions_view.php:164
@@ -8224,7 +8232,7 @@ msgstr "Toegangscode"
 #: application/controllers/admin/browse.php:457
 #: application/helpers/common_helper.php:5234
 #: application/helpers/replacements_helper.php:617
-#: application/views/admin/export/exportresults_view.php:123
+#: application/views/admin/export/exportresults_view.php:121
 #: application/views/admin/participants/displayParticipants_view.php:63
 #: application/views/admin/participants/displayParticipants_view.php:149
 #: application/views/admin/participants/displayParticipants_view.php:168
@@ -8239,7 +8247,7 @@ msgstr "Voornaam"
 #: application/controllers/admin/browse.php:458
 #: application/helpers/common_helper.php:5235
 #: application/helpers/replacements_helper.php:624
-#: application/views/admin/export/exportresults_view.php:124
+#: application/views/admin/export/exportresults_view.php:122
 #: application/views/admin/participants/displayParticipants_view.php:64
 #: application/views/admin/participants/displayParticipants_view.php:149
 #: application/views/admin/participants/displayParticipants_view.php:169
@@ -8464,7 +8472,7 @@ msgstr "Je hebt geen vraag geselecteerd"
 
 #: application/controllers/admin/conditionsaction.php:172
 msgid "Reset Survey Logic"
-msgstr "Verwijder condities"
+msgstr "Reset Survey Logic"
 
 #: application/controllers/admin/conditionsaction.php:178
 #: application/controllers/admin/conditionsaction.php:699
@@ -8472,14 +8480,14 @@ msgstr "Verwijder condities"
 #: application/controllers/admin/dataentry.php:682
 #: application/controllers/admin/dataentry.php:1187
 #: application/controllers/admin/dataentry.php:1247
-#: application/controllers/admin/printablesurvey.php:1055
-#: application/controllers/admin/printablesurvey.php:1059
-#: application/controllers/admin/printablesurvey.php:1175
-#: application/controllers/admin/printablesurvey.php:1192
-#: application/controllers/admin/printablesurvey.php:1197
+#: application/controllers/admin/printablesurvey.php:1043
+#: application/controllers/admin/printablesurvey.php:1047
+#: application/controllers/admin/printablesurvey.php:1163
+#: application/controllers/admin/printablesurvey.php:1180
+#: application/controllers/admin/printablesurvey.php:1185
 #: application/controllers/admin/quotas.php:517
 #: application/controllers/admin/surveyadmin.php:563
-#: application/controllers/admin/tokens.php:1883
+#: application/controllers/admin/tokens.php:1881
 #: application/core/Survey_Common_Action.php:821
 #: application/helpers/admin/statistics_helper.php:1797
 #: application/helpers/admin/statistics_helper.php:1931
@@ -8522,8 +8530,8 @@ msgstr "Verwijder condities"
 #: application/helpers/export_helper.php:257
 #: application/helpers/export_helper.php:1331
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2516
-#: application/helpers/expressions/em_manager_helper.php:2520
+#: application/helpers/expressions/em_manager_helper.php:2527
+#: application/helpers/expressions/em_manager_helper.php:2531
 #: application/helpers/qanda_helper.php:4280
 #: application/helpers/qanda_helper.php:4707
 #: application/helpers/qanda_helper.php:4745
@@ -8532,12 +8540,12 @@ msgstr "Verwijder condities"
 #: application/views/admin/dataentry/import.php:23
 #: application/views/admin/export/statistics_view.php:506
 #: application/views/admin/export/statistics_view.php:671
+#: application/views/admin/globalSettings_view.php:298
 #: application/views/admin/globalSettings_view.php:309
 #: application/views/admin/globalSettings_view.php:320
-#: application/views/admin/globalSettings_view.php:331
-#: application/views/admin/globalSettings_view.php:373
-#: application/views/admin/globalSettings_view.php:394
-#: application/views/admin/globalSettings_view.php:490
+#: application/views/admin/globalSettings_view.php:362
+#: application/views/admin/globalSettings_view.php:383
+#: application/views/admin/globalSettings_view.php:479
 #: application/views/admin/survey/Question/editQuestion_view.php:140
 #: application/views/admin/survey/Question/editQuestion_view.php:160
 #: application/views/admin/survey/Question/questionbar_view.php:213
@@ -8580,7 +8588,7 @@ msgid "Yes"
 msgstr "Ja"
 
 #: application/controllers/admin/conditionsaction.php:181
-#: application/controllers/admin/tokens.php:1931
+#: application/controllers/admin/tokens.php:1929
 #: application/views/admin/assessments_view.php:120
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/labels/labelview_view.php:157
@@ -8603,14 +8611,14 @@ msgstr "Annuleer"
 
 #: application/controllers/admin/conditionsaction.php:185
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr ""
+msgstr "Je staat op het punt om alle condities binnen deze vragenlijst te verwijderen"
 
 #: application/controllers/admin/conditionsaction.php:186
 msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
-msgstr ""
+msgstr "Wij raden je aan om, voordat je doorgaat, je hele vragenlijst te exporteren."
 
 #: application/controllers/admin/conditionsaction.php:190
-#: application/controllers/admin/tokens.php:1239
+#: application/controllers/admin/tokens.php:1237
 #: application/controllers/admin/useraction.php:157
 #: application/views/admin/dataentry/import.php:31
 #: application/views/admin/survey/Question/questionbar_view.php:193
@@ -8628,7 +8636,7 @@ msgstr "Waarschuwing"
 
 #: application/controllers/admin/conditionsaction.php:203
 msgid "All conditions in this survey have been deleted."
-msgstr ""
+msgstr "Alle condities in deze vragenlijst zijn verwijderd."
 
 #: application/controllers/admin/conditionsaction.php:204
 #: application/controllers/admin/surveypermission.php:246
@@ -8638,8 +8646,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:329
 #: application/controllers/admin/surveypermission.php:502
 #: application/controllers/admin/surveypermission.php:595
-#: application/controllers/admin/tokens.php:2065
-#: application/controllers/admin/tokens.php:2076
+#: application/controllers/admin/tokens.php:2063
+#: application/controllers/admin/tokens.php:2074
 #: application/controllers/admin/useraction.php:720
 #: application/helpers/common_helper.php:6145
 #: application/helpers/common_helper.php:6150
@@ -8664,9 +8672,9 @@ msgstr ""
 #: application/helpers/common_helper.php:6254
 #: application/helpers/common_helper.php:6258
 #: application/helpers/common_helper.php:6262
-#: application/helpers/frontend_helper.php:1435
-#: application/helpers/frontend_helper.php:1512
-#: application/helpers/frontend_helper.php:1684
+#: application/helpers/frontend_helper.php:1434
+#: application/helpers/frontend_helper.php:1511
+#: application/helpers/frontend_helper.php:1683
 #: application/helpers/replacements_helper.php:653
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:63
@@ -8701,14 +8709,14 @@ msgstr "Geen conditie  kon worden gekopieerd (dubbel)"
 
 #: application/controllers/admin/conditionsaction.php:700
 #: application/controllers/admin/dataentry.php:1250
-#: application/controllers/admin/printablesurvey.php:1176
-#: application/controllers/admin/printablesurvey.php:1193
-#: application/controllers/admin/printablesurvey.php:1197
+#: application/controllers/admin/printablesurvey.php:1164
+#: application/controllers/admin/printablesurvey.php:1181
+#: application/controllers/admin/printablesurvey.php:1185
 #: application/helpers/admin/statistics_helper.php:1799
 #: application/helpers/common_helper.php:1843
 #: application/helpers/export_helper.php:259
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2522
+#: application/helpers/expressions/em_manager_helper.php:2533
 #: application/helpers/qanda_helper.php:4708
 #: application/helpers/qanda_helper.php:4753
 #: application/views/admin/dataentry/content_view.php:581
@@ -8721,14 +8729,14 @@ msgstr "Weet niet"
 #: application/controllers/admin/dataentry.php:681
 #: application/controllers/admin/dataentry.php:1190
 #: application/controllers/admin/dataentry.php:1253
-#: application/controllers/admin/printablesurvey.php:1056
-#: application/controllers/admin/printablesurvey.php:1060
-#: application/controllers/admin/printablesurvey.php:1177
-#: application/controllers/admin/printablesurvey.php:1194
-#: application/controllers/admin/printablesurvey.php:1197
+#: application/controllers/admin/printablesurvey.php:1044
+#: application/controllers/admin/printablesurvey.php:1048
+#: application/controllers/admin/printablesurvey.php:1165
+#: application/controllers/admin/printablesurvey.php:1182
+#: application/controllers/admin/printablesurvey.php:1185
 #: application/controllers/admin/quotas.php:518
 #: application/controllers/admin/surveyadmin.php:567
-#: application/controllers/admin/tokens.php:1885
+#: application/controllers/admin/tokens.php:1883
 #: application/core/Survey_Common_Action.php:817
 #: application/helpers/admin/statistics_helper.php:1798
 #: application/helpers/admin/statistics_helper.php:1932
@@ -8769,8 +8777,8 @@ msgstr "Weet niet"
 #: application/helpers/export_helper.php:258
 #: application/helpers/export_helper.php:1331
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2517
-#: application/helpers/expressions/em_manager_helper.php:2521
+#: application/helpers/expressions/em_manager_helper.php:2528
+#: application/helpers/expressions/em_manager_helper.php:2532
 #: application/helpers/qanda_helper.php:4289
 #: application/helpers/qanda_helper.php:4709
 #: application/helpers/qanda_helper.php:4763
@@ -8779,12 +8787,12 @@ msgstr "Weet niet"
 #: application/views/admin/dataentry/import.php:24
 #: application/views/admin/export/statistics_view.php:512
 #: application/views/admin/export/statistics_view.php:683
+#: application/views/admin/globalSettings_view.php:301
 #: application/views/admin/globalSettings_view.php:312
 #: application/views/admin/globalSettings_view.php:323
-#: application/views/admin/globalSettings_view.php:334
-#: application/views/admin/globalSettings_view.php:374
-#: application/views/admin/globalSettings_view.php:395
-#: application/views/admin/globalSettings_view.php:493
+#: application/views/admin/globalSettings_view.php:363
+#: application/views/admin/globalSettings_view.php:384
+#: application/views/admin/globalSettings_view.php:482
 #: application/views/admin/survey/Question/editQuestion_view.php:145
 #: application/views/admin/survey/Question/editQuestion_view.php:165
 #: application/views/admin/survey/Question/questionbar_view.php:216
@@ -8827,14 +8835,14 @@ msgid "No"
 msgstr "Nee"
 
 #: application/controllers/admin/conditionsaction.php:704
-#: application/controllers/admin/printablesurvey.php:1215
-#: application/controllers/admin/printablesurvey.php:1231
-#: application/controllers/admin/printablesurvey.php:1235
+#: application/controllers/admin/printablesurvey.php:1203
+#: application/controllers/admin/printablesurvey.php:1219
+#: application/controllers/admin/printablesurvey.php:1223
 #: application/helpers/admin/statistics_helper.php:1817
 #: application/helpers/common_helper.php:1849
 #: application/helpers/export_helper.php:262
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2525
+#: application/helpers/expressions/em_manager_helper.php:2536
 #: application/helpers/qanda_helper.php:4864
 #: application/helpers/qanda_helper.php:4906
 #: application/views/admin/dataentry/content_view.php:598
@@ -8843,14 +8851,14 @@ msgid "Increase"
 msgstr "Toenemend"
 
 #: application/controllers/admin/conditionsaction.php:705
-#: application/controllers/admin/printablesurvey.php:1216
-#: application/controllers/admin/printablesurvey.php:1232
-#: application/controllers/admin/printablesurvey.php:1235
+#: application/controllers/admin/printablesurvey.php:1204
+#: application/controllers/admin/printablesurvey.php:1220
+#: application/controllers/admin/printablesurvey.php:1223
 #: application/helpers/admin/statistics_helper.php:1818
 #: application/helpers/common_helper.php:1851
 #: application/helpers/export_helper.php:263
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2526
+#: application/helpers/expressions/em_manager_helper.php:2537
 #: application/helpers/qanda_helper.php:4865
 #: application/helpers/qanda_helper.php:4917
 #: application/views/admin/dataentry/content_view.php:599
@@ -8859,14 +8867,14 @@ msgid "Same"
 msgstr "Zelfde"
 
 #: application/controllers/admin/conditionsaction.php:706
-#: application/controllers/admin/printablesurvey.php:1217
-#: application/controllers/admin/printablesurvey.php:1233
-#: application/controllers/admin/printablesurvey.php:1235
+#: application/controllers/admin/printablesurvey.php:1205
+#: application/controllers/admin/printablesurvey.php:1221
+#: application/controllers/admin/printablesurvey.php:1223
 #: application/helpers/admin/statistics_helper.php:1819
 #: application/helpers/common_helper.php:1850
 #: application/helpers/export_helper.php:264
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2527
+#: application/helpers/expressions/em_manager_helper.php:2538
 #: application/helpers/qanda_helper.php:4866
 #: application/helpers/qanda_helper.php:4929
 #: application/views/admin/dataentry/content_view.php:600
@@ -8946,14 +8954,14 @@ msgstr "niet aangevinkt"
 
 #: application/controllers/admin/conditionsaction.php:950
 #: application/controllers/admin/dataentry.php:746
-#: application/controllers/admin/printablesurvey.php:727
-#: application/controllers/admin/printablesurvey.php:732
+#: application/controllers/admin/printablesurvey.php:715
+#: application/controllers/admin/printablesurvey.php:720
 #: application/controllers/admin/quotas.php:451
 #: application/helpers/admin/statistics_helper.php:1924
 #: application/helpers/common_helper.php:1834
 #: application/helpers/export_helper.php:249
 #: application/helpers/export_helper.php:1335
-#: application/helpers/expressions/em_manager_helper.php:2513
+#: application/helpers/expressions/em_manager_helper.php:2524
 #: application/helpers/qanda_helper.php:4326
 #: application/views/admin/dataentry/content_view.php:54
 #: application/views/admin/export/statistics_view.php:488
@@ -8962,14 +8970,14 @@ msgstr "Vrouwelijk"
 
 #: application/controllers/admin/conditionsaction.php:951
 #: application/controllers/admin/dataentry.php:747
-#: application/controllers/admin/printablesurvey.php:728
-#: application/controllers/admin/printablesurvey.php:732
+#: application/controllers/admin/printablesurvey.php:716
+#: application/controllers/admin/printablesurvey.php:720
 #: application/controllers/admin/quotas.php:450
 #: application/helpers/admin/statistics_helper.php:1925
 #: application/helpers/common_helper.php:1833
 #: application/helpers/export_helper.php:250
 #: application/helpers/export_helper.php:1335
-#: application/helpers/expressions/em_manager_helper.php:2512
+#: application/helpers/expressions/em_manager_helper.php:2523
 #: application/helpers/qanda_helper.php:4334
 #: application/views/admin/dataentry/content_view.php:55
 #: application/views/admin/export/statistics_view.php:494
@@ -9011,7 +9019,7 @@ msgstr "Mannelijk"
 #: application/views/admin/dataentry/content_view.php:263
 #: application/views/admin/dataentry/content_view.php:296
 msgid "Other"
-msgstr "Anders"
+msgstr "Andere"
 
 #: application/controllers/admin/conditionsaction.php:1028
 msgid "Before"
@@ -9051,7 +9059,7 @@ msgstr "Pas scenario aan"
 
 #: application/controllers/admin/conditionsaction.php:1327
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:51
+#: application/views/admin/survey/importSurvey_view.php:60
 msgid "and"
 msgstr "en"
 
@@ -9185,7 +9193,7 @@ msgstr "Waarde"
 #: application/views/admin/survey/Question/import_view.php:9
 #: application/views/admin/survey/QuestionGroups/import_view.php:10
 #: application/views/admin/survey/copySurvey_view.php:23
-#: application/views/admin/survey/importSurvey_view.php:27
+#: application/views/admin/survey/importSurvey_view.php:36
 msgid "Questions"
 msgstr "Vragen"
 
@@ -9415,8 +9423,8 @@ msgid "Save"
 msgstr "Bewaar"
 
 #: application/controllers/admin/dataentry.php:1585
-#: application/controllers/admin/tokens.php:703
-#: application/controllers/admin/tokens.php:841
+#: application/controllers/admin/tokens.php:701
+#: application/controllers/admin/tokens.php:839
 #: application/controllers/admin/useraction.php:149
 #: application/views/admin/dataentry/insert.php:73
 #: application/views/admin/dataentry/iteratesurvey.php:5
@@ -9433,7 +9441,7 @@ msgstr "Bewaar"
 #: application/views/admin/survey/importSurveyResources_view.php:3
 #: application/views/admin/survey/importSurveyResources_view.php:10
 #: application/views/admin/survey/importSurvey_view.php:10
-#: application/views/admin/survey/importSurvey_view.php:20
+#: application/views/admin/survey/importSurvey_view.php:29
 #: application/views/admin/templates/importuploaded_view.php:3
 #: application/views/admin/templates/importuploaded_view.php:12
 #: application/views/admin/token/addtokenpost.php:5
@@ -9543,241 +9551,241 @@ msgstr "Beantwoord deze vraag alleen als aan de volgende condities is voldaan:"
 
 #: application/controllers/admin/dataentry.php:2085
 msgid "The answer(s) must meet these validation criteria:"
-msgstr ""
+msgstr "De antwoorden moet voldoen aan:"
 
 #: application/controllers/admin/dataentry.php:2091
 msgid "The answer(s) must meet these array_filter criteria:"
-msgstr ""
+msgstr "De antwoorden moeten voldoen aan deze \"array_filter' voorwaarden:"
 
 #: application/controllers/admin/dataentry.php:2495
-#: application/controllers/admin/tokens.php:1574
+#: application/controllers/admin/tokens.php:1572
 #: application/views/admin/participants/importCSV_view.php:17
 msgid "ARMSCII-8 Armenian"
 msgstr "ARMSCII-8 Armenian"
 
 #: application/controllers/admin/dataentry.php:2496
-#: application/controllers/admin/tokens.php:1575
+#: application/controllers/admin/tokens.php:1573
 #: application/views/admin/participants/importCSV_view.php:18
 msgid "US ASCII"
 msgstr "US ASCII"
 
 #: application/controllers/admin/dataentry.php:2497
-#: application/controllers/admin/tokens.php:1576
+#: application/controllers/admin/tokens.php:1574
 #: application/views/admin/participants/importCSV_view.php:19
 msgid "Automatic"
 msgstr "Automatisch"
 
 #: application/controllers/admin/dataentry.php:2498
-#: application/controllers/admin/tokens.php:1577
+#: application/controllers/admin/tokens.php:1575
 #: application/views/admin/participants/importCSV_view.php:20
 msgid "Big5 Traditional Chinese"
 msgstr "Big5 Traditioneel Chinees"
 
 #: application/controllers/admin/dataentry.php:2499
-#: application/controllers/admin/tokens.php:1578
+#: application/controllers/admin/tokens.php:1576
 #: application/views/admin/participants/importCSV_view.php:21
 msgid "Binary pseudo charset"
-msgstr "Binary pseudo karakterset"
+msgstr "Binaire pseudo karakterset"
 
 #: application/controllers/admin/dataentry.php:2500
-#: application/controllers/admin/tokens.php:1579
+#: application/controllers/admin/tokens.php:1577
 #: application/views/admin/participants/importCSV_view.php:22
 msgid "Windows Central European"
 msgstr "Windows Centraal Europees"
 
 #: application/controllers/admin/dataentry.php:2501
-#: application/controllers/admin/tokens.php:1580
+#: application/controllers/admin/tokens.php:1578
 #: application/views/admin/participants/importCSV_view.php:23
 msgid "Windows Cyrillic"
 msgstr "Windows Cyrillic"
 
 #: application/controllers/admin/dataentry.php:2502
-#: application/controllers/admin/tokens.php:1581
+#: application/controllers/admin/tokens.php:1579
 #: application/views/admin/participants/importCSV_view.php:24
 msgid "Windows Arabic"
 msgstr "Windows Arabisch"
 
 #: application/controllers/admin/dataentry.php:2503
-#: application/controllers/admin/tokens.php:1582
+#: application/controllers/admin/tokens.php:1580
 #: application/views/admin/participants/importCSV_view.php:25
 msgid "Windows Baltic"
 msgstr "Windows Baltisch"
 
 #: application/controllers/admin/dataentry.php:2504
-#: application/controllers/admin/tokens.php:1583
+#: application/controllers/admin/tokens.php:1581
 #: application/views/admin/participants/importCSV_view.php:26
 msgid "DOS West European"
 msgstr "DOS West Europees"
 
 #: application/controllers/admin/dataentry.php:2505
-#: application/controllers/admin/tokens.php:1584
+#: application/controllers/admin/tokens.php:1582
 #: application/views/admin/participants/importCSV_view.php:27
 msgid "DOS Central European"
 msgstr "DOS Centraal Europees"
 
 #: application/controllers/admin/dataentry.php:2506
-#: application/controllers/admin/tokens.php:1585
+#: application/controllers/admin/tokens.php:1583
 #: application/views/admin/participants/importCSV_view.php:28
 msgid "DOS Russian"
 msgstr "DOS Russisch"
 
 #: application/controllers/admin/dataentry.php:2507
-#: application/controllers/admin/tokens.php:1586
+#: application/controllers/admin/tokens.php:1584
 #: application/views/admin/participants/importCSV_view.php:29
 msgid "SJIS for Windows Japanese"
 msgstr "SJIS voor Japanse Windows"
 
 #: application/controllers/admin/dataentry.php:2508
-#: application/controllers/admin/tokens.php:1587
+#: application/controllers/admin/tokens.php:1585
 #: application/views/admin/participants/importCSV_view.php:30
 msgid "DEC West European"
 msgstr "DEC West Europees"
 
 #: application/controllers/admin/dataentry.php:2509
-#: application/controllers/admin/tokens.php:1588
+#: application/controllers/admin/tokens.php:1586
 #: application/views/admin/participants/importCSV_view.php:31
 msgid "UJIS for Windows Japanese"
 msgstr "UJIS voor Japanse Windows"
 
 #: application/controllers/admin/dataentry.php:2510
-#: application/controllers/admin/tokens.php:1589
+#: application/controllers/admin/tokens.php:1587
 #: application/views/admin/participants/importCSV_view.php:32
 msgid "EUC-KR Korean"
 msgstr "EUC-KR Koreaans"
 
 #: application/controllers/admin/dataentry.php:2511
-#: application/controllers/admin/tokens.php:1590
+#: application/controllers/admin/tokens.php:1588
 #: application/views/admin/participants/importCSV_view.php:33
 msgid "GB2312 Simplified Chinese"
 msgstr "GB2312 Vereenvoudigd Chinees"
 
 #: application/controllers/admin/dataentry.php:2512
-#: application/controllers/admin/tokens.php:1591
+#: application/controllers/admin/tokens.php:1589
 #: application/views/admin/participants/importCSV_view.php:34
 msgid "GBK Simplified Chinese"
 msgstr "GBK Vereenvoudigd Chinees"
 
 #: application/controllers/admin/dataentry.php:2513
-#: application/controllers/admin/tokens.php:1592
+#: application/controllers/admin/tokens.php:1590
 #: application/views/admin/participants/importCSV_view.php:35
 msgid "GEOSTD8 Georgian"
 msgstr "GEOSTD8 Georgisch"
 
 #: application/controllers/admin/dataentry.php:2514
-#: application/controllers/admin/tokens.php:1593
+#: application/controllers/admin/tokens.php:1591
 #: application/views/admin/participants/importCSV_view.php:36
 msgid "ISO 8859-7 Greek"
 msgstr "ISO 8859-7 Grieks"
 
 #: application/controllers/admin/dataentry.php:2515
-#: application/controllers/admin/tokens.php:1594
+#: application/controllers/admin/tokens.php:1592
 #: application/views/admin/participants/importCSV_view.php:37
 msgid "ISO 8859-8 Hebrew"
 msgstr "ISO 8859-8 Hebreeuws"
 
 #: application/controllers/admin/dataentry.php:2516
-#: application/controllers/admin/tokens.php:1595
+#: application/controllers/admin/tokens.php:1593
 #: application/views/admin/participants/importCSV_view.php:38
 msgid "HP West European"
 msgstr "HP West Europees"
 
 #: application/controllers/admin/dataentry.php:2517
-#: application/controllers/admin/tokens.php:1596
+#: application/controllers/admin/tokens.php:1594
 #: application/views/admin/participants/importCSV_view.php:39
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr "DOS Kamenicky Tsjechisch-Slowaaks"
 
 #: application/controllers/admin/dataentry.php:2518
-#: application/controllers/admin/tokens.php:1597
+#: application/controllers/admin/tokens.php:1595
 #: application/views/admin/participants/importCSV_view.php:40
 msgid "KOI8-R Relcom Russian"
 msgstr "KOI8-R Relcom Russisch"
 
 #: application/controllers/admin/dataentry.php:2519
-#: application/controllers/admin/tokens.php:1598
+#: application/controllers/admin/tokens.php:1596
 #: application/views/admin/participants/importCSV_view.php:41
 msgid "KOI8-U Ukrainian"
 msgstr "KOI8-U Oekraiens"
 
 #: application/controllers/admin/dataentry.php:2520
-#: application/controllers/admin/tokens.php:1599
+#: application/controllers/admin/tokens.php:1597
 #: application/views/admin/participants/importCSV_view.php:42
 msgid "cp1252 West European"
 msgstr "cp1252 West Europees"
 
 #: application/controllers/admin/dataentry.php:2521
-#: application/controllers/admin/tokens.php:1600
+#: application/controllers/admin/tokens.php:1598
 #: application/views/admin/participants/importCSV_view.php:43
 msgid "ISO 8859-2 Central European"
 msgstr "ISO 8859-2 Centraal Europees"
 
 #: application/controllers/admin/dataentry.php:2522
-#: application/controllers/admin/tokens.php:1601
+#: application/controllers/admin/tokens.php:1599
 #: application/views/admin/participants/importCSV_view.php:44
 msgid "ISO 8859-9 Turkish"
 msgstr "ISO 8859-9 Turks"
 
 #: application/controllers/admin/dataentry.php:2523
-#: application/controllers/admin/tokens.php:1602
+#: application/controllers/admin/tokens.php:1600
 #: application/views/admin/participants/importCSV_view.php:45
 msgid "ISO 8859-13 Baltic"
 msgstr "ISO 8859-13 Baltisch"
 
 #: application/controllers/admin/dataentry.php:2524
-#: application/controllers/admin/tokens.php:1603
+#: application/controllers/admin/tokens.php:1601
 #: application/views/admin/participants/importCSV_view.php:46
 msgid "Mac Central European"
 msgstr "Mac Centraal Europees"
 
 #: application/controllers/admin/dataentry.php:2525
-#: application/controllers/admin/tokens.php:1604
+#: application/controllers/admin/tokens.php:1602
 #: application/views/admin/participants/importCSV_view.php:47
 msgid "Mac West European"
 msgstr "Mac West Europees"
 
 #: application/controllers/admin/dataentry.php:2526
-#: application/controllers/admin/tokens.php:1605
+#: application/controllers/admin/tokens.php:1603
 #: application/views/admin/participants/importCSV_view.php:48
 msgid "Shift-JIS Japanese"
 msgstr "Shift-JIS Japans"
 
 #: application/controllers/admin/dataentry.php:2527
-#: application/controllers/admin/tokens.php:1606
+#: application/controllers/admin/tokens.php:1604
 #: application/views/admin/participants/importCSV_view.php:49
 msgid "7bit Swedish"
 msgstr "7bit Zweeds"
 
 #: application/controllers/admin/dataentry.php:2528
-#: application/controllers/admin/tokens.php:1607
+#: application/controllers/admin/tokens.php:1605
 #: application/views/admin/participants/importCSV_view.php:50
 msgid "TIS620 Thai"
 msgstr "TIS620 Thais"
 
 #: application/controllers/admin/dataentry.php:2529
-#: application/controllers/admin/tokens.php:1608
+#: application/controllers/admin/tokens.php:1606
 #: application/views/admin/participants/importCSV_view.php:51
 msgid "UCS-2 Unicode"
 msgstr "UCS-2 Unicode"
 
 #: application/controllers/admin/dataentry.php:2530
-#: application/controllers/admin/tokens.php:1609
+#: application/controllers/admin/tokens.php:1607
 #: application/views/admin/participants/importCSV_view.php:52
 msgid "EUC-JP Japanese"
 msgstr "EUC-JP Japans"
 
 #: application/controllers/admin/dataentry.php:2531
-#: application/controllers/admin/tokens.php:1610
+#: application/controllers/admin/tokens.php:1608
 #: application/views/admin/participants/importCSV_view.php:53
 msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicode"
 
 #: application/controllers/admin/dataentry.php:2588
-#: application/controllers/admin/printablesurvey.php:1961
+#: application/controllers/admin/printablesurvey.php:1949
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2596
-#: application/controllers/admin/printablesurvey.php:1969
+#: application/controllers/admin/printablesurvey.php:1957
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
 
@@ -9805,7 +9813,7 @@ msgstr "Export VV bestand"
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr "Het archief bevat een vragenlijst in PDF-formaat, een queXML bestand en een queXF banding XML bestand (zie queXF: http://quexf.sourceforge.net/) voor het werken met gescande vragenlijsten."
 
-#: application/controllers/admin/globalsettings.php:175
+#: application/controllers/admin/globalsettings.php:174
 msgid "Global settings were saved."
 msgstr "Instellingen opgeslagen."
 
@@ -10034,78 +10042,78 @@ msgstr ""
 msgid "%s participants have been copied,%s participants have not been copied because they already exist"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:139
+#: application/controllers/admin/printablesurvey.php:128
 msgid "Database"
 msgstr "Database"
 
-#: application/controllers/admin/printablesurvey.php:139
+#: application/controllers/admin/printablesurvey.php:128
 msgid "table"
 msgstr "tabel"
 
-#: application/controllers/admin/printablesurvey.php:153
-#: application/controllers/admin/printablesurvey.php:1790
+#: application/controllers/admin/printablesurvey.php:142
+#: application/controllers/admin/printablesurvey.php:1778
 msgid "Submit Your Survey."
 msgstr "Verstuur je vragenlijst"
 
-#: application/controllers/admin/printablesurvey.php:155
-#: application/controllers/admin/printablesurvey.php:1790
-#: application/controllers/admin/templates.php:1060
+#: application/controllers/admin/printablesurvey.php:144
+#: application/controllers/admin/printablesurvey.php:1778
+#: application/controllers/admin/templates.php:1062
 msgid "Thank you for completing this survey."
 msgstr "Bedankt voor je deelname aan deze vragenlijst."
 
-#: application/controllers/admin/printablesurvey.php:167
-#: application/controllers/admin/templates.php:1056
+#: application/controllers/admin/printablesurvey.php:155
+#: application/controllers/admin/templates.php:1058
 msgid "Please fax your completed survey to:"
 msgstr "Fax je vragenlijst naar:"
 
-#: application/controllers/admin/printablesurvey.php:173
-#: application/controllers/admin/printablesurvey.php:1784
-#: application/controllers/admin/templates.php:1059
+#: application/controllers/admin/printablesurvey.php:161
+#: application/controllers/admin/printablesurvey.php:1772
+#: application/controllers/admin/templates.php:1061
 msgid "Please submit by %s"
 msgstr "Stuur ten laatste in op %s"
 
-#: application/controllers/admin/printablesurvey.php:619
+#: application/controllers/admin/printablesurvey.php:607
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Beantwoord deze vraag alleen als aan de volgende voorwaarden is voldaan:"
 
-#: application/controllers/admin/printablesurvey.php:638
+#: application/controllers/admin/printablesurvey.php:626
 msgid "ID:"
 msgstr "ID:"
 
-#: application/controllers/admin/printablesurvey.php:639
+#: application/controllers/admin/printablesurvey.php:627
 msgid "Question code:"
 msgstr "Vraagcode:"
 
-#: application/controllers/admin/printablesurvey.php:664
-#: application/controllers/admin/printablesurvey.php:666
-#: application/controllers/admin/templates.php:938
-#: application/controllers/admin/templates.php:1033
+#: application/controllers/admin/printablesurvey.php:652
+#: application/controllers/admin/printablesurvey.php:654
+#: application/controllers/admin/templates.php:939
+#: application/controllers/admin/templates.php:1035
 #: application/helpers/qanda_helper.php:321
 #: application/helpers/qanda_helper.php:322
 msgid "*"
 msgstr "*"
 
-#: application/controllers/admin/printablesurvey.php:699
-#: application/controllers/admin/printablesurvey.php:700
-#: application/controllers/admin/printablesurvey.php:724
-#: application/controllers/admin/printablesurvey.php:731
-#: application/controllers/admin/printablesurvey.php:757
-#: application/controllers/admin/printablesurvey.php:760
-#: application/controllers/admin/printablesurvey.php:824
-#: application/controllers/admin/printablesurvey.php:825
-#: application/controllers/admin/printablesurvey.php:1054
-#: application/controllers/admin/printablesurvey.php:1058
-#: application/controllers/admin/templates.php:1037
+#: application/controllers/admin/printablesurvey.php:687
+#: application/controllers/admin/printablesurvey.php:688
+#: application/controllers/admin/printablesurvey.php:712
+#: application/controllers/admin/printablesurvey.php:719
+#: application/controllers/admin/printablesurvey.php:745
+#: application/controllers/admin/printablesurvey.php:748
+#: application/controllers/admin/printablesurvey.php:812
+#: application/controllers/admin/printablesurvey.php:813
+#: application/controllers/admin/printablesurvey.php:1042
+#: application/controllers/admin/printablesurvey.php:1046
+#: application/controllers/admin/templates.php:1039
 msgid "Please choose *only one* of the following:"
 msgstr "Kies een van de volgende mogelijkheden:"
 
-#: application/controllers/admin/printablesurvey.php:716
-#: application/controllers/admin/printablesurvey.php:718
+#: application/controllers/admin/printablesurvey.php:704
+#: application/controllers/admin/printablesurvey.php:706
 msgid "Please enter a date:"
 msgstr "Vul een datum in:"
 
-#: application/controllers/admin/printablesurvey.php:836
-#: application/controllers/admin/printablesurvey.php:838
+#: application/controllers/admin/printablesurvey.php:824
+#: application/controllers/admin/printablesurvey.php:826
 #: application/helpers/qanda_helper.php:2795
 #: application/helpers/qanda_helper.php:2796
 #: application/helpers/qanda_helper.php:2827
@@ -10113,80 +10121,80 @@ msgstr "Vul een datum in:"
 msgid "Make a comment on your choice here:"
 msgstr "Geef hier een toelichting op je antwoord:"
 
-#: application/controllers/admin/printablesurvey.php:850
+#: application/controllers/admin/printablesurvey.php:838
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Geef een nummer voor elke optie volgens je voorkeur van 1 tot"
 
-#: application/controllers/admin/printablesurvey.php:852
+#: application/controllers/admin/printablesurvey.php:840
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Plaats een getal voor elke optie volgens je voorkeur van 1 tot"
 
-#: application/controllers/admin/printablesurvey.php:873
-#: application/controllers/admin/printablesurvey.php:874
+#: application/controllers/admin/printablesurvey.php:861
+#: application/controllers/admin/printablesurvey.php:862
 msgid "Please choose *all* that apply:"
 msgstr "Selecteer alles wat voldoet"
 
-#: application/controllers/admin/printablesurvey.php:925
-#: application/controllers/admin/printablesurvey.php:926
+#: application/controllers/admin/printablesurvey.php:913
+#: application/controllers/admin/printablesurvey.php:914
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Selecteer alle toepasselijke antwoorden en geef je commentaar"
 
-#: application/controllers/admin/printablesurvey.php:943
-#: application/helpers/expressions/em_manager_helper.php:2645
-#: application/helpers/expressions/em_manager_helper.php:4985
+#: application/controllers/admin/printablesurvey.php:931
+#: application/helpers/expressions/em_manager_helper.php:2656
+#: application/helpers/expressions/em_manager_helper.php:4996
 #: application/helpers/qanda_helper.php:1354
 #: application/helpers/qanda_helper.php:1673
 #: application/helpers/qanda_helper.php:2323
 #: application/helpers/qanda_helper.php:2686
 msgid "Other:"
-msgstr "Anders:"
+msgstr "Andere:"
 
-#: application/controllers/admin/printablesurvey.php:964
-#: application/controllers/admin/printablesurvey.php:979
+#: application/controllers/admin/printablesurvey.php:952
+#: application/controllers/admin/printablesurvey.php:967
 msgid "Please write your answer(s) here:"
 msgstr "Vul je antwoord(en) hier in"
 
+#: application/controllers/admin/printablesurvey.php:989
+#: application/controllers/admin/printablesurvey.php:991
+#: application/controllers/admin/printablesurvey.php:998
 #: application/controllers/admin/printablesurvey.php:1001
-#: application/controllers/admin/printablesurvey.php:1003
-#: application/controllers/admin/printablesurvey.php:1010
-#: application/controllers/admin/printablesurvey.php:1013
-#: application/controllers/admin/printablesurvey.php:1023
-#: application/controllers/admin/printablesurvey.php:1026
-#: application/controllers/admin/printablesurvey.php:1044
-#: application/controllers/admin/printablesurvey.php:1047
+#: application/controllers/admin/printablesurvey.php:1011
+#: application/controllers/admin/printablesurvey.php:1014
+#: application/controllers/admin/printablesurvey.php:1032
+#: application/controllers/admin/printablesurvey.php:1035
 msgid "Please write your answer here:"
 msgstr "Vul je antwoord hier in:"
 
-#: application/controllers/admin/printablesurvey.php:1068
-#: application/controllers/admin/printablesurvey.php:1085
-#: application/controllers/admin/printablesurvey.php:1131
-#: application/controllers/admin/printablesurvey.php:1140
-#: application/controllers/admin/printablesurvey.php:1167
-#: application/controllers/admin/printablesurvey.php:1182
-#: application/controllers/admin/printablesurvey.php:1207
-#: application/controllers/admin/printablesurvey.php:1222
-#: application/controllers/admin/printablesurvey.php:1431
-#: application/controllers/admin/printablesurvey.php:1441
-#: application/controllers/admin/printablesurvey.php:1536
-#: application/controllers/admin/printablesurvey.php:1539
-#: application/controllers/admin/printablesurvey.php:1647
-#: application/controllers/admin/printablesurvey.php:1648
+#: application/controllers/admin/printablesurvey.php:1056
+#: application/controllers/admin/printablesurvey.php:1073
+#: application/controllers/admin/printablesurvey.php:1119
+#: application/controllers/admin/printablesurvey.php:1128
+#: application/controllers/admin/printablesurvey.php:1155
+#: application/controllers/admin/printablesurvey.php:1170
+#: application/controllers/admin/printablesurvey.php:1195
+#: application/controllers/admin/printablesurvey.php:1210
+#: application/controllers/admin/printablesurvey.php:1419
+#: application/controllers/admin/printablesurvey.php:1429
+#: application/controllers/admin/printablesurvey.php:1524
+#: application/controllers/admin/printablesurvey.php:1527
+#: application/controllers/admin/printablesurvey.php:1635
+#: application/controllers/admin/printablesurvey.php:1636
 msgid "Please choose the appropriate response for each item:"
 msgstr "Kies het toepasselijk antwoord voor elk onderdeel:"
 
-#: application/controllers/admin/printablesurvey.php:1706
+#: application/controllers/admin/printablesurvey.php:1694
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Er zijn {NUMBEROFQUESTIONS} vragen in deze vragenlijst"
 
-#: application/controllers/admin/printablesurvey.php:1788
+#: application/controllers/admin/printablesurvey.php:1776
 msgid "Please fax your completed survey to: %s"
 msgstr "Fax je ingevulde vragenlijst naar: %s"
 
-#: application/controllers/admin/printablesurvey.php:1869
+#: application/controllers/admin/printablesurvey.php:1857
 msgid "Please choose at least %s items."
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1872
+#: application/controllers/admin/printablesurvey.php:1860
 msgid "Please choose no more than %s items."
 msgstr ""
 
@@ -10459,7 +10467,7 @@ msgid "Delete"
 msgstr "Wis"
 
 #: application/controllers/admin/surveypermission.php:109
-#: application/controllers/admin/tokens.php:381
+#: application/controllers/admin/tokens.php:379
 #: application/views/admin/assessments_view.php:32
 #: application/views/admin/browse/browseidheader_view.php:14
 #: application/views/admin/saved/savedlist_view.php:29
@@ -10770,240 +10778,240 @@ msgstr "Je hebt geen vragenlijstnummer opgegeven"
 msgid "The following surveys are available:"
 msgstr "De volgende vragenlijsten zijn beschikbaar:"
 
-#: application/controllers/admin/templates.php:934
 #: application/controllers/admin/templates.php:935
+#: application/controllers/admin/templates.php:936
 msgid "Please explain something in detail:"
 msgstr "Beschrijf gedetailleerd:"
 
-#: application/controllers/admin/templates.php:1057
+#: application/controllers/admin/templates.php:1059
 msgid "Submit your survey."
 msgstr "Verstuur je vragenlijst."
 
-#: application/controllers/admin/templates.php:1061
+#: application/controllers/admin/templates.php:1063
 msgid "This is the survey end message."
 msgstr "Dit is de afsluittekst van de vragenlijst."
 
-#: application/controllers/admin/tokens.php:49
+#: application/controllers/admin/tokens.php:47
 #: application/views/admin/dataentry/active_html_view.php:94
 msgid "The survey you selected does not exist"
 msgstr "De vragenlijst die je hebt geselecteerd bestaat niet"
 
-#: application/controllers/admin/tokens.php:221
+#: application/controllers/admin/tokens.php:219
 msgid "%s messages were scanned out of which %s were marked as bounce by the system."
 msgstr "%s berichten zijn gecontroleerd waarvan er %s niet verstuurd kunnen worden (bounce). "
 
-#: application/controllers/admin/tokens.php:225
+#: application/controllers/admin/tokens.php:223
 msgid "%s messages were scanned, none were marked as bounce by the system."
 msgstr "%s berichten zijn gecontroleerd, er zijn geen problemen."
 
-#: application/controllers/admin/tokens.php:230
+#: application/controllers/admin/tokens.php:228
 msgid "Please check your settings"
 msgstr "Controleer je instellingen"
 
-#: application/controllers/admin/tokens.php:235
+#: application/controllers/admin/tokens.php:233
 #: application/controllers/survey/index.php:83
 #: application/controllers/survey/index.php:96
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "Je mag dit niet doen."
 
-#: application/controllers/admin/tokens.php:380
+#: application/controllers/admin/tokens.php:378
 msgid "Do survey"
 msgstr "Doen een enquête"
 
-#: application/controllers/admin/tokens.php:381
+#: application/controllers/admin/tokens.php:379
 msgid "Delete token entry"
 msgstr "Verwijder toegangscode-record"
 
-#: application/controllers/admin/tokens.php:386
+#: application/controllers/admin/tokens.php:384
 #: application/views/admin/token/actions.php:19
 #: application/views/admin/token/actions.php:20
 #: application/views/admin/token/browse.php:68
 msgid "Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"
 msgstr "Stuur uitnodigingen per e-mail naar de geselecteerde gebruikers (als ze nog geen uitnodiging gehad hebben)"
 
-#: application/controllers/admin/tokens.php:388
+#: application/controllers/admin/tokens.php:386
 #: application/views/admin/token/actions.php:23
 #: application/views/admin/token/actions.php:24
 #: application/views/admin/token/browse.php:69
 msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
 msgstr "Stuur herinnering per e-mail naar de geselecteerde gebruikers (als ze een uitnodiging gehad hebben)"
 
-#: application/controllers/admin/tokens.php:390
+#: application/controllers/admin/tokens.php:388
 #: application/views/admin/token/tokenform.php:5
 msgid "Edit token entry"
 msgstr "Wijzig toegangscode-record"
 
-#: application/controllers/admin/tokens.php:455
-#: application/controllers/admin/tokens.php:486
-#: application/controllers/admin/tokens.php:588
-#: application/controllers/admin/tokens.php:693
-#: application/controllers/admin/tokens.php:811
+#: application/controllers/admin/tokens.php:453
+#: application/controllers/admin/tokens.php:484
+#: application/controllers/admin/tokens.php:586
+#: application/controllers/admin/tokens.php:691
+#: application/controllers/admin/tokens.php:809
 msgid "%s cannot be empty"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:704
+#: application/controllers/admin/tokens.php:702
 msgid "The token entry was successfully updated."
 msgstr "Toegangscode-record is bijgewerkt."
 
-#: application/controllers/admin/tokens.php:705
-#: application/controllers/admin/tokens.php:843
+#: application/controllers/admin/tokens.php:703
+#: application/controllers/admin/tokens.php:841
 #: application/views/admin/token/addtokenpost.php:7
 #: application/views/admin/token/addtokenpost.php:14
 #: application/views/admin/token/tokenbar.php:12
 msgid "Display tokens"
 msgstr "Toon toegangscodes"
 
-#: application/controllers/admin/tokens.php:711
+#: application/controllers/admin/tokens.php:709
 #: application/views/admin/token/addtokenpost.php:12
 #: application/views/admin/token/ldappost.php:5
 msgid "Failed"
 msgstr "Niet gelukt"
 
-#: application/controllers/admin/tokens.php:712
+#: application/controllers/admin/tokens.php:710
 #: application/views/admin/token/addtokenpost.php:13
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "Er is al een gebruiker met exact dezelfde toegangscode in de tabel. Dezelfde toegangscode kan niet bij meerdere gebruikers hetzelfde zijn."
 
-#: application/controllers/admin/tokens.php:713
+#: application/controllers/admin/tokens.php:711
 msgid "Show this token entry"
 msgstr "Laat deze toegangscode zien"
 
-#: application/controllers/admin/tokens.php:842
+#: application/controllers/admin/tokens.php:840
 msgid "New dummy tokens were added."
 msgstr "Er zijn dummy toegangscodes toegevoegd."
 
-#: application/controllers/admin/tokens.php:938
+#: application/controllers/admin/tokens.php:936
 msgid "%s field(s) were successfully added."
 msgstr "%s veld(en) zijn toegevoegd."
 
-#: application/controllers/admin/tokens.php:939
-#: application/controllers/admin/tokens.php:990
+#: application/controllers/admin/tokens.php:937
+#: application/controllers/admin/tokens.php:988
 msgid "Back to attribute field management."
 msgstr "Terug naar attributen beheer."
 
-#: application/controllers/admin/tokens.php:989
+#: application/controllers/admin/tokens.php:987
 msgid "Token attribute descriptions were successfully updated."
 msgstr "Attribuut beschrijvingen zijn bijgewerkt."
 
-#: application/controllers/admin/tokens.php:1179
+#: application/controllers/admin/tokens.php:1177
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "E-mail naar {FIRSTNAME} {LASTNAME} ({EMAIL}) uitgesteld: Toegangscode is nog niet geldig"
 
-#: application/controllers/admin/tokens.php:1183
+#: application/controllers/admin/tokens.php:1181
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "E-mail naar {FIRSTNAME} {LASTNAME} ({EMAIL}) overgeslagen: Toegangscode is niet meer geldig"
 
-#: application/controllers/admin/tokens.php:1191
+#: application/controllers/admin/tokens.php:1189
 msgid "Invitation sent to:"
 msgstr "Uitnodiging verzonden naar:"
 
-#: application/controllers/admin/tokens.php:1196
+#: application/controllers/admin/tokens.php:1194
 msgid "Reminder sent to:"
 msgstr "Herinnering verzonden naar:"
 
-#: application/controllers/admin/tokens.php:1210
+#: application/controllers/admin/tokens.php:1208
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "Versturen van e-mail naar {FIRSTNAME} {LASTNAME} ({EMAIL}) is mislukt. Foutmelding:"
 
-#: application/controllers/admin/tokens.php:1240
+#: application/controllers/admin/tokens.php:1238
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr "Er waren geen e-mails te versturen. De mogelijke oorzaken hiervan zijn: "
 
-#: application/controllers/admin/tokens.php:1241
+#: application/controllers/admin/tokens.php:1239
 msgid "having a valid email address"
 msgstr "hebben een geldig e-mailadres"
 
-#: application/controllers/admin/tokens.php:1242
+#: application/controllers/admin/tokens.php:1240
 msgid "not having been sent an invitation already"
 msgstr "nog geen uitnodiging verstuurd is"
 
-#: application/controllers/admin/tokens.php:1243
+#: application/controllers/admin/tokens.php:1241
 msgid "having already completed the survey"
 msgstr "Je hebt deze vragenlijst al ingevuld."
 
-#: application/controllers/admin/tokens.php:1244
+#: application/controllers/admin/tokens.php:1242
 msgid "having a token"
 msgstr "hebben een toegangscode"
 
-#: application/controllers/admin/tokens.php:1326
+#: application/controllers/admin/tokens.php:1324
 msgid "Uploading LDAP Query"
-msgstr ""
+msgstr "Upload LDAP zoekopdracht"
 
-#: application/controllers/admin/tokens.php:1539
+#: application/controllers/admin/tokens.php:1537
 msgid "Can't bind to the LDAP directory"
-msgstr ""
+msgstr "Kan niet verbinden met de LDAP map"
 
-#: application/controllers/admin/tokens.php:1546
+#: application/controllers/admin/tokens.php:1544
 msgid "Can't connect to the LDAP directory"
-msgstr ""
+msgstr "Kan geen verbinding met de LDAP map maken"
 
-#: application/controllers/admin/tokens.php:1880
-#: application/controllers/admin/tokens.php:1894
+#: application/controllers/admin/tokens.php:1878
+#: application/controllers/admin/tokens.php:1892
 msgid "Create tokens"
 msgstr "Maak toegangscodes"
 
-#: application/controllers/admin/tokens.php:1881
+#: application/controllers/admin/tokens.php:1879
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1895
+#: application/controllers/admin/tokens.php:1893
 msgid "%s token has been created."
 msgid_plural "%s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:1925
-#: application/controllers/admin/tokens.php:1942
+#: application/controllers/admin/tokens.php:1923
+#: application/controllers/admin/tokens.php:1940
 msgid "Delete Tokens Table"
 msgstr "Verwijder toegangscodetabel"
 
-#: application/controllers/admin/tokens.php:1926
+#: application/controllers/admin/tokens.php:1924
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Als je deze tabel verwijderd, zullen toegangscodes niet langer nodig zijn."
 
-#: application/controllers/admin/tokens.php:1926
+#: application/controllers/admin/tokens.php:1924
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr " Er wordt een back-up van deze tabel gemaakt als u verder gaat. Alleen de systeembeheerder heeft nog toegang tot deze tabel."
 
-#: application/controllers/admin/tokens.php:1929
+#: application/controllers/admin/tokens.php:1927
 msgid "Delete Tokens"
 msgstr "Verwijder toegangscodes"
 
-#: application/controllers/admin/tokens.php:1943
+#: application/controllers/admin/tokens.php:1941
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr "De toegangscodetabel is nu verwijderd en er is geen toegangscode meer nodig om de vragenlijst in te vullen."
 
-#: application/controllers/admin/tokens.php:1943
+#: application/controllers/admin/tokens.php:1941
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "Er is een back-up gemaakt waar alleen de systeembeheerder toegang toe heeft."
 
-#: application/controllers/admin/tokens.php:1988
+#: application/controllers/admin/tokens.php:1986
 #: application/views/admin/globalSettings_view.php:10
 #: application/views/admin/token/bounce.php:1
 #: application/views/admin/token/tokenbar.php:78
 msgid "Bounce settings"
 msgstr "Bounce instellingen"
 
-#: application/controllers/admin/tokens.php:1989
+#: application/controllers/admin/tokens.php:1987
 msgid "Bounce settings have been saved."
 msgstr "Bounce instellingen zijn opgeslagen."
 
-#: application/controllers/admin/tokens.php:2062
-#: application/views/admin/export/exportresults_view.php:117
+#: application/controllers/admin/tokens.php:2060
+#: application/views/admin/export/exportresults_view.php:115
 #: application/views/admin/token/tokenbar.php:3
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr "Beheer toegangscodes"
 
-#: application/controllers/admin/tokens.php:2063
+#: application/controllers/admin/tokens.php:2061
 msgid "A token table has been created for this survey."
 msgstr "Er is een toegangscodetabel voor deze vragenlijst aangemaakt."
 
-#: application/controllers/admin/tokens.php:2073
+#: application/controllers/admin/tokens.php:2071
 msgid "Import old tokens"
 msgstr "Importeer oude toegangscodes"
 
-#: application/controllers/admin/tokens.php:2074
+#: application/controllers/admin/tokens.php:2072
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr "Er is een toegangscodetabel voor deze vragenlijst aangemaakt en de oude toegangscodes zijn geimporteerd."
 
@@ -11099,7 +11107,7 @@ msgstr "Einde bericht:"
 
 #: application/controllers/admin/translate.php:507
 #: application/views/admin/survey/copySurvey_view.php:22
-#: application/views/admin/survey/importSurvey_view.php:26
+#: application/views/admin/survey/importSurvey_view.php:35
 msgid "Question groups"
 msgstr "Groepen"
 
@@ -11111,7 +11119,7 @@ msgstr "Groep omschrijving"
 #: application/views/admin/survey/Question/import_view.php:10
 #: application/views/admin/survey/QuestionGroups/import_view.php:11
 #: application/views/admin/survey/copySurvey_view.php:27
-#: application/views/admin/survey/importSurvey_view.php:32
+#: application/views/admin/survey/importSurvey_view.php:41
 msgid "Subquestions"
 msgstr "Subvraag"
 
@@ -11198,7 +11206,7 @@ msgstr "Een e-mail met een aangemaakt wachtwoord is verzonden naar de gebruiker.
 
 #: application/controllers/admin/useraction.php:160
 msgid "Add user"
-msgstr ""
+msgstr "Toevoegen gebruiker"
 
 #: application/controllers/admin/useraction.php:161
 #: application/controllers/admin/useraction.php:501
@@ -11248,7 +11256,7 @@ msgstr ""
 
 #: application/controllers/admin/useraction.php:501
 msgid "User permissions were updated successfully."
-msgstr ""
+msgstr "Gebruikersrechten gewijzigd."
 
 #: application/controllers/admin/useraction.php:505
 msgid "You are not allowed to change your own permissions!"
@@ -11377,7 +11385,7 @@ msgstr "Geen vragenlijsten beschikbaar"
 #: application/controllers/survey/index.php:269
 #: application/controllers/survey/index.php:270
 msgid "The survey identification number is invalid"
-msgstr ""
+msgstr "Het nummer van de vragenlijst is ongeldig"
 
 #: application/controllers/survey/index.php:357
 msgid "This survey is no longer available."
@@ -11407,19 +11415,19 @@ msgid "Load unfinished survey"
 msgstr ""
 
 #: application/controllers/survey/index.php:484
-#: application/helpers/frontend_helper.php:1477
-#: application/helpers/frontend_helper.php:1551
-#: application/helpers/frontend_helper.php:1596
-#: application/helpers/frontend_helper.php:1635
+#: application/helpers/frontend_helper.php:1476
+#: application/helpers/frontend_helper.php:1550
+#: application/helpers/frontend_helper.php:1595
+#: application/helpers/frontend_helper.php:1634
 #: application/views/entertoken_view.php:8
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Dit is een gecontroleerde vragenlijst. Je hebt een geldige toegangscode nodig om deel te nemen."
 
 #: application/controllers/survey/index.php:485
 #: application/controllers/survey/index.php:516
-#: application/helpers/frontend_helper.php:1553
-#: application/helpers/frontend_helper.php:1598
-#: application/helpers/frontend_helper.php:1789
+#: application/helpers/frontend_helper.php:1552
+#: application/helpers/frontend_helper.php:1597
+#: application/helpers/frontend_helper.php:1788
 msgid "For further information please contact %s"
 msgstr "Voor meer informatie neem contact op met %s"
 
@@ -11543,14 +11551,14 @@ msgstr "Je moet nog vragen toevoegen"
 
 #: application/helpers/SurveyRuntimeHelper.php:135
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
-msgstr ""
+msgstr "Gebruik de navigatieknoppen of de index. Mogelijk heeft u de terug-knop van de browser gebruikt."
 
 #: application/helpers/SurveyRuntimeHelper.php:249
 msgid "Save your responses so far"
 msgstr "Sla je antwoorden tot nu toe op"
 
 #: application/helpers/SurveyRuntimeHelper.php:374
-#: application/helpers/frontend_helper.php:1322
+#: application/helpers/frontend_helper.php:1321
 msgid "Did Not Save"
 msgstr "Niet bewaard"
 
@@ -11587,11 +11595,11 @@ msgstr "Sorry. Er is geen vragenlijst met dit nummer."
 
 #: application/helpers/SurveyRuntimeHelper.php:548
 msgid "Invalid group number for this survey: "
-msgstr ""
+msgstr "Ongeldig groepsnummer voor deze vragenlijst:"
 
 #: application/helpers/SurveyRuntimeHelper.php:554
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
-msgstr ""
+msgstr "Deze groep bevat geen vragen. Voeg eerst vragen toe "
 
 #: application/helpers/SurveyRuntimeHelper.php:572
 msgid "Submit your answers"
@@ -11616,7 +11624,7 @@ msgid "One or more uploaded files are not in proper format/size. You cannot proc
 msgstr "en of meer van de bestanden zijn van het verkeerde formaat of hebben een verkeerde grootte. U  kunt niet verder gaan zonder dit te herstellen."
 
 #: application/helpers/SurveyRuntimeHelper.php:1028
-#: application/helpers/frontend_helper.php:2801
+#: application/helpers/frontend_helper.php:2800
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Deze vragenlijst is nu niet actief. Je antwoorden kunnen niet worden bewaard."
 
@@ -11625,7 +11633,7 @@ msgid "Question index"
 msgstr "Vraagindex"
 
 #: application/helpers/SurveyRuntimeHelper.php:1104
-#: application/helpers/frontend_helper.php:2256
+#: application/helpers/frontend_helper.php:2255
 #: application/helpers/replacements_helper.php:381
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
@@ -11792,7 +11800,7 @@ msgstr "Dit bestand is geen LimeSurvey vragenlijst. Import mislukt."
 #: application/helpers/admin/import_helper.php:2626
 #: application/helpers/admin/import_helper.php:2669
 #: application/helpers/admin/import_helper.php:2696
-#: application/helpers/admin/import_helper.php:4250
+#: application/helpers/admin/import_helper.php:4249
 msgid "Import of this survey file failed"
 msgstr "Import van deze vragenlijst is mislukt"
 
@@ -11832,7 +11840,7 @@ msgstr "Dit is geen geldig tijds data XML bestand."
 
 #: application/helpers/admin/label_helper.php:201
 msgid "Labels sucessfully updated"
-msgstr "Labels succesvol bijgewerkt"
+msgstr "Labels gewijzigd"
 
 #: application/helpers/admin/label_helper.php:206
 msgid "Can't update labels because you are using duplicated codes"
@@ -12078,7 +12086,7 @@ msgstr "Niet getoond"
 #: application/views/admin/survey/Question/import_view.php:11
 #: application/views/admin/survey/QuestionGroups/import_view.php:12
 #: application/views/admin/survey/copySurvey_view.php:24
-#: application/views/admin/survey/importSurvey_view.php:29
+#: application/views/admin/survey/importSurvey_view.php:38
 msgid "Answers"
 msgstr "Antwoorden"
 
@@ -12498,7 +12506,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:1879
 msgid "File count"
-msgstr ""
+msgstr "Aantal bestanden"
 
 #: application/helpers/common_helper.php:2189
 #: application/views/admin/export/statistics_view.php:67
@@ -12518,9 +12526,9 @@ msgid "Start language"
 msgstr "Start taal"
 
 #: application/helpers/common_helper.php:2232
-#: application/helpers/frontend_helper.php:1655
+#: application/helpers/frontend_helper.php:1654
 #: application/views/admin/dataentry/caption_view.php:29
-#: application/views/admin/export/exportresults_view.php:126
+#: application/views/admin/export/exportresults_view.php:124
 #: application/views/admin/token/browse.php:72
 #: application/views/admin/token/browse.php:132
 #: application/views/admin/token/tokenform.php:56
@@ -12640,7 +12648,7 @@ msgstr "Logisch"
 
 #: application/helpers/common_helper.php:3083
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
-msgstr ""
+msgstr "Vul de vraagcode(s) van meerkeuze vragen in, gescheiden door puntkomma's om alleen de overeenkomstige antwoordmogelijkheden te tonen in deze vraag."
 
 #: application/helpers/common_helper.php:3084
 msgid "Array filter"
@@ -12648,7 +12656,7 @@ msgstr "Array filter"
 
 #: application/helpers/common_helper.php:3091
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
-msgstr ""
+msgstr "Vul de vraagcode(s) van meerkeuze vragen in, gescheiden door puntkomma's om de overeenkomstige antwoordmogelijkheden NIET te tonen in deze vraag."
 
 #: application/helpers/common_helper.php:3092
 msgid "Array filter exclusion"
@@ -12776,7 +12784,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3214
 msgid "Question validation equation"
-msgstr ""
+msgstr "Vraag controle vergelijking"
 
 #: application/helpers/common_helper.php:3221
 msgid "This is a hint text that will be shown to the participant describing the question validation equation."
@@ -12784,7 +12792,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3222
 msgid "Question validation tip"
-msgstr ""
+msgstr "Vraag controle tip"
 
 #: application/helpers/common_helper.php:3229
 msgid "Enter a boolean equation to validate each sub-question."
@@ -12792,7 +12800,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3230
 msgid "Sub-question validation equation"
-msgstr ""
+msgstr "Subvraag controle vergelijking"
 
 #: application/helpers/common_helper.php:3237
 msgid "This is a tip shown to the participant describing the sub-question validation equation."
@@ -12800,11 +12808,11 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3238
 msgid "Sub-question validation tip"
-msgstr ""
+msgstr "Subvraag controle tip"
 
 #: application/helpers/common_helper.php:3245
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
-msgstr ""
+msgstr "Sluit alle andere opties uit als een bepaald antwoord is gekozen - geef de antwoordcode(s) gescheiden met een puntkomma."
 
 #: application/helpers/common_helper.php:3246
 msgid "Exclusive option"
@@ -12841,7 +12849,7 @@ msgstr "Plaats opslaan"
 
 #: application/helpers/common_helper.php:3280
 msgid "Store the state?"
-msgstr "Staat opslaan?"
+msgstr "Provincie opslaan?"
 
 #: application/helpers/common_helper.php:3281
 msgid "Save state"
@@ -12905,12 +12913,11 @@ msgstr "grafiek type"
 #: application/helpers/common_helper.php:3343
 #: application/helpers/common_helper.php:3577
 #: application/helpers/common_helper.php:3679
-#: application/views/admin/globalSettings_view.php:192
-#: application/views/admin/globalSettings_view.php:239
-#: application/views/admin/globalSettings_view.php:251
-#: application/views/admin/globalSettings_view.php:272
-#: application/views/admin/globalSettings_view.php:293
-#: application/views/admin/globalSettings_view.php:360
+#: application/views/admin/globalSettings_view.php:228
+#: application/views/admin/globalSettings_view.php:240
+#: application/views/admin/globalSettings_view.php:261
+#: application/views/admin/globalSettings_view.php:282
+#: application/views/admin/globalSettings_view.php:349
 msgid "Off"
 msgstr "Uit"
 
@@ -12952,7 +12959,7 @@ msgstr "IP als standaardlocatie"
 
 #: application/helpers/common_helper.php:3383
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
-msgstr "Begin coordinaten kaart bij laden pagina (Formaat: breedtegraad spatie lengtegraad)"
+msgstr "Begin coördinaten kaart bij laden pagina (Formaat: breedtegraad spatie lengtegraad)"
 
 #: application/helpers/common_helper.php:3384
 msgid "Default position"
@@ -13123,27 +13130,27 @@ msgstr "Tekstinvoer"
 
 #: application/helpers/common_helper.php:3620
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
-msgstr "Maak opmerking bij 'Anders:' verplicht als 'Anders:' is gekozen"
+msgstr "Maak opmerking bij 'Andere:' verplicht als 'Andere:' is gekozen"
 
 #: application/helpers/common_helper.php:3621
 msgid "'Other:' comment mandatory"
-msgstr "'Anders:' opmerking verplicht"
+msgstr "'Andere:' opmerking verplicht"
 
 #: application/helpers/common_helper.php:3631
 msgid "Allow only numerical input for 'Other' text"
-msgstr "Sta alleen numerieke invoer toe voor 'Anders'"
+msgstr "Sta alleen numerieke invoer toe voor 'Andere'"
 
 #: application/helpers/common_helper.php:3632
 msgid "Numbers only for 'Other'"
-msgstr "Uitsluitend getallen voor 'Anders'"
+msgstr "Uitsluitend getallen voor 'Andere'"
 
 #: application/helpers/common_helper.php:3640
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
-msgstr "Vervang het label van de optie 'Anders:' met een tekst"
+msgstr "Vervang het label van de optie 'Andere:' met een tekst"
 
 #: application/helpers/common_helper.php:3641
 msgid "Label for 'Other:' option"
-msgstr "Label voor 'Anders:' optie"
+msgstr "Label voor 'Andere:' optie"
 
 #: application/helpers/common_helper.php:3651
 msgid "Insert a page break before this question in printable view by setting this to Yes."
@@ -13289,11 +13296,11 @@ msgstr "Gebruik dropdown veld"
 
 #: application/helpers/common_helper.php:3831
 msgid "For list dropdown boxes, show up to this many rows"
-msgstr ""
+msgstr "Voor dropdowns, het maximaal aantal rijen "
 
 #: application/helpers/common_helper.php:3832
 msgid "Height of dropdown"
-msgstr ""
+msgstr "Hoogte van dropdown"
 
 #: application/helpers/common_helper.php:3840
 msgid "Order - like 3)"
@@ -13301,11 +13308,11 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3843
 msgid "Accelerator keys for list items"
-msgstr ""
+msgstr "Sneltoetsen"
 
 #: application/helpers/common_helper.php:3844
 msgid "Prefix for list items"
-msgstr ""
+msgstr "Prefix van items in de lijst"
 
 #: application/helpers/common_helper.php:3851
 #: application/views/admin/authentication/login.php:12
@@ -13562,7 +13569,7 @@ msgstr "Toon opmerkingen"
 
 #: application/helpers/common_helper.php:4067
 msgid "The participant cannot upload a single file larger than this size"
-msgstr "De participant kan geen bestand laden groter dan"
+msgstr "De deelnemer kan geen bestand laden groter dan"
 
 #: application/helpers/common_helper.php:4068
 msgid "Maximum file size allowed (in KB)"
@@ -13570,7 +13577,7 @@ msgstr "Maximale bestandsgrootte (in KB)"
 
 #: application/helpers/common_helper.php:4076
 msgid "Maximum number of files that the participant can upload for this question"
-msgstr "Het maximale aantal door de participant te laden bestanden voor deze vraag"
+msgstr "Het maximale aantal door de deelnemer te laden bestanden voor deze vraag"
 
 #: application/helpers/common_helper.php:4077
 msgid "Max number of files"
@@ -13578,7 +13585,7 @@ msgstr "Maximum aantal bestanden"
 
 #: application/helpers/common_helper.php:4085
 msgid "Minimum number of files that the participant must upload for this question"
-msgstr "Het minimale aantal door de participant te laden bestanden voor deze vraag"
+msgstr "Het minimale aantal door de deelnemer te laden bestanden voor deze vraag"
 
 #: application/helpers/common_helper.php:4086
 msgid "Min number of files"
@@ -13610,7 +13617,7 @@ msgstr "SMTP debug uitvoer:"
 
 #: application/helpers/common_helper.php:5236
 #: application/helpers/replacements_helper.php:631
-#: application/views/admin/export/exportresults_view.php:125
+#: application/views/admin/export/exportresults_view.php:123
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:72
 #: application/views/admin/token/browse.php:130
@@ -13757,4 +13764,4 @@ msgstr "Einde"
 
 #: application/helpers/expressions/em_core_helper.php:156
 msgid "Absolute value"
-msgstr ""
+msgstr "Absolute waarde"
