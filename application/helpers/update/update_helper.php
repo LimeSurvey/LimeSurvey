@@ -30,7 +30,7 @@ function CheckForDBUpgrades($subaction = null)
         {
             echo Yii::app()->getController()->_getAdminHeader();
         	echo "<div style='width:90%; padding:1% 5%;background-color:#eee;'>";
-            Yii::app()->loadHelper('update/upgrade-all');
+            Yii::app()->loadHelper('update/updatedb');
             db_upgrade_all(intval($currentDBVersion));
             Yii::app()->db->createCommand()->update('{{settings_global}}', array('stg_value' => intval($dbversionnumber)), 'stg_name = \'DBVersion\'');
             $data = "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
@@ -49,23 +49,23 @@ function ShowDBUpgradeNotice() {
 	//$sitename = Yii::app()->getConfig('sitename');
 	return '<div class="messagebox">'
     ."<div class='header'>".$clang->gT('Database upgrade').'</div><p>'
-    .$clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>'
+    .$clang->gT('Please verify the following information before continuing with the database upgrade:').'</p><ul>'
     ."<li><b>" .$clang->gT('Database type') . ":</b> " . Yii::app()->db->getDriverName() . "</li>"
     ."<li><b>" .$clang->gT('Database name') . ":</b> " . getDBConnectionStringProperty('dbname') . "</li>"
     ."<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->db->tablePrefix . "</li>"
     ."<li><b>" .$clang->gT('Site name') . ":</b> " . Yii::app()->getConfig("sitename") . "</li>"
     ."<li><b>" .$clang->gT('Root URL') . ":</b> " . Yii::app()->getController()->createUrl('') . "</li>"
     .'</ul>'
-    ."<br />"
+    ."<p>"
     ."<a href='".Yii::app()->getController()->createUrl("admin/update/db/continue/yes")."'>" . $clang->gT('Click here to continue') . "</a>"
-    ."<br />"
+    ."</p>"
 	.'</div>';
 }
 
-function getDBConnectionStringProperty($szProperty)
+function getDBConnectionStringProperty($sProperty)
 {
     // Yii doesn't give us a good way to get the database name
-    preg_match('/'.$szProperty.'=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
+    preg_match('/'.$sProperty.'=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
     if ( count($aMatches) === 0 ) {
         return null;
     }
