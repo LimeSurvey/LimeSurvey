@@ -1102,35 +1102,30 @@ class ExpressionManager {
             return array();
         }
         $jsNames = array();
-        if ($this->surveyMode=='group')
+        foreach ($names as $name)
         {
-            foreach ($names as $name)
+            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
             {
-                if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
-                {
-                    continue;
-                }
-                $val = $this->GetVarAttribute($name,'jsName','');
-                $gseq = $this->GetVarAttribute($name,'gseq','');
-                if ($val != '' && $gseq == $this->groupSeq) {
-                    $jsNames[] = $val;
-                }
+                continue;
             }
-        }
-        else
-        {
-            foreach ($names as $name)
+            $val = $this->GetVarAttribute($name,'jsName','');
+            switch ($this->surveyMode)
             {
-                if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
-                {
-                    continue;
-                }
-                $val = $this->GetVarAttribute($name,'jsName','');
-                $qseq = $this->GetVarAttribute($name,'qseq','');
-                if ($val != '' && $qseq == $this->questionSeq) {
-                    $jsNames[] = $val;
-                }
-            }            
+                case 'group':
+                    $gseq = $this->GetVarAttribute($name,'gseq','');
+                    $onpage = ($gseq == $this->groupSeq);
+                    break;
+                case 'question':
+                    $qseq = $this->GetVarAttribute($name,'qseq','');
+                    $onpage = ($qseq == $this->questionSeq);
+                    break;
+                case 'survey':
+                    $onpage = true;
+                    break;
+            }
+            if ($val != '' && $onpage) {
+                $jsNames[] = $val;
+            }
         }
         return array_unique($jsNames);
     }
@@ -1775,11 +1770,10 @@ class ExpressionManager {
      * @param boolean $hyperlinkSyntaxHighlighting
      * @param string $surveyMode survey|group|question
      */
-    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=false,$surveyMode='group')
+    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=false)
     {
         $this->substitutionNum=0;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
-        $this->surveyMode=$surveyMode;
         $this->sid=$sid;
         $this->rooturl=$rooturl;
         $this->hyperlinkSyntaxHighlighting=$hyperlinkSyntaxHighlighting;
@@ -2255,6 +2249,18 @@ class ExpressionManager {
             );
         }
         return $tokens;
+    }
+
+    /**
+     * Specify the survey  mode for this survey.  Options are 'survey', 'group', and 'question'
+     * @param type $mode
+     */
+    public function SetSurveyMode($mode)
+    {
+        if (preg_match('/^group|question|survey$/',$mode))
+        {
+            $this->surveyMode = $mode;
+        }
     }
 
     /**

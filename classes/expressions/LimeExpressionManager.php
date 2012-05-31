@@ -2470,9 +2470,10 @@
                 $forceRefresh=true;
             }
             else if (!$forceRefresh && isset($this->knownVars)) {
-                    return false;   // means that those variables have been cached and no changes needed
-                }
-                $now = microtime(true);
+                return false;   // means that those variables have been cached and no changes needed
+            }
+            $now = microtime(true);
+            $this->em->SetSurveyMode($this->surveyMode);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
@@ -3515,10 +3516,9 @@
             if ($initializeVars)
             {
                 $LEM->em->StartProcessingGroup(
-                isset($_SESSION['LEMsid']) ? $_SESSION['LEMsid'] : NULL,
-                isset($LEM->surveyOptions['rooturl']) ? $LEM->surveyOptions['rooturl'] : '',
-                true,
-                $LEM->surveyMode
+                    isset($_SESSION['LEMsid']) ? $_SESSION['LEMsid'] : NULL,
+                    isset($LEM->surveyOptions['rooturl']) ? $LEM->surveyOptions['rooturl'] : '',
+                    true
                 );
                 $LEM->setVariableAndTokenMappingsForExpressionManager($_SESSION['LEMsid']);
             }
@@ -5464,10 +5464,9 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $LEM->em->StartProcessingGroup(
-            isset($surveyid) ? $surveyid : NULL,
-            isset($LEM->surveyOptions['rooturl']) ? $LEM->surveyOptions['rooturl'] : '',
-            isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false,
-            $LEM->surveyMode
+                isset($surveyid) ? $surveyid : NULL,
+                isset($LEM->surveyOptions['rooturl']) ? $LEM->surveyOptions['rooturl'] : '',
+                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false
             );
             $LEM->groupRelevanceInfo = array();
             if (!is_null($gseq))
