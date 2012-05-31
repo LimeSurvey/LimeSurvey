@@ -30,13 +30,8 @@ function CheckForDBUpgrades($subaction = null)
         {
             echo Yii::app()->getController()->_getAdminHeader();
         	echo "<div style='width:90%; padding:1% 5%;background-color:#eee;'>";
-            $upgradedbtype=Yii::app()->db->getDriverName();
-            if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
-            if ($upgradedbtype=='sqlsrv') $upgradedbtype='mssql';
-            Yii::app()->loadHelper('update/upgrade-'.$upgradedbtype);
             Yii::app()->loadHelper('update/upgrade-all');
             db_upgrade_all(intval($currentDBVersion));
-            db_upgrade(intval($currentDBVersion));
             Yii::app()->db->createCommand()->update('{{settings_global}}', array('stg_value' => intval($dbversionnumber)), 'stg_name = \'DBVersion\'');
             $data = "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
 			$data .= "<br /><a href='".Yii::app()->getController()->createUrl("/admin")."'>".$clang->gT("Back to main menu")."</a></div>";
