@@ -796,11 +796,6 @@ class question extends Survey_Common_Action
                 $aData['selectormodeclass'] = $selectormodeclass;
             }
 
-            if (!$adding)
-                $qattributes = questionAttributes();
-            else
-                $qattributes = array();
-
             if ($adding)
             {
                 // Get the questions for this group

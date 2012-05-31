@@ -1,0 +1,221 @@
+<?php
+class DateQuestion extends QuestionModule
+{
+    public function getAnswerHTML()
+    {
+        global $thissurvey;
+
+        $clang=Yii::app()->lang;
+
+        $aQuestionAttributes=$this->getAttributeValues();
+        $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
+        $js_admin_includes[] = '/scripts/jquery/lime-calendar.js';
+        Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
+
+        $checkconditionFunction = "checkconditions";
+
+        $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
+        $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
+
+        if (trim($aQuestionAttributes['dropdown_dates'])!=0) {
+            if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]))
+            {
+                $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname])->getTimeStamp());
+                $currentyear = $datetimeobj['year'];
+                $currentmonth = $datetimeobj['mon'];
+                $currentdate = $datetimeobj['mday'];
+                $currenthour = $datetimeobj['hours'];
+                $currentminute = $datetimeobj['minutes'];
+            } else {
+                $currentdate='';
+                $currentmonth='';
+                $currentyear='';
+            }
+
+            $dateorder = preg_split('/[-\.\/ ]/', $dateformatdetails['phpdate']);
+            $answer='<p class="question answer-item dropdown-item date-item">';
+            foreach($dateorder as $datepart)
+            {
+                switch($datepart)
+                {
+                    // Show day select box
+                    case 'j':
+                    case 'd':   $answer .= ' <label for="day'.$this->fieldname.'" class="hide">'.$clang->gT('Day').'</label><select id="day'.$this->fieldname.'" name="day'.$this->fieldname.'" class="day">
+                        <option value="">'.$clang->gT('Day')."</option>\n";
+                        for ($i=1; $i<=31; $i++) {
+                            if ($i == $currentdate)
+                            {
+                                $i_date_selected = SELECTED;
+                            }
+                            else
+                            {
+                                $i_date_selected = '';
+                            }
+                            $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
+                        }
+                        $answer .='</select>';
+                        break;
+                        // Show month select box
+                    case 'n':
+                    case 'm':   $answer .= ' <label for="month'.$this->fieldname.'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$this->fieldname.'" name="month'.$this->fieldname.'" class="month">
+                        <option value="">'.$clang->gT('Month')."</option>\n";
+                        $montharray=array(
+                        $clang->gT('Jan'),
+                        $clang->gT('Feb'),
+                        $clang->gT('Mar'),
+                        $clang->gT('Apr'),
+                        $clang->gT('May'),
+                        $clang->gT('Jun'),
+                        $clang->gT('Jul'),
+                        $clang->gT('Aug'),
+                        $clang->gT('Sep'),
+                        $clang->gT('Oct'),
+                        $clang->gT('Nov'),
+                        $clang->gT('Dec'));
+                        for ($i=1; $i<=12; $i++) {
+                            if ($i == $currentmonth)
+                            {
+                                $i_date_selected = SELECTED;
+                            }
+                            else
+                            {
+                                $i_date_selected = '';
+                            }
+
+                            $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
+                        }
+                        $answer .= '    </select>';
+                        break;
+                        // Show year select box
+                    case 'Y':   $answer .= ' <label for="year'.$this->fieldname.'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$this->fieldname.'" name="year'.$this->fieldname.'" class="year">
+                        <option value="">'.$clang->gT('Year').'</option>';
+
+                        /*
+                        *  New question attributes used only if question attribute
+                        * "dropdown_dates" is used (see IF(...) above).
+                        *
+                        * yearmin = Minimum year value for dropdown list, if not set default is 1900
+                        * yearmax = Maximum year value for dropdown list, if not set default is 2020
+                        */
+                        if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='')
+                        {
+                            $yearmin = $aQuestionAttributes['dropdown_dates_year_min'];
+                        }
+                        else
+                        {
+                            $yearmin = 1900;
+                        }
+
+                        if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='')
+                        {
+                            $yearmax = $aQuestionAttributes['dropdown_dates_year_max'];
+                        }
+                        else
+                        {
+                            $yearmax = 2020;
+                        }
+
+                        if ($yearmin > $yearmax)
+                        {
+                            $yearmin = 1900;
+                            $yearmax = 2020;
+                        }
+
+                        if ($aQuestionAttributes['reverse']==1)
+                        {
+                            $tmp = $yearmin;
+                            $yearmin = $yearmax;
+                            $yearmax = $tmp;
+                            $step = 1;
+                            $reverse = true;
+                        }
+                        else
+                        {
+                            $step = -1;
+                            $reverse = false;
+                        }
+
+                        for ($i=$yearmax; ($reverse? $i<=$yearmin: $i>=$yearmin); $i+=$step) {
+                            if ($i == $currentyear)
+                            {
+                                $i_date_selected = SELECTED;
+                            }
+                            else
+                            {
+                                $i_date_selected = '';
+                            }
+                            $answer .= '  <option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
+                        }
+                        $answer .= '</select>';
+
+                        break;
+                }
+            }
+
+            $answer .= '<input class="text" type="text" size="10" name="'.$this->fieldname.'" style="display: none" id="answer'.$this->fieldname.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname].'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+            </p>';
+            $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$this->fieldname.'" />
+            <input type="hidden" id="qattribute_answer'.$this->fieldname.'" name="qattribute_answer'.$this->fieldname.'" />
+            <input type="hidden" id="dateformat'.$this->fieldname.'" value="'.$dateformatdetails['jsdate'].'"/>';
+
+
+        }
+        else
+        {
+            if ($clang->langcode !== 'en')
+            {
+                $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
+            }
+            //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
+
+            // Format the date  for output
+            if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname])!='')
+            {
+                $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] , "Y-m-d");
+                $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
+            }
+            else
+            {
+                $dateoutput='';
+            }
+
+            if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='') {
+                $minyear=$aQuestionAttributes['dropdown_dates_year_min'];
+            }
+            else
+            {
+                $minyear='1980';
+            }
+
+            if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='') {
+                $maxyear=$aQuestionAttributes['dropdown_dates_year_max'];
+            }
+            else
+            {
+                $maxyear='2020';
+            }
+
+            $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
+            $goodchars = "0123456789".$goodchars[0];
+
+            $answer ="<p class='question answer-item text-item date-item'><label for='answer{$this->fieldname}' class='hide label'>{$clang->gT('Date picker')}</label>
+            <input class='popupdate' type=\"text\" size=\"10\" name=\"{$this->fieldname}\" title='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$this->fieldname}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+            <input  type='hidden' name='dateformat{$this->fieldname}' id='dateformat{$this->fieldname}' value='{$dateformatdetails['jsdate']}'  />
+            <input  type='hidden' name='datelanguage{$this->fieldname}' id='datelanguage{$this->fieldname}' value='{$clang->langcode}'  />
+            <input  type='hidden' name='dateyearrange{$this->fieldname}' id='dateyearrange{$this->fieldname}' value='{$minyear}:{$maxyear}'  />
+
+            </p>";
+            if (trim($aQuestionAttributes['hide_tip'])==1) {
+                $answer.="<p class=\"tip\">".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
+            }
+        }
+
+        return $answer;
+    }
+    
+    public function availableAttributes()
+    {
+        return array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");
+    }
+}
+?>

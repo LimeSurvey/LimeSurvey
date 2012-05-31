@@ -3055,7 +3055,7 @@ function questionAttributes($returnByName=false)
     // If you insert a new attribute please do it in correct alphabetical order!
 
     $qattributes["alphasort"]=array(
-    "types"=>"!LOWZ",
+    "types"=>"!LO",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3108,16 +3108,8 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Category separator'),
     "caption"=>$clang->gT('Category separator'));
 
-    $qattributes["code_filter"]=array(
-    "types"=>"WZ",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('Filter the available answers by this value'),
-    "caption"=>$clang->gT('Code filter'));
-
     $qattributes["display_columns"]=array(
-    "types"=>"GLMZ",
+    "types"=>"GLM",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'integer',
@@ -3325,7 +3317,7 @@ function questionAttributes($returnByName=false)
     );
 
     $qattributes["statistics_graphtype"]=array(
-    "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
+    "types"=>'15ABCDEFGHIKLNOQRSTUXY!:;|*',
     'category'=>$clang->gT('Statistics'),
     'inputtype'=>'singleselect',
     'sortorder'=>102,
@@ -3406,7 +3398,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Hide tip'));
 
     $qattributes['hidden']=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+    'types'=>'15ABCDEFGHIKLMNOPQRSTUXY!:;|*',
     'category'=>$clang->gT('Display'),
     'sortorder'=>101,
     'inputtype'=>'singleselect',
@@ -3440,14 +3432,6 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Maximum value of the numeric input'),
     "caption"=>$clang->gT('Maximum value'));
 
-    //    $qattributes["max_num_value_sgqa"]=array(
-    //    "types"=>"K",
-    //    'category'=>$clang->gT('Logic'),
-    //    'sortorder'=>100,
-    //    'inputtype'=>'text',
-    //    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
-    //    "caption"=>$clang->gT('Max value from SGQA'));
-
     $qattributes["maximum_chars"]=array(
     "types"=>"STUNQK:;",
     'category'=>$clang->gT('Input'),
@@ -3479,14 +3463,6 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'integer',
     "help"=>$clang->gT('Minimum value of the numeric input'),
     "caption"=>$clang->gT('Minimum value'));
-
-    //    $qattributes["min_num_value_sgqa"]=array(
-    //    "types"=>"K",
-    //    'category'=>$clang->gT('Logic'),
-    //    'sortorder'=>100,
-    //    'inputtype'=>'text',
-    //    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
-    //    "caption"=>$clang->gT('Minimum value from SGQA'));
 
     $qattributes["multiflexible_max"]=array(
     "types"=>":",
@@ -3533,14 +3509,6 @@ function questionAttributes($returnByName=false)
     'default'=>0,
     "help"=>$clang->gT('Present answer options in reverse order'),
     "caption"=>$clang->gT('Reverse answer order'));
-
-    //    $qattributes["num_value_equals_sgqa"]=array(
-    //    "types"=>"K",
-    //    'category'=>$clang->gT('Logic'),
-    //    'sortorder'=>100,
-    //    'inputtype'=>'text',
-    //    "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
-    //    "caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["num_value_int_only"]=array(
     "types"=>"N",
@@ -3610,7 +3578,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Text inputs"));
 
     $qattributes["other_comment_mandatory"]=array(
-    "types"=>"PLW!Z",
+    "types"=>"PL!",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3632,7 +3600,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Numbers only for 'Other'"));
 
     $qattributes["other_replace_text"]=array(
-    "types"=>"LMPWZ!",
+    "types"=>"LMP!",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3641,7 +3609,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Label for 'Other:' option"));
 
     $qattributes["page_break"]=array(
-    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
+    "types"=>"15ABCDEFGHKLMNOPQRSTUXY!:;|*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3661,7 +3629,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer prefix'));
 
     $qattributes["public_statistics"]=array(
-    "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
+    "types"=>"15ABCEFGHKLMNOPRY!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>80,
     'inputtype'=>'singleselect',
@@ -3672,7 +3640,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Show in public statistics'));
 
     $qattributes["random_order"]=array(
-    "types"=>"!ABCEFHKLMOPQRWZ1:;",
+    "types"=>"!ABCEFHKLMOPQR1:;",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3684,21 +3652,8 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
 
-    /*
-    $qattributes['relevance']=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-    'category'=>$clang->gT('Display'),
-    'sortorder'=>1,
-    'inputtype'=>'text',
-    'default'=>'1',
-    'help'=>$clang->gT('The relevance equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
-    . '  The relevance equation can be as complex as you like, using any combination of mathematical operators, nested parentheses,'
-    . ' any variable or token that has already been set, and any of more than 50 functions.  It is parsed by the ExpressionManager.'),
-    'caption'=>$clang->gT('Relevance equation'));
-    */
-
     $qattributes["parent_order"]=array(
-    "types"=>"!ABCEFHKLMOPQRWZ1:;",
+    "types"=>"!ABCEFHKLMOPQR1:;",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3844,7 +3799,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Prefix for list items'));
 
     $qattributes["scale_export"]=array(
-    "types"=>"CEFGHLMOPWYZ1!:*",
+    "types"=>"CEFGHLMOPY1!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -7526,5 +7481,113 @@ function getBrowserLanguage()
     return $sLanguage;
 }
 
+function objectizeQuestion($ia) //AJS
+{
+Yii::import('application.modules.*', true);
+    switch ($ia[4])
+    {
+        case '1':
+            $q = new DualRadioArrayQuestion;
+            break;
+        case '5':
+            $q = new FiveListQuestion;
+            break;
+        case 'A':
+            $q = new FiveRadioArrayQuestion;
+            break;
+        case 'B':
+            $q = new TenRadioArrayQuestion;
+            break;
+        case 'C':
+            $q = new YNRadioArrayQuestion;
+            break;
+        case 'D':
+            $q = new DateQuestion;
+            break;
+        case 'E':
+            $q = new IDRadioArrayQuestion;
+            break;
+        case 'F':
+            $q = new RadioArrayQuestion;//?????
+            break;
+        case 'G':
+            $q = new GenderQuestion;
+            break;
+        case 'H':
+            $q = new ColumnRadioArrayQuestion;
+            break;
+        case 'I':
+            $q = new LanguageQuestion;
+            break;
+        case 'K':
+            $q = new MultinumericalQuestion;
+            break;
+        case 'L':
+            $q = new ListQuestion;
+            break;
+        case 'M':
+            $q = new CheckQuestion;
+            break;
+        case 'N':
+            $q = new NumericalQuestion;
+            break;
+        case 'O':
+            $q = new CommentListQuestion;
+            break;
+        case 'P':
+            $q = new CommentCheckQuestion;
+            break;
+        case 'Q':
+            $q = new MultitextQuestion;
+            break;
+        case 'R':
+            $q = new RankingQuestion;
+            break;
+        case 'S':
+            $q = new ShortTextQuestion;
+            break;
+        case 'T':
+            $q = new LongTextQuestion;
+            break;
+        case 'U':
+            $q = new HugeTextQuestion;
+            break;
+        case 'X':
+            $q = new DisplayQuestion;
+            break;
+        case 'Y':
+            $q = new YNQuestion;
+            break;
+        case '!':
+            $q = new SelectQuestion;
+            break;
+        case ':':
+            $q = new NumberArrayQuestion; //?????
+            break;
+        case ';':
+            $q = new TextArrayQuestion; //??????
+            break;
+        case '|':
+            $q = new FileQuestion;
+            break;
+        case '*':
+            $q = new EquationQuestion;
+            break;
+        default:
+            $q = null;
+    }
+    
+    $q->id = $ia[0];
+    $q->fieldname = $ia[1];
+    $q->title = $ia[2];
+    $q->text = $ia[3];
+    $q->gid = $ia[5];
+    $q->mandatory = $ia[6];
+    $q->hasConditions = $ia[7];
+    $q->downstreamConditions = $ia[8];
+    $q->questionCount = $ia[9];
+    
+    return $q;
+}
 
 // Closing PHP tag intentionally omitted - yes, it is okay

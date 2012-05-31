@@ -680,13 +680,13 @@ class SurveyRuntimeHelper {
                     //Display the "validation" popup if necessary
                     if ($okToShowErrors && !$stepInfo['valid'])
                     {
-                        list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
+                        list($validationpopup, $vpopup) = validation_popup($notvalidated);
                     }
 
                     // Display the "file validation" popup if necessary
                     if ($okToShowErrors && isset($filenotvalidated))
                     {
-                        list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
+                        list($filevalidationpopup, $fpopup) = file_validation_popup($filenotvalidated);
                     }
                 }
                 if ($ia[4] == "|")
