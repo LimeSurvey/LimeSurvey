@@ -13,6 +13,10 @@ CKEDITOR.editorConfig = function( config )
 	config.toolbarCanCollapse = false;
 	config.resize_enabled = false;
     config.autoParagraph = false;
+	
+	if($('html').attr('dir') == 'rtl') {
+		config.contentsLangDirection = 'rtl';
+	}
 
     config.toolbar_popup =
     [
