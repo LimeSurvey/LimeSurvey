@@ -965,15 +965,15 @@ END;
                     $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
                     echo '
                     <!-- NEW QUESTION -->
-                    <div id="question' . $q->fieldname . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
-                    echo templatereplace($question_template, array(), $redata, false, false, $q->fieldname);
+                    <div id="question' . $q->id . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
+                    echo templatereplace($question_template, array(), $redata, false, false, $q->id);
                     echo '</div>';
                 }
                 else
                 {
                     // TMSW - eventually refactor so that only substitutes the QUESTION_** fields - doesn't need full power of template replace
                     // TMSW - also, want to return a string, and call templatereplace once on that result string once all done.
-                    echo templatereplace($question_template, array(), $redata, false, false, $q->fieldname);
+                    echo templatereplace($question_template, array(), $redata, false, false, $q->id);
                 }
             }
             if ($surveyMode == 'group') {

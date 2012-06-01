@@ -1946,6 +1946,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             }
             if (isset($field['random_gid']))
             {
+                $q = $_SESSION['survey_'.$surveyid]['questions'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']];
                 $q->randomgid = $field['random_gid'];
                 $_SESSION['survey_'.$surveyid]['questions'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']] = $q;
             }
