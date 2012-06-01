@@ -788,6 +788,7 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->alterColumn('{{answers}}','assessment_value',"integer NOT NULL default '0'");
         Yii::app()->db->createCommand()->alterColumn('{{answers}}','scale_id',"integer NOT NULL default '0'");
         Yii::app()->db->createCommand()->alterColumn('{{conditions}}','method',"{$sVarchar}(5) NOT NULL default ''");
+        Yii::app()->db->createCommand()->alterColumn('{{expression_errors}}','id','pk');
         Yii::app()->db->createCommand()->alterColumn('{{participants}}','owner_uid',"integer NOT NULL");
         Yii::app()->db->createCommand()->alterColumn('{{participant_attribute_names}}','visible',$sVarchar.'(5) NOT NULL');
         Yii::app()->db->createCommand()->alterColumn('{{questions}}','type',"{$sVarchar}(1) NOT NULL default 'T'");
@@ -800,20 +801,32 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->alterColumn('{{quota}}','active',"integer NOT NULL DEFAULT 1");
         Yii::app()->db->createCommand()->alterColumn('{{quota}}','autoload_url',"integer NOT NULL DEFAULT 0");
         Yii::app()->db->createCommand()->alterColumn('{{saved_control}}','status',"{$sVarchar}(1) NOT NULL default ''");
+        Yii::app()->db->createCommand()->alterColumn('{{sessions}}','status',"{$sVarchar}(32) NOT NULL");
+
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','active',"{$sVarchar}(1) NOT NULL default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','anonymized',"{$sVarchar}(1) NOT NULL default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','format',"{$sVarchar}(1) NULL default NULL");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','savetimings',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','datestamp',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','usecookie',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','allowregister',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','allowsave',"{$sVarchar}(1) default 'Y'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','autonumber_start',"integer default 0");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','autoredirect',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','allowprev',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','printanswers',"{$sVarchar}(1) default 'N'");
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','listpublic',"{$sVarchar}(1) default 'N'");
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','htmlemail',"{$sVarchar}(1) default 'N'");
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','tokenanswerspersistence',"{$sVarchar}(1) default 'N'");
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','usecaptcha',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','ipaddr',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','refurl',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','publicstatistics',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','publicgraphs',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','listpublic',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','htmlemail',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','sendconfirmation',"{$sVarchar}(1) default 'Y'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','tokenanswerspersistence',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','assessments',"{$sVarchar}(1) default 'N'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','usecaptcha',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','usetokens',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','tokenlength',"integer default 15");
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','savetimings',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','showXquestions',"{$sVarchar}(1) NULL default 'Y'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','showgroupinfo',"{$sVarchar}(1) NULL default 'B'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','shownoanswer',"{$sVarchar}(1) NULL default 'Y'");
@@ -826,6 +839,7 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','nokeyboard',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','alloweditaftercompletion',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','googleanalyticsstyle',"{$sVarchar}(1)");
+
         Yii::app()->db->createCommand()->alterColumn('{{surveys_languagesettings}}','surveyls_dateformat',"integer NOT NULL default 1");
         Yii::app()->db->createCommand()->alterColumn('{{survey_permissions}}','sid',"integer NOT NULL");
         Yii::app()->db->createCommand()->alterColumn('{{survey_permissions}}','uid', "integer NOT NULL");
@@ -835,8 +849,21 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->alterColumn('{{survey_permissions}}','delete_p' ,"integer NOT NULL default 0");
         Yii::app()->db->createCommand()->alterColumn('{{survey_permissions}}','import_p',"integer NOT NULL default 0");
         Yii::app()->db->createCommand()->alterColumn('{{survey_permissions}}','export_p' ,"integer NOT NULL default 0");
-        Yii::app()->db->createCommand()->alterColumn('{{templates_rights}}','use' ,"integer NOT NULL ");
+
+        Yii::app()->db->createCommand()->alterColumn('{{survey_url_parameters}}','id' ,"pk");
+        Yii::app()->db->createCommand()->alterColumn('{{survey_url_parameters}}','targetqid' ,"integer");
+        Yii::app()->db->createCommand()->alterColumn('{{survey_url_parameters}}','targetsqid' ,"integer");
+
+        Yii::app()->db->createCommand()->alterColumn('{{templates_rights}}','use',"integer NOT NULL ");
+        
+        Yii::app()->db->createCommand()->alterColumn('{{users}}','create_survey',"integer NOT NULL default 0");
+        Yii::app()->db->createCommand()->alterColumn('{{users}}','create_user',"integer NOT NULL default 0");
+        Yii::app()->db->createCommand()->alterColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
+        Yii::app()->db->createCommand()->alterColumn('{{users}}','delete_user',"integer NOT NULL default 0");
         Yii::app()->db->createCommand()->alterColumn('{{users}}','superadmin',"integer NOT NULL default 0");
+        Yii::app()->db->createCommand()->alterColumn('{{users}}','configurator',"integer NOT NULL default 0");
+        Yii::app()->db->createCommand()->alterColumn('{{users}}','manage_template',"integer NOT NULL default 0");
+        Yii::app()->db->createCommand()->alterColumn('{{users}}','manage_label',"integer NOT NULL default 0");
         Yii::app()->db->createCommand()->alterColumn('{{users}}','one_time_pw','text');
         Yii::app()->db->createCommand()->alterColumn('{{users}}','dateformat',"integer NOT NULL default 1");
         Yii::app()->db->createCommand()->alterColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
