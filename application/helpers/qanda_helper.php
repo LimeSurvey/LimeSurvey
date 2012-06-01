@@ -3218,6 +3218,13 @@ function do_multipleshorttext($ia)
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 
+                // color code missing mandatory questions red
+                if ($ia[6]=='Y' && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])
+                        || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep'] > $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step']))
+                        && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') {
+                    $ansrow['question'] = "<span class='errormandatory'>{$ansrow['question']}</span>";
+                }
+
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
                 $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
@@ -3508,6 +3515,13 @@ function do_multiplenumeric($ia)
 
                 $sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
+            }
+
+            // color code missing mandatory questions red
+            if ($ia[6]=='Y' && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])
+                    || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep'] > $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step']))
+                    && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') {
+                $theanswer = "<span class='errormandatory'>{$theanswer}</span>";
             }
 
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item numeric-item".$extraclass);
