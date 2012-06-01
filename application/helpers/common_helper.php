@@ -3480,8 +3480,8 @@ function questionAttributes()
     'sortorder'=>100,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('Off'),
-    1=>$clang->gT('Randomize on each page load'),
-    2=>$clang->gT('Randomize once on survey start')
+    1=>$clang->gT('Randomize on each page load')
+    //,2=>$clang->gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
     ),
     'default'=>0,
     "help"=>$clang->gT('Present answers in random order'),

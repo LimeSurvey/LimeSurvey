@@ -135,10 +135,42 @@ function dbQuoteID($id)
     }
 }
 
+/**
+ * Return the random function to use in ORDER BY sql statements
+ *
+ * @return string
+ */
 function dbRandom()
 {
-    if (Yii::app()->db->getDriverName() == 'mssql' || Yii::app()->db->getDriverName() == 'sqlsrv')  {$srandom='NEWID()';}
-    else {$srandom= 0 + lcg_value()*(abs(1));}
+    $driver = Yii::app()->db->getDriverName();
+
+    // Looked up supported db-types in InstallerConfigForm.php
+    // Use below statement to find them
+    //$configForm = new InstallerConfigForm();
+    //$dbTypes    = $configForm->db_names; //Supported types are in this array
+
+    switch ($driver)
+    {
+        case 'mssql':
+        case 'sqlsrv':
+            $srandom='NEWID()';
+            break;
+
+        case 'pgsql':
+            $srandom='RANDOM()';
+            break;
+
+        case 'mysql':
+        case 'mysqli':
+            $srandom='RAND()';
+            break;
+
+        default:
+            //Some db type that is not mentioned above, could fail and if so should get an entry above.
+            $srandom= 0 + lcg_value()*(abs(1));
+            break;
+    }
+    
     return $srandom;
 
 }
