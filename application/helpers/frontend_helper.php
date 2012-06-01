@@ -135,19 +135,9 @@ function loadanswers()
 function makegraph($currentstep, $total)
 {
     global $thissurvey;
-    global $js_header_includes, $css_header_includes;
 
     $clang = Yii::app()->lang;
-
-    $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
-    $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
-    Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
-
-    $css_admin_includes = Yii::app()->getConfig("js_admin_includes");
-    $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
-    $css_header_includes[]= '/scripts/jquery/css/start/lime-progress.css';
-    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
-
+        header_includes('lime-progress.css','css');
     $size = intval(($currentstep-1)/$total*100);
 
     $graph = '<script type="text/javascript">

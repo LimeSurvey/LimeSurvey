@@ -31,8 +31,8 @@ class FiveListQuestion extends QuestionModule
         }
         $answer .= "</ul>\n<input type=\"hidden\" name=\"java$this->fieldname\" id=\"java$this->fieldname\" value=\"".$_SESSION['survey_'.$this->surveyid][$this->fieldname]."\" />\n";
         if($aQuestionAttributes['slider_rating']==1){
-            $css_header_includes[]= '/admin/scripts/rating/jquery.rating.css';
-            $js_header_includes[]='/admin/scripts/rating/jquery.rating.js';
+            header_includes('/admin/scripts/rating/jquery.rating.css','css');
+            header_includes('/admin/scripts/rating/jquery.rating.js','js');
             $answer.="
             <script type=\"text/javascript\">
             document.write('";

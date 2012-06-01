@@ -126,33 +126,31 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_templatecss="";$_templatejs="";
     if(stripos ($line,"{TEMPLATECSS}"))
     {
-        global $css_header_includes;
+        $css_header_includes=Yii::app()->getConfig("css_header_includes");
         // TODO: only one jquery-ui.css, but break slider actually
-        $_templatecss .="<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css' />\n"; // Remove it after corrected slider
         if (file_exists($templatedir . '/jquery-ui-custom.css'))
         {
-            $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui-custom.css' />\n";
+            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui-custom.css' />\n";
         }
         elseif(file_exists($templatedir . '/jquery-ui.css'))
         {
-            $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui.css' />\n";
+            $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui.css' />\n";
         }
-        if(Yii::app()->getConfig("css_admin_includes"))
+        else
         {
-            if(!$css_header_includes){$css_header_includes=array();}
-            foreach (Yii::app()->getConfig("css_admin_includes") as $cssinclude)
-            {
-                $css_header_includes[] = $cssinclude;
-            }
+            $_templatecss .="<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl')."jquery-ui.css' />\n"; // Remove it after corrected slider
+            $template_jqueryui_css="";
         }
-        $_templatecss .= "<link href='".Yii::app()->getConfig('generalscripts')."jquery/css/start/lime-progress.css' media='all' type='text/css' rel='stylesheet' />\n";
         if($css_header_includes){
-            $css_header_includes = array_unique($css_header_includes);
             foreach ($css_header_includes as $cssinclude)
             {
-                $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->baseUrl.$cssinclude."' />\n";
+                if (substr($cssinclude,0,1) == '/')
+                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->baseUrl.$cssinclude."' />\n";
+                else
+                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl').$cssinclude."' />\n";
             }
         }
+        $_templatecss.= $template_jqueryui_css; // Template jquery ui after default css
         $_templatecss.= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}template.css' />\n";
         if (getLanguageRTL($clang->langcode))
         {
@@ -161,20 +159,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if(stripos ($line,"{TEMPLATEJS}"))
     {
-        global $js_header_includes;
+        $js_header_includes =header_includes(false,'js');
         $_jqueryuijsurl=Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js";
         $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.js'></script>\n";
         $_templatejs.= "<script type='text/javascript' src='{$_jqueryuijsurl}'></script>\n";
-        if(Yii::app()->getConfig("js_admin_includes"))
-        {
-            if(!$js_header_includes){$js_header_includes=array();}
-            foreach (Yii::app()->getConfig("js_admin_includes") as $jsinclude)
-            {
-                    $js_header_includes[]=$jsinclude;
-            }
-        }
         if($js_header_includes){
-            $js_header_includes = array_unique($js_header_includes);
             foreach ($js_header_includes as $jsinclude)
             {
                 if (substr($jsinclude,0,4) == 'http')

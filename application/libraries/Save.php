@@ -59,12 +59,10 @@ class Save {
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
         global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $thisstep;
+		$redata = compact(array_keys(get_defined_vars()));
         sendCacheHeaders();
         doHeader();
-        foreach(file("$thistpl/startpage.pstpl") as $op)
-        {
-            echo templatereplace($op);
-        }
+		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
         echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
         ."\t<script type='text/javascript'>\n"
         ."\t<!--\n"
@@ -80,10 +78,7 @@ class Save {
         {
             $errormsg .= "<p>".$clang->gT("Please try again.")."</p>";
         }
-        foreach(file("$thistpl/save.pstpl") as $op)
-        {
-            echo templatereplace($op);
-        }
+		echo templatereplace(file_get_contents("$thistpl/save.pstpl"),array(),$redata);
         //END
         echo "<input type='hidden' name='sid' value='$surveyid' />\n";
         echo "<input type='hidden' name='thisstep' value='",$thisstep,"' />\n";
@@ -91,10 +86,7 @@ class Save {
         echo "<input type='hidden' name='saveprompt' value='Y' />\n";
         echo "</form>";
 
-        foreach(file("$thistpl/endpage.pstpl") as $op)
-        {
-            echo templatereplace($op);
-        }
+		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
         echo "</html>\n";
         exit;
     }

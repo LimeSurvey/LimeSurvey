@@ -3,7 +3,7 @@ class HugeTextQuestion extends TextQuestion
 {
     public function getAnswerHTML()
     {
-        global $js_header_includes, $thissurvey;
+        global $thissurvey;
         $clang =Yii::app()->lang;
         $extraclass ="";
         if ($thissurvey['nokeyboard']=='Y')
@@ -67,7 +67,6 @@ class HugeTextQuestion extends TextQuestion
         $answer .="</p>";
         if (trim($aQuestionAttributes['time_limit']) != '')
         {
-            $js_header_includes[] = '/scripts/coookies.js';
             $answer .= return_timer_script($aQuestionAttributes, $this, "answer".$this->fieldname);
         }
 

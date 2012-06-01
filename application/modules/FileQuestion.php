@@ -48,7 +48,7 @@ class FileQuestion extends QuestionModule
         };
         </script>\n";
 
-        $js_header_includes[]= "<script type='text/javascript' src='".Yii::app()->getBaseUrl(true)."/scripts/modaldialog.js'></script>";
+        header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
 
         // Modal dialog
         $answer .= $uploadbutton;

@@ -18,20 +18,20 @@ button.ui-button::-moz-focus-inner {
 
 button.ui-state-default,
 input.ui-state-default {  
-	color: #333333; 
-	border: 1px solid #A0A0A0;
+/*	color: #333333; */
+/*	border: 1px solid #A0A0A0;*/
 }
 
 button.ui-state-hover,
 input.ui-state-hover {  
-	color: #212121; 
-	border: 1px solid #999999;
+/*	color: #212121; */
+/*	border: 1px solid #999999;*/
 }
 
 button.ui-state-active,
 input.ui-state-active {  
-	color: #212121; 
-	border: 1px solid #AAAAAA; 
+/*	color: #212121; */
+/*	border: 1px solid #AAAAAA; */
 }
 
 .ui-button-icon-only { 

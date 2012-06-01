@@ -4,7 +4,7 @@ class MultinumericalQuestion extends QuestionModule
     protected $children;
     public function getAnswerHTML()
     {
-        global $js_header_includes, $css_header_includes, $thissurvey;
+        global $thissurvey;
 
         $clang = Yii::app()->lang;
         $extraclass ="";
@@ -70,9 +70,9 @@ class MultinumericalQuestion extends QuestionModule
         }
         if ($aQuestionAttributes['slider_layout']==1)
         {
+            header_includes( Yii::app()->getConfig("generalscripts").'jquery/lime-slider.js');
             $slider_layout=true;
             $extraclass .=" withslider";
-            //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
             if (trim($aQuestionAttributes['slider_accuracy'])!='')
             {
                 //$slider_divisor = 1 / $slider_accuracy['value'];
@@ -230,10 +230,6 @@ class MultinumericalQuestion extends QuestionModule
                         $slider_showmin='';
                         $slider_showmax='';
                     }
-
-                    //$js_header_includes[] = '/scripts/jquery/jquery-ui.js'; already included by default
-                    $js_header_includes[] = '/scripts/jquery/lime-slider.js';
-
                     if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] != '')
                     {
                         $slider_startvalue = $_SESSION['survey_'.$this->surveyid][$myfname] * $slider_divisor;
@@ -294,9 +290,6 @@ class MultinumericalQuestion extends QuestionModule
                 $question_tip .= '<p class="tip">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
             }
 
-            if($slider_layout){
-                $js_header_includes[]= "/scripts/jquery/lime-slider.js";
-            }
             if (trim($aQuestionAttributes['equals_num_value']) != ''
             || trim($aQuestionAttributes['min_num_value']) != ''
             || trim($aQuestionAttributes['max_num_value']) != ''

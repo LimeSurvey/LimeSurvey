@@ -3,7 +3,7 @@ class ShortTextQuestion extends TextQuestion
 {
     public function getAnswerHTML()
     {
-        global $js_header_includes, $thissurvey;
+        global $thissurvey;
 
         $clang = Yii::app()->lang;
         $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
@@ -160,13 +160,13 @@ class ShortTextQuestion extends TextQuestion
             </div>";
 
             if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
-                $js_header_includes[] = "https://maps.googleapis.com/maps/api/js?sensor=false";
+                header_includes("https://maps.googleapis.com/maps/api/js?sensor=false");
             else if ($aQuestionAttributes['location_mapservice']==1)
-                    $js_header_includes[] = "http://maps.googleapis.com/maps/api/js?sensor=false";
-                elseif ($aQuestionAttributes['location_mapservice']==2)
-                    $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
+                header_includes("http://maps.googleapis.com/maps/api/js?sensor=false");
+            elseif ($aQuestionAttributes['location_mapservice']==2)
+                header_includes("http://www.openlayers.org/api/OpenLayers.js");
 
-                if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
+            if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
             {
                 $answer .= "<div class=\"questionhelp\">"
                 . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
@@ -193,7 +193,6 @@ class ShortTextQuestion extends TextQuestion
 
         if (trim($aQuestionAttributes['time_limit'])!='')
         {
-            $js_header_includes[] = '/scripts/coookies.js';
             $answer .= return_timer_script($aQuestionAttributes, $this, "answer".$this->fieldname);
         }
 

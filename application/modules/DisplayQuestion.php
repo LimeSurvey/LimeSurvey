@@ -3,13 +3,11 @@ class DisplayQuestion extends QuestionModule
 {
     public function getAnswerHTML()
     {
-        global $js_header_includes;
         $aQuestionAttributes = $this->getAttributeValues();
         $answer='';
 
         if (trim($aQuestionAttributes['time_limit'])!='')
         {
-            $js_header_includes[] = '/scripts/coookies.js';
             $answer .= return_timer_script($aQuestionAttributes, $this);
         }
 

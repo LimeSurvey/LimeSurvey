@@ -8,9 +8,6 @@ class DateQuestion extends QuestionModule
         $clang=Yii::app()->lang;
 
         $aQuestionAttributes=$this->getAttributeValues();
-        $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
-        $js_admin_includes[] = '/scripts/jquery/lime-calendar.js';
-        Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
 
         $checkconditionFunction = "checkconditions";
 
@@ -162,11 +159,11 @@ class DateQuestion extends QuestionModule
         }
         else
         {
+            header_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-calendar.js');
             if ($clang->langcode !== 'en')
             {
-                $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
+                header_includes(Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js');
             }
-            //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
 
             // Format the date  for output
             if (trim($_SESSION['survey_'.$this->surveyid][$this->fieldname])!='')
