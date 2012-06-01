@@ -12,7 +12,7 @@ class FiveListQuestion extends QuestionModule
         for ($fp=1; $fp<=5; $fp++)
         {
             $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$this->fieldname\" id=\"answer$this->fieldname$fp\" value=\"$fp\"";
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == $fp)
+            if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == $fp)
             {
                 $answer .= CHECKED;
             }
@@ -22,14 +22,14 @@ class FiveListQuestion extends QuestionModule
         if ($this->mandatory != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
         {
             $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$this->fieldname\" id=\"NoAnswer\" value=\"\"";
-            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]))
+            if (!isset($_SESSION['survey_'.$this->surveyid][$this->fieldname]))
             {
                 $answer .= CHECKED;
             }
             $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$this->fieldname."NANS\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 
         }
-        $answer .= "</ul>\n<input type=\"hidden\" name=\"java$this->fieldname\" id=\"java$this->fieldname\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]."\" />\n";
+        $answer .= "</ul>\n<input type=\"hidden\" name=\"java$this->fieldname\" id=\"java$this->fieldname\" value=\"".$_SESSION['survey_'.$this->surveyid][$this->fieldname]."\" />\n";
         if($aQuestionAttributes['slider_rating']==1){
             $css_header_includes[]= '/admin/scripts/rating/jquery.rating.css';
             $js_header_includes[]='/admin/scripts/rating/jquery.rating.js';
@@ -65,10 +65,10 @@ class FiveListQuestion extends QuestionModule
         }
 
         if($aQuestionAttributes['slider_rating']==2){
-            if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]) OR $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]==''){
+            if(!isset($_SESSION['survey_'.$this->surveyid][$this->fieldname]) OR $_SESSION['survey_'.$this->surveyid][$this->fieldname]==''){
                 $value=1;
             }else{
-                $value=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname];
+                $value=$_SESSION['survey_'.$this->surveyid][$this->fieldname];
             }
             $answer.="
             <script type=\"text/javascript\">
@@ -128,15 +128,17 @@ class FiveListQuestion extends QuestionModule
         return $answer;
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","slider_rating","random_group");
+        $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","slider_rating","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("5 Point Choice"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("5 Point Choice"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'class' => 'choice-5-pt-radio','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

@@ -18,9 +18,9 @@ class DateQuestion extends QuestionModule
         $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
 
         if (trim($aQuestionAttributes['dropdown_dates'])!=0) {
-            if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]))
+            if (!empty($_SESSION['survey_'.$this->surveyid][$this->fieldname]))
             {
-                $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname])->getTimeStamp());
+                $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION['survey_'.$this->surveyid][$this->fieldname])->getTimeStamp());
                 $currentyear = $datetimeobj['year'];
                 $currentmonth = $datetimeobj['mon'];
                 $currentdate = $datetimeobj['mday'];
@@ -152,7 +152,7 @@ class DateQuestion extends QuestionModule
                 }
             }
 
-            $answer .= '<input class="text" type="text" size="10" name="'.$this->fieldname.'" style="display: none" id="answer'.$this->fieldname.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname].'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+            $answer .= '<input class="text" type="text" size="10" name="'.$this->fieldname.'" style="display: none" id="answer'.$this->fieldname.'" value="'.$_SESSION['survey_'.$this->surveyid][$this->fieldname].'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
             </p>';
             $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$this->fieldname.'" />
             <input type="hidden" id="qattribute_answer'.$this->fieldname.'" name="qattribute_answer'.$this->fieldname.'" />
@@ -169,9 +169,9 @@ class DateQuestion extends QuestionModule
             //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
 
             // Format the date  for output
-            if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname])!='')
+            if (trim($_SESSION['survey_'.$this->surveyid][$this->fieldname])!='')
             {
-                $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] , "Y-m-d");
+                $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.$this->surveyid][$this->fieldname] , "Y-m-d");
                 $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
             }
             else
@@ -213,15 +213,17 @@ class DateQuestion extends QuestionModule
         return $answer;
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");
+        $attrs=array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Date/Time"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Date/Time"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'date','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

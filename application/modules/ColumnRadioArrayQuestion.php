@@ -9,10 +9,10 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
         $checkconditionFunction = "checkconditions";
 
         $aQuestionAttributes = $this->getAttributeValues();
-        $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+        $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
         $qresult = dbExecuteAssoc($qquery);    //Checked
         $qrow = $qresult->read(); $other = $qrow['other'];
-        $lquery = "SELECT * FROM {{answers}} WHERE qid=".$this->id."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
+        $lquery = "SELECT * FROM {{answers}} WHERE qid=".$this->id."  AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
         $lresult = dbExecuteAssoc($lquery);   //Checked
         if ($lresult->count() > 0)
         {
@@ -64,7 +64,7 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
                     /* Check if this item has not been answered: the 'notanswered' variable must be an array,
                     containing a list of unanswered questions, the current question must be in the array,
                     and there must be no answer available for the item in this session. */
-                    if ($this->mandatory=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") )
+                    if ($this->mandatory=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.$this->surveyid][$myfname] == "") )
                     {
                         $ld = "<span class=\"errormandatory\">{$ld}</span>";
                     }
@@ -94,15 +94,15 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
                         . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                         . 'id="answer'.$myfname.'-'.$ansrow['code'].'" '
                         . 'title="'.HTMLEscape(strip_tags($ansrow['answer'])).'"';
-                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
+                        if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $ansrow['code'])
                         {
                             $answer .= CHECKED;
                         }
-                        elseif (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $ansrow['code'] == '')
+                        elseif (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $ansrow['code'] == '')
                         {
                             $answer .= CHECKED;
                             // Humm.. (by lemeur), not sure this section can be reached
-                            // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
+                            // because I think $_SESSION['survey_'.$this->surveyid][$myfname] is always set (by save.php ??) !
                             // should remove the !isset part I think !!
                         }
                         $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
@@ -117,9 +117,9 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
                 {
                     $myfname=$this->fieldname.$ld;
                     $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
                     {
-                        $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                        $answer .= $_SESSION['survey_'.$this->surveyid][$myfname];
                     }
                     $answer .= "\" />\n";
                 }
@@ -138,15 +138,17 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
     
     //public function getInputNames() - inherited
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Array by column"),'group' => $clang->gT('Arrays'),'hasdefaultvalues' => 0,'subquestions' => 1,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("Array by column"),'group' => $clang->gT('Arrays'),'class' => 'array-flexible-column','hasdefaultvalues' => 0,'subquestions' => 1,'assessable' => 1,'answerscales' => 1);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

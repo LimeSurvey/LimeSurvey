@@ -12,7 +12,7 @@ class GenderQuestion extends QuestionModule
         $answer = "<ul class=\"answers-list radio-list\">\n"
         . "\t<li class=\"answer-item radio-item\">\n"
         . '		<input class="radio" type="radio" name="'.$this->fieldname.'" id="answer'.$this->fieldname.'F" value="F"';
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == 'F')
+        if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == 'F')
         {
             $answer .= CHECKED;
         }
@@ -21,7 +21,7 @@ class GenderQuestion extends QuestionModule
 
         $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$this->fieldname\" id=\"answer".$this->fieldname.'M" value="M"';
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == 'M')
+        if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == 'M')
         {
             $answer .= CHECKED;
         }
@@ -30,7 +30,7 @@ class GenderQuestion extends QuestionModule
         if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$this->fieldname\" id=\"answer".$this->fieldname.'" value=""';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == '')
+            if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == '')
             {
                 $answer .= CHECKED;
             }
@@ -39,20 +39,22 @@ class GenderQuestion extends QuestionModule
             // --> END NEW FEATURE - SAVE
 
         }
-        $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$this->fieldname\" id=\"java$this->fieldname\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]."\" />\n";
+        $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$this->fieldname\" id=\"java$this->fieldname\" value=\"".$_SESSION['survey_'.$this->surveyid][$this->fieldname]."\" />\n";
 
         return $answer;
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");
+        $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Gender"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Gender"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'gender','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

@@ -26,17 +26,17 @@ class CommentListQuestion extends ListQuestion
 
         //question attribute random order set?
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
         }
         //question attribute alphasort set?
         elseif ($aQuestionAttributes['alphasort']==1)
         {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY answer";
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY answer";
         }
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
         }
 
         $ansresult=Yii::app()->db->createCommand($ansquery)->query();
@@ -53,7 +53,7 @@ class CommentListQuestion extends ListQuestion
             foreach ($ansresult->readAll() as $ansrow)
             {
                 $check_ans = '';
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == $ansrow['code'])
+                if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == $ansrow['code'])
                 {
                     $check_ans = CHECKED;
                 }
@@ -66,11 +66,11 @@ class CommentListQuestion extends ListQuestion
 
             if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == ' ' ))
+                if ((!$_SESSION['survey_'.$this->surveyid][$this->fieldname] || $_SESSION['survey_'.$this->surveyid][$this->fieldname] == '') ||($_SESSION['survey_'.$this->surveyid][$this->fieldname] == ' ' ))
                 {
                     $check_ans = CHECKED;
                 }
-                elseif (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] != ''))
+                elseif (($_SESSION['survey_'.$this->surveyid][$this->fieldname] || $_SESSION['survey_'.$this->surveyid][$this->fieldname] != ''))
                 {
                     $check_ans = '';
                 }
@@ -96,14 +96,14 @@ class CommentListQuestion extends ListQuestion
 
             <textarea class="textarea '.$kpclass.'" name="'.$this->fieldname.'comment" id="answer'.$this->fieldname.'comment" rows="'.floor($tarows).'" cols="30" >';
             // --> END NEW FEATURE - SAVE
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
+            if (isset($_SESSION['survey_'.$this->surveyid][$fname2]) && $_SESSION['survey_'.$this->surveyid][$fname2])
             {
-                $answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
+                $answer .= str_replace("\\", "", $_SESSION['survey_'.$this->surveyid][$fname2]);
             }
             $answer .= '</textarea>
             </p>
 
-            <input class="radio" type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname].'" />
+            <input class="radio" type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.$this->surveyid][$this->fieldname].'" />
             ';
         }
         else //Dropdown list
@@ -116,7 +116,7 @@ class CommentListQuestion extends ListQuestion
             foreach ($ansresult->readAll() as $ansrow)
             {
                 $check_ans = '';
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == $ansrow['code'])
+                if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == $ansrow['code'])
                 {
                     $check_ans = SELECTED;
                 }
@@ -129,11 +129,11 @@ class CommentListQuestion extends ListQuestion
             }
             if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == ' '))
+                if ((!$_SESSION['survey_'.$this->surveyid][$this->fieldname] || $_SESSION['survey_'.$this->surveyid][$this->fieldname] == '') ||($_SESSION['survey_'.$this->surveyid][$this->fieldname] == ' '))
                 {
                     $check_ans = SELECTED;
                 }
-                elseif ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] != '')
+                elseif ($_SESSION['survey_'.$this->surveyid][$this->fieldname] || $_SESSION['survey_'.$this->surveyid][$this->fieldname] != '')
                 {
                     $check_ans = '';
                 }
@@ -152,12 +152,12 @@ class CommentListQuestion extends ListQuestion
             <label for="answer'.$this->fieldname.'comment">'.$hint_comment.':</label>
             <textarea class="textarea '.$kpclass.'" name="'.$this->fieldname.'comment" id="answer'.$this->fieldname.'comment" rows="'.$tarows.'" cols="'.$maxoptionsize.'" >';
             // --> END NEW FEATURE - SAVE
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
+            if (isset($_SESSION['survey_'.$this->surveyid][$fname2]) && $_SESSION['survey_'.$this->surveyid][$fname2])
             {
-                $answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
+                $answer .= str_replace("\\", "", $_SESSION['survey_'.$this->surveyid][$fname2]);
             }
             $answer .= '</textarea>
-            <input class="radio" type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname].'" /></p>';
+            <input class="radio" type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.$this->surveyid][$this->fieldname].'" /></p>';
         }
         return $answer;
     }
@@ -166,15 +166,17 @@ class CommentListQuestion extends ListQuestion
     
     //public function getHelp() - inherited
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("List with comment"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("List with comment"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'class' => 'list-with-comment','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

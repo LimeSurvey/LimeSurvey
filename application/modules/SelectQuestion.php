@@ -12,9 +12,9 @@ class SelectQuestion extends ListQuestion
 
         $aQuestionAttributes = $this->getAttributeValues();
 
-        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='')
         {
-            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
         }
         else
         {
@@ -34,17 +34,17 @@ class SelectQuestion extends ListQuestion
         //question attribute random order set?
         if ($aQuestionAttributes['random_order']==1)
         {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
         }
         //question attribute alphasort set?
         elseif ($aQuestionAttributes['alphasort']==1)
         {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY answer";
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY answer";
         }
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
         }
 
         $ansresult = Yii::app()->db->createCommand($ansquery)->query() or safeDie('Couldn\'t get answers<br />'.$ansquery.'<br />');    //Checked
@@ -54,13 +54,13 @@ class SelectQuestion extends ListQuestion
         {
             $_height = sanitize_int($aQuestionAttributes['dropdown_size']) ;
             $_maxHeight = $ansresult->RowCount();
-            if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname])) && $this->mandatory != 'Y' && $this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
+            if ((!empty($_SESSION['survey_'.$this->surveyid][$this->fieldname])) && $this->mandatory != 'Y' && $this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
                 ++$_maxHeight;  // for No Answer
             }
             if (isset($other) && $other=='Y') {
                 ++$_maxHeight;  // for Other
             }
-            if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]) {
+            if (!$_SESSION['survey_'.$this->surveyid][$this->fieldname]) {
                 ++$_maxHeight;  // for 'Please choose:'
             }
 
@@ -83,7 +83,7 @@ class SelectQuestion extends ListQuestion
             foreach ($ansresult->readAll() as $ansrow)
             {
                 $opt_select = '';
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == $ansrow['code'])
+                if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == $ansrow['code'])
                 {
                     $opt_select = SELECTED;
                 }
@@ -119,7 +119,7 @@ class SelectQuestion extends ListQuestion
 
                 foreach ($optionlistarray as $optionarray)
                 {
-                    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == $optionarray['code'])
+                    if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == $optionarray['code'])
                     {
                         $opt_select = SELECTED;
                     }
@@ -137,7 +137,7 @@ class SelectQuestion extends ListQuestion
             $opt_select='';
             foreach ($defaultopts as $optionarray)
             {
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == $optionarray['code'])
+                if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == $optionarray['code'])
                 {
                     $opt_select = SELECTED;
                 }
@@ -151,14 +151,14 @@ class SelectQuestion extends ListQuestion
             }
         }
 
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname])
+        if (!$_SESSION['survey_'.$this->surveyid][$this->fieldname])
         {
             $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
         }
 
         if (isset($other) && $other=='Y')
         {
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == '-oth-')
+            if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == '-oth-')
             {
                 $opt_select = SELECTED;
             }
@@ -172,7 +172,7 @@ class SelectQuestion extends ListQuestion
             $answer .= '					<option value="-oth-"'.$opt_select.'>'.$_prefix.$othertext."</option>\n";
         }
 
-        if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] != '') && $this->mandatory != 'Y' && $this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
+        if (($_SESSION['survey_'.$this->surveyid][$this->fieldname] || $_SESSION['survey_'.$this->surveyid][$this->fieldname] != '') && $this->mandatory != 'Y' && $this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
         {
             if ($prefixStyle == 1) {
                 $_prefix = ++$_rowNum . ') ';
@@ -180,7 +180,7 @@ class SelectQuestion extends ListQuestion
             $answer .= '<option class="noanswer-item" value="">'.$_prefix.$clang->gT('No answer')."</option>\n";
         }
         $answer .= '				</select>
-        <input type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname].'" />';
+        <input type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.$this->surveyid][$this->fieldname].'" />';
 
         if (isset($other) && $other=='Y')
         {
@@ -217,7 +217,7 @@ class SelectQuestion extends ListQuestion
             ."//--></script>\n".$answer;
             $answer .= '				<input type="text" id="othertext'.$this->fieldname.'" name="'.$this->fieldname.'other" style="display:';
 
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] != '-oth-')
+            if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] != '-oth-')
             {
                 $answer .= 'none';
             }
@@ -225,13 +225,13 @@ class SelectQuestion extends ListQuestion
             //		// --> START BUG FIX - text field for other was not repopulating when returning to page via << PREV
             $answer .= '"';
             //		$thisfieldname=$this->fieldname.'other';
-            //		if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) { $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES).'" ';}
+            //		if (isset($_SESSION['survey_'.$this->surveyid][$thisfieldname])) { $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.$this->surveyid][$thisfieldname],ENT_QUOTES).'" ';}
             //		// --> END BUG FIX
 
             // --> START NEW FEATURE - SAVE
             $answer .= "  alt='".$clang->gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";
             $thisfieldname=$this->fieldname.'other';
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES)."' ";}
+            if (isset($_SESSION['survey_'.$this->surveyid][$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION['survey_'.$this->surveyid][$thisfieldname],ENT_QUOTES)."' ";}
             $answer .= ' />';
             $answer .= "</p>";
             // --> END NEW FEATURE - SAVE
@@ -247,7 +247,7 @@ class SelectQuestion extends ListQuestion
     protected function getOther()
     {
         if ($this->other) return $this->other;
-        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ";
+        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ";
         return $this->other = Yii::app()->db->createCommand($query)->query()->readAll();  //Checked
     }
 
@@ -255,15 +255,17 @@ class SelectQuestion extends ListQuestion
     
     //public function getHelp() - inherited
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("alphasort","category_separator","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_replace_text","page_break","public_statistics","random_order","parent_order","dropdown_size","dropdown_prefix","scale_export","random_group");
+        $attrs=array("alphasort","category_separator","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_replace_text","page_break","public_statistics","random_order","parent_order","dropdown_size","dropdown_prefix","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("List (Dropdown)"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("List (Dropdown)"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'class' => 'list-dropdown','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

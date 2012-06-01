@@ -45,8 +45,8 @@ class MultitextQuestion extends QuestionModule
             $tiwidth=20;
         }
 
-        if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-            $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
+            $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
             $extraclass .=" withprefix";
         }
         else
@@ -54,8 +54,8 @@ class MultitextQuestion extends QuestionModule
             $prefix = '';
         }
 
-        if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-            $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
+            $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
             $extraclass .=" withsuffix";
         }
         else
@@ -116,9 +116,9 @@ class MultitextQuestion extends QuestionModule
                         $label_width = strlen(trim(strip_tags($ansrow['question'])));
                     }
 
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
                     {
-                        $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                        $dispVal = $_SESSION['survey_'.$this->surveyid][$myfname];
                         if ($aQuestionAttributes['numbers_only']==1)
                         {
                             $dispVal = str_replace('.',$sSeperator,$dispVal);
@@ -150,9 +150,9 @@ class MultitextQuestion extends QuestionModule
                         $label_width = strlen(trim(strip_tags($ansrow['question'])));
                     }
 
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
                     {
-                        $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                        $dispVal = $_SESSION['survey_'.$this->surveyid][$myfname];
                         if ($aQuestionAttributes['numbers_only']==1)
                         {
                             $dispVal = str_replace('.',$sSeperator,$dispVal);
@@ -181,24 +181,26 @@ class MultitextQuestion extends QuestionModule
         if ($this->children) return $this->children;
         $aQuestionAttributes = $this->getAttributeValues();
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY question_order";
         }
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
 
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("array_filter","array_filter_exclude","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");
+        $attrs=array("array_filter","array_filter_exclude","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Multiple Short Text"),'group' => $clang->gT("Text questions"),'subquestions' => 1,'hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Multiple Short Text"),'group' => $clang->gT("Text questions"),'subquestions' => 1,'class' => 'multiple-short-txt','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

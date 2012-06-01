@@ -1152,7 +1152,7 @@ EOD;
 
         $question = retrieveAnswers($q);
         $question['code'] = $q->title;
-        $question['class'] = getQuestionClass($qrows['type']); //AJS!!!!
+        $question['class'] = $q->questionProperties('class');
         $question['essentials'] = 'id="question' . $q->id . '"';
         $question['sgq'] = $q->fieldname;
         $question['aid']='unknown';

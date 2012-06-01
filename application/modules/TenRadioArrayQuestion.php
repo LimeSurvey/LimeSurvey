@@ -9,7 +9,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
 
         $checkconditionFunction = "checkconditions";
 
-        $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+        $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id."  AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
         $qresult = dbExecuteAssoc($qquery);      //Checked
         $qrow = $qresult->read(); $other = $qrow['other'];
 
@@ -69,7 +69,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
             and there must be no answer available for the item in this session. */
-            if ($this->mandatory=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") ) {
+            if ($this->mandatory=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.$this->surveyid][$myfname] == "") ) {
                 $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
             $trbc = alternation($trbc , 'row');
@@ -81,9 +81,9 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
             . "\t<th class=\"answertext\">\n$answertext\n"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
-                $answer_t_content .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                $answer_t_content .= $_SESSION['survey_'.$this->surveyid][$myfname];
             }
             $answer_t_content .= "\" />\n\t</th>\n";
 
@@ -91,7 +91,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
             {
                 $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n<label for=\"answer$myfname-$i\">\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
+                if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $i)
                 {
                     $answer_t_content .= CHECKED;
                 }
@@ -103,7 +103,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
             {
                 $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer')."\"";
-                if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
+                if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == '')
                 {
                     $answer_t_content .= CHECKED;
                 }
@@ -119,15 +119,17 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
     
     //public function getInputNames() - inherited
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("answer_width","array_filter","array_filter_exclude","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");
+        $attrs=array("answer_width","array_filter","array_filter_exclude","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Array (10 Point Choice)"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Array (10 Point Choice)"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'class' => 'array-10-pt','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

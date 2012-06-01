@@ -28,19 +28,19 @@ class ListQuestion extends QuestionModule
 
         //question attribute random order set?
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
         }
 
         //question attribute alphasort set?
         elseif ($aQuestionAttributes['alphasort']==1)
         {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY answer";
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY answer";
         }
 
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
         }
 
         $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
@@ -54,9 +54,9 @@ class ListQuestion extends QuestionModule
             $dcols= 1;
         }
 
-        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='')
         {
-            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
         }
         else
         {
@@ -78,7 +78,7 @@ class ListQuestion extends QuestionModule
         {
             $myfname = $this->fieldname.$ansrow['code'];
             $check_ans = '';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == $ansrow['code'])
+            if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == $ansrow['code'])
             {
                 $check_ans = CHECKED;
             }
@@ -131,7 +131,7 @@ class ListQuestion extends QuestionModule
             }
 
 
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == '-oth-')
+            if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == '-oth-')
             {
                 $check_ans = CHECKED;
             }
@@ -141,9 +141,9 @@ class ListQuestion extends QuestionModule
             }
 
             $thisfieldname=$this->fieldname.'other';
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))
+            if (isset($_SESSION['survey_'.$this->surveyid][$thisfieldname]))
             {
-                $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname];
+                $dispVal = $_SESSION['survey_'.$this->surveyid][$thisfieldname];
                 if ($aQuestionAttributes['other_numbers_only']==1)
                 {
                     $dispVal = str_replace('.',$sSeperator,$dispVal);
@@ -190,7 +190,7 @@ class ListQuestion extends QuestionModule
 
         if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname] == ' ' ))
+            if ((!$_SESSION['survey_'.$this->surveyid][$this->fieldname] || $_SESSION['survey_'.$this->surveyid][$this->fieldname] == '') || ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == ' ' ))
             {
                 $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
             }
@@ -222,7 +222,7 @@ class ListQuestion extends QuestionModule
         }
         //END OF ITEMS
         $answer .= $wrapper['whole-end'].'
-        <input type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname."\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]."\" />\n";
+        <input type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname."\" value=\"".$_SESSION['survey_'.$this->surveyid][$this->fieldname]."\" />\n";
 
         return $answer;
     }
@@ -230,7 +230,7 @@ class ListQuestion extends QuestionModule
     protected function getOther()
     {
         if ($this->other) return $this->other;
-        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ";
+        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ";
         return $this->other = Yii::app()->db->createCommand($query)->query()->readAll();  //Checked
     }
 
@@ -258,15 +258,17 @@ class ListQuestion extends QuestionModule
         return '';
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("alphasort","array_filter","array_filter_exclude","display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("alphasort","array_filter","array_filter_exclude","display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("List (Radio)"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("List (Radio)"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'class' => 'list-radio','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

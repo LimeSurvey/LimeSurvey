@@ -43,16 +43,16 @@ class ShortTextQuestion extends TextQuestion
         {
             $tiwidth=50;
         }
-        if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-            $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
+            $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
             $extraclass .=" withprefix";
         }
         else
         {
             $prefix = '';
         }
-        if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-            $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
+            $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
             $extraclass .=" withsuffix";
         }
         else
@@ -89,8 +89,8 @@ class ShortTextQuestion extends TextQuestion
             .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
             // --> END NEW FEATURE - SAVE
 
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]) {
-                $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]);
+            if ($_SESSION['survey_'.$this->surveyid][$this->fieldname]) {
+                $dispVal = str_replace("\\", "", $_SESSION['survey_'.$this->surveyid][$this->fieldname]);
                 if ($aQuestionAttributes['numbers_only']==1)
                 {
                     $dispVal = str_replace('.',$sSeperator,$dispVal);
@@ -102,7 +102,7 @@ class ShortTextQuestion extends TextQuestion
         }
         elseif((int)($aQuestionAttributes['location_mapservice'])!=0){
             $mapservice = $aQuestionAttributes['location_mapservice'];
-            $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname];
+            $currentLocation = $_SESSION['survey_'.$this->surveyid][$this->fieldname];
             $currentLatLong = null;
 
             $floatLat = 0;
@@ -146,7 +146,7 @@ class ShortTextQuestion extends TextQuestion
             zoom['$this->fieldname'] = {$aQuestionAttributes['location_mapzoom']};
             </script>
             <div class=\"question answer-item geoloc-item {$extraclass}\">
-            <input type=\"hidden\" name=\"$this->fieldname\" id=\"answer$this->fieldname\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname]}\">
+            <input type=\"hidden\" name=\"$this->fieldname\" id=\"answer$this->fieldname\" value=\"{$_SESSION['survey_'.$this->surveyid][$this->fieldname]}\">
 
             <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$this->fieldname_c\"
             id=\"answer$this->fieldname_c\" value=\"$currentLocation\"
@@ -180,7 +180,7 @@ class ShortTextQuestion extends TextQuestion
             ."<label for='answer{$this->fieldname}' class='hide label'>{$clang->gT('Answer')}</label>"
             ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$this->fieldname\" id=\"answer$this->fieldname\"";
 
-            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname];
+            $dispVal = $_SESSION['survey_'.$this->surveyid][$this->fieldname];
             if ($aQuestionAttributes['numbers_only']==1)
             {
                 $dispVal = str_replace('.',$sSeperator,$dispVal);
@@ -200,15 +200,17 @@ class ShortTextQuestion extends TextQuestion
         return $answer;
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","location_city","location_state","location_postal","location_country","statistics_showmap","statistics_showgraph","statistics_graphtype","location_mapservice","location_mapwidth","location_mapheight","location_nodefaultfromip","location_defaultcoordinates","location_mapzoom","hide_tip","hidden","maximum_chars","numbers_only","page_break","prefix","suffix","text_input_width","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style","random_group");
+        $attrs=array("display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","location_city","location_state","location_postal","location_country","statistics_showmap","statistics_showgraph","statistics_graphtype","location_mapservice","location_mapwidth","location_mapheight","location_nodefaultfromip","location_defaultcoordinates","location_mapzoom","hide_tip","hidden","maximum_chars","numbers_only","page_break","prefix","suffix","text_input_width","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Short Free Text"),'group' => $clang->gT("Text questions"),'subquestions' => 0,'hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Short Free Text"),'group' => $clang->gT("Text questions"),'subquestions' => 0,'class' => 'text-short','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

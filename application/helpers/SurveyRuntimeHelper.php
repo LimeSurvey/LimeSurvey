@@ -914,7 +914,7 @@ END;
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                 $lastanswer = $q->fieldname;
 
-                $q_class = getQuestionClass($qinfo['info']['type']);
+                $q_class = $q->questionProperties('class');
 
                 $man_class = '';
                 if ($qinfo['info']['mandatory'] == 'Y')

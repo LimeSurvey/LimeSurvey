@@ -11,10 +11,10 @@ class RadioArrayQuestion extends ArrayQuestion
         $clang = Yii::app()->lang;
 
         $checkconditionFunction = "checkconditions";
-        $qquery = "SELECT other FROM {{questions}} WHERE qid={$this->id} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+        $qquery = "SELECT other FROM {{questions}} WHERE qid={$this->id} AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
         $qresult = dbExecuteAssoc($qquery);     //Checked
         $qrow = $qresult->read(); $other = $qrow['other'];
-        $lquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
+        $lquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
         $aQuestionAttributes = $this->getAttributeValues();
         if (trim($aQuestionAttributes['answer_width'])!='')
@@ -118,7 +118,7 @@ class RadioArrayQuestion extends ArrayQuestion
 
                 if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
 
-                if ($this->mandatory=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+                if ($this->mandatory=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.$this->surveyid][$myfname] == '') ) {
                     $answertext = '<span class="errormandatory">'.$answertext.'</span>';
                 }
                 // Get array_filter stuff
@@ -132,9 +132,9 @@ class RadioArrayQuestion extends ArrayQuestion
                 $answer .= "\t<th class=\"answertext\">\n$answertext"
                 . $hiddenfield
                 . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
                 {
-                    $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    $answer .= $_SESSION['survey_'.$this->surveyid][$myfname];
                 }
                 $answer .= "\" />\n\t</th>\n";
 
@@ -145,7 +145,7 @@ class RadioArrayQuestion extends ArrayQuestion
                     . "<label for=\"answer$myfname-$ld\">\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
                     . HTMLEscape(strip_tags($labelans[$thiskey])).'"';
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $ld)
                     {
                         $answer .= CHECKED;
                     }
@@ -171,7 +171,7 @@ class RadioArrayQuestion extends ArrayQuestion
                 {
                     $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n<label for=\"answer$myfname-\">\n"
                     ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" title=\"".$clang->gT('No answer').'"';
-                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
+                    if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == '')
                     {
                         $answer .= CHECKED;
                     }
@@ -252,7 +252,7 @@ class RadioArrayQuestion extends ArrayQuestion
 
                 if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
 
-                if ($this->mandatory=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+                if ($this->mandatory=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.$this->surveyid][$myfname] == '') ) {
                     $answertext = '<span class="errormandatory">'.$answertext.'</span>';
                 }
                 // Get array_filter stuff
@@ -262,16 +262,16 @@ class RadioArrayQuestion extends ArrayQuestion
                 $answer .= "\t<th class=\"answertext\">\n$answertext"
                 . $hiddenfield
                 . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
                 {
-                    $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    $answer .= $_SESSION['survey_'.$this->surveyid][$myfname];
                 }
                 $answer .= "\" />\n\t</th>\n";
 
                 $answer .= "\t<td >\n"
                 . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\">\n";
 
-                if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] =='')
+                if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] =='')
                 {
                     $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose')."...</option>\n";
                 }
@@ -279,7 +279,7 @@ class RadioArrayQuestion extends ArrayQuestion
                 foreach ($labels as $lrow)
                 {
                     $answer .= "\t<option value=\"".$lrow['code'].'" ';
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code'])
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $lrow['code'])
                     {
                         $answer .= SELECTED;
                     }
@@ -289,7 +289,7 @@ class RadioArrayQuestion extends ArrayQuestion
                 if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
                 {
                     $answer .= "\t<option value=\"\" ";
-                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
+                    if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == '')
                     {
                         $answer .= SELECTED;
                     }
@@ -321,15 +321,17 @@ class RadioArrayQuestion extends ArrayQuestion
         return $answer;
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("answer_width","array_filter","array_filter_exclude","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        $attrs=array("answer_width","array_filter","array_filter_exclude","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Array"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("Array"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'class' => 'array-flexible-row','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 1);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

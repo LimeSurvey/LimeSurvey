@@ -48,9 +48,9 @@ class CommentCheckQuestion extends CheckQuestion
             $oth_checkconditionFunction = "checkconditions";
         }
 
-        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='')
         {
-            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
         }
         else
         {
@@ -102,9 +102,9 @@ class CommentCheckQuestion extends CheckQuestion
             . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
             /* If the question has already been ticked, check the checkbox */
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
+                if ($_SESSION['survey_'.$this->surveyid][$myfname] == 'Y')
                 {
                     $answer_main .= CHECKED;
                 }
@@ -118,15 +118,15 @@ class CommentCheckQuestion extends CheckQuestion
             //        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
             $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
-                $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                $answer_main .= $_SESSION['survey_'.$this->surveyid][$myfname];
             }
             $answer_main .= "' />\n";
             $fn++;
             $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide \">".$clang->gT('Make a comment on your choice here:')."</label>\n"
             ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT('Make a comment on your choice here:')."' value='";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.$this->surveyid][$myfname2],ENT_QUOTES);}
             // --> START NEW FEATURE - SAVE
             $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n</span>\n"
             . "\t</li>\n";
@@ -142,9 +142,9 @@ class CommentCheckQuestion extends CheckQuestion
             $answer_main .= "\t<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
             . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
             $answer_main .= " onchange='$oth_checkconditionFunction(this.value, this.name, this.type)'";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname])
             {
-                $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                $dispVal = $_SESSION['survey_'.$this->surveyid][$myfname];
                 if ($aQuestionAttributes['other_numbers_only']==1)
                 {
                     $dispVal = str_replace('.',$sSeperator,$dispVal);
@@ -159,7 +159,7 @@ class CommentCheckQuestion extends CheckQuestion
             <input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
             // --> END NEW FEATURE - SAVE
 
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.$this->surveyid][$myfname2],ENT_QUOTES);}
             // --> START NEW FEATURE - SAVE
             $answer_main .= "\"/>\n";
 
@@ -175,15 +175,17 @@ class CommentCheckQuestion extends CheckQuestion
     
     //public function getHelp() - inherited
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("array_filter","array_filter_exclude","assessment_value","exclude_all_others","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("array_filter","array_filter_exclude","assessment_value","exclude_all_others","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Multiple choice with comments"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Multiple choice with comments"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'class' => 'multiple-opt-comments','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

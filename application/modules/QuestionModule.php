@@ -135,7 +135,7 @@ abstract class QuestionModule
         return false;
     }
     
-    abstract public function availableAttributes();    
-    abstract public function questionProperties();
+    abstract public function availableAttributes($attr = false);    
+    abstract public function questionProperties($prop = false);
 }
 ?>

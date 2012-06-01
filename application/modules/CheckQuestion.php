@@ -39,9 +39,9 @@ class CheckQuestion extends QuestionModule
 
         $aQuestionAttributes = $this->getAttributeValues();
 
-        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='')
         {
-            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
         }
         else
         {
@@ -136,9 +136,9 @@ class CheckQuestion extends QuestionModule
             $answer .= '		<input class="checkbox" type="checkbox" name="'.$this->fieldname.$ansrow['title'].'" id="answer'.$this->fieldname.$ansrow['title'].'" value="Y"';
 
             /* If the question has already been ticked, check the checkbox */
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
+                if ($_SESSION['survey_'.$this->surveyid][$myfname] == 'Y')
                 {
                     $answer .= CHECKED;
                 }
@@ -154,9 +154,9 @@ class CheckQuestion extends QuestionModule
             ++$fn;
             /* Now add the hidden field to contain information about this answer */
             $answer .= '		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
-                $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                $answer .= $_SESSION['survey_'.$this->surveyid][$myfname];
             }
             $answer .= "\" />\n{$wrapper['item-end']}";
 
@@ -191,7 +191,7 @@ class CheckQuestion extends QuestionModule
             $answer .= $hiddenfield.'
             <input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
 
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])!='')
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && trim($_SESSION['survey_'.$this->surveyid][$myfname])!='')
             {
                 $answer .= CHECKED;
             }
@@ -200,9 +200,9 @@ class CheckQuestion extends QuestionModule
             $answer .= "' />
             <label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
             <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
-                $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                $dispVal = $_SESSION['survey_'.$this->surveyid][$myfname];
                 if ($aQuestionAttributes['other_numbers_only']==1)
                 {
                     $dispVal = str_replace('.',$sSeperator,$dispVal);
@@ -212,9 +212,9 @@ class CheckQuestion extends QuestionModule
             $answer .= "\" onchange='$(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
             $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
-                $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                $dispVal = $_SESSION['survey_'.$this->surveyid][$myfname];
                 if ($aQuestionAttributes['other_numbers_only']==1)
                 {
                     $dispVal = str_replace('.',$sSeperator,$dispVal);
@@ -281,11 +281,11 @@ class CheckQuestion extends QuestionModule
         if ($this->children) return $this->children;
         $aQuestionAttributes = $this->getAttributeValues();
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
         
@@ -312,7 +312,7 @@ class CheckQuestion extends QuestionModule
     protected function getOther()
     {
         if ($this->other) return $this->other;
-        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
+        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and parent_qid=0";
         return $this->other = Yii::app()->db->createCommand($query)->query()->readAll();  //Checked
     }
 
@@ -348,15 +348,17 @@ class CheckQuestion extends QuestionModule
         return '';
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("array_filter","array_filter_exclude","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("array_filter","array_filter_exclude","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Multiple choice"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Multiple choice"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'class' => 'multiple-opt','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

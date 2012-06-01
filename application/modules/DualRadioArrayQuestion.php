@@ -15,10 +15,10 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
 
         $labelans1=array();
         $labelans=array();
-        $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+        $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
         $other = reset(dbExecuteAssoc($qquery)->read());    //Checked
-        $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$this->id} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
-        $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$this->id} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
+        $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$this->id} AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY sortorder, code";
+        $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$this->id} AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY sortorder, code";
         $aQuestionAttributes = $this->getAttributeValues();
 
         if ($aQuestionAttributes['use_dropdown']==1)
@@ -34,17 +34,17 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $answertypeclass .=" radio";
         }
 
-        if (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-            $leftheader= $clang->gT($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        if (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
+            $leftheader= $clang->gT($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.$this->surveyid]['s_lang']]);
         }
         else
         {
             $leftheader ='';
         }
 
-        if (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+        if (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='')
         {
-            $rightheader= $clang->gT($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+            $rightheader= $clang->gT($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.$this->surveyid]['s_lang']]);
         }
         else
         {
@@ -96,11 +96,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             }
             // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
             if ($aQuestionAttributes['random_order']==1) {
-                $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
+                $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
             }
             else
             {
-                $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY question_order";
+                $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY question_order";
             }
             $ansresult = dbExecuteAssoc($ansquery);   //Checked
             $anscount = $ansresult->count();
@@ -258,7 +258,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 /* Check if this item has not been answered: the 'notanswered' variable must be an array,
                 containing a list of unanswered questions, the current question must be in the array,
                 and there must be no answer available for the item in this session. */
-                if ($this->mandatory=='Y' && (is_array($notanswered)) && ((array_search($myfname, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')) )
+                if ($this->mandatory=='Y' && (is_array($notanswered)) && ((array_search($myfname, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.$this->surveyid][$myfname] == '') || ($_SESSION['survey_'.$this->surveyid][$myfname1] == '')) )
                 {
                     $answertext = "<span class='errormandatory'>{$answertext}</span>";
                 }
@@ -274,7 +274,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 . $hiddenfield
                 . "$answertext\n"
                 . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
+                if (isset($_SESSION['survey_'.$this->surveyid][$myfname])) {$answer .= $_SESSION['survey_'.$this->surveyid][$myfname];}
                 $answer .= "\" />\n\t</th>\n";
                 $hiddenanswers='';
                 $thiskey=0;
@@ -285,7 +285,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     . "<label for=\"answer$myfname-$ld\">\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
                     . HTMLEscape(strip_tags($labelans[$thiskey])).'"';
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $ld)
                     {
                         $answer .= CHECKED;
                     }
@@ -301,7 +301,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     $hiddenanswers='';
                     $answer .= "\t<td class=\"dual_scale_separator information-item\">&nbsp;</td>\n";		// separator
                     $hiddenanswers .= "<input type=\"hidden\" name=\"java$myfname1\" id=\"java$myfname1\" value=\"";
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) {$hiddenanswers .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];}
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname1])) {$hiddenanswers .= $_SESSION['survey_'.$this->surveyid][$myfname1];}
                     $hiddenanswers .= "\" />\n";
                     $thiskey=0;
                     foreach ($labelcode1 as $ld) // second label set
@@ -315,7 +315,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                         $answer .= "<label for=\"answer$myfname1-$ld\">\n"
                         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfname1-$ld\" title=\""
                         . HTMLEscape(strip_tags($labelans1[$thiskey])).'"';
-                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
+                        if (isset($_SESSION['survey_'.$this->surveyid][$myfname1]) && $_SESSION['survey_'.$this->surveyid][$myfname1] == $ld)
                         {
                             $answer .= CHECKED;
                         }
@@ -344,7 +344,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     $answer .= "\t<td class=\"dual_scale_no_answer answer-item radio-item noanswer-item\">\n"
                     . "<label for='answer$myfname-'>\n"
                     . "\t<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
-                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "")
+                    if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == "")
                     {
                         $answer .= CHECKED;
                     }
@@ -404,8 +404,8 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
 
                 // Get attributes for Headers and Prefix/Suffix
 
-                if (trim($aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-                    list ($ddprefix, $ddsuffix) =explode("|",$aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+                if (trim($aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
+                    list ($ddprefix, $ddsuffix) =explode("|",$aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.$this->surveyid]['s_lang']]);
                     $ddprefix = $ddprefix;
                     $ddsuffix = $ddsuffix;
                 }
@@ -477,7 +477,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     $dualgroup1=1;
                     $myfname1 = $this->fieldname.$ansrow['title']."#".$dualgroup1;
 
-                    if ($this->mandatory=='Y' && (is_array($notanswered)) && ((array_search($myfname, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')) )
+                    if ($this->mandatory=='Y' && (is_array($notanswered)) && ((array_search($myfname, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.$this->surveyid][$myfname] == '') || ($_SESSION['survey_'.$this->surveyid][$myfname1] == '')) )
                     {
                         $answertext="<span class='errormandatory'>".dTexts__run($ansrow['question'])."</span>";
                     }
@@ -510,7 +510,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
                     . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup,$checkconditionFunction);\">\n";
 
-                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] =='')
+                    if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] =='')
                     {
                         $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
                     }
@@ -518,7 +518,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     foreach ($labels0 as $lrow)
                     {
                         $answer .= "\t<option value=\"".$lrow['code'].'" ';
-                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code'])
+                        if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] == $lrow['code'])
                         {
                             $answer .= SELECTED;
                         }
@@ -528,7 +528,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
                     {
                         $answer .= "\t<option class=\"noanswer-item\" value=\"\" ";
-                        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
+                        if (!isset($_SESSION['survey_'.$this->surveyid][$myfname]) || $_SESSION['survey_'.$this->surveyid][$myfname] == '')
                         {
                             $answer .= SELECTED;
                         }
@@ -542,9 +542,9 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                         $answer .= "\t<td class=\"ddsuffix information-item\">$ddsuffix</td>\n";
                     }
                     $answer .= "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
                     {
-                        $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                        $answer .= $_SESSION['survey_'.$this->surveyid][$myfname];
                     }
                     $answer .= "\" />\n"
                     . "\t</td>\n";
@@ -562,7 +562,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
                     . "<select name=\"$myfname1\" id=\"answer$myfname1\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup1,$checkconditionFunction);\">\n";
 
-                    if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                    if (empty($_SESSION['survey_'.$this->surveyid][$myfname]))
                     {
                         $answer .= "\t<option value=\"\"".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
                     }
@@ -570,7 +570,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     foreach ($labels1 as $lrow1)
                     {
                         $answer .= "\t<option value=\"".$lrow1['code'].'" ';
-                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $lrow1['code'])
+                        if (isset($_SESSION['survey_'.$this->surveyid][$myfname1]) && $_SESSION['survey_'.$this->surveyid][$myfname1] == $lrow1['code'])
                         {
                             $answer .= SELECTED;
                         }
@@ -580,7 +580,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
                     {
                         $answer .= "\t<option class=\"noanswer-item\" value='' ";
-                        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                        if (empty($_SESSION['survey_'.$this->surveyid][$myfname]))
                         {
                             $answer .= SELECTED;
                         }
@@ -594,9 +594,9 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                         $answer .= "\t<td class=\"ddsuffix information-item\">$ddsuffix</td>\n";
                     }
                     $answer .= "<input type=\"hidden\" name=\"java$myfname1\" id=\"java$myfname1\" value=\"";
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]))
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname1]))
                     {
-                        $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
+                        $answer .= $_SESSION['survey_'.$this->surveyid][$myfname1];
                     }
                     $answer .= "\" />\n"
                     . "\t</td>\n";
@@ -614,15 +614,17 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $answer;
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("answer_width","array_filter","array_filter_exclude","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        $attrs=array("answer_width","array_filter","array_filter_exclude","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
-    
-    public function questionProperties()
+
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Array dual scale"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'assessable' => 1,'hasdefaultvalues' => 0,'answerscales' => 2);
+        $props=array('description' => $clang->gT("Array dual scale"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'assessable' => 1,'class' => 'array-flexible-duel-scale','hasdefaultvalues' => 0,'answerscales' => 2);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

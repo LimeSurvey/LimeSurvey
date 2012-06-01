@@ -14,7 +14,7 @@ class NumberArrayQuestion extends ArrayQuestion
         $checkconditionFunction = "fixnum_checkconditions";
         //echo '<pre>'; print_r($_POST); echo '</pre>';
         $defaultvaluescript = '';
-        $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
+        $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and parent_qid=0";
         $qresult = dbExecuteAssoc($qquery);
         $qrow = $qresult->read(); $other = $qrow['other'];
 
@@ -115,7 +115,7 @@ class NumberArrayQuestion extends ArrayQuestion
         }
         $columnswidth=100-($answerwidth*2);
 
-        $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
+        $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id}  AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=1 ORDER BY question_order";
         $lresult = dbExecuteAssoc($lquery);
         if ($lresult->count() > 0)
         {
@@ -139,7 +139,7 @@ class NumberArrayQuestion extends ArrayQuestion
             {
                 $iParentQID=(int) $aQuestionAttributes['parent_order'];
                 $aResult=array();
-                $sessionao = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order'];
+                $sessionao = $_SESSION['survey_'.$this->surveyid]['answer_order'];
                 foreach ($sessionao[$iParentQID] as $aOrigRow)
                 {
                     $sCode=$aOrigRow['title'];
@@ -212,7 +212,7 @@ class NumberArrayQuestion extends ArrayQuestion
                     foreach($labelcode as $ld)
                     {
                         $myfname2=$myfname.'_'.$ld;
-                        if((array_search($myfname2, $notanswered) !== FALSE) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == "")
+                        if((array_search($myfname2, $notanswered) !== FALSE) && $_SESSION['survey_'.$this->surveyid][$myfname2] == "")
                         {
                             $emptyresult=1;
                         }
@@ -234,9 +234,9 @@ class NumberArrayQuestion extends ArrayQuestion
                 . "$answertext\n"
                 . $hiddenfield
                 . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
                 {
-                    $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    $answer .= $_SESSION['survey_'.$this->surveyid][$myfname];
                 }
                 $answer .= "\" />\n\t</th>\n";
                 $first_hidden_field = '';
@@ -246,9 +246,9 @@ class NumberArrayQuestion extends ArrayQuestion
                     if ($checkboxlayout == false)
                     {
                         $myfname2=$myfname."_$ld";
-                        if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))
+                        if(isset($_SESSION['survey_'.$this->surveyid][$myfname2]))
                         {
-                            $myfname2_java_value = " value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]}\" ";
+                            $myfname2_java_value = " value=\"{$_SESSION['survey_'.$this->surveyid][$myfname2]}\" ";
                         }
                         else
                         {
@@ -266,7 +266,7 @@ class NumberArrayQuestion extends ArrayQuestion
 
                             for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
                                 $answer .= "<option value=\"$ii\"";
-                                if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == $ii) {
+                                if(isset($_SESSION['survey_'.$this->surveyid][$myfname2]) && $_SESSION['survey_'.$this->surveyid][$myfname2] == $ii) {
                                     $answer .= SELECTED;
                                 }
                                 $answer .= ">$ii</option>\n";
@@ -280,8 +280,8 @@ class NumberArrayQuestion extends ArrayQuestion
                             . HTMLEscape($labelans[$thiskey]).'"'
                             . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'-0123456789$sSeperator')\""
                             . " value=\"";
-                            if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) {
-                                $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
+                            if(isset($_SESSION['survey_'.$this->surveyid][$myfname2]) && $_SESSION['survey_'.$this->surveyid][$myfname2]) {
+                                $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.$this->surveyid][$myfname2]);
                                 $answer .= $dispVal;
                             }
                             $answer .= "\" />\n";
@@ -294,7 +294,7 @@ class NumberArrayQuestion extends ArrayQuestion
                     else
                     {
                         $myfname2=$myfname."_$ld";
-                        if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '1')
+                        if(isset($_SESSION['survey_'.$this->surveyid][$myfname2]) && $_SESSION['survey_'.$this->surveyid][$myfname2] == '1')
                         {
                             $myvalue = '1';
                             $setmyvalue = CHECKED;
@@ -350,15 +350,17 @@ class NumberArrayQuestion extends ArrayQuestion
     
     //public function getInputNames() - inherited
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("answer_width","array_filter","array_filter_exclude","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("answer_width","array_filter","array_filter_exclude","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Array (Numbers)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Array (Numbers)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'class' => 'array-multi-flexi','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

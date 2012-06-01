@@ -100,7 +100,7 @@ class RankingQuestion extends QuestionModule
         for ($i=1; $i<=$anscount; $i++)
         {
             $myfname=$this->fieldname.$i;
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
+            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname])
             {
                 $existing++;
             }
@@ -108,11 +108,11 @@ class RankingQuestion extends QuestionModule
         for ($i=1; $i<=$max_answers; $i++)
         {
             $myfname = $this->fieldname.$i;
-            if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (!empty($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
                 foreach ($answers as $ans)
                 {
-                    if ($ans[0] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
+                    if ($ans[0] == $_SESSION['survey_'.$this->surveyid][$myfname])
                     {
                         $thiscode = $ans[0];
                         $thistext = $ans[1];
@@ -121,7 +121,7 @@ class RankingQuestion extends QuestionModule
             }
             $ranklist .= "\t<tr><td class=\"position\">&nbsp;<label for='RANK_{$this->id}$i'>"
             ."$i:&nbsp;</label></td><td class=\"item\"><input class=\"text\" type=\"text\" name=\"RANK_{$this->id}$i\" id=\"RANK_{$this->id}$i\"";
-            if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (!empty($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
                 $ranklist .= " value='";
                 $ranklist .= htmlspecialchars($thistext, ENT_QUOTES);
@@ -130,7 +130,7 @@ class RankingQuestion extends QuestionModule
             $ranklist .= " onfocus=\"this.blur()\" />\n";
             $ranklist .= "<input type=\"hidden\" name=\"$myfname\" id=\"fvalue_{$this->id}$i\" value='";
             $chosen[]=""; //create array
-            if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            if (!empty($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
                 $ranklist .= $thiscode;
                 $chosen[]=array($thiscode, $thistext);
@@ -234,9 +234,9 @@ class RankingQuestion extends QuestionModule
         if ($this->answers) return $this->answers;
         $aQuestionAttributes = $this->getAttributeValues();
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
         } else {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
         }
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
@@ -270,15 +270,17 @@ class RankingQuestion extends QuestionModule
         return $help;
     }
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");
+        $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Ranking"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("Ranking"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'ranking','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 1);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

@@ -28,8 +28,8 @@ class MultinumericalQuestion extends QuestionModule
             $maxlength= "25";
         }
 
-        if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-            $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
+            $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
             $extraclass .=" withprefix";
         }
         else
@@ -37,8 +37,8 @@ class MultinumericalQuestion extends QuestionModule
             $prefix = '';
         }
 
-        if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-            $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
+            $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.$this->surveyid]['s_lang']];
             $extraclass .=" withsuffix";
         }
         else
@@ -209,9 +209,9 @@ class MultinumericalQuestion extends QuestionModule
                     $sSeperator = $sSeperator['seperator'];
 
                     $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
                     {
-                        $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
+                        $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.$this->surveyid][$myfname]);
                         $answer_main .= $dispVal;
                     }
 
@@ -234,9 +234,9 @@ class MultinumericalQuestion extends QuestionModule
                     //$js_header_includes[] = '/scripts/jquery/jquery-ui.js'; already included by default
                     $js_header_includes[] = '/scripts/jquery/lime-slider.js';
 
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] != '')
                     {
-                        $slider_startvalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] * $slider_divisor;
+                        $slider_startvalue = $_SESSION['survey_'.$this->surveyid][$myfname] * $slider_divisor;
                         $displaycallout_atstart=1;
                     }
                     elseif ($slider_default != "")
@@ -272,9 +272,9 @@ class MultinumericalQuestion extends QuestionModule
                     . "\t</div>"
                     . "</div>$sliderright\n"
                     . "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
+                    if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname] != '')
                     {
-                        $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                        $answer_main .= $_SESSION['survey_'.$this->surveyid][$myfname];
                     }
                     elseif ($slider_default != "")
                     {
@@ -338,24 +338,26 @@ class MultinumericalQuestion extends QuestionModule
         if ($this->children) return $this->children;
         $aQuestionAttributes = $this->getAttributeValues();
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY question_order";
         }
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
 
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("array_filter","array_filter_exclude","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group");
+        $attrs=array("array_filter","array_filter_exclude","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Multiple Numerical Input"),'group' => $clang->gT("Mask questions"),'hasdefaultvalues' => 1,'subquestions' => 1,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Multiple Numerical Input"),'group' => $clang->gT("Mask questions"),'class' => 'numeric-multi','hasdefaultvalues' => 1,'subquestions' => 1,'assessable' => 1,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>

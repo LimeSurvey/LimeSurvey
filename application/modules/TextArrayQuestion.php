@@ -25,7 +25,7 @@ class TextArrayQuestion extends ArrayQuestion
         $sSeperator = $sSeperator['seperator'];
 
         $defaultvaluescript = "";
-        $qquery = "SELECT other FROM {{questions}} WHERE qid={$this->id} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+        $qquery = "SELECT other FROM {{questions}} WHERE qid={$this->id} AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
 
         $qresult = Yii::app()->db->createCommand($qquery)->query();
         $qrow = $qresult->read(); $other = $qrow['other'];
@@ -167,7 +167,7 @@ class TextArrayQuestion extends ArrayQuestion
         }
         $columnswidth=100-($answerwidth*2);
 
-        $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
+        $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id}  AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=1 ORDER BY question_order";
         $lresult = Yii::app()->db->createCommand($lquery)->query();
         if (count($lresult)> 0)
         {
@@ -266,7 +266,7 @@ class TextArrayQuestion extends ArrayQuestion
                     foreach($labelcode as $ld)
                     {
                         $myfname2=$myfname.'_'.$ld;
-                        if((array_search($myfname2, $notanswered) !== FALSE) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '')
+                        if((array_search($myfname2, $notanswered) !== FALSE) && $_SESSION['survey_'.$this->surveyid][$myfname2] == '')
                         {
                             $emptyresult=1;
                         }
@@ -288,14 +288,14 @@ class TextArrayQuestion extends ArrayQuestion
                 . "\t\t\t\t".$hiddenfield
                 . "$answertext\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
+                if (isset($_SESSION['survey_'.$this->surveyid][$myfname])) {$answer .= $_SESSION['survey_'.$this->surveyid][$myfname];}
                 $answer .= "\" />\n\t\t\t</th>\n";
                 $thiskey=0;
                 foreach ($labelcode as $ld)
                 {
 
                     $myfname2=$myfname."_$ld";
-                    $myfname2value = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] : "";
+                    $myfname2value = isset($_SESSION['survey_'.$this->surveyid][$myfname2]) ? $_SESSION['survey_'.$this->surveyid][$myfname2] : "";
                     $answer .= "\t<td class=\"answer_cell_00$ld answer-item text-item\">\n"
                     . "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
                     . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
@@ -371,15 +371,17 @@ EOD;
     
     //public function getInputNames() - inherited
     
-    public function availableAttributes()
+    public function availableAttributes($attr = false)
     {
-        return array("answer_width","array_filter","array_filter_exclude","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","show_totals","show_grand_total","page_break","random_order","parent_order","text_input_width","random_group");
+        $attrs=array("answer_width","array_filter","array_filter_exclude","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","show_totals","show_grand_total","page_break","random_order","parent_order","text_input_width","random_group");
+        return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
-    public function questionProperties()
+    public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        return array('description' => $clang->gT("Array (Texts)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Array (Texts)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'class' => 'array-multi-flexi','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        return $prop?$props[$prop]:$props;
     }
 }
 ?>
