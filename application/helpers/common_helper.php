@@ -5816,14 +5816,13 @@ function isNumericInt($mStr)
 */
 function includeKeypad()
 {
-    global $js_header_includes, $css_header_includes, $clang;
-
-    $js_header_includes[] = '/scripts/jquery/jquery.keypad.min.js';
-    if ($clang->langcode !== 'en')
+    $clang = Yii::app()->lang;
+    header_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.keypad.min.js');
+    if ($clang->langcode != 'en')
     {
-        $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.keypad-'.$clang->langcode.'.js';
+        header_includes(Yii::app()->getConfig('generalscripts').'jquery/locale/jquery.ui.keypad-'.$clang->langcode.'.js');
     }
-    $css_header_includes[] = '/scripts/jquery/css/jquery.keypad.alt.css';
+    header_includes('jquery.keypad.alt.css','css');
 }
 
 /**
@@ -7526,5 +7525,21 @@ function getBrowserLanguage()
     return $sLanguage;
 }
 
+/**
+* This function add string to css or js header for public surevy
+* @param	string		string to ellipsize
+* @param	string		max length of string
+* @return	array		array of string for js or css to be included
+*
+*/
 
+function header_includes($includes = false, $method = "js" )
+{
+    $header_includes = (array) Yii::app()->getConfig("{$method}_header_includes");
+    $header_includes[] = $includes;
+    $header_includes = array_filter($header_includes);
+    $header_includes = array_unique($header_includes);
+    Yii::app()->setConfig("{$method}_header_includes", $header_includes);
+    return $header_includes;
+}
 // Closing PHP tag intentionally omitted - yes, it is okay

@@ -577,7 +577,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-
+    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js');
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
     This just stops error messages occuring */
     if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
@@ -929,13 +929,11 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
-    global $js_header_includes;
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer='';
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
 
@@ -991,8 +989,8 @@ function do_5pointchoice($ia)
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
     if($aQuestionAttributes['slider_rating']==1){
-        $css_header_includes[]= '/admin/scripts/rating/jquery.rating.css';
-        $js_header_includes[]='/admin/scripts/rating/jquery.rating.js';
+        header_includes('/admin/scripts/rating/jquery.rating.css','css');
+        header_includes('/admin/scripts/rating/jquery.rating.js','js');
         $answer.="
         <script type=\"text/javascript\">
         document.write('";
@@ -1095,9 +1093,6 @@ function do_date($ia)
     $clang=Yii::app()->lang;
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
-    $js_admin_includes[] = '/scripts/jquery/lime-calendar.js';
-    Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
 
     $checkconditionFunction = "checkconditions";
 
@@ -1249,11 +1244,11 @@ function do_date($ia)
     }
     else
     {
+        header_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-calendar.js');
         if ($clang->langcode !== 'en')
         {
-            $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
+            header_includes(Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js');
         }
-        //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
 
         // Format the date  for output
         if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])!='')
@@ -2948,7 +2943,7 @@ function do_multiplechoice_withcomments($ia)
 // ---------------------------------------------------------------
 function do_file_upload($ia)
 {
-    global $js_header_includes, $thissurvey;
+    global $thissurvey;
 
     $clang = Yii::app()->lang;
 
@@ -2993,7 +2988,7 @@ function do_file_upload($ia)
     };
     </script>\n";
 
-    $js_header_includes[]= "<script type='text/javascript' src='".Yii::app()->getBaseUrl(true)."/scripts/modaldialog.js'></script>";
+    header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -3264,7 +3259,7 @@ function do_multipleshorttext($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_multiplenumeric($ia)
 {
-    global $js_header_includes, $css_header_includes, $thissurvey;
+    global $thissurvey;
 
     $clang = Yii::app()->lang;
     $extraclass ="";
@@ -3388,9 +3383,9 @@ function do_multiplenumeric($ia)
     }
     if ($aQuestionAttributes['slider_layout']==1)
     {
+        header_includes( Yii::app()->getConfig("generalscripts").'jquery/lime-slider.js');
         $slider_layout=true;
         $extraclass .=" withslider";
-        //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
         if (trim($aQuestionAttributes['slider_accuracy'])!='')
         {
             //$slider_divisor = 1 / $slider_accuracy['value'];
@@ -3558,10 +3553,6 @@ function do_multiplenumeric($ia)
                     $slider_showmin='';
                     $slider_showmax='';
                 }
-
-                //$js_header_includes[] = '/scripts/jquery/jquery-ui.js'; already included by default
-                $js_header_includes[] = '/scripts/jquery/lime-slider.js';
-
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
                 {
                     $slider_startvalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] * $slider_divisor;
@@ -3646,9 +3637,7 @@ function do_multiplenumeric($ia)
         //            $answer_computed .= "\t<li class='multiplenumerichelp'>\n<label for=\"totalvalue_{$ia[1]}\">\n\t".$clang->gT('Total: ')."\n</label>\n<span>\n\t$prefix\n\t<input size=10  type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t$suffix\n</span>\n\t</li>\n";
         //            $answer_main .= $answer_computed;
         //        }
-        if($slider_layout){
-            $js_header_includes[]= "/scripts/jquery/lime-slider.js";
-        }
+
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
@@ -3892,7 +3881,7 @@ function do_numerical($ia)
 // ---------------------------------------------------------------
 function do_shortfreetext($ia)
 {
-    global $js_header_includes, $thissurvey;
+    global $thissurvey;
 
     $clang = Yii::app()->lang;
     $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
@@ -4047,15 +4036,14 @@ function do_shortfreetext($ia)
         class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
         <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
         </div>";
-
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
-            $js_header_includes[] = "https://maps.googleapis.com/maps/api/js?sensor=false";
+            header_includes("https://maps.googleapis.com/maps/api/js?sensor=false");
         else if ($aQuestionAttributes['location_mapservice']==1)
-                $js_header_includes[] = "http://maps.googleapis.com/maps/api/js?sensor=false";
-            elseif ($aQuestionAttributes['location_mapservice']==2)
-                $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
+            header_includes("http://maps.googleapis.com/maps/api/js?sensor=false");
+        elseif ($aQuestionAttributes['location_mapservice']==2)
+            header_includes("http://www.openlayers.org/api/OpenLayers.js");
 
-            if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
+        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
             $answer .= "<div class=\"questionhelp\">"
             . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
@@ -4082,7 +4070,6 @@ function do_shortfreetext($ia)
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
@@ -4111,7 +4098,7 @@ function getLatLongFromIp($ip){
 // ---------------------------------------------------------------
 function do_longfreetext($ia)
 {
-    global $js_header_includes, $thissurvey;
+    global $thissurvey;
     $extraclass ="";
 
 
@@ -4179,7 +4166,6 @@ function do_longfreetext($ia)
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
@@ -4190,7 +4176,7 @@ function do_longfreetext($ia)
 // ---------------------------------------------------------------
 function do_hugefreetext($ia)
 {
-    global $js_header_includes, $thissurvey;
+    global $thissurvey;
     $clang =Yii::app()->lang;
     $extraclass ="";
     if ($thissurvey['nokeyboard']=='Y')
@@ -4254,7 +4240,6 @@ function do_hugefreetext($ia)
     $answer .="</p>";
     if (trim($aQuestionAttributes['time_limit']) != '')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
