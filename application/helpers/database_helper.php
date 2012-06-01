@@ -158,10 +158,12 @@ function dbRandom()
 
         case 'pgsql':
             $srandom='RANDOM()';
+            break;
 
         case 'mysql':
         case 'mysqli':
             $srandom='RAND()';
+            break;
 
         default:
             //Some db type that is not mentioned above, could fail and if so should get an entry above.
