@@ -51,28 +51,18 @@ function setNoAnswerMode($thissurvey)
 * @param mixed $ia
 * @return mixed
 */
-function retrieveAnswers($ia) //AJS
+function retrieveAnswers($q)
 {
-    $q = ia2Question($ia); //AJS
-    
     //globalise required config variables
     global $thissurvey; //These are set by index.php
 
     //$clang = Yii::app()->lang;
     $clang = Yii::app()->lang;
 
-    //DISPLAY
-    $display = $q->hasConditions;
-
-    //QUESTION NAME
-    $name = $q->id;
-
     // TMSW - eliminate this - get from LEM
     //A bit of housekeeping to stop PHP Notices
-    $answer = "";
     if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$q->fieldname])) {$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$q->fieldname] = "";}
     $aQuestionAttributes = getQuestionAttributeValues($q->id);
-    //Create the question/answer html
 
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
     // this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.
@@ -198,7 +188,7 @@ function retrieveAnswers($ia) //AJS
     $qtitle = $question_text;
     // =====================================================
 
-    return array($qtitle, $answer, 'help', $display, $name, $q->title, $q->gid, $q->fieldname );
+    return $qtitle;
 }
 
 function mandatory_message($q)
@@ -240,42 +230,6 @@ function validation_message($q,$show)
     //    else {
     //        return $tip;
     //    }
-}
-
-// TMSW Validation -> EM
-function mandatory_popup($ia, $notanswered=null) //AJS
-{
-    global $showpopups;
-
-    $clang = Yii::app()->lang;
-    //This sets the mandatory popup message to show if required
-    //Called from question.php, group.php or survey.php
-    if ($notanswered === null) {unset($notanswered);}
-    if (isset($notanswered) && is_array($notanswered) && isset($showpopups) && $showpopups == 1) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
-    {
-        global $mandatorypopup, $popup;
-        //POPUP WARNING
-        if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U')) //AJS
-        {
-            $popup="<script type=\"text/javascript\">\n
-            <!--\n $(document).ready(function(){
-            alert(\"".$clang->gT("You cannot proceed until you enter some text for one or more questions.", "js")."\");});\n //-->\n
-            </script>\n";
-            $mandatorypopup="Y";
-        }else
-        {
-            $popup="<script type=\"text/javascript\">\n
-            <!--\n $(document).ready(function(){
-            alert(\"".$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.", "js")."\");});\n //-->\n
-            </script>\n";
-            $mandatorypopup="Y";
-        }
-        return array($mandatorypopup, $popup);
-    }
-    else
-    {
-        return false;
-    }
 }
 
 // TMSW Validation -> EM
@@ -340,9 +294,10 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
 
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
     This just stops error messages occuring */
-    if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
+    if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['questions']))
     {
-        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] = array();
+        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['questions'] = array();
+        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] = array(); //AJS
     }
     /* End */
 
@@ -373,10 +328,10 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
     $time_limit_warning_2=trim($aQuestionAttributes['time_limit_warning_2']) != '' ? $aQuestionAttributes['time_limit_warning_2'] : 0;
     $time_limit_countdown_message=trim($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : $clang->gT("Time remaining");
     $time_limit_warning_message=trim($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
-    $time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$q->getID()."_Warning'> </div>", $time_limit_warning_message);
+    $time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$q->id."_Warning'> </div>", $time_limit_warning_message);
     $time_limit_warning_display_time=trim($aQuestionAttributes['time_limit_warning_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_display_time']+1 : 0;
     $time_limit_warning_2_message=trim($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
-    $time_limit_warning_2_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$q->getID()."_Warning_2'> </div>", $time_limit_warning_2_message);
+    $time_limit_warning_2_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$q->id."_Warning_2'> </div>", $time_limit_warning_2_message);
     $time_limit_warning_2_display_time=trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time']+1 : 0;
     $time_limit_message_style=trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "position: absolute;
     top: 10px;
@@ -423,7 +378,7 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
     background-color: #EEE;
     margin-bottom: 5px;
     font-size: 8pt;";
-    $timersessionname="timer_question_".$q->getID();
+    $timersessionname="timer_question_".$q->id;
     if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname])) {
         $time_limit=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname];
     }
@@ -459,9 +414,9 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
         {
             global $gid;
             $qcount=0;
-            foreach($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] as $ib)
+            foreach($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['questions'] as $ib)
             {
-                if($ib[5] == $gid)
+                if($ib->gid == $gid)
                 {
                     $qcount++;
                 }
@@ -629,15 +584,15 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
         //-->
         </script>";
     }
-    $output .= "<div id='question".$q->getID()."_timer' style='".$time_limit_message_style."'>".$time_limit_message."</div>\n\n";
+    $output .= "<div id='question".$q->id."_timer' style='".$time_limit_message_style."'>".$time_limit_message."</div>\n\n";
 
-    $output .= "<div id='LS_question".$q->getID()."_warning' style='".$time_limit_warning_style."'>".$time_limit_warning_message."</div>\n\n";
-    $output .= "<div id='LS_question".$q->getID()."_warning_2' style='".$time_limit_warning_2_style."'>".$time_limit_warning_2_message."</div>\n\n";
-    $output .= "<div id='LS_question".$q->getID()."_Timer' style='".$time_limit_timer_style."'></div>\n\n";
+    $output .= "<div id='LS_question".$q->id."_warning' style='".$time_limit_warning_style."'>".$time_limit_warning_message."</div>\n\n";
+    $output .= "<div id='LS_question".$q->id."_warning_2' style='".$time_limit_warning_2_style."'>".$time_limit_warning_2_message."</div>\n\n";
+    $output .= "<div id='LS_question".$q->id."_Timer' style='".$time_limit_timer_style."'></div>\n\n";
     //Call the countdown script
     $output .= "<script type='text/javascript'>
     $(document).ready(function() {
-    countdown(".$q->getID().", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_2.", ".$time_limit_warning_display_time.", ".$time_limit_warning_2_display_time.", '".$disable."');
+    countdown(".$q->id.", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_2.", ".$time_limit_warning_display_time.", ".$time_limit_warning_2_display_time.", '".$disable."');
     });
     </script>\n\n";
     return $output;

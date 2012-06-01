@@ -4301,31 +4301,31 @@ function getArrayFiltersForQuestion($qid)
     if (isset($cache[$qid])) return $cache[$qid];
 
     $attributes = getQuestionAttributeValues($qid);
-    if (isset($attributes['array_filter']) && Yii::app()->session['fieldarray']) {
+    if (isset($attributes['array_filter']) && Yii::app()->session['questions']) {
         $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-        foreach (Yii::app()->session['fieldarray'] as $fields)
+        foreach (Yii::app()->session['questions'] as $q)
         {
-            if ($fields[2] == $val)
+            if ($q->title == $val)
             {
                 // we found the target question, now we need to know what the answers where, we know its a multi!
-                $fields[0]=sanitize_int($fields[0]);
+                $q->id=sanitize_int($q->id);
                 //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
-                $qresult=Questions::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session[$surveyid]['s_lang']), array('order' => "question_order"));
+                $qresult=Questions::model()->findAllByAttributes(array("parent_qid"=> $q->id, "language"=> Yii::app()->session[$surveyid]['s_lang']), array('order' => "question_order"));
                 $selected = array();
                 //while ($code = $qresult->fetchRow())
                 foreach ($qresult->readAll() as $code)
                 {
-                    if (Yii::app()->session[$fields[1].$code['title']] == "Y"
-                    || Yii::app()->session[$fields[1]] == $code['title'])			 array_push($selected,$code['title']);
+                    if (Yii::app()->session[$id->fieldname.$code['title']] == "Y"
+                    || Yii::app()->session[$id->fieldname] == $code['title']) array_push($selected,$code['title']);
                 }
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
-                $qresult=Questions::model()->findAllByAttributes(array("qid"=>$fields[0]));
+                $qresult=Questions::model()->findAllByAttributes(array("qid"=>$q->id));
                 foreach ($qresult->readAll() as $row) {$other=$row['other'];}
                 if($other == "Y")
                 {
-                    if(Yii::app()->session[$fields[1].'other'] && Yii::app()->session[$fields[1].'other'] !="") {array_push($selected, "other");}
+                    if(Yii::app()->session[$id->fieldname.'other'] && Yii::app()->session[$id->fieldname.'other'] !="") {array_push($selected, "other");}
                 }
                 $cache[$qid] = $selected;
                 return $cache[$qid];
@@ -4395,28 +4395,28 @@ function getArrayFilterExcludesForQuestion($qid)
         /* For each $val (question title) that applies to this, check what values exist and add them to the $selected array */
         foreach ($excludevals as $val)
         {
-            foreach (Yii::app()->session['fieldarray'] as $fields) //iterate through every question in the survey
+            foreach (Yii::app()->session['questions'] as $q) //iterate through every question in the survey
             {
-                if ($fields[2] == $val)
+                if ($this->title == $val)
                 {
                     // we found the target question, now we need to know what the answers were!
-                    $fields[0]=sanitize_int($fields[0]);
-                    $query = "SELECT title FROM {{questions}} where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
+                    $this->id=sanitize_int($this->id);
+                    $query = "SELECT title FROM {{questions}} where parent_qid='{$this->id}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
                     $qresult = dbExecuteAssoc($query);  //Checked
                     foreach ($qresult->readAll() as $code)
                     {
-                        if (isset(Yii::app()->session[$fields[1]]))
-                            if ((isset(Yii::app()->session[$fields[1].$code['title']]) && Yii::app()->session[$fields[1].$code['title']] == "Y")
-                            || Yii::app()->session[$fields[1]] == $code['title'])
+                        if (isset(Yii::app()->session[$id->fieldname]))
+                            if ((isset(Yii::app()->session[$id->fieldname.$code['title']]) && Yii::app()->session[$id->fieldname.$code['title']] == "Y")
+                            || Yii::app()->session[$id->fieldname] == $code['title'])
                                 array_push($selected,$code['title']);
                     }
                     //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
-                    $query = "SELECT other FROM {{questions}} where qid='{$fields[0]}'";
+                    $query = "SELECT other FROM {{questions}} where qid='{$q->id}'";
                     $qresult = dbExecuteAssoc($query);
                     foreach ($qresult->readAll() as $row) {$other=$row['other'];}
                     if($other == "Y")
                     {
-                        if(Yii::app()->session[$fields[1].'other'] != "") {array_push($selected, "other");}
+                        if(Yii::app()->session[$id->fieldname.'other'] != "") {array_push($selected, "other");}
                     }
                 }
             }
@@ -7383,8 +7383,8 @@ function type2Name($type) //AJS
 }
 function objectizeQuestion($type) //AJS
 {
-    Yii::import('application.modules.*');
     $name = type2Name($type).'Question';
+    Yii::import('application.modules.*');
     return new $name;
 }
 function ia2Question($ia) //AJS

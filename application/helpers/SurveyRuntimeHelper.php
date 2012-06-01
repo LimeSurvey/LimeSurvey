@@ -635,39 +635,31 @@ class SurveyRuntimeHelper {
             }
 
             // TMSW - could iterate through LEM::currentQset instead
-            foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia) //AJS
+            foreach ($_SESSION[$LEMsessid]['questions'] as $key => $q) //AJS
             {
                 ++$qnumber;
-                $ia[9] = $qnumber; // incremental question count;
+                $q->questioncount = $qnumber; // incremental question count;
 
-                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))
+                if ($q->randomgid == $gid || (!$q->randomgid && $q->gid == $gid))
                 {
-                    if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid'])
+                    if ($surveyMode == 'question' && $q->id != $stepInfo['qid'])
                     {
                         continue;
                     }
-                    $qidattributes = getQuestionAttributeValues($ia[0], $ia[4]);
-                    if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
+                    $qidattributes = $q->getAttributeValues();
+                    if ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)
                     {
                         continue;
                     }
 
-                    //Get the answers/inputnames
-                    // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
-                    // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                    $plus_qanda = retrieveAnswers($ia, $surveyid);
-                    if ($plus_qanda)
-                    {
-                        $plus_qanda[] = $ia[4];
-                        $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
-                        $qanda[] = $plus_qanda;
-                    }
+                    $qanda[] = $q;
 
                     //Display the "mandatory" popup if necessary
                     // TMSW - get question-level error messages - don't call **_popup() directly
                     if ($okToShowErrors && $stepInfo['mandViolation'])
                     {
-                        list($mandatorypopup, $popup) = mandatory_popup($ia, $notanswered);
+                        $mandatorypopup = $q->mandatoryPopup($notanswered);
+                        $popup =  $q->getPopup($notanswered);
                     }
 
                     //Display the "validation" popup if necessary
@@ -682,7 +674,7 @@ class SurveyRuntimeHelper {
                         list($filevalidationpopup, $fpopup) = file_validation_popup($filenotvalidated);
                     }
                 }
-                if ($ia[4] == "|")
+                if (array_key_exists('max_filesize', $q->questionProperties()))
                     $upload_file = TRUE;
             } //end iteration
         }
@@ -911,17 +903,16 @@ END;
 
             echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 
-            foreach ($qanda as $qa) // one entry per QID
+            foreach ($qanda as $q) // one entry per QID
             {
-                if ($gid != $qa[6]) {
+                if ($gid != $q->gid) {
                     continue;
                 }
 
-                $qid = $qa[4];
-                $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
-                $lastgrouparray = explode("X", $qa[7]);
+                $qinfo = LimeExpressionManager::GetQuestionStatus($q->id);
+                $lastgrouparray = explode("X", $q->fieldname);
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
-                $lastanswer = $qa[7];
+                $lastanswer = $q->fieldname;
 
                 $q_class = getQuestionClass($qinfo['info']['type']);
 
@@ -947,21 +938,21 @@ END;
                     $n_q_display = ' style="display: none;"';
                 }
 
-                $question = $qa[0];
+                $question = retrieveAnswers($q);
                 //===================================================================
                 // The following four variables offer the templating system the
                 // capacity to fully control the HTML output for questions making the
                 // above echo redundant if desired.
-                $question['essentials'] = 'id="question' . $qa[4] . '"' . $n_q_display;
+                $question['essentials'] = 'id="question' . $q->id . '"' . $n_q_display;
                 $question['class'] = $q_class;
                 $question['man_class'] = $man_class;
-                $question['code'] = $qa[5];
-                $question['sgq'] = $qa[7];
+                $question['code'] = $q->title;
+                $question['sgq'] = $q->fieldname;
                 $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
                 $question['type']=$qinfo['info']['type'];
                 //===================================================================
-                $answer = $qa[1];
+                $answer = $q->getAnswerHTML();
                 $help = $qinfo['info']['help'];   // $qa[2];
 
                 $redata = compact(array_keys(get_defined_vars()));
@@ -974,15 +965,15 @@ END;
                     $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
                     echo '
                     <!-- NEW QUESTION -->
-                    <div id="question' . $qa[4] . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
-                    echo templatereplace($question_template, array(), $redata, false, false, $qa[4]);
+                    <div id="question' . $q->fieldname . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
+                    echo templatereplace($question_template, array(), $redata, false, false, $q->fieldname);
                     echo '</div>';
                 }
                 else
                 {
                     // TMSW - eventually refactor so that only substitutes the QUESTION_** fields - doesn't need full power of template replace
                     // TMSW - also, want to return a string, and call templatereplace once on that result string once all done.
-                    echo templatereplace($question_template, array(), $redata, false, false, $qa[4]);
+                    echo templatereplace($question_template, array(), $redata, false, false, $q->fieldname);
                 }
             }
             if ($surveyMode == 'group') {

@@ -1,19 +1,36 @@
 <?php
 abstract class QuestionModule
 {
+    public $surveyid;
     public $id;
     public $fieldname;
     public $title;
     public $text;
     public $gid;
     public $mandatory;
-    public $hasConditions; //boolean
-    public $downstreamConditions;
-    public $questionCount;
-    private $attributes = false;
+    public $conditionsexist; //boolean
+    public $usedinconditions;
+    public $questioncount;
+    public $randomgid;
+    protected $attributes;
 
-    abstract public function getAnswerHTML();
+    public function __construct($surveyid = null, $id = null, $fieldname = null, $title = null, $text = null, $gid = null, $mandatory = null, $conditionsexist = null, $usedinconditions = null, $questioncount = null, $randomgid = null)
+    {
+        $this->surveyid=$surveyid;
+        $this->id=$id;
+        $this->fieldname=$fieldname;
+        $this->title=$title;
+        $this->text=$text;
+        $this->gid=$gid;
+        $this->mandatory=$mandatory;
+        $this->conditionsexist=$conditionsexist; //boolean
+        $this->usedinconditions=$usedinconditions;
+        $this->questioncount=$questioncount;
+        $this->randomgid=$randomgid;
+    }
     
+    abstract public function getAnswerHTML();
+
     public function getAttributeValues()
     {
         if ($this->attributes) return $this->attributes;
@@ -85,6 +102,37 @@ abstract class QuestionModule
     public function getFileValidationMessage()
     {
         return '';
+    }
+    
+    public function mandatoryPopup($notanswered=null)
+    {
+        global $showpopups;
+
+        if (is_array($notanswered) && isset($showpopups) && $showpopups == 1) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+        {
+            global $mandatorypopup;
+            return $mandatorypopup="Y";
+        }
+        return false;
+    }
+    
+    public function getPopup($notanswered=null)
+    {
+        global $showpopups;
+
+        $clang = Yii::app()->lang;
+
+        if (is_array($notanswered) && isset($showpopups) && $showpopups == 1) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+        {
+            global $popup;
+            //POPUP WARNING
+
+            return $popup="<script type=\"text/javascript\">\n
+            <!--\n $(document).ready(function(){
+            alert(\"".$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.", "js")."\");});\n //-->\n
+            </script>\n";
+        }
+        return false;
     }
     
     abstract public function availableAttributes();    

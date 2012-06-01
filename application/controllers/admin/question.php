@@ -1052,17 +1052,8 @@ class question extends Survey_Common_Action
 
         $qrows = Questions::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
 
-        $ia = array(
-            0 => $qid,
-            1 => $surveyid . 'X' . $qrows['gid'] . 'X' . $qid,
-            2 => $qrows['title'],
-            3 => $qrows['question'],
-            4 => $qrows['type'],
-            5 => $qrows['gid'],
-            6 => $qrows['mandatory'],
-            7 => 'N',
-            8 => 'N'
-        );
+        $name = type2Name($qrows['type']).'Question'; //AJS
+        $q = new $name($surveyid, $qid, $surveyid.'X'.$qrows['gid'].'X'.$qid, $qrows['title'], $qrows['question'], $qrows['gid'], $qrows['mandatory'], 'N', 'N');
 
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['seperator'];
@@ -1072,8 +1063,6 @@ class question extends Survey_Common_Action
         LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
         $qseq = LimeExpressionManager::GetQuestionSeq($qid);
         $moveResult = LimeExpressionManager::JumpTo($qseq + 1, true, false, true);
-
-        $answers = retrieveAnswers($ia);
 
         if (!$thissurvey['template'])
             $thistpl = getTemplatePath(Yii::app()->getConfig('defaulttemplate'));
@@ -1155,18 +1144,17 @@ class question extends Survey_Common_Action
 EOD;
 
 
-        $answer = $answers[1];
-//        $help = $answers[2];
+        $answer = $q->getAnswerHTML();
 
         $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
         $help = $qinfo['info']['help'];
 
 
-        $question = $answers[0];
-        $question['code'] = $answers[5];
-        $question['class'] = getQuestionClass($qrows['type']);
-        $question['essentials'] = 'id="question' . $qrows['qid'] . '"';
-        $question['sgq'] = $ia[1];
+        $question = retrieveAnswers($q);
+        $question['code'] = $q->title;
+        $question['class'] = getQuestionClass($qrows['type']); //AJS!!!!
+        $question['essentials'] = 'id="question' . $q->id . '"';
+        $question['sgq'] = $q->fieldname;
         $question['aid']='unknown';
         $question['sqid']='unknown';
 
