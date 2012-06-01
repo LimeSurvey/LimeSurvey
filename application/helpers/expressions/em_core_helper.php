@@ -3055,7 +3055,11 @@ EOD;
             return $clang->ngT($single, $plural, $number);
         }
         else {
-            return $string;
+            if ($number = 1) {
+                return $single;
+            } else {
+                return $plural;
+            }
         }
     }
 
