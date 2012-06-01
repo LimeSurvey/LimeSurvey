@@ -867,7 +867,7 @@ GetReferringUrl();
 if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
     // load previous answers if any (dataentry with nosubmit)
-    $srquery="SELECT id,submitdate FROM {$thissurvey['tablename']}"
+    $srquery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']}"
     . " WHERE {$thissurvey['tablename']}.token='".db_quote($token)."' order by id desc";
 
     $result = db_select_limit_assoc($srquery,1);
@@ -877,6 +877,11 @@ if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey
         if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
         {
             $_SESSION['srid'] = $row['id'];
+            if (!is_null($row['lastpage']))
+            {
+                $_SESSION['LEMtokenResume'] = true;
+                $_SESSION['step'] = $row['lastpage'];
+            }
         }
         buildsurveysession();
         loadanswers();
