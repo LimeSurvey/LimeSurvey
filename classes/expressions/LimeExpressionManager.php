@@ -4956,6 +4956,8 @@
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
                                 // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
                                 if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment'))     // to catch case 'P'
                                 {
                                     $foundSQrelevance=true;

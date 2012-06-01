@@ -2939,6 +2939,11 @@ function do_multipleshorttext($ia)
 
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
 
+                // color code missing mandatory questions red
+                if ($ia[6]=='Y' && (($_SESSION['step'] == $_SESSION['prevstep']) || ($_SESSION['maxstep'] > $_SESSION['step'])) && $_SESSION[$myfname] == '') {
+                    $ansrow['question'] = "<span class='errormandatory'>{$ansrow['question']}</span>";
+                }
+
                 $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'<input class="text '.$kpclass.'" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
@@ -3170,6 +3175,11 @@ function do_multiplenumeric($ia)
 
                 $sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
+            }
+
+            // color code missing mandatory questions red
+            if ($ia[6]=='Y' && (($_SESSION['step'] == $_SESSION['prevstep']) || ($_SESSION['maxstep'] > $_SESSION['step'])) && $_SESSION[$myfname] == '') {
+                $theanswer = "<span class='errormandatory'>{$theanswer}</span>";
             }
 
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
