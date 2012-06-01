@@ -635,7 +635,7 @@ class SurveyRuntimeHelper {
             }
 
             // TMSW - could iterate through LEM::currentQset instead
-            foreach ($_SESSION[$LEMsessid]['questions'] as $key => $q) //AJS
+            foreach ($_SESSION[$LEMsessid]['questions'] as $key => $q)
             {
                 ++$qnumber;
                 $q->questioncount = $qnumber; // incremental question count;
