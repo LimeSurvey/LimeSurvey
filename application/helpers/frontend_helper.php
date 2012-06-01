@@ -349,7 +349,7 @@ function checkconfield($value)
             $query = "SELECT {{conditions}}.*, {{questions}}.type "
             . "FROM {{conditions}}, {{questions}} "
             . "WHERE {{conditions}}.cqid={{questions}}.qid "
-            . "AND {{conditions}}.qid=$q->id "
+            . "AND {{conditions}}.qid=$value_question->id "
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
             . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
@@ -359,7 +359,7 @@ function checkconfield($value)
             $querytoken = "SELECT {{conditions}}.*, '' as type "
             . "FROM {{conditions}} "
             . "WHERE "
-            . " {{conditions}}.qid=$q->id "
+            . " {{conditions}}.qid=$value_question->id "
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname LIKE '{%' "
             . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
@@ -538,9 +538,9 @@ function checkconfield($value)
         }
     }
 
-    if ($q->id != 0)
+    if ($value_question->id != 0)
     { // not token masterFieldname
-        $value_qa=$q->getAttributeValues();
+        $value_qa=$value_question->getAttributeValues();
     }
     if ($fieldisdisplayed === true && isset($value_qa) && (
     (isset($value_qa['array_filter'])  && trim($value_qa['array_filter']) != '') ||
@@ -552,14 +552,14 @@ function checkconfield($value)
         // ie: 2_1 for answer code=2 and labelset code=1 then 2_2 for answer_code=2 and
         // labelset code=2. So for these question types we need to split it again at the underscore!
         // 1. Find out if this is question type ":" or ";"
-        $properties = $q->questionProperties();
+        $properties = $value_question->questionProperties();
         if($properties['subquestions'] == 2)
         {
             list($value_code, $value_label)=explode("_", $value_code);
         }
         if (isset($value_qa['array_filter_exclude']))
         {
-            $arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($q->id);
+            $arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($value_question->id);
             if ( $arrayfilterXcludes_selected_codes !== false &&
             in_array($value_code,$arrayfilterXcludes_selected_codes))
             {
@@ -568,7 +568,7 @@ function checkconfield($value)
         }
         elseif (isset($value_qa['array_filter']))
         {
-            $arrayfilter_selected_codes = getArrayFiltersForQuestion($q->id);
+            $arrayfilter_selected_codes = getArrayFiltersForQuestion($value_question->id);
             if ( $arrayfilter_selected_codes !== false &&
             !in_array($value_code,$arrayfilter_selected_codes))
             {
@@ -1577,7 +1577,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
 
     //RESET ALL THE SESSION VARIABLES AND START AGAIN
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
-    unset($_SESSION['survey_'.$surveyid]['fieldarray']);
     unset($_SESSION['survey_'.$surveyid]['questions']);
     unset($_SESSION['survey_'.$surveyid]['insertarray']);
     unset($_SESSION['survey_'.$surveyid]['thistoken']);
@@ -1940,15 +1939,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
                     $usedinconditions = $field['usedinconditions'];
                 else
                     $usedinconditions = 'N';
-                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
-                $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
-                $title,
-                $question,
-                $field['type'],
-                $field['gid'],
-                $mandatory,
-                $hasconditions,
-                $usedinconditions); //AJS
                 
                 $name = type2Name($field['type']).'Question';
                 $q = new $name($surveyid,$field['qid'],$field['sid'].'X'.$field['gid'].'X'.$field['qid'],$title,$question,$field['gid'],$mandatory,$hasconditions,$usedinconditions);
@@ -1956,8 +1946,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
             }
             if (isset($field['random_gid']))
             {
-                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid']; //AJS
-                $q = $_SESSION['survey_'.$surveyid]['questions'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']];
                 $q->randomgid = $field['random_gid'];
                 $_SESSION['survey_'.$surveyid]['questions'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']] = $q;
             }
@@ -2024,7 +2012,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
 
-    if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']); //AJS ???????????
+    if (isset($_SESSION['survey_'.$surveyid]['questions'])) $_SESSION['survey_'.$surveyid]['questions']=array_values($_SESSION['survey_'.$surveyid]['questions']);
 
     //Check if a passthru label and value have been included in the query url
     $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid);
@@ -2356,18 +2344,6 @@ function UpdateFieldArray()
 
             $_SESSION['survey_'.$surveyid]['questions'][$key] = $q;
         }
-        reset($_SESSION['survey_'.$surveyid]['fieldarray']); //AJS --START
-        while ( list($key) = each($_SESSION['survey_'.$surveyid]['fieldarray']) )
-        {
-            $questionarray =& $_SESSION['survey_'.$surveyid]['fieldarray'][$key];
-
-            $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $result = dbExecuteAssoc($query) or safeDie ("Couldn't get question <br />$query<br />");      //Checked
-            $row = $result->read();
-            $questionarray[2]=$row['title'];
-            $questionarray[3]=$row['question'];
-            unset($questionarray);
-        } //AJS --END
     }
 
 }

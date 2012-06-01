@@ -66,7 +66,7 @@ function retrieveAnswers($q)
 
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
     // this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.
-    $number = isset($q->questionCount) ? $q->questionCount : '';
+    $number = isset($q->questioncount) ? $q->questioncount : '';
 
     // TMSW - populate this directly from LEM? - this this is global
     $question_text = array(
@@ -297,7 +297,6 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
     if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['questions']))
     {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['questions'] = array();
-        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] = array(); //AJS
     }
     /* End */
 

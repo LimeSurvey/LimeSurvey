@@ -1042,7 +1042,7 @@ END;
                         {
                             continue;
                         }
-                        $q = $_SESSION[$LEMsessid]['fieldarray'][$n];
+                        $q = $_SESSION[$LEMsessid]['questions'][$n];
                     }
                     else
                     {
@@ -1060,7 +1060,7 @@ END;
                     }
                     else
                     {
-                        $indexlabel = LimeExpressionManager::ProcessString($q[3]);
+                        $indexlabel = LimeExpressionManager::ProcessString($q->text);
                     }
 
                     $sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
