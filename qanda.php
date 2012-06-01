@@ -203,15 +203,6 @@ function retrieveAnswers($ia)
             break;
         case '|': //File Upload
             $values=do_file_upload($ia);
-            if ($qidattributes['min_num_of_files'] != 0)
-            {
-                if (trim($qidattributes['min_num_of_files']) != 0)
-                {
-                    $qtitle .= "<br />\n<span class = \"questionhelp\">"
-                    .sprintf($clang->gT("At least %d files must be uploaded for this question"), $qidattributes['min_num_of_files'])."<span>";
-                    $question_text['help'] .= ' '.sprintf($clang->gT("At least %d files must be uploaded for this question"), $qidattributes['min_num_of_files']);
-                }
-            }
             break;
         case 'Q': //MULTIPLE SHORT TEXT
             $values=do_multipleshorttext($ia);
@@ -2696,10 +2687,19 @@ function do_file_upload($ia)
             $questgrppreview = 0;
     }
 
-    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid={$surveyid}&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
-    ."{$questgrppreview}&amp;show_title={$qidattributes['show_title']}&amp;show_comment={$qidattributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2><br /><br />";
+    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' ";
+    $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
+    $uploadbutton .=">" .$clang->gT('Upload files'). "</a></h2><br /><br />";
 
     $answer = "<script type='text/javascript'>
+        function upload_$ia[1]() {
+            var uploadurl = '{$scriptloc}?sid={$surveyid}&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}';
+            uploadurl += '&amp;preview={$questgrppreview}&amp;show_title={$qidattributes['show_title']}';
+            uploadurl += '&amp;show_comment={$qidattributes['show_comment']}&amp;pos=".($pos?1:0)."';
+            uploadurl += '&amp;minfiles=' + LEMval('{$qidattributes['min_num_of_files']}');
+            uploadurl += '&amp;maxfiles=' + LEMval('{$qidattributes['max_num_of_files']}');
+            $('#upload_$ia[1]').attr('href',uploadurl);
+        }
         var translt = {
              title: '" . $clang->gT('Upload your files','js') . "',
              returnTxt: '" . $clang->gT('Return to survey','js') . "',
@@ -2757,7 +2757,7 @@ function do_file_upload($ia)
                         var i;
                         var jsonstring = "[";
 
-                        for (i = 1, filecount = 0; i <= '.$qidattributes['max_num_of_files'].'; i++)
+                        for (i = 1, filecount = 0; i <= LEMval("'.$qidattributes['max_num_of_files'].'"); i++)
                         {
                             if ($("#'.$ia[1].'_"+i).val() == "")
                                 continue;

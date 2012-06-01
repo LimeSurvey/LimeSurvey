@@ -1842,6 +1842,76 @@
                     $multiflexible_max='';
                 }
 
+                // min_num_of_files
+                // Validation:= sq_filecount >= value (which could be an expression).
+                if (isset($qattr['min_num_of_files']) && trim($qattr['min_num_of_files']) != '')
+                {
+                    $min_num_of_files = $qattr['min_num_of_files'];
+                    $eqn='';
+                    $sgqa = $qinfo['sgqa'];
+                    switch ($type)
+                    {
+                        case '|': //List - dropdown
+                            $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                            break;
+                        default:
+                            break;
+                    }
+                    if ($eqn != '')
+                    {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'min_num_of_files',
+                        'class' => 'num_answers',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                        );
+                    }
+                }
+                else
+                {
+                    $min_num_of_files = '';
+                }
+
+                // max_num_of_files
+                // Validation:= sq_filecount <= value (which could be an expression).
+                if (isset($qattr['max_num_of_files']) && trim($qattr['max_num_of_files']) != '')
+                {
+                    $max_num_of_files = $qattr['max_num_of_files'];
+                    $eqn='';
+                    $sgqa = $qinfo['sgqa'];
+                    switch ($type)
+                    {
+                        case '|': //List - dropdown
+                            $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                            break;
+                        default:
+                            break;
+                    }
+                    if ($eqn != '')
+                    {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'max_num_of_files',
+                        'class' => 'num_answers',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                        );
+                    }
+                }
+                else
+                {
+                    $max_num_of_files = '';
+                }
+
                 // other_comment_mandatory
                 // Validation:= sqN <= value (which could be an expression).
                 if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) == '1')
@@ -2241,6 +2311,37 @@
                                     "if(($_minV)==($_maxV),".
                                         "sprintf('".$this->gT("The sum must equal %s")."',fixnum($_minV)),".
                                         "sprintf('".$this->gT("The sum must be between %s and %s")."',fixnum($_minV),fixnum($_maxV))".
+                                    ")".
+                                ")".
+                            ")".
+                        ")}";
+                }
+
+                // min/max num files
+                if ($min_num_of_files !='' || $max_num_of_files !='')
+                {
+                    $_minA = (($min_num_of_files == '') ? "''" : $min_num_of_files);
+                    $_maxA = (($max_num_of_files == '') ? "''" : $max_num_of_files    );
+                    // TODO - create em_num_files class so can sepately style num_files vs. num_answers
+                    $qtips['num_answers']=
+                        "{if((is_empty($_minA) && is_empty($_maxA)),".
+                            "'',".
+                            "if(is_empty($_maxA),".
+                                "if(($_minA)==1,".
+                                    "'".$this->gT("Please upload at least one file")."',".
+                                    "sprintf('".$this->gT("Please upload at least %s files")."',fixnum($_minA))".
+                                    "),".
+                                "if(is_empty($_minA),".
+                                    "if(($_maxA)==1,".
+                                        "'".$this->gT("Please upload at most one file")."',".
+                                        "sprintf('".$this->gT("Please upload at most %s files")."',fixnum($_maxA))".
+                                        "),".
+                                    "if(($_minA)==($_maxA),".
+                                        "if(($_minA)==1,".
+                                            "'".$this->gT("Please upload one file")."',".
+                                            "sprintf('".$this->gT("Please upload %s files")."',fixnum($_minA))".
+                                            "),".
+                                        "sprintf('".$this->gT("Please upload between %s and %s files")."',fixnum($_minA),fixnum($_maxA))".
                                     ")".
                                 ")".
                             ")".
@@ -2893,7 +2994,7 @@
                         break;
                 }
                 if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
-                || $type == 'S' || $type == 'T' || $type == 'U') {
+                || $type == 'S' || $type == 'T' || $type == 'U' || $type == '|') {
                     if (!isset($q2subqInfo[$questionNum])) {
                         $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -7517,6 +7618,8 @@ EOD;
                             case 'min_answers':
                             case 'min_num_value':
                             case 'min_num_value_n':
+                            case 'min_num_of_files':
+                            case 'max_num_of_files':
                             case 'multiflexible_max':
                             case 'multiflexible_min':
                                 $value = '{' . $value . '}';
