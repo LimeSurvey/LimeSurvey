@@ -615,7 +615,7 @@ class index extends CAction {
         if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
             // load previous answers if any (dataentry with nosubmit)
-            $srquery="SELECT id FROM {$thissurvey['tablename']}"
+            $srquery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']}"
             . " WHERE {$thissurvey['tablename']}.token='".$token."' order by id desc";
 
             $result = dbSelectLimitAssoc($srquery,1);
@@ -625,7 +625,11 @@ class index extends CAction {
                 if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
                 {
                     $_SESSION['survey_'.$surveyid]['srid'] = $row['id'];
-
+                    if (!is_null($row['lastpage']))
+                    {
+                        $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
+                        $_SESSION['survey_'.$surveyid]['step'] = $row['lastpage'];
+                    }
                 }
                 buildsurveysession();
                 loadanswers();

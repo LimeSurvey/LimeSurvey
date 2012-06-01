@@ -2487,6 +2487,7 @@
                 return false;   // means that those variables have been cached and no changes needed
             }
             $now = microtime(true);
+            $this->em->SetSurveyMode($this->surveyMode);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
@@ -3520,8 +3521,7 @@
                 $LEM->em->StartProcessingGroup(
                     isset($_SESSION['LEMsid']) ? $_SESSION['LEMsid'] : NULL,
                     '',
-                    true,
-                    $LEM->surveyMode
+                    true
                 );
                 $LEM->setVariableAndTokenMappingsForExpressionManager($_SESSION['LEMsid']);
             }
@@ -5470,8 +5470,7 @@
             $LEM->em->StartProcessingGroup(
                 isset($surveyid) ? $surveyid : NULL,
                 '',
-                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false,
-                $LEM->surveyMode
+                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false
                 );
             $LEM->groupRelevanceInfo = array();
             if (!is_null($gseq))
