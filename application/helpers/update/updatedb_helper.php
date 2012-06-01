@@ -814,7 +814,7 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','usetokens',"{$sVarchar}(1) default 'N'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','tokenlength',"integer default 15");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','savetimings',"{$sVarchar}(1) default 'N'");
-        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','showXquestions',"{$sVarchar}(1) NULL default 'Y'");
+        Yii::app()->db->createCommand()->alterColumn('{{surveys}}','showxquestions',"{$sVarchar}(1) NULL default 'Y'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','showgroupinfo',"{$sVarchar}(1) NULL default 'B'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','shownoanswer',"{$sVarchar}(1) NULL default 'Y'");
         Yii::app()->db->createCommand()->alterColumn('{{surveys}}','showqnumcode',"{$sVarchar}(1) NULL default 'X'");
