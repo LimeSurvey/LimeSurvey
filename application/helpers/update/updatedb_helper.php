@@ -192,7 +192,7 @@ function db_upgrade_all($oldversion) {
     if ($oldversion < 130)
     {
         Yii::app()->db->createCommand()->addColumn('{{conditions}}','scenario',"integer NOT NULL default '1'");
-        Yii::app()->db->createCommand()->update('{{conditions}}',array('scenario'=>1),"(scenario is null) or scenario='' or scenario=0");
+        Yii::app()->db->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
     }
 
@@ -221,14 +221,20 @@ function db_upgrade_all($oldversion) {
             case 'mysql':
                 Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                 Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
+                // copy assessment link to message since from now on we will have HTML assignment messages
+                Yii::app()->db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
                 break;
             case 'mssql':
                 Yii::app()->db->createCommand()->update('{{answers}}',array('assessment_value=CAST([code] as int)'));
                 Yii::app()->db->createCommand()->update('{{labels}}',array('assessment_value=CAST([code] as int)'));
+                // copy assessment link to message since from now on we will have HTML assignment messages
+                Yii::app()->db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
                 break;
             case 'pgsql':
-                Yii::app()->db->createCommand()->update('{{answers}}',array('assessment_value=CAST(code as integer)'));
-                Yii::app()->db->createCommand()->update('{{labels}}',array('assessment_value=CAST(code as integer)'));
+                Yii::app()->db->createCommand("UPDATE {{answers}} SET assessment_value=CAST(code as integer)")->execute();
+                Yii::app()->db->createCommand("UPDATE {{labels}} SET assessment_value=CAST(code as integer)")->execute();
+                // copy assessment link to message since from now on we will have HTML assignment messages
+                Yii::app()->db->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
                 break;
             default: die('Unkown database type');
         }
@@ -238,8 +244,6 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->addColumn('{{assessments}}','language',"{$sVarchar}(20) NOT NULL default 'en'");
         // update language field with default language of that particular survey
         Yii::app()->db->createCommand("UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)")->execute();
-        // copy assessment link to message since from now on we will have HTML assignment messages
-        Yii::app()->db->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
         // drop the old link field
         Yii::app()->db->createCommand()->dropColumn('{{assessments}}','link');
 
@@ -855,7 +859,7 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->alterColumn('{{survey_url_parameters}}','targetsqid' ,"integer");
 
         Yii::app()->db->createCommand()->alterColumn('{{templates_rights}}','use',"integer NOT NULL ");
-        
+
         Yii::app()->db->createCommand()->alterColumn('{{users}}','create_survey',"integer NOT NULL default 0");
         Yii::app()->db->createCommand()->alterColumn('{{users}}','create_user',"integer NOT NULL default 0");
         Yii::app()->db->createCommand()->alterColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
