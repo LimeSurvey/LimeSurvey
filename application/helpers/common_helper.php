@@ -2573,8 +2573,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "|")
         {
             $qidattributes= getQuestionAttributeValues($arow['qid']);
-            for ($i = 1; $i <= $qidattributes['max_num_of_files']; $i++)
-            {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                 'type'=>$arow['type'],
@@ -2614,7 +2612,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
-            }
         }
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
@@ -4071,7 +4068,7 @@ function questionAttributes($returnByName=false)
     "types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
-    "inputtype"=>"integer",
+    "inputtype"=>"text",
     'default'=>1,
     "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
     "caption"=>$clang->gT("Max number of files"));
@@ -4080,7 +4077,7 @@ function questionAttributes($returnByName=false)
     "types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>132,
-    "inputtype"=>"integer",
+    "inputtype"=>"text",
     'default'=>0,
     "help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
     "caption"=>$clang->gT("Min number of files"));

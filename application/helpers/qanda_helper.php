@@ -243,15 +243,6 @@ function retrieveAnswers($ia)
             break;
         case '|': //File Upload
             $values=do_file_upload($ia);
-            if ($aQuestionAttributes['min_num_of_files'] != 0)
-            {
-                if (trim($aQuestionAttributes['min_num_of_files']) != 0)
-                {
-                    $qtitle .= "<br />\n<span class = \"questionhelp\">"
-                    .sprintf($clang->gT("At least %d files must be uploaded for this question"), $aQuestionAttributes['min_num_of_files'])."<span>";
-                    $question_text['help'] .= ' '.sprintf($clang->gT("At least %d files must be uploaded for this question"), $aQuestionAttributes['min_num_of_files']);
-                }
-            }
             break;
         case 'Q': //MULTIPLE SHORT TEXT
             $values=do_multipleshorttext($ia);
@@ -2975,17 +2966,26 @@ function do_file_upload($ia)
             $questgrppreview = 0;
     }
 
-    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
-    ."{$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2>";
+    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' ";
+    $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
+    $uploadbutton .=">" .$clang->gT('Upload files'). "</a></h2>";
 
-    $answer =  "<script type='text/javascript'>
-    var translt = {
-    title: '" . $clang->gT('Upload your files','js') . "',
-    returnTxt: '" . $clang->gT('Return to survey','js') . "',
-    headTitle: '" . $clang->gT('Title','js') . "',
-    headComment: '" . $clang->gT('Comment','js') . "',
-    headFileName: '" . $clang->gT('File name','js') . "'
-    };
+    $answer = "<script type='text/javascript'>
+        function upload_$ia[1]() {
+            var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}';
+            uploadurl += '&amp;preview={$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}';
+            uploadurl += '&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."';
+            uploadurl += '&amp;minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
+            uploadurl += '&amp;maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
+            $('#upload_$ia[1]').attr('href',uploadurl);
+        }
+        var translt = {
+             title: '" . $clang->gT('Upload your files','js') . "',
+             returnTxt: '" . $clang->gT('Return to survey','js') . "',
+             headTitle: '" . $clang->gT('Title','js') . "',
+             headComment: '" . $clang->gT('Comment','js') . "',
+             headFileName: '" . $clang->gT('File name','js') . "',
+            };
     </script>\n";
 
     header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
@@ -3032,7 +3032,7 @@ function do_file_upload($ia)
     var i;
     var jsonstring = "[";
 
-    for (i = 1, filecount = 0; i <= '.$aQuestionAttributes['max_num_of_files'].'; i++)
+    for (i = 1, filecount = 0; i <= LEMval("'.$aQuestionAttributes['max_num_of_files'].'"); i++)
     {
     if ($("#'.$ia[1].'_"+i).val() == "")
     continue;
