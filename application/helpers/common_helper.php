@@ -5325,14 +5325,14 @@ function cleanTempDirectory()
     $dir =  Yii::app()->getConfig('tempdir').'/';
     $dp = opendir($dir) or show_error('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
             @unlink($dir.$file);
         }
     }
     $dir=  Yii::app()->getConfig('tempdir').'/uploads/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
             @unlink($dir.$file);
         }
     }
