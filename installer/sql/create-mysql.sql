@@ -5,10 +5,10 @@ CREATE TABLE `prefix_answers` (
   `qid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
   `answer` text NOT NULL,
-  `assessment_value` int(11) NOT NULL default '0',
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
-  `scale_id` tinyint NOT NULL default '0',
+  `assessment_value` int(11) NOT NULL default '0',
+  `scale_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`qid`,`code`,`language`,`scale_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -36,11 +36,11 @@ CREATE TABLE `prefix_assessments` (
 CREATE TABLE `prefix_conditions` (
   `cid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
-  `scenario` int(11) NOT NULL default '1',
   `cqid` int(11) NOT NULL default '0',
   `cfieldname` varchar(50) NOT NULL default '',
   `method` varchar(5) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
+  `scenario` int(11) NOT NULL default '1',
   PRIMARY KEY  (`cid`)
 ) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -50,18 +50,18 @@ CREATE TABLE `prefix_conditions` (
 --
 CREATE TABLE `prefix_defaultvalues` (
   `qid` int(11) NOT NULL default '0',
-  `specialtype` varchar(20) NOT NULL default '',
   `scale_id` int(11) NOT NULL default '0',
   `sqid` int(11) NOT NULL default '0',
   `language` varchar(20) NOT NULL,
+  `specialtype` varchar(20) NOT NULL default '',
   `defaultvalue` text,
-  PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype`, `sqid` )
+  PRIMARY KEY  (`qid` , `specialtype`, `language`, `scale_id`, `sqid` )
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 
 --
 -- Table structure for table expression_errors
 --
-
 CREATE TABLE `prefix_expression_errors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `errortime` varchar(50) DEFAULT NULL,
@@ -75,6 +75,19 @@ CREATE TABLE `prefix_expression_errors` (
   `prettyprint` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Create failed_login_attempts
+--
+CREATE TABLE `prefix_failed_login_attempts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(37) NOT NULL,
+  `last_attempt` varchar(20) NOT NULL,
+  `number_attempts` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 
 --
 -- Table structure for table groups
@@ -100,8 +113,8 @@ CREATE TABLE `prefix_labels` (
   `code` varchar(5) NOT NULL default '',
   `title` text,
   `sortorder` int(11) NOT NULL,
-  `assessment_value` int(11) NOT NULL default '0',
   `language` varchar(20) default 'en',
+  `assessment_value` int(11) NOT NULL default '0',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
   KEY `ixcode` (`code`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -116,328 +129,6 @@ CREATE TABLE `prefix_labelsets` (
   `languages` varchar(200) default 'en',
   PRIMARY KEY  (`lid`)
 ) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table question_attributes
---
-CREATE TABLE `prefix_question_attributes` (
-  `qaid` int(11) NOT NULL auto_increment,
-  `qid` int(11) NOT NULL default '0',
-  `attribute` varchar(50) default NULL,
-  `value` text default NULL,
-  `language` varchar(20) default NULL,
-  PRIMARY KEY  (`qaid`)
-) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table quota
---
-CREATE TABLE `prefix_quota` (
-  `id` int(11) NOT NULL auto_increment,
-  `sid` int(11) default NULL,
-  `name` varchar(255) collate utf8_unicode_ci default NULL,
-  `qlimit` int(11) default NULL,
-  `action` int(11) default NULL,
-  `active` int(11) NOT NULL default '1',
-  `autoload_url` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-)  ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table quota_languagesettings
---
-CREATE TABLE `prefix_quota_languagesettings` (
-  `quotals_id` int(11) NOT NULL auto_increment,
-  `quotals_quota_id` int(11) NOT NULL default '0',
-  `quotals_language` varchar(45) NOT NULL default 'en',
-  `quotals_name` varchar(255) collate utf8_unicode_ci default NULL,
-  `quotals_message` text NOT NULL,
-  `quotals_url` varchar(255),
-  `quotals_urldescrip` varchar(255),
-  PRIMARY KEY (`quotals_id`)
-)  ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table quota_members
---
-CREATE TABLE `prefix_quota_members` (
-  `id` int(11) NOT NULL auto_increment,
-  `sid` int(11) default NULL,
-  `qid` int(11) default NULL,
-  `quota_id` int(11) default NULL,
-  `code` varchar(11) collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
-)   ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table questions
---
-CREATE TABLE `prefix_questions` (
-  `qid` int(11) NOT NULL auto_increment,
-  `parent_qid` int(11) NOT NULL default '0',
-  `sid` int(11) NOT NULL default '0',
-  `gid` int(11) NOT NULL default '0',
-  `type` varchar(1) NOT NULL default 'T',
-  `title` varchar(20) NOT NULL default '',
-  `question` text NOT NULL,
-  `preg` text,
-  `help` text,
-  `other` varchar(1) NOT NULL default 'N',
-  `mandatory` varchar(1) default NULL,
-  `question_order` int(11) NOT NULL,
-  `language` varchar(20) default 'en',
-  `scale_id` tinyint NOT NULL default '0',
-  `same_default` tinyint NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
-  `relevance` text,
-  PRIMARY KEY  (`qid`,`language`)
-) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table saved_control
---
-CREATE TABLE `prefix_saved_control` (
-  `scid` int(11) NOT NULL auto_increment,
-  `sid` int(11) NOT NULL default '0',
-  `srid` int(11) NOT NULL default '0',
-  `identifier` text NOT NULL,
-  `access_code` text NOT NULL,
-  `email` varchar(320) default NULL,
-  `ip` text NOT NULL,
-  `saved_thisstep` text NOT NULL,
-  `status` varchar(1) NOT NULL default '',
-  `saved_date` datetime NOT NULL,
-  `refurl` text,
-  PRIMARY KEY  (`scid`)
-) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table sessions
---
-CREATE TABLE `prefix_sessions`(
-      `id` varchar(32) NOT NULL,
-      `expire` int(11) DEFAULT NULL,
-      `data` text,
-      PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table settings_global
---
-CREATE TABLE `prefix_settings_global` (
-  `stg_name` varchar(50) NOT NULL default '',
-  `stg_value` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`stg_name`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table surveys
---
-CREATE TABLE `prefix_surveys` (
-  `sid` int(11) NOT NULL,
-  `owner_id` int(11) NOT NULL,
-  `admin` varchar(50) default NULL,
-  `active` varchar(1) NOT NULL default 'N',
-  `expires` datetime default NULL,
-  `startdate` datetime default NULL,
-  `adminemail` varchar(320) default NULL,
-  `anonymized` varchar(1) NOT NULL default 'N',
-  `faxto` varchar(20) default NULL,
-  `format` varchar(1) default NULL,
-  `savetimings` varchar(1) default 'N',
-  `template` varchar(100) default 'default',
-  `language` varchar(50) default NULL,
-  `additional_languages` varchar(255) default NULL,
-  `datestamp` varchar(1) default 'N',
-  `usecookie` varchar(1) default 'N',
-  `allowregister` varchar(1) default 'N',
-  `allowsave` varchar(1) default 'Y',
-  `autonumber_start` int(11) default '0',
-  `autoredirect` varchar(1) default 'N',
-  `allowprev` varchar(1) default 'Y',
-  `printanswers` varchar(1) default 'N',
-  `ipaddr` varchar(1) default 'N',
-  `refurl` varchar(1) default 'N',
-  `datecreated` date default NULL,
-  `publicstatistics` varchar(1) default 'N',
-  `publicgraphs` varchar(1) default 'N',
-  `listpublic` varchar(1) default 'N',
-  `htmlemail` varchar(1) default 'N',
-  `sendconfirmation` varchar(1) default 'Y',
-  `tokenanswerspersistence` varchar(1) default 'N',
-  `assessments` varchar(1) default 'N',
-  `usecaptcha` varchar(1) default 'N',
-  `usetokens` varchar(1) default 'N',
-  `bounce_email` varchar(320) default NULL,
-  `attributedescriptions` text,
-  `emailresponseto` text default NULL,
-  `emailnotificationto` text default NULL,
-  `tokenlength` int(11) default '15',
-  `showxquestions` varchar(1) default 'Y',
-  `showgroupinfo` varchar(1) default 'B',
-  `shownoanswer` varchar(1) default 'Y',
-  `showqnumcode` varchar(1) default 'X',
-  `bouncetime` int(11),
-  `bounceprocessing` varchar(1) default 'N',
-  `bounceaccounttype` varchar(4),
-  `bounceaccounthost` varchar(200),
-  `bounceaccountpass` varchar(100),
-  `bounceaccountencryption` varchar(3),
-  `bounceaccountuser` varchar(200),
-  `showwelcome` varchar(1) default 'Y',
-  `showprogress` varchar(1) default 'Y',
-  `allowjumps` varchar(1) default 'N',
-  `navigationdelay` int(11) default '0',
-  `nokeyboard` varchar(1) default 'N',
-  `alloweditaftercompletion` varchar(1) default 'N',
-  `googleanalyticsstyle` varchar(1) DEFAULT NULL,
-  `googleanalyticsapikey` VARCHAR(25) DEFAULT NULL,
-   PRIMARY KEY(`sid`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table surveys_languagesettings
---
-CREATE TABLE `prefix_surveys_languagesettings` (
-  `surveyls_survey_id` int(11) NOT NULL DEFAULT 0,
-  `surveyls_language` varchar(45) NULL DEFAULT 'en',
-  `surveyls_title` varchar(200) NOT NULL,
-  `surveyls_description` TEXT NULL,
-  `surveyls_welcometext` TEXT NULL,
-  `surveyls_endtext` TEXT NULL,
-  `surveyls_url` varchar(255) NULL,
-  `surveyls_urldescription` varchar(255) NULL,
-  `surveyls_email_invite_subj` varchar(255) NULL,
-  `surveyls_email_invite` TEXT NULL,
-  `surveyls_email_remind_subj` varchar(255) NULL,
-  `surveyls_email_remind` TEXT NULL,
-  `surveyls_email_register_subj` varchar(255) NULL,
-  `surveyls_email_register` TEXT NULL,
-  `surveyls_email_confirm_subj` varchar(255) NULL,
-  `surveyls_email_confirm` TEXT NULL,
-  `surveyls_dateformat` int(11) NOT NULL DEFAULT 1,
-  `surveyls_attributecaptions` TEXT NULL,
-  `email_admin_notification_subj`  varchar(255) NULL,
-  `email_admin_notification` TEXT NULL,
-  `email_admin_responses_subj` varchar(255) NULL,
-  `email_admin_responses` TEXT NULL,
-  `surveyls_numberformat` INT NOT NULL DEFAULT 0,
-
-  PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table survey_permissions
---
-CREATE TABLE `prefix_survey_permissions` (
-	`sid` int(11) NOT NULL,
-	`uid` int(11) NOT NULL,
-	`permission` varchar(20) NOT NULL,
-	`create_p` int(11) NOT NULL default '0',
-    `read_p` int(11) NOT NULL default '0',
-	`update_p` int(11) NOT NULL default '0',
-	`delete_p` int(11) NOT NULL default '0',
-    `import_p` int(11) NOT NULL default '0',
-    `export_p` int(11) NOT NULL default '0',
-	PRIMARY KEY (sid, uid, permission)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table survey_url_parameters
---
-CREATE TABLE `prefix_survey_url_parameters` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
-	`sid` int(11) NOT NULL,
-	`parameter` varchar(50) NOT NULL,
-	`targetqid` int(11) NULL,
-	`targetsqid` int(11) NULL,
-	PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
---
--- Table structure for table user_groups
---
-CREATE TABLE `prefix_user_groups` (
-	`ugid` int(11) NOT NULL auto_increment PRIMARY KEY,
-	`name` varchar(20) NOT NULL UNIQUE,
-	`description` TEXT NOT NULL,
-	`owner_id` int(11) NOT NULL
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table user_in_groups
---
-CREATE TABLE `prefix_user_in_groups` (
-	`ugid` int(11) NOT NULL,
-	`uid` int(11) NOT NULL,
-     PRIMARY KEY  (`ugid`,`uid`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table users
---
-CREATE TABLE `prefix_users` (
-  `uid` int(11) NOT NULL auto_increment PRIMARY KEY,
-  `users_name` varchar(64) NOT NULL UNIQUE default '',
-  `password` BLOB NOT NULL,
-  `full_name` varchar(50) NOT NULL,
-  `parent_id` int(11) NOT NULL,
-  `lang` varchar(20),
-  `email` varchar(320),
-  `create_survey` int(11) NOT NULL default '0',
-  `create_user` int(11) NOT NULL default '0',
-  `participant_panel` int(11) NOT NULL default '0',
-  `delete_user` int(11) NOT NULL default '0',
-  `superadmin` int(11) NOT NULL default '0',
-  `configurator` int(11) NOT NULL default '0',
-  `manage_template` int(11) NOT NULL default '0',
-  `manage_label` int(11) NOT NULL default '0',
-  `htmleditormode` varchar(7) default 'default',
-  `templateeditormode` varchar(7) default 'default',
-  `questionselectormode` varchar(7) default 'default',
-  `one_time_pw` BLOB,
-  `dateformat` INT NOT NULL DEFAULT 1
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table templates_rights
---
-CREATE TABLE `prefix_templates_rights` (
-  `uid` int(11) NOT NULL,
-  `folder` varchar(255) NOT NULL,
-  `use` int(11) NOT NULL,
-  PRIMARY KEY  (`uid`,`folder`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
--- Table structure for table participants
---
-CREATE TABLE `prefix_participants` (
-  `participant_id` varchar(50) NOT NULL,
-  `firstname` varchar(40) DEFAULT NULL,
-  `lastname` varchar(40) DEFAULT NULL,
-  `email` varchar(80) DEFAULT NULL,
-  `language` varchar(40) DEFAULT NULL,
-  `blacklisted` varchar(1) NOT NULL,
-  `owner_uid` int(11) NOT NULL,
-  PRIMARY KEY  (`participant_id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 --
@@ -497,15 +188,342 @@ CREATE TABLE `prefix_participant_shares` (
 
 
 --
+-- Table structure for table participants
+--
+CREATE TABLE `prefix_participants` (
+  `participant_id` varchar(50) NOT NULL,
+  `firstname` varchar(40) DEFAULT NULL,
+  `lastname` varchar(40) DEFAULT NULL,
+  `email` varchar(80) DEFAULT NULL,
+  `language` varchar(40) DEFAULT NULL,
+  `blacklisted` varchar(1) NOT NULL,
+  `owner_uid` int(11) NOT NULL,
+  PRIMARY KEY  (`participant_id`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table question_attributes
+--
+CREATE TABLE `prefix_question_attributes` (
+  `qaid` int(11) NOT NULL auto_increment,
+  `qid` int(11) NOT NULL default '0',
+  `attribute` varchar(50) default NULL,
+  `value` text default NULL,
+  `language` varchar(20) default NULL,
+  PRIMARY KEY  (`qaid`)
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table questions
+--
+CREATE TABLE `prefix_questions` (
+  `qid` int(11) NOT NULL auto_increment,
+  `parent_qid` int(11) NOT NULL default '0',
+  `sid` int(11) NOT NULL default '0',
+  `gid` int(11) NOT NULL default '0',
+  `type` varchar(1) NOT NULL default 'T',
+  `title` varchar(20) NOT NULL default '',
+  `question` text NOT NULL,
+  `preg` text,
+  `help` text,
+  `other` varchar(1) NOT NULL default 'N',
+  `mandatory` varchar(1) default NULL,
+  `question_order` int(11) NOT NULL,
+  `language` varchar(20) default 'en',
+  `scale_id` int(11) NOT NULL default '0',
+  `same_default` int(11) NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
+  `relevance` text,
+  PRIMARY KEY  (`qid`,`language`)
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table quota
+--
+CREATE TABLE `prefix_quota` (
+  `id` int(11) NOT NULL auto_increment,
+  `sid` int(11) default NULL,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `qlimit` int(11) default NULL,
+  `action` int(11) default NULL,
+  `active` int(11) NOT NULL default '1',
+  `autoload_url` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+)  ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table quota_languagesettings
+--
+CREATE TABLE `prefix_quota_languagesettings` (
+  `quotals_id` int(11) NOT NULL auto_increment,
+  `quotals_quota_id` int(11) NOT NULL default '0',
+  `quotals_language` varchar(45) NOT NULL default 'en',
+  `quotals_name` varchar(255) collate utf8_unicode_ci default NULL,
+  `quotals_message` text NOT NULL,
+  `quotals_url` varchar(255),
+  `quotals_urldescrip` varchar(255),
+  PRIMARY KEY (`quotals_id`)
+)  ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table quota_members
+--
+CREATE TABLE `prefix_quota_members` (
+  `id` int(11) NOT NULL auto_increment,
+  `sid` int(11) default NULL,
+  `qid` int(11) default NULL,
+  `quota_id` int(11) default NULL,
+  `code` varchar(11) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
+)   ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table saved_control
+--
+CREATE TABLE `prefix_saved_control` (
+  `scid` int(11) NOT NULL auto_increment,
+  `sid` int(11) NOT NULL default '0',
+  `srid` int(11) NOT NULL default '0',
+  `identifier` text NOT NULL,
+  `access_code` text NOT NULL,
+  `email` varchar(320) default NULL,
+  `ip` text NOT NULL,
+  `saved_thisstep` text NOT NULL,
+  `status` varchar(1) NOT NULL default '',
+  `saved_date` datetime NOT NULL,
+  `refurl` text,
+  PRIMARY KEY  (`scid`)
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table sessions
+--
+CREATE TABLE `prefix_sessions`(
+      `id` varchar(32) NOT NULL,
+      `expire` int(11) DEFAULT NULL,
+      `data` text,
+      PRIMARY KEY (`id`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table settings_global
+--
+CREATE TABLE `prefix_settings_global` (
+  `stg_name` varchar(50) NOT NULL default '',
+  `stg_value` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`stg_name`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
 -- Table structure for table survey_links
 --
 CREATE TABLE `prefix_survey_links` (
   `participant_id` varchar(50) NOT NULL,
   `token_id` int(11) NOT NULL,
   `survey_id` int(11) NOT NULL,
-  `date_created` datetime NOT NULL,
+  `date_created` datetime,
    PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
  ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table survey_permissions
+--
+CREATE TABLE `prefix_survey_permissions` (
+	`sid` int(11) NOT NULL,
+	`uid` int(11) NOT NULL,
+	`permission` varchar(20) NOT NULL,
+	`create_p` int(11) NOT NULL default '0',
+    `read_p` int(11) NOT NULL default '0',
+	`update_p` int(11) NOT NULL default '0',
+	`delete_p` int(11) NOT NULL default '0',
+    `import_p` int(11) NOT NULL default '0',
+    `export_p` int(11) NOT NULL default '0',
+	PRIMARY KEY (sid, uid, permission)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table survey_url_parameters
+--
+CREATE TABLE `prefix_survey_url_parameters` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`sid` int(11) NOT NULL,
+	`parameter` varchar(50) NOT NULL,
+	`targetqid` int(11) NULL,
+	`targetsqid` int(11) NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table surveys
+--
+CREATE TABLE `prefix_surveys` (
+  `sid` int(11) NOT NULL,
+  `owner_id` int(11) NOT NULL,
+  `admin` varchar(50) default NULL,
+  `active` varchar(1) NOT NULL default 'N',
+  `expires` datetime default NULL,
+  `startdate` datetime default NULL,
+  `adminemail` varchar(320) default NULL,
+  `anonymized` varchar(1) NOT NULL default 'N',
+  `faxto` varchar(20) default NULL,
+  `format` varchar(1) default NULL,
+  `savetimings` varchar(1) NOT NULL default 'N',
+  `template` varchar(100) default 'default',
+  `language` varchar(50) default NULL,
+  `additional_languages` varchar(255) default NULL,
+  `datestamp` varchar(1) NOT NULL default 'N',
+  `usecookie` varchar(1) NOT NULL default 'N',
+  `allowregister` varchar(1) NOT NULL default 'N',
+  `allowsave` varchar(1) NOT NULL default 'Y',
+  `autonumber_start` int(11) NOT NULL default '0',
+  `autoredirect` varchar(1) NOT NULL default 'N',
+  `allowprev` varchar(1) NOT NULL default 'N',
+  `printanswers` varchar(1) NOT NULL default 'N',
+  `ipaddr` varchar(1) NOT NULL default 'N',
+  `refurl` varchar(1) NOT NULL default 'N',
+  `datecreated` date default NULL,
+  `publicstatistics` varchar(1) NOT NULL default 'N',
+  `publicgraphs` varchar(1) NOT NULL default 'N',
+  `listpublic` varchar(1) NOT NULL default 'N',
+  `htmlemail` varchar(1) NOT NULL default 'N',
+  `sendconfirmation` varchar(1) NOT NULL default 'Y',
+  `tokenanswerspersistence` varchar(1) NOT NULL default 'N',
+  `assessments` varchar(1) NOT NULL default 'N',
+  `usecaptcha` varchar(1) NOT NULL default 'N',
+  `usetokens` varchar(1) NOT NULL default 'N',
+  `bounce_email` varchar(320) default NULL,
+  `attributedescriptions` text,
+  `emailresponseto` text default NULL,
+  `emailnotificationto` text default NULL,
+  `tokenlength` int(11) NOT NULL default '15',
+  `showxquestions` varchar(1) default 'Y',
+  `showgroupinfo` varchar(1) default 'B',
+  `shownoanswer` varchar(1) default 'Y',
+  `showqnumcode` varchar(1) default 'X',
+  `bouncetime` int(11),
+  `bounceprocessing` varchar(1) default 'N',
+  `bounceaccounttype` varchar(4),
+  `bounceaccounthost` varchar(200),
+  `bounceaccountpass` varchar(100),
+  `bounceaccountencryption` varchar(3),
+  `bounceaccountuser` varchar(200),
+  `showwelcome` varchar(1) default 'Y',
+  `showprogress` varchar(1) default 'Y',
+  `allowjumps` varchar(1) default 'N',
+  `navigationdelay` int(11) NOT NULL default '0',
+  `nokeyboard` varchar(1) default 'N',
+  `alloweditaftercompletion` varchar(1) default 'N',
+  `googleanalyticsstyle` varchar(1) DEFAULT NULL,
+  `googleanalyticsapikey` VARCHAR(25) DEFAULT NULL,
+   PRIMARY KEY(`sid`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table surveys_languagesettings
+--
+CREATE TABLE `prefix_surveys_languagesettings` (
+  `surveyls_survey_id` int(11) NOT NULL,
+  `surveyls_language` varchar(45) NULL DEFAULT 'en',
+  `surveyls_title` varchar(200) NOT NULL,
+  `surveyls_description` TEXT NULL,
+  `surveyls_welcometext` TEXT NULL,
+  `surveyls_endtext` TEXT NULL,
+  `surveyls_url` varchar(255) NULL,
+  `surveyls_urldescription` varchar(255) NULL,
+  `surveyls_email_invite_subj` varchar(255) NULL,
+  `surveyls_email_invite` TEXT NULL,
+  `surveyls_email_remind_subj` varchar(255) NULL,
+  `surveyls_email_remind` TEXT NULL,
+  `surveyls_email_register_subj` varchar(255) NULL,
+  `surveyls_email_register` TEXT NULL,
+  `surveyls_email_confirm_subj` varchar(255) NULL,
+  `surveyls_email_confirm` TEXT NULL,
+  `surveyls_dateformat` int(11) NOT NULL DEFAULT 1,
+  `surveyls_attributecaptions` TEXT NULL,
+  `email_admin_notification_subj`  varchar(255) NULL,
+  `email_admin_notification` TEXT NULL,
+  `email_admin_responses_subj` varchar(255) NULL,
+  `email_admin_responses` TEXT NULL,
+  `surveyls_numberformat` INT NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table user_groups
+--
+CREATE TABLE `prefix_user_groups` (
+	`ugid` int(11) NOT NULL auto_increment PRIMARY KEY,
+	`name` varchar(20) NOT NULL UNIQUE,
+	`description` TEXT NOT NULL,
+	`owner_id` int(11) NOT NULL
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table user_in_groups
+--
+CREATE TABLE `prefix_user_in_groups` (
+	`ugid` int(11) NOT NULL,
+	`uid` int(11) NOT NULL,
+     PRIMARY KEY  (`ugid`,`uid`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table users
+--
+CREATE TABLE `prefix_users` (
+  `uid` int(11) NOT NULL auto_increment PRIMARY KEY,
+  `users_name` varchar(64) NOT NULL UNIQUE default '',
+  `password` BLOB NOT NULL,
+  `full_name` varchar(50) NOT NULL,
+  `parent_id` int(11) NOT NULL,
+  `lang` varchar(20),
+  `email` varchar(320),
+  `create_survey` int(11) NOT NULL default '0',
+  `create_user` int(11) NOT NULL default '0',
+  `participant_panel` int(11) NOT NULL default '0',
+  `delete_user` int(11) NOT NULL default '0',
+  `superadmin` int(11) NOT NULL default '0',
+  `configurator` int(11) NOT NULL default '0',
+  `manage_template` int(11) NOT NULL default '0',
+  `manage_label` int(11) NOT NULL default '0',
+  `htmleditormode` varchar(7) default 'default',
+  `templateeditormode` varchar(7) NOT NULL default 'default',
+  `questionselectormode` varchar(7) NOT NULL default 'default',
+  `one_time_pw` text,
+  `dateformat` INT NOT NULL DEFAULT 1
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Table structure for table templates_rights
+--
+CREATE TABLE `prefix_templates_rights` (
+  `uid` int(11) NOT NULL,
+  `folder` varchar(255) NOT NULL,
+  `use` int(11) NOT NULL,
+  PRIMARY KEY  (`uid`,`folder`)
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+
+
 
 
 --
@@ -517,18 +535,6 @@ CREATE TABLE `prefix_templates` (
   PRIMARY KEY  (`folder`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-
---
--- Create failed_login_attempts
---
-
-CREATE TABLE `prefix_failed_login_attempts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(37) NOT NULL,
-  `last_attempt` varchar(20) NOT NULL,
-  `number_attempts` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 --
 -- Secondary indexes
@@ -548,7 +554,8 @@ create index `quota_idx2` on `prefix_quota` (`sid`);
 create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 
+
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '156');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '157');

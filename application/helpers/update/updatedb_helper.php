@@ -506,7 +506,7 @@ function db_upgrade_all($oldversion) {
         alterColumn('{{labels}}','code',"{$sVarchar}(5)",false , '');
         alterColumn('{{labels}}','language',"{$sVarchar}(20)",false , 'en');
         alterColumn('{{labelsets}}','label_name',"{$sVarchar}(100)",false , '');
-        alterColumn('{{questions}}','parent_qid',"integer",false , 0);
+        alterColumn('{{questions}}','parent_qid',"integer",false ,'0');
         alterColumn('{{questions}}','title',"{$sVarchar}(20)",false , '');
         alterColumn('{{questions}}','question',"text",false);
         alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
@@ -569,7 +569,7 @@ function db_upgrade_all($oldversion) {
         alterColumn('{{users}}','lang',"{$sVarchar}(20)");
         alterColumn('{{users}}','email',"{$sVarchar}(320)");
         alterColumn('{{users}}','superadmin',"integer",false , 0);
-        alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)");
+        alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
         alterColumn('{{users}}','dateformat',"integer",false , 1);
         try{
             Yii::app()->db->createCommand()->dropIndex('email','{{users}}');
@@ -683,11 +683,11 @@ function db_upgrade_all($oldversion) {
     if ($oldversion < 149)
     {
         $fields = array(
-        'id' => 'INT',
-        'sid' => 'INT',
-        'parameter' => 'VARCHAR(50)',
-        'targetqid' => 'INT NULL',
-        'targetsqid' => 'INT NULL'
+        'id' => 'integer',
+        'sid' => 'integer',
+        'parameter' => $sVarchar.'(50)',
+        'targetqid' => 'integer',
+        'targetsqid' => 'integer'
         );
         Yii::app()->db->createCommand()->createTable('{{survey_url_parameters}}',$fields);
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
@@ -763,8 +763,8 @@ function db_upgrade_all($oldversion) {
         'id' => 'pk',
         'sid' => 'integer NOT NULL',
         'parameter' => $sVarchar.'(50) NOT NULL',
-        'targetqid' => 'integer NOT NULL',
-        'targetsqid' => 'integer NOT NULL'
+        'targetqid' => 'integer',
+        'targetsqid' => 'integer'
         ));
 
         Yii::app()->db->createCommand()->dropTable('{{sessions}}');
@@ -805,6 +805,8 @@ function db_upgrade_all($oldversion) {
         alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
         alterColumn('{{questions}}','mandatory',"{$sVarchar}(1)");
         alterColumn('{{questions}}','scale_id','integer',false , '0');
+        alterColumn('{{questions}}','parent_qid',"integer",false ,'0');
+
         alterColumn('{{questions}}','same_default','integer',false , '0');
         alterColumn('{{quota}}','qlimit',"integer");
         alterColumn('{{quota}}','action',"integer");
