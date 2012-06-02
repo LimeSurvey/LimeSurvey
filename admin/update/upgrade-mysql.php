@@ -785,7 +785,7 @@ function upgrade_token_tables134()
 {
     global $modifyoutput,$dbprefix;
     $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
-    $surveyidresult = db_execute_assoc($surveyidquery);
+    $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
     {
