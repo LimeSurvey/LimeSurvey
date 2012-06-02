@@ -183,6 +183,7 @@ CREATE TABLE `prefix_questions` (
   `parent_qid` int(11) NOT NULL default '0',
   `sid` int(11) NOT NULL default '0',
   `gid` int(11) NOT NULL default '0',
+  `tid` int(11) NOT NULL default '0',
   `type` char(1) NOT NULL default 'T',
   `title` varchar(20) NOT NULL default '',
   `question` text NOT NULL,
@@ -530,6 +531,39 @@ CREATE TABLE `prefix_failed_login_attempts` (
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+
+--
+-- Create question_types
+--
+
+CREATE TABLE `prefix_question_types` (
+  `tid` int(11) NOT NULL AUTO_INCREMENT,
+  `order` int(11) NOT NULL,
+  `group` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `class` varchar(50) NOT NULL,
+  `legacy` char(1) DEFAULT NULL,
+  `system` char(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`tid`),
+  UNIQUE KEY `order` (`order`,`group`),
+  UNIQUE KEY `Name` (`name`),
+  UNIQUE KEY `legacy` (`legacy`)
+) ENGINE=MyISAM  AUTO_INCREMENT=30 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+--
+-- Create question_type_groups
+--
+
+CREATE TABLE `prefix_question_type_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `order` int(11) NOT NULL,
+  `system` char(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `order` (`order`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 --
 -- Secondary indexes
 --
@@ -551,4 +585,42 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '156');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '158');
+
+INSERT INTO `prefix_question_types` (`tid`, `order`, `group`, `name`, `class`, `legacy`, `system`) VALUES
+(1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
+(2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),
+(3, 3, 1, 'List (radio)', 'List', 'L', 'Y'),
+(4, 4, 1, 'List with comment', 'CommentList', 'O', 'Y'),
+(5, 1, 2, 'Array', 'RadioArray', 'F', 'Y'),
+(6, 2, 2, 'Array (10 point choice)', 'TenRadioArray', 'B', 'Y'),
+(7, 3, 2, 'Array (5 point choice)', 'FiveRadioArray', 'A', 'Y'),
+(8, 4, 2, 'Array (Increase/Same/Decrease)', 'IDRadioArray', 'E', 'Y'),
+(9, 5, 2, 'Array (Numbers)', 'NumberArray', ':', 'Y'),
+(10, 6, 2, 'Array (Texts)', 'TextArray', ';', 'Y'),
+(11, 7, 2, 'Array (Yes/No/Uncertain)', 'YNRadioArray', 'C', 'Y'),
+(12, 8, 2, 'Array by column', 'ColumnRadioArray', 'H', 'Y'),
+(13, 9, 2, 'Array dual scale', 'DualRadioArray', '1', 'Y'),
+(14, 1, 3, 'Date/Time', 'Date', 'D', 'Y'),
+(15, 2, 3, 'Equation', 'Equation', '*', 'Y'),
+(16, 3, 3, 'File upload', 'File', '|', 'Y'),
+(17, 4, 3, 'Gender', 'Gender', 'G', 'Y'),
+(18, 5, 3, 'Language switch', 'Language', 'I', 'Y'),
+(19, 6, 3, 'Multiple numerical input', 'Multinumerical', 'K', 'Y'),
+(20, 7, 3, 'Numerical input', 'Numerical', 'N', 'Y'),
+(21, 8, 3, 'Ranking', 'Ranking', 'R', 'Y'),
+(22, 9, 3, 'Text display', 'Display', 'X', 'Y'),
+(23, 10, 3, 'Yes/No', 'YN', 'Y', 'Y'),
+(24, 1, 4, 'Huge free text', 'HugeText', 'U', 'Y'),
+(25, 2, 4, 'Long free text', 'LongText', 'T', 'Y'),
+(26, 3, 4, 'Multiple short text', 'Multitext', 'Q', 'Y'),
+(27, 4, 4, 'Short free text', 'ShortText', 'S', 'Y'),
+(28, 1, 5, 'Multiple choice', 'Check', 'M', 'Y'),
+(29, 2, 5, 'Multiple choice with comments', 'CommentCheck', 'P', 'Y');
+
+INSERT INTO `prefix_question_type_groups` (`id`, `name`, `order`, `system`) VALUES
+(1, 'Single choice questions', 1, 'Y'),
+(2, 'Arrays', 2, 'Y'),
+(3, 'Mask questions', 3, 'Y'),
+(4, 'Text questions', 4, 'Y'),
+(5, 'Multiple choice questions', 5, 'Y');
