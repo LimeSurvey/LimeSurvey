@@ -728,7 +728,7 @@ class question extends Survey_Common_Action
                 LimeExpressionManager::StartProcessingPage(false,Yii::app()->baseUrl,true);  // so can click on syntax highlighting to edit questions
             }
 
-            $qtypelist = getQuestionTypeList('', 'array');
+            $qtypelist = getQuestionTypeList();
             $qDescToCode = 'qDescToCode = {';
             $qCodeToInfo = 'qCodeToInfo = {';
             foreach ($qtypelist as $qtype => $qdesc)

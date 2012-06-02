@@ -277,7 +277,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
 
     //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
     $results['labelsets']=0;
-    $qtypes = getQuestionTypeList("" ,"array");
+    $qtypes = getQuestionTypeList();
     $results['labels']=0;
     $results['labelsets']=0;
     $results['answers']=0;
@@ -521,7 +521,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     $aQIDReplacements[$oldqid]=Yii::app()->db->getLastInsertID();
                     $saveqid=$aQIDReplacements[$oldqid];
                 }
-                $qtypes = getQuestionTypeList("" ,"array");
+                $qtypes = getQuestionTypeList();
                 $aSQIDReplacements=array();
 
                 // Now we will fix up old label sets where they are used as answers
@@ -1487,7 +1487,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                 $newqid=Yii::app()->db->getLastInsertID();
             }
         }
-        $qtypes = getQuestionTypeList("" ,"array");
+        $qtypes = getQuestionTypeList();
         $results['answers']=0;
         $results['subquestions']=0;
 
@@ -2712,7 +2712,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $importresults['deniedcountls'] =0;
 
 
-    $qtypes = getQuestionTypeList("" ,"array");
+    $qtypes = getQuestionTypeList();
     $results['labels']=0;
     $results['labelsets']=0;
     $results['answers']=0;

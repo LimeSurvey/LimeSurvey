@@ -7421,7 +7421,7 @@ EOD;
                 $moveResult = LimeExpressionManager::NavigateForwards();
             }
 
-            $qtypes=getQuestionTypeList('','array');
+            $qtypes=getQuestionTypeList();
 
             templatereplace('{SITENAME}');  // to ensure that lime replacement fields loaded
 

@@ -32,10 +32,8 @@ function comparePermission($aPermissionA,$aPermissionB)
 * getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
 *
-* @param string $SelectedCode Value of the Question Type (defaults to "T")
-* @param string $ReturnType Type of output from this function (defaults to selector)
 *
-* @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
+* @return returns a straight "array" of question types
 *
 * Explanation of questiontype array:
 *
@@ -44,236 +42,19 @@ function comparePermission($aPermissionA,$aPermissionB)
 * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
 * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
 */
-function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
+function getQuestionTypeList($type = false)
 {
-    $publicurl = Yii::app()->getConfig('publicurl');
     $clang = Yii::app()->lang;
 
-    $group['Arrays'] = $clang->gT('Arrays');
-    $group['MaskQuestions'] = $clang->gT("Mask questions");
-    $group['SinChoiceQues'] = $clang->gT("Single choice questions");
-    $group['MulChoiceQues'] = $clang->gT("Multiple choice questions");
-    $group['TextQuestions'] = $clang->gT("Text questions");
-
-
-    $qtypes = array(
-    "1" => array('description' => $clang->gT("Array dual scale"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'assessable' => 1,
-    'hasdefaultvalues' => 0,
-    'answerscales' => 2),
-    "5" => array('description' => $clang->gT("5 Point Choice"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "A" => array('description' => $clang->gT("Array (5 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "B" => array('description' => $clang->gT("Array (10 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "C" => array('description' => $clang->gT("Array (Yes/No/Uncertain)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "D" => array('description' => $clang->gT("Date/Time"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "E" => array('description' => $clang->gT("Array (Increase/Same/Decrease)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "F" => array('description' => $clang->gT("Array"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "G" => array('description' => $clang->gT("Gender"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "H" => array('description' => $clang->gT("Array by column"),
-    'group' => $group['Arrays'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "I" => array('description' => $clang->gT("Language Switch"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "K" => array('description' => $clang->gT("Multiple Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 1,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "L" => array('description' => $clang->gT("List (Radio)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "M" => array('description' => $clang->gT("Multiple choice"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "N" => array('description' => $clang->gT("Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "O" => array('description' => $clang->gT("List with comment"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "P" => array('description' => $clang->gT("Multiple choice with comments"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "Q" => array('description' => $clang->gT("Multiple Short Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "R" => array('description' => $clang->gT("Ranking"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "S" => array('description' => $clang->gT("Short Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "T" => array('description' => $clang->gT("Long Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "U" => array('description' => $clang->gT("Huge Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "X" => array('description' => $clang->gT("Text display"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "Y" => array('description' => $clang->gT("Yes/No"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "!" => array('description' => $clang->gT("List (Dropdown)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    ":" => array('description' => $clang->gT("Array (Numbers)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    ";" => array('description' => $clang->gT("Array (Texts)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "|" => array('description' => $clang->gT("File upload"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "*" => array('description' => $clang->gT("Equation"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    );
-    asort($qtypes);
-
-    if ($ReturnType == "array")
-        return $qtypes;
-
-    if ($ReturnType == "group")
+    $types = Question_types::model()->findAll();
+    foreach($types as $type)
     {
-        foreach ($qtypes as $qkey => $qtype)
-        {
-            $newqType[$qtype['group']][$qkey] = $qtype;
-        }
-
-
-        $qtypeselecter = "";
-        foreach ($newqType as $group => $members)
-        {
-            $qtypeselecter .= '<optgroup label="' . $group . '">';
-            foreach ($members as $TypeCode => $TypeProperties)
-            {
-                $qtypeselecter .= "<option value='$TypeCode'";
-                if ($SelectedCode == $TypeCode)
-                {
-                    $qtypeselecter .= " selected='selected'";
-                }
-                $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
-            }
-            $qtypeselecter .= '</optgroup>';
-        }
-
-        return $qtypeselecter;
-    };
-    $qtypeselecter = "";
-    foreach ($qtypes as $TypeCode => $TypeProperties)
-    {
-        $qtypeselecter .= "<option value='$TypeCode'";
-        if ($SelectedCode == $TypeCode)
-        {
-            $qtypeselecter .= " selected='selected'";
-        }
-        $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
+        $q = createQuestion($type['class']);
+        $qtypes[$type['legacy']] = $q->questionProperties(); //AJS
     }
-    return $qtypeselecter;
+
+    asort($qtypes);
+    return $qtypes;
 }
 
 /**
@@ -2285,7 +2066,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
     }
-    $qtypes=getQuestionTypeList('','array');
+    $qtypes=getQuestionTypeList();
 
     $aquery = "SELECT * "
     ." FROM {{questions}} as questions, {{groups}} as groups"
@@ -2893,22 +2674,22 @@ function buildLabelSetCheckSumArray()
 * @param $iQID The question ID
 * @return array$bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
 */
-function getQuestionAttributeValues($iQID)
+function getQuestionAttributeValues($q)
 {
     static $cache;
-    $iQID = sanitize_int($iQID);
-
-    if (isset($cache[$iQID])) {
-        return $cache[$iQID];
+    if (is_object($q))
+    {
+        if (isset($cache[$q->id])) return $cache[$q->id];
     }
-    $row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $iQID)); //, 'parent_qid' => 0), array('group' => 'type')
-    $row = $row->question_types;
-    $class = $row['class'].'Question';
-    Yii::import('application.modules.*');
-    $q = new $class;
-    $q->id = $iQID;
+    else //AJS
+    {
+        $qid = sanitize_int($q);
+        if (isset($cache[$qid])) return $cache[$qid];
+        $row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid)); //, 'parent_qid' => 0), array('group' => 'type')
+        $q = createQuestion($row->question_types['class'], 0, $qid);
+    }
 
-    return $cache[$iQID] = $q->getAttributeValues();
+    return $cache[$q->id] = $q->getAttributeValues();
 }
 
 /**
@@ -7333,26 +7114,21 @@ function type2Name($type) //AJS
             return "Equation";
     }
 }
+
+function createQuestion($name)
+{
+    $class = $name.'Question';
+    Yii::import('application.modules.*');
+    $args = func_get_args();
+    $args = array_splice($args, 1);
+    $q = new $class;
+    call_user_func_array(array($q, '__construct'), $args);
+    return $q;
+}
+
 function objectizeQuestion($type) //AJS
 {
-    $name = type2Name($type).'Question';
-    Yii::import('application.modules.*');
-    return new $name;
-}
-function ia2Question($ia) //AJS
-{
-    $q = objectizeQuestion($ia[4]);
-    $q->id = $ia[0];
-    $q->fieldname = $ia[1];
-    $q->title = $ia[2];
-    $q->text = $ia[3];
-    $q->gid = $ia[5];
-    $q->mandatory = $ia[6];
-    $q->hasConditions = $ia[7];
-    $q->downstreamConditions = $ia[8];
-    $q->questionCount = $ia[9];
-    
-    return $q;
+    return createQuestion(type2Name($type));
 }
 
 /**

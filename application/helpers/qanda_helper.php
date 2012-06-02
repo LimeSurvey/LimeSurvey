@@ -62,7 +62,7 @@ function retrieveAnswers($q)
     // TMSW - eliminate this - get from LEM
     //A bit of housekeeping to stop PHP Notices
     if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$q->fieldname])) {$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$q->fieldname] = "";}
-    $aQuestionAttributes = getQuestionAttributeValues($q->id);
+    $aQuestionAttributes = getQuestionAttributeValues($q);
 
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
     // this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.

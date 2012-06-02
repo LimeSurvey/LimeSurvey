@@ -1688,7 +1688,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
     }
-    $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
 
@@ -2185,7 +2184,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         {
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                             {
-                                $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
+                                $aAttributes=getQuestionAttributeValues($field['qid']);
                                 $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
                                 $total=$total+(int)$aAttributes['assessment_value'];
                             }
