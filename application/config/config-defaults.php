@@ -505,6 +505,7 @@ $config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // L
 $config['adminscripts']            = $config['publicurl'].'scripts/admin/';
 $config['generalscripts']          = $config['publicurl'].'scripts/';
 $config['styleurl']                = $config['publicurl'].'styles/';
+$config['publicstyleurl']          = $config['publicurl'].'styles-public/';
 $config['sCKEditorURL']            = $config['adminscripts'].'/ckeditor.36';
 $config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
 $config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script

@@ -14,7 +14,7 @@
    *	Files Purpose: lots of common functions
 */
 
-class Tokens_dynamic extends CActiveRecord
+class Tokens_dynamic extends LSActiveRecord
 {
 	protected static $sid = 0;
 
@@ -37,7 +37,7 @@ class Tokens_dynamic extends CActiveRecord
 	 * @static
 	 * @access public
 	 * @param int $surveyid
-	 * @return CActiveRecord
+	 * @return Tokens_dynamic
 	 */
 	public static function model($sid = null)
 	{
@@ -124,12 +124,32 @@ class Tokens_dynamic extends CActiveRecord
         ->bindParam(":tid", $tid, PDO::PARAM_INT)
         ->execute();
     }
+
+    /**
+     * Retrieve an array of records with an empty token, in the result is just the id (tid)
+     *
+     * @param int $iSurveyID
+     * @return array
+     */
     function selectEmptyTokens($iSurveyID)
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
+
+    /**
+     * Creates tokens for all token records that have empty token fields and returns the number
+     * of tokens created
+     *
+     * @param int $iSurveyID
+     * @return int number of created tokens
+     */
     function createTokens($iSurveyID)
     {
+        $tkresult = $this->selectEmptyTokens($iSurveyID);
+
+        //Exit early if there are not empty tokens
+        if (count($tkresult)===0) return 0;
+
         //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>$iSurveyID));
         $iTokenLength = $tlrow->tokenlength;
@@ -140,7 +160,10 @@ class Tokens_dynamic extends CActiveRecord
             $iTokenLength = 15;
         }
 
-		$ntresult = $this->findAll();
+        //Add some criteria to select only the token field
+        $criteria = $this->getDbCriteria();
+        $criteria->select = 'token';
+		$ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
 
         // select all existing tokens
         foreach ($ntresult as $tkrow)
@@ -149,7 +172,6 @@ class Tokens_dynamic extends CActiveRecord
         }
 
         $newtokencount = 0;
-        $tkresult = $this->selectEmptyTokens($iSurveyID);
         foreach ($tkresult as $tkrow)
         {
             $bIsValidToken = false;
@@ -164,8 +186,8 @@ class Tokens_dynamic extends CActiveRecord
             $itresult = $this->updateToken($tkrow['tid'], $newtoken);
             $newtokencount++;
         }
-        return $newtokencount;
 
+        return $newtokencount;
     }
 
     public function search()

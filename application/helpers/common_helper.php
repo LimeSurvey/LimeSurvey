@@ -2573,8 +2573,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "|")
         {
             $qidattributes= getQuestionAttributeValues($arow['qid']);
-            for ($i = 1; $i <= $qidattributes['max_num_of_files']; $i++)
-            {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                 'type'=>$arow['type'],
@@ -2614,7 +2612,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
-            }
         }
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
@@ -4071,7 +4068,7 @@ function questionAttributes($returnByName=false)
     "types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
-    "inputtype"=>"integer",
+    "inputtype"=>"text",
     'default'=>1,
     "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
     "caption"=>$clang->gT("Max number of files"));
@@ -4080,7 +4077,7 @@ function questionAttributes($returnByName=false)
     "types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>132,
-    "inputtype"=>"integer",
+    "inputtype"=>"text",
     'default'=>0,
     "help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
     "caption"=>$clang->gT("Min number of files"));
@@ -5816,14 +5813,13 @@ function isNumericInt($mStr)
 */
 function includeKeypad()
 {
-    global $js_header_includes, $css_header_includes, $clang;
-
-    $js_header_includes[] = '/scripts/jquery/jquery.keypad.min.js';
-    if ($clang->langcode !== 'en')
+    $clang = Yii::app()->lang;
+    header_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.keypad.min.js');
+    if ($clang->langcode != 'en')
     {
-        $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.keypad-'.$clang->langcode.'.js';
+        header_includes(Yii::app()->getConfig('generalscripts').'jquery/locale/jquery.ui.keypad-'.$clang->langcode.'.js');
     }
-    $css_header_includes[] = '/scripts/jquery/css/jquery.keypad.alt.css';
+    header_includes('jquery.keypad.alt.css','css');
 }
 
 /**
@@ -7526,5 +7522,21 @@ function getBrowserLanguage()
     return $sLanguage;
 }
 
+/**
+* This function add string to css or js header for public surevy
+* @param	string		string to ellipsize
+* @param	string		max length of string
+* @return	array		array of string for js or css to be included
+*
+*/
 
+function header_includes($includes = false, $method = "js" )
+{
+    $header_includes = (array) Yii::app()->getConfig("{$method}_header_includes");
+    $header_includes[] = $includes;
+    $header_includes = array_filter($header_includes);
+    $header_includes = array_unique($header_includes);
+    Yii::app()->setConfig("{$method}_header_includes", $header_includes);
+    return $header_includes;
+}
 // Closing PHP tag intentionally omitted - yes, it is okay

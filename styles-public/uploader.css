@@ -28,7 +28,7 @@ img {
 
 .upload-button {
     border: 1px solid #79B7E7;
-    background: url("jquery/css/start/images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC;
+    background: url("./images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC;
     color: #5670A1;
     font-weight: bold;
     outline: medium none;
@@ -55,11 +55,11 @@ img {
 .success {
     color: #4F8A10;
     background-color: #DFF2BF;
-    background-image:url('../../images/success_notice.png');
+    background-image:url('../images/success_notice.png');
 }
 
 .error {
     color: #D8000C;
     background-color: #FFBABA;
-    background-image: url('../../images/error_notice.png');
+    background-image: url('../images/error_notice.png');
 }

@@ -35,6 +35,7 @@ $(document).ready(function() {
                     $(this).dialog('close');
                     $('iframe#uploader').remove();
                     $(this).dialog('destroy');
+                    checkconditions();
                 }
             };
 

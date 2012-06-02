@@ -243,15 +243,6 @@ function retrieveAnswers($ia)
             break;
         case '|': //File Upload
             $values=do_file_upload($ia);
-            if ($aQuestionAttributes['min_num_of_files'] != 0)
-            {
-                if (trim($aQuestionAttributes['min_num_of_files']) != 0)
-                {
-                    $qtitle .= "<br />\n<span class = \"questionhelp\">"
-                    .sprintf($clang->gT("At least %d files must be uploaded for this question"), $aQuestionAttributes['min_num_of_files'])."<span>";
-                    $question_text['help'] .= ' '.sprintf($clang->gT("At least %d files must be uploaded for this question"), $aQuestionAttributes['min_num_of_files']);
-                }
-            }
             break;
         case 'Q': //MULTIPLE SHORT TEXT
             $values=do_multipleshorttext($ia);
@@ -577,7 +568,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-
+    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js');
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
     This just stops error messages occuring */
     if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
@@ -929,13 +920,11 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
-    global $js_header_includes;
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer='';
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
 
@@ -991,8 +980,8 @@ function do_5pointchoice($ia)
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
     if($aQuestionAttributes['slider_rating']==1){
-        $css_header_includes[]= '/admin/scripts/rating/jquery.rating.css';
-        $js_header_includes[]='/admin/scripts/rating/jquery.rating.js';
+        header_includes('/admin/scripts/rating/jquery.rating.css','css');
+        header_includes('/admin/scripts/rating/jquery.rating.js','js');
         $answer.="
         <script type=\"text/javascript\">
         document.write('";
@@ -1095,9 +1084,6 @@ function do_date($ia)
     $clang=Yii::app()->lang;
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
-    $js_admin_includes[] = '/scripts/jquery/lime-calendar.js';
-    Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
 
     $checkconditionFunction = "checkconditions";
 
@@ -1249,11 +1235,11 @@ function do_date($ia)
     }
     else
     {
+        header_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-calendar.js');
         if ($clang->langcode !== 'en')
         {
-            $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
+            header_includes(Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js');
         }
-        //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
 
         // Format the date  for output
         if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])!='')
@@ -2948,7 +2934,7 @@ function do_multiplechoice_withcomments($ia)
 // ---------------------------------------------------------------
 function do_file_upload($ia)
 {
-    global $js_header_includes, $thissurvey;
+    global $thissurvey;
 
     $clang = Yii::app()->lang;
 
@@ -2980,20 +2966,29 @@ function do_file_upload($ia)
             $questgrppreview = 0;
     }
 
-    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
-    ."{$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2>";
+    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' ";
+    $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
+    $uploadbutton .=">" .$clang->gT('Upload files'). "</a></h2>";
 
-    $answer =  "<script type='text/javascript'>
-    var translt = {
-    title: '" . $clang->gT('Upload your files','js') . "',
-    returnTxt: '" . $clang->gT('Return to survey','js') . "',
-    headTitle: '" . $clang->gT('Title','js') . "',
-    headComment: '" . $clang->gT('Comment','js') . "',
-    headFileName: '" . $clang->gT('File name','js') . "'
-    };
+    $answer = "<script type='text/javascript'>
+        function upload_$ia[1]() {
+            var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}';
+            uploadurl += '&amp;preview={$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}';
+            uploadurl += '&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."';
+            uploadurl += '&amp;minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
+            uploadurl += '&amp;maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
+            $('#upload_$ia[1]').attr('href',uploadurl);
+        }
+        var translt = {
+             title: '" . $clang->gT('Upload your files','js') . "',
+             returnTxt: '" . $clang->gT('Return to survey','js') . "',
+             headTitle: '" . $clang->gT('Title','js') . "',
+             headComment: '" . $clang->gT('Comment','js') . "',
+             headFileName: '" . $clang->gT('File name','js') . "',
+            };
     </script>\n";
 
-    $js_header_includes[]= "<script type='text/javascript' src='".Yii::app()->getBaseUrl(true)."/scripts/modaldialog.js'></script>";
+    header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -3037,7 +3032,7 @@ function do_file_upload($ia)
     var i;
     var jsonstring = "[";
 
-    for (i = 1, filecount = 0; i <= '.$aQuestionAttributes['max_num_of_files'].'; i++)
+    for (i = 1, filecount = 0; i <= LEMval("'.$aQuestionAttributes['max_num_of_files'].'"); i++)
     {
     if ($("#'.$ia[1].'_"+i).val() == "")
     continue;
@@ -3223,6 +3218,13 @@ function do_multipleshorttext($ia)
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 
+                // color code missing mandatory questions red
+                if ($ia[6]=='Y' && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])
+                        || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep'] > $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step']))
+                        && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') {
+                    $ansrow['question'] = "<span class='errormandatory'>{$ansrow['question']}</span>";
+                }
+
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
                 $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
@@ -3264,7 +3266,7 @@ function do_multipleshorttext($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_multiplenumeric($ia)
 {
-    global $js_header_includes, $css_header_includes, $thissurvey;
+    global $thissurvey;
 
     $clang = Yii::app()->lang;
     $extraclass ="";
@@ -3388,9 +3390,9 @@ function do_multiplenumeric($ia)
     }
     if ($aQuestionAttributes['slider_layout']==1)
     {
+        header_includes( Yii::app()->getConfig("generalscripts").'jquery/lime-slider.js');
         $slider_layout=true;
         $extraclass .=" withslider";
-        //$css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css'; already included by default
         if (trim($aQuestionAttributes['slider_accuracy'])!='')
         {
             //$slider_divisor = 1 / $slider_accuracy['value'];
@@ -3515,6 +3517,13 @@ function do_multiplenumeric($ia)
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
 
+            // color code missing mandatory questions red
+            if ($ia[6]=='Y' && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])
+                    || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep'] > $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step']))
+                    && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') {
+                $theanswer = "<span class='errormandatory'>{$theanswer}</span>";
+            }
+
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item numeric-item".$extraclass);
             $answer_main .= "\t$htmltbody2\n";
             if ($slider_layout === false)
@@ -3558,10 +3567,6 @@ function do_multiplenumeric($ia)
                     $slider_showmin='';
                     $slider_showmax='';
                 }
-
-                //$js_header_includes[] = '/scripts/jquery/jquery-ui.js'; already included by default
-                $js_header_includes[] = '/scripts/jquery/lime-slider.js';
-
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] != '')
                 {
                     $slider_startvalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] * $slider_divisor;
@@ -3646,9 +3651,7 @@ function do_multiplenumeric($ia)
         //            $answer_computed .= "\t<li class='multiplenumerichelp'>\n<label for=\"totalvalue_{$ia[1]}\">\n\t".$clang->gT('Total: ')."\n</label>\n<span>\n\t$prefix\n\t<input size=10  type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t$suffix\n</span>\n\t</li>\n";
         //            $answer_main .= $answer_computed;
         //        }
-        if($slider_layout){
-            $js_header_includes[]= "/scripts/jquery/lime-slider.js";
-        }
+
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
@@ -3892,7 +3895,7 @@ function do_numerical($ia)
 // ---------------------------------------------------------------
 function do_shortfreetext($ia)
 {
-    global $js_header_includes, $thissurvey;
+    global $thissurvey;
 
     $clang = Yii::app()->lang;
     $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
@@ -4047,15 +4050,14 @@ function do_shortfreetext($ia)
         class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
         <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
         </div>";
-
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
-            $js_header_includes[] = "https://maps.googleapis.com/maps/api/js?sensor=false";
+            header_includes("https://maps.googleapis.com/maps/api/js?sensor=false");
         else if ($aQuestionAttributes['location_mapservice']==1)
-                $js_header_includes[] = "http://maps.googleapis.com/maps/api/js?sensor=false";
-            elseif ($aQuestionAttributes['location_mapservice']==2)
-                $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
+            header_includes("http://maps.googleapis.com/maps/api/js?sensor=false");
+        elseif ($aQuestionAttributes['location_mapservice']==2)
+            header_includes("http://www.openlayers.org/api/OpenLayers.js");
 
-            if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
+        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
             $answer .= "<div class=\"questionhelp\">"
             . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
@@ -4082,7 +4084,6 @@ function do_shortfreetext($ia)
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
@@ -4111,7 +4112,7 @@ function getLatLongFromIp($ip){
 // ---------------------------------------------------------------
 function do_longfreetext($ia)
 {
-    global $js_header_includes, $thissurvey;
+    global $thissurvey;
     $extraclass ="";
 
 
@@ -4179,7 +4180,6 @@ function do_longfreetext($ia)
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
@@ -4190,7 +4190,7 @@ function do_longfreetext($ia)
 // ---------------------------------------------------------------
 function do_hugefreetext($ia)
 {
-    global $js_header_includes, $thissurvey;
+    global $thissurvey;
     $clang =Yii::app()->lang;
     $extraclass ="";
     if ($thissurvey['nokeyboard']=='Y')
@@ -4254,7 +4254,6 @@ function do_hugefreetext($ia)
     $answer .="</p>";
     if (trim($aQuestionAttributes['time_limit']) != '')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
