@@ -70,6 +70,9 @@
             'parents' => array(self::HAS_ONE, 'Questions', '',
             'on' => 't.parent_qid = parents.qid',
             ),
+            'question_types' => array(self::HAS_ONE, 'Question_types', '',
+            'on' => 't.tid = question_types.tid',
+            ),
             );
         }
 

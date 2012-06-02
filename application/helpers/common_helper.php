@@ -2901,10 +2901,11 @@ function getQuestionAttributeValues($iQID)
     if (isset($cache[$iQID])) {
         return $cache[$iQID];
     }
-    $row = Questions::model()->findByAttributes(array('qid' => $iQID)); //, 'parent_qid' => 0), array('group' => 'type')
-    $row = $row->getAttributes();
-    $type = $row['type']; //AJS
-    $q = objectizeQuestion($type); //AJS
+    $row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $iQID)); //, 'parent_qid' => 0), array('group' => 'type')
+    $row = $row->question_types;
+    $class = $row['class'].'Question';
+    Yii::import('application.modules.*');
+    $q = new $class;
     $q->id = $iQID;
 
     return $cache[$iQID] = $q->getAttributeValues();
