@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-31 06:06:59+0000\n"
+"PO-Revision-Date: 2012-06-02 11:49:05+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,6 +14,34 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Language: Polish\n"
 "Project-Id-Version: LimeSurvey 1.92\n"
+
+#: classes/expressions/LimeExpressionManager.php:2331
+msgid "Please upload at least one file"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2332
+msgid "Please upload at least %s files"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2336
+msgid "Please upload at most one file"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2337
+msgid "Please upload at most %s files"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2341
+msgid "Please upload one file"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2342
+msgid "Please upload %s files"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2344
+msgid "Please upload between %s and %s files"
+msgstr ""
 
 #: admin/activate.php:73
 msgid "Add or delete groups"
@@ -491,7 +519,7 @@ msgstr "Czy jesteś pewien, że chcesz usunąć ten wpis?"
 
 #: admin/assessments.php:203 admin/assessments.php:231 admin/surveylist.php:39
 msgid "Total"
-msgstr "Całość"
+msgstr "Ogółem"
 
 #: admin/assessments.php:234 admin/browse.php:870
 msgid "Group"
@@ -557,7 +585,7 @@ msgstr "ID tokena"
 #: admin/exportresults.php:434 admin/exportresults.php:435
 #: admin/exportresults.php:757 admin/tokens.php:1025 admin/tokens.php:1028
 #: admin/tokens.php:1029 admin/tokens.php:2322 admin/tokens.php:2458
-#: common_functions.php:6214 replacements.php:507
+#: common_functions.php:6211 replacements.php:507
 msgid "First name"
 msgstr "Imię"
 
@@ -565,7 +593,7 @@ msgstr "Imię"
 #: admin/exportresults.php:429 admin/exportresults.php:430
 #: admin/exportresults.php:760 admin/tokens.php:1035 admin/tokens.php:1038
 #: admin/tokens.php:1039 admin/tokens.php:2326 admin/tokens.php:2460
-#: common_functions.php:6215 replacements.php:514
+#: common_functions.php:6212 replacements.php:514
 msgid "Last name"
 msgstr "Nazwisko"
 
@@ -739,7 +767,7 @@ msgstr "Edytuj token"
 msgid "Time statistics"
 msgstr "Statystyki czasu"
 
-#: admin/browse.php:868 common_functions.php:2928
+#: admin/browse.php:868 common_functions.php:2925
 msgid "Total time"
 msgstr "Całkowity czas"
 
@@ -903,24 +931,24 @@ msgstr "Nie można skopiować warunków (z powodu powtórzeń)"
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2513
-#: classes/expressions/LimeExpressionManager.php:2517 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2615
+#: classes/expressions/LimeExpressionManager.php:2619 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
-#: common_functions.php:3205 common_functions.php:3278
-#: common_functions.php:3385 common_functions.php:3398
-#: common_functions.php:3409 common_functions.php:3420
-#: common_functions.php:3431 common_functions.php:3469
-#: common_functions.php:3499 common_functions.php:3510
-#: common_functions.php:3601 common_functions.php:3612
-#: common_functions.php:3624 common_functions.php:3636
-#: common_functions.php:3666 common_functions.php:3679
-#: common_functions.php:3690 common_functions.php:3701
-#: common_functions.php:3720 common_functions.php:3739
-#: common_functions.php:3750 common_functions.php:3761
-#: common_functions.php:3804 common_functions.php:3830
-#: common_functions.php:3865 common_functions.php:3931
-#: common_functions.php:3941 common_functions.php:4055
-#: common_functions.php:4066 qanda.php:3771 qanda.php:4193 qanda.php:4232
+#: common_functions.php:3202 common_functions.php:3275
+#: common_functions.php:3382 common_functions.php:3395
+#: common_functions.php:3406 common_functions.php:3417
+#: common_functions.php:3428 common_functions.php:3466
+#: common_functions.php:3496 common_functions.php:3507
+#: common_functions.php:3598 common_functions.php:3609
+#: common_functions.php:3621 common_functions.php:3633
+#: common_functions.php:3663 common_functions.php:3676
+#: common_functions.php:3687 common_functions.php:3698
+#: common_functions.php:3717 common_functions.php:3736
+#: common_functions.php:3747 common_functions.php:3758
+#: common_functions.php:3801 common_functions.php:3827
+#: common_functions.php:3862 common_functions.php:3928
+#: common_functions.php:3938 common_functions.php:4052
+#: common_functions.php:4063 qanda.php:3781 qanda.php:4203 qanda.php:4242
 msgid "Yes"
 msgstr "Tak"
 
@@ -931,8 +959,8 @@ msgstr "Tak"
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2519 common_functions.php:1922
-#: qanda.php:4194 qanda.php:4239
+#: classes/expressions/LimeExpressionManager.php:2621 common_functions.php:1922
+#: qanda.php:4204 qanda.php:4249
 msgid "Uncertain"
 msgstr "Nie wiem"
 
@@ -970,24 +998,24 @@ msgstr "Nie wiem"
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2514
-#: classes/expressions/LimeExpressionManager.php:2518 common_functions.php:1905
-#: common_functions.php:1921 common_functions.php:3204
-#: common_functions.php:3277 common_functions.php:3384
-#: common_functions.php:3399 common_functions.php:3410
-#: common_functions.php:3421 common_functions.php:3432
-#: common_functions.php:3470 common_functions.php:3498
-#: common_functions.php:3509 common_functions.php:3600
-#: common_functions.php:3611 common_functions.php:3623
-#: common_functions.php:3635 common_functions.php:3665
-#: common_functions.php:3678 common_functions.php:3689
-#: common_functions.php:3700 common_functions.php:3719
-#: common_functions.php:3738 common_functions.php:3749
-#: common_functions.php:3760 common_functions.php:3803
-#: common_functions.php:3815 common_functions.php:3829
-#: common_functions.php:3864 common_functions.php:3930
-#: common_functions.php:3940 common_functions.php:4054
-#: common_functions.php:4065 qanda.php:3778 qanda.php:4195 qanda.php:4247
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2616
+#: classes/expressions/LimeExpressionManager.php:2620 common_functions.php:1905
+#: common_functions.php:1921 common_functions.php:3201
+#: common_functions.php:3274 common_functions.php:3381
+#: common_functions.php:3396 common_functions.php:3407
+#: common_functions.php:3418 common_functions.php:3429
+#: common_functions.php:3467 common_functions.php:3495
+#: common_functions.php:3506 common_functions.php:3597
+#: common_functions.php:3608 common_functions.php:3620
+#: common_functions.php:3632 common_functions.php:3662
+#: common_functions.php:3675 common_functions.php:3686
+#: common_functions.php:3697 common_functions.php:3716
+#: common_functions.php:3735 common_functions.php:3746
+#: common_functions.php:3757 common_functions.php:3800
+#: common_functions.php:3812 common_functions.php:3826
+#: common_functions.php:3861 common_functions.php:3927
+#: common_functions.php:3937 common_functions.php:4051
+#: common_functions.php:4062 qanda.php:3788 qanda.php:4205 qanda.php:4257
 msgid "No"
 msgstr "Nie"
 
@@ -997,8 +1025,8 @@ msgstr "Nie"
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2522 common_functions.php:1928
-#: qanda.php:4341 qanda.php:4384
+#: classes/expressions/LimeExpressionManager.php:2624 common_functions.php:1928
+#: qanda.php:4351 qanda.php:4394
 msgid "Increase"
 msgstr "Wzrost"
 
@@ -1008,8 +1036,8 @@ msgstr "Wzrost"
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2523 common_functions.php:1930
-#: qanda.php:4342 qanda.php:4395
+#: classes/expressions/LimeExpressionManager.php:2625 common_functions.php:1930
+#: qanda.php:4352 qanda.php:4405
 msgid "Same"
 msgstr "Bez zmian"
 
@@ -1019,8 +1047,8 @@ msgstr "Bez zmian"
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2524 common_functions.php:1929
-#: qanda.php:4343 qanda.php:4407
+#: classes/expressions/LimeExpressionManager.php:2626 common_functions.php:1929
+#: qanda.php:4353 qanda.php:4417
 msgid "Decrease"
 msgstr "Spadek"
 
@@ -1039,13 +1067,13 @@ msgstr "Spadek"
 #: admin/statistics_function.php:2567 admin/statistics_function.php:2581
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
-#: common_functions.php:1914 common_functions.php:5468
-#: common_functions.php:5473 qanda.php:927 qanda.php:1455 qanda.php:1734
-#: qanda.php:1838 qanda.php:1893 qanda.php:3787 qanda.php:3832 qanda.php:3921
-#: qanda.php:3985 qanda.php:4074 qanda.php:4120 qanda.php:4198 qanda.php:4264
-#: qanda.php:4346 qanda.php:4424 qanda.php:4525 qanda.php:4547 qanda.php:4615
-#: qanda.php:4746 qanda.php:5517 qanda.php:5518 qanda.php:5803 qanda.php:5878
-#: qanda.php:5979 qanda.php:6179 qanda.php:6233
+#: common_functions.php:1914 common_functions.php:5465
+#: common_functions.php:5470 qanda.php:918 qanda.php:1446 qanda.php:1725
+#: qanda.php:1829 qanda.php:1884 qanda.php:3797 qanda.php:3842 qanda.php:3931
+#: qanda.php:3995 qanda.php:4084 qanda.php:4130 qanda.php:4208 qanda.php:4274
+#: qanda.php:4356 qanda.php:4434 qanda.php:4535 qanda.php:4557 qanda.php:4625
+#: qanda.php:4756 qanda.php:5527 qanda.php:5528 qanda.php:5813 qanda.php:5888
+#: qanda.php:5989 qanda.php:6189 qanda.php:6243
 msgid "No answer"
 msgstr "Brak odpowiedzi"
 
@@ -1072,8 +1100,8 @@ msgstr "niezaznaczone"
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2510 common_functions.php:1913
-#: qanda.php:3815
+#: classes/expressions/LimeExpressionManager.php:2612 common_functions.php:1913
+#: qanda.php:3825
 msgid "Female"
 msgstr "Kobietą"
 
@@ -1084,8 +1112,8 @@ msgstr "Kobietą"
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2509 common_functions.php:1912
-#: qanda.php:3823
+#: classes/expressions/LimeExpressionManager.php:2611 common_functions.php:1912
+#: qanda.php:3833
 msgid "Male"
 msgstr "Mężczyzną"
 
@@ -1099,13 +1127,13 @@ msgstr "Mężczyzną"
 #: admin/statistics_function.php:693 admin/statistics_function.php:1826
 #: admin/statistics_function.php:1917 admin/statistics_function.php:2049
 #: common_functions.php:1890 common_functions.php:1948
-#: common_functions.php:2530 common_functions.php:2798
-#: common_functions.php:3631 common_functions.php:3645
-#: common_functions.php:3661 common_functions.php:3716
-#: common_functions.php:3735 common_functions.php:3893
-#: common_functions.php:4074 common_functions.php:4083
-#: common_functions.php:4092 common_functions.php:4101 qanda.php:1700
-#: qanda.php:2355 qanda.php:2595
+#: common_functions.php:2530 common_functions.php:2795
+#: common_functions.php:3628 common_functions.php:3642
+#: common_functions.php:3658 common_functions.php:3713
+#: common_functions.php:3732 common_functions.php:3890
+#: common_functions.php:4071 common_functions.php:4080
+#: common_functions.php:4089 common_functions.php:4098 qanda.php:1691
+#: qanda.php:2346 qanda.php:2586
 msgid "Other"
 msgstr "Inne"
 
@@ -1229,7 +1257,7 @@ msgstr "Nie wybrano pytań"
 
 #: admin/conditionshandling.php:1618
 msgid "Check all"
-msgstr "Sprawdź wszystko"
+msgstr "Zaznacz wszystko"
 
 #: admin/conditionshandling.php:1618
 msgid "Uncheck all"
@@ -1287,8 +1315,8 @@ msgstr "Operator porównania"
 #: admin/statistics_function.php:2188 admin/statistics_function.php:2197
 #: admin/statistics_function.php:2202 admin/statistics_function.php:2292
 #: admin/statistics_function.php:2295 admin/statistics_function.php:2303
-#: admin/statistics_function.php:2308 qanda.php:1177 qanda.php:3400
-#: qanda.php:3488 qanda.php:3581 qanda.php:3669 qanda.php:3737
+#: admin/statistics_function.php:2308 qanda.php:1168 qanda.php:3410
+#: qanda.php:3498 qanda.php:3591 qanda.php:3679 qanda.php:3747
 msgid "Answer"
 msgstr "Odpowiedź"
 
@@ -1533,7 +1561,7 @@ msgid "Start Language:"
 msgstr "Język początkowy:"
 
 #: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:2939
-#: group.php:1019 index.php:2416 replacements.php:272
+#: group.php:1019 index.php:2421 replacements.php:272
 msgid "Submit"
 msgstr "Wyślij"
 
@@ -1616,24 +1644,24 @@ msgstr "Podgląd odpowiedzi (ID %s)"
 #: admin/dataentry.php:2033 admin/dataentry.php:2066 admin/dataentry.php:2305
 #: admin/dataentry.php:2619 admin/dataentry.php:2634 admin/dataentry.php:2655
 #: admin/dataentry.php:2676 admin/dataentry.php:2696 admin/dataentry.php:2856
-#: qanda.php:1469 qanda.php:4726
+#: qanda.php:1460 qanda.php:4736
 msgid "Please choose"
 msgstr "Wybierz"
 
-#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2059
+#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2050
 msgid "Remove this item"
 msgstr "Usuń ten element"
 
-#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2088
+#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2079
 msgid "Your Choices"
 msgstr "Dostępne elementy"
 
-#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2099
+#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2090
 msgid "Your Ranking"
 msgstr "Twój ranking"
 
-#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3401
-#: qanda.php:3405
+#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3411
+#: qanda.php:3415
 msgid "Only numbers may be entered in this field"
 msgstr "Można wprowadzać tylko liczby"
 
@@ -1657,7 +1685,7 @@ msgstr "Rekord usunięty"
 #: admin/exportresults.php:444 admin/exportresults.php:445
 #: admin/exportresults.php:769 admin/tokens.php:1065 admin/tokens.php:1068
 #: admin/tokens.php:1069 admin/tokens.php:2343 common_functions.php:2344
-#: index.php:1763 index.php:1930
+#: index.php:1768 index.php:1935
 msgid "Token"
 msgstr "Token"
 
@@ -1695,14 +1723,14 @@ msgstr "Etykieta %s"
 #: admin/dataentry.php:1932 admin/dataentry.php:1944 admin/labels.php:78
 #: admin/translate_functions.php:148 common_functions.php:646
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
-#: common_functions.php:1411 common_functions.php:4803
-#: common_functions.php:4852 common_functions.php:4888
-#: common_functions.php:4924 qanda.php:1253 qanda.php:1431 qanda.php:6159
-#: qanda.php:6213
+#: common_functions.php:1411 common_functions.php:4800
+#: common_functions.php:4849 common_functions.php:4885
+#: common_functions.php:4921 qanda.php:1244 qanda.php:1422 qanda.php:6169
+#: qanda.php:6223
 msgid "Please choose..."
 msgstr "Wybierz..."
 
-#: admin/dataentry.php:2069 common_functions.php:2559 common_functions.php:2779
+#: admin/dataentry.php:2069 common_functions.php:2559 common_functions.php:2776
 #: qanda.php:2707 uploader.php:96
 msgid "Comment"
 msgstr "Komentarz"
@@ -1847,7 +1875,7 @@ msgid "Quick-add answers"
 msgstr "Szybkie dodawanie odpowiedzi"
 
 #: admin/editansweroptions.php:119 admin/editansweroptions.php:148
-#: admin/labels.php:327 common_functions.php:3243
+#: admin/labels.php:327 common_functions.php:3240
 msgid "Assessment value"
 msgstr "Wartość oceny"
 
@@ -2836,7 +2864,7 @@ msgstr "System może wyeksportować tokeny skojarzone z odpowiedziami. Wybierz p
 
 #: admin/exportresults.php:234 admin/exportresults.php:439
 #: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1045
-#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6216
+#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6213
 #: replacements.php:521
 msgid "Email address"
 msgstr "Adres e-mail"
@@ -2921,7 +2949,7 @@ msgstr "Email z tabeli tokenów"
 #: admin/fck_LimeReplacementFields.php:149
 #: admin/fck_LimeReplacementFields.php:165
 #: admin/fck_LimeReplacementFields.php:222 admin/tokens.php:1125
-#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6222
+#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6219
 msgid "Uses left"
 msgstr "Pozostało do wykorzystania"
 
@@ -3192,8 +3220,8 @@ msgstr "Włączony"
 #: admin/globalsettings.php:254 admin/globalsettings.php:265
 #: admin/globalsettings.php:317 admin/globalsettings.php:329
 #: admin/globalsettings.php:350 admin/globalsettings.php:370
-#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3441
-#: common_functions.php:3649
+#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3438
+#: common_functions.php:3646
 msgid "Off"
 msgstr "Wyłączony"
 
@@ -3243,7 +3271,7 @@ msgstr "SMTP"
 
 #: admin/globalsettings.php:302
 msgid "Sendmail"
-msgstr "Wyślij mail"
+msgstr "Sendmail"
 
 #: admin/globalsettings.php:305
 msgid "Qmail"
@@ -3452,7 +3480,7 @@ msgid "HTML editor mode"
 msgstr "Tryb edytora HTML"
 
 #: admin/html.php:118 admin/html.php:129 admin/html.php:139
-#: admin/login_check.php:229 common_functions.php:3896
+#: admin/login_check.php:229 common_functions.php:3893
 msgid "Default"
 msgstr "Domyślny"
 
@@ -3650,8 +3678,8 @@ msgstr "Grupy pytań"
 #: admin/html.php:611 admin/tokens.php:823 admin/tokens.php:857
 #: common_functions.php:651 common_functions.php:654 common_functions.php:1312
 #: common_functions.php:1337 common_functions.php:1412
-#: common_functions.php:3884 common_functions.php:4853
-#: common_functions.php:4889
+#: common_functions.php:3881 common_functions.php:4850
+#: common_functions.php:4886
 msgid "None"
 msgstr "Żadne"
 
@@ -4564,7 +4592,7 @@ msgstr "Pamiętaj, skrypt nie obsługuje podkatalogów w archiwum ZIP."
 #: admin/import_resources_zip.php:160 admin/import_resources_zip.php:342
 #: admin/import_resources_zip.php:536 admin/surveylist.php:38
 msgid "Partial"
-msgstr "Import częściowo udany"
+msgstr "Częściowe"
 
 #: admin/import_resources_zip.php:164 admin/import_resources_zip.php:172
 #: admin/import_resources_zip.php:346 admin/import_resources_zip.php:354
@@ -5329,7 +5357,7 @@ msgstr "Zarządzanie zasobami"
 
 #: admin/labels.php:438
 msgid "Quick add"
-msgstr ""
+msgstr "Szybko dodaj"
 
 #: admin/labels.php:439
 msgid "Enter your labels:"
@@ -5440,7 +5468,7 @@ msgid "Question code:"
 msgstr "Kod pytania:"
 
 #: admin/printablesurvey.php:479 admin/printablesurvey.php:481
-#: admin/templates.php:531 admin/templates.php:664 qanda.php:281 qanda.php:282
+#: admin/templates.php:531 admin/templates.php:664 qanda.php:272 qanda.php:273
 msgid "*"
 msgstr "*"
 
@@ -5457,8 +5485,8 @@ msgstr "Proszę wybrać jedną odpowiedź z poniższych:"
 msgid "Please enter a date:"
 msgstr "Proszę wprowadzić datę"
 
-#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2578
-#: qanda.php:2579 qanda.php:2610
+#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2569
+#: qanda.php:2570 qanda.php:2601
 msgid "Make a comment on your choice here:"
 msgstr "Wprowadź komentarz do swojej odpowiedzi:"
 
@@ -5483,9 +5511,9 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Proszę wybrać wszystkie pasujące odpowiedzi oraz dodać komentarz"
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2643
-#: classes/expressions/LimeExpressionManager.php:4993 qanda.php:1290
-#: qanda.php:1590 qanda.php:2200 qanda.php:2500
+#: classes/expressions/LimeExpressionManager.php:2745
+#: classes/expressions/LimeExpressionManager.php:5096 qanda.php:1281
+#: qanda.php:1581 qanda.php:2191 qanda.php:2491
 msgid "Other:"
 msgstr "Inne:"
 
@@ -5793,7 +5821,7 @@ msgid "Select Question"
 msgstr "Wybierz pytanie"
 
 #: admin/quota.php:725 admin/quota.php:788 admin/templates.php:429
-#: index.php:2400 index.php:2406 index.php:2411
+#: index.php:2405 index.php:2411 index.php:2416
 msgid "Next"
 msgstr "Dalej"
 
@@ -6180,7 +6208,7 @@ msgstr "Anonimowe odpowiedzi"
 
 #: admin/surveylist.php:37
 msgid "Full"
-msgstr "Pełna"
+msgstr "Kompletne"
 
 #: admin/surveylist.php:40
 msgid "Tokens available"
@@ -6344,7 +6372,7 @@ msgstr "Grupa 1: Pierwsza partia pytań"
 msgid "This group description is fairly vacuous, but quite important."
 msgstr "Ten opis grupy może wydawać się nie całkiem sensowny, ale jest dość ważny."
 
-#: admin/templates.php:430 index.php:2394 index.php:2815
+#: admin/templates.php:430 index.php:2399 index.php:2804
 msgid "Previous"
 msgstr "Wstecz"
 
@@ -6542,7 +6570,7 @@ msgstr "Podgląd:"
 msgid "Please change the directory permissions of the folder %s in order to preview templates."
 msgstr "W celu podglądu szablonów, proszę zmienić uprawnienia dostępu do folderu %s"
 
-#: admin/templates.php:1137 index.php:1044
+#: admin/templates.php:1137 index.php:1049
 msgid "You have completed %s%% of this survey"
 msgstr "Wypełniono %s%% tej ankiety"
 
@@ -7354,7 +7382,7 @@ msgstr "Pozostało do wykorzystania:"
 msgid "until"
 msgstr "do"
 
-#: admin/tokens.php:2399 admin/tokens.php:2482 qanda.php:1225 qanda.php:1232
+#: admin/tokens.php:2399 admin/tokens.php:2482 qanda.php:1216 qanda.php:1223
 msgid "Format: %s"
 msgstr "Format: %s"
 
@@ -7621,7 +7649,7 @@ msgstr "Email rejestracji"
 
 #: admin/translate_functions.php:744
 msgid "Question code / ID"
-msgstr ""
+msgstr "Kod pytania / ID"
 
 #: admin/update/updater.php:88 admin/update/updater.php:188
 msgid "Tempdir %s is not writable"
@@ -8926,7 +8954,7 @@ msgid "This variable is not declared until a later page"
 msgstr "Ta zmienna nie będzie zadeklarowana aż do późniejszej strony"
 
 #: classes/expressions/ExpressionManager.php:572
-#: classes/expressions/ExpressionManager.php:1685
+#: classes/expressions/ExpressionManager.php:1680
 msgid "Undefined variable"
 msgstr "Niezdefiniowana zmienna"
 
@@ -8966,218 +8994,218 @@ msgstr "Znaleziono dodatkowy przecinek w funkcji"
 msgid "Expected right parentheses"
 msgstr "Oczekiwane prawe nawiasy"
 
-#: classes/expressions/ExpressionManager.php:1669
+#: classes/expressions/ExpressionManager.php:1664
 msgid "Extra right parentheses detected"
 msgstr "Wykryto dodatkowe prawe nawiasy"
 
-#: classes/expressions/ExpressionManager.php:1678
+#: classes/expressions/ExpressionManager.php:1673
 msgid "Undefined function"
 msgstr "Niezdefiniowana funkcja"
 
-#: classes/expressions/ExpressionManager.php:1690
+#: classes/expressions/ExpressionManager.php:1685
 msgid "Unsupported syntax"
 msgstr "Nieobsługiwana składnia"
 
-#: classes/expressions/ExpressionManager.php:1698
+#: classes/expressions/ExpressionManager.php:1693
 msgid "Missing %s closing right parentheses"
 msgstr "Brakuje %s zamykających prawych nawiasów"
 
-#: classes/expressions/ExpressionManager.php:1955
+#: classes/expressions/ExpressionManager.php:1949
 msgid "Function must have at least %s argument(s)"
 msgstr "Funkcja musi zawierać co najmniej %s argument(ów)"
 
-#: classes/expressions/ExpressionManager.php:2046
+#: classes/expressions/ExpressionManager.php:2040
 msgid "Unsupported number of arguments: %s"
 msgstr "Nieuzasadniona liczba argumentów: %s"
 
-#: classes/expressions/ExpressionManager.php:2051
+#: classes/expressions/ExpressionManager.php:2045
 msgid "Function does not support %s arguments. "
 msgstr "Funkcja nie potwierdza %s argumentów."
 
-#: classes/expressions/ExpressionManager.php:2052
+#: classes/expressions/ExpressionManager.php:2046
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr "Funkcja potwierdza taką liczbę argumentów, gdzie -1=nieograniczona: %s."
 
-#: classes/expressions/ExpressionManager.php:2273
+#: classes/expressions/ExpressionManager.php:2279
 msgid "Tried to pop value off of empty stack"
 msgstr "Próbowano pobrać wartość z pustego stosu"
 
-#: classes/expressions/ExpressionManager.php:3197
+#: classes/expressions/ExpressionManager.php:3203
 msgid "Invalid PERL Regular Expression: %s"
 msgstr "Nieprawidłowe wyrażenie regularne PERL: %s"
 
-#: classes/expressions/LimeExpressionManager.php:2167
+#: classes/expressions/LimeExpressionManager.php:2237
 msgid "Please select at least one answer"
 msgstr "Proszę wybrać co najmniej jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2168
+#: classes/expressions/LimeExpressionManager.php:2238
 msgid "Please select at least %s answers"
 msgstr "Proszę wybrać co najmniej %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2172
+#: classes/expressions/LimeExpressionManager.php:2242
 msgid "Please select at most one answer"
 msgstr "Proszę wybrać co najwyżej jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2173
+#: classes/expressions/LimeExpressionManager.php:2243
 msgid "Please select at most %s answers"
 msgstr "Proszę wybrać co najwyżej %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2177
+#: classes/expressions/LimeExpressionManager.php:2247
 msgid "Please select one answer"
 msgstr "Proszę wybrać jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2178
+#: classes/expressions/LimeExpressionManager.php:2248
 msgid "Please select %s answers"
 msgstr "Proszę wybrać %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2180
+#: classes/expressions/LimeExpressionManager.php:2250
 msgid "Please select between %s and %s answers"
 msgstr "Proszę wybrać od %s do %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2196
-#: classes/expressions/LimeExpressionManager.php:2217
+#: classes/expressions/LimeExpressionManager.php:2266
+#: classes/expressions/LimeExpressionManager.php:2287
 msgid "Each answer must be at least %s"
 msgstr "Każda odpowiedź musi wynosić co najmniej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2198
-#: classes/expressions/LimeExpressionManager.php:2219
+#: classes/expressions/LimeExpressionManager.php:2268
+#: classes/expressions/LimeExpressionManager.php:2289
 msgid "Each answer must be at most %s"
 msgstr "Każda odpowiedź musi wynosić co najwyżej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2200
-#: classes/expressions/LimeExpressionManager.php:2221
+#: classes/expressions/LimeExpressionManager.php:2270
+#: classes/expressions/LimeExpressionManager.php:2291
 msgid "Each answer must be %s"
 msgstr "Każda odpowiedź musi być %s"
 
-#: classes/expressions/LimeExpressionManager.php:2201
-#: classes/expressions/LimeExpressionManager.php:2222
+#: classes/expressions/LimeExpressionManager.php:2271
+#: classes/expressions/LimeExpressionManager.php:2292
 msgid "Each answer must be between %s and %s"
 msgstr "Każda odpowiedź musi być z przedziału %s i %s"
 
-#: classes/expressions/LimeExpressionManager.php:2238
+#: classes/expressions/LimeExpressionManager.php:2308
 msgid "The sum must be at least %s"
 msgstr "Suma musi równać się co najmniej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2240
+#: classes/expressions/LimeExpressionManager.php:2310
 msgid "The sum must be at most %s"
 msgstr "Suma musi równać się co najwyżej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2242
-#: classes/expressions/LimeExpressionManager.php:2253
+#: classes/expressions/LimeExpressionManager.php:2312
+#: classes/expressions/LimeExpressionManager.php:2354
 msgid "The sum must equal %s"
 msgstr "Suma musi się równać %s"
 
-#: classes/expressions/LimeExpressionManager.php:2243
+#: classes/expressions/LimeExpressionManager.php:2313
 msgid "The sum must be between %s and %s"
 msgstr "Suma musi być z przedziału %s i %s"
 
-#: classes/expressions/LimeExpressionManager.php:2259
+#: classes/expressions/LimeExpressionManager.php:2360
 msgid "Please also fill in the \"other comment\" field."
 msgstr "Proszę wypełnić także pole \"inny komentarz\"."
 
-#: classes/expressions/LimeExpressionManager.php:2267
+#: classes/expressions/LimeExpressionManager.php:2368
 msgid "Please check the format of your answer."
 msgstr "Proszę sprawdzić format swojej odpowiedzi."
 
-#: classes/expressions/LimeExpressionManager.php:4009
+#: classes/expressions/LimeExpressionManager.php:4110
 msgid "Unable to insert record into survey table: "
 msgstr "Nie można wstawić rekordu do tabeli ankiety:"
 
-#: classes/expressions/LimeExpressionManager.php:4025
+#: classes/expressions/LimeExpressionManager.php:4126
 msgid "Unable to insert record into timings table "
 msgstr "Nie można wstawić rekordu do tabeli czasów"
 
-#: classes/expressions/LimeExpressionManager.php:4973
+#: classes/expressions/LimeExpressionManager.php:5076
 msgid "This question is mandatory"
 msgstr "To pytanie jest obligatoryjne"
 
-#: classes/expressions/LimeExpressionManager.php:4985
+#: classes/expressions/LimeExpressionManager.php:5088
 msgid "Please check at least one item."
 msgstr "Proszę zaznaczyć przynajmniej jeden element"
 
-#: classes/expressions/LimeExpressionManager.php:4995
+#: classes/expressions/LimeExpressionManager.php:5098
 msgid "If you choose '%s' you must provide a description."
 msgstr "Przy wyborze '%s' należy wprowadzić dodatkowy opis."
 
-#: classes/expressions/LimeExpressionManager.php:5017
-#: classes/expressions/LimeExpressionManager.php:5054
+#: classes/expressions/LimeExpressionManager.php:5120
+#: classes/expressions/LimeExpressionManager.php:5157
 msgid "Please complete all parts"
 msgstr "Prosimy udzielić odpowiedzi na wszystkie części"
 
-#: classes/expressions/LimeExpressionManager.php:5046
+#: classes/expressions/LimeExpressionManager.php:5149
 msgid "Please check at least one box per row"
 msgstr "Proszę zaznaczyć przynajmniej jeden element w każdym wierszu"
 
-#: classes/expressions/LimeExpressionManager.php:5062
+#: classes/expressions/LimeExpressionManager.php:5165
 msgid "Please rank all items"
 msgstr "Należy uporządkować wszystkie elementy"
 
-#: classes/expressions/LimeExpressionManager.php:7415
+#: classes/expressions/LimeExpressionManager.php:7517
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Nieprawidłowe pytanie - prawdopodobnie brak sub-pytań lub ustawień właściwych dla języka"
 
-#: classes/expressions/LimeExpressionManager.php:7420
+#: classes/expressions/LimeExpressionManager.php:7522
 msgid "Name [ID]"
 msgstr "Nazwa [ID]"
 
-#: classes/expressions/LimeExpressionManager.php:7420
+#: classes/expressions/LimeExpressionManager.php:7522
 msgid "Relevance [Validation] (Default)"
 msgstr "Relewancja [Walidacja] (Domyślnie)"
 
-#: classes/expressions/LimeExpressionManager.php:7420
+#: classes/expressions/LimeExpressionManager.php:7522
 msgid "Text [Help] (Tip)"
 msgstr "Tekst [Pomoc] (Podpowiedź)"
 
-#: classes/expressions/LimeExpressionManager.php:7471
-#: classes/expressions/LimeExpressionManager.php:7697
+#: classes/expressions/LimeExpressionManager.php:7573
+#: classes/expressions/LimeExpressionManager.php:7801
 msgid "DEFAULT:"
 msgstr "DOMYŚLNIE:"
 
-#: classes/expressions/LimeExpressionManager.php:7479
+#: classes/expressions/LimeExpressionManager.php:7581
 msgid "HELP:"
 msgstr "POMOC:"
 
-#: classes/expressions/LimeExpressionManager.php:7480
+#: classes/expressions/LimeExpressionManager.php:7582
 msgid "TIP:"
 msgstr "PODPOWIEDŹ"
 
-#: classes/expressions/LimeExpressionManager.php:7487
+#: classes/expressions/LimeExpressionManager.php:7589
 msgid "Question Attribute"
 msgstr "Atrybut pytania"
 
-#: classes/expressions/LimeExpressionManager.php:7487
+#: classes/expressions/LimeExpressionManager.php:7589
 msgid "Value"
 msgstr "Wartość"
 
-#: classes/expressions/LimeExpressionManager.php:7586
+#: classes/expressions/LimeExpressionManager.php:7690
 msgid "VALIDATION:"
 msgstr "WALIDACJA:"
 
-#: classes/expressions/LimeExpressionManager.php:7600
+#: classes/expressions/LimeExpressionManager.php:7704
 msgid "This variable name has already been used."
 msgstr "Ta nazwa zmiennej była już wykorzystana."
 
-#: classes/expressions/LimeExpressionManager.php:7612
+#: classes/expressions/LimeExpressionManager.php:7716
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Począwszy od wersji 1.92 nazwy zmiennych powinny zawierać tylko litery, cyfry i podkreślenia; nie mogą zaczynać się od cyfry. Ta nazwa zmiennej jest niedopuszczalna."
 
-#: classes/expressions/LimeExpressionManager.php:7765
+#: classes/expressions/LimeExpressionManager.php:7869
 msgid "This question has at least %s error(s)"
 msgstr "To pytanie zawiera co najmniej %s błędów"
 
-#: classes/expressions/LimeExpressionManager.php:7804
+#: classes/expressions/LimeExpressionManager.php:7908
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s pytań zawiera błędy, które muszą być poprawione"
 
-#: classes/expressions/LimeExpressionManager.php:7810
+#: classes/expressions/LimeExpressionManager.php:7914
 msgid "No syntax errors detected in this survey"
 msgstr "W ankiecie nie wykryto błędów składniowych"
 
-#: classes/expressions/LimeExpressionManager.php:7813
+#: classes/expressions/LimeExpressionManager.php:7917
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Ta grupa, sama w sobie, nie zawiera błędów składniowych"
 
-#: classes/expressions/LimeExpressionManager.php:7816
+#: classes/expressions/LimeExpressionManager.php:7920
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "To pytanie, samo w sobie, nie zawiera błędów składniowych"
 
@@ -9441,914 +9469,914 @@ msgstr "Skala 2"
 msgid "Rank %s"
 msgstr "Ranguj %s"
 
-#: common_functions.php:2816
+#: common_functions.php:2813
 msgid "Other comment"
 msgstr "Inny komentarz"
 
-#: common_functions.php:2935
+#: common_functions.php:2932
 msgid "Group time"
 msgstr "Czas grupy"
 
-#: common_functions.php:2942
+#: common_functions.php:2939
 msgid "Question time"
 msgstr "Czas pytania"
 
-#: common_functions.php:3201 common_functions.php:3212
-#: common_functions.php:3247 common_functions.php:3255
-#: common_functions.php:3266 common_functions.php:3274
-#: common_functions.php:3285 common_functions.php:3293
-#: common_functions.php:3301 common_functions.php:3309
-#: common_functions.php:3317 common_functions.php:3325
-#: common_functions.php:3495 common_functions.php:3506
-#: common_functions.php:3573 common_functions.php:3581
-#: common_functions.php:3589 common_functions.php:3597
-#: common_functions.php:3608 common_functions.php:3675
-#: common_functions.php:3708 common_functions.php:3727
-#: common_functions.php:3746 common_functions.php:3811
-#: common_functions.php:3845 common_functions.php:3853
-#: common_functions.php:3861 common_functions.php:3872
-#: common_functions.php:3881
+#: common_functions.php:3198 common_functions.php:3209
+#: common_functions.php:3244 common_functions.php:3252
+#: common_functions.php:3263 common_functions.php:3271
+#: common_functions.php:3282 common_functions.php:3290
+#: common_functions.php:3298 common_functions.php:3306
+#: common_functions.php:3314 common_functions.php:3322
+#: common_functions.php:3492 common_functions.php:3503
+#: common_functions.php:3570 common_functions.php:3578
+#: common_functions.php:3586 common_functions.php:3594
+#: common_functions.php:3605 common_functions.php:3672
+#: common_functions.php:3705 common_functions.php:3724
+#: common_functions.php:3743 common_functions.php:3808
+#: common_functions.php:3842 common_functions.php:3850
+#: common_functions.php:3858 common_functions.php:3869
+#: common_functions.php:3878
 msgid "Display"
 msgstr "Pokaż"
 
-#: common_functions.php:3207
+#: common_functions.php:3204
 msgid "Sort the answer options alphabetically"
 msgstr "Sortuj opcje odpowiedzi alfabetycznie"
 
-#: common_functions.php:3208
+#: common_functions.php:3205
 msgid "Sort answers alphabetically"
 msgstr "Sortuj odpowiedzi alfabetycznie"
 
-#: common_functions.php:3217
+#: common_functions.php:3214
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "Procentowa szerokość kolumny odpowiedzi (1-100)"
 
-#: common_functions.php:3218
+#: common_functions.php:3215
 msgid "Answer width"
 msgstr "Szerokość pola odpowiedzi"
 
-#: common_functions.php:3222 common_functions.php:3230
-#: common_functions.php:3238 common_functions.php:3341
-#: common_functions.php:3349 common_functions.php:3357
-#: common_functions.php:3365 common_functions.php:3373
-#: common_functions.php:3381 common_functions.php:3517
-#: common_functions.php:3549 common_functions.php:3686
-#: common_functions.php:3697 common_functions.php:4110
+#: common_functions.php:3219 common_functions.php:3227
+#: common_functions.php:3235 common_functions.php:3338
+#: common_functions.php:3346 common_functions.php:3354
+#: common_functions.php:3362 common_functions.php:3370
+#: common_functions.php:3378 common_functions.php:3514
+#: common_functions.php:3546 common_functions.php:3683
+#: common_functions.php:3694 common_functions.php:4107
 msgid "Logic"
 msgstr "Logika"
 
-#: common_functions.php:3225
+#: common_functions.php:3222
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
 msgstr "Wprowadź kod(y) pytań wielokrotnych odpowiedzi (oddzielone średnikiem), aby pokazać w tym pytaniu tylko pasujące opcje odpowiedzi."
 
-#: common_functions.php:3226
+#: common_functions.php:3223
 msgid "Array filter"
 msgstr "Filtr"
 
-#: common_functions.php:3233
+#: common_functions.php:3230
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
 msgstr "Wprowadź kod(y) pytań wielkokrotnych odpowiedzi (oddzielone średnikiem), aby wykluczyć w tym pytaniu pasujące opcje odpowiedzi."
 
-#: common_functions.php:3234
+#: common_functions.php:3231
 msgid "Array filter exclusion"
 msgstr "Filtr wykluczający"
 
-#: common_functions.php:3242
+#: common_functions.php:3239
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr "Jeśli jedno z subpytań jest oznaczone, to do każdego subpytania ta wartość jest dodana jako ocena."
 
-#: common_functions.php:3250 common_functions.php:3251
+#: common_functions.php:3247 common_functions.php:3248
 msgid "Category separator"
 msgstr "Separator kategorii"
 
-#: common_functions.php:3261
+#: common_functions.php:3258
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "Opcje odpowiedzi zostaną rozłożone w podanej liczbie kolumn"
 
-#: common_functions.php:3262
+#: common_functions.php:3259
 msgid "Display columns"
 msgstr "Pokaż kolumny"
 
-#: common_functions.php:3269
+#: common_functions.php:3266
 msgid "How many rows to display"
 msgstr "Liczba wierszy do pokazania"
 
-#: common_functions.php:3270
+#: common_functions.php:3267
 msgid "Display rows"
 msgstr "Pokaż wiersze"
 
-#: common_functions.php:3280
+#: common_functions.php:3277
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "Użyj odpowiednich pól rozwijanych zamiast okna kalendarza"
 
-#: common_functions.php:3281
+#: common_functions.php:3278
 msgid "Display dropdown boxes"
 msgstr "Pokaż pola rozwijane"
 
-#: common_functions.php:3288
+#: common_functions.php:3285
 msgid "Minimum year value in calendar"
 msgstr "Minimalna wartość roku w kalendarzu"
 
-#: common_functions.php:3289
+#: common_functions.php:3286
 msgid "Minimum year"
 msgstr "Minimalny rok"
 
-#: common_functions.php:3296
+#: common_functions.php:3293
 msgid "Maximum year value for calendar"
 msgstr "Maksymalna wartość roku w kalendarzu"
 
-#: common_functions.php:3297
+#: common_functions.php:3294
 msgid "Maximum year"
 msgstr "Maksymalny rok"
 
-#: common_functions.php:3304
+#: common_functions.php:3301
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Prefiks|Sufiks dla listy rozwijanej"
 
-#: common_functions.php:3305
+#: common_functions.php:3302
 msgid "Dropdown prefix/suffix"
 msgstr "Prefix/suffix listy rozwijanej"
 
-#: common_functions.php:3312
+#: common_functions.php:3309
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Post-Answer-Separator|Separator-pośredni dla listy rozwijanej"
 
-#: common_functions.php:3313
+#: common_functions.php:3310
 msgid "Dropdown separator"
 msgstr "Separator listy rozwijanej"
 
-#: common_functions.php:3320
+#: common_functions.php:3317
 msgid "Enter a header text for the first scale"
 msgstr "Wpisz tekst nagłówka pierwszej skali"
 
-#: common_functions.php:3321
+#: common_functions.php:3318
 msgid "Header for first scale"
 msgstr "Nagłówek pierwszej skali"
 
-#: common_functions.php:3328
+#: common_functions.php:3325
 msgid "Enter a header text for the second scale"
 msgstr "Wpisz tekst nagłówka drugiej skali"
 
-#: common_functions.php:3329
+#: common_functions.php:3326
 msgid "Header for second scale"
 msgstr "Nagłówek drugiej skali"
 
-#: common_functions.php:3333 common_functions.php:3525
-#: common_functions.php:3533 common_functions.php:3541
-#: common_functions.php:3557 common_functions.php:3565
-#: common_functions.php:3619
+#: common_functions.php:3330 common_functions.php:3522
+#: common_functions.php:3530 common_functions.php:3538
+#: common_functions.php:3554 common_functions.php:3562
+#: common_functions.php:3616
 msgid "Input"
 msgstr "Wejście"
 
-#: common_functions.php:3336
+#: common_functions.php:3333
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Suma wielokrotnych wartości liczbowych musi równać się"
 
-#: common_functions.php:3337
+#: common_functions.php:3334
 msgid "Equals sum value"
 msgstr "Suma wprowadzanych wartości"
 
-#: common_functions.php:3344
+#: common_functions.php:3341
 msgid "Boolean equation to validate the whole question."
 msgstr "Równanie Boole'a do walidacji całego pytania."
 
-#: common_functions.php:3345
+#: common_functions.php:3342
 msgid "Question validation equation"
 msgstr "Równanie walidacyjne pytania"
 
-#: common_functions.php:3352
+#: common_functions.php:3349
 msgid "Tip to show user describing the question validation equation."
 msgstr "Podpowiedź dla użytkownika opisująca równanie walidacji pytania."
 
-#: common_functions.php:3353
+#: common_functions.php:3350
 msgid "Question validation tip"
 msgstr "Podpowiedź walidacyjna pytania"
 
-#: common_functions.php:3360
+#: common_functions.php:3357
 msgid "Boolean equation to validate each sub-question."
 msgstr "Równanie Boole'a do walidacji każdego sub-pytania."
 
-#: common_functions.php:3361
+#: common_functions.php:3358
 msgid "Sub-question validation equation"
 msgstr "Równanie walidacyjne sub-pytania"
 
-#: common_functions.php:3368
+#: common_functions.php:3365
 msgid "Tip to show user describing the sub-question validation equation."
 msgstr "Podpowiedź dla użytkownika opisująca równanie walidacyjne sub-pytania."
 
-#: common_functions.php:3369
+#: common_functions.php:3366
 msgid "Sub-question validation tip"
 msgstr "Podpowiedź do walidacji sub-pytania"
 
-#: common_functions.php:3376
+#: common_functions.php:3373
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr "Wyklucza wszystkie inne opcje w przypadku określonej odpowiedzi - wprowadź kod(y) odpowiedzi oddzielone średnikiem."
 
-#: common_functions.php:3377
+#: common_functions.php:3374
 msgid "Exclusive option"
 msgstr "Opcja wykluczająca"
 
-#: common_functions.php:3387
+#: common_functions.php:3384
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr "Jeśli uczestnik zaznacza wszystkie opcje, odznacz wszystkie i zaznacz opcję ustawioną w \"Opcja wykluczająca\""
 
-#: common_functions.php:3388
+#: common_functions.php:3385
 msgid "Auto-check exclusive option if all others are checked"
 msgstr "Automatycznie zaznacz opcję wykluczającą, jeśli zaznaczono wszystkie inne"
 
-#: common_functions.php:3395 common_functions.php:3406
-#: common_functions.php:3417 common_functions.php:3428
-#: common_functions.php:3438 common_functions.php:3448
-#: common_functions.php:3457 common_functions.php:3466
-#: common_functions.php:3476 common_functions.php:3484
+#: common_functions.php:3392 common_functions.php:3403
+#: common_functions.php:3414 common_functions.php:3425
+#: common_functions.php:3435 common_functions.php:3445
+#: common_functions.php:3454 common_functions.php:3463
+#: common_functions.php:3473 common_functions.php:3481
 msgid "Location"
 msgstr "Lokalizacja"
 
-#: common_functions.php:3400
+#: common_functions.php:3397
 msgid "Store the city?"
 msgstr "Przechowywać miasto?"
 
-#: common_functions.php:3401
+#: common_functions.php:3398
 msgid "Save city"
 msgstr "Zapisz miasto"
 
-#: common_functions.php:3411
+#: common_functions.php:3408
 msgid "Store the state?"
 msgstr "Przechowywać stan?"
 
-#: common_functions.php:3412
+#: common_functions.php:3409
 msgid "Save state"
 msgstr "Zapisz stan"
 
-#: common_functions.php:3422
+#: common_functions.php:3419
 msgid "Store the postal code?"
 msgstr "Przechowywać kod pocztowy?"
 
-#: common_functions.php:3423
+#: common_functions.php:3420
 msgid "Save postal code"
 msgstr "Zapisz kod pocztowy"
 
-#: common_functions.php:3433
+#: common_functions.php:3430
 msgid "Store the country?"
 msgstr "Przechowywać państwo?"
 
-#: common_functions.php:3434
+#: common_functions.php:3431
 msgid "Save country"
 msgstr "Zapisz państwo"
 
-#: common_functions.php:3442
+#: common_functions.php:3439
 msgid "Google Maps"
 msgstr "Google Maps"
 
-#: common_functions.php:3443
+#: common_functions.php:3440
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr "Aktywuj tę opcję, aby pokazać mapę powyżej pola wprowadzania, w którym użytkownik może wybrać lokalizację"
 
-#: common_functions.php:3444
+#: common_functions.php:3441
 msgid "Use mapping service"
 msgstr "Użyj usługi mapowania"
 
-#: common_functions.php:3452
+#: common_functions.php:3449
 msgid "Width of the map in pixel"
 msgstr "Szerokość mapy w pikselach"
 
-#: common_functions.php:3453
+#: common_functions.php:3450
 msgid "Map width"
 msgstr "Szerokość mapy"
 
-#: common_functions.php:3461
+#: common_functions.php:3458
 msgid "Height of the map in pixel"
 msgstr "Wysokość mapy w pikselach"
 
-#: common_functions.php:3462
+#: common_functions.php:3459
 msgid "Map height"
 msgstr "Wysokość mapy"
 
-#: common_functions.php:3471
+#: common_functions.php:3468
 msgid "Get the default location using the user's IP address?"
 msgstr "Pobrać lokalizację domyślną na postawie adresu IP użytkownika?"
 
-#: common_functions.php:3472
+#: common_functions.php:3469
 msgid "IP as default location"
 msgstr "IP jako domyślna lokalizacja"
 
-#: common_functions.php:3479
+#: common_functions.php:3476
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr "Domyślne współrzędne mapy przy pierwszym ładowaniu strony. Format: szerokość [spacja] długość"
 
-#: common_functions.php:3480
+#: common_functions.php:3477
 msgid "Default position"
 msgstr "Domyślna pozycja"
 
-#: common_functions.php:3488
+#: common_functions.php:3485
 msgid "Map zoom level"
 msgstr "Poziom powiększenia mapy"
 
-#: common_functions.php:3489
+#: common_functions.php:3486
 msgid "Zoom level"
 msgstr "Poziom powiększenia"
 
-#: common_functions.php:3501
+#: common_functions.php:3498
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Ukryj podpowiedź domyślnie pokazywaną przy pytaniu"
 
-#: common_functions.php:3502
+#: common_functions.php:3499
 msgid "Hide tip"
 msgstr "Ukryj podpowiedź"
 
-#: common_functions.php:3512
+#: common_functions.php:3509
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr "Ukryj to pytanie. Jest to przydatne przy dodawaniu danych przy użyciu wstępnego podstawienia odpowiedzi."
 
-#: common_functions.php:3513
+#: common_functions.php:3510
 msgid "Always hide this question"
 msgstr "Zawsze ukrywaj to pytanie"
 
-#: common_functions.php:3520
+#: common_functions.php:3517
 msgid "Limit the number of possible answers"
 msgstr "Limit liczby potencjalnych odpowiedzi"
 
-#: common_functions.php:3521
+#: common_functions.php:3518
 msgid "Maximum answers"
 msgstr "Maksymalnie odpowiedzi"
 
-#: common_functions.php:3528
+#: common_functions.php:3525
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Maksymalna suma dla wielokrotnej wartości liczbowej"
 
-#: common_functions.php:3529
+#: common_functions.php:3526
 msgid "Maximum sum value"
 msgstr "Maksymalna suma"
 
-#: common_functions.php:3536
+#: common_functions.php:3533
 msgid "Maximum value of the numeric input"
 msgstr "Maksymalna wartość numeryczna"
 
-#: common_functions.php:3537 common_functions.php:3577
+#: common_functions.php:3534 common_functions.php:3574
 msgid "Maximum value"
 msgstr "Maksimum"
 
-#: common_functions.php:3544
+#: common_functions.php:3541
 msgid "Maximum characters allowed"
 msgstr "Dozwolona maksymalna liczba znaków"
 
-#: common_functions.php:3545
+#: common_functions.php:3542
 msgid "Maximum characters"
 msgstr "Maksymalnie znaków"
 
-#: common_functions.php:3552
+#: common_functions.php:3549
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Zapewnij minimalną liczbę możliwych odpowiedzi (0=brak limitu)"
 
-#: common_functions.php:3553
+#: common_functions.php:3550
 msgid "Minimum answers"
 msgstr "Minimalnie odpowiedzi"
 
-#: common_functions.php:3560
+#: common_functions.php:3557
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr "Suma wielokrotnych wartości liczbowych musi być większa niż ta wartość"
 
-#: common_functions.php:3561
+#: common_functions.php:3558
 msgid "Minimum sum value"
 msgstr "Minimalna suma dla wprowadzanych wartości"
 
-#: common_functions.php:3568
+#: common_functions.php:3565
 msgid "Minimum value of the numeric input"
 msgstr "Maksymalna wartość numeryczna"
 
-#: common_functions.php:3569 common_functions.php:3585
+#: common_functions.php:3566 common_functions.php:3582
 msgid "Minimum value"
 msgstr "Minimum"
 
-#: common_functions.php:3576
+#: common_functions.php:3573
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maksymalna wartość dla pytania: tabela (zestaw etykiet)"
 
-#: common_functions.php:3584
+#: common_functions.php:3581
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Minimalna wartość dla pytania: tabela (zestaw etykiet)"
 
-#: common_functions.php:3592 common_functions.php:3593
+#: common_functions.php:3589 common_functions.php:3590
 msgid "Step value"
 msgstr "Wartość kroku"
 
-#: common_functions.php:3603
+#: common_functions.php:3600
 msgid "Use checkbox layout"
 msgstr "Układ pola wyboru"
 
-#: common_functions.php:3604
+#: common_functions.php:3601
 msgid "Checkbox layout"
 msgstr "Układ pola wyboru"
 
-#: common_functions.php:3614
+#: common_functions.php:3611
 msgid "Present answer options in reverse order"
 msgstr "Prezentuj odpowiedzi w odwrotnej kolejności"
 
-#: common_functions.php:3615
+#: common_functions.php:3612
 msgid "Reverse answer order"
 msgstr "Odwrotna kolejność odpowiedzi"
 
-#: common_functions.php:3626
+#: common_functions.php:3623
 msgid "Restrict input to integer values"
 msgstr "Ogranicz do wartości całkowitych"
 
-#: common_functions.php:3627
+#: common_functions.php:3624
 msgid "Integer only"
 msgstr "Tylko liczby całkowite"
 
-#: common_functions.php:3639
+#: common_functions.php:3636
 msgid "Allow only numerical input"
 msgstr "Zezwól tylko na wartość liczbową"
 
-#: common_functions.php:3640
+#: common_functions.php:3637
 msgid "Numbers only"
 msgstr "Tylko liczby"
 
-#: common_functions.php:3650
+#: common_functions.php:3647
 msgid "Rows"
 msgstr "Wiersze"
 
-#: common_functions.php:3651
+#: common_functions.php:3648
 msgid "Columns"
 msgstr "Kolumny"
 
-#: common_functions.php:3652
+#: common_functions.php:3649
 msgid "Both rows and columns"
 msgstr "Wiersze i kolumny"
 
-#: common_functions.php:3655
+#: common_functions.php:3652
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr "Pokaż sumy dla wierszy, kolumn lub dla wierszy i kolumn"
 
-#: common_functions.php:3656
+#: common_functions.php:3653
 msgid "Show totals for"
 msgstr "Pokaż sumy dla"
 
-#: common_functions.php:3669
+#: common_functions.php:3666
 msgid "Show grand total for either columns or rows"
 msgstr "Pokaż podsumowanie dla kolumn lub wierszy"
 
-#: common_functions.php:3670
+#: common_functions.php:3667
 msgid "Show grand total"
 msgstr "Pokaż podsumowanie"
 
-#: common_functions.php:3681
+#: common_functions.php:3678
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "Pokaż jako pola tekstowe zamiast list rozwijanych"
 
-#: common_functions.php:3682
+#: common_functions.php:3679
 msgid "Text inputs"
 msgstr "Dane tekstowe"
 
-#: common_functions.php:3692
+#: common_functions.php:3689
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "Pole komentarza 'Inne:' ma być obowiązkowe, gdy aktywna jest opcja 'Inne'"
 
-#: common_functions.php:3693
+#: common_functions.php:3690
 msgid "'Other:' comment mandatory"
 msgstr "Komentarz 'Inne:' obowiązkowy"
 
-#: common_functions.php:3703
+#: common_functions.php:3700
 msgid "Allow only numerical input for 'Other' text"
 msgstr "Pozwól tylko na wartości liczbowe w polu 'Inne'"
 
-#: common_functions.php:3704
+#: common_functions.php:3701
 msgid "Numbers only for 'Other'"
 msgstr "Tylko liczby jako 'Inne'"
 
-#: common_functions.php:3711
+#: common_functions.php:3708
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "Zastępuje etykietę 'Inne:' tekstem"
 
-#: common_functions.php:3712
+#: common_functions.php:3709
 msgid "Label for 'Other:' option"
 msgstr "Etykieta opcji 'Inne:'"
 
-#: common_functions.php:3722
+#: common_functions.php:3719
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "Wstaw podział strony przed tym pytaniem w widoku wydruku ustawiając Tak."
 
-#: common_functions.php:3723
+#: common_functions.php:3720
 msgid "Insert page break in printable view"
 msgstr "Podział strony na wydruku"
 
-#: common_functions.php:3730
+#: common_functions.php:3727
 msgid "Add a prefix to the answer field"
 msgstr "Dodaj prefiks do pola odpowiedzi"
 
-#: common_functions.php:3731
+#: common_functions.php:3728
 msgid "Answer prefix"
 msgstr "Prefiks odpowiedzi"
 
-#: common_functions.php:3741
+#: common_functions.php:3738
 msgid "Show statistics of this question in the public statistics page"
 msgstr "Pokaż statystyki tego pytania na stronie statystyk publicznych"
 
-#: common_functions.php:3742
+#: common_functions.php:3739
 msgid "Show in public statistics"
 msgstr "Pokaż w statystyce"
 
-#: common_functions.php:3752
+#: common_functions.php:3749
 msgid "Present answers in random order"
 msgstr "Prezentuj odpowiedzi w losowej kolejności"
 
-#: common_functions.php:3753
+#: common_functions.php:3750
 msgid "Random answer order"
 msgstr "Rotacja wariantów odpowiedzi"
 
-#: common_functions.php:3757 common_functions.php:3768
-#: common_functions.php:3776 common_functions.php:3784
-#: common_functions.php:3792 common_functions.php:3800
-#: common_functions.php:3826 common_functions.php:3837
+#: common_functions.php:3754 common_functions.php:3765
+#: common_functions.php:3773 common_functions.php:3781
+#: common_functions.php:3789 common_functions.php:3797
+#: common_functions.php:3823 common_functions.php:3834
 msgid "Slider"
 msgstr "Suwak"
 
-#: common_functions.php:3763 common_functions.php:3764
-#: common_functions.php:3820 common_functions.php:3821
+#: common_functions.php:3760 common_functions.php:3761
+#: common_functions.php:3817 common_functions.php:3818
 msgid "Use slider layout"
 msgstr "Użyj formy suwaka"
 
-#: common_functions.php:3771 common_functions.php:3772
+#: common_functions.php:3768 common_functions.php:3769
 msgid "Slider minimum value"
 msgstr "Minimalna wartość suwaka"
 
-#: common_functions.php:3779 common_functions.php:3780
+#: common_functions.php:3776 common_functions.php:3777
 msgid "Slider maximum value"
 msgstr "Maksymalna wartość suwaka"
 
-#: common_functions.php:3787 common_functions.php:3788
+#: common_functions.php:3784 common_functions.php:3785
 msgid "Slider accuracy"
 msgstr "Dokładność suwaka"
 
-#: common_functions.php:3795 common_functions.php:3796
+#: common_functions.php:3792 common_functions.php:3793
 msgid "Slider initial value"
 msgstr "Wartość początkowa suwaka"
 
-#: common_functions.php:3806
+#: common_functions.php:3803
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr "Wskaźnik będzie umieszczony w środku suwaka (nie ma wartości początkowej)"
 
-#: common_functions.php:3807
+#: common_functions.php:3804
 msgid "Slider starts at the middle position"
 msgstr "Suwak startuje ze środkowej pozycji"
 
-#: common_functions.php:3816
+#: common_functions.php:3813
 msgid "Yes - stars"
 msgstr "Tak - gwiazdki"
 
-#: common_functions.php:3817
+#: common_functions.php:3814
 msgid "Yes - slider with emoticon"
 msgstr "Tak - suwak z emotikonem"
 
-#: common_functions.php:3832
+#: common_functions.php:3829
 msgid "Display min and max value under the slider"
 msgstr "Pokaż wartości minimalną i maksymalną pod suwakiem"
 
-#: common_functions.php:3833
+#: common_functions.php:3830
 msgid "Display slider min and max value"
 msgstr "Pokaż minimalną i maksymalną wartość suwaka"
 
-#: common_functions.php:3840
+#: common_functions.php:3837
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "Znak separatora Odpowiedź|Tekst z lewej suwaka|Tekst z prawej suwaka"
 
-#: common_functions.php:3841
+#: common_functions.php:3838
 msgid "Slider left/right text separator"
 msgstr "Separator tekstu lewy/prawy suwaka "
 
-#: common_functions.php:3848
+#: common_functions.php:3845
 msgid "Add a suffix to the answer field"
 msgstr "Dodaj sufiks do pola odpowiedzi"
 
-#: common_functions.php:3849
+#: common_functions.php:3846
 msgid "Answer suffix"
 msgstr "Sufiks odpowiedzi"
 
-#: common_functions.php:3856
+#: common_functions.php:3853
 msgid "Width of text input box"
 msgstr "Szerokość pola tekstowego"
 
-#: common_functions.php:3857
+#: common_functions.php:3854
 msgid "Input box width"
 msgstr "Szerokość pola"
 
-#: common_functions.php:3867
+#: common_functions.php:3864
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr "Użyj rozwijanych pól zamiast listy przycisków radio"
 
-#: common_functions.php:3868
+#: common_functions.php:3865
 msgid "Use dropdown boxes"
 msgstr "Użyj rozwijanych pól"
 
-#: common_functions.php:3876
+#: common_functions.php:3873
 msgid "For list dropdown boxes, show up to this many rows"
 msgstr "Pokaż tyle wierszy w przypadku pól list rozwijanych"
 
-#: common_functions.php:3877
+#: common_functions.php:3874
 msgid "Height of dropdown"
 msgstr "Długość listy rozwijanej"
 
-#: common_functions.php:3885
+#: common_functions.php:3882
 msgid "Order"
 msgstr "Kolejność"
 
-#: common_functions.php:3888
+#: common_functions.php:3885
 msgid "Accelerator keys for list items"
 msgstr "Klawisze skrótu do pozycji listy"
 
-#: common_functions.php:3889
+#: common_functions.php:3886
 msgid "Prefix for list items"
 msgstr "Prefiks listy pozycji"
 
-#: common_functions.php:3897
+#: common_functions.php:3894
 msgid "Nominal"
 msgstr "Nominalna"
 
-#: common_functions.php:3898
+#: common_functions.php:3895
 msgid "Ordinal"
 msgstr "Porządkowa"
 
-#: common_functions.php:3899
+#: common_functions.php:3896
 msgid "Scale"
 msgstr "Skala"
 
-#: common_functions.php:3901
+#: common_functions.php:3898
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "Ustaw typ skali w tym pytaniu właściwy dla eksportu do SPSS"
 
-#: common_functions.php:3902
+#: common_functions.php:3899
 msgid "SPSS export scale type"
 msgstr "Typ skali do eksportu do SPSS"
 
-#: common_functions.php:3907 common_functions.php:3915
-#: common_functions.php:3926 common_functions.php:3937
-#: common_functions.php:3947 common_functions.php:3955
-#: common_functions.php:3963 common_functions.php:3971
-#: common_functions.php:3979 common_functions.php:3987
-#: common_functions.php:3995 common_functions.php:4003
-#: common_functions.php:4011 common_functions.php:4019
-#: common_functions.php:4027 common_functions.php:4035
-#: common_functions.php:4043
+#: common_functions.php:3904 common_functions.php:3912
+#: common_functions.php:3923 common_functions.php:3934
+#: common_functions.php:3944 common_functions.php:3952
+#: common_functions.php:3960 common_functions.php:3968
+#: common_functions.php:3976 common_functions.php:3984
+#: common_functions.php:3992 common_functions.php:4000
+#: common_functions.php:4008 common_functions.php:4016
+#: common_functions.php:4024 common_functions.php:4032
+#: common_functions.php:4040
 msgid "Timer"
 msgstr "Czasomierz"
 
-#: common_functions.php:3910
+#: common_functions.php:3907
 msgid "Limit time to answer question (in seconds)"
 msgstr "Ograniczenie czasu na odpowiedź na to pytanie (w sekundach)"
 
-#: common_functions.php:3911
+#: common_functions.php:3908
 msgid "Time limit"
 msgstr "Limit czasu"
 
-#: common_functions.php:3918
+#: common_functions.php:3915
 msgid "Warn and move on"
 msgstr "Ostrzeż i przejdź dalej"
 
-#: common_functions.php:3919
+#: common_functions.php:3916
 msgid "Move on without warning"
 msgstr "Przejdź dalej bez ostrzeżenia"
 
-#: common_functions.php:3920
+#: common_functions.php:3917
 msgid "Disable only"
 msgstr "Wyłączone"
 
-#: common_functions.php:3921
+#: common_functions.php:3918
 msgid "Action to perform when time limit is up"
 msgstr "Działanie w przypadku upłynięcia limitu czasu"
 
-#: common_functions.php:3922
+#: common_functions.php:3919
 msgid "Time limit action"
 msgstr "Działanie w przypadku upływu czasu"
 
-#: common_functions.php:3932
+#: common_functions.php:3929
 msgid "Disable the next button until time limit expires"
 msgstr "Wyłącz przycisk następny do momentu upłynięcia czasu"
 
-#: common_functions.php:3933
+#: common_functions.php:3930
 msgid "Time limit disable next"
 msgstr "Ograniczenie czasowe wyłącza przejście dalej"
 
-#: common_functions.php:3942
+#: common_functions.php:3939
 msgid "Disable the prev button until the time limit expires"
 msgstr "Wyłącz przycisk poprzedni do momentu upłynięcia czasu"
 
-#: common_functions.php:3943
+#: common_functions.php:3940
 msgid "Time limit disable prev"
 msgstr "Ograniczenie czasowe wyłącza przejście wstecz"
 
-#: common_functions.php:3950
+#: common_functions.php:3947
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr "Wiadomość pokazywana podczas odliczania czasu"
 
-#: common_functions.php:3951
+#: common_functions.php:3948
 msgid "Time limit countdown message"
 msgstr "Ostrzeżenie o limicie czasu"
 
-#: common_functions.php:3958
+#: common_functions.php:3955
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr "Styl CSS wiadomości pokazywanej w czasie odliczania"
 
-#: common_functions.php:3959
+#: common_functions.php:3956
 msgid "Time limit timer CSS style"
 msgstr "Styl CSS zegara limitu czasu"
 
-#: common_functions.php:3966
+#: common_functions.php:3963
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr "Pokaż 'wiadomość o upływie czasu' dla tylu sekund przed wykonaniem 'działania końca czasu' (domyślnie 1 sekunda, jeśli pozostawione puste)"
 
-#: common_functions.php:3967
+#: common_functions.php:3964
 msgid "Time limit expiry message display time"
 msgstr "Czas pokazywania wiadomości o upływie limitu czasu"
 
-#: common_functions.php:3974
+#: common_functions.php:3971
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "Wiadomość pokazywana, gdy czas upłynął (jeśli puste, pokaże się wiadomość domyślna)"
 
-#: common_functions.php:3975
+#: common_functions.php:3972
 msgid "Time limit expiry message"
 msgstr "Wiadomość upłynięcia limitu czasu"
 
-#: common_functions.php:3982
+#: common_functions.php:3979
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "Styl CSS 'wiadomości o limicie czasu'"
 
-#: common_functions.php:3983
+#: common_functions.php:3980
 msgid "Time limit message CSS style"
 msgstr "Styl CSS ostrzeżenia o limicie czasu"
 
-#: common_functions.php:3990
+#: common_functions.php:3987
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Pokaż 'ostrzeżenie o upływie czasu', gdy pozostało tyle sekund odliczania (jeśli puste, ostrzeżenie się nie  pokaże)"
 
-#: common_functions.php:3991
+#: common_functions.php:3988
 msgid "1st time limit warning message timer"
 msgstr "Zegar 1. ostrzeżenia o upływie czasu"
 
-#: common_functions.php:3998
+#: common_functions.php:3995
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "'Ostrzeżenie o limicie czasu' będzie widoczne przez tyle sekund (nie wyłączy się, jeśli pozostanie puste)"
 
-#: common_functions.php:3999
+#: common_functions.php:3996
 msgid "1st time limit warning message display time"
 msgstr "Czas pokazywania 1. ostrzeżenia o upływie czasu"
 
-#: common_functions.php:4006
+#: common_functions.php:4003
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Wiadomość pokazana jako 'ostrzeżenie limitu czasu' (jeśli puste, pokaże się ostrzeżenie domyślne)"
 
-#: common_functions.php:4007
+#: common_functions.php:4004
 msgid "1st time limit warning message"
 msgstr "1. ostrzeżenie o upływie czasu"
 
-#: common_functions.php:4014
+#: common_functions.php:4011
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "Styl CSS, gdy pokazuje się wiadomość 'ostrzeżenia o limicie czasu'"
 
-#: common_functions.php:4015
+#: common_functions.php:4012
 msgid "1st time limit warning CSS style"
 msgstr "Styl CSS 1. ostrzeżenia o limicie czasu"
 
-#: common_functions.php:4022
+#: common_functions.php:4019
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Pokaż drugie 'ostrzeżenie o limicie czasu', kiedy zostało tyle sekund odliczania (jeśli puste, ostrzeżenie się nie pokaże)"
 
-#: common_functions.php:4023
+#: common_functions.php:4020
 msgid "2nd time limit warning message timer"
 msgstr "Zegar 2. ostrzeżenia o upływie czasu"
 
-#: common_functions.php:4030
+#: common_functions.php:4027
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Drugie 'ostrzeżenie o limicie czasu' będzie widoczne przez tyle sekund (nie wyłączy się, jeśli pozostanie puste)"
 
-#: common_functions.php:4031
+#: common_functions.php:4028
 msgid "2nd time limit warning message display time"
 msgstr "Czas pokazywania 2. ostrzeżenia o upływie czasu"
 
-#: common_functions.php:4038
+#: common_functions.php:4035
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Druga wiadomość pokazywana jako 'ostrzeżenie limitu czasu' (jeśli puste, pokaże się domyślne ostrzeżenie)"
 
-#: common_functions.php:4039
+#: common_functions.php:4036
 msgid "2nd time limit warning message"
 msgstr "2. ostrzeżenie o upływie czasu"
 
-#: common_functions.php:4046
+#: common_functions.php:4043
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "Styl CSS, gdy pokazuje się 2. wiadomość 'ostrzeżenia o limicie czasu'"
 
-#: common_functions.php:4047
+#: common_functions.php:4044
 msgid "2nd time limit warning CSS style"
 msgstr "Styl CSS 1. ostrzeżenia o limicie czasu"
 
-#: common_functions.php:4051 common_functions.php:4062
+#: common_functions.php:4048 common_functions.php:4059
 msgid "File metadata"
 msgstr "Metadane pliku"
 
-#: common_functions.php:4057
+#: common_functions.php:4054
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr "Czy uczestnik ma podać tytuł przesyłanego pliku?"
 
-#: common_functions.php:4058
+#: common_functions.php:4055
 msgid "Show title"
 msgstr "Pokaż tytuł"
 
-#: common_functions.php:4068
+#: common_functions.php:4065
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr "Czy uczestnik ma podać komentarz do przesyłanego pliku?"
 
-#: common_functions.php:4069
+#: common_functions.php:4066
 msgid "Show comment"
 msgstr "Pokaż komentarz"
 
-#: common_functions.php:4078
+#: common_functions.php:4075
 msgid "The participant cannot upload a single file larger than this size"
 msgstr "Uczestnik nie może przesłać pliku większego niż ta wielkość"
 
-#: common_functions.php:4079
+#: common_functions.php:4076
 msgid "Maximum file size allowed (in KB)"
 msgstr "Maksymalna wielkość pliku (w KB)"
 
-#: common_functions.php:4087
+#: common_functions.php:4084
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr "Maksymalna liczba plików, którą uczestnik może przesłać do tego pytania"
 
-#: common_functions.php:4088
+#: common_functions.php:4085
 msgid "Max number of files"
 msgstr "Maksymalna liczba plików"
 
-#: common_functions.php:4096
+#: common_functions.php:4093
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr "Minimalna liczba plików, którą uczestnik może przesłać do tego pytania"
 
-#: common_functions.php:4097
+#: common_functions.php:4094
 msgid "Min number of files"
 msgstr "Minimalna liczba plików"
 
-#: common_functions.php:4105
+#: common_functions.php:4102
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr "Dozwolone typy plików w formacie rozdzielanym przecinkami, np. pdf, doc, odt"
 
-#: common_functions.php:4106
+#: common_functions.php:4103
 msgid "Allowed file types"
 msgstr "Dozwolone typy plików"
 
-#: common_functions.php:4113
+#: common_functions.php:4110
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr "Umieść pytania w określonej grupie randomizacji, wszystkie pytania w określonej grupie pojawią się w porządku losowym"
 
-#: common_functions.php:4114
+#: common_functions.php:4111
 msgid "Randomization group name"
 msgstr "Nazwa grupy randomizacji"
 
-#: common_functions.php:4301
+#: common_functions.php:4298
 msgid "Version"
 msgstr "Wersja"
 
-#: common_functions.php:4310
+#: common_functions.php:4307
 msgid "Online Manual"
 msgstr "Podręcznik online"
 
-#: common_functions.php:4313
+#: common_functions.php:4310
 msgid "Support this project - Donate to "
 msgstr "Wspomóż ten projekt - przekaż darowiznę "
 
-#: common_functions.php:4316
+#: common_functions.php:4313
 msgid "Visit our website!"
 msgstr "Odwiedź naszą stronę!"
 
-#: common_functions.php:4431
+#: common_functions.php:4428
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Email nie został wysłany (funkcja wysyłania jest nieaktywna w trybie demo)"
 
-#: common_functions.php:4559
+#: common_functions.php:4556
 msgid "SMTP debug output:"
 msgstr "Wynik debugowania SMTP:"
 
-#: common_functions.php:4703
+#: common_functions.php:4700
 msgid "SQL command failed: %s Reason: %s"
 msgstr "Błąd polecenia SQL: %s przyczyna: %s"
 
-#: common_functions.php:6217
+#: common_functions.php:6214
 msgid "Token code"
 msgstr "Kod tokena"
 
-#: common_functions.php:6218
+#: common_functions.php:6215
 msgid "Language code"
 msgstr "Kod języka"
 
-#: common_functions.php:6219
+#: common_functions.php:6216
 msgid "Invitation sent date"
 msgstr "Data wysłania zaproszenia"
 
-#: common_functions.php:6220
+#: common_functions.php:6217
 msgid "Last Reminder sent date"
 msgstr "Data wysłania ostatniego przypomnienia"
 
-#: common_functions.php:6221
+#: common_functions.php:6218
 msgid "Total numbers of sent reminders"
 msgstr "Liczby wysłanych przypomnień"
 
-#: common_functions.php:6243
+#: common_functions.php:6240
 msgid "Attribute %s"
 msgstr "Atrybut %s"
 
@@ -10368,7 +10396,7 @@ msgstr "Proszę wykorzystać przyciski nawigacyjne LimeSurvey lub indeks. Wyglą
 msgid "Save your responses so far"
 msgstr "Zapisz swoje dotychczasowe odpowiedzi"
 
-#: group.php:346 index.php:1607
+#: group.php:346 index.php:1612
 msgid "Did Not Save"
 msgstr "Nie zapisano"
 
@@ -10412,11 +10440,11 @@ msgstr "Wyślij odpowiedzi"
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr "Nie ma więcej pytań. Proszę nacisnąć przycisk <Wyślij>, aby zakończyć tę ankietę."
 
-#: group.php:800 qanda.php:451
+#: group.php:800 qanda.php:442
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr "Na jedno lub więcej obligatoryjnych pytań nie udzielono odpowiedzi. Nie można kontynuować. "
 
-#: group.php:806 qanda.php:478
+#: group.php:806 qanda.php:469
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr "Na jedno lub więcej pytań nie udzielono odpowiedzi wg wymaganej formy. Przed przejściem do następnego pytania prosimy o dokonanie poprawek."
 
@@ -10424,7 +10452,7 @@ msgstr "Na jedno lub więcej pytań nie udzielono odpowiedzi wg wymaganej formy.
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr "Jeden lub więcej ładowanych plików nie ma odpowiedniego formatu/rozmiaru. Nie można kontynuować, dopóki pliki nie będą poprawne."
 
-#: group.php:948 index.php:2935
+#: group.php:948 index.php:2924
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Ta ankieta nie jest aktywna. Twoje odpowiedzi nie zostaną zapisane."
 
@@ -10496,7 +10524,7 @@ msgstr "Nie podano nazwy"
 msgid "You did not provide a password"
 msgstr "Nie podano hasła"
 
-#: index.php:648 index.php:1685 index.php:1907 register.php:72 save.php:93
+#: index.php:648 index.php:1690 index.php:1912 register.php:72 save.php:93
 msgid "The answer to the security question is incorrect."
 msgstr "Odpowiedź na pytanie bezpieczeństwa jest nieprawidłowa."
 
@@ -10504,15 +10532,15 @@ msgstr "Odpowiedź na pytanie bezpieczeństwa jest nieprawidłowa."
 msgid "Load Unfinished Survey"
 msgstr "Otwórz niedokończoną ankietę"
 
-#: index.php:707 index.php:1757 index.php:1829 index.php:1873 index.php:1910
+#: index.php:707 index.php:1762 index.php:1834 index.php:1878 index.php:1915
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Dostęp do ankiety jest ograniczony. Musisz posiadać token, aby ją wypełnić."
 
-#: index.php:708 index.php:1830 index.php:1874
+#: index.php:708 index.php:1835 index.php:1879
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Wprowadzony numer tokena jest albo nieprawidłowy, albo był już wykorzystany."
 
-#: index.php:709 index.php:745 index.php:1831 index.php:1875 index.php:2066
+#: index.php:709 index.php:745 index.php:1836 index.php:1880 index.php:2071
 msgid "For further information please contact %s"
 msgstr "W celu uzyskania informacji skontaktuj się z %s"
 
@@ -10524,84 +10552,84 @@ msgstr "Przykro nam, ale nie masz uprawnień do uczestnictwa w tym badaniu."
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr "Twój token wygląda na prawidłowy, ale może być wykorzystany tylko w określonym przedziale czasowym."
 
-#: index.php:898
+#: index.php:903
 msgid "Your responses were successfully saved."
 msgstr "Odpowiedzi zostały zapisane."
 
-#: index.php:940
+#: index.php:945
 msgid "There is no matching saved survey"
 msgstr "Nie ma zapisanej takiej ankiety."
 
-#: index.php:1228
+#: index.php:1233
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr "Przepraszamy, rozmiar przesłanego pliku (%s) przekracza dopuszczalną wielkość %s KB."
 
-#: index.php:1241 index.php:1247
+#: index.php:1246 index.php:1252
 msgid "Sorry, only %s extensions are allowed!"
 msgstr "Przepraszamy, dozwolone są tylko rozszerzenia %s!"
 
-#: index.php:1259
+#: index.php:1264
 msgid "The minimum number of files has not been uploaded."
 msgstr "Nie przesłano minimalnej liczby plików."
 
-#: index.php:1608
+#: index.php:1613
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Pojawił się nieoczekiwany błąd i Twoje odpowiedzi nie mogły być zapisane."
 
-#: index.php:1611
+#: index.php:1616
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Twoje odpowiedzi nie zostały utracone. Zostały wysłane do administratora strony, który umieści je w bazie danych."
 
-#: index.php:1616
+#: index.php:1621
 msgid "An error occurred saving a response to survey id"
 msgstr "Pojawił się nieoczekiwany błąd podczas zapisywania odpowiedzi."
 
-#: index.php:1617
+#: index.php:1622
 msgid "DATA TO BE ENTERED"
 msgstr "DANE DO WPROWADZENIA"
 
-#: index.php:1622
+#: index.php:1627
 msgid "SQL CODE THAT FAILED"
 msgstr "Kod SQL, który sprawił problem"
 
-#: index.php:1624
+#: index.php:1629
 msgid "ERROR MESSAGE"
 msgstr "KOMUNIKAT BŁĘDU"
 
-#: index.php:1626
+#: index.php:1631
 msgid "Error saving results"
 msgstr "Błąd podczas zapisywania wyników"
 
-#: index.php:1634
+#: index.php:1639
 msgid "Try to submit again"
 msgstr "Spróbuj wysłać ponownie"
 
-#: index.php:1688
+#: index.php:1693
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Aby uzyskać dostęp do ankiety, odpowiedz na poniższe pytanie."
 
-#: index.php:1712
+#: index.php:1717
 msgid "Security question:"
 msgstr "Pytanie bezpieczeństwa:"
 
-#: index.php:1758 index.php:1915
+#: index.php:1763 index.php:1920
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Jeśli masz token, wpisz go poniżej i kliknij \"Dalej\"."
 
-#: index.php:1788 index.php:1956 replacements.php:467 replacements.php:487
+#: index.php:1793 index.php:1961 replacements.php:467 replacements.php:487
 #: replacements.php:532
 msgid "Security Question"
 msgstr "Pytanie bezpieczeństwa"
 
-#: index.php:1934
+#: index.php:1939
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Potwierdź otrzymany token i odpowiedz na poniższe pytanie bezpieczeństwa, a następnie kliknij \"Dalej\"."
 
-#: index.php:1948
+#: index.php:1953
 msgid "Token:"
 msgstr "Token:"
 
-#: index.php:2065
+#: index.php:2070
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "W ankiecie nie ma jeszcze żadnych pytań i nie można jej testować ani wypełniać."
 
@@ -10645,134 +10673,130 @@ msgstr[2] ""
 msgid "Check any that apply"
 msgstr "Wybierz właściwe odpowiedzi"
 
-#: qanda.php:186 qanda.php:187 qanda.php:1252
+#: qanda.php:186 qanda.php:187 qanda.php:1243
 msgid "Choose your language"
 msgstr "Wybierz język"
 
-#: qanda.php:211 qanda.php:212
-msgid "At least %d files must be uploaded for this question"
-msgstr "Do tego pytania należy załadować co najmniej %d plików"
-
-#: qanda.php:444
+#: qanda.php:435
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Nie możesz kontynuować, zanim nie wprowadzisz tekstu do jednego lub więcej pól."
 
-#: qanda.php:503
+#: qanda.php:494
 msgid "One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed"
 msgstr "Jeden lub więcej plików przekroczyło rozmiar lub nie są w odpowiednim formacie lub minimalna liczba wymaganych plików nie została załadowana. Nie można kontynuować przed dopełnieniem tego"
 
-#: qanda.php:546
+#: qanda.php:537
 msgid "Your time to answer this question has expired"
 msgstr "Upłynął czas odpowiedzi na to pytanie"
 
-#: qanda.php:549
+#: qanda.php:540
 msgid "Time remaining"
 msgstr "Pozostało czasu"
 
-#: qanda.php:550 qanda.php:553
+#: qanda.php:541 qanda.php:544
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
 msgstr "Twój czas na odpowiedź na to pytanie upływa. Zostało {TIME}."
 
-#: qanda.php:703 qanda.php:721 qanda.php:752
+#: qanda.php:694 qanda.php:712 qanda.php:743
 msgid "hours"
 msgstr "godzin"
 
-#: qanda.php:704 qanda.php:722 qanda.php:753
+#: qanda.php:695 qanda.php:713 qanda.php:744
 msgid "mins"
 msgstr "minima"
 
-#: qanda.php:705 qanda.php:723 qanda.php:754 qanda.php:755
+#: qanda.php:696 qanda.php:714 qanda.php:745 qanda.php:746
 msgid "seconds"
 msgstr "sekund"
 
-#: qanda.php:1065 qanda.php:1066
+#: qanda.php:1056 qanda.php:1057
 msgid "Day"
 msgstr "Dzień"
 
-#: qanda.php:1082 qanda.php:1083
+#: qanda.php:1073 qanda.php:1074
 msgid "Month"
 msgstr "Miesiąc"
 
-#: qanda.php:1085
+#: qanda.php:1076
 msgid "Jan"
 msgstr "Sty"
 
-#: qanda.php:1086
+#: qanda.php:1077
 msgid "Feb"
 msgstr "Lut"
 
-#: qanda.php:1087
+#: qanda.php:1078
 msgid "Mar"
 msgstr "Mar"
 
-#: qanda.php:1088
+#: qanda.php:1079
 msgid "Apr"
 msgstr "Kwi"
 
-#: qanda.php:1089
+#: qanda.php:1080
 msgid "May"
 msgstr "Maj"
 
-#: qanda.php:1090
+#: qanda.php:1081
 msgid "Jun"
 msgstr "Cze"
 
-#: qanda.php:1091
+#: qanda.php:1082
 msgid "Jul"
 msgstr "Lip"
 
-#: qanda.php:1092
+#: qanda.php:1083
 msgid "Aug"
 msgstr "Sie"
 
-#: qanda.php:1093
+#: qanda.php:1084
 msgid "Sep"
 msgstr "Wrz"
 
-#: qanda.php:1094
+#: qanda.php:1085
 msgid "Oct"
 msgstr "Paź"
 
-#: qanda.php:1095
+#: qanda.php:1086
 msgid "Nov"
 msgstr "Lis"
 
-#: qanda.php:1096
+#: qanda.php:1087
 msgid "Dec"
 msgstr "Gru"
 
-#: qanda.php:1112 qanda.php:1113
+#: qanda.php:1103 qanda.php:1104
 msgid "Year"
 msgstr "Rok"
 
-#: qanda.php:1224
+#: qanda.php:1215
 msgid "Date picker"
-msgstr ""
+msgstr "Wybór daty"
 
-#: qanda.php:1504
+#: qanda.php:1495
 msgid "Other answer"
 msgstr "Inna odpowiedź"
 
-#: qanda.php:1804
+#: qanda.php:1795
 msgid "Please enter your comment here"
 msgstr "Wprowadź komentarz"
 
-#: qanda.php:2107
+#: qanda.php:2098
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Aby cofnąć wybór, kliknij na ikonę nożyczek, znajdującą się obok wybranego elementu z prawej strony"
 
-#: qanda.php:2118 qanda.php:2133
+#: qanda.php:2109 qanda.php:2124
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] "Proszę porangować co najmniej %d pozycję w pytaniu \"%s\""
 msgstr[1] "Proszę porangować co najmniej %d pozycji w pytaniu \"%s\"."
 msgstr[2] ""
 
-#: qanda.php:2428
+#: qanda.php:2419
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Zaznaczono pole \"inne\" w pytaniu \"%s\". Proszę również wpisać treść w odpowiednie pole \"komentarz\"."
 
-#: qanda.php:2700
+#: qanda.php:2692
 msgid "Upload files"
 msgstr "Wczytaj pliki"
 
@@ -10788,35 +10812,35 @@ msgstr "Powrót do ankiety"
 msgid "File name"
 msgstr "Nazwa pliku"
 
-#: qanda.php:2885 qanda.php:3140 qanda.php:4205 qanda.php:6029
+#: qanda.php:2885 qanda.php:3145 qanda.php:4215 qanda.php:6039
 msgid "Error: This question has no answers."
 msgstr "Błąd: To pytanie nie ma zdefiniowanych wariantów odpowiedzi."
 
-#: qanda.php:3285
+#: qanda.php:3295
 msgid "Only numbers may be entered in these fields"
 msgstr "Można wprowadzać tylko liczby"
 
-#: qanda.php:3296
+#: qanda.php:3306
 msgid "Remaining: "
 msgstr "Pozostało:"
 
-#: qanda.php:3303
+#: qanda.php:3313
 msgid "Total: "
 msgstr "Razem"
 
-#: qanda.php:3572 qanda.php:3573
+#: qanda.php:3582 qanda.php:3583
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Przeciągnij i upuść szpilkę we właściwe miejsce. Możesz także klikną prawym przyciskiem na mapie, aby przesunąć szpilkę."
 
-#: qanda.php:4770 qanda.php:5150 qanda.php:5484 qanda.php:5631 qanda.php:6259
+#: qanda.php:4780 qanda.php:5160 qanda.php:5494 qanda.php:5641 qanda.php:6269
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Błąd: Nie ma opcji odpowiedzi do tego pytania i/lub nie ma ich w tym języku."
 
-#: qanda.php:5401
+#: qanda.php:5411
 msgid "..."
 msgstr "..."
 
-#: qanda.php:5625
+#: qanda.php:5635
 msgid "Error: There are no answers defined for this question."
 msgstr "Błąd: musisz podać warianty odpowiedzi dla tego pytania."
 
@@ -11056,7 +11080,7 @@ msgstr "Do tego pytania można wczytać tylko %s plików!"
 msgid "Uploading"
 msgstr "Przesyłanie"
 
-#: uploader.php:100 uploader.php:128
+#: uploader.php:100 uploader.php:130
 msgid "Select file"
 msgstr "Wybierz plik"
 
@@ -11080,7 +11104,7 @@ msgstr ""
 "Należy przesłać %s więcej plików do tego pytania.\n"
 "Na pewno chcesz wyjść?"
 
-#: uploader.php:131
+#: uploader.php:133
 msgid "You can upload %s under %s KB each."
 msgstr "Możesz wysłać %s do każdych %s KB."
 
@@ -11122,8 +11146,8 @@ msgstr "Nie masz uprawnień do powielania ankiet!"
 #: admin/userrighthandling.php:827 admin/userrighthandling.php:838
 #: admin/userrighthandling.php:867 admin/userrighthandling.php:872
 #: admin/userrighthandling.php:1028 admin/userrighthandling.php:1032
-#: admin/userrighthandling.php:1080 index.php:1717 index.php:1792
-#: index.php:1959 replacements.php:556
+#: admin/userrighthandling.php:1080 index.php:1722 index.php:1797
+#: index.php:1964 replacements.php:556
 msgid "Continue"
 msgstr "Kontynuuj"
 
@@ -11264,7 +11288,7 @@ msgstr "Aktywowanie ankiety"
 #: admin/tokens.php:399 admin/tokens.php:413 admin/tokens.php:479
 #: admin/tokens.php:1002 admin/tokens.php:2746 admin/tokens.php:3183
 #: admin/tokens.php:3189 admin/usercontrol.php:846 admin/vvimport.php:121
-#: common_functions.php:5482 index.php:572
+#: common_functions.php:5479 index.php:572
 msgid "Error"
 msgstr "Błąd"
 
