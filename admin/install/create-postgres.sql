@@ -365,7 +365,7 @@ CREATE TABLE prefix_survey_permissions (
     CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission)
 );
 
-     
+
 --
 -- Table structure for table user_groups
 --
@@ -382,7 +382,8 @@ CREATE TABLE prefix_user_groups (
 --
 CREATE TABLE prefix_user_in_groups (
     ugid integer NOT NULL,
-    uid integer NOT NULL
+    uid integer NOT NULL,
+    CONSTRAINT prefix_user_in_groups_pkey PRIMARY KEY (ugid,uid)
 );
 
 
@@ -433,7 +434,7 @@ CREATE TABLE prefix_participants (
   "lastname" character varying( 40 ) DEFAULT NULL,
   "email" character varying( 80 ) DEFAULT NULL,
   "language" character varying( 2 ) DEFAULT NULL,
-  "blacklisted" character( 1 ) DEFAULT NULL,
+  "blacklisted" character( 1 ) NOT NULL,
   "owner_uid" integer NOT NULL
 );
 
@@ -444,7 +445,7 @@ CREATE TABLE prefix_participants (
 CREATE TABLE prefix_participant_attribute (
   "participant_id" character varying( 50 ) NOT NULL,
   "attribute_id" integer NOT NULL,
-  "value" integer NOT NULL,
+  "value" value character varying(50) NOT NULL,
   CONSTRAINT prefix_participant_attribut_pkey PRIMARY KEY (participant_id,attribute_id)
 );
 
@@ -454,7 +455,7 @@ CREATE TABLE prefix_participant_attribute (
 --
 CREATE TABLE prefix_participant_attribute_names (
   "attribute_id" serial NOT NULL,
-  "attribute_type" character varying( 30 ) NOT NULL,
+  "attribute_type" character varying( 4 ) NOT NULL,
   "visible" character varying( 5 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
 );
@@ -462,10 +463,11 @@ CREATE TABLE prefix_participant_attribute_names (
 -- Table structure for table participant_attribute_lang
 --
 CREATE TABLE prefix_participant_attribute_names_lang (
-  "id" serial PRIMARY KEY NOT NULL,
+  "id" integer NOT NULL,
   "attribute_id" integer NOT NULL,
   "attribute_name" character varying( 30 ) NOT NULL,
-  "lang" character varying( 20 ) NOT NULL
+  "lang" character varying( 20 ) NOT NULL,
+  CONSTRAINT prefix_participant_attribute_names_lang_pkey PRIMARY KEY (attribute_id, lang)
 );
 --
 -- Table structure for table participant_attribute_values
@@ -480,10 +482,10 @@ CREATE TABLE prefix_participant_attribute_values (
 --
 CREATE TABLE prefix_participant_shares (
   "participant_id" character varying( 50 ) NOT NULL,
-  "shared_uid" integer NOT NULL,
-  "date_added" date NOT NULL,
+  "share_uid" integer NOT NULL,
+  "date_added" timestamp NOT NULL,
   "can_edit" character varying( 5 ) NOT NULL,
-  CONSTRAINT prefix_participant_shares_pkey PRIMARY KEY (participant_id,shared_uid)
+  CONSTRAINT prefix_participant_shares_pkey PRIMARY KEY (participant_id,share_uid)
 );
 
 
@@ -533,7 +535,6 @@ create index questions_idx2 on prefix_questions (sid);
 create index questions_idx3 on prefix_questions (gid);
 create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
-create index user_in_groups_idx1 on prefix_user_in_groups  (ugid, uid);
 create index parent_qid_idx on prefix_questions (parent_qid);
 
 
