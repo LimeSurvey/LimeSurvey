@@ -35,16 +35,19 @@ function db_upgrade_all($oldversion) {
     // and http://github.com/yiisoft/yii/issues/765
     if ($sDBDriverName=='pgsql')
     {
+        Yii::app()->setConfig('char',$sChar='character');
         Yii::app()->setConfig('varchar',$sVarchar='character varying');
         Yii::app()->setConfig('autoincrement', $sAutoIncrement='serial');
     }
     elseif ($sDBDriverName=='mssql')
     {
+        Yii::app()->setConfig('char',$sChar='char');
         Yii::app()->setConfig('varchar',$sVarchar='varchar');
         Yii::app()->setConfig('autoincrement', $sAutoIncrement='integer NOT NULL IDENTITY (1,1)');
     }
     else
     {
+        Yii::app()->setConfig('char',$sChar='char');
         Yii::app()->setConfig('varchar',$sVarchar='varchar');
         Yii::app()->setConfig('autoincrement', $sAutoIncrement='int(11) NOT NULL AUTO_INCREMENT');
     }
@@ -845,8 +848,54 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
     }
 
+    if ($oldversion < 158)
+    {
+        Yii::app()->db->createCommand()->createTable('{{question_types}}',array(
+        'tid' => 'pk',
+        'order' => 'integer NOT NULL',
+        'group' => 'integer NOT NULL',
+        'name' => $sVarchar.'(50) NOT NULL',
+        'class' => $sVarchar.'(50) NOT NULL',
+        'legacy' => $sChar.'(1)',
+        'system' => $sChar."(1) NOT NULL DEFAULT 'N'",
+        ));
+        addUnique('question_types', array('order','group'));
+        addUnique('question_types', array('name'));
+        addUnique('question_types', array('legacy'));
+
+        Yii::app()->db->createCommand()->createTable('{{question_type_groups}}',array(
+        'id' => 'pk',
+        'name' => $sVarchar.'(50) NOT NULL',
+        'order' => 'integer NOT NULL',
+        'system' => $sChar."(1) NOT NULL DEFAULT 'N'",
+        ));
+        addUnique('question_type_groups', array('order'));
+
+        Yii::app()->db->createCommand()->addColumn('{{questions}}','tid',"integer NOT NULL DEFAULT '0' AFTER `gid`");
+
+        upgradeSurveys158();
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
+    }
+
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
+}
+
+function upgradeSurveys158()
+{
+    $types = array(array(1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),array(2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),array(3, 3, 1, 'List (radio)', 'List', 'L', 'Y'),array(4, 4, 1, 'List with comment', 'CommentList', 'O', 'Y'),array(5, 1, 2, 'Array', 'RadioArray', 'F', 'Y'),array(6, 2, 2, 'Array (10 point choice)', 'TenRadioArray', 'B', 'Y'),array(7, 3, 2, 'Array (5 point choice)', 'FiveRadioArray', 'A', 'Y'),array(8, 4, 2, 'Array (Increase/Same/Decrease)', 'IDRadioArray', 'E', 'Y'),array(9, 5, 2, 'Array (Numbers)', 'NumberArray', ':', 'Y'),array(10, 6, 2, 'Array (Texts)', 'TextArray', ';', 'Y'),array(11, 7, 2, 'Array (Yes/No/Uncertain)', 'YNRadioArray', 'C', 'Y'),array(12, 8, 2, 'Array by column', 'ColumnRadioArray', 'H', 'Y'),array(13, 9, 2, 'Array dual scale', 'DualRadioArray', '1', 'Y'),array(14, 1, 3, 'Date/Time', 'Date', 'D', 'Y'),array(15, 2, 3, 'Equation', 'Equation', '*', 'Y'),array(16, 3, 3, 'File upload', 'File', '|', 'Y'),array(17, 4, 3, 'Gender', 'Gender', 'G', 'Y'),array(18, 5, 3, 'Language switch', 'Language', 'I', 'Y'),array(19, 6, 3, 'Multiple numerical input', 'Multinumerical', 'K', 'Y'),array(20, 7, 3, 'Numerical input', 'Numerical', 'N', 'Y'),array(21, 8, 3, 'Ranking', 'Ranking', 'R', 'Y'),array(22, 9, 3, 'Text display', 'Display', 'X', 'Y'),array(23, 10, 3, 'Yes/No', 'YN', 'Y', 'Y'),array(24, 1, 4, 'Huge free text', 'HugeText', 'U', 'Y'),array(25, 2, 4, 'Long free text', 'LongText', 'T', 'Y'),array(26, 3, 4, 'Multiple short text', 'Multitext', 'Q', 'Y'),array(27, 4, 4, 'Short free text', 'ShortText', 'S', 'Y'),array(28, 1, 5, 'Multiple choice', 'Check', 'M', 'Y'),array(29, 2, 5, 'Multiple choice with comments', 'CommentCheck', 'P', 'Y')); 
+    $groups = array(array(1, 'Single choice questions', 1, 'Y'),array(2, 'Arrays', 2, 'Y'),array(3, 'Mask questions', 3, 'Y'),array(4, 'Text questions', 4, 'Y'),array(5, 'Multiple choice questions', 5, 'Y'));
+    
+    foreach($types as $type)
+    {
+        Yii::app()->db->createCommand()->insert('{{question_types}}', array('tid' => $type[0], 'order' => $type[1],'group' => $type[2], 'name' => $type[3], 'class' => $type[4], 'legacy' => $type[5], 'system' => $type[6]));
+    }
+    foreach($groups as $group)
+    {
+        Yii::app()->db->createCommand()->insert('{{question_type_groups}}', array('id' => $group[0], 'name' => $group[1], 'order' => $group[2], 'system' => $group[3]));
+    }
+
+    Yii::app()->db->createCommand('UPDATE {{questions}} INNER JOIN {{question_types}} ON {{questions}}.type={{question_types}}.legacy SET {{questions}}.tid={{question_types}}.tid')->execute();
 }
 
 function upgradeSurveys156()
@@ -1383,6 +1432,11 @@ function addPrimaryKey($sTablename, $aColumns)
     Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
 }
 
+
+function addUnique($sTablename, $aColumns)
+{
+    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD UNIQUE (`".implode('`,`',$aColumns)."`)")->execute();
+}
 
 function dropPrimaryKey($sTablename)
 {
