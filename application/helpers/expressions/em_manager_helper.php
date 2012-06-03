@@ -1038,23 +1038,39 @@
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                            $af_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                            $sgq .= substr($sq['sqsuffix'],1);
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $af_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                            $afe_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                            $sgq .= substr($sq['sqsuffix'],1);
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $afe_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                     }
                                     else
                                     {
                                         foreach ($cascadedAF as $_caf)
                                         {
-                                            $af_names[] = $_caf . $sq['sqsuffix'];
+                                            $sgq = $_caf . $sq['sqsuffix'];
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $af_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
-                                            $afe_names[] = $_cafe . $sq['sqsuffix'];
+                                            $sgq = $_cafe . $sq['sqsuffix'];
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $afe_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                     }
                                     break;
