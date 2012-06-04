@@ -370,7 +370,7 @@ class CheckQuestion extends QuestionModule
             $field['hasconditions']=$this->conditionsexist;
             $field['usedinconditions']=$this->usedinconditions;
             $field['questionSeq']=$this->questioncount;
-            $field['groupSeq']=$this->randomgid;
+            $field['groupSeq']=$this->groupcount;
             $field['preg']=$this->preg;
             if(isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
             $field['pq']=$this;

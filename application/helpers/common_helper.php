@@ -2070,22 +2070,16 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
         $pq = createQuestion($arow->question_types['class'], $surveyid, $arow['qid'], $fieldname,
         $arow['title'], $arow['question'], $arow['gid'], $arow['mandatory'], $conditions,
-        $usedinconditions, $questionSeq, $groupSeq, $sLanguage);
+        $usedinconditions, $questionSeq, null, $sLanguage);
         $pq->aid = '';
         if(isset($defaults[$arow['qid']])) $pq->default = $defaults[$arow['qid']];
 
         $pq->preg = $arow['preg'];
         $pq->other = $arow['other'];
         $pq->groupname = $arow->groups['group_name'];
+        $pq->groupcount = $groupSeq;
         $add = $pq->createFieldmap($arow['type']);
         
-        foreach($add as $key=>$value)
-        {
-            unset($add[$key]['q']);
-            unset($add[$key]['pq']);            
-        }
-
-
         if (count($add))
         {
             $tmp=array_values($add);

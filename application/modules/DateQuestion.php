@@ -209,6 +209,29 @@ class DateQuestion extends QuestionModule
 
         return $answer;
     }
+        
+    public function filterGET($value)
+    {
+        global $thissurvey;
+        if (trim($value)=="")
+        {
+            return NULL;
+        }
+        else
+        {
+            $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+            return $datetimeobj->convert("Y-m-d");
+        }
+    }
+        
+    public function prepareValue($value)
+    {
+        if (trim($val)=='') {
+            return NULL;
+        }
+        return $value;
+    }
     
     public function availableAttributes($attr = false)
     {

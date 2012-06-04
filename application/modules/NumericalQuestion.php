@@ -88,6 +88,24 @@ class NumericalQuestion extends QuestionModule
 
         return $answer;
     }
+        
+    public function filterGET($value)
+    {
+        if (trim($value)=="") {
+            return NULL;
+        }
+        else {
+            return sanitize_float($value);
+        }
+    }
+        
+    public function prepareValue($value)
+    {
+        if (trim($val)=='') {
+            return NULL;
+        }
+        return $value;
+    }
     
     public function availableAttributes($attr = false)
     {

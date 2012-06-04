@@ -638,7 +638,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $field['hasconditions']=$this->conditionsexist;
             $field['usedinconditions']=$this->usedinconditions;
             $field['questionSeq']=$this->questioncount;
-            $field['groupSeq']=$this->randomgid;
+            $field['groupSeq']=$this->groupcount;
             $field['pq']=$this;
             $q = clone $this;
             $q->fieldname = $fieldname;

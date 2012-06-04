@@ -11,6 +11,7 @@ abstract class QuestionModule
     public $conditionsexist; //boolean
     public $usedinconditions;
     public $questioncount;
+    public $groupcount;
     public $randomgid;
     public $language;
     public $groupname;
@@ -160,11 +161,26 @@ abstract class QuestionModule
         $map['hasconditions']=$this->conditionsexist;
         $map['usedinconditions']=$this->usedinconditions;
         $map['questionSeq']=$this->questioncount;
-        $map['groupSeq']=$this->randomgid;
+        $map['groupSeq']=$this->groupcount;
         if(isset($this->default[0])) $map['defaultvalue']=$this->default[0];
         $map['q']=$this;
         $map['pq']=$this;
         return array($this->fieldname=>$map);
+    }
+    
+    public function fileUpload()
+    {
+        return false;
+    }
+    
+    public function filterGET($value)
+    {
+        return $value;
+    }
+        
+    public function prepareValue($value)
+    {
+        return $value;
     }
     
     abstract public function availableAttributes($attr = false);    

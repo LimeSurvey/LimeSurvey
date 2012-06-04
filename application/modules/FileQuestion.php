@@ -192,7 +192,7 @@ class FileQuestion extends QuestionModule
             $field['hasconditions']=$this->conditionsexist;
             $field['usedinconditions']=$this->usedinconditions;
             $field['questionSeq']=$this->questioncount;
-            $field['groupSeq']=$this->randomgid;
+            $field['groupSeq']=$this->groupcount;
             $field['pq']=$this;
             $field['q']=$this;
             $field2=$field;
@@ -210,6 +210,16 @@ class FileQuestion extends QuestionModule
             $map[$fieldname2]=$field2;
         }
         return $map;
+    }
+    
+    public function fileUpload()
+    {
+        return true;
+    }
+        
+    public function filterGET($value)
+    {
+        return NULL;
     }
     
     public function availableAttributes($attr = false)
