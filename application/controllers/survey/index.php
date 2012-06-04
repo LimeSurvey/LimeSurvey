@@ -531,10 +531,10 @@ class index extends CAction {
                 $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
                 foreach ($fieldmap as $field)
                 {
-                    if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
+                    $q = $field['q'];
+                    if ($q->fileUpload() && !strpos($q->fieldname, "_filecount"))
                     {
-                        if (!isset($qid)) { $qid = array(); }
-                        $qid[] = $field['fieldname'];
+                        $questions[] = $q;
                     }
                 }
 
@@ -545,9 +545,9 @@ class index extends CAction {
                     $result = dbExecuteAssoc($query);
                     foreach($result->readAll() as $row)
                     {
-                        foreach ($qid as $question)
+                        foreach ($questions as $q)
                         {
-                            $json = $row[$question];
+                            $json = $row[$q->fieldname];
                             if ($json == "" || $json == NULL)
                                 continue;
 

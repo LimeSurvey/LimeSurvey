@@ -772,9 +772,10 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 
             foreach ($fields as $field)
             {
-                if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount"))
+                $q = $fieldmap[$field]['q'];
+                if ($q->fileUpload() && !strrpos($q->fieldname, "_filecount"))
                 {
-                    $validation= getQuestionAttributeValues($fieldmap[$field]['qid']);
+                    $validation= getQuestionAttributeValues($q);
 
                     $filecount = 0;
 
@@ -832,7 +833,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     else
                         $filecount = 0;
 
-                    if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
+                    if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($q->id))
                     {
                         $filenotvalidated = array();
                         $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");
@@ -1729,9 +1730,10 @@ function buildsurveysession($surveyid,$previewGroup=false)
         // First create a fieldmap with GID as key
         foreach ($fieldmap as $aField)
         {
-            if (isset($aField['gid']))
+            $q = $aField['q'];
+            if (isset($q->gid))
             {
-                $GroupFieldMap[$aField['gid']][]=$aField;
+                $GroupFieldMap[$q->gid][]=$aField;
             }
             else{
                 $GroupFieldMap['other'][]=$aField;
@@ -1752,7 +1754,8 @@ function buildsurveysession($surveyid,$previewGroup=false)
         {
             foreach ($aGroupFields as $aField)
             {
-                if (isset($aField['fieldname'])) $fieldmap[$aField['fieldname']]=$aField;  // isset() because of the shuffled flag above
+                $q = $aField['q'];
+                if (isset($q->fieldname)) $fieldmap[$q->fieldname]=$aField;  // isset() because of the shuffled flag above
             }
         }
         unset($GroupFieldMap);
@@ -1798,14 +1801,15 @@ function buildsurveysession($surveyid,$previewGroup=false)
         while (list($fieldkey,$fieldval) = each($fieldmap))
         {
             $found = 0;
+            $q = $fieldval['q'];
             foreach ($randomGroups as $gkey=>$gval)
             {
                 // We found a qid that is in the randomization group
-                if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
+                if (isset($q->id) && in_array($q->id,$oldQuestOrder[$gkey]))
                 {
                     // Get the swapped question
                     $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
-                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]],$_SESSION['survey_'.$surveyid]['s_lang']);
+                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$q->id]],$_SESSION['survey_'.$surveyid]['s_lang']);
                     unset($qfieldmap['id']);
                     unset($qfieldmap['submitdate']);
                     unset($qfieldmap['lastpage']);
@@ -1815,7 +1819,10 @@ function buildsurveysession($surveyid,$previewGroup=false)
                     foreach ($qfieldmap as $tkey=>$tval)
                     {
                         // Assign the swapped question (Might be more than one field)
-                        $tval['random_gid'] = $fieldval['gid'];
+                        $tval['random_gid'] = $q->gid; //AJS
+                        $qq = $tval['q'];
+                        $qq->randomgid = $q->gid;
+                        $tval['q'] = $qq;
                         //$tval['gid'] = $fieldval['gid'];
                         $copyFieldMap[$tkey]=$tval;
                     }
@@ -1840,32 +1847,35 @@ function buildsurveysession($surveyid,$previewGroup=false)
         $copyFieldMap2 = array();
         foreach ($copyFieldMap as $key=>$val)
         {
-            if (isset($val['random_gid']))
+            $q = $val['q'];
+            if (isset($q->randomgid))
             {
-                if ($val['gid'] != '' && $val['random_gid'] != '' && $val['random_gid'] != $_gid)
+                if ($q->gid != '' && $q->randomgid != '' && $q->randomgid != $_gid)
                 {
-                    $_gid = $val['random_gid'];
+                    $_gid = $q->randomgid ;
                     ++$gseq;
                 }
             }
             else
             {
-                if ($val['gid'] != '' && $val['gid'] != $_gid)
+                if ($q->gid != '' && $q->gid != $_gid)
                 {
-                    $_gid = $val['gid'];
+                    $_gid = $q->gid;
                     ++$gseq;
                 }
             }
 
-            if ($val['qid'] != '' && $val['qid'] != $_qid)
+            if ($q->id != '' && $q->id != $_qid)
             {
-                $_qid = $val['qid'];
+                $_qid = $q->id;
                 ++$qseq;
             }
-            if ($val['gid'] != '' && $val['qid'] != '')
+            if ($q->gid != '' && $q->id != '')
             {
-                $val['groupSeq'] = $gseq;
-                $val['questionSeq'] = $qseq;
+                $val['groupSeq'] = $gseq; //AJS
+                $val['questionSeq'] = $qseq; //AJS
+                $q->groupcount = $gseq;
+                $q->questioncount = $qseq;
             }
             $copyFieldMap2[$key] = $val;
         }
@@ -1881,10 +1891,11 @@ function buildsurveysession($surveyid,$previewGroup=false)
     $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
-        if (isset($field['qid']) && $field['qid']!='')
+        $q = $field['q'];
+        if (isset($q->id) && $q->id!='')
         {
-            $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
-            $_SESSION['survey_'.$surveyid]['insertarray'][]=$field['fieldname'];
+            $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$q->fieldname]=$q->surveyid.'X'.$q->gid.'X'.$q->id;
+            $_SESSION['survey_'.$surveyid]['insertarray'][]=$q->fieldname;
             //fieldarray ARRAY CONTENTS -
             //            [0]=questions.qid,
             //			[1]=fieldname,
@@ -1899,45 +1910,34 @@ function buildsurveysession($surveyid,$previewGroup=false)
             //			[9]=used in group.php for question count
             //			[10]=new group id for question in randomization group (GroupbyGroup Mode)
 
-            if (!isset($_SESSION['survey_'.$surveyid]['questions'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
+            if (!isset($_SESSION['survey_'.$surveyid]['questions'][$q->surveyid.'X'.$q->gid.'X'.$q->id]))
             {
                 //JUST IN CASE : PRECAUTION!
                 //following variables are set only if $style=="full" in createFieldMap() in common_helper.
                 //so, if $style = "short", set some default values here!
-                if (isset($field['title']))
-                    $title = $field['title'];
-                else
-                    $title = "";
+                if (!isset($q->title))
+                    $q->title = "";
 
-                if (isset($field['question']))
-                    $question = $field['question'];
-                else
-                    $question = "";
+                if (!isset($q->text))
+                    $q->text = "";
 
-                if (isset($field['mandatory']))
-                    $mandatory = $field['mandatory'];
-                else
-                    $mandatory = 'N';
+                if (!isset($q->mandatory))
+                    $q->mandatory = 'N';
 
-                if (isset($field['hasconditions']))
-                    $hasconditions = $field['hasconditions'];
-                else
-                    $hasconditions = 'N';
+                if (!isset($q->conditionsexist))
+                    $q->conditionsexist = 'N';
 
-                if (isset($field['usedinconditions']))
-                    $usedinconditions = $field['usedinconditions'];
-                else
-                    $usedinconditions = 'N';
-                
-                $name = type2Name($field['type']).'Question';
-                $q = new $name($surveyid,$field['qid'],$field['sid'].'X'.$field['gid'].'X'.$field['qid'],$title,$question,$field['gid'],$mandatory,$hasconditions,$usedinconditions);
-                $_SESSION['survey_'.$surveyid]['questions'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]= $q;
+                if (!isset($q->usedinconditions))
+                    $q->usedinconditions = 'N';
+                $q->fieldname = $q->surveyid.'X'.$q->gid.'X'.$q->id;
+                $q->surveyid = $surveyid;
+                $_SESSION['survey_'.$surveyid]['questions'][$q->surveyid.'X'.$q->gid.'X'.$q->id]= $q;
             }
-            if (isset($field['random_gid']))
+            if (isset($q->randomgid))
             {
-                $q = $_SESSION['survey_'.$surveyid]['questions'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']];
-                $q->randomgid = $field['random_gid'];
-                $_SESSION['survey_'.$surveyid]['questions'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']] = $q;
+                $qq = $_SESSION['survey_'.$surveyid]['questions'][$q->surveyid.'X'.$q->gid.'X'.$q->id];
+                $qq->randomgid = $q->randomgid;
+                $_SESSION['survey_'.$surveyid]['questions'][$q->surveyid.'X'.$q->gid.'X'.$q->id] = $qq;
             }
         }
 
@@ -1960,40 +1960,13 @@ function buildsurveysession($surveyid,$previewGroup=false)
         {
             if (isset($_GET[$field]) && $field!='token')
             {
-                $value=$_GET[$field];
-                $type = $fieldmap[$field]['type'];
-                switch($type)
-                {
-                    case 'D': //DATE
-                        if (trim($value)=="")
-                        {
-                            $value = NULL;
-                        }
-                        else
-                        {
-                            $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                            $value=$datetimeobj->convert("Y-m-d");
-                        }
-                        break;
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                        if (trim($value)=="") {
-                            $value = NULL;
-                        }
-                        else {
-                            $value = sanitize_float($value);
-                        }
-                        break;
-                    case '|': //File Upload
-                        $value=NULL;  // can't upload a file via GET
-                        break;
-                }
+                $q = $fieldmap[$field]['q'];
+                $value = $q->filterGET($_GET[$field]);
                 if (!is_null($value))
                 {
                     $_SESSION['survey_'.$surveyid][$field] = $value;
                     $startingValues[$field] = array (
-                    'type'=>$type,
+                    'q'=>$q,
                     'value'=>$value,
                     );
                 }
@@ -2015,16 +1988,17 @@ function buildsurveysession($surveyid,$previewGroup=false)
             {
                 foreach ($fieldmap as $sFieldname=>$aField)
                 {
+                    $q = $aField['q'];
                     if ($aRow['targetsqid']!='')
                     {
-                        if ($aField['qid']==$aRow['targetqid'] && $aField['sqid']==$aRow['targetsqid'])
+                        if ($q->id==$aRow['targetqid'] && $aField['sqid']==$aRow['targetsqid']) //AJS sqid????
                         {
                             $_SESSION['survey_'.$surveyid][$sFieldname]=$_GET[$aRow['parameter']];
                         }
                     }
                     else
                     {
-                        if ($aField['qid']==$aRow['targetqid'])
+                        if ($q->id==$aRow['targetqid'])
                         {
                             $_SESSION['survey_'.$surveyid][$sFieldname]=$_GET[$aRow['parameter']];
                         }

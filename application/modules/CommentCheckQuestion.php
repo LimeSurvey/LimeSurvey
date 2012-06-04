@@ -59,8 +59,6 @@ class CommentCheckQuestion extends CheckQuestion
 
         $callmaxanswscriptother = '';
 
-        $qresult = $this->getOther();
-        $other = $qresult[0]['other'];
         $ansresult = $this->getChildren();
         $anscount = count($ansresult)*2;
 
@@ -68,10 +66,8 @@ class CommentCheckQuestion extends CheckQuestion
         $answer_main = '';
 
         $fn = 1;
-        if (!isset($other)){
-            $other = 'N';
-        }
-        if($other == 'Y')
+        
+        if($this->getOther() == 'Y')
         {
             $label_width = 25;
         }
@@ -134,7 +130,7 @@ class CommentCheckQuestion extends CheckQuestion
 
             $fn++;
         }
-        if ($other == 'Y')
+        if ($this->getOther() == 'Y')
         {
             $myfname = $this->fieldname.'other';
             $myfname2 = $myfname.'comment';

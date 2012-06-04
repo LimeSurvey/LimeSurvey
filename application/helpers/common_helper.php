@@ -1903,6 +1903,19 @@ function validateTemplateDir($templatename)
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @return array
 */
+function array2Object($array)
+{
+    $object->fieldname=$array['fieldname'];
+    $object->surveyid=$array['sid'];
+    $object->gid=$array['gid'];
+    $object->id=$array['qid'];
+    $object->aid=$array['aid'];
+    $object->title=$array['title'];
+    $object->text=$array['question'];
+    $object->groupname=$array['group_name'];
+    return $object; 
+}
+
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage) {
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
@@ -1919,6 +1932,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["id"]['title']="";
         $fieldmap["id"]['question']=$clang->gT("Response ID");
         $fieldmap["id"]['group_name']="";
+        $fieldmap["id"]['q']=array2Object($fieldmap["id"]);
     }
 
     $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
@@ -1927,6 +1941,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["submitdate"]['title']="";
         $fieldmap["submitdate"]['question']=$clang->gT("Date submitted");
         $fieldmap["submitdate"]['group_name']="";
+        $fieldmap["submitdate"]['q']=array2Object($fieldmap["submitdate"]);
     }
 
     $fieldmap["lastpage"]=array("fieldname"=>"lastpage", 'sid'=>$surveyid, 'type'=>"lastpage", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -1935,6 +1950,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["lastpage"]['title']="";
         $fieldmap["lastpage"]['question']=$clang->gT("Last page");
         $fieldmap["lastpage"]['group_name']="";
+        $fieldmap["lastpage"]['q']=array2Object($fieldmap["lastpage"]);
     }
 
     $fieldmap["startlanguage"]=array("fieldname"=>"startlanguage", 'sid'=>$surveyid, 'type'=>"startlanguage", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -1943,6 +1959,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['title']="";
         $fieldmap["startlanguage"]['question']=$clang->gT("Start language");
         $fieldmap["startlanguage"]['group_name']="";
+        $fieldmap["startlanguage"]['q']=array2Object($fieldmap["startlanguage"]);
     }
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
@@ -1957,6 +1974,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap["token"]['question']=$clang->gT("Token");
             $fieldmap["token"]['group_name']="";
         }
+        $fieldmap["token"]['q']=array2Object($fieldmap["token"]);
     }
     if ($prow['datestamp'] == "Y")
     {
@@ -1972,6 +1990,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap["startdate"]['question']=$clang->gT("Date started");
             $fieldmap["startdate"]['group_name']="";
         }
+        $fieldmap["startdate"]['q']=array2Object($fieldmap["startdate"]);
 
         $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
         'type'=>"datestamp",
@@ -1985,7 +2004,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
             $fieldmap["datestamp"]['group_name']="";
         }
-
+        $fieldmap["datestamp"]['q']=array2Object($fieldmap["datestamp"]);
     }
     if ($prow['ipaddr'] == "Y")
     {
@@ -2001,6 +2020,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
             $fieldmap["ipaddr"]['group_name']="";
         }
+        $fieldmap["ipaddr"]['q']=array2Object($fieldmap["ipaddr"]);
     }
     // Add 'refurl' to fieldmap.
     if ($prow['refurl'] == "Y")
@@ -2012,6 +2032,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
             $fieldmap["refurl"]['group_name']="";
         }
+        $fieldmap["refurl"]['q']=array2Object($fieldmap["refurl"]);
     }
 
     // Collect all default values once so don't need separate query for each question with defaults
@@ -2079,7 +2100,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $pq->groupname = $arow->groups['group_name'];
         $pq->groupcount = $groupSeq;
         $add = $pq->createFieldmap($arow['type']);
-        
+
         if (count($add))
         {
             $tmp=array_values($add);

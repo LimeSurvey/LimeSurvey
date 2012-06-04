@@ -69,9 +69,6 @@ class CheckQuestion extends QuestionModule
             $oth_checkconditionFunction = "checkconditions";
         }
 
-        $qresult = $this->getOther();
-        $other = $qresult[0]['other'];
-
         $ansresult = $this->getChildren();
         $anscount = count($ansresult);
 
@@ -93,7 +90,7 @@ class CheckQuestion extends QuestionModule
             }
         }
 
-        if ($other == 'Y')
+        if ($this->getOther() == 'Y')
         {
             $anscount++; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
         }
@@ -175,7 +172,7 @@ class CheckQuestion extends QuestionModule
             }
         }
 
-        if ($other == 'Y')
+        if ($this->getOther() == 'Y')
         {
             $myfname = $this->fieldname.'other';
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($this, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","question-item answer-item checkbox-item other-item");
@@ -242,7 +239,7 @@ class CheckQuestion extends QuestionModule
         $answer .= $wrapper['whole-end'];
 
         $checkotherscript = "";
-        if ($other == 'Y')
+        if ($this->getOther() == 'Y')
         {
             // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
             // this means that if it is cehcked We must force the end-user to enter text in the input
@@ -312,7 +309,8 @@ class CheckQuestion extends QuestionModule
     {
         if ($this->other) return $this->other;
         $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and parent_qid=0";
-        return $this->other = Yii::app()->db->createCommand($query)->query()->readAll();  //Checked
+        $result = Yii::app()->db->createCommand($query)->query()->readAll();
+        return $this->other = $result[0]['other'];  //Checked
     }
 
     public function getTitle()

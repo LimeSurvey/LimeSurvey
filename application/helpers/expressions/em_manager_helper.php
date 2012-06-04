@@ -4042,25 +4042,33 @@
                 foreach ($updatedValues as $key=>$value)
                 {
                     $val = (is_null($value) ? NULL : $value['value']);
-                    $type = (is_null($value) ? NULL : $value['type']);
-
-                    // Clean up the values to cope with database storage requirements
-                    switch($type)
+                    if(isset($value['q']))
                     {
-                        case 'D': //DATE
-                            if (trim($val)=='') {
-                                $val=NULL;  // since some databases can't store blanks in date fields
-                            }
-                            // otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses()
-                            break;
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
-                            if (trim($val)=='') {
-                                $val=NULL;  // since some databases can't store blanks in numerical inputs
-                            }
-                            break;
-                        default:
-                            break;
+                        $q = $value['q'];
+                        $val = $q->prepareValue($val);
+                    }
+                    else //AJS
+                    {
+                        $type = (is_null($value) ? NULL : $value['type']);
+
+                        // Clean up the values to cope with database storage requirements
+                        switch($type)
+                        {
+                            case 'D': //DATE
+                                if (trim($val)=='') {
+                                    $val=NULL;  // since some databases can't store blanks in date fields
+                                }
+                                // otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses()
+                                break;
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                if (trim($val)=='') {
+                                    $val=NULL;  // since some databases can't store blanks in numerical inputs
+                                }
+                                break;
+                            default:
+                                break;
+                        }
                     }
 
                     if (is_null($val))

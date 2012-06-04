@@ -20,11 +20,6 @@ class ListQuestion extends QuestionModule
 
         $aQuestionAttributes = $this->getAttributeValues();
 
-        foreach ($this->getOther() as $row)
-        {
-            $other = $row['other'];
-        }
-
         //question attribute random order set?
         if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
@@ -62,7 +57,7 @@ class ListQuestion extends QuestionModule
             $othertext=$clang->gT('Other:');
         }
 
-        if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
+        if ($this->getOther()=='Y') {$anscount++;} //Count up for the Other answer
         if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
         $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
@@ -230,7 +225,8 @@ class ListQuestion extends QuestionModule
     {
         if ($this->other) return $this->other;
         $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ";
-        return $this->other = Yii::app()->db->createCommand($query)->query()->readAll();  //Checked
+        $result = Yii::app()->db->createCommand($query)->query()->readAll();
+        return $this->other = $result[count($result)-1];  //Checked
     }
 
     public function getTitle()

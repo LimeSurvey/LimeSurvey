@@ -6,6 +6,7 @@ class SelectQuestion extends ListQuestion
         global $dropdownthreshold;
 
         $clang=Yii::app()->lang;
+        $answer='';
 
         $checkconditionFunction = "checkconditions";
 
@@ -24,11 +25,6 @@ class SelectQuestion extends ListQuestion
         {
             $optCategorySeparator = $aQuestionAttributes['category_separator'];
         }
-
-        $answer='';
-
-        $result = $this->getOther();
-        $other = $result[0]['other'];
 
         //question attribute random order set?
         if ($aQuestionAttributes['random_order']==1)
@@ -56,7 +52,7 @@ class SelectQuestion extends ListQuestion
             if ((!empty($_SESSION['survey_'.$this->surveyid][$this->fieldname])) && $this->mandatory != 'Y' && $this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
                 ++$_maxHeight;  // for No Answer
             }
-            if (isset($other) && $other=='Y') {
+            if ($this->getOther()=='Y') {
                 ++$_maxHeight;  // for Other
             }
             if (!$_SESSION['survey_'.$this->surveyid][$this->fieldname]) {
@@ -247,9 +243,10 @@ class SelectQuestion extends ListQuestion
     {
         if ($this->other) return $this->other;
         $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ";
-        return $this->other = Yii::app()->db->createCommand($query)->query()->readAll();  //Checked
+        $result = Yii::app()->db->createCommand($query)->query()->readAll();
+        return $this->other = $result[0]['other'];  //Checked
     }
-
+    
     //public function getTitle() - inherited
     
     //public function getHelp() - inherited
