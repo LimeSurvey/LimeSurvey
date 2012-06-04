@@ -172,6 +172,46 @@ class FileQuestion extends QuestionModule
         return $qtitle;
     }
     
+    public function createFieldmap($type=null)
+    {
+        $clang = Yii::app()->lang;
+        $qidattributes= getQuestionAttributeValues($this->id);
+        for ($i = 1; $i <= $qidattributes['max_num_of_files']; $i++)
+        {
+            $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}";
+            $field['fieldname']=$fieldname;
+            $field['type']=$type;
+            $field['sid']=$this->surveyid;
+            $field['gid']=$this->gid;
+            $field['qid']=$this->id;
+            $field['aid']='';
+            $field['title']=$this->title;
+            $field['question']=$this->text;
+            $field['group_name']=$this->groupname;
+            $field['mandatory']=$this->mandatory;
+            $field['hasconditions']=$this->conditionsexist;
+            $field['usedinconditions']=$this->usedinconditions;
+            $field['questionSeq']=$this->questioncount;
+            $field['groupSeq']=$this->randomgid;
+            $field['pq']=$this;
+            $field['q']=$this;
+            $field2=$field;
+            $field['max_files']=$qidattributes['max_num_of_files'];
+            $fieldname2="{$this->surveyid}X{$this->gid}X{$this->id}_filecount";
+            $field2['fieldname']=$fieldname2;
+            $field2['aid']='filecount';
+            $field2['question']="filecount - ".$this->text;
+            $q = clone $this;
+            $q->fieldname = $fieldname;
+            $q->aid=$field2['aid'];
+            $q->question=$field2['question'];
+            $field2['q']=$q;
+            $map[$fieldname]=$field;
+            $map[$fieldname2]=$field2;
+        }
+        return $map;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","show_title","show_comment","max_filesize","max_num_of_files","min_num_of_files","allowed_filetypes","random_group");

@@ -1,7 +1,6 @@
 <?php
 class ListQuestion extends QuestionModule
 {
-    protected $other;
     public function getAnswerHTML()
     {
         global $dropdownthreshold;
@@ -256,6 +255,29 @@ class ListQuestion extends QuestionModule
         }
         
         return '';
+    }
+    
+    public function createFieldmap($type=null)
+    {
+        $clang = Yii::app()->lang;
+        $map = parent::createFieldmap($type);
+        if($this->other=='Y')
+        {
+            $other = $map[$this->fieldname];
+            $other['fieldname'].='other';
+            $other['aid']='other';
+            $other['subquestion']=$clang->gT("Other");
+            if (isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
+            else unset($other['defaultvalue']);
+            $q = clone $this;
+            $q->fieldname .= 'other';
+            $q->aid = 'other';
+            $q->default = isset($other['defaultvalues'])?$other['defaultvalues']:null;
+            $other['q']=$q;
+            $other['pq']=$this;
+            $map[$other['fieldname']]=$other;
+        }
+        return $map;
     }
     
     public function availableAttributes($attr = false)

@@ -175,6 +175,33 @@ class CommentCheckQuestion extends CheckQuestion
     
     //public function getHelp() - inherited
     
+    public function createFieldmap($type=null)
+    {
+        $clang = Yii::app()->lang;
+        $map = array();
+        $tmp = parent::createFieldmap($type);
+        foreach($tmp as $field)
+        {
+            $comment = $field;
+            $comment['fieldname'].='comment';
+            $comment['subquestion']=$comment['aid']=='other'?$clang->gT("Other comment"):$clang->gT("Comment");
+            if ($comment['aid']!='other') unset($comment['other']);
+            $comment['aid'].='comment';
+            unset($comment['defaultvalues']);
+            unset($comment['sqid']);
+            unset($comment['preg']);
+            $q = clone $this;
+            $q->fieldname .= 'comment';
+            $q->aid = $comment['aid'];
+            unset($q->default);
+            $comment['q']=$q;
+            $comment['pq']=$this;
+            $map[$field['fieldname']]=$field;
+            $map[$comment['fieldname']]=$comment;
+        }
+        return $map;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","assessment_value","exclude_all_others","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

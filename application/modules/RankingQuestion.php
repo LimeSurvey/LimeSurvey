@@ -270,6 +270,38 @@ class RankingQuestion extends QuestionModule
         return $help;
     }
     
+    public function createFieldmap($type=null)
+    {
+        $clang = Yii::app()->lang;
+        $data = Answers::model()->findAllByAttributes(array('qid' => $this->id, 'language' => $this->language));
+        for ($i=1; $i<=count($data); $i++)
+        {
+            $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}$i";
+            $field['fieldname']=$fieldname;
+            $field['type']=$type;
+            $field['sid']=$this->surveyid;
+            $field['gid']=$this->gid;
+            $field['qid']=$this->id;
+            $field['aid']=$i;
+            $field['title']=$this->title;
+            $field['question']=$this->text;
+            $field['subquestion']=sprintf($clang->gT('Rank %s'),$i);
+            $field['group_name']=$this->groupname;
+            $field['mandatory']=$this->mandatory;
+            $field['hasconditions']=$this->conditionsexist;
+            $field['usedinconditions']=$this->usedinconditions;
+            $field['questionSeq']=$this->questioncount;
+            $field['groupSeq']=$this->randomgid;
+            $field['pq']=$this;
+            $q = clone $this;
+            $q->fieldname = $fieldname;
+            $q->aid = $field['aid'];
+            $field['q']=$q;
+            $map[$fieldname]=$field;
+        }
+        return $map;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");

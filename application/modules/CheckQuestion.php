@@ -2,7 +2,6 @@
 class CheckQuestion extends QuestionModule
 {
     protected $children;
-    protected $other;
     public function getAnswerHTML()
     {
         global $thissurvey;
@@ -346,6 +345,62 @@ class CheckQuestion extends QuestionModule
             }
         }
         return '';
+    }
+    
+    public function createFieldmap($type=null)
+    {
+        $clang = Yii::app()->lang;
+        $map = array();
+        $abrows = getSubQuestions($this);
+        foreach ($abrows as $abrow)
+        {
+            $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}";
+            $field['fieldname']=$fieldname;
+            $field['type']=$type;
+            $field['sid']=$this->surveyid;
+            $field['gid']=$this->gid;
+            $field['qid']=$this->id;
+            $field['aid']=$abrow['title'];
+            $field['sqid']=$abrow['qid'];
+            $field['title']=$this->title;
+            $field['question']=$this->text;
+            $field['subquestion']=$abrow['question'];
+            $field['group_name']=$this->groupname;
+            $field['mandatory']=$this->mandatory;
+            $field['hasconditions']=$this->conditionsexist;
+            $field['usedinconditions']=$this->usedinconditions;
+            $field['questionSeq']=$this->questioncount;
+            $field['groupSeq']=$this->randomgid;
+            $field['preg']=$this->preg;
+            if(isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
+            $field['pq']=$this;
+            $q = clone $this;
+            $q->fieldname = $fieldname;
+            $q->aid=$field['aid'];
+            $q->question=$abrow['question'];
+            $field['q']=$q;
+            $map[$fieldname]=$field;
+        }
+        if ($this->other=='Y')
+        {
+            $other = parent::createFieldmap($type);
+            $other = $other[$this->fieldname];
+            $other['fieldname'].='other';
+            $other['aid']='other';
+            $other['subquestion']=$clang->gT("Other");
+            $other['other']=$this->other;
+            if (isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
+            else unset($other['defaultvalues']);
+            $q = clone $this;
+            $q->fieldname .= 'other';
+            $q->aid = 'other';
+            $q->default = isset($other['defaultvalues'])?$other['defaultvalues']:null;
+            $other['q']=$q;
+            $other['pq']=$this;
+            $map[$other['fieldname']]=$other;
+        }
+        
+        return $map;
     }
     
     public function availableAttributes($attr = false)

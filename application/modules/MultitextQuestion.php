@@ -189,7 +189,43 @@ class MultitextQuestion extends QuestionModule
         }
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
-
+    
+    public function createFieldmap($type=null)
+    {
+        $map = array();
+        $abrows = getSubQuestions($this);
+        foreach ($abrows as $abrow)
+        {
+            $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}";
+            $field['fieldname']=$fieldname;
+            $field['type']=$type;
+            $field['sid']=$this->surveyid;
+            $field['gid']=$this->gid;
+            $field['qid']=$this->id;
+            $field['aid']=$abrow['title'];
+            $field['sqid']=$abrow['qid'];
+            $field['title']=$this->title;
+            $field['question']=$this->text;
+            $field['subquestion']=$abrow['question'];
+            $field['group_name']=$this->groupname;
+            $field['mandatory']=$this->mandatory;
+            $field['hasconditions']=$this->conditionsexist;
+            $field['usedinconditions']=$this->usedinconditions;
+            $field['questionSeq']=$this->questioncount;
+            $field['groupSeq']=$this->randomgid;
+            $field['preg']=$this->preg;
+            if(isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
+            $field['pq']=$this;
+            $q = clone $this;
+            $q->fieldname = $fieldname;
+            $q->aid=$field['aid'];
+            $q->question=$abrow['question'];
+            $field['q']=$q;
+            $map[$fieldname]=$field;
+        }
+        return $map;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");

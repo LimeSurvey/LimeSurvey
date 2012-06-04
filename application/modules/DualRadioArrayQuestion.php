@@ -614,6 +614,50 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $answer;
     }
     
+    public function createFieldmap($type=null)
+    {
+        $clang = Yii::app()->lang;
+        $abrows = getSubQuestions($this);
+        $map = array();
+        foreach ($abrows as $abrow)
+        {
+            $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}#0";
+            $field['fieldname']=$fieldname;
+            $field['type']=$type;
+            $field['sid']=$this->surveyid;
+            $field['gid']=$this->gid;
+            $field['qid']=$this->id;
+            $field['aid']=$abrow['title'];
+            $field['scale_id']=0;
+            $field['title']=$this->title;
+            $field['question']=$this->text;
+            $field['subquestion']=$abrow['question'];
+            $field['group_name']=$this->groupname;
+            $field['scale']=$clang->gT('Scale 1');
+            $field['mandatory']=$this->mandatory;
+            $field['hasconditions']=$this->conditionsexist;
+            $field['usedinconditions']=$this->usedinconditions;
+            $field['questionSeq']=$this->questioncount;
+            $field['groupSeq']=$this->randomgid;
+            $field['pq']=$this;
+            $q = clone $this;
+            $q->fieldname = $fieldname;
+            $q->aid = $field['aid'];
+            $field['q']=$q;
+            $field2=$field;
+            $fieldname2="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}#1";
+            $field2['fieldname']=$fieldname2;
+            $field2['scale_id']=1;
+            $field2['scale']=$clang->gT('Scale 2');
+            $q2 = clone $field['q'];
+            $q2->fieldname = $fieldname;
+            $field2['q']=$q2;
+            $map[$fieldname]=$field;
+            $map[$fieldname2]=$field2;
+        }
+        return $map;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

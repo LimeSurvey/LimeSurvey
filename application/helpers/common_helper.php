@@ -1904,8 +1904,6 @@ function validateTemplateDir($templatename)
 * @return array
 */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage) {
-    global $aDuplicateQIDs;
-
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
     $clang = new Limesurvey_lang($sLanguage); ;
@@ -1946,12 +1944,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['question']=$clang->gT("Start language");
         $fieldmap["startlanguage"]['group_name']="";
     }
-
-    // Select which question IDs have default values
-    $_aDefaultValues = Defaultvalues::model()->with(array('question' => array('condition' => 'question.sid=' . $surveyid)))->findAll();
-    $aDefaultValues = array();
-    foreach ($_aDefaultValues as $k => $v)
-        $aDefaultValues[] = $v->qid;
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
@@ -2023,37 +2015,16 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     // Collect all default values once so don't need separate query for each question with defaults
-    // First collect language specific defaults
-    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{questions}} as b"
-    . " WHERE a.qid = b.qid"
-    . " AND a.language = b.language"
-    . " AND a.language = '{$sLanguage}'"
-    . " AND b.same_default=0"
-    . " AND b.sid = ".$surveyid;
-    $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
-
-    $defaultValues = array();   // indexed by question then subquestion
-    foreach($defaultResults as $dv)
-    {
-        if ($dv['specialtype'] != '') {
-            $sq = $dv['specialtype'];
-        }
-        else {
-            $sq = $dv['sqid'];
-        }
-        $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
-    }
-
-    // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
     $baseLanguage = getBaseLanguageFromSurveyID($surveyid);
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
     . " AND a.language = b.language"
-    . " AND a.language = '{$baseLanguage}'"
-    . " AND b.same_default=1"
-    . " AND b.sid = ".$surveyid;
+    . " AND b.sid = ".$surveyid
+    . " AND ((b.same_default=0"
+    . " AND a.language = '{$sLanguage}')"
+    . " OR (b.same_default=1"
+    . " AND a.language = '{$baseLanguage}'))";
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
 
     foreach($defaultResults as $dv)
@@ -2064,23 +2035,15 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         else {
             $sq = $dv['sqid'];
         }
-        $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
+        $defaults[$dv['qid']][$sq] = $dv['defaultvalue'];
     }
-    $qtypes=getQuestionTypeList();
 
-    $aquery = "SELECT * "
-    ." FROM {{questions}} as questions, {{groups}} as groups"
-    ." WHERE questions.gid=groups.gid AND "
-    ." questions.sid=$surveyid AND "
-    ." questions.language='{$sLanguage}' AND "
-    ." questions.parent_qid=0 AND "
-    ." groups.language='{$sLanguage}' ";
+    $cond = "t.sid=$surveyid AND t.language='$sLanguage' AND groups.language='$sLanguage'";
     if ($questionid!==false)
     {
-        $aquery.=" and questions.qid={$questionid} ";
+        $cond.=" AND {{questions}}.qid=$questionid";
     }
-    $aquery.=" ORDER BY group_order, question_order";
-    $aresult = Yii::app()->db->createCommand($aquery)->queryAll();
+    $aresult = Questions::model()->with('groups')->with('question_types')->findAll(array('condition'=>$cond, 'order'=>'groups.group_order, question_order'));
     $questionSeq=-1; // this is incremental question sequence across all groups
     $groupSeq=-1;
     $_groupOrder=-1;
@@ -2090,8 +2053,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         ++$questionSeq;
 
         // fix fact taht group_order may have gaps
-        if ($_groupOrder != $arow['group_order']) {
-            $_groupOrder = $arow['group_order'];
+        if ($_groupOrder != $arow->groups['group_order']) {
+            $_groupOrder = $arow->groups['group_order'];
             ++$groupSeq;
         }
         // Conditions indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
@@ -2104,349 +2067,37 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         // If S or A don't exist then set it to 0
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
-        // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+        $pq = createQuestion($arow->question_types['class'], $surveyid, $arow['qid'], $fieldname,
+        $arow['title'], $arow['question'], $arow['gid'], $arow['mandatory'], $conditions,
+        $usedinconditions, $questionSeq, $groupSeq, $sLanguage);
+        $pq->aid = '';
+        if(isset($defaults[$arow['qid']])) $pq->default = $defaults[$arow['qid']];
 
-        if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
+        $pq->preg = $arow['preg'];
+        $pq->other = $arow['other'];
+        $pq->groupname = $arow->groups['group_name'];
+        $add = $pq->createFieldmap($arow['type']);
+        
+        foreach($add as $key=>$value)
         {
-            if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-            $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap[$fieldname]['title']=$arow['title'];
-                $fieldmap[$fieldname]['question']=$arow['question'];
-                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                $fieldmap[$fieldname]['hasconditions']=$conditions;
-                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                if (isset($defaultValues[$arow['qid'].'~0'])) {
-                    $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~0'];
-                }
-            }
-            switch($arow['type'])
-            {
-                case "L":  //RADIO LIST
-                case "!":  //DROPDOWN LIST
-                    if ($arow['other'] == "Y")
-                    {
-                        $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
-                        if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-
-                        $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                        'type'=>$arow['type'],
-                        'sid'=>$surveyid,
-                        "gid"=>$arow['gid'],
-                        "qid"=>$arow['qid'],
-                        "aid"=>"other");
-                        // dgk bug fix line above. aid should be set to "other" for export to append to the field name in the header line.
-                        if ($style == "full")
-                        {
-                            $fieldmap[$fieldname]['title']=$arow['title'];
-                            $fieldmap[$fieldname]['question']=$arow['question'];
-                            $fieldmap[$fieldname]['subquestion']=$clang->gT("Other");
-                            $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                            $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                            $fieldmap[$fieldname]['hasconditions']=$conditions;
-                            $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                            if (isset($defaultValues[$arow['qid'].'~other'])) {
-                                $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~other'];
-                            }
-                        }
-                    }
-                    break;
-                case "O": //DROPDOWN LIST WITH COMMENT
-                    $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment";
-                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-
-                    $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                    'type'=>$arow['type'],
-                    'sid'=>$surveyid,
-                    "gid"=>$arow['gid'],
-                    "qid"=>$arow['qid'],
-                    "aid"=>"comment");
-                    // dgk bug fix line below. aid should be set to "comment" for export to append to the field name in the header line. Also needed set the type element correctly.
-                    if ($style == "full")
-                    {
-                        $fieldmap[$fieldname]['title']=$arow['title'];
-                        $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
-                        $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                        $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                        $fieldmap[$fieldname]['hasconditions']=$conditions;
-                        $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                    }
-                    break;
-            }
-        }
-        // For Multi flexi question types
-        elseif ($qtypes[$arow['type']]['subquestions']==2 && $qtypes[$arow['type']]['answerscales']==0)
-        {
-            //MULTI FLEXI
-            $abrows = getSubQuestions($surveyid,$arow['qid'],$sLanguage);
-            //Now first process scale=1
-            $answerset=array();
-            $answerList = array();
-            foreach ($abrows as $key=>$abrow)
-            {
-                if($abrow['scale_id']==1) {
-                    $answerset[]=$abrow;
-                    $answerList[] = array(
-                    'code'=>$abrow['title'],
-                    'answer'=>$abrow['question'],
-                    );
-                    unset($abrows[$key]);
-                }
-            }
-            reset($abrows);
-            foreach ($abrows as $abrow)
-            {
-                foreach($answerset as $answer)
-                {
-                    $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$answer['title']}";
-                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                    $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                    'type'=>$arow['type'],
-                    'sid'=>$surveyid,
-                    "gid"=>$arow['gid'],
-                    "qid"=>$arow['qid'],
-                    "aid"=>$abrow['title']."_".$answer['title'],
-                    "sqid"=>$abrow['qid']);
-                    if ($abrow['other']=="Y") {$alsoother="Y";}
-                    if ($style == "full")
-                    {
-                        $fieldmap[$fieldname]['title']=$arow['title'];
-                        $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion1']=$abrow['question'];
-                        $fieldmap[$fieldname]['subquestion2']=$answer['question'];
-                        $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                        $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                        $fieldmap[$fieldname]['hasconditions']=$conditions;
-                        $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                        $fieldmap[$fieldname]['preg']=$arow['preg'];
-                        $fieldmap[$fieldname]['answerList']=$answerList;
-                    }
-                }
-            }
-            unset($answerset);
-        }
-        elseif ($arow['type'] == "1")
-        {
-            $abrows = getSubQuestions($surveyid,$arow['qid'],$sLanguage);
-            foreach ($abrows as $abrow)
-            {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=$abrow['question'];
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['scale']=$clang->gT('Scale 1');
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                }
-
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>1);
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=$abrow['question'];
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['scale']=$clang->gT('Scale 2');
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                }
-            }
+            unset($add[$key]['q']);
+            unset($add[$key]['pq']);            
         }
 
-        elseif ($arow['type'] == "R")
+
+        if (count($add))
         {
-            //MULTI ENTRY
-            $data = Answers::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage));
-            $data = count($data);
-            $slots=$data;
-            for ($i=1; $i<=$slots; $i++)
-            {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$i);
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=sprintf($clang->gT('Rank %s'),$i);
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                }
-            }
-        }
-        elseif ($arow['type'] == "|")
-        {
-            $qidattributes= getQuestionAttributeValues($arow['qid']);
-            for ($i = 1; $i <= $qidattributes['max_num_of_files']; $i++)
-            {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                "gid"=>$arow['gid'],
-                "qid"=>$arow['qid'],
-                "aid"=>''
-                );
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['max_files']=$qidattributes['max_num_of_files'];
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                }
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                "gid"=>$arow['gid'],
-                "qid"=>$arow['qid'],
-                "aid"=>"filecount"
-                );
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                }
-            }
-        }
-        else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
-        {
-            //MULTI ENTRY
-            $abrows = getSubQuestions($surveyid,$arow['qid'],$sLanguage);
-            foreach ($abrows as $abrow)
-            {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                'gid'=>$arow['gid'],
-                'qid'=>$arow['qid'],
-                'aid'=>$abrow['title'],
-                'sqid'=>$abrow['qid']);
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=$abrow['question'];
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                    $fieldmap[$fieldname]['preg']=$arow['preg'];
-                    if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
-                        $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
-                    }
-                }
-                if ($arow['type'] == "P")
-                {
-                    $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
-                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                    $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']."comment");
-                    if ($style == "full")
-                    {
-                        $fieldmap[$fieldname]['title']=$arow['title'];
-                        $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion']=$clang->gT('Comment');
-                        $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                        $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                        $fieldmap[$fieldname]['hasconditions']=$conditions;
-                        $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                    }
-                }
-            }
-            if ($arow['other']=="Y" && ($arow['type']=="M" || $arow['type']=="P"))
-            {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
-                if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=$clang->gT('Other');
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                    $fieldmap[$fieldname]['other']=$arow['other'];
-                }
-                if ($arow['type']=="P")
-                {
-                    $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment";
-                    if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                    $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"othercomment");
-                    if ($style == "full")
-                    {
-                        $fieldmap[$fieldname]['title']=$arow['title'];
-                        $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion']=$clang->gT('Other comment');
-                        $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                        $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                        $fieldmap[$fieldname]['hasconditions']=$conditions;
-                        $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-                        $fieldmap[$fieldname]['other']=$arow['other'];
-                    }
-                }
-            }
-        }
-        if (isset($fieldmap[$fieldname]))
-        {
-            $fieldmap[$fieldname]['relevance']=$arow['relevance'];
-            $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
-            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-            $fieldmap[$fieldname]['preg']=$arow['preg'];
-            $fieldmap[$fieldname]['other']=$arow['other'];
-            $fieldmap[$fieldname]['help']=$arow['help'];
+            $tmp=array_values($add);
+            $fieldname = $tmp[count($add)-1]['fieldname'];
+            $add[$fieldname]['relevance']=$arow['relevance'];
+            $add[$fieldname]['grelevance']=$arow->groups['grelevance'];
+            $add[$fieldname]['questionSeq']=$questionSeq;
+            $add[$fieldname]['groupSeq']=$groupSeq;
+            $add[$fieldname]['preg']=$arow['preg'];
+            $add[$fieldname]['other']=$arow['other'];
+            $add[$fieldname]['help']=$arow['help'];
+            $fieldmap = array_merge($fieldmap, $add);
         }
         else
         {
@@ -2454,61 +2105,59 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
     }
 
-    if (isset($fieldmap)) {
-        if ($questionid == false)
+    if ($questionid == false)
+    {
+        // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
+        if (isset(Yii::app()->session['fieldmap-' . $surveyid . '-randMaster']))
         {
-            // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-            if (isset(Yii::app()->session['fieldmap-' . $surveyid . '-randMaster']))
-            {
-                $masterFieldmap = Yii::app()->session['fieldmap-' . $surveyid . '-randMaster'];
-                $mfieldmap = Yii::app()->session[$masterFieldmap];
+            $masterFieldmap = Yii::app()->session['fieldmap-' . $surveyid . '-randMaster'];
+            $mfieldmap = Yii::app()->session[$masterFieldmap];
 
-                foreach ($mfieldmap as $fieldname => $mf)
+            foreach ($mfieldmap as $fieldname => $mf)
+            {
+                if (isset($fieldmap[$fieldname]))
                 {
-                    if (isset($fieldmap[$fieldname]))
+                    $f = $fieldmap[$fieldname];
+                    if (isset($f['question']))
                     {
-                        $f = $fieldmap[$fieldname];
-                        if (isset($f['question']))
-                        {
-                            $mf['question'] = $f['question'];
-                        }
-                        if (isset($f['subquestion']))
-                        {
-                            $mf['subquestion'] = $f['subquestion'];
-                        }
-                        if (isset($f['subquestion1']))
-                        {
-                            $mf['subquestion1'] = $f['subquestion1'];
-                        }
-                        if (isset($f['subquestion2']))
-                        {
-                            $mf['subquestion2'] = $f['subquestion2'];
-                        }
-                        if (isset($f['group_name']))
-                        {
-                            $mf['group_name'] = $f['group_name'];
-                        }
-                        if (isset($f['answerList']))
-                        {
-                            $mf['answerList'] = $f['answerList'];
-                        }
-                        if (isset($f['defaultvalue']))
-                        {
-                            $mf['defaultvalue'] = $f['defaultvalue'];
-                        }
-                        if (isset($f['help']))
-                        {
-                            $mf['help'] = $f['help'];
-                        }
+                        $mf['question'] = $f['question'];
                     }
-                    $mfieldmap[$fieldname] = $mf;
+                    if (isset($f['subquestion']))
+                    {
+                        $mf['subquestion'] = $f['subquestion'];
+                    }
+                    if (isset($f['subquestion1']))
+                    {
+                        $mf['subquestion1'] = $f['subquestion1'];
+                    }
+                    if (isset($f['subquestion2']))
+                    {
+                        $mf['subquestion2'] = $f['subquestion2'];
+                    }
+                    if (isset($f['group_name']))
+                    {
+                        $mf['group_name'] = $f['group_name'];
+                    }
+                    if (isset($f['answerList']))
+                    {
+                        $mf['answerList'] = $f['answerList'];
+                    }
+                    if (isset($f['defaultvalue']))
+                    {
+                        $mf['defaultvalue'] = $f['defaultvalue'];
+                    }
+                    if (isset($f['help']))
+                    {
+                        $mf['help'] = $f['help'];
+                    }
                 }
-                $fieldmap = $mfieldmap;
+                $mfieldmap[$fieldname] = $mf;
             }
-            Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
+            $fieldmap = $mfieldmap;
         }
-        return $fieldmap;
+        Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
     }
+    return $fieldmap;
 }
 
 /**
@@ -2534,8 +2183,6 @@ function hasFileUploadQuestion($surveyid) {
 * @return array
 */
 function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
-
-    global $aDuplicateQIDs;
     static $timingsFieldMap;
 
     $clang = Yii::app()->lang;
@@ -5079,20 +4726,20 @@ function getTemplateURL($sTemplateName)
 * @param int $qid
 * @param $sLanguage Language of the subquestion text
 */
-function getSubQuestions($sid, $qid, $sLanguage) {
+function getSubQuestions($q) {
 
     static $subquestions;
 
-    if (!isset($subquestions[$sid]))
+    if (!isset($subquestions[$q->surveyid]))
     {
-        $subquestions[$sid]=array();
+        $subquestions[$q->surveyid]=array();
     }
-    if (!isset($subquestions[$sid][$sLanguage])) {
+    if (!isset($subquestions[$q->surveyid][$q->language])) {
 
         $query = "SELECT sq.*, q.other FROM {{questions}} as sq, {{questions}} as q"
-        ." WHERE sq.parent_qid=q.qid AND q.sid=".$sid
-        ." AND sq.language='".$sLanguage. "' "
-        ." AND q.language='".$sLanguage. "' "
+        ." WHERE sq.parent_qid=q.qid AND q.sid=".$q->surveyid
+        ." AND sq.language='".$q->language. "' "
+        ." AND q.language='".$q->language. "' "
         ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
 
         $query = Yii::app()->db->createCommand($query)->query();
@@ -5103,9 +4750,9 @@ function getSubQuestions($sid, $qid, $sLanguage) {
         {
             $resultset[$row['parent_qid']][] = $row;
         }
-        $subquestions[$sid][$sLanguage] = $resultset;
+        $subquestions[$q->surveyid][$q->language] = $resultset;
     }
-    if (isset($subquestions[$sid][$sLanguage][$qid])) return $subquestions[$sid][$sLanguage][$qid];
+    if (isset($subquestions[$q->surveyid][$q->language][$q->id])) return $subquestions[$q->surveyid][$q->language][$q->id];
     return array();
 }
 

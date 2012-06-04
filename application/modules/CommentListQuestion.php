@@ -166,6 +166,25 @@ class CommentListQuestion extends ListQuestion
     
     //public function getHelp() - inherited
     
+    public function createFieldmap($type=null)
+    {
+        $clang = Yii::app()->lang;
+        $map = parent::createFieldmap($type);
+        $comment = $map[$this->fieldname];
+        $comment['fieldname'].='comment';
+        $comment['aid']='comment';
+        $comment['subquestion']=$clang->gT("Comment");
+        unset($comment['defaultvalue']);
+        $q = clone $this;
+        $q->fieldname .= 'comment';
+        $q->aid='comment';
+        unset($q->default);
+        $comment['q']=$q;
+        $comment['pq']=$this;
+        $map[$comment['fieldname']]=$comment;
+        return $map;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

@@ -12,9 +12,18 @@ abstract class QuestionModule
     public $usedinconditions;
     public $questioncount;
     public $randomgid;
+    public $language;
+    public $groupname;
+    public $aid;
+    public $default;
+    public $preg;
+    public $other;
     protected $attributes;
 
-    public function __construct($surveyid = null, $id = null, $fieldname = null, $title = null, $text = null, $gid = null, $mandatory = null, $conditionsexist = null, $usedinconditions = null, $questioncount = null, $randomgid = null)
+
+    public function __construct($surveyid = null, $id = null, $fieldname = null, $title = null,
+    $text = null, $gid = null, $mandatory = null, $conditionsexist = null, $usedinconditions = null,
+    $questioncount = null, $randomgid = null, $language = null)
     {
         $this->surveyid=$surveyid;
         $this->id=$id;
@@ -27,6 +36,7 @@ abstract class QuestionModule
         $this->usedinconditions=$usedinconditions;
         $this->questioncount=$questioncount;
         $this->randomgid=$randomgid;
+        $this->language=$language;
     }
     
     abstract public function getAnswerHTML();
@@ -133,6 +143,28 @@ abstract class QuestionModule
             </script>\n";
         }
         return false;
+    }
+    
+    public function createFieldmap($type=null)
+    {
+        $map['fieldname']=$this->fieldname;
+        $map['type']=$type;
+        $map['sid']=$this->surveyid;
+        $map['gid']=$this->gid;
+        $map['qid']=$this->id;
+        $map['aid']=$this->aid;
+        $map['title']=$this->title;
+        $map['question']=$this->text;
+        $map['group_name']=$this->groupname;
+        $map['mandatory']=$this->mandatory;
+        $map['hasconditions']=$this->conditionsexist;
+        $map['usedinconditions']=$this->usedinconditions;
+        $map['questionSeq']=$this->questioncount;
+        $map['groupSeq']=$this->randomgid;
+        if(isset($this->default[0])) $map['defaultvalue']=$this->default[0];
+        $map['q']=$this;
+        $map['pq']=$this;
+        return array($this->fieldname=>$map);
     }
     
     abstract public function availableAttributes($attr = false);    

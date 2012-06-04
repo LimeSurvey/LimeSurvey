@@ -350,6 +350,56 @@ class NumberArrayQuestion extends ArrayQuestion
     
     //public function getInputNames() - inherited
     
+    public function createFieldmap($type=null)
+    {
+        $map = array();
+        $abrows = getSubQuestions($this);
+        foreach ($abrows as $key=>$abrow)
+        {
+            if($abrow['scale_id']==1) {
+                $answerset[]=$abrow;
+                $answerList[] = array(
+                'code'=>$abrow['title'],
+                'answer'=>$abrow['question'],
+                );
+                unset($abrows[$key]);
+            }
+        }
+        foreach ($abrows as $abrow)
+        {
+            foreach($answerset as $answer)
+            {
+                $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}_{$answer['title']}";
+                $field['fieldname']= $fieldname;
+                $field['type']=$type;
+                $field['sid']=$this->surveyid;
+                $field['gid']=$this->gid;
+                $field['qid']=$this->id;
+                $field['aid']=$abrow['title']."_".$answer['title'];
+                $field['sqid']=$abrow['qid'];
+                $field['title']=$this->title;
+                $field['question']=$this->text;
+                $field['subquestion1']=$abrow['question'];
+                $field['subquestion2']=$answer['question'];
+                $field['group_name']=$this->groupname;
+                $field['mandatory']=$this->mandatory;
+                $field['hasconditions']=$this->conditionsexist;
+                $field['usedinconditions']=$this->usedinconditions;
+                $field['questionSeq']=$this->questioncount;
+                $field['groupSeq']=$this->randomgid;
+                $field['preg']=$this->preg;
+                $field['answerList']=$answerList;
+                $q = clone $this;
+                $q->fieldname = $fieldname;
+                $q->aid = $field['aid'];
+                $field['q']=$q;
+                $field['pq']=$this;
+                $map[$fieldname]=$field;
+            }
+        }
+        return $map;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
