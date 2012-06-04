@@ -1324,7 +1324,6 @@ function do_language($ia)
 function do_list_dropdown($ia)
 {
     global $dropdownthreshold;
-    global $js_header_includes;
 
     $clang=Yii::app()->lang;
 
@@ -1351,7 +1350,6 @@ function do_list_dropdown($ia)
     //Time Limit Code
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
     //End Time Limit Code
@@ -1608,7 +1606,6 @@ function do_list_dropdown($ia)
 function do_list_radio($ia)
 {
     global $dropdownthreshold;
-    global $js_header_includes;
     global $thissurvey;
     $clang=Yii::app()->lang;
     if ($thissurvey['nokeyboard']=='Y')
@@ -1678,7 +1675,6 @@ function do_list_radio($ia)
     //Time Limit Code
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
     //End Time Limit Code
