@@ -135,19 +135,9 @@
     function makegraph($currentstep, $total)
     {
         global $thissurvey;
-        global $js_header_includes, $css_header_includes;
 
         $clang = Yii::app()->lang;
-
-        $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
-        $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
-        Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
-
-        $css_admin_includes = Yii::app()->getConfig("js_admin_includes");
-        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
-        $css_header_includes[]= '/scripts/jquery/css/start/lime-progress.css';
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
-
+        header_includes('lime-progress.css','css');
         $size = intval(($currentstep-1)/$total*100);
 
         $graph = '<script type="text/javascript">
@@ -238,7 +228,6 @@
                 if ($sLanguage==$sSelectedLanguage)
                 {
                     $sHTMLCode .=" selected='selected'";
-                    $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
                 }
                 $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sLanguage)." - ".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
             }
@@ -2281,7 +2270,6 @@ function doAssessment($surveyid, $returndataonly=false)
     WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
     ORDER BY scope, id";
     if ($result = dbExecuteAssoc($query))   //Checked
-
     {
         if ($result->count() > 0)
         {
@@ -2308,41 +2296,29 @@ function doAssessment($surveyid, $returndataonly=false)
             $groups=array();
             foreach($fieldmap as $field)
             {
-                if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P',":")))
+                if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
                 {
                     $fieldmap[$field['fieldname']]['assessment_value']=0;
                     if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
                     {
-                        if ($field['type']==':') //Multiflexi numbers  - result is the assessment value
-
+                        if (($field['type'] == "M") || ($field['type'] == "P")) //Multiflexi choice  - result is the assessment attribute value
                         {
-                            $fieldmap[$field['fieldname']]['assessment_value']=$_SESSION['survey_'.$surveyid][$field['fieldname']];
-                            $total=$total+$_SESSION['survey_'.$surveyid][$field['fieldname']];
+                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
+                            {
+                                $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
+                                $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
+                                $total=$total+(int)$aAttributes['assessment_value'];
+                            }
                         }
-                        else
+                        else  // Single choice question
                         {
-
                             $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".dbQuoteAll($_SESSION['survey_'.$surveyid][$field['fieldname']]);
                             $usresult = dbExecuteAssoc($usquery);          //Checked
                             if ($usresult)
                             {
                                 $usrow = $usresult->read();
-
-                                if (($field['type'] == "M") || ($field['type'] == "P"))
-                                {
-                                    if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")     // for Multiple choice type questions
-                                    {
-                                        $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
-                                        $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
-                                        $total=$total+$usrow['assessment_value'];
-                                    }
-                                }
-                                else     // any other type of question
-
-                                {
-                                    $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
-                                    $total=$total+$usrow['assessment_value'];
-                                }
+                                $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
+                                $total=$total+$usrow['assessment_value'];
                             }
                         }
                     }
@@ -2363,10 +2339,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         //$grouptotal=$grouptotal+$field['answer'];
                         if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']]))
                         {
-                            if (($field['type'] == "M") and ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")) 	// for Multiple choice type questions
-                                $grouptotal=$grouptotal+$field['assessment_value'];
-                            else																		// any other type of question
-                                $grouptotal=$grouptotal+$field['assessment_value'];
+                            $grouptotal=$grouptotal+$field['assessment_value'];
                         }
                     }
                 }

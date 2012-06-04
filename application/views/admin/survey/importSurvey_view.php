@@ -12,7 +12,16 @@
     <?php if (isset($aImportResults['error']) && $aImportResults['error']!=false)
         {?>
         <div class='warningheader'><?php $clang->eT("Error");?></div><br />
-        <?php echo $aImportResults['error']; ?><br /><br />
+        <?php
+        	if(is_array($aImportResults['error']))
+        	{
+        		foreach($aImportResults['error'] as $error) 
+        			echo $error."<br/>";
+      		} else 
+      		{
+	        	echo $aImportResults['error'];
+        	} 
+    		?><br /><br />
         <input type='submit' value='<?php $clang->eT("Main Admin Screen");?>' onclick="window.open('<?php echo site_url('admin');?>', '_top')" />
         <?php } else
         {?>

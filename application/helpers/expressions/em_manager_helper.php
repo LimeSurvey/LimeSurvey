@@ -1038,23 +1038,39 @@
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                            $af_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                            $sgq .= substr($sq['sqsuffix'],1);
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $af_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                            $afe_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                            $sgq .= substr($sq['sqsuffix'],1);
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $afe_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                     }
                                     else
                                     {
                                         foreach ($cascadedAF as $_caf)
                                         {
-                                            $af_names[] = $_caf . $sq['sqsuffix'];
+                                            $sgq = $_caf . $sq['sqsuffix'];
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $af_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
-                                            $afe_names[] = $_cafe . $sq['sqsuffix'];
+                                            $sgq = $_cafe . $sq['sqsuffix'];
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $afe_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                     }
                                     break;
@@ -1855,6 +1871,76 @@
                     $multiflexible_max='';
                 }
 
+                // min_num_of_files
+                // Validation:= sq_filecount >= value (which could be an expression).
+                if (isset($qattr['min_num_of_files']) && trim($qattr['min_num_of_files']) != '')
+                {
+                    $min_num_of_files = $qattr['min_num_of_files'];
+                    $eqn='';
+                    $sgqa = $qinfo['sgqa'];
+                    switch ($type)
+                    {
+                        case '|': //List - dropdown
+                            $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                            break;
+                        default:
+                            break;
+                    }
+                    if ($eqn != '')
+                    {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'min_num_of_files',
+                        'class' => 'num_answers',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                        );
+                    }
+                }
+                else
+                {
+                    $min_num_of_files = '';
+                }
+
+                // max_num_of_files
+                // Validation:= sq_filecount <= value (which could be an expression).
+                if (isset($qattr['max_num_of_files']) && trim($qattr['max_num_of_files']) != '')
+                {
+                    $max_num_of_files = $qattr['max_num_of_files'];
+                    $eqn='';
+                    $sgqa = $qinfo['sgqa'];
+                    switch ($type)
+                    {
+                        case '|': //List - dropdown
+                            $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                            break;
+                        default:
+                            break;
+                    }
+                    if ($eqn != '')
+                    {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'max_num_of_files',
+                        'class' => 'num_answers',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                        );
+                    }
+                }
+                else
+                {
+                    $max_num_of_files = '';
+                }
+
                 // other_comment_mandatory
                 // Validation:= sqN <= value (which could be an expression).
                 if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) == '1')
@@ -2261,6 +2347,37 @@
                         ")}";
                 }
 
+                // min/max num files
+                if ($min_num_of_files !='' || $max_num_of_files !='')
+                {
+                    $_minA = (($min_num_of_files == '') ? "''" : $min_num_of_files);
+                    $_maxA = (($max_num_of_files == '') ? "''" : $max_num_of_files    );
+                    // TODO - create em_num_files class so can sepately style num_files vs. num_answers
+                    $qtips['num_answers']=
+                        "{if((is_empty($_minA) && is_empty($_maxA)),".
+                            "'',".
+                            "if(is_empty($_maxA),".
+                                "if(($_minA)==1,".
+                                    "'".$this->gT("Please upload at least one file")."',".
+                                    "sprintf('".$this->gT("Please upload at least %s files")."',fixnum($_minA))".
+                                    "),".
+                                "if(is_empty($_minA),".
+                                    "if(($_maxA)==1,".
+                                        "'".$this->gT("Please upload at most one file")."',".
+                                        "sprintf('".$this->gT("Please upload at most %s files")."',fixnum($_maxA))".
+                                        "),".
+                                    "if(($_minA)==($_maxA),".
+                                        "if(($_minA)==1,".
+                                            "'".$this->gT("Please upload one file")."',".
+                                            "sprintf('".$this->gT("Please upload %s files")."',fixnum($_minA))".
+                                            "),".
+                                        "sprintf('".$this->gT("Please upload between %s and %s files")."',fixnum($_minA),fixnum($_maxA))".
+                                    ")".
+                                ")".
+                            ")".
+                        ")}";
+                }
+
                 // equals_num_value
                 if ($equals_num_value!='')
                 {
@@ -2487,6 +2604,7 @@
                 return false;   // means that those variables have been cached and no changes needed
             }
             $now = microtime(true);
+            $this->em->SetSurveyMode($this->surveyMode);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
@@ -2902,7 +3020,7 @@
                         break;
                 }
                 if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
-                || $type == 'S' || $type == 'T' || $type == 'U') {
+                || $type == 'S' || $type == 'T' || $type == 'U' || $type == '|') {
                     if (!isset($q2subqInfo[$questionNum])) {
                         $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -3520,8 +3638,7 @@
                 $LEM->em->StartProcessingGroup(
                     isset($_SESSION['LEMsid']) ? $_SESSION['LEMsid'] : NULL,
                     '',
-                    true,
-                    $LEM->surveyMode
+                    true
                 );
                 $LEM->setVariableAndTokenMappingsForExpressionManager($_SESSION['LEMsid']);
             }
@@ -3965,11 +4082,11 @@
                 $sdata = array(
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 );
-                if ($this->surveyOptions['anonymized'] == "N")
+                if ($this->surveyOptions['anonymized'] == false)
                 {
                     $sdata = array_merge($sdata,array("token"=>($this->surveyOptions['token'])));
                 }
-                if ($this->surveyOptions['datestamp'] == "Y")
+                if ($this->surveyOptions['datestamp'] == true)
                 {
                     $sdata = array_merge($sdata, array(
                     "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION[$this->sessid]['datestamp'] : NULL),
@@ -3977,11 +4094,11 @@
                     ));
 
                 }
-                if ($this->surveyOptions['ipaddr'] == "Y")
+                if ($this->surveyOptions['ipaddr'] == true)
                 {
                     $sdata = array_merge($sdata,array("ipaddr"=>getIPAddress()));
                 }
-                if ($this->surveyOptions['refurl'] == "Y")
+                if ($this->surveyOptions['refurl'] == true)
                 {
                     $sdata = array_merge($sdata,array("refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL)));
                 }
@@ -4853,6 +4970,8 @@
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
                                 // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
                                 if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment'))     // to catch case 'P'
                                 {
                                     $foundSQrelevance=true;
@@ -5470,8 +5589,7 @@
             $LEM->em->StartProcessingGroup(
                 isset($surveyid) ? $surveyid : NULL,
                 '',
-                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false,
-                $LEM->surveyMode
+                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false
                 );
             $LEM->groupRelevanceInfo = array();
             if (!is_null($gseq))
@@ -6839,7 +6957,7 @@ EOD;
             ." FROM {{answers}} AS a, {{questions}} as q"
             ." WHERE ".$where
             .$lang
-            ." ORDER BY qid, scale_id, sortorder";
+            ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
             $data = dbExecuteAssoc($query);
 
@@ -7536,6 +7654,8 @@ EOD;
                             case 'min_answers':
                             case 'min_num_value':
                             case 'min_num_value_n':
+                            case 'min_num_of_files':
+                            case 'max_num_of_files':
                             case 'multiflexible_max':
                             case 'multiflexible_min':
                                 $value = '{' . $value . '}';

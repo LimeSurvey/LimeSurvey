@@ -196,7 +196,7 @@ class ExpressionManager {
 'quoted_printable_decode' => array('quoted_printable_decode', 'quoted_printable_decode', $this->gT('Convert a quoted-printable string to an 8 bit string'), 'string quoted_printable_decode(string)', 'http://www.php.net/manual/en/function.quoted-printable-decode.php', 1),
 'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', $this->gT('Convert a 8 bit string to a quoted-printable string'), 'string quoted_printable_encode(string)', 'http://www.php.net/manual/en/function.quoted-printable-encode.php', 1),
 'quotemeta' => array('quotemeta', 'quotemeta', $this->gT('Quote meta characters'), 'string quotemeta(string)', 'http://www.php.net/manual/en/function.quotemeta.php', 1),
-'rand' => array('rand', 'Math.random', $this->gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://www.php.net/manual/en/function.rand.php', 0,2),
+'rand' => array('rand', 'rand', $this->gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://www.php.net/manual/en/function.rand.php', 0,2),
 'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', $this->gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
 'round' => array('round', 'round', $this->gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://www.php.net/manual/en/function.round.php', 1,2),
 'rtrim' => array('rtrim', 'rtrim', $this->gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://www.php.net/manual/en/function.rtrim.php', 1,2),
@@ -1114,39 +1114,34 @@ class ExpressionManager {
             return array();
         }
         $jsNames = array();
-        if ($this->surveyMode=='group')
+        foreach ($names as $name)
         {
-            foreach ($names as $name)
+            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
             {
-                if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
-                {
-                    continue;
-                }
-                $val = $this->GetVarAttribute($name,'jsName','');
-                $gseq = $this->GetVarAttribute($name,'gseq','');
-                if ($val != '' && $gseq == $this->groupSeq) {
-                    $jsNames[] = $val;
-                }
+                continue;
             }
-        }
-        else
-        {
-            foreach ($names as $name)
+            $val = $this->GetVarAttribute($name,'jsName','');
+            switch ($this->surveyMode)
             {
-                if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
-                {
-                    continue;
-                }
-                $val = $this->GetVarAttribute($name,'jsName','');
-                $qseq = $this->GetVarAttribute($name,'qseq','');
-                if ($val != '' && $qseq == $this->questionSeq) {
-                    $jsNames[] = $val;
-                }
+                case 'group':
+                    $gseq = $this->GetVarAttribute($name,'gseq','');
+                    $onpage = ($gseq == $this->groupSeq);
+                    break;
+                case 'question':
+                    $qseq = $this->GetVarAttribute($name,'qseq','');
+                    $onpage = ($qseq == $this->questionSeq);
+                    break;
+                case 'survey':
+                    $onpage = true;
+                    break;
+            }
+            if ($val != '' && $onpage) {
+                $jsNames[] = $val;
             }
         }
         return array_unique($jsNames);
     }
-
+    
     /**
      * Return the list of all of the JavaScript variables used by the most recent expression
      * @return <type>
@@ -1788,11 +1783,10 @@ class ExpressionManager {
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=true,$surveyMode='group')
+    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=true)
     {
         $this->substitutionNum=0;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
-        $this->surveyMode=$surveyMode;
         $this->sid=$sid;
         $this->hyperlinkSyntaxHighlighting=$hyperlinkSyntaxHighlighting;
     }
@@ -2269,6 +2263,19 @@ class ExpressionManager {
         }
         return $tokens;
     }
+
+    /**
+     * Specify the survey  mode for this survey.  Options are 'survey', 'group', and 'question'
+     * @param type $mode
+     */
+    public function SetSurveyMode($mode)
+    {
+        if (preg_match('/^group|question|survey$/',$mode))
+        {
+            $this->surveyMode = $mode;
+        }
+    }
+
 
     /**
      * Pop a value token off of the stack
@@ -3048,7 +3055,11 @@ EOD;
             return $clang->ngT($single, $plural, $number);
         }
         else {
-            return $string;
+            if ($number = 1) {
+                return $single;
+            } else {
+                return $plural;
+            }
         }
     }
 

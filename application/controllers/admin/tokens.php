@@ -37,8 +37,6 @@ class tokens extends Survey_Common_Action
             die("no permissions"); // TODO Replace
         }
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "admin/tokens.js");
-
         Yii::app()->loadHelper("surveytranslator");
 
         //$dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -547,6 +545,9 @@ class tokens extends Survey_Common_Action
 
             $sanitizedtoken = sanitize_token(Yii::app()->request->getPost('token'));
 
+            /* Mdekker: commented out this block as it doesn't respect tokenlength
+             * or existing tokens and was always handled by the tokenify action as
+             * the ui still suggests
             if (empty($sanitizedtoken))
             {
                 $isvalidtoken = false;
@@ -561,6 +562,7 @@ class tokens extends Survey_Common_Action
                 }
                 $sanitizedtoken = $newtoken;
             }
+            */
 
 
 

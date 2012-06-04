@@ -4159,220 +4159,301 @@ function ExcelImportSurvey($sFullFilepath)
     $results['error']=false;
     $baselang = 'en';   // TODO set proper default
 
-    try {
-        $data = new Spreadsheet_Excel_Reader($sFullFilepath);
-        $adata = $data->dumptonamedarray();
+    $data = new Spreadsheet_Excel_Reader($sFullFilepath);
+    $adata = $data->dumptonamedarray();
 
-        $results['defaultvalues']=0;
-        $results['answers']=0;
-        $results['surveys']=0;
-        $results['languages']=0;
-        $results['questions']=0;
-        $results['subquestions']=0;
-        $results['question_attributes']=0;
-        $results['groups']=0;
-        $results['importwarnings']=array();
-        // these aren't used here, but are needed to avoid errors in post-import display
-        $results['assessments']=0;
-        $results['quota']=0;
-        $results['quotamembers']=0;
-        $results['quotals']=0;
+    $results['defaultvalues']=0;
+    $results['answers']=0;
+    $results['surveys']=0;
+    $results['languages']=0;
+    $results['questions']=0;
+    $results['subquestions']=0;
+    $results['question_attributes']=0;
+    $results['groups']=0;
+    $results['importwarnings']=array();
+    // these aren't used here, but are needed to avoid errors in post-import display
+    $results['assessments']=0;
+    $results['quota']=0;
+    $results['quotamembers']=0;
+    $results['quotals']=0;
 
-        // collect information about survey and its language settings
-        $surveyinfo = array();
-        $surveyls = array();
-        foreach ($adata as $row)
+    // collect information about survey and its language settings
+    $surveyinfo = array();
+    $surveyls = array();
+    foreach ($adata as $row)
+    {
+        switch($row['class'])
         {
-            switch($row['class'])
-            {
-                case 'S':
-                    if (isset($row['text']))
-                    {
-                        $surveyinfo[$row['name']] = $row['text'];
-                    }
-                    break;
-                case 'SL':
-                    if (!isset($surveyls[$row['language']]))
-                    {
-                        $surveyls[$row['language']] = array();
-                    }
-                    if (isset($row['text']))
-                    {
-                        $surveyls[$row['language']][$row['name']] = $row['text'];
-                    }
-                    break;
-            }
+            case 'S':
+                if (isset($row['text']))
+                {
+                    $surveyinfo[$row['name']] = $row['text'];
+                }
+                break;
+            case 'SL':
+                if (!isset($surveyls[$row['language']]))
+                {
+                    $surveyls[$row['language']] = array();
+                }
+                if (isset($row['text']))
+                {
+                    $surveyls[$row['language']][$row['name']] = $row['text'];
+                }
+                break;
+        }
+    }
+
+    $oldsid = 1;
+    if (isset($surveyinfo['sid']))
+    {
+        $oldsid = (int) $surveyinfo['sid'];
+    }
+
+    // Create the survey entry
+    $iNewSID=GetNewSurveyID($oldsid);
+    $surveyinfo['startdate']=NULL;
+    $surveyinfo['sid']=$iNewSID;
+    $surveyinfo['active']='N';
+    $surveyinfo['owner_id']=$_SESSION['loginID'];
+    $surveyinfo['datecreated']=new CDbExpression('NOW()');
+
+    switchMSSQLIdentityInsert('surveys',true);
+    $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) or safeDie($clang->gT("Error").": Failed to insert survey<br />");
+    $results['surveys']++;
+    switchMSSQLIdentityInsert('surveys',false);
+    $results['newsid']=$iNewSID;
+
+    $gid=0;
+    $gseq=0;    // group_order
+    $qid=0;
+    $qseq=0;    // question_order
+    $qtype='T';
+    $aseq=0;    // answer sortorder
+
+    // set the language for the survey
+    $_title='Missing Title';
+    foreach ($surveyls as $_lang => $insertdata)
+    {
+        $insertdata['surveyls_survey_id'] = $iNewSID;
+        $insertdata['surveyls_language'] = $_lang;
+        if (isset($insertdata['surveyls_title']))
+        {
+            $_title = $insertdata['surveyls_title'];
+        }
+        else
+        {
+            $insertdata['surveyls_title'] = $_title;
         }
 
-        $oldsid = 1;
-        if (isset($surveyinfo['sid']))
+
+        $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
+        $results['languages']++;
+    }
+
+    $ginfo=array();
+    $qinfo=array();
+    $sqinfo=array();
+
+    if (isset($surveyinfo['language']))
+    {
+        $baselang = $surveyinfo['language'];    // the base language
+    }
+
+  $rownumber = 1;
+    foreach ($adata as $row)
+    {
+    		$rownumber += 1;
+        $row = str_replace(chr(0xA0),' ',$row);
+        switch($row['class'])
         {
-            $oldsid = (int) $surveyinfo['sid'];
-        }
+            case 'G':
+                // insert group
+                $insertdata = array();
+                $insertdata['sid'] = $iNewSID;
+                $gname = ((isset($row['name']) ? $row['name'] : 'G' . $gseq));
+                $insertdata['group_name'] = $gname;
+                $insertdata['grelevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                $insertdata['description'] = (isset($row['text']) ? $row['text'] : '');
+                $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
 
-        // Create the survey entry
-        $iNewSID=GetNewSurveyID($oldsid);
-        $surveyinfo['startdate']=NULL;
-        $surveyinfo['sid']=$iNewSID;
-        $surveyinfo['active']='N';
-        $surveyinfo['owner_id']=$_SESSION['loginID'];
-        $surveyinfo['datecreated']=new CDbExpression('NOW()');
-
-        switchMSSQLIdentityInsert('surveys',true);
-        $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) or safeDie($clang->gT("Error").": Failed to insert survey<br />");
-        $results['surveys']++;
-        switchMSSQLIdentityInsert('surveys',false);
-        $results['newsid']=$iNewSID;
-
-        $gid=0;
-        $gseq=0;    // group_order
-        $qid=0;
-        $qseq=0;    // question_order
-        $qtype='T';
-        $aseq=0;    // answer sortorder
-
-        // set the language for the survey
-        $_title='Missing Title';
-        foreach ($surveyls as $_lang => $insertdata)
-        {
-            $insertdata['surveyls_survey_id'] = $iNewSID;
-            $insertdata['surveyls_language'] = $_lang;
-            if (isset($insertdata['surveyls_title']))
-            {
-                $_title = $insertdata['surveyls_title'];
-            }
-            else
-            {
-                $insertdata['surveyls_title'] = $_title;
-            }
-
-
-            $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
-            $results['languages']++;
-        }
-
-        $ginfo=array();
-        $qinfo=array();
-        $sqinfo=array();
-
-        if (isset($surveyinfo['language']))
-        {
-            $baselang = $surveyinfo['language'];    // the base language
-        }
-
-        foreach ($adata as $row)
-        {
-            $row = str_replace(chr(0xA0),' ',$row);
-            switch($row['class'])
-            {
-                case 'G':
-                    // insert group
-                    $insertdata = array();
-                    $insertdata['sid'] = $iNewSID;
-                    $gname = ((isset($row['name']) ? $row['name'] : 'G' . $gseq));
-                    $insertdata['group_name'] = $gname;
-                    $insertdata['grelevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
-                    $insertdata['description'] = (isset($row['text']) ? $row['text'] : '');
-                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-
-                    if (isset($ginfo[$gname]))
-                    {
-                        $gseq = $ginfo[$gname]['group_order'];
-                        $gid = $ginfo[$gname]['gid'];
-                        $insertdata['gid'] = $gid;
-                        $insertdata['group_order'] = $gseq;
-                    }
-                    else
-                    {
-                        $insertdata['group_order'] = $gseq;
-                    }
-
-                    $newgid = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT('Error').": Failed to insert group<br />\<br />\n");
-
-                    if (!isset($ginfo[$gname]))
-                    {
-                        $results['groups']++;
-                        $gid=$newgid; // save this for later
-                        $ginfo[$gname]['gid'] = $gid;
-                        $ginfo[$gname]['group_order'] = $gseq++;
-                    }
-
-                    $qseq=0;    // reset the question_order
-                    break;
-                case 'Q':
-                    // insert question
-                    $insertdata = array();
-                    $insertdata['sid'] = $iNewSID;
-                    $qtype = (isset($row['type/scale']) ? $row['type/scale'] : 'T');
-                    $qname = (isset($row['name']) ? $row['name'] : 'Q' . $qseq);
+                if (isset($ginfo[$gname]))
+                {
+                    $gseq = $ginfo[$gname]['group_order'];
+                    $gid = $ginfo[$gname]['gid'];
                     $insertdata['gid'] = $gid;
+                    $insertdata['group_order'] = $gseq;
+                }
+                else
+                {
+                    $insertdata['group_order'] = $gseq;
+                }
+
+                $newgid = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT('Error').": Failed to insert group<br />\<br />\n");
+
+                if (!isset($ginfo[$gname]))
+                {
+                    $results['groups']++;
+                    $gid=$newgid; // save this for later
+                    $ginfo[$gname]['gid'] = $gid;
+                    $ginfo[$gname]['group_order'] = $gseq++;
+                }
+
+                $qseq=0;    // reset the question_order
+                break;
+            case 'Q':
+                // insert question
+                $insertdata = array();
+                $insertdata['sid'] = $iNewSID;
+                $qtype = (isset($row['type/scale']) ? $row['type/scale'] : 'T');
+                $qname = (isset($row['name']) ? $row['name'] : 'Q' . $qseq);
+                $insertdata['gid'] = $gid;
+                $insertdata['type'] = $qtype;
+                $insertdata['title'] = $qname;
+                $insertdata['question'] = (isset($row['text']) ? $row['text'] : '');
+                $insertdata['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                $insertdata['preg'] = (isset($row['validation']) ? $row['validation'] : '');
+                $insertdata['help'] = (isset($row['help']) ? $row['help'] : '');
+                $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
+                $insertdata['other'] = (isset($row['other']) ? $row['other'] : 'N');
+                $insertdata['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
+                $insertdata['parent_qid'] = 0;
+
+                if (isset($qinfo[$qname]))
+                {
+                    $qseq = $qinfo[$qname]['question_order'];
+                    $qid = $qinfo[$qname]['qid'];
+                    $insertdata['qid']  = $qid;
+                    $insertdata['question_order'] = $qseq;
+                }
+                else
+                {
+                    $insertdata['question_order'] = $qseq;
+                }
+
+                $result = Questions::model()->insertRecords($insertdata); //or safeDie ($clang->gT("Error").": Failed to insert question<br />");
+                if(!$result){
+                	 $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
+                	 break;
+                }
+
+				  $newqid = $result;
+                if (!isset($qinfo[$qname]))
+                {
+                    $results['questions']++;
+                    $qid=$newqid; // save this for later
+                    $qinfo[$qname]['qid'] = $qid;
+                    $qinfo[$qname]['question_order'] = $qseq++;
+                }
+
+                $aseq=0;    //reset the answer sortorder
+
+                // insert question attributes
+                foreach ($row as $key=>$val)
+                {
+                    switch($key)
+                    {
+                        case 'class':
+                        case 'type/scale':
+                        case 'name':
+                        case 'text':
+                        case 'validation':
+                        case 'relevance':
+                        case 'help':
+                        case 'language':
+                        case 'mandatory':
+                        case 'other':
+                        case 'same_default':
+                        case 'default':
+                            break;
+                        default:
+                            if ($key != '' && $val != '')
+                            {
+                                $insertdata = array();
+                                $insertdata['qid'] = $qid;
+                                $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                                $insertdata['attribute'] = $key;
+                                $insertdata['value'] = $val;
+                                $result=Question_attributes::model()->insertRecords($insertdata);
+                                $results['question_attributes']++;
+                            }
+                            break;
+                    }
+                }
+
+                // insert default value
+                if (isset($row['default']))
+                {
+                    $insertdata=array();
+                    $insertdata['qid'] = $qid;
+                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                    $insertdata['defaultvalue'] = $row['default'];
+                    $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
+                    $results['defaultvalues']++;
+                }
+
+                $sqseq = 0;
+                break;
+            case 'SQ':
+                $sqname = (isset($row['name']) ? $row['name'] : 'SQ' . $sqseq);
+                if ($qtype == 'O' || $qtype == '|')
+                {
+                    ;   // these are fake rows to show naming of comment and filecount fields
+                }
+                else if ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
+                    {
+                        // only want to set default value for 'other' in these cases - not a real SQ row
+                        // TODO - this isn't working
+                        if (isset($row['default']))
+                        {
+                            $insertdata=array();
+                            $insertdata['qid'] = $qid;
+                            $insertdata['specialtype'] = 'other';
+                            $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                            $insertdata['defaultvalue'] = $row['default'];
+                            $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
+                            $results['defaultvalues']++;
+                        }
+                }
+                else
+                {
+                    $insertdata = array();
+                    $scale_id = (isset($row['type/scale']) ? $row['type/scale'] : 0);
+                    $insertdata['sid'] = $iNewSID;
+                    $insertdata['gid'] = $gid;
+                    $insertdata['parent_qid'] = $qid;
                     $insertdata['type'] = $qtype;
-                    $insertdata['title'] = $qname;
+                    $insertdata['title'] = $sqname;
                     $insertdata['question'] = (isset($row['text']) ? $row['text'] : '');
                     $insertdata['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
                     $insertdata['preg'] = (isset($row['validation']) ? $row['validation'] : '');
                     $insertdata['help'] = (isset($row['help']) ? $row['help'] : '');
                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                     $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
-                    $insertdata['other'] = (isset($row['other']) ? $row['other'] : 'N');
-                    $insertdata['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
-                    $insertdata['parent_qid'] = 0;
+                    $insertdata['scale_id'] = $scale_id;
 
-                    if (isset($qinfo[$qname]))
+                    $fullsqname = $qid . '_' . $sqname;
+
+                    if (isset($sqinfo[$fullsqname]))
                     {
-                        $qseq = $qinfo[$qname]['question_order'];
-                        $qid = $qinfo[$qname]['qid'];
-                        $insertdata['qid']  = $qid;
+                        $qseq = $sqinfo[$fullsqname]['question_order'];
+                        $sqid = $sqinfo[$fullsqname]['sqid'];
                         $insertdata['question_order'] = $qseq;
+                        //                            $insertdata['qid'] = $sqid; // this was causing key duplications - removing it seems to have fixed that
                     }
                     else
                     {
                         $insertdata['question_order'] = $qseq;
                     }
 
-                    $newqid = Questions::model()->insertRecords($insertdata) or safeDie ($clang->gT("Error").": Failed to insert question<br />");
+                    $newsqid = Questions::model()->insertRecords($insertdata) or safeDie ($clang->gT("Error").": Failed to insert question<br />");
 
-                    if (!isset($qinfo[$qname]))
+                    if (!isset($sqinfo[$fullsqname]))
                     {
-                        $results['questions']++;
-                        $qid=$newqid; // save this for later
-                        $qinfo[$qname]['qid'] = $qid;
-                        $qinfo[$qname]['question_order'] = $qseq++;
-                    }
-
-                    $aseq=0;    //reset the answer sortorder
-
-                    // insert question attributes
-                    foreach ($row as $key=>$val)
-                    {
-                        switch($key)
-                        {
-                            case 'class':
-                            case 'type/scale':
-                            case 'name':
-                            case 'text':
-                            case 'validation':
-                            case 'relevance':
-                            case 'help':
-                            case 'language':
-                            case 'mandatory':
-                            case 'other':
-                            case 'same_default':
-                            case 'default':
-                                break;
-                            default:
-                                if ($key != '' && $val != '')
-                                {
-                                    $insertdata = array();
-                                    $insertdata['qid'] = $qid;
-                                    $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                                    $insertdata['attribute'] = $key;
-                                    $insertdata['value'] = $val;
-                                    $result=Question_attributes::model()->insertRecords($insertdata);
-                                    $results['question_attributes']++;
-                                }
-                                break;
-                        }
+                        $sqinfo[$fullsqname]['question_order'] = $qseq++;
+                        $sqid=$newsqid; // save this for later
+                        $sqinfo[$fullsqname]['sqid'] = $sqid;
+                        $results['subquestions']++;
                     }
 
                     // insert default value
@@ -4380,109 +4461,41 @@ function ExcelImportSurvey($sFullFilepath)
                     {
                         $insertdata=array();
                         $insertdata['qid'] = $qid;
+                        $insertdata['sqid'] = $sqid;
+                        $insertdata['scale_id'] = $scale_id;
                         $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                         $insertdata['defaultvalue'] = $row['default'];
                         $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
                         $results['defaultvalues']++;
                     }
+                }
+                break;
+            case 'A':
+                $insertdata = array();
+                $insertdata['qid'] = $qid;
+                $insertdata['code'] = (isset($row['name']) ? $row['name'] : 'A' . $aseq);
+                $insertdata['answer'] = (isset($row['text']) ? $row['text'] : '');
+                $insertdata['scale_id'] = (isset($row['type/scale']) ? $row['type/scale'] : 0);
+                $insertdata['language']= (isset($row['language']) ? $row['language'] : $baselang);
+                $insertdata['assessment_value'] = (isset($row['relevance']) ? $row['relevance'] : '');
+                $insertdata['sortorder'] = ++$aseq;
 
-                    $sqseq = 0;
-                    break;
-                case 'SQ':
-                    $sqname = (isset($row['name']) ? $row['name'] : 'SQ' . $sqseq);
-                    if ($qtype == 'O' || $qtype == '|')
-                    {
-                        ;   // these are fake rows to show naming of comment and filecount fields
-                    }
-                    else if ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
-                        {
-                            // only want to set default value for 'other' in these cases - not a real SQ row
-                            // TODO - this isn't working
-                            if (isset($row['default']))
-                            {
-                                $insertdata=array();
-                                $insertdata['qid'] = $qid;
-                                $insertdata['specialtype'] = 'other';
-                                $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                                $insertdata['defaultvalue'] = $row['default'];
-                                $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
-                                $results['defaultvalues']++;
-                            }
-                    }
-                    else
-                    {
-                        $insertdata = array();
-                        $scale_id = (isset($row['type/scale']) ? $row['type/scale'] : 0);
-                        $insertdata['sid'] = $iNewSID;
-                        $insertdata['gid'] = $gid;
-                        $insertdata['parent_qid'] = $qid;
-                        $insertdata['type'] = $qtype;
-                        $insertdata['title'] = $sqname;
-                        $insertdata['question'] = (isset($row['text']) ? $row['text'] : '');
-                        $insertdata['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
-                        $insertdata['preg'] = (isset($row['validation']) ? $row['validation'] : '');
-                        $insertdata['help'] = (isset($row['help']) ? $row['help'] : '');
-                        $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                        $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
-                        $insertdata['scale_id'] = $scale_id;
-
-                        $fullsqname = $qid . '_' . $sqname;
-
-                        if (isset($sqinfo[$fullsqname]))
-                        {
-                            $qseq = $sqinfo[$fullsqname]['question_order'];
-                            $sqid = $sqinfo[$fullsqname]['sqid'];
-                            $insertdata['question_order'] = $qseq;
-                            //                            $insertdata['qid'] = $sqid; // this was causing key duplications - removing it seems to have fixed that
-                        }
-                        else
-                        {
-                            $insertdata['question_order'] = $qseq;
-                        }
-
-                        $newsqid = Questions::model()->insertRecords($insertdata) or safeDie ($clang->gT("Error").": Failed to insert question<br />");
-
-                        if (!isset($sqinfo[$fullsqname]))
-                        {
-                            $sqinfo[$fullsqname]['question_order'] = $qseq++;
-                            $sqid=$newsqid; // save this for later
-                            $sqinfo[$fullsqname]['sqid'] = $sqid;
-                            $results['subquestions']++;
-                        }
-
-                        // insert default value
-                        if (isset($row['default']))
-                        {
-                            $insertdata=array();
-                            $insertdata['qid'] = $qid;
-                            $insertdata['sqid'] = $sqid;
-                            $insertdata['scale_id'] = $scale_id;
-                            $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                            $insertdata['defaultvalue'] = $row['default'];
-                            $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
-                            $results['defaultvalues']++;
-                        }
-                    }
-                    break;
-                case 'A':
-                    $insertdata = array();
-                    $insertdata['qid'] = $qid;
-                    $insertdata['code'] = (isset($row['name']) ? $row['name'] : 'A' . $aseq);
-                    $insertdata['answer'] = (isset($row['text']) ? $row['text'] : '');
-                    $insertdata['scale_id'] = (isset($row['type/scale']) ? $row['type/scale'] : 0);
-                    $insertdata['language']= (isset($row['language']) ? $row['language'] : $baselang);
-                    $insertdata['assessment_value'] = (isset($row['relevance']) ? $row['relevance'] : '');
-                    $insertdata['sortorder'] = ++$aseq;
-
-                    $result = Answers::model()->insertRecords($insertdata) or safeDie("Error: Failed to insert answer<br />");
-                    $results['answers']++;
-                    break;
-            }
-
+                $result = Answers::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
+                if(!$result){
+                	 $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert answer").". ".$clang->gT("Excel row number ").$rownumber;
+                }
+                $results['answers']++;
+                break;
         }
+
     }
-    catch (Exception $e) {
-        $results['error'] = $e->getMessage();
-    }
+
+    // Delete the survey if error found    
+		if(is_array($results['error']))  
+		{
+			$result = Survey::model()->deleteSurvey($iNewSID);
+		}
+		
     return $results;
 }
+

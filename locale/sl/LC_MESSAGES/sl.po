@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-05-24 20:17:43+0000\n"
+"PO-Revision-Date: 2012-05-31 06:08:02+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,6 +14,19 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Language: Slovenian\n"
 "Project-Id-Version: LimeSurvey 2.x\n"
+
+#: application/helpers/admin/import_helper.php:4336
+msgid "Could not insert question"
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4336
+#: application/helpers/admin/import_helper.php:4485
+msgid "Excel row number "
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4485
+msgid "Could not insert answer"
+msgstr ""
 
 #: application/controllers/admin/templates.php:195
 msgid "Demo mode: Uploading template files is disabled."
@@ -77,7 +90,7 @@ msgstr "Arc kosinus"
 
 #: application/helpers/expressions/em_core_helper.php:158
 msgid "addslashes"
-msgstr ""
+msgstr "dodaj poševnico"
 
 #: application/helpers/expressions/em_core_helper.php:159
 msgid "Arc sine"
@@ -129,19 +142,19 @@ msgstr "Uredi GMT datum/čas"
 
 #: application/helpers/expressions/em_core_helper.php:171
 msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Pretvori vse entitete HTML v primeren znak (vedno uporabi ENT_QUOTES in UTF-8)"
 
 #: application/helpers/expressions/em_core_helper.php:172
 msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Pretvori vse primerne znake v entitete HTML (vedno uporabi ENT_QUOTES in UTF-8)"
 
 #: application/helpers/expressions/em_core_helper.php:173
 msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Pretvori posebne znake v entitete HTML (vedno uporabi ENT_QUOTES in UTF-8)"
 
 #: application/helpers/expressions/em_core_helper.php:174
 msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
-msgstr ""
+msgstr "Pretvori posebne entitete HTML v znake (vedno uporabi ENT_QUOTES in UTF-8)"
 
 #: application/helpers/expressions/em_core_helper.php:175
 msgid "Format a local time/date as integer"
@@ -149,11 +162,11 @@ msgstr "Uredi lokalni čas/datum kot celo število"
 
 #: application/helpers/expressions/em_core_helper.php:176
 msgid "Conditional processing"
-msgstr ""
+msgstr "Pogojno procesiranje"
 
 #: application/helpers/expressions/em_core_helper.php:177
 msgid "Join array elements with a string"
-msgstr ""
+msgstr "Spoji elemente polja z nizom"
 
 #: application/helpers/expressions/em_core_helper.php:178
 msgid "Get the integer value of a variable"
@@ -165,7 +178,7 @@ msgstr "Ugotovi ali je vrednost spremenljivke prazna"
 
 #: application/helpers/expressions/em_core_helper.php:180
 msgid "Finds whether the type of a variable is float"
-msgstr ""
+msgstr "Poišče, če je vrsta spremenljivke plavajoča"
 
 #: application/helpers/expressions/em_core_helper.php:181
 msgid "Find whether the type of a variable is integer"
@@ -209,11 +222,11 @@ msgstr "Najdi najnižjo vrednost"
 
 #: application/helpers/expressions/em_core_helper.php:191
 msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
-msgstr ""
+msgstr "Uporabi unix timestamp za datum (vseh 6 argumentov je opcijskih)"
 
 #: application/helpers/expressions/em_core_helper.php:192
 msgid "Inserts HTML line breaks before all newlines in a string"
-msgstr ""
+msgstr "Vstavi prelome vrstic HTML pred vse znake za novo vrstico v nizu"
 
 #: application/helpers/expressions/em_core_helper.php:193
 msgid "Format a number with grouped thousands"
@@ -229,15 +242,15 @@ msgstr "Eksponentna enačba"
 
 #: application/helpers/expressions/em_core_helper.php:196
 msgid "Convert a quoted-printable string to an 8 bit string"
-msgstr ""
+msgstr "Pretvori niz v narekovajih v 8 bitni niz"
 
 #: application/helpers/expressions/em_core_helper.php:197
 msgid "Convert a 8 bit string to a quoted-printable string"
-msgstr ""
+msgstr "Pretvori 8 bitni niz v niz v narekovajih"
 
 #: application/helpers/expressions/em_core_helper.php:198
 msgid "Quote meta characters"
-msgstr ""
+msgstr "Meta znake daj v narekovaje"
 
 #: application/helpers/expressions/em_core_helper.php:199
 msgid "Generate a random integer"
@@ -245,7 +258,7 @@ msgstr "Ustvari naključno celo število"
 
 #: application/helpers/expressions/em_core_helper.php:200
 msgid "Compare a string to a regular expression pattern"
-msgstr ""
+msgstr "Primerjaj niz z vzorcem regularnega izraza"
 
 #: application/helpers/expressions/em_core_helper.php:201
 msgid "Rounds a number to an optional precision"
@@ -273,7 +286,7 @@ msgstr "Izračunaj vzorčni standardni odklon seznama števil"
 
 #: application/helpers/expressions/em_core_helper.php:207
 msgid "Pad a string to a certain length with another string"
-msgstr ""
+msgstr "Dopolni niz do določene dolžine z drugim nizom"
 
 #: application/helpers/expressions/em_core_helper.php:208
 msgid "Repeat a string"
@@ -285,11 +298,11 @@ msgstr "Nadomesti vsa zaporedja, enaka iskalnemu z nadomestnim zaporedjem (zamen
 
 #: application/helpers/expressions/em_core_helper.php:210
 msgid "Binary safe case-insensitive string comparison"
-msgstr ""
+msgstr "Dvojiško varna primerjava niza, ne razlikuj velikih in malih črk"
 
 #: application/helpers/expressions/em_core_helper.php:211
 msgid "Binary safe string comparison"
-msgstr ""
+msgstr "Dvojiško varna primerjava niza"
 
 #: application/helpers/expressions/em_core_helper.php:212
 msgid "Strip HTML and PHP tags from a string"
@@ -301,35 +314,35 @@ msgstr "Poišči položaj prvega nahajališča zaporedja (case insensitive)"
 
 #: application/helpers/expressions/em_core_helper.php:214
 msgid "Un-quotes a quoted string"
-msgstr ""
+msgstr "Odstrani nizu narekovaje"
 
 #: application/helpers/expressions/em_core_helper.php:215
 msgid "Case-insensitive strstr"
-msgstr ""
+msgstr "Niz, ki ne razlikuje med velikostjo črk"
 
 #: application/helpers/expressions/em_core_helper.php:216
 msgid "Get string length"
-msgstr "izračunaj dolžino zaporedja"
+msgstr "Izračunaj dolžino zaporedja"
 
 #: application/helpers/expressions/em_core_helper.php:217
 msgid "Find position of first occurrence of a string"
-msgstr "najdi položaj prve pojave zaporedja"
+msgstr "Najdi položaj prve pojavitve zaporedja"
 
 #: application/helpers/expressions/em_core_helper.php:218
 msgid "Reverse a string"
-msgstr "obrni zaporedje"
+msgstr "Obrni zaporedje"
 
 #: application/helpers/expressions/em_core_helper.php:219
 msgid "Find first occurrence of a string"
-msgstr "najdi prvo pojavo zaporedja"
+msgstr "Najdi prvo pojavitev zaporedja"
 
 #: application/helpers/expressions/em_core_helper.php:220
 msgid "Make a string lowercase"
-msgstr "spremeni zaporedje v male začetnice"
+msgstr "Spremeni zaporedje v male začetnice"
 
 #: application/helpers/expressions/em_core_helper.php:221
 msgid "Make a string uppercase"
-msgstr "spremeni zaporedje v velike začetnice"
+msgstr "Spremeni zaporedje v velike začetnice"
 
 #: application/helpers/expressions/em_core_helper.php:222
 msgid "Return part of a string"
@@ -345,7 +358,7 @@ msgstr "Tangenta"
 
 #: application/helpers/expressions/em_core_helper.php:225
 msgid "Return current UNIX timestamp"
-msgstr ""
+msgstr "Vrni trenutni sistemski čas"
 
 #: application/helpers/expressions/em_core_helper.php:226
 msgid "Strip whitespace (or other characters) from the beginning and end of a string"
@@ -357,16 +370,16 @@ msgstr "Uveljavi veliko začetnico vsaki besedi v zaporedju"
 
 #: application/helpers/expressions/em_core_helper.php:255
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
-msgstr ""
+msgstr "Ne morem ovrednotiti binarnega operatorja - na skladu sta manj kot 2 vnosa"
 
 #: application/helpers/expressions/em_core_helper.php:262
 #: application/helpers/expressions/em_core_helper.php:401
 msgid "Invalid value(s) on the stack"
-msgstr ""
+msgstr "Neveljavne vrednosti na skladu"
 
 #: application/helpers/expressions/em_core_helper.php:395
 msgid "Unable to evaluate unary operator - no entries on stack"
-msgstr ""
+msgstr "Ne morem ovrednotiti unarnega operatorja - na skladu ni vnosov"
 
 #: application/helpers/expressions/em_core_helper.php:450
 msgid "Extra tokens found"
@@ -374,11 +387,11 @@ msgstr "Najdeni dodatni žetoni"
 
 #: application/helpers/expressions/em_core_helper.php:465
 msgid "Unbalanced equation - values left on stack"
-msgstr ""
+msgstr "Nepravilna enačba - na skladu so ostale vrednosti"
 
 #: application/helpers/expressions/em_core_helper.php:471
 msgid "Not a valid expression"
-msgstr "neveljavni izraz"
+msgstr "Neveljavni izraz"
 
 #: application/helpers/expressions/em_core_helper.php:532
 #: application/helpers/expressions/em_core_helper.php:960
@@ -397,7 +410,7 @@ msgstr "Nedefinirana spremenljivka"
 
 #: application/helpers/expressions/em_core_helper.php:591
 msgid "Should never  get to this line?"
-msgstr ""
+msgstr "Naj nikoli ne pride do te vrstice?"
 
 #: application/helpers/expressions/em_core_helper.php:677
 msgid "The value of this variable can not be changed"
@@ -466,147 +479,147 @@ msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:2286
 msgid "Tried to pop value off of empty stack"
-msgstr ""
+msgstr "Poskus pridobivanja vrednosti s praznega sklada"
 
 #: application/helpers/expressions/em_core_helper.php:3235
 msgid "Invalid PERL Regular Expression: %s"
-msgstr ""
+msgstr "Neveljaven regularni izraz PERL: %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2170
+#: application/helpers/expressions/em_manager_helper.php:2181
 msgid "Please select at least one answer"
 msgstr "Prosim, izberite vsaj en odgovor"
 
-#: application/helpers/expressions/em_manager_helper.php:2171
+#: application/helpers/expressions/em_manager_helper.php:2182
 msgid "Please select at least %s answers"
 msgstr "Prosim, izberite vsaj %s odgovorov"
 
-#: application/helpers/expressions/em_manager_helper.php:2175
+#: application/helpers/expressions/em_manager_helper.php:2186
 msgid "Please select at most one answer"
 msgstr "Prosim, izberite največ en odgovor"
 
-#: application/helpers/expressions/em_manager_helper.php:2176
+#: application/helpers/expressions/em_manager_helper.php:2187
 msgid "Please select at most %s answers"
 msgstr "Prosim, izberite največ %s odgovorov"
 
-#: application/helpers/expressions/em_manager_helper.php:2180
+#: application/helpers/expressions/em_manager_helper.php:2191
 msgid "Please select one answer"
 msgstr "Prosim, izberite en odgovor"
 
-#: application/helpers/expressions/em_manager_helper.php:2181
+#: application/helpers/expressions/em_manager_helper.php:2192
 msgid "Please select %s answers"
 msgstr "Prosim, izberite %s odgovorov"
 
-#: application/helpers/expressions/em_manager_helper.php:2183
+#: application/helpers/expressions/em_manager_helper.php:2194
 msgid "Please select between %s and %s answers"
 msgstr "Prosim, izberite med %s in %s odgovorov"
 
-#: application/helpers/expressions/em_manager_helper.php:2199
-#: application/helpers/expressions/em_manager_helper.php:2220
+#: application/helpers/expressions/em_manager_helper.php:2210
+#: application/helpers/expressions/em_manager_helper.php:2231
 msgid "Each answer must be at least %s"
 msgstr "Vsak odgovor mora biti vsaj %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2201
-#: application/helpers/expressions/em_manager_helper.php:2222
+#: application/helpers/expressions/em_manager_helper.php:2212
+#: application/helpers/expressions/em_manager_helper.php:2233
 msgid "Each answer must be at most %s"
 msgstr "Vsak odgovor mora biti največ %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2203
-#: application/helpers/expressions/em_manager_helper.php:2224
+#: application/helpers/expressions/em_manager_helper.php:2214
+#: application/helpers/expressions/em_manager_helper.php:2235
 msgid "Each answer must be %s"
 msgstr "Vsak odgovor mora biti %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2204
-#: application/helpers/expressions/em_manager_helper.php:2225
+#: application/helpers/expressions/em_manager_helper.php:2215
+#: application/helpers/expressions/em_manager_helper.php:2236
 msgid "Each answer must be between %s and %s"
 msgstr "Vsak odgovor mora biti med %s in %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2241
+#: application/helpers/expressions/em_manager_helper.php:2252
 msgid "The sum must be at least %s"
 msgstr "Vsota mora biti vsaj %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2243
+#: application/helpers/expressions/em_manager_helper.php:2254
 msgid "The sum must be at most %s"
 msgstr "Vsota mora biti največ %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2245
+#: application/helpers/expressions/em_manager_helper.php:2256
 msgid "The sum must equal %s"
 msgstr "Vsota mora biti %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2246
+#: application/helpers/expressions/em_manager_helper.php:2257
 msgid "The sum must be between %s and %s"
 msgstr "Vsota mora biti med %s in %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2256
+#: application/helpers/expressions/em_manager_helper.php:2267
 msgid "The sum must equal %s."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:2262
+#: application/helpers/expressions/em_manager_helper.php:2273
 msgid "Please also fill in the \"other comment\" field."
-msgstr ""
+msgstr "Izpolnite tudi polje \"drugi komentar\"."
 
-#: application/helpers/expressions/em_manager_helper.php:2270
+#: application/helpers/expressions/em_manager_helper.php:2281
 msgid "Please check the format of your answer."
 msgstr "Prosim, preveri format odgovora."
 
-#: application/helpers/expressions/em_manager_helper.php:3986
+#: application/helpers/expressions/em_manager_helper.php:3997
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4001
+#: application/helpers/expressions/em_manager_helper.php:4012
 msgid "Unable to insert record into timings table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4076
+#: application/helpers/expressions/em_manager_helper.php:4087
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:4965
+#: application/helpers/expressions/em_manager_helper.php:4976
 msgid "This question is mandatory"
 msgstr "Na to vprašanje morate obvezno odgovoriti"
 
-#: application/helpers/expressions/em_manager_helper.php:4977
+#: application/helpers/expressions/em_manager_helper.php:4988
 msgid "Please check at least one item."
 msgstr "Prosimo, izberite vsaj eno izmed možnosti."
 
-#: application/helpers/expressions/em_manager_helper.php:4987
+#: application/helpers/expressions/em_manager_helper.php:4998
 msgid "If you choose '%s' you must provide a description."
 msgstr "Če izberete '%s' morate dodati opis."
 
-#: application/helpers/expressions/em_manager_helper.php:5009
-#: application/helpers/expressions/em_manager_helper.php:5046
+#: application/helpers/expressions/em_manager_helper.php:5020
+#: application/helpers/expressions/em_manager_helper.php:5057
 msgid "Please complete all parts"
 msgstr "Prosimo, odgovorite na vsa vprašanja"
 
-#: application/helpers/expressions/em_manager_helper.php:5038
+#: application/helpers/expressions/em_manager_helper.php:5049
 msgid "Please check at least one box per row"
 msgstr "Prosim, označi vsaj en odgovor v vrsti"
 
-#: application/helpers/expressions/em_manager_helper.php:5054
+#: application/helpers/expressions/em_manager_helper.php:5065
 msgid "Please rank all items"
 msgstr "Prosimo, razvrstite vse možnosti"
 
-#: application/helpers/expressions/em_manager_helper.php:7401
+#: application/helpers/expressions/em_manager_helper.php:7432
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7406
+#: application/helpers/expressions/em_manager_helper.php:7437
 msgid "Name [ID]"
 msgstr "Ime [ID]"
 
-#: application/helpers/expressions/em_manager_helper.php:7406
+#: application/helpers/expressions/em_manager_helper.php:7437
 msgid "Relevance [Validation] (Default)"
-msgstr "Relevantnost [Validacija] (Privzeto)"
+msgstr "Ustreznost [Preverjanje] (Privzeto)"
 
-#: application/helpers/expressions/em_manager_helper.php:7406
+#: application/helpers/expressions/em_manager_helper.php:7437
 msgid "Text [Help] (Tip)"
 msgstr "Besedilo [Pomoč] (Namig)"
 
-#: application/helpers/expressions/em_manager_helper.php:7458
-#: application/helpers/expressions/em_manager_helper.php:7684
+#: application/helpers/expressions/em_manager_helper.php:7489
+#: application/helpers/expressions/em_manager_helper.php:7715
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7466
+#: application/helpers/expressions/em_manager_helper.php:7497
 #: application/views/admin/survey/Question/editQuestion_view.php:44
 #: application/views/admin/survey/Question/editQuestion_view.php:46
 #: application/views/admin/survey/Question/editQuestion_view.php:68
@@ -617,27 +630,27 @@ msgstr ""
 msgid "Help:"
 msgstr "Pomoč:"
 
-#: application/helpers/expressions/em_manager_helper.php:7467
+#: application/helpers/expressions/em_manager_helper.php:7498
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7474
+#: application/helpers/expressions/em_manager_helper.php:7505
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7474
+#: application/helpers/expressions/em_manager_helper.php:7505
 msgid "Value"
 msgstr "Vrednost"
 
-#: application/helpers/expressions/em_manager_helper.php:7587
+#: application/helpers/expressions/em_manager_helper.php:7618
 msgid "This variable name has already been used."
-msgstr "Spremenljivka  stem imenom že obstaja."
+msgstr "Spremenljivka s tem imenom že obstaja."
 
-#: application/helpers/expressions/em_manager_helper.php:7599
+#: application/helpers/expressions/em_manager_helper.php:7630
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
-msgstr ""
+msgstr "Od različice 1.92 naprej lahko imena spremenljivk vsebujejo samo črke, številke in podčrtaj in se ne smejo začeti s številko. To ime spremenljivke ni več veljavno."
 
-#: application/helpers/expressions/em_manager_helper.php:7740
+#: application/helpers/expressions/em_manager_helper.php:7771
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] ""
@@ -645,7 +658,7 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: application/helpers/expressions/em_manager_helper.php:7779
+#: application/helpers/expressions/em_manager_helper.php:7810
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
 msgstr[0] ""
@@ -653,15 +666,15 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: application/helpers/expressions/em_manager_helper.php:7785
+#: application/helpers/expressions/em_manager_helper.php:7816
 msgid "No syntax errors detected in this survey"
 msgstr "V anketi ni napak sintakse"
 
-#: application/helpers/expressions/em_manager_helper.php:7788
+#: application/helpers/expressions/em_manager_helper.php:7819
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Ta skupina je brez napak sintakse"
 
-#: application/helpers/expressions/em_manager_helper.php:7791
+#: application/helpers/expressions/em_manager_helper.php:7822
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "To vprašanje je brez napak sintakse"
 
@@ -673,93 +686,93 @@ msgstr "Podatki se ne ujemajo z nobeno izmed shranjenih anket"
 msgid "You have completed %s%% of this survey"
 msgstr "Izpolnili ste %s%% te ankete"
 
-#: application/helpers/frontend_helper.php:821
+#: application/helpers/frontend_helper.php:820
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
-msgstr "Naložena datoteka (%s) je večja od maks. dovoljenih %s KB."
+msgstr "Naložena datoteka (%s) je večja od največ dovoljenih %s KB."
 
-#: application/helpers/frontend_helper.php:834
-#: application/helpers/frontend_helper.php:840
+#: application/helpers/frontend_helper.php:833
+#: application/helpers/frontend_helper.php:839
 msgid "Sorry, only %s extensions are allowed!"
 msgstr "Oprostite, samo %s končnice so dovoljene!"
 
-#: application/helpers/frontend_helper.php:852
+#: application/helpers/frontend_helper.php:851
 msgid "The minimum number of files has not been uploaded."
 msgstr "Minimalno število datotek ni bilo naloženo."
 
-#: application/helpers/frontend_helper.php:1323
+#: application/helpers/frontend_helper.php:1322
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Prišlo je do nepričakovane napake. Vaših odgovorov ni mogoče shraniti."
 
-#: application/helpers/frontend_helper.php:1326
+#: application/helpers/frontend_helper.php:1325
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Vaši odgovori NISO bili izgubljeni. Poslani so bili administratorju ankete in bodo vključeni v končne rezultate."
 
-#: application/helpers/frontend_helper.php:1331
+#: application/helpers/frontend_helper.php:1330
 msgid "An error occurred saving a response to survey id"
 msgstr "Prišlo je do napake pri shranjevanju odgovorov za identifikacijsko številko ankete"
 
-#: application/helpers/frontend_helper.php:1332
+#: application/helpers/frontend_helper.php:1331
 msgid "DATA TO BE ENTERED"
 msgstr "PODATKI ZA VNOS"
 
-#: application/helpers/frontend_helper.php:1337
+#: application/helpers/frontend_helper.php:1336
 msgid "SQL CODE THAT FAILED"
 msgstr "NAPAKA V SQL STAVKU"
 
-#: application/helpers/frontend_helper.php:1339
+#: application/helpers/frontend_helper.php:1338
 msgid "ERROR MESSAGE"
 msgstr "SPOROČILO O NAPAKI"
 
-#: application/helpers/frontend_helper.php:1341
+#: application/helpers/frontend_helper.php:1340
 msgid "Error saving results"
 msgstr "Napaka pri shranjevanju rezultatov"
 
-#: application/helpers/frontend_helper.php:1348
+#: application/helpers/frontend_helper.php:1347
 msgid "Try to submit again"
 msgstr "Poskusite poslati ponovno"
 
-#: application/helpers/frontend_helper.php:1406
+#: application/helpers/frontend_helper.php:1405
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Prosimo, potrdite dostop do ankete z odgovorom na varnostno vprašanje in kliknite Nadaljuj."
 
-#: application/helpers/frontend_helper.php:1430
+#: application/helpers/frontend_helper.php:1429
 msgid "Security question:"
 msgstr "Varnostno vprašanje:"
 
-#: application/helpers/frontend_helper.php:1478
-#: application/helpers/frontend_helper.php:1640
+#: application/helpers/frontend_helper.php:1477
+#: application/helpers/frontend_helper.php:1639
 #: application/views/entertoken_view.php:9
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Če vam je bilo geslo posredovano, ga vpišite v spodnje polje in kliknite za nadaljevanje."
 
-#: application/helpers/frontend_helper.php:1483
-#: application/helpers/frontend_helper.php:1673
+#: application/helpers/frontend_helper.php:1482
+#: application/helpers/frontend_helper.php:1672
 msgid "Token:"
 msgstr "Dostopno geslo:"
 
-#: application/helpers/frontend_helper.php:1508
-#: application/helpers/frontend_helper.php:1681
+#: application/helpers/frontend_helper.php:1507
+#: application/helpers/frontend_helper.php:1680
 #: application/helpers/replacements_helper.php:567
 #: application/helpers/replacements_helper.php:588
 #: application/helpers/replacements_helper.php:651
 msgid "Security Question"
 msgstr "Varnostno vprašanje"
 
-#: application/helpers/frontend_helper.php:1552
-#: application/helpers/frontend_helper.php:1597
+#: application/helpers/frontend_helper.php:1551
+#: application/helpers/frontend_helper.php:1596
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Dostopno geslo, ki ste ga vnesli ni veljavno ali pa je bilo že uporabljeno."
 
-#: application/helpers/frontend_helper.php:1659
+#: application/helpers/frontend_helper.php:1658
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Prosimo potrdite geslo z odgovorom na varnostno vprašanje spodaj in kliknite Nadaljuj."
 
-#: application/helpers/frontend_helper.php:1788
+#: application/helpers/frontend_helper.php:1787
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Ta anketa še nima nobenih vprašanj, zato je ni mogoče testirati ali izpolniti."
 
-#: application/helpers/frontend_helper.php:2233
-#: application/helpers/frontend_helper.php:2679
+#: application/helpers/frontend_helper.php:2232
+#: application/helpers/frontend_helper.php:2678
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:87
 #: application/views/installer/dbsettings_view.php:29
@@ -769,9 +782,9 @@ msgstr "Ta anketa še nima nobenih vprašanj, zato je ni mogoče testirati ali i
 msgid "Previous"
 msgstr "Prejšnja"
 
-#: application/helpers/frontend_helper.php:2240
-#: application/helpers/frontend_helper.php:2246
-#: application/helpers/frontend_helper.php:2251
+#: application/helpers/frontend_helper.php:2239
+#: application/helpers/frontend_helper.php:2245
+#: application/helpers/frontend_helper.php:2250
 #: application/views/admin/participants/displayParticipants_view.php:110
 #: application/views/admin/quotas/newanswer_view.php:33
 #: application/views/admin/quotas/newanswertwo_view.php:45
@@ -790,11 +803,11 @@ msgstr "Naslednji"
 #: application/helpers/qanda_helper.php:151
 #: application/helpers/qanda_helper.php:152
 msgid "Choose one of the following answers"
-msgstr "Prosimo, izberite enega od naslednjih odgovorov"
+msgstr "Izberite enega od naslednjih odgovorov"
 
 #: application/helpers/qanda_helper.php:159
 msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
-msgstr "Izberite odgovor na seznamu na levi, začenši z najvišje ocenjenim in nadaljujte do najnižje ocenjenega elementa."
+msgstr "Izberite odgovor iz seznama na levi, začenši z najvišje ocenjenim in nadaljujte do najnižje ocenjenega elementa."
 
 #: application/helpers/qanda_helper.php:163
 #: application/helpers/qanda_helper.php:164
@@ -810,26 +823,26 @@ msgstr[3] ""
 #: application/helpers/qanda_helper.php:220
 #: application/helpers/qanda_helper.php:221
 msgid "Check any that apply"
-msgstr "Možnih je več odgovorov"
+msgstr "Označite vse, ki ustrezajo"
 
 #: application/helpers/qanda_helper.php:207
 #: application/helpers/qanda_helper.php:208
 #: application/helpers/qanda_helper.php:1315
 msgid "Choose your language"
-msgstr "Izberi jezik"
+msgstr "Izberite jezik"
 
 #: application/helpers/qanda_helper.php:251
 #: application/helpers/qanda_helper.php:252
 msgid "At least %d files must be uploaded for this question"
-msgstr "Vsaj %d datotek more biti naloženih za to vprašanje"
+msgstr "Vsaj %d datotek mora biti naloženih za to vprašanje"
 
 #: application/helpers/qanda_helper.php:502
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr "Nadaljevanje ni mogoče preden ne vnesete teksta za eno ali več vprašanj."
+msgstr "Nadaljevanje ni mogoče preden ne vnesete besedila za eno ali več vprašanj."
 
 #: application/helpers/qanda_helper.php:566
 msgid "One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed"
-msgstr "Ena ali več datotek so presegli velikost datoteke/niso pravilnega formata ali pa ni bilo naloženo minimalno število datotek. Ne moreš nadaljevati dokler tega ne popraviš."
+msgstr "Ena ali več datotek so presegli velikost datoteke/niso pravilnega formata ali pa ni bilo naloženo minimalno število datotek. Ne morete nadaljevati, dokler tega ne popravite."
 
 #: application/helpers/qanda_helper.php:611
 msgid "Your time to answer this question has expired"
@@ -939,7 +952,7 @@ msgstr "Oblika: %s"
 
 #: application/helpers/qanda_helper.php:1568
 msgid "Other answer"
-msgstr "Drug odgovor"
+msgstr "Drugi odgovor"
 
 #: application/helpers/qanda_helper.php:1915
 msgid "Please enter your comment here"
@@ -947,20 +960,20 @@ msgstr "Prosimo, vpišite svoj komentar"
 
 #: application/helpers/qanda_helper.php:2232
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
-msgstr "Kliknite na škarje poleg vsakega elementa na desni za odstranitev zadnji element v spisku"
+msgstr "Kliknite na škarje poleg vsakega elementa na desni za odstranitev zadnjega elementa v seznamu"
 
 #: application/helpers/qanda_helper.php:2243
 #: application/helpers/qanda_helper.php:2258
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
-msgstr[0] "Prosim rangirajte vsaj %d možnost za vprašanje \"%s\""
-msgstr[1] "Prosim rangirajte vsaj %d možnosti za vprašanje \"%s\""
-msgstr[2] "Prosim rangirajte vsaj %d možnosti za vprašanje \"%s\""
-msgstr[3] "Prosim rangirajte vsaj %d možnosti za vprašanje \"%s\""
+msgstr[0] "Razvrstite vsaj %d možnost za vprašanje \"%s\""
+msgstr[1] "Razvrstite vsaj %d možnosti za vprašanje \"%s\"."
+msgstr[2] "Razvrstite vsaj %d možnosti za vprašanje \"%s\"."
+msgstr[3] "Razvrstite vsaj %d možnosti za vprašanje \"%s\"."
 
 #: application/helpers/qanda_helper.php:2614
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
-msgstr "Izbrali ste polje \"drugo\" za vprašanje \"%s\". Izpolnite tudi polje \"komentar drugo\"."
+msgstr "Izbrali ste polje \"drugo\" za vprašanje \"%s\". Izpolnite tudi polje \"drugi komentar\"."
 
 #: application/helpers/qanda_helper.php:2984
 msgid "Upload files"
@@ -983,11 +996,11 @@ msgstr "Ime datoteke"
 #: application/helpers/qanda_helper.php:4719
 #: application/helpers/qanda_helper.php:6593
 msgid "Error: This question has no answers."
-msgstr "Napaka: To vprašanje nima odgovorov."
+msgstr "Napaka: to vprašanje nima odgovorov."
 
 #: application/helpers/qanda_helper.php:3623
 msgid "Only numbers may be entered in these fields"
-msgstr "V ta polja lahko vpisujete samo številke"
+msgstr "V ta polja lahko vnesete samo številke"
 
 #: application/helpers/qanda_helper.php:3664
 msgid "Remaining: "
@@ -1002,12 +1015,12 @@ msgstr "Skupaj: "
 #: application/helpers/qanda_helper.php:3879
 #: application/views/admin/dataentry/content_view.php:408
 msgid "Only numbers may be entered in this field"
-msgstr "V to polje lahko vpisujete samo številke"
+msgstr "V to polje lahko vnesete samo številke"
 
 #: application/helpers/qanda_helper.php:4061
 #: application/helpers/qanda_helper.php:4062
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
-msgstr "Povleci in spusti žebljiček na željeno lokacijo. Žebljiček premakneš tudi z desnim klikom."
+msgstr "Povleci in spusti žebljiček na želeno lokacijo. Žebljiček lahko premakneš tudi z desnim klikom."
 
 #: application/helpers/qanda_helper.php:5299
 #: application/helpers/qanda_helper.php:5681
@@ -1023,7 +1036,7 @@ msgstr "..."
 
 #: application/helpers/qanda_helper.php:6182
 msgid "Error: There are no answers defined for this question."
-msgstr "Napaka: To vprašanje še nima nobenega odgovora."
+msgstr "Napaka: to vprašanje nima določenega še nobenega odgovora."
 
 #: application/helpers/replacements_helper.php:337
 msgid "There are no questions in this survey"
@@ -1473,7 +1486,7 @@ msgstr "Baza je bila uspešno posodobljena na različico %s"
 #: application/views/admin/token/tokenwarning.php:31
 #: application/views/admin/update/step4.php:31
 msgid "Back to main menu"
-msgstr "Nazaj v glavni meni"
+msgstr "Nazaj na glavni meni"
 
 #: application/helpers/update/update_helper.php:56
 msgid "Database upgrade"
@@ -1525,7 +1538,7 @@ msgstr "Premikam predloge uporabnika na novo lokacijo: %s..."
 
 #: application/helpers/update/upgrade-mssql_helper.php:609
 #: application/helpers/update/upgrade-mysql_helper.php:731
-#: application/helpers/update/upgrade-pgsql_helper.php:448
+#: application/helpers/update/upgrade-pgsql_helper.php:451
 msgid "Database update finished (%s)"
 msgstr "Posodobitev baze je končana (%s)"
 
@@ -1549,13 +1562,13 @@ msgstr "Vaša anketa je bila uspešno shranjena."
 msgid "Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:76
+#: application/models/InstallerConfigForm.php:80
 msgid "Passwords do not match!"
 msgstr ""
 
 #: application/models/Survey_permissions.php:65
 #: application/views/admin/survey/copySurvey_view.php:46
-#: application/views/admin/survey/importSurvey_view.php:50
+#: application/views/admin/survey/importSurvey_view.php:59
 #: application/views/admin/survey/surveybar_view.php:73
 msgid "Assessments"
 msgstr "Ocene"
@@ -1566,17 +1579,17 @@ msgstr "Dovoljenje za ustvarjanje/ogled/posodobitev/izbris pravil ocenjevanja an
 
 #: application/models/Survey_permissions.php:66
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:51
+#: application/views/admin/survey/importSurvey_view.php:60
 #: application/views/admin/survey/surveybar_view.php:69
 msgid "Quotas"
-msgstr "kvote"
+msgstr "Kvote"
 
 #: application/models/Survey_permissions.php:66
 msgid "Permission to create/view/update/delete quota rules for a survey"
 msgstr "Dovoljenja za ustvaritev/pogled/spreminjanje/izbris kvote pravil za anketo"
 
 #: application/models/Survey_permissions.php:67
-#: application/views/admin/survey/importSurvey_view.php:59
+#: application/views/admin/survey/importSurvey_view.php:68
 #: application/views/admin/survey/surveybar_view.php:185
 msgid "Responses"
 msgstr "Odgovori"
@@ -2068,7 +2081,7 @@ msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:44
 msgid "There are %s orphaned quota entries which can be deleted."
-msgstr ""
+msgstr "Obstaja %s osirotelih vnosov, ki ji lahko izbrišete."
 
 #: application/views/admin/checkintegrity/check_view.php:48
 msgid "All quotas meet consistency standards."
@@ -2084,7 +2097,7 @@ msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:62
 msgid "There are %s orphaned quota members which can be deleted."
-msgstr ""
+msgstr "Obstaja %s osirotelih članov, ki ji lahko izbrišete."
 
 #: application/views/admin/checkintegrity/check_view.php:66
 msgid "All quota quota members meet consistency standards."
@@ -2285,7 +2298,7 @@ msgstr "Identifikator:"
 
 #: application/views/admin/dataentry/active_html_view.php:40
 #: application/views/admin/dataentry/insert.php:15
-#: application/views/admin/globalSettings_view.php:287
+#: application/views/admin/globalSettings_view.php:276
 #: application/views/admin/token/bounce.php:48
 msgid "Password:"
 msgstr "Geslo:"
@@ -2662,41 +2675,41 @@ msgstr "(knjižnjica Iconv ni nameščena)"
 msgid "CSV File (All charsets)"
 msgstr "CSV Datoteka (vsi kodni nabori)"
 
-#: application/views/admin/export/exportresults_view.php:66
+#: application/views/admin/export/exportresults_view.php:65
 msgid "PDF"
 msgstr "PDF"
 
-#: application/views/admin/export/exportresults_view.php:73
+#: application/views/admin/export/exportresults_view.php:71
 msgid "Column control"
 msgstr "Nadzor stolpcev"
 
-#: application/views/admin/export/exportresults_view.php:82
+#: application/views/admin/export/exportresults_view.php:80
 msgid "Choose Columns"
 msgstr "Izberi stolpce"
 
-#: application/views/admin/export/exportresults_view.php:85
-#: application/views/admin/export/exportresults_view.php:91
-#: application/views/admin/export/exportresults_view.php:119
+#: application/views/admin/export/exportresults_view.php:83
+#: application/views/admin/export/exportresults_view.php:89
+#: application/views/admin/export/exportresults_view.php:117
 msgid "Help"
 msgstr "Pomoč"
 
-#: application/views/admin/export/exportresults_view.php:86
+#: application/views/admin/export/exportresults_view.php:84
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
 msgstr "Vaša anketa vsebuje za več kot 255 stolpcev odgovorov. Preglednice kot je Excel so omejene na 255 stolpcev. V spodnjem seznamu izberite stolpce, ki jih želite izvoziti."
 
-#: application/views/admin/export/exportresults_view.php:92
+#: application/views/admin/export/exportresults_view.php:90
 msgid "Choose the columns you wish to export."
 msgstr "Izberite stolpce, ki jih želite izvoziti."
 
-#: application/views/admin/export/exportresults_view.php:118
+#: application/views/admin/export/exportresults_view.php:116
 msgid "Choose token fields"
 msgstr "Izberi polja žetona"
 
-#: application/views/admin/export/exportresults_view.php:120
+#: application/views/admin/export/exportresults_view.php:118
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr "Vaša anketa lahko izvozi povezane podatke o dostopnem geslu pri vsakem odgovoru. Izberite dodatna polja, ki jih želite izvoziti."
 
-#: application/views/admin/export/exportresults_view.php:136
+#: application/views/admin/export/exportresults_view.php:134
 #: application/views/admin/export/spss_view.php:19
 msgid "Export data"
 msgstr "Izvoz podatkov"
@@ -2762,11 +2775,11 @@ msgstr "Prenesi podatke in datoteko s sintakso."
 
 #: application/views/admin/export/r_view.php:18
 msgid "Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)"
-msgstr "Shranite oboje v delovni direktorij R-ja (uporabite getwd() in setwd() v R ukaznem oknu za preverjejanje in nastavljanje)"
+msgstr "Shranite oboje v delovno mapo R-ja (uporabite getwd() in setwd() v R ukaznem oknu za preverjanje in nastavljanje)"
 
 #: application/views/admin/export/r_view.php:19
 msgid "digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command window"
-msgstr ""
+msgstr "števka:      source(\"%s\", encoding = \"UTF-8\")        v ukaznem oknu R"
 
 #: application/views/admin/export/r_view.php:21
 msgid "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
@@ -2989,7 +3002,7 @@ msgstr "Uporabniki"
 #: application/views/admin/globalSettings_view.php:24
 #: application/views/admin/participants/displayParticipants_view.php:149
 #: application/views/admin/survey/copySurvey_view.php:20
-#: application/views/admin/survey/importSurvey_view.php:24
+#: application/views/admin/survey/importSurvey_view.php:33
 msgid "Surveys"
 msgstr "Ankete"
 
@@ -3145,202 +3158,197 @@ msgstr "Čas strežnika:"
 msgid "Corrected time :"
 msgstr "Popravljen čas:"
 
-#: application/views/admin/globalSettings_view.php:185
-msgid "PDF export available:"
-msgstr "Omogočen PDF izvoz:"
-
-#: application/views/admin/globalSettings_view.php:189
-#: application/views/admin/globalSettings_view.php:359
+#: application/views/admin/globalSettings_view.php:348
 msgid "On"
 msgstr "Vklopljeno"
 
-#: application/views/admin/globalSettings_view.php:195
+#: application/views/admin/globalSettings_view.php:184
 msgid "Session lifetime (seconds):"
 msgstr "Življenjska doba seje (v sekundah):"
 
-#: application/views/admin/globalSettings_view.php:197
+#: application/views/admin/globalSettings_view.php:186
 msgid "IP Info DB API Key:"
-msgstr ""
+msgstr "Informacije IP DB API ključ:"
 
-#: application/views/admin/globalSettings_view.php:199
+#: application/views/admin/globalSettings_view.php:188
 msgid "Google Maps API key:"
 msgstr "Google Maps API Ključ:"
 
-#: application/views/admin/globalSettings_view.php:201
+#: application/views/admin/globalSettings_view.php:190
 msgid "Google Analytics API key:"
 msgstr "Google Analytics API ključ:"
 
-#: application/views/admin/globalSettings_view.php:203
+#: application/views/admin/globalSettings_view.php:192
 msgid "Google Translate API key:"
 msgstr "Google Translate API ključ:"
 
-#: application/views/admin/globalSettings_view.php:209
+#: application/views/admin/globalSettings_view.php:198
 msgid "Default site admin email:"
 msgstr "Privzeti email naslov administratorja:"
 
-#: application/views/admin/globalSettings_view.php:212
+#: application/views/admin/globalSettings_view.php:201
 msgid "Administrator name:"
 msgstr "Ime administratorja:"
 
-#: application/views/admin/globalSettings_view.php:214
+#: application/views/admin/globalSettings_view.php:203
 msgid "Email method:"
 msgstr "Email način:"
 
-#: application/views/admin/globalSettings_view.php:218
+#: application/views/admin/globalSettings_view.php:207
 msgid "PHP (default)"
 msgstr "PHP (privzeto)"
 
-#: application/views/admin/globalSettings_view.php:221
+#: application/views/admin/globalSettings_view.php:210
 msgid "SMTP"
 msgstr "SMTP"
 
-#: application/views/admin/globalSettings_view.php:224
+#: application/views/admin/globalSettings_view.php:213
 msgid "Sendmail"
 msgstr "Sendmail"
 
-#: application/views/admin/globalSettings_view.php:227
+#: application/views/admin/globalSettings_view.php:216
 msgid "Qmail"
 msgstr "Qmail"
 
-#: application/views/admin/globalSettings_view.php:229
+#: application/views/admin/globalSettings_view.php:218
 msgid "SMTP host:"
 msgstr "SMTP strežnik:"
 
-#: application/views/admin/globalSettings_view.php:230
+#: application/views/admin/globalSettings_view.php:219
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr "Vnesite strežnik in vrata: npr.: moj.smtp.si:25"
 
-#: application/views/admin/globalSettings_view.php:231
+#: application/views/admin/globalSettings_view.php:220
 msgid "SMTP username:"
 msgstr "SMTP uporabniško ime:"
 
-#: application/views/admin/globalSettings_view.php:233
+#: application/views/admin/globalSettings_view.php:222
 msgid "SMTP password:"
 msgstr "SMTP geslo:"
 
-#: application/views/admin/globalSettings_view.php:235
+#: application/views/admin/globalSettings_view.php:224
 msgid "SMTP SSL/TLS:"
 msgstr "SMTP SSL/TLS"
 
-#: application/views/admin/globalSettings_view.php:242
-#: application/views/admin/globalSettings_view.php:296
+#: application/views/admin/globalSettings_view.php:231
+#: application/views/admin/globalSettings_view.php:285
 #: application/views/admin/token/bounce.php:63
 msgid "SSL"
 msgstr "SSL"
 
-#: application/views/admin/globalSettings_view.php:245
-#: application/views/admin/globalSettings_view.php:299
+#: application/views/admin/globalSettings_view.php:234
+#: application/views/admin/globalSettings_view.php:288
 #: application/views/admin/token/bounce.php:69
 msgid "TLS"
 msgstr "TLS"
 
-#: application/views/admin/globalSettings_view.php:247
+#: application/views/admin/globalSettings_view.php:236
 msgid "SMTP debug mode:"
 msgstr "SMTP debug mode:"
 
-#: application/views/admin/globalSettings_view.php:254
+#: application/views/admin/globalSettings_view.php:243
 msgid "On errors"
 msgstr "Pri napakah"
 
-#: application/views/admin/globalSettings_view.php:257
+#: application/views/admin/globalSettings_view.php:246
 msgid "Always"
 msgstr "Vedno"
 
-#: application/views/admin/globalSettings_view.php:259
+#: application/views/admin/globalSettings_view.php:248
 msgid "Email batch size:"
 msgstr "Velikost email skupine:"
 
-#: application/views/admin/globalSettings_view.php:266
+#: application/views/admin/globalSettings_view.php:255
 msgid "Default site bounce email:"
 msgstr "Privzeti email za odgovore na email:"
 
-#: application/views/admin/globalSettings_view.php:268
+#: application/views/admin/globalSettings_view.php:257
 #: application/views/admin/token/bounce.php:28
 msgid "Server type:"
 msgstr "Vrsta strežnika:"
 
-#: application/views/admin/globalSettings_view.php:275
+#: application/views/admin/globalSettings_view.php:264
 #: application/views/admin/token/bounce.php:35
 msgid "IMAP"
 msgstr "IMAP"
 
-#: application/views/admin/globalSettings_view.php:278
+#: application/views/admin/globalSettings_view.php:267
 #: application/views/admin/token/bounce.php:41
 msgid "POP"
 msgstr "POP"
 
-#: application/views/admin/globalSettings_view.php:281
+#: application/views/admin/globalSettings_view.php:270
 #: application/views/admin/token/bounce.php:43
 msgid "Server name & port:"
 msgstr "Ime strežnika in port:"
 
-#: application/views/admin/globalSettings_view.php:282
+#: application/views/admin/globalSettings_view.php:271
 #: application/views/admin/token/bounce.php:45
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:995"
 msgstr "Vnesite naslov strežnika in port, npr.: imap.gmail.com:995"
 
-#: application/views/admin/globalSettings_view.php:284
+#: application/views/admin/globalSettings_view.php:273
 #: application/views/admin/token/bounce.php:46
 msgid "User name:"
 msgstr "Uporabniško ime:"
 
-#: application/views/admin/globalSettings_view.php:289
+#: application/views/admin/globalSettings_view.php:278
 #: application/views/admin/token/bounce.php:50
 msgid "Encryption type:"
 msgstr "Vrsta kodiranja:"
 
-#: application/views/admin/globalSettings_view.php:305
+#: application/views/admin/globalSettings_view.php:294
 msgid "Survey preview only for administration users"
 msgstr "Predogled ankete je na voljo samo administratorjem"
 
-#: application/views/admin/globalSettings_view.php:316
+#: application/views/admin/globalSettings_view.php:305
 msgid "Filter HTML for XSS:"
 msgstr "Filtriraj HTML za XSS:"
 
-#: application/views/admin/globalSettings_view.php:327
+#: application/views/admin/globalSettings_view.php:316
 msgid "Group member can only see own group:"
 msgstr "Člani skupin lahko vidijo samo lastno skupino"
 
-#: application/views/admin/globalSettings_view.php:339
+#: application/views/admin/globalSettings_view.php:328
 msgid "Warning: Before turning on HTTPS, "
 msgstr "Opozorilo: Preden vklopite HTTPS,"
 
-#: application/views/admin/globalSettings_view.php:341
+#: application/views/admin/globalSettings_view.php:330
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr "Preverite če ima vaš server vkljopljen SSL na tej povezavi."
 
-#: application/views/admin/globalSettings_view.php:342
+#: application/views/admin/globalSettings_view.php:331
 msgid "check if this link works."
 msgstr "preverite če ta povezava deluje"
 
-#: application/views/admin/globalSettings_view.php:343
+#: application/views/admin/globalSettings_view.php:332
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
 msgstr "Če povezava ne deluje in vključite HTTPS se bo LimeSurvey sesul in ga ne boste mogli več uporabljati."
 
-#: application/views/admin/globalSettings_view.php:357
+#: application/views/admin/globalSettings_view.php:346
 msgid "Force HTTPS:"
 msgstr "Prisilite HTTPS"
 
-#: application/views/admin/globalSettings_view.php:361
+#: application/views/admin/globalSettings_view.php:350
 msgid "Don't force on or off"
 msgstr "Ne prisilite vklop ali izklop"
 
-#: application/views/admin/globalSettings_view.php:371
+#: application/views/admin/globalSettings_view.php:360
 msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr "Show 'no answer' option for non-mandatory questions:"
 
-#: application/views/admin/globalSettings_view.php:375
-#: application/views/admin/globalSettings_view.php:396
-#: application/views/admin/globalSettings_view.php:412
-#: application/views/admin/globalSettings_view.php:431
+#: application/views/admin/globalSettings_view.php:364
+#: application/views/admin/globalSettings_view.php:385
+#: application/views/admin/globalSettings_view.php:401
+#: application/views/admin/globalSettings_view.php:420
 msgid "Survey admin can choose"
 msgstr "Administrator ankete lahko izbere"
 
-#: application/views/admin/globalSettings_view.php:379
+#: application/views/admin/globalSettings_view.php:368
 msgid "Repeating headings in array questions every X subquestions:"
-msgstr ""
+msgstr "Ponavljaj naslov v polju vprašanj vsakih X podvprašanj:"
 
-#: application/views/admin/globalSettings_view.php:392
+#: application/views/admin/globalSettings_view.php:381
 #: application/views/admin/survey/subview/tabPresentation_view.php:214
 #: application/views/admin/survey/subview/tabPresentation_view.php:219
 #: application/views/admin/survey/subview/tabPresentation_view.php:224
@@ -3348,57 +3356,57 @@ msgstr ""
 msgid "Show \"There are X questions in this survey\""
 msgstr "Pokaži \"V anketi je X vprašanj\""
 
-#: application/views/admin/globalSettings_view.php:406
+#: application/views/admin/globalSettings_view.php:395
 msgid "Show question group name and/or description"
 msgstr "Prikaži vprašanje imena skupine in/ali opisa."
 
-#: application/views/admin/globalSettings_view.php:408
-#: application/views/admin/globalSettings_view.php:427
+#: application/views/admin/globalSettings_view.php:397
+#: application/views/admin/globalSettings_view.php:416
 #: application/views/admin/survey/subview/tabPresentation_view.php:289
 #: application/views/admin/survey/subview/tabPresentation_view.php:334
 msgid "Show both"
 msgstr "Prikaži oboje"
 
-#: application/views/admin/globalSettings_view.php:409
+#: application/views/admin/globalSettings_view.php:398
 #: application/views/admin/survey/subview/tabPresentation_view.php:290
 msgid "Show group name only"
 msgstr "Prikaži samo ime skupine"
 
-#: application/views/admin/globalSettings_view.php:410
+#: application/views/admin/globalSettings_view.php:399
 #: application/views/admin/survey/subview/tabPresentation_view.php:291
 msgid "Show group description only"
 msgstr "Prikaži samo skupinski opis"
 
-#: application/views/admin/globalSettings_view.php:411
-#: application/views/admin/globalSettings_view.php:430
+#: application/views/admin/globalSettings_view.php:400
+#: application/views/admin/globalSettings_view.php:419
 #: application/views/admin/survey/subview/tabPresentation_view.php:292
 #: application/views/admin/survey/subview/tabPresentation_view.php:337
 msgid "Hide both"
 msgstr "Skrij oboje"
 
-#: application/views/admin/globalSettings_view.php:425
+#: application/views/admin/globalSettings_view.php:414
 msgid "Show question number and/or question code"
 msgstr "Prikaži številko vprašanja in/ali kodo vprašanja"
 
-#: application/views/admin/globalSettings_view.php:428
+#: application/views/admin/globalSettings_view.php:417
 #: application/views/admin/survey/subview/tabPresentation_view.php:335
 msgid "Show question number only"
 msgstr "Pokaži samo številko vprašanja"
 
-#: application/views/admin/globalSettings_view.php:429
+#: application/views/admin/globalSettings_view.php:418
 #: application/views/admin/survey/subview/tabPresentation_view.php:336
 msgid "Show question code only"
 msgstr "Prikaži samo kodo vprašanja"
 
-#: application/views/admin/globalSettings_view.php:440
+#: application/views/admin/globalSettings_view.php:429
 msgid "Default site language:"
 msgstr "Privzeti jezik strani:"
 
-#: application/views/admin/globalSettings_view.php:456
+#: application/views/admin/globalSettings_view.php:445
 msgid "Available languages:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:469
+#: application/views/admin/globalSettings_view.php:458
 #: application/views/admin/labels/editlabel_view.php:35
 #: application/views/admin/quotas/viewquotasrow_view.php:36
 #: application/views/admin/quotas/viewquotasrowsub_view.php:9
@@ -3406,18 +3414,18 @@ msgstr ""
 msgid "Remove"
 msgstr "Odstrani"
 
-#: application/views/admin/globalSettings_view.php:486
+#: application/views/admin/globalSettings_view.php:475
 msgid "XML-RPC interface enabled:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:503
+#: application/views/admin/globalSettings_view.php:492
 #: application/views/admin/token/bounce.php:71
 #: application/views/admin/user/personalsettings.php:79
 #: application/views/admin/user/setusertemplates.php:24
 msgid "Save settings"
 msgstr "Shrani nastavitve"
 
-#: application/views/admin/globalSettings_view.php:506
+#: application/views/admin/globalSettings_view.php:495
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr "Pozor: Preizukusni način je vklopljen. Nastavitve označene z (*) ne morejo biti spremenjene."
 
@@ -3505,7 +3513,7 @@ msgstr "Uvozi seznam odgovorov"
 #: application/views/admin/labels/import_view.php:24
 #: application/views/admin/participants/uploadSummary_view.php:37
 #: application/views/admin/survey/copySurvey_view.php:51
-#: application/views/admin/survey/importSurvey_view.php:66
+#: application/views/admin/survey/importSurvey_view.php:75
 #: application/views/admin/token/csvpost.php:22
 msgid "Warnings"
 msgstr "Opozorila"
@@ -3518,7 +3526,7 @@ msgstr "Povzetek uvažanja seznama odgovorov"
 #: application/views/admin/survey/Question/import_view.php:16
 #: application/views/admin/survey/QuestionGroups/import_view.php:17
 #: application/views/admin/survey/copySurvey_view.php:39
-#: application/views/admin/survey/importSurvey_view.php:44
+#: application/views/admin/survey/importSurvey_view.php:53
 msgid "Label sets"
 msgstr "Seznami odgovorov"
 
@@ -3643,7 +3651,7 @@ msgstr "Koda"
 
 #: application/views/admin/labels/labelview_view.php:82
 msgid "Label:"
-msgstr "Labela:"
+msgstr "Oznaka:"
 
 #: application/views/admin/labels/labelview_view.php:90
 msgid "Insert a new label after this one"
@@ -3703,7 +3711,7 @@ msgstr "Vnesi oznake:"
 
 #: application/views/admin/labels/labelview_view.php:154
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
-msgstr ""
+msgstr "Vnesite eno oznako na vrstico. Kodo vnesete tako, da ločite kodo in oznako s podpičjem ali tabulatorjem. Za večjezične ankete dodate prevod v isto vrstico, ločeno s podpičjem ali s tabulatorjem."
 
 #: application/views/admin/labels/labelview_view.php:155
 #: application/views/admin/survey/Question/answerOptions_view.php:163
@@ -4595,7 +4603,7 @@ msgstr "Testiraj anketo"
 
 #: application/views/admin/super/footer.php:5
 msgid "Online Manual"
-msgstr "Online Navodila"
+msgstr "Spletni priročnik"
 
 #: application/views/admin/super/footer.php:5
 msgid "Online manual"
@@ -5090,7 +5098,7 @@ msgstr "Povzetek uvoza skupine vprašanj"
 
 #: application/views/admin/survey/QuestionGroups/import_view.php:13
 #: application/views/admin/survey/copySurvey_view.php:35
-#: application/views/admin/survey/importSurvey_view.php:40
+#: application/views/admin/survey/importSurvey_view.php:49
 msgid "Conditions"
 msgstr "Pogoji"
 
@@ -5141,7 +5149,7 @@ msgstr "Prejšnje vprašanje"
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:84
 msgid "No previous question"
-msgstr "Ni prejšniga vprašanja"
+msgstr "Ni prejšnjega vprašanja"
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:93
 msgid "Next question"
@@ -5233,7 +5241,7 @@ msgstr "Anonimni odzivi?"
 #: application/views/admin/survey/activateSurvey_view.php:55
 #: application/views/admin/survey/subview/tabTokens_view.php:15
 msgid "If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr ""
+msgstr "Če vključite anonimne odgovore in ustvarite tabelo žetonov, bo LimeSurvey označil vse žetone samo z 'Y' namesto z datumom in uro in tako zagotovil anonimnost udeležencev."
 
 #: application/views/admin/survey/activateSurvey_view.php:74
 msgid "Date stamp?"
@@ -5266,47 +5274,47 @@ msgid "Survey import summary"
 msgstr "Povzetek uvoza ankete"
 
 #: application/views/admin/survey/copySurvey_view.php:21
-#: application/views/admin/survey/importSurvey_view.php:25
+#: application/views/admin/survey/importSurvey_view.php:34
 msgid "Languages"
 msgstr "Jeziki"
 
 #: application/views/admin/survey/copySurvey_view.php:31
-#: application/views/admin/survey/importSurvey_view.php:36
+#: application/views/admin/survey/importSurvey_view.php:45
 msgid "Default answers"
 msgstr "Privzeti odgovori"
 
 #: application/views/admin/survey/copySurvey_view.php:43
-#: application/views/admin/survey/importSurvey_view.php:48
+#: application/views/admin/survey/importSurvey_view.php:57
 msgid "Not imported label sets"
 msgstr "Skupine vprašanj, ki niso bile uvožene"
 
 #: application/views/admin/survey/copySurvey_view.php:43
-#: application/views/admin/survey/importSurvey_view.php:48
+#: application/views/admin/survey/importSurvey_view.php:57
 msgid "(Label sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "(Skupine vprašanj niso bili uvoženi ker nimate pravic za ustvarjanje novih skupin vprašanj)"
 
 #: application/views/admin/survey/copySurvey_view.php:45
-#: application/views/admin/survey/importSurvey_view.php:28
+#: application/views/admin/survey/importSurvey_view.php:37
 msgid "Question attributes"
 msgstr "Lastnosti vprašanja"
 
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:51
+#: application/views/admin/survey/importSurvey_view.php:60
 msgid "quota members"
 msgstr "člani kvote"
 
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:51
+#: application/views/admin/survey/importSurvey_view.php:60
 msgid "quota language settings"
 msgstr "nastavitve kvote za jezik"
 
 #: application/views/admin/survey/copySurvey_view.php:60
-#: application/views/admin/survey/importSurvey_view.php:82
+#: application/views/admin/survey/importSurvey_view.php:91
 msgid "Copy of survey is completed."
 msgstr "Kopiranje ankete je končano."
 
 #: application/views/admin/survey/copySurvey_view.php:62
-#: application/views/admin/survey/importSurvey_view.php:84
+#: application/views/admin/survey/importSurvey_view.php:93
 msgid "Go to survey"
 msgstr "Pojdi na anketo"
 
@@ -5427,7 +5435,7 @@ msgstr "Izbrisana bo celotna anketa in vse pripadajoče skupine, vprašanja, odg
 
 #: application/views/admin/survey/deleteSurvey_view.php:21
 msgid "It will also delete any resources/files that have been uploaded for this survey."
-msgstr ""
+msgstr "To bo izbrisalo tudi pripadajoče datoteke, če so bile priložene tej anketi."
 
 #: application/views/admin/survey/deleteSurvey_view.php:22
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
@@ -5541,11 +5549,11 @@ msgstr "Skupno število uvoženih datotek"
 msgid "Total Errors"
 msgstr "Skupno število napak"
 
-#: application/views/admin/survey/importSurvey_view.php:57
+#: application/views/admin/survey/importSurvey_view.php:66
 msgid "Response import summary"
 msgstr ""
 
-#: application/views/admin/survey/importSurvey_view.php:78
+#: application/views/admin/survey/importSurvey_view.php:87
 msgid "Import of survey is completed."
 msgstr ""
 
@@ -5842,7 +5850,7 @@ msgstr "Prikaži gumb [<< Nazaj]"
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:91
 msgid "Show question index / allow jumping"
-msgstr ""
+msgstr "Prikaži indeks vprašanj / dovoli preskoke"
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:110
 msgid "Keyboard-less operation"
@@ -5977,19 +5985,19 @@ msgstr "Prebrskaj naložene vire"
 
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:14
 msgid "Export Resources As ZIP Archive"
-msgstr "Izvozi ZIP arhiv z viri"
+msgstr "Izvozi arhiv ZIP z viri"
 
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:22
 msgid "Select ZIP File:"
-msgstr "Izberi ZIP datoteko:"
+msgstr "Izberi datoteko ZIP:"
 
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:25
 msgid "Import Resources ZIP Archive"
-msgstr "Uvozi ZIP arhiv z viri"
+msgstr "Uvozi arhiv ZIP z viri"
 
 #: application/views/admin/survey/subview/tabTokens_view.php:10
 msgid "You can't use Anonymized responses when Token-based answers persistence is enabled."
-msgstr ""
+msgstr "Ne morete uporabiti anonimnih odgovorov, če uporabite odgovore, ki slonijo na žetonih."
 
 #: application/views/admin/survey/subview/tabTokens_view.php:44
 msgid "Allow editing responses after completion?"
@@ -6005,7 +6013,7 @@ msgstr "Omogoči persistentnost odgovorov na podlagi gesel?"
 
 #: application/views/admin/survey/subview/tabTokens_view.php:58
 msgid "This option can't be set if the `Anonymized responses` option is active."
-msgstr ""
+msgstr "Ta možnost ne more biti izbrana, če je izbrana možnost 'Anonimni odgovori'."
 
 #: application/views/admin/survey/subview/tabTokens_view.php:70
 msgid "Allow public registration?"
@@ -6013,11 +6021,11 @@ msgstr "Omogoči javno registracijo uporabnikov za sodelovanje v anketi?"
 
 #: application/views/admin/survey/subview/tabTokens_view.php:86
 msgid "Use HTML format for token emails?"
-msgstr "Uporabite HTML za emaile z gesli?"
+msgstr "Uporabite HTML za e-sporočila z žetoni?"
 
 #: application/views/admin/survey/subview/tabTokens_view.php:87
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
-msgstr "Če zamenjate način za e-maile boste morali pregledati predloge za e-maile in jih prilagoditi novemu formatu"
+msgstr "Če zamenjate način za e-sporočila, boste morali pregledati predloge za e-sporočil in jih prilagoditi novi obliki"
 
 #: application/views/admin/survey/subview/tabTokens_view.php:103
 msgid "Send confirmation emails?"
@@ -6140,11 +6148,11 @@ msgstr "Hitri prevod"
 
 #: application/views/admin/survey/surveybar_view.php:104
 msgid "Currently there are no additional languages configured for this survey."
-msgstr "Trenutno ni navoljo dodatnih jezikov za to anketo"
+msgstr "Trenutno ni na voljo dodatnih jezikov za to anketo"
 
 #: application/views/admin/survey/surveybar_view.php:110
 msgid "Expression Manager"
-msgstr ""
+msgstr "Upravljalnik izrazov"
 
 #: application/views/admin/survey/surveybar_view.php:116
 #: application/views/admin/survey/surveybar_view.php:119
@@ -6243,7 +6251,7 @@ msgstr "Prejšnja skupina vprašanj"
 
 #: application/views/admin/survey/surveybar_view.php:254
 msgid "No previous question group"
-msgstr "Ni prejšne skupine vprašanj"
+msgstr "Ni prejšnje skupine vprašanj"
 
 #: application/views/admin/survey/surveybar_view.php:263
 msgid "Next question group"
@@ -6483,7 +6491,7 @@ msgstr "Dodaj nov vnos z dostopnim geslom"
 
 #: application/views/admin/token/bounce.php:5
 msgid "Survey bounce email:"
-msgstr ""
+msgstr "E-naslov zavrženih odgovorov:"
 
 #: application/views/admin/token/bounce.php:7
 msgid "Bounce settings to be used"
@@ -6596,7 +6604,7 @@ msgstr "Izberite CSV datoteko:"
 
 #: application/views/admin/token/csvupload.php:15
 msgid "Separator used:"
-msgstr ""
+msgstr "Uporabljeno ločilo:"
 
 #: application/views/admin/token/csvupload.php:26
 #: application/views/admin/token/ldapform.php:35
@@ -7256,7 +7264,7 @@ msgstr "Način za urejanje HTML"
 
 #: application/views/admin/user/personalsettings.php:30
 msgid "Inline HTML editor"
-msgstr "Vkomponiran HTML urejevalnik"
+msgstr "Vgrajeni urejevalnik HTML"
 
 #: application/views/admin/user/personalsettings.php:38
 msgid "Question type selector"
@@ -7594,7 +7602,7 @@ msgid "Total records in survey"
 msgstr "Skupno število zapisov v anketi"
 
 #: application/controllers/AdminController.php:66
-#: application/controllers/PrintanswersController.php:74
+#: application/controllers/PrintanswersController.php:71
 #: application/controllers/admin/dataentry.php:1669
 #: application/controllers/admin/dataentry.php:1674
 #: application/controllers/admin/dataentry.php:1679
@@ -7635,10 +7643,11 @@ msgstr "Skupno število zapisov v anketi"
 #: application/helpers/admin/import_helper.php:4001
 #: application/helpers/admin/import_helper.php:4062
 #: application/helpers/admin/import_helper.php:4117
-#: application/helpers/admin/import_helper.php:4222
-#: application/helpers/admin/import_helper.php:4290
-#: application/helpers/admin/import_helper.php:4333
-#: application/helpers/admin/import_helper.php:4443
+#: application/helpers/admin/import_helper.php:4221
+#: application/helpers/admin/import_helper.php:4291
+#: application/helpers/admin/import_helper.php:4336
+#: application/helpers/admin/import_helper.php:4449
+#: application/helpers/admin/import_helper.php:4485
 #: application/views/admin/dataentry/active_html_view.php:93
 #: application/views/admin/dataentry/warning_header.php:1
 #: application/views/admin/error_view.php:3
@@ -7674,7 +7683,7 @@ msgid "Back"
 msgstr "Nazaj"
 
 #: application/controllers/AdminController.php:86
-#: application/controllers/admin/tokens.php:1946
+#: application/controllers/admin/tokens.php:1944
 #: application/helpers/admin/activate_helper.php:429
 #: application/helpers/admin/import_helper.php:2619
 #: application/views/admin/authentication/forgotpassword.php:15
@@ -7683,7 +7692,7 @@ msgstr "Nazaj"
 #: application/views/admin/survey/copySurvey_view.php:8
 #: application/views/admin/survey/deleteSurvey_view.php:11
 #: application/views/admin/survey/importSurvey_view.php:7
-#: application/views/admin/survey/importSurvey_view.php:16
+#: application/views/admin/survey/importSurvey_view.php:25
 msgid "Main Admin Screen"
 msgstr "Glavno administratorsko okno"
 
@@ -7693,7 +7702,7 @@ msgstr "Glavno administratorsko okno"
 #: application/views/admin/index.php:4
 #: application/views/admin/super/adminmenu.php:108
 msgid "LimeSurvey online manual"
-msgstr "LimeSurvey Spletni Vodič"
+msgstr "Spletni vodič LimeSurvey"
 
 #: application/controllers/AdminController.php:356
 msgid "Version"
@@ -7887,15 +7896,15 @@ msgstr "Iz te ankete ste že bili odstranjeni."
 msgid "You have been successfully removed from this survey."
 msgstr "Uspešno ste bili odstranjeni iz te ankete."
 
-#: application/controllers/PrintanswersController.php:75
+#: application/controllers/PrintanswersController.php:72
 msgid "We are sorry but your session has expired."
 msgstr "Vaša seja je žal potekla."
 
-#: application/controllers/PrintanswersController.php:75
+#: application/controllers/PrintanswersController.php:72
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Bodisi ste bili predolgo neaktivni, nimate omogočenih piškotkov v vašem brskalniku ali pa je prišlo do problema z vašo povezavo."
 
-#: application/controllers/PrintanswersController.php:76
+#: application/controllers/PrintanswersController.php:73
 #: application/controllers/admin/templates.php:885
 #: application/controllers/survey/index.php:97
 #: application/controllers/survey/index.php:274
@@ -7906,21 +7915,20 @@ msgstr "Bodisi ste bili predolgo neaktivni, nimate omogočenih piškotkov v vaš
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "Prosimo, obrnite se na  %s ( %s ) za nadaljnjo pomoč."
 
-#: application/controllers/PrintanswersController.php:135
-#: application/controllers/admin/printablesurvey.php:126
+#: application/controllers/PrintanswersController.php:130
 msgid "PDF export"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:146
+#: application/controllers/PrintanswersController.php:140
 #: application/views/admin/templates/templateeditor_printoutput_view.php:1
 msgid "Survey name (ID)"
 msgstr "Ime ankete (ID)"
 
-#: application/controllers/PrintanswersController.php:148
+#: application/controllers/PrintanswersController.php:142
 msgid "Survey name (ID):"
 msgstr "Ime ankete (ID):"
 
-#: application/controllers/PrintanswersController.php:167
+#: application/controllers/PrintanswersController.php:161
 #: application/controllers/admin/browse.php:643
 #: application/controllers/admin/conditionsaction.php:1711
 #: application/controllers/admin/conditionsaction.php:2071
@@ -7932,15 +7940,15 @@ msgstr "Ime ankete (ID):"
 msgid "Question"
 msgstr "Vprašanje"
 
-#: application/controllers/PrintanswersController.php:167
+#: application/controllers/PrintanswersController.php:161
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
 msgid "Your answer"
 msgstr "Vaš odgovor"
 
 #: application/controllers/RegisterController.php:102
 #: application/controllers/survey/index.php:422
-#: application/helpers/frontend_helper.php:1403
-#: application/helpers/frontend_helper.php:1632
+#: application/helpers/frontend_helper.php:1402
+#: application/helpers/frontend_helper.php:1631
 #: application/libraries/Save.php:134
 msgid "The answer to the security question is incorrect."
 msgstr "Odgovor na varnostno vprašanje ni pravilen."
@@ -7955,7 +7963,7 @@ msgstr ""
 
 #: application/controllers/RegisterController.php:135
 msgid "The email you used has already been registered."
-msgstr "Elektronski naslov, ki ste ga vpisali je bil že uporabljen v tej anketi."
+msgstr "Elektronski naslov, ki ste ga vpisali, je bil že uporabljen v tej anketi."
 
 #: application/controllers/RegisterController.php:250
 msgid "Thank you for registering to participate in this survey."
@@ -7963,7 +7971,7 @@ msgstr "Najlepša hvala za registracijo za sodelovanje v anketi."
 
 #: application/controllers/RegisterController.php:250
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
-msgstr "Na e-mail naslov, ki ste ga navedli je bilo poslano sporočilo z navodili za dostop do ankete. Za nadaljevanje ankete sledite povezavi v sporočilu, ki ga boste prejeli v tem sporočilu."
+msgstr "Na e-mail naslov, ki ste ga navedli, je bilo poslano sporočilo z navodili za dostop do ankete. Za nadaljevanje ankete sledite povezavi v sporočilu, ki ga boste prejeli."
 
 #: application/controllers/RegisterController.php:250
 msgid "Survey administrator"
@@ -7979,11 +7987,11 @@ msgstr "Pojdi nazaj"
 
 #: application/controllers/Statistics_userController.php:404
 msgid "Getting questions and answers ..."
-msgstr "Pridobivam vprašanja in odgovore..."
+msgstr "Pridobivam vprašanja in odgovore ..."
 
 #: application/controllers/Statistics_userController.php:427
 msgid "Generating summaries ..."
-msgstr "Generiram osnovne statistike..."
+msgstr "Ustvarjam osnovne statistike ..."
 
 #: application/controllers/Statistics_userController.php:451
 #: application/controllers/admin/browse.php:134
@@ -8002,7 +8010,7 @@ msgstr "Datoteka %s je bila izbrisana"
 
 #: application/controllers/UploaderController.php:79
 msgid "Oops, There was an error deleting the file"
-msgstr "Ups, prišlo je do napake pri brisanju te datoteke."
+msgstr "Ups, prišlo je do napake pri brisanju datoteke"
 
 #: application/controllers/UploaderController.php:130
 msgid "Sorry, this file extension (%s) is not allowed!"
@@ -8076,12 +8084,12 @@ msgstr "Prosim, naložite še %s datotek."
 
 #: application/controllers/UploaderController.php:270
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
-msgstr "Če želite lahko naložite še %s datotek; v nasprotnem se lahko vrnete na anketo"
+msgstr "Če želite lahko naložite še %s datotek; v nasprotnem se lahko vrnete na anketo."
 
 #: application/controllers/UploaderController.php:271
 #: application/controllers/UploaderController.php:272
 msgid "The maximum number of files has been uploaded. You may return back to survey."
-msgstr "Maksimalno število datotek je bilo naloženih. Lahko se vrnete na anketo."
+msgstr "Največje število datotek je bilo naloženih. Lahko se vrnete na anketo."
 
 #: application/controllers/UploaderController.php:273
 msgid ""
@@ -8089,11 +8097,11 @@ msgid ""
 "Are you sure you want to exit?"
 msgstr ""
 "Za to vprašanje morate naložiti še %s datotek. \n"
-"Ste prepričani, da želite oditi?"
+"Ste prepričani, da želite zapreti?"
 
 #: application/controllers/UploaderController.php:299
 msgid "You can upload %s under %s KB each."
-msgstr ""
+msgstr "%s lahko prenesete, če je vsaka manjša od %s KB."
 
 #: application/controllers/admin/assessments.php:60
 msgid "No SID Provided"
@@ -8116,16 +8124,16 @@ msgstr "Skupina vprašanj"
 #: application/helpers/admin/statistics_helper.php:1381
 #: application/views/admin/assessments_view.php:83
 msgid "Minimum"
-msgstr "Minimum"
+msgstr "Najmanj"
 
 #: application/controllers/admin/assessments.php:89
 #: application/helpers/admin/statistics_helper.php:1551
 #: application/views/admin/assessments_view.php:85
 msgid "Maximum"
-msgstr "Maksimum"
+msgstr "Največ"
 
 #: application/controllers/admin/assessments.php:90
-#: application/views/admin/globalSettings_view.php:469
+#: application/views/admin/globalSettings_view.php:458
 #: application/views/admin/labels/editlabel_view.php:35
 #: application/views/admin/labels/labelview_view.php:156
 #: application/views/admin/survey/Question/answerOptions_view.php:164
@@ -8194,7 +8202,7 @@ msgstr ""
 
 #: application/controllers/admin/authentication.php:185
 msgid "Welcome %s!"
-msgstr "Dobrodošli v %s!"
+msgstr "Dobrodošli %s!"
 
 #: application/controllers/admin/authentication.php:190
 msgid "Reloading screen. Please wait."
@@ -8238,7 +8246,7 @@ msgstr "ID gesla:"
 #: application/controllers/admin/browse.php:457
 #: application/helpers/common_helper.php:5234
 #: application/helpers/replacements_helper.php:617
-#: application/views/admin/export/exportresults_view.php:123
+#: application/views/admin/export/exportresults_view.php:121
 #: application/views/admin/participants/displayParticipants_view.php:63
 #: application/views/admin/participants/displayParticipants_view.php:149
 #: application/views/admin/participants/displayParticipants_view.php:168
@@ -8253,7 +8261,7 @@ msgstr "Ime"
 #: application/controllers/admin/browse.php:458
 #: application/helpers/common_helper.php:5235
 #: application/helpers/replacements_helper.php:624
-#: application/views/admin/export/exportresults_view.php:124
+#: application/views/admin/export/exportresults_view.php:122
 #: application/views/admin/participants/displayParticipants_view.php:64
 #: application/views/admin/participants/displayParticipants_view.php:149
 #: application/views/admin/participants/displayParticipants_view.php:169
@@ -8486,14 +8494,14 @@ msgstr "Ponastavi anketno logiko"
 #: application/controllers/admin/dataentry.php:682
 #: application/controllers/admin/dataentry.php:1187
 #: application/controllers/admin/dataentry.php:1247
-#: application/controllers/admin/printablesurvey.php:1055
-#: application/controllers/admin/printablesurvey.php:1059
-#: application/controllers/admin/printablesurvey.php:1175
-#: application/controllers/admin/printablesurvey.php:1192
-#: application/controllers/admin/printablesurvey.php:1197
+#: application/controllers/admin/printablesurvey.php:1043
+#: application/controllers/admin/printablesurvey.php:1047
+#: application/controllers/admin/printablesurvey.php:1163
+#: application/controllers/admin/printablesurvey.php:1180
+#: application/controllers/admin/printablesurvey.php:1185
 #: application/controllers/admin/quotas.php:517
 #: application/controllers/admin/surveyadmin.php:563
-#: application/controllers/admin/tokens.php:1883
+#: application/controllers/admin/tokens.php:1881
 #: application/core/Survey_Common_Action.php:821
 #: application/helpers/admin/statistics_helper.php:1797
 #: application/helpers/admin/statistics_helper.php:1931
@@ -8536,8 +8544,8 @@ msgstr "Ponastavi anketno logiko"
 #: application/helpers/export_helper.php:257
 #: application/helpers/export_helper.php:1331
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2516
-#: application/helpers/expressions/em_manager_helper.php:2520
+#: application/helpers/expressions/em_manager_helper.php:2527
+#: application/helpers/expressions/em_manager_helper.php:2531
 #: application/helpers/qanda_helper.php:4280
 #: application/helpers/qanda_helper.php:4707
 #: application/helpers/qanda_helper.php:4745
@@ -8546,12 +8554,12 @@ msgstr "Ponastavi anketno logiko"
 #: application/views/admin/dataentry/import.php:23
 #: application/views/admin/export/statistics_view.php:506
 #: application/views/admin/export/statistics_view.php:671
+#: application/views/admin/globalSettings_view.php:298
 #: application/views/admin/globalSettings_view.php:309
 #: application/views/admin/globalSettings_view.php:320
-#: application/views/admin/globalSettings_view.php:331
-#: application/views/admin/globalSettings_view.php:373
-#: application/views/admin/globalSettings_view.php:394
-#: application/views/admin/globalSettings_view.php:490
+#: application/views/admin/globalSettings_view.php:362
+#: application/views/admin/globalSettings_view.php:383
+#: application/views/admin/globalSettings_view.php:479
 #: application/views/admin/survey/Question/editQuestion_view.php:140
 #: application/views/admin/survey/Question/editQuestion_view.php:160
 #: application/views/admin/survey/Question/questionbar_view.php:213
@@ -8591,10 +8599,10 @@ msgstr "Ponastavi anketno logiko"
 #: application/views/admin/token/managetokenattributes.php:65
 #: application/views/admin/token/remind.php:75
 msgid "Yes"
-msgstr "da"
+msgstr "Da"
 
 #: application/controllers/admin/conditionsaction.php:181
-#: application/controllers/admin/tokens.php:1931
+#: application/controllers/admin/tokens.php:1929
 #: application/views/admin/assessments_view.php:120
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/labels/labelview_view.php:157
@@ -8624,7 +8632,7 @@ msgid "We recommend that before you proceed, you export the entire survey from t
 msgstr "Preden nadaljujete vam priporočamo, da izvozite celotno anketo. To lahko storite iz glavnega administratorskega vmesnika."
 
 #: application/controllers/admin/conditionsaction.php:190
-#: application/controllers/admin/tokens.php:1239
+#: application/controllers/admin/tokens.php:1237
 #: application/controllers/admin/useraction.php:157
 #: application/views/admin/dataentry/import.php:31
 #: application/views/admin/survey/Question/questionbar_view.php:193
@@ -8652,8 +8660,8 @@ msgstr "Vsi pogoji pri tej anketi so bili odstranjeni."
 #: application/controllers/admin/surveypermission.php:329
 #: application/controllers/admin/surveypermission.php:502
 #: application/controllers/admin/surveypermission.php:595
-#: application/controllers/admin/tokens.php:2065
-#: application/controllers/admin/tokens.php:2076
+#: application/controllers/admin/tokens.php:2063
+#: application/controllers/admin/tokens.php:2074
 #: application/controllers/admin/useraction.php:720
 #: application/helpers/common_helper.php:6145
 #: application/helpers/common_helper.php:6150
@@ -8678,9 +8686,9 @@ msgstr "Vsi pogoji pri tej anketi so bili odstranjeni."
 #: application/helpers/common_helper.php:6254
 #: application/helpers/common_helper.php:6258
 #: application/helpers/common_helper.php:6262
-#: application/helpers/frontend_helper.php:1435
-#: application/helpers/frontend_helper.php:1512
-#: application/helpers/frontend_helper.php:1684
+#: application/helpers/frontend_helper.php:1434
+#: application/helpers/frontend_helper.php:1511
+#: application/helpers/frontend_helper.php:1683
 #: application/helpers/replacements_helper.php:653
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:63
@@ -8715,14 +8723,14 @@ msgstr "Pogojev ni bilo mogoče kopirati (zaradi duplikatov)"
 
 #: application/controllers/admin/conditionsaction.php:700
 #: application/controllers/admin/dataentry.php:1250
-#: application/controllers/admin/printablesurvey.php:1176
-#: application/controllers/admin/printablesurvey.php:1193
-#: application/controllers/admin/printablesurvey.php:1197
+#: application/controllers/admin/printablesurvey.php:1164
+#: application/controllers/admin/printablesurvey.php:1181
+#: application/controllers/admin/printablesurvey.php:1185
 #: application/helpers/admin/statistics_helper.php:1799
 #: application/helpers/common_helper.php:1843
 #: application/helpers/export_helper.php:259
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2522
+#: application/helpers/expressions/em_manager_helper.php:2533
 #: application/helpers/qanda_helper.php:4708
 #: application/helpers/qanda_helper.php:4753
 #: application/views/admin/dataentry/content_view.php:581
@@ -8735,14 +8743,14 @@ msgstr "neodločen"
 #: application/controllers/admin/dataentry.php:681
 #: application/controllers/admin/dataentry.php:1190
 #: application/controllers/admin/dataentry.php:1253
-#: application/controllers/admin/printablesurvey.php:1056
-#: application/controllers/admin/printablesurvey.php:1060
-#: application/controllers/admin/printablesurvey.php:1177
-#: application/controllers/admin/printablesurvey.php:1194
-#: application/controllers/admin/printablesurvey.php:1197
+#: application/controllers/admin/printablesurvey.php:1044
+#: application/controllers/admin/printablesurvey.php:1048
+#: application/controllers/admin/printablesurvey.php:1165
+#: application/controllers/admin/printablesurvey.php:1182
+#: application/controllers/admin/printablesurvey.php:1185
 #: application/controllers/admin/quotas.php:518
 #: application/controllers/admin/surveyadmin.php:567
-#: application/controllers/admin/tokens.php:1885
+#: application/controllers/admin/tokens.php:1883
 #: application/core/Survey_Common_Action.php:817
 #: application/helpers/admin/statistics_helper.php:1798
 #: application/helpers/admin/statistics_helper.php:1932
@@ -8783,8 +8791,8 @@ msgstr "neodločen"
 #: application/helpers/export_helper.php:258
 #: application/helpers/export_helper.php:1331
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2517
-#: application/helpers/expressions/em_manager_helper.php:2521
+#: application/helpers/expressions/em_manager_helper.php:2528
+#: application/helpers/expressions/em_manager_helper.php:2532
 #: application/helpers/qanda_helper.php:4289
 #: application/helpers/qanda_helper.php:4709
 #: application/helpers/qanda_helper.php:4763
@@ -8793,12 +8801,12 @@ msgstr "neodločen"
 #: application/views/admin/dataentry/import.php:24
 #: application/views/admin/export/statistics_view.php:512
 #: application/views/admin/export/statistics_view.php:683
+#: application/views/admin/globalSettings_view.php:301
 #: application/views/admin/globalSettings_view.php:312
 #: application/views/admin/globalSettings_view.php:323
-#: application/views/admin/globalSettings_view.php:334
-#: application/views/admin/globalSettings_view.php:374
-#: application/views/admin/globalSettings_view.php:395
-#: application/views/admin/globalSettings_view.php:493
+#: application/views/admin/globalSettings_view.php:363
+#: application/views/admin/globalSettings_view.php:384
+#: application/views/admin/globalSettings_view.php:482
 #: application/views/admin/survey/Question/editQuestion_view.php:145
 #: application/views/admin/survey/Question/editQuestion_view.php:165
 #: application/views/admin/survey/Question/questionbar_view.php:216
@@ -8838,55 +8846,55 @@ msgstr "neodločen"
 #: application/views/admin/token/managetokenattributes.php:65
 #: application/views/admin/token/remind.php:76
 msgid "No"
-msgstr "ne"
+msgstr "Ne"
 
 #: application/controllers/admin/conditionsaction.php:704
-#: application/controllers/admin/printablesurvey.php:1215
-#: application/controllers/admin/printablesurvey.php:1231
-#: application/controllers/admin/printablesurvey.php:1235
+#: application/controllers/admin/printablesurvey.php:1203
+#: application/controllers/admin/printablesurvey.php:1219
+#: application/controllers/admin/printablesurvey.php:1223
 #: application/helpers/admin/statistics_helper.php:1817
 #: application/helpers/common_helper.php:1849
 #: application/helpers/export_helper.php:262
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2525
+#: application/helpers/expressions/em_manager_helper.php:2536
 #: application/helpers/qanda_helper.php:4864
 #: application/helpers/qanda_helper.php:4906
 #: application/views/admin/dataentry/content_view.php:598
 #: application/views/admin/export/statistics_view.php:727
 msgid "Increase"
-msgstr "povečalo"
+msgstr "Povečaj"
 
 #: application/controllers/admin/conditionsaction.php:705
-#: application/controllers/admin/printablesurvey.php:1216
-#: application/controllers/admin/printablesurvey.php:1232
-#: application/controllers/admin/printablesurvey.php:1235
+#: application/controllers/admin/printablesurvey.php:1204
+#: application/controllers/admin/printablesurvey.php:1220
+#: application/controllers/admin/printablesurvey.php:1223
 #: application/helpers/admin/statistics_helper.php:1818
 #: application/helpers/common_helper.php:1851
 #: application/helpers/export_helper.php:263
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2526
+#: application/helpers/expressions/em_manager_helper.php:2537
 #: application/helpers/qanda_helper.php:4865
 #: application/helpers/qanda_helper.php:4917
 #: application/views/admin/dataentry/content_view.php:599
 #: application/views/admin/export/statistics_view.php:732
 msgid "Same"
-msgstr "ostalo enako"
+msgstr "Enako"
 
 #: application/controllers/admin/conditionsaction.php:706
-#: application/controllers/admin/printablesurvey.php:1217
-#: application/controllers/admin/printablesurvey.php:1233
-#: application/controllers/admin/printablesurvey.php:1235
+#: application/controllers/admin/printablesurvey.php:1205
+#: application/controllers/admin/printablesurvey.php:1221
+#: application/controllers/admin/printablesurvey.php:1223
 #: application/helpers/admin/statistics_helper.php:1819
 #: application/helpers/common_helper.php:1850
 #: application/helpers/export_helper.php:264
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2527
+#: application/helpers/expressions/em_manager_helper.php:2538
 #: application/helpers/qanda_helper.php:4866
 #: application/helpers/qanda_helper.php:4929
 #: application/views/admin/dataentry/content_view.php:600
 #: application/views/admin/export/statistics_view.php:737
 msgid "Decrease"
-msgstr "zmanjšalo"
+msgstr "Zmanjšaj"
 
 #: application/controllers/admin/conditionsaction.php:726
 #: application/controllers/admin/conditionsaction.php:852
@@ -8960,14 +8968,14 @@ msgstr "ni izbrano"
 
 #: application/controllers/admin/conditionsaction.php:950
 #: application/controllers/admin/dataentry.php:746
-#: application/controllers/admin/printablesurvey.php:727
-#: application/controllers/admin/printablesurvey.php:732
+#: application/controllers/admin/printablesurvey.php:715
+#: application/controllers/admin/printablesurvey.php:720
 #: application/controllers/admin/quotas.php:451
 #: application/helpers/admin/statistics_helper.php:1924
 #: application/helpers/common_helper.php:1834
 #: application/helpers/export_helper.php:249
 #: application/helpers/export_helper.php:1335
-#: application/helpers/expressions/em_manager_helper.php:2513
+#: application/helpers/expressions/em_manager_helper.php:2524
 #: application/helpers/qanda_helper.php:4326
 #: application/views/admin/dataentry/content_view.php:54
 #: application/views/admin/export/statistics_view.php:488
@@ -8976,14 +8984,14 @@ msgstr "ženski"
 
 #: application/controllers/admin/conditionsaction.php:951
 #: application/controllers/admin/dataentry.php:747
-#: application/controllers/admin/printablesurvey.php:728
-#: application/controllers/admin/printablesurvey.php:732
+#: application/controllers/admin/printablesurvey.php:716
+#: application/controllers/admin/printablesurvey.php:720
 #: application/controllers/admin/quotas.php:450
 #: application/helpers/admin/statistics_helper.php:1925
 #: application/helpers/common_helper.php:1833
 #: application/helpers/export_helper.php:250
 #: application/helpers/export_helper.php:1335
-#: application/helpers/expressions/em_manager_helper.php:2512
+#: application/helpers/expressions/em_manager_helper.php:2523
 #: application/helpers/qanda_helper.php:4334
 #: application/views/admin/dataentry/content_view.php:55
 #: application/views/admin/export/statistics_view.php:494
@@ -9065,7 +9073,7 @@ msgstr "Uredi scenarij"
 
 #: application/controllers/admin/conditionsaction.php:1327
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:51
+#: application/views/admin/survey/importSurvey_view.php:60
 msgid "and"
 msgstr "in"
 
@@ -9199,7 +9207,7 @@ msgstr "Konstanta"
 #: application/views/admin/survey/Question/import_view.php:9
 #: application/views/admin/survey/QuestionGroups/import_view.php:10
 #: application/views/admin/survey/copySurvey_view.php:23
-#: application/views/admin/survey/importSurvey_view.php:27
+#: application/views/admin/survey/importSurvey_view.php:36
 msgid "Questions"
 msgstr "Vprašanja"
 
@@ -9429,8 +9437,8 @@ msgid "Save"
 msgstr "Shrani"
 
 #: application/controllers/admin/dataentry.php:1585
-#: application/controllers/admin/tokens.php:703
-#: application/controllers/admin/tokens.php:841
+#: application/controllers/admin/tokens.php:701
+#: application/controllers/admin/tokens.php:839
 #: application/controllers/admin/useraction.php:149
 #: application/views/admin/dataentry/insert.php:73
 #: application/views/admin/dataentry/iteratesurvey.php:5
@@ -9447,7 +9455,7 @@ msgstr "Shrani"
 #: application/views/admin/survey/importSurveyResources_view.php:3
 #: application/views/admin/survey/importSurveyResources_view.php:10
 #: application/views/admin/survey/importSurvey_view.php:10
-#: application/views/admin/survey/importSurvey_view.php:20
+#: application/views/admin/survey/importSurvey_view.php:29
 #: application/views/admin/templates/importuploaded_view.php:3
 #: application/views/admin/templates/importuploaded_view.php:12
 #: application/views/admin/token/addtokenpost.php:5
@@ -9557,241 +9565,241 @@ msgstr "Odgovarjanje mogoče samo, če je zadoščeno naslednjim pogojem:"
 
 #: application/controllers/admin/dataentry.php:2085
 msgid "The answer(s) must meet these validation criteria:"
-msgstr "Odgovor(i) morajo ustrezati naslednjim validacijskim kriterijem:"
+msgstr "Odgovor(i) morajo ustrezati naslednjim kriterijem preverjanja:"
 
 #: application/controllers/admin/dataentry.php:2091
 msgid "The answer(s) must meet these array_filter criteria:"
-msgstr ""
+msgstr "Odgovori morajo zadoščati sledečim kriterijem: "
 
 #: application/controllers/admin/dataentry.php:2495
-#: application/controllers/admin/tokens.php:1574
+#: application/controllers/admin/tokens.php:1572
 #: application/views/admin/participants/importCSV_view.php:17
 msgid "ARMSCII-8 Armenian"
 msgstr "ARMSCII-8 Armensko"
 
 #: application/controllers/admin/dataentry.php:2496
-#: application/controllers/admin/tokens.php:1575
+#: application/controllers/admin/tokens.php:1573
 #: application/views/admin/participants/importCSV_view.php:18
 msgid "US ASCII"
 msgstr "US ASCII"
 
 #: application/controllers/admin/dataentry.php:2497
-#: application/controllers/admin/tokens.php:1576
+#: application/controllers/admin/tokens.php:1574
 #: application/views/admin/participants/importCSV_view.php:19
 msgid "Automatic"
 msgstr "Avtomatsko"
 
 #: application/controllers/admin/dataentry.php:2498
-#: application/controllers/admin/tokens.php:1577
+#: application/controllers/admin/tokens.php:1575
 #: application/views/admin/participants/importCSV_view.php:20
 msgid "Big5 Traditional Chinese"
 msgstr "Velikih5 Tradicionalna Kitajščina"
 
 #: application/controllers/admin/dataentry.php:2499
-#: application/controllers/admin/tokens.php:1578
+#: application/controllers/admin/tokens.php:1576
 #: application/views/admin/participants/importCSV_view.php:21
 msgid "Binary pseudo charset"
 msgstr "Binarni psevdo nabor"
 
 #: application/controllers/admin/dataentry.php:2500
-#: application/controllers/admin/tokens.php:1579
+#: application/controllers/admin/tokens.php:1577
 #: application/views/admin/participants/importCSV_view.php:22
 msgid "Windows Central European"
 msgstr "Windows Srednjeevropsko"
 
 #: application/controllers/admin/dataentry.php:2501
-#: application/controllers/admin/tokens.php:1580
+#: application/controllers/admin/tokens.php:1578
 #: application/views/admin/participants/importCSV_view.php:23
 msgid "Windows Cyrillic"
 msgstr "Windows Cirilica"
 
 #: application/controllers/admin/dataentry.php:2502
-#: application/controllers/admin/tokens.php:1581
+#: application/controllers/admin/tokens.php:1579
 #: application/views/admin/participants/importCSV_view.php:24
 msgid "Windows Arabic"
 msgstr "Windows Arabsko"
 
 #: application/controllers/admin/dataentry.php:2503
-#: application/controllers/admin/tokens.php:1582
+#: application/controllers/admin/tokens.php:1580
 #: application/views/admin/participants/importCSV_view.php:25
 msgid "Windows Baltic"
 msgstr "Windows Baltsko"
 
 #: application/controllers/admin/dataentry.php:2504
-#: application/controllers/admin/tokens.php:1583
+#: application/controllers/admin/tokens.php:1581
 #: application/views/admin/participants/importCSV_view.php:26
 msgid "DOS West European"
 msgstr "DOS Zahodnoevropsko"
 
 #: application/controllers/admin/dataentry.php:2505
-#: application/controllers/admin/tokens.php:1584
+#: application/controllers/admin/tokens.php:1582
 #: application/views/admin/participants/importCSV_view.php:27
 msgid "DOS Central European"
 msgstr "DOS Srednjeevropsko"
 
 #: application/controllers/admin/dataentry.php:2506
-#: application/controllers/admin/tokens.php:1585
+#: application/controllers/admin/tokens.php:1583
 #: application/views/admin/participants/importCSV_view.php:28
 msgid "DOS Russian"
 msgstr "DOS Rusko"
 
 #: application/controllers/admin/dataentry.php:2507
-#: application/controllers/admin/tokens.php:1586
+#: application/controllers/admin/tokens.php:1584
 #: application/views/admin/participants/importCSV_view.php:29
 msgid "SJIS for Windows Japanese"
 msgstr "SJIS za Windows Japonsko"
 
 #: application/controllers/admin/dataentry.php:2508
-#: application/controllers/admin/tokens.php:1587
+#: application/controllers/admin/tokens.php:1585
 #: application/views/admin/participants/importCSV_view.php:30
 msgid "DEC West European"
 msgstr "DEC Zahodnoevropsko"
 
 #: application/controllers/admin/dataentry.php:2509
-#: application/controllers/admin/tokens.php:1588
+#: application/controllers/admin/tokens.php:1586
 #: application/views/admin/participants/importCSV_view.php:31
 msgid "UJIS for Windows Japanese"
 msgstr "UJIS za Windows Japonsko"
 
 #: application/controllers/admin/dataentry.php:2510
-#: application/controllers/admin/tokens.php:1589
+#: application/controllers/admin/tokens.php:1587
 #: application/views/admin/participants/importCSV_view.php:32
 msgid "EUC-KR Korean"
 msgstr "EUC-KR Korejsko"
 
 #: application/controllers/admin/dataentry.php:2511
-#: application/controllers/admin/tokens.php:1590
+#: application/controllers/admin/tokens.php:1588
 #: application/views/admin/participants/importCSV_view.php:33
 msgid "GB2312 Simplified Chinese"
 msgstr "GB2312 Poenostavljena Kitajščina"
 
 #: application/controllers/admin/dataentry.php:2512
-#: application/controllers/admin/tokens.php:1591
+#: application/controllers/admin/tokens.php:1589
 #: application/views/admin/participants/importCSV_view.php:34
 msgid "GBK Simplified Chinese"
 msgstr "GBK Poenostavljena Kitajščina"
 
 #: application/controllers/admin/dataentry.php:2513
-#: application/controllers/admin/tokens.php:1592
+#: application/controllers/admin/tokens.php:1590
 #: application/views/admin/participants/importCSV_view.php:35
 msgid "GEOSTD8 Georgian"
 msgstr "GEOSTD8 Gruzijsko"
 
 #: application/controllers/admin/dataentry.php:2514
-#: application/controllers/admin/tokens.php:1593
+#: application/controllers/admin/tokens.php:1591
 #: application/views/admin/participants/importCSV_view.php:36
 msgid "ISO 8859-7 Greek"
 msgstr "ISO 8859-7 Grško"
 
 #: application/controllers/admin/dataentry.php:2515
-#: application/controllers/admin/tokens.php:1594
+#: application/controllers/admin/tokens.php:1592
 #: application/views/admin/participants/importCSV_view.php:37
 msgid "ISO 8859-8 Hebrew"
 msgstr "ISO 8859-8 Hebrejsko"
 
 #: application/controllers/admin/dataentry.php:2516
-#: application/controllers/admin/tokens.php:1595
+#: application/controllers/admin/tokens.php:1593
 #: application/views/admin/participants/importCSV_view.php:38
 msgid "HP West European"
 msgstr "HP Zahodnoevropsko"
 
 #: application/controllers/admin/dataentry.php:2517
-#: application/controllers/admin/tokens.php:1596
+#: application/controllers/admin/tokens.php:1594
 #: application/views/admin/participants/importCSV_view.php:39
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr "DOS Kamenicky Češkoslovaško"
 
 #: application/controllers/admin/dataentry.php:2518
-#: application/controllers/admin/tokens.php:1597
+#: application/controllers/admin/tokens.php:1595
 #: application/views/admin/participants/importCSV_view.php:40
 msgid "KOI8-R Relcom Russian"
 msgstr "KOI8-R Relcom Rusko"
 
 #: application/controllers/admin/dataentry.php:2519
-#: application/controllers/admin/tokens.php:1598
+#: application/controllers/admin/tokens.php:1596
 #: application/views/admin/participants/importCSV_view.php:41
 msgid "KOI8-U Ukrainian"
 msgstr "KOI8-U Ukrainsko"
 
 #: application/controllers/admin/dataentry.php:2520
-#: application/controllers/admin/tokens.php:1599
+#: application/controllers/admin/tokens.php:1597
 #: application/views/admin/participants/importCSV_view.php:42
 msgid "cp1252 West European"
 msgstr "cp1252 Zahodnoevropsko"
 
 #: application/controllers/admin/dataentry.php:2521
-#: application/controllers/admin/tokens.php:1600
+#: application/controllers/admin/tokens.php:1598
 #: application/views/admin/participants/importCSV_view.php:43
 msgid "ISO 8859-2 Central European"
 msgstr "ISO 8859-2 Srednjeevropsko"
 
 #: application/controllers/admin/dataentry.php:2522
-#: application/controllers/admin/tokens.php:1601
+#: application/controllers/admin/tokens.php:1599
 #: application/views/admin/participants/importCSV_view.php:44
 msgid "ISO 8859-9 Turkish"
 msgstr "ISO 8859-9 Turško"
 
 #: application/controllers/admin/dataentry.php:2523
-#: application/controllers/admin/tokens.php:1602
+#: application/controllers/admin/tokens.php:1600
 #: application/views/admin/participants/importCSV_view.php:45
 msgid "ISO 8859-13 Baltic"
 msgstr "ISO 8859-13 Baltsko"
 
 #: application/controllers/admin/dataentry.php:2524
-#: application/controllers/admin/tokens.php:1603
+#: application/controllers/admin/tokens.php:1601
 #: application/views/admin/participants/importCSV_view.php:46
 msgid "Mac Central European"
 msgstr "Mac Srednjeevropsko"
 
 #: application/controllers/admin/dataentry.php:2525
-#: application/controllers/admin/tokens.php:1604
+#: application/controllers/admin/tokens.php:1602
 #: application/views/admin/participants/importCSV_view.php:47
 msgid "Mac West European"
 msgstr "Mac Zahodnoevropsko"
 
 #: application/controllers/admin/dataentry.php:2526
-#: application/controllers/admin/tokens.php:1605
+#: application/controllers/admin/tokens.php:1603
 #: application/views/admin/participants/importCSV_view.php:48
 msgid "Shift-JIS Japanese"
 msgstr "Shift-JIS Japonsko"
 
 #: application/controllers/admin/dataentry.php:2527
-#: application/controllers/admin/tokens.php:1606
+#: application/controllers/admin/tokens.php:1604
 #: application/views/admin/participants/importCSV_view.php:49
 msgid "7bit Swedish"
 msgstr "7bit Švedsko"
 
 #: application/controllers/admin/dataentry.php:2528
-#: application/controllers/admin/tokens.php:1607
+#: application/controllers/admin/tokens.php:1605
 #: application/views/admin/participants/importCSV_view.php:50
 msgid "TIS620 Thai"
 msgstr "TIS620 Tajsko"
 
 #: application/controllers/admin/dataentry.php:2529
-#: application/controllers/admin/tokens.php:1608
+#: application/controllers/admin/tokens.php:1606
 #: application/views/admin/participants/importCSV_view.php:51
 msgid "UCS-2 Unicode"
 msgstr "UCS-2 Unicode"
 
 #: application/controllers/admin/dataentry.php:2530
-#: application/controllers/admin/tokens.php:1609
+#: application/controllers/admin/tokens.php:1607
 #: application/views/admin/participants/importCSV_view.php:52
 msgid "EUC-JP Japanese"
 msgstr "EUC-JP Japonsko"
 
 #: application/controllers/admin/dataentry.php:2531
-#: application/controllers/admin/tokens.php:1610
+#: application/controllers/admin/tokens.php:1608
 #: application/views/admin/participants/importCSV_view.php:53
 msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicode"
 
 #: application/controllers/admin/dataentry.php:2588
-#: application/controllers/admin/printablesurvey.php:1961
+#: application/controllers/admin/printablesurvey.php:1949
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2596
-#: application/controllers/admin/printablesurvey.php:1969
+#: application/controllers/admin/printablesurvey.php:1957
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
 
@@ -9817,9 +9825,9 @@ msgstr "Izvozi VV datoteko"
 
 #: application/controllers/admin/export.php:1070
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
-msgstr ""
+msgstr "Ta arhiv vsebuje datoteko PDF ankete, datoteko queXML in datoteko queXF XML, ki jo lahko uporabite s programom http://quexf.sourceforge.net/ za procesiranje skeniranih anket."
 
-#: application/controllers/admin/globalsettings.php:175
+#: application/controllers/admin/globalsettings.php:174
 msgid "Global settings were saved."
 msgstr "Globalne nastavitve so bile shranjene."
 
@@ -10048,106 +10056,106 @@ msgstr ""
 msgid "%s participants have been copied,%s participants have not been copied because they already exist"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:139
+#: application/controllers/admin/printablesurvey.php:128
 msgid "Database"
 msgstr "Podatkovna baza"
 
-#: application/controllers/admin/printablesurvey.php:139
+#: application/controllers/admin/printablesurvey.php:128
 msgid "table"
 msgstr "tabela"
 
-#: application/controllers/admin/printablesurvey.php:153
-#: application/controllers/admin/printablesurvey.php:1790
+#: application/controllers/admin/printablesurvey.php:142
+#: application/controllers/admin/printablesurvey.php:1778
 msgid "Submit Your Survey."
 msgstr "Pošlji anketo."
 
-#: application/controllers/admin/printablesurvey.php:155
-#: application/controllers/admin/printablesurvey.php:1790
-#: application/controllers/admin/templates.php:1060
+#: application/controllers/admin/printablesurvey.php:144
+#: application/controllers/admin/printablesurvey.php:1778
+#: application/controllers/admin/templates.php:1062
 msgid "Thank you for completing this survey."
 msgstr "Najlepša hvala za sodelovanje v anketi."
 
-#: application/controllers/admin/printablesurvey.php:167
-#: application/controllers/admin/templates.php:1056
+#: application/controllers/admin/printablesurvey.php:155
+#: application/controllers/admin/templates.php:1058
 msgid "Please fax your completed survey to:"
 msgstr "Prosimo, pošljite vašo izpolnjeno anketo po telefaksu na številko:"
 
-#: application/controllers/admin/printablesurvey.php:173
-#: application/controllers/admin/printablesurvey.php:1784
-#: application/controllers/admin/templates.php:1059
+#: application/controllers/admin/printablesurvey.php:161
+#: application/controllers/admin/printablesurvey.php:1772
+#: application/controllers/admin/templates.php:1061
 msgid "Please submit by %s"
 msgstr "Prosimo pošljite na %s"
 
-#: application/controllers/admin/printablesurvey.php:619
+#: application/controllers/admin/printablesurvey.php:607
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Na to vprašanje odgovorite samo, če je zadoščeno naslednjim pogojem:"
 
-#: application/controllers/admin/printablesurvey.php:638
+#: application/controllers/admin/printablesurvey.php:626
 msgid "ID:"
 msgstr "ID"
 
-#: application/controllers/admin/printablesurvey.php:639
+#: application/controllers/admin/printablesurvey.php:627
 msgid "Question code:"
 msgstr "Koda vprašanja"
 
-#: application/controllers/admin/printablesurvey.php:664
-#: application/controllers/admin/printablesurvey.php:666
-#: application/controllers/admin/templates.php:938
-#: application/controllers/admin/templates.php:1033
+#: application/controllers/admin/printablesurvey.php:652
+#: application/controllers/admin/printablesurvey.php:654
+#: application/controllers/admin/templates.php:939
+#: application/controllers/admin/templates.php:1035
 #: application/helpers/qanda_helper.php:321
 #: application/helpers/qanda_helper.php:322
 msgid "*"
 msgstr "*"
 
-#: application/controllers/admin/printablesurvey.php:699
-#: application/controllers/admin/printablesurvey.php:700
-#: application/controllers/admin/printablesurvey.php:724
-#: application/controllers/admin/printablesurvey.php:731
-#: application/controllers/admin/printablesurvey.php:757
-#: application/controllers/admin/printablesurvey.php:760
-#: application/controllers/admin/printablesurvey.php:824
-#: application/controllers/admin/printablesurvey.php:825
-#: application/controllers/admin/printablesurvey.php:1054
-#: application/controllers/admin/printablesurvey.php:1058
-#: application/controllers/admin/templates.php:1037
+#: application/controllers/admin/printablesurvey.php:687
+#: application/controllers/admin/printablesurvey.php:688
+#: application/controllers/admin/printablesurvey.php:712
+#: application/controllers/admin/printablesurvey.php:719
+#: application/controllers/admin/printablesurvey.php:745
+#: application/controllers/admin/printablesurvey.php:748
+#: application/controllers/admin/printablesurvey.php:812
+#: application/controllers/admin/printablesurvey.php:813
+#: application/controllers/admin/printablesurvey.php:1042
+#: application/controllers/admin/printablesurvey.php:1046
+#: application/controllers/admin/templates.php:1039
 msgid "Please choose *only one* of the following:"
 msgstr "Prosimo, izberite *samo eno* izmed možnosti:"
 
-#: application/controllers/admin/printablesurvey.php:716
-#: application/controllers/admin/printablesurvey.php:718
+#: application/controllers/admin/printablesurvey.php:704
+#: application/controllers/admin/printablesurvey.php:706
 msgid "Please enter a date:"
 msgstr "Prosimo, vpišite datum:"
 
-#: application/controllers/admin/printablesurvey.php:836
-#: application/controllers/admin/printablesurvey.php:838
+#: application/controllers/admin/printablesurvey.php:824
+#: application/controllers/admin/printablesurvey.php:826
 #: application/helpers/qanda_helper.php:2795
 #: application/helpers/qanda_helper.php:2796
 #: application/helpers/qanda_helper.php:2827
 #: application/helpers/qanda_helper.php:2829
 msgid "Make a comment on your choice here:"
-msgstr "Pojasnite vašo izbiro:"
+msgstr "Vnesite komentar:"
 
-#: application/controllers/admin/printablesurvey.php:850
+#: application/controllers/admin/printablesurvey.php:838
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Prosimo, oštevilčite vsako polje glede na vaše preference od 1 do"
 
-#: application/controllers/admin/printablesurvey.php:852
+#: application/controllers/admin/printablesurvey.php:840
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Prosimo, oštevilčite vsako polje glede na vaše preference od 1 do "
 
-#: application/controllers/admin/printablesurvey.php:873
-#: application/controllers/admin/printablesurvey.php:874
+#: application/controllers/admin/printablesurvey.php:861
+#: application/controllers/admin/printablesurvey.php:862
 msgid "Please choose *all* that apply:"
 msgstr "Prosimo, izberite *vse* odgovore, ki ustrezajo:"
 
-#: application/controllers/admin/printablesurvey.php:925
-#: application/controllers/admin/printablesurvey.php:926
+#: application/controllers/admin/printablesurvey.php:913
+#: application/controllers/admin/printablesurvey.php:914
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Izberite vse ustrezne odgovore in podajte komentar:"
 
-#: application/controllers/admin/printablesurvey.php:943
-#: application/helpers/expressions/em_manager_helper.php:2645
-#: application/helpers/expressions/em_manager_helper.php:4985
+#: application/controllers/admin/printablesurvey.php:931
+#: application/helpers/expressions/em_manager_helper.php:2656
+#: application/helpers/expressions/em_manager_helper.php:4996
 #: application/helpers/qanda_helper.php:1354
 #: application/helpers/qanda_helper.php:1673
 #: application/helpers/qanda_helper.php:2323
@@ -10155,52 +10163,52 @@ msgstr "Izberite vse ustrezne odgovore in podajte komentar:"
 msgid "Other:"
 msgstr "Drugo:"
 
-#: application/controllers/admin/printablesurvey.php:964
-#: application/controllers/admin/printablesurvey.php:979
+#: application/controllers/admin/printablesurvey.php:952
+#: application/controllers/admin/printablesurvey.php:967
 msgid "Please write your answer(s) here:"
 msgstr "Prosimo, vpišite vaš(e) odgovor(e):"
 
+#: application/controllers/admin/printablesurvey.php:989
+#: application/controllers/admin/printablesurvey.php:991
+#: application/controllers/admin/printablesurvey.php:998
 #: application/controllers/admin/printablesurvey.php:1001
-#: application/controllers/admin/printablesurvey.php:1003
-#: application/controllers/admin/printablesurvey.php:1010
-#: application/controllers/admin/printablesurvey.php:1013
-#: application/controllers/admin/printablesurvey.php:1023
-#: application/controllers/admin/printablesurvey.php:1026
-#: application/controllers/admin/printablesurvey.php:1044
-#: application/controllers/admin/printablesurvey.php:1047
+#: application/controllers/admin/printablesurvey.php:1011
+#: application/controllers/admin/printablesurvey.php:1014
+#: application/controllers/admin/printablesurvey.php:1032
+#: application/controllers/admin/printablesurvey.php:1035
 msgid "Please write your answer here:"
 msgstr "Vpišite vaš odgovor:"
 
-#: application/controllers/admin/printablesurvey.php:1068
-#: application/controllers/admin/printablesurvey.php:1085
-#: application/controllers/admin/printablesurvey.php:1131
-#: application/controllers/admin/printablesurvey.php:1140
-#: application/controllers/admin/printablesurvey.php:1167
-#: application/controllers/admin/printablesurvey.php:1182
-#: application/controllers/admin/printablesurvey.php:1207
-#: application/controllers/admin/printablesurvey.php:1222
-#: application/controllers/admin/printablesurvey.php:1431
-#: application/controllers/admin/printablesurvey.php:1441
-#: application/controllers/admin/printablesurvey.php:1536
-#: application/controllers/admin/printablesurvey.php:1539
-#: application/controllers/admin/printablesurvey.php:1647
-#: application/controllers/admin/printablesurvey.php:1648
+#: application/controllers/admin/printablesurvey.php:1056
+#: application/controllers/admin/printablesurvey.php:1073
+#: application/controllers/admin/printablesurvey.php:1119
+#: application/controllers/admin/printablesurvey.php:1128
+#: application/controllers/admin/printablesurvey.php:1155
+#: application/controllers/admin/printablesurvey.php:1170
+#: application/controllers/admin/printablesurvey.php:1195
+#: application/controllers/admin/printablesurvey.php:1210
+#: application/controllers/admin/printablesurvey.php:1419
+#: application/controllers/admin/printablesurvey.php:1429
+#: application/controllers/admin/printablesurvey.php:1524
+#: application/controllers/admin/printablesurvey.php:1527
+#: application/controllers/admin/printablesurvey.php:1635
+#: application/controllers/admin/printablesurvey.php:1636
 msgid "Please choose the appropriate response for each item:"
 msgstr "Izberite primeren odgovor za vsako trditev."
 
-#: application/controllers/admin/printablesurvey.php:1706
+#: application/controllers/admin/printablesurvey.php:1694
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "V tej anketi je {NUMBEROFQUESTIONS} vprašanj"
 
-#: application/controllers/admin/printablesurvey.php:1788
+#: application/controllers/admin/printablesurvey.php:1776
 msgid "Please fax your completed survey to: %s"
 msgstr "Prosimo, pošljite vašo izpolnjeno anketo po telefaksu na številko: %s"
 
-#: application/controllers/admin/printablesurvey.php:1869
+#: application/controllers/admin/printablesurvey.php:1857
 msgid "Please choose at least %s items."
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1872
+#: application/controllers/admin/printablesurvey.php:1860
 msgid "Please choose no more than %s items."
 msgstr ""
 
@@ -10473,7 +10481,7 @@ msgid "Delete"
 msgstr "Izbriši"
 
 #: application/controllers/admin/surveypermission.php:109
-#: application/controllers/admin/tokens.php:381
+#: application/controllers/admin/tokens.php:379
 #: application/views/admin/assessments_view.php:32
 #: application/views/admin/browse/browseidheader_view.php:14
 #: application/views/admin/saved/savedlist_view.php:29
@@ -10696,7 +10704,7 @@ msgstr "Predloga '%s' je bila uspešno zbrisana."
 
 #: application/controllers/admin/templates.php:433
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
-msgstr "Pri izbrisu predloge '%s' je prišlo do težav. Preverite pravice direktorija/datoteke."
+msgstr "Pri izbrisu predloge '%s' je prišlo do težav. Preverite pravice mape/datoteke."
 
 #: application/controllers/admin/templates.php:690
 msgid "Survey List Page"
@@ -10784,183 +10792,183 @@ msgstr "Niste vnesli identifikacijske številke ankete"
 msgid "The following surveys are available:"
 msgstr "Na voljo so naslednje ankete:"
 
-#: application/controllers/admin/templates.php:934
 #: application/controllers/admin/templates.php:935
+#: application/controllers/admin/templates.php:936
 msgid "Please explain something in detail:"
 msgstr "Podrobno razložite nekaj:"
 
-#: application/controllers/admin/templates.php:1057
+#: application/controllers/admin/templates.php:1059
 msgid "Submit your survey."
 msgstr "Pošlji anketo."
 
-#: application/controllers/admin/templates.php:1061
+#: application/controllers/admin/templates.php:1063
 msgid "This is the survey end message."
 msgstr "To je sporočilo ob koncu ankete."
 
-#: application/controllers/admin/tokens.php:49
+#: application/controllers/admin/tokens.php:47
 #: application/views/admin/dataentry/active_html_view.php:94
 msgid "The survey you selected does not exist"
 msgstr "Anketa, ki ste jo izbrali ne obstaja"
 
-#: application/controllers/admin/tokens.php:221
+#: application/controllers/admin/tokens.php:219
 msgid "%s messages were scanned out of which %s were marked as bounce by the system."
-msgstr ""
+msgstr "%s sporočil je bilo pregledanih, od katerih je sistem %s označil kot zavržene."
 
-#: application/controllers/admin/tokens.php:225
+#: application/controllers/admin/tokens.php:223
 msgid "%s messages were scanned, none were marked as bounce by the system."
-msgstr ""
+msgstr "%s sporočil je bilo pregledanih, nobeno ni bilo označeno kot zavrženo."
 
-#: application/controllers/admin/tokens.php:230
+#: application/controllers/admin/tokens.php:228
 msgid "Please check your settings"
 msgstr "Prosimo preverite vaše nastavitve"
 
-#: application/controllers/admin/tokens.php:235
+#: application/controllers/admin/tokens.php:233
 #: application/controllers/survey/index.php:83
 #: application/controllers/survey/index.php:96
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "Za to izbiro žal nimate pravic."
 
-#: application/controllers/admin/tokens.php:380
+#: application/controllers/admin/tokens.php:378
 msgid "Do survey"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:381
+#: application/controllers/admin/tokens.php:379
 msgid "Delete token entry"
 msgstr "Izbriši dostopno geslo"
 
-#: application/controllers/admin/tokens.php:386
+#: application/controllers/admin/tokens.php:384
 #: application/views/admin/token/actions.php:19
 #: application/views/admin/token/actions.php:20
 #: application/views/admin/token/browse.php:68
 msgid "Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"
 msgstr "Pošlji emaile s povabilom na izbrane vnose (če jim povabilo še ni bilo poslano)"
 
-#: application/controllers/admin/tokens.php:388
+#: application/controllers/admin/tokens.php:386
 #: application/views/admin/token/actions.php:23
 #: application/views/admin/token/actions.php:24
 #: application/views/admin/token/browse.php:69
 msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
 msgstr "Pošlji email z opomnikom na izbrane vnose (če so že prejeli email s povabilom)"
 
-#: application/controllers/admin/tokens.php:390
+#: application/controllers/admin/tokens.php:388
 #: application/views/admin/token/tokenform.php:5
 msgid "Edit token entry"
 msgstr "Uredi dostopno geslo"
 
-#: application/controllers/admin/tokens.php:455
-#: application/controllers/admin/tokens.php:486
-#: application/controllers/admin/tokens.php:588
-#: application/controllers/admin/tokens.php:693
-#: application/controllers/admin/tokens.php:811
+#: application/controllers/admin/tokens.php:453
+#: application/controllers/admin/tokens.php:484
+#: application/controllers/admin/tokens.php:586
+#: application/controllers/admin/tokens.php:691
+#: application/controllers/admin/tokens.php:809
 msgid "%s cannot be empty"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:704
+#: application/controllers/admin/tokens.php:702
 msgid "The token entry was successfully updated."
 msgstr "Dostopno geslo je bilo uspešno posodobljeno."
 
-#: application/controllers/admin/tokens.php:705
-#: application/controllers/admin/tokens.php:843
+#: application/controllers/admin/tokens.php:703
+#: application/controllers/admin/tokens.php:841
 #: application/views/admin/token/addtokenpost.php:7
 #: application/views/admin/token/addtokenpost.php:14
 #: application/views/admin/token/tokenbar.php:12
 msgid "Display tokens"
 msgstr "Prikaži dostopna gesla"
 
-#: application/controllers/admin/tokens.php:711
+#: application/controllers/admin/tokens.php:709
 #: application/views/admin/token/addtokenpost.php:12
 #: application/views/admin/token/ldappost.php:5
 msgid "Failed"
 msgstr "Ni uspelo"
 
-#: application/controllers/admin/tokens.php:712
+#: application/controllers/admin/tokens.php:710
 #: application/views/admin/token/addtokenpost.php:13
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "V tabeli je že vnos z enakim dostopnim geslom. Isto dostopno geslo ne more biti večkrat v uporabi."
 
-#: application/controllers/admin/tokens.php:713
+#: application/controllers/admin/tokens.php:711
 msgid "Show this token entry"
 msgstr "Prikaži ta vnos gesla"
 
-#: application/controllers/admin/tokens.php:842
+#: application/controllers/admin/tokens.php:840
 msgid "New dummy tokens were added."
 msgstr "Novi poizkusni žetoni so bili dodani"
 
-#: application/controllers/admin/tokens.php:938
+#: application/controllers/admin/tokens.php:936
 msgid "%s field(s) were successfully added."
 msgstr "%s polij je bilo uspešno dodanih."
 
-#: application/controllers/admin/tokens.php:939
-#: application/controllers/admin/tokens.php:990
+#: application/controllers/admin/tokens.php:937
+#: application/controllers/admin/tokens.php:988
 msgid "Back to attribute field management."
 msgstr "Nazaj na urejanje lastnosti polij."
 
-#: application/controllers/admin/tokens.php:989
+#: application/controllers/admin/tokens.php:987
 msgid "Token attribute descriptions were successfully updated."
 msgstr "Opisi lastnosti opisov so bili uspešno posodobljeni."
 
-#: application/controllers/admin/tokens.php:1179
+#: application/controllers/admin/tokens.php:1177
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "Email za {FIRSTNAME} {LASTNAME} ({EMAIL}) je v čakanju: Dostopno geslo še ni veljavno."
 
-#: application/controllers/admin/tokens.php:1183
+#: application/controllers/admin/tokens.php:1181
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "Email za {FIRSTNAME} {LASTNAME} ({EMAIL}) preskočen: Dostopno geslo ni več veljavno."
 
-#: application/controllers/admin/tokens.php:1191
+#: application/controllers/admin/tokens.php:1189
 msgid "Invitation sent to:"
 msgstr "Povabilo poslano na:"
 
-#: application/controllers/admin/tokens.php:1196
+#: application/controllers/admin/tokens.php:1194
 msgid "Reminder sent to:"
 msgstr "Opomnik poslan na:"
 
-#: application/controllers/admin/tokens.php:1210
+#: application/controllers/admin/tokens.php:1208
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "Email za {FIRSTNAME} {LASTNAME} ({EMAIL}) ni uspel. Sporočilo o napaki:"
 
-#: application/controllers/admin/tokens.php:1240
+#: application/controllers/admin/tokens.php:1238
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr "Nobeno sporočilo ni bilo poslano. To je posledica tega da nobeno sporočilo ni ustrezalo kriterijem:"
 
-#: application/controllers/admin/tokens.php:1241
+#: application/controllers/admin/tokens.php:1239
 msgid "having a valid email address"
 msgstr "imajo veljaven email naslov"
 
-#: application/controllers/admin/tokens.php:1242
+#: application/controllers/admin/tokens.php:1240
 msgid "not having been sent an invitation already"
 msgstr "povabilo še ni bilo poslano"
 
-#: application/controllers/admin/tokens.php:1243
+#: application/controllers/admin/tokens.php:1241
 msgid "having already completed the survey"
 msgstr "so že izpolnili to anketo"
 
-#: application/controllers/admin/tokens.php:1244
+#: application/controllers/admin/tokens.php:1242
 msgid "having a token"
 msgstr "ima dostopno geslo"
 
-#: application/controllers/admin/tokens.php:1326
+#: application/controllers/admin/tokens.php:1324
 msgid "Uploading LDAP Query"
 msgstr "Nalaganje LDAP poizvedbe"
 
-#: application/controllers/admin/tokens.php:1539
+#: application/controllers/admin/tokens.php:1537
 msgid "Can't bind to the LDAP directory"
-msgstr "Ne morem se povezati (bind) na LDAP direktorij"
+msgstr "Ne morem se povezati (bind) na imenik LDAP"
 
-#: application/controllers/admin/tokens.php:1546
+#: application/controllers/admin/tokens.php:1544
 msgid "Can't connect to the LDAP directory"
-msgstr "Ne morem se povezati (connect) na LDAP direktorij"
+msgstr "Ne morem se povezati na imenik LDAP"
 
-#: application/controllers/admin/tokens.php:1880
-#: application/controllers/admin/tokens.php:1894
+#: application/controllers/admin/tokens.php:1878
+#: application/controllers/admin/tokens.php:1892
 msgid "Create tokens"
 msgstr "Ustvari gesla"
 
-#: application/controllers/admin/tokens.php:1881
+#: application/controllers/admin/tokens.php:1879
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1895
+#: application/controllers/admin/tokens.php:1893
 msgid "%s token has been created."
 msgid_plural "%s tokens have been created."
 msgstr[0] ""
@@ -10968,58 +10976,58 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: application/controllers/admin/tokens.php:1925
-#: application/controllers/admin/tokens.php:1942
+#: application/controllers/admin/tokens.php:1923
+#: application/controllers/admin/tokens.php:1940
 msgid "Delete Tokens Table"
 msgstr "Izbriši tabelo dostopnih gesel"
 
-#: application/controllers/admin/tokens.php:1926
+#: application/controllers/admin/tokens.php:1924
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Če boste izbrisali tabelo z gesli bo anketa postala dostopna brez gesel."
 
-#: application/controllers/admin/tokens.php:1926
+#: application/controllers/admin/tokens.php:1924
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "Če se odločite nadaljevati bo narejena varnostna kopija baze. Vaš sistemski administrator bo lahko dostopal do te tabele."
 
-#: application/controllers/admin/tokens.php:1929
+#: application/controllers/admin/tokens.php:1927
 msgid "Delete Tokens"
 msgstr "Izbriši dostopna gesla"
 
-#: application/controllers/admin/tokens.php:1943
+#: application/controllers/admin/tokens.php:1941
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr "Tabela z dostopnimi gesli je bila odstranjena. Gesla niso več potrebna za sodelovanje v tej anketi."
 
-#: application/controllers/admin/tokens.php:1943
+#: application/controllers/admin/tokens.php:1941
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "Ustvarjena je bila varnostna kopija te tabele, ki je dostopna administratorju sistema."
 
-#: application/controllers/admin/tokens.php:1988
+#: application/controllers/admin/tokens.php:1986
 #: application/views/admin/globalSettings_view.php:10
 #: application/views/admin/token/bounce.php:1
 #: application/views/admin/token/tokenbar.php:78
 msgid "Bounce settings"
 msgstr "Odbijajoče nastavitve"
 
-#: application/controllers/admin/tokens.php:1989
+#: application/controllers/admin/tokens.php:1987
 msgid "Bounce settings have been saved."
 msgstr "Odbijajoče nastavitve so bile shranjene."
 
-#: application/controllers/admin/tokens.php:2062
-#: application/views/admin/export/exportresults_view.php:117
+#: application/controllers/admin/tokens.php:2060
+#: application/views/admin/export/exportresults_view.php:115
 #: application/views/admin/token/tokenbar.php:3
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr "Upravljanje z dostopnimi gesli"
 
-#: application/controllers/admin/tokens.php:2063
+#: application/controllers/admin/tokens.php:2061
 msgid "A token table has been created for this survey."
 msgstr "Tabela z dostopnimi gesli za to anketo je bila ustvarjena."
 
-#: application/controllers/admin/tokens.php:2073
+#: application/controllers/admin/tokens.php:2071
 msgid "Import old tokens"
 msgstr "Uvozi stara dostopna gesla"
 
-#: application/controllers/admin/tokens.php:2074
+#: application/controllers/admin/tokens.php:2072
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr "A token table has been created for this survey and the old tokens were imported."
 
@@ -11078,7 +11086,7 @@ msgstr "Prevedi v"
 #: application/views/admin/dataentry/content_view.php:94
 #: application/views/admin/labels/labelsetsbar_view.php:22
 msgid "Please choose..."
-msgstr "Prosimo, izberite..."
+msgstr "Prosimo, izberite ..."
 
 #: application/controllers/admin/translate.php:447
 msgid "Survey title and description"
@@ -11102,7 +11110,7 @@ msgstr "Opis:"
 
 #: application/controllers/admin/translate.php:477
 msgid "Welcome and end text"
-msgstr "Dobrodošli in poslovitveni tekst"
+msgstr "Dobrodošli in poslovitveno besedilo"
 
 #: application/controllers/admin/translate.php:492
 #: application/views/admin/survey/editLocalSettings_view.php:13
@@ -11115,7 +11123,7 @@ msgstr "Končno sporočilo:"
 
 #: application/controllers/admin/translate.php:507
 #: application/views/admin/survey/copySurvey_view.php:22
-#: application/views/admin/survey/importSurvey_view.php:26
+#: application/views/admin/survey/importSurvey_view.php:35
 msgid "Question groups"
 msgstr "Skupine vprašanj"
 
@@ -11127,7 +11135,7 @@ msgstr "Opis skupine"
 #: application/views/admin/survey/Question/import_view.php:10
 #: application/views/admin/survey/QuestionGroups/import_view.php:11
 #: application/views/admin/survey/copySurvey_view.php:27
-#: application/views/admin/survey/importSurvey_view.php:32
+#: application/views/admin/survey/importSurvey_view.php:41
 msgid "Subquestions"
 msgstr "Podvprašanja"
 
@@ -11236,7 +11244,7 @@ msgstr ""
 
 #: application/controllers/admin/useraction.php:288
 msgid "All of the user's surveys were transferred to %s."
-msgstr "Vse uporabnikove ankete so bile prenešene na %s."
+msgstr "Vse uporabnikove ankete so bile prenesene na %s."
 
 #: application/controllers/admin/useraction.php:347
 #: application/controllers/admin/useraction.php:363
@@ -11423,19 +11431,19 @@ msgid "Load unfinished survey"
 msgstr ""
 
 #: application/controllers/survey/index.php:484
-#: application/helpers/frontend_helper.php:1477
-#: application/helpers/frontend_helper.php:1551
-#: application/helpers/frontend_helper.php:1596
-#: application/helpers/frontend_helper.php:1635
+#: application/helpers/frontend_helper.php:1476
+#: application/helpers/frontend_helper.php:1550
+#: application/helpers/frontend_helper.php:1595
+#: application/helpers/frontend_helper.php:1634
 #: application/views/entertoken_view.php:8
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Ta anketa ni javno dostopna.  Za sodelovanje potrebujete dostopno geslo."
 
 #: application/controllers/survey/index.php:485
 #: application/controllers/survey/index.php:516
-#: application/helpers/frontend_helper.php:1553
-#: application/helpers/frontend_helper.php:1598
-#: application/helpers/frontend_helper.php:1789
+#: application/helpers/frontend_helper.php:1552
+#: application/helpers/frontend_helper.php:1597
+#: application/helpers/frontend_helper.php:1788
 msgid "For further information please contact %s"
 msgstr "Za dodatne informacije se obrnite na %s"
 
@@ -11489,11 +11497,11 @@ msgstr "Prikaz celotne ankete na eni strani."
 
 #: application/core/Survey_Common_Action.php:686
 msgid "No question index will be shown with this format."
-msgstr ""
+msgstr "Pri tej obliki ni prikazan indeks vprašanja."
 
 #: application/core/Survey_Common_Action.php:690
 msgid "A question index will be shown; participants will be able to jump between viewed questions."
-msgstr ""
+msgstr "Prikazan bo indeks vprašanja; udeleženci bodo lahko preskakovali med pregledanimi vprašanji."
 
 #: application/core/Survey_Common_Action.php:695
 #: application/views/admin/survey/subview/tabNotification_view.php:22
@@ -11566,7 +11574,7 @@ msgid "Save your responses so far"
 msgstr "Shrani dosedanje odgovore"
 
 #: application/helpers/SurveyRuntimeHelper.php:374
-#: application/helpers/frontend_helper.php:1322
+#: application/helpers/frontend_helper.php:1321
 msgid "Did Not Save"
 msgstr "Ni bilo shranjeno"
 
@@ -11603,7 +11611,7 @@ msgstr "Oprostite. Takšna anketa ne obstaja."
 
 #: application/helpers/SurveyRuntimeHelper.php:548
 msgid "Invalid group number for this survey: "
-msgstr ""
+msgstr "Napačna številka skupine za to anketo: "
 
 #: application/helpers/SurveyRuntimeHelper.php:554
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
@@ -11632,7 +11640,7 @@ msgid "One or more uploaded files are not in proper format/size. You cannot proc
 msgstr "Ena ali več datotek so neveljavnega formata ali velikosti, ne morete nadaljevati dokler niso datoteke veljavne."
 
 #: application/helpers/SurveyRuntimeHelper.php:1028
-#: application/helpers/frontend_helper.php:2801
+#: application/helpers/frontend_helper.php:2800
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Ta anketa trenutno ni aktivna. Ne boste mogli shraniti vaših odzivov."
 
@@ -11641,7 +11649,7 @@ msgid "Question index"
 msgstr "Index vprašanja"
 
 #: application/helpers/SurveyRuntimeHelper.php:1104
-#: application/helpers/frontend_helper.php:2256
+#: application/helpers/frontend_helper.php:2255
 #: application/helpers/replacements_helper.php:381
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
@@ -11808,7 +11816,7 @@ msgstr "Ta datoteka ni LimeSurvey anketna datoteka. Uvoz ni uspel."
 #: application/helpers/admin/import_helper.php:2626
 #: application/helpers/admin/import_helper.php:2669
 #: application/helpers/admin/import_helper.php:2696
-#: application/helpers/admin/import_helper.php:4250
+#: application/helpers/admin/import_helper.php:4249
 msgid "Import of this survey file failed"
 msgstr "Uvoz datoteke z anketo ni uspel"
 
@@ -12094,7 +12102,7 @@ msgstr "Niso prikazani"
 #: application/views/admin/survey/Question/import_view.php:11
 #: application/views/admin/survey/QuestionGroups/import_view.php:12
 #: application/views/admin/survey/copySurvey_view.php:24
-#: application/views/admin/survey/importSurvey_view.php:29
+#: application/views/admin/survey/importSurvey_view.php:38
 msgid "Answers"
 msgstr "Odgovori"
 
@@ -12126,15 +12134,15 @@ msgstr "Vprašanja z eno izbiro"
 
 #: application/helpers/common_helper.php:55
 msgid "Multiple choice questions"
-msgstr "Vprašanja z večimi izbirami"
+msgstr "Vprašanja z več izbirami"
 
 #: application/helpers/common_helper.php:56
 msgid "Text questions"
-msgstr "Vprašanja z tekstom"
+msgstr "Vprašanja z besedilom"
 
 #: application/helpers/common_helper.php:60
 msgid "Array dual scale"
-msgstr ""
+msgstr "Dvojna velikost polja"
 
 #: application/helpers/common_helper.php:66
 msgid "5 Point Choice"
@@ -12162,7 +12170,7 @@ msgstr "Lestvica (povečalo/ostalo enako/zmanjšalo)"
 
 #: application/helpers/common_helper.php:102
 msgid "Array"
-msgstr "Lestvica"
+msgstr "Polje"
 
 #: application/helpers/common_helper.php:108
 msgid "Gender"
@@ -12170,7 +12178,7 @@ msgstr "Spol"
 
 #: application/helpers/common_helper.php:114
 msgid "Array by column"
-msgstr "Lestvica po stolpcih"
+msgstr "Polje po stolpcih"
 
 #: application/helpers/common_helper.php:120
 msgid "Language Switch"
@@ -12178,11 +12186,11 @@ msgstr "Zamenjava jezika"
 
 #: application/helpers/common_helper.php:126
 msgid "Multiple Numerical Input"
-msgstr "Več kratkih številskih odgovorov"
+msgstr "Več številskih odgovorov"
 
 #: application/helpers/common_helper.php:132
 msgid "List (Radio)"
-msgstr "Seznam (izbirni gumbi)"
+msgstr "Seznam (izbirni gumb)"
 
 #: application/helpers/common_helper.php:138
 msgid "Multiple choice"
@@ -12190,7 +12198,7 @@ msgstr "Več možnosti"
 
 #: application/helpers/common_helper.php:144
 msgid "Numerical Input"
-msgstr "Številski odgovor"
+msgstr "Številski vnos"
 
 #: application/helpers/common_helper.php:150
 msgid "List with comment"
@@ -12198,11 +12206,11 @@ msgstr "Seznam s komentarjem"
 
 #: application/helpers/common_helper.php:156
 msgid "Multiple choice with comments"
-msgstr "Več možnosti z odgovorom"
+msgstr "Več možnosti s komentarjem"
 
 #: application/helpers/common_helper.php:162
 msgid "Multiple Short Text"
-msgstr "Več kratkih tekstovnih vnosov"
+msgstr "Več kratkih besedilnih vnosov"
 
 #: application/helpers/common_helper.php:174
 msgid "Short Free Text"
@@ -12218,7 +12226,7 @@ msgstr "Ogromno besedilo"
 
 #: application/helpers/common_helper.php:192
 msgid "Text display"
-msgstr "Prikaz teksta"
+msgstr "Prikaz besedila"
 
 #: application/helpers/common_helper.php:198
 msgid "Yes/No"
@@ -12226,15 +12234,15 @@ msgstr "Da/Ne"
 
 #: application/helpers/common_helper.php:204
 msgid "List (Dropdown)"
-msgstr "Seznam (padajoč seznam)"
+msgstr "Seznam (izbirni seznam)"
 
 #: application/helpers/common_helper.php:210
 msgid "Array (Numbers)"
-msgstr "Lestvica (številke)"
+msgstr "Polja (številke)"
 
 #: application/helpers/common_helper.php:216
 msgid "Array (Texts)"
-msgstr "Lestvica (besedila)"
+msgstr "Polja (besedila)"
 
 #: application/helpers/common_helper.php:222
 msgid "File upload"
@@ -12295,6 +12303,25 @@ msgid ""
 "The following answers were given by the participant:\n"
 "{ANSWERTABLE}"
 msgstr ""
+"Pozdravljeni,\n"
+"\n"
+"na vašo anketo '{SURVEYNAME}' je bil podan nov odgovor.\n"
+"\n"
+"Kliknite povezavo, da osvežite anketo:\n"
+"{RELOADURL}\n"
+"\n"
+"Kliknite povezavo za pregled posameznega odgovora:\n"
+"{VIEWRESPONSEURL}\n"
+"\n"
+"Kliknite povezavo za urejanje posameznega odgovora:\n"
+"{EDITRESPONSEURL}\n"
+"\n"
+"Statistike najdete na naslovu:\n"
+"{STATISTICSURL}\n"
+"\n"
+"\n"
+"Udeleženci so podali sledeče odgovore:\n"
+"{ANSWERTABLE}"
 
 #: application/helpers/common_helper.php:1537
 msgid "Response submission for survey {SURVEYNAME}"
@@ -12318,6 +12345,21 @@ msgid ""
 "View statistics by clicking here:\n"
 "{STATISTICSURL}"
 msgstr ""
+"Pozdravljeni,\n"
+"\n"
+"na vašo anketo '{SURVEYNAME}' je bil podan nov odgovor.\n"
+"\n"
+"Kliknite povezavo, da osvežite anketo:\n"
+"{RELOADURL}\n"
+"\n"
+"Kliknite povezavo za pregled posameznega odgovora:\n"
+"{VIEWRESPONSEURL}\n"
+"\n"
+"Kliknite povezavo za urejanje posameznega odgovora:\n"
+"{EDITRESPONSEURL}\n"
+"\n"
+"Statistike najdete na naslovu:\n"
+"{STATISTICSURL}"
 
 #: application/helpers/common_helper.php:1539
 msgid "Confirmation of your participation in our survey"
@@ -12502,15 +12544,15 @@ msgid "Start language"
 msgstr "Začetni jezik"
 
 #: application/helpers/common_helper.php:2232
-#: application/helpers/frontend_helper.php:1655
+#: application/helpers/frontend_helper.php:1654
 #: application/views/admin/dataentry/caption_view.php:29
-#: application/views/admin/export/exportresults_view.php:126
+#: application/views/admin/export/exportresults_view.php:124
 #: application/views/admin/token/browse.php:72
 #: application/views/admin/token/browse.php:132
 #: application/views/admin/token/tokenform.php:56
 #: application/views/entertoken_view.php:15
 msgid "Token"
-msgstr "Dostopno geslo"
+msgstr "Žeton"
 
 #: application/helpers/common_helper.php:2247
 msgid "Date started"
@@ -12524,7 +12566,7 @@ msgstr "Datum zadnje akcije"
 #: application/views/admin/dataentry/caption_view.php:74
 #: application/views/admin/saved/savedlist_view.php:8
 msgid "IP address"
-msgstr "IP naslov"
+msgstr "Naslov IP"
 
 #: application/helpers/common_helper.php:2287
 msgid "Referrer URL"
@@ -12598,7 +12640,7 @@ msgstr "Uredi odgovore po abecedi"
 
 #: application/helpers/common_helper.php:3075
 msgid "Set the percentage width of the answer column (1-100)"
-msgstr "Širina stolpca za odgovore v procentih (1-100)"
+msgstr "Širina stolpca za odgovore v odstotkih (1-100)"
 
 #: application/helpers/common_helper.php:3076
 msgid "Answer width"
@@ -12624,15 +12666,15 @@ msgstr "Logika"
 
 #: application/helpers/common_helper.php:3083
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
-msgstr ""
+msgstr "Vnesite kode vprašanj z več možnostmi (ločene s podpičjem) da prikažete samo odgovarjajoče odgovore v tem vprašanju."
 
 #: application/helpers/common_helper.php:3084
 msgid "Array filter"
-msgstr "Filter polij"
+msgstr "Filter polj"
 
 #: application/helpers/common_helper.php:3091
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
-msgstr ""
+msgstr "Vnesite kode vprašanj z več možnostmi (ločene s podpičjem) da izločite odgovarjajoče odgovore v tem vprašanju."
 
 #: application/helpers/common_helper.php:3092
 msgid "Array filter exclusion"
@@ -12640,7 +12682,7 @@ msgstr "Izločitveni filter polij"
 
 #: application/helpers/common_helper.php:3100
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
-msgstr ""
+msgstr "Če je katero od podvprašanj označeno, bo ta vrednost dodana vsakemu od označenih podvprašanj."
 
 #: application/helpers/common_helper.php:3101
 #: application/views/admin/labels/labelview_view.php:35
@@ -12680,11 +12722,11 @@ msgstr "Prikaži vrstice"
 
 #: application/helpers/common_helper.php:3146
 msgid "Use accessible dropdown boxes instead of calendar popup"
-msgstr ""
+msgstr "Uporabi spustni seznam namesto pojavnega okna koledarja"
 
 #: application/helpers/common_helper.php:3147
 msgid "Display dropdown boxes"
-msgstr "Prikaži spuščajoče kvadrate"
+msgstr "Prikaži spustne sezname"
 
 #: application/helpers/common_helper.php:3154
 msgid "Minimum year value in calendar"
@@ -12704,7 +12746,7 @@ msgstr "Najvišje leto"
 
 #: application/helpers/common_helper.php:3171
 msgid "Prefix|Suffix for dropdown lists"
-msgstr "Predpona|Pripona za padajoče menije"
+msgstr "Predpona|Pripona za spustne sezname"
 
 #: application/helpers/common_helper.php:3172
 msgid "Dropdown prefix/suffix"
@@ -12744,11 +12786,11 @@ msgstr "Naslov za drugo skalo"
 #: application/helpers/common_helper.php:4012
 #: application/helpers/common_helper.php:4020
 msgid "Input"
-msgstr "Odgovor"
+msgstr "Vnos"
 
 #: application/helpers/common_helper.php:3205
 msgid "Multiple numeric inputs sum must equal this value"
-msgstr "Vsota večih številskih vnosov mora biti enaka tej vrednosti"
+msgstr "Vsota več številskih vnosov mora biti enaka tej vrednosti"
 
 #: application/helpers/common_helper.php:3206
 msgid "Equals sum value"
@@ -12760,7 +12802,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3214
 msgid "Question validation equation"
-msgstr "Enačba za validacijo vprašanja"
+msgstr "Enačba za preverjanje vprašanja"
 
 #: application/helpers/common_helper.php:3221
 msgid "This is a hint text that will be shown to the participant describing the question validation equation."
@@ -12768,7 +12810,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3222
 msgid "Question validation tip"
-msgstr "Namig za validacijo vprašanja"
+msgstr "Namig za preverjanje vprašanja"
 
 #: application/helpers/common_helper.php:3229
 msgid "Enter a boolean equation to validate each sub-question."
@@ -12776,7 +12818,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3230
 msgid "Sub-question validation equation"
-msgstr "Enačba za validacijo podvprašanja"
+msgstr "Enačba za preverjanje podvprašanja"
 
 #: application/helpers/common_helper.php:3237
 msgid "This is a tip shown to the participant describing the sub-question validation equation."
@@ -12784,7 +12826,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3238
 msgid "Sub-question validation tip"
-msgstr "Namig za validacijo podvprašanja"
+msgstr "Namig za preverjanje podvprašanja"
 
 #: application/helpers/common_helper.php:3245
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
@@ -12796,11 +12838,11 @@ msgstr "Izključujoča možnost"
 
 #: application/helpers/common_helper.php:3256
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
-msgstr ""
+msgstr "Če uporabnik označi vse možnosti, odznači vse in označi nabor možnosti v nastavitvi \"Izključujoča možnost\""
 
 #: application/helpers/common_helper.php:3257
 msgid "Auto-check exclusive option if all others are checked"
-msgstr ""
+msgstr "Samodejno označi izključujočo možnost, če so vse druge označene."
 
 #: application/helpers/common_helper.php:3264
 #: application/helpers/common_helper.php:3275
@@ -12817,7 +12859,7 @@ msgstr "Lokacija"
 
 #: application/helpers/common_helper.php:3269
 msgid "Store the city?"
-msgstr "Sharnim mesto?"
+msgstr "Shranim mesto?"
 
 #: application/helpers/common_helper.php:3270
 msgid "Save city"
@@ -12889,12 +12931,11 @@ msgstr ""
 #: application/helpers/common_helper.php:3343
 #: application/helpers/common_helper.php:3577
 #: application/helpers/common_helper.php:3679
-#: application/views/admin/globalSettings_view.php:192
-#: application/views/admin/globalSettings_view.php:239
-#: application/views/admin/globalSettings_view.php:251
-#: application/views/admin/globalSettings_view.php:272
-#: application/views/admin/globalSettings_view.php:293
-#: application/views/admin/globalSettings_view.php:360
+#: application/views/admin/globalSettings_view.php:228
+#: application/views/admin/globalSettings_view.php:240
+#: application/views/admin/globalSettings_view.php:261
+#: application/views/admin/globalSettings_view.php:282
+#: application/views/admin/globalSettings_view.php:349
 msgid "Off"
 msgstr "Izklopljeno"
 
@@ -12904,15 +12945,15 @@ msgstr "Google zemljevidi"
 
 #: application/helpers/common_helper.php:3346
 msgid "Activate this to show a map above the input field where the user can select a location"
-msgstr ""
+msgstr "Aktivirajte to, da prikažete zemljevid nad vnosnim poljem, kjer uporabnik lahko izbere lokacijo"
 
 #: application/helpers/common_helper.php:3347
 msgid "Use mapping service"
-msgstr ""
+msgstr "Uporabi servis mapiranja"
 
 #: application/helpers/common_helper.php:3355
 msgid "Width of the map in pixel"
-msgstr "Širina zemljevida v pikslih"
+msgstr "Širina zemljevida v pikah"
 
 #: application/helpers/common_helper.php:3356
 msgid "Map width"
@@ -12920,7 +12961,7 @@ msgstr "Širina zemljevida"
 
 #: application/helpers/common_helper.php:3364
 msgid "Height of the map in pixel"
-msgstr "Višina zemljevida v pixlih"
+msgstr "Višina zemljevida v pikah"
 
 #: application/helpers/common_helper.php:3365
 msgid "Map height"
@@ -12928,11 +12969,11 @@ msgstr "Višina zemljevida"
 
 #: application/helpers/common_helper.php:3375
 msgid "Get the default location using the user's IP address?"
-msgstr "Dobi privzeto lokacijo na podlagi uporabnikovega IP naslova?"
+msgstr "Dobi privzeto lokacijo na podlagi uporabnikovega naslova IP?"
 
 #: application/helpers/common_helper.php:3376
 msgid "IP as default location"
-msgstr "IP kot "
+msgstr "IP kot privzeta lokacija"
 
 #: application/helpers/common_helper.php:3383
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
@@ -12940,7 +12981,7 @@ msgstr "Privzete koordinate zemljevida ko se naloži prva stran. Format: geograf
 
 #: application/helpers/common_helper.php:3384
 msgid "Default position"
-msgstr "Privzet pozicija"
+msgstr "Privzeti položaj"
 
 #: application/helpers/common_helper.php:3392
 msgid "Map zoom level"
@@ -12956,11 +12997,11 @@ msgstr "Skrij namig, ki je navadno prikazan z geslom"
 
 #: application/helpers/common_helper.php:3406
 msgid "Hide tip"
-msgstr "Skrij namige"
+msgstr "Skrij namig"
 
 #: application/helpers/common_helper.php:3416
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
-msgstr "Kadarkoli skrij to vprašanje. To je uporabno, ko želite vključiti podatke s pomočjo predizpolnjenih odgovorov."
+msgstr "Skrij to vprašanje. To je uporabno, ko želite vključiti podatke s pomočjo predizpolnjenih odgovorov."
 
 #: application/helpers/common_helper.php:3417
 msgid "Always hide this question"
@@ -12976,7 +13017,7 @@ msgstr "Največ odgovorov"
 
 #: application/helpers/common_helper.php:3432
 msgid "Maximum sum value of multiple numeric input"
-msgstr "Največja vsota vrednosti večih številskih vnosov"
+msgstr "Največja vsota vrednosti več številskih vnosov"
 
 #: application/helpers/common_helper.php:3433
 msgid "Maximum sum value"
@@ -13009,7 +13050,7 @@ msgstr "Najmanj odgovorov"
 
 #: application/helpers/common_helper.php:3472
 msgid "The sum of the multiple numeric inputs must be greater than this value"
-msgstr "Vsota večih numeričnih vnosov mmora biti večja od te vrednosti"
+msgstr "Vsota več numeričnih vnosov mora biti večja od te vrednosti"
 
 #: application/helpers/common_helper.php:3473
 msgid "Minimum sum value"
@@ -13043,7 +13084,7 @@ msgstr "Uporabi ureditev potrditvenih polij"
 
 #: application/helpers/common_helper.php:3524
 msgid "Checkbox layout"
-msgstr "Ureditev polja odkljukat"
+msgstr "Položaj potrditvenega polja"
 
 #: application/helpers/common_helper.php:3534
 msgid "Present answer options in reverse order"
@@ -13055,7 +13096,7 @@ msgstr "Nasprotni vrstni red odgovorov"
 
 #: application/helpers/common_helper.php:3554
 msgid "Restrict input to integer values"
-msgstr "Omkeji vnos na celoštevilčne vrednosti"
+msgstr "Omeji vnos na celoštevilčne vrednosti"
 
 #: application/helpers/common_helper.php:3555
 msgid "Integer only"
@@ -13079,11 +13120,11 @@ msgstr "Stolpci"
 
 #: application/helpers/common_helper.php:3580
 msgid "Both rows and columns"
-msgstr "Oboje kolone in vrste"
+msgstr "Stolpci in vrstice"
 
 #: application/helpers/common_helper.php:3583
 msgid "Show totals for either rows, columns or both rows and columns"
-msgstr "Pokaži vsote le za vrste ali stolpce ali pa za oboje"
+msgstr "Pokaži vsote le za vrstice, le za stolpce ali pa za oboje"
 
 #: application/helpers/common_helper.php:3584
 msgid "Show totals for"
@@ -13091,7 +13132,7 @@ msgstr "Pokaži skupaj za"
 
 #: application/helpers/common_helper.php:3597
 msgid "Show grand total for either columns or rows"
-msgstr "Pokaži vsote le za vrste ali stolpce"
+msgstr "Pokaži vsote le za vrstice ali le za stolpce"
 
 #: application/helpers/common_helper.php:3598
 msgid "Show grand total"
@@ -13099,11 +13140,11 @@ msgstr "Pokaži skupno vsoto"
 
 #: application/helpers/common_helper.php:3609
 msgid "Present as text input boxes instead of dropdown lists"
-msgstr "Predstavi kot tekstovna vnosna polja namesto padajočih seznamov."
+msgstr "Predstavi kot besedilna vnosna polja namesto spustnih seznamov"
 
 #: application/helpers/common_helper.php:3610
 msgid "Text inputs"
-msgstr "Tekstovni vnosi"
+msgstr "Besedilni vnosi"
 
 #: application/helpers/common_helper.php:3620
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
@@ -13123,11 +13164,11 @@ msgstr "Samo števila za 'Drugo'"
 
 #: application/helpers/common_helper.php:3640
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
-msgstr "Zamenja labelo 'drugo' z besedilom"
+msgstr "Zamenja oznako  'drugo' z besedilom"
 
 #: application/helpers/common_helper.php:3641
 msgid "Label for 'Other:' option"
-msgstr "Labela za 'Drugo:' možnost"
+msgstr "Oznaka za možnost 'Drugo:'"
 
 #: application/helpers/common_helper.php:3651
 msgid "Insert a page break before this question in printable view by setting this to Yes."
@@ -13193,7 +13234,7 @@ msgstr "Drsnik"
 #: application/helpers/common_helper.php:3773
 #: application/helpers/common_helper.php:3774
 msgid "Use slider layout"
-msgstr "Uporabi ureditev z drsnikom"
+msgstr "Uporabi postavitev z drsnikom"
 
 #: application/helpers/common_helper.php:3724
 #: application/helpers/common_helper.php:3725
@@ -13233,11 +13274,11 @@ msgstr "Da - drsnik z emocijami"
 
 #: application/helpers/common_helper.php:3785
 msgid "Display min and max value under the slider"
-msgstr "Prikaži minimalni in maksimalno vrednosto pod drsnikom"
+msgstr "Prikaži najmanjšo in največjo vrednost pod drsnikom"
 
 #: application/helpers/common_helper.php:3786
 msgid "Display slider min and max value"
-msgstr "Prikaži minimalno in maksimalno vrednost drsnika"
+msgstr "Prikaži najmanjšo in največjo vrednost drsnika"
 
 #: application/helpers/common_helper.php:3793
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
@@ -13273,11 +13314,11 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3831
 msgid "For list dropdown boxes, show up to this many rows"
-msgstr "V dropdown izbiri pokaži toliko vrstic"
+msgstr "V spustnem seznamu izbiri prikaži toliko vrstic"
 
 #: application/helpers/common_helper.php:3832
 msgid "Height of dropdown"
-msgstr "Višina dropdown izbire"
+msgstr "Višina spustnega seznama"
 
 #: application/helpers/common_helper.php:3840
 msgid "Order - like 3)"
@@ -13285,7 +13326,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3843
 msgid "Accelerator keys for list items"
-msgstr ""
+msgstr "Bljižnične tipke za elemente seznama"
 
 #: application/helpers/common_helper.php:3844
 msgid "Prefix for list items"
@@ -13393,15 +13434,15 @@ msgstr "Opozorilo odštevanja časovne omejitve"
 
 #: application/helpers/common_helper.php:3916
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
-msgstr "CSS stil za sporočilo, ki je prikazano v števcu med odštevanjem časovne omejitve"
+msgstr "Slog CSS  za sporočilo, ki je prikazano v števcu med odštevanjem časovne omejitve"
 
 #: application/helpers/common_helper.php:3917
 msgid "Time limit timer CSS style"
-msgstr "CSS stil števca časovne omejitve"
+msgstr "Slog števca CSS časovne omejitve"
 
 #: application/helpers/common_helper.php:3924
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
-msgstr "Prikaži 'sporočilo o poteku časovne omejitve', ko je še toliko sekund pred 'akcijo časovne omejitve' (privzeto na 1 sekundo, če je prazno)"
+msgstr "Prikaži 'sporočilo o poteku časovne omejitve', ko je še toliko sekund pred 'akcijo časovne omejitve' (privzeto je 1 sekundo, če je prazno)"
 
 #: application/helpers/common_helper.php:3925
 msgid "Time limit expiry message display time"
@@ -13417,11 +13458,11 @@ msgstr "Sporočilo preteka časovne omejitve"
 
 #: application/helpers/common_helper.php:3941
 msgid "CSS style for the 'time limit expiry message'"
-msgstr "CSS stil za sporočilo o 'preteku časovne omejitve'"
+msgstr "Slog CSS za sporočilo o 'preteku časovne omejitve'"
 
 #: application/helpers/common_helper.php:3942
 msgid "Time limit message CSS style"
-msgstr "CSS stil sporočila o časovni omejitvi"
+msgstr "Slog CSS sporočila o časovni omejitvi"
 
 #: application/helpers/common_helper.php:3949
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
@@ -13429,7 +13470,7 @@ msgstr "Prikaži 'sporočilo o omejenem času', ko je še toliko sekund do konca
 
 #: application/helpers/common_helper.php:3950
 msgid "1st time limit warning message timer"
-msgstr "Štoparica za prvo opozorilo prekoračitve časa"
+msgstr "Odštevalnik za prvo opozorilo prekoračitve časa"
 
 #: application/helpers/common_helper.php:3957
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
@@ -13449,11 +13490,11 @@ msgstr "Prvo opozorilo prekoračitve časa"
 
 #: application/helpers/common_helper.php:3974
 msgid "CSS style used when the 'time limit warning' message is displayed"
-msgstr "CSS stil za opozorilo o časovni omejitvi"
+msgstr "Slog CSS za opozorilo o časovni omejitvi"
 
 #: application/helpers/common_helper.php:3975
 msgid "1st time limit warning CSS style"
-msgstr "CSS stil prvega opozorila prekoračitve časa"
+msgstr "Slog CSS prvega opozorila prekoračitve časa"
 
 #: application/helpers/common_helper.php:3982
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
@@ -13461,7 +13502,7 @@ msgstr "Prikaži drugo 'sporočilo o omejenem času', ko je še toliko sekund do
 
 #: application/helpers/common_helper.php:3983
 msgid "2nd time limit warning message timer"
-msgstr "Štoparica za drugo opozorilo prekoračitve časa"
+msgstr "Odštevalnik za drugo opozorilo prekoračitve časa"
 
 #: application/helpers/common_helper.php:3990
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
@@ -13481,11 +13522,11 @@ msgstr "Drugo opozorilo prekoračitve časa"
 
 #: application/helpers/common_helper.php:4007
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
-msgstr "CSS stil za drugo opozorilo o časovni omejitvi"
+msgstr "Slog CSS za drugo opozorilo o časovni omejitvi"
 
 #: application/helpers/common_helper.php:4008
 msgid "2nd time limit warning CSS style"
-msgstr "Drugo časovno opozorilo CSS stila"
+msgstr "Slog CSS drugega časovnega opozorila"
 
 #: application/helpers/common_helper.php:4015
 msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"
@@ -13542,7 +13583,7 @@ msgstr "Naj bo udeleženec primoran podati komentar naložene datoteke?"
 
 #: application/helpers/common_helper.php:4058
 msgid "Show comment"
-msgstr "Prikaži naslov"
+msgstr "Prikaži komentar"
 
 #: application/helpers/common_helper.php:4067
 msgid "The participant cannot upload a single file larger than this size"
@@ -13558,7 +13599,7 @@ msgstr "Največje število datotek, ki jih udeleženec lahko naloži za to vpra�
 
 #: application/helpers/common_helper.php:4077
 msgid "Max number of files"
-msgstr "Maksimalno število datotek"
+msgstr "Največje število datotek"
 
 #: application/helpers/common_helper.php:4085
 msgid "Minimum number of files that the participant must upload for this question"
@@ -13566,27 +13607,27 @@ msgstr "Najmanjše število datotek, ki jih mora udeleženec naložiti za to vpr
 
 #: application/helpers/common_helper.php:4086
 msgid "Min number of files"
-msgstr "Minimalno število datotek"
+msgstr "Najmanjše število datotek"
 
 #: application/helpers/common_helper.php:4094
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
-msgstr "Dovoljeni tipi datotek (vrednosti, ločene z vejico - npr. pdf,doc,odt)"
+msgstr "Dovoljene vrste datotek (vrednosti, ločene z vejico - npr. pdf,doc,odt)"
 
 #: application/helpers/common_helper.php:4095
 msgid "Allowed file types"
-msgstr "Dovoljeni tipi datotek"
+msgstr "Dovoljene vrste datotek"
 
 #: application/helpers/common_helper.php:4102
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
-msgstr ""
+msgstr "Postavi vprašanje v določeno naključno skupino, vsa vprašanja v tej skupini se bodo prikazala v naključnem vrstnem redu"
 
 #: application/helpers/common_helper.php:4103
 msgid "Randomization group name"
-msgstr ""
+msgstr "Ime naključne skupine"
 
 #: application/helpers/common_helper.php:4237
 msgid "Email was not sent because demo-mode is activated."
-msgstr "E-mail ni bil poslan ker je vključen demonstracijski način ankete"
+msgstr "Sporočilo ni bilo poslano, ker je vključen demonstracijski način ankete."
 
 #: application/helpers/common_helper.php:4358
 msgid "SMTP debug output:"
@@ -13594,7 +13635,7 @@ msgstr "SMTP razhroščevalni izpis:"
 
 #: application/helpers/common_helper.php:5236
 #: application/helpers/replacements_helper.php:631
-#: application/views/admin/export/exportresults_view.php:125
+#: application/views/admin/export/exportresults_view.php:123
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:72
 #: application/views/admin/token/browse.php:130
@@ -13603,7 +13644,7 @@ msgstr "Elektronski naslov"
 
 #: application/helpers/common_helper.php:5237
 msgid "Token code"
-msgstr "Koda gesla"
+msgstr "Žeton"
 
 #: application/helpers/common_helper.php:5238
 msgid "Language code"
@@ -13611,15 +13652,15 @@ msgstr "Koda jezika"
 
 #: application/helpers/common_helper.php:5239
 msgid "Invitation sent date"
-msgstr "Povabilo poslano na"
+msgstr "Datum vabila"
 
 #: application/helpers/common_helper.php:5240
 msgid "Last Reminder sent date"
-msgstr "Opomnik nazadnje poslan na"
+msgstr "Datum zadnjega poslanega opomnika"
 
 #: application/helpers/common_helper.php:5241
 msgid "Total numbers of sent reminders"
-msgstr "Skupno število poslanih opomnikov."
+msgstr "Skupno število poslanih opomnikov"
 
 #: application/helpers/common_helper.php:5242
 #: application/views/admin/token/browse.php:72
@@ -13629,7 +13670,7 @@ msgstr "Preostalih uporab"
 
 #: application/helpers/common_helper.php:5261
 msgid "Attribute %s"
-msgstr "Lastnost %s"
+msgstr "Atribut %s"
 
 #: application/helpers/common_helper.php:6139
 msgid "Access denied!"

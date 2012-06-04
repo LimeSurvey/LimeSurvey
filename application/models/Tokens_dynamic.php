@@ -14,7 +14,7 @@
    *	Files Purpose: lots of common functions
 */
 
-class Tokens_dynamic extends CActiveRecord
+class Tokens_dynamic extends LSActiveRecord
 {
 	protected static $sid = 0;
 
@@ -37,7 +37,7 @@ class Tokens_dynamic extends CActiveRecord
 	 * @static
 	 * @access public
 	 * @param int $surveyid
-	 * @return CActiveRecord
+	 * @return Tokens_dynamic
 	 */
 	public static function model($sid = null)
 	{
@@ -69,48 +69,33 @@ class Tokens_dynamic extends CActiveRecord
 		return 'tid';
 	}
 
-	/**
-	 * Returnvs a summary of this table
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function summary()
-	{
-		$sid = self::$sid;
+    /**
+     * Returns summary information of this token table
+     *
+     * @access public
+     * @return array
+     */
+    public function summary()
+    {
+        $sid = self::$sid;
+        if(Yii::app()->db->schema->getTable("{{tokens_$sid}}")){
+            $data=Yii::app()->db->createCommand()
+                ->select("COUNT(*) as tkcount, 
+                            SUM(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE 0 END) as tkinvalid, 
+                            SUM(CASE WHEN (sent!='N' and sent<>'') THEN 1 ELSE 0 END) as tksent, 
+                            SUM(CASE WHEN (emailstatus = 'OptOut') THEN 1 ELSE 0 END) as tkoptout,
+                            SUM(CASE WHEN (completed!='N' and completed<>'') THEN 1 ELSE 0 END) as tkcompleted
+                            ")
+                ->from("{{tokens_$sid}}")
+                ->queryRow();
+        }
+        else
+        {
+            $data=false;
+        }
 
-		$tksq = "SELECT count(tid) FROM {{tokens_$sid}}";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$tkcount = $tkr["count(tid)"];
-		$data['tkcount']=$tkcount;
-
-		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE token IS NULL OR token=''";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$data['query1'] = $tkr["count(*)"]." / $tkcount";
-		$data['tkinvalid']= $tkr["count(*)"];
-
-		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE (sent!='N' and sent<>'')";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$data['query2'] = $tkr["count(*)"]." / $tkcount";
-		$data['tksent']= $tkr["count(*)"];
-
-		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE emailstatus = 'OptOut'";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$data['query3'] = $tkr["count(*)"]." / $tkcount";
-		$data['tkoptout']= $tkr["count(*)"];
-
-		$tksq = "SELECT count(*) FROM {{tokens_$sid}} WHERE (completed!='N' and completed<>'')";
-		$tksr = Yii::app()->db->createCommand($tksq)->query();
-		$tkr = $tksr->read();
-		$data['query4'] = $tkr["count(*)"]." / $tkcount";
-		$data['tkcompleted']= $tkr["count(*)"];
-
-		return $data;
-	}
+        return $data;
+    }
 
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
@@ -139,12 +124,32 @@ class Tokens_dynamic extends CActiveRecord
         ->bindParam(":tid", $tid, PDO::PARAM_INT)
         ->execute();
     }
+
+    /**
+     * Retrieve an array of records with an empty token, in the result is just the id (tid)
+     *
+     * @param int $iSurveyID
+     * @return array
+     */
     function selectEmptyTokens($iSurveyID)
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
+
+    /**
+     * Creates tokens for all token records that have empty token fields and returns the number
+     * of tokens created
+     *
+     * @param int $iSurveyID
+     * @return int number of created tokens
+     */
     function createTokens($iSurveyID)
     {
+        $tkresult = $this->selectEmptyTokens($iSurveyID);
+
+        //Exit early if there are not empty tokens
+        if (count($tkresult)===0) return 0;
+
         //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>$iSurveyID));
         $iTokenLength = $tlrow->tokenlength;
@@ -155,7 +160,10 @@ class Tokens_dynamic extends CActiveRecord
             $iTokenLength = 15;
         }
 
-		$ntresult = $this->findAll();
+        //Add some criteria to select only the token field
+        $criteria = $this->getDbCriteria();
+        $criteria->select = 'token';
+		$ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
 
         // select all existing tokens
         foreach ($ntresult as $tkrow)
@@ -164,7 +172,6 @@ class Tokens_dynamic extends CActiveRecord
         }
 
         $newtokencount = 0;
-        $tkresult = $this->selectEmptyTokens($iSurveyID);
         foreach ($tkresult as $tkrow)
         {
             $bIsValidToken = false;
@@ -179,8 +186,8 @@ class Tokens_dynamic extends CActiveRecord
             $itresult = $this->updateToken($tkrow['tid'], $newtoken);
             $newtokencount++;
         }
-        return $newtokencount;
 
+        return $newtokencount;
     }
 
     public function search()
