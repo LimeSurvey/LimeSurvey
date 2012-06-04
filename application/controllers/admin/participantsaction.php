@@ -114,7 +114,8 @@ class participantsaction extends Survey_Common_Action
         {
             $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('survey.owner_id=:uid AND surveyls_language=:lang',array('survey.uid'=>Yii::app()->session['loginID'], ':lang'=>$lang));
         }
-        //echo "<pre>"; print_r($aSurveyNames); echo "</pre>";
+
+        /* Build a list of surveys that have tokens tables */
         $tSurveyNames=array();
         foreach($aSurveyNames as $row)
         {
