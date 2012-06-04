@@ -3858,7 +3858,7 @@ function questionAttributes($returnByName=false)
 
     //Timer attributes
     $qattributes["time_limit"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>90,
     "inputtype"=>"integer",
@@ -3866,7 +3866,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit"));
 
     $qattributes["time_limit_action"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>92,
     'inputtype'=>'singleselect',
@@ -3878,7 +3878,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit action"));
 
     $qattributes["time_limit_disable_next"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>94,
     "inputtype"=>"singleselect",
@@ -3889,7 +3889,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit disable next"));
 
     $qattributes["time_limit_disable_prev"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>96,
     "inputtype"=>"singleselect",
@@ -3900,7 +3900,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit disable prev"));
 
     $qattributes["time_limit_countdown_message"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>98,
     "inputtype"=>"textarea",
@@ -3909,7 +3909,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit countdown message"));
 
     $qattributes["time_limit_timer_style"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>100,
     "inputtype"=>"textarea",
@@ -3917,7 +3917,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit timer CSS style"));
 
     $qattributes["time_limit_message_delay"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>102,
     "inputtype"=>"integer",
@@ -3925,7 +3925,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit expiry message display time"));
 
     $qattributes["time_limit_message"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>104,
     "inputtype"=>"textarea",
@@ -3934,7 +3934,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit expiry message"));
 
     $qattributes["time_limit_message_style"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>106,
     "inputtype"=>"textarea",
@@ -3942,7 +3942,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit message CSS style"));
 
     $qattributes["time_limit_warning"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>108,
     "inputtype"=>"integer",
@@ -3950,7 +3950,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning message timer"));
 
     $qattributes["time_limit_warning_display_time"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>110,
     "inputtype"=>"integer",
@@ -3958,7 +3958,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning message display time"));
 
     $qattributes["time_limit_warning_message"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>112,
     "inputtype"=>"textarea",
@@ -3967,7 +3967,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning message"));
 
     $qattributes["time_limit_warning_style"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>114,
     "inputtype"=>"textarea",
@@ -3975,7 +3975,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning CSS style"));
 
     $qattributes["time_limit_warning_2"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>116,
     "inputtype"=>"integer",
@@ -3983,7 +3983,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("2nd time limit warning message timer"));
 
     $qattributes["time_limit_warning_2_display_time"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>118,
     "inputtype"=>"integer",
@@ -3991,7 +3991,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("2nd time limit warning message display time"));
 
     $qattributes["time_limit_warning_2_message"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>120,
     "inputtype"=>"textarea",
@@ -4000,7 +4000,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("2nd time limit warning message"));
 
     $qattributes["time_limit_warning_2_style"]=array(
-    "types"=>"STUX",
+    "types"=>"STUXL",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>122,
     "inputtype"=>"textarea",

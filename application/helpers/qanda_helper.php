@@ -1338,6 +1338,7 @@ function do_language($ia)
 function do_list_dropdown($ia)
 {
     global $dropdownthreshold;
+    global $js_header_includes;
 
     $clang=Yii::app()->lang;
 
@@ -1360,6 +1361,14 @@ function do_list_dropdown($ia)
     }
 
     $answer='';
+
+    //Time Limit Code
+    if (trim($aQuestionAttributes['time_limit'])!='')
+    {
+        $js_header_includes[] = '/scripts/coookies.js';
+        $answer .= return_timer_script($aQuestionAttributes, $ia);
+    }
+    //End Time Limit Code
 
     $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ";
     $result = Yii::app()->db->createCommand($query)->query();     //Checked
@@ -1613,6 +1622,7 @@ function do_list_dropdown($ia)
 function do_list_radio($ia)
 {
     global $dropdownthreshold;
+    global $js_header_includes;
     global $thissurvey;
     $clang=Yii::app()->lang;
     if ($thissurvey['nokeyboard']=='Y')
@@ -1678,6 +1688,15 @@ function do_list_radio($ia)
 
     $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
     $answer = $wrapper['whole-start'];
+
+    //Time Limit Code
+    if (trim($aQuestionAttributes['time_limit'])!='')
+    {
+        $js_header_includes[] = '/scripts/coookies.js';
+        $answer .= return_timer_script($aQuestionAttributes, $ia);
+    }
+    //End Time Limit Code
+
     // Get array_filter stuff
 
     $rowcounter = 0;
