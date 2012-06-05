@@ -2554,6 +2554,17 @@ EOD;
 1~!0
 0~(empty and 0)
 0~(empty or 0)
+<B>Empty_Var Vs. Zero</B>~"<B>Empty_Var Vs. Zero</B>"
+0~empty == zero
+1~empty != zero
+0~empty > zero
+0~empty >= zero
+0~empty < zero
+0~empty <= zero
+1~!empty
+1~!zero
+0~(empty and zero)
+0~(empty or zero)
 <B>Empty_Var Vs. Constant</B>~"<B>Empty_Var Vs. Constant</B>"
 0~empty == 3
 1~empty != 3
@@ -2575,6 +2586,16 @@ EOD;
 0~!is_empty(empty) && (empty <= 0)
 0~!is_empty(empty) && ((empty and 0))
 0~!is_empty(empty) && ((empty or 0))
+<B>Solution: Empty_Var Vs. Zero</B>~"<B>Solution: Empty_Var Vs. Zero</B>"
+0~!is_empty(empty) && (empty == zero)
+0~!is_empty(five) && (five == zero)
+1~!is_empty(zero) && (zero == zero)
+0~!is_empty(empty) && (empty > zero)
+0~!is_empty(empty) && (empty >= zero)
+0~!is_empty(empty) && (empty < zero)
+0~!is_empty(empty) && (empty <= zero)
+0~!is_empty(empty) && ((empty and zero))
+0~!is_empty(empty) && ((empty or zero))
 <B>Solution: Empty_Var Vs. Constant</B>~"<B>Solution: Empty_Var Vs. Constant</B>"
 0~!is_empty(empty) && (empty < 3)
 0~!is_empty(empty) && (empty <= 3)
@@ -2585,6 +2606,7 @@ EOD;
 1~(empty != 0)
 1~!is_empty(empty) && (empty != 0)
 1~is_empty(empty) || (empty != 0)
+1~is_empty(empty) || (empty != zero)
 0~is_empty(zero) || (zero != 0)
 1~is_empty(five) || (five != 0)
 <b>SETUP</b>~'<b>SETUP</b>'
