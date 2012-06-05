@@ -568,7 +568,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js');
+    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js', 'js');
+
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
     This just stops error messages occuring */
     if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
@@ -1324,7 +1325,6 @@ function do_language($ia)
 function do_list_dropdown($ia)
 {
     global $dropdownthreshold;
-    global $js_header_includes;
 
     $clang=Yii::app()->lang;
 
@@ -1351,7 +1351,6 @@ function do_list_dropdown($ia)
     //Time Limit Code
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
     //End Time Limit Code
@@ -1608,7 +1607,6 @@ function do_list_dropdown($ia)
 function do_list_radio($ia)
 {
     global $dropdownthreshold;
-    global $js_header_includes;
     global $thissurvey;
     $clang=Yii::app()->lang;
     if ($thissurvey['nokeyboard']=='Y')
@@ -1678,7 +1676,6 @@ function do_list_radio($ia)
     //Time Limit Code
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
     //End Time Limit Code
