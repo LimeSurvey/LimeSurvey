@@ -791,6 +791,7 @@
             $relOrList = array();
             foreach($query->readAll() as $row)
             {
+                $row['method']=trim($row['method']); //For Postgres
                 if ($row['qid'] != $_qid)
                 {
                     // output the values for prior question is there was one
@@ -884,18 +885,52 @@
                 {
                     // Conditions uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
                     if ($value === '" "') {
-                        if ($row['method'] == '==') {
+                        if ($row['method'] == '==')
+                        {
                             $relOrList[] = "is_empty(" . $fieldname . ")";
                         }
-                        else if ($row['method'] == '!=') {
-                                $relOrList[] = "!is_empty(" . $fieldname . ")";
-                            }
-                            else {
-                                $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                        else if ($row['method'] == '!=')
+                        {
+                            $relOrList[] = "!is_empty(" . $fieldname . ")";
+                        }
+                        else
+                        {
+                            $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
                         }
                     }
-                    else {
-                        $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                    else
+                    {
+                        if ($value == '"0"' || !preg_match('/^".+"$/',$value))
+                        {
+                            switch ($row['method'])
+                            {
+                                case '==':
+                                case '<':
+                                case '<=':
+                                case '>=':
+                                    $relOrList[] = '(!is_empty(' . $fieldname . ') && (' . $fieldname . " " . $row['method'] . " " . $value . '))';
+                                    break;
+                                case '!=':
+                                    $relOrList[] = '(is_empty(' . $fieldname . ') || (' . $fieldname . " != " . $value . '))';
+                                    break;
+                                default:
+                                    $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch ($row['method'])
+                            {
+                                case '<':
+                                case '<=':
+                                    $relOrList[] = '(!is_empty(' . $fieldname . ') && (' . $fieldname . " " . $row['method'] . " " . $value . '))';
+                                    break;
+                                default:
+                                    $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                                    break;
+                            }
+                        }
                     }
                 }
 
