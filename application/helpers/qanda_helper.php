@@ -568,7 +568,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js');
+    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js', 'js');
+
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
     This just stops error messages occuring */
     if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
