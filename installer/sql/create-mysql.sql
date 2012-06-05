@@ -6,8 +6,8 @@ CREATE TABLE `prefix_answers` (
   `code` varchar(5) NOT NULL default '',
   `answer` text NOT NULL,
   `sortorder` int(11) NOT NULL,
-  `language` varchar(20) default 'en',
   `assessment_value` int(11) NOT NULL default '0',
+  `language` varchar(20) default 'en',
   `scale_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`qid`,`code`,`language`,`scale_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -116,7 +116,7 @@ CREATE TABLE `prefix_labels` (
   `language` varchar(20) default 'en',
   `assessment_value` int(11) NOT NULL default '0',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
-  KEY `ixcode` (`code`)
+  KEY `labels_code_idx` (`code`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -165,7 +165,7 @@ CREATE TABLE `prefix_participant_attribute_names` (
 
 
 --
--- Table structure for table participant_attribute_names_values
+-- Table structure for table participant_attribute_values
 --
 CREATE TABLE `prefix_participant_attribute_values` (
   `value_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -520,10 +520,6 @@ CREATE TABLE `prefix_templates_rights` (
   `use` int(11) NOT NULL,
   PRIMARY KEY  (`uid`,`folder`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
-
-
 
 
 --

@@ -913,7 +913,12 @@ function db_upgrade_all($oldversion) {
         alterColumn('{{users}}','email',"{$sVarchar}(320)");
 
         try{ Yii::app()->db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) {};
-        try{ Yii::app()->db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid',true);} catch(Exception $e) {};
+        try{ Yii::app()->db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid');} catch(Exception $e) {};
+
+        try{ Yii::app()->db->createCommand()->dropIndex('ixcode','{{labels}}');} catch(Exception $e) {};
+        try{ Yii::app()->db->createCommand()->dropIndex('{{labels_ixcode_idx}}','{{labels}}');} catch(Exception $e) {};
+        try{ Yii::app()->db->createCommand()->createIndex('labels_code_idx','{{labels}}','code');} catch(Exception $e) {};
+
 
 
         if ($sDBDriverName=='pgsql')
