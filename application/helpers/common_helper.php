@@ -3088,6 +3088,17 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter exclusion'));
 
+    $qattributes["array_filter_style"]=array(
+    "types"=>"1ABCEF:;MPLKQ",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>100,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Hidden'),
+    1=>$clang->gT('Disabled')),
+    'default'=>0,
+    "help"=>$clang->gT("Specify how array-filtered sub-questions should be displayed"),
+    "caption"=>$clang->gT('Array filter style'));
+
     $qattributes["assessment_value"]=array(
     "types"=>"MP",
     'category'=>$clang->gT('Logic'),
