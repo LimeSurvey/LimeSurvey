@@ -1038,23 +1038,39 @@
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                            $af_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                            $sgq .= substr($sq['sqsuffix'],1);
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $af_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                            $afe_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                            $sgq .= substr($sq['sqsuffix'],1);
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $afe_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                     }
                                     else
                                     {
                                         foreach ($cascadedAF as $_caf)
                                         {
-                                            $af_names[] = $_caf . $sq['sqsuffix'];
+                                            $sgq = $_caf . $sq['sqsuffix'];
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $af_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
-                                            $afe_names[] = $_cafe . $sq['sqsuffix'];
+                                            $sgq = $_cafe . $sq['sqsuffix'];
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $afe_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                     }
                                     break;
@@ -5815,12 +5831,23 @@
                     ////////////////////////////////////////////////////////////////////////
 
                     // Do all sub-question filtering (e..g array_filter)
+                    /**
+                     * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row
+                     */
+                    $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
 
                         $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
-                        $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                        if ($afHide)
+                        {
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                        }
+                        else
+                        {
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                        }
                         if ($sq['isExclusiveJS'] != '')
                         {
                             $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
@@ -5842,7 +5869,14 @@
                                 $relParts[] = "    }\n";
                                 $relParts[] = "    else {\n";
                                 $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                if ($afHide)
+                                {
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                }
+                                else
+                                {
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                }
                                 $relParts[] = "    }\n";
                             }
                             else
@@ -5852,7 +5886,14 @@
                         }
                         else
                         {
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                            if ($afHide)
+                            {
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                            }
+                            else
+                            {
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                            }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";

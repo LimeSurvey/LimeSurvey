@@ -766,6 +766,25 @@ class CheckIntegrity extends Survey_Common_Action
                 $aDelete['redundantsurveytables'] = $aOldSurveyTableAsk;
             }
         }
+
+        /**********************************************************************/
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN TABLES       */
+        /**********************************************************************/
+        //1: Get distinct list of survey_link survey ids, check if tokens
+        //   table still exists for each one, and remove if not
+
+
+        /* TODO */
+
+        /**********************************************************************/
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN ENTRIES      */
+        /**********************************************************************/
+        //1: For each survey_link, see if the matching entry still exists in
+        //   the token table and remove if it doesn't.
+
+
+        /* TODO */
+
         return $aDelete;
     }
 

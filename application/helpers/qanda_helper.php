@@ -568,7 +568,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js');
+    header_includes(Yii::app()->getConfig("generalscripts").'coookies.js', 'js');
+
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
     This just stops error messages occuring */
     if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
@@ -1347,6 +1348,13 @@ function do_list_dropdown($ia)
 
     $answer='';
 
+    //Time Limit Code
+    if (trim($aQuestionAttributes['time_limit'])!='')
+    {
+        $answer .= return_timer_script($aQuestionAttributes, $ia);
+    }
+    //End Time Limit Code
+
     $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ";
     $result = Yii::app()->db->createCommand($query)->query();     //Checked
     $row = $result->read(); $other = $row['other'];
@@ -1664,6 +1672,14 @@ function do_list_radio($ia)
 
     $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
     $answer = $wrapper['whole-start'];
+
+    //Time Limit Code
+    if (trim($aQuestionAttributes['time_limit'])!='')
+    {
+        $answer .= return_timer_script($aQuestionAttributes, $ia);
+    }
+    //End Time Limit Code
+
     // Get array_filter stuff
 
     $rowcounter = 0;
