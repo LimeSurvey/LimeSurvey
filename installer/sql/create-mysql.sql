@@ -506,7 +506,7 @@ CREATE TABLE `prefix_users` (
   `htmleditormode` varchar(7) default 'default',
   `templateeditormode` varchar(7) NOT NULL default 'default',
   `questionselectormode` varchar(7) NOT NULL default 'default',
-  `one_time_pw` text,
+  `one_time_pw` BLOB,
   `dateformat` INT NOT NULL DEFAULT 1
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
