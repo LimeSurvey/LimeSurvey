@@ -445,7 +445,7 @@ CREATE TABLE prefix_participants (
 CREATE TABLE prefix_participant_attribute (
   "participant_id" character varying( 50 ) NOT NULL,
   "attribute_id" integer NOT NULL,
-  "value" value character varying(50) NOT NULL,
+  "value" character varying(50) NOT NULL,
   CONSTRAINT prefix_participant_attribut_pkey PRIMARY KEY (participant_id,attribute_id)
 );
 
