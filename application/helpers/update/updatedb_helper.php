@@ -905,12 +905,22 @@ function db_upgrade_all($oldversion) {
         alterColumn('{{survey_permissions}}','uid','integer',false);
         alterColumn('{{users}}','htmleditormode',"{$sVarchar}(7)",true,'default');
         alterColumn('{{survey_links}}','date_created',"datetime",true);
-        alterColumn('{{survey_links}}','date_created',"datetime",true);
-        /*        if ($sDBDriverName=='pgsql')
-        {
-        alterColumn('{{users}}','uid',"serial",true);
-        }*/
+        alterColumn('{{survey_links}}','error_time',"datetime",true);
+        alterColumn('{{saved_control}}','identifier',"text",false);
+        alterColumn('{{saved_control}}','email',"{$sVarchar}(320)",false);
+        alterColumn('{{surveys}}','adminemail',"{$sVarchar}(320)");
+        alterColumn('{{surveys}}','bounce_email',"{$sVarchar}(320)");
+        alterColumn('{{users}}','email',"{$sVarchar}(320)");
 
+        try{ Yii::app()->db->createCommand()->dropIndex('assessments_idx','{{assessments}}');} catch(Exception $e) {};
+        try{ Yii::app()->db->createCommand()->createIndex('assessments_idx3','{{assessments}}','gid',true);} catch(Exception $e) {};
+
+
+        if ($sDBDriverName=='pgsql')
+        {
+            try{ Yii::app()->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) {};
+            try{ Yii::app()->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) {};
+        }
 
         Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
 
