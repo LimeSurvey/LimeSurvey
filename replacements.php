@@ -621,7 +621,7 @@ EOD;
                 {
                     $gseq=$moveInfo['gseq']+1;
                 }
-                $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
+                $_trackURL = htmlentities($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname, ENT_QUOTES);
                 $_googleAnalyticsJavaScript = <<<EOD
 <script type="text/javascript">
   var _gaq = _gaq || [];
