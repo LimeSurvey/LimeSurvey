@@ -7708,10 +7708,20 @@ EOD;
                 // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
                 //////
                 $attrTable = '';
-                if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
-                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
+
+                $attrs = (isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array());
+                if (isset($LEM->q2subqInfo[$qid]['preg']))
+                {
+                    $attrs['regex_validation'] = $LEM->q2subqInfo[$qid]['preg'];
+                }
+                if (isset($LEM->questionSeq2relevance[$qseq]['other']))
+                {
+                    $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
+                }
+                if (count($attrs) > 0) {
+                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
-                    foreach ($LEM->qattr[$qid] as $key=>$value) {
+                    foreach ($attrs as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
                             continue;
                         }
@@ -7751,6 +7761,12 @@ EOD;
                                 break;
                             case 'other_replace_text':
                             case 'show_totals':
+                            case 'regex_validation':
+                                break;
+                            case 'other':
+                                if ($value == 'N') {
+                                    $value = NULL; // so can skip this one
+                                }
                                 break;
                         }
                         if (is_null($value)) {
