@@ -2011,6 +2011,16 @@ class ExpressionManager {
                                         $result = NAN;
                                     }
                                     break;
+                                case 'mktime':
+                                    if (is_numeric($params[0]) && is_numeric($params[1]))
+                                    {
+                                        $result = $funcName(intval($params[0]),intval($params[1]));
+                                    }
+                                    else
+                                    {
+                                        $result = NAN;
+                                    }
+                                    break;
                                 default:
                                     $result = $funcName($params[0], $params[1]);
                                      break;
