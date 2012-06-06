@@ -732,7 +732,6 @@ function db_upgrade_all($oldversion) {
     if ($oldversion < 154)
     {
         Yii::app()->db->createCommand()->addColumn('{{groups}}','grelevance',"text");
-        LimeExpressionManager::UpgradeConditionsToRelevance();
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
     }
 
@@ -930,6 +929,12 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
 
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
+    }
+
+    if ($oldversion < 158)
+    {
+        LimeExpressionManager::UpgradeConditionsToRelevance();
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
     }
 
     fixLanguageConsistencyAllSurveys();
