@@ -223,11 +223,11 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
     $usrow = $usresult->FetchRow();
     
 	//if user doesn't run the latest DB version, show a message and run update
-    if (intval($usrow['stg_value'])<$dbversionnumber)
+    if (floatval($usrow['stg_value'])<$dbversionnumber)
     {
         print("Upgrading db to $dbversionnumber\n");
-        db_upgrade_all(intval($usrow['stg_value']));
-        db_upgrade(intval($usrow['stg_value']));
+        db_upgrade_all(floatval($usrow['stg_value']));
+        db_upgrade(floatval($usrow['stg_value']));
     } 
 	//latest DB version is already in use
 	else 

@@ -268,7 +268,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
 
     $xml = simplexml_load_file($sFullFilepath);
     if ($xml->LimeSurveyDocType!='Label set') safe_die('This is not a valid LimeSurvey label set structure XML file.');
-    $dbversion = (int) $xml->DBVersion;
+    $dbversion = (float) $xml->DBVersion;
     $csarray=buildLabelSetCheckSumArray();
     $aLSIDReplacements=array();
     $results['labelsets']=0;

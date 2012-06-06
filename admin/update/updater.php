@@ -623,7 +623,7 @@ function CheckForDBUpgrades()
 {
     global $connect, $databasetype, $dbprefix, $dbversionnumber, $clang;
     $currentDBVersion=GetGlobalSetting('DBVersion');
-    if (intval($dbversionnumber)>intval($currentDBVersion))
+    if (floatval($dbversionnumber)>intval($currentDBVersion))
     {
         if(isset($_GET['continue']) && $_GET['continue']==1)
         {
@@ -635,8 +635,8 @@ function CheckForDBUpgrades()
             include ('upgrade-'.$upgradedbtype.'.php');
             include ('upgrade-all.php');
             $tables = $connect->MetaTables();
-            db_upgrade_all(intval($currentDBVersion));
-            db_upgrade(intval($currentDBVersion));
+            db_upgrade_all(floatval($currentDBVersion));
+            db_upgrade(floatval($currentDBVersion));
             echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
         }
         else {

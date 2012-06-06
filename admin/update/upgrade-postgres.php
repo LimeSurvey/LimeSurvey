@@ -407,7 +407,6 @@ function db_upgrade($oldversion) {
     if ($oldversion < 154)
     {
         modify_database("","ALTER TABLE prefix_groups ADD grelevance text DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
-        LimeExpressionManager::UpgradeConditionsToRelevance();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='154' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
     if ($oldversion < 155)
@@ -416,6 +415,11 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE prefix_surveys ADD googleanalyticsapikey character varying(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         modify_database("",'ALTER TABLE prefix_surveys RENAME COLUMN "showXquestions" TO "showxquestions";');
         modify_database("","UPDATE prefix_settings_global SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
+    }
+    if ($oldversion < 155.5)
+    {
+        LimeExpressionManager::UpgradeConditionsToRelevance();
+        modify_database("","UPDATE prefix_settings_global SET stg_value='155.5' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
 
     fixLanguageConsistencyAllSurveys();

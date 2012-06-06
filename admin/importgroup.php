@@ -889,7 +889,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
 
     $xml = @simplexml_load_file($sFullFilepath);
     if ($xml==false || $xml->LimeSurveyDocType!='Group') safe_die('This is not a valid LimeSurvey group structure XML file.');
-    $dbversion = (int) $xml->DBVersion;
+    $dbversion = (float) $xml->DBVersion;
     $aQIDReplacements=array();
     $results['defaultvalues']=0;
     $results['answers']=0;

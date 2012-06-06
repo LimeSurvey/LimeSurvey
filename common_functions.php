@@ -4121,6 +4121,20 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
     "caption"=>$clang->gT("Randomization group name"));
 
+    // This is added to support historical behavior.  Early versions of 1.92 used a value of "No", so if there was a min_sum_value or equals_sum_value, the question was not valid
+    // unless those criteria were met.  In later releases of 1.92, the default was changed so that missing values were allowed even if those attributes were set
+    // This attribute lets authors control whether missing values should be allowed in those cases without needing to set min_answers
+    // Existing surveys will use the old behavior, but if the author edits the question, the default will be the new behavior.
+    $qattributes["value_range_allows_missing"]=array(
+    "types"=>"K",
+    'category'=>$clang->gT('Input'),
+    'sortorder'=>100,
+    "inputtype"=>"singleselect",
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+    "help"=>$clang->gT("Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"),
+    "caption"=>$clang->gT("Value range allows missing"));
 
     //This builds a more useful array (don't modify)
     if ($returnByName==false)

@@ -462,6 +462,7 @@
         * 'type' => 'M' // the one-letter question type
         * 'fieldname' => '26626X34X702sq1' // the fieldname (used as JavaScript variable name, and also as database column name
         * 'rootVarName' => 'afDS'  // the root variable name
+        * 'preg' => '/[A-Z]+/' // regular expression validation equation, if any
         * 'subqs' => array() of sub-questions, where each contains:
         *     'rowdivid' => '26626X34X702sq1' // the javascript id identifying the question row (so array_filter can hide rows)
         *     'varName' => 'afSrcFilter_sq1' // the full variable name for the sub-question
@@ -1003,6 +1004,15 @@
                     $input_boxes='';
                 }
 
+                if (isset($qattr['value_range_allows_missing']) && $qattr['value_range_allows_missing'] == '1')
+                {
+                    $value_range_allows_missing = true;
+                }
+                else
+                {
+                    $value_range_allows_missing = false;
+                }
+
                 // array_filter
                 // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
                 // relevance for Q2_SQ1 is Q1_SQ1!=''
@@ -1192,12 +1202,18 @@
                                 $mainEqn = 'round(' . $mainEqn . ', ' . $precision . ')';
                             }
 
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_range',
                             // Different script for mandatory or non-mandatory question
-                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             'sumRemainingEqn' => $sumRemainingEqn,
@@ -1706,11 +1722,17 @@
                                 $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
                             }
 
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value',
                             'class' => 'sum_range',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             );
@@ -1762,11 +1784,18 @@
                             {
                                 $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
                             }
+
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value',
                             'class' => 'sum_range',
-                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             );
@@ -7660,10 +7689,20 @@ EOD;
                 // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
                 //////
                 $attrTable = '';
-                if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
+
+                $attrs = (isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array());
+                if (isset($LEM->q2subqInfo[$qid]['preg']))
+                {
+                    $attrs['regex_validation'] = $LEM->q2subqInfo[$qid]['preg'];
+                }
+                if (isset($LEM->questionSeq2relevance[$qseq]['other']))
+                {
+                    $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
+                }
+                if (count($attrs) > 0) {
                     $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
-                    foreach ($LEM->qattr[$qid] as $key=>$value) {
+                    foreach ($attrs as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
                             continue;
                         }
@@ -7703,6 +7742,12 @@ EOD;
                                 break;
                             case 'other_replace_text':
                             case 'show_totals':
+                            case 'regex_validation':
+                                break;
+                            case 'other':
+                                if ($value == 'N') {
+                                    $value = NULL; // so can skip this one 
+                                }
                                 break;
                         }
                         if (is_null($value)) {

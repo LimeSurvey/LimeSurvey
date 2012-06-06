@@ -2373,7 +2373,7 @@ function do_multiplechoice($ia)
             {
                 $dispVal = str_replace('.',$sSeperator,$dispVal);
             }
-            $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
+            $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
         }
 
         $answer .= "\" />\n{$wrapper['item-end']}";

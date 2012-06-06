@@ -263,7 +263,7 @@ if ($sourcefrom == "admin")
 If (!$dbexistsbutempty && $sourcefrom=='admin')
 {
     $usrow = getGlobalSetting('DBVersion');
-    if (intval($usrow)<$dbversionnumber)
+    if (floatval($usrow)<$dbversionnumber)
     {
         $action='';
         require_once($rootdir.'/classes/core/language.php');
