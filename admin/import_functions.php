@@ -1101,7 +1101,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         //echo $clang->gT("This is VALID LimeSurvey survey structure XML file.");
         //return $results;
     }
-    $dbversion = (int) $xml->DBVersion;
+    $dbversion = (float) $xml->DBVersion;
     $aQIDReplacements=array();
     $aQuotaReplacements=array();
     $results['defaultvalues']=0;

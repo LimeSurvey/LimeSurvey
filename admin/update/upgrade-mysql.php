@@ -698,6 +698,11 @@ function db_upgrade($oldversion) {
 
         modify_database("", "UPDATE `prefix_settings_global` SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
+    if ($oldversion < 155.5)
+    {
+        LimeExpressionManager::UpgradeConditionsToRelevance();
+        modify_database("", "UPDATE `prefix_settings_global` SET stg_value='155.5' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
