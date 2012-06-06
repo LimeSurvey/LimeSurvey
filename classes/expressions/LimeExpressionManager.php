@@ -7695,6 +7695,10 @@ EOD;
                 {
                     $attrs['regex_validation'] = $LEM->q2subqInfo[$qid]['preg'];
                 }
+                if (isset($LEM->questionSeq2relevance[$qseq]['other']))
+                {
+                    $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
+                }
                 if (count($attrs) > 0) {
                     $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
@@ -7739,6 +7743,11 @@ EOD;
                             case 'other_replace_text':
                             case 'show_totals':
                             case 'regex_validation':
+                                break;
+                            case 'other':
+                                if ($value == 'N') {
+                                    $value = NULL; // so can skip this one 
+                                }
                                 break;
                         }
                         if (is_null($value)) {
