@@ -407,7 +407,6 @@ function db_upgrade($oldversion) {
     if ($oldversion < 154)
     {
         modify_database("","ALTER TABLE prefix_groups ADD grelevance text DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
-        LimeExpressionManager::UpgradeConditionsToRelevance();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='154' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
     if ($oldversion < 155)
