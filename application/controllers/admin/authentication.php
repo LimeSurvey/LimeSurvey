@@ -3,33 +3,33 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * 	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* 	$Id$
+*/
 
 /**
- * Authentication Controller
- *
- * This controller performs authentication
- *
- * @package        LimeSurvey
- * @subpackage    Backend
- */
+* Authentication Controller
+*
+* This controller performs authentication
+*
+* @package        LimeSurvey
+* @subpackage    Backend
+*/
 class Authentication extends Survey_Common_Action
 {
 
     /**
-     * Show login screen and parse login data
-     */
+    * Show login screen and parse login data
+    */
     public function index()
     {
         $this->_redirectIfLoggedIn();
@@ -69,8 +69,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Logout user
-     */
+    * Logout user
+    */
     public function logout()
     {
         Yii::app()->user->logout();
@@ -78,8 +78,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Forgot Password screen
-     */
+    * Forgot Password screen
+    */
     public function forgotpassword()
     {
         $this->_redirectIfLoggedIn();
@@ -111,11 +111,11 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Send the forgot password email
-     *
-     * @param string $sEmailAddr
-     * @param array $aFields
-     */
+    * Send the forgot password email
+    *
+    * @param string $sEmailAddr
+    * @param array $aFields
+    */
     private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
         $clang = $this->getController()->lang;
@@ -151,9 +151,9 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Show login screen
-     * @param optional message
-     */
+    * Show login screen
+    * @param optional message
+    */
     protected function _showLoginForm($sLogoutSummary = '')
     {
         $aData['summary'] = $this->_getSummary('logout', $sLogoutSummary);
@@ -161,11 +161,11 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Get's the summary
-     * @param string $sMethod login|logout
-     * @param string $sSummary Default summary
-     * @return string Summary
-     */
+    * Get's the summary
+    * @param string $sMethod login|logout
+    * @param string $sSummary Default summary
+    * @return string Summary
+    */
     private function _getSummary($sMethod = 'login', $sSummary = '')
     {
         if (!empty($sSummary))
@@ -186,7 +186,7 @@ class Authentication extends Survey_Common_Action
                 if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === FALSE)
                 {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
-                            . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
+                    . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
                     $sSummary = '<p><font size="1"><i>' . $clang->gT('Reloading screen. Please wait.') . '</i></font>';
                     unset(Yii::app()->session['redirect_after_login']);
                 }
@@ -197,8 +197,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Redirects a logged in user to the administration page
-     */
+    * Redirects a logged in user to the administration page
+    */
     private function _redirectIfLoggedIn()
     {
         if (!Yii::app()->user->getIsGuest())
@@ -208,10 +208,10 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Check if a user can log in
-     * @param string $sIp IP Address
-     * @return bool|array
-     */
+    * Check if a user can log in
+    * @param string $sIp IP Address
+    * @return bool|array
+    */
     private function _userCanLogin($sIp = '')
     {
         if (empty($sIp))
@@ -233,8 +233,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Redirect after login
-     */
+    * Redirect after login
+    */
     private function _doRedirect()
     {
         if (strlen(Yii::app()->session['redirectopage']) > 1)
@@ -248,12 +248,12 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Do the actual login work
-     * Note: This function is replicated in parts in remotecontrol.php controller - if you change this don't forget to make according changes there, too (which is why we should make a login helper)
-     * @param string $sUsername The username to login with
-     * @param string $sPassword The password to login with
-     * @return Array of data containing errors for the view
-     */
+    * Do the actual login work
+    * Note: This function is replicated in parts in remotecontrol.php controller - if you change this don't forget to make according changes there, too (which is why we should make a login helper)
+    * @param string $sUsername The username to login with
+    * @param string $sPassword The password to login with
+    * @return Array of data containing errors for the view
+    */
     private function _doLogin($sUsername, $sPassword)
     {
         $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
@@ -267,10 +267,10 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Sets the login sessions
-     * @param UserIdentity $identity
-     * @return bool True
-     */
+    * Sets the login sessions
+    * @param UserIdentity $identity
+    * @return bool True
+    */
     private function _setLoginSessions($identity)
     {
         $user = $identity->getUser();
@@ -284,9 +284,9 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Sets the session data
-     * @param CActiveRecord $user
-     */
+    * Sets the session data
+    * @param CActiveRecord $user
+    */
     private function _setSessionData($user)
     {
         Yii::app()->session['loginID'] = (int) $user->uid;
@@ -300,9 +300,9 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Sets the language settings for the user
-     * @param CActiveRecord $user
-     */
+    * Sets the language settings for the user
+    * @param CActiveRecord $user
+    */
     private function _setLanguageSettings($user)
     {
 
@@ -326,8 +326,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Checks if the user is using default password
-     */
+    * Checks if the user is using default password
+    */
     private function _checkForUsageOfDefaultPassword()
     {
         $clang = $this->getController()->lang;
@@ -340,9 +340,9 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Get the authentication failed error messages
-     * @return array Data
-     */
+    * Get the authentication failed error messages
+    * @return array Data
+    */
     private function _getAuthenticationFailedErrorMessage()
     {
         $clang = $this->getController()->lang;
@@ -362,8 +362,8 @@ class Authentication extends Survey_Common_Action
         if ($bLockedOut)
         {
             $aData['maxattempts'] = sprintf(
-                    $clang->gT('You have exceeded you maximum login attempts. Please wait %d minutes before trying again'),
-                    Yii::app()->getConfig('timeOutTime') / 60
+            $clang->gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'),
+            Yii::app()->getConfig('timeOutTime') / 60
             );
         }
 
@@ -371,12 +371,12 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
+    * Renders template(s) wrapped in header and footer
+    *
+    * @param string $sAction Current action, the folder to fetch views from
+    * @param string|array $aViewUrls View url(s)
+    * @param array $aData Data to be passed on. Optional.
+    */
     protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
