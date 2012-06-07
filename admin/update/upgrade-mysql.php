@@ -695,13 +695,10 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE `prefix_surveys` ADD `googleanalyticsapikey` varchar(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `showXquestions` `showxquestions` char(1) collate utf8_unicode_ci NOT NULL default 'Y';"); echo $modifyoutput; flush();@ob_flush();
 
+        LimeExpressionManager::UpgradeConditionsToRelevance();
         modify_database("", "UPDATE `prefix_settings_global` SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
-    if ($oldversion < 155.5)
-    {
-        LimeExpressionManager::UpgradeConditionsToRelevance();
-        modify_database("", "UPDATE `prefix_settings_global` SET stg_value='155.5' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
-    }
+
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
