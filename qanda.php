@@ -893,7 +893,7 @@ function do_equation($ia)
     {
         $answer .= htmlspecialchars($_SESSION[$ia[1]],ENT_QUOTES);
     }
-    $answer .= '".>';
+    $answer .= '">';
     $inputnames[]=$ia[1];
     $mandatory=null;
 
