@@ -833,12 +833,26 @@ function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, 
             }
             else
             {
-                $htmltbody2 .= " style='display: none'";
+                if (!isset($qidattributes['array_filter_style']) || $qidattributes['array_filter_style'] == '0')
+                {
+                    $htmltbody2 .= " style='display: none'";
+                }
+                else
+                {
+                    $htmltbody2 .= " disabled='disabled'";
+                }
             }
         }
         else
         {
-            $htmltbody2 .= " style='display: none'";
+            if (!isset($qidattributes['array_filter_style']) || $qidattributes['array_filter_style'] == '0')
+            {
+                $htmltbody2 .= " style='display: none'";
+            }
+            else
+            {
+                $htmltbody2 .= " disabled='disabled'";
+            }
         }
     }
     $htmltbody2 .= ">\n";
