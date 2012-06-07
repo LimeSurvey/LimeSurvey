@@ -473,6 +473,7 @@
         * 'type' => 'M' // the one-letter question type
         * 'fieldname' => '26626X34X702sq1' // the fieldname (used as JavaScript variable name, and also as database column name
         * 'rootVarName' => 'afDS'  // the root variable name
+        * 'preg' => '/[A-Z]+/' // regular expression validation equation, if any
         * 'subqs' => array() of sub-questions, where each contains:
         *     'rowdivid' => '26626X34X702sq1' // the javascript id identifying the question row (so array_filter can hide rows)
         *     'varName' => 'afSrcFilter_sq1' // the full variable name for the sub-question
@@ -791,6 +792,7 @@
             $relOrList = array();
             foreach($query->readAll() as $row)
             {
+                $row['method']=trim($row['method']); //For Postgres
                 if ($row['qid'] != $_qid)
                 {
                     // output the values for prior question is there was one
@@ -884,18 +886,52 @@
                 {
                     // Conditions uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
                     if ($value === '" "') {
-                        if ($row['method'] == '==') {
+                        if ($row['method'] == '==')
+                        {
                             $relOrList[] = "is_empty(" . $fieldname . ")";
                         }
-                        else if ($row['method'] == '!=') {
-                                $relOrList[] = "!is_empty(" . $fieldname . ")";
-                            }
-                            else {
-                                $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                        else if ($row['method'] == '!=')
+                        {
+                            $relOrList[] = "!is_empty(" . $fieldname . ")";
+                        }
+                        else
+                        {
+                            $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
                         }
                     }
-                    else {
-                        $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                    else
+                    {
+                        if ($value == '"0"' || !preg_match('/^".+"$/',$value))
+                        {
+                            switch ($row['method'])
+                            {
+                                case '==':
+                                case '<':
+                                case '<=':
+                                case '>=':
+                                    $relOrList[] = '(!is_empty(' . $fieldname . ') && (' . $fieldname . " " . $row['method'] . " " . $value . '))';
+                                    break;
+                                case '!=':
+                                    $relOrList[] = '(is_empty(' . $fieldname . ') || (' . $fieldname . " != " . $value . '))';
+                                    break;
+                                default:
+                                    $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch ($row['method'])
+                            {
+                                case '<':
+                                case '<=':
+                                    $relOrList[] = '(!is_empty(' . $fieldname . ') && (' . $fieldname . " " . $row['method'] . " " . $value . '))';
+                                    break;
+                                default:
+                                    $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                                    break;
+                            }
+                        }
                     }
                 }
 
@@ -980,6 +1016,15 @@
                 else
                 {
                     $input_boxes='';
+                }
+
+                if (isset($qattr['value_range_allows_missing']) && $qattr['value_range_allows_missing'] == '1')
+                {
+                    $value_range_allows_missing = true;
+                }
+                else
+                {
+                    $value_range_allows_missing = false;
                 }
 
                 // array_filter
@@ -1170,11 +1215,18 @@
                                 $sumRemainingEqn = 'round(' . $sumRemainingEqn . ', ' . $precision . ')';
                                 $mainEqn = 'round(' . $mainEqn . ', ' . $precision . ')';
                             }
+
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_range',
-                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             'sumRemainingEqn' => $sumRemainingEqn,
@@ -1683,11 +1735,17 @@
                                 $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
                             }
 
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value',
                             'class' => 'sum_range',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             );
@@ -1741,11 +1799,17 @@
                                 $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
                             }
 
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value',
                             'class' => 'sum_range',
-                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             );
@@ -7644,10 +7708,20 @@ EOD;
                 // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
                 //////
                 $attrTable = '';
-                if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
-                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
+
+                $attrs = (isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array());
+                if (isset($LEM->q2subqInfo[$qid]['preg']))
+                {
+                    $attrs['regex_validation'] = $LEM->q2subqInfo[$qid]['preg'];
+                }
+                if (isset($LEM->questionSeq2relevance[$qseq]['other']))
+                {
+                    $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
+                }
+                if (count($attrs) > 0) {
+                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
-                    foreach ($LEM->qattr[$qid] as $key=>$value) {
+                    foreach ($attrs as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
                             continue;
                         }
@@ -7687,6 +7761,12 @@ EOD;
                                 break;
                             case 'other_replace_text':
                             case 'show_totals':
+                            case 'regex_validation':
+                                break;
+                            case 'other':
+                                if ($value == 'N') {
+                                    $value = NULL; // so can skip this one
+                                }
                                 break;
                         }
                         if (is_null($value)) {

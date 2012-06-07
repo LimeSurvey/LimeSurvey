@@ -2515,6 +2515,115 @@ EOD;
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+<B>Empty Vs. Empty</B>~"<B>Empty Vs. Empty</B>"
+1~'' == ''
+0~'' != ''
+0~'' > ''
+1~'' >= ''
+0~'' < ''
+1~'' <= ''
+1~!''
+~('' and '')
+~('' or '')
+<B>Empty Vs. Zero</B>~"<B>Empty Vs. Zero</B>"
+0~'' == 0
+1~'' != 0
+0~'' > 0
+0~'' >= 0
+0~'' < 0
+0~'' <= 0
+1~!''
+1~!0
+0~('' and 0)
+0~('' or 0)
+<B>Empty Vs. Constant</B>~"<B>Empty Vs. Constant</B>"
+0~'' == 3
+1~'' != 3
+0~'' > 3
+0~'' >= 3
+0~'' < 3
+0~'' <= 3
+1~!''
+0~!3
+0~('' and 3)
+1~('' or 3)
+<B>Empty Vs. Empty_Var</B>~"<B>Empty Vs. Empty_Var</B>"
+1~'' == empty
+0~'' != empty
+0~'' > empty
+1~'' >= empty
+0~'' < empty
+1~'' <= empty
+1~!''
+1~!empty
+~('' and empty)
+~('' or empty)
+<B>Empty_Var Vs. Zero</B>~"<B>Empty_Var Vs. Zero</B>"
+0~empty == 0
+1~empty != 0
+0~empty > 0
+0~empty >= 0
+0~empty < 0
+0~empty <= 0
+1~!empty
+1~!0
+0~(empty and 0)
+0~(empty or 0)
+<B>Empty_Var Vs. Zero</B>~"<B>Empty_Var Vs. Zero</B>"
+0~empty == zero
+1~empty != zero
+0~empty > zero
+0~empty >= zero
+0~empty < zero
+0~empty <= zero
+1~!empty
+1~!zero
+0~(empty and zero)
+0~(empty or zero)
+<B>Empty_Var Vs. Constant</B>~"<B>Empty_Var Vs. Constant</B>"
+0~empty == 3
+1~empty != 3
+0~empty > 3
+0~empty >= 3
+0~empty < 3
+0~empty <= 3
+1~!empty
+0~!3
+0~(empty and 3)
+1~(empty or 3)
+<B>Solution: Empty_Var Vs. Zero</B>~"<B>Solution: Empty_Var Vs. Zero</B>"
+0~!is_empty(empty) && (empty == 0)
+0~!is_empty(five) && (five == 0)
+1~!is_empty(zero) && (zero == 0)
+0~!is_empty(empty) && (empty > 0)
+0~!is_empty(empty) && (empty >= 0)
+0~!is_empty(empty) && (empty < 0)
+0~!is_empty(empty) && (empty <= 0)
+0~!is_empty(empty) && ((empty and 0))
+0~!is_empty(empty) && ((empty or 0))
+<B>Solution: Empty_Var Vs. Zero</B>~"<B>Solution: Empty_Var Vs. Zero</B>"
+0~!is_empty(empty) && (empty == zero)
+0~!is_empty(five) && (five == zero)
+1~!is_empty(zero) && (zero == zero)
+0~!is_empty(empty) && (empty > zero)
+0~!is_empty(empty) && (empty >= zero)
+0~!is_empty(empty) && (empty < zero)
+0~!is_empty(empty) && (empty <= zero)
+0~!is_empty(empty) && ((empty and zero))
+0~!is_empty(empty) && ((empty or zero))
+<B>Solution: Empty_Var Vs. Constant</B>~"<B>Solution: Empty_Var Vs. Constant</B>"
+0~!is_empty(empty) && (empty < 3)
+0~!is_empty(empty) && (empty <= 3)
+<B>Solution: Empty_Var Vs. Variable</B>~"<B>Solution: Empty_Var Vs. Variable</B>"
+0~!is_empty(empty) && (empty < five)
+0~!is_empty(empty) && (empty <= five)
+<B>Solution: The Hard One is Empty_Var != 0</B>~"<B>Solution: The Hard One is Empty_Var != 0</B>"
+1~(empty != 0)
+1~!is_empty(empty) && (empty != 0)
+1~is_empty(empty) || (empty != 0)
+1~is_empty(empty) || (empty != zero)
+0~is_empty(zero) || (zero != 0)
+1~is_empty(five) || (five != 0)
 <b>SETUP</b>~'<b>SETUP</b>'
 &quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
 &quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
