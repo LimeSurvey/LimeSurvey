@@ -956,7 +956,7 @@ function do_equation($ia)
     {
         $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
     }
-    $answer .= '".>';
+    $answer .= '">';
     $inputnames[]=$ia[1];
     $mandatory=null;
 
