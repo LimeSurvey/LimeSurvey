@@ -292,7 +292,7 @@ CREATE TABLE `prefix_saved_control` (
   `srid` int(11) NOT NULL default '0',
   `identifier` text NOT NULL,
   `access_code` text NOT NULL,
-  `email` varchar(320) default NULL,
+  `email` varchar(320),
   `ip` text NOT NULL,
   `saved_thisstep` text NOT NULL,
   `status` varchar(1) NOT NULL default '',
@@ -554,4 +554,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '157');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '158');
