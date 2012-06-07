@@ -1278,7 +1278,7 @@ class ExpressionManager {
                     break;
                 default:
                     // don't need to check type of $token[2] here since already handling SQ_STRING and DQ_STRING above
-                    switch ($token[0])
+                    switch (strtolower($token[0]))
                     {
                         case 'and': $stringParts[] = ' && '; break;
                         case 'or':  $stringParts[] = ' || '; break;
