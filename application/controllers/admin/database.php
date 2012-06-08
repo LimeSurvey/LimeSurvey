@@ -407,11 +407,12 @@ class database extends Survey_Common_Action
                     $_POST['help_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$baselang));
                 }
 
-                $data = array();
+                $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJS
                 $data = array(
                 'sid' => $surveyid,
                 'gid' => $gid,
-                'type' => Yii::app()->request->getPost('type'),
+                'tid' => Yii::app()->request->getPost('type'),
+                'type' => $type['legacy'], //AJS
                 'title' => Yii::app()->request->getPost('title'),
                 'question' => Yii::app()->request->getPost('question_'.$baselang),
                 'preg' => Yii::app()->request->getPost('preg'),
@@ -444,7 +445,8 @@ class database extends Survey_Common_Action
                             'qid' => $qid,
                             'sid' => $surveyid,
                             'gid' => $gid,
-                            'type' => Yii::app()->request->getPost('type'),
+                            'tid' => Yii::app()->request->getPost('type'),
+                            'type' => $type['legacy'], //AJS
                             'title' => Yii::app()->request->getPost('title'),
                             'question' => Yii::app()->request->getPost('question_'.$alang),
                             'preg' => Yii::app()->request->getPost('preg'),
@@ -526,7 +528,7 @@ class database extends Survey_Common_Action
                             }
                         }
                     } else {
-                        $q = objectizeQuestion(Yii::app()->request->getPost('type')); //AJS
+                        $q = tidToQuestion(Yii::app()->request->getPost('type'));
                         foreach ($q->availableAttributes() as $validAttribute)
                         {
                             if (Yii::app()->request->getPost($validAttribute))
@@ -571,16 +573,15 @@ class database extends Survey_Common_Action
             $oldgid=$cqr['gid'];
 
             // Remove invalid question attributes on saving
-            $qattributes=linkedAttributes();
+            $q = objectizeQuestion(Yii::app()->request->getPost('type')); //AJS
+            $qattributes=linkedAttributes($q);
 
             $criteria = new CDbCriteria;
             $criteria->compare('qid',$qid);
-            if (isset($qattributes[Yii::app()->request->getPost('type')])){
-                $validAttributes=$qattributes[Yii::app()->request->getPost('type')];
-                foreach ($validAttributes as  $validAttribute)
-                {
-                    $criteria->compare('attribute', '<>'.$validAttribute['name']);
-                }
+            $validAttributes=$qattributes;
+            foreach ($validAttributes as  $validAttribute)
+            {
+                $criteria->compare('attribute', '<>'.$validAttribute['name']);
             }
             Question_attributes::model()->deleteAll($criteria);
 

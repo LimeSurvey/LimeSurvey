@@ -266,11 +266,7 @@ var qCodeToInfo;
 function getToolTip(type){
     var code = qDescToCode[''+type];
     var multiple = 0;
-    if (code=='S') multiple = 2;
-
-    if (code == ":") code = "COLON";
-    else if(code == "|") code = "PIPE";
-    else if(code == "*") code = "EQUATION";
+    if (code=='ShortText') multiple = 2; //AJS
 
     if (multiple > 0){
         returnval = '';

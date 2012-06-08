@@ -521,7 +521,6 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     $aQIDReplacements[$oldqid]=Yii::app()->db->getLastInsertID();
                     $saveqid=$aQIDReplacements[$oldqid];
                 }
-                $qtypes = getQuestionTypeList();
                 $aSQIDReplacements=array();
 
                 // Now we will fix up old label sets where they are used as answers

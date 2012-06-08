@@ -42,20 +42,32 @@ function comparePermission($aPermissionA,$aPermissionB)
 * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
 * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
 */
-function getQuestionTypeList($type = false)
+function getQuestionTypeList($type = false, $legacy = true) //AJS
 {
     $clang = Yii::app()->lang;
-    if ($type) //AJS
+    if ($type && $legacy) //AJS
     {
         $result = Question_types::model()->findByAttribute(array('legacy' => $type));
         return  createQuestion($result['class']);
-    }
+    } else if ($type) {
+        $result = Question_types::model()->findByAttribute(array('tid' => $type));
+        return  createQuestion($result['class']);
+    } 
     
     $types = Question_types::model()->findAll();
-    foreach($types as $type)
+    if ($legacy) //AJS
     {
-        $q = createQuestion($type['class']);
-        $qtypes[$type['legacy']] = $q->questionProperties(); //AJS
+        foreach($types as $type)
+        {
+            $q = createQuestion($type['class']);
+            $qtypes[$type['legacy']] = $q->questionProperties();
+        }
+    } else {
+        foreach($types as $type)
+        {
+            $q = createQuestion($type['class']);
+            $qtypes[$type['tid']] = $q->questionProperties();
+        }
     }
 
     asort($qtypes);
@@ -6759,6 +6771,12 @@ function type2Name($type) //AJS
         case '*':
             return "Equation";
     }
+}
+
+function tidToQuestion($tid)
+{
+    $type = Question_types::model()->findByPk($tid);
+    return createQuestion($type['class']);
 }
 
 function createQuestion($name)

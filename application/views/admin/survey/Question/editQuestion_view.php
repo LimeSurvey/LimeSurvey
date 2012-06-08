@@ -100,22 +100,18 @@
 
                         <select id='question_type' style='margin-bottom:5px' name='type' class='<?php echo $selectormodeclass; ?>'>
                             <?php 
-                            foreach (getQuestionTypeList() as $qkey => $qtype)
-                            {
-                                $newqType[$qtype['group']][$qkey] = $qtype;
-                            }
-
-                            foreach ($newqType as $group => $members)
+                            
+                            foreach ($qTypeGroups as $group => $members)
                             {
                                 echo '<optgroup label="' . $group . '">';
-                                foreach ($members as $TypeCode => $TypeProperties)
+                                foreach ($members as $type)
                                 {
-                                    echo "<option value='$TypeCode'";
-                                    if ($eqrow['type'] == $TypeCode)
+                                    echo "<option value='{$type['tid']}'";
+                                    if ($eqrow['type'] == $type['class'])
                                     {
                                         echo " selected='selected'";
                                     }
-                                    echo ">{$TypeProperties['description']}</option>\n";
+                                    echo ">{$type['name']}</option>\n";
                                 }
                                 echo '</optgroup>';
                             }; ?>

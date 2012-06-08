@@ -726,15 +726,17 @@ class question extends Survey_Common_Action
                 LimeExpressionManager::StartProcessingPage(false,Yii::app()->baseUrl,true);  // so can click on syntax highlighting to edit questions
             }
 
-            $qtypelist = getQuestionTypeList();
+            $types = Question_types::model()->with('question_type_groups')->findAll(array('order' => 'question_type_groups.order, t.order'));
             $qDescToCode = 'qDescToCode = {';
-            $qCodeToInfo = 'qCodeToInfo = {';
-            foreach ($qtypelist as $qtype => $qdesc)
+            foreach ($types as $type)
             {
-                $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-                $qCodeToInfo .= " '{$qtype}' : '" . ls_json_encode($qdesc) . "', \n";
+                $q = createQuestion($type['class']);
+                $props = $q->questionProperties();
+                $qDescToCode .= " '{$props['description']}' : '{$type['class']}', \n";
+                $typegroups[$type->question_type_groups['name']][] = $type;
             }
-            $aData['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
+            $aData['qTypeOutput'] = "$qDescToCode 'null':'null' };";
+            $aData['qTypeGroups'] = $typegroups;
 
             if (!$adding)
             {
@@ -750,7 +752,7 @@ class question extends Survey_Common_Action
                 $eqrow['title'] = '';
                 $eqrow['question'] = '';
                 $eqrow['help'] = '';
-                $eqrow['type'] = 'T';
+                $eqrow['type'] = 'LongText'; //AJS - WHY IS THIS HARDCODED?
                 $eqrow['lid'] = 0;
                 $eqrow['lid1'] = 0;
                 $eqrow['gid'] = $gid;
