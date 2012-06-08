@@ -325,7 +325,7 @@ class Survey_Common_Action extends CAction
         $sqrq = Questions::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
         $aData['sqct'] = $sqct = count($sqrq);
 
-        $qrresult = Questions::model()->findAllByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyId, 'language' => $baselang));
+        $qrresult = Questions::model()->with('question_types')->findAllByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyId, 'language' => $baselang));
 
         $questionsummary = "<div class='menubar'>\n";
 
@@ -344,8 +344,7 @@ class Survey_Common_Action extends CAction
 
         foreach ($qrresult as $qrrow)
         {
-            $qrrow = $qrrow->attributes;
-            $qrrow = array_map('flattenText', $qrrow);
+            $flatrow = array_map('flattenText', $qrrow->attributes);
             if (hasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
             {
                 if (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) != 0)
@@ -358,7 +357,7 @@ class Survey_Common_Action extends CAction
                     $aData['tmp_survlangs'] = $tmp_survlangs;
                 }
             }
-            $q = objectizeQuestion($qrrow['type']); //AJS
+            $q = createQuestion($qrrow->question_types['class']);
             $aData['qproperties']=$q->questionProperties();
             if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action == "copyquestion")
             {
@@ -374,7 +373,7 @@ class Survey_Common_Action extends CAction
             $aData['qid'] = $qid;
             $aData['gid'] = $gid;
             $aData['clang'] = $clang;
-            $aData['qrrow'] = $qrrow;
+            $aData['qrrow'] = $flatrow;
             $aData['baselang'] = $baselang;
             $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyId, $baselang);
             $DisplayArray = array();

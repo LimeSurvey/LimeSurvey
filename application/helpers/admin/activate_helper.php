@@ -113,11 +113,11 @@ function checkQuestions($postsid, $surveyid)
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
 
-    $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$surveyid} and parent_qid=0";
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
+    $chkresult = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyId, 'parent_qid' => 0));
+    
     foreach ($chkresult as $chkrow)
     {
-        $q = objectizeQuestion($chkrow['type']); //AJS
+        $q = createQuestion($chkrow->question_types['class']);
         $qproperties=$q->questionProperties();
         if ($qproperties['subquestions']>0)
         {

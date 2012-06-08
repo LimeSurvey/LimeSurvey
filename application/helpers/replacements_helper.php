@@ -102,8 +102,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $clang = Yii::app()->lang;
 
     Yii::app()->loadHelper('surveytranslator');
-    $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
-    if(isset($question) && isset($question['sgq'])) $questiondetails=getSIDGIDQIDAIDType($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
+    $questiondetails = false;
+    if(isset($question) && isset($question['sgq'])) $questiondetails=getQuestion($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
 
     if (isset($thissurvey['sid'])) {
         $surveyid = $thissurvey['sid'];
@@ -746,7 +746,7 @@ EOD;
     // Set the array of replacement variables here - don't include curly braces
 
     $coreReplacements = array();
-    $coreReplacements['AID'] = isset($questiondetails['aid']) ? $questiondetails['aid'] : '';
+    $coreReplacements['AID'] = isset($questiondetails->aid) ? $questiondetails->aid : '';
     $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
     $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
@@ -758,7 +758,7 @@ EOD;
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['EXPIRY'] = $_dateoutput;
-    $coreReplacements['GID'] = isset($questiondetails['gid']) ? $questiondetails['gid']: '';
+    $coreReplacements['GID'] = isset($questiondetails->gid) ? $questiondetails->gid: '';
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
     $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
@@ -777,7 +777,7 @@ EOD;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.");
-    $coreReplacements['QID'] = isset($questiondetails['qid']) ? $questiondetails['qid'] : '';
+    $coreReplacements['QID'] = isset($questiondetails->id) ? $questiondetails->id : '';
     $coreReplacements['QUESTION'] = $_question;
     $coreReplacements['QUESTIONHELP'] = $_questionhelp;
     $coreReplacements['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($help)); // global
@@ -807,7 +807,7 @@ EOD;
     $coreReplacements['SAVEHEADING'] = $clang->gT("Save Your Unfinished Survey");
     $coreReplacements['SAVEMESSAGE'] = $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
     $coreReplacements['SGQ'] = $_question_sgq;
-    $coreReplacements['SID'] = (isset($surveyid) ? $surveyid : (isset($questiondetails['sid']) ? $questiondetails['sid'] : ''));
+    $coreReplacements['SID'] = (isset($surveyid) ? $surveyid : (isset($questiondetails->surveyid) ? $questiondetails->surveyid : ''));
     $coreReplacements['SITENAME'] = isset($sitename) ? $sitename : '';  // global
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;
     $coreReplacements['SUBMITCOMPLETE'] = "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers.");

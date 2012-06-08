@@ -124,12 +124,12 @@ class question extends Survey_Common_Action
         $baselang = Survey::model()->findByPk($surveyid)->language;
         array_unshift($questlangs, $baselang);
 
-        $questionrow = Questions::model()->findByAttributes(array(
+        $questionrow = Questions::model()->with('question_types')->findByAttributes(array(
             'qid' => $qid,
             'gid' => $gid,
             'language' => $baselang
         ))->attributes;
-        $q = objectizeQuestion($questionrow['type']); //AJS
+        $q = createQuestion($questionrow->question_types['class']);
         $qproperties=$q->questionProperties();
 
         $langopts = array();
@@ -289,9 +289,9 @@ class question extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $qrow = Questions::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $qrow = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid, 'language' => $baselang));
 
-        $q = objectizeQuestion($qrow['type']); //AJS
+        $q = createQuestion($qrow->question_types['class']);
         $qproperties=$q->questionProperties();
 
         $scalecount = $qproperties['answerscales'];
@@ -449,9 +449,9 @@ class question extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $resultrow = Questions::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
+        $resultrow = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid, 'language' => $baselang));
 
-        $q = objectizeQuestion($resultrow['type']); //AJS
+        $q = createQuestion($resultrow->question_types['class']);
         $qproperties=$q->questionProperties();
         $iScaleCount = $qproperties['subquestions'];
 
@@ -545,9 +545,8 @@ class question extends Survey_Common_Action
         Questions::model()->deleteAll($criteria);
 
         // Check sort order for subquestions
-        $qresult = Questions::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
-        if (!is_null($qresult))
-            $qtype = $qresult->type;
+        $qresult = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $q = createQuestion($qresult->question_types['class']);
 
         if (!empty($_POST['ansaction']))
         {
@@ -581,7 +580,6 @@ class question extends Survey_Common_Action
          */
         Yii::app()->loadHelper('surveytranslator');
 
-        $q = objectizeQuestion($qtype); //AJS
         $qproperties=$q->questionProperties();
         $aData['scalecount'] = $scalecount = $qproperties['subquestions'];
 
@@ -1050,10 +1048,9 @@ class question extends Survey_Common_Action
 
         Yii::app()->session['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
 
-        $qrows = Questions::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
+        $qrows = Questions::model()->with('question_types')->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
 
-        $name = type2Name($qrows['type']).'Question'; //AJS
-        $q = new $name($surveyid, $qid, $surveyid.'X'.$qrows['gid'].'X'.$qid, $qrows['title'], $qrows['question'], $qrows['gid'], $qrows['mandatory'], 'N', 'N');
+        $q = createQuestion($qrows->question_types['class'], $surveyid, $qid, $surveyid.'X'.$qrows['gid'].'X'.$qid, $qrows['title'], $qrows['question'], $qrows['gid'], $qrows['mandatory'], 'N', 'N');
 
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['seperator'];

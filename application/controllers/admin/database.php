@@ -70,8 +70,8 @@ class database extends Survey_Common_Action
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
             }
 
-            $resrow = Questions::model()->findByAttributes(array('qid'=>$qid));
-            $q = objectizeQuestion($resrow['type']); //AJS
+            $resrow = Questions::model()->with('question_types')->findByAttributes(array('qid'=>$qid));
+            $q = createQuestion($resrow->question_types['class']);
             $qproperties=$q->questionProperties();
             if ($qproperties['answerscales']>0 && $qproperties['subquestions']==0)
             {
@@ -144,8 +144,8 @@ class database extends Survey_Common_Action
             $alllanguages = $anslangs;
             array_unshift($alllanguages,$baselang);
 
-            $resrow = Questions::model()->findByAttributes(array('qid'=>$qid));
-            $q = objectizeQuestion($resrow['type']); //AJS
+            $resrow = Questions::model()->with('question_types')->findByAttributes(array('qid'=>$qid));
+            $q = createQuestion($resrow->question_types['class']);
             $qproperties=$q->questionProperties();
             $scalecount=$qproperties['answerscales'];
 
@@ -241,8 +241,8 @@ class database extends Survey_Common_Action
             $baselang = Survey::model()->findByPk($surveyid)->language;
             array_unshift($anslangs,$baselang);
 
-            $row = Questions::model()->findByAttributes(array('qid'=>$qid));
-            $q = objectizeQuestion($resrow['type']); //AJS
+            $resrow = Questions::model()->with('question_types')->findByAttributes(array('qid'=>$qid));
+            $q = createQuestion($resrow->question_types['class']);
             $qproperties=$q->questionProperties();
             $scalecount=$qproperties['answerscales'];
 
