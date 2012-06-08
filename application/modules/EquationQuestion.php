@@ -8,7 +8,7 @@ class EquationQuestion extends QuestionModule
         {
             $answer .= htmlspecialchars($_SESSION['survey_'.$this->surveyid][$this->fieldname],ENT_QUOTES);
         }
-        $answer .= '".>';
+        $answer .= '">';
 
         return $answer;
     }

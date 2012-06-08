@@ -166,7 +166,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         if($js_header_includes){
             foreach ($js_header_includes as $jsinclude)
             {
-                if (substr($jsinclude,0,4) == 'http')
+                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,strlen(Yii::app()->getConfig('generalscripts'))) == Yii::app()->getConfig('generalscripts'))
                     $_templatejs .= "<script type='text/javascript' src='{$jsinclude}'></script>\n";
                 else
                     $_templatejs .= "<script type='text/javascript' src='".Yii::app()->baseUrl.$jsinclude."'></script>\n";

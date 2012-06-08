@@ -35,17 +35,26 @@ class FileQuestion extends QuestionModule
                 $questgrppreview = 0;
         }
 
-        $uploadbutton = "<h2><a id='upload_".$this->fieldname."' class='upload' href='{$scriptloc}?sid=".$this->surveyid."&amp;fieldname={$this->fieldname}&amp;qid={$this->id}&amp;preview="
-        ."{$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2>";
+        $uploadbutton = "<h2><a id='upload_".$this->fieldname."' class='upload' ";
+        $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
+        $uploadbutton .=">" .$clang->gT('Upload files'). "</a></h2>";
 
-        $answer =  "<script type='text/javascript'>
-        var translt = {
-        title: '" . $clang->gT('Upload your files','js') . "',
-        returnTxt: '" . $clang->gT('Return to survey','js') . "',
-        headTitle: '" . $clang->gT('Title','js') . "',
-        headComment: '" . $clang->gT('Comment','js') . "',
-        headFileName: '" . $clang->gT('File name','js') . "'
-        };
+        $answer = "<script type='text/javascript'>
+            function upload_$ia[1]() {
+                var uploadurl = '{$scriptloc}?sid=".$this->surveyid."&amp;fieldname={$this->fieldname}&amp;qid={$this->id}';
+                uploadurl += '&amp;preview={$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}';
+                uploadurl += '&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."';
+                uploadurl += '&amp;minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
+                uploadurl += '&amp;maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
+                $('#upload_$ia[1]').attr('href',uploadurl);
+            }
+            var translt = {
+                 title: '" . $clang->gT('Upload your files','js') . "',
+                 returnTxt: '" . $clang->gT('Return to survey','js') . "',
+                 headTitle: '" . $clang->gT('Title','js') . "',
+                 headComment: '" . $clang->gT('Comment','js') . "',
+                 headFileName: '" . $clang->gT('File name','js') . "',
+                };
         </script>\n";
 
         header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
@@ -92,7 +101,7 @@ class FileQuestion extends QuestionModule
         var i;
         var jsonstring = "[";
 
-        for (i = 1, filecount = 0; i <= '.$aQuestionAttributes['max_num_of_files'].'; i++)
+        for (i = 1, filecount = 0; i <= LEMval("'.$aQuestionAttributes['max_num_of_files'].'"); i++)
         {
         if ($("#'.$this->fieldname.'_"+i).val() == "")
         continue;
@@ -125,34 +134,6 @@ class FileQuestion extends QuestionModule
         return $answer;
     }
     
-    public function getTitle()
-    {
-        $clang=Yii::app()->lang;
-        $aQuestionAttributes=$this->getAttributeValues();
-        if ($aQuestionAttributes['min_num_of_files'] != 0)
-        {
-            if (trim($aQuestionAttributes['min_num_of_files']) != 0)
-            {
-                return $this->text."<br />\n<span class = \"questionhelp\">".sprintf($clang->gT("At least %d files must be uploaded for this question"), $aQuestionAttributes['min_num_of_files'])."<span>";
-            }
-        }
-        return $this->text;
-    }
-    
-    public function getHelp()
-    {
-        $clang=Yii::app()->lang;
-        $aQuestionAttributes=$this->getAttributeValues();
-        if ($aQuestionAttributes['min_num_of_files'] != 0)
-        {
-            if (trim($aQuestionAttributes['min_num_of_files']) != 0)
-            {
-                return ' '.sprintf($clang->gT("At least %d files must be uploaded for this question"), $aQuestionAttributes['min_num_of_files']);
-            }
-        }
-        return '';
-    }
-    
     public function getFileValidationMessage()
     {
         global $filenotvalidated;
@@ -176,39 +157,36 @@ class FileQuestion extends QuestionModule
     {
         $clang = Yii::app()->lang;
         $qidattributes= getQuestionAttributeValues($this->id);
-        for ($i = 1; $i <= $qidattributes['max_num_of_files']; $i++)
-        {
-            $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}";
-            $field['fieldname']=$fieldname;
-            $field['type']=$type;
-            $field['sid']=$this->surveyid;
-            $field['gid']=$this->gid;
-            $field['qid']=$this->id;
-            $field['aid']='';
-            $field['title']=$this->title;
-            $field['question']=$this->text;
-            $field['group_name']=$this->groupname;
-            $field['mandatory']=$this->mandatory;
-            $field['hasconditions']=$this->conditionsexist;
-            $field['usedinconditions']=$this->usedinconditions;
-            $field['questionSeq']=$this->questioncount;
-            $field['groupSeq']=$this->groupcount;
-            $field['pq']=$this;
-            $field['q']=$this;
-            $field2=$field;
-            $field['max_files']=$qidattributes['max_num_of_files'];
-            $fieldname2="{$this->surveyid}X{$this->gid}X{$this->id}_filecount";
-            $field2['fieldname']=$fieldname2;
-            $field2['aid']='filecount';
-            $field2['question']="filecount - ".$this->text;
-            $q = clone $this;
-            $q->fieldname = $fieldname;
-            $q->aid=$field2['aid'];
-            $q->question=$field2['question'];
-            $field2['q']=$q;
-            $map[$fieldname]=$field;
-            $map[$fieldname2]=$field2;
-        }
+        $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}";
+        $field['fieldname']=$fieldname;
+        $field['type']=$type;
+        $field['sid']=$this->surveyid;
+        $field['gid']=$this->gid;
+        $field['qid']=$this->id;
+        $field['aid']='';
+        $field['title']=$this->title;
+        $field['question']=$this->text;
+        $field['group_name']=$this->groupname;
+        $field['mandatory']=$this->mandatory;
+        $field['hasconditions']=$this->conditionsexist;
+        $field['usedinconditions']=$this->usedinconditions;
+        $field['questionSeq']=$this->questioncount;
+        $field['groupSeq']=$this->groupcount;
+        $field['pq']=$this;
+        $field['q']=$this;
+        $field2=$field;
+        $field['max_files']=$qidattributes['max_num_of_files'];
+        $fieldname2="{$this->surveyid}X{$this->gid}X{$this->id}_filecount";
+        $field2['fieldname']=$fieldname2;
+        $field2['aid']='filecount';
+        $field2['question']="filecount - ".$this->text;
+        $q = clone $this;
+        $q->fieldname = $fieldname;
+        $q->aid=$field2['aid'];
+        $q->question=$field2['question'];
+        $field2['q']=$q;
+        $map[$fieldname]=$field;
+        $map[$fieldname2]=$field2;
         return $map;
     }
     

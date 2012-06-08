@@ -215,7 +215,7 @@ class CheckQuestion extends QuestionModule
                 {
                     $dispVal = str_replace('.',$sSeperator,$dispVal);
                 }
-                $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
+                $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
             }
 
             $answer .= "\" />\n{$wrapper['item-end']}";
@@ -403,7 +403,7 @@ class CheckQuestion extends QuestionModule
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("array_filter","array_filter_exclude","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

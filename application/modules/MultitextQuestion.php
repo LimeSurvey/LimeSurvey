@@ -139,6 +139,13 @@ class MultitextQuestion extends QuestionModule
                 {
                     $myfname = $this->fieldname.$ansrow['title'];
                     if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
+                    
+                    // color code missing mandatory questions red
+                    if ($this->mandatory=='Y' && (($_SESSION['survey_'.$this->surveyid]['step'] == $_SESSION['survey_'.$this->surveyid]['prevstep'])
+                            || ($_SESSION['survey_'.$this->surveyid]['maxstep'] > $_SESSION['survey_'.$this->surveyid]['step']))
+                            && $_SESSION['survey_'.$this->surveyid][$myfname] == '') {
+                        $ansrow['question'] = "<span class='errormandatory'>{$ansrow['question']}</span>";
+                    }
 
                     list($htmltbody2, $hiddenfield)=return_array_filter_strings($this, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
                     $answer_main .= "\t$htmltbody2\n"
@@ -228,7 +235,7 @@ class MultitextQuestion extends QuestionModule
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("array_filter","array_filter_exclude","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");
+        $attrs=array("array_filter","array_filter_exclude","array_filter_style","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

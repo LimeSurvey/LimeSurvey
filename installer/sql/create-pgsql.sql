@@ -11,12 +11,12 @@ SET default_with_oids = false;
 --
 CREATE TABLE prefix_answers (
     qid integer DEFAULT 0 NOT NULL,
-    code character varying(5) DEFAULT ''::character varying NOT NULL,
+    code character varying(5) DEFAULT '' NOT NULL,
     answer text NOT NULL,
     sortorder integer NOT NULL,
+    "language" character varying(20) DEFAULT 'en',
     assessment_value integer DEFAULT 0 NOT NULL,
-    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
-    scale_id smallint DEFAULT 0 NOT NULL,
+    scale_id integer DEFAULT 0 NOT NULL,
     CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid, code, "language", scale_id)
 );
 
@@ -25,15 +25,15 @@ CREATE TABLE prefix_answers (
 -- Table structure for table assessments
 --
 CREATE TABLE prefix_assessments (
-    id serial,
+    id serial NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
-    scope character varying(5) DEFAULT ''::character varying NOT NULL,
+    scope character varying(5) DEFAULT '' NOT NULL,
     gid integer DEFAULT 0 NOT NULL,
     name text NOT NULL,
-    minimum character varying(50) DEFAULT ''::character varying NOT NULL,
-    maximum character varying(50) DEFAULT ''::character varying NOT NULL,
+    minimum character varying(50) DEFAULT '' NOT NULL,
+    maximum character varying(50) DEFAULT '' NOT NULL,
     message text NOT NULL,
-    language character varying(20) DEFAULT 'en'::bpchar NOT NULL,
+    language character varying(20) DEFAULT 'en' NOT NULL,
     CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)
 );
 
@@ -42,13 +42,13 @@ CREATE TABLE prefix_assessments (
 -- Table structure for table conditions
 --
 CREATE TABLE prefix_conditions (
-    cid serial,
+    cid serial NOT NULL,
     qid integer DEFAULT 0 NOT NULL,
-    scenario integer DEFAULT 1 NOT NULL,
     cqid integer DEFAULT 0 NOT NULL,
-    cfieldname character varying(50) DEFAULT ''::character varying NOT NULL,
-    method character varying(5) DEFAULT ''::character varying NOT NULL,
-    value character varying(255) DEFAULT ''::character varying NOT NULL,
+    cfieldname character varying(50) DEFAULT '' NOT NULL,
+    method character varying(5) DEFAULT '' NOT NULL,
+    value character varying(255) DEFAULT '' NOT NULL,
+    scenario integer DEFAULT 1 NOT NULL,
     CONSTRAINT prefix_conditions_pkey PRIMARY KEY (cid)
 );
 
@@ -63,21 +63,22 @@ CREATE TABLE prefix_defaultvalues (
     language character varying(20) NOT NULL,
     specialtype character varying(20) NOT NULL default '',
     defaultvalue text,
-    CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)
+    CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , specialtype, language, scale_id, sqid)
 );
+
 
 --
 -- Table structure for table expression_errors
 --
 
 CREATE TABLE prefix_expression_errors (
-  id serial,
-  errortime character varying(50) DEFAULT NULL,
-  sid integer DEFAULT NULL,
-  gid integer DEFAULT NULL,
-  qid integer DEFAULT NULL,
-  gseq integer DEFAULT NULL,
-  qseq integer DEFAULT NULL,
+  id serial NOT NULL,
+  errortime character varying(50),
+  sid integer,
+  gid integer,
+  qid integer,
+  gseq integer,
+  qseq integer,
   "type" character varying(50) ,
   eqn text,
   prettyprint text,
@@ -86,16 +87,27 @@ CREATE TABLE prefix_expression_errors (
 
 
 --
+-- Create failed_login_attempts
+--
+CREATE TABLE prefix_failed_login_attempts (
+  id serial PRIMARY KEY NOT NULL,
+  ip character varying(37) NOT NULL,
+  last_attempt character varying(20) NOT NULL,
+  number_attempts integer NOT NULL
+);
+
+
+--
 -- Table structure for table groups
 --
 CREATE TABLE prefix_groups (
-    gid serial,
+    gid serial NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
-    group_name character varying(100) DEFAULT ''::character varying NOT NULL,
+    group_name character varying(100) DEFAULT '' NOT NULL,
     group_order integer DEFAULT 0 NOT NULL,
     description text,
-    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
-    randomization_group character varying(20) DEFAULT ''::character varying NOT NULL,
+    "language" character varying(20) DEFAULT 'en',
+    randomization_group character varying(20) DEFAULT '' NOT NULL,
     grelevance text DEFAULT NULL,
     CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")
 );
@@ -106,14 +118,13 @@ CREATE TABLE prefix_groups (
 --
 CREATE TABLE prefix_labels (
     lid integer DEFAULT 0 NOT NULL,
-    code character varying(5) DEFAULT ''::character varying NOT NULL,
+    code character varying(5) DEFAULT '' NOT NULL,
     title text,
     sortorder integer NOT NULL,
     assessment_value integer DEFAULT 0 NOT NULL,
-    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
+    "language" character varying(20) DEFAULT 'en' NOT NULL,
     CONSTRAINT prefix_labels_pkey PRIMARY KEY (lid, sortorder, "language")
 );
-CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 
 
 --
@@ -121,9 +132,78 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 --
 CREATE TABLE prefix_labelsets (
     lid serial NOT NULL,
-    label_name character varying(100) DEFAULT ''::character varying NOT NULL,
-    languages character varying(200) DEFAULT 'en'::character varying,
+    label_name character varying(100) DEFAULT '' NOT NULL,
+    languages character varying(200) DEFAULT 'en',
     CONSTRAINT prefix_labelsets_pkey PRIMARY KEY (lid)
+);
+
+
+--
+-- Table structure for table participant_attribute
+--
+CREATE TABLE prefix_participant_attribute (
+  "participant_id" character varying( 50 ) NOT NULL,
+  "attribute_id" integer NOT NULL,
+  "value" character varying(50) NOT NULL,
+  CONSTRAINT prefix_participant_attribut_pkey PRIMARY KEY (participant_id,attribute_id)
+);
+
+
+--
+-- Table structure for table participant_attribute_lang
+--
+CREATE TABLE prefix_participant_attribute_names_lang (
+  "attribute_id" integer NOT NULL,
+  "attribute_name" character varying( 30 ) NOT NULL,
+  "lang" character varying( 20 ) NOT NULL,
+  CONSTRAINT prefix_participant_attribute_names_lang_pkey PRIMARY KEY (attribute_id,lang)
+);
+
+
+--
+-- Table structure for table participant_attribute_names
+--
+CREATE TABLE prefix_participant_attribute_names (
+  "attribute_id" serial NOT NULL,
+  "attribute_type" character varying( 4 ) NOT NULL,
+  "visible" character varying( 5 ) NOT NULL,
+  CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
+);
+
+
+--
+-- Table structure for table participant_attribute_values
+--
+CREATE TABLE prefix_participant_attribute_values (
+  "value_id" serial PRIMARY KEY NOT NULL,
+  "attribute_id" integer NOT NULL,
+  "value" character varying( 20 ) NOT NULL
+);
+
+
+--
+-- Table structure for table participant_shares
+--
+CREATE TABLE prefix_participant_shares (
+  "participant_id" character varying( 50 ) NOT NULL,
+  "share_uid" integer NOT NULL,
+  "date_added" timestamp NOT NULL,
+  "can_edit" character varying( 5 ) NOT NULL,
+  CONSTRAINT prefix_participant_shares_pkey PRIMARY KEY (participant_id,share_uid)
+);
+
+
+--
+-- Table structure for table participants
+--
+CREATE TABLE prefix_participants (
+  "participant_id" character varying(50) PRIMARY KEY NOT NULL,
+  "firstname" character varying(40),
+  "lastname" character varying(40),
+  "email" character varying(80),
+  "language" character varying(40),
+  "blacklisted" character varying(1) NOT NULL,
+  "owner_uid" integer NOT NULL
 );
 
 
@@ -137,6 +217,31 @@ CREATE TABLE prefix_question_attributes (
     value text NULL,
     "language" character varying(20),
     CONSTRAINT prefix_question_attributes_pkey PRIMARY KEY (qaid)
+);
+
+
+--
+-- Table structure for table questions
+--
+CREATE TABLE prefix_questions (
+    qid serial NOT NULL,
+    parent_qid integer DEFAULT 0 NOT NULL,
+    sid integer DEFAULT 0 NOT NULL,
+    gid integer DEFAULT 0 NOT NULL,
+    tid integer DEFAULT 0 NOT NULL,
+    "type" character varying(1) DEFAULT 'T' NOT NULL,
+    title character varying(20) DEFAULT '' NOT NULL,
+    question text NOT NULL,
+    preg text,
+    help text,
+    other character varying(1) DEFAULT 'N' NOT NULL,
+    mandatory character varying(1),
+    question_order integer NOT NULL,
+    "language" character varying(20) DEFAULT 'en' NOT NULL,
+    scale_id integer DEFAULT 0 NOT NULL,
+    same_default integer DEFAULT 0 NOT NULL,
+    relevance text,
+    CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language")
 );
 
 
@@ -162,8 +267,8 @@ CREATE TABLE prefix_quota_languagesettings
 (
     quotals_id serial NOT NULL,
     quotals_quota_id integer NOT NULL DEFAULT 0,
-    quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
-    quotals_name character varying(200),
+    quotals_language character varying(45) NOT NULL DEFAULT 'en',
+    quotals_name character varying(255),
     quotals_message text NOT NULL,
     quotals_url character varying(255),
     quotals_urldescrip character varying(255),
@@ -175,7 +280,7 @@ CREATE TABLE prefix_quota_languagesettings
 -- Table structure for table quota_members
 --
 CREATE TABLE prefix_quota_members (
-    id serial,
+    id serial NOT NULL,
     sid integer,
     qid integer,
     quota_id integer,
@@ -185,30 +290,6 @@ CREATE TABLE prefix_quota_members (
 CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree (sid,qid,quota_id,code);
 
 
---
--- Table structure for table questions
---
-CREATE TABLE prefix_questions (
-    qid serial NOT NULL,
-    parent_qid integer DEFAULT 0 NOT NULL,
-    sid integer DEFAULT 0 NOT NULL,
-    gid integer DEFAULT 0 NOT NULL,
-    tid integer DEFAULT 0 NOT NULL,
-    "type" character(1) DEFAULT 'T'::bpchar NOT NULL,
-    title character varying(20) DEFAULT ''::character varying NOT NULL,
-    question text NOT NULL,
-    preg text,
-    help text,
-    other character(1) DEFAULT 'N'::bpchar NOT NULL,
-    mandatory character(1),
-    question_order integer NOT NULL,
-    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
-    scale_id smallint DEFAULT 0 NOT NULL,
-    same_default smallint DEFAULT 0 NOT NULL,
-    relevance text,
-    CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language")
-);
-
 
 --
 -- Table structure for table saved_control
@@ -217,13 +298,13 @@ CREATE TABLE prefix_saved_control (
     scid serial NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
     srid integer DEFAULT 0 NOT NULL,
-    identifier text,
+    identifier text NOT NULL,
     access_code text NOT NULL,
-    email character varying(320) NOT NULL,
+    email character varying(320),
     ip text NOT NULL,
     saved_thisstep text NOT NULL,
-    status character(1) DEFAULT ''::bpchar NOT NULL,
-    saved_date timestamp without time zone NOT NULL,
+    status character varying(1) DEFAULT '' NOT NULL,
+    saved_date timestamp NOT NULL,
     refurl text,
     CONSTRAINT prefix_saved_control_pkey PRIMARY KEY (scid)
 );
@@ -233,7 +314,7 @@ CREATE TABLE prefix_saved_control (
 -- Table structure for table sessions
 --
 CREATE TABLE prefix_sessions(
-      id character(32) NOT NULL,
+      id character varying(32) NOT NULL,
       expire integer DEFAULT NULL,
       data text,
       CONSTRAINT prefix_sessions_pkey PRIMARY KEY ( id )
@@ -244,9 +325,50 @@ CREATE TABLE prefix_sessions(
 -- Table structure for table settings_global
 --
 CREATE TABLE prefix_settings_global (
-    stg_name character varying(50) DEFAULT ''::character varying NOT NULL,
-    stg_value character varying(255) DEFAULT ''::character varying NOT NULL,
+    stg_name character varying(50) DEFAULT '' NOT NULL,
+    stg_value character varying(255) DEFAULT '' NOT NULL,
     CONSTRAINT prefix_settings_global_pkey PRIMARY KEY (stg_name)
+);
+
+
+--
+-- Table structure for table survey_links
+--
+CREATE TABLE prefix_survey_links (
+  "participant_id" character varying ( 50 ) NOT NULL,
+  "token_id" integer NOT NULL,
+  "survey_id" integer NOT NULL,
+  "date_created" timestamp,
+  CONSTRAINT prefix_survey_links_pkey PRIMARY KEY (participant_id,token_id,survey_id)
+);
+
+
+--
+-- Table structure for table survey_permissions
+--
+CREATE TABLE prefix_survey_permissions (
+	sid integer NOT NULL,
+	uid integer NOT NULL,
+	permission character varying(20) NOT NULL,
+	create_p integer DEFAULT 0 NOT NULL,
+    read_p integer DEFAULT 0 NOT NULL,
+	update_p integer DEFAULT 0 NOT NULL,
+	delete_p integer DEFAULT 0 NOT NULL,
+    import_p integer DEFAULT 0 NOT NULL,
+    export_p integer DEFAULT 0 NOT NULL,
+    CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission)
+);
+
+
+--
+-- Table structure for table survey_url_parameters
+--
+CREATE TABLE prefix_survey_url_parameters (
+	id serial PRIMARY KEY NOT NULL,
+	sid integer NOT NULL,
+	parameter character varying(50) NOT NULL,
+	targetqid integer NULL,
+	targetsqid integer NULL
 );
 
 
@@ -257,61 +379,61 @@ CREATE TABLE prefix_surveys (
     sid integer NOT NULL,
     owner_id integer NOT NULL,
     "admin" character varying(50),
-    active character(1) DEFAULT 'N'::bpchar NOT NULL,
-    startdate timestamp,
+    active character varying(1) DEFAULT 'N' NOT NULL,
     expires timestamp,
-    adminemail character varying(320) NOT NULL,
-    anonymized character(1),
+    startdate timestamp,
+    adminemail character varying(320),
+    anonymized character varying(1) DEFAULT 'N' NOT NULL,
     faxto character varying(20),
-    format character(1),
-    savetimings character(1) DEFAULT 'N'::bpchar,
-    "template" character varying(100) DEFAULT 'default'::character varying,
+    format character varying(1),
+    savetimings character varying(1) DEFAULT 'N' NOT NULL,
+    "template" character varying(100) DEFAULT 'default',
     "language" character varying(50),
     additional_languages character varying(255),
-    datestamp character(1) DEFAULT 'N'::bpchar,
-    usecookie character(1) DEFAULT 'N'::bpchar,
-    allowregister character(1) DEFAULT 'N'::bpchar,
-    allowsave character(1) DEFAULT 'Y'::bpchar,
-    printanswers character(1) DEFAULT 'N'::bpchar,
-    autonumber_start integer DEFAULT 0,
-    autoredirect character(1) DEFAULT 'N'::bpchar,
-    showxquestions character(1) DEFAULT 'Y'::bpchar,
-    showgroupinfo character(1) DEFAULT 'B'::bpchar,
-    shownoanswer character(1) DEFAULT 'Y'::bpchar,
-    showqnumcode character(1) DEFAULT 'X'::bpchar,
-    showwelcome character(1) DEFAULT 'Y'::bpchar,
-    allowprev character(1) DEFAULT 'Y'::bpchar,
-    ipaddr character(1) DEFAULT 'N'::bpchar,
-    refurl character(1) DEFAULT 'N'::bpchar,
+    datestamp character varying(1) DEFAULT 'N' NOT NULL,
+    usecookie character varying(1) DEFAULT 'N' NOT NULL,
+    allowregister character varying(1) DEFAULT 'N' NOT NULL,
+    allowsave character varying(1) DEFAULT 'Y' NOT NULL,
+    autonumber_start integer DEFAULT 0 NOT NULL,
+    autoredirect character varying(1) DEFAULT 'N' NOT NULL,
+    allowprev character varying(1) DEFAULT 'N' NOT NULL,
+    printanswers character varying(1) DEFAULT 'N' NOT NULL,
+    ipaddr character varying(1) DEFAULT 'N' NOT NULL,
+    refurl character varying(1) DEFAULT 'N' NOT NULL,
     datecreated date,
-    listpublic character(1) DEFAULT 'N'::bpchar,
-    publicstatistics character(1) DEFAULT 'N'::bpchar,
-    publicgraphs character(1) DEFAULT 'N'::bpchar,
-    htmlemail character(1) DEFAULT 'N'::bpchar,
-    sendconfirmation character(1) DEFAULT 'Y'::bpchar,
-    tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
-    assessments character(1) DEFAULT 'N'::bpchar,
-    usecaptcha character(1) DEFAULT 'N'::bpchar,
-    bouncetime bigint,
-    bounceprocessing character(1) default 'N'::bpchar,
-    bounceaccounttype character(4),
-    bounceaccounthost character(200),
-    bounceaccountuser character(200),
-    bounceaccountpass character(100),
-    bounceaccountencryption character(3),
-    usetokens character(1) DEFAULT 'N'::bpchar,
-    "bounce_email" character varying(320) NOT NULL,
+    publicstatistics character varying(1) DEFAULT 'N' NOT NULL,
+    publicgraphs character varying(1) DEFAULT 'N' NOT NULL,
+    listpublic character varying(1) DEFAULT 'N' NOT NULL,
+    htmlemail character varying(1) DEFAULT 'N' NOT NULL,
+    sendconfirmation character varying(1) DEFAULT 'Y' NOT NULL,
+    tokenanswerspersistence character varying(1) DEFAULT 'N' NOT NULL,
+    assessments character varying(1) DEFAULT 'N' NOT NULL,
+    usecaptcha character varying(1) DEFAULT 'N' NOT NULL,
+    usetokens character varying(1) DEFAULT 'N' NOT NULL,
+    "bounce_email" character varying(320),
     attributedescriptions text,
 	emailresponseto text,
     emailnotificationto text,
-	tokenlength smallint DEFAULT '15',
-    showprogress character(1) DEFAULT 'N'::bpchar,
-    allowjumps character(1) DEFAULT 'N'::bpchar,
-    navigationdelay smallint DEFAULT '0',
-    nokeyboard character(1) DEFAULT 'N'::bpchar,
-    alloweditaftercompletion character(1) DEFAULT 'N'::bpchar,
-    googleanalyticsstyle character(1) DEFAULT NULL,
-    googleanalyticsapikey character varying(25) DEFAULT NULL,
+	tokenlength integer DEFAULT '15' NOT NULL,
+    showxquestions character varying(1) DEFAULT 'Y',
+    showgroupinfo character varying(1) DEFAULT 'B',
+    shownoanswer character varying(1) DEFAULT 'Y',
+    showqnumcode character varying(1) DEFAULT 'X',
+    bouncetime integer,
+    bounceprocessing character varying(1) default 'N',
+    bounceaccounttype character varying(4),
+    bounceaccounthost character varying(200),
+    bounceaccountpass character varying(100),
+    bounceaccountencryption character varying(3),
+    bounceaccountuser character varying(200),
+    showwelcome character varying(1) DEFAULT 'Y',
+    showprogress character varying(1) DEFAULT 'Y',
+    allowjumps character varying(1) DEFAULT 'N',
+    navigationdelay integer DEFAULT '0' NOT NULL,
+    nokeyboard character varying(1) DEFAULT 'N',
+    alloweditaftercompletion character varying(1) DEFAULT 'N',
+    googleanalyticsstyle character varying(1),
+    googleanalyticsapikey character varying(25),
     CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid)
 );
 
@@ -320,14 +442,14 @@ CREATE TABLE prefix_surveys (
 -- Table structure for table surveys_languagesettings
 --
 CREATE TABLE prefix_surveys_languagesettings (
-    surveyls_survey_id integer DEFAULT 0 NOT NULL,
-    surveyls_language character varying(45) DEFAULT 'en'::character varying NOT NULL,
+    surveyls_survey_id integer NOT NULL,
+    surveyls_language character varying(45) DEFAULT 'en',
     surveyls_title character varying(200) NOT NULL,
     surveyls_description text,
     surveyls_welcometext text,
+    surveyls_endtext text,
     surveyls_url character varying(255),
     surveyls_urldescription character varying(255),
-    surveyls_endtext text,
     surveyls_email_invite_subj character varying(255),
     surveyls_email_invite text,
     surveyls_email_remind_subj character varying(255),
@@ -342,43 +464,16 @@ CREATE TABLE prefix_surveys_languagesettings (
     email_admin_notification text,
     email_admin_responses_subj character varying(255),
     email_admin_responses text,
-    surveyls_numberformat integer NOT NULL DEFAULT 1,
+    surveyls_numberformat integer NOT NULL DEFAULT 0,
     CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language)
 );
 
 
 --
--- Table structure for table survey_permissions
---
-CREATE TABLE prefix_survey_permissions (
-	sid integer DEFAULT 0 NOT NULL,
-	uid integer DEFAULT 0 NOT NULL,
-	permission character varying(20) NOT NULL,
-	create_p integer DEFAULT 0 NOT NULL,
-    read_p integer DEFAULT 0 NOT NULL,
-	update_p integer DEFAULT 0 NOT NULL,
-	delete_p integer DEFAULT 0 NOT NULL,
-    import_p integer DEFAULT 0 NOT NULL,
-    export_p integer DEFAULT 0 NOT NULL,
-    CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission)
-);
-
---
--- Table structure for table survey_url_parameters
---
-CREATE TABLE prefix_survey_url_parameters (
-	id serial PRIMARY KEY NOT NULL,
-	sid integer NOT NULL,
-	parameter character varying(50) NOT NULL,
-	targetqid integer NULL,
-	targetsqid integer NULL
-);
-
---
 -- Table structure for table user_groups
 --
 CREATE TABLE prefix_user_groups (
-    ugid serial NOT NULL,
+    ugid serial PRIMARY KEY NOT NULL,
     name character varying(20) NOT NULL,
     description text NOT NULL,
     owner_id integer NOT NULL
@@ -390,7 +485,8 @@ CREATE TABLE prefix_user_groups (
 --
 CREATE TABLE prefix_user_in_groups (
     ugid integer NOT NULL,
-    uid integer NOT NULL
+    uid integer NOT NULL,
+    CONSTRAINT prefix_user_in_groups_pkey PRIMARY KEY (ugid, uid)
 );
 
 
@@ -399,12 +495,12 @@ CREATE TABLE prefix_user_in_groups (
 --
 CREATE TABLE prefix_users (
     uid serial PRIMARY KEY NOT NULL,
-    users_name character varying(64) DEFAULT ''::character varying UNIQUE NOT NULL,
+    users_name character varying(64) DEFAULT '' UNIQUE NOT NULL,
     "password" bytea NOT NULL,
     full_name character varying(50) NOT NULL,
     parent_id integer NOT NULL,
     lang character varying(20),
-    email character varying(320) NOT NULL,
+    email character varying(320),
     create_survey integer DEFAULT 0 NOT NULL,
     create_user integer DEFAULT 0 NOT NULL,
     participant_panel integer DEFAULT 0 NOT NULL,
@@ -413,9 +509,9 @@ CREATE TABLE prefix_users (
     configurator integer DEFAULT 0 NOT NULL,
     manage_template integer DEFAULT 0 NOT NULL,
     manage_label integer DEFAULT 0 NOT NULL,
-    htmleditormode character(7) DEFAULT 'default'::bpchar,
-    templateeditormode character(7) DEFAULT 'default'::bpchar,
-    questionselectormode character(7) DEFAULT 'default'::bpchar,
+    htmleditormode character varying(7) DEFAULT 'default',
+    templateeditormode character varying(7) DEFAULT 'default' NOT NULL,
+    questionselectormode character varying(7) DEFAULT 'default' NOT NULL,
 	one_time_pw bytea,
     "dateformat" integer DEFAULT 1 NOT NULL
 );
@@ -433,102 +529,12 @@ CREATE TABLE prefix_templates_rights (
 
 
 --
--- Table structure for table participants
---
-CREATE TABLE prefix_participants (
-  "participant_id" character varying( 50 ) PRIMARY KEY NOT NULL,
-  "firstname" character varying( 40 ) DEFAULT NULL,
-  "lastname" character varying( 40 ) DEFAULT NULL,
-  "email" character varying( 80 ) DEFAULT NULL,
-  "language" character varying( 2 ) DEFAULT NULL,
-  "blacklisted" character( 1 ) DEFAULT NULL,
-  "owner_uid" integer NOT NULL
-);
-
-
---
--- Table structure for table participant_attribute
---
-CREATE TABLE prefix_participant_attribute (
-  "participant_id" character varying( 50 ) NOT NULL,
-  "attribute_id" integer NOT NULL,
-  "value" integer NOT NULL,
-  CONSTRAINT prefix_participant_attribut_pkey PRIMARY KEY (participant_id,attribute_id)
-);
-
-
---
--- Table structure for table participant_attribute_lang
---
-CREATE TABLE prefix_participant_attribute_names_lang (
-  "id" serial PRIMARY KEY NOT NULL,
-  "attribute_id" integer NOT NULL,
-  "attribute_name" character varying( 30 ) NOT NULL,
-  "lang" character varying( 20 ) NOT NULL
-);
-
-
---
--- Table structure for table participant_attribute_names
---
-CREATE TABLE prefix_participant_attribute_names (
-  "attribute_id" serial NOT NULL,
-  "attribute_type" character varying( 30 ) NOT NULL,
-  "visible" character varying( 5 ) NOT NULL,
-  CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
-);
-
-
---
--- Table structure for table participant_attribute_values
---
-CREATE TABLE prefix_participant_attribute_values (
-  "value_id" serial PRIMARY KEY NOT NULL,
-  "attribute_id" integer NOT NULL,
-  "value" character varying( 20 ) NOT NULL
-);
---
--- Table structure for table participant_shares
---
-CREATE TABLE prefix_participant_shares (
-  "participant_id" character varying( 50 ) NOT NULL,
-  "shared_uid" integer NOT NULL,
-  "date_added" date NOT NULL,
-  "can_edit" character varying( 5 ) NOT NULL,
-  CONSTRAINT prefix_participant_shares_pkey PRIMARY KEY (participant_id,shared_uid)
-);
-
-
---
--- Table structure for table participant_attribute_values
---
-CREATE TABLE prefix_survey_links (
-  "participant_id" character varying ( 50 ) NOT NULL,
-  "token_id" integer NOT NULL,
-  "survey_id" integer NOT NULL,
-  "date_created" date NOT NULL,
-  CONSTRAINT prefix_survey_links_pkey PRIMARY KEY (participant_id,token_id,survey_id)
-);
-
-
---
 -- Table structure for table templates
 --
 CREATE TABLE prefix_templates (
   "folder" character varying(255) NOT NULL,
   "creator" integer NOT NULL,
   CONSTRAINT prefix_templates_pkey PRIMARY KEY ("folder")
-);
-
-
---
--- Create failed_login_attempts
---
-CREATE TABLE prefix_failed_login_attempts (
-  id serial PRIMARY KEY NOT NULL,
-  ip character varying(37) NOT NULL,
-  last_attempt character varying(20) NOT NULL,
-  number_attempts integer NOT NULL
 );
 
 
@@ -562,24 +568,27 @@ CREATE TABLE `prefix_question_type_groups` (
 --
 -- Secondary indexes
 --
+create index answers_idx2 on prefix_answers (sortorder);
 create index assessments_idx2 on prefix_assessments (sid);
 create index assessments_idx3 on prefix_assessments (gid);
 create index conditions_idx2 on prefix_conditions (qid);
+create index conditions_idx3 on prefix_conditions (cqid);
 create index groups_idx2 on prefix_groups (sid);
 create index question_attributes_idx2 on prefix_question_attributes (qid);
 create index question_attributes_idx3 on prefix_question_attributes (attribute);
 create index questions_idx2 on prefix_questions (sid);
 create index questions_idx3 on prefix_questions (gid);
+create index questions_idx4 on prefix_questions (type);
 create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
-create index user_in_groups_idx1 on prefix_user_in_groups  (ugid, uid);
 create index parent_qid_idx on prefix_questions (parent_qid);
+create index labels_code_idx on prefix_labels (code);
 
 
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '158');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '159');
 INSERT INTO prefix_question_types (tid, "order", "group", name, "class", legacy, system) VALUES
 (1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
 (2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),

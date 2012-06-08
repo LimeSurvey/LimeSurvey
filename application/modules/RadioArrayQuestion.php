@@ -323,7 +323,7 @@ class RadioArrayQuestion extends ArrayQuestion
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("answer_width","array_filter","array_filter_exclude","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

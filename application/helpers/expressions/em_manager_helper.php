@@ -473,6 +473,7 @@
         * 'type' => 'M' // the one-letter question type
         * 'fieldname' => '26626X34X702sq1' // the fieldname (used as JavaScript variable name, and also as database column name
         * 'rootVarName' => 'afDS'  // the root variable name
+        * 'preg' => '/[A-Z]+/' // regular expression validation equation, if any
         * 'subqs' => array() of sub-questions, where each contains:
         *     'rowdivid' => '26626X34X702sq1' // the javascript id identifying the question row (so array_filter can hide rows)
         *     'varName' => 'afSrcFilter_sq1' // the full variable name for the sub-question
@@ -791,6 +792,7 @@
             $relOrList = array();
             foreach($query->readAll() as $row)
             {
+                $row['method']=trim($row['method']); //For Postgres
                 if ($row['qid'] != $_qid)
                 {
                     // output the values for prior question is there was one
@@ -884,18 +886,52 @@
                 {
                     // Conditions uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
                     if ($value === '" "') {
-                        if ($row['method'] == '==') {
+                        if ($row['method'] == '==')
+                        {
                             $relOrList[] = "is_empty(" . $fieldname . ")";
                         }
-                        else if ($row['method'] == '!=') {
-                                $relOrList[] = "!is_empty(" . $fieldname . ")";
-                            }
-                            else {
-                                $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                        else if ($row['method'] == '!=')
+                        {
+                            $relOrList[] = "!is_empty(" . $fieldname . ")";
+                        }
+                        else
+                        {
+                            $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
                         }
                     }
-                    else {
-                        $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                    else
+                    {
+                        if ($value == '"0"' || !preg_match('/^".+"$/',$value))
+                        {
+                            switch ($row['method'])
+                            {
+                                case '==':
+                                case '<':
+                                case '<=':
+                                case '>=':
+                                    $relOrList[] = '(!is_empty(' . $fieldname . ') && (' . $fieldname . " " . $row['method'] . " " . $value . '))';
+                                    break;
+                                case '!=':
+                                    $relOrList[] = '(is_empty(' . $fieldname . ') || (' . $fieldname . " != " . $value . '))';
+                                    break;
+                                default:
+                                    $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch ($row['method'])
+                            {
+                                case '<':
+                                case '<=':
+                                    $relOrList[] = '(!is_empty(' . $fieldname . ') && (' . $fieldname . " " . $row['method'] . " " . $value . '))';
+                                    break;
+                                default:
+                                    $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                                    break;
+                            }
+                        }
                     }
                 }
 
@@ -982,6 +1018,15 @@
                     $input_boxes='';
                 }
 
+                if (isset($qattr['value_range_allows_missing']) && $qattr['value_range_allows_missing'] == '1')
+                {
+                    $value_range_allows_missing = true;
+                }
+                else
+                {
+                    $value_range_allows_missing = false;
+                }
+
                 // array_filter
                 // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
                 // relevance for Q2_SQ1 is Q1_SQ1!=''
@@ -1038,23 +1083,39 @@
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                            $af_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                            $sgq .= substr($sq['sqsuffix'],1);
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $af_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                            $afe_names[] = $sgq . substr($sq['sqsuffix'],1);;
+                                            $sgq .= substr($sq['sqsuffix'],1);
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $afe_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                     }
                                     else
                                     {
                                         foreach ($cascadedAF as $_caf)
                                         {
-                                            $af_names[] = $_caf . $sq['sqsuffix'];
+                                            $sgq = $_caf . $sq['sqsuffix'];
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $af_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
-                                            $afe_names[] = $_cafe . $sq['sqsuffix'];
+                                            $sgq = $_cafe . $sq['sqsuffix'];
+                                            if (isset($this->knownVars[$sgq]))
+                                            {
+                                                $afe_names[] = $sgq . '.NAOK';
+                                            }
                                         }
                                     }
                                     break;
@@ -1154,11 +1215,18 @@
                                 $sumRemainingEqn = 'round(' . $sumRemainingEqn . ', ' . $precision . ')';
                                 $mainEqn = 'round(' . $mainEqn . ', ' . $precision . ')';
                             }
+
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_range',
-                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             'sumRemainingEqn' => $sumRemainingEqn,
@@ -1667,11 +1735,17 @@
                                 $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
                             }
 
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value',
                             'class' => 'sum_range',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             );
@@ -1725,11 +1799,17 @@
                                 $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
                             }
 
+                            $noanswer_option = '';
+                            if ($value_range_allows_missing)
+                            {
+                                $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
+                            }
+
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value',
                             'class' => 'sum_range',
-                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             );
@@ -1853,6 +1933,76 @@
                 else
                 {
                     $multiflexible_max='';
+                }
+
+                // min_num_of_files
+                // Validation:= sq_filecount >= value (which could be an expression).
+                if (isset($qattr['min_num_of_files']) && trim($qattr['min_num_of_files']) != '')
+                {
+                    $min_num_of_files = $qattr['min_num_of_files'];
+                    $eqn='';
+                    $sgqa = $qinfo['sgqa'];
+                    switch ($type)
+                    {
+                        case '|': //List - dropdown
+                            $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                            break;
+                        default:
+                            break;
+                    }
+                    if ($eqn != '')
+                    {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'min_num_of_files',
+                        'class' => 'num_answers',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                        );
+                    }
+                }
+                else
+                {
+                    $min_num_of_files = '';
+                }
+
+                // max_num_of_files
+                // Validation:= sq_filecount <= value (which could be an expression).
+                if (isset($qattr['max_num_of_files']) && trim($qattr['max_num_of_files']) != '')
+                {
+                    $max_num_of_files = $qattr['max_num_of_files'];
+                    $eqn='';
+                    $sgqa = $qinfo['sgqa'];
+                    switch ($type)
+                    {
+                        case '|': //List - dropdown
+                            $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                            break;
+                        default:
+                            break;
+                    }
+                    if ($eqn != '')
+                    {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'max_num_of_files',
+                        'class' => 'num_answers',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                        );
+                    }
+                }
+                else
+                {
+                    $max_num_of_files = '';
                 }
 
                 // other_comment_mandatory
@@ -2255,6 +2405,37 @@
                                     "if(($_minV)==($_maxV),".
                                         "sprintf('".$this->gT("The sum must equal %s")."',fixnum($_minV)),".
                                         "sprintf('".$this->gT("The sum must be between %s and %s")."',fixnum($_minV),fixnum($_maxV))".
+                                    ")".
+                                ")".
+                            ")".
+                        ")}";
+                }
+
+                // min/max num files
+                if ($min_num_of_files !='' || $max_num_of_files !='')
+                {
+                    $_minA = (($min_num_of_files == '') ? "''" : $min_num_of_files);
+                    $_maxA = (($max_num_of_files == '') ? "''" : $max_num_of_files    );
+                    // TODO - create em_num_files class so can sepately style num_files vs. num_answers
+                    $qtips['num_answers']=
+                        "{if((is_empty($_minA) && is_empty($_maxA)),".
+                            "'',".
+                            "if(is_empty($_maxA),".
+                                "if(($_minA)==1,".
+                                    "'".$this->gT("Please upload at least one file")."',".
+                                    "sprintf('".$this->gT("Please upload at least %s files")."',fixnum($_minA))".
+                                    "),".
+                                "if(is_empty($_minA),".
+                                    "if(($_maxA)==1,".
+                                        "'".$this->gT("Please upload at most one file")."',".
+                                        "sprintf('".$this->gT("Please upload at most %s files")."',fixnum($_maxA))".
+                                        "),".
+                                    "if(($_minA)==($_maxA),".
+                                        "if(($_minA)==1,".
+                                            "'".$this->gT("Please upload one file")."',".
+                                            "sprintf('".$this->gT("Please upload %s files")."',fixnum($_minA))".
+                                            "),".
+                                        "sprintf('".$this->gT("Please upload between %s and %s files")."',fixnum($_minA),fixnum($_maxA))".
                                     ")".
                                 ")".
                             ")".
@@ -2903,7 +3084,7 @@
                         break;
                 }
                 if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
-                || $type == 'S' || $type == 'T' || $type == 'U') {
+                || $type == 'S' || $type == 'T' || $type == 'U' || $type == '|') {
                     if (!isset($q2subqInfo[$questionNum])) {
                         $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -4861,6 +5042,8 @@
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
                                 // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
                                 if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment'))     // to catch case 'P'
                                 {
                                     $foundSQrelevance=true;
@@ -4993,7 +5176,10 @@
                         {
                             $qmandViolation = true;
                         }
-                        $mandatoryTip .= $LEM->gT('Please check at least one item.');
+                        if (!($qInfo['type'] == '!' || $qInfo['type'] == 'L'))
+                        {
+                            $mandatoryTip .= $LEM->gT('Please check at least one item.');
+                        }
                         if ($qInfo['other']=='Y')
                         {
                             $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
@@ -5720,12 +5906,23 @@
                     ////////////////////////////////////////////////////////////////////////
 
                     // Do all sub-question filtering (e..g array_filter)
+                    /**
+                     * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row
+                     */
+                    $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
 
                         $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
-                        $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                        if ($afHide)
+                        {
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                        }
+                        else
+                        {
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                        }
                         if ($sq['isExclusiveJS'] != '')
                         {
                             $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
@@ -5747,7 +5944,14 @@
                                 $relParts[] = "    }\n";
                                 $relParts[] = "    else {\n";
                                 $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                if ($afHide)
+                                {
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                }
+                                else
+                                {
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                }
                                 $relParts[] = "    }\n";
                             }
                             else
@@ -5757,7 +5961,14 @@
                         }
                         else
                         {
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                            if ($afHide)
+                            {
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                            }
+                            else
+                            {
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                            }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
@@ -7508,10 +7719,20 @@ EOD;
                 // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
                 //////
                 $attrTable = '';
-                if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
-                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
+
+                $attrs = (isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array());
+                if (isset($LEM->q2subqInfo[$qid]['preg']))
+                {
+                    $attrs['regex_validation'] = $LEM->q2subqInfo[$qid]['preg'];
+                }
+                if (isset($LEM->questionSeq2relevance[$qseq]['other']))
+                {
+                    $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
+                }
+                if (count($attrs) > 0) {
+                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
-                    foreach ($LEM->qattr[$qid] as $key=>$value) {
+                    foreach ($attrs as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
                             continue;
                         }
@@ -7543,12 +7764,20 @@ EOD;
                             case 'min_answers':
                             case 'min_num_value':
                             case 'min_num_value_n':
+                            case 'min_num_of_files':
+                            case 'max_num_of_files':
                             case 'multiflexible_max':
                             case 'multiflexible_min':
                                 $value = '{' . $value . '}';
                                 break;
                             case 'other_replace_text':
                             case 'show_totals':
+                            case 'regex_validation':
+                                break;
+                            case 'other':
+                                if ($value == 'N') {
+                                    $value = NULL; // so can skip this one
+                                }
                                 break;
                         }
                         if (is_null($value)) {

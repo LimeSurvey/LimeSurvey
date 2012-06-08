@@ -2427,6 +2427,16 @@ function questionAttributes()
     "help"=>$clang->gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter exclusion'));
 
+    $qattributes["array_filter_style"]=array(
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>100,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Hidden'),
+    1=>$clang->gT('Disabled')),
+    'default'=>0,
+    "help"=>$clang->gT("Specify how array-filtered sub-questions should be displayed"),
+    "caption"=>$clang->gT('Array filter style'));
+
     $qattributes["assessment_value"]=array(
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
@@ -3265,7 +3275,7 @@ function questionAttributes()
     $qattributes["max_num_of_files"]=array(
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
-    "inputtype"=>"integer",
+    "inputtype"=>"text",
     'default'=>1,
     "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
     "caption"=>$clang->gT("Max number of files"));
@@ -3273,7 +3283,7 @@ function questionAttributes()
     $qattributes["min_num_of_files"]=array(
     'category'=>$clang->gT('Other'),
     'sortorder'=>132,
-    "inputtype"=>"integer",
+    "inputtype"=>"text",
     'default'=>0,
     "help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
     "caption"=>$clang->gT("Min number of files"));
@@ -3293,6 +3303,19 @@ function questionAttributes()
     "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
     "caption"=>$clang->gT("Randomization group name"));
 
+    // This is added to support historical behavior.  Early versions of 1.92 used a value of "No", so if there was a min_sum_value or equals_sum_value, the question was not valid
+    // unless those criteria were met.  In later releases of 1.92, the default was changed so that missing values were allowed even if those attributes were set
+    // This attribute lets authors control whether missing values should be allowed in those cases without needing to set min_answers
+    // Existing surveys will use the old behavior, but if the author edits the question, the default will be the new behavior.
+    $qattributes["value_range_allows_missing"]=array(
+    'category'=>$clang->gT('Input'),
+    'sortorder'=>100,
+    "inputtype"=>"singleselect",
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+    "help"=>$clang->gT("Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"),
+    "caption"=>$clang->gT("Value range allows missing"));
     return $qattributes;
 }
 
@@ -4513,14 +4536,14 @@ function cleanTempDirectory()
     $dir =  Yii::app()->getConfig('tempdir').'/';
     $dp = opendir($dir) or show_error('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
             @unlink($dir.$file);
         }
     }
     $dir=  Yii::app()->getConfig('tempdir').'/uploads/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
             @unlink($dir.$file);
         }
     }
