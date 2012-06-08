@@ -36,17 +36,17 @@ class FileQuestion extends QuestionModule
         }
 
         $uploadbutton = "<h2><a id='upload_".$this->fieldname."' class='upload' ";
-        $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
+        $uploadbutton .= " href='#' onclick='javascript:upload_$this->fieldname();'";
         $uploadbutton .=">" .$clang->gT('Upload files'). "</a></h2>";
 
         $answer = "<script type='text/javascript'>
-            function upload_$ia[1]() {
+            function upload_$this->fieldname[1]() {
                 var uploadurl = '{$scriptloc}?sid=".$this->surveyid."&amp;fieldname={$this->fieldname}&amp;qid={$this->id}';
                 uploadurl += '&amp;preview={$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}';
                 uploadurl += '&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."';
                 uploadurl += '&amp;minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
                 uploadurl += '&amp;maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
-                $('#upload_$ia[1]').attr('href',uploadurl);
+                $('#upload_$this->fieldname').attr('href',uploadurl);
             }
             var translt = {
                  title: '" . $clang->gT('Upload your files','js') . "',
