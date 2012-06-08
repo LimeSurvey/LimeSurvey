@@ -5168,7 +5168,10 @@
                         {
                             $qmandViolation = true;
                         }
-                        $mandatoryTip .= $LEM->gT('Please check at least one item.');
+                        if (!($qInfo['type'] == '!' || $qInfo['type'] == 'L'))
+                        {
+                            $mandatoryTip .= $LEM->gT('Please check at least one item.');
+                        }
                         if ($qInfo['other']=='Y')
                         {
                             $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
