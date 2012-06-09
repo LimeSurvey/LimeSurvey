@@ -1463,7 +1463,8 @@ function getQuestion($fieldcode)
     $fields=createFieldMap($sid,'full',false,false,getBaseLanguageFromSurveyID($sid));
     foreach($fields as $field)
     {
-        if($field['q']->id==$qid && $field['q']->surveyid==$sid && $field['q']->gid==$gid) return $field['q'];
+        $q=$field['q'];
+        if($q->id==$qid && $q->surveyid==$sid && $q->gid==$gid) return $q;
     }
     return false;
 }
@@ -2036,53 +2037,9 @@ function hasFileUploadQuestion($surveyid) {
     $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
 
     foreach ($fieldmap as $field) {
-        if (isset($field['type']) &&  $field['type'] === '|') return true;
+        $q=$field['q'];
+        if (substr(get_class($q),-8)=="Question" && $q->fileUpload()) return true;
     }
-}
-
-/**
-* This function generates an array containing the fieldcode, and matching data in the same order as the activate script
-*
-* @param string $surveyid The Survey ID
-* @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
-* @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param int $questionid Limit to a certain qid only (for question preview) - default is false
-* @return array
-*/
-function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
-    static $timingsFieldMap;
-
-    $clang = Yii::app()->lang;
-
-    $surveyid=sanitize_int($surveyid);
-    //checks to see if fieldmap has already been built for this page.
-    if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
-    }
-
-    //do something
-    $fields = createFieldMap($surveyid, $style, $force_refresh, $questionid, $sQuestionLanguage);
-    $fieldmap['interviewtime']=array('fieldname'=>'interviewtime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>$clang->gT('Total time'), 'title'=>'interviewtime');
-    foreach ($fields as $field) {
-        if (!empty($field['gid'])) {
-            // field for time spent on page
-            $fieldname="{$field['sid']}X{$field['gid']}time";
-            if (!isset($fieldmap[$fieldname]))
-            {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>'', 'aid'=>'', 'title'=>'groupTime'.$field['gid'], 'question'=>$clang->gT('Group time').": ".$field['group_name']);
-            }
-
-            // field for time spent on answering a question
-            $fieldname="{$field['sid']}X{$field['gid']}X{$field['qid']}time";
-            if (!isset($fieldmap[$fieldname]))
-            {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], 'aid'=>'', "title"=>$field['title'].'Time', "question"=>$clang->gT('Question time').": ".$field['title']);
-            }
-        }
-    }
-
-    $timingsFieldMap[$surveyid][$style][$clang->langcode] = $fieldmap;
-    return $timingsFieldMap[$surveyid][$style][$clang->langcode];
 }
 
 /**
@@ -3479,65 +3436,58 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $qidtotitle=array();
     $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
 
-    if($gid != "") {
-        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
-    } else {
-        $qrows = $fieldmap;
-    }
-    $grows = array(); //Create an empty array in case query not return any rows
-    // Store each result as an array with in the $grows array
-    foreach ($qrows as $qrow) {
-        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
-            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
-        }
-    }
     $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
-    foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
+    foreach ($fieldmap as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-        $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = getQuestionAttributeValues($qrow['qid'],$qrow['type']);
-        if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
+        $q = $qrow['q'];
+        if (isset($q->gid) && !empty($q->gid) && (!$gid || $q->gid == $gid))
         {
-            $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-            foreach ($grows as $avalue) // Cycle through all the other questions in this group until we find the source question for this array_filter
+            $qidtotitle[$qrow->id]=$qrow->title;
+            $qresult = $q->getAttributeValues();
+            if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
             {
-                if ($avalue['title'] == $val)
+                $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
+                foreach ($fieldmap as $avalue) // Cycle through all the other questions in this group until we find the source question for this array_filter
                 {
-                    /* This question ($avalue) is the question that provides the source information we use
-                    * to determine which answers show up in the question we're looking at, which is $qrow['qid']
-                    * So, in other words, we're currently working on question $qrow['qid'], trying to find out more
-                    * information about question $avalue['qid'], because that's the source */
-                    $sources[$qrow['qid']]=$avalue['qid']; /* This question ($qrow['qid']) relies on answers in $avalue['qid'] */
-                    if(isset($cascades)) {unset($cascades);}
-                    $cascades=array();                     /* Create an empty array */
-
-                    /* At this stage, we know for sure that this question relies on one other question for the filter */
-                    /* But this function wants to send back information about questions that rely on multiple other questions for the filter */
-                    /* So we don't want to do anything yet */
-
-                    /* What we need to do now, is check whether the question this one relies on, also relies on another */
-
-                    /* The question we are now checking is $avalue['qid'] */
-                    $keepgoing=1;
-                    $questiontocheck=$avalue['qid'];
-                    /* If there is a key in the $sources array that is equal to $avalue['qid'] then we want to add that
-                    * to the $cascades array */
-                    while($keepgoing > 0)
+                    $qq = $avalue['q'];
+                    if (isset($qq->gid) && !empty($qq->gid) && (!$gid || $qq->gid == $gid) && $qq->title == $val)
                     {
-                        if(!empty($sources[$questiontocheck]))
+                        /* This question ($avalue) is the question that provides the source information we use
+                        * to determine which answers show up in the question we're looking at, which is $qrow['qid']
+                        * So, in other words, we're currently working on question $qrow['qid'], trying to find out more
+                        * information about question $avalue['qid'], because that's the source */
+                        $sources[$q->id]=$qq->id; /* This question ($qrow['qid']) relies on answers in $avalue['qid'] */
+                        if(isset($cascades)) {unset($cascades);}
+                        $cascades=array();                     /* Create an empty array */
+
+                        /* At this stage, we know for sure that this question relies on one other question for the filter */
+                        /* But this function wants to send back information about questions that rely on multiple other questions for the filter */
+                        /* So we don't want to do anything yet */
+
+                        /* What we need to do now, is check whether the question this one relies on, also relies on another */
+
+                        /* The question we are now checking is $avalue['qid'] */
+                        $keepgoing=1;
+                        $questiontocheck=$qq->id;
+                        /* If there is a key in the $sources array that is equal to $avalue['qid'] then we want to add that
+                        * to the $cascades array */
+                        while($keepgoing > 0)
                         {
-                            $cascades[] = $sources[$questiontocheck];
-                            /* Now we need to move down the chain */
-                            /* We want to check the $sources[$questiontocheck] question */
-                            $questiontocheck=$sources[$questiontocheck];
-                        } else {
-                            /* Since it was empty, there must not be any more questions down the cascade */
-                            $keepgoing=0;
+                            if(!empty($sources[$questiontocheck]))
+                            {
+                                $cascades[] = $sources[$questiontocheck];
+                                /* Now we need to move down the chain */
+                                /* We want to check the $sources[$questiontocheck] question */
+                                $questiontocheck=$sources[$questiontocheck];
+                            } else {
+                                /* Since it was empty, there must not be any more questions down the cascade */
+                                $keepgoing=0;
+                            }
                         }
-                    }
-                    /* Now add all that info */
-                    if(count($cascades) > 0) {
-                        $cascaded[$qrow['qid']]=$cascades;
+                        /* Now add all that info */
+                        if(count($cascades) > 0) {
+                            $cascaded[$q->id]=$cascades;
+                        }
                     }
                 }
             }
@@ -4099,17 +4049,18 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
     {
-        if ($aFieldinfo['qid']!=null)
+        $q = $aFieldinfo['q'];
+        if ($q->id!=null)
         {
-            $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
-            if ($aFieldinfo['type']=='1')
+            $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$q->gid].'X'.$aQIDReplacements[$q->id].$q->aid;
+            if ($pos=strrpos($sFieldname, 'X'.$q->id.'#'))
             {
-                $aFieldMappings[$sFieldname]=$aFieldMappings[$sFieldname].'#'.$aFieldinfo['scale_id'];
+                $aFieldMappings[$sFieldname].= substr($sFieldname,$pos+strlen($q->id)+1); //AJS
             }
             // now also add a shortened field mapping which is needed for certain kind of condition mappings
-            $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid'].'X'.$aFieldinfo['qid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']];
+            $aFieldMappings[$q->surveyid.'X'.$q->gid.'X'.$q->id]=$iOldSID.'X'.$aGIDReplacements[$q->gid].'X'.$aQIDReplacements[$q->id];
             // Shortened field mapping for timings table
-            $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']];
+            $aFieldMappings[$q->surveyid.'X'.$q->gid]=$iOldSID.'X'.$aGIDReplacements[$q->gid];
         }
     }
     return array_flip($aFieldMappings);
@@ -4734,8 +4685,7 @@ function enforceSSLMode()
 function getQuotaCompletedCount($iSurveyId, $quotaid)
 {
     $result = "N/A";
-    $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
-    $quota = $quota_info[0];
+    $quota = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
 
     if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
     count($quota['members']) > 0)
@@ -4746,17 +4696,13 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
         // Construct an array of value for each $quota['members']['fieldnames']
         $fields_query = array();
 
-        foreach ($quota['members'] as $member)
+        foreach ($quota['members'] as $fieldname => $member)
         {
             $criteria = new CDbCriteria;
 
-            foreach ($member['fieldnames'] as $fieldname)
-            {
-                if (!in_array($fieldname, $fields_list))
-                    $fields_list[] = $fieldname;
-
-                $criteria->addColumnCondition(array($fieldname => $member['value']), 'OR');
-            }
+            if (!in_array($fieldname, $fields_list)) $fields_list[] = $fieldname;
+            
+            $criteria->addColumnCondition(array($fieldname => $member), 'OR');
 
             $fields_query[$fieldname] = $criteria;
         }
@@ -4790,57 +4736,59 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     // Create array of non-null values - those are the relevant ones
     $aRelevantFields = array();
 
-    foreach ($aFieldMap as $sKey=>$fname)
+    foreach ($aFieldMap as $fname)
     {
-        if (!is_null($idrow[$fname['fieldname']]))
+        $q = $fname['q'];
+        if (!is_null($idrow[$q->fieldname]))
         {
-            $aRelevantFields[$sKey]=$fname;
+            $aRelevantFields[$q->fieldname]=$fname;
         }
     }
 
     $aResultTable=array();
     $oldgid = 0;
     $oldqid = 0;
-    foreach ($aRelevantFields as $sKey=>$fname)
+    foreach ($aRelevantFields as $fname)
     {
-        if (!empty($fname['qid']))
+        $q = $fname['q'];
+        if (!empty($q->id))
         {
-            $attributes = getQuestionAttributeValues($fname['qid']);
+            $attributes = getQuestionAttributeValues($q->id);
             if (getQuestionAttributeValue($attributes, 'hidden') == 1)
             {
                 continue;
             }
         }
-        $question = $fname['question'];
+        $question = $q->question;
         $subquestion='';
-        if (isset($fname['gid']) && !empty($fname['gid'])) {
+        if (isset($q->gid) && !empty($q->gid)) {
             //Check to see if gid is the same as before. if not show group name
-            if ($oldgid !== $fname['gid'])
+            if ($oldgid !== $q->gid)
             {
-                $oldgid = $fname['gid'];
-                $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+                $oldgid = $q->gid;
+                $aResultTable['gid_'.$q->gid]=array($q->group_name);
             }
         }
-        if (!empty($fname['qid']))
+        if (!empty($q->id))
         {
-            if ($oldqid !== $fname['qid'])
+            if ($oldqid !== $q->id)
             {
-                $oldqid = $fname['qid'];
-                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
+                $oldqid = $q->id;
+                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) //AJS
                 {
-                    $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
+                    $aResultTable['qid_'.$q->surveyid.'X'.$q->gid.'X'.$q->id]=array($q->question,'','');
                 }
                 else
                 {
-                    $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
-                    $aResultTable[$fname['fieldname']]=array($question,'',$answer);
+                    $answer = getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$sLanguageCode);
+                    $aResultTable[$q->fieldname]=array($question,'',$answer);
                     continue;
                 }
             }
         }
         else
         {
-            $answer=getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
+            $answer=getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$sLanguageCode);
             $aResultTable[$fname['fieldname']]=array($question,'',$answer);
             continue;
         }
@@ -4853,8 +4801,8 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
 
-        $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
-        $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
+        $answer = getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$sLanguageCode);
+        $aResultTable[$q->fieldname]=array('',$subquestion,$answer);
     }
     return $aResultTable;
 }
@@ -4899,87 +4847,45 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
     global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
 
-    $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes(array('sid' => $surveyid, 'id' =>$quotaid));
-    $quota_info = array();
-    $x=0;
+    $quotas = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findByAttributes(array('sid' => $surveyid, 'id' =>$quotaid));
 
     $surveyinfo=getSurveyInfo($surveyid);
 
     // Check all quotas for the current survey
-    //if ($result->RecordCount() > 0)
-    if (count($result) > 0)
+    if (count($quotas) > 0)
     {
-        //while ($survey_quotas = $result->FetchRow())
-        foreach ($result as $_survey_quotas)
+        $survey_quotas = $quotas->attributes;
+        foreach ($quotas->languagesettings[0]->attributes as $k => $v)
+            $survey_quotas[$k] = $v;
+
+        //Modify the URL - thanks janokary
+        $survey_quotas['quotals_url']=str_replace("{SAVEDID}",!empty(Yii::app()->session['srid']) ? Yii::app()->session['srid'] : '', $survey_quotas['quotals_url']);
+        $survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
+        $survey_quotas['quotals_url']=str_replace("{LANG}", Yii::app()->lang->getlangcode(), $survey_quotas['quotals_url']);
+        $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
+
+        $quota_info=array('Name' => $survey_quotas['name'],
+        'Limit' => $survey_quotas['qlimit'],
+        'Action' => $survey_quotas['action'],
+        'Message' => $survey_quotas['quotals_message'],
+        'Url' => $survey_quotas['quotals_url'],
+        'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
+        'AutoloadUrl' => $survey_quotas['autoload_url']);
+
+        $result_qe = Quota_members::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
+        $quota_info['members'] = array();
+        foreach ($result_qe as $quota_entry)
         {
-            $survey_quotas = $_survey_quotas->attributes;
-            // !!! Doubting this
-            foreach ($_survey_quotas->languagesettings[0] as $k => $v)
-                $survey_quotas[$k] = $v;
+            $quota_entry = $quota_entry->attributes;
+            $result_quest=Questions::model()->with('question_types')->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
+            $qtype=$result_quest->attributes;
 
-            //Modify the URL - thanks janokary
-            $survey_quotas['quotals_url']=str_replace("{SAVEDID}",!empty(Yii::app()->session['srid']) ? Yii::app()->session['srid'] : '', $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{LANG}", Yii::app()->lang->getlangcode(), $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
-
-            array_push($quota_info,array('Name' => $survey_quotas['name'],
-            'Limit' => $survey_quotas['qlimit'],
-            'Action' => $survey_quotas['action'],
-            'Message' => $survey_quotas['quotals_message'],
-            'Url' => $survey_quotas['quotals_url'],
-            'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
-            'AutoloadUrl' => $survey_quotas['autoload_url']));
-
-            $result_qe = Quota_members::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
-            $quota_info[$x]['members'] = array();
-            if (count($result_qe) > 0)
-            {
-                foreach ($result_qe as $quota_entry)
-                {
-                    $quota_entry = $quota_entry->attributes;
-                    $result_quest=Questions::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
-                    $qtype=$result_quest->attributes;
-
-                    $fieldnames = "0";
-
-                    if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
-
-                    if($qtype['type'] == "L" || $qtype['type'] == "O" || $qtype['type'] =="!")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
-
-                    if($qtype['type'] == "M")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
-                        $value = "Y";
-                    }
-
-                    if($qtype['type'] == "A" || $qtype['type'] == "B")
-                    {
-                        $temp = explode('-',$quota_entry['code']);
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
-                        $value = $temp[1];
-                    }
-
-                    array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],
-                    'type' => $qtype['type'],
-                    'code' => $quota_entry['code'],
-                    'value' => $value,
-                    'qid' => $quota_entry['qid'],
-                    'fieldnames' => $fieldnames));
-                }
-            }
-            $x++;
+            $q = createQuestion($result_quest->question_types['class'], $surveyid, $quota_entry['qid'], null, null, null, $qtype['gid']);
+            if ($member = $q->getQuotaValue($quota_entry['code'])) $quota_info['members'] = array_merge($quota_info['members'], $member);
         }
+        return $quota_info;
     }
-    return $quota_info;
+    return false;
 }
 
 /**
@@ -5454,7 +5360,8 @@ function fixLanguageConsistency($sid, $availlangs='')
                     'qid' => $question['qid'],
                     'sid' => $question['sid'],
                     'gid' => $question['gid'],
-                    'type' => $question['type'],
+                    'tid' => $question['tid'],
+                    'type' => $question['type'], //AJS
                     'title' => $question['title'],
                     'question' => $question['question'],
                     'preg' => $question['preg'],
@@ -6459,12 +6366,12 @@ EOS;
 */
 function fixSubquestions()
 {
-    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
+    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, sq.tid as sqtid,q.type,q.tid
     from {{questions}} sq JOIN {{questions}} q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)")->query();
+    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type or sq.tid!=q.tid)")->query(); //AJS
     foreach($surveyidresult->readAll() as $sv)
     {
-        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->query();
+        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']}, tid={$sv['tid']} where qid={$sv['qid']}")->query(); //AJS
     }
 
 }

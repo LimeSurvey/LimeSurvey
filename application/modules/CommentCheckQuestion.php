@@ -198,6 +198,11 @@ class CommentCheckQuestion extends CheckQuestion
         return $map;
     }
     
+    public function getQuotaValue($value)
+    {
+        return false;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","exclude_all_others","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

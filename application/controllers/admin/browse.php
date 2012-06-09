@@ -627,20 +627,28 @@ class browse extends Survey_Common_Action
             }
         }
 
-        $fields = createTimingsFieldMap($iSurveyId, 'full',true,false,$aData['language']);
+        $fields = createFieldMap($iSurveyId, 'full',true,false,$aData['language']);
 
         $clang = $aData['clang'];
+        $fnames = array('interviewtime' => $clang->gT('Total time'));
         foreach ($fields as $fielddetails)
         {
-            // headers for answer id and time data
-            if ($fielddetails['type'] == 'id')
-                $fnames[] = array($fielddetails['fieldname'], $fielddetails['question']);
-            if ($fielddetails['type'] == 'interview_time')
-                $fnames[] = array($fielddetails['fieldname'], $clang->gT('Total time'));
-            if ($fielddetails['type'] == 'page_time')
-                $fnames[] = array($fielddetails['fieldname'], $clang->gT('Group') . ": " . $fielddetails['group_name']);
-            if ($fielddetails['type'] == 'answer_time')
-                $fnames[] = array($fielddetails['fieldname'], $clang->gT('Question') . ": " . $fielddetails['title']);
+            $q = $fielddetails['q'];
+            if (!empty($q->gid)) {
+                // field for time spent on page
+                $fieldname="{$q->surveyid}X{$q->gid}time";
+                if (!isset($fnames[$fieldname]))
+                {
+                    $fnames[$fieldname]=$clang->gT('Group').": ".$q->group_name;
+                }
+
+                // field for time spent on answering a question
+                $fieldname="{$q->surveyid}X{$q->gid}X{$q->id}time";
+                if (!isset($fieldmap[$fieldname]))
+                {
+                    $fieldmap[$fieldname]=$clang->gT('Question').": ".$q->title.'Time';
+                }
+            }
         }
         $fncount = count($fnames);
 
@@ -649,12 +657,12 @@ class browse extends Survey_Common_Action
         {
             if (!isset($currentgroup))
             {
-                $currentgroup = $fn[1];
+                $currentgroup = $fn;
                 $gbc = "oddrow";
             }
-            if ($currentgroup != $fn[1])
+            if ($currentgroup != $fn)
             {
-                $currentgroup = $fn[1];
+                $currentgroup = $fn;
                 if ($gbc == "oddrow")
                 {
                     $gbc = "evenrow";
@@ -749,12 +757,12 @@ class browse extends Survey_Common_Action
                     $bgcc = "evenrow";
                 }
 
-            for ($i = 0; $i < $fncount; $i++)
+            foreach ($fnames as $fname=>$title)
             {
-                $browsedatafield = htmlspecialchars($dtrow[$fnames[$i][0]]);
+                $browsedatafield = htmlspecialchars($dtrow[$fname]);
 
                 // seconds -> minutes & seconds
-                if (strtolower(substr($fnames[$i][0], -4)) == "time")
+                if (strtolower(substr($fname, -4)) == "time")
                 {
                     $minutes = (int) ($browsedatafield / 60);
                     $seconds = $browsedatafield % 60;

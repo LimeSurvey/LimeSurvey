@@ -406,7 +406,12 @@ class CheckQuestion extends QuestionModule
         if($value=="Y") return $language->gT("Yes")." [$value]";
         return $value;
     }
-   
+    
+    public function getQuotaValue($value)
+    {
+        return array($this->surveyid.'X'.$this->gid.'X'.$this->id.$value => 'Y');
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

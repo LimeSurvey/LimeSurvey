@@ -36,15 +36,20 @@ class LanguageQuestion extends QuestionModule
         {
             return $language->gT("Other")." [$value]";
         }
-        $result = Answers::model()->getAnswerFromCode($this->id,$value,$language->langcode)->readAll() or die ("Couldn't get answer type."); //Checked
-        if(count($result))
+        $result = Answers::model()->getAnswerFromCode($this->id,$value,$language->langcode) or die ("Couldn't get answer type."); //Checked
+        if($result->count())
         {
-            $result =array_values($result);
+            $result =array_values($result->readAll());
             return $result[count($result)-1]." [$value]";
         }
         return $value;
     }
-   
+    
+    public function getQuotaValue($value)
+    {
+        return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","random_group");

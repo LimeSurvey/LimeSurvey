@@ -2327,197 +2327,161 @@ function check_quota($checkaction,$surveyid)
     }
     global $thistpl, $clang, $clienttoken;
     $global_matched = false;
-    $quota_info = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-    $x=0;
+    $quota = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
     $clang = Yii::app()->lang;
 
-    if(count($quota_info) > 0) // Quota's have to exist
+    if(!$quota) return false;
+
+    // Check each quota on saved data to see if it is full
+    $querycond = array();
+    if (count($quota['members']) > 0) // Quota can't be empty
     {
-        // Check each quota on saved data to see if it is full
-        $querycond = array();
-        foreach ($quota_info as $quota)
+        $fields_list = array(); // Keep a list of fields for easy reference
+        // We need to make the conditions for the select statement here
+        // fill the array of value and query for each fieldnames
+        $fields_value_array = array();
+        $fields_query_array = array();
+        foreach($quota['members'] as $fieldname => $member)
         {
-            if (count($quota['members']) > 0) // Quota can't be empty
+            if (!in_array($fieldname,$fields_list))
             {
-                $fields_list = array(); // Keep a list of fields for easy reference
-                $y=0;
-                // We need to make the conditions for the select statement here
-                unset($querycond);
-                // fill the array of value and query for each fieldnames
-                $fields_value_array = array();
-                $fields_query_array = array();
-                foreach($quota['members'] as $member)
-                {
-                    foreach($member['fieldnames'] as $fieldname)
-                    {
-
-                        if (!in_array($fieldname,$fields_list))
-                        {
-                            $fields_list[] = $fieldname;
-                            $fields_value_array[$fieldname] = array();
-                            $fields_query_array[$fieldname] = array();
-                        }
-                        $fields_value_array[$fieldname][]=$member['value'];
-                        $fields_query_array[$fieldname][]= dbQuoteID($fieldname)." = '{$member['value']}'";
-                    }
-
-                }
-                // fill the $querycond array with each fields_query grouped by fieldname
-                foreach($fields_list as $fieldname)
-                {
-                    $select_query = " ( ".implode(' OR ',$fields_query_array[$fieldname]).' )';
-                    $querycond[] = $select_query;
-                }
-                // Test if the fieldname is in the array of value in the session
-                foreach($quota['members'] as $member)
-                {
-                    foreach($member['fieldnames'] as $fieldname)
-                    {
-                        if (isset($_SESSION['survey_'.$surveyid][$fieldname]))
-                        {
-                            if (in_array($_SESSION['survey_'.$surveyid][$fieldname],$fields_value_array[$fieldname])){
-                                $quota_info[$x]['members'][$y]['insession'] = "true";
-                            }
-                        }
-                    }
-                    $y++;
-                }
-                unset($fields_query_array);unset($fields_value_array);
-
-                // Lets only continue if any of the quota fields is in the posted page
-                $matched_fields = false;
-                if (isset($_POST['fieldnames']))
-                {
-                    $posted_fields = explode("|",$_POST['fieldnames']);
-                    foreach ($fields_list as $checkfield)
-                    {
-                        if (in_array($checkfield,$posted_fields))
-                        {
-                            $matched_fields = true;
-                            $global_matched = true;
-                        }
-                    }
-                }
-
-                // A field was submitted that is part of the quota
-
-                if ($matched_fields == true)
-                {
-
-                    // Check the status of the quota, is it full or not
-                    $querysel = "SELECT id FROM {{survey_".$surveyid."}}
-                    WHERE ".implode(' AND ',$querycond)." "."
-                    AND submitdate IS NOT NULL";
-
-                    $result = dbExecuteAssoc($querysel) or safeDie();    //Checked
-                    $quota_check = $result->readAll();
-
-                    if ($result->count() >= $quota['Limit']) // Quota is full!!
-
-                    {
-                        // Now we have to check if the quota matches in the current session
-                        // This will let us know if this person is going to exceed the quota
-
-                        $counted_matches = 0;
-                        foreach($quota_info[$x]['members'] as $member)
-                        {
-                            if (isset($member['insession']) && $member['insession'] == "true") $counted_matches++;
-                        }
-                        if($counted_matches == count($quota['members']))
-                        {
-                            // They are going to exceed the quota if data is submitted
-                            $quota_info[$x]['status']="matched";
-
-                        } else
-                        {
-                            $quota_info[$x]['status']="notmatched";
-                        }
-
-                    } else
-                    {
-                        // Quota is no in danger of being exceeded.
-                        $quota_info[$x]['status']="notmatched";
-                    }
-                }
-
+                $fields_list[] = $fieldname;
+                $fields_value_array[$fieldname] = array();
+                $fields_query_array[$fieldname] = array();
             }
-            $x++;
+            $fields_value_array[$fieldname][]=$member;
+            $fields_query_array[$fieldname][]= dbQuoteID($fieldname)." = '{$member}'";
+        }
+        // fill the $querycond array with each fields_query grouped by fieldname
+        foreach($fields_list as $fieldname)
+        {
+            $select_query = " ( ".implode(' OR ',$fields_query_array[$fieldname]).' )';
+            $querycond[] = $select_query;
         }
 
-    } else
-    {
-        return false;
+        // Lets only continue if any of the quota fields is in the posted page
+        $matched_fields = false;
+        if (isset($_POST['fieldnames']))
+        {
+            $posted_fields = explode("|",$_POST['fieldnames']);
+            foreach ($fields_list as $checkfield)
+            {
+                if (in_array($checkfield,$posted_fields))
+                {
+                    $matched_fields = true;
+                    $global_matched = true;
+                }
+            }
+        }
+
+        // A field was submitted that is part of the quota
+
+        if ($matched_fields == true)
+        {
+
+            // Check the status of the quota, is it full or not
+            $querysel = "SELECT id FROM {{survey_".$surveyid."}}
+            WHERE ".implode(' AND ',$querycond)." "."
+            AND submitdate IS NOT NULL";
+
+            $result = dbExecuteAssoc($querysel) or safeDie();    //Checked
+            $quota_check = $result->readAll();
+
+            if ($result->count() >= $quota['Limit']) // Quota is full!!
+
+            {
+                // Now we have to check if the quota matches in the current session
+                // This will let us know if this person is going to exceed the quota
+
+                $counted_matches = 0;
+                foreach($quota['members'] as $fieldname => $member)
+                {
+                    if (isset($_SESSION['survey_'.$surveyid][$fieldname]))
+                    {
+                        if (in_array($_SESSION['survey_'.$surveyid][$fieldname],$fields_value_array[$fieldname]))
+                        {
+                            $counted_matches++;
+                        }
+                    } 
+                }
+                if($counted_matches == count($quota['members']))
+                {
+                    // They are going to exceed the quota if data is submitted
+                    $quota['status']="matched";
+
+                } else
+                {
+                    $quota['status']="notmatched";
+                }
+
+            } else
+            {
+                // Quota is no in danger of being exceeded.
+                $quota['status']="notmatched";
+            }
+        }
     }
 
     // Now we have all the information we need about the quotas and their status.
     // Lets see what we should do now
     if ($checkaction == 'return')
     {
-        return $quota_info;
-    }
-    else if ($global_matched == true && $checkaction == 'enforce')
+        return $quota;
+    } else if ($global_matched == true && $checkaction == 'enforce') {
+        // Need to add Quota action enforcement here.
+
+        $tempmsg ="";
+        $found = false;
+        if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
         {
-            // Need to add Quota action enforcement here.
-            reset($quota_info);
-
-            $tempmsg ="";
-            $found = false;
-            foreach($quota_info as $quota)
+            // If a token is used then mark the token as completed
+            if (isset($clienttoken) && $clienttoken)
             {
-                if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
-                {
-                    // If a token is used then mark the token as completed
-                    if (isset($clienttoken) && $clienttoken)
-                    {
-                        submittokens(true);
-                    }
-
-                    killSurveySession($surveyid);
-                sendCacheHeaders();
-                if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
-                {
-                    header("Location: ".$quota['Url']);
-                }
-                doHeader();
-
-                $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2617]');
-                echo "\t<div class='quotamessage'>\n";
-                echo "\t".$quota['Message']."<br /><br />\n";
-                echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "\t</div>\n";
-                echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2622]');
-                doFooter();
-                exit;
+                submittokens(true);
             }
 
-            if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "2"))
+            killSurveySession($surveyid);
+            sendCacheHeaders();
+            if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
             {
-
-                sendCacheHeaders();
-                doHeader();
-
-                $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2634]');
-                echo "\t<div class='quotamessage'>\n";
-                echo "\t".$quota['Message']."<br /><br />\n";
-                echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
-                <input type='hidden' name='thisstep' value='".($_SESSION['survey_'.$surveyid]['step'])."' id='thisstep' />
-                <input type='hidden' name='sid' value='".returnGlobal('sid')."' id='sid' />
-                <input type='hidden' name='token' value='".$clienttoken."' id='token' />
-                </form>\n";
-                echo "\t</div>\n";
-                echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2644]');
-                doFooter();
-                exit;
+                header("Location: ".$quota['Url']);
             }
+            doHeader();
+
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2617]');
+            echo "\t<div class='quotamessage'>\n";
+            echo "\t".$quota['Message']."<br /><br />\n";
+            echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
+            echo "\t</div>\n";
+            echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2622]');
+            doFooter();
+            exit;
         }
 
+        if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "2"))
+        {
 
-    } else
-    {
+            sendCacheHeaders();
+            doHeader();
+
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2634]');
+            echo "\t<div class='quotamessage'>\n";
+            echo "\t".$quota['Message']."<br /><br />\n";
+            echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
+            echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
+            <input type='hidden' name='thisstep' value='".($_SESSION['survey_'.$surveyid]['step'])."' id='thisstep' />
+            <input type='hidden' name='sid' value='".returnGlobal('sid')."' id='sid' />
+            <input type='hidden' name='token' value='".$clienttoken."' id='token' />
+            </form>\n";
+            echo "\t</div>\n";
+            echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2644]');
+            doFooter();
+            exit;
+        }
+    } else {
         // Unknown value
         return false;
     }

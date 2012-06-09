@@ -101,7 +101,7 @@ function checkQuestions($postsid, $surveyid)
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 
-    $chkresult = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyId, 'parent_qid' => 0));
+    $chkresult = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $surveyid, 'parent_qid' => 0));
     
     foreach ($chkresult as $chkrow)
     {
@@ -449,13 +449,20 @@ function activateSurvey($surveyid, $simulate = false)
 
         if (isset($savetimings) && $savetimings=="TRUE")
         {
-            $timingsfieldmap = createTimingsFieldMap($surveyid,"full",false,false,getBaseLanguageFromSurveyID($surveyid));
+            $timingsfieldmap = createFieldMap($surveyid,"short",false,false,getBaseLanguageFromSurveyID($surveyid));
 
-            $column = array();
             $column['id'] = $createsurvey['id'];
-            foreach ($timingsfieldmap as $field=>$fielddata)
+            $column['interviewtime'] = 'FLOAT';
+            foreach ($timingsfieldmap as $field)
             {
-                $column[$field] = 'FLOAT';
+                $q=$field['q'];
+                if (!empty($q->gid)) {
+                    // field for time spent on page
+                    $column["{$q->surveyid}X{$q->gid}time"]='FLOAT';
+
+                    // field for time spent on answering a question
+                    $column["{$q->surveyid}X{$q->gid}X{$q->id}time"]='FLOAT';
+                }
             }
 
             $command = new CDbCommand(Yii::app()->db);

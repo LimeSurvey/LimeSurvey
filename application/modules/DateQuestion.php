@@ -235,7 +235,7 @@ class DateQuestion extends QuestionModule
     
     public function getExtendedAnswer($value, $language)
     {
-        $qidattributes = getQuestionAttributeValues($this->qid);
+        $qidattributes = getQuestionAttributeValues($this->id);
         $dateformatdetails = getDateFormatDataForQID($qidattributes, $this->surveyid);
         return convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
     }

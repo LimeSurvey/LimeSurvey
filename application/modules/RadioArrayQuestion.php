@@ -328,10 +328,10 @@ class RadioArrayQuestion extends ArrayQuestion
             return $language->gT("Other"). "[-oth-]";
         }
         $scale=isset($this->scale)?$this->scale:0;
-        $result = Answers::model()->getAnswerFromCode($this->id,$value,$language->langcode,$scale)->readAll() or die ("Couldn't get answer type."); //Checked
-        if(count($result))
+        $result = Answers::model()->getAnswerFromCode($this->id,$value,$language->langcode,$scale) or die ("Couldn't get answer type."); //Checked
+        if($result->count())
         {
-            $result =array_values($result);
+            $result =array_values($result->readAll());
             return $result[count($result)-1]." [$value]";
         }
         return $value;

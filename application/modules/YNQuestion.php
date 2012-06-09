@@ -52,7 +52,12 @@ class YNQuestion extends QuestionModule
             default: return $language->gT("No answer")." [$value]";
         }
     }
-   
+    
+    public function getQuotaValue($value)
+    {
+        return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

@@ -189,6 +189,11 @@ abstract class QuestionModule
         return $value;
     }
     
+    public function getQuotaValue($value)
+    {
+        return false;
+    }
+    
     abstract public function availableAttributes($attr = false);    
     abstract public function questionProperties($prop = false);
 }

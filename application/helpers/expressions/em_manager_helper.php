@@ -4300,17 +4300,11 @@
                         }
                         // Check Quotas
                         $bQuotaMatched = false;
-                    $aQuotas = check_quota('return', $this->sid);
-                    if ($aQuotas !== false)
+                    $aQuota = check_quota('return', $this->sid);
+                    if ($aQuota != false)
                     {
-                        if ($aQuotas != false)
-                        {
-                            foreach ($aQuotas as $aQuota)
-                            {
-                                if (isset($aQuota['status']) && $aQuota['status'] == 'matched') {
-                                    $bQuotaMatched = true;
-                                }
-                            }
+                        if (isset($aQuota['status']) && $aQuota['status'] == 'matched') {
+                            $bQuotaMatched = true;
                         }
                     }
                     if ($bQuotaMatched)

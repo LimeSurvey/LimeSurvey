@@ -290,15 +290,20 @@ class ListQuestion extends QuestionModule
         {
             return $language->gT("Other")." [$value]";
         }
-        $result = Answers::model()->getAnswerFromCode($this->id,$value,$language->langcode)->readAll() or die ("Couldn't get answer type."); //Checked
-        if(count($result))
+        $result = Answers::model()->getAnswerFromCode($this->id,$value,$language->langcode) or die ("Couldn't get answer."); //Checked
+        if($result->count())
         {
-            $result =array_values($result);
+            $result =array_values($result->readAll());
             return $result[count($result)-1]." [$value]";
         }
         return $value;
     }
-   
+    
+    public function getQuotaValue($value)
+    {
+        return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","array_filter","array_filter_exclude","array_filter_style","display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style");
