@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-06-07 07:56:45+0000\n"
+"PO-Revision-Date: 2012-06-09 11:21:15+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,17 +15,21 @@ msgstr ""
 "X-Poedit-Language: Czech\n"
 "Project-Id-Version: LimeSurvey 1.92\n"
 
+#: classes/core/surveytranslator.php:542
+msgid "Spanish (Chile)"
+msgstr ""
+
 #: common_functions.php:3238
 msgid "Hidden"
-msgstr ""
+msgstr "Skryté"
 
 #: common_functions.php:3241
 msgid "Specify how array-filtered sub-questions should be displayed"
-msgstr ""
+msgstr "Určuje, jak budou zobrazeny vyfiltrované dílčí otázky"
 
 #: common_functions.php:3242
 msgid "Array filter style"
-msgstr ""
+msgstr "Styl filtru pole"
 
 #: common_functions.php:4136
 msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
@@ -5536,7 +5540,7 @@ msgstr "Prosím zvolte vše, co je relevantní, a doplňte komentář:"
 
 #: admin/printablesurvey.php:758
 #: classes/expressions/LimeExpressionManager.php:2824
-#: classes/expressions/LimeExpressionManager.php:5175 qanda.php:1295
+#: classes/expressions/LimeExpressionManager.php:5178 qanda.php:1295
 #: qanda.php:1595 qanda.php:2205 qanda.php:2505
 msgid "Other:"
 msgstr "Jiné:"
@@ -8630,7 +8634,7 @@ msgstr "Srbština"
 msgid "Spanish"
 msgstr "Španělština"
 
-#: classes/core/surveytranslator.php:542 classes/core/surveytranslator.php:549
+#: classes/core/surveytranslator.php:549
 msgid "Spanish (Mexico)"
 msgstr "Španělština (Mexiko)"
 
@@ -9143,93 +9147,93 @@ msgstr "Nelze vložit záznam do časovací tabulky"
 msgid "This question is mandatory"
 msgstr "Na otázku je nutno odpovědět."
 
-#: classes/expressions/LimeExpressionManager.php:5167
+#: classes/expressions/LimeExpressionManager.php:5169
 msgid "Please check at least one item."
 msgstr "Prosím zaškrtněte alespoň jednu položku."
 
-#: classes/expressions/LimeExpressionManager.php:5177
+#: classes/expressions/LimeExpressionManager.php:5180
 msgid "If you choose '%s' you must provide a description."
 msgstr "Zvolíte-li '%s' musíte napsat popis."
 
-#: classes/expressions/LimeExpressionManager.php:5199
-#: classes/expressions/LimeExpressionManager.php:5236
+#: classes/expressions/LimeExpressionManager.php:5202
+#: classes/expressions/LimeExpressionManager.php:5239
 msgid "Please complete all parts"
 msgstr "Prosím dokončete všechny části"
 
-#: classes/expressions/LimeExpressionManager.php:5228
+#: classes/expressions/LimeExpressionManager.php:5231
 msgid "Please check at least one box per row"
 msgstr "Zaškrtněte prosím minimálně jednu položku v řádku"
 
-#: classes/expressions/LimeExpressionManager.php:5244
+#: classes/expressions/LimeExpressionManager.php:5247
 msgid "Please rank all items"
 msgstr "Prosím ohodnoťte všechny položky"
 
-#: classes/expressions/LimeExpressionManager.php:7621
+#: classes/expressions/LimeExpressionManager.php:7624
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Chybná otázka - pravděpodobně chybí podotázky nebo specifické nastavení pro některý jazyk"
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7629
 msgid "Name [ID]"
 msgstr "Jméno [ID]"
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7629
 msgid "Relevance [Validation] (Default)"
 msgstr "Relevantnost [Validace] (Výchozí)"
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7629
 msgid "Text [Help] (Tip)"
 msgstr "Text [Nápověda] (Tip)"
 
-#: classes/expressions/LimeExpressionManager.php:7677
-#: classes/expressions/LimeExpressionManager.php:7921
+#: classes/expressions/LimeExpressionManager.php:7680
+#: classes/expressions/LimeExpressionManager.php:7924
 msgid "DEFAULT:"
 msgstr "VÝCHOZÍ:"
 
-#: classes/expressions/LimeExpressionManager.php:7685
+#: classes/expressions/LimeExpressionManager.php:7688
 msgid "HELP:"
 msgstr "NÁPOVĚDA:"
 
-#: classes/expressions/LimeExpressionManager.php:7686
+#: classes/expressions/LimeExpressionManager.php:7689
 msgid "TIP:"
 msgstr "TIP:"
 
-#: classes/expressions/LimeExpressionManager.php:7703
+#: classes/expressions/LimeExpressionManager.php:7706
 msgid "Question Attribute"
 msgstr "Atributy otázky"
 
-#: classes/expressions/LimeExpressionManager.php:7703
+#: classes/expressions/LimeExpressionManager.php:7706
 msgid "Value"
 msgstr "Hodnota"
 
-#: classes/expressions/LimeExpressionManager.php:7810
+#: classes/expressions/LimeExpressionManager.php:7813
 msgid "VALIDATION:"
 msgstr "OVĚŘENÍ:"
 
-#: classes/expressions/LimeExpressionManager.php:7824
+#: classes/expressions/LimeExpressionManager.php:7827
 msgid "This variable name has already been used."
 msgstr "Toto jméno proměnné již bylo použito."
 
-#: classes/expressions/LimeExpressionManager.php:7836
+#: classes/expressions/LimeExpressionManager.php:7839
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Od verze 1.92 mohou proměnné obsahovat pouze písmena, číslice a podtržítka, přičemž nemohou začínat číslicí. Tento název proměnné je zastaralý."
 
-#: classes/expressions/LimeExpressionManager.php:7989
+#: classes/expressions/LimeExpressionManager.php:7992
 msgid "This question has at least %s error(s)"
 msgstr "Tato otázka má minimálně %s chyb"
 
-#: classes/expressions/LimeExpressionManager.php:8028
+#: classes/expressions/LimeExpressionManager.php:8031
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s otázek obsahuje chyby, které je potřeba opravit"
 
-#: classes/expressions/LimeExpressionManager.php:8034
+#: classes/expressions/LimeExpressionManager.php:8037
 msgid "No syntax errors detected in this survey"
 msgstr "V tomto průzkumu nebyla nalezena žádná chyba syntaxe."
 
-#: classes/expressions/LimeExpressionManager.php:8037
+#: classes/expressions/LimeExpressionManager.php:8040
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Tato skupina neobsahuje žádnou chybu syntaxe."
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8043
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "Tato otázka neobsahuje žádnou chybu syntaxe."
 
