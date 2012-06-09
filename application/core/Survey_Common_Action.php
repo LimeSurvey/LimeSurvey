@@ -326,6 +326,7 @@ class Survey_Common_Action extends CAction
         $aData['sqct'] = $sqct = count($sqrq);
 
         $qrresult = Questions::model()->with('question_types')->findAllByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyId, 'language' => $baselang));
+        $q = createQuestion($qrrow->question_types['class'], $iSurveyId, $qid);
 
         $questionsummary = "<div class='menubar'>\n";
 
@@ -357,7 +358,6 @@ class Survey_Common_Action extends CAction
                     $aData['tmp_survlangs'] = $tmp_survlangs;
                 }
             }
-            $q = createQuestion($qrrow->question_types['class']);
             $aData['qproperties']=$q->questionProperties();
             if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action == "copyquestion")
             {
@@ -375,7 +375,7 @@ class Survey_Common_Action extends CAction
             $aData['clang'] = $clang;
             $aData['qrrow'] = $flatrow;
             $aData['baselang'] = $baselang;
-            $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyId, $baselang);
+            $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($q, $baselang);
             $DisplayArray = array();
             foreach ($aAttributesWithValues as $aAttribute)
             {

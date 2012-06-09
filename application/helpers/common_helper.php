@@ -6561,8 +6561,10 @@ function type2Name($type) //AJS
 
 function tidToQuestion($tid)
 {
+    $args = func_get_args();
     $type = Question_types::model()->findByPk($tid);
-    return createQuestion($type['class']);
+    $args[0] = $type['class'];
+    return call_user_func_array('createQuestion', $args);
 }
 
 function createQuestion($name)
@@ -6578,7 +6580,9 @@ function createQuestion($name)
 
 function objectizeQuestion($type) //AJS
 {
-    return createQuestion(type2Name($type));
+    $args = func_get_args();
+    $args[0] = type2Name($type);
+    return call_user_func_array('createQuestion', $args);
 }
 
 /**

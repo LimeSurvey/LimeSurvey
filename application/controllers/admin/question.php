@@ -898,14 +898,12 @@ class question extends Survey_Common_Action
      */
     public function ajaxquestionattributes()
     {
-        $surveyid = (int) $_POST['sid'];
-        $qid = (int) $_POST['qid'];
-        $type = $_POST['question_type'];
+        $q = objectizeQuestion($_POST['question_type'], (int) $_POST['sid'], (int) $_POST['qid']);
 
-        $aLanguages = array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
-        $thissurvey = getSurveyInfo($surveyid);
+        $aLanguages = array_merge(array(Survey::model()->findByPk($q->surveyid)->language), Survey::model()->findByPk($q->surveyid)->additionalLanguages);
+        $thissurvey = getSurveyInfo($q->surveyid);
 
-        $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
+        $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($q);
         uasort($aAttributesWithValues, 'categorySort');
 
         $aAttributesPrepared = array();

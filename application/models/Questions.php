@@ -108,20 +108,18 @@
         * @param string $sLanguage  If you give a language then only the attributes for that language are returned
         * @return array
         */
-        public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage=null)
+        public function getAdvancedSettingsWithValues($q, $sLanguage=null)
         {
-            $q = objectizeQuestion($sQuestionType); //AJS
             if (is_null($sLanguage))
             {
-                $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+                $aLanguages = array_merge(array(Survey::model()->findByPk($q->surveyid)->language), Survey::model()->findByPk($q->surveyid)->additionalLanguages);
             }
             else
             {
                 $aLanguages = array($sLanguage);
             }
-            if ($iQuestionID != 0)
+            if ($q->id != 0)
             {
-                $q->id = $iQuestionID;
                 $aAttributeValues = $q->getAttributeValues();
             }
 

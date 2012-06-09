@@ -111,7 +111,8 @@ class UploaderController extends AdminController {
 		    $fieldname = $_POST['fieldname'];
             $aFieldMap = createFieldMap($surveyid,'short',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 		    if (!isset($aFieldMap[$fieldname])) die();
-		    $aAttributes=getQuestionAttributeValues($aFieldMap[$fieldname]['qid'],$aFieldMap[$fieldname]['type']);
+            $q=$aFieldMap[$fieldname]['q'];
+		    $aAttributes=$q->getAttributeValues();
 
 		    $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
 		    $valid_extensions_array = array_map('trim',$valid_extensions_array);
