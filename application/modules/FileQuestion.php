@@ -199,6 +199,23 @@ class FileQuestion extends QuestionModule
     {
         return NULL;
     }
+                
+    public function getExtendedAnswer($value, $language)
+    {
+        if (substr($this->fieldname, -9) == 'filecount') return $language->gT("File count")." [$value]";
+        //Show the filename, size, title and comment -- no link!
+        $files = json_decode($value);
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                $answer .= $file->name .
+                ' (' . $file->size . 'KB) ' .
+                strip_tags($file->title) .
+                ' - ' . strip_tags($file->comment) . "<br/>";
+            }
+            return $answer;
+        }
+        return '';
+    }
     
     public function availableAttributes($attr = false)
     {

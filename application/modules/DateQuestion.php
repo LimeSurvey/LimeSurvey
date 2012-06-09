@@ -233,6 +233,13 @@ class DateQuestion extends QuestionModule
         return $value;
     }
     
+    public function getExtendedAnswer($value, $language)
+    {
+        $qidattributes = getQuestionAttributeValues($this->qid);
+        $dateformatdetails = getDateFormatDataForQID($qidattributes, $this->surveyid);
+        return convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");

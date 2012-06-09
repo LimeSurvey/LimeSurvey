@@ -19,6 +19,7 @@ abstract class QuestionModule
     public $default;
     public $preg;
     public $other;
+    public $scale;
     protected $attributes;
 
 
@@ -179,6 +180,11 @@ abstract class QuestionModule
     }
         
     public function prepareValue($value)
+    {
+        return $value;
+    }
+    
+    public function getExtendedAnswer($value, $language)
     {
         return $value;
     }

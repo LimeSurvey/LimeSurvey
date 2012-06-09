@@ -29,7 +29,22 @@ class LanguageQuestion extends QuestionModule
 
         return $answer;
     }
-    
+        
+    public function getExtendedAnswer($value, $language)
+    {
+        if ($value == "-oth-")
+        {
+            return $language->gT("Other")." [$value]";
+        }
+        $result = Answers::model()->getAnswerFromCode($this->id,$value,$language->langcode)->readAll() or die ("Couldn't get answer type."); //Checked
+        if(count($result))
+        {
+            $result =array_values($result);
+            return $result[count($result)-1]." [$value]";
+        }
+        return $value;
+    }
+   
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","random_group");

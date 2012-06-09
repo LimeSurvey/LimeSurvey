@@ -107,7 +107,7 @@
                                 foreach ($members as $type)
                                 {
                                     echo "<option value='{$type['tid']}'";
-                                    if ($eqrow['type'] == $type['class'])
+                                    if ($eqrow['type'] == $type['class']) //AJS
                                     {
                                         echo " selected='selected'";
                                     }

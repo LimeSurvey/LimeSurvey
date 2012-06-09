@@ -156,7 +156,18 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
     }
     
     //public function getInputNames() - inherited
-    
+            
+    public function getExtendedAnswer($value, $language)
+    {
+        switch($value)
+        {
+            case "I": return $language->gT("Increase")." [$value]";
+            case "D": return $language->gT("Decrease")." [$value]";
+            case "S": return $language->gT("Same")." [$value]";
+            default: return $value;
+        }
+    }
+   
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

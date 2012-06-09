@@ -1478,147 +1478,26 @@ function getQuestion($fieldcode)
 */
 function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
 {
-    if (is_null($sValue) || $sValue=='') return '';
+    if (is_null($sValue) || trim($sValue)=='') return '';
     $sLanguage = $oLanguage->langcode;
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
-    if (strpos($sFieldCode, "{$iSurveyID}X")===0) //Only check if it looks like a real fieldcode
+    if (strpos($sFieldCode, "{$iSurveyID}X")!==0) //Only check if it looks like a real fieldcode
     {
-        $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage);
-        if (isset($fieldmap[$sFieldCode]))
-            $fields = $fieldmap[$sFieldCode];
-        else
-            return false;
-        //Find out the question type
-        $this_type = $fields['type'];
-        switch($this_type)
-        {
-            case 'D':
-                if (trim($sValue)!='')
-                {
-                    $qidattributes = getQuestionAttributeValues($fields['qid']);
-                    $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
-                    $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
-                }
-                break;
-            case "L":
-            case "!":
-            case "O":
-            case "^":
-            case "I":
-            case "R":
-                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage) or die ("Couldn't get answer type L - getAnswerCode()"); //Checked
-                foreach($result as $row)
-                {
-                    $this_answer=$row['answer'];
-                } // while
-                if ($sValue == "-oth-")
-                {
-                    $this_answer=$oLanguage->gT("Other");
-                }
-                break;
-            case "M":
-            case "J":
-            case "P":
-            switch($sValue)
-            {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-            }
-            break;
-            case "Y":
-            switch($sValue)
-            {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-                case "N": $this_answer=$oLanguage->gT("No"); break;
-                default: $this_answer=$oLanguage->gT("No answer");
-            }
-            break;
-            case "G":
-            switch($sValue)
-            {
-                case "M": $this_answer=$oLanguage->gT("Male"); break;
-                case "F": $this_answer=$oLanguage->gT("Female"); break;
-                default: $this_answer=$oLanguage->gT("No answer");
-            }
-            break;
-            case "C":
-            switch($sValue)
-            {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-                case "N": $this_answer=$oLanguage->gT("No"); break;
-                case "U": $this_answer=$oLanguage->gT("Uncertain"); break;
-            }
-            break;
-            case "E":
-            switch($sValue)
-            {
-                case "I": $this_answer=$oLanguage->gT("Increase"); break;
-                case "D": $this_answer=$oLanguage->gT("Decrease"); break;
-                case "S": $this_answer=$oLanguage->gT("Same"); break;
-            }
-            break;
-            case "F":
-            case "H":
-            case "1":
-                $aConditions=array('qid' => $fields['qid'], 'code' => $sValue, 'language' => $sLanguage);
-                if (isset($fields['scale_id']))
-                {
-                    $iScaleID=$fields['scale_id'];
-                }
-                else
-                {
-                    $iScaleID=0;
-                }
-                $result = Answers::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID) or die ("Couldn't get answer type L - getAnswerCode()"); //Checked
-                foreach($result as $row)
-                {
-                    $this_answer=$row['answer'];
-                } // while
-                $this_answer=$row['answer'];
-                if ($sValue == "-oth-")
-                {
-                    $this_answer=$oLanguage->gT("Other");
-                }
-                break;
-            case "|": //File upload
-                if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = $oLanguage->gT("File count");
-                } else {
-                    //Show the filename, size, title and comment -- no link!
-                    $files = json_decode($sValue);
-                    $sValue = '';
-                    if (is_array($files)) {
-                        foreach ($files as $file) {
-                            $sValue .= $file->name .
-                            ' (' . $file->size . 'KB) ' .
-                            strip_tags($file->title) .
-                            ' - ' . strip_tags($file->comment) . "<br/>";
-                        }
-                    }
-                }
-                break;
-            default:
-                ;
-        } // switch
-    }
-    switch($sFieldCode)
-    {
-        case 'submitdate':
-            if (trim($sValue)!='')
-            {
-                $dateformatdetails = getDateFormatDataForQID(array('date_format'=>''), $iSurveyID);
-                $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate'].' H:i:s');
-            }
-            break;
-    }
-    if (isset($this_answer))
-    {
-        return $this_answer." [$sValue]";
-    }
-    else
-    {
+        if($sFieldCode=='submitdate' && trim($sValue)!='') {
+            $dateformatdetails = getDateFormatDataForQID(array('date_format'=>''), $iSurveyID);
+            return convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate'].' H:i:s');
+        }
         return $sValue;
     }
+    $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage);
+    if (isset($fieldmap[$sFieldCode]))
+        $fields = $fieldmap[$sFieldCode];
+    else
+        return false;
+    //Find out the question type
+    $q = $fields['q'];
+    return $q->getExtendedAnswer($sValue, $oLanguage);
 }
 
 /*function validateEmailAddress($email)

@@ -643,6 +643,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $q = clone $this;
             $q->fieldname = $fieldname;
             $q->aid = $field['aid'];
+            $q->scale=0;
             $field['q']=$q;
             $field2=$field;
             $fieldname2="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}#1";
@@ -651,6 +652,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $field2['scale']=$clang->gT('Scale 2');
             $q2 = clone $field['q'];
             $q2->fieldname = $fieldname;
+            $q2->scale=1;
             $field2['q']=$q2;
             $map[$fieldname]=$field;
             $map[$fieldname2]=$field2;

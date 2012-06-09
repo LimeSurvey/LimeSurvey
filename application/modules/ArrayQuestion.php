@@ -16,7 +16,7 @@ abstract class ArrayQuestion extends QuestionModule
         }
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
-    
+
     public function createFieldmap($type=null)
     {
         $map = array();

@@ -100,18 +100,6 @@ function checkQuestions($postsid, $surveyid)
     $clang = Yii::app()->lang;
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
-    //THESE QUESTION TYPES ARE:
-    //	# "L" -> LIST
-    //  # "O" -> LIST WITH COMMENT
-    //  # "M" -> Multiple choice
-    //	# "P" -> Multiple choice with comments
-    //	# "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
-    //  # "R" -> RANKING
-    //  # "U" -> FILE CSV MORE
-	//  # "I" -> LANGUAGE SWITCH
-    //  # ":" -> Array Multi Flexi Numbers
-    //  # ";" -> Array Multi Flexi Text
-    //  # "1" -> MULTI SCALE
 
     $chkresult = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyId, 'parent_qid' => 0));
     

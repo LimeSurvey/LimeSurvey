@@ -42,7 +42,17 @@ class YNQuestion extends QuestionModule
         $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$this->fieldname}\" id=\"java{$this->fieldname}\" value=\"{ ".$_SESSION['survey_'.$this->surveyid][$this->fieldname]."}\" />\n";
         return $answer;
     }
-    
+        
+    public function getExtendedAnswer($value, $language)
+    {
+        switch($value)
+        {
+            case "Y": return $language->gT("Yes")." [$value]";
+            case "N": return $language->gT("No")." [$value]";
+            default: return $language->gT("No answer")." [$value]";
+        }
+    }
+   
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

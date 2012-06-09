@@ -320,6 +320,22 @@ class RadioArrayQuestion extends ArrayQuestion
         }
         return $answer;
     }
+                
+    public function getExtendedAnswer($value, $language)
+    {
+        if ($value == "-oth-")
+        {
+            return $language->gT("Other"). "[-oth-]";
+        }
+        $scale=isset($this->scale)?$this->scale:0;
+        $result = Answers::model()->getAnswerFromCode($this->id,$value,$language->langcode,$scale)->readAll() or die ("Couldn't get answer type."); //Checked
+        if(count($result))
+        {
+            $result =array_values($result);
+            return $result[count($result)-1]." [$value]";
+        }
+        return $value;
+    }
     
     public function availableAttributes($attr = false)
     {

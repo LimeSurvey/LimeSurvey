@@ -43,7 +43,17 @@ class GenderQuestion extends QuestionModule
 
         return $answer;
     }
-    
+            
+    public function getExtendedAnswer($value, $language)
+    {
+        switch($value)
+        {
+            case "M": return $language->gT("Male")." [$value]";
+            case "F": return $language->gT("Female")." [$value]";
+            default: return $language->gT("No answer")." [$value]";
+        }
+    }
+   
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");
