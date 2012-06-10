@@ -799,6 +799,7 @@
                     $_qid = $row['qid'];
                     $_scenario = $row['scenario'];
                     $_cqid = $row['cqid'];
+                    $_fieldname = -1;
                     $relAndList = array();
                     $relOrList = array();
                     $scenarios = array();
@@ -815,12 +816,14 @@
                     $relOrList = array();
                     $_scenario = $row['scenario'];
                     $_cqid = $row['cqid'];
+                    $_fieldname = -1;
                 }
                 if ($row['cqid'] != $_cqid)
                 {
                     $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
                     $relOrList = array();
                     $_cqid = $row['cqid'];
+                    $_fieldname = -1;
                 }
 
                 // fix fieldnames
@@ -844,6 +847,12 @@
                         $fieldname = $row['cfieldname'] . '.NAOK';
                         $value = $row['value'];
                 }
+                if ($_fieldname != -1 && $_fieldname != $fieldname)
+                {
+                    $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
+                    $relOrList = array();
+                }
+                $_fieldname = $fieldname;
 
                 // fix values
                 if (preg_match('/^@\d+X\d+X\d+.*@$/',$value)) {

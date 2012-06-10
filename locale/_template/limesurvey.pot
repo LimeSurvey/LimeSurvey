@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-06-07 07:56:41+00:00\n"
+"POT-Creation-Date: 2012-06-09 11:21:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5609,7 +5609,7 @@ msgstr ""
 
 #: admin/printablesurvey.php:758
 #: classes/expressions/LimeExpressionManager.php:2824
-#: classes/expressions/LimeExpressionManager.php:5175 qanda.php:1295
+#: classes/expressions/LimeExpressionManager.php:5178 qanda.php:1295
 #: qanda.php:1595 qanda.php:2205 qanda.php:2505
 msgid "Other:"
 msgstr ""
@@ -8703,7 +8703,11 @@ msgstr ""
 msgid "Spanish"
 msgstr ""
 
-#: classes/core/surveytranslator.php:542 classes/core/surveytranslator.php:549
+#: classes/core/surveytranslator.php:542
+msgid "Spanish (Chile)"
+msgstr ""
+
+#: classes/core/surveytranslator.php:549
 msgid "Spanish (Mexico)"
 msgstr ""
 
@@ -9244,93 +9248,93 @@ msgstr ""
 msgid "This question is mandatory"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5167
+#: classes/expressions/LimeExpressionManager.php:5169
 msgid "Please check at least one item."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5177
+#: classes/expressions/LimeExpressionManager.php:5180
 msgid "If you choose '%s' you must provide a description."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5199
-#: classes/expressions/LimeExpressionManager.php:5236
+#: classes/expressions/LimeExpressionManager.php:5202
+#: classes/expressions/LimeExpressionManager.php:5239
 msgid "Please complete all parts"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5228
+#: classes/expressions/LimeExpressionManager.php:5231
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5244
+#: classes/expressions/LimeExpressionManager.php:5247
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7621
+#: classes/expressions/LimeExpressionManager.php:7624
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7629
 msgid "Name [ID]"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7629
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7629
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7677
-#: classes/expressions/LimeExpressionManager.php:7921
+#: classes/expressions/LimeExpressionManager.php:7680
+#: classes/expressions/LimeExpressionManager.php:7924
 msgid "DEFAULT:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7685
+#: classes/expressions/LimeExpressionManager.php:7688
 msgid "HELP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7686
+#: classes/expressions/LimeExpressionManager.php:7689
 msgid "TIP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7703
+#: classes/expressions/LimeExpressionManager.php:7706
 msgid "Question Attribute"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7703
+#: classes/expressions/LimeExpressionManager.php:7706
 msgid "Value"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7810
+#: classes/expressions/LimeExpressionManager.php:7813
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7824
+#: classes/expressions/LimeExpressionManager.php:7827
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7836
+#: classes/expressions/LimeExpressionManager.php:7839
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7989
+#: classes/expressions/LimeExpressionManager.php:7992
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8028
+#: classes/expressions/LimeExpressionManager.php:8031
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8034
+#: classes/expressions/LimeExpressionManager.php:8037
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8037
+#: classes/expressions/LimeExpressionManager.php:8040
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8043
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
