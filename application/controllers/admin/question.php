@@ -898,7 +898,7 @@ class question extends Survey_Common_Action
      */
     public function ajaxquestionattributes()
     {
-        $q = objectizeQuestion($_POST['question_type'], (int) $_POST['sid'], (int) $_POST['qid']);
+        $q = objectizeQuestion($_POST['question_type'], array('surveyid' => (int) $_POST['sid'], 'id' => (int) $_POST['qid'])); //AJS
 
         $aLanguages = array_merge(array(Survey::model()->findByPk($q->surveyid)->language), Survey::model()->findByPk($q->surveyid)->additionalLanguages);
         $thissurvey = getSurveyInfo($q->surveyid);
@@ -1050,7 +1050,12 @@ class question extends Survey_Common_Action
 
         $qrows = Questions::model()->with('question_types')->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
 
-        $q = createQuestion($qrows->question_types['class'], $surveyid, $qid, $surveyid.'X'.$qrows['gid'].'X'.$qid, $qrows['title'], $qrows['question'], $qrows['gid'], $qrows['mandatory'], 'N', 'N');
+        $q = createQuestion($qrows->question_types['class'],
+            array('surveyid'=>$surveyid, 'id'=>$qid,
+            'fieldname'=>$surveyid.'X'.$qrows['gid'].'X'.$qid,
+            'title'=>$qrows['title'], 'text'=>$qrows['question'],
+            'gid'=>$qrows['gid'], 'mandatory'=>$qrows['mandatory'],
+            'conditionsexist'=>'N', 'usedinconditions'=>'N'));
 
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['seperator'];

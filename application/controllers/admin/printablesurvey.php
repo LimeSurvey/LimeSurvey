@@ -634,7 +634,7 @@ class printablesurvey extends Survey_Common_Action
                     ,'QUESTION_SCENARIO' => $explanation    // if there are conditions on a question, list the conditions.
                     ,'QUESTION_MANDATORY' => ''        // translated 'mandatory' identifier
                     ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
-                    ,'QUESTION_CLASS' => objectizeQuestion($deqrow['type'])->questionProperties('class')    // classes to be added to wrapping question div
+                    ,'QUESTION_CLASS' => objectizeQuestion($deqrow['type'])->questionProperties('class')    // classes to be added to wrapping question div //AJS
                     ,'QUESTION_TYPE_HELP' => $qinfo['validTip']   // ''		// instructions on how to complete the question // prettyValidTip is too verbose; assuming printable surveys will use static values
                     ,'QUESTION_MAN_MESSAGE' => ''        // (not sure if this is used) mandatory error
                     ,'QUESTION_VALID_MESSAGE' => ''        // (not sure if this is used) validation error

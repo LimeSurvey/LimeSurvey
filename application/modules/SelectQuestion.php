@@ -268,7 +268,7 @@ class SelectQuestion extends ListQuestion
             $other['fieldname'].='other';
             $other['aid']='other';
             $other['subquestion']=$clang->gT("Other");
-            if (isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
+            if (isset($this->default) && isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
             else unset($other['defaultvalue']);
             $q = clone $this;
             $q->fieldname .= 'other';

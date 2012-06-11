@@ -1942,9 +1942,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
         $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-        $pq = createQuestion($arow->question_types['class'], $surveyid, $arow['qid'], $fieldname,
-        $arow['title'], $arow['question'], $arow['gid'], $arow['mandatory'], $conditions,
-        $usedinconditions, $questionSeq, null, $sLanguage);
+        $pq = createQuestion($arow->question_types['class'], array('surveyid'=>$surveyid,
+            'id'=>$arow['qid'], 'fieldname'=>$fieldname,
+            'title'=>$arow['title'], 'text'=>$arow['question'],
+            'gid'=>$arow['gid'], 'mandatory'=>$arow['mandatory'],
+            'conditionsexist'=>$conditions, 'usedinconditions'=>$usedinconditions,
+            'questioncount'=>$questionSeq, 'language'=>$sLanguage));
         $pq->aid = '';
         if(isset($defaults[$arow['qid']])) $pq->default = $defaults[$arow['qid']];
 
@@ -2157,7 +2160,7 @@ function getQuestionAttributeValues($q)
         $qid = sanitize_int($q);
         if (isset($cache[$qid])) return $cache[$qid];
         $row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid)); //, 'parent_qid' => 0), array('group' => 'type')
-        $q = createQuestion($row->question_types['class'], 0, $qid);
+        $q = createQuestion($row->question_types['class'], array('id'=>$qid));
     }
 
     return $cache[$q->id] = $q->getAttributeValues();
@@ -4880,7 +4883,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
             $result_quest=Questions::model()->with('question_types')->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
             $qtype=$result_quest->attributes;
 
-            $q = createQuestion($result_quest->question_types['class'], $surveyid, $quota_entry['qid'], null, null, null, $qtype['gid']);
+            $q = createQuestion($result_quest->question_types['class'], array('surveyid'=>$surveyid, 'id'=>$quota_entry['qid'], 'gid'=>$qtype['gid']));
             if ($member = $q->getQuotaValue($quota_entry['code'])) $quota_info['members'] = array_merge($quota_info['members'], $member);
         }
         return $quota_info;
@@ -6559,30 +6562,22 @@ function type2Name($type) //AJS
     }
 }
 
-function tidToQuestion($tid)
+function tidToQuestion($tid, $data=array())
 {
-    $args = func_get_args();
     $type = Question_types::model()->findByPk($tid);
-    $args[0] = $type['class'];
-    return call_user_func_array('createQuestion', $args);
+    return createQuestion($type['class'], $data);
 }
 
-function createQuestion($name)
+function createQuestion($name, $data=array())
 {
     $class = $name.'Question';
     Yii::import('application.modules.*');
-    $args = func_get_args();
-    $args = array_splice($args, 1);
-    $q = new $class;
-    call_user_func_array(array($q, '__construct'), $args);
-    return $q;
+    return new $class($data);
 }
 
-function objectizeQuestion($type) //AJS
+function objectizeQuestion($type, $data=array()) //AJS
 {
-    $args = func_get_args();
-    $args[0] = type2Name($type);
-    return call_user_func_array('createQuestion', $args);
+    return createQuestion(type2Name($type), $data);
 }
 
 /**

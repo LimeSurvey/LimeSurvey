@@ -620,6 +620,7 @@ class SurveyRuntimeHelper {
         Yii::app()->getController()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
 
+                    var_dump($_SESSION[$LEMsessid]['grouplist']);die();
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
             $gid = $gl[0];
@@ -640,7 +641,7 @@ class SurveyRuntimeHelper {
                 ++$qnumber;
                 $q->questioncount = $qnumber; // incremental question count;
 
-                if ($q->randomgid == $gid || (!$q->randomgid && $q->gid == $gid))
+                if ((isset($q->randomgid) && $q->randomgid == $gid) || ((!isset($q->randomgid) || !$q->randomgid) && $q->gid == $gid))
                 {
                     if ($surveyMode == 'question' && $q->id != $stepInfo['qid'])
                     {

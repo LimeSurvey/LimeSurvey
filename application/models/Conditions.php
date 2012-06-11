@@ -60,7 +60,7 @@
         * @access public
         * @return array
         */
-        public function relatiosn()
+        public function relations()
         {
             return array(
             'question' => array(self::HAS_ONE, 'Questions', '',

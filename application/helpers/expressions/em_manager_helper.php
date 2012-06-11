@@ -839,11 +839,10 @@
                 }
 
                 // fix fieldnames
-                if ($row['type'] == '' && preg_match('/^{.+}$/',$row['cfieldname'])) {
+                if ($row['type'] == '' && preg_match('/^{.+}$/',$row['cfieldname'])) { //AJS
                     $fieldname = substr($row['cfieldname'],1,-1);    // {TOKEN:xxxx}
                     $value = $row['value'];
-                }
-                else if ($row['type'] == 'M' || $row['type'] == 'P') {
+                } else if ($row['type'] == 'M' || $row['type'] == 'P') { //AJS
                         if (substr($row['cfieldname'],0,1) == '+') {
                             // if prefixed with +, then a fully resolved name
                             $fieldname = substr($row['cfieldname'],1) . '.NAOK';
@@ -854,10 +853,9 @@
                             $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
                             $value = 'Y';
                         }
-                    }
-                    else {
-                        $fieldname = $row['cfieldname'] . '.NAOK';
-                        $value = $row['value'];
+                } else {
+                    $fieldname = $row['cfieldname'] . '.NAOK';
+                    $value = $row['value'];
                 }
 
                 // fix values
@@ -6893,6 +6891,7 @@ EOD;
             .", q.sid, q.type"
             ." from {{conditions}} as c"
             .", {{questions}} as q"
+            ." join {{question_types}} as t on (q.tid = t.tid)"
             ." where " . $where
             ." c.cqid=q.qid"
             ." union "
@@ -6901,7 +6900,7 @@ EOD;
             .", {{questions}} as q"
             ." where ". $where
             ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, qid, scenario, cqid, cfieldname, value";
+            ." order by sid, qid, scenario, cqid, cfieldname, value"; //AJS
 
             $data = dbExecuteAssoc($query);
 

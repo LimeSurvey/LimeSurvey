@@ -370,7 +370,7 @@ class CheckQuestion extends QuestionModule
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
             $field['preg']=$this->preg;
-            if(isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
+            if(isset($this->default) && isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
             $field['pq']=$this;
             $q = clone $this;
             $q->fieldname = $fieldname;
@@ -387,7 +387,7 @@ class CheckQuestion extends QuestionModule
             $other['aid']='other';
             $other['subquestion']=$clang->gT("Other");
             $other['other']=$this->other;
-            if (isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
+            if (isset($this->default) && isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
             else unset($other['defaultvalues']);
             $q = clone $this;
             $q->fieldname .= 'other';

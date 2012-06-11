@@ -1,44 +1,41 @@
 <?php
 abstract class QuestionModule
 {
-    public $surveyid;
-    public $id;
-    public $fieldname;
-    public $title;
-    public $text;
-    public $gid;
-    public $mandatory;
-    public $conditionsexist; //boolean
-    public $usedinconditions;
-    public $questioncount;
-    public $groupcount;
-    public $randomgid;
-    public $language;
-    public $groupname;
-    public $aid;
-    public $default;
-    public $preg;
-    public $other;
-    public $scale;
+    protected $data;
     protected $attributes;
 
 
-    public function __construct($surveyid = null, $id = null, $fieldname = null, $title = null,
-    $text = null, $gid = null, $mandatory = null, $conditionsexist = null, $usedinconditions = null,
-    $questioncount = null, $randomgid = null, $language = null)
+    public function __construct($data = array())
     {
-        $this->surveyid=$surveyid;
-        $this->id=$id;
-        $this->fieldname=$fieldname;
-        $this->title=$title;
-        $this->text=$text;
-        $this->gid=$gid;
-        $this->mandatory=$mandatory;
-        $this->conditionsexist=$conditionsexist; //boolean
-        $this->usedinconditions=$usedinconditions;
-        $this->questioncount=$questioncount;
-        $this->randomgid=$randomgid;
-        $this->language=$language;
+        foreach($data as $key => $datum)
+            $this->$key = $datum;
+    }
+    
+    public function __get($name)
+    {
+        if (array_key_exists($name, $this->data)) {
+            return $this->data[$name];
+        }
+
+        trigger_error(
+            'Undefined property via __get()',
+            E_USER_NOTICE);
+        return null;
+    }
+    
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
+    
+    public function __isset($name)
+    {
+        return isset($this->data[$name]);
+    }
+    
+    public function __unset($name)
+    {
+        unset($this->data[$name]);
     }
     
     abstract public function getAnswerHTML();
@@ -163,7 +160,7 @@ abstract class QuestionModule
         $map['usedinconditions']=$this->usedinconditions;
         $map['questionSeq']=$this->questioncount;
         $map['groupSeq']=$this->groupcount;
-        if(isset($this->default[0])) $map['defaultvalue']=$this->default[0];
+        if(isset($this->default) && isset($this->default[0])) $map['defaultvalue']=$this->default[0];
         $map['q']=$this;
         $map['pq']=$this;
         return array($this->fieldname=>$map);

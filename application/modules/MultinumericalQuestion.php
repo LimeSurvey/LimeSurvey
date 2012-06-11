@@ -371,7 +371,7 @@ class MultinumericalQuestion extends QuestionModule
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
             $field['preg']=$this->preg;
-            if(isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
+            if(isset($this->default) && isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
             $field['pq']=$this;
             $q = clone $this;
             $q->fieldname = $fieldname;

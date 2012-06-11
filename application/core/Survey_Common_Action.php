@@ -326,7 +326,6 @@ class Survey_Common_Action extends CAction
         $aData['sqct'] = $sqct = count($sqrq);
 
         $qrresult = Questions::model()->with('question_types')->findAllByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyId, 'language' => $baselang));
-        $q = createQuestion($qrrow->question_types['class'], $iSurveyId, $qid);
 
         $questionsummary = "<div class='menubar'>\n";
 
@@ -345,6 +344,7 @@ class Survey_Common_Action extends CAction
 
         foreach ($qrresult as $qrrow)
         {
+            $q = createQuestion($qrrow->question_types['class'], array('surveyid'=>$iSurveyId, 'id'=>$qid));
             $flatrow = array_map('flattenText', $qrrow->attributes);
             if (hasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
             {
