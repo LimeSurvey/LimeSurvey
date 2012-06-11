@@ -211,6 +211,7 @@ function LEMval(alias)
     var suffix = 'code';    // the default
 
     /* If passed a number, return that number */
+    if (str == '') return '';
     newval = str;
     if (LEMradix === ',') {
         newval = str.split(',').join('.');
