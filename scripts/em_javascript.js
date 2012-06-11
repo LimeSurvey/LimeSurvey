@@ -209,6 +209,16 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
+
+    /* If passed a number, return that number */
+    newval = str;
+    if (LEMradix === ',') {
+        newval = str.split(',').join('.');
+    }
+    if (newval == parseFloat(newval)) {
+        return +newval;
+    }
+
     if (str.match(/^INSERTANS:/)) {
         suffix = 'shown';
         varName = varName.substr(10);
