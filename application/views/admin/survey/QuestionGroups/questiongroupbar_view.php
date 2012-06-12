@@ -22,7 +22,7 @@
                 <img src='<?php echo $imageurl; ?>edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php } ?>
 
-        <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
+        <?php if(hasSurveyPermission($surveyid,'translations','read'))
             { ?>
             <img id='separator6' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
