@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-06-12 11:53:01+00:00\n"
+"POT-Creation-Date: 2012-06-12 12:02:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10935,7 +10935,7 @@ msgid "Click on the scissors next to each item on the right to remove the last e
 msgstr ""
 
 #: qanda.php:2123 qanda.php:2138
-msgid "Please rank at least %d item for question \"%s\""
+msgid "Please rank at least %d item for question \"%s\"."
 msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] ""
 msgstr[1] ""
