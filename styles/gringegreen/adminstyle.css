@@ -676,7 +676,6 @@ ul.assessmentscope li label:first-child {
 }
 
 #assessmentsform #languagetabs input[type="text"] {
-    width: 565px;
     margin-bottom: 5px;
 }
 
@@ -1216,6 +1215,10 @@ textarea.updater-changelog {
     list-style-type: none;
     clear:left;
     padding-bottom:5px;
+}
+
+.editorLink {
+	vertical-align: top;
 }
 
 .form30 ul.editor-parent {

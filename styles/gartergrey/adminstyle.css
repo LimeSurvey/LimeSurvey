@@ -519,6 +519,10 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     padding-bottom:5px;
 }
 
+.editorLink {
+	vertical-align: top;
+}
+
 .form30 ul.editor-parent {
     min-width:1000px;
 }
