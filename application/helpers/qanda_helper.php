@@ -2256,7 +2256,7 @@ function do_ranking($ia)
         if(!isset($showpopups) || $showpopups == 0)
         {
             $answer .= "<div id='rankingminanswarning{$ia[0]}' style='display: none; color: red' class='errormandatory'>"
-            .sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\".",$minansw),$minansw, trim(str_replace(array("\n", "\r"), "", $ia[3])))."</div>";
+            .sprintf($clang->ngT('Please rank at least %d item for question "%s".','Please rank at least %d items for question "%s".',$minansw),$minansw, trim(str_replace(array("\n", "\r"), "", $ia[3])))."</div>";
         }
         $minanswscript = "<script type='text/javascript'>\n"
         . "  <!--\n"
@@ -2271,7 +2271,7 @@ function do_ranking($ia)
             document.getElementById('rankingminanswarning{$ia[0]}').style.display='';\n";
         } else {
             $minanswscript .="
-            alert('".sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\"",$minansw,'js'),$minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
+            alert('".sprintf($clang->ngT('Please rank at least %d item for question "%s".','Please rank at least %d items for question "%s".',$minansw,'js'),$minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
         }
         $minanswscript .= ""
         . "     return false;\n"
