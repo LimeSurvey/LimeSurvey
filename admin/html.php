@@ -372,7 +372,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         }
 
         // QUALITY ASSURANCE BUTTON - SHOW LOGIC FILE
-        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        if(bHasSurveyPermission($surveyid,'translations','read'))
         {
             $icontext = $clang->gT("Survey  Logic File");
         }
@@ -982,7 +982,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         }
 
         // QUALITY ASSURANCE BUTTON - SHOW LOGIC FILE FOR THIS QUESTION GROUP
-        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        if(bHasSurveyPermission($surveyid,'translations','read'))
         {
             $groupsummary .= "<img src='$imageurl/seperator.gif' alt=''  />\n"
             . "<a href=\"#\" onclick=\"window.open('$scriptname?action=showlogicfile&amp;sid=$surveyid&amp;gid=$gid','_blank')\""
@@ -1217,7 +1217,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         }
 
         // QUALITY ASSURANCE BUTTON - SHOW LOGIC FILE FOR THIS QUESTION GROUP
-        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        if(bHasSurveyPermission($surveyid,'translations','read'))
         {
             $questionsummary .= "<img src='$imageurl/seperator.gif' alt=''  />\n"
             . "<a href=\"#\" onclick=\"window.open('$scriptname?action=showlogicfile&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid','_blank')\""
