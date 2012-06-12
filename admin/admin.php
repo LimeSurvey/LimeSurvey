@@ -266,7 +266,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'showlogicfile')
     {
-        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        if(bHasSurveyPermission($surveyid,'translations','read'))
         {
             $surveyid = sanitize_int($surveyid);
             $thissurvey  = getSurveyInfo($surveyid);

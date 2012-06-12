@@ -344,7 +344,11 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                 $createsurvey .= " X";
                 break;
             case "D":  //DATE
-                $createsurvey .= " D";
+                if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative') {
+                    $createsurvey .= " T";
+                }
+                else
+                    $createsurvey .= " D";
                 break;
             case "5":  //5 Point Choice
             case "G":  //Gender

@@ -171,10 +171,11 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
 		$assessmentsoutput.= "<th>$head</th>\n";
 	}
 	$assessmentsoutput.= "<th>".$clang->gT("Title")."</th><th>".$clang->gT("Message")."</th>";
-	$assessmentsoutput.= "</tr></thead>\n<tbody>\n";
+	$assessmentsoutput.= "</tr></thead>\n";
 	$flipflop=true;
 	foreach($assessments as $assess) {
 		$flipflop=!$flipflop;
+		$assessmentsoutput.= "<tbody>\n";
 		if ($flipflop==true){$assessmentsoutput.= "<tr class='oddrow'>\n";}
 		else {$assessmentsoutput.= "<tr class='evenrow'>\n";}
 		$assessmentsoutput.= "<td>".$assess['id']."</td>\n";
@@ -226,32 +227,33 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
 	    $assessmentsoutput.= "<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='$scriptname?sid=$surveyid'><div class='header ui-widget-header'>\n";
 	    $assessmentsoutput.= "$actiontitle</div>\n";
 
-	    $assessmentsoutput.="<ul><li><label>".$clang->gT("Scope")."</label><input type='radio' id='radiototal' name='scope' value='T' ";
+	    $assessmentsoutput.="<ul>\n"
+	    ."<li><label>".$clang->gT("Scope")."</label><input type='radio' id='radiototal' name='scope' value='T' ";
 	    if (!isset($editdata) || $editdata['scope'] == "T") {$assessmentsoutput .= " checked='checked' ";}
 	    $assessmentsoutput.=" /><label for='radiototal'>".$clang->gT("Total")."</label>
                      <input type='radio' id='radiogroup' name='scope' value='G'";
 	    if (isset($editdata) && $editdata['scope'] == "G") {$assessmentsoutput .= " checked='checked' ";}
-	    $assessmentsoutput.="/><label for='radiogroup'>".$clang->gT("Group")."</label></li>";
-	    $assessmentsoutput.="<li><label for='gid'>".$clang->gT("Question group")."</label>$groupselect</li>"
+	    $assessmentsoutput.="/><label for='radiogroup'>".$clang->gT("Group")."</label></li>\n";
+	    $assessmentsoutput.="<li><label for='gid'>".$clang->gT("Question group")."</label>$groupselect</li>\n"
 	    ."<li><label for='minimum'>".$clang->gT("Minimum")."</label><input type='text' id='minimum' name='minimum' class='numbersonly'";
 	    if (isset($editdata)) {$assessmentsoutput .= " value='{$editdata['minimum']}' ";}
-	    $assessmentsoutput.="/></li>"
+	    $assessmentsoutput.="/></li>\n"
 	    ."<li><label for='maximum'>".$clang->gT("Maximum")."</label><input type='text' id='maximum' name='maximum' class='numbersonly'";
 	    if (isset($editdata)) {$assessmentsoutput .= " value='{$editdata['maximum']}' ";}
-	    $assessmentsoutput.="/></li>";
+	    $assessmentsoutput.="/></li>\n"
+	    ."</ul>";
 
 	    // start tabs
-	    $assessmentsoutput.= "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
-	    $assessmentsoutput.='</table><div id="languagetabs">'
-	    .'<ul>';
+	    $assessmentsoutput.= "<div id=\"languagetabs\">"
+	    ."<ul>\n";
 	    foreach ($assessmentlangs as $assessmentlang)
 	    {
 		    $position=0;
 		    $assessmentsoutput .= '<li><a href="#tablang'.$assessmentlang.'"><span>'.getLanguageNameFromCode($assessmentlang, false);
 		    if ($assessmentlang==$baselang) {$assessmentsoutput .= ' ('.$clang->gT("Base language").')';}
-		    $assessmentsoutput .='</span></a></li>';
+		    $assessmentsoutput .="</span></a></li>\n";
 	    }
-	    $assessmentsoutput.= '</ul>';
+	    $assessmentsoutput.= "</ul>\n";
 	    foreach ($assessmentlangs as $assessmentlang)
 	    {
 		    $heading=''; $message='';
@@ -265,28 +267,29 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
 			    $heading=htmlspecialchars($editdata['name'],ENT_QUOTES);
 			    $message=htmlspecialchars($editdata['message']);
 		    }
-		    $assessmentsoutput .= '<div id="tablang'.$assessmentlang.'">';
-		    $assessmentsoutput .= $clang->gT("Heading")."<br/>"
-		    ."<input type='text' name='name_$assessmentlang' size='80' value='$heading'/><br /><br />"
-		    .$clang->gT("Message")
-		    ."<textarea name='assessmentmessage_$assessmentlang' id='assessmentmessage_$assessmentlang' rows='10' cols='80'>$message</textarea >";
-
-		    $assessmentsoutput .='</div>';
+		    $assessmentsoutput .= "<div id=\"tablang".$assessmentlang."\">\n"
+			."\t<div class='settingrow'>\n"
+		    ."\t\t<span class=\"settingcaption\">".$clang->gT("Heading")."</span>\n"
+		    ."\t\t<span class=\"settingentry\"><input type='text' name='name_$assessmentlang' size='80' value='$heading'/></span>\n"
+			."\t</div>\n"
+			."\t<div class='settingrow'>\n"
+		    ."\t\t<span class=\"settingcaption\">".$clang->gT("Message")."</span>\n"
+		    ."\t\t<span class=\"settingentry\">\n\t\t\t<textarea name='assessmentmessage_$assessmentlang' id='assessmentmessage_$assessmentlang' rows='10' cols='80'>$message</textarea >\n";
+		    $assessmentsoutput.=getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,$qid,$action);
+			$assessmentsoutput .="</span>\n\t</div>\n"
+			."\t<div style='clear:both'></div>\n"
+			."</div>";
 	    }
 	    $assessmentsoutput .='</div>';
 
-
-	    $assessmentsoutput.= "<p><input type='submit' value='".$clang->gT("Save")."' />\n";
+	    $assessmentsoutput.= "<p>\n"
+	    ."<input type='submit' value='".$clang->gT("Save")."' />\n";
 	    if ($action == "assessmentedit") $assessmentsoutput.= "&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Cancel")."' onclick=\"document.assessmentsform.action.value='assessments'\" />\n";
 	    $assessmentsoutput.= "<input type='hidden' name='sid' value='$surveyid' />\n"
 	    ."<input type='hidden' name='action' value='$actionvalue' />\n"
 	    ."<input type='hidden' name='id' value='$thisid' />\n"
-	    ."</div>\n"
+	    ."</p>\n"
 	    ."</form>\n";
-	    foreach ($assessmentlangs as $assessmentlang)
-	    {
-		    $assessmentsoutput.=getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,$qid,$action);
-	    }
     }
 }
 

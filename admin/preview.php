@@ -19,7 +19,6 @@ $LEMdebugLevel=0;
 
 include_once("login_check.php");
 require_once(dirname(__FILE__).'/sessioncontrol.php');
-require_once(dirname(__FILE__).'/../qanda.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
@@ -41,6 +40,7 @@ $clang = new limesurvey_lang($language);
 
 $thissurvey=getSurveyInfo($surveyid);
 $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
+require_once(dirname(__FILE__).'/../qanda.php');
 
 $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid='$surveyid' AND qid='$qid' AND language='{$language}'";
 $qresult = db_execute_assoc($qquery);

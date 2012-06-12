@@ -156,6 +156,8 @@
     //Create header
     sendcacheheaders();
     echo getHeader();
+    echo templatereplace(file_get_contents("$thisSurveyCssPath/startpage.pstpl"));
+
 
     /*
     * only show questions where question attribute "public_statistics" is set to "1"
@@ -448,6 +450,7 @@
     echo $statisticsoutput;
 
 
+    echo templatereplace(file_get_contents("$thisSurveyCssPath/endpage.pstpl"));
     //output footer
     echo getFooter();
 
