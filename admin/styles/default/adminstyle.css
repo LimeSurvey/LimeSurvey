@@ -390,6 +390,10 @@ span.settingcaption {
     color: #1D2D45;
 }
 
+#assessmentsform span.settingcaption {
+    width: 15%;
+}
+
 .settingentry {
     float: left;
     width: 660px;
@@ -402,6 +406,10 @@ span.settingcaption {
 	outline: 0 none;
 }
 
+#assessmentsform .settingentry {
+    width: 80%;
+}
+
 .settingentry span {
 	outline: 0 none;
 }
@@ -411,6 +419,10 @@ span.settingcaption {
     clear: left;
     margin: 0 auto 20px auto;
     background-color: #F8F8FF;
+}
+
+#assessmentsform .settingrow {
+    width: 100%;
 }
 
 .settingrow .cke_skin_office2003,
@@ -697,6 +709,12 @@ a.optoutemail {
 #languagetabs {
     width:60%;
     margin:0 auto;
+}
+
+#assessmentsform #languagetabs {
+	min-width: 680px;
+    background-color: #F8F8FF;
+	background-image: none;
 }
 
 .answertable tr.highlight {
@@ -1163,7 +1181,9 @@ textarea.updater-changelog {
     padding-bottom:5px;
 }
 
-
+#assessmentsform .ui-tabs-nav li {
+    clear: none;
+}
 
 #frmeditquestion li,
 #importquestion li {
