@@ -168,7 +168,7 @@ if (!$surveyid || !$surveyexists)
     {
         $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
     }
-    
+
     if(!$surveyid)
     {
         $thissurvey['name']=$sitename;
@@ -1570,7 +1570,7 @@ function SendSubmitNotifications()
         $oMail = new PHPMailer;
         foreach ($aEmailNotificationTo as $sRecipient)
         {
-            if (!SendEmailMessage($oMail, $sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
+            if (!SendEmailMessage($oMail, $sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
             {
                 if ($debug>0)
                 {
@@ -1588,7 +1588,7 @@ function SendSubmitNotifications()
         $mail = new PHPMailer;
         foreach ($aEmailResponseTo as $sRecipient)
         {
-            if (!SendEmailMessage($mail,$sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
+            if (!SendEmailMessage($mail,$sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid)))
             {
                 if ($debug>0)
                 {
