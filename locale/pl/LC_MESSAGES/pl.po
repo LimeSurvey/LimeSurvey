@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-06-07 07:56:44+0000\n"
+"PO-Revision-Date: 2012-06-12 11:53:06+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,51 +15,55 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "Project-Id-Version: LimeSurvey 1.92\n"
 
+#: classes/core/surveytranslator.php:542
+msgid "Spanish (Chile)"
+msgstr "Hiszpański (Chile)"
+
 #: common_functions.php:3238
 msgid "Hidden"
-msgstr ""
+msgstr "Ukryty"
 
 #: common_functions.php:3241
 msgid "Specify how array-filtered sub-questions should be displayed"
-msgstr ""
+msgstr "Określ sposób pokazania filtrowanych sub-pytań"
 
 #: common_functions.php:3242
 msgid "Array filter style"
-msgstr ""
+msgstr "Styl filtra tabeli"
 
 #: common_functions.php:4136
 msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
-msgstr ""
+msgstr "Czy dopuszcza się brak odpowiedzi przy ustawieniu 'Suma wprowadzanych wartości' lub 'Minimalna suma dla wprowadzanych wartości'?"
 
 #: common_functions.php:4137
 msgid "Value range allows missing"
-msgstr ""
+msgstr "Zakres wartości dopuszcza brak odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2410
+#: classes/expressions/LimeExpressionManager.php:2419
 msgid "Please upload at least one file"
 msgstr "Proszę przesłać co najmniej jeden plik"
 
-#: classes/expressions/LimeExpressionManager.php:2411
+#: classes/expressions/LimeExpressionManager.php:2420
 msgid "Please upload at least %s files"
 msgstr "Proszę przesłać co najmniej %s plików"
 
-#: classes/expressions/LimeExpressionManager.php:2415
+#: classes/expressions/LimeExpressionManager.php:2424
 msgid "Please upload at most one file"
 msgstr "Proszę przesłać co najwyżej jeden plik"
 
-#: classes/expressions/LimeExpressionManager.php:2416
+#: classes/expressions/LimeExpressionManager.php:2425
 msgid "Please upload at most %s files"
 msgstr "Proszę przesłać co najwyżej %s plików"
 
-#: classes/expressions/LimeExpressionManager.php:2420
+#: classes/expressions/LimeExpressionManager.php:2429
 msgid "Please upload one file"
 msgstr "Proszę przesłać jeden plik"
 
-#: classes/expressions/LimeExpressionManager.php:2421
+#: classes/expressions/LimeExpressionManager.php:2430
 msgid "Please upload %s files"
 msgstr "Proszę przesłać %s plików"
 
-#: classes/expressions/LimeExpressionManager.php:2423
+#: classes/expressions/LimeExpressionManager.php:2432
 msgid "Please upload between %s and %s files"
 msgstr "Proszę przesłać od %s do %s plików"
 
@@ -632,7 +636,7 @@ msgstr "Data wysłania"
 #: admin/browse.php:139 admin/browse.php:140 admin/browse.php:478
 #: admin/dataentry.php:456 admin/exportresults.php:469
 #: admin/exportresults.php:470 admin/exportresults.php:751 admin/quota.php:498
-#: admin/quota.php:675 admin/tokens.php:747 statistics_user.php:441
+#: admin/quota.php:675 admin/tokens.php:747 statistics_user.php:443
 msgid "Completed"
 msgstr "Ukończone"
 
@@ -951,8 +955,8 @@ msgstr "Nie można skopiować warunków (z powodu powtórzeń)"
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2694
-#: classes/expressions/LimeExpressionManager.php:2698 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2703
+#: classes/expressions/LimeExpressionManager.php:2707 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
 #: common_functions.php:3202 common_functions.php:3286
 #: common_functions.php:3393 common_functions.php:3406
@@ -980,7 +984,7 @@ msgstr "Tak"
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2700 common_functions.php:1922
+#: classes/expressions/LimeExpressionManager.php:2709 common_functions.php:1922
 #: qanda.php:4218 qanda.php:4263
 msgid "Uncertain"
 msgstr "Nie wiem"
@@ -1019,8 +1023,8 @@ msgstr "Nie wiem"
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2695
-#: classes/expressions/LimeExpressionManager.php:2699 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2704
+#: classes/expressions/LimeExpressionManager.php:2708 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3201
 #: common_functions.php:3285 common_functions.php:3392
 #: common_functions.php:3407 common_functions.php:3418
@@ -1047,7 +1051,7 @@ msgstr "Nie"
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2703 common_functions.php:1928
+#: classes/expressions/LimeExpressionManager.php:2712 common_functions.php:1928
 #: qanda.php:4365 qanda.php:4408
 msgid "Increase"
 msgstr "Wzrost"
@@ -1058,7 +1062,7 @@ msgstr "Wzrost"
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2704 common_functions.php:1930
+#: classes/expressions/LimeExpressionManager.php:2713 common_functions.php:1930
 #: qanda.php:4366 qanda.php:4419
 msgid "Same"
 msgstr "Bez zmian"
@@ -1069,7 +1073,7 @@ msgstr "Bez zmian"
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2705 common_functions.php:1929
+#: classes/expressions/LimeExpressionManager.php:2714 common_functions.php:1929
 #: qanda.php:4367 qanda.php:4431
 msgid "Decrease"
 msgstr "Spadek"
@@ -1122,7 +1126,7 @@ msgstr "niezaznaczone"
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2691 common_functions.php:1913
+#: classes/expressions/LimeExpressionManager.php:2700 common_functions.php:1913
 #: qanda.php:3839
 msgid "Female"
 msgstr "Kobietą"
@@ -1134,7 +1138,7 @@ msgstr "Kobietą"
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2690 common_functions.php:1912
+#: classes/expressions/LimeExpressionManager.php:2699 common_functions.php:1912
 #: qanda.php:3847
 msgid "Male"
 msgstr "Mężczyzną"
@@ -5533,8 +5537,8 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Proszę wybrać wszystkie pasujące odpowiedzi oraz dodać komentarz"
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2824
-#: classes/expressions/LimeExpressionManager.php:5175 qanda.php:1295
+#: classes/expressions/LimeExpressionManager.php:2833
+#: classes/expressions/LimeExpressionManager.php:5187 qanda.php:1295
 #: qanda.php:1595 qanda.php:2205 qanda.php:2505
 msgid "Other:"
 msgstr "Inne:"
@@ -8628,7 +8632,7 @@ msgstr "Serbski"
 msgid "Spanish"
 msgstr "Hiszpański"
 
-#: classes/core/surveytranslator.php:542 classes/core/surveytranslator.php:549
+#: classes/core/surveytranslator.php:549
 msgid "Spanish (Mexico)"
 msgstr "Hiszpański (Meksyk)"
 
@@ -9056,178 +9060,178 @@ msgstr "Próbowano pobrać wartość z pustego stosu"
 msgid "Invalid PERL Regular Expression: %s"
 msgstr "Nieprawidłowe wyrażenie regularne PERL: %s"
 
-#: classes/expressions/LimeExpressionManager.php:2316
+#: classes/expressions/LimeExpressionManager.php:2325
 msgid "Please select at least one answer"
 msgstr "Proszę wybrać co najmniej jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2317
+#: classes/expressions/LimeExpressionManager.php:2326
 msgid "Please select at least %s answers"
 msgstr "Proszę wybrać co najmniej %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2321
+#: classes/expressions/LimeExpressionManager.php:2330
 msgid "Please select at most one answer"
 msgstr "Proszę wybrać co najwyżej jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2322
+#: classes/expressions/LimeExpressionManager.php:2331
 msgid "Please select at most %s answers"
 msgstr "Proszę wybrać co najwyżej %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2326
+#: classes/expressions/LimeExpressionManager.php:2335
 msgid "Please select one answer"
 msgstr "Proszę wybrać jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2327
+#: classes/expressions/LimeExpressionManager.php:2336
 msgid "Please select %s answers"
 msgstr "Proszę wybrać %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2329
+#: classes/expressions/LimeExpressionManager.php:2338
 msgid "Please select between %s and %s answers"
 msgstr "Proszę wybrać od %s do %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2345
-#: classes/expressions/LimeExpressionManager.php:2366
+#: classes/expressions/LimeExpressionManager.php:2354
+#: classes/expressions/LimeExpressionManager.php:2375
 msgid "Each answer must be at least %s"
 msgstr "Każda odpowiedź musi wynosić co najmniej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2347
-#: classes/expressions/LimeExpressionManager.php:2368
+#: classes/expressions/LimeExpressionManager.php:2356
+#: classes/expressions/LimeExpressionManager.php:2377
 msgid "Each answer must be at most %s"
 msgstr "Każda odpowiedź musi wynosić co najwyżej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2349
-#: classes/expressions/LimeExpressionManager.php:2370
+#: classes/expressions/LimeExpressionManager.php:2358
+#: classes/expressions/LimeExpressionManager.php:2379
 msgid "Each answer must be %s"
 msgstr "Każda odpowiedź musi być %s"
 
-#: classes/expressions/LimeExpressionManager.php:2350
-#: classes/expressions/LimeExpressionManager.php:2371
+#: classes/expressions/LimeExpressionManager.php:2359
+#: classes/expressions/LimeExpressionManager.php:2380
 msgid "Each answer must be between %s and %s"
 msgstr "Każda odpowiedź musi być z przedziału %s i %s"
 
-#: classes/expressions/LimeExpressionManager.php:2387
+#: classes/expressions/LimeExpressionManager.php:2396
 msgid "The sum must be at least %s"
 msgstr "Suma musi równać się co najmniej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2389
+#: classes/expressions/LimeExpressionManager.php:2398
 msgid "The sum must be at most %s"
 msgstr "Suma musi równać się co najwyżej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2391
-#: classes/expressions/LimeExpressionManager.php:2433
+#: classes/expressions/LimeExpressionManager.php:2400
+#: classes/expressions/LimeExpressionManager.php:2442
 msgid "The sum must equal %s"
 msgstr "Suma musi się równać %s"
 
-#: classes/expressions/LimeExpressionManager.php:2392
+#: classes/expressions/LimeExpressionManager.php:2401
 msgid "The sum must be between %s and %s"
 msgstr "Suma musi być z przedziału %s i %s"
 
-#: classes/expressions/LimeExpressionManager.php:2439
+#: classes/expressions/LimeExpressionManager.php:2448
 msgid "Please also fill in the \"other comment\" field."
 msgstr "Proszę wypełnić także pole \"inny komentarz\"."
 
-#: classes/expressions/LimeExpressionManager.php:2447
+#: classes/expressions/LimeExpressionManager.php:2456
 msgid "Please check the format of your answer."
 msgstr "Proszę sprawdzić format swojej odpowiedzi."
 
-#: classes/expressions/LimeExpressionManager.php:4189
+#: classes/expressions/LimeExpressionManager.php:4198
 msgid "Unable to insert record into survey table: "
 msgstr "Nie można wstawić rekordu do tabeli ankiety:"
 
-#: classes/expressions/LimeExpressionManager.php:4205
+#: classes/expressions/LimeExpressionManager.php:4214
 msgid "Unable to insert record into timings table "
 msgstr "Nie można wstawić rekordu do tabeli czasów"
 
-#: classes/expressions/LimeExpressionManager.php:5155
+#: classes/expressions/LimeExpressionManager.php:5164
 msgid "This question is mandatory"
 msgstr "To pytanie jest obligatoryjne"
 
-#: classes/expressions/LimeExpressionManager.php:5167
+#: classes/expressions/LimeExpressionManager.php:5178
 msgid "Please check at least one item."
 msgstr "Proszę zaznaczyć przynajmniej jeden element"
 
-#: classes/expressions/LimeExpressionManager.php:5177
+#: classes/expressions/LimeExpressionManager.php:5189
 msgid "If you choose '%s' you must provide a description."
 msgstr "Przy wyborze '%s' należy wprowadzić dodatkowy opis."
 
-#: classes/expressions/LimeExpressionManager.php:5199
-#: classes/expressions/LimeExpressionManager.php:5236
+#: classes/expressions/LimeExpressionManager.php:5211
+#: classes/expressions/LimeExpressionManager.php:5248
 msgid "Please complete all parts"
 msgstr "Prosimy udzielić odpowiedzi na wszystkie części"
 
-#: classes/expressions/LimeExpressionManager.php:5228
+#: classes/expressions/LimeExpressionManager.php:5240
 msgid "Please check at least one box per row"
 msgstr "Proszę zaznaczyć przynajmniej jeden element w każdym wierszu"
 
-#: classes/expressions/LimeExpressionManager.php:5244
+#: classes/expressions/LimeExpressionManager.php:5256
 msgid "Please rank all items"
 msgstr "Należy uporządkować wszystkie elementy"
 
-#: classes/expressions/LimeExpressionManager.php:7621
+#: classes/expressions/LimeExpressionManager.php:7633
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Nieprawidłowe pytanie - prawdopodobnie brak sub-pytań lub ustawień właściwych dla języka"
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7638
 msgid "Name [ID]"
 msgstr "Nazwa [ID]"
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7638
 msgid "Relevance [Validation] (Default)"
 msgstr "Relewancja [Walidacja] (Domyślnie)"
 
-#: classes/expressions/LimeExpressionManager.php:7626
+#: classes/expressions/LimeExpressionManager.php:7638
 msgid "Text [Help] (Tip)"
 msgstr "Tekst [Pomoc] (Podpowiedź)"
 
-#: classes/expressions/LimeExpressionManager.php:7677
-#: classes/expressions/LimeExpressionManager.php:7921
+#: classes/expressions/LimeExpressionManager.php:7689
+#: classes/expressions/LimeExpressionManager.php:7933
 msgid "DEFAULT:"
 msgstr "DOMYŚLNIE:"
 
-#: classes/expressions/LimeExpressionManager.php:7685
+#: classes/expressions/LimeExpressionManager.php:7697
 msgid "HELP:"
 msgstr "POMOC:"
 
-#: classes/expressions/LimeExpressionManager.php:7686
+#: classes/expressions/LimeExpressionManager.php:7698
 msgid "TIP:"
 msgstr "PODPOWIEDŹ"
 
-#: classes/expressions/LimeExpressionManager.php:7703
+#: classes/expressions/LimeExpressionManager.php:7715
 msgid "Question Attribute"
 msgstr "Atrybut pytania"
 
-#: classes/expressions/LimeExpressionManager.php:7703
+#: classes/expressions/LimeExpressionManager.php:7715
 msgid "Value"
 msgstr "Wartość"
 
-#: classes/expressions/LimeExpressionManager.php:7810
+#: classes/expressions/LimeExpressionManager.php:7822
 msgid "VALIDATION:"
 msgstr "WALIDACJA:"
 
-#: classes/expressions/LimeExpressionManager.php:7824
+#: classes/expressions/LimeExpressionManager.php:7836
 msgid "This variable name has already been used."
 msgstr "Ta nazwa zmiennej była już wykorzystana."
 
-#: classes/expressions/LimeExpressionManager.php:7836
+#: classes/expressions/LimeExpressionManager.php:7848
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Począwszy od wersji 1.92 nazwy zmiennych powinny zawierać tylko litery, cyfry i podkreślenia; nie mogą zaczynać się od cyfry. Ta nazwa zmiennej jest niedopuszczalna."
 
-#: classes/expressions/LimeExpressionManager.php:7989
+#: classes/expressions/LimeExpressionManager.php:8001
 msgid "This question has at least %s error(s)"
 msgstr "To pytanie zawiera co najmniej %s błędów"
 
-#: classes/expressions/LimeExpressionManager.php:8028
+#: classes/expressions/LimeExpressionManager.php:8040
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s pytań zawiera błędy, które muszą być poprawione"
 
-#: classes/expressions/LimeExpressionManager.php:8034
+#: classes/expressions/LimeExpressionManager.php:8046
 msgid "No syntax errors detected in this survey"
 msgstr "W ankiecie nie wykryto błędów składniowych"
 
-#: classes/expressions/LimeExpressionManager.php:8037
+#: classes/expressions/LimeExpressionManager.php:8049
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Ta grupa, sama w sobie, nie zawiera błędów składniowych"
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8052
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "To pytanie, samo w sobie, nie zawiera błędów składniowych"
 
@@ -11043,23 +11047,23 @@ msgstr "Błąd: Niepowodzenie z wysyłką e-maila, może to wskazywać na proble
 msgid "Your survey was successfully saved."
 msgstr "Ankieta została pomyślnie zapisana."
 
-#: statistics_user.php:373
+#: statistics_user.php:375
 msgid "Please wait ..."
 msgstr "Trwa ładowanie..."
 
-#: statistics_user.php:375
+#: statistics_user.php:377
 msgid "Go back"
 msgstr "Wróć"
 
-#: statistics_user.php:384
+#: statistics_user.php:386
 msgid "Getting questions and answers ..."
 msgstr "Wczytywanie pytań i odpowiedzi..."
 
-#: statistics_user.php:400
+#: statistics_user.php:402
 msgid "Total records in survey"
 msgstr "Liczba rekordów w ankiecie"
 
-#: statistics_user.php:413
+#: statistics_user.php:415
 msgid "Generating summaries ..."
 msgstr "Generowanie podsumowania..."
 
