@@ -143,5 +143,8 @@ $(document).ready(function(){
             });
         }
     });
+	
+	$('.wrapper').width($('#displaysurveys').width()*1.006);
+	$('.footer').width(($('#displaysurveys').width()*1.006)-10);
 
 });
