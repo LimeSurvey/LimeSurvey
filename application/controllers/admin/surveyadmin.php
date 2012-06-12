@@ -673,6 +673,10 @@ class SurveyAdmin extends Survey_Common_Action
 
         if (hasSurveyPermission($iSurveyID, 'surveylocale', 'read'))
         {
+            if (hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
+            {
+                Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
+            }
             $editsurvey = '';
             $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
             $baselang = Survey::model()->findByPk($iSurveyID)->language;

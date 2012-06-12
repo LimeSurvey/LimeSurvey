@@ -46,13 +46,13 @@ class kcfinder extends Survey_Common_Action
                     $_SESSION['KCFINDER']['disabled'] = false;
                     if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
                     {
-                        $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createAbsoluteUrl("upload/surveys/{$surveyid}/");
+                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getRequest()->getHostInfo($schema).Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
                     else
                     {
-                        $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");
+                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
-                    $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/surveys/{$surveyid}/";
+                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
                 }
             }
             elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
@@ -63,8 +63,8 @@ class kcfinder extends Survey_Common_Action
                 if (Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1 && isset($labelid) && $labelid != '')
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
-                    $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/labels/{$labelid}/");
-                    $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/labels/{$labelid}/";
+                    $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";
+                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
                 }
             }
         }
