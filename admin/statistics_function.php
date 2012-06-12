@@ -589,7 +589,7 @@
                 if ($total)
                 {
                     $percent=sprintf("%01.2f", ($results/$total)*100);
-                    $statisticsoutput .= "\t<tr><th align='right'>".$statlang->gT("Percentage of total:").'</th>'
+                    $statisticsoutput .= "\t<tr><th>".$statlang->gT("Percentage of total:").'</th>'
                     ."<td>$percent%</td></tr>\n";
                 }
                 $statisticsoutput .="</table>\n";
