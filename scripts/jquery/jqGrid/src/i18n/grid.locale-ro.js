@@ -7,7 +7,8 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = {
+$.jgrid = $.jgrid || {};
+$.extend($.jgrid,{
 	defaults : {
 		recordtext: "Vizualizare {0} - {1} din {2}",
 		emptyrecords: "Nu există înregistrări de vizualizat",
@@ -135,5 +136,5 @@ $.jgrid = {
 		checkbox : {disabled:true},
 		idName : 'id'
 	}
-};
+});
 })(jQuery);

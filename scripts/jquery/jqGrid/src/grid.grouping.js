@@ -1,5 +1,6 @@
 // Grouping module
 ;(function($){
+"use strict";
 $.jgrid.extend({
 	groupingSetup : function () {
 		return this.each(function (){
@@ -29,7 +30,7 @@ $.jgrid.extend({
 							grp.visibiltyOnNextGrouping[i] = true;
 							$($t).jqGrid('showCol',grp.groupField[i]);
 						} else {
-							grp.visibiltyOnNextGrouping[i] = $("#"+$t.p.id+"_"+grp.groupField[i]).is(":visible");
+							grp.visibiltyOnNextGrouping[i] = $("#"+$.jgrid.jqID($t.p.id+"_"+grp.groupField[i])).is(":visible");
 							$($t).jqGrid('hideCol',grp.groupField[i]);
 						}
 						grp.sortitems[i] = [];
@@ -45,25 +46,24 @@ $.jgrid.extend({
 							}
 						}
 					}
-					$t.p.scroll = false;
-					$t.p.rownumbers = false;
-					$t.p.subGrid = false;
-					$t.p.treeGrid = false;
-					$t.p.gridview = true;
 				}
 			} else {
 				$t.p.grouping = false;
 			}
 		});
 	},
-	groupingPrepare : function (rData, items, gdata, record) {
+	groupingPrepare : function (rData, gdata, record) {
 		this.each(function(){
 			// currently only one level
 			// Is this a good idea to do it so!!!!?????
+			var grp = this.p.groupingView, $t= this;
+			var grlen = grp.groupField.length, items = [];
+			for(var z=0;z<grlen;z++) {
+				items.push(record[grp.groupField[z]]);
+			}
 			items[0]  += "";
 			var itm = items[0].toString().split(' ').join('');
 			
-			var grp = this.p.groupingView, $t= this;
 			if(gdata.hasOwnProperty(itm)) {
 				gdata[itm].push(rData);
 			} else {
@@ -74,7 +74,7 @@ $.jgrid.extend({
 				grp.summaryval[0][itm] = $.extend(true,[],grp.summary[0]);
 			}
 			if(grp.groupSummary[0]) {
-				$.each(grp.summaryval[0][itm],function(i,n) {
+				$.each(grp.summaryval[0][itm],function() {
 					if ($.isFunction(this.st)) {
 						this.v = this.st.call($t, this.v, this.nm, record);
 					} else {
@@ -94,9 +94,9 @@ $.jgrid.extend({
 			num = parseInt(hid.substring(strpos+1),10)+1,
 			minus = grp.minusicon,
 			plus = grp.plusicon,
-			tar = $("#"+hid),
-			r = tar[0].nextSibling,
-			tarspan = $("#"+hid+" span."+"tree-wrap-"+$t.p.direction),
+			tar = $("#"+$.jgrid.jqID(hid)),
+			r = tar.length ? tar[0].nextSibling : null,
+			tarspan = $("#"+$.jgrid.jqID(hid)+" span."+"tree-wrap-"+$t.p.direction),
 			collapsed = false;
 			if( tarspan.hasClass(minus) ) {
 				if(grp.showSummaryOnHide && grp.groupSummary[0]) {
@@ -113,7 +113,7 @@ $.jgrid.extend({
 							if($(r).attr('id') ==uid+String(num) ) { break; }
 							$(r).hide();
 							r = r.nextSibling;
-				}
+						}
 					}
 				}
 				tarspan.removeClass(minus).addClass(plus);
@@ -127,8 +127,8 @@ $.jgrid.extend({
 					}
 				}
 				tarspan.removeClass(plus).addClass(minus);
-				collapsed = false;
 			}
+			$($t).triggerHandler("jqGridGroupingClickGroup", [hid , collapsed]);
 			if( $.isFunction($t.p.onClickGroup)) { $t.p.onClickGroup.call($t, hid , collapsed); }
 
 		});
@@ -138,7 +138,7 @@ $.jgrid.extend({
 		return this.each(function(){
 			var $t = this,
 			grp = $t.p.groupingView,
-			str = "", icon = "", hid, pmrtl ="", gv, cp, ii;
+			str = "", icon = "", hid, pmrtl = grp.groupCollapse ? grp.plusicon : grp.minusicon, gv, cp, ii;
 			//only one level for now
 			if(!grp.groupDataSorted) {
 				// ???? TO BE IMPROVED
@@ -150,8 +150,6 @@ $.jgrid.extend({
 					grp.sortnames[0].reverse();
 				}
 			}   
-			if(grp.groupCollapse) { pmrtl = grp.plusicon; }
-			else {pmrtl = grp.minusicon;}
 			pmrtl += " tree-wrap-"+$t.p.direction; 
 			ii = 0;
 			while(ii < colspans) {
@@ -163,7 +161,7 @@ $.jgrid.extend({
 			}
 			$.each(grp.sortitems[0],function(i,n){
 				hid = $t.p.id+"ghead_"+i;
-				icon = "<span style='cursor:pointer;' class='ui-icon "+pmrtl+"' onclick=\"jQuery('#"+$t.p.id+"').jqGrid('groupingToggle','"+hid+"');return false;\"></span>";
+				icon = "<span style='cursor:pointer;' class='ui-icon "+pmrtl+"' onclick=\"jQuery('#"+$.jgrid.jqID($t.p.id)+"').jqGrid('groupingToggle','"+hid+"');return false;\"></span>";
 				try {
 					gv = $t.formatter(hid, grp.sortnames[0][i], cp, grp.sortitems[0] );
 				} catch (egv) {
@@ -209,12 +207,12 @@ $.jgrid.extend({
 					str += "</tr>";
 				}
 			});
-			$("#"+$t.p.id+" tbody:first").append(str);
+			$("#"+$.jgrid.jqID($t.p.id)+" tbody:first").append(str);
 			// free up memory
 			str = null;
 		});
 	},
-	groupingGroupBy : function (name, options, current) {
+	groupingGroupBy : function (name, options ) {
 		return this.each(function(){
 			var $t = this;
 			if(typeof(name) == "string") {
@@ -222,16 +220,22 @@ $.jgrid.extend({
 			}
 			var grp = $t.p.groupingView;
 			$t.p.grouping = true;
-      // show previous hidden groups if they are hidden and weren't removed yet
-      for(var i=0;i<grp.groupField.length;i++) {
-        if(!grp.groupColumnShow[i] && grp.visibiltyOnNextGrouping[i]) {
-          $($t).jqGrid('showCol',grp.groupField[i]);
-        }
-      }
-      // set visibility status of current group columns on next grouping
-      for(var i=0;i<name.length;i++) {
-        grp.visibiltyOnNextGrouping[i] = $("#"+$t.p.id+"_"+name[i]).is(":visible");
-      }
+
+			//Set default, in case visibilityOnNextGrouping is undefined 
+			if (typeof grp.visibiltyOnNextGrouping == "undefined") {
+				grp.visibiltyOnNextGrouping = [];
+			}
+			var i;
+			// show previous hidden groups if they are hidden and weren't removed yet
+			for(i=0;i<grp.groupField.length;i++) {
+				if(!grp.groupColumnShow[i] && grp.visibiltyOnNextGrouping[i]) {
+				$($t).jqGrid('showCol',grp.groupField[i]);
+				}
+			}
+			// set visibility status of current group columns on next grouping
+			for(i=0;i<name.length;i++) {
+				grp.visibiltyOnNextGrouping[i] = $("#"+$.jgrid.jqID($t.p.id)+"_"+$.jgrid.jqID(name[i])).is(":visible");
+			}
 			$t.p.groupingView = $.extend($t.p.groupingView, options || {});
 			grp.groupField = name;
 			$($t).trigger("reloadGrid");
@@ -245,15 +249,15 @@ $.jgrid.extend({
 			}
 			$t.p.grouping = false;
 			if(current===true) {
-        var grp = $t.p.groupingView;
-        // show previous hidden groups if they are hidden and weren't removed yet
-        for(var i=0;i<grp.groupField.length;i++) {
-          if (!grp.groupColumnShow[i] && grp.visibiltyOnNextGrouping[i]) {
-            $($t).jqGrid('showCol', grp.groupField);
-          }
-        }
-				$("tr.jqgroup, tr.jqfoot","#"+$t.p.id+" tbody:first").remove();
-				$("tr.jqgrow:hidden","#"+$t.p.id+" tbody:first").show();
+				var grp = $t.p.groupingView;
+				// show previous hidden groups if they are hidden and weren't removed yet
+				for(var i=0;i<grp.groupField.length;i++) {
+				if (!grp.groupColumnShow[i] && grp.visibiltyOnNextGrouping[i]) {
+						$($t).jqGrid('showCol', grp.groupField);
+					}
+				}
+				$("tr.jqgroup, tr.jqfoot","#"+$.jgrid.jqID($t.p.id)+" tbody:first").remove();
+				$("tr.jqgrow:hidden","#"+$.jgrid.jqID($t.p.id)+" tbody:first").show();
 			} else {
 				$($t).trigger("reloadGrid");
 			}

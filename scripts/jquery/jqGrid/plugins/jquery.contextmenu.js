@@ -18,7 +18,7 @@
 
 (function($) {
 
- 	var menu, shadow, trigger, content, hash, currentTarget;
+ 	var menu, shadow, content, hash, currentTarget;
   var defaults = {
     menuStyle: {
       listStyle: 'none',
@@ -82,13 +82,16 @@
     $(this).bind('contextmenu', function(e) {
       // Check if onContextMenu() defined
       var bShowContext = (!!hash[index].onContextMenu) ? hash[index].onContextMenu(e) : true;
-      if (bShowContext) display(index, this, e, options);
-      return false;
+	  currentTarget = e.target;
+      if (bShowContext) {
+		display(index, this, e );
+		return false;
+	  }
     });
     return this;
   };
 
-  function display(index, trigger, e, options) {
+  function display(index, trigger, e ) {
     var cur = hash[index];
     content = $('#'+cur.id).find('ul:first').clone(true);
     content.css(cur.menuStyle).find('li').css(cur.itemStyle).hover(
@@ -109,7 +112,7 @@
     if (!!cur.onShowMenu) menu = cur.onShowMenu(e, menu);
 
     $.each(cur.bindings, function(id, func) {
-      $('#'+id, menu).bind('click', function(e) {
+      $('#'+id, menu).bind('click', function() {
         hide();
         func(trigger, currentTarget);
       });

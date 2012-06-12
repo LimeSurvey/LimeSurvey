@@ -7,7 +7,8 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = {
+$.jgrid = $.jgrid || {};
+$.extend($.jgrid,{
 	defaults : {
 		recordtext: "Vis {0} - {1} of {2}",
 	    emptyrecords: "Ingen linjer fundet",
@@ -123,6 +124,6 @@ $.jgrid = {
 	    checkbox : {disabled:true},
 		idName : 'id'
 	}
-};
+});
 // DA
 })(jQuery);

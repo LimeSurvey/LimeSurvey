@@ -7,6 +7,10 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl-2.0.html
 **/ 
+//jsHint options
+/*global jQuery, $, alert, xmlJsonClass */
+
+"use strict";
     $.jgrid.extend({
         jqGridImport : function(o) {
             o = $.extend({
@@ -27,7 +31,7 @@
             }, o || {});
             return this.each(function(){
                 var $t = this;
-                var XmlConvert = function (xml,o) {
+                var xmlConvert = function (xml,o) {
                     var cnfg = $(o.xmlGrid.config,xml)[0];
                     var xmldata = $(o.xmlGrid.data,xml)[0], jstr, jstr1;
                     if(xmlJsonClass.xml2json && $.jgrid.parse) {
@@ -52,9 +56,15 @@
                         alert("xml2json or parse are not present");
                     }
                 };
-                var JsonConvert = function (jsonstr,o){
+                var jsonConvert = function (jsonstr,o){
                     if (jsonstr && typeof jsonstr == 'string') {
+						var _jsonparse = false;
+						if($.jgrid.useJSON) {
+							$.jgrid.useJSON = false;
+							_jsonparse = true;
+						}
                         var json = $.jgrid.parse(jsonstr);
+						if(_jsonparse) { $.jgrid.useJSON = true; }
                         var gprm = json[o.jsonGrid.config];
                         var jdata = json[o.jsonGrid.data];
                         if(jdata) {
@@ -76,7 +86,8 @@
                             dataType:"xml",
                             complete: function(xml,stat) {
                                 if(stat == 'success') {
-                                    XmlConvert(xml.responseXML,o);
+                                    xmlConvert(xml.responseXML,o);
+                                    $($t).triggerHandler("jqGridImportComplete", [xml, o]);
                                     if($.isFunction(o.importComplete)) {
                                         o.importComplete(xml);
                                     }
@@ -90,7 +101,8 @@
                         if(o.impstring && typeof o.impstring == 'string') {
                             var xmld = $.jgrid.stringToDoc(o.impstring);
                             if(xmld) {
-                                XmlConvert(xmld,o);
+                                xmlConvert(xmld,o);
+                                $($t).triggerHandler("jqGridImportComplete", [xmld, o]);
                                 if($.isFunction(o.importComplete)) {
                                     o.importComplete(xmld);
                                 }
@@ -105,20 +117,22 @@
                             type:o.mtype,
                             data: o.impData,
                             dataType:"json",
-                            complete: function(json,stat) {
-                                if(stat == 'success') {
-                                    JsonConvert(json.responseText,o );
+                            complete: function(json) {
+                                try {
+                                    jsonConvert(json.responseText,o );
+                                    $($t).triggerHandler("jqGridImportComplete", [json, o]);
                                     if($.isFunction(o.importComplete)) {
                                         o.importComplete(json);
                                     }
-                                }
+                                } catch (ee){}
                                 json=null;
                             }
                         }, o.ajaxOptions ));
                         break;
                     case 'jsonstring' :
                         if(o.impstring && typeof o.impstring == 'string') {
-                            JsonConvert(o.impstring,o );
+                            jsonConvert(o.impstring,o );
+                            $($t).triggerHandler("jqGridImportComplete", [o.impstring, o]);
                             if($.isFunction(o.importComplete)) {
                                 o.importComplete(o.impstring);
                             }
@@ -137,7 +151,7 @@
             var ret = null;
             this.each(function () {
                 if(!this.grid) { return;}
-                var gprm = $.extend({},$(this).jqGrid("getGridParam"));
+                var gprm = $.extend(true, {},$(this).jqGrid("getGridParam"));
                 // we need to check for:
                 // 1.multiselect, 2.subgrid  3. treegrid and remove the unneded columns from colNames
                 if(gprm.rownumbers) {
