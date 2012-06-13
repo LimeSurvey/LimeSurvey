@@ -37,7 +37,7 @@
             $esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
             $esresult = db_execute_assoc($esquery); //Checked
             $esrow = $esresult->FetchRow();
-
+            if($esrow['surveyls_url']==""){$esrow['surveyls_url']="http://";}
             $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'],false);
 
             if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid))
