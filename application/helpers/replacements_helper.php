@@ -127,12 +127,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if(stripos ($line,"{TEMPLATECSS}"))
     {
         $css_header_includes=Yii::app()->getConfig("css_header_includes");
-        // TODO: only one jquery-ui.css, but break slider actually
-        if (file_exists($templatedir . '/jquery-ui-custom.css'))
+        if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
             $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui-custom.css' />\n";
         }
-        elseif(file_exists($templatedir . '/jquery-ui.css'))
+        elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
             $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui.css' />\n";
         }
@@ -142,12 +141,23 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $template_jqueryui_css="";
         }
         if($css_header_includes){
-            foreach ($css_header_includes as $cssinclude)
+                        foreach ($css_header_includes as $cssinclude)
             {
-                if (substr($cssinclude,0,1) == '/')
-                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->baseUrl.$cssinclude."' />\n";
+                if (substr($cssinclude,0,4) == 'http' || substr($cssinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
+                {
+                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".$cssinclude."' />\n";
+                }
                 else
-                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl').$cssinclude."' />\n";
+                {
+                    if(file_exists($templatedir.DIRECTORY_SEPARATOR.$cssinclude))
+                    {
+                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='{$$templateurl}/{$cssinclude}' />\n";
+                    }
+                    else
+                    {
+                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl').$cssinclude."' />\n";
+                    }
+                }
             }
         }
         $_templatecss.= $template_jqueryui_css; // Template jquery ui after default css
@@ -166,10 +176,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         if($js_header_includes){
             foreach ($js_header_includes as $jsinclude)
             {
-                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,strlen(Yii::app()->getConfig('generalscripts'))) == Yii::app()->getConfig('generalscripts'))
+                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
+                {
                     $_templatejs .= "<script type='text/javascript' src='{$jsinclude}'></script>\n";
+                }
                 else
-                    $_templatejs .= "<script type='text/javascript' src='".Yii::app()->baseUrl.$jsinclude."'></script>\n";
+                {
+                    $_templatejs .= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts').$jsinclude."'></script>\n";
+                }
             }
         }
         $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."survey_runtime.js'></script>\n";

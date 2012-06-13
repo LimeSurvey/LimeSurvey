@@ -1,0 +1,171 @@
+/* --------------------------------------------- */
+/* JQUERY ui replace                             */
+/* --------------------------------------------- */
+
+/*** Start jQuery UI Theme Styles ***/
+
+button.ui-button::-moz-focus-inner {
+	border: 0; 
+	padding: 0;   /* Get rid of extra padding in focused button in FF */
+}
+.ui-corner-all {
+    -moz-border-radius: 4px;
+    border-radius:4px;
+}
+.ui-button { 
+	position: relative; 
+	padding: 0.1em 0 0.1em 0; 
+	cursor: pointer;
+	font-family: FreeSans,Arial,Helvetica,sans-serif;
+	font-size: 1.0em;
+	font-weight: normal;
+	line-height: normal;
+}
+
+.ui-button-icon-only { width: 2.2em;
+} 
+
+button.ui-button-icon-only { 
+	width: 2.4em; /* Button elements seem to need a little more width */
+}
+
+.ui-button-icons-only { 
+	width: 3.4em; 
+} 
+
+button.ui-button-icons-only {
+	width: 3.7em; 
+}
+
+/* Button text elements */
+.ui-button-text-only .ui-button-text {
+	padding: 0 1em; 
+}
+
+.ui-button-icon-only .ui-button-text, 
+.ui-button-icons-only .ui-button-text {
+	text-indent: -9999999px; 
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	padding: 0 0.7em 0 1.7em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	padding: 0 1.7em 0 0.7em; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	padding: 0 1.7em; 
+}
+
+input.ui-button {
+	padding: 0.1em 1em 0.1em 1em;  /* No icon support for input elements, provide padding by default */
+}
+
+/* Button icon element(s) */
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px; 
+}
+
+.ui-button-icon-only .ui-icon {
+	left: 50%; 
+	margin-left: -8px; 
+}
+
+.ui-button-text-icon-primary .ui-button-icon-primary, 
+.ui-button-text-icons .ui-button-icon-primary, 
+.ui-button-icons-only .ui-button-icon-primary {
+	left: .4em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-icon-secondary, 
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+/* Button sets*/
+.ui-buttonset {
+	margin-right: 7px; 
+}
+
+.ui-buttonset .ui-button {
+	margin-left: 0;
+	margin-right: -.3em; 
+}
+
+/* IE6/7 hacks 8 */
+
+.ui-button,
+input.ui-button { 
+	*padding: 0.1em 0 0.1em 0; 
+}
+
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	*margin-top: -9px;
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	*padding: 0 0 0 1.0em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	*padding: 0 1.2em 0 0; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	*padding: 0 1.0em; 
+}
+
+/*** End jQuery UI Theme Styles ***/
+
+/* Component containers
+----------------------------------*/
+.ui-widget { font-family: Arial, Helvetica, FreeSans, sans-serif; font-size: 1.1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial, Helvetica, FreeSans, sans-serif;; font-size: 1em; }
+.ui-widget-content { border: 1px solid #161c28; background: #fefefe; color: #000; }
+.ui-widget-content a { color: #000; }
+.ui-widget-header { border: 1px solid #161c28; background: #5670a1; color: #fefefe; font-weight: bold; }
+.ui-widget-header a { color: #fefefe; }
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default, .ui-widget-content .ui-state-default { border: 1px solid #abb8d1; background: #fefefe; font-weight: normal; color: #5670a1; outline: none; }
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #5670a1; text-decoration: none; outline: none; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus { border: 1px solid #abb8d1; background: #eff1f6; font-weight: normal; color: #415479; outline: none; }
+.ui-state-hover a, .ui-state-hover a:hover { color: #415479; text-decoration: none; outline: none; }
+.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #415479; background: #d5dbe7; font-weight: normal; color: #161c28; outline: none; }
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #161c28; outline: none; text-decoration: none; }
+
+/* Interaction Cues
+----------------------------------*/
+.ui-state-highlight, .ui-widget-content .ui-state-highlight {border: 1px solid #fcefa1; background: #fefefe; color: #363636; }
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a { color: #363636; }
+.ui-state-error, .ui-widget-content .ui-state-error {border: 1px solid #cd0a0a; background: #fef1ec; color: #cd0a0a; }
+.ui-state-error a, .ui-widget-content .ui-state-error a { color: #cd0a0a; }
+.ui-state-error-text, .ui-widget-content .ui-state-error-text { color: #cd0a0a; }
+.ui-state-disabled, .ui-widget-content .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
+.ui-priority-primary, .ui-widget-content .ui-priority-primary { font-weight: bold; }
+.ui-priority-secondary, .ui-widget-content .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+
+/* Overlays */
+.ui-widget-overlay { background: #aaaaaa 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
+.ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
+.alert .ui-dialog-titlebar {display:none}
