@@ -27,7 +27,8 @@
 
             <a href="<?php echo $this->createUrl("admin/user/index"); ?>">
                 <img src='<?php echo $sImageURL;?>security.png' alt='<?php $clang->eT("Manage survey administrators");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
-
+            <a href="<?php echo $this->createUrl("admin/usergroups/index"); ?>">
+                <img src='<?php echo $sImageURL;?>usergroup.png' alt='<?php $clang->eT("Create/Edit Groups");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
             <?php
                 if(Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
                 { ?>

@@ -714,6 +714,9 @@ class SurveyRuntimeHelper {
         sendCacheHeaders();
         doHeader();
 
+        $redata = compact(array_keys(get_defined_vars()));
+        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"), array(), $redata);
+        //popup need jquery
         if (isset($popup))
         {
             echo $popup;
@@ -726,10 +729,6 @@ class SurveyRuntimeHelper {
         {
             echo $fpopup;
         }
-
-        $redata = compact(array_keys(get_defined_vars()));
-
-        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"), array(), $redata);
 
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
         if ($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] != $_SESSION[$LEMsessid]['prevstep'] ||
