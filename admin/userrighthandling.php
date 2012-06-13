@@ -15,8 +15,8 @@
 //Security Checked: POST/GET/DB/SESSION
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
-if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
+if (isset($_POST['uid'])) {$postuserid=intval($_POST['uid']);}
+if (isset($_POST['ugid'])) {$postusergroupid=intval($_POST['ugid']);}
 
 if (get_magic_quotes_gpc())
 {$_POST  = array_map('recursive_stripslashes', $_POST);}
