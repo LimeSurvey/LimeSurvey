@@ -6851,7 +6851,7 @@ EOD;
             // eventually replace this with i8n
             if (isset(Yii::app()->lang))
             {
-                return Yii::app()->lang->gT($string);
+                return htmlspecialchars(Yii::app()->lang->gT($string),ENT_QUOTES);
             }
             else
             {
