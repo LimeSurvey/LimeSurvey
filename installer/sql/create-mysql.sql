@@ -82,7 +82,7 @@ CREATE TABLE `prefix_expression_errors` (
 --
 CREATE TABLE `prefix_failed_login_attempts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(37) NOT NULL,
+  `ip` varchar(40) NOT NULL,
   `last_attempt` varchar(20) NOT NULL,
   `number_attempts` int(11) NOT NULL,
   PRIMARY KEY (`id`)

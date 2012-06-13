@@ -995,6 +995,12 @@ function db_upgrade_all($oldversion) {
         LimeExpressionManager::UpgradeConditionsToRelevance();
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
     }
+    if ($oldversion < 159)
+    {
+        alterColumn('{{failed_login_attempts}}', 'ip', "{$sVarchar}(40)",false);
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
+    }
+
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';

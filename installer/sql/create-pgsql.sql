@@ -91,7 +91,7 @@ CREATE TABLE prefix_expression_errors (
 --
 CREATE TABLE prefix_failed_login_attempts (
   id serial PRIMARY KEY NOT NULL,
-  ip character varying(37) NOT NULL,
+  ip character varying(40) NOT NULL,
   last_attempt character varying(20) NOT NULL,
   number_attempts integer NOT NULL
 );

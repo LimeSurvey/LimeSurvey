@@ -279,14 +279,14 @@ class remotecontrol_handle
      */
     protected function _doLogin($sUsername, $sPassword)
     {
-        if (Failed_login_attempts::model()->isLockedOut(Yii::app()->request->getUserHostAddress()))
+        if (Failed_login_attempts::model()->isLockedOut())
             return false;
 
         $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
 
         if (!$identity->authenticate())
         {
-            Failed_login_attempts::model()->addAttempt(Yii::app()->request->getUserHostAddress());
+            Failed_login_attempts::model()->addAttempt();
             return false;
         }
         else
