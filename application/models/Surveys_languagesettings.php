@@ -147,7 +147,7 @@ class Surveys_languagesettings extends CActiveRecord
         {
             $this->db->where($condition);
         }
-
+        if (isset($data['surveyls_url']) && $data['surveyls_url']== 'http://') {$data['surveyls_url']="";}
 		if($xssfiltering)
 		{
 			$filter = new CHtmlPurifier();
