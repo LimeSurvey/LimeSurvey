@@ -6851,7 +6851,7 @@ EOD;
             // eventually replace this with i8n
             global $clang;
             if (isset($clang))  {
-                return $clang->gT($string);
+                return htmlspecialchars($clang->gT($string),ENT_QUOTES);
             }
             else {
                 return $string;
