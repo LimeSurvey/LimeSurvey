@@ -413,7 +413,7 @@ class UserAction extends Survey_Common_Action
         ) //	if(Yii::app()->session['loginID'] != $postuserid)
         {
             $aData['postuserid'] = $postuserid;
-            $this->_renderWrappedTemplate('user', 'setUserRights', $aData);
+            $this->_renderWrappedTemplate('user', 'setuserrights', $aData);
         } // if
         else
         {
