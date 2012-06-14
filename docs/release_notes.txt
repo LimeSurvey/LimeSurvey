@@ -77,6 +77,32 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.92+ (build 120608) to 1.92+ (build 120613) June 13, 2012
+Fixed issue #6100: English in other language (Thomas White)
+Fixed issue #6130: Response emails sent as "text/plain" but with HTML embedded (Carsten Schmitz)
+Fixed issue #6147: "Please rank at least x items" not being translated (Carsten Schmitz)
+Fixed issue #6151: CSS errors on public statistics page (Carsten Schmitz)
+Fixed issue #6153: "Cannot find data type DATE" when activating a survey with MSSQL 2005 (Carsten Schmitz)
+Fixed issue #6168: Question preview ignores "no answer" setting (Thomas White)
+Fixed issue #6177: uppercase logical operators (e.g. 'OR') in EM yield JavaScript errors (Thomas White)
+Fixed issue #6178: es-CL is listed as Spanish (Mexico) instead of Spanish (Chile) (Carsten Schmitz)
+Fixed issue #6186: Array Question Type: EM doesn't convert condition correctly, AND becomes OR (Thomas White)
+Fixed issue #6187: Javascript Error on em_javascript.js : attr is undefined (Thomas White)
+Fixed issue #6196: Misplaced PopUpEditor icon (tpartner)
+Fixed issue #6200: if enter text into other box, then click the other checkbox, the entered text disappears (Thomas White)
+Fixed issue #6201: Fatal error: Cannot redeclare replacenewline() (Thomas White)
+Fixed issue: "Please check at least one item" not appropriate for single select list questions (Thomas White)
+Updated translation: Arabic by maan
+Updated translation: Croatian by rovinj
+Updated translation: Czech by slansky
+Updated translation: German by c_schmitz
+Updated translation: German (Informal) by c_schmitz
+Updated translation: Italian by lfanfoni
+Updated translation: Korean by heasunchun
+Updated translation: Norwegian (Bokmål) by c_schmitz
+Updated translation: Polish by elisa
+Updated translation: Portuguese (Brazil) by mauriciofurtado
+Updated translation: Spanish (Mexican) by scoutino
 
 Changes from 1.92+ (build 120607) to 1.92+ (build 120608) June 7, 2012
 Fixed issue HTML error in hidden field for equation question type
