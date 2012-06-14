@@ -6149,7 +6149,7 @@
                         $relParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
                     }
                     else {
-                        if (!($relevance == '' || $relevance == '1'))
+                        if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)))
                         {
                             // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
                             $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
