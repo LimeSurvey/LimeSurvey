@@ -5893,14 +5893,14 @@
 
                     $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
 
-                    if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0)
+                    if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0)
                     {
                         // Only show constitutively true relevances if there is tailoring that should be done.
                         $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
                         $GalwaysRelevant[$arg['gseq']] = true;
                         continue;
                     }
-                    $relevance = ($relevance == '') ? '1' : $relevance;
+                    $relevance = ($relevance == '' || ($arg['result'] == true && $arg['numJsVars']==0)) ? '1' : $relevance;
                     $relParts[] = "\nif (" . $relevance . ")\n{\n";
                     ////////////////////////////////////////////////////////////////////////
                     // DO ALL ARRAY FILTERING FIRST - MAY AFFECT VALIDATION AND TAILORING //
@@ -6148,7 +6148,7 @@
                         $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                     }
                     else {
-                        if (!($relevance == '' || $relevance == '1'))
+                        if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)))
                         {
                             // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
                             $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
@@ -6176,7 +6176,7 @@
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
 
                     $relParts[] = "}\n";
-                    if (!($relevance == '' || $relevance == '1'))
+                    if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)))
                     {
                         if (!isset($dynamicQinG[$arg['gseq']]))
                         {
