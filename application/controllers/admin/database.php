@@ -634,7 +634,7 @@ class database extends Survey_Common_Action
                     $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid));
                     if (count($result)>0)
                     {
-                        if($value!=$validAttribute['default'])
+                        if($value!=$validAttribute['default'] && trim($value)!="")
                         {
                             Question_attributes::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
                         }
@@ -643,7 +643,7 @@ class database extends Survey_Common_Action
                             Question_attributes::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
                         }
                     }
-                    elseif($value!=$validAttribute['default'])
+                    elseif($value!=$validAttribute['default'] && trim($value)!="")
                     {
                         $attribute = new Question_attributes;
                         $attribute->qid = $qid;
