@@ -1298,7 +1298,10 @@ class ExpressionManager {
         {
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
             {
-                $nonNAvarsUsed[] = $var;
+                if ($this->GetVarAttribute($var,'jsName','') != '')
+                {
+                    $nonNAvarsUsed[] = $var;
+                }
             }
         }
         $mainClause = implode('', $stringParts);
