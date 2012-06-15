@@ -7972,7 +7972,7 @@ EOD;
                         }
 
                         $subQeqn = '';
-                        $rowdivid = $q['sgqa'] . $ansInfo[1];
+                        $rowdivid = $sgqas[0] . $ansInfo[1];
                         if (isset($LEM->subQrelInfo[$qid][$rowdivid]))
                         {
                             $sq = $LEM->subQrelInfo[$qid][$rowdivid];

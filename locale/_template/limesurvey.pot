@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-06-13 06:28:36+00:00\n"
+"POT-Creation-Date: 2012-06-15 12:21:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9055,7 +9055,7 @@ msgid "This variable is not declared until a later page"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:572
-#: classes/expressions/ExpressionManager.php:1680
+#: classes/expressions/ExpressionManager.php:1683
 msgid "Undefined variable"
 msgstr ""
 
@@ -9095,43 +9095,43 @@ msgstr ""
 msgid "Expected right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1664
+#: classes/expressions/ExpressionManager.php:1667
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1673
+#: classes/expressions/ExpressionManager.php:1676
 msgid "Undefined function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1685
+#: classes/expressions/ExpressionManager.php:1688
 msgid "Unsupported syntax"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1693
+#: classes/expressions/ExpressionManager.php:1696
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1949
+#: classes/expressions/ExpressionManager.php:1952
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2050
+#: classes/expressions/ExpressionManager.php:2053
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2055
+#: classes/expressions/ExpressionManager.php:2058
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2056
+#: classes/expressions/ExpressionManager.php:2059
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2289
+#: classes/expressions/ExpressionManager.php:2292
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3322
+#: classes/expressions/ExpressionManager.php:3325
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -9269,72 +9269,72 @@ msgstr ""
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7633
+#: classes/expressions/LimeExpressionManager.php:7634
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7639
 msgid "Name [ID]"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7639
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7639
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7689
-#: classes/expressions/LimeExpressionManager.php:7933
+#: classes/expressions/LimeExpressionManager.php:7690
+#: classes/expressions/LimeExpressionManager.php:7934
 msgid "DEFAULT:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7697
+#: classes/expressions/LimeExpressionManager.php:7698
 msgid "HELP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7698
+#: classes/expressions/LimeExpressionManager.php:7699
 msgid "TIP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7715
+#: classes/expressions/LimeExpressionManager.php:7716
 msgid "Question Attribute"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7715
+#: classes/expressions/LimeExpressionManager.php:7716
 msgid "Value"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7822
+#: classes/expressions/LimeExpressionManager.php:7823
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7836
+#: classes/expressions/LimeExpressionManager.php:7837
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7848
+#: classes/expressions/LimeExpressionManager.php:7849
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8001
+#: classes/expressions/LimeExpressionManager.php:8002
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8041
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8046
+#: classes/expressions/LimeExpressionManager.php:8047
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8049
+#: classes/expressions/LimeExpressionManager.php:8050
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8052
+#: classes/expressions/LimeExpressionManager.php:8053
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
