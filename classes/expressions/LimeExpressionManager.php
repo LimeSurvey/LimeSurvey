@@ -1091,12 +1091,12 @@
                                             {
                                                 if ($fsq['sqsuffix'] == $sq['sqsuffix'])
                                                 {
-                                                    $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK';
+                                                    $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
                                                 }
                                             }
                                             if (count($fsqs) > 0)
                                             {
-                                                $af_names[] = '(' . implode(' != "" or ', $fsqs) . ' != "")';
+                                                $af_names[] = '(' . implode(' or ', $fsqs) . ')';
                                             }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
@@ -1109,12 +1109,12 @@
                                             {
                                                 if ($fsq['sqsuffix'] == $sq['sqsuffix'])
                                                 {
-                                                    $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK';
+                                                    $fsqs[] = 'is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
                                                 }
                                             }
                                             if (count($fsqs) > 0)
                                             {
-                                                $afe_names[] = '(' . implode(' == "" and ', $fsqs) . ' == "")';
+                                                $afe_names[] = '(' . implode(' and ', $fsqs) . ')';
                                             }
                                         }
 //                                    }
