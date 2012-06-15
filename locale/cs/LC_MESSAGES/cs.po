@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-06-07 07:58:07+0000\n"
+"PO-Revision-Date: 2012-06-15 12:25:38+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,17 +15,33 @@ msgstr ""
 "X-Poedit-Language: Czech\n"
 "Project-Id-Version: LimeSurvey 2.x\n"
 
+#: application/controllers/admin/authentication.php:358
+msgid "You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again."
+msgstr ""
+
+#: application/helpers/qanda_helper.php:2259
+#: application/helpers/qanda_helper.php:2274
+msgid "Please rank at least %d item for question \"%s\"."
+msgid_plural "Please rank at least %d items for question \"%s\"."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: application/views/admin/super/adminmenu.php:31
+msgid "Create/Edit Groups"
+msgstr ""
+
 #: application/helpers/common_helper.php:3096
 msgid "Hidden"
-msgstr ""
+msgstr "Skryté"
 
 #: application/helpers/common_helper.php:3099
 msgid "Specify how array-filtered sub-questions should be displayed"
-msgstr ""
+msgstr "Určuje, jak budou zobrazeny vyfiltrované dílčí otázky"
 
 #: application/helpers/common_helper.php:3100
 msgid "Array filter style"
-msgstr ""
+msgstr "Styl filtru pole"
 
 #: application/helpers/common_helper.php:4125
 msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
@@ -35,35 +51,35 @@ msgstr ""
 msgid "Value range allows missing"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:7722
+#: application/helpers/expressions/em_manager_helper.php:7734
 msgid "Question Attribute"
-msgstr ""
+msgstr "Atribut otázky"
 
-#: application/helpers/expressions/em_manager_helper.php:2425
+#: application/helpers/expressions/em_manager_helper.php:2434
 msgid "Please upload at least one file"
 msgstr "Nahrajte prosím minimálně jeden soubor"
 
-#: application/helpers/expressions/em_manager_helper.php:2426
+#: application/helpers/expressions/em_manager_helper.php:2435
 msgid "Please upload at least %s files"
 msgstr "Nahrajte prosím minimálně %s souborů"
 
-#: application/helpers/expressions/em_manager_helper.php:2430
+#: application/helpers/expressions/em_manager_helper.php:2439
 msgid "Please upload at most one file"
 msgstr "Nahrajte prosím maximálně jeden soubor"
 
-#: application/helpers/expressions/em_manager_helper.php:2431
+#: application/helpers/expressions/em_manager_helper.php:2440
 msgid "Please upload at most %s files"
 msgstr "Nahrajte prosím maximálně %s souborů"
 
-#: application/helpers/expressions/em_manager_helper.php:2435
+#: application/helpers/expressions/em_manager_helper.php:2444
 msgid "Please upload one file"
 msgstr "Nahrajte prosím jeden soubor"
 
-#: application/helpers/expressions/em_manager_helper.php:2436
+#: application/helpers/expressions/em_manager_helper.php:2445
 msgid "Please upload %s files"
 msgstr "Nahrajte prosím %s souborů"
 
-#: application/helpers/expressions/em_manager_helper.php:2438
+#: application/helpers/expressions/em_manager_helper.php:2447
 msgid "Please upload between %s and %s files"
 msgstr "Nahrajte prosím minimálně %s a maximálně %s souborů"
 
@@ -456,7 +472,7 @@ msgid "Variable not declared until a later page"
 msgstr "Proměnná není deklarovaná do další stránky"
 
 #: application/helpers/expressions/em_core_helper.php:584
-#: application/helpers/expressions/em_core_helper.php:1693
+#: application/helpers/expressions/em_core_helper.php:1696
 msgid "Undefined variable"
 msgstr "Nedefinovaná proměnná"
 
@@ -481,7 +497,7 @@ msgid "Extra token found after expressions"
 msgstr "Za výrazem byl nalezen nadbytečný token"
 
 #: application/helpers/expressions/em_core_helper.php:763
-#: application/helpers/expressions/em_core_helper.php:1686
+#: application/helpers/expressions/em_core_helper.php:1689
 msgid "Undefined function"
 msgstr "Nedefinovaná funkce"
 
@@ -497,180 +513,180 @@ msgstr "Ve funkci byla nalezena nadbytečná čárka"
 msgid "Expected right parentheses"
 msgstr "Očekávám pravou závorku"
 
-#: application/helpers/expressions/em_core_helper.php:1677
+#: application/helpers/expressions/em_core_helper.php:1680
 msgid "Extra right parentheses detected"
 msgstr "Byla zaznamenána nadbytečná pravá závorka"
 
-#: application/helpers/expressions/em_core_helper.php:1698
+#: application/helpers/expressions/em_core_helper.php:1701
 msgid "Unsupported syntax"
 msgstr "Nepodporovaný syntax"
 
-#: application/helpers/expressions/em_core_helper.php:1706
+#: application/helpers/expressions/em_core_helper.php:1709
 msgid "Missing %s closing right parentheses"
 msgstr "Chybí %s uzavíracích pravých závorek"
 
-#: application/helpers/expressions/em_core_helper.php:1962
+#: application/helpers/expressions/em_core_helper.php:1965
 msgid "Function must have at least %s argument"
 msgid_plural "Function must have at least %s arguments"
 msgstr[0] "Funkce musí mít minimálně %s parametr"
 msgstr[1] "Funkce musí mít minimálně %s parametry"
 msgstr[2] "Funkce musí mít minimálně %s parametrů"
 
-#: application/helpers/expressions/em_core_helper.php:2053
+#: application/helpers/expressions/em_core_helper.php:2056
 msgid "Unsupported number of arguments: %s"
 msgstr "Nepodporovaný počet parametrů: %s"
 
-#: application/helpers/expressions/em_core_helper.php:2058
+#: application/helpers/expressions/em_core_helper.php:2061
 msgid "Function does not support %s arguments"
 msgstr "Funkce nepodporuje %s parametrů"
 
-#: application/helpers/expressions/em_core_helper.php:2059
+#: application/helpers/expressions/em_core_helper.php:2062
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr "Funkce podporuje tento počet parametrů (-1 = neomezeno): %s"
 
-#: application/helpers/expressions/em_core_helper.php:2293
+#: application/helpers/expressions/em_core_helper.php:2296
 msgid "Tried to pop value off of empty stack"
 msgstr "Pokus o výběr hodnoty z prázdného zásobníku"
 
-#: application/helpers/expressions/em_core_helper.php:3355
+#: application/helpers/expressions/em_core_helper.php:3358
 msgid "Invalid PERL Regular Expression: %s"
 msgstr "Naplatný PERL regulární výraz: %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2331
+#: application/helpers/expressions/em_manager_helper.php:2340
 msgid "Please select at least one answer"
 msgstr "Vyberte prosím minimálně jedu odpověď"
 
-#: application/helpers/expressions/em_manager_helper.php:2332
+#: application/helpers/expressions/em_manager_helper.php:2341
 msgid "Please select at least %s answers"
 msgstr "Vyberte prosím minimálně %s odpovědí"
 
-#: application/helpers/expressions/em_manager_helper.php:2336
+#: application/helpers/expressions/em_manager_helper.php:2345
 msgid "Please select at most one answer"
 msgstr "Vyberte prosím maximálně jedu odpověď"
 
-#: application/helpers/expressions/em_manager_helper.php:2337
+#: application/helpers/expressions/em_manager_helper.php:2346
 msgid "Please select at most %s answers"
 msgstr "Vyberte prosím maximálně %s odpovědí"
 
-#: application/helpers/expressions/em_manager_helper.php:2341
+#: application/helpers/expressions/em_manager_helper.php:2350
 msgid "Please select one answer"
 msgstr "Vyberte prosím jednu odpověď"
 
-#: application/helpers/expressions/em_manager_helper.php:2342
+#: application/helpers/expressions/em_manager_helper.php:2351
 msgid "Please select %s answers"
 msgstr "Vyberte prosím %s odpovědí"
 
-#: application/helpers/expressions/em_manager_helper.php:2344
+#: application/helpers/expressions/em_manager_helper.php:2353
 msgid "Please select between %s and %s answers"
 msgstr "Vyberte prosím minimálně %s a maximálně %s odpovědí"
 
-#: application/helpers/expressions/em_manager_helper.php:2360
-#: application/helpers/expressions/em_manager_helper.php:2381
+#: application/helpers/expressions/em_manager_helper.php:2369
+#: application/helpers/expressions/em_manager_helper.php:2390
 msgid "Each answer must be at least %s"
 msgstr "Každá odpověď musí být minimálně %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2362
-#: application/helpers/expressions/em_manager_helper.php:2383
+#: application/helpers/expressions/em_manager_helper.php:2371
+#: application/helpers/expressions/em_manager_helper.php:2392
 msgid "Each answer must be at most %s"
 msgstr "Každá odpověď musí být maximálně %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2364
-#: application/helpers/expressions/em_manager_helper.php:2385
+#: application/helpers/expressions/em_manager_helper.php:2373
+#: application/helpers/expressions/em_manager_helper.php:2394
 msgid "Each answer must be %s"
 msgstr "Každá odpověď musí být %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2365
-#: application/helpers/expressions/em_manager_helper.php:2386
+#: application/helpers/expressions/em_manager_helper.php:2374
+#: application/helpers/expressions/em_manager_helper.php:2395
 msgid "Each answer must be between %s and %s"
 msgstr "Každá odpověď musí být mezi %s a %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2402
+#: application/helpers/expressions/em_manager_helper.php:2411
 msgid "The sum must be at least %s"
 msgstr "Součet musí být minimálně %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2404
+#: application/helpers/expressions/em_manager_helper.php:2413
 msgid "The sum must be at most %s"
 msgstr "Součet musí být maximálně %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2406
+#: application/helpers/expressions/em_manager_helper.php:2415
 msgid "The sum must equal %s"
 msgstr "Součet musí být %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2407
+#: application/helpers/expressions/em_manager_helper.php:2416
 msgid "The sum must be between %s and %s"
 msgstr "Součet musí být mezi %s a %s"
 
-#: application/helpers/expressions/em_manager_helper.php:2448
+#: application/helpers/expressions/em_manager_helper.php:2457
 msgid "The sum must equal %s."
 msgstr "Součet musí být %s."
 
-#: application/helpers/expressions/em_manager_helper.php:2454
+#: application/helpers/expressions/em_manager_helper.php:2463
 msgid "Please also fill in the \"other comment\" field."
 msgstr "Vyplňte prosím také pole \"další komentář\"."
 
-#: application/helpers/expressions/em_manager_helper.php:2462
+#: application/helpers/expressions/em_manager_helper.php:2471
 msgid "Please check the format of your answer."
 msgstr "Zkontrolujte prosím formát odpovědi."
 
-#: application/helpers/expressions/em_manager_helper.php:4178
+#: application/helpers/expressions/em_manager_helper.php:4187
 msgid "Unable to insert record into survey table"
 msgstr "Nelze vložit záznam do tabulky průzkumu"
 
-#: application/helpers/expressions/em_manager_helper.php:4193
+#: application/helpers/expressions/em_manager_helper.php:4202
 msgid "Unable to insert record into timings table"
 msgstr "Nelze vložit záznam do časovací tabulky"
 
-#: application/helpers/expressions/em_manager_helper.php:4268
+#: application/helpers/expressions/em_manager_helper.php:4277
 msgid "Error in SQL update"
 msgstr "Chyba při SQL update"
 
-#: application/helpers/expressions/em_manager_helper.php:5159
+#: application/helpers/expressions/em_manager_helper.php:5168
 msgid "This question is mandatory"
 msgstr "Na otázku je nutno odpovědět."
 
-#: application/helpers/expressions/em_manager_helper.php:5171
+#: application/helpers/expressions/em_manager_helper.php:5182
 msgid "Please check at least one item."
 msgstr "Prosím zaškrtněte alespoň jednu položku."
 
-#: application/helpers/expressions/em_manager_helper.php:5181
+#: application/helpers/expressions/em_manager_helper.php:5193
 msgid "If you choose '%s' you must provide a description."
 msgstr "Zvolíte-li '%s' musíte napsat popis."
 
-#: application/helpers/expressions/em_manager_helper.php:5203
-#: application/helpers/expressions/em_manager_helper.php:5240
+#: application/helpers/expressions/em_manager_helper.php:5215
+#: application/helpers/expressions/em_manager_helper.php:5252
 msgid "Please complete all parts"
 msgstr "Prosím dokončete všechny části"
 
-#: application/helpers/expressions/em_manager_helper.php:5232
+#: application/helpers/expressions/em_manager_helper.php:5244
 msgid "Please check at least one box per row"
 msgstr "Zaškrtněte prosím minimálně jednu položku v řádku"
 
-#: application/helpers/expressions/em_manager_helper.php:5248
+#: application/helpers/expressions/em_manager_helper.php:5260
 msgid "Please rank all items"
 msgstr "Prosím ohodnoťte všechny položky"
 
-#: application/helpers/expressions/em_manager_helper.php:7639
+#: application/helpers/expressions/em_manager_helper.php:7651
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr "Chybná otázka - pravděpodobně chybí dílčí otázky nebo specifické nastavení pro jazyk %s"
 
-#: application/helpers/expressions/em_manager_helper.php:7644
+#: application/helpers/expressions/em_manager_helper.php:7656
 msgid "Name [ID]"
 msgstr "Jméno [ID]"
 
-#: application/helpers/expressions/em_manager_helper.php:7644
+#: application/helpers/expressions/em_manager_helper.php:7656
 msgid "Relevance [Validation] (Default)"
 msgstr "Relevantnost [Validace] (Výchozí)"
 
-#: application/helpers/expressions/em_manager_helper.php:7644
+#: application/helpers/expressions/em_manager_helper.php:7656
 msgid "Text [Help] (Tip)"
 msgstr "Text [Nápověda] (Tip)"
 
-#: application/helpers/expressions/em_manager_helper.php:7696
-#: application/helpers/expressions/em_manager_helper.php:7940
+#: application/helpers/expressions/em_manager_helper.php:7708
+#: application/helpers/expressions/em_manager_helper.php:7952
 msgid "Default:"
 msgstr "Výchozí:"
 
-#: application/helpers/expressions/em_manager_helper.php:7704
+#: application/helpers/expressions/em_manager_helper.php:7716
 #: application/views/admin/survey/Question/editQuestion_view.php:44
 #: application/views/admin/survey/Question/editQuestion_view.php:46
 #: application/views/admin/survey/Question/editQuestion_view.php:68
@@ -681,45 +697,45 @@ msgstr "Výchozí:"
 msgid "Help:"
 msgstr "Nápověda:"
 
-#: application/helpers/expressions/em_manager_helper.php:7705
+#: application/helpers/expressions/em_manager_helper.php:7717
 msgid "Tip:"
 msgstr "Tip:"
 
-#: application/helpers/expressions/em_manager_helper.php:7722
+#: application/helpers/expressions/em_manager_helper.php:7734
 msgid "Value"
 msgstr "Hodnota"
 
-#: application/helpers/expressions/em_manager_helper.php:7843
+#: application/helpers/expressions/em_manager_helper.php:7855
 msgid "This variable name has already been used."
 msgstr "Toto jméno proměnné již bylo použito."
 
-#: application/helpers/expressions/em_manager_helper.php:7855
+#: application/helpers/expressions/em_manager_helper.php:7867
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Od verze 1.92 mohou proměnné obsahovat pouze písmena, číslice a podtržítka, přičemž nemohou začínat číslicí. Tento název proměnné je zastaralý."
 
-#: application/helpers/expressions/em_manager_helper.php:7996
+#: application/helpers/expressions/em_manager_helper.php:8008
 msgid "This question has at least %s error."
 msgid_plural "This question has at least %s errors."
 msgstr[0] "Tato otázka má minimálně %s chybu"
 msgstr[1] "Tato otázka má minimálně %s chyby"
 msgstr[2] "Tato otázka má minimálně %s chyb"
 
-#: application/helpers/expressions/em_manager_helper.php:8035
+#: application/helpers/expressions/em_manager_helper.php:8047
 msgid "%s question contains errors that need to be corrected"
 msgid_plural "%s questions contain errors that need to be corrected"
 msgstr[0] "%s otázka obsahuje chyby, které je potřeba opravit"
 msgstr[1] "%s otázky obsahují chyby, které je potřeba opravit"
 msgstr[2] "%s otázek obsahuje chyby, které je potřeba opravit"
 
-#: application/helpers/expressions/em_manager_helper.php:8041
+#: application/helpers/expressions/em_manager_helper.php:8053
 msgid "No syntax errors detected in this survey"
 msgstr "V tomto průzkumu nebyla nalezena žádná chyba syntaxe."
 
-#: application/helpers/expressions/em_manager_helper.php:8044
+#: application/helpers/expressions/em_manager_helper.php:8056
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Tato skupina neobsahuje žádnou chybu syntaxe."
 
-#: application/helpers/expressions/em_manager_helper.php:8047
+#: application/helpers/expressions/em_manager_helper.php:8059
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "Tato otázka neobsahuje žádnou chybu syntaxe."
 
@@ -797,9 +813,9 @@ msgstr "Přístupový kód:"
 
 #: application/helpers/frontend_helper.php:1497
 #: application/helpers/frontend_helper.php:1670
-#: application/helpers/replacements_helper.php:556
-#: application/helpers/replacements_helper.php:577
-#: application/helpers/replacements_helper.php:640
+#: application/helpers/replacements_helper.php:570
+#: application/helpers/replacements_helper.php:591
+#: application/helpers/replacements_helper.php:654
 msgid "Security Question"
 msgstr "Bezpečnostní otázka"
 
@@ -1001,14 +1017,6 @@ msgstr "Zde prosím vložte Váš komentář"
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Pro odstranění poslední položky v seznamu klikněte na nůžky vpravo vedle položky"
 
-#: application/helpers/qanda_helper.php:2259
-#: application/helpers/qanda_helper.php:2274
-msgid "Please rank at least %d item for question \"%s\""
-msgid_plural "Please rank at least %d items for question \"%s\"."
-msgstr[0] "Prosím ohodnoťte nejméně %d položku v otázce \"%s\""
-msgstr[1] "Prosím ohodnoťte nejméně %d položky v otázce \"%s\""
-msgstr[2] "Prosím ohodnoťte nejméně %d položek v otázce \"%s\""
-
 #: application/helpers/qanda_helper.php:2630
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Označili jste pole \"další\" pro otázku \"%s\". Vyplňte prosím také příslušné pole \"další komentář\"."
@@ -1076,142 +1084,142 @@ msgstr "..."
 msgid "Error: There are no answers defined for this question."
 msgstr "Chyba: Pro tuto otázku nejsou definovány žádné odpovědi."
 
-#: application/helpers/replacements_helper.php:326
+#: application/helpers/replacements_helper.php:340
 msgid "There are no questions in this survey"
 msgstr "Průzkum neobsahuje ani jednu otázku"
 
-#: application/helpers/replacements_helper.php:330
+#: application/helpers/replacements_helper.php:344
 msgid "There is 1 question in this survey"
 msgstr "Tento průzkum obsahuje 1 otázku"
 
-#: application/helpers/replacements_helper.php:334
+#: application/helpers/replacements_helper.php:348
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Průzkum obsahuje {NUMBEROFQUESTIONS} otázek."
 
-#: application/helpers/replacements_helper.php:389
+#: application/helpers/replacements_helper.php:403
 msgid "Exit and Clear Survey"
 msgstr "Ukončit a vymazat průzkum"
 
-#: application/helpers/replacements_helper.php:390
+#: application/helpers/replacements_helper.php:404
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Jste si jistý(á), že chcete vymazat všechny vaše odpovědi?"
 
-#: application/helpers/replacements_helper.php:420
-#: application/helpers/replacements_helper.php:424
-#: application/helpers/replacements_helper.php:444
+#: application/helpers/replacements_helper.php:434
+#: application/helpers/replacements_helper.php:438
+#: application/helpers/replacements_helper.php:458
 msgid "Resume later"
 msgstr "Obnovit později"
 
-#: application/helpers/replacements_helper.php:483
+#: application/helpers/replacements_helper.php:497
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Pokud chcete zkontrolovat kteroukoli z vašich odpovědí, a/nebo je změnit, můžete tak učinit nyní kliknutím na tlačítko [<< předchozí] a procházením Vašich odpovědí."
 
-#: application/helpers/replacements_helper.php:490
-#: application/helpers/replacements_helper.php:499
+#: application/helpers/replacements_helper.php:504
+#: application/helpers/replacements_helper.php:513
 msgid "Restart this Survey"
 msgstr "Znovu spustit tento průzkum"
 
-#: application/helpers/replacements_helper.php:508
+#: application/helpers/replacements_helper.php:522
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr "Pro zachování anonymity použijte místo vašeho jména pseudonym, také e-mailová adresa není nutná."
 
-#: application/helpers/replacements_helper.php:522
+#: application/helpers/replacements_helper.php:536
 msgid "Return To Survey"
 msgstr "Vrátit se k průzkumu"
 
-#: application/helpers/replacements_helper.php:542
+#: application/helpers/replacements_helper.php:556
 msgid "Repeat Password"
 msgstr "Zopakovat heslo"
 
-#: application/helpers/replacements_helper.php:548
+#: application/helpers/replacements_helper.php:562
 msgid "Your Email"
 msgstr "Váš e-mail"
 
-#: application/helpers/replacements_helper.php:563
+#: application/helpers/replacements_helper.php:577
 msgid "Saved name"
 msgstr "Uložené jméno"
 
-#: application/helpers/replacements_helper.php:580
+#: application/helpers/replacements_helper.php:594
 msgid "Load Now"
 msgstr "Nyní načíst"
 
-#: application/helpers/replacements_helper.php:751
+#: application/helpers/replacements_helper.php:765
 msgid "Answers Cleared"
 msgstr "Odpovědi vymazány"
 
-#: application/helpers/replacements_helper.php:754
+#: application/helpers/replacements_helper.php:768
 msgid "Your Assessment"
 msgstr "Vaše hodnocení"
 
-#: application/helpers/replacements_helper.php:755
+#: application/helpers/replacements_helper.php:769
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Upozornění: Máte v prohlížeči zakázané spouštění JavaScriptu. Může se tedy stát, že nebudete moci zodpovědět všechny otázky. Prosím zkontrolujte nastavení Vašeho prohlížeče."
 
-#: application/helpers/replacements_helper.php:757
+#: application/helpers/replacements_helper.php:771
 msgid "Close this window"
 msgstr "Zavřít toto okno"
 
-#: application/helpers/replacements_helper.php:770
+#: application/helpers/replacements_helper.php:784
 msgid "Load A Previously Saved Survey"
 msgstr "Načíst dříve uložený průzkum"
 
-#: application/helpers/replacements_helper.php:771
+#: application/helpers/replacements_helper.php:785
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Můžete si načíst průzkum, který jste si dříve uložil(a)."
 
-#: application/helpers/replacements_helper.php:771
+#: application/helpers/replacements_helper.php:785
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Vepište 'jméno', které jste použil(a) při ukládání průzkumu, a heslo."
 
-#: application/helpers/replacements_helper.php:779
+#: application/helpers/replacements_helper.php:793
 msgid "A Note On Privacy"
 msgstr "Prohlášení o zachování soukromí"
 
-#: application/helpers/replacements_helper.php:779
+#: application/helpers/replacements_helper.php:793
 msgid "This survey is anonymous."
 msgstr "Tento průzkum je anonymní."
 
-#: application/helpers/replacements_helper.php:779
+#: application/helpers/replacements_helper.php:793
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Záznam odpovědí v průzkumu neobsahuje žádné identifikační údaje, pokud nebyly uvedeny u některé z otázek. Pokud jste odpovídal(a) na průzkum, který používá přístupový kód pro povolení přístupu k průzkumu, ujišťujeme Vás, že tento kód není provázán s odpověďmi v tomto průzkumu. V oddělené databázi účastníků se zobrazí pouze to, zda účastník vyplnil nebo nevyplnil tento průzkum. Neexistuje způsob, jak spárovat účastníka s odpověďmi v tomto průzkumu."
 
-#: application/helpers/replacements_helper.php:798
+#: application/helpers/replacements_helper.php:812
 msgid "You must be registered to complete this survey"
 msgstr "Pokud se chcete účastnit tohoto průzkumu musíte být registrován"
 
-#: application/helpers/replacements_helper.php:799
+#: application/helpers/replacements_helper.php:813
 msgid "You may register for this survey if you wish to take part."
 msgstr "Jestliže se chcete účastnit tohoto průzkumu, můžete se zaregistrovat."
 
-#: application/helpers/replacements_helper.php:799
+#: application/helpers/replacements_helper.php:813
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Níže uveďte Vaše údaje a bezprostředně na to Vám bude zaslán e-mailem odkaz na účast v průzkumu."
 
-#: application/helpers/replacements_helper.php:807
+#: application/helpers/replacements_helper.php:821
 msgid "Save Your Unfinished Survey"
 msgstr "Uložit Váš nedokončený průzkum"
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:822
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Zadejte jméno a heslo pro tento průzkum a klikněte na uložte."
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:822
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Váš průzkum bude uložen se jménem a heslem. Průzkum může být dokončen později po přihlášení se stejným jménem a heslem."
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:822
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Jestliže uvedete e-mailovou adresu, bude Vám zaslán e-mail s podrobnostmi."
 
-#: application/helpers/replacements_helper.php:808
+#: application/helpers/replacements_helper.php:822
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr "Po kliknutí na tlačítku uložit můžete buď zavřít toto okno prohlížeče nebo pokračovat ve vyplňování průzkumu."
 
-#: application/helpers/replacements_helper.php:813
+#: application/helpers/replacements_helper.php:827
 msgid "You have completed answering the questions in this survey."
 msgstr "Vyplnil(a) jste všechny otázky v tomto průzkumu."
 
-#: application/helpers/replacements_helper.php:813
+#: application/helpers/replacements_helper.php:827
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Nyní klikněte na 'Odeslat' k dokončení průzkumu a uložení odpovědí."
 
@@ -1570,11 +1578,11 @@ msgstr "LimeSurvey databáze se aktualizuje"
 msgid "Please be patient..."
 msgstr "Prosím, buďte trpěliví..."
 
-#: application/helpers/update/updatedb_helper.php:382
+#: application/helpers/update/updatedb_helper.php:386
 msgid "Moving user templates to new location at %s..."
 msgstr "Přesun uživatelských šablon na nové umístění %s..."
 
-#: application/helpers/update/updatedb_helper.php:941
+#: application/helpers/update/updatedb_helper.php:1006
 msgid "Database update finished (%s)"
 msgstr "Aktualizace databáze dokončena (%s)"
 
@@ -1751,7 +1759,7 @@ msgstr "Celkem"
 msgid "Heading"
 msgstr "Záhlaví"
 
-#: application/views/admin/assessments_view.php:127
+#: application/views/admin/assessments_view.php:115
 #: application/views/admin/usergroup/mailUserGroup_view.php:7
 msgid "Message:"
 msgstr "Zpráva:"
@@ -3003,7 +3011,7 @@ msgid "You must set at last one available language."
 msgstr "Musíte nastavit alespoň jeden dostupný jazyk."
 
 #: application/views/admin/globalSettings_view.php:4
-#: application/views/admin/super/adminmenu.php:35
+#: application/views/admin/super/adminmenu.php:36
 msgid "Global settings"
 msgstr "Globální nastavení"
 
@@ -3654,7 +3662,7 @@ msgid "Label sets:"
 msgstr "Soubory popisků:"
 
 #: application/views/admin/labels/labelsetsbar_view.php:41
-#: application/views/admin/super/adminmenu.php:105
+#: application/views/admin/super/adminmenu.php:106
 #: application/views/admin/templates/templateeditorbar_view.php:123
 msgid "Logout"
 msgstr "Odhlásit"
@@ -4568,39 +4576,39 @@ msgstr "Výchozí stránka administrace"
 msgid "Manage survey administrators"
 msgstr "Správa administrátorů průzkumu"
 
-#: application/views/admin/super/adminmenu.php:41
+#: application/views/admin/super/adminmenu.php:42
 msgid "Check Data Integrity"
 msgstr "Zkontrolovat integritu dat"
 
-#: application/views/admin/super/adminmenu.php:53
+#: application/views/admin/super/adminmenu.php:54
 msgid "Backup Entire Database"
 msgstr "Záloha celé databáze"
 
-#: application/views/admin/super/adminmenu.php:57
+#: application/views/admin/super/adminmenu.php:58
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
 msgstr "Export databáze je dostupný pouze pro MySQL. Pro ostatní typy databází použijte prosím odpovídající zálohovací prostředek."
 
-#: application/views/admin/super/adminmenu.php:69
+#: application/views/admin/super/adminmenu.php:70
 msgid "Edit label sets"
 msgstr "Editovat sady popisků"
 
-#: application/views/admin/super/adminmenu.php:75
+#: application/views/admin/super/adminmenu.php:76
 msgid "Template Editor"
 msgstr "Editor šablon"
 
-#: application/views/admin/super/adminmenu.php:82
+#: application/views/admin/super/adminmenu.php:83
 msgid "Central participant database/panel"
 msgstr "Centrální databáze/panel účastníků"
 
-#: application/views/admin/super/adminmenu.php:86
+#: application/views/admin/super/adminmenu.php:87
 msgid "Surveys:"
 msgstr "Průzkumy:"
 
-#: application/views/admin/super/adminmenu.php:91
+#: application/views/admin/super/adminmenu.php:92
 msgid "Detailed list of surveys"
 msgstr "Podrobný seznam průzkumů"
 
-#: application/views/admin/super/adminmenu.php:99
+#: application/views/admin/super/adminmenu.php:100
 msgid "Create, import, or copy a survey"
 msgstr "Vytvořit, importovat nebo kopírovat průzkum"
 
@@ -7736,7 +7744,7 @@ msgstr "Hlavní stránka administrátora"
 #: application/core/Survey_Common_Action.php:301
 #: application/views/admin/conditions/conditionshead_view.php:25
 #: application/views/admin/index.php:4
-#: application/views/admin/super/adminmenu.php:108
+#: application/views/admin/super/adminmenu.php:109
 msgid "LimeSurvey online manual"
 msgstr "Online příručka LimeSurvey (anglicky)"
 
@@ -7745,7 +7753,7 @@ msgid "Version"
 msgstr "Verze"
 
 #: application/controllers/AdminController.php:408
-#: application/controllers/admin/authentication.php:338
+#: application/controllers/admin/authentication.php:331
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "Varování: stále používáte výchozí heslo ('password'). Prosím změňte je a znovu se přihlaste."
 
@@ -7947,7 +7955,7 @@ msgstr "Buď jste byl(a) příliš dlouho neaktivní, máte v prohlížeči zak�
 #: application/controllers/survey/index.php:358
 #: application/controllers/survey/index.php:371
 #: application/controllers/survey/index.php:386
-#: application/helpers/replacements_helper.php:210
+#: application/helpers/replacements_helper.php:224
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "Kontaktujte prosím %s (%s) pro další pomoc."
 
@@ -8195,62 +8203,58 @@ msgstr "Upozornění: Mód hodnocení pro tento průzkum je vypnutý. Můžete h
 msgid "Edit"
 msgstr "Editovat"
 
-#: application/controllers/admin/authentication.php:77
+#: application/controllers/admin/authentication.php:76
 msgid "Logout successful."
 msgstr "Úspěšné odhlášení."
 
-#: application/controllers/admin/authentication.php:101
+#: application/controllers/admin/authentication.php:100
 msgid "User name and/or email not found!"
 msgstr "Uživatelské jméno a/nebo e-mail se nepodařilo najít."
 
-#: application/controllers/admin/authentication.php:124
+#: application/controllers/admin/authentication.php:123
 msgid "User data"
 msgstr "Data uživatele"
 
-#: application/controllers/admin/authentication.php:129
+#: application/controllers/admin/authentication.php:128
 msgid "Username: %s"
 msgstr "Uživatelské jméno: %s"
 
-#: application/controllers/admin/authentication.php:130
+#: application/controllers/admin/authentication.php:129
 msgid "Email: %s"
 msgstr "E-mail: %s"
 
-#: application/controllers/admin/authentication.php:131
+#: application/controllers/admin/authentication.php:130
 msgid "New password: %s"
 msgstr "Nové heslo: %s"
 
-#: application/controllers/admin/authentication.php:134
+#: application/controllers/admin/authentication.php:133
 msgid "Your user data for accessing %s"
 msgstr "Vaše data uživatele pro přístup %s"
 
-#: application/controllers/admin/authentication.php:142
+#: application/controllers/admin/authentication.php:141
 msgid "An email with your login data was sent to you."
 msgstr "Byl Vám zaslán e-mail s přihlašovacími údaji."
 
-#: application/controllers/admin/authentication.php:146
+#: application/controllers/admin/authentication.php:145
 #: application/controllers/admin/useraction.php:154
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Odeslání e-mail pro {NAME} ({EMAIL}) se nezdařilo."
 
-#: application/controllers/admin/authentication.php:180
+#: application/controllers/admin/authentication.php:179
 msgid "Please log in first."
 msgstr "Nejprve se musíte přihlásit."
 
-#: application/controllers/admin/authentication.php:185
+#: application/controllers/admin/authentication.php:184
 msgid "Welcome %s!"
 msgstr "Vítejte %s!"
 
-#: application/controllers/admin/authentication.php:190
+#: application/controllers/admin/authentication.php:189
 msgid "Reloading screen. Please wait."
 msgstr "Znovunačítám obrazovku. Počkejte prosím."
 
-#: application/controllers/admin/authentication.php:356
+#: application/controllers/admin/authentication.php:349
 msgid "Incorrect username and/or password!"
 msgstr "Chybné uživatelské jméno nebo heslo!"
-
-#: application/controllers/admin/authentication.php:365
-msgid "You have exceeded you maximum login attempts. Please wait %d minutes before trying again"
-msgstr "Přesáhl jste maximální počet pokusů pro přihlášení. Prosím počkejte %d minut před tím, než to zkusíte znovu."
 
 #: application/controllers/admin/browse.php:68
 #: application/controllers/admin/browse.php:77
@@ -8281,7 +8285,7 @@ msgstr "Přístupový kód"
 #: application/controllers/admin/browse.php:130
 #: application/controllers/admin/browse.php:457
 #: application/helpers/common_helper.php:5257
-#: application/helpers/replacements_helper.php:606
+#: application/helpers/replacements_helper.php:620
 #: application/views/admin/export/exportresults_view.php:121
 #: application/views/admin/participants/displayParticipants_view.php:63
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8296,7 +8300,7 @@ msgstr "Jméno"
 #: application/controllers/admin/browse.php:131
 #: application/controllers/admin/browse.php:458
 #: application/helpers/common_helper.php:5258
-#: application/helpers/replacements_helper.php:613
+#: application/helpers/replacements_helper.php:627
 #: application/views/admin/export/exportresults_view.php:122
 #: application/views/admin/participants/displayParticipants_view.php:64
 #: application/views/admin/participants/displayParticipants_view.php:149
@@ -8581,8 +8585,8 @@ msgstr "Vynulovat logiku průzkumu"
 #: application/helpers/export_helper.php:257
 #: application/helpers/export_helper.php:1331
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2709
-#: application/helpers/expressions/em_manager_helper.php:2713
+#: application/helpers/expressions/em_manager_helper.php:2718
+#: application/helpers/expressions/em_manager_helper.php:2722
 #: application/helpers/qanda_helper.php:4309
 #: application/helpers/qanda_helper.php:4736
 #: application/helpers/qanda_helper.php:4774
@@ -8640,7 +8644,7 @@ msgstr "Ano"
 
 #: application/controllers/admin/conditionsaction.php:181
 #: application/controllers/admin/tokens.php:1933
-#: application/views/admin/assessments_view.php:120
+#: application/views/admin/assessments_view.php:122
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/labels/labelview_view.php:157
 #: application/views/admin/participants/attributeMapCSV_view.php:64
@@ -8726,7 +8730,7 @@ msgstr "Byly smazány všechny podmínky v tomto průzkumu."
 #: application/helpers/frontend_helper.php:1424
 #: application/helpers/frontend_helper.php:1501
 #: application/helpers/frontend_helper.php:1673
-#: application/helpers/replacements_helper.php:642
+#: application/helpers/replacements_helper.php:656
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:63
 #: application/views/admin/participants/attributeMap_view.php:95
@@ -8767,7 +8771,7 @@ msgstr "Žádné podmínky nebyly zkopírovány (nalezeny duplikáty)"
 #: application/helpers/common_helper.php:1843
 #: application/helpers/export_helper.php:259
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2715
+#: application/helpers/expressions/em_manager_helper.php:2724
 #: application/helpers/qanda_helper.php:4737
 #: application/helpers/qanda_helper.php:4782
 #: application/views/admin/dataentry/content_view.php:581
@@ -8829,8 +8833,8 @@ msgstr "Nevím"
 #: application/helpers/export_helper.php:258
 #: application/helpers/export_helper.php:1331
 #: application/helpers/export_helper.php:1350
-#: application/helpers/expressions/em_manager_helper.php:2710
-#: application/helpers/expressions/em_manager_helper.php:2714
+#: application/helpers/expressions/em_manager_helper.php:2719
+#: application/helpers/expressions/em_manager_helper.php:2723
 #: application/helpers/qanda_helper.php:4318
 #: application/helpers/qanda_helper.php:4738
 #: application/helpers/qanda_helper.php:4792
@@ -8894,7 +8898,7 @@ msgstr "Ne"
 #: application/helpers/common_helper.php:1849
 #: application/helpers/export_helper.php:262
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2718
+#: application/helpers/expressions/em_manager_helper.php:2727
 #: application/helpers/qanda_helper.php:4893
 #: application/helpers/qanda_helper.php:4935
 #: application/views/admin/dataentry/content_view.php:598
@@ -8910,7 +8914,7 @@ msgstr "Zvýšení"
 #: application/helpers/common_helper.php:1851
 #: application/helpers/export_helper.php:263
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2719
+#: application/helpers/expressions/em_manager_helper.php:2728
 #: application/helpers/qanda_helper.php:4894
 #: application/helpers/qanda_helper.php:4946
 #: application/views/admin/dataentry/content_view.php:599
@@ -8926,7 +8930,7 @@ msgstr "Stejný"
 #: application/helpers/common_helper.php:1850
 #: application/helpers/export_helper.php:264
 #: application/helpers/export_helper.php:1355
-#: application/helpers/expressions/em_manager_helper.php:2720
+#: application/helpers/expressions/em_manager_helper.php:2729
 #: application/helpers/qanda_helper.php:4895
 #: application/helpers/qanda_helper.php:4958
 #: application/views/admin/dataentry/content_view.php:600
@@ -9013,7 +9017,7 @@ msgstr "nezašktrnuto"
 #: application/helpers/common_helper.php:1834
 #: application/helpers/export_helper.php:249
 #: application/helpers/export_helper.php:1335
-#: application/helpers/expressions/em_manager_helper.php:2706
+#: application/helpers/expressions/em_manager_helper.php:2715
 #: application/helpers/qanda_helper.php:4355
 #: application/views/admin/dataentry/content_view.php:54
 #: application/views/admin/export/statistics_view.php:488
@@ -9029,7 +9033,7 @@ msgstr "Žena"
 #: application/helpers/common_helper.php:1833
 #: application/helpers/export_helper.php:250
 #: application/helpers/export_helper.php:1335
-#: application/helpers/expressions/em_manager_helper.php:2705
+#: application/helpers/expressions/em_manager_helper.php:2714
 #: application/helpers/qanda_helper.php:4363
 #: application/views/admin/dataentry/content_view.php:55
 #: application/views/admin/export/statistics_view.php:494
@@ -9378,7 +9382,7 @@ msgstr "Import skončil s chybou na záznamu %d"
 #: application/controllers/admin/question.php:55
 #: application/controllers/admin/questiongroup.php:55
 #: application/controllers/admin/surveyadmin.php:209
-#: application/controllers/admin/surveyadmin.php:777
+#: application/controllers/admin/surveyadmin.php:781
 #: application/controllers/admin/templates.php:151
 #: application/controllers/admin/templates.php:210
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
@@ -9455,7 +9459,7 @@ msgstr "Vaše pořadí"
 
 #: application/controllers/admin/dataentry.php:1421
 #: application/helpers/admin/label_helper.php:138
-#: application/views/admin/assessments_view.php:115
+#: application/views/admin/assessments_view.php:117
 #: application/views/admin/dataentry/includes/editdata/edit.php:1
 #: application/views/admin/emailtemplates/emailtemplates_view.php:145
 #: application/views/admin/labels/editlabel_view.php:50
@@ -9569,7 +9573,7 @@ msgid "Thank you for saving your survey in progress.  The following details can 
 msgstr "Děkujeme za uložení Vašeho rozpracovaného průzkumu. Následující detaily mohou být použity pro návrat do tohoto průzkumu ve stavu, jak jste jej opustil(a). Uložte si prosím tento e-mail, není možné odeslat Vám heslo znovu."
 
 #: application/controllers/admin/dataentry.php:1946
-#: application/helpers/replacements_helper.php:530
+#: application/helpers/replacements_helper.php:544
 #: application/libraries/Save.php:198
 msgid "Name"
 msgstr "Jméno"
@@ -9579,8 +9583,8 @@ msgstr "Jméno"
 #: application/controllers/admin/useraction.php:133
 #: application/controllers/admin/useraction.php:362
 #: application/controllers/admin/useraction.php:380
-#: application/helpers/replacements_helper.php:536
-#: application/helpers/replacements_helper.php:569
+#: application/helpers/replacements_helper.php:550
+#: application/helpers/replacements_helper.php:583
 #: application/libraries/Save.php:199
 #: application/views/admin/authentication/login.php:8
 #: application/views/admin/user/modifyuser.php:7
@@ -10192,8 +10196,8 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Prosím zvolte vše, co je relevantní, a doplňte komentář:"
 
 #: application/controllers/admin/printablesurvey.php:931
-#: application/helpers/expressions/em_manager_helper.php:2838
-#: application/helpers/expressions/em_manager_helper.php:5179
+#: application/helpers/expressions/em_manager_helper.php:2847
+#: application/helpers/expressions/em_manager_helper.php:5191
 #: application/helpers/qanda_helper.php:1355
 #: application/helpers/qanda_helper.php:1681
 #: application/helpers/qanda_helper.php:2339
@@ -10399,43 +10403,43 @@ msgstr "Otevřeno"
 msgid "Survey deleted."
 msgstr "Průzkum byl smazán."
 
-#: application/controllers/admin/surveyadmin.php:698
+#: application/controllers/admin/surveyadmin.php:702
 #: application/views/admin/survey/Question/answerOptions_view.php:43
 #: application/views/admin/survey/Question/subQuestion_view.php:40
 msgid "Base Language"
 msgstr "Primární jazyk"
 
-#: application/controllers/admin/surveyadmin.php:759
+#: application/controllers/admin/surveyadmin.php:763
 msgid "Import survey data"
 msgstr "Importovat data průzkumu"
 
-#: application/controllers/admin/surveyadmin.php:760
+#: application/controllers/admin/surveyadmin.php:764
 msgid "Survey structure import summary"
 msgstr "Přehled importu struktury průzkumu"
 
-#: application/controllers/admin/surveyadmin.php:765
+#: application/controllers/admin/surveyadmin.php:769
 #: application/views/admin/survey/copySurvey_view.php:1
 #: application/views/admin/survey/subview/tabCopy_view.php:21
 msgid "Copy survey"
 msgstr "Kopírovat průzkum"
 
-#: application/controllers/admin/surveyadmin.php:766
+#: application/controllers/admin/surveyadmin.php:770
 msgid "Survey copy summary"
 msgstr "Přehled kopírování průzkumu"
 
-#: application/controllers/admin/surveyadmin.php:796
+#: application/controllers/admin/surveyadmin.php:800
 msgid "Import failed. You specified an invalid file type."
 msgstr "Import se nezdařil. Vybrali jste nesprávný typ souboru."
 
-#: application/controllers/admin/surveyadmin.php:833
+#: application/controllers/admin/surveyadmin.php:837
 msgid "No survey ID has been provided. Cannot copy survey"
 msgstr "Nebyl zadán ID průzkumu. Průzkum nelze zkopírovat"
 
-#: application/controllers/admin/surveyadmin.php:1046
+#: application/controllers/admin/surveyadmin.php:1050
 msgid "The new question group/question order was successfully saved."
 msgstr "Nové pořadí skupin otázek nebo pořadí otázky bylo úspěšně uloženo."
 
-#: application/controllers/admin/surveyadmin.php:1314
+#: application/controllers/admin/surveyadmin.php:1318
 #: application/views/admin/labels/labelview_view.php:132
 #: application/views/admin/labels/labelview_view.php:144
 #: application/views/admin/survey/Question/editQuestion_view.php:262
@@ -10447,21 +10451,21 @@ msgstr "Nové pořadí skupin otázek nebo pořadí otázky bylo úspěšně ulo
 msgid "Please select a file to import!"
 msgstr "Vyberte prosím soubor pro import!"
 
-#: application/controllers/admin/surveyadmin.php:1317
+#: application/controllers/admin/surveyadmin.php:1321
 #: application/views/admin/labels/labelview_view.php:144
 #: application/views/admin/templates/importform_view.php:16
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr "Knihovna zpracovávající zip není nainstalována v PHP. Import ZIPů je vypnut"
 
-#: application/controllers/admin/surveyadmin.php:1342
+#: application/controllers/admin/surveyadmin.php:1346
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr "Průzkum byl úspěšně uzavřen nastavením data expirace v nastavení průzkumu."
 
-#: application/controllers/admin/surveyadmin.php:1457
+#: application/controllers/admin/surveyadmin.php:1461
 msgid "Survey could not be created because it did not have a title"
 msgstr "Průzkum nelze vytvořit, protože nebyl zadán Název"
 
-#: application/controllers/admin/surveyadmin.php:1620
+#: application/controllers/admin/surveyadmin.php:1624
 msgid "Survey was successfully added."
 msgstr "Průzkum byl úspěšně přidán."
 
@@ -10638,7 +10642,7 @@ msgid "Export"
 msgstr "Exportovat"
 
 #: application/controllers/admin/surveypermission.php:439
-#: application/helpers/replacements_helper.php:559
+#: application/helpers/replacements_helper.php:573
 #: application/views/admin/user/setuserrights.php:119
 msgid "Save Now"
 msgstr "Nyní uložit"
@@ -11462,8 +11466,8 @@ msgstr "Neuvedl(a) jste heslo"
 
 #: application/controllers/survey/index.php:440
 #: application/controllers/survey/index.php:444
-#: application/helpers/replacements_helper.php:419
-#: application/helpers/replacements_helper.php:431
+#: application/helpers/replacements_helper.php:433
+#: application/helpers/replacements_helper.php:445
 msgid "Load unfinished survey"
 msgstr "Načíst nedokončený průzkum"
 
@@ -11624,7 +11628,7 @@ msgid "Clear Responses"
 msgstr "Vymazat odpovědi"
 
 #: application/helpers/SurveyRuntimeHelper.php:443
-#: application/helpers/replacements_helper.php:813
+#: application/helpers/replacements_helper.php:827
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr "Děkujeme Vám!"
@@ -11662,32 +11666,32 @@ msgstr "Odešlete své odpovědi"
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr "Již nejsou další odpovědi. Prosím stlačte tlačítko \"Odeslat\". "
 
-#: application/helpers/SurveyRuntimeHelper.php:878
+#: application/helpers/SurveyRuntimeHelper.php:877
 #: application/helpers/qanda_helper.php:500
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr "Jedna nebo více povinných otázek nebylo zodpovězeno. Nemůžete pokračovat, dokud  na tyto otázky neodpovíte."
 
-#: application/helpers/SurveyRuntimeHelper.php:884
+#: application/helpers/SurveyRuntimeHelper.php:883
 #: application/helpers/qanda_helper.php:530
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr "Jedna nebo více otázek nebyla zodpovězena platným způsobem. Nemůžete pokračovat, dokud nebudou platně zodpovězeny. "
 
-#: application/helpers/SurveyRuntimeHelper.php:890
+#: application/helpers/SurveyRuntimeHelper.php:889
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr "Jedno nebo více souborů není v povoleném formátu nebo velikosti. Nemůžete pokračovat, dokud nebudou tyto soubory platné. "
 
-#: application/helpers/SurveyRuntimeHelper.php:1028
+#: application/helpers/SurveyRuntimeHelper.php:1027
 #: application/helpers/frontend_helper.php:2774
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Průzkum není nyní aktivní. Nebudete moci uložit Vaše odpovědi."
 
-#: application/helpers/SurveyRuntimeHelper.php:1036
+#: application/helpers/SurveyRuntimeHelper.php:1035
 msgid "Question index"
 msgstr "Index otázky"
 
-#: application/helpers/SurveyRuntimeHelper.php:1104
+#: application/helpers/SurveyRuntimeHelper.php:1103
 #: application/helpers/frontend_helper.php:2245
-#: application/helpers/replacements_helper.php:370
+#: application/helpers/replacements_helper.php:384
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/dataentry/insert.php:41
@@ -13671,7 +13675,7 @@ msgid "SMTP debug output:"
 msgstr "Výstup SMTP debug:"
 
 #: application/helpers/common_helper.php:5259
-#: application/helpers/replacements_helper.php:620
+#: application/helpers/replacements_helper.php:634
 #: application/views/admin/export/exportresults_view.php:123
 #: application/views/admin/saved/savedlist_view.php:10
 #: application/views/admin/token/browse.php:72
