@@ -1069,7 +1069,13 @@
                         $cascadedAFE = array_reverse($cascadedAFE);
 
                         $subqs = $qinfo['subqs'];
+                        $last_rowdivid = '--';
                         foreach ($subqs as $sq) {
+                            if ($sq['rowdivid'] == $last_rowdivid)
+                            {
+                                continue;
+                            }
+                            $last_rowdivid = $sq['rowdivid'];
                             $af_names = array();
                             $afe_names = array();
                             switch ($type)
@@ -1087,46 +1093,64 @@
                                 case 'P': //Multiple choice with comments checkbox + text
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
-                                    if ($this->sgqaNaming)
-                                    {
+//                                    if ($this->sgqaNaming)
+//                                    {
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                            $sgq .= substr($sq['sqsuffix'],1);
-                                            if (isset($this->knownVars[$sgq]))
+                                            $fqid = explode('X',$sgq);
+                                            $fqid = $fqid[2];
+                                            $fsqs = array();
+                                            foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
                                             {
-                                                $af_names[] = $sgq . '.NAOK';
+                                                if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                {
+                                                    $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK';
+                                                }
+                                            }
+                                            if (count($fsqs) > 0)
+                                            {
+                                                $af_names[] = '(' . implode(' != "" or ', $fsqs) . ' != "")';
                                             }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                            $sgq .= substr($sq['sqsuffix'],1);
-                                            if (isset($this->knownVars[$sgq]))
+                                            $fqid = explode('X',$sgq);
+                                            $fqid = $fqid[2];
+                                            $fsqs = array();
+                                            foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
                                             {
-                                                $afe_names[] = $sgq . '.NAOK';
+                                                if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                {
+                                                    $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK';
+                                                }
+                                            }
+                                            if (count($fsqs) > 0)
+                                            {
+                                                $afe_names[] = '(' . implode(' == "" and ', $fsqs) . ' == "")';
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        foreach ($cascadedAF as $_caf)
-                                        {
-                                            $sgq = $_caf . $sq['sqsuffix'];
-                                            if (isset($this->knownVars[$sgq]))
-                                            {
-                                                $af_names[] = $sgq . '.NAOK';
-                                            }
-                                        }
-                                        foreach ($cascadedAFE as $_cafe)
-                                        {
-                                            $sgq = $_cafe . $sq['sqsuffix'];
-                                            if (isset($this->knownVars[$sgq]))
-                                            {
-                                                $afe_names[] = $sgq . '.NAOK';
-                                            }
-                                        }
-                                    }
+//                                    }
+//                                    else  // TODO - implement qcode naming for this
+//                                    {
+//                                        foreach ($cascadedAF as $_caf)
+//                                        {
+//                                            $sgq = $_caf . $sq['sqsuffix'];
+//                                            if (isset($this->knownVars[$sgq]))
+//                                            {
+//                                                $af_names[] = $sgq . '.NAOK';
+//                                            }
+//                                        }
+//                                        foreach ($cascadedAFE as $_cafe)
+//                                        {
+//                                            $sgq = $_cafe . $sq['sqsuffix'];
+//                                            if (isset($this->knownVars[$sgq]))
+//                                            {
+//                                                $afe_names[] = $sgq . '.NAOK';
+//                                            }
+//                                        }
+//                                    }
                                     break;
                                 default:
                                     break;
@@ -1138,7 +1162,7 @@
                                 $afs_eqn = '';
                                 if (count($af_names) > 0)
                                 {
-                                    $afs_eqn .= implode(' != "" && ', $af_names) . ' != ""';
+                                    $afs_eqn .= implode(' && ', $af_names);
                                 }
                                 if (count($afe_names) > 0)
                                 {
@@ -1146,7 +1170,7 @@
                                     {
                                         $afs_eqn .= ' && ';
                                     }
-                                    $afs_eqn .= implode(' == "" && ', array_unique($afe_names)) . ' == ""';
+                                    $afs_eqn .= implode(' && ', $afe_names);
                                 }
 
                                 $subQrels[] = array(
