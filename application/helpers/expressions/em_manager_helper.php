@@ -6490,6 +6490,34 @@
                     $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
                 }
             }
+            else
+            {
+                // For all-in-one mode, declare the always-hidden variables, since qanda will not be called for them.
+                foreach ($LEM->knownVars as $key=>$knownVar)
+                {
+                    if (!is_numeric($key[0])) {
+                        continue;
+                    }
+                    if ($knownVar['jsName'] == '') {
+                        continue;
+                    }
+                    if ($knownVar['hidden'])
+                    {
+                        $jsVar = $knownVar['jsName'];
+                        $undeclaredJsVars[] = $jsVar;
+                        $sgqa = $knownVar['sgqa'];
+                        $codeValue = (isset($_SESSION[$LEM->sessid][$sgqa])) ? $_SESSION[$LEM->sessid][$sgqa] : '';
+                        $undeclaredVal[$jsVar] = $codeValue;
+                    }
+                }
+
+                $undeclaredJsVars = array_unique($undeclaredJsVars);
+                foreach ($undeclaredJsVars as $jsVar)
+                {
+                    if ($jsVar == '') continue;
+                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                }
+            }
             foreach ($qidList as $qid)
             {
                 if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
