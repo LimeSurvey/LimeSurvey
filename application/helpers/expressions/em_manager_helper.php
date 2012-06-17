@@ -3805,7 +3805,62 @@
 
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
             {
-                $startingValues = $_SESSION[$LEM->sessid]['startingValues'];
+                $startingValues = array();
+                foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k=>$value)
+                {
+                    if (isset($LEM->knownVars[$k]))
+                    {
+                        $knownVar = $LEM->knownVars[$k];
+                    }
+                    else if (isset($LEM->qcode2sgqa[$k]))
+                    {
+                        $knownVar = $LEM->knownVars[$LEM->qcode2sgqa[$k]];
+                    }
+                    else if (isset($LEM->tempVars[$k]))
+                    {
+                        $knownVar = $LEM->tempVar[$k];
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    if (!isset($knownVar['jsName']))
+                    {
+                        continue;
+                    }
+                    switch ($knownVar['type'])
+                    {
+                        case 'D': //DATE
+                            if (trim($value)=="")
+                            {
+                                $value = NULL;
+                            }
+                            else
+                            {
+                                $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                                $value=$datetimeobj->convert("Y-m-d");
+                            }
+                            break;
+                        case 'N': //NUMERICAL QUESTION TYPE
+                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                            if (trim($value)=="") {
+                                $value = NULL;
+                            }
+                            else {
+                                $value = sanitize_float($value);
+                            }
+                            break;
+                        case '|': //File Upload
+                            $value=NULL;  // can't upload a file via GET
+                            break;
+                    }
+                    $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
+                    $startingValues[$k]=array(
+                        'type'=>$knownVar['type'],
+                        'value'=>$value,
+                    );
+                }
                 $LEM->_UpdateValuesInDatabase($startingValues);
             }
 
