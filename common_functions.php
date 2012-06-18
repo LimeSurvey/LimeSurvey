@@ -3377,7 +3377,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Sub-question validation tip'));
 
     $qattributes["exclude_all_others"]=array(
-    "types"=>"MP",
+    "types"=>":ABCEFMPKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>130,
     'inputtype'=>'text',
@@ -3385,7 +3385,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Exclusive option'));
 
     $qattributes["exclude_all_others_auto"]=array(
-    "types"=>"M",
+    "types"=>"MP",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>131,
     'inputtype'=>'singleselect',

@@ -877,7 +877,7 @@ if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey
         if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
         {
             $_SESSION['srid'] = $row['id'];
-            if (!is_null($row['lastpage']))
+            if (!is_null($row['lastpage']) && $row['submitdate']=='') 
             {
                 $_SESSION['LEMtokenResume'] = true;
                 $_SESSION['step'] = $row['lastpage'];
@@ -2270,50 +2270,15 @@ function buildsurveysession($previewGroup=false)
     //    }
     // Prefill questions/answers from command line params
     $startingValues=array();
-    if (isset($_SESSION['insertarray']))
+    if (isset($_GET))
     {
-        foreach($_SESSION['insertarray'] as $field)
+        foreach ($_GET as $k=>$v)
         {
-            if (isset($_GET[$field]) && $field!='token')
+            if (preg_match('/^(token|sid|lang|newtest)$/',$k))
             {
-                $value=$_GET[$field];
-                $type = $fieldmap[$field]['type'];
-                switch($type)
-                {
-                    case 'D': //DATE
-                        if (trim($value)=="")
-                        {
-                            $value = NULL;
-                        }
-                        else
-                        {
-                            $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                            $value=$datetimeobj->convert("Y-m-d");
-                        }
-                        break;
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                        if (trim($value)=="") {
-                            $value = NULL;
-                        }
-                        else {
-                            $value = sanitize_float($value);
-                        }
-                        break;
-                    case '|': //File Upload
-                        $value=NULL;  // can't upload a file via GET
-                        break;
-                }
-                if (!is_null($value))
-                {
-                    $_SESSION[$field] = $value;
-                    $startingValues[$field] = array (
-                    'type'=>$type,
-                    'value'=>$value,
-                    );
-                }
+                continue;
             }
+            $startingValues[$k] = $v;
         }
     }
     $_SESSION['startingValues']=$startingValues;

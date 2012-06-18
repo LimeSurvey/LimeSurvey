@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-06-13 06:28:36+00:00\n"
+"POT-Creation-Date: 2012-06-17 19:18:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1032,8 +1032,8 @@ msgstr ""
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2703
-#: classes/expressions/LimeExpressionManager.php:2707 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2743
+#: classes/expressions/LimeExpressionManager.php:2747 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
 #: common_functions.php:3202 common_functions.php:3286
 #: common_functions.php:3393 common_functions.php:3406
@@ -1061,7 +1061,7 @@ msgstr ""
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2709 common_functions.php:1922
+#: classes/expressions/LimeExpressionManager.php:2749 common_functions.php:1922
 #: qanda.php:4218 qanda.php:4263
 msgid "Uncertain"
 msgstr ""
@@ -1100,8 +1100,8 @@ msgstr ""
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2704
-#: classes/expressions/LimeExpressionManager.php:2708 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2744
+#: classes/expressions/LimeExpressionManager.php:2748 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3201
 #: common_functions.php:3285 common_functions.php:3392
 #: common_functions.php:3407 common_functions.php:3418
@@ -1128,7 +1128,7 @@ msgstr ""
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2712 common_functions.php:1928
+#: classes/expressions/LimeExpressionManager.php:2752 common_functions.php:1928
 #: qanda.php:4365 qanda.php:4408
 msgid "Increase"
 msgstr ""
@@ -1139,7 +1139,7 @@ msgstr ""
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2713 common_functions.php:1930
+#: classes/expressions/LimeExpressionManager.php:2753 common_functions.php:1930
 #: qanda.php:4366 qanda.php:4419
 msgid "Same"
 msgstr ""
@@ -1150,7 +1150,7 @@ msgstr ""
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2714 common_functions.php:1929
+#: classes/expressions/LimeExpressionManager.php:2754 common_functions.php:1929
 #: qanda.php:4367 qanda.php:4431
 msgid "Decrease"
 msgstr ""
@@ -1203,7 +1203,7 @@ msgstr ""
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2700 common_functions.php:1913
+#: classes/expressions/LimeExpressionManager.php:2740 common_functions.php:1913
 #: qanda.php:3839
 msgid "Female"
 msgstr ""
@@ -1215,7 +1215,7 @@ msgstr ""
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2699 common_functions.php:1912
+#: classes/expressions/LimeExpressionManager.php:2739 common_functions.php:1912
 #: qanda.php:3847
 msgid "Male"
 msgstr ""
@@ -1664,7 +1664,7 @@ msgid "Start Language:"
 msgstr ""
 
 #: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:2939
-#: group.php:1019 index.php:2421 replacements.php:272
+#: group.php:1019 index.php:2386 replacements.php:272
 msgid "Submit"
 msgstr ""
 
@@ -5608,8 +5608,8 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr ""
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2833
-#: classes/expressions/LimeExpressionManager.php:5187 qanda.php:1295
+#: classes/expressions/LimeExpressionManager.php:2873
+#: classes/expressions/LimeExpressionManager.php:5283 qanda.php:1295
 #: qanda.php:1595 qanda.php:2205 qanda.php:2505
 msgid "Other:"
 msgstr ""
@@ -5918,7 +5918,7 @@ msgid "Select Question"
 msgstr ""
 
 #: admin/quota.php:725 admin/quota.php:788 admin/templates.php:429
-#: index.php:2405 index.php:2411 index.php:2416
+#: index.php:2370 index.php:2376 index.php:2381
 msgid "Next"
 msgstr ""
 
@@ -6469,7 +6469,7 @@ msgstr ""
 msgid "This group description is fairly vacuous, but quite important."
 msgstr ""
 
-#: admin/templates.php:430 index.php:2399 index.php:2804
+#: admin/templates.php:430 index.php:2364 index.php:2769
 msgid "Previous"
 msgstr ""
 
@@ -9055,7 +9055,7 @@ msgid "This variable is not declared until a later page"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:572
-#: classes/expressions/ExpressionManager.php:1680
+#: classes/expressions/ExpressionManager.php:1683
 msgid "Undefined variable"
 msgstr ""
 
@@ -9095,246 +9095,246 @@ msgstr ""
 msgid "Expected right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1664
+#: classes/expressions/ExpressionManager.php:1667
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1673
+#: classes/expressions/ExpressionManager.php:1676
 msgid "Undefined function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1685
+#: classes/expressions/ExpressionManager.php:1688
 msgid "Unsupported syntax"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1693
+#: classes/expressions/ExpressionManager.php:1696
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1949
+#: classes/expressions/ExpressionManager.php:1952
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2050
+#: classes/expressions/ExpressionManager.php:2053
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2055
+#: classes/expressions/ExpressionManager.php:2058
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2056
+#: classes/expressions/ExpressionManager.php:2059
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2289
+#: classes/expressions/ExpressionManager.php:2292
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3322
+#: classes/expressions/ExpressionManager.php:3325
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2325
+#: classes/expressions/LimeExpressionManager.php:2365
 msgid "Please select at least one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2326
+#: classes/expressions/LimeExpressionManager.php:2366
 msgid "Please select at least %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2330
+#: classes/expressions/LimeExpressionManager.php:2370
 msgid "Please select at most one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2331
+#: classes/expressions/LimeExpressionManager.php:2371
 msgid "Please select at most %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2335
+#: classes/expressions/LimeExpressionManager.php:2375
 msgid "Please select one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2336
+#: classes/expressions/LimeExpressionManager.php:2376
 msgid "Please select %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2338
+#: classes/expressions/LimeExpressionManager.php:2378
 msgid "Please select between %s and %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2354
-#: classes/expressions/LimeExpressionManager.php:2375
+#: classes/expressions/LimeExpressionManager.php:2394
+#: classes/expressions/LimeExpressionManager.php:2415
 msgid "Each answer must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2356
-#: classes/expressions/LimeExpressionManager.php:2377
+#: classes/expressions/LimeExpressionManager.php:2396
+#: classes/expressions/LimeExpressionManager.php:2417
 msgid "Each answer must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2358
-#: classes/expressions/LimeExpressionManager.php:2379
+#: classes/expressions/LimeExpressionManager.php:2398
+#: classes/expressions/LimeExpressionManager.php:2419
 msgid "Each answer must be %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2359
-#: classes/expressions/LimeExpressionManager.php:2380
+#: classes/expressions/LimeExpressionManager.php:2399
+#: classes/expressions/LimeExpressionManager.php:2420
 msgid "Each answer must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2396
+#: classes/expressions/LimeExpressionManager.php:2436
 msgid "The sum must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2398
+#: classes/expressions/LimeExpressionManager.php:2438
 msgid "The sum must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2400
-#: classes/expressions/LimeExpressionManager.php:2442
+#: classes/expressions/LimeExpressionManager.php:2440
+#: classes/expressions/LimeExpressionManager.php:2482
 msgid "The sum must equal %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2401
+#: classes/expressions/LimeExpressionManager.php:2441
 msgid "The sum must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2419
+#: classes/expressions/LimeExpressionManager.php:2459
 msgid "Please upload at least one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2420
+#: classes/expressions/LimeExpressionManager.php:2460
 msgid "Please upload at least %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2424
+#: classes/expressions/LimeExpressionManager.php:2464
 msgid "Please upload at most one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2425
+#: classes/expressions/LimeExpressionManager.php:2465
 msgid "Please upload at most %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2429
+#: classes/expressions/LimeExpressionManager.php:2469
 msgid "Please upload one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2430
+#: classes/expressions/LimeExpressionManager.php:2470
 msgid "Please upload %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2432
+#: classes/expressions/LimeExpressionManager.php:2472
 msgid "Please upload between %s and %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2448
+#: classes/expressions/LimeExpressionManager.php:2488
 msgid "Please also fill in the \"other comment\" field."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2456
+#: classes/expressions/LimeExpressionManager.php:2496
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4198
+#: classes/expressions/LimeExpressionManager.php:4294
 msgid "Unable to insert record into survey table: "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4214
+#: classes/expressions/LimeExpressionManager.php:4310
 msgid "Unable to insert record into timings table "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5164
+#: classes/expressions/LimeExpressionManager.php:5260
 msgid "This question is mandatory"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5178
+#: classes/expressions/LimeExpressionManager.php:5274
 msgid "Please check at least one item."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5189
+#: classes/expressions/LimeExpressionManager.php:5285
 msgid "If you choose '%s' you must provide a description."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5211
-#: classes/expressions/LimeExpressionManager.php:5248
+#: classes/expressions/LimeExpressionManager.php:5307
+#: classes/expressions/LimeExpressionManager.php:5344
 msgid "Please complete all parts"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5240
+#: classes/expressions/LimeExpressionManager.php:5336
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5256
+#: classes/expressions/LimeExpressionManager.php:5352
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7633
+#: classes/expressions/LimeExpressionManager.php:7758
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7763
 msgid "Name [ID]"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7763
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7763
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7689
-#: classes/expressions/LimeExpressionManager.php:7933
+#: classes/expressions/LimeExpressionManager.php:7814
+#: classes/expressions/LimeExpressionManager.php:8058
 msgid "DEFAULT:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7697
+#: classes/expressions/LimeExpressionManager.php:7822
 msgid "HELP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7698
+#: classes/expressions/LimeExpressionManager.php:7823
 msgid "TIP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7715
+#: classes/expressions/LimeExpressionManager.php:7840
 msgid "Question Attribute"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7715
+#: classes/expressions/LimeExpressionManager.php:7840
 msgid "Value"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7822
+#: classes/expressions/LimeExpressionManager.php:7947
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7836
+#: classes/expressions/LimeExpressionManager.php:7961
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7848
+#: classes/expressions/LimeExpressionManager.php:7973
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8001
+#: classes/expressions/LimeExpressionManager.php:8126
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8165
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8046
+#: classes/expressions/LimeExpressionManager.php:8171
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8049
+#: classes/expressions/LimeExpressionManager.php:8174
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8052
+#: classes/expressions/LimeExpressionManager.php:8177
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
@@ -10602,7 +10602,7 @@ msgstr ""
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: group.php:948 index.php:2924
+#: group.php:948 index.php:2889
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 

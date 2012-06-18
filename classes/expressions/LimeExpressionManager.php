@@ -1055,7 +1055,13 @@
                         $cascadedAFE = array_reverse($cascadedAFE);
 
                         $subqs = $qinfo['subqs'];
+                        $last_rowdivid = '--';
                         foreach ($subqs as $sq) {
+                            if ($sq['rowdivid'] == $last_rowdivid)
+                            {
+                                continue;
+                            }
+                            $last_rowdivid = $sq['rowdivid'];
                             $af_names = array();
                             $afe_names = array();
                             switch ($type)
@@ -1073,46 +1079,72 @@
                                 case 'P': //Multiple choice with comments checkbox + text
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
-                                    if ($this->sgqaNaming)
-                                    {
+//                                    if ($this->sgqaNaming)
+//                                    {
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                            $sgq .= substr($sq['sqsuffix'],1);
-                                            if (isset($this->knownVars[$sgq]))
+                                            $fqid = explode('X',$sgq);
+                                            if (!isset($fqid[2]))
                                             {
-                                                $af_names[] = $sgq . '.NAOK';
+                                                continue;
+                                            }
+                                            $fqid = $fqid[2];
+                                            $fsqs = array();
+                                            foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
+                                            {
+                                                if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                {
+                                                    $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                }
+                                            }
+                                            if (count($fsqs) > 0)
+                                            {
+                                                $af_names[] = '(' . implode(' or ', $fsqs) . ')';
                                             }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                            $sgq .= substr($sq['sqsuffix'],1);
-                                            if (isset($this->knownVars[$sgq]))
+                                            $fqid = explode('X',$sgq);
+                                            if (!isset($fqid[2]))
                                             {
-                                                $afe_names[] = $sgq . '.NAOK';
+                                                continue;
+                                            }
+                                            $fqid = $fqid[2];
+                                            $fsqs = array();
+                                            foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
+                                            {
+                                                if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                {
+                                                    $fsqs[] = 'is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                }
+                                            }
+                                            if (count($fsqs) > 0)
+                                            {
+                                                $afe_names[] = '(' . implode(' and ', $fsqs) . ')';
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        foreach ($cascadedAF as $_caf)
-                                        {
-                                            $sgq = $_caf . $sq['sqsuffix'];
-                                            if (isset($this->knownVars[$sgq]))
-                                            {
-                                                $af_names[] = $sgq . '.NAOK';
-                                            }
-                                        }
-                                        foreach ($cascadedAFE as $_cafe)
-                                        {
-                                            $sgq = $_cafe . $sq['sqsuffix'];
-                                            if (isset($this->knownVars[$sgq]))
-                                            {
-                                                $afe_names[] = $sgq . '.NAOK';
-                                            }
-                                        }
-                                    }
+//                                    }
+//                                    else  // TODO - implement qcode naming for this
+//                                    {
+//                                        foreach ($cascadedAF as $_caf)
+//                                        {
+//                                            $sgq = $_caf . $sq['sqsuffix'];
+//                                            if (isset($this->knownVars[$sgq]))
+//                                            {
+//                                                $af_names[] = $sgq . '.NAOK';
+//                                            }
+//                                        }
+//                                        foreach ($cascadedAFE as $_cafe)
+//                                        {
+//                                            $sgq = $_cafe . $sq['sqsuffix'];
+//                                            if (isset($this->knownVars[$sgq]))
+//                                            {
+//                                                $afe_names[] = $sgq . '.NAOK';
+//                                            }
+//                                        }
+//                                    }
                                     break;
                                 default:
                                     break;
@@ -1124,7 +1156,7 @@
                                 $afs_eqn = '';
                                 if (count($af_names) > 0)
                                 {
-                                    $afs_eqn .= implode(' != "" && ', $af_names) . ' != ""';
+                                    $afs_eqn .= implode(' && ', $af_names);
                                 }
                                 if (count($afe_names) > 0)
                                 {
@@ -1132,7 +1164,7 @@
                                     {
                                         $afs_eqn .= ' && ';
                                     }
-                                    $afs_eqn .= implode(' == "" && ', array_unique($afe_names)) . ' == ""';
+                                    $afs_eqn .= implode(' && ', $afe_names);
                                 }
 
                                 $subQrels[] = array(
@@ -1257,8 +1289,16 @@
                                 }
                                 switch ($type)
                                 {
+                                    case ':': //ARRAY (Multi Flexi) 1 to 10
+                                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                                    case 'F': //ARRAY (Flexible) - Row Format
                                     case 'M': //Multiple choice checkbox
                                     case 'P': //Multiple choice with comments checkbox + text
+                                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                                    case 'Q': //MULTIPLE SHORT TEXT
                                         if ($this->sgqaNaming)
                                         {
                                             $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
@@ -1276,7 +1316,7 @@
                                     'qtype' => $type,
                                     'type' => 'exclude_all_others',
                                     'rowdivid' => $sq['rowdivid'],
-                                    'eqn' => '(' . $sq_name . ' == "")',
+                                    'eqn' => 'is_empty(' . $sq_name . ')',
                                     'qid' => $questionNum,
                                     'sgqa' => $qinfo['sgqa'],
                                     );
@@ -1305,6 +1345,7 @@
                             switch ($type)
                             {
                                 case 'M': //Multiple choice checkbox
+                                case 'P': //Multiple choice with comments checkbox + text
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4);
@@ -1332,7 +1373,7 @@
                         if (count($sq_names) > 0) {
                             $relpart = "sum(" . implode(".relevanceStatus, ", $sq_names) . ".relevanceStatus)";
                             $checkedpart = "count(" . implode(".NAOK, ", $sq_names) . ".NAOK)";
-                            $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && " . $eoVarName . "=='')";
+                            $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && is_empty(" . $eoVarName . "))";
                             $eoEqn = "(" . $eoRelevantAndUnchecked . " && (" . $relpart . " == " . $checkedpart . "))";
 
                             $this->em->ProcessBooleanExpression($eoEqn, $qinfo['gseq'], $qinfo['qseq']);
@@ -3778,7 +3819,63 @@
 
             if (isset($_SESSION['startingValues']) && is_array($_SESSION['startingValues']) && count($_SESSION['startingValues']) > 0)
             {
-                $startingValues = $_SESSION['startingValues'];
+                $startingValues = array();
+                foreach ($_SESSION['startingValues'] as $k=>$value)
+                {
+                    if (isset($LEM->knownVars[$k]))
+                    {
+                        $knownVar = $LEM->knownVars[$k];
+                    }
+                    else if (isset($LEM->qcode2sgqa[$k]))
+                    {
+                        $knownVar = $LEM->knownVars[$LEM->qcode2sgqa[$k]];
+                    }
+                    else if (isset($LEM->tempVars[$k]))
+                    {
+                        $knownVar = $LEM->tempVar[$k];
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    if (!isset($knownVar['jsName']))
+                    {
+                        continue;
+                    }
+                    switch ($knownVar['type'])
+                    {
+                        case 'D': //DATE
+                            if (trim($value)=="")
+                            {
+                                $value = NULL;
+                            }
+                            else
+                            {
+                                $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                                $value=$datetimeobj->convert("Y-m-d");
+                            }
+                            break;
+                        case 'N': //NUMERICAL QUESTION TYPE
+                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                            if (trim($value)=="") {
+                                $value = NULL;
+                            }
+                            else {
+                                $value = sanitize_float($value);
+                            }
+                            break;
+                        case '|': //File Upload
+                            $value=NULL;  // can't upload a file via GET
+                            break;
+                    }
+                    $_SESSION[$knownVar['sgqa']] = $value;
+                    $startingValues[$k]=array(
+                        'type'=>$knownVar['type'],
+                        'value'=>$value,
+                    );
+
+                }
                 $LEM->_UpdateValuesInDatabase($startingValues);
             }
 
@@ -6468,6 +6565,34 @@
                     $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
                 }
             }
+            else
+            {
+                // For all-in-one mode, declare the always-hidden variables, since qanda will not be called for them.
+                foreach ($LEM->knownVars as $key=>$knownVar)
+                {
+                    if (!is_numeric($key[0])) {
+                        continue;
+                    }
+                    if ($knownVar['jsName'] == '') {
+                        continue;
+                    }
+                    if ($knownVar['hidden'])
+                    {
+                        $jsVar = $knownVar['jsName'];
+                        $undeclaredJsVars[] = $jsVar;
+                        $sgqa = $knownVar['sgqa'];
+                        $codeValue = (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : '';
+                        $undeclaredVal[$jsVar] = $codeValue;
+                    }
+                }
+
+                $undeclaredJsVars = array_unique($undeclaredJsVars);
+                foreach ($undeclaredJsVars as $jsVar)
+                {
+                    if ($jsVar == '') continue;
+                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                }
+            }
             foreach ($qidList as $qid)
             {
                 if (isset($_SESSION['relevanceStatus'])) {
@@ -7972,7 +8097,7 @@ EOD;
                         }
 
                         $subQeqn = '';
-                        $rowdivid = $q['sgqa'] . $ansInfo[1];
+                        $rowdivid = $sgqas[0] . $ansInfo[1];
                         if (isset($LEM->subQrelInfo[$qid][$rowdivid]))
                         {
                             $sq = $LEM->subQrelInfo[$qid][$rowdivid];
@@ -8017,7 +8142,7 @@ EOD;
                     . $rootVarName . "</span>";
                 }
 
-                $questionRow .= "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
+                $questionRow .= "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?action=editquestion&sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";

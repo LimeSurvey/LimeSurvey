@@ -1230,7 +1230,7 @@
                     $tokenoutput .= "<td align='left' style='white-space:nowrap;'>\n";
                     if (bHasSurveyPermission($surveyid, 'tokens','update'))
                     {
-                        if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
+                        if ((($brow['completed'] == "N" || $brow['completed'] == "") && $brow['token']) || $thissurvey['alloweditaftercompletion']=='Y')
                         {
                             $toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
                             $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imageurl/do_16.png' title='"

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-06-02 11:49:04+0000\n"
+"PO-Revision-Date: 2012-06-17 19:18:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,33 +15,63 @@ msgstr ""
 "X-Poedit-Language: Turkish\n"
 "Project-Id-Version: LimeSurvey 1.92\n"
 
-#: classes/expressions/LimeExpressionManager.php:2331
+#: qanda.php:2123 qanda.php:2138
+msgid "Please rank at least %d item for question \"%s\"."
+msgid_plural "Please rank at least %d items for question \"%s\"."
+msgstr[0] "Lütfen \"\\%s\\\" sorusu için en az %d ögeyi sıralayın."
+msgstr[1] "Lütfen \"%s\" sorusu için en az %d ögeyi sıralayın."
+
+#: classes/core/surveytranslator.php:542
+msgid "Spanish (Chile)"
+msgstr "İspanyolca (Şili)"
+
+#: common_functions.php:3238
+msgid "Hidden"
+msgstr "Gizli"
+
+#: common_functions.php:3241
+msgid "Specify how array-filtered sub-questions should be displayed"
+msgstr "Dizi süzmeli alt soruların nasıl gösterileceğini belirtin"
+
+#: common_functions.php:3242
+msgid "Array filter style"
+msgstr "Dizi süzgeci stili"
+
+#: common_functions.php:4136
+msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
+msgstr "'Toplam değere eşit' ya da 'En düşük toplam değer' belirtilmişse, eksik (boş) yanıtlara izin verilsin"
+
+#: common_functions.php:4137
+msgid "Value range allows missing"
+msgstr "Eksikliğe izin verilecek değer aralığı"
+
+#: classes/expressions/LimeExpressionManager.php:2459
 msgid "Please upload at least one file"
-msgstr ""
+msgstr "Lütfen en az bir dosya yükleyin"
 
-#: classes/expressions/LimeExpressionManager.php:2332
+#: classes/expressions/LimeExpressionManager.php:2460
 msgid "Please upload at least %s files"
-msgstr ""
+msgstr "Lütfen en az %s dosya yükleyin"
 
-#: classes/expressions/LimeExpressionManager.php:2336
+#: classes/expressions/LimeExpressionManager.php:2464
 msgid "Please upload at most one file"
-msgstr ""
+msgstr "Lütfen en fazla bir dosya yükleyin"
 
-#: classes/expressions/LimeExpressionManager.php:2337
+#: classes/expressions/LimeExpressionManager.php:2465
 msgid "Please upload at most %s files"
-msgstr ""
+msgstr "Lütfen en fazla %s dosya yükleyin"
 
-#: classes/expressions/LimeExpressionManager.php:2341
+#: classes/expressions/LimeExpressionManager.php:2469
 msgid "Please upload one file"
-msgstr ""
+msgstr "Lütfen bir dosya yükleyin"
 
-#: classes/expressions/LimeExpressionManager.php:2342
+#: classes/expressions/LimeExpressionManager.php:2470
 msgid "Please upload %s files"
-msgstr ""
+msgstr "Lütfen %s dosya yükleyin"
 
-#: classes/expressions/LimeExpressionManager.php:2344
+#: classes/expressions/LimeExpressionManager.php:2472
 msgid "Please upload between %s and %s files"
-msgstr ""
+msgstr "Lütfen %s ile %s arasında dosya yükleyin"
 
 #: admin/activate.php:73
 msgid "Add or delete groups"
@@ -107,15 +137,15 @@ msgstr "Bu soru için ikinci bir yanıt olmalı, ancak belirtilmemiş."
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Bu soru bir koşul takımı içeriyor, ancak bu koşul daha sonra gösterilecek sorulara bağlı görünüyor."
 
-#: admin/activate_functions.php:410
+#: admin/activate_functions.php:414
 msgid "Survey could not be actived."
 msgstr "Anket etkinleştirilemedi."
 
-#: admin/activate_functions.php:412
+#: admin/activate_functions.php:416
 msgid "Database error:"
 msgstr "Veritabanı hatası:"
 
-#: admin/activate_functions.php:414 admin/browse.php:33 admin/browse.php:64
+#: admin/activate_functions.php:418 admin/browse.php:33 admin/browse.php:64
 #: admin/browse.php:76 admin/dataentry.php:82 admin/dataentry.php:2967
 #: admin/deactivate.php:46 admin/deactivate.php:52 admin/deactivate.php:54
 #: admin/deactivate.php:56 admin/deactivate.php:93 admin/deactivate.php:99
@@ -139,43 +169,43 @@ msgstr "Veritabanı hatası:"
 msgid "Main Admin Screen"
 msgstr "Ana Yönetici Ekranı"
 
-#: admin/activate_functions.php:450
+#: admin/activate_functions.php:454
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Anket etkinleştirildi. Sonuç tablosu oluşturuldu."
 
-#: admin/activate_functions.php:459
+#: admin/activate_functions.php:463
 msgid "The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory."
-msgstr "Yüklenen dosyaları kaydetmek için gereken dosya yolu oluşturulamadı. Lütfen limesurvey/upload/surveys dosya yolu üzerindeki dosya izinlerini kontrol edin."
+msgstr "Yüklenen dosyaları kaydetmek için gereken dosya yolu oluşturulamadı. limesurvey/upload/surveys klasörünün dosya izinlerini denetleyin."
 
-#: admin/activate_functions.php:485
+#: admin/activate_functions.php:489
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "Bu anket herkese açık kayıda izin veriyor. Ayrıca bir pin kodu tablosu oluşturulması gerekiyor."
 
-#: admin/activate_functions.php:486 admin/tokens.php:550
+#: admin/activate_functions.php:490 admin/tokens.php:550
 msgid "Initialise tokens"
 msgstr "Pin Kodlarını Oluştur"
 
-#: admin/activate_functions.php:490
+#: admin/activate_functions.php:494
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Bu anket artık etkin ve yanıtlar kaydedilebilir."
 
-#: admin/activate_functions.php:491
+#: admin/activate_functions.php:495
 msgid "Open-access mode"
 msgstr "Açık-erişim kipi"
 
-#: admin/activate_functions.php:491
+#: admin/activate_functions.php:495
 msgid "No invitation code is needed to complete the survey."
 msgstr "Bu anketi tamamlamak için çağrı kodu gerekmiyor."
 
-#: admin/activate_functions.php:491
+#: admin/activate_functions.php:495
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "Aşağıdaki bağlantıya tıklayarak bir pin kodu tablosu oluşturabilir ve anketi genel erişime kapalı hale getirebilirsiniz."
 
-#: admin/activate_functions.php:492
+#: admin/activate_functions.php:496
 msgid "Switch to closed-access mode"
 msgstr "Genel erişime kapalı kipe geç"
 
-#: admin/activate_functions.php:493 admin/tokens.php:552
+#: admin/activate_functions.php:497 admin/tokens.php:552
 msgid "No, thanks."
 msgstr "Hayır, Teşekkürler."
 
@@ -445,21 +475,21 @@ msgstr "Açıklama: Bu anket için değerlendirme kipi etkinleştirilmemiş. Etk
 msgid "No SID Provided"
 msgstr "Anket Numarası Belirtilmemiş"
 
-#: admin/assessments.php:145 admin/assessments.php:229
+#: admin/assessments.php:145 admin/assessments.php:231
 msgid "Scope"
 msgstr "Kapsam"
 
-#: admin/assessments.php:145 admin/assessments.php:208
-#: admin/assessments.php:235 admin/html.php:948 admin/statistics.php:412
+#: admin/assessments.php:145 admin/assessments.php:209
+#: admin/assessments.php:237 admin/html.php:948 admin/statistics.php:412
 msgid "Question group"
 msgstr "Soru grubu"
 
-#: admin/assessments.php:145 admin/assessments.php:236
+#: admin/assessments.php:145 admin/assessments.php:238
 #: admin/statistics_function.php:1172
 msgid "Minimum"
 msgstr "En az"
 
-#: admin/assessments.php:145 admin/assessments.php:239
+#: admin/assessments.php:145 admin/assessments.php:241
 #: admin/statistics_function.php:1346
 msgid "Maximum"
 msgstr "En çok"
@@ -471,7 +501,7 @@ msgstr "En çok"
 msgid "Add"
 msgstr "Ekle"
 
-#: admin/assessments.php:157 admin/assessments.php:185 admin/quota.php:561
+#: admin/assessments.php:157 admin/assessments.php:186 admin/quota.php:561
 #: admin/surveylist.php:155
 msgid "Edit"
 msgstr "Düzenle"
@@ -497,37 +527,37 @@ msgstr "Anket kodu"
 #: admin/assessments.php:173 admin/editsurveysettings.php:137
 #: admin/html.php:711 admin/html.php:1124 admin/labels.php:328
 #: admin/questiongrouphandling.php:58 admin/questiongrouphandling.php:144
-#: admin/questiongrouphandling.php:162 qanda.php:2706 uploader.php:95
+#: admin/questiongrouphandling.php:162 qanda.php:2720 uploader.php:95
 msgid "Title"
 msgstr "Başlık"
 
-#: admin/assessments.php:173 admin/assessments.php:271 admin/tokens.php:1476
+#: admin/assessments.php:173 admin/assessments.php:276 admin/tokens.php:1476
 #: admin/tokens.php:1771
 msgid "Message"
 msgstr "İleti"
 
-#: admin/assessments.php:194 admin/html.php:1641 admin/html.php:1919
+#: admin/assessments.php:195 admin/html.php:1641 admin/html.php:1919
 #: admin/resetsurveylogic.php:49 admin/templates.php:994 admin/tokens.php:2148
 #: admin/userrighthandling.php:470
 msgid "Delete"
 msgstr "Sil"
 
-#: admin/assessments.php:194 admin/browse.php:223 admin/html.php:1919
+#: admin/assessments.php:195 admin/browse.php:223 admin/html.php:1919
 #: admin/saved.php:97 admin/tokens.php:1258 admin/userrighthandling.php:85
 #: admin/userrighthandling.php:470 admin/userrighthandling.php:566
 #: admin/userrighthandling.php:954
 msgid "Are you sure you want to delete this entry?"
 msgstr "Bu kayıdı silmek istediğinizden emin misiniz?"
 
-#: admin/assessments.php:203 admin/assessments.php:231 admin/surveylist.php:39
+#: admin/assessments.php:204 admin/assessments.php:233 admin/surveylist.php:39
 msgid "Total"
 msgstr "Toplam"
 
-#: admin/assessments.php:234 admin/browse.php:870
+#: admin/assessments.php:236 admin/browse.php:870
 msgid "Group"
 msgstr "Grup"
 
-#: admin/assessments.php:251 admin/editansweroptions.php:128
+#: admin/assessments.php:253 admin/editansweroptions.php:128
 #: admin/editemailtemplates.php:45 admin/editsubquestions.php:140
 #: admin/editsurveytextelements.php:44 admin/questiongrouphandling.php:33
 #: admin/questiongrouphandling.php:142 admin/questionhandling.php:40
@@ -536,11 +566,11 @@ msgstr "Grup"
 msgid "Base language"
 msgstr "Ana dil"
 
-#: admin/assessments.php:269
+#: admin/assessments.php:272
 msgid "Heading"
 msgstr "Başlık"
 
-#: admin/assessments.php:279 admin/dataentry.php:1515 admin/dataentry.php:1520
+#: admin/assessments.php:286 admin/dataentry.php:1515 admin/dataentry.php:1520
 #: admin/editemailtemplates.php:160 admin/editsurveysettings.php:1078
 #: admin/editsurveysettings.php:1083 admin/editsurveytextelements.php:104
 #: admin/labels.php:201 admin/labels.php:598 admin/questionhandling.php:276
@@ -549,7 +579,7 @@ msgstr "Başlık"
 msgid "Save"
 msgstr "Kaydet"
 
-#: admin/assessments.php:280 admin/conditionshandling.php:1238
+#: admin/assessments.php:287 admin/conditionshandling.php:1238
 #: admin/deletesurvey.php:55 admin/editansweroptions.php:248
 #: admin/editansweroptions.php:256 admin/editsubquestions.php:248
 #: admin/editsubquestions.php:255 admin/labels.php:443 admin/quota.php:472
@@ -557,7 +587,7 @@ msgstr "Kaydet"
 msgid "Cancel"
 msgstr "İptal"
 
-#: admin/assessments.php:288 admin/userrighthandling.php:670
+#: admin/assessments.php:278 admin/userrighthandling.php:670
 msgid "Message:"
 msgstr "İleti:"
 
@@ -587,7 +617,7 @@ msgstr "Pin Kodu No"
 #: admin/exportresults.php:434 admin/exportresults.php:435
 #: admin/exportresults.php:757 admin/tokens.php:1025 admin/tokens.php:1028
 #: admin/tokens.php:1029 admin/tokens.php:2322 admin/tokens.php:2458
-#: common_functions.php:6211 replacements.php:507
+#: common_functions.php:6236 replacements.php:507
 msgid "First name"
 msgstr "Adı"
 
@@ -595,7 +625,7 @@ msgstr "Adı"
 #: admin/exportresults.php:429 admin/exportresults.php:430
 #: admin/exportresults.php:760 admin/tokens.php:1035 admin/tokens.php:1038
 #: admin/tokens.php:1039 admin/tokens.php:2326 admin/tokens.php:2460
-#: common_functions.php:6212 replacements.php:514
+#: common_functions.php:6237 replacements.php:514
 msgid "Last name"
 msgstr "Soyadı"
 
@@ -614,7 +644,7 @@ msgstr "Gönderim tarihi"
 #: admin/browse.php:139 admin/browse.php:140 admin/browse.php:478
 #: admin/dataentry.php:456 admin/exportresults.php:469
 #: admin/exportresults.php:470 admin/exportresults.php:751 admin/quota.php:498
-#: admin/quota.php:675 admin/tokens.php:747 statistics_user.php:441
+#: admin/quota.php:675 admin/tokens.php:747 statistics_user.php:443
 msgid "Completed"
 msgstr "Tamamlandı"
 
@@ -933,24 +963,25 @@ msgstr "Yinelendikleri için hiçbir koşul kopyalanamadı"
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2615
-#: classes/expressions/LimeExpressionManager.php:2619 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2743
+#: classes/expressions/LimeExpressionManager.php:2747 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
-#: common_functions.php:3202 common_functions.php:3275
-#: common_functions.php:3382 common_functions.php:3395
-#: common_functions.php:3406 common_functions.php:3417
-#: common_functions.php:3428 common_functions.php:3466
-#: common_functions.php:3496 common_functions.php:3507
-#: common_functions.php:3598 common_functions.php:3609
-#: common_functions.php:3621 common_functions.php:3633
-#: common_functions.php:3663 common_functions.php:3676
-#: common_functions.php:3687 common_functions.php:3698
-#: common_functions.php:3717 common_functions.php:3736
-#: common_functions.php:3747 common_functions.php:3758
-#: common_functions.php:3801 common_functions.php:3827
-#: common_functions.php:3862 common_functions.php:3928
-#: common_functions.php:3938 common_functions.php:4052
-#: common_functions.php:4063 qanda.php:3781 qanda.php:4203 qanda.php:4242
+#: common_functions.php:3202 common_functions.php:3286
+#: common_functions.php:3393 common_functions.php:3406
+#: common_functions.php:3417 common_functions.php:3428
+#: common_functions.php:3439 common_functions.php:3477
+#: common_functions.php:3507 common_functions.php:3518
+#: common_functions.php:3609 common_functions.php:3620
+#: common_functions.php:3632 common_functions.php:3644
+#: common_functions.php:3674 common_functions.php:3687
+#: common_functions.php:3698 common_functions.php:3709
+#: common_functions.php:3728 common_functions.php:3747
+#: common_functions.php:3758 common_functions.php:3769
+#: common_functions.php:3812 common_functions.php:3838
+#: common_functions.php:3873 common_functions.php:3939
+#: common_functions.php:3949 common_functions.php:4063
+#: common_functions.php:4074 common_functions.php:4134 qanda.php:3795
+#: qanda.php:4217 qanda.php:4256
 msgid "Yes"
 msgstr "Evet"
 
@@ -961,8 +992,8 @@ msgstr "Evet"
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2621 common_functions.php:1922
-#: qanda.php:4204 qanda.php:4249
+#: classes/expressions/LimeExpressionManager.php:2749 common_functions.php:1922
+#: qanda.php:4218 qanda.php:4263
 msgid "Uncertain"
 msgstr "Açık değil"
 
@@ -1000,24 +1031,25 @@ msgstr "Açık değil"
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2616
-#: classes/expressions/LimeExpressionManager.php:2620 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2744
+#: classes/expressions/LimeExpressionManager.php:2748 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3201
-#: common_functions.php:3274 common_functions.php:3381
-#: common_functions.php:3396 common_functions.php:3407
-#: common_functions.php:3418 common_functions.php:3429
-#: common_functions.php:3467 common_functions.php:3495
-#: common_functions.php:3506 common_functions.php:3597
-#: common_functions.php:3608 common_functions.php:3620
-#: common_functions.php:3632 common_functions.php:3662
-#: common_functions.php:3675 common_functions.php:3686
-#: common_functions.php:3697 common_functions.php:3716
-#: common_functions.php:3735 common_functions.php:3746
-#: common_functions.php:3757 common_functions.php:3800
-#: common_functions.php:3812 common_functions.php:3826
-#: common_functions.php:3861 common_functions.php:3927
-#: common_functions.php:3937 common_functions.php:4051
-#: common_functions.php:4062 qanda.php:3788 qanda.php:4205 qanda.php:4257
+#: common_functions.php:3285 common_functions.php:3392
+#: common_functions.php:3407 common_functions.php:3418
+#: common_functions.php:3429 common_functions.php:3440
+#: common_functions.php:3478 common_functions.php:3506
+#: common_functions.php:3517 common_functions.php:3608
+#: common_functions.php:3619 common_functions.php:3631
+#: common_functions.php:3643 common_functions.php:3673
+#: common_functions.php:3686 common_functions.php:3697
+#: common_functions.php:3708 common_functions.php:3727
+#: common_functions.php:3746 common_functions.php:3757
+#: common_functions.php:3768 common_functions.php:3811
+#: common_functions.php:3823 common_functions.php:3837
+#: common_functions.php:3872 common_functions.php:3938
+#: common_functions.php:3948 common_functions.php:4062
+#: common_functions.php:4073 common_functions.php:4133 qanda.php:3802
+#: qanda.php:4219 qanda.php:4271
 msgid "No"
 msgstr "Hayır"
 
@@ -1027,8 +1059,8 @@ msgstr "Hayır"
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2624 common_functions.php:1928
-#: qanda.php:4351 qanda.php:4394
+#: classes/expressions/LimeExpressionManager.php:2752 common_functions.php:1928
+#: qanda.php:4365 qanda.php:4408
 msgid "Increase"
 msgstr "Arttır"
 
@@ -1038,8 +1070,8 @@ msgstr "Arttır"
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2625 common_functions.php:1930
-#: qanda.php:4352 qanda.php:4405
+#: classes/expressions/LimeExpressionManager.php:2753 common_functions.php:1930
+#: qanda.php:4366 qanda.php:4419
 msgid "Same"
 msgstr "Aynı"
 
@@ -1049,8 +1081,8 @@ msgstr "Aynı"
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2626 common_functions.php:1929
-#: qanda.php:4353 qanda.php:4417
+#: classes/expressions/LimeExpressionManager.php:2754 common_functions.php:1929
+#: qanda.php:4367 qanda.php:4431
 msgid "Decrease"
 msgstr "Azalt"
 
@@ -1069,13 +1101,13 @@ msgstr "Azalt"
 #: admin/statistics_function.php:2567 admin/statistics_function.php:2581
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
-#: common_functions.php:1914 common_functions.php:5465
-#: common_functions.php:5470 qanda.php:918 qanda.php:1446 qanda.php:1725
-#: qanda.php:1829 qanda.php:1884 qanda.php:3797 qanda.php:3842 qanda.php:3931
-#: qanda.php:3995 qanda.php:4084 qanda.php:4130 qanda.php:4208 qanda.php:4274
-#: qanda.php:4356 qanda.php:4434 qanda.php:4535 qanda.php:4557 qanda.php:4625
-#: qanda.php:4756 qanda.php:5527 qanda.php:5528 qanda.php:5813 qanda.php:5888
-#: qanda.php:5989 qanda.php:6189 qanda.php:6243
+#: common_functions.php:1914 common_functions.php:5490
+#: common_functions.php:5495 qanda.php:932 qanda.php:1460 qanda.php:1739
+#: qanda.php:1843 qanda.php:1898 qanda.php:3811 qanda.php:3856 qanda.php:3945
+#: qanda.php:4009 qanda.php:4098 qanda.php:4144 qanda.php:4222 qanda.php:4288
+#: qanda.php:4370 qanda.php:4448 qanda.php:4549 qanda.php:4571 qanda.php:4639
+#: qanda.php:4770 qanda.php:5541 qanda.php:5542 qanda.php:5827 qanda.php:5902
+#: qanda.php:6003 qanda.php:6203 qanda.php:6257
 msgid "No answer"
 msgstr "Yanıt yok"
 
@@ -1102,8 +1134,8 @@ msgstr "işaretlenmedi"
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2612 common_functions.php:1913
-#: qanda.php:3825
+#: classes/expressions/LimeExpressionManager.php:2740 common_functions.php:1913
+#: qanda.php:3839
 msgid "Female"
 msgstr "Kadın"
 
@@ -1114,8 +1146,8 @@ msgstr "Kadın"
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2611 common_functions.php:1912
-#: qanda.php:3833
+#: classes/expressions/LimeExpressionManager.php:2739 common_functions.php:1912
+#: qanda.php:3847
 msgid "Male"
 msgstr "Erkek"
 
@@ -1130,12 +1162,12 @@ msgstr "Erkek"
 #: admin/statistics_function.php:1917 admin/statistics_function.php:2049
 #: common_functions.php:1890 common_functions.php:1948
 #: common_functions.php:2530 common_functions.php:2795
-#: common_functions.php:3628 common_functions.php:3642
-#: common_functions.php:3658 common_functions.php:3713
-#: common_functions.php:3732 common_functions.php:3890
-#: common_functions.php:4071 common_functions.php:4080
-#: common_functions.php:4089 common_functions.php:4098 qanda.php:1691
-#: qanda.php:2346 qanda.php:2586
+#: common_functions.php:3639 common_functions.php:3653
+#: common_functions.php:3669 common_functions.php:3724
+#: common_functions.php:3743 common_functions.php:3901
+#: common_functions.php:4082 common_functions.php:4091
+#: common_functions.php:4100 common_functions.php:4109 qanda.php:1705
+#: qanda.php:2360 qanda.php:2600
 msgid "Other"
 msgstr "Diğer"
 
@@ -1317,8 +1349,8 @@ msgstr "Karşılaştırma operatörü"
 #: admin/statistics_function.php:2188 admin/statistics_function.php:2197
 #: admin/statistics_function.php:2202 admin/statistics_function.php:2292
 #: admin/statistics_function.php:2295 admin/statistics_function.php:2303
-#: admin/statistics_function.php:2308 qanda.php:1168 qanda.php:3410
-#: qanda.php:3498 qanda.php:3591 qanda.php:3679 qanda.php:3747
+#: admin/statistics_function.php:2308 qanda.php:1182 qanda.php:3424
+#: qanda.php:3512 qanda.php:3605 qanda.php:3693 qanda.php:3761
 msgid "Answer"
 msgstr "Yanıt"
 
@@ -1473,7 +1505,7 @@ msgstr "Anket güncellenemedi"
 
 #: admin/database.php:1237
 msgid "Email templates successfully saved."
-msgstr "E-posta temaları kaydedildi."
+msgstr "E-posta kalıpları kaydedildi."
 
 #: admin/database.php:1251
 msgid "ERROR deleting Survey id"
@@ -1563,7 +1595,7 @@ msgid "Start Language:"
 msgstr "Başlangıç Dili:"
 
 #: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:2939
-#: group.php:1019 index.php:2421 replacements.php:272
+#: group.php:1019 index.php:2386 replacements.php:272
 msgid "Submit"
 msgstr "Gönder"
 
@@ -1646,24 +1678,24 @@ msgstr "Yanıt gösteriliyor (Kod %s)"
 #: admin/dataentry.php:2033 admin/dataentry.php:2066 admin/dataentry.php:2305
 #: admin/dataentry.php:2619 admin/dataentry.php:2634 admin/dataentry.php:2655
 #: admin/dataentry.php:2676 admin/dataentry.php:2696 admin/dataentry.php:2856
-#: qanda.php:1460 qanda.php:4736
+#: qanda.php:1474 qanda.php:4750
 msgid "Please choose"
 msgstr "Listeden seçin"
 
-#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2050
+#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2064
 msgid "Remove this item"
 msgstr "Bu ögeyi sil"
 
-#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2079
+#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2093
 msgid "Your Choices"
 msgstr "Seçimleriniz"
 
-#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2090
+#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2104
 msgid "Your Ranking"
 msgstr "Derecelendirmeniz"
 
-#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3411
-#: qanda.php:3415
+#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3425
+#: qanda.php:3429
 msgid "Only numbers may be entered in this field"
 msgstr "Bu alana yalnız sayılar yazılabilir"
 
@@ -1725,15 +1757,15 @@ msgstr "Etiket %s"
 #: admin/dataentry.php:1932 admin/dataentry.php:1944 admin/labels.php:78
 #: admin/translate_functions.php:148 common_functions.php:646
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
-#: common_functions.php:1411 common_functions.php:4800
-#: common_functions.php:4849 common_functions.php:4885
-#: common_functions.php:4921 qanda.php:1244 qanda.php:1422 qanda.php:6169
-#: qanda.php:6223
+#: common_functions.php:1411 common_functions.php:4825
+#: common_functions.php:4874 common_functions.php:4910
+#: common_functions.php:4946 qanda.php:1258 qanda.php:1436 qanda.php:6183
+#: qanda.php:6237
 msgid "Please choose..."
 msgstr "Seçmek için tıklayın..."
 
 #: admin/dataentry.php:2069 common_functions.php:2559 common_functions.php:2776
-#: qanda.php:2707 uploader.php:96
+#: qanda.php:2721 uploader.php:96
 msgid "Comment"
 msgstr "Açıklama"
 
@@ -1877,7 +1909,7 @@ msgid "Quick-add answers"
 msgstr "Hızlı yanıt ekleme"
 
 #: admin/editansweroptions.php:119 admin/editansweroptions.php:148
-#: admin/labels.php:327 common_functions.php:3240
+#: admin/labels.php:327 common_functions.php:3251
 msgid "Assessment value"
 msgstr "Değer"
 
@@ -2866,7 +2898,7 @@ msgstr "Anketiniz her doldurulmuş yanıtla birlikte pin kodu bilgisini verebili
 
 #: admin/exportresults.php:234 admin/exportresults.php:439
 #: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1045
-#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6213
+#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6238
 #: replacements.php:521
 msgid "Email address"
 msgstr "E-posta adresi"
@@ -2951,7 +2983,7 @@ msgstr "Pin kodundan e-posta"
 #: admin/fck_LimeReplacementFields.php:149
 #: admin/fck_LimeReplacementFields.php:165
 #: admin/fck_LimeReplacementFields.php:222 admin/tokens.php:1125
-#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6219
+#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6244
 msgid "Uses left"
 msgstr "Kullanıcı kaldı"
 
@@ -3222,8 +3254,8 @@ msgstr "Evet"
 #: admin/globalsettings.php:254 admin/globalsettings.php:265
 #: admin/globalsettings.php:317 admin/globalsettings.php:329
 #: admin/globalsettings.php:350 admin/globalsettings.php:370
-#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3438
-#: common_functions.php:3646
+#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3449
+#: common_functions.php:3657
 msgid "Off"
 msgstr "Hayır"
 
@@ -3482,7 +3514,7 @@ msgid "HTML editor mode"
 msgstr "HTML düzenleyici kipi"
 
 #: admin/html.php:118 admin/html.php:129 admin/html.php:139
-#: admin/login_check.php:229 common_functions.php:3893
+#: admin/login_check.php:229 common_functions.php:3904
 msgid "Default"
 msgstr "Varsayılan"
 
@@ -3680,8 +3712,8 @@ msgstr "Soru Grubu"
 #: admin/html.php:611 admin/tokens.php:823 admin/tokens.php:857
 #: common_functions.php:651 common_functions.php:654 common_functions.php:1312
 #: common_functions.php:1337 common_functions.php:1412
-#: common_functions.php:3881 common_functions.php:4850
-#: common_functions.php:4886
+#: common_functions.php:3892 common_functions.php:4875
+#: common_functions.php:4911
 msgid "None"
 msgstr "Seçime geri dön"
 
@@ -3701,7 +3733,7 @@ msgstr "Sonraki soru grubu"
 msgid "No next question group"
 msgstr "Daha sonra bir soru grubu yok"
 
-#: admin/html.php:663 admin/html.php:1085
+#: admin/html.php:663 admin/html.php:1085 common_functions.php:3239
 msgid "Disabled"
 msgstr "Devre dışı"
 
@@ -4377,7 +4409,7 @@ msgstr "HTML düzenleyiciyi açılan pencerede başlat"
 
 #: admin/htmleditor-functions.php:169
 msgid "Give focus to the HTML Editor Popup Window"
-msgstr "HTML düzenleyici açılan penceresine odaklan"
+msgstr "Açılan HTML düzenleyici penceresine odaklan"
 
 #: admin/htmleditor-popup.php:39 admin/htmleditor-popup.php:47
 msgid "HTML Editor"
@@ -5047,7 +5079,7 @@ msgstr "%d kodlu anket %s zamanında kaydedilmiş ve %d kayıt içeriyor (%s)"
 
 #: admin/integritycheck.php:483
 msgid "The following old survey tables should be deleted because their parent survey no longer exists"
-msgstr "Üst anketleri artık bulunmadığından bu eski anket tabloları silinmeli"
+msgstr "Üst anketleri artık bulunmadığından şu eski anket tabloları silinmeli"
 
 #: admin/integritycheck.php:489
 msgid "All old survey tables meet consistency standards"
@@ -5218,7 +5250,7 @@ msgstr "Önemli açıklamalar"
 
 #: admin/iterate_survey.php:31
 msgid "Click on the following button if you want to"
-msgstr "Eğer şunu yapmak istiyorsanız aşağıdaki butona tıklayın:"
+msgstr "Yapmak istediğiniz işlem için düğmeye tıklayın"
 
 #: admin/iterate_survey.php:33
 msgid "Delete all incomplete answers that correspond to a token for which a completed answers is already recorded"
@@ -5487,8 +5519,8 @@ msgstr "Lütfen aşağıdakilerden *yalnız birini* seçin:"
 msgid "Please enter a date:"
 msgstr "Lütfen bir tarih yazın:"
 
-#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2569
-#: qanda.php:2570 qanda.php:2601
+#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2583
+#: qanda.php:2584 qanda.php:2615
 msgid "Make a comment on your choice here:"
 msgstr "Seçiminiz hakkında bir açıklama yazın:"
 
@@ -5513,9 +5545,9 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Lütfen istediklerinizi seçip açıklamalarınızı yazın:"
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2745
-#: classes/expressions/LimeExpressionManager.php:5096 qanda.php:1281
-#: qanda.php:1581 qanda.php:2191 qanda.php:2491
+#: classes/expressions/LimeExpressionManager.php:2873
+#: classes/expressions/LimeExpressionManager.php:5283 qanda.php:1295
+#: qanda.php:1595 qanda.php:2205 qanda.php:2505
 msgid "Other:"
 msgstr "Diğer:"
 
@@ -5826,7 +5858,7 @@ msgid "Select Question"
 msgstr "Soru Seçin"
 
 #: admin/quota.php:725 admin/quota.php:788 admin/templates.php:429
-#: index.php:2405 index.php:2411 index.php:2416
+#: index.php:2370 index.php:2376 index.php:2381
 msgid "Next"
 msgstr "Sonraki"
 
@@ -6377,7 +6409,7 @@ msgstr "Grup 1: İlk soru grubu"
 msgid "This group description is fairly vacuous, but quite important."
 msgstr "Bu grup açıklaması gereksiz görünebilir ama oldukça önemlidir."
 
-#: admin/templates.php:430 index.php:2399 index.php:2804
+#: admin/templates.php:430 index.php:2364 index.php:2769
 msgid "Previous"
 msgstr "Önceki"
 
@@ -7387,7 +7419,7 @@ msgstr "kalanları kullanır"
 msgid "until"
 msgstr "Geçerlilik sonu:"
 
-#: admin/tokens.php:2399 admin/tokens.php:2482 qanda.php:1216 qanda.php:1223
+#: admin/tokens.php:2399 admin/tokens.php:2482 qanda.php:1230 qanda.php:1237
 msgid "Format: %s"
 msgstr "Biçim: %s"
 
@@ -7514,7 +7546,7 @@ msgstr "Liste"
 
 #: admin/tokens.php:2936
 msgid "%s lines had a mismatching number of fields."
-msgstr "%s satır alan sayısına uymuyor."
+msgstr "%s satırın alan sayıları uyuşmuyor."
 
 #: admin/tokens.php:2946 admin/tokens.php:3172
 msgid "%s records with invalid email address removed"
@@ -7570,7 +7602,7 @@ msgstr "Dosyanın karakter seti:"
 
 #: admin/tokens.php:3218
 msgid "Separator used:"
-msgstr "Ayraç kullanıldı:"
+msgstr "Kullanılacak ayırac:"
 
 #: admin/tokens.php:3221 admin/tokens.php:3272
 msgid "Filter blank email addresses:"
@@ -7582,7 +7614,7 @@ msgstr "Yinelenen kayıtları süz:"
 
 #: admin/tokens.php:3223
 msgid "Duplicates are determined by:"
-msgstr "Yinelenenler şuna göre belirlendi:"
+msgstr "Yinelenenleri şuna göre belirle:"
 
 #: admin/tokens.php:3253
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
@@ -7831,7 +7863,7 @@ msgstr "Veritabanı yedeği oluşturulmadı:"
 
 #: admin/update/updater.php:481
 msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
-msgstr "Şu anda kullandığınız veritabanı tipi için yedekleme işlevi yok. Devam etmeden önce lütfen veritabanınızı başka bir yedekleme aracı ile yedekleyin!"
+msgstr "Şu anda kullandığınız tip için veritabanı yedekleme işlevi yok. Devam etmeden önce veritabanınızı başka bir yedekleme aracı ile yedekleyin!"
 
 #: admin/update/updater.php:484
 msgid "Please check any problems above and then proceed to the final step."
@@ -7901,8 +7933,8 @@ msgstr "Lütfen sabırlı olun..."
 msgid "Moving user templates to new location at %s..."
 msgstr "Kullanıcı temaları %s konumuna taşınıyor..."
 
-#: admin/update/upgrade-mssql.php:593 admin/update/upgrade-mssqlnative.php:594
-#: admin/update/upgrade-mysql.php:702 admin/update/upgrade-postgres.php:422
+#: admin/update/upgrade-mssql.php:597 admin/update/upgrade-mssqlnative.php:598
+#: admin/update/upgrade-mysql.php:706 admin/update/upgrade-postgres.php:426
 msgid "Database update finished (%s)"
 msgstr "Veritabanı yükleme bitti (%s)"
 
@@ -8156,7 +8188,7 @@ msgstr "Hepsini kullan / temaları yönet"
 
 #: admin/userrighthandling.php:330
 msgid "Manage Labels"
-msgstr "Etiket Yönetme"
+msgstr "Etiket Yönetimi"
 
 #: admin/userrighthandling.php:420
 msgid "Ownership was successfully changed."
@@ -8611,7 +8643,7 @@ msgstr "Sırpça"
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: classes/core/surveytranslator.php:542 classes/core/surveytranslator.php:549
+#: classes/core/surveytranslator.php:549
 msgid "Spanish (Mexico)"
 msgstr "İspanyolca (Meksika)"
 
@@ -8677,7 +8709,7 @@ msgstr "Listedeki yanıtlanan soruları sayar"
 
 #: classes/expressions/ExpressionManager.php:154
 msgid "Format a local date/time"
-msgstr "Yerel tarih/zaman biçimi"
+msgstr "Yerel tarih/zamanı biçimlendirir"
 
 #: classes/expressions/ExpressionManager.php:155
 msgid "Calculates the exponent of e"
@@ -8693,7 +8725,7 @@ msgstr "Küsuratları aşağı yuvarlar"
 
 #: classes/expressions/ExpressionManager.php:158
 msgid "Format a GMT date/time"
-msgstr "GMT tarih/zaman biçimi"
+msgstr "GMT tarih/zamanı biçimlendirir"
 
 #: classes/expressions/ExpressionManager.php:159
 msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
@@ -8713,7 +8745,7 @@ msgstr "HTML ögelerini özel karakterlere dönüştürür (herzaman ENT_QUOTES 
 
 #: classes/expressions/ExpressionManager.php:163
 msgid "Format a local time/date as integer"
-msgstr "Yerel tarih/saati tamsayı olarak biçimlendir"
+msgstr "Yerel tarih/saati tamsayı olarak biçimlendirir"
 
 #: classes/expressions/ExpressionManager.php:164
 msgid "Conditional processing"
@@ -8805,7 +8837,7 @@ msgstr "8 bit dizgeyi tırnaklı yazdırılabilir dizgeye dönüştürür"
 
 #: classes/expressions/ExpressionManager.php:186
 msgid "Quote meta characters"
-msgstr "Meta karakterlerini tırnağa alır"
+msgstr "Meta karakterlerini tırnak arasına alır"
 
 #: classes/expressions/ExpressionManager.php:187
 msgid "Generate a random integer"
@@ -8959,7 +8991,7 @@ msgid "This variable is not declared until a later page"
 msgstr "Değişken daha sonraki bir sayfaya kadar tanımlanmamış"
 
 #: classes/expressions/ExpressionManager.php:572
-#: classes/expressions/ExpressionManager.php:1680
+#: classes/expressions/ExpressionManager.php:1683
 msgid "Undefined variable"
 msgstr "Tanımlanmamış değişken"
 
@@ -8977,11 +9009,11 @@ msgstr "Yalnız değişkenlere değer atanabilir"
 
 #: classes/expressions/ExpressionManager.php:727
 msgid "Expected expressions separated by commas"
-msgstr "Virgülle ayrılmış denklemler olması beklenir"
+msgstr "Virgülle ayrılmış ifadeler beklenir"
 
 #: classes/expressions/ExpressionManager.php:735
 msgid "Extra token found after Expressions"
-msgstr "Denklemlerden sonra fazladan komut bulundu"
+msgstr "İfadelerden sonra fazladan komut bulundu"
 
 #: classes/expressions/ExpressionManager.php:751
 msgid "Undefined Function"
@@ -8999,220 +9031,220 @@ msgstr "İşlevde fazladan virgül var"
 msgid "Expected right parentheses"
 msgstr "Eksik sağ parantez"
 
-#: classes/expressions/ExpressionManager.php:1664
+#: classes/expressions/ExpressionManager.php:1667
 msgid "Extra right parentheses detected"
 msgstr "Fazla sağ parantez"
 
-#: classes/expressions/ExpressionManager.php:1673
+#: classes/expressions/ExpressionManager.php:1676
 msgid "Undefined function"
 msgstr "Tanımsız işlev"
 
-#: classes/expressions/ExpressionManager.php:1685
+#: classes/expressions/ExpressionManager.php:1688
 msgid "Unsupported syntax"
 msgstr "Desteklenmeyen yazım"
 
-#: classes/expressions/ExpressionManager.php:1693
+#: classes/expressions/ExpressionManager.php:1696
 msgid "Missing %s closing right parentheses"
 msgstr "%s sağ kapama parantezi eksik"
 
-#: classes/expressions/ExpressionManager.php:1949
+#: classes/expressions/ExpressionManager.php:1952
 msgid "Function must have at least %s argument(s)"
 msgstr "İşlevin en az %s argümanı olmalı"
 
-#: classes/expressions/ExpressionManager.php:2040
+#: classes/expressions/ExpressionManager.php:2053
 msgid "Unsupported number of arguments: %s"
 msgstr "Desteklenmeyen argüman sayısı: %s"
 
-#: classes/expressions/ExpressionManager.php:2045
+#: classes/expressions/ExpressionManager.php:2058
 msgid "Function does not support %s arguments. "
 msgstr "İşlev %s argümanı desteklemiyor."
 
-#: classes/expressions/ExpressionManager.php:2046
+#: classes/expressions/ExpressionManager.php:2059
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr "İşlev %s argüman destekliyor. -1 sınırsız anlamına gelir."
 
-#: classes/expressions/ExpressionManager.php:2279
+#: classes/expressions/ExpressionManager.php:2292
 msgid "Tried to pop value off of empty stack"
 msgstr "Boş bir yığından değer alınmaya çalışıldı"
 
-#: classes/expressions/ExpressionManager.php:3203
+#: classes/expressions/ExpressionManager.php:3325
 msgid "Invalid PERL Regular Expression: %s"
 msgstr "Geçersiz PERL Kurallı İfadesi: %s"
 
-#: classes/expressions/LimeExpressionManager.php:2237
+#: classes/expressions/LimeExpressionManager.php:2365
 msgid "Please select at least one answer"
 msgstr "Lütfen en az bir yanıt seçin"
 
-#: classes/expressions/LimeExpressionManager.php:2238
+#: classes/expressions/LimeExpressionManager.php:2366
 msgid "Please select at least %s answers"
 msgstr "Lütfen en az %s yanıt seçin"
 
-#: classes/expressions/LimeExpressionManager.php:2242
+#: classes/expressions/LimeExpressionManager.php:2370
 msgid "Please select at most one answer"
 msgstr "Lütfen en çok bir yanıt seçin"
 
-#: classes/expressions/LimeExpressionManager.php:2243
+#: classes/expressions/LimeExpressionManager.php:2371
 msgid "Please select at most %s answers"
 msgstr "Lütfen en çok %s yanıt seçin"
 
-#: classes/expressions/LimeExpressionManager.php:2247
+#: classes/expressions/LimeExpressionManager.php:2375
 msgid "Please select one answer"
 msgstr "Lütfen bir yanıt seçin"
 
-#: classes/expressions/LimeExpressionManager.php:2248
+#: classes/expressions/LimeExpressionManager.php:2376
 msgid "Please select %s answers"
 msgstr "Lütfen %s yanıt seçin"
 
-#: classes/expressions/LimeExpressionManager.php:2250
+#: classes/expressions/LimeExpressionManager.php:2378
 msgid "Please select between %s and %s answers"
 msgstr "Lütfen %s ile %s arasında yanıt seçin"
 
-#: classes/expressions/LimeExpressionManager.php:2266
-#: classes/expressions/LimeExpressionManager.php:2287
+#: classes/expressions/LimeExpressionManager.php:2394
+#: classes/expressions/LimeExpressionManager.php:2415
 msgid "Each answer must be at least %s"
 msgstr "Her yanıt en az %s olmalı"
 
-#: classes/expressions/LimeExpressionManager.php:2268
-#: classes/expressions/LimeExpressionManager.php:2289
+#: classes/expressions/LimeExpressionManager.php:2396
+#: classes/expressions/LimeExpressionManager.php:2417
 msgid "Each answer must be at most %s"
 msgstr "Her yanıt en çok %s olmalı"
 
-#: classes/expressions/LimeExpressionManager.php:2270
-#: classes/expressions/LimeExpressionManager.php:2291
+#: classes/expressions/LimeExpressionManager.php:2398
+#: classes/expressions/LimeExpressionManager.php:2419
 msgid "Each answer must be %s"
 msgstr "Her yanıt %s olmalı"
 
-#: classes/expressions/LimeExpressionManager.php:2271
-#: classes/expressions/LimeExpressionManager.php:2292
+#: classes/expressions/LimeExpressionManager.php:2399
+#: classes/expressions/LimeExpressionManager.php:2420
 msgid "Each answer must be between %s and %s"
 msgstr "Her yanıt %s ile %s arasında olmalı"
 
-#: classes/expressions/LimeExpressionManager.php:2308
+#: classes/expressions/LimeExpressionManager.php:2436
 msgid "The sum must be at least %s"
 msgstr "Toplam en az %s olmalı"
 
-#: classes/expressions/LimeExpressionManager.php:2310
+#: classes/expressions/LimeExpressionManager.php:2438
 msgid "The sum must be at most %s"
 msgstr "Toplam en çok %s olmalı"
 
-#: classes/expressions/LimeExpressionManager.php:2312
-#: classes/expressions/LimeExpressionManager.php:2354
+#: classes/expressions/LimeExpressionManager.php:2440
+#: classes/expressions/LimeExpressionManager.php:2482
 msgid "The sum must equal %s"
 msgstr "Toplam %s olmalı"
 
-#: classes/expressions/LimeExpressionManager.php:2313
+#: classes/expressions/LimeExpressionManager.php:2441
 msgid "The sum must be between %s and %s"
 msgstr "Toplam %s ile %s arasında olmalı"
 
-#: classes/expressions/LimeExpressionManager.php:2360
+#: classes/expressions/LimeExpressionManager.php:2488
 msgid "Please also fill in the \"other comment\" field."
 msgstr "Lütfen \"diğer için açıklama\" alanını da doldurun."
 
-#: classes/expressions/LimeExpressionManager.php:2368
+#: classes/expressions/LimeExpressionManager.php:2496
 msgid "Please check the format of your answer."
 msgstr "Lütfen yanıtınızın biçimini denetleyin."
 
-#: classes/expressions/LimeExpressionManager.php:4110
+#: classes/expressions/LimeExpressionManager.php:4294
 msgid "Unable to insert record into survey table: "
 msgstr "Kayıt anket tablosuna eklenemedi:"
 
-#: classes/expressions/LimeExpressionManager.php:4126
+#: classes/expressions/LimeExpressionManager.php:4310
 msgid "Unable to insert record into timings table "
 msgstr "Zamanlama tablosuna kayıt eklenemedi"
 
-#: classes/expressions/LimeExpressionManager.php:5076
+#: classes/expressions/LimeExpressionManager.php:5260
 msgid "This question is mandatory"
 msgstr "Bu soruyu yanıtlamak zorunlu"
 
-#: classes/expressions/LimeExpressionManager.php:5088
+#: classes/expressions/LimeExpressionManager.php:5274
 msgid "Please check at least one item."
 msgstr "Lütfen an az bir ögeyi işaretleyin"
 
-#: classes/expressions/LimeExpressionManager.php:5098
+#: classes/expressions/LimeExpressionManager.php:5285
 msgid "If you choose '%s' you must provide a description."
 msgstr "'%s' seçerseniz bir açıklama yazmalısınız."
 
-#: classes/expressions/LimeExpressionManager.php:5120
-#: classes/expressions/LimeExpressionManager.php:5157
+#: classes/expressions/LimeExpressionManager.php:5307
+#: classes/expressions/LimeExpressionManager.php:5344
 msgid "Please complete all parts"
 msgstr "Lütfen tüm bölümleri tamamlayın"
 
-#: classes/expressions/LimeExpressionManager.php:5149
+#: classes/expressions/LimeExpressionManager.php:5336
 msgid "Please check at least one box per row"
 msgstr "Lütfen her satırda en az bir ögeyi işaretleyin"
 
-#: classes/expressions/LimeExpressionManager.php:5165
+#: classes/expressions/LimeExpressionManager.php:5352
 msgid "Please rank all items"
 msgstr "Lütfen tüm ögeleri derecelendirin"
 
-#: classes/expressions/LimeExpressionManager.php:7517
+#: classes/expressions/LimeExpressionManager.php:7758
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Geçersiz soru. Muhtemelen alt sorular ya da şu dil için dile özel ayarlar eksik: "
 
-#: classes/expressions/LimeExpressionManager.php:7522
+#: classes/expressions/LimeExpressionManager.php:7763
 msgid "Name [ID]"
 msgstr "Ad [Kod]"
 
-#: classes/expressions/LimeExpressionManager.php:7522
+#: classes/expressions/LimeExpressionManager.php:7763
 msgid "Relevance [Validation] (Default)"
 msgstr "İlinti [Geçerlilik] (Varsayılan)"
 
-#: classes/expressions/LimeExpressionManager.php:7522
+#: classes/expressions/LimeExpressionManager.php:7763
 msgid "Text [Help] (Tip)"
 msgstr "Metin [Yardım] (İpucu)"
 
-#: classes/expressions/LimeExpressionManager.php:7573
-#: classes/expressions/LimeExpressionManager.php:7801
+#: classes/expressions/LimeExpressionManager.php:7814
+#: classes/expressions/LimeExpressionManager.php:8058
 msgid "DEFAULT:"
 msgstr "VARSAYILAN:"
 
-#: classes/expressions/LimeExpressionManager.php:7581
+#: classes/expressions/LimeExpressionManager.php:7822
 msgid "HELP:"
 msgstr "YARDIM:"
 
-#: classes/expressions/LimeExpressionManager.php:7582
+#: classes/expressions/LimeExpressionManager.php:7823
 msgid "TIP:"
 msgstr "İPUCU:"
 
-#: classes/expressions/LimeExpressionManager.php:7589
+#: classes/expressions/LimeExpressionManager.php:7840
 msgid "Question Attribute"
 msgstr "Soru Özniteliği"
 
-#: classes/expressions/LimeExpressionManager.php:7589
+#: classes/expressions/LimeExpressionManager.php:7840
 msgid "Value"
 msgstr "Değer"
 
-#: classes/expressions/LimeExpressionManager.php:7690
+#: classes/expressions/LimeExpressionManager.php:7947
 msgid "VALIDATION:"
 msgstr "GEÇERLİLİK:"
 
-#: classes/expressions/LimeExpressionManager.php:7704
+#: classes/expressions/LimeExpressionManager.php:7961
 msgid "This variable name has already been used."
 msgstr "Aynı adlı bir değişken zaten kullanılmış."
 
-#: classes/expressions/LimeExpressionManager.php:7716
+#: classes/expressions/LimeExpressionManager.php:7973
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "1.92 sürümünden sonra, değişken adları yalnız harf, rakam ve alt çizgi karakterlerinden oluşabilir ve bir rakam ile başlayamaz. Artık bu değişken adının kullanılması önerilmez. "
 
-#: classes/expressions/LimeExpressionManager.php:7869
+#: classes/expressions/LimeExpressionManager.php:8126
 msgid "This question has at least %s error(s)"
 msgstr "Bu soruda en az %s hata var"
 
-#: classes/expressions/LimeExpressionManager.php:7908
+#: classes/expressions/LimeExpressionManager.php:8165
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s soruda düzeltilmesi gereken hatalar var"
 
-#: classes/expressions/LimeExpressionManager.php:7914
+#: classes/expressions/LimeExpressionManager.php:8171
 msgid "No syntax errors detected in this survey"
 msgstr "Bu ankette hiç yazım hatası yok"
 
-#: classes/expressions/LimeExpressionManager.php:7917
+#: classes/expressions/LimeExpressionManager.php:8174
 msgid "This group, by itself, does not contain any syntax errors"
-msgstr "Bu drupta hiç yazım hatası yok"
+msgstr "Bu grupta hiç yazım hatası yok"
 
-#: classes/expressions/LimeExpressionManager.php:7920
+#: classes/expressions/LimeExpressionManager.php:8177
 msgid "This question, by itself, does not contain any syntax errors"
-msgstr "Bu soru hiç yazım hatası içermiyor"
+msgstr "Bu soruda hiç yazım hatası yok"
 
 #: classes/expressions/test/survey_logic_file.php:138
 msgid "Logic File for Survey # "
@@ -9487,20 +9519,20 @@ msgid "Question time"
 msgstr "Soru zamanı"
 
 #: common_functions.php:3198 common_functions.php:3209
-#: common_functions.php:3244 common_functions.php:3252
-#: common_functions.php:3263 common_functions.php:3271
-#: common_functions.php:3282 common_functions.php:3290
-#: common_functions.php:3298 common_functions.php:3306
-#: common_functions.php:3314 common_functions.php:3322
-#: common_functions.php:3492 common_functions.php:3503
-#: common_functions.php:3570 common_functions.php:3578
-#: common_functions.php:3586 common_functions.php:3594
-#: common_functions.php:3605 common_functions.php:3672
-#: common_functions.php:3705 common_functions.php:3724
-#: common_functions.php:3743 common_functions.php:3808
-#: common_functions.php:3842 common_functions.php:3850
-#: common_functions.php:3858 common_functions.php:3869
-#: common_functions.php:3878
+#: common_functions.php:3255 common_functions.php:3263
+#: common_functions.php:3274 common_functions.php:3282
+#: common_functions.php:3293 common_functions.php:3301
+#: common_functions.php:3309 common_functions.php:3317
+#: common_functions.php:3325 common_functions.php:3333
+#: common_functions.php:3503 common_functions.php:3514
+#: common_functions.php:3581 common_functions.php:3589
+#: common_functions.php:3597 common_functions.php:3605
+#: common_functions.php:3616 common_functions.php:3683
+#: common_functions.php:3716 common_functions.php:3735
+#: common_functions.php:3754 common_functions.php:3819
+#: common_functions.php:3853 common_functions.php:3861
+#: common_functions.php:3869 common_functions.php:3880
+#: common_functions.php:3889
 msgid "Display"
 msgstr "Görünüm"
 
@@ -9521,18 +9553,19 @@ msgid "Answer width"
 msgstr "Yanıt genişliği"
 
 #: common_functions.php:3219 common_functions.php:3227
-#: common_functions.php:3235 common_functions.php:3338
-#: common_functions.php:3346 common_functions.php:3354
-#: common_functions.php:3362 common_functions.php:3370
-#: common_functions.php:3378 common_functions.php:3514
-#: common_functions.php:3546 common_functions.php:3683
-#: common_functions.php:3694 common_functions.php:4107
+#: common_functions.php:3235 common_functions.php:3246
+#: common_functions.php:3349 common_functions.php:3357
+#: common_functions.php:3365 common_functions.php:3373
+#: common_functions.php:3381 common_functions.php:3389
+#: common_functions.php:3525 common_functions.php:3557
+#: common_functions.php:3694 common_functions.php:3705
+#: common_functions.php:4118
 msgid "Logic"
 msgstr "Mantık"
 
 #: common_functions.php:3222
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
-msgstr ""
+msgstr "Bu soruda, yalnız uyan yanıt seçenekleri gösterilecek çoktan seçmeli soruların kodlarını noktalı virgül ile ayırarak yazın."
 
 #: common_functions.php:3223
 msgid "Array filter"
@@ -9540,848 +9573,848 @@ msgstr "Dizi süzgeci"
 
 #: common_functions.php:3230
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
-msgstr ""
+msgstr "Bu soruda, uyan yanıt seçenekleri gösterilmeyecek çoktan seçmeli soruların kodlarını noktalı virgül ile ayırarak yazın."
 
 #: common_functions.php:3231
 msgid "Array filter exclusion"
 msgstr "Dizi süzgeci dışlaması"
 
-#: common_functions.php:3239
+#: common_functions.php:3250
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr "İşaretlenecek her altsoru için bu değerlendirme kuralı eklenecektir. "
 
-#: common_functions.php:3247 common_functions.php:3248
+#: common_functions.php:3258 common_functions.php:3259
 msgid "Category separator"
 msgstr "Kategori Ayıracı "
 
-#: common_functions.php:3258
+#: common_functions.php:3269
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "Yanıt seçenekleri burada ayarlanan sütun sayısına göre dağıtılacaktır"
 
-#: common_functions.php:3259
+#: common_functions.php:3270
 msgid "Display columns"
 msgstr "Sütunları göster"
 
-#: common_functions.php:3266
+#: common_functions.php:3277
 msgid "How many rows to display"
 msgstr "Kaç satır gösterilsin?"
 
-#: common_functions.php:3267
+#: common_functions.php:3278
 msgid "Display rows"
 msgstr "Satırları göster"
 
-#: common_functions.php:3277
+#: common_functions.php:3288
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "Takvim açılır penceresi yerine erişilebilir seçim kutuları kullan "
 
-#: common_functions.php:3278
+#: common_functions.php:3289
 msgid "Display dropdown boxes"
 msgstr "Tıkla aç kutularını göster"
 
-#: common_functions.php:3285
+#: common_functions.php:3296
 msgid "Minimum year value in calendar"
 msgstr "Takvimdeki en eski yıl"
 
-#: common_functions.php:3286
+#: common_functions.php:3297
 msgid "Minimum year"
 msgstr "En eski yıl"
 
-#: common_functions.php:3293
+#: common_functions.php:3304
 msgid "Maximum year value for calendar"
 msgstr "Takvimdeki en yeni yıl"
 
-#: common_functions.php:3294
+#: common_functions.php:3305
 msgid "Maximum year"
 msgstr "En yeni yıl"
 
-#: common_functions.php:3301
+#: common_functions.php:3312
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Açılan kutular için önek|sonek"
 
-#: common_functions.php:3302
+#: common_functions.php:3313
 msgid "Dropdown prefix/suffix"
 msgstr "Açılır kapanır önek/sonek"
 
-#: common_functions.php:3309
+#: common_functions.php:3320
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Açılan kutular için Yanıt Sonrası Ayıracı|Açılan Kutu Ayıracı"
 
-#: common_functions.php:3310
+#: common_functions.php:3321
 msgid "Dropdown separator"
 msgstr "Açılan kutu ayıraçları "
 
-#: common_functions.php:3317
+#: common_functions.php:3328
 msgid "Enter a header text for the first scale"
 msgstr "birinci ölçek için bir başlık bilgisi yazın"
 
-#: common_functions.php:3318
+#: common_functions.php:3329
 msgid "Header for first scale"
 msgstr "Başlık için ilk ölçek"
 
-#: common_functions.php:3325
+#: common_functions.php:3336
 msgid "Enter a header text for the second scale"
 msgstr "İkinci ölçek için bir başlık bilgisi yazın"
 
-#: common_functions.php:3326
+#: common_functions.php:3337
 msgid "Header for second scale"
 msgstr "İkinci ölçek için başlık"
 
-#: common_functions.php:3330 common_functions.php:3522
-#: common_functions.php:3530 common_functions.php:3538
-#: common_functions.php:3554 common_functions.php:3562
-#: common_functions.php:3616
+#: common_functions.php:3341 common_functions.php:3533
+#: common_functions.php:3541 common_functions.php:3549
+#: common_functions.php:3565 common_functions.php:3573
+#: common_functions.php:3627 common_functions.php:4130
 msgid "Input"
 msgstr "Giriş"
 
-#: common_functions.php:3333
+#: common_functions.php:3344
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Birden çok sayısal girişin toplamı bu değere eşit olmalı"
 
-#: common_functions.php:3334
+#: common_functions.php:3345
 msgid "Equals sum value"
 msgstr "Eşdeğer toplam değeri"
 
-#: common_functions.php:3341
+#: common_functions.php:3352
 msgid "Boolean equation to validate the whole question."
 msgstr "Tüm soruyu geçerli kılacak ikili denklem."
 
-#: common_functions.php:3342
+#: common_functions.php:3353
 msgid "Question validation equation"
 msgstr "Soru geçerlilik denklemi"
 
-#: common_functions.php:3349
+#: common_functions.php:3360
 msgid "Tip to show user describing the question validation equation."
 msgstr "Soru geçerlilik denklemini kullanıcıya açıklayan ipucu."
 
-#: common_functions.php:3350
+#: common_functions.php:3361
 msgid "Question validation tip"
 msgstr "Soru geçerlilik ipucu"
 
-#: common_functions.php:3357
+#: common_functions.php:3368
 msgid "Boolean equation to validate each sub-question."
 msgstr "Her bir alt soruyu geçerli kılacak ikili denklem."
 
-#: common_functions.php:3358
+#: common_functions.php:3369
 msgid "Sub-question validation equation"
 msgstr "Alt soru geçerlilik denklemi"
 
-#: common_functions.php:3365
+#: common_functions.php:3376
 msgid "Tip to show user describing the sub-question validation equation."
 msgstr "Alt soru geçerlilik denklemini kullanıcıya açıklayan ipucu."
 
-#: common_functions.php:3366
+#: common_functions.php:3377
 msgid "Sub-question validation tip"
 msgstr "Alt soru geçerlilik ipucu"
 
-#: common_functions.php:3373
+#: common_functions.php:3384
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr "Belirli bir yanıt seçildiğinde tüm diğer seçenekleri dışlar - yalnızca yanıt kodlarını, noktalı virgül ile ayırarak yazın."
 
-#: common_functions.php:3374
+#: common_functions.php:3385
 msgid "Exclusive option"
 msgstr "Dışlama seçeneği"
 
-#: common_functions.php:3384
+#: common_functions.php:3395
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr "Eğer katılımcı tüm seçenekleri işaretlediyse tümünün işaretini kaldırın ve \"Özel seçenek\" ayarını işaretleyin"
 
-#: common_functions.php:3385
+#: common_functions.php:3396
 msgid "Auto-check exclusive option if all others are checked"
 msgstr "Eğer diğer bütün seçenekler işaretlendiyse özel seçeneği otamatikman işaretle"
 
-#: common_functions.php:3392 common_functions.php:3403
-#: common_functions.php:3414 common_functions.php:3425
-#: common_functions.php:3435 common_functions.php:3445
-#: common_functions.php:3454 common_functions.php:3463
-#: common_functions.php:3473 common_functions.php:3481
+#: common_functions.php:3403 common_functions.php:3414
+#: common_functions.php:3425 common_functions.php:3436
+#: common_functions.php:3446 common_functions.php:3456
+#: common_functions.php:3465 common_functions.php:3474
+#: common_functions.php:3484 common_functions.php:3492
 msgid "Location"
 msgstr "Konum"
 
-#: common_functions.php:3397
+#: common_functions.php:3408
 msgid "Store the city?"
 msgstr "Şehir kaydedilsin mi?"
 
-#: common_functions.php:3398
+#: common_functions.php:3409
 msgid "Save city"
 msgstr "Şehri kaydet"
 
-#: common_functions.php:3408
+#: common_functions.php:3419
 msgid "Store the state?"
 msgstr "Bölge kaydedilsin mi ?"
 
-#: common_functions.php:3409
+#: common_functions.php:3420
 msgid "Save state"
 msgstr "Bölgeyi kaydet"
 
-#: common_functions.php:3419
+#: common_functions.php:3430
 msgid "Store the postal code?"
 msgstr "Posta kodu kaydedilsin mi ?"
 
-#: common_functions.php:3420
+#: common_functions.php:3431
 msgid "Save postal code"
 msgstr "Posta kodu kaydedilsin mi ?"
 
-#: common_functions.php:3430
+#: common_functions.php:3441
 msgid "Store the country?"
 msgstr "Ülke kaydedilsin mi ?"
 
-#: common_functions.php:3431
+#: common_functions.php:3442
 msgid "Save country"
 msgstr "Ülkeyi kaydet"
 
-#: common_functions.php:3439
+#: common_functions.php:3450
 msgid "Google Maps"
 msgstr "Google Haritalar"
 
-#: common_functions.php:3440
+#: common_functions.php:3451
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr "Kullanıcıların yer seçimi yaptığı alan üzerinde bir harita göstermek için etkinleştirin"
 
-#: common_functions.php:3441
+#: common_functions.php:3452
 msgid "Use mapping service"
 msgstr "Haritalama servisini kullan"
 
-#: common_functions.php:3449
+#: common_functions.php:3460
 msgid "Width of the map in pixel"
 msgstr "Haritanın piksel olarak genişliği"
 
-#: common_functions.php:3450
+#: common_functions.php:3461
 msgid "Map width"
 msgstr "Harita genişliği"
 
-#: common_functions.php:3458
+#: common_functions.php:3469
 msgid "Height of the map in pixel"
 msgstr "Piksel olarak harita yüksekliği"
 
-#: common_functions.php:3459
+#: common_functions.php:3470
 msgid "Map height"
 msgstr "Harita yüksekliği"
 
-#: common_functions.php:3468
+#: common_functions.php:3479
 msgid "Get the default location using the user's IP address?"
 msgstr "Kullanıcının varsayılan konumunu IP adresini kullanarak al"
 
-#: common_functions.php:3469
+#: common_functions.php:3480
 msgid "IP as default location"
 msgstr "IP ile varsayılan konum"
 
-#: common_functions.php:3476
+#: common_functions.php:3487
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr "Sayfa ilk yüklendiğinde haritanın varsayılan koordinatları. Biçim: enlem [boşluk] boylam"
 
-#: common_functions.php:3477
+#: common_functions.php:3488
 msgid "Default position"
 msgstr "Varsayılan konum"
 
-#: common_functions.php:3485
+#: common_functions.php:3496
 msgid "Map zoom level"
 msgstr "Harita yakınlaştırma düzeyi"
 
-#: common_functions.php:3486
+#: common_functions.php:3497
 msgid "Zoom level"
 msgstr "Yakınlaştırma düzeyi"
 
-#: common_functions.php:3498
+#: common_functions.php:3509
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Normalde sorularda gösterilen ipucunu gizler"
 
-#: common_functions.php:3499
+#: common_functions.php:3510
 msgid "Hide tip"
 msgstr "İpucunu gizle"
 
-#: common_functions.php:3509
+#: common_functions.php:3520
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr "Bu soruyu her zaman için gizle. Bu seçenek, önceden doldurulmuş yanıtlar kullandığınızda işe yarar."
 
-#: common_functions.php:3510
+#: common_functions.php:3521
 msgid "Always hide this question"
 msgstr "Bu soruyu her zaman gizle"
 
-#: common_functions.php:3517
+#: common_functions.php:3528
 msgid "Limit the number of possible answers"
 msgstr "Olası yanıt sayısını sınırla"
 
-#: common_functions.php:3518
+#: common_functions.php:3529
 msgid "Maximum answers"
 msgstr "En çok yanıt"
 
-#: common_functions.php:3525
+#: common_functions.php:3536
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Birden çok sayısal değerin toplamının en büyük değeri"
 
-#: common_functions.php:3526
+#: common_functions.php:3537
 msgid "Maximum sum value"
 msgstr "Toplamda en büyük değer"
 
-#: common_functions.php:3533
+#: common_functions.php:3544
 msgid "Maximum value of the numeric input"
 msgstr "Birden çok sayısal değerin toplamının en büyük değeri "
 
-#: common_functions.php:3534 common_functions.php:3574
+#: common_functions.php:3545 common_functions.php:3585
 msgid "Maximum value"
 msgstr "En çok toplam değer"
 
-#: common_functions.php:3541
+#: common_functions.php:3552
 msgid "Maximum characters allowed"
 msgstr "İzin verilen en çok karakter sayısı"
 
-#: common_functions.php:3542
+#: common_functions.php:3553
 msgid "Maximum characters"
 msgstr "En çok karakter"
 
-#: common_functions.php:3549
+#: common_functions.php:3560
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Olası yanıtların en düşük değerini sağla (0=Sınırsız)"
 
-#: common_functions.php:3550
+#: common_functions.php:3561
 msgid "Minimum answers"
 msgstr "En az yanıt"
 
-#: common_functions.php:3557
+#: common_functions.php:3568
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr "Birden çok sayısal giriş bu değerden büyük olmalıdır "
 
-#: common_functions.php:3558
+#: common_functions.php:3569
 msgid "Minimum sum value"
 msgstr "En az toplam değer"
 
-#: common_functions.php:3565
+#: common_functions.php:3576
 msgid "Minimum value of the numeric input"
 msgstr "Birden çok sayısal değerin toplamının en küçük değeri"
 
-#: common_functions.php:3566 common_functions.php:3582
+#: common_functions.php:3577 common_functions.php:3593
 msgid "Minimum value"
 msgstr "En az değer"
 
-#: common_functions.php:3573
+#: common_functions.php:3584
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Dizi için en büyük değer (çoklu-esnek) soru tipi"
 
-#: common_functions.php:3581
+#: common_functions.php:3592
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Dizi için en küçük değer (çoklu-esnek) soru tipi"
 
-#: common_functions.php:3589 common_functions.php:3590
+#: common_functions.php:3600 common_functions.php:3601
 msgid "Step value"
 msgstr "Adım değeri"
 
-#: common_functions.php:3600
+#: common_functions.php:3611
 msgid "Use checkbox layout"
 msgstr "İşaret kutusu düzenini kullan"
 
-#: common_functions.php:3601
+#: common_functions.php:3612
 msgid "Checkbox layout"
 msgstr "İşaret kutusu yerleşimi"
 
-#: common_functions.php:3611
+#: common_functions.php:3622
 msgid "Present answer options in reverse order"
 msgstr "Yanıt seçeneklerini ters sırada gösterir"
 
-#: common_functions.php:3612
+#: common_functions.php:3623
 msgid "Reverse answer order"
 msgstr "Yanıtları ters sırala"
 
-#: common_functions.php:3623
+#: common_functions.php:3634
 msgid "Restrict input to integer values"
 msgstr "Yalnız tam sayı yazılmasına izin verir"
 
-#: common_functions.php:3624
+#: common_functions.php:3635
 msgid "Integer only"
 msgstr "Yalnız sayı"
 
-#: common_functions.php:3636
+#: common_functions.php:3647
 msgid "Allow only numerical input"
 msgstr "Yalnız rakam yazılmasına izin verir"
 
-#: common_functions.php:3637
+#: common_functions.php:3648
 msgid "Numbers only"
 msgstr "Yalnız rakamlar"
 
-#: common_functions.php:3647
+#: common_functions.php:3658
 msgid "Rows"
 msgstr "Satırlar"
 
-#: common_functions.php:3648
+#: common_functions.php:3659
 msgid "Columns"
 msgstr "Sütunlar"
 
-#: common_functions.php:3649
+#: common_functions.php:3660
 msgid "Both rows and columns"
 msgstr "Satır ve sütun beraber"
 
-#: common_functions.php:3652
+#: common_functions.php:3663
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr "Satırlar, sütunlar ya da ikisi için de toplamları göster"
 
-#: common_functions.php:3653
+#: common_functions.php:3664
 msgid "Show totals for"
 msgstr "Şunun için toplamları göster"
 
-#: common_functions.php:3666
+#: common_functions.php:3677
 msgid "Show grand total for either columns or rows"
 msgstr "Satırlar ya da sütunların en büyük toplamını göster"
 
-#: common_functions.php:3667
+#: common_functions.php:3678
 msgid "Show grand total"
 msgstr "En büyük toplamını göster"
 
-#: common_functions.php:3678
+#: common_functions.php:3689
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "Açılan kutular yerine metin giriş kutuları olarak göster"
 
-#: common_functions.php:3679
+#: common_functions.php:3690
 msgid "Text inputs"
 msgstr "Metin girişleri"
 
-#: common_functions.php:3689
+#: common_functions.php:3700
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "'Diğer' seçeneği etkinken 'Diğer için açıklama' alanının doldurulmasını zorunlu kılar"
 
-#: common_functions.php:3690
+#: common_functions.php:3701
 msgid "'Other:' comment mandatory"
 msgstr "'Diğer' açıklaması zorunlu"
 
-#: common_functions.php:3700
+#: common_functions.php:3711
 msgid "Allow only numerical input for 'Other' text"
 msgstr "'Diğer' metni için yalnız rakam yazılmasına izin verir"
 
-#: common_functions.php:3701
+#: common_functions.php:3712
 msgid "Numbers only for 'Other'"
 msgstr "'Diğer' yalnız sayı olsun"
 
-#: common_functions.php:3708
+#: common_functions.php:3719
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "'Diğer' alanının etiketini istenen bir metin ile değiştirir"
 
-#: common_functions.php:3709
+#: common_functions.php:3720
 msgid "Label for 'Other:' option"
 msgstr "'Diğer' seçeneğinin etiketi"
 
-#: common_functions.php:3719
+#: common_functions.php:3730
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "Evet olarak seçtiğinizde, yazdırılabilir görünümde bu sorudan önce bir sayfa başı eklenir."
 
-#: common_functions.php:3720
+#: common_functions.php:3731
 msgid "Insert page break in printable view"
 msgstr "Yazdırılabilir görünümde sayfa başı ekle"
 
-#: common_functions.php:3727
+#: common_functions.php:3738
 msgid "Add a prefix to the answer field"
 msgstr "Yanıt alanına bir önek ekle"
 
-#: common_functions.php:3728
+#: common_functions.php:3739
 msgid "Answer prefix"
 msgstr "Yanıt öneki"
 
-#: common_functions.php:3738
+#: common_functions.php:3749
 msgid "Show statistics of this question in the public statistics page"
 msgstr "Bu sorunun istatistiklerini herkese açık istatistikler sayfasında göster"
 
-#: common_functions.php:3739
+#: common_functions.php:3750
 msgid "Show in public statistics"
 msgstr "Herkese açık istatistiklerde göster"
 
-#: common_functions.php:3749
+#: common_functions.php:3760
 msgid "Present answers in random order"
 msgstr "Yanıtları rastgele sırada sun"
 
-#: common_functions.php:3750
+#: common_functions.php:3761
 msgid "Random answer order"
 msgstr "Rastgele yanıt sıralaması"
 
-#: common_functions.php:3754 common_functions.php:3765
-#: common_functions.php:3773 common_functions.php:3781
-#: common_functions.php:3789 common_functions.php:3797
-#: common_functions.php:3823 common_functions.php:3834
+#: common_functions.php:3765 common_functions.php:3776
+#: common_functions.php:3784 common_functions.php:3792
+#: common_functions.php:3800 common_functions.php:3808
+#: common_functions.php:3834 common_functions.php:3845
 msgid "Slider"
 msgstr "Kaydırıcı"
 
-#: common_functions.php:3760 common_functions.php:3761
-#: common_functions.php:3817 common_functions.php:3818
+#: common_functions.php:3771 common_functions.php:3772
+#: common_functions.php:3828 common_functions.php:3829
 msgid "Use slider layout"
 msgstr "Kaydırıcı düzenini kullan"
 
-#: common_functions.php:3768 common_functions.php:3769
+#: common_functions.php:3779 common_functions.php:3780
 msgid "Slider minimum value"
 msgstr "Kaydırıcının en küçük değeri"
 
-#: common_functions.php:3776 common_functions.php:3777
+#: common_functions.php:3787 common_functions.php:3788
 msgid "Slider maximum value"
 msgstr "Kaydırıcının en büyük değeri"
 
-#: common_functions.php:3784 common_functions.php:3785
+#: common_functions.php:3795 common_functions.php:3796
 msgid "Slider accuracy"
 msgstr "Kaydırıcı hassasiyeti"
 
-#: common_functions.php:3792 common_functions.php:3793
+#: common_functions.php:3803 common_functions.php:3804
 msgid "Slider initial value"
 msgstr "Kaydırıcının başlangıç değeri"
 
-#: common_functions.php:3803
+#: common_functions.php:3814
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr "Kaydrıcının ortasında gösterilecek düğme (bu değer başlangıç değeri olarak ayarlanmayacak)"
 
-#: common_functions.php:3804
+#: common_functions.php:3815
 msgid "Slider starts at the middle position"
 msgstr "Kaydırıcı orta konumdan başlasın"
 
-#: common_functions.php:3813
+#: common_functions.php:3824
 msgid "Yes - stars"
 msgstr "Evet - yıldızlar"
 
-#: common_functions.php:3814
+#: common_functions.php:3825
 msgid "Yes - slider with emoticon"
 msgstr "Evet - Yüz ifadeleri ile kaydırcı"
 
-#: common_functions.php:3829
+#: common_functions.php:3840
 msgid "Display min and max value under the slider"
 msgstr "En küçük ve en büyük değerleri kaydırıcının altında gösterir"
 
-#: common_functions.php:3830
+#: common_functions.php:3841
 msgid "Display slider min and max value"
 msgstr "En büyük ve en küçük değerleri göster"
 
-#: common_functions.php:3837
+#: common_functions.php:3848
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "Yanıtta |Sol kaydırıcı metni|Sağ kaydırıcı metni arasındaki karakter"
 
-#: common_functions.php:3838
+#: common_functions.php:3849
 msgid "Slider left/right text separator"
 msgstr "Kaydırıcı sol/sağ metin ayıracı"
 
-#: common_functions.php:3845
+#: common_functions.php:3856
 msgid "Add a suffix to the answer field"
 msgstr "Yanıt alanına bir sonek ekle"
 
-#: common_functions.php:3846
+#: common_functions.php:3857
 msgid "Answer suffix"
 msgstr "Soru soneki"
 
-#: common_functions.php:3853
+#: common_functions.php:3864
 msgid "Width of text input box"
 msgstr "Metin giriş kutusunun genişliği"
 
-#: common_functions.php:3854
+#: common_functions.php:3865
 msgid "Input box width"
 msgstr "Giriş kutusu genişliği"
 
-#: common_functions.php:3864
+#: common_functions.php:3875
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr "Çift ölçek yerine çift açılan kutu kullanır "
 
-#: common_functions.php:3865
+#: common_functions.php:3876
 msgid "Use dropdown boxes"
 msgstr "Açılır kutular kullan"
 
-#: common_functions.php:3873
+#: common_functions.php:3884
 msgid "For list dropdown boxes, show up to this many rows"
 msgstr "Açılan liste kutularında gösterilecek en çok satır sayısı"
 
-#: common_functions.php:3874
+#: common_functions.php:3885
 msgid "Height of dropdown"
 msgstr "Açılan kutunun yüksekliği"
 
-#: common_functions.php:3882
+#: common_functions.php:3893
 msgid "Order"
 msgstr "Sıra"
 
-#: common_functions.php:3885
+#: common_functions.php:3896
 msgid "Accelerator keys for list items"
 msgstr "Liste ögeleri için kısayol tuşları"
 
-#: common_functions.php:3886
+#: common_functions.php:3897
 msgid "Prefix for list items"
 msgstr "Liste ögelerinin öneki"
 
-#: common_functions.php:3894
+#: common_functions.php:3905
 msgid "Nominal"
 msgstr "Göstermelik"
 
-#: common_functions.php:3895
+#: common_functions.php:3906
 msgid "Ordinal"
 msgstr "Sırasal"
 
-#: common_functions.php:3896
+#: common_functions.php:3907
 msgid "Scale"
 msgstr "Ölçek"
 
-#: common_functions.php:3898
+#: common_functions.php:3909
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "Bu soru için özel bir SPPS verme ölçeği seçer"
 
-#: common_functions.php:3899
+#: common_functions.php:3910
 msgid "SPSS export scale type"
 msgstr "SPSS verme ölçeği tipi"
 
-#: common_functions.php:3904 common_functions.php:3912
-#: common_functions.php:3923 common_functions.php:3934
-#: common_functions.php:3944 common_functions.php:3952
-#: common_functions.php:3960 common_functions.php:3968
-#: common_functions.php:3976 common_functions.php:3984
-#: common_functions.php:3992 common_functions.php:4000
-#: common_functions.php:4008 common_functions.php:4016
-#: common_functions.php:4024 common_functions.php:4032
-#: common_functions.php:4040
+#: common_functions.php:3915 common_functions.php:3923
+#: common_functions.php:3934 common_functions.php:3945
+#: common_functions.php:3955 common_functions.php:3963
+#: common_functions.php:3971 common_functions.php:3979
+#: common_functions.php:3987 common_functions.php:3995
+#: common_functions.php:4003 common_functions.php:4011
+#: common_functions.php:4019 common_functions.php:4027
+#: common_functions.php:4035 common_functions.php:4043
+#: common_functions.php:4051
 msgid "Timer"
 msgstr "Zamanlayıcı"
 
-#: common_functions.php:3907
+#: common_functions.php:3918
 msgid "Limit time to answer question (in seconds)"
 msgstr "Saniye olarak, soruları yanıtlama süresini sınırlar"
 
-#: common_functions.php:3908
+#: common_functions.php:3919
 msgid "Time limit"
 msgstr "Süre sınırı"
 
-#: common_functions.php:3915
+#: common_functions.php:3926
 msgid "Warn and move on"
 msgstr "Uyar ve ilerle"
 
-#: common_functions.php:3916
+#: common_functions.php:3927
 msgid "Move on without warning"
 msgstr "Uyarmadan ilerle"
 
-#: common_functions.php:3917
+#: common_functions.php:3928
 msgid "Disable only"
 msgstr "Yalnızca devre dışı"
 
-#: common_functions.php:3918
+#: common_functions.php:3929
 msgid "Action to perform when time limit is up"
 msgstr "Süre sınırı dolduğunda yapılacak işlem"
 
-#: common_functions.php:3919
+#: common_functions.php:3930
 msgid "Time limit action"
 msgstr "Süre sınırı işlemi"
 
-#: common_functions.php:3929
+#: common_functions.php:3940
 msgid "Disable the next button until time limit expires"
 msgstr "Süre sınırı dolana kadar sonraki düğmesini devre dışı bırak"
 
-#: common_functions.php:3930
+#: common_functions.php:3941
 msgid "Time limit disable next"
 msgstr "Süre sınırında sonraki devre dışı"
 
-#: common_functions.php:3939
+#: common_functions.php:3950
 msgid "Disable the prev button until the time limit expires"
 msgstr "Süre sınırı dolana kadar önceki düğmesini devre dışı bırak"
 
-#: common_functions.php:3940
+#: common_functions.php:3951
 msgid "Time limit disable prev"
 msgstr "Süre sınırında önceki devre dışı"
 
-#: common_functions.php:3947
+#: common_functions.php:3958
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr "Geri sayma sırasında sayaçla birlikte gösterilecek ileti metni"
 
-#: common_functions.php:3948
+#: common_functions.php:3959
 msgid "Time limit countdown message"
 msgstr "Süre sınırı geri sayma iletisi"
 
-#: common_functions.php:3955
+#: common_functions.php:3966
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr "Geri sayma sırasında sayaçla birlikte gösterilecek iletinin CSS stili"
 
-#: common_functions.php:3956
+#: common_functions.php:3967
 msgid "Time limit timer CSS style"
 msgstr "Süre sınırı sayacı CSS stili"
 
-#: common_functions.php:3963
+#: common_functions.php:3974
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr "'Süre doldu işlemi'ni yapmadan önce 'Süre doldu iletisi'nin gösterileceği süre (boş bırakılırsa varsayılan süre 1 saniyedir) "
 
-#: common_functions.php:3964
+#: common_functions.php:3975
 msgid "Time limit expiry message display time"
 msgstr "Süre sınırının dolduğunu belirten iletinin gösterim süresi"
 
-#: common_functions.php:3971
+#: common_functions.php:3982
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "Süre sınırı dolduğunda gösterilecek ileti (boş bıraklırsa varsayılan bir ileti gösterilir)"
 
-#: common_functions.php:3972
+#: common_functions.php:3983
 msgid "Time limit expiry message"
 msgstr "Süre doldu iletisi"
 
-#: common_functions.php:3979
+#: common_functions.php:3990
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "'Süre sınırı doldu' iletisinin CSS stili"
 
-#: common_functions.php:3980
+#: common_functions.php:3991
 msgid "Time limit message CSS style"
 msgstr "Süre sınırı doldu iletisi CSS stili"
 
-#: common_functions.php:3987
+#: common_functions.php:3998
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Sayaç bu rakama geldiğinde gösterilecek birinci 'Süre sınırı uyarısı' (boş bırakılırsa uyarı gösterilmez)"
 
-#: common_functions.php:3988
+#: common_functions.php:3999
 msgid "1st time limit warning message timer"
 msgstr "Birinci süre sınırı uyarı iletisi sayacı "
 
-#: common_functions.php:3995
+#: common_functions.php:4006
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Birinci  'Süre sınırı uyarısı'nın kaç saniye gösterileceği (boş bırakılırsa sürekli görünür)"
 
-#: common_functions.php:3996
+#: common_functions.php:4007
 msgid "1st time limit warning message display time"
 msgstr "Birinci süre sınırı uyarı iletisi gösterim süresi "
 
-#: common_functions.php:4003
+#: common_functions.php:4014
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Birinci 'Süre sınırı uyarısı' olarak gösterilecek ileti (boş bırakılırsa varsayılan bir uyarı gösterilir)"
 
-#: common_functions.php:4004
+#: common_functions.php:4015
 msgid "1st time limit warning message"
 msgstr "Birinci süre sınırı uyarısı iletisi "
 
-#: common_functions.php:4011
+#: common_functions.php:4022
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "Birinci 'Süre sınırı uyarısı' iletisinin CSS stili"
 
-#: common_functions.php:4012
+#: common_functions.php:4023
 msgid "1st time limit warning CSS style"
 msgstr "Birinci süre sınırı uyarısının CSS stili "
 
-#: common_functions.php:4019
+#: common_functions.php:4030
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Sayaç bu rakama geldiğinde gösterilecek ikinci 'Süre sınırı uyarısı' (boş bırakılırsa uyarı gösterilmez)"
 
-#: common_functions.php:4020
+#: common_functions.php:4031
 msgid "2nd time limit warning message timer"
 msgstr "İkinci süre sınırı uyarı iletisi sayacı "
 
-#: common_functions.php:4027
+#: common_functions.php:4038
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Birinci 'Süre sınırı uyarısı'nın kaç saniye gösterileceği (boş bırakılırsa sürekli görünür)"
 
-#: common_functions.php:4028
+#: common_functions.php:4039
 msgid "2nd time limit warning message display time"
 msgstr "İkinci süre sınırı uyarı iletisi gösterim süresi"
 
-#: common_functions.php:4035
+#: common_functions.php:4046
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "İkinci 'Süre sınırı uyarısı' olarak gösterilecek ileti (boş bırakılırsa varsayılan bir uyarı gösterilir)"
 
-#: common_functions.php:4036
+#: common_functions.php:4047
 msgid "2nd time limit warning message"
 msgstr "İkinci süre sınırı uyarısı iletisi "
 
-#: common_functions.php:4043
+#: common_functions.php:4054
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "İkinci 'Süre sınırı uyarısı' iletisinin CSS stili"
 
-#: common_functions.php:4044
+#: common_functions.php:4055
 msgid "2nd time limit warning CSS style"
 msgstr "İkinci süre sınırı uyarısının CSS stili"
 
-#: common_functions.php:4048 common_functions.php:4059
+#: common_functions.php:4059 common_functions.php:4070
 msgid "File metadata"
 msgstr "Dosya üstverisi"
 
-#: common_functions.php:4054
+#: common_functions.php:4065
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr "Katılımcının yüklediği dosyaya başlık vermesi gerekiyor mu?"
 
-#: common_functions.php:4055
+#: common_functions.php:4066
 msgid "Show title"
 msgstr "Başlığı Göster"
 
-#: common_functions.php:4065
+#: common_functions.php:4076
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr "Katılımcının yüklediği dosyaya yorum yapması gerekiyor mu?"
 
-#: common_functions.php:4066
+#: common_functions.php:4077
 msgid "Show comment"
 msgstr "Yorumu göster"
 
-#: common_functions.php:4075
+#: common_functions.php:4086
 msgid "The participant cannot upload a single file larger than this size"
 msgstr "Katılımcı bu boyuttan büyük bir dosya yükleyemez"
 
-#: common_functions.php:4076
+#: common_functions.php:4087
 msgid "Maximum file size allowed (in KB)"
 msgstr "İzin verilen en çok dosya büyüklüğü(kb olarak)"
 
-#: common_functions.php:4084
+#: common_functions.php:4095
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr "Katılımcının bu soru için yükleyebileceği en fazla dosya sayısı"
 
-#: common_functions.php:4085
+#: common_functions.php:4096
 msgid "Max number of files"
 msgstr "En çok dosya sayısı"
 
-#: common_functions.php:4093
+#: common_functions.php:4104
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr "Katılımcının bu soru için yüklemesi gereken en az dosya sayısı"
 
-#: common_functions.php:4094
+#: common_functions.php:4105
 msgid "Min number of files"
 msgstr "En az dosya sayısı"
 
-#: common_functions.php:4102
+#: common_functions.php:4113
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr "Virgülle ayrılmış olarak, izin verilen dosya türleri. örneğin pdf,doc,odt"
 
-#: common_functions.php:4103
+#: common_functions.php:4114
 msgid "Allowed file types"
 msgstr "İzin verilen dosya türleri"
 
-#: common_functions.php:4110
+#: common_functions.php:4121
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr "Soruları belirtilen bir rastgele grubuna yerleştirir. Belirtilen grupta bulunan tüm sorular rastgele sıralanarak gösterilir."
 
-#: common_functions.php:4111
+#: common_functions.php:4122
 msgid "Randomization group name"
 msgstr "Rastgele grubu adı"
 
-#: common_functions.php:4298
+#: common_functions.php:4323
 msgid "Version"
 msgstr "Sürüm"
 
-#: common_functions.php:4307
+#: common_functions.php:4332
 msgid "Online Manual"
 msgstr "Çevrim İçi Kullanıcı Kitabı"
 
-#: common_functions.php:4310
+#: common_functions.php:4335
 msgid "Support this project - Donate to "
 msgstr "Bağış yaparak bu projeyi destekleyin"
 
-#: common_functions.php:4313
+#: common_functions.php:4338
 msgid "Visit our website!"
 msgstr "Web sitemize bakın!"
 
-#: common_functions.php:4428
+#: common_functions.php:4453
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Tanıtım kipi etkinleştirilmiş olduğundan e-posta gönderilmedi."
 
-#: common_functions.php:4556
+#: common_functions.php:4581
 msgid "SMTP debug output:"
 msgstr "SMTP hata ayıklama çıktısı:"
 
-#: common_functions.php:4700
+#: common_functions.php:4725
 msgid "SQL command failed: %s Reason: %s"
 msgstr "SQL komutu yürütülemedi %s Nedeni: %s"
 
-#: common_functions.php:6214
+#: common_functions.php:6239
 msgid "Token code"
 msgstr "Pin kodu"
 
-#: common_functions.php:6215
+#: common_functions.php:6240
 msgid "Language code"
 msgstr "Dil kodu"
 
-#: common_functions.php:6216
+#: common_functions.php:6241
 msgid "Invitation sent date"
 msgstr "Çağrı gönderim zamanı"
 
-#: common_functions.php:6217
+#: common_functions.php:6242
 msgid "Last Reminder sent date"
 msgstr "Hatırlatmaların en son gönderildiği zaman"
 
-#: common_functions.php:6218
+#: common_functions.php:6243
 msgid "Total numbers of sent reminders"
 msgstr "Gönderilen toplam hatırlatma sayısı"
 
-#: common_functions.php:6240
+#: common_functions.php:6265
 msgid "Attribute %s"
 msgstr "Öznitelik %s"
 
@@ -10395,7 +10428,7 @@ msgstr "Özür dileriz , dosyanın silinmesi sırasında bir hata oluştu."
 
 #: group.php:116
 msgid "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
-msgstr "LÜtfen LimeSurvey gezinme düğmelerini ya da indeksini kullanın. Bir sayfayı yeniden göndermek için tarayıcınızın geri düğmesine tıklanmış gibi görünüyor."
+msgstr "Lütfen LimeSurvey gezinme düğmelerini ya da indeksini kullanın. Bir sayfayı yeniden göndermek için tarayıcınızın geri düğmesine tıklanmış gibi görünüyor."
 
 #: group.php:221
 msgid "Save your responses so far"
@@ -10431,7 +10464,7 @@ msgstr "Malesef, uyan bir anket bulunamadı."
 
 #: group.php:509
 msgid "Invalid group number for this survey: "
-msgstr "Bu anket için geçersiz grup numarası:"
+msgstr "Bu anketin grup numarası geçersiz:"
 
 #: group.php:514
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
@@ -10457,7 +10490,7 @@ msgstr "Bir ya da daha çok soruyu geçerli şekilde yanıtlamadınız. Bunları
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr "Bir ya da daha çok soruyu geçerli şekilde yanıtlamadınız. Bunları geçerli şekilde yanıtlamadan devam edemezsiniz. "
 
-#: group.php:948 index.php:2924
+#: group.php:948 index.php:2889
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Bu anket şu anda etkin değil. Yanıtlarınız kaydedemeyeceksiniz."
 
@@ -10677,7 +10710,7 @@ msgstr[1] "En az %d ögeyi işaretleyin"
 msgid "Check any that apply"
 msgstr "Uyanların tümünü seçin"
 
-#: qanda.php:186 qanda.php:187 qanda.php:1243
+#: qanda.php:186 qanda.php:187 qanda.php:1257
 msgid "Choose your language"
 msgstr "Dilinizi seçin"
 
@@ -10713,137 +10746,131 @@ msgstr "dakika"
 msgid "seconds"
 msgstr "saniye"
 
-#: qanda.php:1056 qanda.php:1057
+#: qanda.php:1070 qanda.php:1071
 msgid "Day"
 msgstr "Gün"
 
-#: qanda.php:1073 qanda.php:1074
+#: qanda.php:1087 qanda.php:1088
 msgid "Month"
 msgstr "Ay"
 
-#: qanda.php:1076
+#: qanda.php:1090
 msgid "Jan"
 msgstr "Oca"
 
-#: qanda.php:1077
+#: qanda.php:1091
 msgid "Feb"
 msgstr "Şub"
 
-#: qanda.php:1078
+#: qanda.php:1092
 msgid "Mar"
 msgstr "Mar"
 
-#: qanda.php:1079
+#: qanda.php:1093
 msgid "Apr"
 msgstr "Nis"
 
-#: qanda.php:1080
+#: qanda.php:1094
 msgid "May"
 msgstr "May"
 
-#: qanda.php:1081
+#: qanda.php:1095
 msgid "Jun"
 msgstr "Haz"
 
-#: qanda.php:1082
+#: qanda.php:1096
 msgid "Jul"
 msgstr "Tem"
 
-#: qanda.php:1083
+#: qanda.php:1097
 msgid "Aug"
 msgstr "Ağu"
 
-#: qanda.php:1084
+#: qanda.php:1098
 msgid "Sep"
 msgstr "Eyl"
 
-#: qanda.php:1085
+#: qanda.php:1099
 msgid "Oct"
 msgstr "Eki"
 
-#: qanda.php:1086
+#: qanda.php:1100
 msgid "Nov"
 msgstr "Kas"
 
-#: qanda.php:1087
+#: qanda.php:1101
 msgid "Dec"
 msgstr "Ara"
 
-#: qanda.php:1103 qanda.php:1104
+#: qanda.php:1117 qanda.php:1118
 msgid "Year"
 msgstr "Yıl"
 
-#: qanda.php:1215
+#: qanda.php:1229
 msgid "Date picker"
 msgstr "Tarih seçici"
 
-#: qanda.php:1495
+#: qanda.php:1509
 msgid "Other answer"
 msgstr "Diğer yanıt"
 
-#: qanda.php:1795
+#: qanda.php:1809
 msgid "Please enter your comment here"
 msgstr "Lütfen açıklamanızı buraya yazın"
 
-#: qanda.php:2098
+#: qanda.php:2112
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Sıralanmış listenizden son ögeyi çıkarmak için her ögenin sağ yanındaki makasa tıklayın"
 
-#: qanda.php:2109 qanda.php:2124
-msgid "Please rank at least %d item for question \"%s\""
-msgid_plural "Please rank at least %d items for question \"%s\"."
-msgstr[0] "En az %d ögeyi \"%s\" sorusu için sıralayın."
-msgstr[1] "En az %d ögeyi \"%s\" sorusu için sıralayın."
-
-#: qanda.php:2419
+#: qanda.php:2433
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "\"%s\" sorusu için \"diğer\" yanıtını seçtiniz. Lütfen \"Diğer için açıklama\" alanını da doldurun."
 
-#: qanda.php:2692
+#: qanda.php:2706
 msgid "Upload files"
 msgstr "Sunucuya dosya yükle"
 
-#: qanda.php:2704
+#: qanda.php:2718
 msgid "Upload your files"
 msgstr "Dosyalarınızı sunucuya yükleyin"
 
-#: qanda.php:2705
+#: qanda.php:2719
 msgid "Return to survey"
 msgstr "Ankete geri dön"
 
-#: qanda.php:2708
+#: qanda.php:2722
 msgid "File name"
 msgstr "Dosya adı"
 
-#: qanda.php:2885 qanda.php:3145 qanda.php:4215 qanda.php:6039
+#: qanda.php:2899 qanda.php:3159 qanda.php:4229 qanda.php:6053
 msgid "Error: This question has no answers."
 msgstr "Hata: Bu sorunun yanıtı yok."
 
-#: qanda.php:3295
+#: qanda.php:3309
 msgid "Only numbers may be entered in these fields"
 msgstr "Bu alanlara yalnız sayılar yazılabilir"
 
-#: qanda.php:3306
+#: qanda.php:3320
 msgid "Remaining: "
 msgstr "Kalan:"
 
-#: qanda.php:3313
+#: qanda.php:3327
 msgid "Total: "
 msgstr "Toplam:"
 
-#: qanda.php:3582 qanda.php:3583
+#: qanda.php:3596 qanda.php:3597
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "İğneyi istenilen bölgeye sürükleyip bırakın. Ayrıca iğneyi hareket ettirmek için haritaya sağ tıklayabilirsiniz."
 
-#: qanda.php:4780 qanda.php:5160 qanda.php:5494 qanda.php:5641 qanda.php:6269
+#: qanda.php:4794 qanda.php:5174 qanda.php:5508 qanda.php:5655 qanda.php:6283
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Hata: Bu soru için bir yanıtlama seçeneği belirtilmemiş ya da sizin dilinize çevrilmemiş."
 
-#: qanda.php:5411
+#: qanda.php:5425
 msgid "..."
 msgstr "..."
 
-#: qanda.php:5635
+#: qanda.php:5649
 msgid "Error: There are no answers defined for this question."
 msgstr "Hata: Bu soru için hiç yanıt tanımlanmamış."
 
@@ -11023,23 +11050,23 @@ msgstr "Hata: E-posta gönderilemedi. Sunucunuzda bir PHP Posta Kurulumu sorunu 
 msgid "Your survey was successfully saved."
 msgstr "Anketiniz kaydedildi."
 
-#: statistics_user.php:373
+#: statistics_user.php:375
 msgid "Please wait ..."
 msgstr "Lütfen bekleyin..."
 
-#: statistics_user.php:375
+#: statistics_user.php:377
 msgid "Go back"
 msgstr "Geri Dön"
 
-#: statistics_user.php:384
+#: statistics_user.php:386
 msgid "Getting questions and answers ..."
 msgstr "Sorular ve yanıtlar alınıyor..."
 
-#: statistics_user.php:400
+#: statistics_user.php:402
 msgid "Total records in survey"
 msgstr "Anketteki toplam kayıt"
 
-#: statistics_user.php:413
+#: statistics_user.php:415
 msgid "Generating summaries ..."
 msgstr "Özetler üretiliyor..."
 
@@ -11239,7 +11266,7 @@ msgid "You are not allowed to perform this operation!"
 msgstr "Bu işlemi yapmak için izniniz yok!"
 
 #: admin/activate.php:39 admin/activate.php:67 admin/activate.php:76
-#: admin/activate_functions.php:409 admin/activate_functions.php:449
+#: admin/activate_functions.php:413 admin/activate_functions.php:453
 msgid "Activate Survey"
 msgstr "Anketi Etkinleştir"
 
@@ -11291,7 +11318,7 @@ msgstr "Anketi Etkinleştir"
 #: admin/tokens.php:399 admin/tokens.php:413 admin/tokens.php:479
 #: admin/tokens.php:1002 admin/tokens.php:2746 admin/tokens.php:3183
 #: admin/tokens.php:3189 admin/usercontrol.php:846 admin/vvimport.php:121
-#: common_functions.php:5479 index.php:572
+#: common_functions.php:5504 index.php:572
 msgid "Error"
 msgstr "Hata"
 
