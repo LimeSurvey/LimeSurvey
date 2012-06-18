@@ -1085,6 +1085,10 @@
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
                                             $fqid = explode('X',$sgq);
+                                            if (!isset($fqid[2]))
+                                            {
+                                                continue;
+                                            }
                                             $fqid = $fqid[2];
                                             $fsqs = array();
                                             foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
@@ -1103,6 +1107,10 @@
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
                                             $fqid = explode('X',$sgq);
+                                            if (!isset($fqid[2]))
+                                            {
+                                                continue;
+                                            }
                                             $fqid = $fqid[2];
                                             $fsqs = array();
                                             foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
@@ -1281,8 +1289,16 @@
                                 }
                                 switch ($type)
                                 {
+                                    case ':': //ARRAY (Multi Flexi) 1 to 10
+                                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                                    case 'F': //ARRAY (Flexible) - Row Format
                                     case 'M': //Multiple choice checkbox
                                     case 'P': //Multiple choice with comments checkbox + text
+                                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                                    case 'Q': //MULTIPLE SHORT TEXT
                                         if ($this->sgqaNaming)
                                         {
                                             $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
@@ -1300,7 +1316,7 @@
                                     'qtype' => $type,
                                     'type' => 'exclude_all_others',
                                     'rowdivid' => $sq['rowdivid'],
-                                    'eqn' => '(' . $sq_name . ' == "")',
+                                    'eqn' => 'is_empty(' . $sq_name . ')',
                                     'qid' => $questionNum,
                                     'sgqa' => $qinfo['sgqa'],
                                     );
@@ -1329,6 +1345,7 @@
                             switch ($type)
                             {
                                 case 'M': //Multiple choice checkbox
+                                case 'P': //Multiple choice with comments checkbox + text
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4);
@@ -1356,7 +1373,7 @@
                         if (count($sq_names) > 0) {
                             $relpart = "sum(" . implode(".relevanceStatus, ", $sq_names) . ".relevanceStatus)";
                             $checkedpart = "count(" . implode(".NAOK, ", $sq_names) . ".NAOK)";
-                            $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && " . $eoVarName . "=='')";
+                            $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && is_empty(" . $eoVarName . "))";
                             $eoEqn = "(" . $eoRelevantAndUnchecked . " && (" . $relpart . " == " . $checkedpart . "))";
 
                             $this->em->ProcessBooleanExpression($eoEqn, $qinfo['gseq'], $qinfo['qseq']);
@@ -8125,7 +8142,7 @@ EOD;
                     . $rootVarName . "</span>";
                 }
 
-                $questionRow .= "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
+                $questionRow .= "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?action=editquestion&sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
