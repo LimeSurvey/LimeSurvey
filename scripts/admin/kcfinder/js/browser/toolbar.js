@@ -4,9 +4,9 @@
   *
   *      @desc Toolbar functionality
   *   @package KCFinder
-  *   @version 2.21
+  *   @version 2.51
   *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010 KCFinder Project
+  * @copyright 2010, 2011 KCFinder Project
   *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
   *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
   *      @link http://kcfinder.sunhater.com
@@ -56,23 +56,54 @@ browser.initToolbar = function() {
 
     $('#toolbar a[href="kcact:about"]').click(function() {
         var html = '<div class="box about">' +
-            '<div class="title"><a href="http://kcfinder.sunhater.com" target="_blank">KCFinder</a> v2.21</div>' +
-            '<div>Licenses: GPLv2 & LGPLv2</div>' +
-            '<div>Copyright &copy;2010 Pavel Tzonkov</div>' +
-            '<button>' + _.htmlValue(browser.label("OK")) + '</button>' +
+            '<div class="head"><a href="http://kcfinder.sunhater.com" target="_blank">KCFinder</a> ' + browser.version + '</div>';
+        if (browser.support.check4Update)
+            html += '<div id="checkver"><span class="loading"><span>' + browser.label("Checking for new version...") + '</span></span></div>';
+        html +=
+            '<div>' + browser.label("Licenses:") + ' GPLv2 & LGPLv2</div>' +
+            '<div>Copyright &copy;2010, 2011 Pavel Tzonkov</div>' +
+            '<button>' + browser.label("OK") + '</button>' +
         '</div>';
         $('#dialog').html(html);
+        $('#dialog').data('title', browser.label("About"));
         browser.showDialog();
-        $('#dialog button').get(0).focus();
         var close = function() {
             browser.hideDialog();
             browser.unshadow();
         }
         $('#dialog button').click(close);
-        $('#dialog button').keypress(function(e) {
-            if (e.keyCode == 27) close();
-        });
+        var span = $('#checkver > span');
+        setTimeout(function() {
+            $.ajax({
+                dataType: 'json',
+                url: browser.baseGetData('check4Update'),
+                async: true,
+                success: function(data) {
+                    if (!$('#dialog').html().length)
+                        return;
+                    span.removeClass('loading');
+                    if (!data.version) {
+                        span.html(browser.label("Unable to connect!"));
+                        browser.showDialog();
+                        return;
+                    }
+                    if (browser.version < data.version)
+                        span.html('<a href="http://kcfinder.sunhater.com/download" target="_blank">' + browser.label("Download version {version} now!", {version: data.version}) + '</a>');
+                    else
+                        span.html(browser.label("KCFinder is up to date!"));
+                    browser.showDialog();
+                },
+                error: function() {
+                    if (!$('#dialog').html().length)
+                        return;
+                    span.removeClass('loading');
+                    span.html(browser.label("Unable to connect!"));
+                    browser.showDialog();
+                }
+            });
+        }, 1000);
         $('#dialog').unbind();
+
         return false;
     });
 
@@ -81,7 +112,7 @@ browser.initToolbar = function() {
 
 browser.initUploadButton = function() {
     var btn = $('#toolbar a[href="kcact:upload"]');
-    if (this.readonly) {
+    if (!this.access.files.upload) {
         btn.css('display', 'none');
         return;
     }
@@ -90,11 +121,11 @@ browser.initUploadButton = function() {
     var height = btn.outerHeight();
     $('#toolbar').prepend('<div id="upload" style="top:' + top + 'px;width:' + width + 'px;height:' + height + 'px">' +
         '<form enctype="multipart/form-data" method="post" target="uploadResponse" action="' + browser.baseGetData('upload') + '">' +
-            '<input type="file" name="upload" onchange="browser.uploadFile(this.form)" style="height:' + height + 'px" />' +
+            '<input type="file" name="upload[]" onchange="browser.uploadFile(this.form)" style="height:' + height + 'px" multiple="multiple" />' +
             '<input type="hidden" name="dir" value="" />' +
         '</form>' +
     '</div>');
-    $('#upload input').css('margin-left', "-" + ($('#upload input').outerWidth() - width) + "px");
+    $('#upload input').css('margin-left', "-" + ($('#upload input').outerWidth() - width) + 'px');
     $('#upload').mouseover(function() {
         $('#toolbar a[href="kcact:upload"]').addClass('hover');
     });
@@ -105,7 +136,7 @@ browser.initUploadButton = function() {
 
 browser.uploadFile = function(form) {
     if (!this.dirWritable) {
-        alert(this.label("Cannot write to upload folder."));
+        browser.alert(this.label("Cannot write to upload folder."));
         $('#upload').detach();
         browser.initUploadButton();
         return;
@@ -118,10 +149,19 @@ browser.uploadFile = function(form) {
     $('#uploadResponse').load(function() {
         var response = $(this).contents().find('body').html();
         $('#loading').css('display', 'none');
-        if (response.length && response.substr(0, 1) != '/')
-            alert(response);
-        else
-            browser.refresh(response.substr(1, response.length - 1));
+        response = response.split("\n");
+        var selected = [], errors = [];
+        $.each(response, function(i, row) {
+            if (row.substr(0, 1) == '/')
+                selected[selected.length] = row.substr(1, row.length - 1)
+            else
+                errors[errors.length] = row;
+        });
+        if (errors.length)
+            browser.alert(errors.join("\n"));
+        if (!selected.length)
+            selected = null
+        browser.refresh(selected);
         $('#upload').detach();
         setTimeout(function() {
             $('#uploadResponse').detach();
@@ -152,12 +192,16 @@ browser.maximize = function(button) {
 
         if ($(button).hasClass('selected')) {
             $(button).removeClass('selected');
-            win.css('left', browser.maximizeMCE.left + 'px');
-            win.css('top', browser.maximizeMCE.top + 'px');
-            win.css('width', browser.maximizeMCE.width + 'px');
-            win.css('height', browser.maximizeMCE.height + 'px');
-            ifr.css('width', browser.maximizeMCE.width - browser.maximizeMCE.Hspace + 'px');
-            ifr.css('height', browser.maximizeMCE.height - browser.maximizeMCE.Vspace + 'px');
+            win.css({
+                left: browser.maximizeMCE.left + 'px',
+                top: browser.maximizeMCE.top + 'px',
+                width: browser.maximizeMCE.width + 'px',
+                height: browser.maximizeMCE.height + 'px'
+            });
+            ifr.css({
+                width: browser.maximizeMCE.width - browser.maximizeMCE.Hspace + 'px',
+                height: browser.maximizeMCE.height - browser.maximizeMCE.Vspace + 'px'
+            });
 
         } else {
             $(button).addClass('selected')
@@ -171,12 +215,16 @@ browser.maximize = function(button) {
             };
             var width = $(window.parent).width();
             var height = $(window.parent).height();
-            win.css('left', $(window.parent).scrollLeft() + 'px');
-            win.css('top', $(window.parent).scrollTop() + 'px');
-            win.css('width', width + 'px');
-            win.css('height', height + 'px');
-            ifr.css('width', width - browser.maximizeMCE.Hspace + 'px');
-            ifr.css('height', height - browser.maximizeMCE.Vspace + 'px');
+            win.css({
+                left: $(window.parent).scrollLeft() + 'px',
+                top: $(window.parent).scrollTop() + 'px',
+                width: width + 'px',
+                height: height + 'px'
+            });
+            ifr.css({
+                width: width - browser.maximizeMCE.Hspace + 'px',
+                height: height - browser.maximizeMCE.Vspace + 'px'
+            });
         }
 
     } else if ($('iframe', window.parent.document).get(0)) {
@@ -194,12 +242,14 @@ browser.maximize = function(button) {
             $.each($('*', window.parent.document).get(), function(i, e) {
                 e.style.display = browser.maximizeDisplay[i];
             });
-            ifrm.css('display', browser.maximizeCSS.display);
-            ifrm.css('position', browser.maximizeCSS.position);
-            ifrm.css('left', browser.maximizeCSS.left);
-            ifrm.css('top', browser.maximizeCSS.top);
-            ifrm.css('width', browser.maximizeCSS.width);
-            ifrm.css('height', browser.maximizeCSS.height);
+            ifrm.css({
+                display: browser.maximizeCSS.display,
+                position: browser.maximizeCSS.position,
+                left: browser.maximizeCSS.left,
+                top: browser.maximizeCSS.top,
+                width: browser.maximizeCSS.width,
+                height: browser.maximizeCSS.height
+            });
             $(window.parent).scrollLeft(browser.maximizeLest);
             $(window.parent).scrollTop(browser.maximizeTop);
 
@@ -231,21 +281,24 @@ browser.maximize = function(button) {
                 ) {
                     browser.maximizeW = width;
                     browser.maximizeH = height;
-                    ifrm.css('width', width + 'px');
-                    ifrm.css('height', height + 'px');
+                    ifrm.css({
+                        width: width + 'px',
+                        height: height + 'px'
+                    });
                     browser.resize();
                 }
             }
             ifrm.css('position', 'absolute');
             if ((ifrm.offset().left == ifrm.position().left) &&
                 (ifrm.offset().top == ifrm.position().top)
-            ) {
-                ifrm.css('left', '0');
-                ifrm.css('top', '0');
-            } else {
-                ifrm.css('left', - ifrm.offset().left +'px');
-                ifrm.css('top', - ifrm.offset().top + 'px');
-            }
+            )
+                ifrm.css({left: '0', top: '0'});
+            else
+                ifrm.css({
+                    left: - ifrm.offset().left + 'px',
+                    top: - ifrm.offset().top + 'px'
+                });
+
             resize();
             browser.maximizeThread = setInterval(resize, 250);
         }
@@ -256,20 +309,19 @@ browser.refresh = function(selected) {
     this.fadeFiles();
     $.ajax({
         type: 'POST',
+        dataType: 'json',
         url: browser.baseGetData('chDir'),
         data: {dir:browser.dir},
         async: false,
-        success: function(xml) {
-            if (browser.errors(xml)) return;
-            var files = xml.getElementsByTagName('file');
-            var dirWritable =
-                xml.getElementsByTagName('files')[0].getAttribute('dirWritable');
-            browser.dirWritable = (dirWritable == 'yes');
-            browser.loadFiles(files);
+        success: function(data) {
+            if (browser.check4errors(data))
+                return;
+            browser.dirWritable = data.dirWritable;
+            browser.files = data.files ? data.files : [];
             browser.orderFiles(null, selected);
             browser.statusDir();
         },
-        error: function(request, error) {
+        error: function() {
             $('#files > div').css({opacity:'', filter:''});
             $('#files').html(browser.label("Unknown error."));
         }

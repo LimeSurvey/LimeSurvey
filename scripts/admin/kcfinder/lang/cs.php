@@ -236,6 +236,18 @@ $lang = array(
     "Type" => "Typ",
     "Select Thumbnails" => "Vybrat náhled",
     "Download files" => "Stáhnout soubory",
+
+    // SINCE 2.4
+
+    "Checking for new version..." => "Zkontrolovat novou verzi...",
+    "Unable to connect!" => "Nelze připojit!",
+    "Download version {version} now!" => "Stáhnout verzi {version} nyní!",
+    "KCFinder is up to date!" => "KCFinder je aktuální!",
+    "Licenses:" => "Licence:",
+    "Attention" => "Upozornění",
+    "Question" => "Otázka",
+    "Yes" => "Ano",
+    "No" => "Ne",
 );
 
 ?>

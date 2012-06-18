@@ -669,7 +669,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts').'/scripts/admin/surveysettings.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
 
         if (hasSurveyPermission($iSurveyID, 'surveylocale', 'read'))
         {
