@@ -129,7 +129,7 @@ function getQueryVariable(variable, url) {
 function isValueInArray(arr, val) {
     inArray = false;
     for (i = 0; i < arr.length; i++) {
-        if (val === arr[i]) {
+        if (val.toLowerCase() == arr[i].toLowerCase()) {
             inArray = true;
         }
     }
