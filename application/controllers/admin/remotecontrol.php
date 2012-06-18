@@ -119,7 +119,7 @@ class remotecontrol_handle
 
             $session = new Sessions;
             $session->id = $session_key;
-            $session->expire = time() + Yii::app()->getConfig('sess_expiration');
+            $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
             $session->data = $username;
             $session->save();
 

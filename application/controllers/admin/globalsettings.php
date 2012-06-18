@@ -154,9 +154,9 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('repeatheadings', $repeatheadingstemp);
 
         setGlobalSetting('maxemails', sanitize_int($maxemails));
-        $iSessionExpirationTime = (int)($_POST['sess_expiration']);
+        $iSessionExpirationTime = (int)($_POST['iSessionExpirationTime']);
         if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 3600;
-        setGlobalSetting('sess_expiration', $iSessionExpirationTime);
+        setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
         setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);
         setGlobalSetting('googleanalyticsapikey',$_POST['googleanalyticsapikey']);

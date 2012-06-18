@@ -17,7 +17,7 @@
 class Sessions extends CActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
+	 * Returns the static model of Session table
 	 *
 	 * @static
 	 * @access public

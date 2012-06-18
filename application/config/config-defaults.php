@@ -483,6 +483,12 @@ $config['restrictToLanguages'] = '';
 $config['enableXMLRPCInterface'] = 0;
 
 
+/**
+* This parameter sets the default session expiration time in seconds
+* Default is 8 hours
+* @var integer
+*/
+$config['iSessionExpirationTime'] = 28800;
 
 // === Advanced Setup
 // The following parameters need information from config.php
