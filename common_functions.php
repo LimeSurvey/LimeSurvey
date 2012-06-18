@@ -3385,7 +3385,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Exclusive option'));
 
     $qattributes["exclude_all_others_auto"]=array(
-    "types"=>"M",
+    "types"=>"MP",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>131,
     'inputtype'=>'singleselect',
