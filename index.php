@@ -877,7 +877,7 @@ if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey
         if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
         {
             $_SESSION['srid'] = $row['id'];
-            if (!is_null($row['lastpage']))
+            if (!is_null($row['lastpage']) && $row['submitdate']=='') 
             {
                 $_SESSION['LEMtokenResume'] = true;
                 $_SESSION['step'] = $row['lastpage'];
