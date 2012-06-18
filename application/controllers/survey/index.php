@@ -612,7 +612,7 @@ class index extends CAction {
         //  - a token information has been provided
         //  - the survey is setup to allow token-response-persistence
 
-        if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
+        if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
             // load previous answers if any (dataentry with nosubmit)
             $srquery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']}"
@@ -625,13 +625,13 @@ class index extends CAction {
                 if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
                 {
                     $_SESSION['survey_'.$surveyid]['srid'] = $row['id'];
-                    if (!is_null($row['lastpage']))
+                    if (!is_null($row['lastpage']) && $row['submitdate']=='')
                     {
                         $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
                         $_SESSION['survey_'.$surveyid]['step'] = $row['lastpage'];
                     }
                 }
-                buildsurveysession();
+                buildsurveysession($surveyid);
                 loadanswers();
             }
         }
