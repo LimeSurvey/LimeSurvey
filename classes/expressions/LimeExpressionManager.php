@@ -8142,7 +8142,7 @@ EOD;
                     . $rootVarName . "</span>";
                 }
 
-                $questionRow .= "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
+                $questionRow .= "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?action=editquestion&sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
