@@ -799,7 +799,7 @@
                     $_qid = $row['qid'];
                     $_scenario = $row['scenario'];
                     $_cqid = $row['cqid'];
-                    $_fieldname = -1;
+                    $_subqid = -1;
                     $relAndList = array();
                     $relOrList = array();
                     $scenarios = array();
@@ -816,43 +816,47 @@
                     $relOrList = array();
                     $_scenario = $row['scenario'];
                     $_cqid = $row['cqid'];
-                    $_fieldname = -1;
+                    $_subqid = -1;
                 }
                 if ($row['cqid'] != $_cqid)
                 {
                     $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
                     $relOrList = array();
                     $_cqid = $row['cqid'];
-                    $_fieldname = -1;
+                    $_subqid = -1;
                 }
 
                 // fix fieldnames
                 if ($row['type'] == '' && preg_match('/^{.+}$/',$row['cfieldname'])) {
                     $fieldname = substr($row['cfieldname'],1,-1);    // {TOKEN:xxxx}
+                    $subqid = $fieldname;
                     $value = $row['value'];
                 }
                 else if ($row['type'] == 'M' || $row['type'] == 'P') {
-                        if (substr($row['cfieldname'],0,1) == '+') {
-                            // if prefixed with +, then a fully resolved name
-                            $fieldname = substr($row['cfieldname'],1) . '.NAOK';
-                            $value = $row['value'];
-                        }
-                        else {
-                            // else create name by concatenating two parts together
-                            $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
-                            $value = 'Y';
-                        }
+                    if (substr($row['cfieldname'],0,1) == '+') {
+                        // if prefixed with +, then a fully resolved name
+                        $fieldname = substr($row['cfieldname'],1) . '.NAOK';
+                        $subqid = $fieldname;
+                        $value = $row['value'];
                     }
                     else {
-                        $fieldname = $row['cfieldname'] . '.NAOK';
-                        $value = $row['value'];
+                        // else create name by concatenating two parts together
+                        $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
+                        $subqid = $row['cfieldname'];
+                        $value = 'Y';
+                    }
                 }
-                if ($_fieldname != -1 && $_fieldname != $fieldname)
+                else {
+                    $fieldname = $row['cfieldname'] . '.NAOK';
+                    $subqid = $fieldname;
+                    $value = $row['value'];
+                }
+                if ($_subqid != -1 && $_subqid != $subqid)
                 {
                     $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
                     $relOrList = array();
                 }
-                $_fieldname = $fieldname;
+                $_subqid = $subqid;
 
                 // fix values
                 if (preg_match('/^@\d+X\d+X\d+.*@$/',$value)) {
@@ -893,7 +897,7 @@
                             $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
                         }
                     }
-                    else 
+                    else
                     {
                         if ($value == '"0"' || !preg_match('/^".+"$/',$value))
                         {
@@ -1439,6 +1443,7 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case 'M': //Multiple choice checkbox
+                                case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -1459,10 +1464,6 @@
                                             $sq_name = $sq['rowdivid'] . '.NAOK';
                                         }
                                     }
-                                    break;
-                                case 'R': //RANKING STYLE
-                                    // TODO - does not have sub-questions, so how should this be done?
-                                    // Current JavaScript works fine, but can't use expression value
                                     break;
                                 default:
                                     break;
@@ -1528,6 +1529,7 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case 'M': //Multiple choice checkbox
+                                case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -1548,10 +1550,6 @@
                                             $sq_name = $sq['varName'] . '.NAOK';
                                         }
                                     }
-                                    break;
-                                case 'R': //RANKING STYLE
-                                    // TODO - does not have sub-questions, so how should this be done?
-                                    // Current JavaScript works fine, but can't use expression value
                                     break;
                                 default:
                                     break;
@@ -2980,7 +2978,7 @@
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        if ($type != 'H' && $type != 'R') {
+                        if ($type != 'H') {
                             if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
                                 //                            $rowdivid = substr($sgqa,0,-7);
                             }
