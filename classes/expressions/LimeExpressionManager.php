@@ -1443,6 +1443,7 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case 'M': //Multiple choice checkbox
+                                case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -1463,10 +1464,6 @@
                                             $sq_name = $sq['rowdivid'] . '.NAOK';
                                         }
                                     }
-                                    break;
-                                case 'R': //RANKING STYLE
-                                    // TODO - does not have sub-questions, so how should this be done?
-                                    // Current JavaScript works fine, but can't use expression value
                                     break;
                                 default:
                                     break;
@@ -1532,6 +1529,7 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case 'M': //Multiple choice checkbox
+                                case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -1552,10 +1550,6 @@
                                             $sq_name = $sq['varName'] . '.NAOK';
                                         }
                                     }
-                                    break;
-                                case 'R': //RANKING STYLE
-                                    // TODO - does not have sub-questions, so how should this be done?
-                                    // Current JavaScript works fine, but can't use expression value
                                     break;
                                 default:
                                     break;
@@ -2984,7 +2978,7 @@
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        if ($type != 'H' && $type != 'R') {
+                        if ($type != 'H') {
                             if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
                                 //                            $rowdivid = substr($sgqa,0,-7);
                             }
