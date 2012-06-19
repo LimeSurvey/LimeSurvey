@@ -161,6 +161,7 @@ class Survey extends CActiveRecord
     */
     public function insertNewSurvey($data, $xssfiltering = false)
     {
+
         do
         {
             if (isset($data['wishSID'])) // if wishSID is set check if it is not taken already
@@ -175,12 +176,17 @@ class Survey extends CActiveRecord
         }
         while (!is_null($isresult));
 
-        $data['datecreated'] = date("Y-m-d");
+     //   $data['datecreated'] = date("Y-m-d");
         if (isset($data['startdate']) && trim($data['startdate']) == '')
-            $data['startdate'] = null;
+            unset($data['startdate']);
 
         if (isset($data['expires']) && trim($data['expires']) == '')
-            $data['expires'] = null;
+            unset($data['expires']);
+
+        if (!isset($insertdata['datecreated']))
+        {
+            $insertdata['datecreated'] = date("Y-m-d");
+        }
 
         if($xssfiltering)
         {
@@ -199,6 +205,7 @@ class Survey extends CActiveRecord
         foreach ($data as $k => $v)
             $survey->$k = $v;
         $survey->save();
+
         return $data['sid'];
     }
 

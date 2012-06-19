@@ -969,8 +969,13 @@ class InstallerController extends CController {
             $dbdata .="\t\t\t" . "'username' => '$sDatabaseUser',"  . "\n"
             ."\t\t\t" . "'password' => '$sDatabasePwd',"            . "\n"
             ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
-            ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n"
-            ."\t\t" . "),"                                          . "\n"
+            ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n";
+
+            if (in_array($sDatabaseType, array('mssql', 'sqlsrv'))) {
+                $dbdata .="\t\t\t" ."'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),"    . "\n";
+            }
+
+            $dbdata .="\t\t" . "),"                                          . "\n"
             ."\t\t"   . ""                                          . "\n"
 
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"

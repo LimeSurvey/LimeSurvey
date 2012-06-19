@@ -6008,7 +6008,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
     $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {{quota_languagesettings}} qls, {{quota}} q
     WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')";
-    $res = dbExecuteAssoc($sql) or safeDie("Can't read quota table in transInsertAns");     // Checked
+    $result = dbExecuteAssoc($sql) or safeDie("Can't read quota table in transInsertAns");     // Checked
 
     foreach ($result->readAll() as $qentry)
     {

@@ -404,7 +404,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
             }
 
             // replace the sid
-            $oldsid=$grouprowdata['sid'];
+            $iOldSID=$grouprowdata['sid'];
             $grouprowdata['sid']=$iNewSID;
 
             // replace the gid  or remove it if needed (it also will calculate the group order if is a new group)
@@ -428,8 +428,8 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
             $grouprowdata=array_map('convertCSVReturnToReturn', $grouprowdata);
 
             // translate internal links
-            $grouprowdata['group_name']=translateLinks('survey', $oldsid, $iNewSID, $grouprowdata['group_name']);
-            $grouprowdata['description']=translateLinks('survey', $oldsid, $iNewSID, $grouprowdata['description']);
+            $grouprowdata['group_name']=translateLinks('survey', $iOldSID, $iNewSID, $grouprowdata['group_name']);
+            $grouprowdata['description']=translateLinks('survey', $iOldSID, $iNewSID, $grouprowdata['description']);
 
             $gres = Yii::app()->db->createCommand()->insert('{{groups}}', $grouprowdata);
 
@@ -502,9 +502,9 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                 $questionrowdata=array_map('convertCSVReturnToReturn', $questionrowdata);
 
                 // translate internal links
-                $questionrowdata['title']=translateLinks('survey', $oldsid, $iNewSID, $questionrowdata['title']);
-                $questionrowdata['question']=translateLinks('survey', $oldsid, $iNewSID, $questionrowdata['question']);
-                $questionrowdata['help']=translateLinks('survey', $oldsid, $iNewSID, $questionrowdata['help']);
+                $questionrowdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['title']);
+                $questionrowdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['question']);
+                $questionrowdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['help']);
 
                 $newvalues=array_values($questionrowdata);
                 $qres = Yii::app()->db->createCommand()->insert('{{questions}}', $questionrowdata);
@@ -618,7 +618,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     $qres = Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
                 }
                 // translate internal links
-                $answerrowdata['answer']=translateLinks('survey', $oldsid, $iNewSID, $answerrowdata['answer']);
+                $answerrowdata['answer']=translateLinks('survey', $iOldSID, $iNewSID, $answerrowdata['answer']);
                 // Everything set - now insert it
                 $answerrowdata = array_map('convertCSVReturnToReturn', $answerrowdata);
 
@@ -839,14 +839,14 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         {
             $insertdata[(string)$key]=(string)$value;
         }
-        $oldsid=$insertdata['sid'];
+        $iOldSID=$insertdata['sid'];
         $insertdata['sid']=$iNewSID;
         $insertdata['group_order']=$newgrouporder;
         $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
 
         // now translate any links
-        $insertdata['group_name']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['group_name']);
-        $insertdata['description']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['description']);
+        $insertdata['group_name']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
+        $insertdata['description']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
         // Insert the new question
         if (isset($aGIDReplacements[$oldgid]))
         {
@@ -877,16 +877,16 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         {
             $insertdata[(string)$key]=(string)$value;
         }
-        $oldsid=$insertdata['sid'];
+        $iOldSID=$insertdata['sid'];
         $insertdata['sid']=$iNewSID;
         if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
         $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
         $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
         // now translate any links
-        $insertdata['title']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['title']);
-        $insertdata['question']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['question']);
-        $insertdata['help']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['help']);
+        $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
+        $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+        $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
         // Insert the new question
         if (isset($aQIDReplacements[$oldqid]))
         {
@@ -920,9 +920,9 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
             $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
-            $insertdata['title']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['title']);
-            $insertdata['question']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['question']);
-            $insertdata['help']=translateLinks('survey', $oldsid, $iNewSID, !empty($insertdata['help']) ? $insertdata['help'] : '');
+            $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
+            $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+            $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, !empty($insertdata['help']) ? $insertdata['help'] : '');
             if (isset($aQIDReplacements[$oldsqid])){
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
             }
@@ -1428,7 +1428,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
 
             // replace the sid
             $oldqid = $questionrowdata['qid'];
-            $oldsid = $questionrowdata['sid'];
+            $iOldSID = $questionrowdata['sid'];
             $oldgid = $questionrowdata['gid'];
 
             // Remove qid field if there is no newqid; and set it to newqid if it's set
@@ -1472,8 +1472,8 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
             $questionrowdata=array_map('convertCSVReturnToReturn', $questionrowdata);
 
             // translate internal links
-            $questionrowdata['question']=translateLinks('survey', $oldsid, $iNewSID, $questionrowdata['question']);
-            $questionrowdata['help']=translateLinks('survey', $oldsid, $iNewSID, $questionrowdata['help']);
+            $questionrowdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['question']);
+            $questionrowdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['help']);
 
             $newvalues=array_values($questionrowdata);
             if ($xssfilter)
@@ -1588,7 +1588,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
 
                 }
                 // translate internal links
-                $answerrowdata['answer']=translateLinks('survey', $oldsid, $iNewSID, $answerrowdata['answer']);
+                $answerrowdata['answer']=translateLinks('survey', $iOldSID, $iNewSID, $answerrowdata['answer']);
                 // Everything set - now insert it
                 $answerrowdata = array_map('convertCSVReturnToReturn', $answerrowdata);
 
@@ -1753,16 +1753,16 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
         {
             $insertdata[(string)$key]=(string)$value;
         }
-        $oldsid=$insertdata['sid'];
+        $iOldSID=$insertdata['sid'];
         $insertdata['sid']=$iNewSID;
         $insertdata['gid']=$newgid;
         $insertdata['question_order']=$newquestionorder;
         $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
         // now translate any links
-        $insertdata['title']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['title']);
-        $insertdata['question']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['question']);
-        $insertdata['help']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['help']);
+        $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
+        $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+        $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
         // Insert the new question
         if (isset($aQIDReplacements[$oldqid]))
         {
@@ -1799,10 +1799,10 @@ function XMLImportQuestion($sFullFilepath, $iNewSID, $newgid)
 
             // now translate any links
 
-            $insertdata['question']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['question']);
+            $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
             if (isset($insertdata['help']))
             {
-                $insertdata['help']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['help']);
+                $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             }
             if (isset($aQIDReplacements[$oldsqid])){
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
@@ -2607,9 +2607,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
     $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
-    $oldsid=$surveyrowdata["sid"];
+    $iOldSID=$surveyrowdata["sid"];
 
-    if (!$oldsid)
+    if (!$iOldSID)
     {
         if ($importingfrom == "http")
         {
@@ -2633,7 +2633,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     }
     else
     {
-        $iNewSID = GetNewSurveyID($oldsid);
+        $iNewSID = GetNewSurveyID($iOldSID);
     }
 
 
@@ -2681,14 +2681,14 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         // translate internal links
         if ($bTranslateLinks)
         {
-            $surveylsrowdata['surveyls_title']=translateLinks('survey', $oldsid, $iNewSID, $surveylsrowdata['surveyls_title']);
-            $surveylsrowdata['surveyls_description']=translateLinks('survey', $oldsid, $iNewSID, $surveylsrowdata['surveyls_description']);
-            $surveylsrowdata['surveyls_welcometext']=translateLinks('survey', $oldsid, $iNewSID, $surveylsrowdata['surveyls_welcometext']);
-            $surveylsrowdata['surveyls_urldescription']=translateLinks('survey', $oldsid, $iNewSID, $surveylsrowdata['surveyls_urldescription']);
-            $surveylsrowdata['surveyls_email_invite']=translateLinks('survey', $oldsid, $iNewSID, $surveylsrowdata['surveyls_email_invite']);
-            $surveylsrowdata['surveyls_email_remind']=translateLinks('survey', $oldsid, $iNewSID, $surveylsrowdata['surveyls_email_remind']);
-            $surveylsrowdata['surveyls_email_register']=translateLinks('survey', $oldsid, $iNewSID, $surveylsrowdata['surveyls_email_register']);
-            $surveylsrowdata['surveyls_email_confirm']=translateLinks('survey', $oldsid, $iNewSID, $surveylsrowdata['surveyls_email_confirm']);
+            $surveylsrowdata['surveyls_title']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_title']);
+            $surveylsrowdata['surveyls_description']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_description']);
+            $surveylsrowdata['surveyls_welcometext']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_welcometext']);
+            $surveylsrowdata['surveyls_urldescription']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_urldescription']);
+            $surveylsrowdata['surveyls_email_invite']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_email_invite']);
+            $surveylsrowdata['surveyls_email_remind']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_email_remind']);
+            $surveylsrowdata['surveyls_email_register']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_email_register']);
+            $surveylsrowdata['surveyls_email_confirm']=translateLinks('survey', $iOldSID, $iNewSID, $surveylsrowdata['surveyls_email_confirm']);
         }
         unset($surveylsrowdata['lastpage']);
         $surveylsrowdata['surveyls_survey_id']=$iNewSID;
@@ -2832,7 +2832,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
 
             //Now an additional integrity check if there are any groups not belonging into this survey
-            if ($grouprowdata['sid'] != $oldsid)
+            if ($grouprowdata['sid'] != $iOldSID)
             {
                 $results['fatalerror'] = $clang->gT("A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped.")."<br />\n";
                 return $results;
@@ -2853,8 +2853,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             // translate internal links
             if ($bTranslateLinks)
             {
-                $grouprowdata['group_name']=translateLinks('survey', $oldsid, $iNewSID, $grouprowdata['group_name']);
-                $grouprowdata['description']=translateLinks('survey', $oldsid, $iNewSID, $grouprowdata['description']);
+                $grouprowdata['group_name']=translateLinks('survey', $iOldSID, $iNewSID, $grouprowdata['group_name']);
+                $grouprowdata['description']=translateLinks('survey', $iOldSID, $iNewSID, $grouprowdata['description']);
             }
 
             if (isset($grouprowdata['gid'])) switchMSSQLIdentityInsert('groups',true);
@@ -2930,8 +2930,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             // translate internal links
             if ($bTranslateLinks)
             {
-                $questionrowdata['question']=translateLinks('survey', $oldsid, $iNewSID, $questionrowdata['question']);
-                $questionrowdata['help']=translateLinks('survey', $oldsid, $iNewSID, $questionrowdata['help']);
+                $questionrowdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['question']);
+                $questionrowdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $questionrowdata['help']);
             }
 
 
@@ -3061,7 +3061,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             // translate internal links
             if ($bTranslateLinks)
             {
-                $answerrowdata['answer']=translateLinks('survey', $oldsid, $iNewSID, $answerrowdata['answer']);
+                $answerrowdata['answer']=translateLinks('survey', $iOldSID, $iNewSID, $answerrowdata['answer']);
             }
             // Everything set - now insert it
             $answerrowdata = array_map('convertCSVReturnToReturn', $answerrowdata);
@@ -3184,9 +3184,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
             $asrowdata=array_combine($fieldorders,$fieldcontents);
 
-            $oldsid=$asrowdata["sid"];
+            $iOldSID=$asrowdata["sid"];
             foreach ($substitutions as $subs) {
-                if ($oldsid==$subs[0]) {$iNewSID=$subs[3];}
+                if ($iOldSID==$subs[0]) {$iNewSID=$subs[3];}
             }
 
             $asrowdata["sid"]=$iNewSID;
@@ -3209,14 +3209,14 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
             $asrowdata=array_combine($fieldorders,$fieldcontents);
 
-            $oldsid=$asrowdata["sid"];
+            $iOldSID=$asrowdata["sid"];
             $newqid="";
             $newquotaid="";
             $oldqid=$asrowdata['qid'];
             $oldquotaid=$asrowdata['quota_id'];
 
             foreach ($substitutions as $subs) {
-                if ($oldsid==$subs[0]) {$iNewSID=$subs[3];}
+                if ($iOldSID==$subs[0]) {$iNewSID=$subs[3];}
                 if ($oldqid==$subs[2]) {$newqid=$subs[5];}
             }
 
@@ -3300,7 +3300,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $conditionrowdata["qid"]=$aQIDReplacements[$conditionrowdata["qid"]];
             $conditionrowdata["cqid"]=$aQIDReplacements[$conditionrowdata["cqid"]];
             $oldcfieldname=$conditionrowdata["cfieldname"];
-            $conditionrowdata["cfieldname"]=str_replace($oldsid.'X'.$oldgid.'X'.$oldcqid,$iNewSID.'X'.$aGIDReplacements[$oldgid].'X'.$conditionrowdata["cqid"],$conditionrowdata["cfieldname"]);
+            $conditionrowdata["cfieldname"]=str_replace($iOldSID.'X'.$oldgid.'X'.$oldcqid,$iNewSID.'X'.$aGIDReplacements[$oldgid].'X'.$conditionrowdata["cqid"],$conditionrowdata["cfieldname"]);
 
             $result=Conditions::model()->insertRecords($conditionrowdata) or safeDie("Couldn't insert condition<br />");
 
@@ -3312,7 +3312,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
     $importresults['importversion']=$importversion;
     $importresults['newsid']=$iNewSID;
-    $importresults['oldsid']=$oldsid;
+    $importresults['oldsid']=$iOldSID;
     return $importresults;
 }
 
@@ -3384,14 +3384,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata[(string)$key]=(string)$value;
         }
 
-        $oldsid=$insertdata['sid'];
+        $iOldSID=$results['oldsid']=$insertdata['sid'];
         if($iDesiredSurveyId!=NULL)
         {
-            $iNewSID=GetNewSurveyID($iDesiredSurveyId);
-        }
-        else
-        {
-            $iNewSID=GetNewSurveyID($oldsid);
+            $insertdata['wishSID']=GetNewSurveyID($iDesiredSurveyId);
         }
 
         if ($iDBVersion<=143)
@@ -3400,25 +3396,15 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['private']);
             unset($insertdata['notification']);
         }
-        $insertdata['startdate']=NULL;
-        //Now insert the new SID and change some values
-        $insertdata['sid'] = $iNewSID;
+
+        unset($insertdata['expires']);
+        unset($insertdata['startdate']);
+
         //Make sure it is not set active
         $insertdata['active']='N';
         //Set current user to be the owner
         $insertdata['owner_id']=Yii::app()->session['loginID'];
-        //Change creation date to import date
 
-        $insertdata['datecreated'] = new CDbExpression('NOW()');
-
-        if (isset($insertdata['expires']) && $insertdata['expires'] == '')
-        {
-            $insertdata['expires'] = NULL;
-        }
-        if (isset($insertdata['startdate']) && $insertdata['startdate'] == '')
-        {
-            $insertdata['startdate'] = NULL;
-        }
         if (isset($insertdata['bouncetime']) && $insertdata['bouncetime'] == '')
         {
             $insertdata['bouncetime'] = NULL;
@@ -3429,18 +3415,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['showxquestions']=$insertdata['showXquestions'];
             unset($insertdata['showXquestions']);
         }
-
-        switchMSSQLIdentityInsert('surveys',true);
-        if ($xssfilter)
-            XSSFilterArray($insertdata);
-        $iNewSID = Survey::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata,$xssfilter) or safeDie($clang->gT("Error").": Failed to insert data<br />");
 
         $results['surveys']++;
-        switchMSSQLIdentityInsert('surveys',false);
     }
 
-    $results['newsid']=$iNewSID;
-    $results['oldsid']=$oldsid;
 
     // Import survey languagesettings table ===================================================================================
 
@@ -3461,17 +3440,17 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             if ($sNewSurveyName == NULL)
             {
-                $insertdata['surveyls_title']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['surveyls_title']);
+                $insertdata['surveyls_title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_title']);
             } else {
-                $insertdata['surveyls_title']=translateLinks('survey', $oldsid, $iNewSID, $sNewSurveyName);
+                $insertdata['surveyls_title']=translateLinks('survey', $iOldSID, $iNewSID, $sNewSurveyName);
             }
-            $insertdata['surveyls_description']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['surveyls_description']);
-            $insertdata['surveyls_welcometext']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['surveyls_welcometext']);
-            $insertdata['surveyls_urldescription']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['surveyls_urldescription']);
-            $insertdata['surveyls_email_invite']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['surveyls_email_invite']);
-            $insertdata['surveyls_email_remind']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['surveyls_email_remind']);
-            $insertdata['surveyls_email_register']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['surveyls_email_register']);
-            $insertdata['surveyls_email_confirm']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['surveyls_email_confirm']);
+            $insertdata['surveyls_description']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_description']);
+            $insertdata['surveyls_welcometext']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_welcometext']);
+            $insertdata['surveyls_urldescription']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_urldescription']);
+            $insertdata['surveyls_email_invite']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_invite']);
+            $insertdata['surveyls_email_remind']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_remind']);
+            $insertdata['surveyls_email_register']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_register']);
+            $insertdata['surveyls_email_confirm']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_confirm']);
         }
 
 
@@ -3492,15 +3471,15 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata[(string)$key]=(string)$value;
             }
             if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
-            $oldsid=$insertdata['sid'];
+            $iOldSID=$insertdata['sid'];
             $insertdata['sid']=$iNewSID;
             $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
 
             // now translate any links
             if ($bTranslateInsertansTags)
             {
-                $insertdata['group_name']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['group_name']);
-                $insertdata['description']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['description']);
+                $insertdata['group_name']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
+                $insertdata['description']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
             }
             // Insert the new group
             if (isset($aGIDReplacements[$oldgid]))
@@ -3537,7 +3516,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata[(string)$key]=(string)$value;
             }
             if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
-            $oldsid=$insertdata['sid'];
+            $iOldSID=$insertdata['sid'];
             $insertdata['sid']=$iNewSID;
             $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
             $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
@@ -3545,8 +3524,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // now translate any links
             if ($bTranslateInsertansTags)
             {
-                $insertdata['question']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['question']);
-                $insertdata['help']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['help']);
+                $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+                $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             }
             // Insert the new question
             if (isset($aQIDReplacements[$oldqid]))
@@ -3590,8 +3569,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // now translate any links
             if ($bTranslateInsertansTags)
             {
-                $insertdata['question']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['question']);
-                if (isset($insertdata['help'])) $insertdata['help']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['help']);
+                $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
+                if (isset($insertdata['help'])) $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             }
             if (isset($aQIDReplacements[$oldsqid])){
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
@@ -3630,7 +3609,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // now translate any links
             if ($bTranslateInsertansTags)
             {
-                $insertdata['answer']=translateLinks('survey', $oldsid, $iNewSID, $insertdata['answer']);
+                $insertdata['answer']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
             }
             if ($xssfilter)
                 XSSFilterArray($insertdata);
@@ -3694,7 +3673,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $results['defaultvalues']++;
         }
     }
-    $aOldNewFieldmap=reverseTranslateFieldNames($oldsid,$iNewSID,$aGIDReplacements,$aQIDReplacements);
+    $aOldNewFieldmap=reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDReplacements);
 
     // Import conditions ---------------------------------------------------------
     if(isset($xml->conditions))
@@ -3887,10 +3866,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     // Set survey rights
     Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSID);
-    $aOldNewFieldmap=reverseTranslateFieldNames($oldsid,$iNewSID,$aGIDReplacements,$aQIDReplacements);
+    $aOldNewFieldmap=reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDReplacements);
     $results['FieldReMap']=$aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
-    translateInsertansTags($iNewSID,$oldsid,$aOldNewFieldmap);
+    translateInsertansTags($iNewSID,$iOldSID,$aOldNewFieldmap);
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
     return $results;
@@ -3900,38 +3879,36 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 * This function returns a new random sid if the existing one is taken,
 * otherwise it returns the old one.
 *
-* @param mixed $oldsid
+* @param mixed $iOldSID
 */
-function GetNewSurveyID($oldsid)
+function GetNewSurveyID($iOldSID)
 {
     Yii::app()->loadHelper('database');
-    $query = "SELECT sid FROM {{surveys}} WHERE sid=$oldsid";
+    $query = "SELECT sid FROM {{surveys}} WHERE sid=$iOldSID";
 
-    $res = Yii::app()->db->createCommand($query)->query();
-    $isresult = $res->read();
+    $aRow = Yii::app()->db->createCommand($query)->queryRow();
 
     if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         $xssfilter = true;
     else
         $xssfilter = false;
-
     //if (!is_null($isresult))
-    if($res->count() > 0)
+    if($aRow!==false)
     {
         // Get new random ids until one is found that is not used
         do
         {
             $iNewSID = randomChars(5,'123456789');
             $query = "SELECT sid FROM {{surveys}} WHERE sid=$iNewSID";
-            $res = Yii::app()->db->createCommand($query)->query();
+            $aRow = Yii::app()->db->createCommand($query)->queryRow();
         }
-        while ($res->count());
+        while ($aRow!==false);
 
         return $iNewSID;
     }
     else
     {
-        return $oldsid;
+        return $iOldSID;
     }
 }
 
@@ -4203,14 +4180,14 @@ function ExcelImportSurvey($sFullFilepath)
         }
     }
 
-    $oldsid = 1;
+    $iOldSID = 1;
     if (isset($surveyinfo['sid']))
     {
-        $oldsid = (int) $surveyinfo['sid'];
+        $iOldSID = (int) $surveyinfo['sid'];
     }
 
     // Create the survey entry
-    $iNewSID=GetNewSurveyID($oldsid);
+    $iNewSID=GetNewSurveyID($iOldSID);
     $surveyinfo['startdate']=NULL;
     $surveyinfo['sid']=$iNewSID;
     $surveyinfo['active']='N';
@@ -4490,12 +4467,12 @@ function ExcelImportSurvey($sFullFilepath)
 
     }
 
-    // Delete the survey if error found    
-		if(is_array($results['error']))  
+    // Delete the survey if error found
+		if(is_array($results['error']))
 		{
 			$result = Survey::model()->deleteSurvey($iNewSID);
 		}
-		
+
     return $results;
 }
 
