@@ -7008,6 +7008,8 @@ EOD;
 
         private static function getConditionsForEM($surveyid=NULL, $qid=NULL)
         {
+            global $databasetype;
+
             if (!is_null($qid)) {
                 $where = " c.qid = ".$qid." and ";
             }
@@ -7029,8 +7031,18 @@ EOD;
             ." from ".db_table_name('conditions')." as c"
             .", ".db_table_name('questions')." as q"
             ." where ". $where
-            ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, qid, scenario, cqid, cfieldname, value";
+            ." c.cqid = 0 and c.qid = q.qid";
+
+            if ($databasetype == 'mssql')
+            {
+                $query .= " order by sid, c.qid, scenario, cqid, cfieldname, value";
+
+            }
+            else
+            {
+                $query .= " order by sid, qid, scenario, cqid, cfieldname, value";
+
+            }
 
             $data = db_execute_assoc($query);
 
