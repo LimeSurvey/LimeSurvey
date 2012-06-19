@@ -7035,8 +7035,17 @@ EOD;
             ." from {{conditions}} as c"
             .", {{questions}} as q"
             ." where ". $where
-            ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, c.qid, scenario, cqid, cfieldname, value";
+            ." c.cqid = 0 and c.qid = q.qid";
+
+            $databasetype = Yii::app()->db->getDriverName();
+            if ($databasetype=='mssql')
+            {
+                $query .= " order by sid, c.qid, scenario, cqid, cfieldname, value";
+            }
+            else
+            {
+                $query .= " order by sid, qid, scenario, cqid, cfieldname, value";
+            }
 
             $data = dbExecuteAssoc($query);
 
