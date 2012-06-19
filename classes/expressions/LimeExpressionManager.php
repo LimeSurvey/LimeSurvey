@@ -1059,6 +1059,17 @@
                         $cascadedAFE = array_reverse($cascadedAFE);
 
                         $subqs = $qinfo['subqs'];
+                        if ($type == 'R') {
+                            $subqs = array();
+                            foreach ($this->qans[$qinfo['qid']] as $k=>$v)
+                            {
+                                $_code = explode('~',$k);
+                                $subqs[] = array(
+                                    'rowdivid'=>$qinfo['sgqa'] . $_code[1],
+                                    'sqsuffix'=>'_' . $_code[1],
+                                );
+                            }
+                        }
                         $last_rowdivid = '--';
                         foreach ($subqs as $sq) {
                             if ($sq['rowdivid'] == $last_rowdivid)
@@ -1083,6 +1094,7 @@
                                 case 'P': //Multiple choice with comments checkbox + text
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
+                                case 'R': //Ranking
 //                                    if ($this->sgqaNaming)
 //                                    {
                                         foreach ($cascadedAF as $_caf)
@@ -1443,6 +1455,7 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case 'M': //Multiple choice checkbox
+                                case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -1464,10 +1477,6 @@
                                         }
                                     }
                                     break;
-                                case 'R': //RANKING STYLE
-                                    // TODO - does not have sub-questions, so how should this be done?
-                                    // Current JavaScript works fine, but can't use expression value
-                                    break;
                                 default:
                                     break;
                             }
@@ -1484,7 +1493,7 @@
                             'qtype' => $type,
                             'type' => 'min_answers',
                             'class' => 'num_answers',
-                            'eqn' => '(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . '))',
+                            'eqn' => 'if(is_empty('.$min_answers.'),1,(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . ')))',
                             'qid' => $questionNum,
                             );
                         }
@@ -1532,6 +1541,7 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case 'M': //Multiple choice checkbox
+                                case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -1553,10 +1563,6 @@
                                         }
                                     }
                                     break;
-                                case 'R': //RANKING STYLE
-                                    // TODO - does not have sub-questions, so how should this be done?
-                                    // Current JavaScript works fine, but can't use expression value
-                                    break;
                                 default:
                                     break;
                             }
@@ -1573,7 +1579,7 @@
                             'qtype' => $type,
                             'type' => 'max_answers',
                             'class' => 'num_answers',
-                            'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
+                            'eqn' => '(if(is_empty('.$max_answers.'),1,count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . ')))',
                             'qid' => $questionNum,
                             );
                         }
@@ -2984,7 +2990,7 @@
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        if ($type != 'H' && $type != 'R') {
+                        if ($type != 'H') {
                             if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
                                 //                            $rowdivid = substr($sgqa,0,-7);
                             }
@@ -4272,7 +4278,7 @@
             }
             else
             {
-                // Otherwise, use the real date/time, it will only be saved when the table holds a 
+                // Otherwise, use the real date/time, it will only be saved when the table holds a
                 // datestamp field
                 $datestamp=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             }
@@ -6009,9 +6015,10 @@
 
                     // Do all sub-question filtering (e..g array_filter)
                     /**
-                     * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row 
+                     * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
+                    $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
@@ -6023,15 +6030,15 @@
                         }
                         else
                         {
-                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
                         }
                         if ($sq['isExclusiveJS'] != '')
                         {
                             $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                             $relParts[] = "    }\n";
                             $relParts[] = "    else {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
                             $relParts[] = "    }\n";
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -6042,23 +6049,23 @@
                             if ($sq['irrelevantAndExclusiveJS'] != '')
                             {
                                 $relParts[] = "    if ( " . $sq['irrelevantAndExclusiveJS'] . " ) {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                                 $relParts[] = "    }\n";
                                 $relParts[] = "    else {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
                                 if ($afHide)
                                 {
                                     $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
                                 }
                                 else
                                 {
-                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                                 }
                                 $relParts[] = "    }\n";
                             }
                             else
                             {
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                             }
                         }
                         else
@@ -6069,7 +6076,7 @@
                             }
                             else
                             {
-                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                             }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -7001,6 +7008,8 @@ EOD;
 
         private static function getConditionsForEM($surveyid=NULL, $qid=NULL)
         {
+            global $databasetype;
+
             if (!is_null($qid)) {
                 $where = " c.qid = ".$qid." and ";
             }
@@ -7022,8 +7031,18 @@ EOD;
             ." from ".db_table_name('conditions')." as c"
             .", ".db_table_name('questions')." as q"
             ." where ". $where
-            ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, qid, scenario, cqid, cfieldname, value";
+            ." c.cqid = 0 and c.qid = q.qid";
+
+            if ($databasetype == 'mssql')
+            {
+                $query .= " order by sid, c.qid, scenario, cqid, cfieldname, value";
+
+            }
+            else
+            {
+                $query .= " order by sid, qid, scenario, cqid, cfieldname, value";
+
+            }
 
             $data = db_execute_assoc($query);
 
@@ -7888,7 +7907,7 @@ EOD;
                                 break;
                             case 'other':
                                 if ($value == 'N') {
-                                    $value = NULL; // so can skip this one 
+                                    $value = NULL; // so can skip this one
                                 }
                                 break;
                         }
@@ -8032,8 +8051,6 @@ EOD;
                                 $sgqa_len = strlen($sid . 'X'. $gid . 'X' . $qid);
                                 $varName = $rootVarName . '_' . substr($_rowdivid,$sgqa_len);
                             }
-                        case 'L':
-                            // TODO - need to show array filters applied to lists
                             break;
                     }
                     if (is_null($rowdivid)) {
@@ -8102,6 +8119,10 @@ EOD;
 
                         $subQeqn = '';
                         $rowdivid = $sgqas[0] . $ansInfo[1];
+                        if ($q['info']['type'] == 'R')
+                        {
+                            $rowdivid = $LEM->sid . 'X' . $gid . 'X' . $qid . $ansInfo[1];
+                        }
                         if (isset($LEM->subQrelInfo[$qid][$rowdivid]))
                         {
                             $sq = $LEM->subQrelInfo[$qid][$rowdivid];

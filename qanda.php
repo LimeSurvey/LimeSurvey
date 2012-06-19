@@ -155,12 +155,6 @@ function retrieveAnswers($ia)
             if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
             {
                 $question_text['help'] = $clang->gT("Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item.");
-                if (trim($qidattributes['min_answers'])!='')
-                {
-                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . sprintf($clang->ngT("Check at least %d item","Check at least %d items",$qidattributes['min_answers']),$qidattributes['min_answers'])."</span>";
-                    $question_text['help'] .=' '.sprintf($clang->ngT("Check at least %d item","Check at least %d items",$qidattributes['min_answers']),$qidattributes['min_answers']);
-                }
             }
             break;
         case 'M': //Multiple choice checkbox
@@ -1944,16 +1938,38 @@ function do_ranking($ia)
     if (trim($qidattributes["max_answers"])!='')
     {
         $max_answers=trim($qidattributes["max_answers"]);
+        $max_ans_val = LimeExpressionManager::ProcessString('{'.$max_answers.'}',$ia[0]);
+        if (!is_numeric($max_ans_val))  // this happens when try to do dynamic max ranking values and the starting value is blank
+        {
+            $max_ans_val = $anscount;
+        }
     } else {
         $max_answers=$anscount;
+        $max_ans_val = $anscount;
     }
-    $finished=$anscount-$max_answers;
+    if (trim($qidattributes["min_answers"])!='')
+    {
+        $min_answers = trim($qidattributes["min_answers"]);
+    }
+    else
+    {
+        $min_answers = 0;
+    }
+
     $answer .= "\t<script type='text/javascript'>\n"
     . "\t<!--\n"
     . "function rankthis_{$ia[0]}(\$code, \$value)\n"
     . "\t{\n"
     . "\t\$index=document.getElementById('CHOICES_{$ia[0]}').selectedIndex;\n"
-    . "\tfor (i=1; i<=$max_answers; i++)\n"
+    . "\tvar _maxans = $.trim(LEMstrip_tags($('#RANK_{$ia[0]}_maxans').html()));\n"
+    . "\tvar _minans = $.trim(LEMstrip_tags($('#RANK_{$ia[0]}_minans').html()));\n"
+    . "\tvar maxval = (LEMempty(_maxans) ? $anscount : Math.floor(_maxans));\n"
+    . "\tif (($anscount - document.getElementById('CHOICES_{$ia[0]}').options.length) >= maxval) {\n"
+    . "\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n"
+    . "\t\tdocument.getElementById('CHOICES_{$ia[0]}').selectedIndex=-1;\n"
+    . "\t\treturn true;\n"
+    . "\t}\n"
+    . "\tfor (i=1; i<=maxval; i++)\n"
     . "{\n"
     . "\$b=i;\n"
     . "\$b += '';\n"
@@ -1973,10 +1989,10 @@ function do_ranking($ia)
     . "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[b] = null;\n"
     . "\t\t\t\t\t\t\t\t\t}\n"
     . "\t\t\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\t\t\ti=$max_answers;\n"
+    . "\t\t\t\t\t\t\ti=maxval;\n"
     . "\t\t\t\t\t\t\t}\n"
     . "\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length == $finished)\n"
+    . "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length == ($anscount - maxval))\n"
     . "\t\t\t\t\t\t{\n"
     . "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n"
     . "\t\t\t\t\t\t}\n"
@@ -2030,7 +2046,7 @@ function do_ranking($ia)
             $existing++;
         }
     }
-    for ($i=1; $i<=$max_answers; $i++)
+    for ($i=1; $i<=floor($max_ans_val); $i++)
     {
         $myfname = $ia[1].$i;
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
@@ -2081,7 +2097,7 @@ function do_ranking($ia)
         {
             if (!in_array($ans, $chosen))
             {
-                $choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+                $choicelist .= "\t\t\t\t\t\t\t<option id='javatbd{$ia[1]}{$ans[0]}' value='{$ans[0]}'>{$ans[1]}</option>\n";
             }
         if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
         }
@@ -2101,7 +2117,10 @@ function do_ranking($ia)
     $ranklist = str_replace("<input class=\"text\"", "<input size='{$maxselectlength}' class='text'", $ranklist);
     $answer .= "\t<td style=\"text-align:left; white-space:nowrap;\" class='rank output'>\n"
         . "\t<table border='0' cellspacing='1' cellpadding='0'>\n"
-        . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
+        . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong>"
+        . "<div style='display:none' id='RANK_{$ia[0]}_maxans'>{".$max_answers."}</div>"
+        . "<div style='display:none' id='RANK_{$ia[0]}_minans'>{".$min_answers."}</div>"
+        . "</td></tr>\n";
 
     $answer .= $ranklist
     . "\t</table>\n"
@@ -2113,44 +2132,6 @@ function do_ranking($ia)
     . "\t</font size='1'></td>\n"
     . "</tr>\n"
     . "\t</table>\n";
-
-    if (trim($qidattributes["min_answers"])!='')
-    {
-        $minansw=trim($qidattributes["min_answers"]);
-        if(!isset($showpopups) || $showpopups == 0)
-        {
-            $answer .= "<div id='rankingminanswarning{$ia[0]}' style='display: none; color: red' class='errormandatory'>"
-                       .sprintf($clang->ngT('Please rank at least %d item for question "%s".','Please rank at least %d items for question "%s".',$minansw),$minansw, trim(str_replace(array("\n", "\r"), "", $ia[3])))."</div>";
-        }
-        $minanswscript = "<script type='text/javascript'>\n"
-        . "  <!--\n"
-        . "  oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
-        . "  function ensureminansw_{$ia[0]}()\n"
-        . "  {\n"
-        . "     count={$anscount} - document.getElementById('CHOICES_{$ia[0]}').options.length;\n"
-        . "     if (count < {$minansw} && $('#relevance{$ia[0]}').val()==1){\n";
-        if(!isset($showpopups) || $showpopups == 0)
-        {
-            $minanswscript .= "\n
-			document.getElementById('rankingminanswarning{$ia[0]}').style.display='';\n";
-        } else {
-            $minanswscript .="
-                    alert('".sprintf($clang->ngT('Please rank at least %d item for question "%s".', 'Please rank at least %d items for question "%s".', $minansw,'js'),$minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
-        }
-        $minanswscript .= ""
-        . "     return false;\n"
-        . "   } else {\n"
-        . "     if (oldonsubmit_{$ia[0]}){\n"
-        . "         return oldonsubmit_{$ia[0]}();\n"
-        . "     }\n"
-        . "     return true;\n"
-        . "     }\n"
-        . "  }\n"
-        . "  document.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
-        . "  -->\n"
-        . "  </script>\n";
-        $answer = $minanswscript . $answer;
-    }
 
     return array($answer, $inputnames);
 }
