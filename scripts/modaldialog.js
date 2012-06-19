@@ -66,6 +66,11 @@ $(document).ready(function() {
                         }else{
                             /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                         }
+                        if (pass) {
+                            $('iframe#uploader').remove();
+                            $(this).dialog('destroy');
+                            checkconditions();
+                        }
                         return true;
 
                     },
@@ -100,7 +105,11 @@ $(document).ready(function() {
                         }else{    /*IE6*/
                             pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                         }
-
+                        if (pass) {
+                            $('iframe#uploader').remove();
+                            $(this).dialog('destroy');
+                            checkconditions();
+                        }
                         return pass;
                     },
                     overlay: {
@@ -136,7 +145,7 @@ function getQueryVariable(variable, url) {
 function isValueInArray(arr, val) {
     inArray = false;
     for (i = 0; i < arr.length; i++) {
-        if (val === arr[i]) {
+        if (val.toLowerCase() == arr[i].toLowerCase()) {
             inArray = true;
         }
     }
