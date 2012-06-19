@@ -1106,12 +1106,33 @@
                                                 continue;
                                             }
                                             $fqid = $fqid[2];
+                                            if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                            {
+                                                $rankables = array();
+                                                foreach ($this->qans[$fqid] as $k=>$v)
+                                                {
+                                                    $rankable = explode('~',$k);
+                                                    $rankables[] = '_' . $rankable[1];
+                                                }
+                                                if (array_search($sq['sqsuffix'],$rankables) === false)
+                                                {
+                                                    continue;
+                                                }
+                                            }
                                             $fsqs = array();
                                             foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
                                             {
-                                                if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                if ($this->q2subqInfo[$fqid]['type'] == 'R')
                                                 {
-                                                    $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                    // we know the suffix exists
+                                                    $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK == '" . substr($sq['sqsuffix'],1) . "')";
+                                                }
+                                                else
+                                                {
+                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                    {
+                                                        $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                    }
                                                 }
                                             }
                                             if (count($fsqs) > 0)
@@ -1128,12 +1149,33 @@
                                                 continue;
                                             }
                                             $fqid = $fqid[2];
+                                            if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                            {
+                                                $rankables = array();
+                                                foreach ($this->qans[$fqid] as $k=>$v)
+                                                {
+                                                    $rankable = explode('~',$k);
+                                                    $rankables[] = '_' . $rankable[1];
+                                                }
+                                                if (array_search($sq['sqsuffix'],$rankables) === false)
+                                                {
+                                                    continue;
+                                                }
+                                            }
                                             $fsqs = array();
                                             foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
                                             {
-                                                if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                if ($this->q2subqInfo[$fqid]['type'] == 'R')
                                                 {
-                                                    $fsqs[] = 'is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                    // we know the suffix exists
+                                                    $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK != '" . substr($sq['sqsuffix'],1) . "')";
+                                                }
+                                                else
+                                                {
+                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                    {
+                                                        $fsqs[] = 'is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                    }
                                                 }
                                             }
                                             if (count($fsqs) > 0)
