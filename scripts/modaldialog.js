@@ -66,6 +66,11 @@ $(document).ready(function() {
                         }else{
                             /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                         }
+                        if (pass) {
+                            $('iframe#uploader').remove();
+                            $(this).dialog('destroy');
+                            checkconditions();
+                        }
                         return true;
 
                     },
@@ -100,7 +105,11 @@ $(document).ready(function() {
                         }else{    /*IE6*/
                             pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                         }
-
+                        if (pass) {
+                            $('iframe#uploader').remove();
+                            $(this).dialog('destroy');
+                            checkconditions();
+                        }
                         return pass;
                     },
                     overlay: {
