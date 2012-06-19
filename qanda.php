@@ -1947,13 +1947,23 @@ function do_ranking($ia)
         $max_answers=$anscount;
         $max_ans_val = $anscount;
     }
+    if (trim($qidattributes["min_answers"])!='')
+    {
+        $min_answers = trim($qidattributes["min_answers"]);
+    }
+    else
+    {
+        $min_answers = 0;
+    }
 
     $answer .= "\t<script type='text/javascript'>\n"
     . "\t<!--\n"
     . "function rankthis_{$ia[0]}(\$code, \$value)\n"
     . "\t{\n"
     . "\t\$index=document.getElementById('CHOICES_{$ia[0]}').selectedIndex;\n"
-    . "\tvar maxval = (LEMempty(LEMval('$max_answers')) ? $anscount : Math.floor(LEMval('$max_answers')));\n"
+    . "\tvar _maxans = $.trim(LEMstrip_tags($('#RANK_{$ia[0]}_maxans').html()));\n"
+    . "\tvar _minans = $.trim(LEMstrip_tags($('#RANK_{$ia[0]}_minans').html()));\n"
+    . "\tvar maxval = (LEMempty(_maxans) ? $anscount : Math.floor(_maxans));\n"
     . "\tif (($anscount - document.getElementById('CHOICES_{$ia[0]}').options.length) >= maxval) {\n"
     . "\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n"
     . "\t\tdocument.getElementById('CHOICES_{$ia[0]}').selectedIndex=-1;\n"
@@ -2107,7 +2117,10 @@ function do_ranking($ia)
     $ranklist = str_replace("<input class=\"text\"", "<input size='{$maxselectlength}' class='text'", $ranklist);
     $answer .= "\t<td style=\"text-align:left; white-space:nowrap;\" class='rank output'>\n"
         . "\t<table border='0' cellspacing='1' cellpadding='0'>\n"
-        . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
+        . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong>"
+        . "<div style='display:none' id='RANK_{$ia[0]}_maxans'>{".$max_answers."}</div>"
+        . "<div style='display:none' id='RANK_{$ia[0]}_minans'>{".$min_answers."}</div>"
+        . "</td></tr>\n";
 
     $answer .= $ranklist
     . "\t</table>\n"
