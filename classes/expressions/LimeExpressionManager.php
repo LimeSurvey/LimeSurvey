@@ -7030,7 +7030,7 @@ EOD;
             .", ".db_table_name('questions')." as q"
             ." where ". $where
             ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, c.qid, scenario, cqid, cfieldname, value";
+            ." order by sid, qid, scenario, cqid, cfieldname, value";
 
             $data = db_execute_assoc($query);
 
