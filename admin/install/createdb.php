@@ -41,7 +41,10 @@
         if ($createdbtype=='mssql_n' || $createdbtype=='odbc_mssql' || $createdbtype=='odbtp') $createdbtype='mssql';
         if($createdbtype=='postgres' && version_compare($connect->pgVersion, '9') >= 0)
         {
-            $connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
+            $result=$connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
+            if ($result==false){
+              die ('Database creation failed. Some database settings could not be set.<br>You need to be owner of the Postgres database. Please adjust your permissions and try again.');
+            }
         }
         if($createdbtype=='mssqlnative') $createdbtype='mssqlnative';
         if (modify_database(dirname(__FILE__).'/create-'.$createdbtype.'.sql'))

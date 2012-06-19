@@ -4278,7 +4278,7 @@
             }
             else
             {
-                // Otherwise, use the real date/time, it will only be saved when the table holds a 
+                // Otherwise, use the real date/time, it will only be saved when the table holds a
                 // datestamp field
                 $datestamp=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             }
@@ -6015,7 +6015,7 @@
 
                     // Do all sub-question filtering (e..g array_filter)
                     /**
-                     * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row 
+                     * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
                     $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
@@ -7030,7 +7030,7 @@ EOD;
             .", ".db_table_name('questions')." as q"
             ." where ". $where
             ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, qid, scenario, cqid, cfieldname, value";
+            ." order by sid, c.qid, scenario, cqid, cfieldname, value";
 
             $data = db_execute_assoc($query);
 
@@ -7895,7 +7895,7 @@ EOD;
                                 break;
                             case 'other':
                                 if ($value == 'N') {
-                                    $value = NULL; // so can skip this one 
+                                    $value = NULL; // so can skip this one
                                 }
                                 break;
                         }
