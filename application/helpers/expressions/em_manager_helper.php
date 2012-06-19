@@ -630,7 +630,7 @@
          * @var type
          */
         private $qid2exclusiveAuto = array();
-        
+
         /**
         * A private constructor; prevents direct creation of object
         */
@@ -4328,7 +4328,7 @@
                 if ($this->surveyOptions['ipaddr']) {
                     $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll(getIPAddress());
                 }
-  
+
                 foreach ($updatedValues as $key=>$value)
                 {
                     $val = (is_null($value) ? NULL : $value['value']);
@@ -7036,7 +7036,7 @@ EOD;
             .", {{questions}} as q"
             ." where ". $where
             ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, qid, scenario, cqid, cfieldname, value";
+            ." order by sid, c.qid, scenario, cqid, cfieldname, value";
 
             $data = dbExecuteAssoc($query);
 
