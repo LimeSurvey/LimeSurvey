@@ -32,7 +32,7 @@ switch ($databasetype)
     case 'odbc_mssql':modify_database("",'UPDATE [prefix_users] set password=\'$defaultpass\' where uid=1;');
     echo $modifyoutput; flush();
     break;
-    case 'postgres':modify_database("",'UPDATE prefix_users set \"password\"=\'$defaultpass\' where uid=1;');
+    case 'postgres':modify_database("",'UPDATE prefix_users set "password"=\'$defaultpass\' where uid=1;');
     echo $modifyoutput; flush();
     break;
 }
