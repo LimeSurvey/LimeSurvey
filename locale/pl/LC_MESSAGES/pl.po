@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 1.92 package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-06-12 11:53:06+0000\n"
+"PO-Revision-Date: 2012-06-20 10:25:25+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,31 +39,31 @@ msgstr "Czy dopuszcza się brak odpowiedzi przy ustawieniu 'Suma wprowadzanych w
 msgid "Value range allows missing"
 msgstr "Zakres wartości dopuszcza brak odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2419
+#: classes/expressions/LimeExpressionManager.php:2512
 msgid "Please upload at least one file"
 msgstr "Proszę przesłać co najmniej jeden plik"
 
-#: classes/expressions/LimeExpressionManager.php:2420
+#: classes/expressions/LimeExpressionManager.php:2513
 msgid "Please upload at least %s files"
 msgstr "Proszę przesłać co najmniej %s plików"
 
-#: classes/expressions/LimeExpressionManager.php:2424
+#: classes/expressions/LimeExpressionManager.php:2517
 msgid "Please upload at most one file"
 msgstr "Proszę przesłać co najwyżej jeden plik"
 
-#: classes/expressions/LimeExpressionManager.php:2425
+#: classes/expressions/LimeExpressionManager.php:2518
 msgid "Please upload at most %s files"
 msgstr "Proszę przesłać co najwyżej %s plików"
 
-#: classes/expressions/LimeExpressionManager.php:2429
+#: classes/expressions/LimeExpressionManager.php:2522
 msgid "Please upload one file"
 msgstr "Proszę przesłać jeden plik"
 
-#: classes/expressions/LimeExpressionManager.php:2430
+#: classes/expressions/LimeExpressionManager.php:2523
 msgid "Please upload %s files"
 msgstr "Proszę przesłać %s plików"
 
-#: classes/expressions/LimeExpressionManager.php:2432
+#: classes/expressions/LimeExpressionManager.php:2525
 msgid "Please upload between %s and %s files"
 msgstr "Proszę przesłać od %s do %s plików"
 
@@ -131,15 +131,15 @@ msgstr "To pytanie wymaga drugiego zestawu odpowiedzi, a nie ma go."
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Na to pytanie nałożono warunek, ale jest on oparty na pytaniu, które następuje później."
 
-#: admin/activate_functions.php:410
+#: admin/activate_functions.php:414
 msgid "Survey could not be actived."
 msgstr "Ankieta nie może być aktywowana."
 
-#: admin/activate_functions.php:412
+#: admin/activate_functions.php:416
 msgid "Database error:"
 msgstr "Błąd bazy danych:"
 
-#: admin/activate_functions.php:414 admin/browse.php:33 admin/browse.php:64
+#: admin/activate_functions.php:418 admin/browse.php:33 admin/browse.php:64
 #: admin/browse.php:76 admin/dataentry.php:82 admin/dataentry.php:2967
 #: admin/deactivate.php:46 admin/deactivate.php:52 admin/deactivate.php:54
 #: admin/deactivate.php:56 admin/deactivate.php:93 admin/deactivate.php:99
@@ -152,8 +152,8 @@ msgstr "Błąd bazy danych:"
 #: admin/import_resources_zip.php:336 admin/import_resources_zip.php:385
 #: admin/importgroup.php:45 admin/importgroup.php:70 admin/importlabel.php:31
 #: admin/importquestion.php:55 admin/importquestion.php:80
-#: admin/install/createdb.php:51 admin/install/createdb.php:68
-#: admin/install/createdb.php:105 admin/integritycheck.php:65
+#: admin/install/createdb.php:54 admin/install/createdb.php:71
+#: admin/install/createdb.php:108 admin/integritycheck.php:65
 #: admin/integritycheck.php:67 admin/integritycheck.php:96
 #: admin/integritycheck.php:98 admin/integritycheck.php:100
 #: admin/login_check.php:165 admin/resetsurveylogic.php:29
@@ -163,43 +163,43 @@ msgstr "Błąd bazy danych:"
 msgid "Main Admin Screen"
 msgstr "Strona główna administracji"
 
-#: admin/activate_functions.php:450
+#: admin/activate_functions.php:454
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Ankieta została aktywowana. Utworzono tabelę wyników."
 
-#: admin/activate_functions.php:459
+#: admin/activate_functions.php:463
 msgid "The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory."
 msgstr "Nie można utworzyć folderu do zapisu załadowanych plików. Proszę sprawdzić uprawnienia do zapisu w folderze limesurvey/upload/surveys."
 
-#: admin/activate_functions.php:485
+#: admin/activate_functions.php:489
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "W tym badaniu dopuszczono publiczną rejestrację. Musi być także utworzona tabela tokenów."
 
-#: admin/activate_functions.php:486 admin/tokens.php:550
+#: admin/activate_functions.php:490 admin/tokens.php:550
 msgid "Initialise tokens"
 msgstr "Inicjuj tokeny"
 
-#: admin/activate_functions.php:490
+#: admin/activate_functions.php:494
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Ta ankieta jest teraz aktywna i można wpisywać odpowiedzi."
 
-#: admin/activate_functions.php:491
+#: admin/activate_functions.php:495
 msgid "Open-access mode"
 msgstr "Nieograniczony"
 
-#: admin/activate_functions.php:491
+#: admin/activate_functions.php:495
 msgid "No invitation code is needed to complete the survey."
 msgstr "Nie jest wymagane zaproszenie do wypełnienia ankiety."
 
-#: admin/activate_functions.php:491
+#: admin/activate_functions.php:495
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "Możesz ograniczyć dostęp do ankiety poprzez inicjację tokenów przy pomocy poniższego przycisku."
 
-#: admin/activate_functions.php:492
+#: admin/activate_functions.php:496
 msgid "Switch to closed-access mode"
 msgstr "Przełącz na dostęp ograniczony"
 
-#: admin/activate_functions.php:493 admin/tokens.php:552
+#: admin/activate_functions.php:497 admin/tokens.php:552
 msgid "No, thanks."
 msgstr "Nie, dziękuję."
 
@@ -467,21 +467,21 @@ msgstr "Uwaga: Tryb oceniania nie został aktywowany w tym badaniu. Możesz go a
 msgid "No SID Provided"
 msgstr "Nie wprowadzono SID"
 
-#: admin/assessments.php:145 admin/assessments.php:229
+#: admin/assessments.php:145 admin/assessments.php:231
 msgid "Scope"
 msgstr "Zakres"
 
-#: admin/assessments.php:145 admin/assessments.php:208
-#: admin/assessments.php:235 admin/html.php:948 admin/statistics.php:412
+#: admin/assessments.php:145 admin/assessments.php:209
+#: admin/assessments.php:237 admin/html.php:948 admin/statistics.php:412
 msgid "Question group"
 msgstr "Grupa pytań"
 
-#: admin/assessments.php:145 admin/assessments.php:236
+#: admin/assessments.php:145 admin/assessments.php:238
 #: admin/statistics_function.php:1172
 msgid "Minimum"
 msgstr "Minimum"
 
-#: admin/assessments.php:145 admin/assessments.php:239
+#: admin/assessments.php:145 admin/assessments.php:241
 #: admin/statistics_function.php:1346
 msgid "Maximum"
 msgstr "Maksimum"
@@ -493,7 +493,7 @@ msgstr "Maksimum"
 msgid "Add"
 msgstr "Dodaj"
 
-#: admin/assessments.php:157 admin/assessments.php:185 admin/quota.php:561
+#: admin/assessments.php:157 admin/assessments.php:186 admin/quota.php:561
 #: admin/surveylist.php:155
 msgid "Edit"
 msgstr "Edytuj"
@@ -519,37 +519,37 @@ msgstr "SID"
 #: admin/assessments.php:173 admin/editsurveysettings.php:137
 #: admin/html.php:711 admin/html.php:1124 admin/labels.php:328
 #: admin/questiongrouphandling.php:58 admin/questiongrouphandling.php:144
-#: admin/questiongrouphandling.php:162 qanda.php:2720 uploader.php:95
+#: admin/questiongrouphandling.php:162 qanda.php:2701 uploader.php:95
 msgid "Title"
 msgstr "Tytuł"
 
-#: admin/assessments.php:173 admin/assessments.php:271 admin/tokens.php:1476
+#: admin/assessments.php:173 admin/assessments.php:276 admin/tokens.php:1476
 #: admin/tokens.php:1771
 msgid "Message"
 msgstr "Wiadomość"
 
-#: admin/assessments.php:194 admin/html.php:1641 admin/html.php:1919
+#: admin/assessments.php:195 admin/html.php:1641 admin/html.php:1919
 #: admin/resetsurveylogic.php:49 admin/templates.php:994 admin/tokens.php:2148
 #: admin/userrighthandling.php:470
 msgid "Delete"
 msgstr "Usuń"
 
-#: admin/assessments.php:194 admin/browse.php:223 admin/html.php:1919
+#: admin/assessments.php:195 admin/browse.php:223 admin/html.php:1919
 #: admin/saved.php:97 admin/tokens.php:1258 admin/userrighthandling.php:85
 #: admin/userrighthandling.php:470 admin/userrighthandling.php:566
 #: admin/userrighthandling.php:954
 msgid "Are you sure you want to delete this entry?"
 msgstr "Czy jesteś pewien, że chcesz usunąć ten wpis?"
 
-#: admin/assessments.php:203 admin/assessments.php:231 admin/surveylist.php:39
+#: admin/assessments.php:204 admin/assessments.php:233 admin/surveylist.php:39
 msgid "Total"
 msgstr "Ogółem"
 
-#: admin/assessments.php:234 admin/browse.php:870
+#: admin/assessments.php:236 admin/browse.php:870
 msgid "Group"
 msgstr "Grupa"
 
-#: admin/assessments.php:251 admin/editansweroptions.php:128
+#: admin/assessments.php:253 admin/editansweroptions.php:128
 #: admin/editemailtemplates.php:45 admin/editsubquestions.php:140
 #: admin/editsurveytextelements.php:44 admin/questiongrouphandling.php:33
 #: admin/questiongrouphandling.php:142 admin/questionhandling.php:40
@@ -558,11 +558,11 @@ msgstr "Grupa"
 msgid "Base language"
 msgstr "Podstawowy język"
 
-#: admin/assessments.php:269
+#: admin/assessments.php:272
 msgid "Heading"
 msgstr "Nagłówek"
 
-#: admin/assessments.php:279 admin/dataentry.php:1515 admin/dataentry.php:1520
+#: admin/assessments.php:286 admin/dataentry.php:1515 admin/dataentry.php:1520
 #: admin/editemailtemplates.php:160 admin/editsurveysettings.php:1078
 #: admin/editsurveysettings.php:1083 admin/editsurveytextelements.php:104
 #: admin/labels.php:201 admin/labels.php:598 admin/questionhandling.php:276
@@ -571,7 +571,7 @@ msgstr "Nagłówek"
 msgid "Save"
 msgstr "Zapisz"
 
-#: admin/assessments.php:280 admin/conditionshandling.php:1238
+#: admin/assessments.php:287 admin/conditionshandling.php:1238
 #: admin/deletesurvey.php:55 admin/editansweroptions.php:248
 #: admin/editansweroptions.php:256 admin/editsubquestions.php:248
 #: admin/editsubquestions.php:255 admin/labels.php:443 admin/quota.php:472
@@ -579,7 +579,7 @@ msgstr "Zapisz"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: admin/assessments.php:288 admin/userrighthandling.php:670
+#: admin/assessments.php:278 admin/userrighthandling.php:670
 msgid "Message:"
 msgstr "Wiadomość:"
 
@@ -955,8 +955,8 @@ msgstr "Nie można skopiować warunków (z powodu powtórzeń)"
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2703
-#: classes/expressions/LimeExpressionManager.php:2707 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2796
+#: classes/expressions/LimeExpressionManager.php:2800 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
 #: common_functions.php:3202 common_functions.php:3286
 #: common_functions.php:3393 common_functions.php:3406
@@ -972,8 +972,8 @@ msgstr "Nie można skopiować warunków (z powodu powtórzeń)"
 #: common_functions.php:3812 common_functions.php:3838
 #: common_functions.php:3873 common_functions.php:3939
 #: common_functions.php:3949 common_functions.php:4063
-#: common_functions.php:4074 common_functions.php:4134 qanda.php:3795
-#: qanda.php:4217 qanda.php:4256
+#: common_functions.php:4074 common_functions.php:4134 qanda.php:3776
+#: qanda.php:4198 qanda.php:4237
 msgid "Yes"
 msgstr "Tak"
 
@@ -984,8 +984,8 @@ msgstr "Tak"
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2709 common_functions.php:1922
-#: qanda.php:4218 qanda.php:4263
+#: classes/expressions/LimeExpressionManager.php:2802 common_functions.php:1922
+#: qanda.php:4199 qanda.php:4244
 msgid "Uncertain"
 msgstr "Nie wiem"
 
@@ -1023,8 +1023,8 @@ msgstr "Nie wiem"
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2704
-#: classes/expressions/LimeExpressionManager.php:2708 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2797
+#: classes/expressions/LimeExpressionManager.php:2801 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3201
 #: common_functions.php:3285 common_functions.php:3392
 #: common_functions.php:3407 common_functions.php:3418
@@ -1040,8 +1040,8 @@ msgstr "Nie wiem"
 #: common_functions.php:3823 common_functions.php:3837
 #: common_functions.php:3872 common_functions.php:3938
 #: common_functions.php:3948 common_functions.php:4062
-#: common_functions.php:4073 common_functions.php:4133 qanda.php:3802
-#: qanda.php:4219 qanda.php:4271
+#: common_functions.php:4073 common_functions.php:4133 qanda.php:3783
+#: qanda.php:4200 qanda.php:4252
 msgid "No"
 msgstr "Nie"
 
@@ -1051,8 +1051,8 @@ msgstr "Nie"
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2712 common_functions.php:1928
-#: qanda.php:4365 qanda.php:4408
+#: classes/expressions/LimeExpressionManager.php:2805 common_functions.php:1928
+#: qanda.php:4346 qanda.php:4389
 msgid "Increase"
 msgstr "Wzrost"
 
@@ -1062,8 +1062,8 @@ msgstr "Wzrost"
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2713 common_functions.php:1930
-#: qanda.php:4366 qanda.php:4419
+#: classes/expressions/LimeExpressionManager.php:2806 common_functions.php:1930
+#: qanda.php:4347 qanda.php:4400
 msgid "Same"
 msgstr "Bez zmian"
 
@@ -1073,8 +1073,8 @@ msgstr "Bez zmian"
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2714 common_functions.php:1929
-#: qanda.php:4367 qanda.php:4431
+#: classes/expressions/LimeExpressionManager.php:2807 common_functions.php:1929
+#: qanda.php:4348 qanda.php:4412
 msgid "Decrease"
 msgstr "Spadek"
 
@@ -1094,12 +1094,12 @@ msgstr "Spadek"
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
 #: common_functions.php:1914 common_functions.php:5490
-#: common_functions.php:5495 qanda.php:932 qanda.php:1460 qanda.php:1739
-#: qanda.php:1843 qanda.php:1898 qanda.php:3811 qanda.php:3856 qanda.php:3945
-#: qanda.php:4009 qanda.php:4098 qanda.php:4144 qanda.php:4222 qanda.php:4288
-#: qanda.php:4370 qanda.php:4448 qanda.php:4549 qanda.php:4571 qanda.php:4639
-#: qanda.php:4770 qanda.php:5541 qanda.php:5542 qanda.php:5827 qanda.php:5902
-#: qanda.php:6003 qanda.php:6203 qanda.php:6257
+#: common_functions.php:5495 qanda.php:926 qanda.php:1454 qanda.php:1733
+#: qanda.php:1837 qanda.php:1892 qanda.php:3792 qanda.php:3837 qanda.php:3926
+#: qanda.php:3990 qanda.php:4079 qanda.php:4125 qanda.php:4203 qanda.php:4269
+#: qanda.php:4351 qanda.php:4429 qanda.php:4530 qanda.php:4552 qanda.php:4620
+#: qanda.php:4751 qanda.php:5522 qanda.php:5523 qanda.php:5808 qanda.php:5883
+#: qanda.php:5984 qanda.php:6184 qanda.php:6238
 msgid "No answer"
 msgstr "Brak odpowiedzi"
 
@@ -1126,8 +1126,8 @@ msgstr "niezaznaczone"
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2700 common_functions.php:1913
-#: qanda.php:3839
+#: classes/expressions/LimeExpressionManager.php:2793 common_functions.php:1913
+#: qanda.php:3820
 msgid "Female"
 msgstr "Kobietą"
 
@@ -1138,8 +1138,8 @@ msgstr "Kobietą"
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2699 common_functions.php:1912
-#: qanda.php:3847
+#: classes/expressions/LimeExpressionManager.php:2792 common_functions.php:1912
+#: qanda.php:3828
 msgid "Male"
 msgstr "Mężczyzną"
 
@@ -1158,8 +1158,8 @@ msgstr "Mężczyzną"
 #: common_functions.php:3669 common_functions.php:3724
 #: common_functions.php:3743 common_functions.php:3901
 #: common_functions.php:4082 common_functions.php:4091
-#: common_functions.php:4100 common_functions.php:4109 qanda.php:1705
-#: qanda.php:2360 qanda.php:2600
+#: common_functions.php:4100 common_functions.php:4109 qanda.php:1699
+#: qanda.php:2341 qanda.php:2581
 msgid "Other"
 msgstr "Inne"
 
@@ -1341,8 +1341,8 @@ msgstr "Operator porównania"
 #: admin/statistics_function.php:2188 admin/statistics_function.php:2197
 #: admin/statistics_function.php:2202 admin/statistics_function.php:2292
 #: admin/statistics_function.php:2295 admin/statistics_function.php:2303
-#: admin/statistics_function.php:2308 qanda.php:1182 qanda.php:3424
-#: qanda.php:3512 qanda.php:3605 qanda.php:3693 qanda.php:3761
+#: admin/statistics_function.php:2308 qanda.php:1176 qanda.php:3405
+#: qanda.php:3493 qanda.php:3586 qanda.php:3674 qanda.php:3742
 msgid "Answer"
 msgstr "Odpowiedź"
 
@@ -1587,7 +1587,7 @@ msgid "Start Language:"
 msgstr "Język początkowy:"
 
 #: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:2939
-#: group.php:1019 index.php:2421 replacements.php:272
+#: group.php:1019 index.php:2386 replacements.php:272
 msgid "Submit"
 msgstr "Wyślij"
 
@@ -1670,24 +1670,24 @@ msgstr "Podgląd odpowiedzi (ID %s)"
 #: admin/dataentry.php:2033 admin/dataentry.php:2066 admin/dataentry.php:2305
 #: admin/dataentry.php:2619 admin/dataentry.php:2634 admin/dataentry.php:2655
 #: admin/dataentry.php:2676 admin/dataentry.php:2696 admin/dataentry.php:2856
-#: qanda.php:1474 qanda.php:4750
+#: qanda.php:1468 qanda.php:4731
 msgid "Please choose"
 msgstr "Wybierz"
 
-#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2064
+#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2080
 msgid "Remove this item"
 msgstr "Usuń ten element"
 
-#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2093
+#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2109
 msgid "Your Choices"
 msgstr "Dostępne elementy"
 
-#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2104
+#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2120
 msgid "Your Ranking"
 msgstr "Twój ranking"
 
-#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3425
-#: qanda.php:3429
+#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3406
+#: qanda.php:3410
 msgid "Only numbers may be entered in this field"
 msgstr "Można wprowadzać tylko liczby"
 
@@ -1751,13 +1751,13 @@ msgstr "Etykieta %s"
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
 #: common_functions.php:1411 common_functions.php:4825
 #: common_functions.php:4874 common_functions.php:4910
-#: common_functions.php:4946 qanda.php:1258 qanda.php:1436 qanda.php:6183
-#: qanda.php:6237
+#: common_functions.php:4946 qanda.php:1252 qanda.php:1430 qanda.php:6164
+#: qanda.php:6218
 msgid "Please choose..."
 msgstr "Wybierz..."
 
 #: admin/dataentry.php:2069 common_functions.php:2559 common_functions.php:2776
-#: qanda.php:2721 uploader.php:96
+#: qanda.php:2702 uploader.php:96
 msgid "Comment"
 msgstr "Komentarz"
 
@@ -4850,28 +4850,28 @@ msgstr "Utwórz bazę danych"
 msgid "Creating tables. This might take a moment..."
 msgstr "Tworzenie tabel. To może zająć chwilę..."
 
-#: admin/install/createdb.php:34 admin/install/createdb.php:97
+#: admin/install/createdb.php:34 admin/install/createdb.php:100
 #: admin/install/index.php:46 admin/install/index.php:56
 msgid "Populate Database"
 msgstr "Zapełnij bazę danych"
 
-#: admin/install/createdb.php:50
+#: admin/install/createdb.php:53
 msgid "Database `%s` has been successfully populated."
 msgstr "Baza danych `%s` została pomyślnie zapełniona."
 
-#: admin/install/createdb.php:65
+#: admin/install/createdb.php:68
 msgid "Database Information not provided. This script must be run from admin.php only."
 msgstr "Brak informacji o bazie danych. Skrypt może być uruchamiany jedynie z poziomu admin.php!"
 
-#: admin/install/createdb.php:94
+#: admin/install/createdb.php:97
 msgid "Database has been created."
 msgstr "Baza danych została utworzona."
 
-#: admin/install/createdb.php:95
+#: admin/install/createdb.php:98
 msgid "Please click below to populate the database"
 msgstr "Kliknij poniżej, aby zapełnić bazę danych"
 
-#: admin/install/createdb.php:102
+#: admin/install/createdb.php:105
 msgid "Could not create database"
 msgstr "Nie można utworzyć bazy danych"
 
@@ -5494,7 +5494,7 @@ msgid "Question code:"
 msgstr "Kod pytania:"
 
 #: admin/printablesurvey.php:479 admin/printablesurvey.php:481
-#: admin/templates.php:531 admin/templates.php:664 qanda.php:272 qanda.php:273
+#: admin/templates.php:531 admin/templates.php:664 qanda.php:266 qanda.php:267
 msgid "*"
 msgstr "*"
 
@@ -5511,8 +5511,8 @@ msgstr "Proszę wybrać jedną odpowiedź z poniższych:"
 msgid "Please enter a date:"
 msgstr "Proszę wprowadzić datę"
 
-#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2583
-#: qanda.php:2584 qanda.php:2615
+#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2564
+#: qanda.php:2565 qanda.php:2596
 msgid "Make a comment on your choice here:"
 msgstr "Wprowadź komentarz do swojej odpowiedzi:"
 
@@ -5537,9 +5537,9 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Proszę wybrać wszystkie pasujące odpowiedzi oraz dodać komentarz"
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2833
-#: classes/expressions/LimeExpressionManager.php:5187 qanda.php:1295
-#: qanda.php:1595 qanda.php:2205 qanda.php:2505
+#: classes/expressions/LimeExpressionManager.php:2926
+#: classes/expressions/LimeExpressionManager.php:5336 qanda.php:1289
+#: qanda.php:1589 qanda.php:2186 qanda.php:2486
 msgid "Other:"
 msgstr "Inne:"
 
@@ -5847,7 +5847,7 @@ msgid "Select Question"
 msgstr "Wybierz pytanie"
 
 #: admin/quota.php:725 admin/quota.php:788 admin/templates.php:429
-#: index.php:2405 index.php:2411 index.php:2416
+#: index.php:2370 index.php:2376 index.php:2381
 msgid "Next"
 msgstr "Dalej"
 
@@ -6398,7 +6398,7 @@ msgstr "Grupa 1: Pierwsza partia pytań"
 msgid "This group description is fairly vacuous, but quite important."
 msgstr "Ten opis grupy może wydawać się nie całkiem sensowny, ale jest dość ważny."
 
-#: admin/templates.php:430 index.php:2399 index.php:2804
+#: admin/templates.php:430 index.php:2364 index.php:2769
 msgid "Previous"
 msgstr "Wstecz"
 
@@ -7408,7 +7408,7 @@ msgstr "Pozostało do wykorzystania:"
 msgid "until"
 msgstr "do"
 
-#: admin/tokens.php:2399 admin/tokens.php:2482 qanda.php:1230 qanda.php:1237
+#: admin/tokens.php:2399 admin/tokens.php:2482 qanda.php:1224 qanda.php:1231
 msgid "Format: %s"
 msgstr "Format: %s"
 
@@ -8980,7 +8980,7 @@ msgid "This variable is not declared until a later page"
 msgstr "Ta zmienna nie będzie zadeklarowana aż do późniejszej strony"
 
 #: classes/expressions/ExpressionManager.php:572
-#: classes/expressions/ExpressionManager.php:1680
+#: classes/expressions/ExpressionManager.php:1683
 msgid "Undefined variable"
 msgstr "Niezdefiniowana zmienna"
 
@@ -9020,218 +9020,218 @@ msgstr "Znaleziono dodatkowy przecinek w funkcji"
 msgid "Expected right parentheses"
 msgstr "Oczekiwane prawe nawiasy"
 
-#: classes/expressions/ExpressionManager.php:1664
+#: classes/expressions/ExpressionManager.php:1667
 msgid "Extra right parentheses detected"
 msgstr "Wykryto dodatkowe prawe nawiasy"
 
-#: classes/expressions/ExpressionManager.php:1673
+#: classes/expressions/ExpressionManager.php:1676
 msgid "Undefined function"
 msgstr "Niezdefiniowana funkcja"
 
-#: classes/expressions/ExpressionManager.php:1685
+#: classes/expressions/ExpressionManager.php:1688
 msgid "Unsupported syntax"
 msgstr "Nieobsługiwana składnia"
 
-#: classes/expressions/ExpressionManager.php:1693
+#: classes/expressions/ExpressionManager.php:1696
 msgid "Missing %s closing right parentheses"
 msgstr "Brakuje %s zamykających prawych nawiasów"
 
-#: classes/expressions/ExpressionManager.php:1949
+#: classes/expressions/ExpressionManager.php:1952
 msgid "Function must have at least %s argument(s)"
 msgstr "Funkcja musi zawierać co najmniej %s argument(ów)"
 
-#: classes/expressions/ExpressionManager.php:2050
+#: classes/expressions/ExpressionManager.php:2053
 msgid "Unsupported number of arguments: %s"
 msgstr "Nieuzasadniona liczba argumentów: %s"
 
-#: classes/expressions/ExpressionManager.php:2055
+#: classes/expressions/ExpressionManager.php:2058
 msgid "Function does not support %s arguments. "
 msgstr "Funkcja nie potwierdza %s argumentów."
 
-#: classes/expressions/ExpressionManager.php:2056
+#: classes/expressions/ExpressionManager.php:2059
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr "Funkcja potwierdza taką liczbę argumentów, gdzie -1=nieograniczona: %s."
 
-#: classes/expressions/ExpressionManager.php:2289
+#: classes/expressions/ExpressionManager.php:2292
 msgid "Tried to pop value off of empty stack"
 msgstr "Próbowano pobrać wartość z pustego stosu"
 
-#: classes/expressions/ExpressionManager.php:3322
+#: classes/expressions/ExpressionManager.php:3325
 msgid "Invalid PERL Regular Expression: %s"
 msgstr "Nieprawidłowe wyrażenie regularne PERL: %s"
 
-#: classes/expressions/LimeExpressionManager.php:2325
+#: classes/expressions/LimeExpressionManager.php:2418
 msgid "Please select at least one answer"
 msgstr "Proszę wybrać co najmniej jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2326
+#: classes/expressions/LimeExpressionManager.php:2419
 msgid "Please select at least %s answers"
 msgstr "Proszę wybrać co najmniej %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2330
+#: classes/expressions/LimeExpressionManager.php:2423
 msgid "Please select at most one answer"
 msgstr "Proszę wybrać co najwyżej jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2331
+#: classes/expressions/LimeExpressionManager.php:2424
 msgid "Please select at most %s answers"
 msgstr "Proszę wybrać co najwyżej %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2335
+#: classes/expressions/LimeExpressionManager.php:2428
 msgid "Please select one answer"
 msgstr "Proszę wybrać jedną odpowiedź"
 
-#: classes/expressions/LimeExpressionManager.php:2336
+#: classes/expressions/LimeExpressionManager.php:2429
 msgid "Please select %s answers"
 msgstr "Proszę wybrać %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2338
+#: classes/expressions/LimeExpressionManager.php:2431
 msgid "Please select between %s and %s answers"
 msgstr "Proszę wybrać od %s do %s odpowiedzi"
 
-#: classes/expressions/LimeExpressionManager.php:2354
-#: classes/expressions/LimeExpressionManager.php:2375
+#: classes/expressions/LimeExpressionManager.php:2447
+#: classes/expressions/LimeExpressionManager.php:2468
 msgid "Each answer must be at least %s"
 msgstr "Każda odpowiedź musi wynosić co najmniej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2356
-#: classes/expressions/LimeExpressionManager.php:2377
+#: classes/expressions/LimeExpressionManager.php:2449
+#: classes/expressions/LimeExpressionManager.php:2470
 msgid "Each answer must be at most %s"
 msgstr "Każda odpowiedź musi wynosić co najwyżej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2358
-#: classes/expressions/LimeExpressionManager.php:2379
+#: classes/expressions/LimeExpressionManager.php:2451
+#: classes/expressions/LimeExpressionManager.php:2472
 msgid "Each answer must be %s"
 msgstr "Każda odpowiedź musi być %s"
 
-#: classes/expressions/LimeExpressionManager.php:2359
-#: classes/expressions/LimeExpressionManager.php:2380
+#: classes/expressions/LimeExpressionManager.php:2452
+#: classes/expressions/LimeExpressionManager.php:2473
 msgid "Each answer must be between %s and %s"
 msgstr "Każda odpowiedź musi być z przedziału %s i %s"
 
-#: classes/expressions/LimeExpressionManager.php:2396
+#: classes/expressions/LimeExpressionManager.php:2489
 msgid "The sum must be at least %s"
 msgstr "Suma musi równać się co najmniej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2398
+#: classes/expressions/LimeExpressionManager.php:2491
 msgid "The sum must be at most %s"
 msgstr "Suma musi równać się co najwyżej %s"
 
-#: classes/expressions/LimeExpressionManager.php:2400
-#: classes/expressions/LimeExpressionManager.php:2442
+#: classes/expressions/LimeExpressionManager.php:2493
+#: classes/expressions/LimeExpressionManager.php:2535
 msgid "The sum must equal %s"
 msgstr "Suma musi się równać %s"
 
-#: classes/expressions/LimeExpressionManager.php:2401
+#: classes/expressions/LimeExpressionManager.php:2494
 msgid "The sum must be between %s and %s"
 msgstr "Suma musi być z przedziału %s i %s"
 
-#: classes/expressions/LimeExpressionManager.php:2448
+#: classes/expressions/LimeExpressionManager.php:2541
 msgid "Please also fill in the \"other comment\" field."
 msgstr "Proszę wypełnić także pole \"inny komentarz\"."
 
-#: classes/expressions/LimeExpressionManager.php:2456
+#: classes/expressions/LimeExpressionManager.php:2549
 msgid "Please check the format of your answer."
 msgstr "Proszę sprawdzić format swojej odpowiedzi."
 
-#: classes/expressions/LimeExpressionManager.php:4198
+#: classes/expressions/LimeExpressionManager.php:4347
 msgid "Unable to insert record into survey table: "
 msgstr "Nie można wstawić rekordu do tabeli ankiety:"
 
-#: classes/expressions/LimeExpressionManager.php:4214
+#: classes/expressions/LimeExpressionManager.php:4363
 msgid "Unable to insert record into timings table "
 msgstr "Nie można wstawić rekordu do tabeli czasów"
 
-#: classes/expressions/LimeExpressionManager.php:5164
+#: classes/expressions/LimeExpressionManager.php:5313
 msgid "This question is mandatory"
 msgstr "To pytanie jest obligatoryjne"
 
-#: classes/expressions/LimeExpressionManager.php:5178
+#: classes/expressions/LimeExpressionManager.php:5327
 msgid "Please check at least one item."
 msgstr "Proszę zaznaczyć przynajmniej jeden element"
 
-#: classes/expressions/LimeExpressionManager.php:5189
+#: classes/expressions/LimeExpressionManager.php:5338
 msgid "If you choose '%s' you must provide a description."
 msgstr "Przy wyborze '%s' należy wprowadzić dodatkowy opis."
 
-#: classes/expressions/LimeExpressionManager.php:5211
-#: classes/expressions/LimeExpressionManager.php:5248
+#: classes/expressions/LimeExpressionManager.php:5360
+#: classes/expressions/LimeExpressionManager.php:5397
 msgid "Please complete all parts"
 msgstr "Prosimy udzielić odpowiedzi na wszystkie części"
 
-#: classes/expressions/LimeExpressionManager.php:5240
+#: classes/expressions/LimeExpressionManager.php:5389
 msgid "Please check at least one box per row"
 msgstr "Proszę zaznaczyć przynajmniej jeden element w każdym wierszu"
 
-#: classes/expressions/LimeExpressionManager.php:5256
+#: classes/expressions/LimeExpressionManager.php:5405
 msgid "Please rank all items"
 msgstr "Należy uporządkować wszystkie elementy"
 
-#: classes/expressions/LimeExpressionManager.php:7633
+#: classes/expressions/LimeExpressionManager.php:7824
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr "Nieprawidłowe pytanie - prawdopodobnie brak sub-pytań lub ustawień właściwych dla języka"
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7829
 msgid "Name [ID]"
 msgstr "Nazwa [ID]"
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7829
 msgid "Relevance [Validation] (Default)"
 msgstr "Relewancja [Walidacja] (Domyślnie)"
 
-#: classes/expressions/LimeExpressionManager.php:7638
+#: classes/expressions/LimeExpressionManager.php:7829
 msgid "Text [Help] (Tip)"
 msgstr "Tekst [Pomoc] (Podpowiedź)"
 
-#: classes/expressions/LimeExpressionManager.php:7689
-#: classes/expressions/LimeExpressionManager.php:7933
+#: classes/expressions/LimeExpressionManager.php:7880
+#: classes/expressions/LimeExpressionManager.php:8122
 msgid "DEFAULT:"
 msgstr "DOMYŚLNIE:"
 
-#: classes/expressions/LimeExpressionManager.php:7697
+#: classes/expressions/LimeExpressionManager.php:7888
 msgid "HELP:"
 msgstr "POMOC:"
 
-#: classes/expressions/LimeExpressionManager.php:7698
+#: classes/expressions/LimeExpressionManager.php:7889
 msgid "TIP:"
 msgstr "PODPOWIEDŹ"
 
-#: classes/expressions/LimeExpressionManager.php:7715
+#: classes/expressions/LimeExpressionManager.php:7906
 msgid "Question Attribute"
 msgstr "Atrybut pytania"
 
-#: classes/expressions/LimeExpressionManager.php:7715
+#: classes/expressions/LimeExpressionManager.php:7906
 msgid "Value"
 msgstr "Wartość"
 
-#: classes/expressions/LimeExpressionManager.php:7822
+#: classes/expressions/LimeExpressionManager.php:8013
 msgid "VALIDATION:"
 msgstr "WALIDACJA:"
 
-#: classes/expressions/LimeExpressionManager.php:7836
+#: classes/expressions/LimeExpressionManager.php:8027
 msgid "This variable name has already been used."
 msgstr "Ta nazwa zmiennej była już wykorzystana."
 
-#: classes/expressions/LimeExpressionManager.php:7848
+#: classes/expressions/LimeExpressionManager.php:8039
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr "Począwszy od wersji 1.92 nazwy zmiennych powinny zawierać tylko litery, cyfry i podkreślenia; nie mogą zaczynać się od cyfry. Ta nazwa zmiennej jest niedopuszczalna."
 
-#: classes/expressions/LimeExpressionManager.php:8001
+#: classes/expressions/LimeExpressionManager.php:8194
 msgid "This question has at least %s error(s)"
 msgstr "To pytanie zawiera co najmniej %s błędów"
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8233
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr "%s pytań zawiera błędy, które muszą być poprawione"
 
-#: classes/expressions/LimeExpressionManager.php:8046
+#: classes/expressions/LimeExpressionManager.php:8239
 msgid "No syntax errors detected in this survey"
 msgstr "W ankiecie nie wykryto błędów składniowych"
 
-#: classes/expressions/LimeExpressionManager.php:8049
+#: classes/expressions/LimeExpressionManager.php:8242
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr "Ta grupa, sama w sobie, nie zawiera błędów składniowych"
 
-#: classes/expressions/LimeExpressionManager.php:8052
+#: classes/expressions/LimeExpressionManager.php:8245
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr "To pytanie, samo w sobie, nie zawiera błędów składniowych"
 
@@ -10467,11 +10467,11 @@ msgstr "Wyślij odpowiedzi"
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr "Nie ma więcej pytań. Proszę nacisnąć przycisk <Wyślij>, aby zakończyć tę ankietę."
 
-#: group.php:800 qanda.php:442
+#: group.php:800 qanda.php:436
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr "Na jedno lub więcej obligatoryjnych pytań nie udzielono odpowiedzi. Nie można kontynuować. "
 
-#: group.php:806 qanda.php:469
+#: group.php:806 qanda.php:463
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr "Na jedno lub więcej pytań nie udzielono odpowiedzi wg wymaganej formy. Przed przejściem do następnego pytania prosimy o dokonanie poprawek."
 
@@ -10479,7 +10479,7 @@ msgstr "Na jedno lub więcej pytań nie udzielono odpowiedzi wg wymaganej formy.
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr "Jeden lub więcej ładowanych plików nie ma odpowiedniego formatu/rozmiaru. Nie można kontynuować, dopóki pliki nie będą poprawne."
 
-#: group.php:948 index.php:2924
+#: group.php:948 index.php:2889
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Ta ankieta nie jest aktywna. Twoje odpowiedzi nie zostaną zapisane."
 
@@ -10689,185 +10689,171 @@ msgstr "Wybierz jedną z następujących odpowiedzi"
 msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
 msgstr "Kliknij element po lewej, zaczynając od ocenianego najwyżej, poprzez kolejne, aż do ocenianego najniżej."
 
-#: qanda.php:161 qanda.php:162
-msgid "Check at least %d item"
-msgid_plural "Check at least %d items"
-msgstr[0] "Zaznacz co najmniej %d pozycję"
-msgstr[1] "Zaznacz co najmniej %d pozycji"
-msgstr[2] ""
-
-#: qanda.php:175 qanda.php:176 qanda.php:199 qanda.php:200
+#: qanda.php:169 qanda.php:170 qanda.php:193 qanda.php:194
 msgid "Check any that apply"
 msgstr "Wybierz właściwe odpowiedzi"
 
-#: qanda.php:186 qanda.php:187 qanda.php:1257
+#: qanda.php:180 qanda.php:181 qanda.php:1251
 msgid "Choose your language"
 msgstr "Wybierz język"
 
-#: qanda.php:435
+#: qanda.php:429
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Nie możesz kontynuować, zanim nie wprowadzisz tekstu do jednego lub więcej pól."
 
-#: qanda.php:494
+#: qanda.php:488
 msgid "One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed"
 msgstr "Jeden lub więcej plików przekroczyło rozmiar lub nie są w odpowiednim formacie lub minimalna liczba wymaganych plików nie została załadowana. Nie można kontynuować przed dopełnieniem tego"
 
-#: qanda.php:537
+#: qanda.php:531
 msgid "Your time to answer this question has expired"
 msgstr "Upłynął czas odpowiedzi na to pytanie"
 
-#: qanda.php:540
+#: qanda.php:534
 msgid "Time remaining"
 msgstr "Pozostało czasu"
 
-#: qanda.php:541 qanda.php:544
+#: qanda.php:535 qanda.php:538
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
 msgstr "Twój czas na odpowiedź na to pytanie upływa. Zostało {TIME}."
 
-#: qanda.php:694 qanda.php:712 qanda.php:743
+#: qanda.php:688 qanda.php:706 qanda.php:737
 msgid "hours"
 msgstr "godzin"
 
-#: qanda.php:695 qanda.php:713 qanda.php:744
+#: qanda.php:689 qanda.php:707 qanda.php:738
 msgid "mins"
 msgstr "minima"
 
-#: qanda.php:696 qanda.php:714 qanda.php:745 qanda.php:746
+#: qanda.php:690 qanda.php:708 qanda.php:739 qanda.php:740
 msgid "seconds"
 msgstr "sekund"
 
-#: qanda.php:1070 qanda.php:1071
+#: qanda.php:1064 qanda.php:1065
 msgid "Day"
 msgstr "Dzień"
 
-#: qanda.php:1087 qanda.php:1088
+#: qanda.php:1081 qanda.php:1082
 msgid "Month"
 msgstr "Miesiąc"
 
-#: qanda.php:1090
+#: qanda.php:1084
 msgid "Jan"
 msgstr "Sty"
 
-#: qanda.php:1091
+#: qanda.php:1085
 msgid "Feb"
 msgstr "Lut"
 
-#: qanda.php:1092
+#: qanda.php:1086
 msgid "Mar"
 msgstr "Mar"
 
-#: qanda.php:1093
+#: qanda.php:1087
 msgid "Apr"
 msgstr "Kwi"
 
-#: qanda.php:1094
+#: qanda.php:1088
 msgid "May"
 msgstr "Maj"
 
-#: qanda.php:1095
+#: qanda.php:1089
 msgid "Jun"
 msgstr "Cze"
 
-#: qanda.php:1096
+#: qanda.php:1090
 msgid "Jul"
 msgstr "Lip"
 
-#: qanda.php:1097
+#: qanda.php:1091
 msgid "Aug"
 msgstr "Sie"
 
-#: qanda.php:1098
+#: qanda.php:1092
 msgid "Sep"
 msgstr "Wrz"
 
-#: qanda.php:1099
+#: qanda.php:1093
 msgid "Oct"
 msgstr "Paź"
 
-#: qanda.php:1100
+#: qanda.php:1094
 msgid "Nov"
 msgstr "Lis"
 
-#: qanda.php:1101
+#: qanda.php:1095
 msgid "Dec"
 msgstr "Gru"
 
-#: qanda.php:1117 qanda.php:1118
+#: qanda.php:1111 qanda.php:1112
 msgid "Year"
 msgstr "Rok"
 
-#: qanda.php:1229
+#: qanda.php:1223
 msgid "Date picker"
 msgstr "Wybór daty"
 
-#: qanda.php:1509
+#: qanda.php:1503
 msgid "Other answer"
 msgstr "Inna odpowiedź"
 
-#: qanda.php:1809
+#: qanda.php:1803
 msgid "Please enter your comment here"
 msgstr "Wprowadź komentarz"
 
-#: qanda.php:2112
+#: qanda.php:2131
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Aby cofnąć wybór, kliknij na ikonę nożyczek, znajdującą się obok wybranego elementu z prawej strony"
 
-#: qanda.php:2123 qanda.php:2138
-msgid "Please rank at least %d item for question \"%s\""
-msgid_plural "Please rank at least %d items for question \"%s\"."
-msgstr[0] "Proszę porangować co najmniej %d pozycję w pytaniu \"%s\""
-msgstr[1] "Proszę porangować co najmniej %d pozycji w pytaniu \"%s\"."
-msgstr[2] ""
-
-#: qanda.php:2433
+#: qanda.php:2414
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Zaznaczono pole \"inne\" w pytaniu \"%s\". Proszę również wpisać treść w odpowiednie pole \"komentarz\"."
 
-#: qanda.php:2706
+#: qanda.php:2687
 msgid "Upload files"
 msgstr "Wczytaj pliki"
 
-#: qanda.php:2718
+#: qanda.php:2699
 msgid "Upload your files"
 msgstr "Wczytaj własne pliki"
 
-#: qanda.php:2719
+#: qanda.php:2700
 msgid "Return to survey"
 msgstr "Powrót do ankiety"
 
-#: qanda.php:2722
+#: qanda.php:2703
 msgid "File name"
 msgstr "Nazwa pliku"
 
-#: qanda.php:2899 qanda.php:3159 qanda.php:4229 qanda.php:6053
+#: qanda.php:2880 qanda.php:3140 qanda.php:4210 qanda.php:6034
 msgid "Error: This question has no answers."
 msgstr "Błąd: To pytanie nie ma zdefiniowanych wariantów odpowiedzi."
 
-#: qanda.php:3309
+#: qanda.php:3290
 msgid "Only numbers may be entered in these fields"
 msgstr "Można wprowadzać tylko liczby"
 
-#: qanda.php:3320
+#: qanda.php:3301
 msgid "Remaining: "
 msgstr "Pozostało:"
 
-#: qanda.php:3327
+#: qanda.php:3308
 msgid "Total: "
 msgstr "Razem"
 
-#: qanda.php:3596 qanda.php:3597
+#: qanda.php:3577 qanda.php:3578
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Przeciągnij i upuść szpilkę we właściwe miejsce. Możesz także klikną prawym przyciskiem na mapie, aby przesunąć szpilkę."
 
-#: qanda.php:4794 qanda.php:5174 qanda.php:5508 qanda.php:5655 qanda.php:6283
+#: qanda.php:4775 qanda.php:5155 qanda.php:5489 qanda.php:5636 qanda.php:6264
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Błąd: Nie ma opcji odpowiedzi do tego pytania i/lub nie ma ich w tym języku."
 
-#: qanda.php:5425
+#: qanda.php:5406
 msgid "..."
 msgstr "..."
 
-#: qanda.php:5649
+#: qanda.php:5630
 msgid "Error: There are no answers defined for this question."
 msgstr "Błąd: musisz podać warianty odpowiedzi dla tego pytania."
 
@@ -11263,7 +11249,7 @@ msgid "You are not allowed to perform this operation!"
 msgstr "Nie masz uprawnień do wykonania tej operacji!"
 
 #: admin/activate.php:39 admin/activate.php:67 admin/activate.php:76
-#: admin/activate_functions.php:409 admin/activate_functions.php:449
+#: admin/activate_functions.php:413 admin/activate_functions.php:453
 msgid "Activate Survey"
 msgstr "Aktywowanie ankiety"
 
@@ -11309,8 +11295,8 @@ msgstr "Aktywowanie ankiety"
 #: admin/importquestion.php:565 admin/importquestion.php:778
 #: admin/importquestion.php:816 admin/importquestion.php:845
 #: admin/importquestion.php:868 admin/importquestion.php:892
-#: admin/importsurvey.php:115 admin/install/createdb.php:64
-#: admin/install/createdb.php:101 admin/resetsurveylogic.php:27
+#: admin/importsurvey.php:115 admin/install/createdb.php:67
+#: admin/install/createdb.php:104 admin/resetsurveylogic.php:27
 #: admin/templates.php:305 admin/templates.php:317 admin/templates.php:329
 #: admin/tokens.php:399 admin/tokens.php:413 admin/tokens.php:479
 #: admin/tokens.php:1002 admin/tokens.php:2746 admin/tokens.php:3183
