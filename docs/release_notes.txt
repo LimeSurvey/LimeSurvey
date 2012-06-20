@@ -77,6 +77,38 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+
+
+Changes from 1.92+ (build 120613) to 1.92+ (build 120620) June 20, 2012
+-Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
+-Fixed issue #6205: Add http:// by default to endurl for indication (Denis Chenu)
+-Fixed issue #6207: [Microsoft][ODBC SQL Server Driver][SQL Server]Ambiguous column name 'qid' (Carsten Schmitz)
+-Fixed issue #6207: [Microsoft][ODBC SQL Server Driver][SQL Server]Ambiguous column name 'qid' (Thomas White)
+-Fixed issue #6208 : Adding user to user group leads to error message (Denis Chenu)
+-Fixed issue #6211: Problems with two "file upload" question types in the same question group (Thomas White)
+-Fixed issue #6213: File upload questions tips have an error in italian (Thomas White)
+-Fixed issue #6214: relevance equations that only contain static replacement values cause JS crash (Thomas White)
+-Fixed issue #6221: Array filtering does not work when trigger question has multiple inputs per row (Thomas White)
+-Fixed issue #6222: Conditions not working when it relies on value from a hidden question (Thomas White)
+-Fixed issue #6223: Admin login does not work with postgres right after install (Carsten Schmitz)
+-Fixed issue #6224: resetadminpw.php: SQL-string for postgres incorrect (Carsten Schmitz)
+-Fixed issue #6225: unable to pass qcode-named variables via URL (Thomas White)
+-Fixed issue #6226 & #6229: Only end message with Cannot edit answer (token and edit answers after submitting activated) (Denis Chenu)
+-Fixed issue #6231: EM doesn't convert condition correctly, OR becomes AND (Thomas White)
+-Fixed issue #6235: Javascript errors when use equations for min/max num values in Ranking questions (Thomas White)
+-Fixed issue #6238: array filtering does not work for Ranking questions (Thomas White)
+-Fixed issue #6239: Ranking style questions can't be used to filter other questions (Thomas White)
+-Fixed issue: Array-filter algorithms for Ranking questions do not appear in Show Logic File (Thomas White)
+-Fixed issue: PHP errors thrown if use invalid array filter question (Thomas White)
+-Fixed issue: QID links in Show Survey Logic File should open new edit-question window, not just view question (Thomas White)
+-Fixed issue: ShowLogicFile did not show array filters for List(Radio) questions when "other" advanced question option selected (Thomas White)
+#Updated translation: Chinese (Simplified) by yooyooh
+#Updated translation: Italian by lfanfoni, gifino
+#Updated translation: Polish by elisa
+#Updated translation: Swedish
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 1.92+ (build 120608) to 1.92+ (build 120613) June 13, 2012
 -Fixed issue #6100: English in other language (Thomas White)
 -Fixed issue #6130: Response emails sent as "text/plain" but with HTML embedded (Carsten Schmitz)
