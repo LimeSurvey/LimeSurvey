@@ -883,7 +883,7 @@
                 else
                 {
                     // Conditions uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
-                    if ($value === '" "') {
+                    if ($value === '" "' || $value == '""') {
                         if ($row['method'] == '==')
                         {
                             $relOrList[] = "is_empty(" . $fieldname . ")";
