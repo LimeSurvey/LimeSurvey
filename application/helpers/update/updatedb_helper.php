@@ -1659,7 +1659,7 @@ function dropColumn($sTableName, $sColumnName)
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
+    if ($sDBDriverName=='mssql')
     {
         dropDefaultValueMSSQL($sColumnName,$sTableName);
     }
@@ -1674,7 +1674,7 @@ function createTable($sTableName, $aColumns, $aOptions=null)
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
+    if ($sDBDriverName=='mssql')
     {
         foreach ($aColumns as $sName=>&$sType)
         {
@@ -1690,7 +1690,7 @@ function addColumn($sTableName, $sColumn, $sType)
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
+    if ($sDBDriverName=='mssql')
     {
         $sType=str_replace('text','varchar(max)',$sType);
         $sType=str_replace('binary','text',$sType);
