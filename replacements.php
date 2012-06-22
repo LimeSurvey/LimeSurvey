@@ -303,14 +303,21 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
     {
         $_s_lang = $_SESSION['s_lang'];
     }
-
-    $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
+    // CLEARALL
+    if( $surveyid && !isCompleted($surveyid,$saved_id))
+    {
+        $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
             . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=" . $_s_lang;
         if (returnglobal('token'))
         {
-        $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnglobal('token')))));
+        $_clearall .= "&amp;token={$_token}";
         }
         $_clearall .= "', '_self')}\" />";
+    }
+    else
+    {
+        $_clearall=""; // This survey are already completed or surveyid not set, then don't have access to clearallbtn
+    }
 
     if (isset($_SESSION['datestamp']))
     {
