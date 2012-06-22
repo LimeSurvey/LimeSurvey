@@ -1,5 +1,3 @@
-// $Id$
-
 $(document).ready(function(){
 
     if ($(".answertable tbody").children().length == 0)
@@ -36,6 +34,7 @@ $(document).ready(function(){
 
     $("#mainform").submit(function(event,ui){
 
+        if (code_duplicates_check()==false) return false;
         var dataToSend = {};
         dataToSend['langs'] = [];
         dataToSend['codelist'] = [];
@@ -321,6 +320,26 @@ function getNextCode(sourcecode)
     }
 }
 
+function code_duplicates_check()
+{
+    var codearray=[];
+    $('#tabs>form>div:first input.codeval').each(function(){
+        sValue=$.trim($(this).val());
+        $(this).val(sValue);
+        codearray.push(sValue);
+    })
+    if ($.inArray('other', codearray)!=-1)
+    {
+        alert(otherisreserved);
+        return false;
+    }
+    if (arrHasDupes(codearray))
+        {
+        alert(duplicatelabelcode);
+        return false;
+    }
+    return true;
+}
 
 
 function is_numeric (mixed_var) {

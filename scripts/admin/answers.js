@@ -1,4 +1,3 @@
-// $Id: answers.js 10065 2011-05-15 09:28:52Z c_schmitz $
 var labelcache=[];
 $(document).ready(function(){
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
