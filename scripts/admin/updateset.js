@@ -76,7 +76,7 @@ function quickaddfunction(){
     }
 
     if (lsreplace){
-        $("#tabs>div:not(:last) tbody>tr").remove();
+        $(".answertable tbody>tr").remove();
     }
 
     lsrows=$('#quickaddarea').val().split("\n");
@@ -91,7 +91,7 @@ function quickaddfunction(){
         code = undefined;
 
         params = element.split(seperatorchar);
-        i = 0;
+        k = 0;
         if (params.length > $(".lslanguage").length){
             code = params[0].replace(/[^a-zA-Z 0-9]+/g,'');
 
@@ -113,8 +113,8 @@ function quickaddfunction(){
             $("#code_"+retcode).val(code);
 
         $(".lslanguage").each(function(){
-            $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[i]);
-            i++;
+            $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
+            k++;
         });
 
 
@@ -158,15 +158,15 @@ function sort_complete(event, ui){
 
 function add_label(event)
 {
-    if ($(this).parent().parent().find('.codeval').size()>0)
+    if ($('.answertable').find('.codeval').size()>0)
         {
-        next_code=getNextCode($(this).parent().parent().find('.codeval').val());
+        next_code=getNextCode($('.answertable').find('.codeval').val());
     }
     else
         {
         next_code='L001';
     }
-    while ($(this).parent().parent().parent().find('input[value="'+next_code+'"]').length>0)
+    while ($('.answertable').find('input[value="'+next_code+'"]').length>0)
     {
         next_code=getNextCode(next_code);
     }
@@ -179,7 +179,7 @@ function add_label(event)
     else
         var row_id = ($(event.target).parent().parent().parent().children().index($(event.target).parent().parent()));
 
-    var randomid = 'new' + Math.floor(Math.random()*111111);
+    var randomid = 'new' + Math.floor(Math.random()*1111111);
 
     html = str_replace("###assessmentval###",'0',html);
     html = str_replace("###codeval###",next_code,html);
@@ -188,7 +188,7 @@ function add_label(event)
 
 
     if (typeof(event) == "undefined")
-        $("#tabs div:first tbody").html(html);
+        $("#tabs div:first tbody").append(html);
     else
         $(event.target).parent().parent().after(html);
 
@@ -205,7 +205,7 @@ function add_label(event)
             $($("tbody",element).children()[row_id]).after(temp_html);
         }
         else
-            $(".answertable tbody",$(element)).html(temp_html);
+            $(".answertable tbody",$(element)).append(temp_html);
 
     });
 
@@ -292,18 +292,19 @@ function str_replace (search, replace, subject, count) {
     return sa ? s : s[0];
 }
 
+
+
 function getNextCode(sourcecode)
 {
     i=1;
     found=true;
     foundnumber=-1;
-    sclength = sourcecode.length;
-    while (i<=sclength && found == true)
+    while (i<=sourcecode.length && found)
     {
-        found=is_numeric(sourcecode.substr(sclength-i,i));
+        found=is_numeric(sourcecode.substr(-i));
         if (found)
             {
-            foundnumber=sourcecode.substr(sclength-i,i);
+            foundnumber=sourcecode.substr(-i);
             i++;
         }
     }
@@ -315,11 +316,12 @@ function getNextCode(sourcecode)
         {
         foundnumber++;
         foundnumber=foundnumber+'';
-        result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
+        result=sourcecode.substr(0,sourcecode.length-foundnumber.length)+foundnumber;
         return(result);
     }
-
 }
+
+
 
 function is_numeric (mixed_var) {
     return (typeof(mixed_var) === 'number' || typeof(mixed_var) === 'string') && mixed_var !== '' && !isNaN(mixed_var);
