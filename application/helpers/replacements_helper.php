@@ -761,6 +761,13 @@ EOD;
         }
     }
 
+    $_endtext = '';
+    if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext'])!='')
+    {
+        $_endtext = $thissurvey['surveyls_endtext'];
+    }
+
+
     // Set the array of replacement variables here - don't include curly braces
 
     $coreReplacements = array();
@@ -775,6 +782,7 @@ EOD;
     $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>";
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
+	$coreReplacements['ENDTEXT'] = $_endtext;
     $coreReplacements['EXPIRY'] = $_dateoutput;
     $coreReplacements['GID'] = isset($questiondetails['gid']) ? $questiondetails['gid']: '';
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;

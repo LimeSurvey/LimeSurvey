@@ -108,8 +108,6 @@ EOD;
 
     SetSurveyLanguage($surveyid, $language);
 
-    echo '<H3>' . sprintf($clang->gT('Logic file for survey ID %s'),$surveyid) . "</H3>\n";
-
     $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $gid, $qid,$LEMdebugLevel,$assessments);
     print $result['html'];
 
