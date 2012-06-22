@@ -1108,7 +1108,7 @@
                                 case 'P': //Multiple choice with comments checkbox + text
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
-                                case 'R': //Ranking
+//                                case 'R': //Ranking
 //                                    if ($this->sgqaNaming)
 //                                    {
                                         foreach ($cascadedAF as $_caf)
