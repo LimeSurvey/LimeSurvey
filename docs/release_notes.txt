@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.00 Release Candidate 3!
+Welcome to LimeSurvey v2.00 Release Candidate 4!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,16 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 2.0RC3 to 2.0RC4 (build 120522) June 22, 2012
+-Fixed issue #6240: conversion of conditions to relevance can fail for multiple choice tests during some upgrades. (Thomas White)
+-Fixed issue: Problems on upgrade from a previous version (Carsten Schmitz)
+-Fixed issue: Proper codes for Italian translations (Carsten Schmitz)
+#Updated translation: Chinese (Simplified) by yooyooh
+#Updated translation: Czech by slansky
+#Updated translation: German by c_schmitz
+
 
 Changes from 2.0RC2 to 2.0RC3 (build 120521) June 20, 2012
 +New feature: Timer function added to radio list question type (jcleeland)
