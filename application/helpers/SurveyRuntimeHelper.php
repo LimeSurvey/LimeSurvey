@@ -950,7 +950,6 @@ END;
                 $question['sgq'] = $q->fieldname;
                 $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
-                $question['type']=$qinfo['info']['type'];
                 //===================================================================
                 $answer = $q->getAnswerHTML();
                 $help = $qinfo['info']['help'];   // $qa[2];

@@ -191,6 +191,21 @@ abstract class QuestionModule
         return false;
     }
     
+    public function retrieveText()
+    {
+        return $this->text;
+    }
+    
+    public function loadAnswer($value)
+    {
+        return $value;
+    }
+    
+    public function setAssessment()
+    {
+        return false;
+    }
+    
     abstract public function availableAttributes($attr = false);    
     abstract public function questionProperties($prop = false);
 }

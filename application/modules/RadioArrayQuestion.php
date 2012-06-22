@@ -337,6 +337,22 @@ class RadioArrayQuestion extends ArrayQuestion
         return $value;
     }
     
+    public function setAssessment()
+    {
+        $this->assessment_value = 0;
+        if (isset($_SESSION['survey_'.$this->surveyid][$this->fieldname]))
+        {
+            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$this->id." and language='$baselang' and code=".dbQuoteAll($_SESSION['survey_'.$this->surveyid][$this->fieldname]);
+            $usresult = dbExecuteAssoc($usquery);          //Checked
+            if ($usresult)
+            {
+                $usrow = $usresult->read();
+                $this->assessment_value=(int) $usrow['assessment_value'];
+            }
+        }
+        return true;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

@@ -111,20 +111,8 @@ function loadanswers()
                 //Only make session variables for those in insertarray[]
                 if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']))
                 {
-                    if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'N' ||
-                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'K' ||
-                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'D') && $value == null)
-                    {   // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
-                        // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
-                        // This is especially important for the deletenonvalue feature,
-                        // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
-                        // question types (NKD)
-                        $_SESSION['survey_'.$surveyid][$column]='';
-                    }
-                    else
-                    {
-                        $_SESSION['survey_'.$surveyid][$column]=$value;
-                    }
+                    $q = $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['q'];
+                    $_SESSION['survey_'.$surveyid][$column] = $q->loadAnswer($value);
                 }  // if (in_array(
             }  // else
         } // foreach
@@ -2144,40 +2132,16 @@ function doAssessment($surveyid, $returndataonly=false)
                 }
             }
             $fieldmap=createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
-            $i=0;
             $total=0;
             $groups=array();
             foreach($fieldmap as $field)
             {
-                if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
+                $q = $field['q'];
+                if ($q->setAssessment())
                 {
-                    $fieldmap[$field['fieldname']]['assessment_value']=0;
-                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
-                    {
-                        if (($field['type'] == "M") || ($field['type'] == "P")) //Multiflexi choice  - result is the assessment attribute value
-                        {
-                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
-                            {
-                                $aAttributes=getQuestionAttributeValues($field['qid']);
-                                $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
-                                $total=$total+(int)$aAttributes['assessment_value'];
-                            }
-                        }
-                        else  // Single choice question
-                        {
-                            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".dbQuoteAll($_SESSION['survey_'.$surveyid][$field['fieldname']]);
-                            $usresult = dbExecuteAssoc($usquery);          //Checked
-                            if ($usresult)
-                            {
-                                $usrow = $usresult->read();
-                                $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
-                                $total=$total+$usrow['assessment_value'];
-                            }
-                        }
-                    }
-                    $groups[]=$field['gid'];
+                    $total+=$q->assessment_value;
+                    $groups[]=$q->gid;
                 }
-                $i++;
             }
 
             $groups=array_unique($groups);
@@ -2187,12 +2151,13 @@ function doAssessment($surveyid, $returndataonly=false)
                 $grouptotal=0;
                 foreach ($fieldmap as $field)
                 {
-                    if ($field['gid'] == $group && isset($field['assessment_value']))
+                    $q=$field['q'];
+                    if ($q->gid == $group && isset($q->assessment_value))
                     {
                         //$grouptotal=$grouptotal+$field['answer'];
-                        if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']]))
+                        if (isset ($_SESSION['survey_'.$surveyid][$q->fieldname]))
                         {
-                            $grouptotal=$grouptotal+$field['assessment_value'];
+                            $grouptotal+=$q->assessment_value;
                         }
                     }
                 }

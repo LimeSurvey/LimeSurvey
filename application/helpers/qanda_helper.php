@@ -71,7 +71,7 @@ function retrieveAnswers($q)
     // TMSW - populate this directly from LEM? - this this is global
     $question_text = array(
     'all' => '' // All has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
-    ,'text' => $q->text
+    ,'text' => $q->retrieveText()
     ,'code' => $q->title
     ,'number' => $number
     ,'mandatory' => ''

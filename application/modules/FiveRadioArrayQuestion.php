@@ -154,6 +154,11 @@ class FiveRadioArrayQuestion extends RadioArrayQuestion
         return array($this->surveyid.'X'.$this->gid.'X'.$value[0] => $value[1]);
     }
     
+    public function setAssessment()
+    {
+        return false;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");

@@ -13,6 +13,11 @@ class EquationQuestion extends QuestionModule
         return $answer;
     }
     
+    public function retrieveText()
+    {
+        return '<div class="em_equation">' . $this->text . '</div>';
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hidden","numbers_only","page_break","public_statistics","scale_export");

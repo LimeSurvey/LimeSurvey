@@ -400,6 +400,11 @@ class MultinumericalQuestion extends QuestionModule
         }
         return $value;
     }
+        
+    public function loadAnswer($value)
+    {
+        return $value==null?'':$value;
+    }
     
     public function availableAttributes($attr = false)
     {

@@ -240,6 +240,11 @@ class DateQuestion extends QuestionModule
         return convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
     }
     
+    public function loadAnswer($value)
+    {
+        return $value==null?'':$value;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");

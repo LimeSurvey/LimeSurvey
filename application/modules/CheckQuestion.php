@@ -412,6 +412,18 @@ class CheckQuestion extends QuestionModule
         return array($this->surveyid.'X'.$this->gid.'X'.$this->id.$value => 'Y');
     }
     
+    public function setAssessment()
+    {
+        if (isset($_SESSION['survey_'.$this->surveyid][$this->fieldname]) && $_SESSION['survey_'.$this->surveyid][$this->fieldname] == "Y")
+        {
+            $aAttributes=$this->getAttributeValues();
+            $this->assessment_value=(int)$aAttributes['assessment_value'];
+        } else {
+            $this->assessment_value = 0;
+        }
+        return true;
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
