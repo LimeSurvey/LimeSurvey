@@ -107,7 +107,7 @@
                                 foreach ($members as $type)
                                 {
                                     echo "<option value='{$type['tid']}'";
-                                    if ($eqrow['type'] == $type['class']) //AJS
+                                    if ($eqrow['tid'] == $type['tid'])
                                     {
                                         echo " selected='selected'";
                                     }
@@ -119,9 +119,7 @@
                         <?php }
                         else
                         {
-
-                            $qtypelist=getQuestionTypeList('','array');
-                            echo "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
+                            echo "{$createQuestion($eqrow['class'])->questionProperties('description')} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
                         <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
                         <?php } ?>
 

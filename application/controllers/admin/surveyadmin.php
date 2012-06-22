@@ -995,7 +995,7 @@ class SurveyAdmin extends Survey_Common_Action
             $qs = array();
             $junk = array();
 
-            foreach ($oQuestionData->readAll() as $q)
+            foreach ($oQuestionData as $q)
             {
                 $relevance = ($q['relevance'] == '') ? 1 : $q['relevance'];
                 $question = '[{' . $relevance . '}] ' . $q['question'];

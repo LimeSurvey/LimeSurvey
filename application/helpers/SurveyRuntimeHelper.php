@@ -620,7 +620,6 @@ class SurveyRuntimeHelper {
         Yii::app()->getController()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
 
-                    var_dump($_SESSION[$LEMsessid]['grouplist']);die();
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
             $gid = $gl[0];

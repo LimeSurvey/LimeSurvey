@@ -713,7 +713,7 @@ class question extends Survey_Common_Action
                     }
                 }
 
-                $eqresult = Questions::model()->with('groups')->together()->findByAttributes(array(
+                $eqresult = Questions::model()->with('groups')->with('question_types')->together()->findByAttributes(array(
                     'sid' => $surveyid,
                     'gid' => $gid,
                     'qid' => $qid,
@@ -740,7 +740,7 @@ class question extends Survey_Common_Action
 
             if (!$adding)
             {
-                $eqrow = array_merge($eqresult->attributes, $eqresult->groups->attributes);;
+                $eqrow = array_merge($eqresult->attributes, $eqresult->groups->attributes, $eqresult->question_types->attributes);
 
                 // Todo: handler in case that record is not found
                 if ($copying)
@@ -752,7 +752,7 @@ class question extends Survey_Common_Action
                 $eqrow['title'] = '';
                 $eqrow['question'] = '';
                 $eqrow['help'] = '';
-                $eqrow['type'] = 'LongText'; //AJS - WHY IS THIS HARDCODED?
+                $eqrow['tid'] = 25; //AJS - WHY IS THIS HARDCODED?
                 $eqrow['lid'] = 0;
                 $eqrow['lid1'] = 0;
                 $eqrow['gid'] = $gid;

@@ -158,15 +158,7 @@
 
         function getQuestions($sid, $gid, $language)
         {
-            return Yii::app()->db->createCommand()
-            ->select()
-            ->from(self::tableName())
-            ->where(array('and', 'sid=:sid', 'gid=:gid', 'language=:language', 'parent_qid=0'))
-            ->order('question_order asc')
-            ->bindParam(":sid", $sid, PDO::PARAM_INT)
-            ->bindParam(":gid", $gid, PDO::PARAM_INT)
-            ->bindParam(":language", $language, PDO::PARAM_STR)
-            ->query();
+            return self::model()->with('question_types')->findAllByAttributes(array('sid'=>$sid, 'gid'=>$gid, 'language'=>$language, 'parent_qid'=>0));
         }
 
         function getSubQuestions($parent_qid)
