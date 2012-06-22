@@ -98,7 +98,7 @@ class dataentry extends Survey_Common_Action
             }
         }
     }
-    
+
     function iteratesurvey()
     {
         $aData = array();
@@ -2053,7 +2053,7 @@ class dataentry extends Survey_Common_Action
 
                 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
                 usort($deqrows, 'groupOrderThenQuestionOrder');
-
+                $bgc = 'odd';
                 foreach ($deqrows as $deqrow)
                 {
                     $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
