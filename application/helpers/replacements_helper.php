@@ -421,7 +421,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_clearall = "";
     }
-
+    if (isset(Yii::app()->session['datestamp']))
+    {
+        $_datestamp = Yii::app()->session['datestamp'];
+    }
+    else
+    {
+        $_datestamp = '-';
+    }
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
     {
         // Find out if the user has any saved data
