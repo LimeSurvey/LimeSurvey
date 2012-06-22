@@ -1812,6 +1812,7 @@ class ExpressionManager {
         $this->groupSeq = $groupSeq;
         $result = $src;
         $prettyPrint = '';
+        $errors = array();
 
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
@@ -1821,8 +1822,10 @@ class ExpressionManager {
             {
                 $prettyPrint = $this->prettyPrintSource;
             }
+            $errors = array_merge($errors, $this->RDP_errs);
         }
         $this->prettyPrintSource = $prettyPrint;    // ensure that if doing recursive substition, can get original source to pretty print
+        $this->RDP_errs = $errors;
         return $result;
     }
 

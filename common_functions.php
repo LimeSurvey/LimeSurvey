@@ -6681,7 +6681,30 @@ function usedTokens($token)
     return $utresult;
 }
 
-
+/**
+* Return true if the actual survey answer is completed
+*
+* @param int $surveyid The survey id
+* @param int $srid The survey answer id
+*/
+function isCompleted($surveyid,$srid)
+{
+    global $connect;
+    $completed = false;
+    if($surveyid && $srid)
+    {
+        $sRow=$connect->GetRow("SELECT active FROM ".db_table_name('surveys')." WHERE sid=$surveyid");
+        if($sRow['active']=='Y')
+        {
+            $sridRow=$connect->GetRow("SELECT submitdate FROM ".db_table_name('survey_'.$surveyid)." WHERE id=$srid");
+            if($sridRow && $sridRow['submitdate'])
+            {
+                $completed=true;
+            }
+        }
+    }
+    return $completed;
+};
 
 /**
 * redirect() generates a redirect URL for the apporpriate SSL mode then applies it.

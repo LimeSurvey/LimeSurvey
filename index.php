@@ -761,51 +761,52 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
 if (isset($_GET['move']) && $_GET['move'] == "clearall")
 {
     $s_lang = $_SESSION['s_lang'];
-    if (isset($_SESSION['srid']))
+    if (isset($_SESSION['srid']) && !isCompleted($surveyid,$_SESSION['srid']))
     {
-        // find out if there are any fuqt questions - checked
-        $fieldmap = createFieldMap($surveyid);
-        foreach ($fieldmap as $field)
+        // delete the response but only if not already completed
+        $result = $connect->query('SELECT id FROM '.db_table_name('survey_'.$surveyid).' WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
+        if($result->RecordCount()>0)
         {
-            if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
+            $connect->query('DELETE FROM '.db_table_name('survey_'.$surveyid).' WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
+            // find out if there are any fuqt questions - checked
+            $fieldmap = createFieldMap($surveyid);
+            foreach ($fieldmap as $field)
             {
-                if (!isset($qid)) { $qid = array(); }
-                $qid[] = $field['fieldname'];
-            }
-        }
-
-        // if yes, extract the response json to those questions
-        if (isset($qid))
-        {
-            $query = "SELECT * FROM ".db_table_name("survey_".$surveyid)." WHERE id=".$_SESSION['srid'];
-            $result = db_execute_assoc($query);
-            while ($row = $result->FetchRow())
-            {
-                foreach ($qid as $question)
+                if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
                 {
-                    $json = $row[$question];
-                    if ($json == "" || $json == NULL)
-                        continue;
-
-                    // decode them
-                    $phparray = json_decode($json);
-
-                    foreach ($phparray as $metadata)
+                    if (!isset($qid)) { $qid = array(); }
+                    $qid[] = $field['fieldname'];
+                }
+            }
+            // if yes, extract the response json to those questions
+            if (isset($qid))
+            {
+                $query = "SELECT * FROM ".db_table_name("survey_".$surveyid)." WHERE id=".$_SESSION['srid'];
+                $result = db_execute_assoc($query);
+                while ($row = $result->FetchRow())
+                {
+                    foreach ($qid as $question)
                     {
-                        $target = "{$uploaddir}/surveys/{$surveyid}/files/";
-                        // delete those files
-                        unlink($target.$metadata->filename);
+                        $json = $row[$question];
+                        if ($json == "" || $json == NULL)
+                            continue;
+
+                        // decode them
+                        $phparray = json_decode($json);
+
+                        foreach ($phparray as $metadata)
+                        {
+                            $target = "{$uploaddir}/surveys/{$surveyid}/files/";
+                            // delete those files
+                            unlink($target.$metadata->filename);
+                        }
                     }
                 }
             }
+            // done deleting uploaded files
         }
-        // done deleting uploaded files
-
-
-        // delete the response but only if not already completed
-        $connect->query('DELETE FROM '.db_table_name('survey_'.$surveyid).' WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
-
-        // also delete a record from saved_control when there is one
+        
+        // also delete a record from saved_control when there is one, we can allway do it.
         $connect->query('DELETE FROM '.db_table_name('saved_control'). ' WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
     }
     session_unset();

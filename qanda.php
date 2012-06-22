@@ -1248,7 +1248,7 @@ function do_language($ia)
 
     $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
-    $answer = "\n\t<p class=\"question\">\n.<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Choose your language')}</label><select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
+    $answer = "\n\t<p class=\"question\">\n<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Choose your language')}</label><select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
     if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {

@@ -7784,6 +7784,7 @@ EOD;
             $LEM =& LimeExpressionManager::singleton();
 
             $allErrors = array();
+            $warnings=0;
 
             $surveyOptions = array(
             'assessments'=>$assessments,
@@ -7816,8 +7817,6 @@ EOD;
 
             $qtypes=getqtypelist('','array');
 
-            templatereplace('{SITENAME}');  // to ensure that lime replacement fields loaded
-
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                 return array(
                 'errors'=>1,
@@ -7825,8 +7824,43 @@ EOD;
                 );
             }
 
-            $out = "<table border='1'>"
-            . "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
+            $surveyname = templatereplace('{SURVEYNAME}');
+
+            $out = '<H3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
+            $out .= "<table border='1'>";
+
+            if (is_null($gid) && is_null($qid))
+            {
+                $description = templatereplace('{SURVEYDESCRIPTION}');
+                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                if ($description != '')
+                {
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Description:") . "</td><td colspan=2>" . $description . "</td></tr>";
+                }
+
+                $welcome = templatereplace('{WELCOME}');
+                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                if ($welcome != '')
+                {
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Welcome:") . "</td><td colspan=2>" . $welcome . "</td></tr>";
+                }
+
+                $endmsg = templatereplace('{ENDTEXT}');
+                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                if ($endmsg != '')
+                {
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End message:") . "</td><td colspan=2>" . $endmsg . "</td></tr>";
+                }
+
+                $_linkreplace = templatereplace('{URL}');
+                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                if ($_linkreplace != '')
+                {
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End URL") . ":</td><td colspan=2>" . $_linkreplace . "</td></tr>";
+                }
+            }
+            
+            $out .= "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
 
             $_gseq=-1;
             foreach ($LEM->currentQset as $q) {
@@ -8049,6 +8083,10 @@ EOD;
                     if (!$LEM->sgqaNaming)
                     {
                         ++$errorCount;
+                    }
+                    else
+                    {
+                        ++$warnings;
                     }
                 }
 
