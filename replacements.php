@@ -639,6 +639,12 @@ EOD;
         }
     }
 
+    $_endtext = '';
+    if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext'])!='')
+    {
+        $_endtext = $thissurvey['surveyls_endtext'];
+    }
+
     // Set the array of replacement variables here - don't include curly braces
     // Please put any conditional logic above this section.  Here below should just be an alphabetical list of replacement values with no embedded logic.
 
@@ -654,6 +660,7 @@ EOD;
 	$coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>";
 	$coreReplacements['COMPLETED'] = $completed;    // global
 	$coreReplacements['DATESTAMP'] = $_datestamp;
+	$coreReplacements['ENDTEXT'] = $_endtext;
 	$coreReplacements['EXPIRY'] = $_dateoutput;
     $coreReplacements['GID'] = $_question_gid;
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
