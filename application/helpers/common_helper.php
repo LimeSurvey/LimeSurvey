@@ -5621,26 +5621,18 @@ function getXMLWriter() {
 
 
 /**
-* Returns true when a token can not be used (either doesn't exist, has less then one usage left or allao edit after completion aren't allowed)
+* Returns true when a token can not be used (either doesn't exist, has less then one usage left )
 *
 * @param mixed $tid Token
 */
 function usedTokens($token, $surveyid)
 {
     $utresult = true;
-    $thissurvey=getSurveyInfo($surveyid);;// ONLY for alloweditaftercompletion
-    if($thissurvey['alloweditaftercompletion'])
-    {
-        $utresult = false;
-    }
-    else
-    {
-        Tokens_dynamic::sid($surveyid);
-        $query=Tokens_dynamic::model()->findAllByAttributes(array("token"=>$token));
-        if (count($query) > 0) {
-            $row = $query[0];
-            if ($row->usesleft > 0) $utresult = false;
-        }
+    Tokens_dynamic::sid($surveyid);
+    $query=Tokens_dynamic::model()->findAllByAttributes(array("token"=>$token));
+    if (count($query) > 0) {
+        $row = $query[0];
+        if ($row->usesleft > 0) $utresult = false;
     }
     return $utresult;
 }

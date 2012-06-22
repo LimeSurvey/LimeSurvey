@@ -470,7 +470,7 @@ class index extends CAction {
             }
             $tkresult = dbExecuteAssoc($tkquery); //Checked
             $tokendata = $tkresult->read();
-            if ($tkresult->count()==0 || $areTokensUsed)
+            if ($tkresult->count()==0 || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y'))
             {
                 sendCacheHeaders();
                 doHeader();
@@ -524,50 +524,51 @@ class index extends CAction {
         //Clear session and remove the incomplete response if requested.
         if (isset($move) && $move == "clearall")
         {
+            // delete the response but only if not already completed
             $s_lang = $_SESSION['survey_'.$surveyid]['s_lang'];
             if (isset($_SESSION['survey_'.$surveyid]['srid']))
             {
-                // find out if there are any fuqt questions - checked
-                $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
-                foreach ($fieldmap as $field)
-                {
-                    if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
+                // delete the response but only if not already completed
+                 $result= dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
+                if($result->count()>0){
+                    // find out if there are any fuqt questions - checked
+                    $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
+                    foreach ($fieldmap as $field)
                     {
-                        if (!isset($qid)) { $qid = array(); }
-                        $qid[] = $field['fieldname'];
-                    }
-                }
-
-                // if yes, extract the response json to those questions
-                if (isset($qid))
-                {
-                    $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['survey_'.$surveyid]['srid'];
-                    $result = dbExecuteAssoc($query);
-                    foreach($result->readAll() as $row)
-                    {
-                        foreach ($qid as $question)
+                        if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
                         {
-                            $json = $row[$question];
-                            if ($json == "" || $json == NULL)
-                                continue;
+                            if (!isset($qid)) { $qid = array(); }
+                            $qid[] = $field['fieldname'];
+                        }
+                    }
 
-                            // decode them
-                            $phparray = json_decode($json);
-
-                            foreach ($phparray as $metadata)
+                    // if yes, extract the response json to those questions
+                    if (isset($qid))
+                    {
+                        $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['survey_'.$surveyid]['srid'];
+                        $result = dbExecuteAssoc($query);
+                        foreach($result->readAll() as $row)
+                        {
+                            foreach ($qid as $question)
                             {
-                                $target = Yii::app()->getConfig("uploaddir")."/surveys/".$surveyid."/files/";
-                                // delete those files
-                                unlink($target.$metadata->filename);
+                                $json = $row[$question];
+                                if ($json == "" || $json == NULL)
+                                    continue;
+
+                                // decode them
+                                $phparray = json_decode($json);
+
+                                foreach ($phparray as $metadata)
+                                {
+                                    $target = Yii::app()->getConfig("uploaddir")."/surveys/".$surveyid."/files/";
+                                    // delete those files
+                                    unlink($target.$metadata->filename);
+                                }
                             }
                         }
                     }
+                    // done deleting uploaded files
                 }
-                // done deleting uploaded files
-
-
-                // delete the response but only if not already completed
-                dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
 
                 // also delete a record from saved_control when there is one
                 dbExecuteAssoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);

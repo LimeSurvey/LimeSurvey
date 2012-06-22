@@ -1526,7 +1526,7 @@
 
         $tkresult = dbExecuteAssoc($tkquery);    //Checked
         $tkexist = reset($tkresult->read());
-        if (!$tkexist || $areTokensUsed)
+        if (!$tkexist ||  ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
