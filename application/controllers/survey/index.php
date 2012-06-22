@@ -615,13 +615,11 @@ class index extends CAction {
         if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
             // load previous answers if any (dataentry with nosubmit)
-            $srquery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']}"
-            . " WHERE {$thissurvey['tablename']}.token='".$token."' order by id desc";
-
+            $srquery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']} WHERE {$thissurvey['tablename']}.token='{$token}' order by id desc";
             $result = dbSelectLimitAssoc($srquery,1);
             if ($result->count()>0)
             {
-                $row=reset($result->read());
+                $row=$result->read();
                 if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
                 {
                     $_SESSION['survey_'.$surveyid]['srid'] = $row['id'];
