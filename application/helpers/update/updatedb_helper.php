@@ -1001,6 +1001,13 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
     }
 
+    if ($oldversion < 160)
+    {
+        alterLanguageCode('it','it-informal');
+        alterLanguageCode('it-formal','it');
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
+    }
+
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';

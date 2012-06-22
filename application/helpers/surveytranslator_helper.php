@@ -301,12 +301,12 @@
         $supportedLanguages['it']['dateformat'] = 5;
         $supportedLanguages['it']['radixpoint'] = 1;
 
-        // Italian-Formal
-        $supportedLanguages['it-formal']['description'] = $clang->gT('Italian (formal)');
-        $supportedLanguages['it-formal']['nativedescription'] = 'Formale Italiano';
-        $supportedLanguages['it-formal']['rtl'] = false;
-        $supportedLanguages['it-formal']['dateformat'] = 5;
-        $supportedLanguages['it-formal']['radixpoint'] = 1;
+        // Italian informal
+        $supportedLanguages['it-informal']['description'] = $clang->gT('Italian (informal)');
+        $supportedLanguages['it-informal']['nativedescription'] = 'Italiano (informale)';
+        $supportedLanguages['it-informal']['rtl'] = false;
+        $supportedLanguages['it-informal']['dateformat'] = 5;
+        $supportedLanguages['it-informal']['radixpoint'] = 1;
 
         // Japanese
         $supportedLanguages['ja']['description'] = $clang->gT('Japanese');
