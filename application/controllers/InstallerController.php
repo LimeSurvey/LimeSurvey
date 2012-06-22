@@ -947,7 +947,7 @@ class InstallerController extends CController {
             ."*/"                                                                   ."\n"
             . "return array("                             . "\n"
             ."\t"     . "'basePath' => dirname(dirname(__FILE__))," . "\n"
-            ."\t"     . "'runtimePath' => dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
+            ."\t"     . "'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
             ."\t"     . "'name' => 'LimeSurvey',"                   . "\n"
             ."\t"     . "'defaultController' => 'survey',"          . "\n"
             ."\t"     . ""                                          . "\n"
