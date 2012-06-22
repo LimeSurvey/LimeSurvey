@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-06-20 10:34:11+00:00\n"
+"POT-Creation-Date: 2012-06-22 07:00:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13526,7 +13526,7 @@ msgid "Set this to the IP/net location of your database server. In most cases \"
 msgstr ""
 
 #: application/views/installer/dbconfig_view.php:44
-msgid "If you provide an existing database name make sure the database does not contain old tables of LimeSurvey."
+msgid "If the database not exists it will be created (necessrary permission provided). If there are existing tables then the LimeSurvey database will be upgraded automatically after installation if necessary."
 msgstr ""
 
 #: application/views/installer/dbconfig_view.php:50
