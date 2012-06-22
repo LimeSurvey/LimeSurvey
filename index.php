@@ -761,7 +761,7 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
 if (isset($_GET['move']) && $_GET['move'] == "clearall")
 {
     $s_lang = $_SESSION['s_lang'];
-    if (isset($_SESSION['srid']))
+    if (isset($_SESSION['srid']) && !isCompleted($surveyid,$_SESSION['srid']))
     {
         // delete the response but only if not already completed
         $result = $connect->query('SELECT id FROM '.db_table_name('survey_'.$surveyid).' WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
