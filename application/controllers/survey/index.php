@@ -526,7 +526,7 @@ class index extends CAction {
         {
             // delete the response but only if not already completed
             $s_lang = $_SESSION['survey_'.$surveyid]['s_lang'];
-            if (isset($_SESSION['survey_'.$surveyid]['srid']))
+            if (isset($_SESSION['survey_'.$surveyid]['srid']) && !Survey_dynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']))
             {
                 // delete the response but only if not already completed
                  $result= dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
