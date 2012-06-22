@@ -399,7 +399,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_linkreplace='';
     }
 
-    if (isset($surveyid) && !(usedTokens($_token,$surveyid) && $thissurvey['alloweditaftercompletion'] == 'Y')) 
+    if(tableExists('{{tokens_'.$thissurvey['sid'].'}}') && $thissurvey['alloweditaftercompletion'] == 'Y')
+    {
+        if (usedTokens($_token,$surveyid))
+        {
+            $dontclear=true;
+        }
+    }
+    if (isset($surveyid) && isset($dontclear)) 
     {
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
         . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
@@ -413,14 +420,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     else
     {
         $_clearall = "";
-    }
-    if (isset(Yii::app()->session['datestamp']))
-    {
-        $_datestamp = Yii::app()->session['datestamp'];
-    }
-    else
-    {
-        $_datestamp = '-';
     }
 
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
