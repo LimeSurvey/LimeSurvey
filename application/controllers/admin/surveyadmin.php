@@ -295,8 +295,8 @@ class SurveyAdmin extends Survey_Common_Action
 
             //Update the auto_increment value from the table before renaming
             $new_autonumber_start = 0;
-            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($oldtable)." ORDER BY id desc LIMIT 1";
-            $result = Yii::app()->db->createCommand($query)->query();
+            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($oldtable)." ORDER BY id desc";
+            $result = Yii::app()->db->createCommand($query)->limit(1)->query();
             if ($result->getRowCount() > 0)
             {
                 foreach ($result->readAll() as $row)
