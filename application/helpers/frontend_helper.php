@@ -324,9 +324,10 @@ function checkconfield($value)
 
             $scenario = $scenariorow['scenario'];
             $currentcfield="";
-            $query = "SELECT {{conditions}}.*, {{questions}}.type "
+            $query = "SELECT {{conditions}}.*, {{question_types}}.clas "
             . "FROM {{conditions}}, {{questions}} "
             . "WHERE {{conditions}}.cqid={{questions}}.qid "
+            . "AND {{questions}}.tid={{question_types}}.tid "
             . "AND {{conditions}}.qid=$value_question->id "
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
@@ -334,7 +335,7 @@ function checkconfield($value)
             $result=dbExecuteAssoc($query) or safeDie($query."<br />");         //Checked
             $conditionsfound = $result->count();
 
-            $querytoken = "SELECT {{conditions}}.*, '' as type "
+            $querytoken = "SELECT {{conditions}}.*, 'Display' as class "
             . "FROM {{conditions}} "
             . "WHERE "
             . " {{conditions}}.qid=$value_question->id "
@@ -357,36 +358,14 @@ function checkconfield($value)
 
             foreach ($aAllCondrows as $rows)
             {
-                if (preg_match("/^\+(.*)$/",$rows['cfieldname'],$cfieldnamematch))
-                { // this condition uses a single checkbox as source
-                    $rows['type'] = "+".$rows['type'];
-                    $rows['cfieldname'] = $cfieldnamematch[1];
-                }
-
-                if($rows['type'] == "M" || $rows['type'] == "P")
+                $q = createQuestion($rows['class']);
+                $val = $q->prepareConditions();
+                $cqval[]=$val;
+                if ($val['cfieldname'] != $currentcfield)
                 {
-                    $matchfield=$rows['cfieldname'].$rows['value'];
-                    $matchmethod=$rows['method'];
-                    $matchvalue="Y";
+                    $container[]=$val['cfieldname'];
                 }
-                else
-                {
-                    $matchfield=$rows['cfieldname'];
-                    $matchmethod=$rows['method'];
-                    $matchvalue=$rows['value'];
-                }
-                $cqval[]=array("cfieldname"=>$rows['cfieldname'],
-                "value"=>$rows['value'],
-                "type"=>$rows['type'],
-                "matchfield"=>$matchfield,
-                "matchvalue"=>$matchvalue,
-                "matchmethod"=>$matchmethod
-                );
-                if ($rows['cfieldname'] != $currentcfield)
-                {
-                    $container[]=$rows['cfieldname'];
-                }
-                $currentcfield=$rows['cfieldname'];
+                $currentcfield=$val['cfieldname'];
             }
             if ($conditionsfound > 0)
             {
@@ -2000,7 +1979,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
     ." FROM {{questions}}"
-    ." WHERE type in ('X','*')\n"
+    ." WHERE tid in (15,22)\n" //AJS Not sure how to do this.
     ." AND sid={$surveyid}"
     ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
     ." AND parent_qid=0")->read();

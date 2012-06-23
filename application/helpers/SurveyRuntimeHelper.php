@@ -928,12 +928,12 @@ END;
                 }
 
                 $n_q_display = '';
-                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
+                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*') //AJS
                 {
                     continue; // skip this one
                 }
 
-                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
+                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*')) //AJS
                 {
                     $n_q_display = ' style="display: none;"';
                 }

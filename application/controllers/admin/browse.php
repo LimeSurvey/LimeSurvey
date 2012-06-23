@@ -136,13 +136,12 @@ class browse extends Survey_Common_Action
 
         foreach ($fieldmap as $field)
         {
-            if ($field['fieldname'] == 'lastpage' || $field['fieldname'] == 'submitdate')
-                continue;
-            if ($field['type'] == 'interview_time')
-                continue;
-            if ($field['type'] == 'page_time')
-                continue;
-            if ($field['type'] == 'answer_time')
+            $q = $field['q'];
+            if ($q->fieldname == 'lastpage' ||
+            $q->fieldname == 'submitdate' ||
+            $q->fieldname == 'interview_time' ||
+            $q->fieldname == 'page_time' ||
+            $q->fieldname == 'answer_time')
                 continue;
 
             $question = $field['question'];

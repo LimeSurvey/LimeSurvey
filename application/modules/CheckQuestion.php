@@ -424,6 +424,26 @@ class CheckQuestion extends QuestionModule
         return true;
     }
     
+    public function prepareConditions($row)
+    {
+        if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
+        { // this condition uses a single checkbox as source
+            return array("cfieldname"=>$cfieldnamematch[1],
+            "value"=>$row['value'],
+            "matchfield"=>$row['cfieldname'],
+            "matchvalue"=>$row['value'],
+            "matchmethod"=>$row['method']
+            );
+        }
+        
+        return array("cfieldname"=>$rows['cfieldname'].$rows['value'],
+        "value"=>$row['value'],
+        "matchfield"=>$row['cfieldname'],
+        "matchvalue"=>"Y",
+        "matchmethod"=>$row['method']
+        );
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

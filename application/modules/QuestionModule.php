@@ -206,6 +206,21 @@ abstract class QuestionModule
         return false;
     }
     
+    public function prepareConditions($row)
+    {
+        if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
+        { // this condition uses a single checkbox as source
+            $row['cfieldname'] = $cfieldnamematch[1];
+        }
+        
+        return array("cfieldname"=>$row['cfieldname'],
+        "value"=>$row['value'],
+        "matchfield"=>$row['cfieldname'],
+        "matchvalue"=>$row['value'],
+        "matchmethod"=>$row['method']
+        );
+    }
+    
     abstract public function availableAttributes($attr = false);    
     abstract public function questionProperties($prop = false);
 }
