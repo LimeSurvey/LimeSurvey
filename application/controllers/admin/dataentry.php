@@ -2389,6 +2389,8 @@ class dataentry extends Survey_Common_Action
                             break;
                         case ":": //ARRAY (Multi Flexi)
                             //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                            $minvalue=1;
+                            $maxvalue=10;
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {
                                 $maxvalue=$qidattributes['multiflexible_max'];
                                 $minvalue=1;
@@ -2396,10 +2398,6 @@ class dataentry extends Survey_Common_Action
                             if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) =='') {
                                 $minvalue=$qidattributes['multiflexible_min'];
                                 $maxvalue=$qidattributes['multiflexible_min'] + 10;
-                            }
-                            if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) =='') {
-                                $minvalue=1;
-                                $maxvalue=10;
                             }
                             if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !='') {
                                 if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
