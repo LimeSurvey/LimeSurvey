@@ -399,11 +399,15 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_linkreplace='';
     }
 
-    if(isset($surveyid) && !isset($saved_id) && isset($_SESSION['survey_'.$surveyid]['srid']))
+    if(isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active']=='Y')
     {
-        $saved_id=$_SESSION['survey_'.$surveyid]['srid'];
+        $iscompleted=Survey_dynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
     }
-    if (isset($surveyid) && !Survey_dynamic::model($surveyid)->isCompleted(isset($saved_id) ? $saved_id : 0)) 
+    else
+    {
+        $iscompleted=false;
+    }
+    if (isset($surveyid) && !$iscompleted)
     {
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
         . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
