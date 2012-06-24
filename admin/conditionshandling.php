@@ -1283,7 +1283,7 @@ $subaction=='copyconditionsform' || $subaction=='copyconditions')
             ."AND {$dbprefix}conditions.qid=$qid "
             ."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
             ."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
-            ."ORDER BY {$dbprefix}groups.group_order,{$dbprefix}questions.question_order";
+            ."ORDER BY {$dbprefix}groups.group_order,{$dbprefix}questions.question_order, {$dbprefix}conditions.cfieldname";
             $result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
             $conditionscount=$result->RecordCount();
 

@@ -75,18 +75,18 @@
         if ($actresult->RecordCount() == 0) { safe_die('You have to provide a valid survey ID.'); }
         else
         {
-            $surveyinfo=getSurveyInfo($surveyid);
+            $thissurvey=getSurveyInfo($surveyid);
             // CHANGE JSW_NZ - let's get the survey title for display
-            $thisSurveyTitle = $surveyinfo["name"];
+            $thisSurveyTitle = $thissurvey["name"];
             // CHANGE JSW_NZ - let's get css from individual template.css - so define path
-            $thisSurveyCssPath = sGetTemplateURL($surveyinfo["template"]);
-            if ($surveyinfo['publicstatistics']!='Y')
+            $thistpl = sgetTemplatePath($thissurvey["template"]);
+            if ($thissurvey['publicstatistics']!='Y')
             {
                 safe_die('The public statistics for this survey are deactivated.');
             }
 
             //check if graphs should be shown for this survey
-            if ($surveyinfo['publicgraphs']=='Y')
+            if ($thissurvey['publicgraphs']=='Y')
             {
                 $publicgraphs = 1;
             } else {
@@ -156,7 +156,7 @@
     //Create header
     sendcacheheaders();
     echo getHeader();
-    echo templatereplace(file_get_contents("$thisSurveyCssPath/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 
     /*
@@ -450,7 +450,7 @@
     echo $statisticsoutput;
 
 
-    echo templatereplace(file_get_contents("$thisSurveyCssPath/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     //output footer
     echo getFooter();
 

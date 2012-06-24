@@ -3129,6 +3129,7 @@ EOD;
         $pre .= "<!--\n";
         $pre .= "var LEMalias2varName= {". implode(",\n", $LEMalias2varName) ."};\n";
         $pre .= "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
+        $pre .= "var LEMradix = '.';\n";
         $pre .= "//-->\n</script>\n";
 
         print $pre;
