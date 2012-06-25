@@ -39,7 +39,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && Yii::app()->session['USER_RIGHT_CREATE_SURVEY'] != 1)
         {
             die();
         }
@@ -1471,7 +1471,6 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             Yii::app()->loadHelper("surveytranslator");
-
 
             // If start date supplied convert it to the right format
             $aDateFormatData = getDateFormatData(Yii::app()->session['dateformat']);
