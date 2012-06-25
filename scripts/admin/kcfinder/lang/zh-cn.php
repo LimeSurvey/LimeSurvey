@@ -9,7 +9,7 @@
 
 $lang = array(
 
-    '_locale' => "zn_CN.UTF-8",  // UNIX localization code
+    '_locale' => "zh_CN.UTF-8",  // UNIX localization code
     '_charset' => "utf-8",       // Browser charset
 
     // Date time formats. See http://www.php.net/manual/en/function.strftime.php

@@ -295,8 +295,8 @@ class SurveyAdmin extends Survey_Common_Action
 
             //Update the auto_increment value from the table before renaming
             $new_autonumber_start = 0;
-            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($oldtable)." ORDER BY id desc LIMIT 1";
-            $result = Yii::app()->db->createCommand($query)->query();
+            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($oldtable)." ORDER BY id desc";
+            $result = Yii::app()->db->createCommand($query)->limit(1)->query();
             if ($result->getRowCount() > 0)
             {
                 foreach ($result->readAll() as $row)
@@ -669,7 +669,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts').'/scripts/admin/surveysettings.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
 
         if (hasSurveyPermission($iSurveyID, 'surveylocale', 'read'))
         {

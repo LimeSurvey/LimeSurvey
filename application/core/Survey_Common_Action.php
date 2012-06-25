@@ -195,9 +195,16 @@ class Survey_Common_Action extends CAction
             $sViewPath .= $sAction . '/';
         }
 
+        // Send HTTP header 
+        header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
+
+
         // Header
         if(!isset($aData['display']['header']) || $aData['display']['header'] !== false)
+        {
             Yii::app()->getController()->_getAdminHeader();
+        }
+
 
         // Menu bars
         if (!isset($aData['display']['menu_bars']) || ($aData['display']['menu_bars'] !== false && (!is_array($aData['display']['menu_bars']) || !in_array('browse', array_keys($aData['display']['menu_bars'])))))

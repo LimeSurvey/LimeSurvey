@@ -156,12 +156,12 @@ jQuery("#displaytokens").jqGrid({
             var validfrom = row.find('[aria-describedby="displaytokens_validfrom"]');
             validfrom.find('input').css('width', '119px').datetimepicker({
                 showOn: 'button',
-                dateFormat: userdateformat,
+                dateFormat: userdateformat
             });
             var validuntil = row.find('[aria-describedby="displaytokens_validuntil"]');
             validuntil.find('input').css('width', '119px').datetimepicker({
                 showOn: 'button',
-                dateFormat: userdateformat,
+                dateFormat: userdateformat
             });
     
             jQuery('<input type="image" class="drop_editing" src="' + jQuery(this).parent().find('input:eq(1)').attr('src') + '" />')
@@ -182,7 +182,7 @@ jQuery("#displaytokens").jqGrid({
         row.find('.token_edit').click();
     },
     pager: "#pager",
-    caption: "Tokens",
+    caption: "Tokens"
     });
 jQuery("#displaytokens").jqGrid('navGrid','#pager',{ add:false,del:true,edit:false,refresh: true,search: false},{},{ width : 400},{ msg:delmsg, width : 700,
                      afterShowForm: function($form) {

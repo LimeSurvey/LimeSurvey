@@ -1260,7 +1260,7 @@ class conditionsaction extends Survey_Common_Action {
                     ."AND c.qid=:qid "
                     ."AND c.scenario=:scenario "
                     ."AND c.cfieldname NOT LIKE '{%' " // avoid catching SRCtokenAttr conditions
-                    ."ORDER BY g.group_order, q.question_order";
+                    ."ORDER BY g.group_order, q.question_order, c.cfieldname";
                     $sLanguage=Survey::model()->findByPk($surveyid)->language;
                     $result=Yii::app()->db->createCommand($query)
                     ->bindValue(":scenario", $scenarionr['scenario'])

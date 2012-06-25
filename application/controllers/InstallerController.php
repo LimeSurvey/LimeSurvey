@@ -184,7 +184,7 @@ class InstallerController extends CController {
     public function stepViewLicense()
     {
         $filename = dirname(BASEPATH) . '/docs/license.txt';
-        header('Content-Type: text/plain;');
+        header('Content-Type: text/plain; charset=UTF-8');
         readfile($filename);
         exit;
     }
@@ -947,6 +947,7 @@ class InstallerController extends CController {
             ."*/"                                                                   ."\n"
             . "return array("                             . "\n"
             ."\t"     . "'basePath' => dirname(dirname(__FILE__))," . "\n"
+            ."\t"     . "'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
             ."\t"     . "'name' => 'LimeSurvey',"                   . "\n"
             ."\t"     . "'defaultController' => 'survey',"          . "\n"
             ."\t"     . ""                                          . "\n"
@@ -969,8 +970,13 @@ class InstallerController extends CController {
             $dbdata .="\t\t\t" . "'username' => '$sDatabaseUser',"  . "\n"
             ."\t\t\t" . "'password' => '$sDatabasePwd',"            . "\n"
             ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
-            ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n"
-            ."\t\t" . "),"                                          . "\n"
+            ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n";
+
+            if (in_array($sDatabaseType, array('mssql', 'sqlsrv'))) {
+                $dbdata .="\t\t\t" ."'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),"    . "\n";
+            }
+
+            $dbdata .="\t\t" . "),"                                          . "\n"
             ."\t\t"   . ""                                          . "\n"
 
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"

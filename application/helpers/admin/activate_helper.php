@@ -444,9 +444,9 @@ function activateSurvey($surveyid, $simulate = false)
                         mssql_drop_primary_index('survey_'.$surveyid);
                         mssql_drop_constraint('id','survey_'.$surveyid);
                         $autonumberquery = "alter table {{survey_{$surveyid}}} drop column id ";
-                        Yii::app()->db->createCommand($autonumberquery)->query()->readAll();
+                        Yii::app()->db->createCommand($autonumberquery)->execute();
                         $autonumberquery = "alter table {{survey_{$surveyid}}} add [id] int identity({$row['autonumber_start']},1)";
-                        Yii::app()->db->createCommand($autonumberquery)->query()->readAll();
+                        Yii::app()->db->createCommand($autonumberquery)->execute();
                     }
                     else
                     {
@@ -539,7 +539,7 @@ function mssql_drop_constraint($fieldname, $tablename)
                       sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
                       sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
                       sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
-                WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name={{{$tablename}}})";
+                WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{{{$tablename}}}')";
     $result = dbExecuteAssoc($dfquery)->read();
     $defaultname=$result['CONTRAINT_NAME'];
     if ($defaultname!=false)
@@ -557,12 +557,11 @@ function mssql_drop_primary_index($tablename)
     // find out the constraint name of the old primary key
     $pkquery = "SELECT CONSTRAINT_NAME "
               ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
-              ."WHERE     (TABLE_NAME = {{{$tablename}}}) AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+              ."WHERE     (TABLE_NAME = '{{{$tablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
-    $result = dbExecuteAssoc($pkquery)->read();
-    $primarykey=$result['CONTSTRAINT_NAME'];
-    if ($primarykey!=false)
+    $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
+    if ($primarykey!==false)
     {
-        modifyDatabase("","ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$primarykey}"); echo $modifyoutput; flush();
+        Yii::app()->db->createCommand("ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$primarykey[0]}")->execute();
     }
 }

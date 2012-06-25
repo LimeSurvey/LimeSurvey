@@ -4,9 +4,9 @@
   *
   *      @desc HTTP cache helper class
   *   @package KCFinder
-  *   @version 2.21
+  *   @version 2.51
   *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010 KCFinder Project
+  * @copyright 2010, 2011 KCFinder Project
   *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
   *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
   *      @link http://kcfinder.sunhater.com
@@ -68,7 +68,7 @@ class httpCache {
     * the PHP to be configured as Apache module.
     * @param integer $mtime */
 
-    static function checkMTime($mtime) {
+    static function checkMTime($mtime, $sendHeaders=null) {
         header("Last-Modified: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
 
         $headers = function_exists("getallheaders")
@@ -79,9 +79,16 @@ class httpCache {
 
         if (is_array($headers) && isset($headers['If-Modified-Since'])) {
             $client_mtime = explode(';', $headers['If-Modified-Since']);
-            $client_mtime = strtotime($client_mtime[0]);
+            $client_mtime = @strtotime($client_mtime[0]);
             if ($client_mtime >= $mtime) {
                 header('HTTP/1.1 304 Not Modified');
+                if (is_array($sendHeaders) && count($sendHeaders))
+                    foreach ($sendHeaders as $header)
+                        header($header);
+                elseif ($sendHeaders !== null)
+                    header($sendHeaders);
+
+
                 die;
             }
         }

@@ -1,3 +1,7 @@
+    <script type='text/javascript'>
+        var duplicatelabelcode='<?php $clang->eT('Error: You are trying to use duplicate label codes.','js'); ?>';
+        var otherisreserved='<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>';
+    </script>
 <div class='header ui-widget-header'><?php $clang->eT("Labels") ?></div>
 <div id='tabs' class='ui-tabs ui-widget ui-widget-content ui-corner-all'>
     <ul class='ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all'>
@@ -10,7 +14,7 @@
         ?>
     </ul>
 
-    <form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/process') ?>' onsubmit="return codeCheck('code_', <?php echo $maxsortorder ?>, '<?php $clang->eT("Error: You are trying to use duplicate label codes.", 'js') ?>', '<?php $clang->eT("Error: 'other' is a reserved keyword.", 'js') ?>');">
+    <form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/process') ?>'>
         <input type='hidden' name='lid' value='<?php echo $lid ?>' />
         <input type='hidden' name='action' value='modlabelsetanswers' />
         <?php

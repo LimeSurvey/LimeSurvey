@@ -70,24 +70,25 @@ class kcfinder extends Survey_Common_Action
         }
 
         Yii::registerAutoloader(array($this, 'kcfinder_autoload'));
-        if (!empty($load) && file_exists(ROOT . "/scripts/admin/kcfinder/" . $load . EXT))
+        if (!empty($load) && file_exists(Yii::app()->getConfig('generalscripts')."admin/kcfinder/" . $load . EXT))
         {
-            require_once(ROOT . "/scripts/admin/kcfinder/" . $load . EXT);
+            chdir(Yii::app()->getConfig('generalscripts')."admin/kcfinder/");
+            require_once(Yii::app()->getConfig('generalscripts')."admin/kcfinder/" . $load . EXT);
         }
     }
 
     function kcfinder_autoload($class)
     {
         if ($class == "uploader")
-            require ROOT . "/scripts/admin/kcfinder/core/uploader.php";
+            require Yii::app()->getConfig('generalscripts')."kcfinder/core/uploader.php";
         elseif ($class == "browser")
-            require ROOT . "/scripts/admin/kcfinder/core/browser.php";
-        elseif (file_exists(ROOT . "/scripts/admin/kcfinder/core/types/$class.php"))
-            require ROOT . "/scripts/admin/kcfinder/core/types/$class.php";
-        elseif (file_exists(ROOT . "/scripts/admin/kcfinder/lib/class_$class.php"))
-            require ROOT . "/scripts/admin/kcfinder/lib/class_$class.php";
-        elseif (file_exists(ROOT . "/scripts/admin/kcfinder/lib/helper_$class.php"))
-            require ROOT . "/scripts/admin/kcfinder/lib/helper_$class.php";
+            require Yii::app()->getConfig('generalscripts')."admin/kcfinder/core/browser.php";
+        elseif (file_exists(Yii::app()->getConfig('generalscripts')."admin/kcfinder/core/types/$class.php"))
+            require Yii::app()->getConfig('generalscripts')."admin/kcfinder/core/types/$class.php";
+        elseif (file_exists(Yii::app()->getConfig('generalscripts')."admin/kcfinder/lib/class_$class.php"))
+            require Yii::app()->getConfig('generalscripts')."admin/kcfinder/lib/class_$class.php";
+        elseif (file_exists(Yii::app()->getConfig('generalscripts')."admin/kcfinder/lib/helper_$class.php"))
+            require Yii::app()->getConfig('generalscripts')."admin/kcfinder/lib/helper_$class.php";
     }
 
     function css()
@@ -335,8 +336,8 @@ class kcfinder extends Survey_Common_Action
         $input = new input();
         if (!isset($input->get['lng']) || ($input->get['lng'] == 'en'))
             die;
-        $file = ROOT . "/scripts/admin/kcfinder/lang/" . $input->get['lng'] . ".php";
-        $files = glob(ROOT . "/scripts/admin/kcfinder/lang/*.php");
+        $file = Yii::app()->getConfig('generalscripts')."admin/kcfinder/lang/" . $input->get['lng'] . ".php";
+        $files = glob(Yii::app()->getConfig('generalscripts')."admin/kcfinder/lang/*.php");
         if (!in_array($file, $files))
             die;
         $mtime = @filemtime($file);

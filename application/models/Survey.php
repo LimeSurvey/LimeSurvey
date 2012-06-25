@@ -156,31 +156,38 @@ class Survey extends CActiveRecord
     * !!! Shouldn't this be moved to beforeSave?
     * Creates a new survey - does some basic checks of the suppplied data
     *
-    * @param string $data
-    * @return mixed
+    * @param array $aData Array with fieldname=>fieldcontents data
+    * @param boolean $xssfiltering Sets if the data for the new survey should be filtered for XSS
+    * @return integer The new survey id
     */
-    public function insertNewSurvey($data, $xssfiltering = false)
+    public function insertNewSurvey($aData, $xssfiltering = false)
     {
+
         do
         {
-            if (isset($data['wishSID'])) // if wishSID is set check if it is not taken already
+            if (isset($aData['wishSID'])) // if wishSID is set check if it is not taken already
             {
-                $data['sid'] = $data['wishSID'];
-                unset($data['wishSID']);
+                $aData['sid'] = $aData['wishSID'];
+                unset($aData['wishSID']);
             }
             else
-                $data['sid'] = randomChars(6, '123456789');
+                $aData['sid'] = randomChars(6, '123456789');
 
-            $isresult = self::model()->findByPk($data['sid']);
+            $isresult = self::model()->findByPk($aData['sid']);
         }
         while (!is_null($isresult));
 
-        $data['datecreated'] = date("Y-m-d");
-        if (isset($data['startdate']) && trim($data['startdate']) == '')
-            $data['startdate'] = null;
+     //   $aData['datecreated'] = date("Y-m-d");
+        if (isset($aData['startdate']) && trim($aData['startdate']) == '')
+            unset($aData['startdate']);
 
-        if (isset($data['expires']) && trim($data['expires']) == '')
-            $data['expires'] = null;
+        if (isset($aData['expires']) && trim($aData['expires']) == '')
+            unset($aData['expires']);
+
+        if (!isset($aData['datecreated']))
+        {
+            $aData['datecreated'] = date("Y-m-d");
+        }
 
         if($xssfiltering)
         {
@@ -189,17 +196,18 @@ class Survey extends CActiveRecord
             'http' => true,
             'https' => true,
             ));
-            $data["admin"] = $filter->purify($data["admin"]);
-            $data["adminemail"] = $filter->purify($data["adminemail"]);
-            $data["bounce_email"] = $filter->purify($data["bounce_email"]);
-            $data["faxto"] = $filter->purify($data["faxto"]);
+            $aData["admin"] = $filter->purify($aData["admin"]);
+            $aData["adminemail"] = $filter->purify($aData["adminemail"]);
+            $aData["bounce_email"] = $filter->purify($aData["bounce_email"]);
+            $aData["faxto"] = $filter->purify($aData["faxto"]);
         }
 
         $survey = new self;
-        foreach ($data as $k => $v)
+        foreach ($aData as $k => $v)
             $survey->$k = $v;
         $survey->save();
-        return $data['sid'];
+
+        return $aData['sid'];
     }
 
     /**

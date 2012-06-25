@@ -246,7 +246,7 @@ function qTypeDropdownInit()
                     tooltip:'rightMiddle'
                 }
             },
-            show: 'mouseover',
+            show: 'mouseover'
             //hide: 'mouseout'
         });
 
@@ -334,32 +334,6 @@ function isEmpty(elem, helperMsg)
     if($.trim(elem.value).length == 0){
         alert(helperMsg);
         elem.focus(); // set the focus to this input
-        return false;
-    }
-    return true;
-}
-
-function codeCheck(prefix, elementcount, helperMsg, reservedKeywordMsg)
-{
-    var i, j;
-    var X = new Array();
-
-    for (i=0; i<=elementcount; i++) {
-        j = document.getElementById(prefix+i);
-        if (j != undefined)
-            {
-            j.value=trim(j.value);
-            if (j.value == "other")
-                {
-                alert(reservedKeywordMsg);
-                return false;
-            }
-            X.push(j.value);
-        }
-    }
-    if (arrHasDupes(X))
-        {
-        alert(helperMsg);
         return false;
     }
     return true;

@@ -243,6 +243,22 @@ $lang = array(
     "selected files" => "فایل های انتخاب شده",
     "Select Thumbnails" => "انتخاب عکس های کوچک",
     "Download files" => "دریافت فایل ها",
+
+    // SINCE 2.4
+
+    "Checking for new version..." => "...وجود نسخه جدید را بررسی کن",
+    "Unable to connect!" => "!مشکل در برقراری ارتباط",
+    "Download version {version} now!" => "!را دانلود کن {version} همسین حالا نسخه ",
+    "KCFinder is up to date!" => "!بروز است KCFinder",
+    "Licenses:" => "مجوز",
+    "Attention" => "توجه",
+    "Question" => "پرسش",
+    "Yes" => "بله",
+    "No" => "خیر",
+
+    // SINCE 2.41
+
+    "You cannot rename the extension of files!" => "!شما نمی توانید پسوند فایلها را تغییر دهید",
 );
 
 ?>

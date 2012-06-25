@@ -1001,6 +1001,13 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
     }
 
+    if ($oldversion < 160)
+    {
+        alterLanguageCode('it','it-informal');
+        alterLanguageCode('it-formal','it');
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
+    }
+
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
@@ -1659,7 +1666,7 @@ function dropColumn($sTableName, $sColumnName)
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
+    if ($sDBDriverName=='mssql')
     {
         dropDefaultValueMSSQL($sColumnName,$sTableName);
     }
@@ -1674,7 +1681,7 @@ function createTable($sTableName, $aColumns, $aOptions=null)
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
+    if ($sDBDriverName=='mssql')
     {
         foreach ($aColumns as $sName=>&$sType)
         {
@@ -1690,7 +1697,7 @@ function addColumn($sTableName, $sColumn, $sType)
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
+    if ($sDBDriverName=='mssql')
     {
         $sType=str_replace('text','varchar(max)',$sType);
         $sType=str_replace('binary','text',$sType);

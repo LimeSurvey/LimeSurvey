@@ -173,6 +173,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_jqueryuijsurl=Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js";
         $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.js'></script>\n";
         $_templatejs.= "<script type='text/javascript' src='{$_jqueryuijsurl}'></script>\n";
+        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.ui.touch-punch.min.js'></script>\n";
         if($js_header_includes){
             foreach ($js_header_includes as $jsinclude)
             {
@@ -399,7 +400,16 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_linkreplace='';
     }
 
-    if (isset($surveyid)) {
+    if(isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active']=='Y')
+    {
+        $iscompleted=Survey_dynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
+    }
+    else
+    {
+        $iscompleted=false;
+    }
+    if (isset($surveyid) && !$iscompleted)
+    {
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
         . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
 
@@ -422,7 +432,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
-
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
     {
         // Find out if the user has any saved data
@@ -757,6 +766,13 @@ EOD;
         }
     }
 
+    $_endtext = '';
+    if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext'])!='')
+    {
+        $_endtext = $thissurvey['surveyls_endtext'];
+    }
+
+
     // Set the array of replacement variables here - don't include curly braces
 
     $coreReplacements = array();
@@ -771,6 +787,7 @@ EOD;
     $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>";
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
+	$coreReplacements['ENDTEXT'] = $_endtext;
     $coreReplacements['EXPIRY'] = $_dateoutput;
     $coreReplacements['GID'] = isset($questiondetails['gid']) ? $questiondetails['gid']: '';
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;

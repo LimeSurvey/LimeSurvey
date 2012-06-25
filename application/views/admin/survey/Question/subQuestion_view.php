@@ -6,9 +6,10 @@
     var strCantDeleteLastAnswer='<?php $clang->eT('You cannot delete the last subquestion.','js'); ?>';
     var lsbrowsertitle='<?php $clang->eT('Label set browser','js'); ?>';
     var quickaddtitle='<?php $clang->eT('Quick-add subquestions','js'); ?>';
-    var duplicateanswercode='<?php $clang->eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
+    var duplicatesubquestioncode='<?php $clang->eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
     var strNoLabelSet='<?php $clang->eT('There are no label sets which match the survey default language','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
+    var otherisreserved='<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>';
     var sImageURL ='<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
     var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
@@ -25,7 +26,7 @@
 <div class='header ui-widget-header'>
     <?php $clang->eT("Edit subquestions"); ?>
 </div>
-<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='<?php echo $this->createUrl("admin/database"); ?>' onsubmit="return codeCheck('code_',<?php echo $maxsortorder; ?>,'<?php $clang->eT("Error: You are trying to use duplicate answer codes.",'js'); ?>','<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>');">
+<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='<?php echo $this->createUrl("admin/database"); ?>'>
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
     <input type='hidden' name='qid' value='<?php echo $qid; ?>' />

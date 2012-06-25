@@ -236,6 +236,18 @@ $lang = array(
     "Type" => "Type",
     "Select Thumbnails" => "Sélectionner les miniatures",
     "Download files" => "Télécharger les fichiers",
+
+    // SINCE 2.4
+
+    "Checking for new version..." => "Vérifier l'existance d'une nouvelle version...",
+    "Unable to connect!" => "Connexion impossible!",
+    "Download version {version} now!" => "Télécharger la version {version} maintenant!",
+    "KCFinder is up to date!" => "KCFinder est à jour!",
+    "Licenses:" => "Licences:",
+    "Attention" => "Alerte",
+    "Question" => "Question",
+    "Yes" => "Oui",
+    "No" => "Non",
 );
 
 ?>

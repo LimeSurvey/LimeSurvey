@@ -630,7 +630,7 @@
          * @var type
          */
         private $qid2exclusiveAuto = array();
-        
+
         /**
         * A private constructor; prevents direct creation of object
         */
@@ -814,7 +814,7 @@
                     $_qid = $row['qid'];
                     $_scenario = $row['scenario'];
                     $_cqid = $row['cqid'];
-                    $_fieldname = -1;
+                    $_subqid = -1;
                     $relAndList = array();
                     $relOrList = array();
                     $scenarios = array();
@@ -831,43 +831,47 @@
                     $relOrList = array();
                     $_scenario = $row['scenario'];
                     $_cqid = $row['cqid'];
-                    $_fieldname = -1;
+                    $_subqid = -1;
                 }
                 if ($row['cqid'] != $_cqid)
                 {
                     $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
                     $relOrList = array();
                     $_cqid = $row['cqid'];
-                    $_fieldname = -1;
+                    $_subqid = -1;
                 }
 
                 // fix fieldnames
                 if ($row['type'] == '' && preg_match('/^{.+}$/',$row['cfieldname'])) {
                     $fieldname = substr($row['cfieldname'],1,-1);    // {TOKEN:xxxx}
+                    $subqid = $fieldname;
                     $value = $row['value'];
                 }
                 else if ($row['type'] == 'M' || $row['type'] == 'P') {
-                        if (substr($row['cfieldname'],0,1) == '+') {
-                            // if prefixed with +, then a fully resolved name
-                            $fieldname = substr($row['cfieldname'],1) . '.NAOK';
-                            $value = $row['value'];
-                        }
-                        else {
-                            // else create name by concatenating two parts together
-                            $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
-                            $value = 'Y';
-                        }
+                    if (substr($row['cfieldname'],0,1) == '+') {
+                        // if prefixed with +, then a fully resolved name
+                        $fieldname = substr($row['cfieldname'],1) . '.NAOK';
+                        $subqid = $fieldname;
+                        $value = $row['value'];
                     }
                     else {
-                        $fieldname = $row['cfieldname'] . '.NAOK';
-                        $value = $row['value'];
+                        // else create name by concatenating two parts together
+                        $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
+                        $subqid = $row['cfieldname'];
+                        $value = 'Y';
+                    }
                 }
-                if ($_fieldname != -1 && $_fieldname != $fieldname)
+                else {
+                    $fieldname = $row['cfieldname'] . '.NAOK';
+                    $subqid = $fieldname;
+                    $value = $row['value'];
+                }
+                if ($_subqid != -1 && $_subqid != $subqid)
                 {
                     $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
                     $relOrList = array();
                 }
-                $_fieldname = $fieldname;
+                $_subqid = $subqid;
 
                 // fix values
                 if (preg_match('/^@\d+X\d+X\d+.*@$/',$value)) {
@@ -894,7 +898,7 @@
                 else
                 {
                     // Conditions uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
-                    if ($value === '" "') {
+                    if ($value === '" "' || $value == '""') {
                         if ($row['method'] == '==')
                         {
                             $relOrList[] = "is_empty(" . $fieldname . ")";
@@ -1069,7 +1073,24 @@
                         $cascadedAFE = array_reverse($cascadedAFE);
 
                         $subqs = $qinfo['subqs'];
+                        if ($type == 'R') {
+                            $subqs = array();
+                            foreach ($this->qans[$qinfo['qid']] as $k=>$v)
+                            {
+                                $_code = explode('~',$k);
+                                $subqs[] = array(
+                                    'rowdivid'=>$qinfo['sgqa'] . $_code[1],
+                                    'sqsuffix'=>'_' . $_code[1],
+                                );
+                            }
+                        }
+                        $last_rowdivid = '--';
                         foreach ($subqs as $sq) {
+                            if ($sq['rowdivid'] == $last_rowdivid)
+                            {
+                                continue;
+                            }
+                            $last_rowdivid = $sq['rowdivid'];
                             $af_names = array();
                             $afe_names = array();
                             switch ($type)
@@ -1087,46 +1108,115 @@
                                 case 'P': //Multiple choice with comments checkbox + text
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
-                                    if ($this->sgqaNaming)
-                                    {
+//                                case 'R': //Ranking
+//                                    if ($this->sgqaNaming)
+//                                    {
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                            $sgq .= substr($sq['sqsuffix'],1);
-                                            if (isset($this->knownVars[$sgq]))
+                                            $fqid = explode('X',$sgq);
+                                            if (!isset($fqid[2]))
                                             {
-                                                $af_names[] = $sgq . '.NAOK';
+                                                continue;
+                                            }
+                                            $fqid = $fqid[2];
+                                            if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                            {
+                                                $rankables = array();
+                                                foreach ($this->qans[$fqid] as $k=>$v)
+                                                {
+                                                    $rankable = explode('~',$k);
+                                                    $rankables[] = '_' . $rankable[1];
+                                                }
+                                                if (array_search($sq['sqsuffix'],$rankables) === false)
+                                                {
+                                                    continue;
+                                                }
+                                            }
+                                            $fsqs = array();
+                                            foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
+                                            {
+                                                if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                                {
+                                                    // we know the suffix exists
+                                                    $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK == '" . substr($sq['sqsuffix'],1) . "')";
+                                                }
+                                                else
+                                                {
+                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                    {
+                                                        $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                    }
+                                                }
+                                            }
+                                            if (count($fsqs) > 0)
+                                            {
+                                                $af_names[] = '(' . implode(' or ', $fsqs) . ')';
                                             }
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                            $sgq .= substr($sq['sqsuffix'],1);
-                                            if (isset($this->knownVars[$sgq]))
+                                            $fqid = explode('X',$sgq);
+                                            if (!isset($fqid[2]))
                                             {
-                                                $afe_names[] = $sgq . '.NAOK';
+                                                continue;
+                                            }
+                                            $fqid = $fqid[2];
+                                            if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                            {
+                                                $rankables = array();
+                                                foreach ($this->qans[$fqid] as $k=>$v)
+                                                {
+                                                    $rankable = explode('~',$k);
+                                                    $rankables[] = '_' . $rankable[1];
+                                                }
+                                                if (array_search($sq['sqsuffix'],$rankables) === false)
+                                                {
+                                                    continue;
+                                                }
+                                            }
+                                            $fsqs = array();
+                                            foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
+                                            {
+                                                if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                                {
+                                                    // we know the suffix exists
+                                                    $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK != '" . substr($sq['sqsuffix'],1) . "')";
+                                                }
+                                                else
+                                                {
+                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                    {
+                                                        $fsqs[] = 'is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
+                                                    }
+                                                }
+                                            }
+                                            if (count($fsqs) > 0)
+                                            {
+                                                $afe_names[] = '(' . implode(' and ', $fsqs) . ')';
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        foreach ($cascadedAF as $_caf)
-                                        {
-                                            $sgq = $_caf . $sq['sqsuffix'];
-                                            if (isset($this->knownVars[$sgq]))
-                                            {
-                                                $af_names[] = $sgq . '.NAOK';
-                                            }
-                                        }
-                                        foreach ($cascadedAFE as $_cafe)
-                                        {
-                                            $sgq = $_cafe . $sq['sqsuffix'];
-                                            if (isset($this->knownVars[$sgq]))
-                                            {
-                                                $afe_names[] = $sgq . '.NAOK';
-                                            }
-                                        }
-                                    }
+//                                    }
+//                                    else  // TODO - implement qcode naming for this
+//                                    {
+//                                        foreach ($cascadedAF as $_caf)
+//                                        {
+//                                            $sgq = $_caf . $sq['sqsuffix'];
+//                                            if (isset($this->knownVars[$sgq]))
+//                                            {
+//                                                $af_names[] = $sgq . '.NAOK';
+//                                            }
+//                                        }
+//                                        foreach ($cascadedAFE as $_cafe)
+//                                        {
+//                                            $sgq = $_cafe . $sq['sqsuffix'];
+//                                            if (isset($this->knownVars[$sgq]))
+//                                            {
+//                                                $afe_names[] = $sgq . '.NAOK';
+//                                            }
+//                                        }
+//                                    }
                                     break;
                                 default:
                                     break;
@@ -1138,7 +1228,7 @@
                                 $afs_eqn = '';
                                 if (count($af_names) > 0)
                                 {
-                                    $afs_eqn .= implode(' != "" && ', $af_names) . ' != ""';
+                                    $afs_eqn .= implode(' && ', $af_names);
                                 }
                                 if (count($afe_names) > 0)
                                 {
@@ -1146,7 +1236,7 @@
                                     {
                                         $afs_eqn .= ' && ';
                                     }
-                                    $afs_eqn .= implode(' == "" && ', array_unique($afe_names)) . ' == ""';
+                                    $afs_eqn .= implode(' && ', $afe_names);
                                 }
 
                                 $subQrels[] = array(
@@ -1270,8 +1360,16 @@
                                 }
                                 switch ($type)
                                 {
+                                    case ':': //ARRAY (Multi Flexi) 1 to 10
+                                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                                    case 'F': //ARRAY (Flexible) - Row Format
                                     case 'M': //Multiple choice checkbox
                                     case 'P': //Multiple choice with comments checkbox + text
+                                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                                    case 'Q': //MULTIPLE SHORT TEXT
                                         if ($this->sgqaNaming)
                                         {
                                             $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
@@ -1289,7 +1387,7 @@
                                     'qtype' => $type,
                                     'type' => 'exclude_all_others',
                                     'rowdivid' => $sq['rowdivid'],
-                                    'eqn' => '(' . $sq_name . ' == "")',
+                                    'eqn' => 'is_empty(' . $sq_name . ')',
                                     'qid' => $questionNum,
                                     'sgqa' => $qinfo['sgqa'],
                                     );
@@ -1318,6 +1416,7 @@
                             switch ($type)
                             {
                                 case 'M': //Multiple choice checkbox
+                                case 'P': //Multiple choice with comments checkbox + text
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4);
@@ -1345,7 +1444,7 @@
                         if (count($sq_names) > 0) {
                             $relpart = "sum(" . implode(".relevanceStatus, ", $sq_names) . ".relevanceStatus)";
                             $checkedpart = "count(" . implode(".NAOK, ", $sq_names) . ".NAOK)";
-                            $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && " . $eoVarName . "=='')";
+                            $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && is_empty(" . $eoVarName . "))";
                             $eoEqn = "(" . $eoRelevantAndUnchecked . " && (" . $relpart . " == " . $checkedpart . "))";
 
                             $this->em->ProcessBooleanExpression($eoEqn, $qinfo['gseq'], $qinfo['qseq']);
@@ -1411,6 +1510,7 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case 'M': //Multiple choice checkbox
+                                case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -1432,10 +1532,6 @@
                                         }
                                     }
                                     break;
-                                case 'R': //RANKING STYLE
-                                    // TODO - does not have sub-questions, so how should this be done?
-                                    // Current JavaScript works fine, but can't use expression value
-                                    break;
                                 default:
                                     break;
                             }
@@ -1452,7 +1548,7 @@
                             'qtype' => $type,
                             'type' => 'min_answers',
                             'class' => 'num_answers',
-                            'eqn' => '(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . '))',
+                            'eqn' => 'if(is_empty('.$min_answers.'),1,(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . ')))',
                             'qid' => $questionNum,
                             );
                         }
@@ -1500,6 +1596,7 @@
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case 'M': //Multiple choice checkbox
+                                case 'R': //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -1521,10 +1618,6 @@
                                         }
                                     }
                                     break;
-                                case 'R': //RANKING STYLE
-                                    // TODO - does not have sub-questions, so how should this be done?
-                                    // Current JavaScript works fine, but can't use expression value
-                                    break;
                                 default:
                                     break;
                             }
@@ -1541,7 +1634,7 @@
                             'qtype' => $type,
                             'type' => 'max_answers',
                             'class' => 'num_answers',
-                            'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
+                            'eqn' => '(if(is_empty('.$max_answers.'),1,count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . ')))',
                             'qid' => $questionNum,
                             );
                         }
@@ -2953,7 +3046,7 @@
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        if ($type != 'H' && $type != 'R') {
+                        if ($type != 'H') {
                             if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
                                 //                            $rowdivid = substr($sgqa,0,-7);
                             }
@@ -3781,7 +3874,62 @@
 
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
             {
-                $startingValues = $_SESSION[$LEM->sessid]['startingValues'];
+                $startingValues = array();
+                foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k=>$value)
+                {
+                    if (isset($LEM->knownVars[$k]))
+                    {
+                        $knownVar = $LEM->knownVars[$k];
+                    }
+                    else if (isset($LEM->qcode2sgqa[$k]))
+                    {
+                        $knownVar = $LEM->knownVars[$LEM->qcode2sgqa[$k]];
+                    }
+                    else if (isset($LEM->tempVars[$k]))
+                    {
+                        $knownVar = $LEM->tempVar[$k];
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    if (!isset($knownVar['jsName']))
+                    {
+                        continue;
+                    }
+                    switch ($knownVar['type'])
+                    {
+                        case 'D': //DATE
+                            if (trim($value)=="")
+                            {
+                                $value = NULL;
+                            }
+                            else
+                            {
+                                $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                                $value=$datetimeobj->convert("Y-m-d");
+                            }
+                            break;
+                        case 'N': //NUMERICAL QUESTION TYPE
+                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                            if (trim($value)=="") {
+                                $value = NULL;
+                            }
+                            else {
+                                $value = sanitize_float($value);
+                            }
+                            break;
+                        case '|': //File Upload
+                            $value=NULL;  // can't upload a file via GET
+                            break;
+                    }
+                    $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
+                    $startingValues[$k]=array(
+                        'type'=>$knownVar['type'],
+                        'value'=>$value,
+                    );
+                }
                 $LEM->_UpdateValuesInDatabase($startingValues);
             }
 
@@ -4228,7 +4376,7 @@
                 if ($this->surveyOptions['ipaddr']) {
                     $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll(getIPAddress());
                 }
-  
+
                 foreach ($updatedValues as $key=>$value)
                 {
                     $val = (is_null($value) ? NULL : $value['value']);
@@ -5911,6 +6059,7 @@
                      * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
+                    $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
@@ -5922,15 +6071,15 @@
                         }
                         else
                         {
-                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
                         }
                         if ($sq['isExclusiveJS'] != '')
                         {
                             $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                             $relParts[] = "    }\n";
                             $relParts[] = "    else {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
                             $relParts[] = "    }\n";
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -5941,23 +6090,23 @@
                             if ($sq['irrelevantAndExclusiveJS'] != '')
                             {
                                 $relParts[] = "    if ( " . $sq['irrelevantAndExclusiveJS'] . " ) {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                                 $relParts[] = "    }\n";
                                 $relParts[] = "    else {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').removeAttr('disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
                                 if ($afHide)
                                 {
                                     $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
                                 }
                                 else
                                 {
-                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                                 }
                                 $relParts[] = "    }\n";
                             }
                             else
                             {
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                             }
                         }
                         else
@@ -5968,7 +6117,7 @@
                             }
                             else
                             {
-                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . " :input:not(:hidden)').attr('disabled','disabled');\n";
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
                             }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -6466,6 +6615,34 @@
                     $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
                 }
             }
+            else
+            {
+                // For all-in-one mode, declare the always-hidden variables, since qanda will not be called for them.
+                foreach ($LEM->knownVars as $key=>$knownVar)
+                {
+                    if (!is_numeric($key[0])) {
+                        continue;
+                    }
+                    if ($knownVar['jsName'] == '') {
+                        continue;
+                    }
+                    if ($knownVar['hidden'])
+                    {
+                        $jsVar = $knownVar['jsName'];
+                        $undeclaredJsVars[] = $jsVar;
+                        $sgqa = $knownVar['sgqa'];
+                        $codeValue = (isset($_SESSION[$LEM->sessid][$sgqa])) ? $_SESSION[$LEM->sessid][$sgqa] : '';
+                        $undeclaredVal[$jsVar] = $codeValue;
+                    }
+                }
+
+                $undeclaredJsVars = array_unique($undeclaredJsVars);
+                foreach ($undeclaredJsVars as $jsVar)
+                {
+                    if ($jsVar == '') continue;
+                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                }
+            }
             foreach ($qidList as $qid)
             {
                 if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
@@ -6907,8 +7084,17 @@ EOD;
             ." from {{conditions}} as c"
             .", {{questions}} as q"
             ." where ". $where
-            ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, qid, scenario, cqid, cfieldname, value";
+            ." c.cqid = 0 and c.qid = q.qid";
+
+            $databasetype = Yii::app()->db->getDriverName();
+            if ($databasetype=='mssql')
+            {
+                $query .= " order by sid, c.qid, scenario, cqid, cfieldname, value";
+            }
+            else
+            {
+                $query .= " order by sid, qid, scenario, cqid, cfieldname, value";
+            }
 
             $data = dbExecuteAssoc($query);
 
@@ -7612,6 +7798,7 @@ EOD;
             $LEM =& LimeExpressionManager::singleton();
 
             $allErrors = array();
+            $warnings = 0;
 
             $surveyOptions = array(
             'assessments'=>$assessments,
@@ -7643,8 +7830,6 @@ EOD;
 
             $qtypes=getQuestionTypeList('','array');
 
-            templatereplace('{SITENAME}');  // to ensure that lime replacement fields loaded
-
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                 return array(
                 'errors'=>1,
@@ -7652,8 +7837,43 @@ EOD;
                 );
             }
 
-            $out = "<table border='1'>"
-            . "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
+            $surveyname = templatereplace('{SURVEYNAME}');
+
+            $out = '<H3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
+            $out .= "<table border='1'>";
+
+            if (is_null($gid) && is_null($qid))
+            {
+                $description = templatereplace('{SURVEYDESCRIPTION}');
+                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                if ($description != '')
+                {
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Description:") . "</td><td colspan=2>" . $description . "</td></tr>";
+                }
+
+                $welcome = templatereplace('{WELCOME}');
+                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                if ($welcome != '')
+                {
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Welcome:") . "</td><td colspan=2>" . $welcome . "</td></tr>";
+                }
+
+                $endmsg = templatereplace('{ENDTEXT}');
+                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                if ($endmsg != '')
+                {
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End message:") . "</td><td colspan=2>" . $endmsg . "</td></tr>";
+                }
+
+                $_linkreplace = templatereplace('{URL}');
+                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                if ($_linkreplace != '')
+                {
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End URL") . ":</td><td colspan=2>" . $_linkreplace . "</td></tr>";
+                }
+            }
+            
+            $out .= "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
 
             $_gseq=-1;
             foreach ($LEM->currentQset as $q) {
@@ -7878,6 +8098,10 @@ EOD;
                     {
                         ++$errorCount;
                     }
+                    else
+                    {
+                        ++$warnings;
+                    }
                 }
 
                 //////
@@ -7921,9 +8145,6 @@ EOD;
                                 $sgqa_len = strlen($sid . 'X'. $gid . 'X' . $qid);
                                 $varName = $rootVarName . '_' . substr($_rowdivid,$sgqa_len);
                             }
-                        case 'L':
-                            // TODO - need to show array filters applied to lists
-                            break;
                     }
                     if (is_null($rowdivid)) {
                         continue;
@@ -7991,6 +8212,10 @@ EOD;
 
                         $subQeqn = '';
                         $rowdivid = $sgqas[0] . $ansInfo[1];
+                        if ($q['info']['type'] == 'R')
+                        {
+                            $rowdivid = $LEM->sid . 'X' . $gid . 'X' . $qid . $ansInfo[1];
+                        }
                         if (isset($LEM->subQrelInfo[$qid][$rowdivid]))
                         {
                             $sq = $LEM->subQrelInfo[$qid][$rowdivid];

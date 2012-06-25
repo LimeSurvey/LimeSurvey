@@ -251,7 +251,13 @@ function code_duplicates_check()
         })
         if (arrHasDupes(codearray))
             {
-            alert(duplicateanswercode);
+            alert(duplicatesubquestioncode);
+            dupefound=true;
+            return;
+        }
+        if ($.inArray('other', codearray)!=-1)
+        {
+            alert(otherisreserved);
             dupefound=true;
             return;
         }
