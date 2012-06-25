@@ -39,9 +39,9 @@ class SurveyAdmin extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && Yii::app()->session['USER_RIGHT_CREATE_SURVEY'] != 1)
+        if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN') && !hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
         {
-            die();
+            die("This user (ID ".Yii::app()->user->getId().") is not authorized to perform this action");
         }
     }
 
