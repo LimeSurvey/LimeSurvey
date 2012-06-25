@@ -246,7 +246,7 @@ function qTypeDropdownInit()
                     tooltip:'rightMiddle'
                 }
             },
-            show: 'mouseover',
+            show: 'mouseover'
             //hide: 'mouseout'
         });
 
