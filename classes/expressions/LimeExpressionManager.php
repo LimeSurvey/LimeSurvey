@@ -7770,25 +7770,33 @@ EOD;
                     }
                 }
 
+                if (isset($_SESSION[$name]))
+                {
+                    $_result = $_SESSION[$name];
+                }
+                else
+                {
+                    $_result = (isset($LEM->knownVars[$name]['default']) ? $LEM->knownVars[$name]['default'] : 0);
+                }
+
                 switch($op)
                 {
                     case '=':
-                        $LEM->knownVars[$name]['code'] = $value;
+                        $_result = $value;
                         break;
                     case '*=':
-                        $LEM->knownVars[$name]['code'] *= $value;
+                        $_result *= $value;
                         break;
                     case '/=':
-                        $LEM->knownVars[$name]['code'] /= $value;
+                        $_result /= $value;
                         break;
                     case '+=':
-                        $LEM->knownVars[$name]['code'] += $value;
+                        $_result += $value;
                         break;
                     case '-=':
-                        $LEM->knownVars[$name]['code'] -= $value;
+                        $_result -= $value;
                         break;
                 }
-                $_result = $LEM->knownVars[$name]['code'];
                 $_SESSION[$name] = $_result;
                 $_type = $LEM->knownVars[$name]['type'];
                 $LEM->updatedValues[$name] = array(
