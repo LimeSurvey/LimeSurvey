@@ -614,6 +614,11 @@
          * @var type
          */
         private $qid2exclusiveAuto = array();
+        /**
+         * Array of values to be updated
+         * @var type 
+         */
+        private $updatedValues = array();
 
 
         /**
@@ -2897,7 +2902,7 @@
                 }
                 $this->qid2code[$questionNum] = $codeList;
 
-                $readWrite = 'N';
+                $readWrite = 'Y';
 
                 // Set $ansArray
                 switch($type)
@@ -3943,6 +3948,7 @@
             $LEM =& LimeExpressionManager::singleton();
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
+            $LEM->updatedValues = array();
 
             switch ($LEM->surveyMode)
             {
@@ -4076,6 +4082,7 @@
             $LEM =& LimeExpressionManager::singleton();
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
+            $LEM->updatedValues = array();
 
             switch ($LEM->surveyMode)
             {
@@ -4295,6 +4302,9 @@
         {
             // Update these values in the database
             global $connect;
+
+            //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
+            $updatedValues = $this->updatedValues;
 
             if (!$this->surveyOptions['deletenonvalues'])
             {
@@ -4527,6 +4537,7 @@
             }
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
+            $LEM->updatedValues = array();
             --$seq; // convert to 0-based numbering
 
             switch ($LEM->surveyMode)
@@ -5612,6 +5623,7 @@
                 {
                     $_SESSION[$sgqa] = NULL;
                     $updatedValues[$sgqa] = NULL;
+                    $LEM->updatedValues[$sgqa] = NULL;
                 }
             }
             else if ($qInfo['type'] == '*')
@@ -5621,10 +5633,12 @@
                     $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
                     // Store the result of the Equation in the SESSION
                     $_SESSION[$sgqa] = $result;
-                    $updatedValues[$sgqa] = array(
+                    $_update = array(
                     'type'=>'*',
                     'value'=>$result,
                     );
+                    $updatedValues[$sgqa] = $_update;
+                    $LEM->updatedValues[$sgqa] = $_update;
                     if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                     {
                         $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
@@ -5636,6 +5650,7 @@
                 // NULL irrelevant sub-questions
                 $_SESSION[$sq] = NULL;
                 $updatedValues[$sq] = NULL;
+                $LEM->updatedValues[$sq]= NULL;
             }
 
             // Regardless of whether relevant or hidden, if there is a default value and $_SESSION[$sgqa] is NULL, then use the default value in $_SESSION, but don't write to database
@@ -6615,7 +6630,7 @@
                 {
                     // TODO - is different type needed for text?  Or process value to striphtml?
                     if ($jsVar == '') continue;
-                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
                 }
             }
             else
@@ -7321,9 +7336,9 @@ EOD;
                     $type = $qinfo['info']['type'];
                     if ($relevant && $grelevant && $sqrelevant)
                     {
-                        if ($qinfo['info']['hidden'])
+                        if ($qinfo['info']['hidden'] && !isset($_POST[$sq]))
                         {
-                            $value = (isset($_SESSION[$sq]) ? $_SESSION[$sq] : '');    // if always hidden, use the default value, if any
+                            $value = (isset($_SESSION[$sq]) ? $_SESSION[$sq] : '');    // if always hidden, use the default value, if any, unless value was changed via POST
                         }
                         else
                         {
@@ -7393,18 +7408,22 @@ EOD;
                                 break;
                         }
                         $_SESSION[$sq] = $value;
-                        $updatedValues[$sq] = array (
+                        $_update = array (
                         'type'=>$type,
                         'value'=>$value,
                         );
+                        $updatedValues[$sq] = $_update;
+                        $LEM->updatedValues[$sq] = $_update;
                     }
                     else {  // irrelevant, so database will be NULLed separately
                         // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
                         unset($_SESSION[$sq]);
-                        $updatedValues[$sq] = array (
+                        $_update = array (
                         'type'=>$type,
                         'value'=>NULL,
                         );
+                        $updatedValues[$sq] = $_update;
+                        $LEM->updatedValues[$sq] = $_update;
                     }
                 }
             }
@@ -7729,38 +7748,62 @@ EOD;
                         $LEM->tempVars[$name]['code'] -= $value;
                         break;
                 }
-                return $LEM->tempVars[$name]['code'];
+                $_result = $LEM->tempVars[$name]['code'];
+                $_SESSION[$name] = $_result;
+                $LEM->updatedValues[$name] = array(
+                    'type'=>'*',
+                    'value'=>$_result,
+                );
+                return $_result;
             }
             else
             {
-                if (isset($LEM->knownVars[$name]))
+                if (!isset($LEM->knownVars[$name]))
                 {
-                    $vname = $name;
-                }
-                else if (isset($LEM->qcode2sgqa[$name]))
+                    if (isset($LEM->qcode2sgqa[$name]))
                     {
-                        $vname = $LEM->qcode2sgqa[$name];
+                        $name = $LEM->qcode2sgqa[$name];
                     }
+                    else
+                    {
+                        return '';  // shouldn't happen
+                    }
+                }
 
-                    switch($op)
+                if (isset($_SESSION[$name]))
+                {
+                    $_result = $_SESSION[$name];
+                }
+                else
+                {
+                    $_result = (isset($LEM->knownVars[$name]['default']) ? $LEM->knownVars[$name]['default'] : 0);
+                }
+
+                switch($op)
                 {
                     case '=':
-                        $LEM->knownVars[$name]['code'] = $value;
+                        $_result = $value;
                         break;
                     case '*=':
-                        $LEM->knownVars[$name]['code'] *= $value;
+                        $_result *= $value;
                         break;
                     case '/=':
-                        $LEM->knownVars[$name]['code'] /= $value;
+                        $_result /= $value;
                         break;
                     case '+=':
-                        $LEM->knownVars[$name]['code'] += $value;
+                        $_result += $value;
                         break;
                     case '-=':
-                        $LEM->knownVars[$name]['code'] -= $value;
+                        $_result -= $value;
                         break;
                 }
-                return $LEM->knownVars[$name]['code'];
+                $_SESSION[$name] = $_result;
+                $_type = $LEM->knownVars[$name]['type'];
+                $LEM->updatedValues[$name] = array(
+                    'type'=>$_type,
+                    'value'=>$_result,
+                );
+                return $_result;
             }
         }
 

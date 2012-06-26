@@ -4278,6 +4278,7 @@ function getHeader($meta = false)
         . $css_header
         . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
         . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui.js\"></script>\n"
+        . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.ui.touch-punch.min.js\"></script>\n"
         . "<link href=\"".$rooturl."/scripts/jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
         . "<link href=\"".$rooturl."/scripts/jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
         . $js_header;
