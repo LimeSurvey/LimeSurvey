@@ -339,6 +339,7 @@ function getAdminHeader($meta=false)
     $strAdminHeader.= "<script type=\"text/javascript\" src=\"{$homeurl}/scripts/tabpane/js/tabpane.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.ui.touch-punch.min.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery.qtip.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery.notify.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"{$homeurl}/scripts/admin_core.js\"></script>\n";
