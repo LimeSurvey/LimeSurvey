@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-06-20 10:25:22+00:00\n"
+"POT-Creation-Date: 2012-06-27 08:04:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -55,8 +55,8 @@ msgstr ""
 #: admin/userrighthandling.php:827 admin/userrighthandling.php:838
 #: admin/userrighthandling.php:867 admin/userrighthandling.php:872
 #: admin/userrighthandling.php:1028 admin/userrighthandling.php:1032
-#: admin/userrighthandling.php:1080 index.php:1722 index.php:1797
-#: index.php:1964 replacements.php:556
+#: admin/userrighthandling.php:1080 index.php:1723 index.php:1798
+#: index.php:1965 replacements.php:563
 msgid "Continue"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgstr ""
 #: admin/tokens.php:399 admin/tokens.php:413 admin/tokens.php:479
 #: admin/tokens.php:1002 admin/tokens.php:2746 admin/tokens.php:3183
 #: admin/tokens.php:3189 admin/usercontrol.php:846 admin/vvimport.php:121
-#: common_functions.php:5504 index.php:572
+#: common_functions.php:5505 index.php:572
 msgid "Error"
 msgstr ""
 
@@ -686,7 +686,7 @@ msgstr ""
 #: admin/exportresults.php:434 admin/exportresults.php:435
 #: admin/exportresults.php:757 admin/tokens.php:1025 admin/tokens.php:1028
 #: admin/tokens.php:1029 admin/tokens.php:2322 admin/tokens.php:2458
-#: common_functions.php:6236 replacements.php:507
+#: common_functions.php:6237 replacements.php:514
 msgid "First name"
 msgstr ""
 
@@ -694,7 +694,7 @@ msgstr ""
 #: admin/exportresults.php:429 admin/exportresults.php:430
 #: admin/exportresults.php:760 admin/tokens.php:1035 admin/tokens.php:1038
 #: admin/tokens.php:1039 admin/tokens.php:2326 admin/tokens.php:2460
-#: common_functions.php:6237 replacements.php:514
+#: common_functions.php:6238 replacements.php:521
 msgid "Last name"
 msgstr ""
 
@@ -1032,8 +1032,8 @@ msgstr ""
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2796
-#: classes/expressions/LimeExpressionManager.php:2800 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2801
+#: classes/expressions/LimeExpressionManager.php:2805 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
 #: common_functions.php:3202 common_functions.php:3286
 #: common_functions.php:3393 common_functions.php:3406
@@ -1061,7 +1061,7 @@ msgstr ""
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2802 common_functions.php:1922
+#: classes/expressions/LimeExpressionManager.php:2807 common_functions.php:1922
 #: qanda.php:4199 qanda.php:4244
 msgid "Uncertain"
 msgstr ""
@@ -1100,8 +1100,8 @@ msgstr ""
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2797
-#: classes/expressions/LimeExpressionManager.php:2801 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2802
+#: classes/expressions/LimeExpressionManager.php:2806 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3201
 #: common_functions.php:3285 common_functions.php:3392
 #: common_functions.php:3407 common_functions.php:3418
@@ -1128,7 +1128,7 @@ msgstr ""
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2805 common_functions.php:1928
+#: classes/expressions/LimeExpressionManager.php:2810 common_functions.php:1928
 #: qanda.php:4346 qanda.php:4389
 msgid "Increase"
 msgstr ""
@@ -1139,7 +1139,7 @@ msgstr ""
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2806 common_functions.php:1930
+#: classes/expressions/LimeExpressionManager.php:2811 common_functions.php:1930
 #: qanda.php:4347 qanda.php:4400
 msgid "Same"
 msgstr ""
@@ -1150,7 +1150,7 @@ msgstr ""
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2807 common_functions.php:1929
+#: classes/expressions/LimeExpressionManager.php:2812 common_functions.php:1929
 #: qanda.php:4348 qanda.php:4412
 msgid "Decrease"
 msgstr ""
@@ -1170,8 +1170,8 @@ msgstr ""
 #: admin/statistics_function.php:2567 admin/statistics_function.php:2581
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
-#: common_functions.php:1914 common_functions.php:5490
-#: common_functions.php:5495 qanda.php:926 qanda.php:1454 qanda.php:1733
+#: common_functions.php:1914 common_functions.php:5491
+#: common_functions.php:5496 qanda.php:926 qanda.php:1454 qanda.php:1733
 #: qanda.php:1837 qanda.php:1892 qanda.php:3792 qanda.php:3837 qanda.php:3926
 #: qanda.php:3990 qanda.php:4079 qanda.php:4125 qanda.php:4203 qanda.php:4269
 #: qanda.php:4351 qanda.php:4429 qanda.php:4530 qanda.php:4552 qanda.php:4620
@@ -1203,7 +1203,7 @@ msgstr ""
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2793 common_functions.php:1913
+#: classes/expressions/LimeExpressionManager.php:2798 common_functions.php:1913
 #: qanda.php:3820
 msgid "Female"
 msgstr ""
@@ -1215,7 +1215,7 @@ msgstr ""
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2792 common_functions.php:1912
+#: classes/expressions/LimeExpressionManager.php:2797 common_functions.php:1912
 #: qanda.php:3828
 msgid "Male"
 msgstr ""
@@ -1236,7 +1236,7 @@ msgstr ""
 #: common_functions.php:3743 common_functions.php:3901
 #: common_functions.php:4082 common_functions.php:4091
 #: common_functions.php:4100 common_functions.php:4109 qanda.php:1699
-#: qanda.php:2341 qanda.php:2581
+#: qanda.php:2341 qanda.php:2580
 msgid "Other"
 msgstr ""
 
@@ -1664,7 +1664,7 @@ msgid "Start Language:"
 msgstr ""
 
 #: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:2939
-#: group.php:1019 index.php:2386 replacements.php:272
+#: group.php:1019 index.php:2387 replacements.php:272
 msgid "Submit"
 msgstr ""
 
@@ -1684,7 +1684,7 @@ msgstr ""
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
-#: admin/dataentry.php:390 admin/userrighthandling.php:865 replacements.php:441
+#: admin/dataentry.php:390 admin/userrighthandling.php:865 replacements.php:448
 #: save.php:172
 msgid "Name"
 msgstr ""
@@ -1692,7 +1692,7 @@ msgstr ""
 #: admin/dataentry.php:391 admin/login_check.php:225 admin/usercontrol.php:470
 #: admin/usercontrol.php:474 admin/usercontrol.php:688
 #: admin/usercontrol.php:700 admin/userrighthandling.php:228
-#: replacements.php:447 replacements.php:479 save.php:173
+#: replacements.php:454 replacements.php:486 save.php:173
 msgid "Password"
 msgstr ""
 
@@ -1788,7 +1788,7 @@ msgstr ""
 #: admin/exportresults.php:444 admin/exportresults.php:445
 #: admin/exportresults.php:769 admin/tokens.php:1065 admin/tokens.php:1068
 #: admin/tokens.php:1069 admin/tokens.php:2343 common_functions.php:2344
-#: index.php:1768 index.php:1935
+#: index.php:1769 index.php:1936
 msgid "Token"
 msgstr ""
 
@@ -1826,9 +1826,9 @@ msgstr ""
 #: admin/dataentry.php:1932 admin/dataentry.php:1944 admin/labels.php:78
 #: admin/translate_functions.php:148 common_functions.php:646
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
-#: common_functions.php:1411 common_functions.php:4825
-#: common_functions.php:4874 common_functions.php:4910
-#: common_functions.php:4946 qanda.php:1252 qanda.php:1430 qanda.php:6164
+#: common_functions.php:1411 common_functions.php:4826
+#: common_functions.php:4875 common_functions.php:4911
+#: common_functions.php:4947 qanda.php:1252 qanda.php:1430 qanda.php:6164
 #: qanda.php:6218
 msgid "Please choose..."
 msgstr ""
@@ -2255,6 +2255,7 @@ msgstr ""
 #: admin/questiongrouphandling.php:149 admin/questiongrouphandling.php:165
 #: admin/questiongrouphandling.php:167 admin/translate_functions.php:238
 #: admin/userrighthandling.php:628 admin/userrighthandling.php:648
+#: classes/expressions/LimeExpressionManager.php:7881
 msgid "Description:"
 msgstr ""
 
@@ -2266,6 +2267,7 @@ msgstr ""
 #: admin/editsurveysettings.php:147 admin/editsurveysettings.php:149
 #: admin/editsurveytextelements.php:58 admin/editsurveytextelements.php:60
 #: admin/html.php:795 admin/translate_functions.php:290
+#: classes/expressions/LimeExpressionManager.php:7895
 msgid "End message:"
 msgstr ""
 
@@ -2729,6 +2731,7 @@ msgid "Survey title"
 msgstr ""
 
 #: admin/editsurveytextelements.php:56 admin/html.php:784
+#: classes/expressions/LimeExpressionManager.php:7888
 msgid "Welcome:"
 msgstr ""
 
@@ -2967,8 +2970,8 @@ msgstr ""
 
 #: admin/exportresults.php:234 admin/exportresults.php:439
 #: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1045
-#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6238
-#: replacements.php:521
+#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6239
+#: replacements.php:528
 msgid "Email address"
 msgstr ""
 
@@ -3052,7 +3055,7 @@ msgstr ""
 #: admin/fck_LimeReplacementFields.php:149
 #: admin/fck_LimeReplacementFields.php:165
 #: admin/fck_LimeReplacementFields.php:222 admin/tokens.php:1125
-#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6244
+#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6245
 msgid "Uses left"
 msgstr ""
 
@@ -3781,8 +3784,8 @@ msgstr ""
 #: admin/html.php:611 admin/tokens.php:823 admin/tokens.php:857
 #: common_functions.php:651 common_functions.php:654 common_functions.php:1312
 #: common_functions.php:1337 common_functions.php:1412
-#: common_functions.php:3892 common_functions.php:4875
-#: common_functions.php:4911
+#: common_functions.php:3892 common_functions.php:4876
+#: common_functions.php:4912
 msgid "None"
 msgstr ""
 
@@ -3904,7 +3907,7 @@ msgstr ""
 msgid "Flag"
 msgstr ""
 
-#: admin/html.php:872
+#: admin/html.php:872 classes/expressions/LimeExpressionManager.php:7902
 msgid "End URL"
 msgstr ""
 
@@ -4216,7 +4219,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: admin/html.php:1678 admin/userrighthandling.php:392 replacements.php:470
+#: admin/html.php:1678 admin/userrighthandling.php:392 replacements.php:477
 msgid "Save Now"
 msgstr ""
 
@@ -5582,8 +5585,8 @@ msgstr ""
 msgid "Please enter a date:"
 msgstr ""
 
-#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2564
-#: qanda.php:2565 qanda.php:2596
+#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2563
+#: qanda.php:2564 qanda.php:2596
 msgid "Make a comment on your choice here:"
 msgstr ""
 
@@ -5608,8 +5611,8 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr ""
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2926
-#: classes/expressions/LimeExpressionManager.php:5336 qanda.php:1289
+#: classes/expressions/LimeExpressionManager.php:2931
+#: classes/expressions/LimeExpressionManager.php:5347 qanda.php:1289
 #: qanda.php:1589 qanda.php:2186 qanda.php:2486
 msgid "Other:"
 msgstr ""
@@ -5918,7 +5921,7 @@ msgid "Select Question"
 msgstr ""
 
 #: admin/quota.php:725 admin/quota.php:788 admin/templates.php:429
-#: index.php:2370 index.php:2376 index.php:2381
+#: index.php:2371 index.php:2377 index.php:2382
 msgid "Next"
 msgstr ""
 
@@ -6469,7 +6472,7 @@ msgstr ""
 msgid "This group description is fairly vacuous, but quite important."
 msgstr ""
 
-#: admin/templates.php:430 index.php:2364 index.php:2769
+#: admin/templates.php:430 index.php:2365 index.php:2770
 msgid "Previous"
 msgstr ""
 
@@ -6477,7 +6480,7 @@ msgstr ""
 msgid "This is some help text."
 msgstr ""
 
-#: admin/templates.php:434 group.php:413 replacements.php:711
+#: admin/templates.php:434 group.php:413 replacements.php:725
 msgid "Thank you!"
 msgstr ""
 
@@ -6667,7 +6670,7 @@ msgstr ""
 msgid "Please change the directory permissions of the folder %s in order to preview templates."
 msgstr ""
 
-#: admin/templates.php:1137 index.php:1049
+#: admin/templates.php:1137 index.php:1050
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
@@ -9111,235 +9114,235 @@ msgstr ""
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1952
+#: classes/expressions/ExpressionManager.php:1955
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2053
+#: classes/expressions/ExpressionManager.php:2056
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2058
+#: classes/expressions/ExpressionManager.php:2061
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2059
+#: classes/expressions/ExpressionManager.php:2062
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2292
+#: classes/expressions/ExpressionManager.php:2295
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3325
+#: classes/expressions/ExpressionManager.php:3329
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2418
+#: classes/expressions/LimeExpressionManager.php:2423
 msgid "Please select at least one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2419
+#: classes/expressions/LimeExpressionManager.php:2424
 msgid "Please select at least %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2423
+#: classes/expressions/LimeExpressionManager.php:2428
 msgid "Please select at most one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2424
+#: classes/expressions/LimeExpressionManager.php:2429
 msgid "Please select at most %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2428
+#: classes/expressions/LimeExpressionManager.php:2433
 msgid "Please select one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2429
+#: classes/expressions/LimeExpressionManager.php:2434
 msgid "Please select %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2431
+#: classes/expressions/LimeExpressionManager.php:2436
 msgid "Please select between %s and %s answers"
-msgstr ""
-
-#: classes/expressions/LimeExpressionManager.php:2447
-#: classes/expressions/LimeExpressionManager.php:2468
-msgid "Each answer must be at least %s"
-msgstr ""
-
-#: classes/expressions/LimeExpressionManager.php:2449
-#: classes/expressions/LimeExpressionManager.php:2470
-msgid "Each answer must be at most %s"
-msgstr ""
-
-#: classes/expressions/LimeExpressionManager.php:2451
-#: classes/expressions/LimeExpressionManager.php:2472
-msgid "Each answer must be %s"
 msgstr ""
 
 #: classes/expressions/LimeExpressionManager.php:2452
 #: classes/expressions/LimeExpressionManager.php:2473
+msgid "Each answer must be at least %s"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2454
+#: classes/expressions/LimeExpressionManager.php:2475
+msgid "Each answer must be at most %s"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2456
+#: classes/expressions/LimeExpressionManager.php:2477
+msgid "Each answer must be %s"
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:2457
+#: classes/expressions/LimeExpressionManager.php:2478
 msgid "Each answer must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2489
+#: classes/expressions/LimeExpressionManager.php:2494
 msgid "The sum must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2491
+#: classes/expressions/LimeExpressionManager.php:2496
 msgid "The sum must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2493
-#: classes/expressions/LimeExpressionManager.php:2535
+#: classes/expressions/LimeExpressionManager.php:2498
+#: classes/expressions/LimeExpressionManager.php:2540
 msgid "The sum must equal %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2494
+#: classes/expressions/LimeExpressionManager.php:2499
 msgid "The sum must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2512
+#: classes/expressions/LimeExpressionManager.php:2517
 msgid "Please upload at least one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2513
+#: classes/expressions/LimeExpressionManager.php:2518
 msgid "Please upload at least %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2517
+#: classes/expressions/LimeExpressionManager.php:2522
 msgid "Please upload at most one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2518
+#: classes/expressions/LimeExpressionManager.php:2523
 msgid "Please upload at most %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2522
+#: classes/expressions/LimeExpressionManager.php:2527
 msgid "Please upload one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2523
+#: classes/expressions/LimeExpressionManager.php:2528
 msgid "Please upload %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2525
+#: classes/expressions/LimeExpressionManager.php:2530
 msgid "Please upload between %s and %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2541
+#: classes/expressions/LimeExpressionManager.php:2546
 msgid "Please also fill in the \"other comment\" field."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2549
+#: classes/expressions/LimeExpressionManager.php:2554
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4347
+#: classes/expressions/LimeExpressionManager.php:4357
 msgid "Unable to insert record into survey table: "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4363
+#: classes/expressions/LimeExpressionManager.php:4373
 msgid "Unable to insert record into timings table "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5313
+#: classes/expressions/LimeExpressionManager.php:5324
 msgid "This question is mandatory"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5327
+#: classes/expressions/LimeExpressionManager.php:5338
 msgid "Please check at least one item."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5338
+#: classes/expressions/LimeExpressionManager.php:5349
 msgid "If you choose '%s' you must provide a description."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5360
-#: classes/expressions/LimeExpressionManager.php:5397
+#: classes/expressions/LimeExpressionManager.php:5371
+#: classes/expressions/LimeExpressionManager.php:5408
 msgid "Please complete all parts"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5389
+#: classes/expressions/LimeExpressionManager.php:5400
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5405
+#: classes/expressions/LimeExpressionManager.php:5416
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7824
+#: classes/expressions/LimeExpressionManager.php:7866
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7829
+#: classes/expressions/LimeExpressionManager.php:7872
+msgid "Logic File for Survey # "
+msgstr ""
+
+#: classes/expressions/LimeExpressionManager.php:7906
 msgid "Name [ID]"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7829
+#: classes/expressions/LimeExpressionManager.php:7906
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7829
+#: classes/expressions/LimeExpressionManager.php:7906
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7880
-#: classes/expressions/LimeExpressionManager.php:8122
+#: classes/expressions/LimeExpressionManager.php:7957
+#: classes/expressions/LimeExpressionManager.php:8203
 msgid "DEFAULT:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7888
+#: classes/expressions/LimeExpressionManager.php:7965
 msgid "HELP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7889
+#: classes/expressions/LimeExpressionManager.php:7966
 msgid "TIP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7906
+#: classes/expressions/LimeExpressionManager.php:7983
 msgid "Question Attribute"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7906
+#: classes/expressions/LimeExpressionManager.php:7983
 msgid "Value"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8013
+#: classes/expressions/LimeExpressionManager.php:8090
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8027
+#: classes/expressions/LimeExpressionManager.php:8104
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8039
+#: classes/expressions/LimeExpressionManager.php:8116
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8194
+#: classes/expressions/LimeExpressionManager.php:8275
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8233
+#: classes/expressions/LimeExpressionManager.php:8314
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8239
+#: classes/expressions/LimeExpressionManager.php:8320
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8242
+#: classes/expressions/LimeExpressionManager.php:8323
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8245
+#: classes/expressions/LimeExpressionManager.php:8326
 msgid "This question, by itself, does not contain any syntax errors"
-msgstr ""
-
-#: classes/expressions/test/survey_logic_file.php:138
-msgid "Logic File for Survey # "
 msgstr ""
 
 #: common_functions.php:35
@@ -10478,55 +10481,55 @@ msgstr ""
 msgid "Value range allows missing"
 msgstr ""
 
-#: common_functions.php:4323
+#: common_functions.php:4324
 msgid "Version"
 msgstr ""
 
-#: common_functions.php:4332
+#: common_functions.php:4333
 msgid "Online Manual"
 msgstr ""
 
-#: common_functions.php:4335
+#: common_functions.php:4336
 msgid "Support this project - Donate to "
 msgstr ""
 
-#: common_functions.php:4338
+#: common_functions.php:4339
 msgid "Visit our website!"
 msgstr ""
 
-#: common_functions.php:4453
+#: common_functions.php:4454
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
-#: common_functions.php:4581
+#: common_functions.php:4582
 msgid "SMTP debug output:"
 msgstr ""
 
-#: common_functions.php:4725
+#: common_functions.php:4726
 msgid "SQL command failed: %s Reason: %s"
 msgstr ""
 
-#: common_functions.php:6239
+#: common_functions.php:6240
 msgid "Token code"
 msgstr ""
 
-#: common_functions.php:6240
+#: common_functions.php:6241
 msgid "Language code"
 msgstr ""
 
-#: common_functions.php:6241
+#: common_functions.php:6242
 msgid "Invitation sent date"
 msgstr ""
 
-#: common_functions.php:6242
+#: common_functions.php:6243
 msgid "Last Reminder sent date"
 msgstr ""
 
-#: common_functions.php:6243
+#: common_functions.php:6244
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: common_functions.php:6265
+#: common_functions.php:6266
 msgid "Attribute %s"
 msgstr ""
 
@@ -10546,7 +10549,7 @@ msgstr ""
 msgid "Save your responses so far"
 msgstr ""
 
-#: group.php:346 index.php:1612
+#: group.php:346 index.php:1613
 msgid "Did Not Save"
 msgstr ""
 
@@ -10602,7 +10605,7 @@ msgstr ""
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: group.php:948 index.php:2889
+#: group.php:948 index.php:2890
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
@@ -10674,23 +10677,23 @@ msgstr ""
 msgid "You did not provide a password"
 msgstr ""
 
-#: index.php:648 index.php:1690 index.php:1912 register.php:72 save.php:93
+#: index.php:648 index.php:1691 index.php:1913 register.php:72 save.php:93
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: index.php:667 index.php:671 replacements.php:332 replacements.php:344
+#: index.php:667 index.php:671 replacements.php:339 replacements.php:351
 msgid "Load Unfinished Survey"
 msgstr ""
 
-#: index.php:707 index.php:1762 index.php:1834 index.php:1878 index.php:1915
+#: index.php:707 index.php:1763 index.php:1835 index.php:1879 index.php:1916
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
-#: index.php:708 index.php:1835 index.php:1879
+#: index.php:708 index.php:1836 index.php:1880
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: index.php:709 index.php:745 index.php:1836 index.php:1880 index.php:2071
+#: index.php:709 index.php:745 index.php:1837 index.php:1881 index.php:2072
 msgid "For further information please contact %s"
 msgstr ""
 
@@ -10702,84 +10705,84 @@ msgstr ""
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr ""
 
-#: index.php:903
+#: index.php:904
 msgid "Your responses were successfully saved."
 msgstr ""
 
-#: index.php:945
+#: index.php:946
 msgid "There is no matching saved survey"
 msgstr ""
 
-#: index.php:1233
+#: index.php:1234
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr ""
 
-#: index.php:1246 index.php:1252
+#: index.php:1247 index.php:1253
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
-#: index.php:1264
+#: index.php:1265
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: index.php:1613
+#: index.php:1614
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: index.php:1616
+#: index.php:1617
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: index.php:1621
+#: index.php:1622
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: index.php:1622
+#: index.php:1623
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: index.php:1627
+#: index.php:1628
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: index.php:1629
+#: index.php:1630
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: index.php:1631
+#: index.php:1632
 msgid "Error saving results"
 msgstr ""
 
-#: index.php:1639
+#: index.php:1640
 msgid "Try to submit again"
 msgstr ""
 
-#: index.php:1693
+#: index.php:1694
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr ""
 
-#: index.php:1717
+#: index.php:1718
 msgid "Security question:"
 msgstr ""
 
-#: index.php:1763 index.php:1920
+#: index.php:1764 index.php:1921
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
-#: index.php:1793 index.php:1961 replacements.php:467 replacements.php:487
-#: replacements.php:532
+#: index.php:1794 index.php:1962 replacements.php:474 replacements.php:494
+#: replacements.php:539
 msgid "Security Question"
 msgstr ""
 
-#: index.php:1939
+#: index.php:1940
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
-#: index.php:1953
+#: index.php:1954
 msgid "Token:"
 msgstr ""
 
-#: index.php:2070
+#: index.php:2071
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr ""
 
@@ -11012,127 +11015,127 @@ msgstr ""
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr ""
 
-#: replacements.php:307
+#: replacements.php:309
 msgid "Exit and Clear Survey"
 msgstr ""
 
-#: replacements.php:308
+#: replacements.php:310
 msgid "Are you sure you want to clear all your responses?"
 msgstr ""
 
-#: replacements.php:333 replacements.php:337 replacements.php:357
+#: replacements.php:340 replacements.php:344 replacements.php:364
 msgid "Resume Later"
 msgstr ""
 
-#: replacements.php:403
+#: replacements.php:410
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr ""
 
-#: replacements.php:412 replacements.php:423
+#: replacements.php:419 replacements.php:430
 msgid "Restart this Survey"
 msgstr ""
 
-#: replacements.php:427
+#: replacements.php:434
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr ""
 
-#: replacements.php:439
+#: replacements.php:446
 msgid "Return To Survey"
 msgstr ""
 
-#: replacements.php:453
+#: replacements.php:460
 msgid "Repeat Password"
 msgstr ""
 
-#: replacements.php:459
+#: replacements.php:466
 msgid "Your Email"
 msgstr ""
 
-#: replacements.php:473
+#: replacements.php:480
 msgid "Saved name"
 msgstr ""
 
-#: replacements.php:491
+#: replacements.php:498
 msgid "Load Now"
 msgstr ""
 
-#: replacements.php:648
+#: replacements.php:661
 msgid "Answers Cleared"
 msgstr ""
 
-#: replacements.php:651
+#: replacements.php:664
 msgid "Your Assessment"
 msgstr ""
 
-#: replacements.php:652
+#: replacements.php:665
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr ""
 
-#: replacements.php:654
+#: replacements.php:667
 msgid "Close this window"
 msgstr ""
 
-#: replacements.php:667
+#: replacements.php:681
 msgid "Load A Previously Saved Survey"
 msgstr ""
 
-#: replacements.php:668
+#: replacements.php:682
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr ""
 
-#: replacements.php:668
+#: replacements.php:682
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr ""
 
-#: replacements.php:676
+#: replacements.php:690
 msgid "A Note On Privacy"
 msgstr ""
 
-#: replacements.php:676
+#: replacements.php:690
 msgid "This survey is anonymous."
 msgstr ""
 
-#: replacements.php:676
+#: replacements.php:690
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr ""
 
-#: replacements.php:695
+#: replacements.php:709
 msgid "You must be registered to complete this survey"
 msgstr ""
 
-#: replacements.php:696
+#: replacements.php:710
 msgid "You may register for this survey if you wish to take part."
 msgstr ""
 
-#: replacements.php:696
+#: replacements.php:710
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr ""
 
-#: replacements.php:704
+#: replacements.php:718
 msgid "Save Your Unfinished Survey"
 msgstr ""
 
-#: replacements.php:705
+#: replacements.php:719
 msgid "Enter a name and password for this survey and click save below."
 msgstr ""
 
-#: replacements.php:705
+#: replacements.php:719
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr ""
 
-#: replacements.php:705
+#: replacements.php:719
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr ""
 
-#: replacements.php:705
+#: replacements.php:719
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr ""
 
-#: replacements.php:711
+#: replacements.php:725
 msgid "You have completed answering the questions in this survey."
 msgstr ""
 
-#: replacements.php:711
+#: replacements.php:725
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr ""
 
