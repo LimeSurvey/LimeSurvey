@@ -291,7 +291,7 @@ class translate extends Survey_Common_Action {
 	{
 		$survey_button = "";
 
-        $imageurl = Yii::app()->getConfig("imageurl");
+        $imageurl = Yii::app()->getConfig("adminimageurl");
         $clang = Yii::app()->lang;
 
         $baselang = Survey::model()->findByPk($surveyid)->language;
@@ -990,7 +990,10 @@ class translate extends Survey_Common_Action {
     */
     private function menuItem( $jsMenuText, $menuImageText, $menuImageFile, $scriptname)
     {
-		$img_tag = CHtml::image(Yii::app()->getConfig("imageurl") . "/" . $menuImageFile, $jsMenuText, array('name'=>$menuImageText));
+
+        $imageurl = Yii::app()->getConfig("adminimageurl");
+        
+		$img_tag = CHtml::image($imageurl . "/" . $menuImageFile, $jsMenuText, array('name'=>$menuImageText));
 		$menuitem = CHtml::link($img_tag, '#', array(
 			'onclick' => "window.open('{$scriptname}', '_top')"
 		));
@@ -1003,7 +1006,10 @@ class translate extends Survey_Common_Action {
     */
     private function menuSeparator()
     {
-		$image = CHtml::image(Yii::app()->getConfig("imageurl") . "/separator.gif", '');
+
+        $imageurl = Yii::app()->getConfig("adminimageurl");
+        
+		$image = CHtml::image($imageurl . "/separator.gif", '');
         return $image;
     }
 
