@@ -80,7 +80,7 @@ class ExpressionManager {
         $RDP_regex_inc_dec = '\+\+|--';
         $RDP_regex_binary = '[+*/-]';
         $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
-        $RDP_regex_assign = '=|\+=|-=|\*=|/=';
+        $RDP_regex_assign = '=';    // '=|\+=|-=|\*=|/=';
         $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
