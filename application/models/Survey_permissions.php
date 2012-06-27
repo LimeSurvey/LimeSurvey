@@ -197,10 +197,12 @@ class Survey_permissions extends CActiveRecord
 		$this->deleteAll($criteria);
     }
 
-	function insertRecords($data)
+	function insertRecords($records)
 	{
-		foreach ($item as $data)
-			$this->insertSomeRecords($item);
+            $aReturnStatuses = array();
+            foreach ($records as $record)
+                    $aReturnStatuses[] = $this->insertSomeRecords($record);
+            return $aReturnStatuses;
 	}
 
     function insertSomeRecords($data)
