@@ -648,7 +648,7 @@ function multi_set(ids,_radix)
 								_bits[_counter].push(_tdin);
 								//set key board actions
 								_tdin.onkeydown = _in_key;
-								_tdin.onchange = calc;
+								_tdin.onkeyup = calc;
 								//check for total and grand total
 								if(_td[_a].className && _td[_a].className.match(_match_total,'ig'))
 								{
@@ -738,7 +738,7 @@ function multi_set(ids,_radix)
 			{
 				var addaclass=!_bits[id][i].getAttribute(ie ? 'className' : 'class') ? '' : _bits[id][i].getAttribute(ie ? 'className' : 'class') + ' ';
 				_bits[id][i].setAttribute((ie ? 'className' : 'class'), addaclass + 'horo_' + id);
-				_bits[id][i].onChange = calc;
+				_bits[id][i].onkeyup = calc;
 				if(i == (l - 1))
 				{
 					_bits[id][i].value = round(qt,12)
@@ -769,7 +769,7 @@ function multi_set(ids,_radix)
 			{
 				var addaclass=!_bits[i][id].getAttribute(ie ? 'className' : 'class') ? '' : _bits[i][id].getAttribute(ie ? 'className' : 'class') + ' ';
 				_bits[i][id].setAttribute((ie ? 'className' : 'class'), addaclass + 'vert_' + id);
-				_bits[i][id].onchange = calc;
+				_bits[i][id].onkeyup = calc;
 				if(i == (l - 1))
 				{
 					_bits[i][id].value = round(qt,12);
@@ -801,7 +801,7 @@ function multi_set(ids,_radix)
             if (radix===',') {
                 _aval = _aval.split(',').join('.');
             }
-            if (radix!=='X' && _aval != parseFloat(_aval)) {
+            if (radix!=='X' && _aval != '-' && _aval != '.' && _aval != '-.' && _aval != parseFloat(_aval)) {
                 el.value = "";
             }
 
