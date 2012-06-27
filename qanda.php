@@ -1696,7 +1696,7 @@ function do_list_radio($ia)
         $answer .= '		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
-			<input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onchange="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
+			<input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
 		</label>
         '.$wrapper['item-end'];
 
@@ -2358,7 +2358,7 @@ function do_multiplechoice($ia)
             }
             $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
-        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));' onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }' $numbersonly />";
+        $answer .= " onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));' $numbersonly />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         if (isset($_SESSION[$myfname]))
@@ -2549,8 +2549,7 @@ function do_multiplechoice_withcomments($ia)
                 $answer_main .= CHECKED;
             }
         }
-        $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);' "
-        . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
+        $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);if (!$(this).attr(\"checked\")) { $(\"#answer$myfname2\").val(\"\"); $checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"checkbox\");}' />\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
         . $ansrow['question']."</label>\n";
 
@@ -2564,7 +2563,7 @@ function do_multiplechoice_withcomments($ia)
         $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide\">".$clang->gT("Make a comment on your choice here:")."</label>\n"
         ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
         if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
-        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n</span>\n"
+        $answer_main .= "' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"text\");}' />\n</span>\n"
 
         . "\t</li>\n";
 
@@ -2579,7 +2578,7 @@ function do_multiplechoice_withcomments($ia)
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
-        $answer_main .= " onchange='$oth_checkconditionFunction(this.value, this.name, this.type)'";
+        $answer_main .= " onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type); if($.trim(this.value)==\"\") { $(\"#answer$myfname2\").val(\"\"); $checkconditionFunction(\"\",\"$myfname2\",\"text\"); }'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
             $dispVal = $_SESSION[$myfname];
@@ -2592,8 +2591,9 @@ function do_multiplechoice_withcomments($ia)
         $fn++;
         $answer_main .= "  $callmaxanswscriptother />\n\t</label>\n</span>\n"
         . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment\">\n"
-        . '
-				<input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
+        . '<input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'"'
+        . " onkeyup='$checkconditionFunction(this.value,this.name,this.type);'"
+        . ' title="'.$clang->gT('Make a comment on your choice here:').'" value="';
 
         if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         $answer_main .= "\"/>\n";
@@ -2900,7 +2900,7 @@ function do_multipleshorttext($ia)
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'
 				<textarea class="textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
-				rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
+				rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
@@ -2958,7 +2958,7 @@ function do_multipleshorttext($ia)
                     $answer_main .= htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
                 }
 
-                $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' '.$maxlength.' />'."\n".$suffix."\n\t</span>\n"
+                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' '.$maxlength.' />'."\n".$suffix."\n\t</span>\n"
                 . "\t</li>\n";
 
                 $fn++;
@@ -3209,7 +3209,7 @@ function do_multiplenumeric($ia)
                     $answer_main .= $dispVal;
                 }
 
-                $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$numbersonly} {$maxlength} />\n\t".$suffix."\n</span>\n\t</li>\n";
+                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$numbersonly} {$maxlength} />\n\t".$suffix."\n</span>\n\t</li>\n";
 
             }
             else
@@ -3403,7 +3403,7 @@ function do_numerical($ia)
         $kpclass = "";
     }
     $answer = "<p class=\"question\"><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" title=\"".$clang->gT('Only numbers may be entered in this field')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)' "
+    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" title=\"".$clang->gT('Only numbers may be entered in this field')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
     . " {$maxlength} />\n\t{$suffix}\n</p>\n";
     if ($qidattributes['hide_tip']==0)
     {
@@ -3491,7 +3491,7 @@ function do_shortfreetext($ia)
         }
 
         $answer = '<label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Answer').'</label><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'"'
-        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
+        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
 
         if ($_SESSION[$ia[1]]) {
             $dispVal = str_replace("\\", "", $_SESSION[$ia[1]]);
@@ -3593,7 +3593,7 @@ function do_shortfreetext($ia)
         $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
         $answer .= " value=\"$dispVal\"";
 
-        $answer .=" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
+        $answer .=" {$maxlength} onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
     }
 
 
@@ -3672,7 +3672,7 @@ function do_longfreetext($ia)
     }
 
     $answer = '<label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Answer').'</label><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
+    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
 
     if ($_SESSION[$ia[1]]) {$answer .= htmlspecialchars(htmlspecialchars(str_replace("\\", "", $_SESSION[$ia[1]])));}
 
@@ -3740,7 +3740,7 @@ function do_hugefreetext($ia)
     }
 
     $answer = '<label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Answer').'</label><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
+    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
 
     if ($_SESSION[$ia[1]]) {$answer .= htmlspecialchars(htmlspecialchars(str_replace("\\", "", $_SESSION[$ia[1]])));}
 
@@ -5138,7 +5138,7 @@ function do_array_multitext($ia)
 $(document).ready(function()
 {
     $('#question{$ia[0]} :input:visible:enabled').each(function(index){
-        $(this).bind('change',function(e) {
+        $(this).bind('keyup',function(e) {
             checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'));
             return true;
         })
@@ -5402,7 +5402,7 @@ function do_array_multiflexi($ia)
                     if($inputboxlayout == false) {
                         $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                         . html_escape($labelans[$thiskey]).'"'
-                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
+                        . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
                         . "<option value=\"\">".$clang->gT('...')."</option>\n";
 
                         for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
@@ -5419,7 +5419,7 @@ function do_array_multiflexi($ia)
                         $sSeperator = $sSeperator['seperator'];
                         $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
                         . html_escape($labelans[$thiskey]).'"'
-                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'-0123456789$sSeperator')\""
+                        . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'-0123456789$sSeperator')\""
                         . " value=\"";
                         if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2]) {
                             $dispVal = str_replace('.',$sSeperator,$_SESSION[$myfname2]);

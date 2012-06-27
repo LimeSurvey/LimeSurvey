@@ -722,7 +722,7 @@ print <<<END
             newval = new String(value);
             newval = newval.split(',').join('.');
         }
-        if (newval != parseFloat(newval)) {
+        if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {
             newval = '';
             if (name.match(/other$/)) {
                 $('#answer'+name+'text').val('');
