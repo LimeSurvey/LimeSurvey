@@ -1649,12 +1649,10 @@ function do_list_radio($ia)
 
         if ($qidattributes['other_numbers_only']==1)
         {
-            $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
             $oth_checkconditionFunction = 'fixnum_checkconditions';
         }
         else
         {
-            $numbersonly = '';
             $oth_checkconditionFunction = 'checkconditions';
         }
 
@@ -1696,7 +1694,7 @@ function do_list_radio($ia)
         $answer .= '		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
-			<input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
+			<input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
 		</label>
         '.$wrapper['item-end'];
 
@@ -2199,12 +2197,10 @@ function do_multiplechoice($ia)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator= $sSeperator['seperator'];
-        $numbersonly = " onkeypress='return goodchars(event,\"-0123456789$sSeperator\")'";
         $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
-        $numbersonly = '';
         $oth_checkconditionFunction = "checkconditions";
     }
 
@@ -2358,7 +2354,7 @@ function do_multiplechoice($ia)
             }
             $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
-        $answer .= " onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));' $numbersonly />";
+        $answer .= " onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));' />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         if (isset($_SESSION[$myfname]))
@@ -2468,12 +2464,10 @@ function do_multiplechoice_withcomments($ia)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
-        $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
         $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
-        $numbersonly = '';
         $oth_checkconditionFunction = "checkconditions";
     }
 
@@ -2577,7 +2571,7 @@ function do_multiplechoice_withcomments($ia)
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
-        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
         $answer_main .= " onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type); if($.trim(this.value)==\"\") { $(\"#answer$myfname2\").val(\"\"); $checkconditionFunction(\"\",\"$myfname2\",\"text\"); }'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
@@ -2804,12 +2798,10 @@ function do_multipleshorttext($ia)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
-		$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
         $checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
-        $numbersonly = '';
         $checkconditionFunction = "checkconditions";
     }
     if (intval(trim($qidattributes['maximum_chars']))>0)
@@ -2900,7 +2892,7 @@ function do_multipleshorttext($ia)
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'
 				<textarea class="textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
-				rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
+				rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" >';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
@@ -2958,7 +2950,7 @@ function do_multipleshorttext($ia)
                     $answer_main .= htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
                 }
 
-                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' '.$maxlength.' />'."\n".$suffix."\n\t</span>\n"
+                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$maxlength.' />'."\n".$suffix."\n\t</span>\n"
                 . "\t</li>\n";
 
                 $fn++;
@@ -2985,8 +2977,7 @@ function do_multiplenumeric($ia)
     $answer='';
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
-    //Must turn on the "numbers only javascript"
-    $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\''.$sSeperator.'\')>0 && String.fromCharCode(getkey(event))==\''.$sSeperator.'\') return false; return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+    $numbersonly = '';  // 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\''.$sSeperator.'\')>0 && String.fromCharCode(getkey(event))==\''.$sSeperator.'\') return false; return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
     if (intval(trim($qidattributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -3382,11 +3373,13 @@ function do_numerical($ia)
     if (trim($qidattributes['num_value_int_only'])==1)
     {
         $acomma="";
+        $intonly=1;
     }
     else
     {
         $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
         $acomma = $acomma['seperator'];
+        $intonly=0;
 
     }
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -3403,7 +3396,7 @@ function do_numerical($ia)
         $kpclass = "";
     }
     $answer = "<p class=\"question\"><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" title=\"".$clang->gT('Only numbers may be entered in this field')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
+    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" title=\"".$clang->gT('Only numbers may be entered in this field')."\" onkeyup='$checkconditionFunction(this.value, this.name, this.type,null, $intonly)' "
     . " {$maxlength} />\n\t{$suffix}\n</p>\n";
     if ($qidattributes['hide_tip']==0)
     {
@@ -3429,12 +3422,10 @@ function do_shortfreetext($ia)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
-        $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
         $checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
-        $numbersonly = '';
         $checkconditionFunction = "checkconditions";
     }
     if (intval(trim($qidattributes['maximum_chars']))>0)
@@ -3491,7 +3482,7 @@ function do_shortfreetext($ia)
         }
 
         $answer = '<label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Answer').'</label><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'"'
-        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
+        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
 
         if ($_SESSION[$ia[1]]) {
             $dispVal = str_replace("\\", "", $_SESSION[$ia[1]]);
@@ -3593,7 +3584,7 @@ function do_shortfreetext($ia)
         $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
         $answer .= " value=\"$dispVal\"";
 
-        $answer .=" {$maxlength} onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
+        $answer .=" {$maxlength} onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
     }
 
 
@@ -4835,14 +4826,12 @@ function do_array_multitext($ia)
     $grand_total = '';
     $q_table_id = '';
     $q_table_id_HTML = '';
-    $numbersonly = '';
 
     if ($qidattributes['numbers_only']==1)
     {
         $checkconditionFunction = "fixnum_checkconditions";
         $q_table_id = 'totals_'.$ia[0];
 	$q_table_id_HTML = ' id="'.$q_table_id.'"';
-        //	$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
         $num_class = ' numbers-only';
 	switch ($qidattributes['show_totals'])
 	{
@@ -5419,7 +5408,7 @@ function do_array_multiflexi($ia)
                         $sSeperator = $sSeperator['seperator'];
                         $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
                         . html_escape($labelans[$thiskey]).'"'
-                        . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'-0123456789$sSeperator')\""
+                        . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
                         . " value=\"";
                         if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2]) {
                             $dispVal = str_replace('.',$sSeperator,$_SESSION[$myfname2]);
