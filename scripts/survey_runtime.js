@@ -588,6 +588,7 @@ function multi_set(ids,_radix)
 	//match for total
 	var _match_total = new RegExp('total');
     var radix = _radix; // comma, period, X (for not using numbers only)
+    var numRegex = new RegExp('[^-' + radix + '0-9]','g');
 	//main function (obj)
 	//id = wrapper id
 	function multi_total(id)
@@ -647,7 +648,6 @@ function multi_set(ids,_radix)
 								//add it to the array @ counter
 								_bits[_counter].push(_tdin);
 								//set key board actions
-								_tdin.onkeydown = _in_key;
 								_tdin.onkeyup = calc;
 								//check for total and grand total
 								if(_td[_a].className && _td[_a].className.match(_match_total,'ig'))
@@ -797,12 +797,21 @@ function multi_set(ids,_radix)
 			var _id=el.getAttribute(ie ? 'className' : 'class');
 
             // eliminate bad numbers
-            _aval=el.value;
+            _aval=new String(el.value);
+            if (radix!=='X') {
+                _aval=_aval.replace(numRegex,'');
+            }
             if (radix===',') {
                 _aval = _aval.split(',').join('.');
             }
             if (radix!=='X' && _aval != '-' && _aval != '.' && _aval != '-.' && _aval != parseFloat(_aval)) {
-                el.value = "";
+                _aval = "";
+            }
+            if (radix===',') {
+                el.value = _aval.split('.').join(',');
+            }
+            else if (radix!=='X') {
+                el.value = _aval;
             }
 
 			//vert_[id] horo_[id] in class trigger vert or horo calc on row[id]
@@ -910,60 +919,6 @@ function multi_set(ids,_radix)
 		{
 			return(false);
 		};
-		//limit to numbers and .
-		function _in_key(e)
-		{
-			e = e || window.event;
-			//alert(e.keyCode);
-			switch(e.keyCode)
-			{
-				case 8:
-				case 9:
-				case 48:
-				case 49:
-				case 50:
-				case 51:
-				case 52:
-				case 53:
-				case 54:
-				case 55:
-				case 56:
-				case 57:
-				case 190:
-				case 45:
-				case 35:
-				case 40:
-				case 34:
-				case 37:
-				case 12:
-				case 39:
-				case 36:
-				case 38:
-				case 33:
-				case 46:
-				case 96:
-				case 97:
-				case 98:
-				case 99:
-				case 100:
-				case 101:
-				case 102:
-				case 103:
-				case 104:
-				case 105:
-				case 110:
-				case 109:
-                case 189:
-                case 188:
-                    if (radix===',' && e.keyCode == 190) { return false; }
-                    if (radix==='.' && e.keyCode == 188) { return false; }
-					return(e.keyCode);
-				default:
-				//alert(e.keyCode);
-					return(false);
-					break;
-			}
-		}
 	};
 	//set up the dom
 	//alert('multi called called value ' + ids);

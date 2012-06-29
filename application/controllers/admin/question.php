@@ -1090,20 +1090,31 @@ class question extends Survey_Common_Action
             <script type='text/javascript'>
             <!--
             LEMradix='$radix';
-            function fixnum_checkconditions(value, name, type, evt_type)
+            var numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
+            var intRegex = new RegExp('[^-0-9]','g');
+            function fixnum_checkconditions(value, name, type, evt_type, intonly)
             {
-                newval = value;
+                newval = new String(value);
+                if (typeof intonly !=='undefined' && intonly==1) {
+                    newval = newval.replace(intRegex,'');
+                }
+                else {
+                    newval = newval.replace(numRegex,'');
+                }
                 if (LEMradix === ',') {
-                    newval = new String(value);
                     newval = newval.split(',').join('.');
                 }
-                if (newval != parseFloat(newval)) {
+                if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {
                     newval = '';
-                    if (name.match(/other$/)) {
-                        $('#answer'+name+'text').val('');
-                    }
-                    $('#answer'+name).val('');
                 }
+                displayVal = newval;
+                if (LEMradix === ',') {
+                    displayVal = displayVal.split('.').join(',');
+                }
+                if (name.match(/other$/)) {
+                    $('#answer'+name+'text').val(displayVal);
+                }
+                $('#answer'+name).val(displayVal);
 
                 if (typeof evt_type === 'undefined')
                 {
