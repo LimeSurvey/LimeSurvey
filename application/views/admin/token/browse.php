@@ -58,7 +58,7 @@
     var delUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/delete/surveyid/" . $surveyid); ?>";
     var cancelBtn = "<?php $clang->eT("Cancel") ?>";
     var okBtn = "<?php echo $clang->eT("OK") ?>";
-    var delmsg = "<?php $clang->eT("Are you sure you want to delete this entry?") ?>";
+    var delmsg = "<?php $clang->eT("Are you sure you want to delete the selected entries?") ?>";
     var surveyID = "<?php echo $surveyid; ?>";
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/getTokens_json/surveyid/' . $surveyid); ?>";
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/setSession"); ?>";
@@ -201,4 +201,4 @@
     </p>
 </div>
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
-<div>    
+<div>

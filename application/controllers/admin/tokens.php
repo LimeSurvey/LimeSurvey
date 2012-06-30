@@ -82,7 +82,7 @@ class tokens extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $thissurvey = getSurveyInfo($iSurveyId);
 
-        if (($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') == 'off')) 
+        if (($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') == 'off'))
             && hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
             $bouncetotal = 0;
@@ -739,6 +739,11 @@ class tokens extends Survey_Common_Action
         if (hasSurveyPermission($iSurveyId, 'tokens', 'delete'))
         {
             $aTokenIds = explode(',', $iTokenId); //Make the tokenids string into an array
+
+            //Delete any survey_links
+            Survey_links::deleteTokenLink($aTokenIds, $iSurveyId);
+
+            //Then delete the tokens
             Tokens_dynamic::model($iSurveyId)->deleteRecords($aTokenIds);
         }
     }
@@ -1921,6 +1926,8 @@ class tokens extends Survey_Common_Action
         }
 
         $date = date('YmdHis');
+        /* If there is not a $_POST value of 'ok', then ask if the user is sure they want to
+           delete the tokens table */
         if (!Yii::app()->request->getPost('ok'))
         {
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
@@ -1934,11 +1941,15 @@ class tokens extends Survey_Common_Action
             )), $aData);
         }
         else
+        /* The user has confirmed they want to delete the tokens table */
         {
             $oldtable = "tokens_$iSurveyId";
             $newtable = "old_tokens_{$iSurveyId}_$date";
 
             Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
+
+            //Remove any survey_links to the CPDB
+            Survey_links::deleteLinksBySurvey($iSurveyId);
 
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Delete Tokens Table"),
@@ -2067,9 +2078,13 @@ class tokens extends Survey_Common_Action
             . $clang->gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )));
         }
+        /* Restore a previously deleted tokens table */
         elseif (returnGlobal('restoretable') == "Y" && Yii::app()->request->getPost('oldtable') && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));
+
+            //Add any survey_links from the renamed table
+            Survey_links::rebuildLinksFromTokenTable($iSurveyId);
 
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => $clang->gT("Import old tokens"),
