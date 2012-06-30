@@ -16,7 +16,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
+    static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
@@ -70,7 +70,7 @@ class ExpressionManager {
         $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $RDP_regex_assign = '=';    // '=|\+=|-=|\*=|/=';
         $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
-        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
+        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
         $RDP_regex_lcb = '{';
@@ -1743,6 +1743,7 @@ class ExpressionManager {
         $this->groupSeq = $groupSeq;
         $this->questionSeq = $questionSeq;
 
+        $expr = $this->ExpandThisVar($expr);
         $status = $this->RDP_Evaluate($expr);
         if (!$status) {
             return false;    // if there are errors in the expression, hide it?
@@ -1853,7 +1854,8 @@ class ExpressionManager {
             }
             else {
                 ++$this->substitutionNum;
-                if ($this->RDP_Evaluate(substr($stringPart[0],1,-1)))
+                $expr = $this->ExpandThisVar(substr($stringPart[0],1,-1));
+                if ($this->RDP_Evaluate($expr))
                 {
                     $resolvedPart = $this->GetResult();
                 }
@@ -1880,7 +1882,7 @@ class ExpressionManager {
                         'raw' => $stringPart[0],
                         'result' => $resolvedPart,
                         'vars' => implode('|',$jsVarsUsed),
-                        'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, substr($stringPart[0],1,-1)),
+                        'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, $expr),
                     );
                 }
                 else
@@ -1893,6 +1895,30 @@ class ExpressionManager {
         $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
         $this->RDP_errs = $allErrors;   // so that has all errors from this string
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
+    }
+
+    /**
+     * If the equation contains refernece to this, expand to comma separated list if needed.
+     * @param type $eqn
+     */
+    function ExpandThisVar($src)
+    {
+        $splitter = '(?:self|that)(?:\.(?:[A-Z0-9_]+))*';
+        $parts = preg_split("/(" . $splitter . ")/i",$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+        $result = '';
+        foreach ($parts as $part)
+        {
+            if (preg_match("/" . $splitter . "/",$part))
+            {
+                $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq,$part);
+            }
+            else
+            {
+                $result .= $part;
+            }
+        }
+
+        return $result;
     }
 
     /**

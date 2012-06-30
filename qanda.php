@@ -5391,7 +5391,7 @@ function do_array_multiflexi($ia)
                     if($inputboxlayout == false) {
                         $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                         . html_escape($labelans[$thiskey]).'"'
-                        . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
+                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
                         . "<option value=\"\">".$clang->gT('...')."</option>\n";
 
                         for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
