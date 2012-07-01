@@ -42,7 +42,24 @@ class YNQuestion extends QuestionModule
         $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$this->fieldname}\" id=\"java{$this->fieldname}\" value=\"{ ".$_SESSION['survey_'.$this->surveyid][$this->fieldname]."}\" />\n";
         return $answer;
     }
-        
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $clang = Yii::app()->lang;
+        $output .= "\t<select name='{$this->fieldname}'>\n"
+        ."<option value=''";
+        if ($idrow[$this->fieldname] == "") {$output .= " selected='selected'";}
+        $output .= ">".$clang->gT("Please choose")."..</option>\n"
+        ."<option value='Y'";
+        if ($idrow[$this->fieldname] == "Y") {$output .= " selected='selected'";}
+        $output .= ">".$clang->gT("Yes")."</option>\n"
+        ."<option value='N'";
+        if ($idrow[$this->fieldname] == "N") {$output .= " selected='selected'";}
+        $output .= ">".$clang->gT("No")."</option>\n"
+        ."\t</select>\n";
+        return $output;
+    }
+  
     public function getExtendedAnswer($value, $language)
     {
         switch($value)

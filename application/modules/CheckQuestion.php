@@ -271,7 +271,31 @@ class CheckQuestion extends QuestionModule
         $answer .= $postrow;
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $q = $this;
+        while ($q->id == $this->id)
+        {
+            if (substr($q->fieldname, -5) == "other")
+            {
+                $output .= "\t<input type='text' name='{$q->fieldname}' value='"
+                .htmlspecialchars($idrow[$q->fieldname], ENT_QUOTES) . "' />\n";
+            }
+            else
+            {
+                $output .= "\t<input type='checkbox' class='checkboxbtn' name='{$q->fieldname}' value='Y'";
+                if ($idrow[$q->fieldname] == "Y") {$output .= " checked";}
+                $output .= " />{$q->sq}<br />\n";
+            }
+
+            if(!$fname=next($fnames)) break;
+            $q=$fname['q'];
+        }
+        prev($fnames);
+        return $output;
+    }
+
     protected function getChildren()
     {
         if ($this->children) return $this->children;
@@ -376,6 +400,7 @@ class CheckQuestion extends QuestionModule
             $q->fieldname = $fieldname;
             $q->aid=$field['aid'];
             $q->question=$abrow['question'];
+            $q->sq=$abrow['question'];
             $field['q']=$q;
             $map[$fieldname]=$field;
         }

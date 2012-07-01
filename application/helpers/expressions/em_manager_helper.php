@@ -839,23 +839,14 @@
                 }
 
                 // fix fieldnames
-                if ($row['type'] == '' && preg_match('/^{.+}$/',$row['cfieldname'])) { //AJS
+                if ($row['class'] == '') {
                     $fieldname = substr($row['cfieldname'],1,-1);    // {TOKEN:xxxx}
                     $value = $row['value'];
-                } else if ($row['type'] == 'M' || $row['type'] == 'P') { //AJS
-                        if (substr($row['cfieldname'],0,1) == '+') {
-                            // if prefixed with +, then a fully resolved name
-                            $fieldname = substr($row['cfieldname'],1) . '.NAOK';
-                            $value = $row['value'];
-                        }
-                        else {
-                            // else create name by concatenating two parts together
-                            $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
-                            $value = 'Y';
-                        }
                 } else {
-                    $fieldname = $row['cfieldname'] . '.NAOK';
-                    $value = $row['value'];
+                    $q = createQuestion($row['class']);
+                    $newrow = $q->prepareConditions($row);
+                    $fieldname = $newrow['cfieldname'] . '.NAOK';
+                    $value = $newrow['matchvalue'];
                 }
 
                 // fix values
@@ -6888,19 +6879,19 @@ EOD;
             }
 
             $query = "select distinct c.*"
-            .", q.sid, q.type"
+            .", q.sid, q.type, q.tid, t.class" //AJS
             ." from {{conditions}} as c"
             .", {{questions}} as q"
             ." join {{question_types}} as t on (q.tid = t.tid)"
             ." where " . $where
             ." c.cqid=q.qid"
-            ." union "
-            ." select c.*, q.sid, '' as type"
+            ." union"
+            ." select c.*, q.sid, '' as type, 0 as tid, '' as class" //AJS
             ." from {{conditions}} as c"
             .", {{questions}} as q"
             ." where ". $where
             ." c.cqid = 0 and c.qid = q.qid"
-            ." order by sid, qid, scenario, cqid, cfieldname, value"; //AJS
+            ." order by sid, qid, scenario, cqid, cfieldname, value";
 
             $data = dbExecuteAssoc($query);
 

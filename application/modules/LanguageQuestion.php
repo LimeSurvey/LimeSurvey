@@ -29,7 +29,32 @@ class LanguageQuestion extends QuestionModule
 
         return $answer;
     }
-        
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $lquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language = '{$language}' ORDER BY sortorder, answer";
+        $lresult = dbExecuteAssoc($lquery);
+
+
+        $slangs = Survey::model()->findByPk($this->surveyid)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($this->surveyid)->language;
+        array_unshift($slangs,$baselang);
+
+        $output.= "<select name='{$this->fieldname}'>\n";
+        $output .= "<option value=''";
+        if ($idrow[$this->fieldname] == "") {$output .= " selected='selected'";}
+        $output .= ">".$clang->gT("Please choose")."..</option>\n";
+
+        foreach ($slangs as $lang)
+        {
+            $output.="<option value='{$lang}'";
+            if ($lang == $idrow[$this->fieldname]) {$output .= " selected='selected'";}
+            $output.=">".getLanguageNameFromCode($lang,false)."</option>\n";
+        }
+        $output .= "</select>";
+        return $output;
+    }
+
     public function getExtendedAnswer($value, $language)
     {
         if ($value == "-oth-")

@@ -320,7 +320,47 @@ class RadioArrayQuestion extends ArrayQuestion
         }
         return $answer;
     }
-                
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $clang = Yii::app()->lang;
+        $output = "<table>\n";
+        $q = $this;
+        while ($q->id == $this->id)
+        {
+            $output .= "\t<tr>\n"
+            ."<td>{$fname['subquestion']}";
+            if (isset($fname['scale']))
+            {
+                $output .= " (".$fname['scale'].')';
+            }
+            $output .="</td>\n";
+            $scale_id=0;
+            if (isset($q->scale)) $scale_id=$q->scale;
+            $fquery = "SELECT * FROM {{answers}} WHERE qid='{$q->id}' and scale_id={$scale_id} and language='$sDataEntryLanguage' order by sortorder, answer";
+            $fresult = dbExecuteAssoc($fquery);
+            $output .= "<td>\n";
+            foreach ($fresult->readAll() as $frow)
+            {
+                $output .= "\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value='{$frow['code']}'";
+                if ($idrow[$q->fieldname] == $frow['code']) {$output .= " checked";}
+                $output .= " />".$frow['answer']."&nbsp;\n";
+            }
+            //Add 'No Answer'
+            $output .= "\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value=''";
+            if ($idrow[$q->fieldname] == '') {$output .= " checked";}
+            $output .= " />".$clang->gT("No answer")."&nbsp;\n";
+
+            $output .= "</td>\n"
+            ."\t</tr>\n";
+            if(!$fname=next($fnames)) break;
+            $q=$fname['q'];
+        }
+        prev($fnames);
+        $output .= "</table>\n";
+        return $output;
+    }
+
     public function getExtendedAnswer($value, $language)
     {
         if ($value == "-oth-")

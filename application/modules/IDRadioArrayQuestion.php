@@ -154,7 +154,36 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
         $answer .=  $answer_body . "\t</tbody>\n</table>\n";
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $output = "<table>\n";
+        $q = $this;
+        while ($q->id == $this->id)
+        {
+            $fieldn = substr($q->fieldname, 0, strlen($q->fieldname));
+            $output .= "\t<tr>\n"
+            ."<td align='right'>{$q->sq}</td>\n"
+            ."<td>\n"
+            ."\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value='I'";
+            if ($idrow[$q->fieldname] == "I") {$output .= " checked";}
+            $output .= " />Increase&nbsp;\n"
+            ."\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value='S'";
+            if ($idrow[$q->fieldname] == "I") {$output .= " checked";}
+            $output .= " />Same&nbsp;\n"
+            ."\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value='D'";
+            if ($idrow[$q->fieldname] == "D") {$output .= " checked";}
+            $output .= " />Decrease&nbsp;\n"
+            ."</td>\n"
+            ."\t</tr>\n";
+            if(!$fname=next($fnames)) break;
+            $q=$fname['q'];
+        }
+        prev($fnames);
+        $output .= "</table>\n";
+        return $output;
+    }
+
     //public function getInputNames() - inherited
             
     public function getExtendedAnswer($value, $language)

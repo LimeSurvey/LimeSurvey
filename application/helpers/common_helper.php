@@ -1496,7 +1496,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
         $fields = $fieldmap[$sFieldCode];
     else
         return false;
-    //Find out the question type
+
     $q = $fields['q'];
     return $q->getExtendedAnswer($sValue, $oLanguage);
 }
@@ -1756,7 +1756,7 @@ function validateTemplateDir($templatename)
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @return array
 */
-function array2Object($array)
+function array2Object($array) //AJS
 {
     $object->fieldname=$array['fieldname'];
     $object->surveyid=$array['sid'];
@@ -1779,7 +1779,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
-    $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
+    $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>""); //AJS
     if ($style == "full")
     {
         $fieldmap["id"]['title']="";
@@ -1788,7 +1788,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["id"]['q']=array2Object($fieldmap["id"]);
     }
 
-    $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+    $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
     if ($style == "full")
     {
         $fieldmap["submitdate"]['title']="";
@@ -1797,7 +1797,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["submitdate"]['q']=array2Object($fieldmap["submitdate"]);
     }
 
-    $fieldmap["lastpage"]=array("fieldname"=>"lastpage", 'sid'=>$surveyid, 'type'=>"lastpage", "gid"=>"", "qid"=>"", "aid"=>"");
+    $fieldmap["lastpage"]=array("fieldname"=>"lastpage", 'sid'=>$surveyid, 'type'=>"lastpage", "gid"=>"", "qid"=>"", "aid"=>""); //AJS
     if ($style == "full")
     {
         $fieldmap["lastpage"]['title']="";
@@ -1806,7 +1806,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["lastpage"]['q']=array2Object($fieldmap["lastpage"]);
     }
 
-    $fieldmap["startlanguage"]=array("fieldname"=>"startlanguage", 'sid'=>$surveyid, 'type'=>"startlanguage", "gid"=>"", "qid"=>"", "aid"=>"");
+    $fieldmap["startlanguage"]=array("fieldname"=>"startlanguage", 'sid'=>$surveyid, 'type'=>"startlanguage", "gid"=>"", "qid"=>"", "aid"=>""); //AJS
     if ($style == "full")
     {
         $fieldmap["startlanguage"]['title']="";
@@ -1820,7 +1820,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     if ($prow['anonymized'] == "N")
     {
-        $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
+        $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>""); //AJS
         if ($style == "full")
         {
             $fieldmap["token"]['title']="";
@@ -1836,7 +1836,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         'sid'=>$surveyid,
         "gid"=>"",
         "qid"=>"",
-        "aid"=>"");
+        "aid"=>""); //AJS
         if ($style == "full")
         {
             $fieldmap["startdate"]['title']="";
@@ -1850,7 +1850,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         'sid'=>$surveyid,
         "gid"=>"",
         "qid"=>"",
-        "aid"=>"");
+        "aid"=>""); //AJS
         if ($style == "full")
         {
             $fieldmap["datestamp"]['title']="";
@@ -1866,7 +1866,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         'sid'=>$surveyid,
         "gid"=>"",
         "qid"=>"",
-        "aid"=>"");
+        "aid"=>""); //AJS
         if ($style == "full")
         {
             $fieldmap["ipaddr"]['title']="";
@@ -1878,7 +1878,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     // Add 'refurl' to fieldmap.
     if ($prow['refurl'] == "Y")
     {
-        $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+        $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
         if ($style == "full")
         {
             $fieldmap["refurl"]['title']="";
@@ -1955,7 +1955,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $pq->other = $arow['other'];
         $pq->groupname = $arow->groups['group_name'];
         $pq->groupcount = $groupSeq;
-        $add = $pq->createFieldmap($arow['type']);
+        $add = $pq->createFieldmap($arow['type']); //AJS
 
         if (count($add))
         {
@@ -2159,7 +2159,7 @@ function getQuestionAttributeValues($q)
     {
         $qid = sanitize_int($q);
         if (isset($cache[$qid])) return $cache[$qid];
-        $row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid)); //, 'parent_qid' => 0), array('group' => 'type')
+        $row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid)); 
         $q = createQuestion($row->question_types['class'], array('id'=>$qid));
     }
 
@@ -2192,7 +2192,7 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
 }
 
 /**
-* Returns array of question type chars with attributes
+* Returns array of attributes
 *
 * @param mixed $returnByName If set to true the array will be by attribute name
 */
@@ -2201,7 +2201,6 @@ function questionAttributes()
     $clang = Yii::app()->lang;
     //For each question attribute include a key:
     // name - the display name
-    // types - a string with one character representing each question typy to which the attribute applies
     // help - a short explanation
 
     // If you insert a new attribute please do it in correct alphabetical order!

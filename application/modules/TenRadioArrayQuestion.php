@@ -116,7 +116,32 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         $answer .=  $answer_t_content . "\t\n</tbody>\n</table>\n";
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $output = "<table>\n";
+        $q = $this;
+        while ($q->id == $this->id)
+        {
+            $output .= "\t<tr>\n"
+            ."<td align='right'>{$q->sq}</td>\n"
+            ."<td>\n";
+            for ($j=1; $j<=10; $j++)
+            {
+                $output .= "\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value='$j'";
+                if ($idrow[$q->fieldname] == $j) {$output .= " checked";}
+                $output .= " />$j&nbsp;\n";
+            }
+            $output .= "</td>\n"
+            ."\t</tr>\n";
+            if(!$fname=next($fnames)) break;
+            $q=$fname['q'];
+        }
+        prev($fnames);
+        $output .= "</table>\n";
+        return $output;
+    }
+
     //public function getInputNames() - inherited
     
     public function getExtendedAnswer($value, $language)

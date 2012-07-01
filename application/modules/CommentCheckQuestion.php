@@ -166,7 +166,48 @@ class CommentCheckQuestion extends CheckQuestion
 
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $output .= "<table>\n";
+        $q = $this;
+        while (get_class($q) == get_class($this))
+        {
+            if (substr($q->fieldname, -7) == "comment")
+            {
+                $output .= "<td><input type='text' name='{$q->fieldname}' size='50' value='"
+                .htmlspecialchars($idrow[$q->fieldname], ENT_QUOTES) . "' /></td>\n"
+                ."\t</tr>\n";
+            }
+            elseif (substr($q->fieldname, -5) == "other")
+            {
+                $output .= "\t<tr>\n"
+                ."<td>\n"
+                ."\t<input type='text' name='{$q->fieldname}' size='30' value='"
+                .htmlspecialchars($idrow[$q->fieldname], ENT_QUOTES) . "' />\n"
+                ."</td>\n"
+                ."<td>\n";
+                $q=next($fnames);
+                $output .= "\t<input type='text' name='{$q->fieldname}' size='50' value='"
+                .htmlspecialchars($idrow[$q->fieldname], ENT_QUOTES) . "' />\n"
+                ."</td>\n"
+                ."\t</tr>\n";
+            }
+            else
+            {
+                $output .= "\t<tr>\n"
+                ."<td><input type='checkbox' class='checkboxbtn' name=\"{$q->fieldname}\" value='Y'";
+                if ($idrow[$q->fieldname] == "Y") {$output .= " checked";}
+                $output .= " />{$q->sq}</td>\n";
+            }
+            if(!$fname=next($fnames)) break;
+            $q=$fname['q'];
+        }
+        $output .= "</table>\n";
+        prev($fnames);
+        return $output;
+    }
+
     //public function getTitle() - inherited
     
     //public function getHelp() - inherited
@@ -186,9 +227,10 @@ class CommentCheckQuestion extends CheckQuestion
             unset($comment['defaultvalues']);
             unset($comment['sqid']);
             unset($comment['preg']);
-            $q = clone $this;
+            $q = clone $field['q'];
             $q->fieldname .= 'comment';
             $q->aid = $comment['aid'];
+            $q->sq=$comment['aid']=='other'?$clang->gT("Other comment"):$clang->gT("Comment");
             unset($q->default);
             $comment['q']=$q;
             $comment['pq']=$this;

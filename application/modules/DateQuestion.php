@@ -209,7 +209,41 @@ class DateQuestion extends QuestionModule
 
         return $answer;
     }
-        
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $dateformatdetails = getDateFormatDataForQID($this->getAttributeValues(), $this->surveyid);
+        if ($idrow[$this->fieldname]!='')
+        {
+            $thisdate = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$this->fieldname])->format($dateformatdetails['phpdate']);
+        }
+        else
+        {
+            $thisdate = '';
+        }
+
+        if(canShowDatePicker($dateformatdetails))
+        {
+            $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
+            $goodchars = "0123456789".$goodchars[0];
+            $output = CHtml::textField($this->fieldname, $thisdate,
+            array(
+            'class' => 'popupdate',
+            'size' => '12',
+            'onkeypress' => 'return goodchars(event,\''.$goodchars.'\')'
+            )
+            );
+            $output .= CHtml::hiddenField('dateformat'.$this->fieldname, $dateformatdetails['jsdate'],
+            array( 'id' => "dateformat{$this->fieldname}" )
+            );
+            return $output;
+        }
+        else
+        {
+            return CHtml::textField($this->fieldname, $thisdate);
+        }
+    }
+
     public function filterGET($value)
     {
         global $thissurvey;

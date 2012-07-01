@@ -245,7 +245,9 @@ class SelectQuestion extends ListQuestion
 
         return $answer;
     }
-    
+
+    //public function getDataEntry($idrow, $fnames, $language) - inherited
+
     protected function getOther()
     {
         if ($this->other) return $this->other;
@@ -258,28 +260,7 @@ class SelectQuestion extends ListQuestion
     
     //public function getHelp() - inherited
        
-    public function createFieldmap($type=null)
-    {
-        $clang = Yii::app()->lang;
-        $map = parent::createFieldmap($type);
-        if($this->other=='Y')
-        {
-            $other = $map[$this->fieldname];
-            $other['fieldname'].='other';
-            $other['aid']='other';
-            $other['subquestion']=$clang->gT("Other");
-            if (isset($this->default) && isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
-            else unset($other['defaultvalue']);
-            $q = clone $this;
-            $q->fieldname .= 'other';
-            $q->aid = 'other';
-            $q->default = isset($other['defaultvalues'])?$other['defaultvalues']:null;
-            $other['q']=$q;
-            $other['pq']=$this;
-            $map[$other['fieldname']]=$other;
-        }
-        return $map;
-    }
+    //public function createFieldmap($type=null) - inherited
     
     public function getQuotaValue($value)
     {

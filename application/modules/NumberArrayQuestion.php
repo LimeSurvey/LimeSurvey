@@ -347,7 +347,72 @@ class NumberArrayQuestion extends ArrayQuestion
         }
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $qidattributes=$this->getAttributeValues();
+        if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
+            $maxvalue=$qidattributes['multiflexible_max'];
+            $minvalue=1;
+        }
+        if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) ==''){
+            $minvalue=$qidattributes['multiflexible_min'];
+            $maxvalue=$qidattributes['multiflexible_min'] + 10;
+        }
+        if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) ==''){
+            $minvalue=1;
+            $maxvalue=10;
+        }
+        if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !=''){
+            if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
+                $minvalue=$qidattributes['multiflexible_min'];
+                $maxvalue=$qidattributes['multiflexible_max'];
+            }
+        }
+
+
+        if (trim($qidattributes['multiflexible_step'])!='') {
+            $stepvalue=$qidattributes['multiflexible_step'];
+        } else {
+            $stepvalue=1;
+        }
+        if ($qidattributes['multiflexible_checkbox']!=0) {
+            $minvalue=0;
+            $maxvalue=1;
+            $stepvalue=1;
+        }
+        $output = "<table>\n";
+        $q = $this;
+        while ($q->id == $this->id)
+        {
+            $output .= "\t<tr>\n"
+            . "<td>{$q->sq1}:{$q->sq2}</td>\n";
+            $output .= "<td>\n";
+            if ($qidattributes['input_boxes']!=0) {
+                $output .= "\t<input type='text' name='{$q->fieldname}' value='";
+                if (!empty($idrow[$q->fieldname])) {$output .= $idrow[$q->fieldname];}
+                $output .= "' size=4 />";
+            } else {
+                $output .= "\t<select name='{$q->fieldname}'>\n";
+                $output .= "<option value=''>...</option>\n";
+                for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
+                {
+                    $output .= "<option value='$ii'";
+                    if($idrow[$q->fieldname] == $ii) {$output .= " selected";}
+                    $output .= ">$ii</option>\n";
+                }
+            }
+
+            $output .= "</td>\n"
+            ."\t</tr>\n";
+            if(!$fname=next($fnames)) break;
+            $q=$fname['q'];
+        }
+        prev($fnames);
+        $output .= "</table>\n";
+        return $output;
+    }
+
     //public function getInputNames() - inherited
     
     public function createFieldmap($type=null)
@@ -392,6 +457,8 @@ class NumberArrayQuestion extends ArrayQuestion
                 $q = clone $this;
                 $q->fieldname = $fieldname;
                 $q->aid = $field['aid'];
+                $q->sq1=$abrow['question'];
+                $q->sq2=$answer['question'];
                 $field['q']=$q;
                 $field['pq']=$this;
                 $map[$fieldname]=$field;

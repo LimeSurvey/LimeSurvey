@@ -228,7 +228,96 @@ class ListQuestion extends QuestionModule
 
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $qidattributes=$this->getAttributeValues();
+        if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
+        {
+            $optCategorySeparator = $qidattributes['category_separator'];
+        }
+        else
+        {
+            unset($optCategorySeparator);
+        }
+
+        if (substr($this->fieldname, -5) == "other")
+        {
+            $output .= "\t<input type='text' name='{$this->fieldname}' value='"
+            .htmlspecialchars($idrow[$this->fieldname], ENT_QUOTES) . "' />\n";
+        }
+        else
+        {
+            $lquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language = '{$language}' ORDER BY sortorder, answer";
+            $lresult = dbExecuteAssoc($lquery);
+            $output .= "\t<select name='{$this->fieldname}'>\n"
+            ."<option value=''";
+            if ($idrow[$this->fieldname] == "") {$output .= " selected='selected'";}
+            $output .= ">".$clang->gT("Please choose")."..</option>\n";
+
+            if (!isset($optCategorySeparator))
+            {
+                foreach ($lresult->readAll() as $llrow)
+                {
+                    $output .= "<option value='{$llrow['code']}'";
+                    if ($idrow[$this->fieldname] == $llrow['code']) {$output .= " selected='selected'";}
+                    $output .= ">{$llrow['answer']}</option>\n";
+                }
+            }
+            else
+            {
+                $defaultopts = array();
+                $optgroups = array();
+                foreach ($lresult->readAll() as $llrow)
+                {
+                    list ($categorytext, $answertext) = explode($optCategorySeparator,$llrow['answer']);
+                    if ($categorytext == '')
+                    {
+                        $defaultopts[] = array ( 'code' => $llrow['code'], 'answer' => $answertext);
+                    }
+                    else
+                    {
+                        $optgroups[$categorytext][] = array ( 'code' => $llrow['code'], 'answer' => $answertext);
+                    }
+                }
+
+                foreach ($optgroups as $categoryname => $optionlistarray)
+                {
+                    $output .= "<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
+                    foreach ($optionlistarray as $optionarray)
+                    {
+                        $output .= "\t<option value='{$optionarray['code']}'";
+                        if ($idrow[$this->fieldname] == $optionarray['code']) {$output .= " selected='selected'";}
+                        $output .= ">{$optionarray['answer']}</option>\n";
+                    }
+                    $output .= "</optgroup>\n";
+                }
+                foreach ($defaultopts as $optionarray)
+                {
+                    $output .= "<option value='{$optionarray['code']}'";
+                    if ($idrow[$this->fieldname] == $optionarray['code']) {$output .= " selected='selected'";}
+                    $output .= ">{$optionarray['answer']}</option>\n";
+                }
+
+            }
+
+            $oquery="SELECT other FROM {{questions}} WHERE qid={$this->id} AND {{questions}}.language = '{$language}'";
+            $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery."<br />");
+            foreach($oresult->readAll() as $orow)
+            {
+                $fother=$orow['other'];
+            }
+            if ($fother =="Y")
+            {
+                $output .= "<option value='-oth-'";
+                if ($idrow[$this->fieldname] == "-oth-"){$output .= " selected='selected'";}
+                $output .= ">".$clang->gT("Other")."</option>\n";
+            }
+            $output .= "\t</select>\n";
+        }
+        return $output;
+    }
+
     protected function getOther()
     {
         if ($this->other) return $this->other;
@@ -276,6 +365,7 @@ class ListQuestion extends QuestionModule
             $q = clone $this;
             $q->fieldname .= 'other';
             $q->aid = 'other';
+            $q->sq=$clang->gT("Other");
             $q->default = isset($other['defaultvalues'])?$other['defaultvalues']:null;
             $other['q']=$q;
             $other['pq']=$this;

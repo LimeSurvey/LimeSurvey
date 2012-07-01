@@ -140,7 +140,32 @@ class FiveRadioArrayQuestion extends RadioArrayQuestion
         $answer .= $answer_t_content . "\n</tbody>\t</table>\n";
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $output = "<table>\n";
+        $q = $this;
+        while ($q->id == $this->id)
+        {
+            $output .= "\t<tr>\n"
+            ."<td align='right'>{$q->sq}</td>\n"
+            ."<td>\n";
+            for ($j=1; $j<=5; $j++)
+            {
+                $output .= "\t<input type='radio' class='radiobtn' name='{$this->fieldname}' value='$j'";
+                if ($idrow[$this->fieldname] == $j) {$output .= " checked";}
+                $output .= " />$j&nbsp;\n";
+            }
+            $output .= "</td>\n"
+            ."\t</tr>\n";
+            if(!$fname=next($fnames)) break;
+            $q=$fname['q'];
+        }
+        $output .= "</table>\n";
+        prev($fnames);
+        return $output;
+    }
+
     //public function getInputNames() - inherited
     
     public function getExtendedAnswer($value, $language)

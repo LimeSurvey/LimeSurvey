@@ -43,7 +43,18 @@ class GenderQuestion extends QuestionModule
 
         return $answer;
     }
-            
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $clang = Yii::app()->lang;
+        $select_options = array(
+        '' => $clang->gT("Please choose").'...',
+        'F' => $clang->gT("Female"),
+        'G' => $clang->gT("Male")
+        );
+        return CHtml::listBox($this->fieldname, $idrow[$this->fieldname], $select_options);
+    }
+    
     public function getExtendedAnswer($value, $language)
     {
         switch($value)

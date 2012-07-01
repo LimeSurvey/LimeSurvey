@@ -88,7 +88,13 @@ class NumericalQuestion extends QuestionModule
 
         return $answer;
     }
-        
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        return "\t<input type='text' name='{$this->fieldname}' value='{$idrow[$this->fieldname]}' "
+        ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
+    }
+
     public function filterGET($value)
     {
         if (trim($value)=="") {

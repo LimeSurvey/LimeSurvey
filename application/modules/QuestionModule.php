@@ -39,6 +39,7 @@ abstract class QuestionModule
     }
     
     abstract public function getAnswerHTML();
+    abstract public function getDataEntry($idrow, &$fnames, $language);
 
     public function getAttributeValues()
     {
@@ -53,9 +54,9 @@ abstract class QuestionModule
         {
             $row = $row->getAttributes();
         }
-        $surveyid = $row['sid'];
+        $this->surveyid = $row['sid'];
 
-        $aLanguages = array_merge((array)Survey::model()->findByPk($surveyid)->language, Survey::model()->findByPk($surveyid)->additionalLanguages);
+        $aLanguages = array_merge((array)Survey::model()->findByPk($this->surveyid)->language, Survey::model()->findByPk($this->surveyid)->additionalLanguages);
 
         //Now read available attributes, make sure we do this only once per request to save
         //processing cycles and memory

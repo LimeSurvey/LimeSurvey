@@ -140,7 +140,36 @@ class YNRadioArrayQuestion extends RadioArrayQuestion
         $answer .=  $answer_t_content . "\t\n</tbody>\n</table>\n";
         return $answer;
     }
-            
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $clang = Yii::app()->lang;
+        $output = "<table>\n";
+        $q = $this;
+        while ($q->id == $this->id)
+        {
+            $output .= "\t<tr>\n"
+            ."<td align='right'>{$q->sq}</td>\n"
+            ."<td>\n"
+            ."\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value='Y'";
+            if ($idrow[$q->fieldname] == "Y") {$output .= " checked";}
+            $output .= " />".$clang->gT("Yes")."&nbsp;\n"
+            ."\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value='U'";
+            if ($idrow[$q->fieldname] == "U") {$output .= " checked";}
+            $output .= " />".$clang->gT("Uncertain")."&nbsp;\n"
+            ."\t<input type='radio' class='radiobtn' name='{$q->fieldname}' value='N'";
+            if ($idrow[$q->fieldname] == "N") {$output .= " checked";}
+            $output .= " />".$clang->gT("No")."&nbsp;\n"
+            ."</td>\n"
+            ."\t</tr>\n";
+            if(!$fname=next($fnames)) break;
+            $q=$fname['q'];
+        }
+        prev($fnames);
+        $output .= "</table>\n";
+        return $output;
+    }
+
     public function getExtendedAnswer($value, $language)
     {
         switch($value)

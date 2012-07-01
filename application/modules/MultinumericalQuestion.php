@@ -332,7 +332,14 @@ class MultinumericalQuestion extends QuestionModule
 
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $output = $this->sq.'&nbsp;';
+        $output .= CHtml::textField($this->fieldname, $idrow[$this->fieldname]);
+        return $output;
+    }
+
     protected function getChildren()
     {
         if ($this->children) return $this->children;
@@ -377,6 +384,7 @@ class MultinumericalQuestion extends QuestionModule
             $q->fieldname = $fieldname;
             $q->aid=$field['aid'];
             $q->question=$abrow['question'];
+            $q->sq=$abrow['question'];
             $field['q']=$q;
             $map[$fieldname]=$field;
         }

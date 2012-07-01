@@ -161,7 +161,30 @@ class CommentListQuestion extends ListQuestion
         }
         return $answer;
     }
-        
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $lquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language = '{$language}' ORDER BY sortorder, answer";
+        $lresult = dbExecuteAssoc($lquery);
+        $output = "\t<select name='{$this->fieldname}'>\n"
+        ."<option value=''";
+        if ($idrow[$this->fieldname] == "") {$output .= " selected='selected'";}
+        $output .= ">".$clang->gT("Please choose")."..</option>\n";
+
+        foreach ($lresult->readAll() as $llrow)
+        {
+            $output .= "<option value='{$llrow['code']}'";
+            if ($idrow[$this->fieldname] == $llrow['code']) {$output .= " selected='selected'";}
+            $output .= ">{$llrow['answer']}</option>\n";
+        }
+        $q=next($fnames);
+        $output .= "\t</select>\n"
+        ."\t<br />\n"
+        ."\t<textarea cols='45' rows='5' name='{$q->fieldname}'>"
+        .htmlspecialchars($idrow[$q->fieldname]) . "</textarea>\n";
+        return $output;
+    }
+  
     //public function getTitle() - inherited
     
     //public function getHelp() - inherited
@@ -169,15 +192,16 @@ class CommentListQuestion extends ListQuestion
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;
-        $map = parent::createFieldmap($type);
+        $map = QuestionModule::createFieldmap($type);
         $comment = $map[$this->fieldname];
         $comment['fieldname'].='comment';
         $comment['aid']='comment';
         $comment['subquestion']=$clang->gT("Comment");
         unset($comment['defaultvalue']);
-        $q = clone $this;
+        $q = clone $comment['q'];
         $q->fieldname .= 'comment';
         $q->aid='comment';
+        $q->sq=$clang->gT("Comment");
         unset($q->default);
         $comment['q']=$q;
         $comment['pq']=$this;

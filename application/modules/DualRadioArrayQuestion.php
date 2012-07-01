@@ -613,7 +613,9 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         }
         return $answer;
     }
-    
+
+    //public function getDataEntry($idrow, $fnames, $language) - inherited
+
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;
@@ -644,6 +646,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $q->fieldname = $fieldname;
             $q->aid = $field['aid'];
             $q->scale=0;
+            $q->sq=$abrow['question'];
             $field['q']=$q;
             $field2=$field;
             $fieldname2="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}#1";

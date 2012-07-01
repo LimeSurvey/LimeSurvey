@@ -133,7 +133,59 @@ class FileQuestion extends QuestionModule
         </script>';
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        $output = "<table>\n";
+        if ($fname['aid']!=='filecount' && isset($idrow[$this->fieldname . '_filecount']) && ($idrow[$this->fieldname . '_filecount'] > 0))
+        {//file metadata
+            $metadata = json_decode($idrow[$this->fieldname], true);
+            $qAttributes = $this->getAttributeValues();
+            for ($i = 0; $i < $qAttributes['max_num_of_files'], isset($metadata[$i]); $i++)
+            {
+                if ($qAttributes['show_title'])
+                    $output .= '<tr><td>Title    </td><td><input type="text" class="'.$this->fieldname.'" id="'.$this->fieldname.'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
+                if ($qAttributes['show_comment'])
+                    $output .= '<tr><td >Comment  </td><td><input type="text" class="'.$this->fieldname.'" id="'.$this->fieldname.'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>';
+
+                $output .= '<tr><td>        File name</td><td><input   class="'.$this->fieldname.'" id="'.$this->fieldname.'_name_'.$i.'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"]))    .'" /></td></tr>'
+                .'<tr><td></td><td><input type="hidden" class="'.$this->fieldname.'" id="'.$this->fieldname.'_size_'.$i.'" name="size" size=50 value="'.htmlspecialchars($metadata[$i]["size"])    .'" /></td></tr>'
+                .'<tr><td></td><td><input type="hidden" class="'.$this->fieldname.'" id="'.$this->fieldname.'_ext_'.$i.'" name="ext" size=50 value="'.htmlspecialchars($metadata[$i]["ext"])     .'" /></td></tr>'
+                .'<tr><td></td><td><input type="hidden"  class="'.$this->fieldname.'" id="'.$this->fieldname.'_filename_'.$i.'" name="filename" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["filename"]))    .'" /></td></tr>';
+            }
+            $output .= '<tr><td></td><td><input type="hidden" id="'.$this->fieldname.'" name="'.$this->fieldname.'" size=50 value="'.htmlspecialchars($idrow[$this->fieldname]).'" /></td></tr>';
+            $output .= '</table>';
+            $output .= '<script type="text/javascript">
+            $(function() {
+            $(".'.$this->fieldname.'").keyup(function() {
+            var filecount = $("#'.$this->fieldname.'_filecount").val();
+            var jsonstr = "[";
+            var i;
+            for (i = 0; i < filecount; i++)
+            {
+            if (i != 0)
+            jsonstr += ",";
+            jsonstr += \'{"title":"\'+$("#'.$this->fieldname.'_title_"+i).val()+\'",\';
+            jsonstr += \'"comment":"\'+$("#'.$this->fieldname.'_comment_"+i).val()+\'",\';
+            jsonstr += \'"size":"\'+$("#'.$this->fieldname.'_size_"+i).val()+\'",\';
+            jsonstr += \'"ext":"\'+$("#'.$this->fieldname.'_ext_"+i).val()+\'",\';
+            jsonstr += \'"filename":"\'+$("#'.$this->fieldname.'_filename_"+i).val()+\'",\';
+            jsonstr += \'"name":"\'+encodeURIComponent($("#'.$this->fieldname.'_name_"+i).val())+\'"}\';
+            }
+            jsonstr += "]";
+            $("#'.$this->fieldname.'").val(jsonstr);
+
+            });
+            });
+            </script>';
+        }
+        else
+        {//file count
+            $output .= '<input readonly id="'.$this->fieldname.'" name="'.$this->fieldname.'" value ="'.htmlspecialchars($idrow[$this->fieldname]).'" /></td></table>';
+        }
+        return $output;
+    }
+
     public function getFileValidationMessage()
     {
         global $filenotvalidated;

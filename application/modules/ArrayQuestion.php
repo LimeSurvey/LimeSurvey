@@ -47,6 +47,7 @@ abstract class ArrayQuestion extends QuestionModule
             $q->fieldname = $fieldname;
             $q->aid=$field['aid'];
             $q->question=$abrow['question'];
+            $q->sq=$abrow['question'];
             $field['q']=$q;
             $map[$fieldname]=$field;
         }

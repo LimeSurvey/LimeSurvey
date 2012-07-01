@@ -121,7 +121,7 @@ class browse extends Survey_Common_Action
         $aViewUrls = array();
 
         $fncount = 0;
-        $fieldmap = createFieldMap($iSurveyId, 'full', false, false, $aData['language']);
+        $fieldmap = createFieldMap($iSurveyId, 'full', false, false, $aData['language']); //AJS#
 
         //add token to top of list if survey is not private
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId))
@@ -137,45 +137,41 @@ class browse extends Survey_Common_Action
         foreach ($fieldmap as $field)
         {
             $q = $field['q'];
-            if ($q->fieldname == 'lastpage' ||
-            $q->fieldname == 'submitdate' ||
-            $q->fieldname == 'interview_time' ||
-            $q->fieldname == 'page_time' ||
-            $q->fieldname == 'answer_time')
+            if ($q->fieldname == 'lastpage' || $q->fieldname == 'submitdate')
                 continue;
 
-            $question = $field['question'];
-            if ($field['type'] != "|")
+            $question = $q->text;
+            if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
             {
-                if (isset($field['subquestion']) && $field['subquestion'] != '')
-                    $question .=' (' . $field['subquestion'] . ')';
-                if (isset($field['subquestion1']) && isset($field['subquestion2']))
-                    $question .=' (' . $field['subquestion1'] . ':' . $field['subquestion2'] . ')';
-                if (isset($field['scale_id']))
-                    $question .='[' . $field['scale'] . ']';
-                $fnames[] = array($field['fieldname'], $question);
+                if (isset($q->sq) && $q->sq != '')
+                    $question .=' (' . $q->sq . ')';
+                if (isset($q->sq1) && isset($q->sq2))
+                    $question .=' (' . $q->sq1 . ':' . $q->sq2 . ')';
+                if (isset($q->scale))
+                    $question .='[' . $q->scale . ']';
+                $fnames[] = array($q->fieldname, $question);
             }
             else
             {
-                if ($field['aid'] !== 'filecount')
+                if ($q->aid !== 'filecount')
                 {
-                    $qidattributes = getQuestionAttributeValues($field['qid']);
+                    $qidattributes = $q->getAttributeValues();
 
                     for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (Title)", "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Title)", "type" => "|", "metadata" => "title", "index" => $i);
 
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (File name)", "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (File size)", "type" => "|", "metadata" => "size", "index" => $i);
+                        $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File name)", "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File size)", "type" => "|", "metadata" => "size", "index" => $i);
                         //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
                 }
                 else
-                    $fnames[] = array($field['fieldname'], "File count");
+                    $fnames[] = array($q->fieldname, "File count");
             }
         }
 
@@ -299,13 +295,14 @@ class browse extends Survey_Common_Action
             $_POST['deleteanswer'] = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
             // delete the files as well if its a fuqt
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,Yii::app()->session['browselang']);
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,Yii::app()->session['browselang']); //AJS#
             $fuqtquestions = array();
             // find all fuqt questions
             foreach ($fieldmap as $field)
             {
-                if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
-                    $fuqtquestions[] = $field['fieldname'];
+                $q = $field['q'];
+                if (is_a($q, 'QuestionModule') && $q->fileUpload() && strpos($q->fieldname, "_filecount") == 0)
+                    $fuqtquestions[] = $q->fieldname;
             }
 
             if (!empty($fuqtquestions))
@@ -336,13 +333,14 @@ class browse extends Survey_Common_Action
             // Delete the marked responses - checked
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
             {
-                $fieldmap = createFieldMap($iSurveyId,'full',false,false,Yii::app()->session['browselang']);
+                $fieldmap = createFieldMap($iSurveyId,'full',false,false,Yii::app()->session['browselang']); //AJS#
                 $fuqtquestions = array();
                 // find all fuqt questions
                 foreach ($fieldmap as $field)
                 {
-                    if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
-                        $fuqtquestions[] = $field['fieldname'];
+                    $q = $field['q'];
+                    if (is_a($q, 'QuestionModule') && $q->fileUpload() && strpos($q->fieldname, "_filecount") == 0)
+                        $fuqtquestions[] = $q->fieldname;
                 }
 
                 foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
@@ -459,55 +457,48 @@ class browse extends Survey_Common_Action
             }
 
             $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
-            $fields = createFieldMap($iSurveyId, 'full', false, false, $aData['language']);
+            $fields = createFieldMap($iSurveyId, 'full', false, false, $aData['language']); //AJS#
 
             foreach ($fields as $fielddetails)
             {
-                if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
+                $q = $fielddetails['q'];
+                if ($q->fieldname == 'lastpage' ||
+                    $q->fieldname == 'submitdate' ||
+                    $q->fieldname == 'token')
                     continue;
 
-                $question = $fielddetails['question'];
-                if ($fielddetails['type'] != "|")
+                $question = $q->text;
+                if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
                 {
-                    if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
-                        continue;
-
-                    // no headers for time data
-                    if ($fielddetails['type'] == 'interview_time')
-                        continue;
-                    if ($fielddetails['type'] == 'page_time')
-                        continue;
-                    if ($fielddetails['type'] == 'answer_time')
-                        continue;
-                    if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
+                    if (isset($q->sq) && $q->sq != '')
                         $question .=' (' . $fielddetails['subquestion'] . ')';
-                    if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-                        $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
-                    if (isset($fielddetails['scale_id']))
-                        $question .='[' . $fielddetails['scale'] . ']';
-                    $fnames[] = array($fielddetails['fieldname'], $question);
+                    if (isset($q->sq1) && isset($q->sq2))
+                        $question .=' (' . $q->sq1 . ':' . $q->sq2 . ')';
+                    if (isset($q->scale))
+                        $question .='[' . $q->scale . ']';
+                    $fnames[] = array($q->fieldname, $question);
                 }
                 else
                 {
                     if ($fielddetails['aid'] !== 'filecount')
                     {
-                        $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
+                        $qidattributes = $q->getAttributeValues();
 
                         for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                         {
                             if ($qidattributes['show_title'] == 1)
-                                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
+                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
 
                             if ($qidattributes['show_comment'] == 1)
-                                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
 
-                            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
-                            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
-                            //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
+                            //$fnames[] = array($q->fieldname, "File ".($i+1)." - ".$q->text."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                         }
                     }
                     else
-                        $fnames[] = array($fielddetails['fieldname'], "File count");
+                        $fnames[] = array($q->fieldname, "File count");
                 }
             }
 
@@ -626,7 +617,7 @@ class browse extends Survey_Common_Action
             }
         }
 
-        $fields = createFieldMap($iSurveyId, 'full',true,false,$aData['language']);
+        $fields = createFieldMap($iSurveyId, 'full',true,false,$aData['language']); //AJS#
 
         $clang = $aData['clang'];
         $fnames = array('interviewtime' => $clang->gT('Total time'));
@@ -639,13 +630,6 @@ class browse extends Survey_Common_Action
                 if (!isset($fnames[$fieldname]))
                 {
                     $fnames[$fieldname]=$clang->gT('Group').": ".$q->group_name;
-                }
-
-                // field for time spent on answering a question
-                $fieldname="{$q->surveyid}X{$q->gid}X{$q->id}time";
-                if (!isset($fieldmap[$fieldname]))
-                {
-                    $fieldmap[$fieldname]=$clang->gT('Question').": ".$q->title.'Time';
                 }
             }
         }
@@ -856,13 +840,14 @@ class browse extends Survey_Common_Action
         $tmpdir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/";
 
         $filelist = array();
-        $fieldmap = createFieldMap($iSurveyId, 'full' ,false, false, Yii::app()->session['browselang']);
+        $fieldmap = createFieldMap($iSurveyId, 'full' ,false, false, Yii::app()->session['browselang']); //AJS#
 
         foreach ($fieldmap as $field)
         {
-            if ($field['type'] == "|" && $field['aid'] !== 'filecount')
+            $q = $field['q'];
+            if (is_a($q, 'QuestionModule') && $q->fileUpload() && $q->aid !== 'filecount')
             {
-                $filequestion[] = $field['fieldname'];
+                $filequestion[] = $q->fieldname;
             }
         }
 

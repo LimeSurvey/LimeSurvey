@@ -12,7 +12,13 @@ class EquationQuestion extends QuestionModule
 
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        return "\t<input type='text' name='{$this->fieldname}' value='"
+            .$idrow[$this->fieldname] . "' />\n";
+    }
+
     public function retrieveText()
     {
         return '<div class="em_equation">' . $this->text . '</div>';

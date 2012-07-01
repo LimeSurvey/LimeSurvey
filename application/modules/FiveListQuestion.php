@@ -127,7 +127,17 @@ class FiveListQuestion extends QuestionModule
         
         return $answer;
     }
-    
+
+    public function getDataEntry($idrow, &$fnames, $language)
+    {
+        for ($i=1; $i<=5; $i++)
+        {
+            $output .= CHtml::radioButton($this->fieldname, $idrow[$this->fieldname] == $i, array('class'=>'radiobtn', 'value'=>$i));
+            $output .= $i;
+        }
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","slider_rating","random_group");

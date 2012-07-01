@@ -12,21 +12,6 @@
 *
 *	$Id$
 */
-// Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
-
-//if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
-
-/*
-* $conditions element structure
-* $condition[n][0] => qid = question id
-* $condition[n][1] => cqid = question id of the target question, or 0 for TokenAttr leftOperand
-* $condition[n][2] => field name of element [1] (Except for type M or P)
-* $condition[n][3] => value to be evaluated on answers labeled.
-* $condition[n][4] => type of question
-* $condition[n][5] => SGQ code of element [1] (sub-part of [2])
-* $condition[n][6] => method used to evaluate
-* $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
-*/
 
 /**
 * setNoAnswerMode
@@ -204,7 +189,7 @@ function mandatory_message($q)
 
 /**
 *
-* @param <type> $ia
+* @param <type> $q
 * @param <type> $show - true if should initially be visible
 * @return <type>
 */
