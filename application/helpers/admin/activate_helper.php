@@ -219,12 +219,13 @@ function checkQuestions($postsid, $surveyid)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
     if (isset($fieldmap))
     {
         foreach($fieldmap as $fielddata)
         {
-            $fieldlist[]=$fielddata['fieldname'];
+            $q = $fielddata['q'];
+            $fieldlist[]=$q->fieldname;
         }
         $fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
     }
@@ -235,8 +236,8 @@ function checkQuestions($postsid, $surveyid)
     {
         foreach ($duplicates as $dup)
         {
-            $badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
-            $fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
+            $q = $fieldmap[$dup]['q'];
+            $fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$q->id."'>Click Here to Fix</a>]";
             $failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
         }
     }

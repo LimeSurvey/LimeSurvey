@@ -247,9 +247,51 @@ class FileQuestion extends QuestionModule
         return true;
     }
         
-    public function filterGET($value)
+    public function filter($value, $type)
     {
-        return NULL;
+        switch ($type)
+        {
+            case 'get':
+            return NULL;
+            case 'dataentry':
+            if (strpos($this->fieldname, '_filecount') && $value == "")
+            {
+                return NULL;
+            }
+            case 'db':
+            return $value;
+            case 'dataentryinsert':
+            if (!strpos($this->fieldname, "_filecount"))
+            {
+                $this->dataentry = json_decode(stripslashes($value));
+                $filecount = 0;
+
+                for ($i = 0; $filecount < count($this->dataentry); $i++)
+                {
+                    if ($_FILES[$q->fieldname."_file_".$i]['error'] != 4)
+                    {
+                        $target = Yii::app()->getConfig('uploaddir')."/surveys/". $this->surveyid ."/files/".randomChars(20);
+                        $size = 0.001 * $_FILES[$this->fieldname."_file_".$i]['size'];
+                        $name = rawurlencode($_FILES[$this->fieldname."_file_".$i]['name']);
+
+                        if (move_uploaded_file($_FILES[$this->fieldname."_file_".$i]['tmp_name'], $target))
+                        {
+                            $this->dataentry[$filecount]->filename = basename($target);
+                            $this->dataentry[$filecount]->name = $name;
+                            $this->dataentry[$filecount]->size = $size;
+                            $pathinfo = pathinfo($_FILES[$q->fieldname."_file_".$i]['name']);
+                            $phparray[$filecount]->ext = $pathinfo['extension'];
+                            $filecount++;
+                        }
+                    }
+                }
+                return ls_json_encode($this->dataentry);
+            }
+            else
+            {
+                return count($this->dataentry);
+            }
+        }
     }
                 
     public function getExtendedAnswer($value, $language)

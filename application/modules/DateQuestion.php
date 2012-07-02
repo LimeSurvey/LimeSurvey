@@ -244,27 +244,35 @@ class DateQuestion extends QuestionModule
         }
     }
 
-    public function filterGET($value)
+    public function filter($value, $type)
     {
-        global $thissurvey;
         if (trim($value)=="")
         {
             return NULL;
         }
-        else
+        switch ($type)
         {
+            case 'get':
+            global $thissurvey;
             $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
             $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
             return $datetimeobj->convert("Y-m-d");
+            case 'db':
+            return $value;
+            case 'dataentry':
+            case 'dataentryinsert':
+            global $thissurvey;
+            $qidattributes = $this->getAttributeValues();
+            $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
+
+            $items = array($value,$dateformatdetails['phpdate']);
+            $this->getController()->loadLibrary('Date_Time_Converter');
+            $datetimeobj = new date_time_converter($items) ;
+            //need to check if library get initialized with new value of constructor or not.
+
+            //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
+            return $datetimeobj->convert("Y-m-d H:i:s");
         }
-    }
-        
-    public function prepareValue($value)
-    {
-        if (trim($val)=='') {
-            return NULL;
-        }
-        return $value;
     }
     
     public function getExtendedAnswer($value, $language)

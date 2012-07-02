@@ -1032,14 +1032,16 @@ class question extends Survey_Common_Action
 
         // Use $_SESSION instead of $this->session for frontend features.
         $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
-        $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language);
+        $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language); //AJS#
 
 
         // Prefill question/answer from defaultvalues
         foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $field)
-            if (isset($field['defaultvalue']))
-                $_SESSION['survey_'.$surveyid][$field['fieldname']] = $field['defaultvalue'];
-
+        {
+            $q = $field['q'];
+            if (isset($q->default))
+                $_SESSION['survey_'.$surveyid][$q->fieldname] = $q->default;
+        }
         $clang = new limesurvey_lang($language);
 
         $thissurvey = getSurveyInfo($surveyid);

@@ -47,7 +47,7 @@ class limereplacementfields extends Survey_Common_Action
             }
 
             //2: Get all other questions that occur before this question that are pre-determined answer types
-            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
             $surveyInfo = getSurveyInfo($surveyid);
             $surveyformat = $surveyInfo['format']; // S, G, A
@@ -73,19 +73,20 @@ class limereplacementfields extends Survey_Common_Action
 
     private function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
     {
-        $previousQuestion = null;
+        $previousQ = null;
         $isPreviousPageQuestion = true;
         $questionList = array();
 
         foreach ($fieldmap as $question)
         {
-            if (empty($question['qid'])) {
+            $q = $question['q'];
+            if (!isset($q->id)) {
                 continue;
             }
 
-            if ($this->_shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
-                $isPreviousPageQuestion = $this->_addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
-                $previousQuestion = $question;
+            if ($this->_shouldAddQuestion($action, $gid, $qid, $q, $previousQ)) {
+                $isPreviousPageQuestion = $this->_addQuestionToList($action, $gid, $q, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
+                $previousQ = $q;
             }
             else
             {
@@ -95,7 +96,7 @@ class limereplacementfields extends Survey_Common_Action
         return $questionList;
     }
 
-    private function _shouldAddQuestion($action, $gid, $qid, array $question, $previousQuestion)
+    private function _shouldAddQuestion($action, $gid, $qid, array $q, $previousQ)
     {
         switch ($action)
         {
@@ -109,7 +110,7 @@ class limereplacementfields extends Survey_Common_Action
                     safeDie("No GID provided.");
                 }
 
-                if ($question['gid'] == $gid) {
+                if ($q->gid == $gid) {
                     return false;
                 }
                 return true;
@@ -119,7 +120,7 @@ class limereplacementfields extends Survey_Common_Action
                     safeDie("No GID provided.");
                 }
 
-                if (!is_null($previousQuestion) && $previousQuestion['gid'] == $gid && $question['gid'] != $gid ) {
+                if (!is_null($previousQ) && $previousQ->gid == $gid && $q->gid != $gid ) {
                     return false;
                 }
                 return true;
@@ -136,7 +137,7 @@ class limereplacementfields extends Survey_Common_Action
                     safeDie("No QID provided.");
                 }
 
-                if ($question['gid'] == $gid && $question['qid'] == $qid) {
+                if ($q->gid == $gid && $q->id == $qid) {
                    return false;
                 }
                 return true;
@@ -148,7 +149,7 @@ class limereplacementfields extends Survey_Common_Action
         }
     }
 
-    private function _addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
+    private function _addQuestionToList($action, $gid, $q, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
     {
         if ($action == 'tokens' && $questionType == 'email-conf' || $surveyformat == "S") {
             $isPreviousPageQuestion = true;
@@ -156,7 +157,7 @@ class limereplacementfields extends Survey_Common_Action
         elseif ($surveyformat == "G")
         {
             if ($isPreviousPageQuestion === true) { // Last question was on a previous page
-                if ($field["gid"] == $gid) { // This question is on same page
+                if ($q->gid == $gid) { // This question is on same page
                     $isPreviousPageQuestion = false;
                 }
             }
@@ -166,7 +167,8 @@ class limereplacementfields extends Survey_Common_Action
             $isPreviousPageQuestion = false;
         }
 
-        $questionList[] = array_merge($field, Array("previouspage" => $isPreviousPageQuestion));
+        $q->previouspage = $isPreviousPageQuestion;
+        $questionList[] = $q;
 
         return $isPreviousPageQuestion;
     }
@@ -175,22 +177,20 @@ class limereplacementfields extends Survey_Common_Action
     {
         $cquestions = array();
 
-        foreach ($questions as $row)
+        foreach ($questions as $q)
         {
-            $question = $row['question'];
-
-            if (isset($row['subquestion'])) {
-                $question = "[{$row['subquestion']}] " . $question;
+            if (isset($q->sq)) {
+                $text = "[{$q->sq}] " . $q->text;
             }
-            if (isset($row['subquestion1'])) {
-                $question = "[{$row['subquestion1']}] " . $question;
+            if (isset($q->sq1)) {
+                $text = "[{$q->sq1}] " . $q->text;
             }
-            if (isset($row['subquestion2'])) {
-                $question = "[{$row['subquestion2']}] " . $question;
+            if (isset($q->sq2)) {
+                $text = "[{$q->sq2}] " . $q->text;
             }
 
-            $shortquestion = $row['title'] . ": " . flattenText($question);
-            $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage']);
+            $shortquestion = $q->title . ": " . flattenText($text);
+            $cquestions[] = array($shortquestion, $q->id, $q->fieldname, $q->previouspage);
         }
         return $cquestions;
     }

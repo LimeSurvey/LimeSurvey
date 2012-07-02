@@ -70,16 +70,12 @@
                         foreach ($cquestions as $cqn)
                         {
                             $isDisabled="";
-                            if (in_array($cqn[2],$InsertansUnsupportedtypes))
-                            {
-                                $isDisabled=" disabled='disabled'";
-                            }
-                            elseif ($cqn[4] === false)
+                            elseif ($cqn[3] === false)
                             {
                                 $isDisabled=" disabled='disabled'";
                             }
                         ?>
-                        <option value='INSERTANS:<?php echo $cqn[3];?>' title='<?php echo $cqn[0];?>' <?php echo $isDisabled;?>><?php echo $cqn[0];?></option>
+                        <option value='INSERTANS:<?php echo $cqn[2];?>' title='<?php echo $cqn[0];?>' <?php echo $isDisabled;?>><?php echo $cqn[0];?></option>
                         <?php
                         }
                     ?>

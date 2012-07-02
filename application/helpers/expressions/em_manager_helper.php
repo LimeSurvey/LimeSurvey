@@ -4215,7 +4215,7 @@
                     if(isset($value['q']))
                     {
                         $q = $value['q'];
-                        $val = $q->prepareValue($val);
+                        $val = $q->filter($val, 'db');
                     }
                     else //AJS
                     {

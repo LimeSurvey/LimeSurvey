@@ -394,9 +394,9 @@ class CheckQuestion extends QuestionModule
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
             $field['preg']=$this->preg;
-            if(isset($this->default) && isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
             $field['pq']=$this;
             $q = clone $this;
+            if(isset($this->default) && isset($this->default[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->default[$abrow['qid']];
             $q->fieldname = $fieldname;
             $q->aid=$field['aid'];
             $q->question=$abrow['question'];
@@ -412,12 +412,15 @@ class CheckQuestion extends QuestionModule
             $other['aid']='other';
             $other['subquestion']=$clang->gT("Other");
             $other['other']=$this->other;
-            if (isset($this->default) && isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
-            else unset($other['defaultvalues']);
             $q = clone $this;
+            if (isset($this->default) && isset($this->default['other'])) $q->default=$other['defaultvalue']=$this->default['other'];
+            else
+            {
+                unset($other['defaultvalues']);
+                unset($q->default);
+            }
             $q->fieldname .= 'other';
             $q->aid = 'other';
-            $q->default = isset($other['defaultvalues'])?$other['defaultvalues']:null;
             $other['q']=$q;
             $other['pq']=$this;
             $map[$other['fieldname']]=$other;

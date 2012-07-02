@@ -2046,30 +2046,6 @@ function hasFileUploadQuestion($surveyid) {
 }
 
 /**
-* put your comment there...
-*
-* @param mixed $needle
-* @param mixed $haystack
-* @param mixed $keyname
-* @param mixed $maxanswers
-*/
-function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
-    $output=array();
-    foreach($haystack as $hay) {
-        if (array_key_exists($keyname, $hay)) {
-            if ($hay[$keyname] == $needle) {
-                if ($maxanswers == 1) {
-                    return $hay;
-                } else {
-                    $output[]=$hay;
-                }
-            }
-        }
-    }
-    return $output;
-}
-
-/**
 * set the rights of a user and his children
 *
 * @param int $uid the user id

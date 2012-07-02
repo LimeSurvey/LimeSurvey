@@ -172,7 +172,7 @@ class dataentry extends Survey_Common_Action
         $aFieldnames = array_map('dbQuoteID', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
-        $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+        $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
         foreach ($aFileContents as $row)
         {
@@ -190,7 +190,7 @@ class dataentry extends Survey_Common_Action
                     {
                         $q = $fieldmap[$cutname]['q'];
                         if (is_a($q, 'QuestionModule'))
-                            $fielddata[$fieldname] = $q->prepareValue($fielddatum);
+                            $fielddata[$fieldname] = $q->filter($fielddatum, 'db');
                     }
                 }
 
@@ -526,7 +526,7 @@ class dataentry extends Survey_Common_Action
             $fnames['completed'] = array('fieldname'=>"completed", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
             $fnames['completed']['q'] = array2Object($fnames['completed']);
 
-            $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage));
+            $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage)); //AJS#
 
             //SHOW INDIVIDUAL RECORD
 
@@ -756,73 +756,51 @@ class dataentry extends Survey_Common_Action
 
             $aDataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
 
-            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
             $thissurvey = getSurveyInfo($surveyid);
             $updateqr = "UPDATE $surveytable SET \n";
 
             foreach ($fieldmap as $irow)
             {
-                $fieldname=$irow['fieldname'];
-                if ($fieldname=='id') continue;
-                if (isset($_POST[$fieldname]))
+                $q = $irow['q'];
+                if ($q->fieldname=='id') continue;
+                if (isset($_POST[$q->fieldname]))
                 {
-                    $thisvalue=$_POST[$fieldname];
+                    $thisvalue=$_POST[$q->fieldname];
                 }
                 else
                 {
                     $thisvalue="";
                 }
-                if ($irow['type'] == 'lastpage')
+
+                if ($q->fieldname == 'lastpage')
                 {
                     $thisvalue=0;
                 }
-                elseif ($irow['type'] == 'D')
-                {
-                    if ($thisvalue == "")
-                    {
-                        $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
-                    }
-                    else
-                    {
-                        $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
-                        $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
-
-                        $items = array($thisvalue,$dateformatdetails['phpdate']);
-                        $this->getController()->loadLibrary('Date_Time_Converter');
-                        $datetimeobj = new date_time_converter($items) ;
-                        //need to check if library get initialized with new value of constructor or not.
-
-                        //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
-                        $updateqr .= $fieldname." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";// dbQuoteID($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
-                    }
-                }
-                elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
-                {
-                    $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
-                }
-                elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
-                {
-                    $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
-                }
-                elseif ($irow['type'] == 'submitdate')
+                elseif ($q->fieldname == 'submitdate')
                 {
                     if (isset($_POST['completed']) && ($_POST['completed']== "N"))
                     {
-                        $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= $q->fieldname." = NULL, \n"; //dbQuoteID($q->fieldname)." = NULL, \n";
                     }
                     elseif (isset($_POST['completed']) && $thisvalue=="")
                     {
-                        $updateqr .= $fieldname." = '" . $_POST['completed'] . "', \n";// dbQuoteID($fieldname)." = " . dbQuoteAll($_POST['completed'],true) . ", \n";
+                        $updateqr .= $q->fieldname." = '" . $_POST['completed'] . "', \n";// dbQuoteID($q->fieldname)." = " . dbQuoteAll($_POST['completed'],true) . ", \n";
                     }
                     else
                     {
-                        $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; //dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
+                        $updateqr .= $q->fieldname." = '" . $thisvalue . "', \n"; //dbQuoteID($q->fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
                     }
+                }
+                elseif(!is_a($q, 'QuestionModule'))
+                {
+                    $thisvalue = $q->filter($thisvalue, 'dataentry');
+                    $updateqr .= $q->fieldname . ' = ' . $thisvalue == null ? 'NULL' : $thisvalue . ', \n';
                 }
                 else
                 {
-                    $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; // dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
+                    $updateqr .= $q->fieldname." = '" . $thisvalue . "', \n"; // dbQuoteID($q->fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);
@@ -987,7 +965,7 @@ class dataentry extends Survey_Common_Action
 
                     //BUILD THE SQL TO INSERT RESPONSES
                     $baselang = Survey::model()->findByPk($surveyid)->language;
-                    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+                    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
                     $insert_data = array();
 
                     $_POST['startlanguage'] = $baselang;
@@ -1006,61 +984,15 @@ class dataentry extends Survey_Common_Action
 
                     foreach ($fieldmap as $irow)
                     {
-                        $fieldname = $irow['fieldname'];
-                        if (isset($_POST[$fieldname]))
+                        $q = $irow['q'];
+                        if (isset($_POST[$q->fieldname]))
                         {
-                            if ($_POST[$fieldname] == "" && ($irow['type'] == 'D' || $irow['type'] == 'N' || $irow['type'] == 'K'))
-                            { // can't add '' in Date column
-                                // Do nothing
-                            }
-                            else if ($irow['type'] == '|')
-                                {
-                                    if (!strpos($irow['fieldname'], "_filecount"))
-                                    {
-                                        $json = $_POST[$fieldname];
-                                        $phparray = json_decode(stripslashes($json));
-                                        $filecount = 0;
-
-                                        for ($i = 0; $filecount < count($phparray); $i++)
-                                        {
-                                            if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
-                                            {
-                                                $target = Yii::app()->getConfig('uploaddir')."/surveys/". $thissurvey['sid'] ."/files/".randomChars(20);
-                                                $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
-                                                $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
-
-                                                if (move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target))
-                                                {
-                                                    $phparray[$filecount]->filename = basename($target);
-                                                    $phparray[$filecount]->name = $name;
-                                                    $phparray[$filecount]->size = $size;
-                                                    $pathinfo = pathinfo($_FILES[$fieldname."_file_".$i]['name']);
-                                                    $phparray[$filecount]->ext = $pathinfo['extension'];
-                                                    $filecount++;
-                                                }
-                                        }
-                                    }
-
-                                    $insert_data[$fieldname] = ls_json_encode($phparray);
-
-                                }
-                                else
-                                {
-                                    $insert_data[$fieldname] = count($phparray);
-                                }
-                            }
-                            elseif ($irow['type'] == 'D')
-                            {
-                                Yii::app()->loadLibrary('Date_Time_Converter');
-                                $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
-                                $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
-                                $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
-                                $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
-                            }
+                            $q = $irow['q'];
+                            if (is_a($q, 'QuestionModule'))
+                                $data = $q->filter($_POST[$q->fieldname], 'dataentryinsert');
                             else
-                            {
-                                $insert_data[$fieldname] = $_POST[$fieldname];
-                            }
+                                $data = $_POST[$q->fieldname];
+                            if ($data!==null) $insert_data[$q->fieldname] = $data;
                         }
                     }
 

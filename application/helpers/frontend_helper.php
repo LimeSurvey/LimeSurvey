@@ -1928,7 +1928,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             if (isset($_GET[$field]) && $field!='token')
             {
                 $q = $fieldmap[$field]['q'];
-                $value = $q->filterGET($_GET[$field]);
+                $value = $q->filter($_GET[$field], 'get');
                 if (!is_null($value))
                 {
                     $_SESSION['survey_'.$surveyid][$field] = $value;

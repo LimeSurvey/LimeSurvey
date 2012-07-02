@@ -378,9 +378,10 @@ class MultinumericalQuestion extends QuestionModule
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
             $field['preg']=$this->preg;
-            if(isset($this->default) && isset($this->default[$abrow['qid']])) $field['defaultvalue']=$this->default[$abrow['qid']];
+
             $field['pq']=$this;
             $q = clone $this;
+            if(isset($this->default) && isset($this->default[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->default[$abrow['qid']];
             $q->fieldname = $fieldname;
             $q->aid=$field['aid'];
             $q->question=$abrow['question'];
@@ -391,22 +392,20 @@ class MultinumericalQuestion extends QuestionModule
         return $map;
     }
         
-    public function filterGET($value)
+    public function filter($value, $type)
     {
-        if (trim($value)=="") {
+        if (trim($value)=='') {
             return NULL;
         }
-        else {
+        switch ($type)
+        {
+            case 'get':
             return sanitize_float($value);
+            case 'db':
+            case 'dataentry':
+            case 'dataentryinsert':
+            return $value;
         }
-    }
-        
-    public function prepareValue($value)
-    {
-        if (trim($val)=='') {
-            return NULL;
-        }
-        return $value;
     }
         
     public function loadAnswer($value)

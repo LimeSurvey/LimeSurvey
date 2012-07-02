@@ -161,8 +161,9 @@ abstract class QuestionModule
         $map['usedinconditions']=$this->usedinconditions;
         $map['questionSeq']=$this->questioncount;
         $map['groupSeq']=$this->groupcount;
-        if(isset($this->default) && isset($this->default[0])) $map['defaultvalue']=$this->default[0];
-        $map['q']=$this;
+        $q = clone $this;
+        if(isset($this->default) && isset($this->default[0])) $q->default=$map['defaultvalue']=$this->default[0];
+        $map['q']=$q;
         $map['pq']=$this;
         return array($this->fieldname=>$map);
     }
@@ -172,12 +173,7 @@ abstract class QuestionModule
         return false;
     }
     
-    public function filterGET($value)
-    {
-        return $value;
-    }
-        
-    public function prepareValue($value)
+    public function filter($value, $type)
     {
         return $value;
     }

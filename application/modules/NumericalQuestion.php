@@ -95,22 +95,21 @@ class NumericalQuestion extends QuestionModule
         ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
     }
 
-    public function filterGET($value)
+    public function filter($value, $type)
     {
-        if (trim($value)=="") {
+        if (trim($value)=="")
+        {
             return NULL;
         }
-        else {
+        switch ($type)
+        {
+            case 'get':
             return sanitize_float($value);
+            case 'db':
+            case 'dataentry':
+            case 'dataentryinsert':
+            return $value;
         }
-    }
-        
-    public function prepareValue($value)
-    {
-        if (trim($val)=='') {
-            return NULL;
-        }
-        return $value;
     }
     
     public function loadAnswer($value)

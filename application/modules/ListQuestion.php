@@ -360,9 +360,13 @@ class ListQuestion extends QuestionModule
             $other['fieldname'].='other';
             $other['aid']='other';
             $other['subquestion']=$clang->gT("Other");
-            if (isset($this->default) && isset($this->default['other'])) $other['defaultvalue']=$this->default['other'];
-            else unset($other['defaultvalue']);
             $q = clone $this;
+            if (isset($this->default) && isset($this->default['other'])) $q->default=$other['defaultvalue']=$this->default['other'];
+            else
+            {
+                unset($other['defaultvalues']);
+                unset($q->default);
+            }
             $q->fieldname .= 'other';
             $q->aid = 'other';
             $q->sq=$clang->gT("Other");

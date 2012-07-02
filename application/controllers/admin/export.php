@@ -188,7 +188,7 @@ class export extends Survey_Common_Action {
         if ( ! $exportstyle )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $excesscols = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            $excesscols = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
             $excesscols = array_keys($excesscols);
 
             $afieldcount = count($excesscols);
@@ -926,7 +926,7 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
             $surveytable = "{{survey_$iSurveyID}}";
 
             Survey::model()->findByPk($iSurveyID)->language;
@@ -938,15 +938,14 @@ class export extends Survey_Common_Action {
             $secondline = "";
             foreach ( $fieldnames as $field )
             {
-                $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
-
-                if ( count($fielddata) < 1 )
+                if (!array_key_exists($field, $fieldmap))
                 {
                     $firstline .= $field;
                 }
                 else
                 {
-                    $firstline.=preg_replace('/\s+/', ' ', strip_tags($fielddata['question']));
+                    $q = $fieldmap[$field]['q'];
+                    $firstline.=preg_replace('/\s+/', ' ', strip_tags($q->text));
                 }
                 $firstline .= $s;
                 $secondline .= $field.$s;
