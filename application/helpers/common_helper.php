@@ -3705,6 +3705,19 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT('Relevance equation'));
     */
 
+    $qattributes["showpopups"]=array(
+    "types"=>"R",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>110,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+    "caption"=>$clang->gT('Show javascript alert'),
+    "help"=>$clang->gT('Show an alert if answers exceeds the number of max answers'));
+
+
+
     $qattributes["parent_order"]=array(
     "types"=>"!ABCEFHKLMOPQRWZ1:;",
     'category'=>$clang->gT('Display'),

@@ -3106,7 +3106,7 @@
                 switch($type)
                 {
                     case 'R': //RANKING STYLE
-                        $jsVarName_on = 'fvalue_' . $fieldNameParts[2];
+                        $jsVarName_on = 'answer' . $sgqa;
                         $jsVarName = 'java' . $sgqa;
                         break;
                     case 'D': //DATE

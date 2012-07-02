@@ -2049,18 +2049,14 @@ function do_ranking($ia)
 {
     // note to self: this function needs to define:
     // inputnames, answer, among others
-    global $thissurvey, $showpopups;
-
-    // the future string that goes into the answer segment of templates
-    $answer = '';
-
+    global $thissurvey;
+    
     $clang=Yii::app()->lang;
     $imageurl = Yii::app()->getConfig("imageurl");
 
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
-    $answer = '';
     if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
     } else {
@@ -2071,204 +2067,71 @@ function do_ranking($ia)
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
         $max_answers=trim($aQuestionAttributes["max_answers"]);
-        $max_ans_val = LimeExpressionManager::ProcessString('{'.$max_answers.'}',$ia[0]);
-        if (!is_numeric($max_ans_val))  // this happens when try to do dynamic max ranking values and the starting value is blank
-        {
-            $max_ans_val = $anscount;
-        }
     } else {
         $max_answers=$anscount;
-        $max_ans_val = $anscount;
     }
     if (trim($aQuestionAttributes["min_answers"])!='')
     {
-        $min_answers = trim($aQuestionAttributes["min_answers"]);
+        $min_answers=trim($aQuestionAttributes["min_answers"]);
+    } else {
+        $min_answers=0;
     }
-    else
-    {
-        $min_answers = 0;
-    }
-
-    $answer .= "\t<script type='text/javascript'>\n"
-    . "\t<!--\n"
-    . "function rankthis_{$ia[0]}(\$code, \$value)\n"
-    . "\t{\n"
-    . "\t\$index=document.getElementById('CHOICES_{$ia[0]}').selectedIndex;\n"
-    . "\tvar _maxans = $.trim(LEMstrip_tags($('#RANK_{$ia[0]}_maxans').html()));\n"
-    . "\tvar _minans = $.trim(LEMstrip_tags($('#RANK_{$ia[0]}_minans').html()));\n"
-    . "\tvar maxval = (LEMempty(_maxans) ? $anscount : Math.floor(_maxans));\n"
-    . "\tif (($anscount - document.getElementById('CHOICES_{$ia[0]}').options.length) >= maxval) {\n"
-    . "\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n"
-    . "\t\tdocument.getElementById('CHOICES_{$ia[0]}').selectedIndex=-1;\n"
-    . "\t\treturn true;\n"
-    . "\t}\n"
-    . "\tfor (i=1; i<=maxval; i++)\n"
-    . "{\n"
-    . "\$b=i;\n"
-    . "\$b += '';\n"
-    . "\$inputname=\"RANK_{$ia[0]}\"+\$b;\n"
-    . "\$hiddenname=\"fvalue_{$ia[0]}\"+\$b;\n"
-    . "\$cutname=\"cut_{$ia[0]}\"+i;\n"
-    . "document.getElementById(\$cutname).style.display='none';\n"
-    . "if (!document.getElementById(\$inputname).value)\n"
-    . "\t{\n"
-    . "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n"
-    . "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n"
-    . "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n"
-    . "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_{$ia[0]}').options.length-1; b>=0; b--)\n"
-    . "\t\t\t\t\t\t\t\t{\n"
-    . "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options[b].value == \$code)\n"
-    . "\t\t\t\t\t\t\t\t\t{\n"
-    . "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[b] = null;\n"
-    . "\t\t\t\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\t\t\ti=maxval;\n"
-    . "\t\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length == ($anscount - maxval))\n"
-    . "\t\t\t\t\t\t{\n"
-    . "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n"
-    . "\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').selectedIndex=-1;\n"
-    . "\t\t\t\t\t$checkconditionFunction(\$code);\n"
-    . "\t\t\t\t\t}\n"
-    . "\t\t\t\tfunction deletethis_{$ia[0]}(\$text, \$value, \$name, \$thisname)\n"
-    . "\t\t\t\t\t{\n"
-    . "\t\t\t\t\tvar qid='{$ia[0]}';\n"
-    . "\t\t\t\t\tvar lngth=qid.length+4;\n"
-    . "\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n"
-    . "\t\t\t\t\tcutindex=parseFloat(cutindex);\n"
-    . "\t\t\t\t\tdocument.getElementById(\$name).value='';\n"
-    . "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n"
-    . "\t\t\t\t\tif (cutindex > 1)\n"
-    . "\t\t\t\t\t\t{\n"
-    . "\t\t\t\t\t\t\$cut1name=\"cut_{$ia[0]}\"+(cutindex-1);\n"
-    . "\t\t\t\t\t\t\$cut2name=\"fvalue_{$ia[0]}\"+(cutindex);\n"
-    . "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n"
-    . "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n"
-    . "\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\telse\n"
-    . "\t\t\t\t\t\t{\n"
-    . "\t\t\t\t\t\t\$cut2name=\"fvalue_{$ia[0]}\"+(cutindex);\n"
-    . "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n"
-    . "\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\tvar i=document.getElementById('CHOICES_{$ia[0]}').options.length;\n"
-    . "\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[i] = new Option(\$text, \$value);\n"
-    . "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length > 0)\n"
-    . "\t\t\t\t\t\t{\n"
-    . "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=false;\n"
-    . "\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\t$checkconditionFunction('');\n"
-    . "\t\t\t\t\t}\n"
-    . "\t\t\t//-->\n"
-    . "\t\t\t</script>\n";
-    unset($answers);
-    //unset($inputnames);
-    unset($chosen);
-    $ranklist = '';
-
-    foreach ($ansresult->readAll() as $ansrow)
-    {
-        $answers[] = array($ansrow['code'], $ansrow['answer']);
-    }
-    $existing=0;
+    $answer = '';
+    // First start by a ranking without javascript : just a list of select box 
+    // construction select box
+    $answers= array();
+        foreach ($ansresult->readAll() as $ansrow)
+        {
+            $answers[] = $ansrow;
+        }
+    $answer .= '<div class="ranking-answers">
+    <ul class="answers-list select-list">';
     for ($i=1; $i<=$anscount; $i++)
     {
         $myfname=$ia[1].$i;
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
+        $answer .= "\n<li class=\"select-item\"><select name=\"{$myfname}\" id=\"answer{$myfname}\">";
+        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
         {
-            $existing++;
+            $answer .= "\t<option value=\"\"".SELECTED.">".$clang->gT('Please choose...')."</option>\n";
         }
-    }
-    for ($i=1; $i<=floor($max_ans_val); $i++)
-    {
-        $myfname = $ia[1].$i;
-        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+        foreach ($answers as $ansrow)
         {
-            foreach ($answers as $ans)
-            {
-                if ($ans[0] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
+            $thisvalue="";
+            $answer .="\t<option value=\"{$ansrow['code']}\"";
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
                 {
-                    $thiscode = $ans[0];
-                    $thistext = $ans[1];
+                    $answer .= SELECTED;
+                    $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                 }
-            }
+            $answer .=">".htmlspecialchars($ansrow['answer'], ENT_QUOTES)."</option>\n";
         }
-        $ranklist .= "\t<tr><td class=\"position\">&nbsp;<label for='RANK_{$ia[0]}$i'>"
-        ."$i:&nbsp;</label></td><td class=\"item\"><input class=\"text\" type=\"text\" name=\"RANK_{$ia[0]}$i\" id=\"RANK_{$ia[0]}$i\"";
-        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            $ranklist .= " value='";
-            $ranklist .= htmlspecialchars($thistext, ENT_QUOTES);
-            $ranklist .= "'";
-        }
-        $ranklist .= " onfocus=\"this.blur()\" />\n";
-        $ranklist .= "<input type=\"hidden\" name=\"$myfname\" id=\"fvalue_{$ia[0]}$i\" value='";
-        $chosen[]=""; //create array
-        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            $ranklist .= $thiscode;
-            $chosen[]=array($thiscode, $thistext);
-        }
-        $ranklist .= "' />\n";
-        $ranklist .= "<img src=\"$imageurl/cut.gif\" alt=\"".$clang->gT("Remove this item")."\" title=\"".$clang->gT("Remove this item")."\" ";
-        if ($i != $existing)
-        {
-            $ranklist .= "style=\"display:none\"";
-        }
-        $ranklist .= " id=\"cut_{$ia[0]}$i\" onclick=\"deletethis_{$ia[0]}(document.getElementById('RANK_{$ia[0]}$i').value, document.getElementById('fvalue_{$ia[0]}$i').value, document.getElementById('RANK_{$ia[0]}$i').name, this.id)\" /><br />\n";
+        $answer .="</select>";
+        // Hidden form: maybe can be replaced with ranking.js
+        $answer .="<input type=\"hidden\" id=\"java{$myfname}\" disabled=\"disabled\" value=\"{$thisvalue}\"/>";
+        // TODO put some div for $ansrow['answer'] with HTML
+        $answer .="</li>";
         $inputnames[]=$myfname;
-        $ranklist .= "</td></tr>\n";
     }
+    $answer .="</ul>"
+        . "<div style='display:none' id='ranking-{$ia[0]}-maxans'>{".$max_answers."}</div>"
+        . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
+        . "</div>";
 
-    $maxselectlength=0;
-    $choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
-    if (isset($choicewidth)) {$choicelist.=$choicewidth;}
+    header_includes("ranking.js");
+    header_includes("ranking.css","css");
 
-    $choicelist .= " id=\"CHOICES_{$ia[0]}\" onchange=\"if (this.options.length>0 && this.selectedIndex<0) { this.options[this.options.length-1].selected=true; }; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
-
-    foreach ($answers as $ans)
-    {
-        if (!in_array($ans, $chosen))
-        {
-            $choicelist .= "\t\t\t\t\t\t\t<option id='javatbd{$ia[1]}{$ans[0]}' value='{$ans[0]}'>{$ans[1]}</option>\n";
-        }
-        if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
-    }
-    $choicelist .= "</select>\n";
-
-    $answer .= "\t<table border='0' cellspacing='0' class='rank'>\n"
-    . "<tr>\n"
-    . "\t<td align='left' valign='top' class='rank label'>\n"
-    . "<strong>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>".$clang->gT("Your Choices").":</label></strong><br />\n"
-    . "&nbsp;".$choicelist
-    . "\t&nbsp;</td>\n";
-    $maxselectlength=$maxselectlength+2;
-    if ($maxselectlength > 60)
-    {
-        $maxselectlength=60;
-    }
-    $ranklist = str_replace("<input class=\"text\"", "<input size='{$maxselectlength}' class='text'", $ranklist);
-    $answer .= "\t<td style=\"text-align:left; white-space:nowrap;\" class='rank output'>\n"
-        . "\t<table border='0' cellspacing='1' cellpadding='0'>\n"
-        . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong>"
-        . "<div style='display:none' id='RANK_{$ia[0]}_maxans'>{".$max_answers."}</div>"
-        . "<div style='display:none' id='RANK_{$ia[0]}_minans'>{".$min_answers."}</div>"
-        . "</td></tr>\n";
-
-    $answer .= $ranklist
-    . "\t</table>\n"
-    . "\t</td>\n"
-    . "</tr>\n"
-    . "<tr>\n"
-    . "\t<td colspan='2' class='rank helptext'>\n"
-    . "".$clang->gT("Click on the scissors next to each item on the right to remove the last entry in your ranked list")
-    . "\t</td>\n"
-    . "</tr>\n"
-    . "\t</table>\n";
-
+    $answer .= "<script type='text/javascript'>\n"
+    . "  <!--\n"
+    . "var translt = {
+             choicetitle: '".$clang->gT("Your Choices",'js')."',
+             ranktitle: '".$clang->gT("Your Ranking",'js')."',
+            };\n"
+    ." doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]});\n"
+    ." -->\n"
+    ."</script>\n";
     return array($answer, $inputnames);
 }
+
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
