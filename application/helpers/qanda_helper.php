@@ -2852,7 +2852,7 @@ function do_file_upload($ia)
              returnTxt: '" . $clang->gT('Return to survey','js') . "',
              headTitle: '" . $clang->gT('Title','js') . "',
              headComment: '" . $clang->gT('Comment','js') . "',
-             headFileName: '" . $clang->gT('File name','js') . "',
+             headFileName: '" . $clang->gT('File name','js') . "'
             };
     </script>\n";
 
