@@ -3788,7 +3788,10 @@
             $parts = explode('.',$varname);
             $qroot = '';
             $suffix = '';
+            $sqpatts = array();
+            $nosqpatts = array();
             $sqpatt = '';
+            $nosqpatt = '';
             $comments = '';
 
             if ($parts[0] == 'self')
@@ -3808,45 +3811,42 @@
                     return $varname;
                 }
             }
+            array_shift($parts);
 
-            if (count($parts) > 3)
+            if (count($parts) > 0)
             {
-                return $varname;    // invalid
-            }
-            if (count($parts) == 3)
-            {
-                if (preg_match('/^' . ExpressionManager::$RDP_regex_var_attr . '$/',$parts[2]))
+                if (preg_match('/^' . ExpressionManager::$RDP_regex_var_attr . '$/',$parts[count($parts)-1]))
                 {
-                    $suffix = '.' . $parts[2];
-                }
-                else
-                {
-                    return $varname;    // invalid
+                    $suffix = '.' . $parts[count($parts)-1];
+                    array_pop($parts);
                 }
             }
-            if (count($parts) >= 2)
+
+            foreach($parts as $part)
             {
-                if (count($parts) == 2 && preg_match('/^' . ExpressionManager::$RDP_regex_var_attr . '$/',$parts[1]))
-                {
-                    $suffix = '.' . $parts[1];
-                }
-                else if (preg_match('/^sq_.+$/',$parts[1]))
-                {
-                    $sqpatt = substr($parts[1],3);
-                }
-                else if ($parts[1] == 'nocomments')
+                if ($part == 'nocomments')
                 {
                     $comments = 'N';
                 }
-                else if ($parts[1] == 'comments')
+                else if ($part == 'comments')
                 {
                     $comments = 'Y';
+                }
+                else if (preg_match('/^sq_.+$/',$part))
+                {
+                    $sqpatts[] = substr($part,3);
+                }
+                else if (preg_match('/^nosq_.+$/',$part))
+                {
+                    $nosqpatts[] = substr($part,5);
                 }
                 else
                 {
                     return $varname;    // invalid
                 }
             }
+            $sqpatt = implode('|',$sqpatts);
+            $nosqpatt = implode('|',$nosqpatts);
             $vars = array();
 
             foreach ($LEM->knownVars as $kv)
@@ -3876,18 +3876,31 @@
                         continue;
                     }
                 }
+                $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
+                $ext = substr($kv['sgqa'],strlen($sgq));
+
                 if ($sqpatt != '')
                 {
-                    $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
-                    $ext = substr($kv['sgqa'],strlen($sgq));
                     if (!preg_match('/'.$sqpatt.'/',$ext))
                     {
                         continue;
                     }
                 }
+                if ($nosqpatt != '')
+                {
+                    if (preg_match('/'.$nosqpatt.'/',$ext))
+                    {
+                        continue;
+                    }
+                }              
+
                 $vars[] = $kv['sgqa'] . $suffix;
             }
-            return implode(',',$vars);
+            if (count($vars) > 0)
+            {
+                return implode(',',$vars);
+            }
+            return $varname;    // invalid
         }
 
         /**
