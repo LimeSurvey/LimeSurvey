@@ -203,11 +203,11 @@ class User extends CActiveRecord
     */
     public function getID($fullname)
     {
-        $this->db->select('uid');
-        $this->db->from('users');
-        $this->db->where(array("full_name"=>Yii::app()->db->quoteValue($fullname)));
-        $result = $this->db->get();
-        return $result->row();
+        return $this->getDbConnection()->createCommand()
+            ->select('uid')
+            ->from('users')
+            ->where('full_name=:full_name', array('full_name'=>$fullname))
+            ->queryScalar();
     }
 
     /**

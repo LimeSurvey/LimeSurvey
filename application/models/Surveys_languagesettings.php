@@ -122,16 +122,15 @@ class Surveys_languagesettings extends CActiveRecord
 
 		if($xssfiltering)
 		{
-			$filter = new CHtmlPurifier();
-			$filter->options = array('URI.AllowedSchemes'=>array(
-  				'http' => true,
-  				'https' => true,
-			));
-			$data["description"] = $filter->purify($data["description"]);
-			$data["title"] = $filter->purify($data["title"]);
-			$data["welcome"] = $filter->purify($data["welcome"]);
-			$data["endtext"] = $filter->purify($data["endtext"]);
-		}
+                        $fields_to_purify = array(
+                            "surveyls_description",
+                            "surveyls_title",
+                            "surveyls_welcome",
+                            "surveyls_endtext"
+                        );
+                        $this->purify($fields_to_purify, $data);
+                }
+
 
 		return $this->insertSomeRecords($data);
     }
@@ -181,5 +180,21 @@ class Surveys_languagesettings extends CActiveRecord
 		foreach ($data as $k => $v)
 			$lang->$k = $v;
 		return $lang->save();
+    }
+
+    private function purify($fields, &$data)
+    {
+        $purifier = new CHtmlPurifier();
+        $purifier->options = array(
+            'URI.AllowedSchemes' => array(
+                'http' => true,
+                'https' => true,
+            )
+        );
+
+        foreach($fields as $ftp) 
+        {
+            $data[$ftp] = $purifier->purify($ftp);
+        }
     }
 }

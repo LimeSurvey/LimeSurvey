@@ -39,9 +39,9 @@ class SurveyAdmin extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        if (!hasGlobalPermission('USER_RIGHT_SUPERADMIN') && !hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
         {
-            die();
+            die("This user (ID ".Yii::app()->user->getId().") is not authorized to perform this action");
         }
     }
 
@@ -1471,7 +1471,6 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             Yii::app()->loadHelper("surveytranslator");
-
 
             // If start date supplied convert it to the right format
             $aDateFormatData = getDateFormatData(Yii::app()->session['dateformat']);
