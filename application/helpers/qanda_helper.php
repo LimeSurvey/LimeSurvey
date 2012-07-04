@@ -2089,7 +2089,15 @@ function do_ranking($ia)
     for ($i=1; $i<=$anscount; $i++)
     {
         $myfname=$ia[1].$i;
-        $answer .= "\n<li class=\"select-item\"><select name=\"{$myfname}\" id=\"answer{$myfname}\">";
+        $answer .= "\n<li class=\"select-item\">";
+        $answer .="<label for=\"answer{$myfname}\">";
+        if($i==1){
+            $answer .=$clang->gT('First choice');
+        }else{
+            $answer .=$clang->gT('Next choice');
+        }
+        $answer .= "</label>";
+        $answer .= "<select name=\"{$myfname}\" id=\"answer{$myfname}\">\n";
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
         {
             $answer .= "\t<option value=\"\"".SELECTED.">".$clang->gT('Please choose...')."</option>\n";
@@ -2108,7 +2116,6 @@ function do_ranking($ia)
         $answer .="</select>";
         // Hidden form: maybe can be replaced with ranking.js
         $answer .="<input type=\"hidden\" id=\"java{$myfname}\" disabled=\"disabled\" value=\"{$thisvalue}\"/>";
-        // TODO put some div for $ansrow['answer'] with HTML
         $answer .="</li>";
         $inputnames[]=$myfname;
     }
@@ -2116,7 +2123,13 @@ function do_ranking($ia)
         . "<div style='display:none' id='ranking-{$ia[0]}-maxans'>{".$max_answers."}</div>"
         . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
         . "</div>";
-
+    // The list with HTML answres
+    $answer .="<div style=\"display:none\">";
+    foreach ($answers as $ansrow)
+    {
+        $answer.="<div id=\"htmlblock-{$ia['0']}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
+    }
+    $answer .="</div>";
     header_includes("ranking.js");
     header_includes("ranking.css","css");
 
@@ -2124,7 +2137,7 @@ function do_ranking($ia)
     . "  <!--\n"
     . "var translt = {
              choicetitle: '".$clang->gT("Your Choices",'js')."',
-             ranktitle: '".$clang->gT("Your Ranking",'js')."',
+             ranktitle: '".$clang->gT("Your Ranking",'js')."'
             };\n"
     ." doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]});\n"
     ." -->\n"

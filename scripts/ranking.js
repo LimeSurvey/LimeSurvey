@@ -38,14 +38,16 @@ if (typeof samelistheight === 'undefined'){samelistheight=true;}
   $('#question'+qID+' .answers-list .select-item option:selected').each(function(index, Element) {
     if($(this).val()!=''){
       ranked.push($(this).val());
-      var liCode = '<li class="ui-state-default choice" id="choice_'+$(this).val()+'">' + $(this).text() + '</li>'
+      htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
+      var liCode = '<li class="ui-widget-content choice" id="choice_'+$(this).val()+'">' + htmloption + '</li>'
       $(liCode).appendTo('#sortable-rank-'+qID+'');
     }
   });
   $('#question'+qID+' .answers-list .select-item:first option').each(function(index, Element) {
     var thisvalue=$(this).val();
     if(thisvalue!='' && jQuery.inArray(thisvalue,ranked)<0){
-        var liCode = '<li class="ui-state-default choice" id="choice_'+$(this).val()+'">' + $(this).text() + '</li>'
+        htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
+        var liCode = '<li class="ui-widget-content choice" id="choice_'+$(this).val()+'">' + htmloption + '</li>'
         $(liCode).appendTo('#sortable-choice-'+qID+'');
     }
   });

@@ -1,7 +1,7 @@
 /* Drag-n-drop ranking default styles */
 
 .dragDropTable .SortableTitle{display:block}
-.dragDropTable .columns2{width:50%;float:left;margin:0;padding:0}
+.dragDropTable .columns2{width:50%;float:left;margin:0;padding:0;}
 :dir(ltr) .dragDropTable .columns2{float:right}
 .dragDropTable .clear{clear:both}
 
@@ -29,12 +29,10 @@
 .dragDropTable .dragDropChoiceList li,
 .dragDropTable .dragDropRankList li {
     margin: 3px;
-    *margin-left: -13px; /* IE7 and below */
     padding: 3px;
 	min-height: 1.3em;
-	height:auto !important;height: 1.3em; /* IE6 and below hack */
 	font-weight: normal;
 	cursor: move;
-	display: block; /* Force the li to full width */
+	clear:both;
 }
 
