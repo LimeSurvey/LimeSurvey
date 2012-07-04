@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-06-27 08:04:07+00:00\n"
+"POT-Creation-Date: 2012-07-04 11:56:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -596,7 +596,7 @@ msgstr ""
 #: admin/assessments.php:173 admin/editsurveysettings.php:137
 #: admin/html.php:711 admin/html.php:1124 admin/labels.php:328
 #: admin/questiongrouphandling.php:58 admin/questiongrouphandling.php:144
-#: admin/questiongrouphandling.php:162 qanda.php:2701 uploader.php:95
+#: admin/questiongrouphandling.php:162 qanda.php:2695 uploader.php:95
 msgid "Title"
 msgstr ""
 
@@ -1049,8 +1049,8 @@ msgstr ""
 #: common_functions.php:3812 common_functions.php:3838
 #: common_functions.php:3873 common_functions.php:3939
 #: common_functions.php:3949 common_functions.php:4063
-#: common_functions.php:4074 common_functions.php:4134 qanda.php:3776
-#: qanda.php:4198 qanda.php:4237
+#: common_functions.php:4074 common_functions.php:4134 qanda.php:3767
+#: qanda.php:4189 qanda.php:4228
 msgid "Yes"
 msgstr ""
 
@@ -1062,7 +1062,7 @@ msgstr ""
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
 #: classes/expressions/LimeExpressionManager.php:2807 common_functions.php:1922
-#: qanda.php:4199 qanda.php:4244
+#: qanda.php:4190 qanda.php:4235
 msgid "Uncertain"
 msgstr ""
 
@@ -1117,8 +1117,8 @@ msgstr ""
 #: common_functions.php:3823 common_functions.php:3837
 #: common_functions.php:3872 common_functions.php:3938
 #: common_functions.php:3948 common_functions.php:4062
-#: common_functions.php:4073 common_functions.php:4133 qanda.php:3783
-#: qanda.php:4200 qanda.php:4252
+#: common_functions.php:4073 common_functions.php:4133 qanda.php:3774
+#: qanda.php:4191 qanda.php:4243
 msgid "No"
 msgstr ""
 
@@ -1129,7 +1129,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
 #: classes/expressions/LimeExpressionManager.php:2810 common_functions.php:1928
-#: qanda.php:4346 qanda.php:4389
+#: qanda.php:4337 qanda.php:4380
 msgid "Increase"
 msgstr ""
 
@@ -1140,7 +1140,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
 #: classes/expressions/LimeExpressionManager.php:2811 common_functions.php:1930
-#: qanda.php:4347 qanda.php:4400
+#: qanda.php:4338 qanda.php:4391
 msgid "Same"
 msgstr ""
 
@@ -1151,7 +1151,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
 #: classes/expressions/LimeExpressionManager.php:2812 common_functions.php:1929
-#: qanda.php:4348 qanda.php:4412
+#: qanda.php:4339 qanda.php:4403
 msgid "Decrease"
 msgstr ""
 
@@ -1171,12 +1171,12 @@ msgstr ""
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
 #: common_functions.php:1914 common_functions.php:5491
-#: common_functions.php:5496 qanda.php:926 qanda.php:1454 qanda.php:1733
-#: qanda.php:1837 qanda.php:1892 qanda.php:3792 qanda.php:3837 qanda.php:3926
-#: qanda.php:3990 qanda.php:4079 qanda.php:4125 qanda.php:4203 qanda.php:4269
-#: qanda.php:4351 qanda.php:4429 qanda.php:4530 qanda.php:4552 qanda.php:4620
-#: qanda.php:4751 qanda.php:5522 qanda.php:5523 qanda.php:5808 qanda.php:5883
-#: qanda.php:5984 qanda.php:6184 qanda.php:6238
+#: common_functions.php:5496 qanda.php:926 qanda.php:1454 qanda.php:1731
+#: qanda.php:1835 qanda.php:1890 qanda.php:3783 qanda.php:3828 qanda.php:3917
+#: qanda.php:3981 qanda.php:4070 qanda.php:4116 qanda.php:4194 qanda.php:4260
+#: qanda.php:4342 qanda.php:4420 qanda.php:4521 qanda.php:4543 qanda.php:4611
+#: qanda.php:4742 qanda.php:5511 qanda.php:5512 qanda.php:5797 qanda.php:5872
+#: qanda.php:5973 qanda.php:6173 qanda.php:6227
 msgid "No answer"
 msgstr ""
 
@@ -1204,7 +1204,7 @@ msgstr ""
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
 #: classes/expressions/LimeExpressionManager.php:2798 common_functions.php:1913
-#: qanda.php:3820
+#: qanda.php:3811
 msgid "Female"
 msgstr ""
 
@@ -1216,7 +1216,7 @@ msgstr ""
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
 #: classes/expressions/LimeExpressionManager.php:2797 common_functions.php:1912
-#: qanda.php:3828
+#: qanda.php:3819
 msgid "Male"
 msgstr ""
 
@@ -1235,8 +1235,8 @@ msgstr ""
 #: common_functions.php:3669 common_functions.php:3724
 #: common_functions.php:3743 common_functions.php:3901
 #: common_functions.php:4082 common_functions.php:4091
-#: common_functions.php:4100 common_functions.php:4109 qanda.php:1699
-#: qanda.php:2341 qanda.php:2580
+#: common_functions.php:4100 common_functions.php:4109 qanda.php:1697
+#: qanda.php:2337 qanda.php:2574
 msgid "Other"
 msgstr ""
 
@@ -1418,8 +1418,8 @@ msgstr ""
 #: admin/statistics_function.php:2188 admin/statistics_function.php:2197
 #: admin/statistics_function.php:2202 admin/statistics_function.php:2292
 #: admin/statistics_function.php:2295 admin/statistics_function.php:2303
-#: admin/statistics_function.php:2308 qanda.php:1176 qanda.php:3405
-#: qanda.php:3493 qanda.php:3586 qanda.php:3674 qanda.php:3742
+#: admin/statistics_function.php:2308 qanda.php:1176 qanda.php:3398
+#: qanda.php:3484 qanda.php:3577 qanda.php:3665 qanda.php:3733
 msgid "Answer"
 msgstr ""
 
@@ -1664,7 +1664,7 @@ msgid "Start Language:"
 msgstr ""
 
 #: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:2939
-#: group.php:1019 index.php:2387 replacements.php:272
+#: group.php:1030 index.php:2387 replacements.php:272
 msgid "Submit"
 msgstr ""
 
@@ -1747,24 +1747,24 @@ msgstr ""
 #: admin/dataentry.php:2033 admin/dataentry.php:2066 admin/dataentry.php:2305
 #: admin/dataentry.php:2619 admin/dataentry.php:2634 admin/dataentry.php:2655
 #: admin/dataentry.php:2676 admin/dataentry.php:2696 admin/dataentry.php:2856
-#: qanda.php:1468 qanda.php:4731
+#: qanda.php:1468 qanda.php:4722
 msgid "Please choose"
 msgstr ""
 
-#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2080
+#: admin/dataentry.php:865 admin/dataentry.php:2190 qanda.php:2078
 msgid "Remove this item"
 msgstr ""
 
-#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2109
+#: admin/dataentry.php:887 admin/dataentry.php:2223 qanda.php:2107
 msgid "Your Choices"
 msgstr ""
 
-#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2120
+#: admin/dataentry.php:892 admin/dataentry.php:2228 qanda.php:2118
 msgid "Your Ranking"
 msgstr ""
 
-#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3406
-#: qanda.php:3410
+#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3399
+#: qanda.php:3403
 msgid "Only numbers may be entered in this field"
 msgstr ""
 
@@ -1828,13 +1828,13 @@ msgstr ""
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
 #: common_functions.php:1411 common_functions.php:4826
 #: common_functions.php:4875 common_functions.php:4911
-#: common_functions.php:4947 qanda.php:1252 qanda.php:1430 qanda.php:6164
-#: qanda.php:6218
+#: common_functions.php:4947 qanda.php:1252 qanda.php:1430 qanda.php:6153
+#: qanda.php:6207
 msgid "Please choose..."
 msgstr ""
 
 #: admin/dataentry.php:2069 common_functions.php:2559 common_functions.php:2776
-#: qanda.php:2702 uploader.php:96
+#: qanda.php:2696 uploader.php:96
 msgid "Comment"
 msgstr ""
 
@@ -2255,7 +2255,7 @@ msgstr ""
 #: admin/questiongrouphandling.php:149 admin/questiongrouphandling.php:165
 #: admin/questiongrouphandling.php:167 admin/translate_functions.php:238
 #: admin/userrighthandling.php:628 admin/userrighthandling.php:648
-#: classes/expressions/LimeExpressionManager.php:7881
+#: classes/expressions/LimeExpressionManager.php:8008
 msgid "Description:"
 msgstr ""
 
@@ -2267,7 +2267,7 @@ msgstr ""
 #: admin/editsurveysettings.php:147 admin/editsurveysettings.php:149
 #: admin/editsurveytextelements.php:58 admin/editsurveytextelements.php:60
 #: admin/html.php:795 admin/translate_functions.php:290
-#: classes/expressions/LimeExpressionManager.php:7895
+#: classes/expressions/LimeExpressionManager.php:8022
 msgid "End message:"
 msgstr ""
 
@@ -2731,7 +2731,7 @@ msgid "Survey title"
 msgstr ""
 
 #: admin/editsurveytextelements.php:56 admin/html.php:784
-#: classes/expressions/LimeExpressionManager.php:7888
+#: classes/expressions/LimeExpressionManager.php:8015
 msgid "Welcome:"
 msgstr ""
 
@@ -3907,7 +3907,7 @@ msgstr ""
 msgid "Flag"
 msgstr ""
 
-#: admin/html.php:872 classes/expressions/LimeExpressionManager.php:7902
+#: admin/html.php:872 classes/expressions/LimeExpressionManager.php:8029
 msgid "End URL"
 msgstr ""
 
@@ -5585,8 +5585,8 @@ msgstr ""
 msgid "Please enter a date:"
 msgstr ""
 
-#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2563
-#: qanda.php:2564 qanda.php:2596
+#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2557
+#: qanda.php:2558 qanda.php:2590
 msgid "Make a comment on your choice here:"
 msgstr ""
 
@@ -5612,8 +5612,8 @@ msgstr ""
 
 #: admin/printablesurvey.php:758
 #: classes/expressions/LimeExpressionManager.php:2931
-#: classes/expressions/LimeExpressionManager.php:5347 qanda.php:1289
-#: qanda.php:1589 qanda.php:2186 qanda.php:2486
+#: classes/expressions/LimeExpressionManager.php:5474 qanda.php:1289
+#: qanda.php:1589 qanda.php:2184 qanda.php:2480
 msgid "Other:"
 msgstr ""
 
@@ -9114,27 +9114,27 @@ msgstr ""
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1955
+#: classes/expressions/ExpressionManager.php:1981
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2056
+#: classes/expressions/ExpressionManager.php:2082
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2061
+#: classes/expressions/ExpressionManager.php:2087
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2062
+#: classes/expressions/ExpressionManager.php:2088
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2295
+#: classes/expressions/ExpressionManager.php:2321
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3329
+#: classes/expressions/ExpressionManager.php:3355
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -9239,109 +9239,109 @@ msgstr ""
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4357
+#: classes/expressions/LimeExpressionManager.php:4484
 msgid "Unable to insert record into survey table: "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4373
+#: classes/expressions/LimeExpressionManager.php:4500
 msgid "Unable to insert record into timings table "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5324
+#: classes/expressions/LimeExpressionManager.php:5451
 msgid "This question is mandatory"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5338
+#: classes/expressions/LimeExpressionManager.php:5465
 msgid "Please check at least one item."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5349
+#: classes/expressions/LimeExpressionManager.php:5476
 msgid "If you choose '%s' you must provide a description."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5371
-#: classes/expressions/LimeExpressionManager.php:5408
+#: classes/expressions/LimeExpressionManager.php:5498
+#: classes/expressions/LimeExpressionManager.php:5535
 msgid "Please complete all parts"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5400
+#: classes/expressions/LimeExpressionManager.php:5527
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5416
+#: classes/expressions/LimeExpressionManager.php:5543
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7866
+#: classes/expressions/LimeExpressionManager.php:7993
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7872
+#: classes/expressions/LimeExpressionManager.php:7999
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7906
+#: classes/expressions/LimeExpressionManager.php:8033
 msgid "Name [ID]"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7906
+#: classes/expressions/LimeExpressionManager.php:8033
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7906
+#: classes/expressions/LimeExpressionManager.php:8033
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7957
-#: classes/expressions/LimeExpressionManager.php:8203
+#: classes/expressions/LimeExpressionManager.php:8084
+#: classes/expressions/LimeExpressionManager.php:8330
 msgid "DEFAULT:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7965
+#: classes/expressions/LimeExpressionManager.php:8092
 msgid "HELP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7966
+#: classes/expressions/LimeExpressionManager.php:8093
 msgid "TIP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7983
+#: classes/expressions/LimeExpressionManager.php:8110
 msgid "Question Attribute"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:7983
+#: classes/expressions/LimeExpressionManager.php:8110
 msgid "Value"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8090
+#: classes/expressions/LimeExpressionManager.php:8217
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8104
+#: classes/expressions/LimeExpressionManager.php:8231
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8116
+#: classes/expressions/LimeExpressionManager.php:8243
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8275
+#: classes/expressions/LimeExpressionManager.php:8402
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8314
+#: classes/expressions/LimeExpressionManager.php:8441
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8320
+#: classes/expressions/LimeExpressionManager.php:8447
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8323
+#: classes/expressions/LimeExpressionManager.php:8450
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8326
+#: classes/expressions/LimeExpressionManager.php:8453
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
@@ -10593,23 +10593,23 @@ msgstr ""
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
-#: group.php:800 qanda.php:436
+#: group.php:811 qanda.php:436
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: group.php:806 qanda.php:463
+#: group.php:817 qanda.php:463
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: group.php:812
+#: group.php:823
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: group.php:948 index.php:2890
+#: group.php:959 index.php:2890
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
-#: group.php:956
+#: group.php:967
 msgid "Question index"
 msgstr ""
 
@@ -10923,63 +10923,63 @@ msgstr ""
 msgid "Other answer"
 msgstr ""
 
-#: qanda.php:1803
+#: qanda.php:1801
 msgid "Please enter your comment here"
 msgstr ""
 
-#: qanda.php:2131
+#: qanda.php:2129
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr ""
 
-#: qanda.php:2414
+#: qanda.php:2410
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr ""
 
-#: qanda.php:2687
+#: qanda.php:2681
 msgid "Upload files"
 msgstr ""
 
-#: qanda.php:2699
+#: qanda.php:2693
 msgid "Upload your files"
 msgstr ""
 
-#: qanda.php:2700
+#: qanda.php:2694
 msgid "Return to survey"
 msgstr ""
 
-#: qanda.php:2703
+#: qanda.php:2697
 msgid "File name"
 msgstr ""
 
-#: qanda.php:2880 qanda.php:3140 qanda.php:4210 qanda.php:6034
+#: qanda.php:2872 qanda.php:3131 qanda.php:4201 qanda.php:6023
 msgid "Error: This question has no answers."
 msgstr ""
 
-#: qanda.php:3290
+#: qanda.php:3281
 msgid "Only numbers may be entered in these fields"
 msgstr ""
 
-#: qanda.php:3301
+#: qanda.php:3292
 msgid "Remaining: "
 msgstr ""
 
-#: qanda.php:3308
+#: qanda.php:3299
 msgid "Total: "
 msgstr ""
 
-#: qanda.php:3577 qanda.php:3578
+#: qanda.php:3568 qanda.php:3569
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: qanda.php:4775 qanda.php:5155 qanda.php:5489 qanda.php:5636 qanda.php:6264
+#: qanda.php:4766 qanda.php:5144 qanda.php:5478 qanda.php:5625 qanda.php:6253
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: qanda.php:5406
+#: qanda.php:5395
 msgid "..."
 msgstr ""
 
-#: qanda.php:5630
+#: qanda.php:5619
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
