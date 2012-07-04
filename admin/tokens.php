@@ -2109,34 +2109,46 @@
             {
                 $tokenlength = 15;
             }
-
             // select all existing tokens
             $ntquery = "SELECT token FROM ".db_table_name("tokens_$surveyid")." group by token";
             $ntresult = db_execute_assoc($ntquery);
             while ($tkrow = $ntresult->FetchRow())
             {
-                $existingtokens[$tkrow['token']]=null;
+                $existingtokens[]=$tkrow['token'];
             }
             $newtokencount = 0;
+            $invalidtokencount=0;
             $tkquery = "SELECT tid FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
             $tkresult = db_execute_assoc($tkquery) or safe_die ("Mucked up!<br />$tkquery<br />".$connect->ErrorMsg());
             while ($tkrow = $tkresult->FetchRow())
             {
                 $isvalidtoken = false;
-                while ($isvalidtoken == false)
+                while ($isvalidtoken == false && $invalidtokencount<50) 
                 {
                     $newtoken = sRandomChars($tokenlength);
-                    if (!isset($existingtokens[$newtoken])) {
+                    if (!in_array($newtoken,$existingtokens)) {
                         $isvalidtoken = true;
-                        $existingtokens[$newtoken]=null;
+                        $existingtokens[]=$newtoken;
+                        $invalidtokencount=0;
+                    }
+                    else
+                    {
+                        $invalidtokencount ++;
                     }
                 }
-                $itquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET token='$newtoken' WHERE tid={$tkrow['tid']}";
-                $itresult = $connect->Execute($itquery);
-                $newtokencount++;
+                if(!$invalidtokencount)
+                {
+                    $itquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET token='$newtoken' WHERE tid={$tkrow['tid']}";
+                    $itresult = $connect->Execute($itquery);
+                    $newtokencount++;
+                }
             }
-            $message=str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"));
-            $tokenoutput .= "<div class='successheader'>$message</div>\n";
+            if(!$invalidtokencount){
+                $tokenoutput .= "<div class='successheader'>".sprintf($clang->gT("%s tokens have been created"),$newtokencount)."</div>\n";
+            }else{
+                $tokenoutput .= "\t\t<div class='errorheader'>".$clang->gT("Error")."</div>\n";
+                $tokenoutput .= sprintf($clang->gT("Only %s tokens have been created"),$newtokencount)."\n";
+            }
         }
         $tokenoutput .= "</div>\n";
     }
@@ -2673,32 +2685,57 @@
         $tblInsert=db_table_name('tokens_'.$surveyid);
         $amount = sanitize_int($_POST['amount']);
         $tokenlength = sanitize_int($_POST['tokenlen']);
-
+        $invalidtokencount=0;
+        $newdummytoken = 0;
         for ($i=0; $i<$amount;$i++){
             $dataToInsert = $data;
             $dataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['firstname']);
             $dataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['lastname']);
             $dataToInsert['email'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['email']);
-
+            // select all existing tokens
+            $ntquery = "SELECT token FROM ".db_table_name("tokens_$surveyid")." group by token";
+            $ntresult = db_execute_assoc($ntquery);
+            $existingtokens=array();
+            while ($tkrow = $ntresult->FetchRow())
+            {
+                $existingtokens[]=$tkrow['token'];
+            }
             $isvalidtoken = false;
-            while ($isvalidtoken == false)
+            $invalidtokencount=0;
+            while ($isvalidtoken == false && $invalidtokencount<50)
             {
                 $newtoken = sRandomChars($tokenlength);
-                if (!isset($existingtokens[$newtoken])) {
+                if (!in_array($newtoken,$existingtokens)) {
                     $isvalidtoken = true;
-                    $existingtokens[$newtoken]=null;
+                    $existingtokens[]=$newtoken;
+                    $invalidtokencount=0;
+                    $newdummytoken++;
+                }
+                else
+                {
+                    $invalidtokencount ++;
                 }
             }
-            $dataToInsert['token'] = $newtoken;
-            $tblInsert=db_table_name('tokens_'.$surveyid);
-            $inresult = $connect->AutoExecute($tblInsert, $dataToInsert, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
-
+            if(!$invalidtokencount){
+                $dataToInsert['token'] = $newtoken;
+                $tblInsert=db_table_name('tokens_'.$surveyid);
+                $inresult = $connect->AutoExecute($tblInsert, $dataToInsert, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
+            }
         }
-
-        $tokenoutput .= "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
-        ."\t\t<br />".$clang->gT("New dummy tokens were added.")."<br /><br />\n"
-        ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n";
-        $tokenoutput .= "\t</div>";
+        if(!$invalidtokencount)
+        {
+            $tokenoutput .= "\t\t<div class='successheader'>".$clang->gT("Success")."</div>\n"
+            ."\t\t<br />".$clang->gT("New dummy tokens were added.")."<br /><br />\n"
+            ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n";
+            $tokenoutput .= "\t</div>";
+        }
+        else
+        {
+            $tokenoutput .= "\t\t<div class='errorheader'>".$clang->gT("Error")."</div>\n"
+            ."\t\t<br />".sprintf($clang->gT("Only %s new dummy tokens were added."),$newdummytoken)."<br /><br />\n"
+            ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" /><br />\n";
+            $tokenoutput .= "\t</div>";
+        }
     }
 
     if ($subaction == "import" && bHasSurveyPermission($surveyid, 'tokens','import'))
