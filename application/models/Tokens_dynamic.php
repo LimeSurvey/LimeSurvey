@@ -135,7 +135,6 @@ class Tokens_dynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
-
     /**
      * Creates tokens for all token records that have empty token fields and returns the number
      * of tokens created
@@ -163,7 +162,7 @@ class Tokens_dynamic extends LSActiveRecord
         //Add some criteria to select only the token field
         $criteria = $this->getDbCriteria();
         $criteria->select = 'token';
-		$ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
+        $ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
 
         // select all existing tokens
         foreach ($ntresult as $tkrow)
@@ -172,19 +171,29 @@ class Tokens_dynamic extends LSActiveRecord
         }
 
         $newtokencount = 0;
+        $invalidtokencount=0;
         foreach ($tkresult as $tkrow)
         {
             $bIsValidToken = false;
-            while ($bIsValidToken == false)
+            while ($bIsValidToken == false && $invalidtokencount<50)
             {
                 $newtoken = randomChars($iTokenLength);
-                if (!in_array($newtoken, $existingtokens)) {
+                if (!in_array($newtoken, $existingtokens)) 
+                {
                     $existingtokens[] = $newtoken;
                     $bIsValidToken = true;
+                    $invalidtokencount=0;
+                }
+                else
+                {
+                    $invalidtokencount ++;
                 }
             }
-            $itresult = $this->updateToken($tkrow['tid'], $newtoken);
-            $newtokencount++;
+            if(!$invalidtokencount)
+            {
+                $itresult = $this->updateToken($tkrow['tid'], $newtoken);
+                $newtokencount++;
+            }
         }
 
         return $newtokencount;

@@ -822,6 +822,17 @@ class tokens extends Survey_Common_Action
             $amount = sanitize_int(Yii::app()->request->getPost('amount'));
             $tokenlength = sanitize_int(Yii::app()->request->getPost('tokenlen'));
 
+            // Fill an array with all existing tokens
+            $criteria = Tokens_dynamic::model($iSurveyId)->getDbCriteria();
+            $criteria->select = 'token';
+            $ntresult = Tokens_dynamic::model($iSurveyId)->findAllAsArray($criteria);   //Use AsArray to skip active record creation
+            $existingtokens=array();
+            foreach ($ntresult as $tkrow)
+            {
+                $existingtokens[] = $tkrow['token'];
+            }
+            $invalidtokencount=0;
+            $newDummyToken=0;
             for ($i = 0; $i < $amount; $i++)
             {
                 $aDataToInsert = $aData;
@@ -830,25 +841,49 @@ class tokens extends Survey_Common_Action
                 $aDataToInsert['email'] = str_replace('{TOKEN_COUNTER}', $i, $aDataToInsert['email']);
 
                 $isvalidtoken = false;
-                while ($isvalidtoken == false)
+                while ($isvalidtoken == false && $invalidtokencount<50)
                 {
                     $newtoken = randomChars($tokenlength);
-                    if (!isset($existingtokens[$newtoken]))
+                    if (!in_array($newtoken, $existingtokens)) 
                     {
                         $isvalidtoken = true;
-                        $existingtokens[$newtoken] = null;
+                        $existingtokens[] = $newtoken;
+                        $invalidtokencount=0;
+                    }
+                    else
+                    {
+                        $invalidtokencount ++;
                     }
                 }
-
-                $aDataToInsert['token'] = $newtoken;
-                Tokens_dynamic::insertToken($iSurveyId, $aDataToInsert);
+                if(!$invalidtokencount)
+                {
+                    $aDataToInsert['token'] = $newtoken;
+                    Tokens_dynamic::insertToken($iSurveyId, $aDataToInsert);
+                    $newDummyToken ++;
+                }
+                
             }
-
-            $this->_renderWrappedTemplate('token', array('message' => array(
-            'title' => $clang->gT("Success"),
-            'message' => $clang->gT("New dummy tokens were added.") . "<br /><br />\n<input type='button' value='"
-            . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
-            ) ));
+            $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+            $aData['surveyid'] = $iSurveyId;
+            if(!$invalidtokencount)
+            {
+                $aData['success'] = false;
+                $message=array('title' => $clang->gT("Success"),
+                'message' => $clang->gT("New dummy tokens were added.") . "<br /><br />\n<input type='button' value='"
+                . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
+                );
+            }
+            else
+            {
+                $aData['success'] = true;
+                $message= array(
+                'title' => $clang->gT("Failed"),
+                'message' => sprintf($clang->gT("Only %s new dummy tokens were added."),$newDummyToken) . "<br /><br />\n<input type='button' value='"
+                . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
+                );
+            }
+            $this->_renderWrappedTemplate('token',  array('tokenbar','message' => $message),$aData);
+            
         }
         else
         {
