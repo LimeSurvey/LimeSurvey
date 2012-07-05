@@ -4873,7 +4873,11 @@ function do_array($ia)
     {
         $useDropdownLayout = false;
     }
-
+    if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+    {
+        $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+        $minrepeatheadings = 0;
+    }
     $lresult = dbExecuteAssoc($lquery);   //Checked
     if ($useDropdownLayout === false && $lresult->count() > 0)
     {
@@ -4912,19 +4916,17 @@ function do_array($ia)
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
         $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question\" >\n";
-        $answer_head = "\t<thead>\n"
-        . "<tr>\n"
-        . "\t<td>&nbsp;</td>\n";
-        foreach ($labelans as $ld)
-        {
-            $answer_head .= "\t<th>".$ld."</th>\n";
-        }
-        if ($right_exists) {$answer_head .= "\t<td>&nbsp;</td>\n";}
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
-        {
-            $answer_head .= "\t<th>".$clang->gT('No answer')."</th>\n";
-        }
-        $answer_head .= "</tr>\n\t</thead>\n\n\t\n";
+        $answer_head_line= "\t<td>&nbsp;</td>\n";
+            foreach ($labelans as $ld)
+            {
+                $answer_head_line .= "\t<th>".$ld."</th>\n";
+            }
+            if ($right_exists) {$answer_head_line .= "\t<td>&nbsp;</td>\n";}
+            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
+            {
+                $answer_head_line .= "\t<th>".$clang->gT('No answer')."</th>\n";
+            }
+        $answer_head = "\t<thead><tr>\n".$answer_head_line."</thead></tr>\n\t\n";
 
         $answer = '<tbody>';
         $trbc = '';
@@ -4937,17 +4939,7 @@ function do_array($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "<tr class=\"repeat headings\">\n"
-                    . "\t<td>&nbsp;</td>\n";
-                    foreach ($labelans as $ld)
-                    {
-                        $answer .= "\t<th>".$ld."</th>\n";
-                    }
-                    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
-                    {
-                        $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
-                    }
-                    $answer .= "</tr>\n";
+                    $answer .= "<tr class=\"repeat headings\">{$answer_head_line}</tr>";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -5226,6 +5218,11 @@ function do_array_multitext($ia)
     $q_table_id = '';
     $q_table_id_HTML = '';
 
+    if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+    {
+        $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+        $minrepeatheadings = 0;
+    }
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -5389,35 +5386,33 @@ function do_array_multitext($ia)
 
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
         ."\n\t\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-
-        $answer_head = "\n\t<thead>\n"
-        . "\t\t<tr>\n"
-        . "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";
+        $answer_head_line= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";
 
         $odd_even = '';
         foreach ($labelans as $ld)
         {
-            $answer_head .= "\t<th class=\"answertext\">".$ld."</th>\n";
+            $answer_head_line .= "\t<th class=\"answertext\">".$ld."</th>\n";
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
         }
         if ($right_exists)
         {
-            $answer_head .= "\t<td>&nbsp;</td>\n";// class=\"answertextright\"
+            $answer_head_line .= "\t<td>&nbsp;</td>\n";// class=\"answertextright\"
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
         }
 
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
         {
-            $answer_head .= $col_head;
+            $answer_head_line .= $col_head;
             $odd_even = alternation($odd_even);
             $answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
         }
         $answer_cols .= "\t</colgroup>\n";
 
-        $answer_head .= "</tr>\n"
-        . "\t</thead>\n";
+        $answer_head = "\n\t<thead>\n\t\t<tr>\n"
+        . $answer_head_line
+        . "</tr>\n\t</thead>\n";
 
         $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list{$extraclass}$num_class"."$totals_class\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
         $answer .= "<tbody>";
@@ -5430,12 +5425,8 @@ function do_array_multitext($ia)
                 {
                     $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
                     $answer .= "<tr class=\"repeat headings\">\n"
-                    . "\t<td>&nbsp;</td>\n";
-                    foreach ($labelans as $ld)
-                    {
-                        $answer .= "\t<th>".$ld."</th>\n";
-                    }
-                    $answer .= "</tr>\n";
+                    . $answer_head_line
+                    . "</tr>\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -5638,7 +5629,11 @@ function do_array_multiflexi($ia)
     {
         $answertypeclass .=" dropdown";
     }
-
+    if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+    {
+        $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+        $minrepeatheadings = 0;
+    }
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -5722,30 +5717,27 @@ function do_array_multiflexi($ia)
 
         $mycols = "\t<colgroup class=\"col-responses\">\n"
         . "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-
-        $myheader = "\n\t<thead>\n"
-        . "<tr>\n"
-        . "\t<td >&nbsp;</td>\n";
-
+        $answer_head_line = "\t<td >&nbsp;</td>\n";
         $odd_even = '';
         foreach ($labelans as $ld)
         {
-            $myheader .= "\t<th>".$ld."</th>\n";
+            $answer_head_line .= "\t<th>".$ld."</th>\n";
             $odd_even = alternation($odd_even);
             $mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
         }
         if ($right_exists)
         {
-            $myheader .= "\t<td>&nbsp;</td>";
+            $answer_head_line .= "\t<td>&nbsp;</td>";
             $odd_even = alternation($odd_even);
             $mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
         }
-        $myheader .= "</tr>\n"
-        . "\t</thead>\n";
+        $answer_head = "\n\t<thead>\n<tr>\n"
+        . $answer_head_line
+        . "</tr>\n\t</thead>\n";
         $mycols .= "\t</colgroup>\n";
 
         $trbc = '';
-        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n";
+        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $answer_head . "\n";
         $answer .= "<tbody>";
         foreach ($ansresult as $ansrow)
         {
@@ -5755,12 +5747,8 @@ function do_array_multiflexi($ia)
                 {
                     $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
                     $answer .= "<tr class=\"repeat headings\">\n"
-                    . "\t<td>&nbsp;</td>\n";
-                    foreach ($labelans as $ld)
-                    {
-                        $answer .= "\t<th>".$ld."</th>\n";
-                    }
-                    $answer .= "</tr>\n\n";
+                    . $answer_head_line
+                    . "</tr>\n\n";
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
@@ -6098,7 +6086,11 @@ function do_array_dual($ia)
         $extraclass .=" radio-list";
         $answertypeclass .=" radio";
     }
-
+    if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+    {
+        $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+        $minrepeatheadings = 0;
+    }
     if (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $leftheader= $clang->gT($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
     }
@@ -6199,12 +6191,12 @@ function do_array_dual($ia)
         $mycolumns = "\t<colgroup class=\"col-responses group-1\">\n"
         ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
-        $myheader2 = "\n<tr class=\"array1 header_row\">\n"
-        . "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
+
+        $answer_head_line = "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
         $odd_even = '';
         foreach ($labelans as $ld)
         {
-            $myheader2 .= "\t<th>".$ld."</th>\n";
+            $answer_head_line .= "\t<th>".$ld."</th>\n";
             $odd_even = alternation($odd_even);
             $mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
         }
@@ -6214,10 +6206,10 @@ function do_array_dual($ia)
         {
             $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n"
             . "\t<col class=\"seperator\" />\n";
-            $myheader2 .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator
+            $answer_head_line .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator
             foreach ($labelans1 as $ld)
             {
-                $myheader2 .= "\t<th>".$ld."</th>\n";
+                $answer_head_line .= "\t<th>".$ld."</th>\n";
                 $odd_even = alternation($odd_even);
                 $mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
             }
@@ -6225,54 +6217,56 @@ function do_array_dual($ia)
         }
         if ($right_exists)
         {
-            $myheader2 .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
+            $answer_head_line .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
             $mycolumns .= "\n\t<col class=\"answertextright\" />\n\n";
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
         {
-            $myheader2 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
-            $myheader2 .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
+            $answer_head_line .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
+            $answer_head_line .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
             $odd_even = alternation($odd_even);
             $mycolumns .= "\n\t<col class=\"seperator\" />\n\n";
             $mycolumns .= "\t<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
         }
 
         $mycolumns .= "\t</colgroup>\n";
-        $myheader2 .= "</tr>\n";
+        $answer_head2 = "\n<tr class=\"array1 header_row\">\n"
+        . $answer_head_line
+        . "</tr>\n";
 
         // build first row of header if needed
         if ($leftheader != '' || $rightheader !='')
         {
-            $myheader1 = "<tr class=\"array1 groups header_row\">\n"
+            $answer_head1 = "<tr class=\"array1 groups header_row\">\n"
             . "\t<th class=\"header_answer_text\">&nbsp;</th>\n"
             . "\t<th colspan=\"".count($labelans)."\" class=\"dsheader\">$leftheader</th>\n";
 
             if (count($labelans1)>0)
             {
-                $myheader1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n" // Separator
+                $answer_head1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n" // Separator
                 ."\t<th colspan=\"".count($labelans1)."\" class=\"dsheader\">$rightheader</th>\n";
             }
             if ($right_exists)
             {
-                $myheader1 .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
+                $answer_head1 .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
             }
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                $myheader1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
-                $myheader1 .= "\t<th class=\"header_no_answer\">&nbsp;</th>\n";
+                $answer_head1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
+                $answer_head1 .= "\t<th class=\"header_no_answer\">&nbsp;</th>\n";
             }
-            $myheader1 .= "</tr>\n";
+            $answer_head1 .= "</tr>\n";
         }
         else
         {
-            $myheader1 = '';
+            $answer_head1 = '';
         }
 
         $answer .= "\n<table class=\"question subquestions-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a dual array type question\">\n"
         . $mycolumns
         . "\n\t<thead>\n"
-        . $myheader1
-        . $myheader2
+        . $answer_head1
+        . $answer_head2
         . "\n\t</thead>\n"
         . "<tbody>\n";
 
@@ -6285,30 +6279,10 @@ function do_array_dual($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "\n<tr  class=\"repeat headings\">\n"
-                    . "\t<th class=\"header_answer_text\">&nbsp;</th>\n";
-                    foreach ($labelans as $ld)
-                    {
-                        $answer .= "\t<th>".$ld."</th>\n";
-                    }
-                    if (count($labelans1)>0) // if second label set is used
-                    {
-                        $answer .= "<th class=\"header_separator\">&nbsp;</th>\n"; // Separator
-                        foreach ($labelans1 as $ld)
-                        {
-                            $answer .= "\t<th>".$ld."</th>\n";
-                        }
-                    }
-                    if ($right_exists)
-                    {
-                        $answer .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
-                    }
-                    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
-                    {
-                        $answer .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
-                        $answer .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
-                    }
-                    $answer .= "</tr>\n";
+                    //$answer .= $answer_head1;
+                    $answer .= "\n<tr class=\"repeat headings\">\n"
+                    . $answer_head_line
+                    . "</tr>\n";
                 }
             }
 
