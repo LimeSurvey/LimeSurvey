@@ -616,7 +616,7 @@
         private $qid2exclusiveAuto = array();
         /**
          * Array of values to be updated
-         * @var type 
+         * @var type
          */
         private $updatedValues = array();
 
@@ -3892,7 +3892,7 @@
                     {
                         continue;
                     }
-                }              
+                }
 
                 $vars[] = $kv['sgqa'] . $suffix;
             }
@@ -7217,7 +7217,7 @@ EOD;
             ." where ". $where
             ." c.cqid = 0 and c.qid = q.qid";
 
-            if ($databasetype == 'mssql')
+            if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n' || $databasetype =='mssqlnative')
             {
                 $query .= " order by sid, c.qid, scenario, cqid, cfieldname, value";
 
@@ -8029,7 +8029,7 @@ EOD;
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End URL") . ":</td><td colspan=2>" . $_linkreplace . "</td></tr>";
                 }
             }
-            
+
             $out .= "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
 
             $_gseq=-1;
