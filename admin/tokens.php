@@ -2682,6 +2682,14 @@
         {
             $data[$attr_name]=$_POST[$attr_name];
         }
+        // select all existing tokens
+        $ntquery = "SELECT token FROM ".db_table_name("tokens_$surveyid")." group by token";
+        $ntresult = db_execute_assoc($ntquery);
+        $existingtokens=array();
+        while ($tkrow = $ntresult->FetchRow())
+        {
+            $existingtokens[]=$tkrow['token'];
+        }
         $tblInsert=db_table_name('tokens_'.$surveyid);
         $amount = sanitize_int($_POST['amount']);
         $tokenlength = sanitize_int($_POST['tokenlen']);
@@ -2692,14 +2700,6 @@
             $dataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['firstname']);
             $dataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['lastname']);
             $dataToInsert['email'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['email']);
-            // select all existing tokens
-            $ntquery = "SELECT token FROM ".db_table_name("tokens_$surveyid")." group by token";
-            $ntresult = db_execute_assoc($ntquery);
-            $existingtokens=array();
-            while ($tkrow = $ntresult->FetchRow())
-            {
-                $existingtokens[]=$tkrow['token'];
-            }
             $isvalidtoken = false;
             $invalidtokencount=0;
             while ($isvalidtoken == false && $invalidtokencount<50)
