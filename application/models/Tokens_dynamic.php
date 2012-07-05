@@ -140,14 +140,13 @@ class Tokens_dynamic extends LSActiveRecord
      * of tokens created
      *
      * @param int $iSurveyID
-     * @return int number of created tokens
+     * @return array ( int number of created tokens, int number to be created tokens)
      */
     function createTokens($iSurveyID)
     {
         $tkresult = $this->selectEmptyTokens($iSurveyID);
-
         //Exit early if there are not empty tokens
-        if (count($tkresult)===0) return 0;
+        if (count($tkresult)===0) return array(0,0);
 
         //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>$iSurveyID));
@@ -158,7 +157,6 @@ class Tokens_dynamic extends LSActiveRecord
         {
             $iTokenLength = 15;
         }
-
         //Add some criteria to select only the token field
         $criteria = $this->getDbCriteria();
         $criteria->select = 'token';
@@ -167,7 +165,7 @@ class Tokens_dynamic extends LSActiveRecord
         // select all existing tokens
         foreach ($ntresult as $tkrow)
         {
-            $existingtokens[] = $tkrow['token'];
+            $existingtokens[$tkrow['token']] = true;
         }
 
         $newtokencount = 0;
@@ -178,9 +176,9 @@ class Tokens_dynamic extends LSActiveRecord
             while ($bIsValidToken == false && $invalidtokencount<50)
             {
                 $newtoken = randomChars($iTokenLength);
-                if (!in_array($newtoken, $existingtokens)) 
+                if (!isset($existingtokens[$newtoken])) 
                 {
-                    $existingtokens[] = $newtoken;
+                    $existingtokens[$newtoken] = true;
                     $bIsValidToken = true;
                     $invalidtokencount=0;
                 }
@@ -189,14 +187,18 @@ class Tokens_dynamic extends LSActiveRecord
                     $invalidtokencount ++;
                 }
             }
-            if(!$invalidtokencount)
+            if($bIsValidToken)
             {
                 $itresult = $this->updateToken($tkrow['tid'], $newtoken);
                 $newtokencount++;
             }
+            else
+            {
+                break;
+            }
         }
 
-        return $newtokencount;
+        return array($newtokencount,count($tkresult));
     }
 
     public function search()

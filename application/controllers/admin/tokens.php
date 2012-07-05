@@ -829,25 +829,25 @@ class tokens extends Survey_Common_Action
             $existingtokens=array();
             foreach ($ntresult as $tkrow)
             {
-                $existingtokens[] = $tkrow['token'];
+                $existingtokens[$tkrow['token']] = true ;
             }
             $invalidtokencount=0;
             $newDummyToken=0;
-            for ($i = 0; $i < $amount; $i++)
+            while ($newDummyToken<$amount && $invalidtokencount<50)
             {
                 $aDataToInsert = $aData;
-                $aDataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}', $i, $aDataToInsert['firstname']);
-                $aDataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}', $i, $aDataToInsert['lastname']);
-                $aDataToInsert['email'] = str_replace('{TOKEN_COUNTER}', $i, $aDataToInsert['email']);
+                $aDataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}', $newDummyToken, $aDataToInsert['firstname']);
+                $aDataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}', $newDummyToken, $aDataToInsert['lastname']);
+                $aDataToInsert['email'] = str_replace('{TOKEN_COUNTER}', $newDummyToken, $aDataToInsert['email']);
 
                 $isvalidtoken = false;
                 while ($isvalidtoken == false && $invalidtokencount<50)
                 {
                     $newtoken = randomChars($tokenlength);
-                    if (!in_array($newtoken, $existingtokens)) 
+                    if (!isset($existingtokens[$newtoken])) 
                     {
                         $isvalidtoken = true;
-                        $existingtokens[] = $newtoken;
+                        $existingtokens[$newtoken] = true;
                         $invalidtokencount=0;
                     }
                     else
@@ -855,7 +855,7 @@ class tokens extends Survey_Common_Action
                         $invalidtokencount ++;
                     }
                 }
-                if(!$invalidtokencount)
+                if($isvalidtoken)
                 {
                     $aDataToInsert['token'] = $newtoken;
                     Tokens_dynamic::insertToken($iSurveyId, $aDataToInsert);
@@ -878,7 +878,9 @@ class tokens extends Survey_Common_Action
                 $aData['success'] = true;
                 $message= array(
                 'title' => $clang->gT("Failed"),
-                'message' => sprintf($clang->gT("Only %s new dummy tokens were added."),$newDummyToken) . "<br /><br />\n<input type='button' value='"
+                'message' => "<p>".sprintf($clang->gT("Only %s new dummy tokens were added after %s trials."),$newDummyToken,$invalidtokencount)
+                .$clang->gT("Try with a bigger token length.")."</p>"
+                ."\n<input type='button' value='"
                 . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
                 );
             }
@@ -1931,10 +1933,23 @@ class tokens extends Survey_Common_Action
         else
         {
             //get token length from survey settings
-            $newtokencount = Tokens_dynamic::model($iSurveyId)->createTokens($iSurveyId);
+            $newtoken = Tokens_dynamic::model($iSurveyId)->createTokens($iSurveyId);
+            $newtokencount = $newtoken['0'];
+            $neededtokencount = $newtoken['1'];
+            if($neededtokencount>$newtokencount)
+            {
+                $aData['success'] = false;
+                $message = sprintf($clang->ngT('Only %s token has been created.','Only %s tokens have been created.',$newtokencount),$newtokencount)
+                         .sprintf($clang->ngT('Need %s token.','Need %s tokens.',$neededtokencount),$neededtokencount);
+            }
+            else
+            {
+                $aData['success'] = true;
+                $message = sprintf($clang->ngT('%s token has been created.','%s tokens have been created.',$newtokencount),$newtokencount);
+            }
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Create tokens"),
-            'message' => sprintf($clang->ngT('%s token has been created.','%s tokens have been created.',$newtokencount),$newtokencount)
+            'message' => $message
             )), $aData);
         }
     }
