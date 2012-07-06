@@ -83,7 +83,7 @@ th, p, div {
 }
 
 fieldset {
-    padding:0 6px 0px 6px;
+    padding:4px 8px 4px 8px;
     margin: 3px;
     border-color:#DDD;
     border-style: solid;
@@ -1657,4 +1657,8 @@ ol.organizer {
 #templateleft select
 {
     width:140px;
+}
+
+legend{
+    margin:1em;
 }

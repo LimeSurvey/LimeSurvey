@@ -1588,10 +1588,11 @@ class PdfWriter extends Writer
         //The $pdforientation, $pdfDefaultFont, and $pdfFontSize values
         //come from the Lime Survey config files.
 
-        global $pdforientation, $pdfdefaultfont, $pdffontsize;
+       global $pdforientation, $pdfdefaultfont, $pdffontsize;
 
-        $this->pdf = new PDF($pdforientation,'mm','A4');
-        $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
+        Yii::import('application.libraries.admin.pdf', true);
+        $this->pdf = new PDF(Yii::app()->getConfig('pdforientation'),'mm','A4');
+        $this->pdf->SetFont(Yii::app()->getConfig('pdfdefaultfont'), '', Yii::app()->getConfig('pdffontsize'));
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
 
@@ -1653,7 +1654,7 @@ class PdfWriter extends Writer
         else
         {
             //Presuming this else branch is a send to client via HTTP.
-            $filename = $this->translate($this->surveyName, $this->languageCode).'pdf';
+            $filename = $this->translate($this->surveyName, $this->languageCode).'.pdf';
         }
         $this->pdf->Output($filename, $this->pdfDestination);
     }

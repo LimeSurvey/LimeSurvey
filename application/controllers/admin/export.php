@@ -193,8 +193,6 @@ class export extends Survey_Common_Action {
 
             $afieldcount = count($excesscols);
 
-            $this->getController()->_getAdminHeader();
-
             $selecthide = "'";
             $selectshow = "";
             $selectinc = "";

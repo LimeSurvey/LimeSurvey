@@ -61,7 +61,7 @@
                     <li><input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc' <?php if (!function_exists('iconv'))
                                 { echo 'checked="checked" ';} ?>onclick='document.getElementById(\"ansabbrev\").disabled=false;' />
                         <label for='csvdoc'><?php $clang->eT("CSV File (All charsets)");?></label></li>
-                    <li><input type='radio' class='radiobtn' name='type' value='pdf' id='pdfdoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;' />"
+                    <li><input type='radio' class='radiobtn' name='type' value='pdf' id='pdfdoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;' />
                         <label for='pdfdoc'><?php $clang->eT("PDF");?><br />
                         </label></li>
                 </ul></fieldset>
