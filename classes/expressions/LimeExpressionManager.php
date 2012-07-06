@@ -3923,6 +3923,13 @@
             }
             $LEM->qid2exclusiveAuto=array();
 
+            // TODO - should really pass  this in as a variable
+            global $surveyinfo;
+            if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
+            {
+                $LEM->surveyOptions['assessments']=true;
+            }
+
             //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
             $LEM->initialized=true;
