@@ -40,7 +40,7 @@
     /* Build the javasript variables to pass to the jqGrid */
 ?>
 <script type="text/javascript">
-    var imageurl = "<?php echo Yii::app()->getRequest()->getBaseUrl() ?>/images";
+    var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
     var mapButton = "<?php $clang->eT("Next") ?>";
     var error = "<?php $clang->eT("Error") ?>";
     var removecondition = "<?php $clang->eT("Remove condition") ?>";

@@ -1,6 +1,6 @@
 // $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz
 var idexternal=parseInt(3);
-function addcondition() 
+function addcondition()
 {
     id=2;
     html = "<tr name='joincondition_"+idexternal+"' id='joincondition_"+idexternal+"'><td><select name='join_"+idexternal+"' id='join_"+idexternal+"'>\n\
@@ -19,9 +19,9 @@ function addcondition()
     idexternal++;
 }
 $(document).ready(function(){
-    
+
     $("#bounceprocessing").change(turnoff);
-    turnoff();	
+    turnoff();
     $('img#bounceprocessing').bind('click',function(){
         $("#dialog-modal").dialog({
                                     title: "Summary",
@@ -31,19 +31,19 @@ $(document).ready(function(){
                                     width: 400,
                                     show: 'blind',
                                     hide: 'blind'
-	                                }); 	  
+	                                });
  	    checkbounces(surveyid);
-    }); 
+    });
     $("#filterduplicatetoken").change(function(){
         if ($("#filterduplicatetoken").attr('checked')==true)
         {
-            $("#lifilterduplicatefields").slideDown(); 
+            $("#lifilterduplicatefields").slideDown();
         }
         else
         {
-            $("#lifilterduplicatefields").slideUp(); 
+            $("#lifilterduplicatefields").slideUp();
         }
-    }) 
+    })
 
 
 function turnoff(ui,evt)
@@ -62,14 +62,14 @@ function turnoff(ui,evt)
 // Code for AJAX download
 jQuery.download = function(url, data, method){
 	//url and data options required
-	if( url && data ){ 
+	if( url && data ){
 		//data can be string of parameters or array/object
 		data = typeof data == 'string' ? data : jQuery.param(data);
 		//split params into form inputs
 		var inputs = '';
-		jQuery.each(data.split('&'), function(){ 
+		jQuery.each(data.split('&'), function(){
 			var pair = this.split('=');
-			inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />'; 
+			inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />';
 		});
 		//send request
 		jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
@@ -109,7 +109,7 @@ $('#searchtable tr:last').after(html);
 var searchconditions = {};
 var field;
 $('#searchbutton').click(function(){
-        
+
 });
 var lastSel,lastSel2;
 jQuery("#displaytokens").jqGrid({
@@ -163,11 +163,11 @@ jQuery("#displaytokens").jqGrid({
                 showOn: 'button',
                 dateFormat: userdateformat
             });
-    
+
             jQuery('<input type="image" class="drop_editing" src="' + jQuery(this).parent().find('input:eq(1)').attr('src') + '" />')
                 .appendTo(jQuery(this).parent())
                 .click(func);
-            jQuery('<input type="image" class="save" src="' + imageurl + '/success_notice.png" width="16" />')
+            jQuery('<input type="image" class="save" src="' + imageurl + '/ok.png" width="16" />')
                 .appendTo(jQuery(this).parent())
                 .click(function()
                 {
@@ -191,13 +191,13 @@ jQuery("#displaytokens").jqGrid('navGrid','#pager',{ add:false,del:true,edit:fal
                                    selRowCoordinates = $('#'+selRowId).offset();
                                dialog.offset(selRowCoordinates);
                            },
-      
+
 
  beforeSubmit : function(postdata, formid) {
          $.post(delUrl, { tid : postdata }, function(data) {});
         success = "dummy";
          message = "dummy";
-         return[success,message]; 
+         return[success,message];
 },
 
 beforeShowForm:function(form) {$('#selectable').bind("mousedown", function (e) { e.metaKey = false;}).selectable({ tolerance: 'fit'})}},{ multipleSearch:true, multipleGroup:true});
@@ -230,21 +230,21 @@ $("#displaytokens").navButtonAdd('#pager',{ caption:"",title:"Full Search", butt
          }
         else
         {
-        
+
         if(id == 1)
          {
-                searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();      
+                searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
                 jQuery("#displaytokens").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
          }
         else
          {
-             searchconditions = $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();      
+             searchconditions = $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
              for( i=2 ; i<=idexternal; i++)
                 {
-                    
+
                    if($('#field_'+i).val())
                     {
-                        searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();                          
+                        searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();
                     }
                 }
             jQuery("#displaytokens").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
@@ -262,8 +262,8 @@ $("#displaytokens").navButtonAdd('#pager',{ caption:"",title:"Full Search", butt
 				modal: true,
                                 title : 'Full Search',
 	            buttons: dialog_buttons
-	        });    
- 
+	        });
+
 }});
 $("#displaytokens").navButtonAdd('#pager',{  caption:"",title:invitemsg, buttonicon:'ui-icon-mail-closed', onClickButton:function(){window.open(inviteurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")}});
 $("#displaytokens").navButtonAdd('#pager',{  caption:"",title:remindmsg, buttonicon:'ui-icon-mail-open', onClickButton:function(){window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")}});
