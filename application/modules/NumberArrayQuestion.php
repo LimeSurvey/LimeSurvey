@@ -423,10 +423,6 @@ class NumberArrayQuestion extends ArrayQuestion
         {
             if($abrow['scale_id']==1) {
                 $answerset[]=$abrow;
-                $answerList[] = array(
-                'code'=>$abrow['title'],
-                'answer'=>$abrow['question'],
-                );
                 unset($abrows[$key]);
             }
         }
@@ -453,18 +449,83 @@ class NumberArrayQuestion extends ArrayQuestion
                 $field['questionSeq']=$this->questioncount;
                 $field['groupSeq']=$this->groupcount;
                 $field['preg']=$this->preg;
-                $field['answerList']=$answerList;
                 $q = clone $this;
                 $q->fieldname = $fieldname;
                 $q->aid = $field['aid'];
                 $q->sq1=$abrow['question'];
                 $q->sq2=$answer['question'];
+                $q->sqid=$abrow['qid'];
                 $field['q']=$q;
-                $field['pq']=$this;
                 $map[$fieldname]=$field;
             }
         }
         return $map;
+    }
+    
+    public function getDBField()
+    {
+        return 'text';
+    }
+    
+    public function getFieldSubHeading($survey, $export, $code)
+    {
+        //The headers created by this section of code are significantly different from
+        //the old code.  I believe that they are more accurate. - elameno
+        list($scaleZeroTitle, $scaleOneTitle) = explode('_', $this->aid);
+        if($code) return' ['.$scaleZeroTitle.']['.$scaleOneTitle.']';
+
+        $sqs = $survey->getSubQuestionArrays($this->id);
+
+        $scaleZeroText = '';
+        $scaleOneText = '';
+        foreach ($sqs as $sq)
+        {
+            if ($sq['title'] == $scaleZeroTitle && $sq['scale_id'] == 0)
+            {
+                $scaleZeroText = $sq['question'];
+            }
+            elseif ($sq['title'] == $scaleOneTitle && $sq['scale_id'] == 1)
+            {
+                $scaleOneText = $sq['question'];
+            }
+        }
+
+        return ' ['.$export->stripTagsFull($scaleZeroText).
+               ']['.$export->stripTagsFull($scaleOneText).']';
+    }
+    
+    public function getSPSSAnswers()
+    {
+        $answers = array();
+        //Get the labels that could apply!
+        $qidattributes=$this->getAttributeValues();
+        if (trim($qidattributes['multiflexible_max'])!='') {
+            $maxvalue=$qidattributes['multiflexible_max'];
+        } else {
+            $maxvalue=10;
+        }
+        if (trim($qidattributes['multiflexible_min'])!='')
+        {
+            $minvalue=$qidattributes['multiflexible_min'];
+        } else {
+            $minvalue=1;
+        }
+        if (trim($qidattributes['multiflexible_step'])!='')
+        {
+            $stepvalue=$qidattributes['multiflexible_step'];
+        } else {
+            $stepvalue=1;
+        }
+        if ($qidattributes['multiflexible_checkbox']!=0) {
+            $minvalue=0;
+            $maxvalue=1;
+            $stepvalue=1;
+        }
+        for ($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue)
+        {
+            $answers[] = array('code'=>$i, 'value'=>$i);
+        }
+        return $answers;
     }
     
     public function availableAttributes($attr = false)

@@ -89,6 +89,7 @@ class ExportSurveyResultsService
                 $writer = new CsvWriter();
                 break;
             case "pdf":
+                Yii::import("application.libraries.admin.pdf", true);
                 $writer = new PdfWriter();
                 break;
             default:
@@ -226,7 +227,7 @@ class SurveyDao
         $lang = Survey::model()->findByPk($intId)->language;
         $clang = new limesurvey_lang($lang);
 
-        $survey->fieldMap = createFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId));
+        $survey->fieldMap = createFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId)); //AJS#
 
         if (empty($intId))
         {
@@ -406,9 +407,10 @@ class SurveyObj
     */
     public function getQuestionCode($fieldName)
     {
-        if (isset($this->fieldMap[$fieldName]['title']))
+        $q = $this->fieldMap[$fieldName]['q'];
+        if (isset($q->title))
         {
-            return $this->fieldMap[$fieldName]['title'];
+            return $q->title;
         }
         else
         {
@@ -462,9 +464,10 @@ class SurveyObj
     */
     public function getQuestionArray($fieldName)
     {
+        $q = $this->fieldMap[$fieldName]['q'];
         foreach ($this->questions as $question)
         {
-            if ($question['qid'] == $this->fieldMap[$fieldName]['qid'])
+            if ($question['qid'] == $q->id)
             {
                 return $question;
             }
@@ -491,201 +494,6 @@ class SurveyObj
             }
         }
         return $results;
-    }
-
-    /**
-    * Returns the full answer for the question that matches $fieldName
-    * and the answer that matches the $answerCode.  If a match cannot
-    * be made then false is returned.
-    *
-    * The name of the variable $answerCode is not strictly an answerCode
-    * but could also be a comment entered by a participant.
-    *
-    * @param string $fieldName
-    * @param string $answerCode
-    * @param Translator $translator
-    * @param string $languageCode
-    * @return string (or false)
-    */
-    public function getFullAnswer($fieldName, $answerCode, Translator $translator, $languageCode)
-    {
-        $fullAnswer = null;
-        $fieldType = $this->fieldMap[$fieldName]['type'];
-        $question = $this->getQuestionArray($fieldName);
-        $questionId = $question['qid'];
-        $answers = $this->getAnswers($questionId);
-        if (array_key_exists($answerCode, $answers))
-        {
-            $answer = $answers[$answerCode]['answer'];
-        }
-        else
-        {
-            $answer = null;
-        }
-
-        //echo "\n$fieldName: $fieldType = $answerCode";
-        switch ($fieldType)
-        {
-            case 'R':   //RANKING TYPE
-                $fullAnswer = $answer;
-                break;
-
-            case '1':   //Array dual scale
-                if (mb_substr($fieldName, -1) == 0)
-                {
-                    $answers = $this->getAnswers($questionId, 0);
-                }
-                else
-                {
-                    $answers = $this->getAnswers($questionId, 1);
-                }
-                if (array_key_exists($answerCode, $answers))
-                {
-                    $fullAnswer = $answers[$answerCode]['answer'];
-                }
-                else
-                {
-                    $fullAnswer = null;
-                }
-                break;
-
-            case 'L':   //DROPDOWN LIST
-            case '!':
-                if (mb_substr($fieldName, -5, 5) == 'other')
-                {
-                    $fullAnswer = $answerCode;
-                }
-                else
-                {
-                    if ($answerCode == '-oth-')
-                    {
-                        $fullAnswer = $translator->translate('Other', $languageCode);
-                    }
-                    else
-                    {
-                        $fullAnswer = $answer;
-                    }
-                }
-                break;
-
-            case 'O':   //DROPDOWN LIST WITH COMMENT
-                if (isset($answer))
-                {
-                    //This is one of the dropdown list options.
-                    $fullAnswer = $answer;
-                }
-                else
-                {
-                    //This is a comment.
-                    $fullAnswer = $answerCode;
-                }
-                break;
-
-            case 'Y':   //YES/NO
-            switch ($answerCode)
-            {
-                case 'Y':
-                    $fullAnswer = $translator->translate('Yes', $languageCode);
-                    break;
-
-                case 'N':
-                    $fullAnswer = $translator->translate('No', $languageCode);
-                    break;
-
-                default:
-                    $fullAnswer = $translator->translate('N/A', $languageCode);
-            }
-            break;
-
-            case 'G':
-            switch ($answerCode)
-            {
-                case 'M':
-                    $fullAnswer = $translator->translate('Male', $languageCode);
-                    break;
-
-                case 'F':
-                    $fullAnswer = $translator->translate('Female', $languageCode);
-                    break;
-
-                default:
-                    $fullAnswer = $translator->translate('N/A', $languageCode);
-            }
-            break;
-
-            case 'M':   //MULTIOPTION
-            case 'P':
-                if (mb_substr($fieldName, -5, 5) == 'other' || mb_substr($fieldName, -7, 7) == 'comment')
-                {
-                    //echo "\n -- Branch 1 --";
-                    $fullAnswer = $answerCode;
-                }
-                else
-                {
-                    switch ($answerCode)
-                    {
-                        case 'Y':
-                            $fullAnswer = $translator->translate('Yes', $languageCode);
-                            break;
-
-                        case 'N':
-                        case '':
-                            $fullAnswer = $translator->translate('No', $languageCode);
-                            break;
-
-                        default:
-                            //echo "\n -- Branch 2 --";
-                            $fullAnswer = $answerCode;
-                    }
-                }
-                break;
-
-            case 'C':
-            switch ($answerCode)
-            {
-                case 'Y':
-                    $fullAnswer = $translator->translate('Yes', $languageCode);
-                    break;
-
-                case 'N':
-                    $fullAnswer = $translator->translate('No', $languageCode);
-                    break;
-
-                case 'U':
-                    $fullAnswer = $translator->translate('Uncertain', $languageCode);
-                    break;
-            }
-            break;
-
-            case 'E':
-            switch ($answerCode)
-            {
-                case 'I':
-                    $fullAnswer = $translator->translate('Increase', $languageCode);
-                    break;
-
-                case 'S':
-                    $fullAnswer = $translator->translate('Same', $languageCode);
-                    break;
-
-                case 'D':
-                    $fullAnswer = $translator->translate('Decrease', $languageCode);
-                    break;
-            }
-            break;
-
-            case 'F':
-            case 'H':
-                $answers = $this->getAnswers($questionId, 0);
-                $fullAnswer = (isset($answers[$answerCode])) ? $answers[$answerCode]['answer'] : "";
-                break;
-
-            default:
-
-                $fullAnswer .= $answerCode;
-        }
-
-        return $fullAnswer;
     }
 
     /**
@@ -838,10 +646,10 @@ interface IWriter
 */
 abstract class Writer implements IWriter
 {
-    protected $languageCode;
-    protected $translator;
+    public $languageCode;
+    public $translator;
 
-    protected function translate($key, $languageCode)
+    public function translate($key, $languageCode)
     {
         return $this->translator->translate($key, $languageCode);
     }
@@ -910,18 +718,17 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getAbbreviatedHeading(SurveyObj $survey, $fieldName)
+    public function getAbbreviatedHeading(SurveyObj $survey, $q)
     {
-        $question = $survey->getQuestionArray($fieldName);
+        $question = $survey->getQuestionArray($q->fieldname);
         if ($question)
         {
             $heading = $question['question'];
             $heading = $this->stripTagsFull($heading);
             $heading = mb_substr($heading, 0, 15).'.. ';
-            $aid = $survey->fieldMap[$fieldName]['aid'];
-            if (!empty($aid))
+            if (isset($q->aid))
             {
-                $heading .= '['.$aid.']';
+                $heading .= '['.$q->aid.']';
             }
             return $heading;
         }
@@ -937,282 +744,32 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string (or false)
     */
-    public function getFullHeading(SurveyObj $survey, FormattingOptions $options, $fieldName)
+    public function getFullHeading(SurveyObj $survey, $q)
     {
-        $question = $survey->getQuestionArray($fieldName);
+        $question = $survey->getQuestionArray($q->fieldname);
         $heading = $question['question'];
         $heading = $this->stripTagsFull($heading);
-        $heading.=$this->getFullFieldSubHeading($survey, $options, $fieldName);
+        $heading.= $q->getFieldSubHeading($survey, $this, false);
         return $heading;
     }
 
-    public function getCodeHeading(SurveyObj $survey, FormattingOptions $options, $fieldName)
+    public function getCodeHeading(SurveyObj $survey, $q)
     {
-        $question = $survey->getQuestionArray($fieldName);
+        $question = $survey->getQuestionArray($q->fieldname);
         $heading = $question['title'];
         $heading = $this->stripTagsFull($heading);
-        $heading.=$this->getCodeFieldSubHeading($survey, $options, $fieldName);
+        $heading.= $q->getFieldSubHeading($survey, $this, true);
         return $heading;
     }
 
-    public function getCodeFieldSubHeading(SurveyObj $survey, FormattingOptions $options, $fieldName)
-    {
-        $field = $survey->fieldMap[$fieldName];
-        $answerCode = $field['aid'];
-        $questionId = $field['qid'];
-        $fieldType = $field['type'];
-
-        $subHeading = '';
-        switch ($fieldType)
-        {
-            case 'R':
-                $subHeading .= ' ['.$this->translate('Ranking', $this->languageCode).' '.
-                $answerCode.']';
-                break;
-
-            case 'L':
-            case '!':
-                if ($answerCode == 'other')
-                {
-                    $subHeading .= ' '.$this->getOtherSubHeading();
-                }
-                break;
-
-            case 'O':
-                if ($answerCode == 'comment')
-                {
-                    $subHeading .= ' '.$this->getCommentSubHeading();
-                }
-                break;
-
-            case 'M':
-            case 'P':
-                //This section creates differing output from the old code base, but I do think
-                //that it is more correct than the old code.
-                $isOther = ($answerCode == 'other');
-                $isComment = (mb_substr($answerCode, -7, 7) == 'comment');
-
-                if ($isComment)
-                {
-                    $isOther = (mb_substr($answerCode, 0, -7) == 'other');
-                }
-
-                if ($isOther)
-                {
-                    $subHeading .= ' '.$this->getOtherSubHeading();
-                }
-                elseif (!$isComment)
-                {
-                    $subHeading .= ' ['.$answerCode.']';
-                }
-                if (isset($isComment) && $isComment == true)
-                {
-                    $subHeading .= ' '.$this->getCommentSubHeading();
-                    $comment = false;
-                }
-
-                break;
-
-            case ':':
-            case ';':
-                list($scaleZeroTitle, $scaleOneTitle) = explode('_', $answerCode);
-                $subHeading .= ' ['.$scaleZeroTitle.']['.$scaleOneTitle.']';
-                break;
-
-            case '1':
-                $answerScale = substr($fieldName, -1) + 1;
-                $subQuestions = $survey->getSubQuestionArrays($questionId);
-                foreach ($subQuestions as $question)
-                {
-                    if ($question['title'] == $answerCode && $question['scale_id'] == 0)
-                    {
-                        $subHeading = ' ['.flattenText($question['title'], true,true).'][Scale '.$answerScale.']';
-                    }
-                }
-                break;
-
-            default:
-                if (!empty($answerCode))
-                {
-                    $subHeading .= ' ['.$answerCode.']';
-                }
-        }
-
-        //rtrim the result since it could be an empty string ' ' which
-        //should be removed.
-        return rtrim($subHeading);
-    }
-
-    public function getFullFieldSubHeading(SurveyObj $survey, FormattingOptions $options, $fieldName)
-    {
-        $field = $survey->fieldMap[$fieldName];
-        $answerCode = $field['aid'];
-        $questionId = $field['qid'];
-        $fieldType = $field['type'];
-
-        $subHeading = '';
-        switch ($fieldType)
-        {
-            case 'R':
-                $subHeading .= ' ['.$this->translate('Ranking', $this->languageCode).' '.
-                $answerCode.']';
-                break;
-
-            case 'L':
-            case '!':
-                if ($answerCode == 'other')
-                {
-                    $subHeading .= ' '.$this->getOtherSubHeading();
-                }
-                break;
-
-            case 'O':
-                if ($answerCode == 'comment')
-                {
-                    $subHeading .= ' '.$this->getCommentSubHeading();
-                }
-                break;
-
-            case 'M':
-            case 'P':
-                //This section creates differing output from the old code base, but I do think
-                //that it is more correct than the old code.
-                $isOther = ($answerCode == 'other');
-                $isComment = (mb_substr($answerCode, -7, 7) == 'comment');
-
-                if ($isComment)
-                {
-                    $isOther = (mb_substr($answerCode, 0, -7) == 'other');
-                }
-
-                if ($isOther)
-                {
-                    $subHeading .= ' '.$this->getOtherSubHeading();
-                }
-                else
-                {
-                    $sqs = $survey->getSubQuestionArrays($questionId);
-                    foreach ($sqs as $sq)
-                    {
-                        if (!$isComment && $sq['title'] == $answerCode)
-                        {
-                            $value = $sq['question'];
-                        }
-                    }
-                    if (!empty($value))
-                    {
-                        $subHeading .= ' ['.$value.']';
-                    }
-                }
-                if (isset($isComment) && $isComment == true)
-                {
-                    $subHeading .= ' '.$this->getCommentSubHeading();
-                    $comment = false;
-                }
-
-                break;
-
-            case ':':
-            case ';':
-                //The headers created by this section of code are significantly different from
-                //the old code.  I believe that they are more accurate. - elameno
-                list($scaleZeroTitle, $scaleOneTitle) = explode('_', $answerCode);
-                $sqs = $survey->getSubQuestionArrays($questionId);
-
-                $scaleZeroText = '';
-                $scaleOneText = '';
-                foreach ($sqs as $sq)
-                {
-                    if ($sq['title'] == $scaleZeroTitle && $sq['scale_id'] == 0)
-                    {
-                        $scaleZeroText = $sq['question'];
-                    }
-                    elseif ($sq['title'] == $scaleOneTitle && $sq['scale_id'] == 1)
-                    {
-                        $scaleOneText = $sq['question'];
-                    }
-                }
-
-                $subHeading .= ' ['.$this->stripTagsFull($scaleZeroText).']['.$this->stripTagsFull($scaleOneText).']';
-                break;
-
-            case '1':
-                $answerScale = substr($fieldName, -1) + 1;
-                $subQuestions = $survey->getSubQuestionArrays($questionId);
-                foreach ($subQuestions as $question)
-                {
-                    if ($question['title'] == $answerCode && $question['scale_id'] == 0)
-                    {
-                        $subHeading = ' ['.flattenText($question['question'], true,true).'][Scale '.$answerScale.']';
-                    }
-                }
-                break;
-
-            default:
-                $subQuestion = null;
-                $subQuestions = $survey->getSubQuestionArrays($questionId);
-                foreach ($subQuestions as $question)
-                {
-                    if ($question['title'] == $answerCode)
-                    {
-                        $subQuestion = $question;
-                    }
-                }
-                if (!empty($subQuestion) && !empty($subQuestion['question']))
-                {
-                    $subHeading .= ' ['.$this->stripTagsFull($subQuestion['question']).']';
-                }
-        }
-
-        //rtrim the result since it could be an empty string ' ' which
-        //should be removed.
-        return rtrim($subHeading);
-    }
-
-    private function getOtherSubHeading()
+    public function getOtherSubHeading()
     {
         return '['.$this->translate('Other', $this->languageCode).']';
     }
 
-    private function getCommentSubHeading()
+    public function getCommentSubHeading()
     {
         return '- comment';
-    }
-
-    /**
-    * Performs a transformation of the response value based on the value, the
-    * type of field the value is a response for, and the FormattingOptions.
-    * All transforms should be processed during the execution of this function!
-    *
-    * The final step in the transform is to apply a stripTagsFull on the $value.
-    * This occurs for ALL values whether or not any other transform is applied.
-    *
-    * @param string $value
-    * @param string $fieldType
-    * @param FormattingOptions $options
-    * @return string
-    */
-    private function transformResponseValue($value, $fieldType, FormattingOptions $options)
-    {
-        //The following if block handles transforms of Ys and Ns.
-        if (($options->convertN || $options->convertY) &&
-        isset($fieldType) &&
-        ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y'))
-        {
-            if ($value == 'N' && $options->convertN)
-            {
-                //echo "Transforming 'N' to ".$options->nValue.PHP_EOL;
-                return $options->nValue;
-            }
-            else if ($value == 'Y' && $options->convertY)
-                {
-                    //echo "Transforming 'Y' to ".$options->yValue.PHP_EOL;
-                    return $options->yValue;
-                }
-        }
-
-        //This spot should only be reached if no transformation occurs.
-        return $this->stripTagsFull($value);
     }
 
     /**
@@ -1249,18 +806,19 @@ abstract class Writer implements IWriter
                 //FIXME fix the above condition
 
                 //Survey question field, $column value is a field name from the getFieldMap function.
+                $q = $survey->fieldMap[$column]['q'];
                 switch ($options->headingFormat)
                 {
                     case 'abrev':
-                        $value = $this->getAbbreviatedHeading($survey, $column);
+                        $value = $this->getAbbreviatedHeading($survey, $q);
                         break;
 
                     case 'headcodes':
-                        $value = $this->getCodeHeading($survey, $options, $column);
+                        $value = $this->getCodeHeading($survey, $q);
                         break;
 
                     case 'full':
-                        $value = $this->getFullHeading($survey, $options, $column);
+                        $value = $this->getFullHeading($survey, $q);
                         break;
 
                     default:
@@ -1292,17 +850,21 @@ abstract class Writer implements IWriter
             foreach ($options->selectedColumns as $column)
             {
                 $value = $response[$column];
+                $q = $survey->fieldMap[$column]['q'];
+
+                if (!is_a($q, 'QuestionModule'))
+                {
+                    $elementArray[] = $this->stripTagsFull($value);
+                    continue;
+                }
 
                 switch ($options->answerFormat) {
                     case 'short':
-                        $elementArray[] = $this->transformResponseValue($value,
-                        $survey->fieldMap[$column]['type'], $options);
+                        $elementArray[] = $q->transformResponseValue($this, $value, $options);
                         break;
 
                     case 'long':
-                        $elementArray[] = $this->transformResponseValue($survey->getFullAnswer(
-                        $column, $value, $this->translator, $this->languageCode),
-                        $survey->fieldMap[$column]['type'], $options);
+                        $elementArray[] = $q->transformResponseValue($this, $q->getFullAnswer($value, $this, $survey), $options);
                         break;
 
                     default:
@@ -1315,7 +877,7 @@ abstract class Writer implements IWriter
         }
     }
 
-    protected function stripTagsFull($string)
+    public function stripTagsFull($string)
     {
         $string=str_replace('-oth-','',$string);
         return flattenText($string,false,true,'UTF-8',false);
@@ -1589,7 +1151,7 @@ class PdfWriter extends Writer
         //come from the Lime Survey config files.
 
         global $pdforientation, $pdfdefaultfont, $pdffontsize;
-
+        
         $this->pdf = new PDF($pdforientation,'mm','A4');
         $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
         $this->pdf->AddPage();
@@ -1653,7 +1215,7 @@ class PdfWriter extends Writer
         else
         {
             //Presuming this else branch is a send to client via HTTP.
-            $filename = $this->translate($this->surveyName, $this->languageCode).'pdf';
+            $filename = $this->translate($this->surveyName, $this->languageCode).'.pdf';
         }
         $this->pdf->Output($filename, $this->pdfDestination);
     }

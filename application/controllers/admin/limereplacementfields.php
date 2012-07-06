@@ -80,7 +80,7 @@ class limereplacementfields extends Survey_Common_Action
         foreach ($fieldmap as $question)
         {
             $q = $question['q'];
-            if (!isset($q->id)) {
+            if (!isset($q->id) || empty($q->id)) {
                 continue;
             }
 

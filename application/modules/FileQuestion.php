@@ -224,7 +224,6 @@ class FileQuestion extends QuestionModule
         $field['usedinconditions']=$this->usedinconditions;
         $field['questionSeq']=$this->questioncount;
         $field['groupSeq']=$this->groupcount;
-        $field['pq']=$this;
         $field['q']=$this;
         $field2=$field;
         $field['max_files']=$qidattributes['max_num_of_files'];
@@ -309,6 +308,14 @@ class FileQuestion extends QuestionModule
             return $answer;
         }
         return '';
+    }
+    
+    public function getDBField()
+    {
+        if (strpos($this->fieldname, "_"))
+            return "INT(1)";
+        else
+           return "text";
     }
     
     public function availableAttributes($attr = false)

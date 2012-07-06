@@ -641,11 +641,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $field['usedinconditions']=$this->usedinconditions;
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
-            $field['pq']=$this;
             $q = clone $this;
             $q->fieldname = $fieldname;
             $q->aid = $field['aid'];
             $q->scale=0;
+            $q->scalename=$clang->gT('Scale 1');
             $q->sq=$abrow['question'];
             $field['q']=$q;
             $field2=$field;
@@ -656,11 +656,47 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $q2 = clone $field['q'];
             $q2->fieldname = $fieldname;
             $q2->scale=1;
+            $q2->scalename=$clang->gT('Scale 2');
             $field2['q']=$q2;
             $map[$fieldname]=$field;
             $map[$fieldname2]=$field2;
         }
         return $map;
+    }
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        if (mb_substr($this->fieldname, -1) == 0)
+        {
+            $answers = $survey->getAnswers($this->id, 0);
+        }
+        else
+        {
+            $answers = $survey->getAnswers($this->id, 1);
+        }
+
+        if (array_key_exists($answerCode, $answers))
+        {
+            return $answers[$answerCode]['answer'];
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public function getFieldSubHeading($survey, $export, $code)
+    {
+        $answerScale = substr($this->fieldname, -1) + 1;
+        $subQuestions = $survey->getSubQuestionArrays($this->id);
+        foreach ($subQuestions as $question)
+        {
+            if ($question['title'] == $this->aid && $question['scale_id'] == 0)
+            {
+                $subHeading = ' ['.flattenText($question[$code?'title':'question'], true,true).'][Scale '.$answerScale.']';
+            }
+        }
+        return '';
     }
     
     public function availableAttributes($attr = false)

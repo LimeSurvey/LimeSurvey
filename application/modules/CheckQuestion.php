@@ -394,13 +394,13 @@ class CheckQuestion extends QuestionModule
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
             $field['preg']=$this->preg;
-            $field['pq']=$this;
             $q = clone $this;
-            if(isset($this->default) && isset($this->default[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->default[$abrow['qid']];
+            if(isset($this->defaults) && isset($this->defaults[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->defaults[$abrow['qid']];
             $q->fieldname = $fieldname;
             $q->aid=$field['aid'];
             $q->question=$abrow['question'];
             $q->sq=$abrow['question'];
+            $q->sqid=$abrow['qid'];
             $field['q']=$q;
             $map[$fieldname]=$field;
         }
@@ -413,7 +413,7 @@ class CheckQuestion extends QuestionModule
             $other['subquestion']=$clang->gT("Other");
             $other['other']=$this->other;
             $q = clone $this;
-            if (isset($this->default) && isset($this->default['other'])) $q->default=$other['defaultvalue']=$this->default['other'];
+            if (isset($this->defaults) && isset($this->defaults['other'])) $q->default=$other['defaultvalue']=$this->defaults['other'];
             else
             {
                 unset($other['defaultvalues']);
@@ -421,8 +421,9 @@ class CheckQuestion extends QuestionModule
             }
             $q->fieldname .= 'other';
             $q->aid = 'other';
+            $q->sq = $clang->gT("Other");
+            $q->other = $this->other;
             $other['q']=$q;
-            $other['pq']=$this;
             $map[$other['fieldname']]=$other;
         }
         
@@ -452,6 +453,18 @@ class CheckQuestion extends QuestionModule
         return true;
     }
     
+    public function getDBField()
+    {
+        if ($this->aid != 'other' && strpos($this->aid,'comment')===false && strpos($this->aid,'othercomment')===false)
+        {
+            return "VARCHAR(5)";
+        }
+        else
+        {
+            return "text";
+        }
+    }
+    
     public function prepareConditions($row)
     {
         if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
@@ -470,6 +483,105 @@ class CheckQuestion extends QuestionModule
         "matchvalue"=>"Y",
         "matchmethod"=>$row['method']
         );
+    }
+
+    public function transformResponseValue($export, $value, $options)
+    {
+        if ($value == 'N' && $options->convertN)
+        {
+            //echo "Transforming 'N' to ".$options->nValue.PHP_EOL;
+            return $options->nValue;
+        }
+        else if ($value == 'Y' && $options->convertY)
+        {
+            //echo "Transforming 'Y' to ".$options->yValue.PHP_EOL;
+            return $options->yValue;
+        }
+        return parent::transformResponseValue($export, $value, $options);
+    }
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        if (mb_substr($this->fieldname, -5, 5) == 'other' || mb_substr($this->fieldname, -7, 7) == 'comment')
+        {
+            //echo "\n -- Branch 1 --";
+            return $answerCode;
+        }
+        else
+        {
+            switch ($answerCode)
+            {
+                case 'Y':
+                    return $export->translator->translate('Yes', $export->languageCode);
+                case 'N':
+                case '':
+                    return $export->translator->translate('No', $export->languageCode);
+                default:
+                    //echo "\n -- Branch 2 --";
+                    return $answerCode;
+            }
+        }
+    }
+    
+    public function getFieldSubHeading($survey, $export, $code)
+    {
+        //This section creates differing output from the old code base, but I do think
+        //that it is more correct than the old code.
+        $isOther = ($this->aid == 'other');
+        $isComment = (mb_substr($this->aid, -7, 7) == 'comment');
+
+        if ($isComment)
+        {
+            $isOther = (mb_substr($this->aid, 0, -7) == 'other');
+        }
+
+        if ($isOther)
+        {
+            return ' '.$export->getOtherSubHeading();
+        }
+        else if (!$code)
+        {
+            $sqs = $survey->getSubQuestionArrays($this->id);
+            foreach ($sqs as $sq)
+            {
+                if (!$isComment && $sq['title'] == $this->aid)
+                {
+                    $value = $sq['question'];
+                }
+            }
+            if (!empty($value))
+            {
+                return ' ['.$value.']';
+            }
+        }
+        elseif (!$isComment)
+        {
+            return ' ['.$this->aid.']';
+        }
+        else
+        {
+            return ' '.$export->getCommentSubHeading();
+        }
+    }
+    
+    public function getSPSSAnswers()
+    {
+        if ($this->aid == 'other' || strpos($this->aid,'comment') !== false) return array();
+        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
+        $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
+        return $answers;
+    }
+    
+    public function getSPSSData($data, $iLength, $na)
+    {
+        if ($this->aid == 'other' || strpos($this->aid,'comment') !== false)
+        {
+            return parent::getSPSSData($data, $iLength, $na);
+        } else if ($data == 'Y'){
+            return "'1'";
+        } else {
+            return "'0'";
+        }
     }
     
     public function availableAttributes($attr = false)

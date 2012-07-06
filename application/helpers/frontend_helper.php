@@ -731,7 +731,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 
     if (!isset($backok) || $backok != "Y")
     {
-        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
 
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
@@ -1656,7 +1656,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
     }
-    $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+    $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
 
 
     // Randomization groups for groups
@@ -1776,7 +1776,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 {
                     // Get the swapped question
                     $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
-                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$q->id]],$_SESSION['survey_'.$surveyid]['s_lang']);
+                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$q->id]],$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
                     unset($qfieldmap['id']);
                     unset($qfieldmap['submitdate']);
                     unset($qfieldmap['lastpage']);
@@ -1787,7 +1787,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                     {
                         // Assign the swapped question (Might be more than one field)
                         $tval['random_gid'] = $q->gid; //AJS
-                        $qq = $tval['q'];
+                        $qq = clone $tval['q'];
                         $qq->randomgid = $q->gid;
                         $tval['q'] = $qq;
                         //$tval['gid'] = $fieldval['gid'];
@@ -1814,7 +1814,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         $copyFieldMap2 = array();
         foreach ($copyFieldMap as $key=>$val)
         {
-            $q = $val['q'];
+            $q = clone $val['q'];
             if (isset($q->randomgid))
             {
                 if ($q->gid != '' && $q->randomgid != '' && $q->randomgid != $_gid)
@@ -1843,6 +1843,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 $val['questionSeq'] = $qseq; //AJS
                 $q->groupcount = $gseq;
                 $q->questioncount = $qseq;
+                $val['q'] = $q;
             }
             $copyFieldMap2[$key] = $val;
         }
@@ -1858,7 +1859,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
-        $q = $field['q'];
+        $q = clone $field['q'];
         if (isset($q->id) && $q->id!='')
         {
             $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$q->fieldname]=$q->surveyid.'X'.$q->gid.'X'.$q->id;
@@ -1927,7 +1928,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         {
             if (isset($_GET[$field]) && $field!='token')
             {
-                $q = $fieldmap[$field]['q'];
+                $q = clone $fieldmap[$field]['q'];
                 $value = $q->filter($_GET[$field], 'get');
                 if (!is_null($value))
                 {
@@ -2110,7 +2111,7 @@ function doAssessment($surveyid, $returndataonly=false)
                     "message"=>$row['message']);
                 }
             }
-            $fieldmap=createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+            $fieldmap=createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
             $total=0;
             $groups=array();
             foreach($fieldmap as $field)
@@ -2242,7 +2243,7 @@ function UpdateFieldArray()
         reset($_SESSION['survey_'.$surveyid]['questions']);
         while ( list($key) = each($_SESSION['survey_'.$surveyid]['questions']) )
         {
-            $q = $_SESSION['survey_'.$surveyid]['questions'][$key];
+            $q = clone $_SESSION['survey_'.$surveyid]['questions'][$key];
 
             $query = "SELECT * FROM {{questions}} WHERE qid=".$q->id." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
             $result = dbExecuteAssoc($query) or safeDie ("Couldn't get question <br />$query<br />");      //Checked

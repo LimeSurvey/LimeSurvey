@@ -202,11 +202,33 @@ class CommentListQuestion extends ListQuestion
         $q->fieldname .= 'comment';
         $q->aid='comment';
         $q->sq=$clang->gT("Comment");
-        unset($q->default);
         $comment['q']=$q;
-        $comment['pq']=$this;
         $map[$comment['fieldname']]=$comment;
         return $map;
+    }
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        $answers = $survey->getAnswers($this->id);
+        if (array_key_exists($answerCode, $answers))
+        {
+            //This is one of the dropdown list options.
+            return $answers[$answerCode]['answer'];
+        }
+        else
+        {
+            //This is a comment.
+            return $answerCode;
+        }
+    }
+    
+    public function getFieldSubHeading($survey, $export, $code)
+    {
+        if ($this->aid == 'comment')
+        {
+            return ' '.$export->getCommentSubHeading();
+        }
+        return '';
     }
     
     public function availableAttributes($attr = false)

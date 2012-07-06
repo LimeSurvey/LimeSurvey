@@ -393,6 +393,35 @@ class RadioArrayQuestion extends ArrayQuestion
         return true;
     }
     
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        $answers = $survey->getAnswers($this->id, 0);
+        return (isset($answers[$answerCode])) ? $answers[$answerCode]['answer'] : "";
+    }
+    
+    public function getSPSSAnswers()
+    {
+        global $language, $length_vallabel;
+        $query = "SELECT {{answers}}.code, {{answers}}.answer,
+        {{questions}}.type FROM {{answers}}, {{questions}} WHERE";
+
+        if (isset($this->scale)) $query .= " {{answers}}.scale_id = " . (int) $this->scale . " AND";
+
+        $query .= " {{answers}}.qid = '".$this->id."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
+        and {{questions}}.qid='".$this->id."' ORDER BY sortorder ASC";
+        $result= Yii::app()->db->createCommand($query)->query(); //Checked
+        foreach ($result->readAll() as $row)
+        {
+            $answers[] = array('code'=>$row['code'], 'value'=>mb_substr(stripTagsFull($row["answer"]),0,$length_vallabel));
+        }
+        return $answers;
+    }
+    
+    public function getAnswerArray($em)
+    {
+        return (isset($em->qans[$this->id]) ? $em->qans[$this->id] : NULL);
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

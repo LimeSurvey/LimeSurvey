@@ -1460,11 +1460,16 @@ function sendCacheHeaders()
 function getQuestion($fieldcode)
 {
     list($sid, $gid, $qid) = explode('X', $fieldcode);
-    $fields=createFieldMap($sid,'full',false,false,getBaseLanguageFromSurveyID($sid));
+    $fields=createFieldMap($sid,'full',false,false,getBaseLanguageFromSurveyID($sid)); //AJS#
     foreach($fields as $field)
     {
         $q=$field['q'];
+        //try {
+        //echo 'test';
         if($q->id==$qid && $q->surveyid==$sid && $q->gid==$gid) return $q;
+        //} catch(Exception $e) {
+        //    var_dump($q);die();
+        //}
     }
     return false;
 }
@@ -1491,7 +1496,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
         }
         return $sValue;
     }
-    $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage);
+    $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage); //AJS
     if (isset($fieldmap[$sFieldCode]))
         $fields = $fieldmap[$sFieldCode];
     else
@@ -1949,7 +1954,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             'conditionsexist'=>$conditions, 'usedinconditions'=>$usedinconditions,
             'questioncount'=>$questionSeq, 'language'=>$sLanguage));
         $pq->aid = '';
-        if(isset($defaults[$arow['qid']])) $pq->default = $defaults[$arow['qid']];
+        if(isset($defaults[$arow['qid']])) $pq->defaults = $defaults[$arow['qid']];
 
         $pq->preg = $arow['preg'];
         $pq->other = $arow['other'];
@@ -1961,6 +1966,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         {
             $tmp=array_values($add);
             $fieldname = $tmp[count($add)-1]['fieldname'];
+            $q = $add[$fieldname]['q'];
             $add[$fieldname]['relevance']=$arow['relevance'];
             $add[$fieldname]['grelevance']=$arow->groups['grelevance'];
             $add[$fieldname]['questionSeq']=$questionSeq;
@@ -1968,7 +1974,14 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $add[$fieldname]['preg']=$arow['preg'];
             $add[$fieldname]['other']=$arow['other'];
             $add[$fieldname]['help']=$arow['help'];
-            $fieldmap = array_merge($fieldmap, $add);
+            $q->relevance=$arow['relevance'];
+            $q->grelevance=$arow->groups['grelevance'];
+            $q->questionSeq=$questionSeq;
+            $q->groupSeq=$groupSeq;
+            $q->preg=$arow['preg'];
+            $q->other=$arow['other'];
+            $q->help=$arow['help'];
+            $fieldmap=array_merge($fieldmap, $add);
         }
         else
         {
@@ -2009,10 +2022,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     {
                         $mf['group_name'] = $f['group_name'];
                     }
-                    if (isset($f['answerList']))
-                    {
-                        $mf['answerList'] = $f['answerList'];
-                    }
                     if (isset($f['defaultvalue']))
                     {
                         $mf['defaultvalue'] = $f['defaultvalue'];
@@ -2037,7 +2046,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 * @return bool
 */
 function hasFileUploadQuestion($surveyid) {
-    $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
+    $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
     foreach ($fieldmap as $field) {
         $q=$field['q'];
@@ -3412,7 +3421,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $cascaded=array();
     $sources=array();
     $qidtotitle=array();
-    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
     $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
     foreach ($fieldmap as $qrow) // Cycle through questions to see if any have list_filter attributes
@@ -4022,7 +4031,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
     else {
         $forceRefresh=false;
     }
-    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,getBaseLanguageFromSurveyID($iNewSID));
+    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,getBaseLanguageFromSurveyID($iNewSID)); //AJS#
 
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
@@ -4707,7 +4716,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 */
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=false)
 {
-    $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
+    $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode); //AJS#
     //Get response data
     $idrow = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 

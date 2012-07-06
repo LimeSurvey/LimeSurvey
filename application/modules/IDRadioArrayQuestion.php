@@ -202,6 +202,47 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
         return false;
     }
     
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        switch ($answerCode)
+        {
+            case 'I':
+                return $export->translator->translate('Increase', $export->languageCode);
+            case 'S':
+                return $export->translator->translate('Same', $export->languageCode);
+            case 'D':
+                return $export->translator->translate('Decrease', $export->languageCode);
+        }
+    }
+    
+    public function getSPSSAnswers()
+    {
+        $answers[] = array('code'=>1, 'value'=>$clang->gT('Increase'));
+        $answers[] = array('code'=>2, 'value'=>$clang->gT('Same'));
+        $answers[] = array('code'=>3, 'value'=>$clang->gT('Decrease'));
+        return $answers;
+    }
+    
+    public function getSPSSData($data, $iLength, $na)
+    {
+        if ($data == 'I')
+        {
+            return "'1'";
+        } else if ($data == 'S'){
+            return "'2'";
+        } else if ($data == 'D'){
+            return "'3'";
+        } else {
+            return $na;
+        }
+    }
+    
+    public function getAnswerArray($em)
+    {
+        $clang = Yii::app()->lang;
+        return array('I' => $clang->gT("Increase"), 'S' => $clang->gT("Same"), 'D' => $clang->gT("Decrease"));
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

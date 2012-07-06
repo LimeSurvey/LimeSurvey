@@ -117,6 +117,16 @@ class NumericalQuestion extends QuestionModule
         return $value==null?'':$value;
     }
     
+    public function getDBField()
+    {
+        return 'float';
+    }
+    
+    public function adjustSize($size)
+    {
+        return $size . '.' . ($size-1);
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_num_value_n","maximum_chars","min_num_value_n","num_value_int_only","page_break","prefix","public_statistics","suffix","text_input_width","random_group");

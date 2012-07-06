@@ -503,8 +503,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     $aQuestionMap=array();
     foreach ($fieldmap as $field)
     {
-        if(isset($field['qid']) && $field['qid']!='')
-            $aQuestionMap[]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+        $q = $field['q'];
+        if(isset($q->id) && $q->id!='')
+            $aQuestionMap[]=$q->surveyid.'X'.$q->gid.'X'.$q->id;
     }
 
     /*
@@ -902,15 +903,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                 //search for key
                 $fld = substr($rt, 1, strlen($rt));
-                $fielddata=$fieldmap[$fld];
+                $q=$fieldmap[$fld]['q'];
 
                 //get SGQA IDs
-                $qsid=$fielddata['sid'];
-                $qgid=$fielddata['gid'];
-                $qqid=$fielddata['qid'];
+                $qsid=$q->surveyid;
+                $qgid=$q->gid;
+                $qqid=$q->id;
 
 
-                list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
+                list($qanswer, $qlid)=isset($q->aid) ? explode("_", $q->aid) : array("", "");
                 //get SGQ data
                 //list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
@@ -1699,37 +1700,28 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             else
             {
                 //search for key
-                $fielddata=$fieldmap[$rt];
+                $q=$fieldmap[$rt]['q'];
                 //print_r($fielddata);
                 //get SGQA IDs
-                $qsid=$fielddata['sid'];
-                $qgid=$fielddata['gid'];
-                $qqid=$fielddata['qid'];
-                $qanswer=$fielddata['aid'];
+                $qsid=$q->surveyid;
+                $qqid=$q->id;
+                $qanswer=$q->aid;
 
                 //question type
                 $qtype=$fielddata['type'];
 
-                //question string
-                $qastring=$fielddata['question'];
-
-                //question ID
-                $rqid=$qqid;
-
                 //get question data
-                $nquery = "SELECT title, type, question, qid, parent_qid, other FROM {{questions}} WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
+                $nquery = "SELECT title, type, question, qid, parent_qid, other FROM {{questions}} WHERE qid='{$q->id}' AND parent_qid=0 and language='{$language}'";
                 $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //loop though question data
                 foreach ($nresult->readAll() as $nrow)
                 {
-                    $nrow=array_values($nrow);
-                    $qtitle=flattenText($nrow[0]);
-                    $qtype=$nrow[1];
-                    $qquestion=flattenText($nrow[2]);
-                    $qiqid=$nrow[3];
-                    $qparentqid=$nrow[4];
-                    $qother=$nrow[5];
+                    $qtitle=flattenText($nrow['title']);
+                    $qtype=$nrow['type'];
+                    $qquestion=flattenText($nrow['question']);
+                    $qiqid=$nrow['qid'];
+                    $qother=$nrow['other'];
                 }
 
                 //check question types
@@ -1884,7 +1876,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $alist[]=array($i, $i);
                         }
 
-                        $qquestion .= $linefeed."[".$fielddata['subquestion1']."] [".$fielddata['subquestion2']."]";
+                        $qquestion .= $linefeed."[".$q->sq1."] [".$q->sq2."]";
                         list($myans, $mylabel)=explode("_", $qanswer);
                         $qtitle .= "[$myans][$mylabel]";
                         break;
@@ -2015,7 +2007,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         //adapt title and question
                         $qtitle = $qtitle." [".$sSubquestion."][".$labelno."]";
-                        $qquestion  = $qastring .$labelheader;
+                        $qquestion  = $q->text .$labelheader;
                         break;
 
 
@@ -2038,12 +2030,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         if ((($qtype == "L" || $qtype == "!") && $qother == "Y"))
                         {
                             //add "other"
-                            $alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$fielddata['fieldname'].'other');
+                            $alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$q->fieldname.'other');
                         }
                         if ( $qtype == "O")
                         {
                             //add "comment"
-                            $alist[]=array($statlang->gT("Comments"),$statlang->gT("Comments"),$fielddata['fieldname'].'comment');
+                            $alist[]=array($statlang->gT("Comments"),$statlang->gT("Comments"),$q->fieldname.'comment');
                         }
 
                 }	//end switch question type

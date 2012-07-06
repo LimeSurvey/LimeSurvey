@@ -33,7 +33,8 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=false)
 
     if (!$silent && !$dataset)
     {
-        safeDie('Error executing query in dbExecuteAssoc:'.$error);
+        throw new Exception($error);
+        //safeDie('Error executing query in dbExecuteAssoc:'.$error);
     }
     return $dataset;
 }

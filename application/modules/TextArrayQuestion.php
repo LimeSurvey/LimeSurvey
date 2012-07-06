@@ -400,10 +400,6 @@ EOD;
         {
             if($abrow['scale_id']==1) {
                 $answerset[]=$abrow;
-                $answerList[] = array(
-                'code'=>$abrow['title'],
-                'answer'=>$abrow['question'],
-                );
                 unset($abrows[$key]);
             }
         }
@@ -430,18 +426,49 @@ EOD;
                 $field['questionSeq']=$this->questioncount;
                 $field['groupSeq']=$this->groupcount;
                 $field['preg']=$this->preg;
-                $field['answerList']=$answerList;
                 $q = clone $this;
                 $q->fieldname = $fieldname;
                 $q->aid = $field['aid'];
                 $q->sq1=$abrow['question'];
                 $q->sq2=$answer['question'];
+                $q->sqid=$abrow['qid'];
                 $field['q']=$q;
-                $field['pq']=$this;
                 $map[$fieldname]=$field;
             }
         }
         return $map;
+    }
+    
+    public function getDBField()
+    {
+        return 'text';
+    }
+    
+    public function getFieldSubHeading($survey, $export, $code)
+    {
+        //The headers created by this section of code are significantly different from
+        //the old code.  I believe that they are more accurate. - elameno
+        list($scaleZeroTitle, $scaleOneTitle) = explode('_', $this->aid);
+        if($code) return' ['.$scaleZeroTitle.']['.$scaleOneTitle.']';
+
+        $sqs = $survey->getSubQuestionArrays($this->id);
+
+        $scaleZeroText = '';
+        $scaleOneText = '';
+        foreach ($sqs as $sq)
+        {
+            if ($sq['title'] == $scaleZeroTitle && $sq['scale_id'] == 0)
+            {
+                $scaleZeroText = $sq['question'];
+            }
+            elseif ($sq['title'] == $scaleOneTitle && $sq['scale_id'] == 1)
+            {
+                $scaleOneText = $sq['question'];
+            }
+        }
+
+        return ' ['.$export->stripTagsFull($scaleZeroText).
+               ']['.$export->stripTagsFull($scaleOneText).']';
     }
     
     public function availableAttributes($attr = false)

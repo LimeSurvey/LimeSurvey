@@ -70,6 +70,49 @@ class GenderQuestion extends QuestionModule
         return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
     }
     
+    public function getDBField()
+    {
+        return 'VARCHAR(1)';
+    }
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        switch ($answerCode)
+        {
+            case 'M':
+                return $export->translator->translate('Male', $export->languageCode);
+            case 'F':
+                return $export->translator->translate('Female', $export->languageCode);
+            default:
+                return $export->translator->translate('N/A', $export->languageCode);
+        }
+    }
+    
+    public function getSPSSAnswers()
+    {
+        $answers[] = array('code'=>1, 'value'=>$clang->gT('Female'));
+        $answers[] = array('code'=>2, 'value'=>$clang->gT('Male'));
+        return $answers;
+    }
+    
+    public function getSPSSData($data, $iLength, $na)
+    {
+        if ($data == 'F')
+        {
+            return "'1'";
+        } else if ($data == 'M'){
+            return "'2'";
+        } else {
+            return $na;
+        }
+    }
+    
+    public function getAnswerArray($em)
+    {
+        $clang = Yii::app()->lang;
+        return array('M' => $clang->gT("Male"), 'F' => $clang->gT("Female"));
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

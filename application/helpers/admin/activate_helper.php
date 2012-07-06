@@ -278,100 +278,50 @@ function activateSurvey($surveyid, $simulate = false)
     }
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($surveyid,'full',true,false,getBaseLanguageFromSurveyID($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',true,false,getBaseLanguageFromSurveyID($surveyid)); //AJS
 
     $createsurvey = array();
-    foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
+    foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
-        switch($arow['type'])
+        $q = $arow['q'];
+        switch($q->fieldname)
         {
             case 'startlanguage':
-                $createsurvey[$arow['fieldname']] = "VARCHAR(20) NOT NULL";
+                $createsurvey[$q->fieldname] = "VARCHAR(20) NOT NULL";
                 break;
             case 'id':
-                $createsurvey[$arow['fieldname']] = "pk";
+                $createsurvey[$q->fieldname] = "pk";
                 break;
             case "startdate":
             case "datestamp":
-                $createsurvey[$arow['fieldname']] = "datetime NOT NULL";
+                $createsurvey[$q->fieldname] = "datetime NOT NULL";
                 break;
             case "submitdate":
-                $createsurvey[$arow['fieldname']] = "datetime";
+                $createsurvey[$q->fieldname] = "datetime";
                 break;
             case "lastpage":
-                $createsurvey[$arow['fieldname']] = "integer";
+                $createsurvey[$q->fieldname] = "integer";
                 break;
-            case "N":  //NUMERICAL
-                $createsurvey[$arow['fieldname']] = "float";
-                break;
-            case "S":  //SHORT TEXT
-                if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')    {$createsurvey[$arow['fieldname']] = "text";}
-                else  {$createsurvey[$arow['fieldname']] = "string";}
-                break;
-            case "L":  //LIST (RADIO)
-            case "!":  //LIST (DROPDOWN)
-            case "M":  //Multiple choice
-            case "P":  //Multiple choice with comment
-            case "O":  //DROPDOWN LIST WITH COMMENT
-                if ($arow['aid'] != 'other' && strpos($arow['aid'],'comment')===false && strpos($arow['aid'],'othercomment')===false)
-                {
-                    $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
-                }
-                else
-                {
-                    $createsurvey[$arow['fieldname']] = "text";
-                }
-                break;
-            case "K":  // Multiple Numerical
-                $createsurvey[$arow['fieldname']] = "float";
-                break;
-            case "U":  //Huge text
-            case "Q":  //Multiple short text
-            case "T":  //LONG TEXT
-            case ";":  //Multi Flexi
-            case ":":  //Multi Flexi
-                $createsurvey[$arow['fieldname']] = "text";
-                break;
-            case "D":  //DATE
-                $createsurvey[$arow['fieldname']] = "datetime";
-                break;
-            case "5":  //5 Point Choice
-            case "G":  //Gender
-            case "Y":  //YesNo
-            case "X":  //Boilerplate
-                $createsurvey[$arow['fieldname']] = "VARCHAR(1)";
-                break;
-            case "I":  //Language switch
-                $createsurvey[$arow['fieldname']] = "VARCHAR(20)";
-                break;
-            case "|":
-                $createsurveydirectory = true;
-                if (strpos($arow['fieldname'], "_"))
-                    $createsurvey[$arow['fieldname']] = "INT(1)";
-                else
-                   $createsurvey[$arow['fieldname']] = "text";
-                break;
-            case "ipaddress":
+            case "ipaddr":
                 if ($prow['ipaddr'] == "Y")
-                    $createsurvey[$arow['fieldname']] = "text";
+                    $createsurvey[$q->fieldname] = "text";
                 break;
-            case "url":
+            case "refurl":
                 if ($prow['refurl'] == "Y")
-                    $createsurvey[$arow['fieldname']] = "text";
+                    $createsurvey[$q->fieldname] = "text";
                 break;
             case "token":
                 if ($prow['anonymized'] == "N")
                 {
-                    $createsurvey[$arow['fieldname']] = "VARCHAR(36)";
+                    $createsurvey[$q->fieldname] = "VARCHAR(36)";
                 }
                 break;
-            case '*': // Equation
-                $createsurvey[$arow['fieldname']] = "text";
-                break;
             default:
-                $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
+                $createsurvey[$q->fieldname] = $q->getDBField();
         }
 
+        if ($q->fileUpload()) $createsurveydirectory = true;
+        
         if ($simulate){
             $tempTrim = trim($createsurvey);
             $brackets = strpos($tempTrim,"(");
@@ -450,7 +400,7 @@ function activateSurvey($surveyid, $simulate = false)
 
         if (isset($savetimings) && $savetimings=="TRUE")
         {
-            $timingsfieldmap = createFieldMap($surveyid,"short",false,false,getBaseLanguageFromSurveyID($surveyid));
+            $timingsfieldmap = createFieldMap($surveyid,"short",false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
             $column['id'] = $createsurvey['id'];
             $column['interviewtime'] = 'FLOAT';

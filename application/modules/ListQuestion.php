@@ -361,18 +361,15 @@ class ListQuestion extends QuestionModule
             $other['aid']='other';
             $other['subquestion']=$clang->gT("Other");
             $q = clone $this;
-            if (isset($this->default) && isset($this->default['other'])) $q->default=$other['defaultvalue']=$this->default['other'];
+            if (isset($this->defaults) && isset($this->defaults['other'])) $q->default=$other['defaultvalue']=$this->defaults['other'];
             else
             {
                 unset($other['defaultvalues']);
-                unset($q->default);
             }
             $q->fieldname .= 'other';
             $q->aid = 'other';
             $q->sq=$clang->gT("Other");
-            $q->default = isset($other['defaultvalues'])?$other['defaultvalues']:null;
             $other['q']=$q;
-            $other['pq']=$this;
             $map[$other['fieldname']]=$other;
         }
         return $map;
@@ -412,6 +409,98 @@ class ListQuestion extends QuestionModule
             }
         }
         return true;
+    }
+    
+    public function getDBField()
+    {
+        if ($this->aid != 'other' && strpos($this->aid,'comment')===false && strpos($this->aid,'othercomment')===false)
+        {
+            return "VARCHAR(5)";
+        }
+        else
+        {
+            return "text";
+        }
+    }
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        if (mb_substr($this->fieldname, -5, 5) == 'other')
+        {
+            return $answerCode;
+        }
+        else
+        {
+            if ($answerCode == '-oth-')
+            {
+                return $export->translator->translate('Other', $export->languageCode);
+            }
+            else
+            {
+                $answers = $survey->getAnswers($this->id);
+                if (array_key_exists($answerCode, $answers))
+                {
+                    return $answers[$answerCode]['answer'];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+    }
+    
+    public function getFieldSubHeading($survey, $export, $code)
+    {
+        if ($this->aid == 'other')
+        {
+            return ' '.$export->getOtherSubHeading();
+        }
+        return '';
+    }
+    
+    public function getSPSSAnswers()
+    {
+        global $language, $length_vallabel;
+        if ($this->aid == 'other' || strpos($this->aid,'comment') !== false) {
+            return array();
+        } else {
+            $query = "SELECT {{answers}}.code, {{answers}}.answer,
+            {{questions}}.type FROM {{answers}}, {{questions}} WHERE";
+
+            $query .= " {{answers}}.qid = '".$this->id."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
+            and {{questions}}.qid='".$this->id."' ORDER BY sortorder ASC";
+            $result= Yii::app()->db->createCommand($query)->query(); //Checked
+            foreach ($result->readAll() as $row)
+            {
+                $answers[] = array('code'=>$row['code'], 'value'=>mb_substr(stripTagsFull($row["answer"]),0,$length_vallabel));
+            }
+            return $answers;
+        }
+    }
+    
+    public function getAnswerArray($em)
+    {
+        $ansArray = (isset($em->qans[$this->id]) ? $em->qans[$this->id] : NULL);
+        if (isset($this->other) && $this->other == 'Y')
+        {
+            if (preg_match('/other$/',$this->fieldname))
+            {
+                $ansArray = NULL;   // since the other variable doesn't need it
+            }
+            else
+            {
+                $_qattr = isset($em->qattr[$this->id]) ? $em->qattr[$this->id] : array();
+                if (isset($_qattr['other_replace_text']) && trim($_qattr['other_replace_text']) != '') {
+                    $othertext = trim($_qattr['other_replace_text']);
+                }
+                else {
+                    $othertext = $em->gT('Other:');
+                }
+                $ansArray['0~-oth-'] = '0|' . $othertext;
+            }
+        }
+        return $ansArray;
     }
     
     public function availableAttributes($attr = false)

@@ -204,7 +204,13 @@ class ShortTextQuestion extends TextQuestion
         return "\t<input type='text' name='{$this->fieldname}' value='"
         .htmlspecialchars($idrow[$this->fieldname], ENT_QUOTES) . "' />\n";
     }
-
+    
+    public function getDBField()
+    {
+        if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') return 'text';
+        return 'string';
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","location_city","location_state","location_postal","location_country","statistics_showmap","statistics_showgraph","statistics_graphtype","location_mapservice","location_mapwidth","location_mapheight","location_nodefaultfromip","location_defaultcoordinates","location_mapzoom","hide_tip","hidden","maximum_chars","numbers_only","page_break","prefix","suffix","text_input_width","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style","random_group");

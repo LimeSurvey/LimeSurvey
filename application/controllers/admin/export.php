@@ -341,8 +341,6 @@ class export extends Survey_Common_Action {
         $clang = $this->getController()->lang;
         //for scale 1=nominal, 2=ordinal, 3=scale
 
-        //		$typeMap = $this->_getTypeMap();
-
         $filterstate = incompleteAnsFilterState();
         $spssver = returnGlobal('spssver');
 
@@ -508,11 +506,11 @@ class export extends Survey_Common_Action {
 
             foreach ( $fields as $field )
             {
+                $q = $field['question'];
                 if( $field['SPSStype'] == 'DATETIME23.2' ) $field['size'] = '';
-
-                if($field['SPSStype'] == 'F' && ($field['LStype'] == 'N' || $field['LStype'] == 'K'))
+                else if($field['SPSStype'] == 'F' && is_a($q, 'QuestionModule'))
                 {
-                    $field['size'] .= '.' . ($field['size']-1);
+                    $field['size'] = $q->adjustSize($field['size']);
                 }
 
                 if ( !$field['hide'] ) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
@@ -631,8 +629,6 @@ class export extends Survey_Common_Action {
         $clang = $this->getController()->lang;
         //for scale 1=nominal, 2=ordinal, 3=scale
 
-        //$typeMap = $this->_getTypeMap();
-
         $length_vallabel = '120'; // Set the max text length of Value Labels
         $iLength = '25500'; // Set the max text length of Text Data
         $length_varlabel = '25500'; // Set the max text length of Variable Labels
@@ -750,12 +746,13 @@ class export extends Survey_Common_Action {
             $i = 1;
             foreach ( $fields as $field )
             {
+                $q = $field['question'];
                 if ( $field['SPSStype'] == 'DATETIME23.2' ) $field['size']='';
-
-                if ( $field['LStype'] == 'N' || $field['LStype'] == 'K' )
+                if(is_a($q, 'QuestionModule'))
                 {
-                    $field['size'] .= '.' . ($field['size'] - 1);
+                    $field['size'] = $q->adjustSize($field['size']);
                 }
+
 
                 switch ( $field['SPSStype'] )
                 {

@@ -455,7 +455,6 @@ class RankingQuestion extends QuestionModule
             $field['usedinconditions']=$this->usedinconditions;
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
-            $field['pq']=$this;
             $q = clone $this;
             $q->fieldname = $fieldname;
             $q->aid = $field['aid'];
@@ -480,7 +479,46 @@ class RankingQuestion extends QuestionModule
         }
         return $value;
     }
-   
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        $answers = $survey->getAnswers($this->id);
+        if (array_key_exists($answerCode, $answers))
+        {
+            return $answers[$answerCode]['answer'];
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public function getFieldSubHeading($survey, $export, $code)
+    {
+        return ' ['.$export->translate('Ranking', $export->languageCode).' '.$this->aid.']';
+    }
+    
+    public function getSPSSAnswers()
+    {
+        global $language, $length_vallabel;
+        $query = "SELECT {{answers}}.code, {{answers}}.answer,
+        {{questions}}.type FROM {{answers}}, {{questions}} WHERE";
+
+        $query .= " {{answers}}.qid = '".$this->id."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
+        and {{questions}}.qid='".$this->id."' ORDER BY sortorder ASC";
+        $result= Yii::app()->db->createCommand($query)->query(); //Checked
+        foreach ($result->readAll() as $row)
+        {
+            $answers[] = array('code'=>$row['code'], 'value'=>mb_substr(stripTagsFull($row["answer"]),0,$length_vallabel));
+        }
+        return $answers;
+    }
+    
+    public function getAnswerArray($em)
+    {
+        return (isset($em->qans[$this->id]) ? $em->qans[$this->id] : NULL);
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");

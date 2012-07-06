@@ -180,7 +180,48 @@ class YNRadioArrayQuestion extends RadioArrayQuestion
             default: return $value;
         }
     }
-   
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        switch ($answerCode)
+        {
+            case 'Y':
+                return $export->translator->translate('Yes', $export->languageCode);
+            case 'N':
+                return $export->translator->translate('No', $export->languageCode);
+            case 'U':
+                return $export->translator->translate('Uncertain', $export->languageCode);
+        }
+    }
+    
+    public function getSPSSData($data, $iLength, $na)
+    {
+        if ($data == 'Y')
+        {
+            return "'1'";
+        } else if ($data == 'N'){
+            return "'2'";
+        } else if ($data == 'U'){
+            return "'3'";
+        } else {
+            return $na;
+        }
+    }
+    
+    public function getSPSSAnswers()
+    {
+        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
+        $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
+        $answers[] = array('code'=>3, 'value'=>$clang->gT('Uncertain'));
+        return $answers;
+    }
+    
+    public function getAnswerArray($em)
+    {
+        $clang = Yii::app()->lang;
+        return array('Y' => $clang->gT("Yes"), 'N' => $clang->gT("No"), 'U' => $clang->gT("Uncertain"));
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

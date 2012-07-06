@@ -75,6 +75,11 @@ class LanguageQuestion extends QuestionModule
         return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
     }
     
+    public function getDBField()
+    {
+        return 'VARCHAR(20)';
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","random_group");

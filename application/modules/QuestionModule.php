@@ -162,9 +162,8 @@ abstract class QuestionModule
         $map['questionSeq']=$this->questioncount;
         $map['groupSeq']=$this->groupcount;
         $q = clone $this;
-        if(isset($this->default) && isset($this->default[0])) $q->default=$map['defaultvalue']=$this->default[0];
+        if(isset($this->defaults) && isset($this->defaults[0])) $q->default=$map['defaultvalue']=$this->defaults[0];
         $map['q']=$q;
-        $map['pq']=$this;
         return array($this->fieldname=>$map);
     }
     
@@ -203,6 +202,11 @@ abstract class QuestionModule
         return false;
     }
     
+    public function getDBField()
+    {
+        return 'VARCHAR(5)';
+    }
+    
     public function prepareConditions($row)
     {
         if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
@@ -216,6 +220,66 @@ abstract class QuestionModule
         "matchvalue"=>$row['value'],
         "matchmethod"=>$row['method']
         );
+    }
+    
+    public function transformResponseValue($export, $value, $options)
+    {
+        return $export->stripTagsFull($value);
+    }
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        return $answerCode;
+    }
+    
+    public function getFieldSubHeading($survey, $export, $code)
+    {
+        if ($code && isset($this->aid) && !empty($this->aid)) return '['.$this->aid.']';
+        else if (!$code)
+        {
+            $subQuestions = $survey->getSubQuestionArrays($this->id);
+            foreach ($subQuestions as $question)
+            {
+
+                if ($question['title'] == $this->aid)
+                {
+                    $subQuestion = $question;
+                }
+            }
+            if (isset($subQuestion) && isset($subQuestion['question']))
+            {
+                return ' ['.$export->stripTagsFull($subQuestion['question']).']';
+            }
+        }
+        return '';
+    }
+    
+    public function getSPSSAnswers()
+    {
+        return array();
+    }
+    
+    public function getSPSSData($data, $iLength, $na)
+    {
+        $strTmp=mb_substr(stripTagsFull($data), 0, $iLength);
+        if (trim($strTmp) != ''){
+            $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+            return "'$strTemp'";
+        }
+        else
+        {
+            return $na;
+        }
+    }
+    
+    public function getAnswerArray($em)
+    {
+        return null;
+    }
+    
+    public function adjustSize($size)
+    {
+        return $size;
     }
     
     abstract public function availableAttributes($attr = false);    

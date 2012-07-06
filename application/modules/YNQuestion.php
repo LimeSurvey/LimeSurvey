@@ -75,6 +75,64 @@ class YNQuestion extends QuestionModule
         return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
     }
     
+    public function getDBField()
+    {
+        return 'VARCHAR(1)';
+    }
+    
+    public function transformResponseValues($value, $options)
+    {
+        if ($value == 'N' && $options->convertN)
+        {
+            //echo "Transforming 'N' to ".$options->nValue.PHP_EOL;
+            return $options->nValue;
+        }
+        else if ($value == 'Y' && $options->convertY)
+        {
+            //echo "Transforming 'Y' to ".$options->yValue.PHP_EOL;
+            return $options->yValue;
+        }
+        return parent::transformResponseValues($value, $options);
+    }
+    
+    public function getFullAnswer($answerCode, $export, $survey)
+    {
+        switch ($answerCode)
+        {
+            case 'Y':
+                return $export->translator->translate('Yes', $export->languageCode);
+            case 'N':
+                return $export->translator->translate('No', $export->languageCode);
+            default:
+                return $export->translator->translate('N/A', $export->languageCode);
+        }
+    }
+    
+    public function getSPSSAnswers()
+    {
+        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
+        $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
+        return $answers;
+    }
+    
+    public function getSPSSData($data, $iLength, $na)
+    {
+        if ($data == 'Y')
+        {
+            return "'1'";
+        } else if ($data == 'N'){
+            return "'2'";
+        } else {
+            return $na;
+        }
+    }
+    
+    public function getAnswerArray($em)
+    {
+        $clang = Yii::app()->lang;
+        return array('Y' => $clang->gT("Yes"), 'N' => $clang->gT("No"));
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");
