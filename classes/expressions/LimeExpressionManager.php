@@ -4566,7 +4566,7 @@
                     }
                     else
                     {
-                        $setter[] = db_quote_id($key) . "=" . db_quoteall($val);
+                        $setter[] = db_quote_id($key) . "=" . db_quoteall($val,true);
                     }
                 }
                 $query .= implode(', ', $setter);
