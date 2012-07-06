@@ -2123,7 +2123,7 @@
             while (($tkrow = $tkresult->FetchRow()) && $invalidtokencount<50)
             {
                 $isvalidtoken = false;
-                while ($isvalidtoken == false && $invalidtokencount<50) 
+                while ($isvalidtoken == false && $invalidtokencount<50)
                 {
                     $newtoken = sRandomChars($tokenlength);
                     if (!isset($existingtokens[$newtoken])) {
@@ -2144,7 +2144,7 @@
                 }
             }
             if(!$invalidtokencount){
-                $tokenoutput .= "<div class='successheader'>".sprintf($clang->gT("%s tokens have been created"),$newtokencount)."</div>\n";
+                $tokenoutput .= "<div class='successheader'>".sprintf($clang->gT("%s tokens have been created."),$newtokencount)."</div>\n";
             }else{
                 $tokenoutput .= "\t\t<div class='errorheader'>".$clang->gT("Error")."</div>\n"
             ."\t\t<p>".sprintf($clang->gT("Only %s new tokens were added after %s trials."),$newtokencount,$invalidtokencount)."\n"
