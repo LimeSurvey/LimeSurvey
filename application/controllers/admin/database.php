@@ -785,7 +785,7 @@ class database extends Survey_Common_Action
                     // Update the group ID on subquestions, too
                     if ($oldgid!=$gid)
                     {
-                        Questions::model()->updateAll(array('gid'=>$gid), 'qid=:qid and parent_qid>0', array(':qid'=>$oldqid));
+                        Questions::model()->updateAll(array('gid'=>$gid), 'qid=:qid and parent_qid>0', array(':qid'=>$qid));
                         // if the group has changed then fix the sortorder of old and new group
                         fixSortOrderQuestions($oldgid, $surveyid);
                         fixSortOrderQuestions($gid, $surveyid);

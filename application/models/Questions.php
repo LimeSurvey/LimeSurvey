@@ -94,6 +94,24 @@
             }
         }
 
+        function updateQuestionOrder($gid,$language,$position=0)
+        {
+            $data=Yii::app()->db->createCommand()->select('qid')
+            ->where(array('and','gid=:gid','language=:language'))
+            ->order('question_order, title ASC')
+            ->from('{{questions}}')
+            ->bindParam(':gid', $gid, PDO::PARAM_INT)
+            ->bindParam(':language', $language, PDO::PARAM_STR)
+            ->query();
+
+            $position = intval($position);
+            foreach($data->readAll() as $row)
+            {
+                Yii::app()->db->createCommand()->update($this->tableName(),array('question_order' => $position),'qid='.$row['qid']);
+                $position++;
+            }
+        }
+
         /**
         * This function returns an array of the advanced attributes for the particular question
         * including their values set in the database
