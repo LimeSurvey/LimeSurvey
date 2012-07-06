@@ -2050,7 +2050,7 @@ function do_ranking($ia)
     // note to self: this function needs to define:
     // inputnames, answer, among others
     global $thissurvey;
-    
+
     $clang=Yii::app()->lang;
     $imageurl = Yii::app()->getConfig("imageurl");
 
@@ -2077,7 +2077,7 @@ function do_ranking($ia)
         $min_answers=0;
     }
     $answer = '';
-    // First start by a ranking without javascript : just a list of select box 
+    // First start by a ranking without javascript : just a list of select box
     // construction select box
     $answers= array();
         foreach ($ansresult->readAll() as $ansrow)
@@ -2480,7 +2480,7 @@ function do_multiplechoice($ia)
         . "}\n"
         . "\t}\n"
         . "\telse {\n"
-        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
+        . "alert('".sprintf($clang->gT("You've marked the 'Other:' field for question '%s'. Please also fill in the accompanying comment field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
         . "return false;\n"
         . "\t}\n"
         . "}\n"
@@ -2731,83 +2731,6 @@ function do_multiplechoice_withcomments($ia)
         $inputnames[]=$myfname2;
     }
     $answer .= "<ul class=\"subquestions-list questions-list checkbox-text-list\">\n".$answer_main."</ul>\n";
-
-
-    //    if ( $maxansw > 0 )
-    //    {
-    //        $maxanswscript .= "\tif (count > max)\n"
-    //        . "{\n"
-    //        . "alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascriptEscape($ia[3],true,true)))."');\n"
-    //        . "var commentname='answer'+me.name+'comment';\n"
-    //        . "if (me.type == 'checkbox') {\n"
-    //        . "\tme.checked = false;\n"
-    //        . "\tvar commentname='answer'+me.name+'comment';\n"
-    //        . "}\n"
-    //        . "if (me.type == 'text') {\n"
-    //        . "\tme.value = '';\n"
-    //        . "\tif (document.getElementById(me.name + 'cbox') ){\n"
-    //        . " document.getElementById(me.name + 'cbox').checked = false;\n"
-    //        . "\t}\n"
-    //        . "}"
-    //        . "document.getElementById(commentname).value='';\n"
-    //        . "return max;\n"
-    //        . "}\n"
-    //        . "\t}\n"
-    //        . "\t//-->\n"
-    //        . "\t</script>\n";
-    //        $answer = $maxanswscript . $answer;
-    //    }
-    //
-    //    if ( $minansw > 0 )
-    //    {
-    //        $minanswscript .=
-    //        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-    //        . "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),
-    //        $minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
-    //        . "return false;\n"
-    //        . "\t} else {\n"
-    //        . "if (oldonsubmit_{$ia[0]}){\n"
-    //        . "\treturn oldonsubmit_{$ia[0]}();\n"
-    //        . "}\n"
-    //        . "return true;\n"
-    //        . "\t}\n"
-    //        . "}\n"
-    //        . "document.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
-    //        . "-->\n"
-    //        . "\t</script>\n";
-    //        //$answer = $minanswscript . $answer;
-    //    }
-
-    //    $checkotherscript = "";
-    //    //if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
-    //    if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
-    //    {
-    //        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
-    //        // this means that if it is cehcked We must force the end-user to enter text in the input
-    //        // box
-    //        $checkotherscript = "<script type='text/javascript'>\n"
-    //        . "\t<!--\n"
-    //        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-    //        . "function ensureOther_{$ia[0]}()\n"
-    //        . "{\n"
-    //        . "\tothercommentval=document.getElementById('answer".$myfname2."').value;\n"
-    //        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
-    //        . "\tif (otherval != '' && othercommentval == '') {\n"
-    //        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
-    //        . "return false;\n"
-    //        . "\t}\n"
-    //        . "\telse {\n"
-    //        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-    //        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-    //        . "}\n"
-    //        . "\t}\n"
-    //        . "}\n"
-    //        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-    //        . "\t-->\n"
-    //        . "</script>\n";
-    //    }
-    //
-    //    $answer = $checkotherscript . $answer;
 
     return array($answer, $inputnames);
 }
