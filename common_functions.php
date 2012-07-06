@@ -409,7 +409,7 @@ function db_quote_id($id)
             return "`".$id."`";
             break;
         case "mssql_n" :
-        case "mssql" :
+        case "odbtp" :
         case "mssqlnative" :
         case "odbc_mssql" :
             return "[".$id."]";

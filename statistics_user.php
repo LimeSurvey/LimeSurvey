@@ -171,7 +171,7 @@
     ."AND q.qid=qa.qid\n"
     ."AND q.parent_qid=0\n"
     ."AND qa.attribute='public_statistics'\n";
-    if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
+    if ($databasetype=='mssql_n' or $databasetype=='odbtp' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
     {
         $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
     }
