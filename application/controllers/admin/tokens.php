@@ -1195,9 +1195,9 @@ class tokens extends Survey_Common_Action
 
                     $from = Yii::app()->request->getPost('from_' . $emrow['language']);
 
-                    $fieldsarray["{OPTOUTURL}"] = $this->getController()->createUrl("/optout/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
-                    $fieldsarray["{OPTINURL}"] = $this->getController()->createUrl("/optin/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
-                    $fieldsarray["{SURVEYURL}"] = $this->getController()->createUrl("/survey/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{OPTOUTURL}"] = $this->getController()->createAbsoluteUrl("/optout/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{OPTINURL}"] = $this->getController()->createAbsoluteUrl("/optin/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{SURVEYURL}"] = $this->getController()->createAbsoluteUrl("/survey/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
 
                     foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {
