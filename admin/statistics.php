@@ -1272,7 +1272,7 @@ foreach ($filters as $flt)
             for ($i=1; $i<=$count; $i++)
             {
                 //adjust layout depending on counter
-                if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
+                if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
                 //myfield is the SGQ identifier
                 //myfield2 is just used as comment in HTML like "R40X34X1721-1"

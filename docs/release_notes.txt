@@ -78,6 +78,31 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120623) to 1.92+ (build 120704) July 4, 2012
+#Updated translation: Czech by slansky
+#Updated translation: Italian by lfanfoni
+#Updated translation: Spanish (Chile) by SirCrovax
+-Fixed issue #5849: Unable to paste into numeric question types (Thomas White)
+-Fixed issue #6188: Display error in conditions editor when selecting several options per sub-question (Carsten Schmitz)
+-Fixed issue #6210 Inconsistent database after deleting a file by "clear & exit" button (Denis Chenu)
+-Fixed issue #6250 : Public statistics always use default template (Denis Chenu)
+-Fixed issue #6256: Touch event support (tpartner)
+-Fixed issue #6271: text entry fields use onchange instead of onkeyup events to propagate changes (Thomas White)
+-Fixed issue #6281: hidden variables used in equations have wrong name so don't POST properly (Thomas White)
+-Fixed issue #6296: Question type file upload dose not work (tpartner)
+-Fixed issue #6298: File upload button too narrow in Safari + Chrome (tpartner)
+-Fixed issue: Array filter of ranking does not work reliably across browsers (Thomas White)
+-Fixed issue: Changes to comments in multiple choice checkbox could not trigger changes in tailoring (Thomas White)
+-Fixed issue: Clearing "other" value in multiple choice checkbox did not clear associated comment (Thomas White)
+-Fixed issue: EM unit tests broken due to  missing LEMradix variable. (Thomas White)
+-Fixed issue: Revert to using onchange instead of onkeyup for Array  Numbers when using dropdown lists of numbers (Thomas White)
+-Fixed issue: Show Survey Logic File does not show survey title, description, welcome, endmsg, endurl, nor any errors within them (Thomas White)
+-Fixed issue: Unchecking entries in multiple choice checkbox did not clear associated comment (Thomas White)
+-Fixed issue: Wrong flag image for ZH-Hant-TW (Carsten Schmitz)
+-Fixed issue: Removed dot in front of languageswitch drop down. (Marcel Minke)
+
+
+
 Changes from 1.92+ (build 120620) to 1.92+ (build 120623) June 22, 2012
 -Fixed issue #6240: conversion of conditions to relevance can fail for multiple choice tests during some upgrades (Thomas White)
 #Updated translation: Chinese (Simplified) by yooyooh

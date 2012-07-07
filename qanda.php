@@ -2407,7 +2407,7 @@ function do_multiplechoice($ia)
         . "}\n"
         . "\t}\n"
         . "\telse {\n"
-        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+        . "alert('".sprintf($clang->gT("You've marked the 'Other:' field for question '%s'. Please also fill in the accompanying comment field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
         . "return false;\n"
         . "\t}\n"
         . "}\n"
@@ -2694,7 +2694,7 @@ function do_file_upload($ia)
              returnTxt: '" . $clang->gT('Return to survey','js') . "',
              headTitle: '" . $clang->gT('Title','js') . "',
              headComment: '" . $clang->gT('Comment','js') . "',
-             headFileName: '" . $clang->gT('File name','js') . "',
+             headFileName: '" . $clang->gT('File name','js') . "'
             };
     </script>\n";
     /*if ($pos)

@@ -126,7 +126,7 @@ if (!$surveyid || !$surveyexists)
     }
     $languagechanger = makelanguagechanger();
     //Find out if there are any publicly available surveys
-    $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
+    $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics,a.language
     FROM ".db_table_name('surveys')." AS a
     INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
     ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
@@ -143,20 +143,18 @@ if (!$surveyid || !$surveyexists)
     {
         while($rows = $result->FetchRow())
         {
+            $sLinkLanguage=$rows['language'];
             $result2 = db_execute_assoc("Select surveyls_title from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$rows['sid']} and surveyls_language='$baselang'");
             if ($result2->RecordCount())
             {
                 $languagedetails=$result2->FetchRow();
                 $rows['surveyls_title']=$languagedetails['surveyls_title'];
+                $sLinkLanguage=$baselang;
             }
             $link = "<li><a href='$rooturl/index.php?sid=".$rows['sid'];
             if (isset($_GET['lang']))
             {
-                $link .= "&lang=".sanitize_languagecode($_GET['lang']);
-            }
-            if (isset($_GET['lang']))
-            {
-                $link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);
+                $link .= "&amp;lang=".$sLinkLanguage;
             }
             $link .= "'  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
             if ($rows['publicstatistics'] == 'Y') $link .= "<a href='{$relativeurl}/statistics_user.php?sid={$rows['sid']}'>(".$clang->gT('View statistics').")</a>";
@@ -805,7 +803,7 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
             }
             // done deleting uploaded files
         }
-        
+
         // also delete a record from saved_control when there is one, we can allway do it.
         $connect->query('DELETE FROM '.db_table_name('saved_control'). ' WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
     }
@@ -878,7 +876,7 @@ if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey
         if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
         {
             $_SESSION['srid'] = $row['id'];
-            if (!is_null($row['lastpage']) && $row['submitdate']=='') 
+            if (!is_null($row['lastpage']) && $row['submitdate']=='')
             {
                 $_SESSION['LEMtokenResume'] = true;
                 $_SESSION['step'] = $row['lastpage'];
