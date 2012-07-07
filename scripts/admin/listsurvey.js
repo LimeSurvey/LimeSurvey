@@ -116,7 +116,7 @@ $(document).ready(function(){
         caption: "Surveys",
     });
     jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ add:false,del:true,edit:false,refresh: false,search: true},{},{},{ msg:delmsg, width : 700 });
-    jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false});
+    jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false,defaultSearch: 'cn'});
     jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
         buttonicon:"ui-icon-refresh",
         caption:"",
@@ -143,7 +143,7 @@ $(document).ready(function(){
             });
         }
     });
-	
+
 	$('.wrapper').width($('#displaysurveys').width()*1.006);
 	$('.footer').width(($('#displaysurveys').width()*1.006)-10);
 

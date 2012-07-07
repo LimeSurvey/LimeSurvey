@@ -308,46 +308,6 @@ $(document).ready(function() {
         {multipleSearch:true, multipleGroup:true}
     );
 
-    /* Add the CSV Export Button to the main jqGrid Pager */
-    $("#displayparticipants").navButtonAdd(
-        '#pager',
-        {
-            caption:"",
-            title:exportToCSVTitle,
-            buttonicon:'exporticon',
-            onClickButton:function() {
-                $.post(
-                    exporttocsvcount,
-                    { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
-                    function(data) {
-                        titlemsg = data;
-                        var dialog_buttons={};
-                        dialog_buttons[cancelBtn]=function(){
-                            $(this).dialog("close");
-                        };
-                        dialog_buttons[exportBtn]=function(){
-                            //$.load(exporttocsv+"/"+$('#attributes').val(),{ } );
-                            var url = jQuery('#displayparticipants').jqGrid('getGridParam', 'url');
-                            $.download(exporttocsv+"/"+$('#attributes').val(),'searchcondition='+url );
-                            $(this).dialog("close");
-                        };
-                        /* End of building array for button functions */
-                        $('#exportcsv').dialog({
-                            modal: true,
-                            title: titlemsg,
-                            buttons: dialog_buttons,
-                            width : 400,
-                            height : 400,
-                            open: function(event, ui) {
-                                $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true}).multiselectfilter();
-                            }
-                        });
-                    }
-                );
-            }
-        }
-    );
-
     /* Add the full Search Button to the main jqGrid Pager */
     $("#displayparticipants").navButtonAdd(
         '#pager',
@@ -441,6 +401,46 @@ $(document).ready(function() {
             });
         }
     }
+    );
+
+    /* Add the CSV Export Button to the main jqGrid Pager */
+    $("#displayparticipants").navButtonAdd(
+        '#pager',
+        {
+            caption:"",
+            title:exportToCSVTitle,
+            buttonicon:'ui-icon-extlink',
+            onClickButton:function() {
+                $.post(
+                    exporttocsvcount,
+                    { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
+                    function(data) {
+                        titlemsg = data;
+                        var dialog_buttons={};
+                        dialog_buttons[cancelBtn]=function(){
+                            $(this).dialog("close");
+                        };
+                        dialog_buttons[exportBtn]=function(){
+                            //$.load(exporttocsv+"/"+$('#attributes').val(),{ } );
+                            var url = jQuery('#displayparticipants').jqGrid('getGridParam', 'url');
+                            $.download(exporttocsv+"/"+$('#attributes').val(),'searchcondition='+url );
+                            $(this).dialog("close");
+                        };
+                        /* End of building array for button functions */
+                        $('#exportcsv').dialog({
+                            modal: true,
+                            title: titlemsg,
+                            buttons: dialog_buttons,
+                            width : 400,
+                            height : 400,
+                            open: function(event, ui) {
+                                $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true}).multiselectfilter();
+                            }
+                        });
+                    }
+                );
+            }
+        }
     );
 
     $.extend(jQuery.jgrid.edit,{

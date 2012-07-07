@@ -80,6 +80,15 @@
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <?php
                 }
+                if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
+                {
+                ?>
+                <a href="<?php echo $this->createUrl("admin/participants/index"); ?>">
+                    <img src='<?php echo $imageurl; ?>cpdb.png' alt='<?php $clang->eT("Central participant database/panel"); ?>' />
+                </a>
+                <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
+                <?php
+                }
                 if (hasSurveyPermission($surveyid, 'surveyactivation', 'update') || HasSurveyPermission($surveyid, 'tokens','delete'))
                 {
                 ?>
