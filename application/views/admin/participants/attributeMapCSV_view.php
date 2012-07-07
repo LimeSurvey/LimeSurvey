@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl') . "admin/default/adminstyle.css" ?>" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl') . "admin/default/attributeMapCSV.css" ?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" ?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl') . "attributeMapCSV.css" ?>" />
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.js" ?>" type="text/javascript"></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery-ui.js" ?>" type="text/javascript"></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.qtip.js" ?>" type="text/javascript"></script>

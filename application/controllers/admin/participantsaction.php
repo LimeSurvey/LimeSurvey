@@ -1759,7 +1759,7 @@ class participantsaction extends Survey_Common_Action
     {
         Yii::app()->loadHelper('common');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "attributeMap.js");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/".Yii::app()->getConfig('admintheme')."/attributeMap.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') ."attributeMap.css");
 
         $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');

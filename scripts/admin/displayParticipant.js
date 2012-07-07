@@ -585,8 +585,8 @@ $(document).ready(function() {
         /* End of building array containing button functions */
 
         $("#addsurvey").dialog({
-            height: 400,
-            width: 450,
+            height: 500,
+            width: 500,
             title : addsurvey,
             modal: true,
             open: function(event, ui) {
