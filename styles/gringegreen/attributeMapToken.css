@@ -1,48 +1,43 @@
 html, body{
     height: 100%;
 }
-#newcreated{ 
-    float : left;
-    height: 100%;
-    background-color: #D2E0F2;
-}
+
 .newcreate li {
-    
-}
-#tokenattribute{ 
-    float:left; 
-    background-color: #D2E0F2;
-    height: 100%;
-}
-#centralattribute { 
-    float : left;
-    background-color: #D2E0F2;
+
 }
 
 .newcreate ul{
     padding : 100px;
 }
 
-#newcreated,#tokenattribute,#centralattribute{ 
-   margin-top:10px;
-    width:27%;
+#newcreated,#tokenattribute,#centralattribute{
+    float: left;
+    background-color: #EFFBDB;
     height: 100%;
+    margin-top:10px;
     margin-left: 30px;
     margin-right: 30px;
     margin-bottom: 20px;
-    border-color: blue;
+    border-color: #85BD00;
     border-style:solid;
+    border-radius: 10px;
     border-width: 1px;
     overflow : auto;
     text-align:center;
- }
+    width:27%;
+}
+
+#newcreated, #tokenattribute{
+    height: 100%;
+}
+
  .heading{
-    background: #EAF2FF;
+    background: #8CCE00;
     text-decoration: none;
-    color:#5670A1;
+    color: #EFFBDB;
     border-width: 1px;
     vertical-align: middle;
-    
+
 }
 li{
         border:solid 2px #DEDEDE;

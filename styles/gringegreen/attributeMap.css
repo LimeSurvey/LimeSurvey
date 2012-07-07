@@ -2,28 +2,39 @@ html, body{
     height: 100%;
 }
 .main{
-  width: 1200px; 
-  margin: 0 auto;  
+  width: 1200px;
+  margin: 0 auto;
 }
 #sep{
  margin-top: 10px;
 }
-#newcreated{ 
-  
-    float : left;
-    background-color: #D2E0F2;
+#newcreated, #centralattribute, #tokenattribute{
+    float: left;
+    background-color: #EFFBDB;
+    height: 100%;
+    margin-top:10px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    border-color: #85BD00;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 1px;
+    overflow : auto;
+    text-align:center;
  }
-#centralattribute { 
-    float : left;
-    background-color: #D2E0F2;
+#centralattribute, #tokenattribute {
     height: 100%;
-    
 }
-#tokenattribute { 
-    float : left;
-    height: 100%;
-    background-color: #D2E0F2;
-    
+.heading{
+    background: #8CCE00;
+    text-decoration: none;
+    color:#EFFBDB;
+    border-width: 1px;
+    vertical-align: middle;
+    height: 23px;
+    padding-top: 7px;
+    font-weight: bold;
 }
 .attrcol_3 {
 	width:27%;
@@ -44,34 +55,13 @@ html, body{
 .tokenatt li{
     border-color: #696565;
     border-style:solid;
-    border-width:1px;  
+    border-width:1px;
     padding : 4px;
 }
 .newcreate ul{
     padding : 100px;
 }
 
-#newcreated,#centralattribute,#tokenattribute{ 
-    margin-top:10px;
-    height: 100%;
-    margin-left: 30px;
-    margin-right: 30px;
-    margin-bottom: 20px;
-    border-color: blue;
-    border-style:solid;
-    border-width: 1px;
-    overflow : auto;
-    text-align:center;
- }
-
-.heading{
-    background: #EAF2FF;
-    text-decoration: none;
-    color:#5670A1;
-    border-width: 1px;
-    vertical-align: middle;
-    
-}
 li{
         border:solid 2px #DEDEDE;
         background:#FFFFFF ;
@@ -86,4 +76,3 @@ li{
         background:#696565;
         color: white;
 }
- 
