@@ -484,16 +484,16 @@ class SurveyAdmin extends Survey_Common_Action
         //!!! Is this even possible to execute?
         if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
             $surveys->permission(Yii::app()->user->getId());
+
         $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
         foreach ($surveys as $rows)
         {
+            $rows = array_merge($rows->attributes, $rows->languagesettings[0]->attributes, $rows->owner->attributes);
             if($rows['users_name'] == Yii::app()->session['user'] || Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)//If is owner or superadmin show survey.
             {
                 $aSurveyEntry = array();
-                $rows = array_merge($rows->attributes, $rows->languagesettings[0]->attributes, $rows->owner->attributes);
-    
                 // Set status
                 if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
                 {
@@ -518,7 +518,7 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
                     $questionsCountResult = Questions::model()->findAll($condition);
-    
+
                     if (count($questionsCountResult) && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                     {
                         $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . '/inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
@@ -528,22 +528,22 @@ class SurveyAdmin extends Survey_Common_Action
                         $aSurveyEntry[] = '<!--f--><img src="' . Yii::app()->getConfig('adminimageurl') . '/inactive.png" title="' . $clang->gT("This survey is currently not active.") . '" alt="' . $clang->gT("This survey is currently not active.") . '" />';
                     }
                 }
-    
+
                 //Set SID
                 $aSurveyEntry[] = $rows['sid'];
                 '<a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
-    
+
                 //Set Title
                 $aSurveyEntry[] = '<!--' . $rows['surveyls_title'] . '--><a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '" title="' . $rows['surveyls_title'] . '">' . $rows['surveyls_title'] . '</a>';
-    
+
                 //Set Date
                 Yii::import('application.libraries.Date_Time_Converter', true);
                 $datetimeobj = new Date_Time_Converter(array($rows['datecreated'], "Y-m-d H:i:s"));
                 $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
-    
+
                 //Set Owner
                 $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
-    
+
                 //Set Access
                 if (Yii::app()->db->schema->getTable('{{tokens_' . $rows['sid'] . '}}'))
                 {
@@ -553,7 +553,7 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $aSurveyEntry[] = $clang->gT("Open");
                 }
-    
+
                 //Set Anonymous
                 if ($rows['anonymized'] == "Y")
                 {
@@ -563,18 +563,18 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $aSurveyEntry[] = $clang->gT("No");
                 }
-    
+
                 //Set Responses
                 if ($rows['active'] == "Y")
                 {
                     $partial = Survey_dynamic::model($rows['sid'])->countByAttributes(array('submitdate' => null));
                     $all = Survey_dynamic::model($rows['sid'])->count();
-    
+
                     $aSurveyEntry[] = $all - $partial;
                     $aSurveyEntry[] = $partial;
                     $aSurveyEntry[] = $all;
-    
-    
+
+
                     $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']);
                     if (Yii::app()->db->schema->getTable("{{tokens_" . $rows['sid'] . "}}"))
                     {
@@ -582,7 +582,7 @@ class SurveyAdmin extends Survey_Common_Action
                         $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
                         'condition' => "completed <> 'N'"
                         ));
-    
+
                         $aSurveyEntry[] = $tokens;
                         $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);
                     }

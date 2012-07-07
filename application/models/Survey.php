@@ -76,9 +76,9 @@ class Survey extends CActiveRecord
     public function scopes()
     {
         return array(
-        'active' => array(
-        'condition' => "active = 'Y'",
-        ),
+            'active' => array(
+                'condition' => "active = 'Y'",
+            ),
         );
     }
 
@@ -94,7 +94,7 @@ class Survey extends CActiveRecord
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
-        'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)',
+            'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)',
         ));
         $criteria->params[':uid'] = $loginID;
         $criteria->params[':permission'] = 'survey';
