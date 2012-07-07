@@ -76,7 +76,7 @@ class templates extends Survey_Common_Action
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
-        
+
         if ($action == 'templateupload') {
             if (Yii::app()->getConfig('demoMode'))
                 $this->getController()->error($clang->gT("Demo mode: Uploading templates is disabled."));
@@ -187,7 +187,7 @@ class templates extends Survey_Common_Action
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
         $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
         $fullfilepath=$basedestdir."/".$templatename . "/" . $filename;
-        
+
         if($action=="templateuploadfile")
         {
             if(Yii::app()->getConfig('demoMode'))
@@ -200,7 +200,7 @@ class templates extends Survey_Common_Action
             }
             elseif(!in_array(substr(strrchr($filename, '.'),1),explode ( "," , $allowedtemplateuploads )))
             {
-            
+
                 $uploadresult = $clang->gT("This file type is not allowed to be uploaded.");
             }
             else
@@ -378,7 +378,7 @@ class templates extends Survey_Common_Action
             // Copies all the files from one template directory to a new one
             // This is a security issue because it is allowing copying from get variables...
             Yii::app()->loadHelper('admin/template');
-            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('newname');
+            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . sanitize_paranoid_string(returnGlobal('newname'));
             $copydirname = getTemplatePath(returnGlobal('copydir'));
             $mkdirresult = mkdir_p($newdirname);
 
