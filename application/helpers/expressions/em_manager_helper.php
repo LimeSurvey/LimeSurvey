@@ -3927,6 +3927,11 @@
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
             $LEM->qid2exclusiveAuto=array();
 
+            $surveyinfo = (isset($LEM->sid) ? getSurveyInfo($LEM->sid) : null);
+            if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
+            {
+                $LEM->surveyOptions['assessments']=true;
+            }
             //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
             $LEM->initialized=true;
