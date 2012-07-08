@@ -1915,7 +1915,7 @@ class ExpressionManager {
      */
     function ExpandThisVar($src)
     {
-        $splitter = '(?:self|that)(?:\.(?:[A-Z0-9_]+))*';
+        $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*';
         $parts = preg_split("/(" . $splitter . ")/i",$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
         $result = '';
         foreach ($parts as $part)
