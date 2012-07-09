@@ -120,7 +120,7 @@ $(document).ready(function() {
         sortname: 'firstname',
         sortorder: 'asc',
         viewrecords : true,
-        rowList: [25,50,100,250,500,1000,5000,10000],
+        rowList: [25,50,100,250,500,1000,2000,5000],
         multiselect: true,
         loadonce : false,
         loadError : function(xhr, st, str) {

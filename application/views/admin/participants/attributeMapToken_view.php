@@ -10,47 +10,41 @@
     var surveyId = "<?php echo Yii::app()->request->getQuery('sid'); ?>";
 
     /* LANGUAGE */
-    var attributesMappedText = "<?php $clang->et("All the attributes are automatically mapped") ?>";
+    var attributesMappedText = "<?php $clang->et("There are no unmapped attributes") ?>";
     var mustPairAttributeText= "<?php $clang->et("You have to pair it with one attribute of the token table") ?>";
-    var onlyOneAttributeMappedText="<?php $clang->et("Only one central attribute is mapped with token attribute ") ?>";
+    var onlyOneAttributeMappedText="<?php $clang->et("Only one central attribute is mapped with token attribute") ?>";
     var cannotAcceptTokenAttributesText="<?php $clang->et("This list cannot accept token attributes.") ?>";
     var addElementBelowText="<?php $clang->et("You have to add the element below the list") ?>";
 
 </script>
 </head>
 <body>
-    <?php if (!empty($tokenattribute))
-    { ?>
-        <div id="tokenattribute">
-            <div class="heading">Token Attributes</div>
+    <div class='header ui-widget-header'>
+        <strong>
+            <?php $clang->eT("Map your selected token attributes to an existing participant attribute or create a new one"); ?>
+        </strong>
+    </div>
+
+    <div id="tokenattribute">
+        <div class="heading"><?php $clang->eT("Unmapped token attributes") ?></div>
             <ul id="tokenatt">
-                <?php
+            <?php
+            if (!empty($tokenattribute))
+            {
                 foreach ($tokenattribute as $key => $value)
                 {
-                    echo "<li id='t_" . $value . "' name=\"$key\">" . $value . "</li>"; //Passing attribute description as name of the attribute
+                    echo "<li title='".$clang->gT("Drag this attribute to another column to map it to the central participants database")."' id='t_" . $value . "' name=\"$key\">" . $key . "</li>"; //Passing attribute description as name of the attribute
                 }
-                ?>
+            }
+            ?>
             </ul>
-            <ul class="notsortable">
-                <?php
-                foreach ($alreadymappedattributename as $key => $value)
-                {
-                    echo "<li title='This attribute is already mapped' id='' name='' >" . $value . "</li>";
-                }
-                ?>
-            </ul>
+
         </div>
-    <?php } ?>
-<?php if (!empty($tokenattribute))
-{ ?>
-        <div id="newcreated"><div class="heading">Attributes to be created</div>
+        <div id="newcreated"><div class="heading"><?php $clang->eT("Participant attributes to create") ?></div>
             <ul class="newcreate" id="sortable" style ="height: 40px">
             </ul>
         </div>
-<?php } ?>
-            <?php if (!empty($tokenattribute))
-            { ?>
-        <div id="centralattribute"><div class="heading">Central Attribute</div>
+        <div id="centralattribute"><div class="heading"><?php $clang->eT("Existing participant attributes")?></div>
             <ul class="centralatt">
                 <?php
                 if (!empty($attribute))
@@ -62,8 +56,26 @@
                 }
                 ?>
             </ul>
+            <?php
+            if(empty($attribute)) {
+                echo "<br />&nbsp;\n";
+            }
+            if(!empty($alreadymappedattributename)) {
+                ?>
+                <div class='heading'><?php $clang->eT("Pre-mapped attributes") ?></div><br />
+                <ul class="notsortable">
+                <?php
+                foreach ($alreadymappedattributename as $key => $value)
+                {
+                    echo "<li title='".$clang->gT("This attribute is automatically mapped")."' id='' name='$value' >" . $alreadymappedattdescription[$value] . "</li>";
+                }
+                ?>
+                </ul>
+                <br /><input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values?") ?></label>
+                <?php
+            }
+            ?>
         </div>
-    <?php } ?>
     <p> <input type="button" name="attmap" id="attmap" value="Continue" /></p>
     <?php
     $ajaxloader = array(

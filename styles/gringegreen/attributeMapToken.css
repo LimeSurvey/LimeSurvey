@@ -37,7 +37,9 @@ html, body{
     color: #EFFBDB;
     border-width: 1px;
     vertical-align: middle;
-
+    height: 23px;
+    padding-top: 7px;
+    font-weight: bold;
 }
 li{
         border:solid 2px #DEDEDE;

@@ -1,11 +1,13 @@
 $(document).ready(function(){
-    if(!$('#tokenattribute').length ) {
+    if(!$('#tokenatt').children().length ) {
         alert(attributesMappedText);
     }
     var height = $(document).height();
     var width = $(document).width();
     var tokencurrentarray = {};
     var newcurrentarray = {};
+    if($("#overwrite").is(':checked')) {var attoverwrite=true;} else {var attoverwrite=false;}
+
     $('#tokenattribute').css({ 'height' : height-200});
     $('#centralattribute').css({ 'height' : height-200});
     $('#newcreated').css({ 'height' : height-200});
@@ -53,11 +55,15 @@ $(document).ready(function(){
                 $(ui.sender).sortable('cancel');
             } else {
                 $('.newcreate').append('<li id="tb"><input type="text" id="td_'+$(ui.item).attr('id')+'" value=\"'+$(ui.item).attr('name')+'\"></li>');
+                $(ui.item).html($(ui.item).attr('id').replace('t_',''));
                 cpdbattpos = cpdbattpos+1;
                 $('ul.newcreate > li:nth-child('+cpdbattpos+')').css("color", "white");
                 $('ul.newcreate > li:nth-child('+cpdbattpos+')').css("background-color","#696565");
             }
         }
+    });
+    $("#overwrite").click(function(){
+        if($("#overwrite").is(':checked')) {attoverwrite=true;} else {attoverwrite=false;}
     });
     $('#attmap').click(function(){
         var mappedarray = {};
@@ -69,19 +75,20 @@ $(document).ready(function(){
         });
         $.each(newcurrentarray, function(index,value) {
             if(value[0]=='t') {
-                anewcurrentarray[$("#td_"+value).val()] = value.substring(2);
+                anewcurrentarray[value.substring(2)] = $("#td_"+value).val();
             }
         });
-        $("#processing").dialog({
+        /* $("#processing").dialog({
 	        height: 90,
 	        width: 50,
 	        modal: true
-        });
+        }); */
 
         $("#processing").load(copyUrl, {
             mapped: mappedarray,
             newarr: anewcurrentarray,
-            surveyid: surveyId
+            surveyid: surveyId,
+            overwrite: attoverwrite
         }, function(msg){
             alert(msg);
             $(this).dialog("close");

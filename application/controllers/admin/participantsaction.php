@@ -1711,15 +1711,24 @@ class participantsaction extends Survey_Common_Action
 
     /*
      * Responsible for copying the participant from tokens to the central Database
+     *
+     * TODO: Most of the work for this function is in the participants model file
+     *       but it doesn't belong there.
      */
     function addToCentral()
     {
         $newarr = Yii::app()->request->getPost('newarr');
         $mapped = Yii::app()->request->getPost('mapped');
-        $response = Participants::copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped);
+        $overwrite = Yii::app()->request->getPost('overwrite');
+
+        $response = Participants::copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwrite);
         $clang = $this->getController()->lang;
 
-        printf($clang->gT("%s participants have been copied, %s participants have not been copied because they already exist"), $response['success'], $response['duplicate']);
+        printf($clang->gT("%s participants have been copied to the central participants table"), $response['success']);
+        if($response['duplicate'] > 0) {
+            echo "\r\n";
+            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
+        }
     }
 
     /*
@@ -1730,7 +1739,11 @@ class participantsaction extends Survey_Common_Action
         $response = Participants::copytoSurvey(Yii::app()->request->getPost('participantid'), Yii::app()->request->getPost('surveyid'), Yii::app()->request->getPost('attributeid'));
         $clang = $this->getController()->lang;
 
-        printf($clang->gT("%s participants have been copied, %s participants have not been copied because they already exist"), $response['success'], $response['duplicate']);
+        printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
+        if($response['duplicate']>0) {
+            echo "\r\n";
+            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate'])
+        }
     }
 
     /*
@@ -1749,7 +1762,11 @@ class participantsaction extends Survey_Common_Action
         }
         $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId);
 
-        printf($clang->gT("%s participants have been copied,%s participants have not been copied because they already exist"), $response['success'], $response['duplicate']);
+        printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
+        if($response['duplicate']>0) {
+            echo "\r\n";
+            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate'])
+        }
     }
 
     /*
@@ -1837,6 +1854,7 @@ class participantsaction extends Survey_Common_Action
         $selectedcentralattribute = array();
         $alreadymappedattid = array();
         $alreadymappedattdisplay = array();
+        $alreadymappedattnames = array();
         $i = 0;
         $j = 0;
 
@@ -1848,8 +1866,20 @@ class participantsaction extends Survey_Common_Action
             }
             else
             {
-                array_push($alreadymappedattid, substr($key, 15));
-                array_push($alreadymappedattdisplay, $key);
+                $attributeid=substr($key,15);
+                $continue=false;
+                foreach($attributes as $attribute) {
+                    if($attribute['attribute_id']==$attributeid) {
+                        $continue=true;
+                    }
+                }
+                if($continue) {
+                    array_push($alreadymappedattid, $attributeid);
+                    array_push($alreadymappedattdisplay, $key);
+                    $alreadymappedattnames[$key]=$value;
+                } else {
+                    $selectedattribute[$value]=$key;
+                }
             }
         }
         foreach ($attributes as $row)
@@ -1863,7 +1893,8 @@ class participantsaction extends Survey_Common_Action
         $aData = array(
             'attribute' => $selectedcentralattribute,
             'tokenattribute' => $selectedattribute,
-            'alreadymappedattributename' => $alreadymappedattdisplay
+            'alreadymappedattributename' => $alreadymappedattdisplay,
+            'alreadymappedattdescription' => $alreadymappedattnames
         );
 
         $this->_renderWrappedTemplate('participants', 'attributeMapToken', $aData);
