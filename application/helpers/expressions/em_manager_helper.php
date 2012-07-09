@@ -8653,6 +8653,13 @@ EOD;
                 }
             }
 
+            $surveyinfo = getSurveyInfo($sid);
+            $assessments = false;
+            if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
+            {
+                $assessments = true;
+            }
+
             foreach($langs as $lang)
             {
                 if (trim($lang) == '')
@@ -8660,7 +8667,7 @@ EOD;
                     continue;
                 }
                 SetSurveyLanguage($sid,$lang);
-                LimeExpressionManager::StartSurvey($sid, 'survey', array('sgqaNaming'=>'N'), true);
+                LimeExpressionManager::StartSurvey($sid, 'survey', array('sgqaNaming'=>'N','assessments'=>$assessments), true);
                 $moveResult = LimeExpressionManager::NavigateForwards();
                 $LEM =& LimeExpressionManager::singleton();
 
