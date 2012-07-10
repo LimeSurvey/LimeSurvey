@@ -1,115 +1,120 @@
 <?php
 
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * 	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*/
 
 class remotecontrol extends Survey_Common_Action
 {
     /**
-     * @var Zend_XmlRpc_Server
-     */
+    * @var Zend_XmlRpc_Server
+    */
     protected $xmlrpc;
 
     /**
-     * This is the XML-RPC server routine
-     *
-     * @access public
-     * @return void
-     */
+    * This is the XML-RPC server routine
+    *
+    * @access public
+    * @return void
+    */
     public function run()
     {
-        $cur_path = get_include_path();
+        $RPCType=Yii::app()->getConfig("RPCInterface");
 
-        set_include_path($cur_path . ':' . APPPATH . 'helpers');
+        if ($RPCType=='xml')
+        {
+            $cur_path = get_include_path();
 
-        // Yii::import was causing problems for some odd reason
-        require_once('Zend/XmlRpc/Server.php');
-        require_once('Zend/XmlRpc/Server/Exception.php');
-        require_once('Zend/XmlRpc/Value/Exception.php');
+            set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
 
-        $this->xmlrpc = new Zend_XmlRpc_Server();
-        $this->xmlrpc->sendArgumentsToAllMethods(false);
-        $this->xmlrpc->setClass('remotecontrol_handle', '', $this->controller);
-        echo $this->xmlrpc->handle();
+            // Yii::import was causing problems for some odd reason
+            require_once('Zend/XmlRpc/Server.php');
+            require_once('Zend/XmlRpc/Server/Exception.php');
+            require_once('Zend/XmlRpc/Value/Exception.php');
+            $this->xmlrpc = new Zend_XmlRpc_Server();
+            $this->xmlrpc->sendArgumentsToAllMethods(false);
+            $this->xmlrpc->setClass('remotecontrol_handle', '', $this->controller);
+            echo $this->xmlrpc->handle();
+        }
+        elseif($RPCType=='json')
+        {
+            Yii::app()->loadLibrary('jsonRPCServer');
+            $oHandler=new remotecontrol_handle($this->controller);
+            jsonRPCServer::handle($oHandler);
+        }
         exit;
     }
 
     /**
-     * Couldn't include test routine as it'd require a couple more Zend libraries
-     * Instead use PHP XMLRPC Debugger with the following payloads to test routines
-     * Adjusts some values accordingly
-     *
-     * get_session_key : Use this to obtain session_key for other call
-          <param>
-              <value><string>username</string></value>
-          </param>
-          <param>
-              <value><string>password</string></value>
-          </param>
-     *
-     * add_participants
-          <param>
-              <value><string>session_key</string></value>
-          </param>
-          <!-- Survey id -->
-          <param>
-              <value><i4>552489</i4></value>
-          </param>
-          <!-- Participants information -->
-          <param>
-              <value><array><data><value><struct><member><name>firstname</name><value><string>firstname1</string></value></member><member><name>lastname</name><value><string>lastname1</string></value></member><member><name>dummy</name><value><string>lastname1</string></value></member></struct></value></data></array></value>
-          </param>
-     *
-     * delete_survey
-          <param>
-              <value><string>session_key</string></value>
-          </param>
-          <!-- Survey id --.
-          <param>
-              <value><i4>78184</i4></value>
-          </param>
-     */
-}
+    * Simple procedure to test most RPC functions
+    *
+    */
+    public function test()
+    {
+        Yii::app()->loadLibrary('jsonRPCClient');
+        $myJSONRPCClient = new jsonRPCClient(Yii::app()->getBaseUrl(true).'/'.dirname(Yii::app()->request->getPathInfo()));
+        $sSessionKey= $myJSONRPCClient->get_session_key('admin','password');
+        if (is_array($sSessionKey)) {echo $sSessionKey['status']; die();}
+        else
+        {
+            echo 'Retrieved session key'.'<br>';
+        }
 
+        $sLSSData=file_get_contents(dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss');
+        $iSurveyID=$myJSONRPCClient->import_survey($sSessionKey, $sLSSData);
+        echo 'Created new survey SID:'.$iSurveyID.'<br>';
+
+        $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
+        echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
+
+        // Release the session key - close the session
+        $Result= $myJSONRPCClient->release_session_key($sSessionKey);
+        echo 'Closed the session'.'<br>';
+
+    }
+
+
+}
+/**
+* This class handles all methods of the RPCs
+*/
 class remotecontrol_handle
 {
     /**
-     * @var AdminController
-     */
+    * @var AdminController
+    */
     protected $controller;
 
     /**
-     * Constructor, stores the action instance into this handle class
-     *
-     * @access public
-     * @param AdminController $controller
-     * @return void
-     */
+    * Constructor, stores the action instance into this handle class
+    *
+    * @access public
+    * @param AdminController $controller
+    * @return void
+    */
     public function __construct(AdminController $controller)
     {
         $this->controller = $controller;
     }
 
+
     /**
-     * XML-RPC routine to create a session key
-     *
-     * @access public
-     * @param string $username
-     * @param string $password
-     * @return string
-     * @throws Zend_XmlRpc_Server_Exception
-     */
+    * RPC routine to create a session key
+    *
+    * @access public
+    * @param string $username
+    * @param string $password
+    * @return string
+    */
     public function get_session_key($username, $password)
     {
         if ($this->_doLogin($username, $password))
@@ -126,16 +131,16 @@ class remotecontrol_handle
             return $session_key;
         }
         else
-            throw new Zend_XmlRpc_Server_Exception('Login failed', 1);
+            return array('status' => 'Invalid user name or password');
     }
 
     /**
-     * Closes the RPC session
-     *
-     * @access public
-     * @param string $session_key
-     * @return string
-     */
+    * Closes the RPC session
+    *
+    * @access public
+    * @param string $session_key
+    * @return string
+    */
     public function release_session_key($session_key)
     {
         Sessions::model()->deleteAllByAttributes(array('id' => $session_key));
@@ -145,41 +150,71 @@ class remotecontrol_handle
         return 'OK';
     }
 
+
     /**
-     * XML-RPC routine to delete a survey
-     *
-     * @access public
-     * @param string $session_key
-     * @param int $sid
-     * @return string
-     * @throws Zend_XmlRpc_Server_Exception
-     */
+    * RPC routine to import a survey
+    *
+    * @access public
+    * @param string $session_key
+    * @param string $sLSSData String containing the data of an LSS file
+    * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
+    * @return integer iSurveyID  - ID of the new survey
+    */
+    public function import_survey($session_key, $sLSSData, $sNewSurveyName=NULL, $DestSurveyID=NULL)
+    {
+        if ($this->_checkSessionKey($session_key))
+        {
+            if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+            {
+                Yii::app()->loadHelper('admin/import');
+                $aImportResults = XMLImportSurvey('', $sLSSData, $sNewSurveyName, $DestSurveyID);
+
+                if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
+                else
+                {
+                    return $aImportResults['newsid'];
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+    }
+
+
+    /**
+    * RPC routine to delete a survey
+    *
+    * @access public
+    * @param string $session_key
+    * @param int $sid
+    * @return string
+    * @throws Zend_XmlRpc_Server_Exception
+    */
     public function delete_survey($session_key, $sid)
     {
         if ($this->_checkSessionKey($session_key))
         {
             if (hasSurveyPermission($sid, 'survey', 'delete'))
             {
-                Survey::model()->deleteAllByAttributes(array('sid' => $sid));
-                rmdirr(Yii::app()->getConfig("uploaddir") . '/surveys/' . $sid);
+                Survey::model()->deleteSurvey($sid,true);
                 return array('status' => 'OK');
             }
             else
-                throw new Zend_XmlRpc_Server_Exception('No permission', 2);
+                return array('status' => 'No permission');
         }
     }
 
     /**
-     * XML-RPC routing to add a response to the survey table
-     * Returns the id of the inserted survey response
-     *
-     * @access public
-     * @param string $session_key
-     * @param int $sid
-     * @param struct $aResponseData
-     * @return int
-     * @throws Zend_XmlRpc_Server_Exception
-     */
+    * RPC routine to add a response to the survey table
+    * Returns the id of the inserted survey response
+    *
+    * @access public
+    * @param string $session_key
+    * @param int $sid
+    * @param struct $aResponseData
+    * @return int
+    * @throws Zend_XmlRpc_Server_Exception
+    */
     public function add_response($session_key, $sid, $aResponseData)
     {
         if ($this->_checkSessionKey($session_key))
@@ -187,9 +222,11 @@ class remotecontrol_handle
             if (hasSurveyPermission($sid, 'response', 'create'))
             {
                 if (!Yii::app()->db->schema->getTable('{{survey_' . $sid . '}}'))
-                    throw new Zend_XmlRpc_Server_Exception('No survey response table', 12);
+                    return array('status' => 'No survey response table');
 
                 //set required values if not set
+
+                // @todo: This is part of the validation and should be done in the model instead
                 if (!isset($aResponseData['submitdate']))
                     $aResponseData['submitdate'] = date("Y-m-d H:i:s");
                 if (!isset($aResponseData['datestamp']))
@@ -206,25 +243,25 @@ class remotecontrol_handle
                 if ($result)
                     return $survey_dynamic->primaryKey;
                 else
-                    throw new Zend_XmlRpc_Server_Exception('Unable to add survey', 13);
+                    return array('status' => 'Unable to add survey');
             }
             else
-                throw new Zend_XmlRpc_Server_Exception('No permission', 2);
+                return array('status' => 'No permission');
         }
     }
 
     /**
-     * XML-RPC routine to add a participant to a token table
-     * Returns the inserted data including additional new information like the Token entry ID and the token
-     *
-     * @access public
-     * @param string $session_key
-     * @param int $sid
-     * @param struct $participant_data
-     * @param bool $create_token
-     * @return array
-     * @throws Zend_XmlRpc_Server_Exception
-     */
+    * XML-RPC routine to add a participant to a token table
+    * Returns the inserted data including additional new information like the Token entry ID and the token
+    *
+    * @access public
+    * @param string $session_key
+    * @param int $sid
+    * @param struct $participant_data
+    * @param bool $create_token
+    * @return array
+    * @throws Zend_XmlRpc_Server_Exception
+    */
     public function add_participants($session_key, $sid, $participant_data, $create_token)
     {
         if ($this->_checkSessionKey($session_key))
@@ -232,7 +269,7 @@ class remotecontrol_handle
             if (hasSurveyPermission($sid, 'tokens', 'create'))
             {
                 if (!Yii::app()->db->schema->getTable('{{tokens_' . $sid . '}}'))
-                    throw new Zend_XmlRpc_Server_Exception('No token table', 11);
+                    return array('status' => 'No token table');
 
                 $field_names = Yii::app()->db->schema->getTable('{{tokens_' . $sid . '}}')->getColumnNames();
                 $field_names = array_flip($field_names);
@@ -243,7 +280,7 @@ class remotecontrol_handle
                         if (!isset($field_names[$field_name]))
                             unset($participant[$field_name]);
 
-                    Tokens_dynamic::sid($sid);
+                        Tokens_dynamic::sid($sid);
                     $token = new Tokens_dynamic;
 
                     if ($token->insert($participant))
@@ -256,8 +293,8 @@ class remotecontrol_handle
                             $token_string = '';
 
                         $participant = array_merge($participant, array(
-                            'tid' => $new_token_id,
-                            'token' => $token_string,
+                        'tid' => $new_token_id,
+                        'token' => $token_string,
                         ));
                     }
                 }
@@ -265,18 +302,18 @@ class remotecontrol_handle
                 return $participant_data;
             }
             else
-                throw new Zend_XmlRpc_Server_Exception('No permission', 2);
+                return array('status' => 'No permission');
         }
     }
 
     /**
-     * Tries to login with username and password
-     *
-     * @access protected
-     * @param string $sUsername
-     * @param mixed $sPassword
-     * @return bool
-     */
+    * Tries to login with username and password
+    *
+    * @access protected
+    * @param string $sUsername
+    * @param mixed $sPassword
+    * @return bool
+    */
     protected function _doLogin($sUsername, $sPassword)
     {
         if (Failed_login_attempts::model()->isLockedOut())
@@ -294,25 +331,25 @@ class remotecontrol_handle
     }
 
     /**
-     * Fills the session with necessary user info on the fly
-     *
-     * @access protected
-     * @param string $sUsername
-     * @return bool
-     */
+    * Fills the session with necessary user info on the fly
+    *
+    * @access protected
+    * @param string $sUsername
+    * @return bool
+    */
     protected function _jumpStartSession($username)
     {
         $aUserData = User::model()->findByAttributes(array('users_name' => $username))->attributes;
 
         $session = array(
-            'loginID' => intval($aUserData['uid']),
-            'user' => $aUserData['users_name'],
-            'full_name' => $aUserData['full_name'],
-            'htmleditormode' => $aUserData['htmleditormode'],
-            'templateeditormode' => $aUserData['templateeditormode'],
-            'questionselectormode' => $aUserData['questionselectormode'],
-            'dateformat' => $aUserData['dateformat'],
-            'adminlang' => 'en'
+        'loginID' => intval($aUserData['uid']),
+        'user' => $aUserData['users_name'],
+        'full_name' => $aUserData['full_name'],
+        'htmleditormode' => $aUserData['htmleditormode'],
+        'templateeditormode' => $aUserData['templateeditormode'],
+        'questionselectormode' => $aUserData['questionselectormode'],
+        'dateformat' => $aUserData['dateformat'],
+        'adminlang' => 'en'
         );
         foreach ($session as $k => $v)
             Yii::app()->session[$k] = $v;
@@ -323,13 +360,13 @@ class remotecontrol_handle
     }
 
     /**
-     * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
-     *
-     * @access protected
-     * @param string $session_key
-     * @return bool
-     * @throws Zend_XmlRpc_Server_Exception
-     */
+    * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
+    *
+    * @access protected
+    * @param string $session_key
+    * @return bool
+    * @throws Zend_XmlRpc_Server_Exception
+    */
     protected function _checkSessionKey($session_key)
     {
         $criteria = new CDbCriteria;
@@ -338,7 +375,7 @@ class remotecontrol_handle
         $oResult = Sessions::model()->findByPk($session_key);
 
         if (is_null($oResult))
-            throw new Zend_XmlRpc_Server_Exception('Invalid session key', 3);
+            return false;
         else
         {
             $this->_jumpStartSession($oResult->data);
