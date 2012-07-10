@@ -8,6 +8,12 @@ html, body{
 #sep{
  margin-top: 10px;
 }
+
+.newcreate, .csvatt, .cpdbatt {
+    min-height: 100px;
+    padding-bottom: 50px;
+}
+
 #newcreated, #centralattribute, #tokenattribute{
     float: left;
     background-color: #EFFBDB;
@@ -24,7 +30,7 @@ html, body{
     text-align:center;
     width: 27%;
  }
-#centralattribute, #tokenattribute {
+#newcreated, #tokenattribute {
     height: 100%;
 }
 .heading{
@@ -37,22 +43,13 @@ html, body{
     padding-top: 7px;
     font-weight: bold;
 }
-.attrcol_3 {
-	width:27%;
-}
-.attrcol_2 {
-	width:44%;
-}
+
 
 #controllingarea {
 	text-align: right;
 	margin-right: 30px;
 }
 
-.ui-sortable{
-	padding-left: 2% !important;
-	padding-right: 2% !important;
-}
 .tokenatt li{
     border-color: #696565;
     border-style:solid;
@@ -74,6 +71,7 @@ li{
         list-style: none;
         padding:4px;
         text-align:center;
+        cursor: pointer;
 }
 .notsortable li{
         background:#696565;
