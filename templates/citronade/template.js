@@ -20,26 +20,6 @@
 function navbuttonsJqueryUi(){
     // Just deactivate default jquery-ui button
 }
-// This function deactivate comment on multi with comment
-function autoDisabledComment(){
-  $(".answers-wrapper li input.checkbox").each(function(){
-    if($(this).attr('checked')){
-      $(this).closest('li').find('input:text').attr('readonly','');
-    }else{
-      $(this).closest('li').find('input:text').val('');
-      $(this).closest('li').find('input:text').attr('readonly','readonly');
-    }
-  });
-  $(".answers-wrapper li input.checkbox").click(function(){
-    if($(this).attr('checked')){
-      $(this).closest('li').find('input:text').attr('readonly','');
-      $(this).closest('li').find('input:text').focus();
-    }else{
-      $(this).closest('li').find('input:text').val('');
-      $(this).closest('li').find('input:text').attr('readonly','readonly');
-    }
-  });
-}
 
 // Replace common alert with jquery-ui dialog
 function jalert(text) {
@@ -62,7 +42,7 @@ function jalert(text) {
 
 
 $(document).ready(function(){
-  //autoDisabledComment();
+
 })
 
 
