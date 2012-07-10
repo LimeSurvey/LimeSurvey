@@ -355,6 +355,8 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function activate($iSurveyID)
     {
+        $clang = Yii::app()->lang;
+    
         $iSurveyID = (int) $iSurveyID;
 
         $aData = array();
@@ -398,7 +400,52 @@ class SurveyAdmin extends Survey_Common_Action
                 $survey->save();
             }
 
-            $aViewUrls['output'] = activateSurvey($iSurveyID);
+            $aResult=activateSurvey($iSurveyID);
+            if (isset($aResult['error']))
+            {
+                $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n" .
+                "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
+                if ($aResult['error']=='surveytablecreation')
+                {
+                    $aViewUrls['output'].="<div class='warningheader'>".$clang->gT("Survey table could not be created.")."</div>\n";
+                }
+                else
+                {
+                    $aViewUrls['output'].="<div class='warningheader'>".$clang->gT("Timings table could not be created.")."</div>\n";
+                }
+                $aViewUrls['output'].="<p>" .
+                $clang->gT("Database error!!")."\n <font color='red'>" ."</font>\n" .
+                "<pre>".implode(' ', $createsurvey)."</pre>\n
+                <a href='".Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$iSurveyID)."'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
+            }
+            else
+            {
+                $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n"
+                ."<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ({$iSurveyID})</div>\n"
+                ."<div class='successheader'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
+
+                if (isset($aResult['warning']))
+                {
+                    $aViewUrls['output'] .= "<div class='warningheader'>"
+                    .$clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.")
+                    ."</div>";
+                }
+
+                if ($survey->allowregister=='Y')
+                {
+                    $aViewUrls['output'] .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n"
+                    ."<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/index/surveyid/".$iSurveyID))."\" />\n";
+                }
+                else
+                {
+                    $aViewUrls['output'] .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n"
+                    ."<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n"
+                    ."<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/index/surveyid/".$iSurveyID))."\" />\n"
+                    ."<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$iSurveyID))."\" />\n";
+                }
+                $aViewUrls['output'] .= "</div><br />&nbsp;\n";
+            }
+
 
             $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
         }
@@ -943,7 +990,7 @@ class SurveyAdmin extends Survey_Common_Action
                 unlink($sFullFilepath);
             }
 
-//            if (isset($aImportResults['error']) && $aImportResults['error']) safeDie($aImportResults['error']);
+            //            if (isset($aImportResults['error']) && $aImportResults['error']) safeDie($aImportResults['error']);
 
             if (!$aData['bFailed'])
             {

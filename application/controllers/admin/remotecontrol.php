@@ -73,6 +73,11 @@ class remotecontrol extends Survey_Common_Action
         $iSurveyID=$myJSONRPCClient->import_survey($sSessionKey, $sLSSData);
         echo 'Created new survey SID:'.$iSurveyID.'<br>';
 
+        $aResult=$myJSONRPCClient->activate_survey($sSessionKey, $iSurveyID);
+        if ($aResult['status']=='OK')
+        {
+            echo 'Survey '.$iSurveyID.' successfully activated.<br>';
+        }
         $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
@@ -120,15 +125,15 @@ class remotecontrol_handle
         if ($this->_doLogin($username, $password))
         {
             $this->_jumpStartSession($username);
-            $session_key = randomChars(32);
+            $sSessionKey = randomChars(32);
 
             $session = new Sessions;
-            $session->id = $session_key;
+            $session->id = $sSessionKey;
             $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
             $session->data = $username;
             $session->save();
 
-            return $session_key;
+            return $sSessionKey;
         }
         else
             return array('status' => 'Invalid user name or password');
@@ -138,12 +143,12 @@ class remotecontrol_handle
     * Closes the RPC session
     *
     * @access public
-    * @param string $session_key
+    * @param string $sSessionKey
     * @return string
     */
-    public function release_session_key($session_key)
+    public function release_session_key($sSessionKey)
     {
-        Sessions::model()->deleteAllByAttributes(array('id' => $session_key));
+        Sessions::model()->deleteAllByAttributes(array('id' => $sSessionKey));
         $criteria = new CDbCriteria;
         $criteria->condition = 'expire < ' . time();
         Sessions::model()->deleteAll($criteria);
@@ -155,14 +160,14 @@ class remotecontrol_handle
     * RPC routine to import a survey
     *
     * @access public
-    * @param string $session_key
+    * @param string $sSessionKey
     * @param string $sLSSData String containing the data of an LSS file
     * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
     * @return integer iSurveyID  - ID of the new survey
     */
-    public function import_survey($session_key, $sLSSData, $sNewSurveyName=NULL, $DestSurveyID=NULL)
+    public function import_survey($sSessionKey, $sLSSData, $sNewSurveyName=NULL, $DestSurveyID=NULL)
     {
-        if ($this->_checkSessionKey($session_key))
+        if ($this->_checkSessionKey($sSessionKey))
         {
             if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
             {
@@ -180,19 +185,48 @@ class remotecontrol_handle
         }
     }
 
+    /**
+    * RPC routine to activate a survey
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param string $sLSSData String containing the data of an LSS file
+    * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
+    * @return integer iSurveyID  - ID of the new survey
+    */
+    public function activate_survey($sSessionKey, $iSurveyID)
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+            {
+                Yii::app()->loadHelper('admin/activate');
+                $aImportResults = activateSurvey($iSurveyID);
+
+                if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
+                else
+                {
+                    return $aImportResults;
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+    }
+
 
     /**
     * RPC routine to delete a survey
     *
     * @access public
-    * @param string $session_key
+    * @param string $sSessionKey
     * @param int $sid
     * @return string
     * @throws Zend_XmlRpc_Server_Exception
     */
-    public function delete_survey($session_key, $sid)
+    public function delete_survey($sSessionKey, $sid)
     {
-        if ($this->_checkSessionKey($session_key))
+        if ($this->_checkSessionKey($sSessionKey))
         {
             if (hasSurveyPermission($sid, 'survey', 'delete'))
             {
@@ -209,15 +243,15 @@ class remotecontrol_handle
     * Returns the id of the inserted survey response
     *
     * @access public
-    * @param string $session_key
+    * @param string $sSessionKey
     * @param int $sid
     * @param struct $aResponseData
     * @return int
     * @throws Zend_XmlRpc_Server_Exception
     */
-    public function add_response($session_key, $sid, $aResponseData)
+    public function add_response($sSessionKey, $sid, $aResponseData)
     {
-        if ($this->_checkSessionKey($session_key))
+        if ($this->_checkSessionKey($sSessionKey))
         {
             if (hasSurveyPermission($sid, 'response', 'create'))
             {
@@ -255,16 +289,16 @@ class remotecontrol_handle
     * Returns the inserted data including additional new information like the Token entry ID and the token
     *
     * @access public
-    * @param string $session_key
+    * @param string $sSessionKey
     * @param int $sid
     * @param struct $participant_data
     * @param bool $create_token
     * @return array
     * @throws Zend_XmlRpc_Server_Exception
     */
-    public function add_participants($session_key, $sid, $participant_data, $create_token)
+    public function add_participants($sSessionKey, $sid, $participant_data, $create_token)
     {
-        if ($this->_checkSessionKey($session_key))
+        if ($this->_checkSessionKey($sSessionKey))
         {
             if (hasSurveyPermission($sid, 'tokens', 'create'))
             {
@@ -363,16 +397,16 @@ class remotecontrol_handle
     * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
     *
     * @access protected
-    * @param string $session_key
+    * @param string $sSessionKey
     * @return bool
     * @throws Zend_XmlRpc_Server_Exception
     */
-    protected function _checkSessionKey($session_key)
+    protected function _checkSessionKey($sSessionKey)
     {
         $criteria = new CDbCriteria;
         $criteria->condition = 'expire < ' . time();
         Sessions::model()->deleteAll($criteria);
-        $oResult = Sessions::model()->findByPk($session_key);
+        $oResult = Sessions::model()->findByPk($sSessionKey);
 
         if (is_null($oResult))
             return false;
