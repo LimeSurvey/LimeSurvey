@@ -21,7 +21,7 @@
 <body>
     <div class='header ui-widget-header'>
         <strong>
-            <?php $clang->eT("Map your selected token attributes to an existing participant attribute or create a new one"); ?>
+            <?php $clang->eT("Map your token attributes to an existing participant attribute or create a new one"); ?>
         </strong>
     </div>
 
@@ -71,12 +71,15 @@
                 }
                 ?>
                 </ul>
-                <br /><input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values?") ?></label>
+                <br /><input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
                 <?php
             }
             ?>
         </div>
-    <p> <input type="button" name="attmap" id="attmap" value="Continue" /></p>
+    <p>
+        <input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
+        <input type="button" name="attmap" id="attmap" value="Continue" />
+    </p>
     <?php
     $ajaxloader = array(
         'src' => Yii::app()->baseUrl . '/images/ajax-loader.gif',

@@ -1729,6 +1729,10 @@ class participantsaction extends Survey_Common_Action
             echo "\r\n";
             printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
         }
+        if($response['overwrite']=="true") {
+            echo "\r\n";
+            $clang->eT("Attribute values for existing participants have been updated from the token records");
+        }
     }
 
     /*
@@ -1736,13 +1740,22 @@ class participantsaction extends Survey_Common_Action
      */
     function addToToken()
     {
-        $response = Participants::copytoSurvey(Yii::app()->request->getPost('participantid'), Yii::app()->request->getPost('surveyid'), Yii::app()->request->getPost('attributeid'));
+        $response = Participants::copytoSurvey(Yii::app()->request
+                                                         ->getPost('participantid'),
+                                               Yii::app()->request
+                                                         ->getPost('surveyid'), Yii::app()
+                                                         ->request->getPost('attributeid')
+                                               );
         $clang = $this->getController()->lang;
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
             echo "\r\n";
             printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
+        }
+        if($response['overwrite']=="true") {
+            echo "\r\n";
+            $clang->eT("Attribute values for existing participants have been updated from the participants records");
         }
     }
 
@@ -1755,17 +1768,20 @@ class participantsaction extends Survey_Common_Action
         $iSurveyId = Yii::app()->request->getPost('surveyid');
         $mapped = Yii::app()->request->getPost('mapped');
         $newcreate = Yii::app()->request->getPost('newarr');
+        $overwrite = Yii::app()->request->getPost('overwrite');
         $clang = $this->getController()->lang;
-        if (empty($newcreate[0]))
-        {
-            $newcreate = array();
-        }
-        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId);
+        if (empty($newcreate[0])) { $newcreate = array(); }
+
+        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwrite);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
             echo "\r\n";
             printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
+        }
+        if($response['overwrite']=="true") {
+            echo "\r\n";
+            $clang->eT("Attribute values for existing participants have been updated from the participants records");
         }
     }
 
@@ -1783,7 +1799,12 @@ class participantsaction extends Survey_Common_Action
         $count = Yii::app()->request->getPost('count');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
         $attributes = ParticipantAttributeNames::getAttributes();
-        $arr = Tokens_dynamic::model($iSurveyId)->find();
+        $arr = Yii::app()->db
+                         ->createCommand()
+                         ->select('*')
+                         ->from("{{tokens_$iSurveyId}}")
+                         ->queryRow();
+
         if (is_array($arr))
         {
             $tokenfieldnames = array_keys($arr);
@@ -1794,16 +1815,16 @@ class participantsaction extends Survey_Common_Action
             $tokenattributefieldnames = array();
         }
 
-        $selectedattribute = array();
-        $selectedcentralattribute = array();
-        $alreadymappedattid = array();
+        $selectedattribute = array(); //List of existing attribute fields that are not mapped
+        $selectedcentralattribute = array(); //List of attributes that haven't already been mapped
+        $alreadymappedattid = array(); //List of fields already mapped to this tokens table
         $alreadymappedattname = array();
         $i = 0;
         $j = 0;
 
         foreach ($tokenattributefieldnames as $key => $value)
         {
-            if (is_numeric($value[10]))
+            if (is_numeric($value[10])) //Assumes that if the 11th character is a number, it must be a token-table created attribute
             {
                 $selectedattribute[$i] = $value;
                 $i++;

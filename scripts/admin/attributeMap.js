@@ -6,11 +6,16 @@ $(document).ready(function(){
     var width = $(document).width();
     var tokencurrentarray = {};
     var newcurrentarray = {};
+    if($("#overwrite").is(':checked')) {var attoverwrite=true;} else {var attoverwrite=false;}
+
     $('#tokenattribute').css({'height' : height-200});
     $('#centralattribute').css({'height' : height-200});
     $('#newcreated').css({'height' : height-200});
     $(".newcreate").sortable({connectWith:'.tokenatt,#cpdbatt'});
     $("#cpdbatt").sortable({connectWith:'.tokenatt,.newcreate',helper: 'clone',appendTo: 'body'});
+        $("#overwrite").click(function(){
+        if($("#overwrite").is(':checked')) {attoverwrite=true;} else {attoverwrite=false;}
+    });
     $("ul.tokenatt").sortable({
         helper: 'clone',
         appendTo: 'body',
@@ -66,20 +71,20 @@ $(document).ready(function(){
                     mappedarray[tokencurrentarray[index-1].substring(2)] = value.substring(2);
             }
         });
-           $.each(newcurrentarray, function(index,value) {
-                newcurrentarray[index] = value.substring(2);
-            });
+       $.each(newcurrentarray, function(index,value) {
+            newcurrentarray[index] = value.substring(2);
+        });
         $("#processing").dialog({
-        height: 90,
+            height: 90,
             width: 50,
             modal: true
-
         });
 
     $("#processing").load(copyUrl, {
         mapped: mappedarray,
         newarr: newcurrentarray,
         surveyid: surveyId,
+        overwrite: attoverwrite,
         participant_id : participant_id
         }, function(msg){
             $(this).dialog("close");

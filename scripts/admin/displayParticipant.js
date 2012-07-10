@@ -567,13 +567,13 @@ $(document).ready(function() {
                     getSearchIDs,
                     { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
                     function(data) {
-                        $('#count').val($('#ui-dialog-title-addsurvey').text());
+                        $('#count').val(totalitems);
                         $('#participant_id').val(data);
                         $("#addsurvey").submit();
                     });
                 } else { /* Add selected (checked) jqGrid items only */
                     rows = myGrid.getGridParam('selarrrow');
-                    $('#count').val($('#ui-dialog-title-addsurvey').text());
+                    $('#count').val(totalitems);
                     $('#participant_id').val(rows);
                     $("#addsurvey").submit();
                 }

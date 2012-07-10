@@ -22,6 +22,7 @@ html, body{
     border-width: 1px;
     overflow : auto;
     text-align:center;
+    width: 27%;
  }
 #centralattribute, #tokenattribute {
     height: 100%;
@@ -66,7 +67,9 @@ li{
         border:solid 2px #DEDEDE;
         background:#FFFFFF ;
         color:#222222;
+        width : 200px;
         margin-top: 2px;
+        margin-left: 10%;
         margin-bottom: 2px;
         list-style: none;
         padding:4px;
