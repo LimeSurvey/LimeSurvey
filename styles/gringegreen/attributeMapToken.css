@@ -10,6 +10,11 @@ html, body{
     padding : 100px;
 }
 
+.newcreate, .csvatt, .cpdbatt {
+    min-height: 100px;
+    padding-bottom: 50px;
+}
+
 #newcreated,#tokenattribute,#centralattribute{
     float: left;
     background-color: #EFFBDB;
