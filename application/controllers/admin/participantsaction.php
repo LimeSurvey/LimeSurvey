@@ -1742,7 +1742,7 @@ class participantsaction extends Survey_Common_Action
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
             echo "\r\n";
-            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate'])
+            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
         }
     }
 
@@ -1765,7 +1765,7 @@ class participantsaction extends Survey_Common_Action
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
             echo "\r\n";
-            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate'])
+            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
         }
     }
 
