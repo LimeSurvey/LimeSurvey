@@ -2132,14 +2132,30 @@ function do_ranking($ia)
     $answer .="</div>";
     header_includes("ranking.js");
     header_includes("ranking.css","css");
-
+    
+    if(trim($aQuestionAttributes['choice_title'][$clang->langcode]) != '')
+    {
+        $choice_title=htmlspecialchars(trim($aQuestionAttributes['choice_title'][$clang->langcode]), ENT_QUOTES);
+    }
+    else
+    {
+        $choice_title=$clang->gT("Your Choices",'js');
+    } 
+    if(trim($aQuestionAttributes['rank_title'][$clang->langcode]) != '')
+    {
+        $rank_title=htmlspecialchars(trim($aQuestionAttributes['rank_title'][$clang->langcode]), ENT_QUOTES);
+    }
+    else
+    {
+        $rank_title=$clang->gT("Your Ranking",'js');
+    }
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
     . "var translt = {
-             choicetitle: '".$clang->gT("Your Choices",'js')."',
-             ranktitle: '".$clang->gT("Your Ranking",'js')."'
+             choicetitle: '{$choice_title}',
+             ranktitle: '{$rank_title}'
             };\n"
-    ." doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]});\n"
+    ." doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]});\n"
     ." -->\n"
     ."</script>\n";
     return array($answer, $inputnames);

@@ -3724,8 +3724,26 @@ function questionAttributes($returnByName=false)
     'default'=>1,
     "caption"=>$clang->gT('Show javascript alert'),
     "help"=>$clang->gT('Show an alert if answers exceeds the number of max answers'));
-
-
+    $qattributes["samechoiceheight"]=array(
+    "types"=>"R",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>120,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+    "caption"=>$clang->gT('Same height for all choice'),
+    "help"=>$clang->gT('Force each choice to have the same height'));
+    $qattributes["samelistheight"]=array(
+    "types"=>"R",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>121,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+    "caption"=>$clang->gT('Same height for lists'),
+    "help"=>$clang->gT('Force the choice list and the rank list to have the same height'));
 
     $qattributes["parent_order"]=array(
     "types"=>"!ABCEFHKLMOPQRWZ1:;",
@@ -3885,6 +3903,26 @@ function questionAttributes($returnByName=false)
     'default'=>0,
     "help"=>$clang->gT("Set a specific SPSS export scale type for this question"),
     "caption"=>$clang->gT('SPSS export scale type'));
+
+    $qattributes["choice_title"]=array(
+    "types"=>"R",
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>200,
+    "inputtype"=>"text",
+    'i18n'=>true,
+    'default'=>"",
+    "help"=>sprintf($clang->gT("Replace choice header (default: \"%s\")",'js'),$clang->gT("Your Choices")),
+    "caption"=>$clang->gT("Choice header"));
+
+    $qattributes["rank_title"]=array(
+    "types"=>"R",
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>201,
+    "inputtype"=>"text",
+    'i18n'=>true,
+    'default'=>"",
+    "help"=>sprintf($clang->gT("Replace rank header (default: \"%s\")",'js'),$clang->gT("Your Ranking")),
+    "caption"=>$clang->gT("Rank header"));
 
     //Timer attributes
     $qattributes["time_limit"]=array(

@@ -432,7 +432,7 @@ table.question tbody tr td:hover{background:#E5F8A8}
 ,.list-with-comment
 ,.list-dropdown
 ,.list-dropdown-flexible
-,.ranking
+,.ranking .dragDropTable
 ,.numeric-multi
 ,.language
 ,.multiple-opt-comments
@@ -734,7 +734,9 @@ table.rank input{border:1px solid #999}
 	}
 }
 
-
+.dragDropTable .error {
+	border-color: #977;
+}
  .text-short input
 ,.text-short textarea
 ,.text-long textarea
