@@ -78,6 +78,12 @@ class remotecontrol extends Survey_Common_Action
         {
             echo 'Survey '.$iSurveyID.' successfully activated.<br>';
         }
+        $aResult=$myJSONRPCClient->activate_tokens($sSessionKey, $iSurveyID,array(1,2));
+        if ($aResult['status']=='OK')
+        {
+            echo 'Tokens for Survey ID '.$iSurveyID.' successfully activated.<br>';
+        }
+            die();
         $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
@@ -216,6 +222,45 @@ class remotecontrol_handle
 
 
     /**
+    * RPC routine to activate tokens
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param integer $iSurveyID ID of the survey where a token table will be created for
+    * @param array $aAttributeFields  An array of integer describing any additional attribute fields
+    * @return array Status=>OK when successfull, otherwise the error description
+    */
+    public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+            {
+                if (is_array($aAttributeFields) && count($aAttributeFields)>0)
+                {
+                    foreach ($aAttributeFields as &$sField)
+                    {
+                        $sField= intval($sField);
+                        $sField='attribute_'.$sField;
+                    }
+                    $aAttributeFields=array_unique($aAttributeFields);
+                }
+                Yii::app()->loadHelper('admin/token');
+                if (createTokenTable($iSurveyID, $aAttributeFields))
+                {
+                    return array('status' => 'OK');
+                }
+                else
+                {
+                    return array('status' => 'Token table could not be created');
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+    }
+
+    /**
     * RPC routine to delete a survey
     *
     * @access public
@@ -285,7 +330,7 @@ class remotecontrol_handle
     }
 
     /**
-    * XML-RPC routine to add a participant to a token table
+    * RPC routine to add a participant to a token table
     * Returns the inserted data including additional new information like the Token entry ID and the token
     *
     * @access public

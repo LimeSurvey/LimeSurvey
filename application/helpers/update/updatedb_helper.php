@@ -21,6 +21,8 @@ function db_upgrade_all($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $usertemplaterootdir, $standardtemplaterootdir;
+    Yii::app()->loadHelper('database');
+
     $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
     $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     $clang = Yii::app()->lang;
@@ -1676,21 +1678,6 @@ function dropColumn($sTableName, $sColumnName)
 
 
 
-function createTable($sTableName, $aColumns, $aOptions=null)
-{
-    $sDBDriverName=Yii::app()->db->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName=='mssql')
-    {
-        foreach ($aColumns as $sName=>&$sType)
-        {
-            $sType=str_replace('text','varchar(max)',$sType);
-            $sType=str_replace('binary','text',$sType);
-        }
-    }
-    Yii::app()->db->createCommand()->createTable($sTableName,$aColumns,$aOptions);
-}
 
 function addColumn($sTableName, $sColumn, $sType)
 {
