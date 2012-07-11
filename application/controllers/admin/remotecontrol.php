@@ -219,6 +219,12 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
+            {
+                return array('status' => 'Error: Invalid survey ID');
+            }
+
             if (hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))
             {
                 Yii::app()->loadHelper('admin/activate');
@@ -228,6 +234,60 @@ class remotecontrol_handle
                 else
                 {
                     return $aImportResults;
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+    }
+
+    /**
+    * RPC routine to modify survey locale settings
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param integer $iSurveyID  - ID of the survey
+    * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @param string $aLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
+    * @return array status=>OK, when save successful otherwise error text.
+    */
+    public function modify_survey_locale_settings($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage=NULL)
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
+            {
+                return array('status' => 'Error: Invalid survey ID');
+            }
+            if (is_null($sLanguage))
+            {
+                $sLanguage=$oSurvey->language;
+            }
+
+            if (hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
+            {
+                // Remove fields that may not be modified
+                unset($aSurveyLocaleData['surveyls_language']);
+                unset($aSurveyLocaleData['surveyls_survey_id']);
+
+                // Remove invalid fields
+                $aDestinationFields=array_flip(Surveys_languagesettings::model()->tableSchema->columnNames);
+
+                $aSurveyLocaleData=array_intersect_key($aSurveyLocaleData,$aDestinationFields);
+                $oSurveyLocale = Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
+                foreach($aSurveyLocaleData as $sFieldName=>$sValue)
+                {
+                    $oSurveyLocale->$sFieldName=$sValue;
+                }
+                try
+                {
+                    $oSurveyLocale->save(); // save the change to database
+                    return array('status' => 'OK');
+                }
+                catch(Exception $e)
+                {
+                    return array('status' => 'Error');
                 }
             }
             else
@@ -248,6 +308,11 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
+            {
+                return array('status' => 'Error: Invalid survey ID');
+            }
             if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
             {
                 // Remove fields that may not be modified
@@ -286,6 +351,8 @@ class remotecontrol_handle
         }
     }
 
+
+
     /**
     * RPC routine to add a survey language
     *
@@ -299,6 +366,11 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
+            {
+                return array('status' => 'Error: Invalid survey ID');
+            }
             if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
             {
                 Yii::app()->loadHelper('surveytranslator');
@@ -347,8 +419,15 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
+            {
+                return array('status' => 'Error: Invalid survey ID');
+            }
+
             if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
             {
+
                 Yii::app()->loadHelper('surveytranslator');
                 $aLanguages=getLanguageData();
 
@@ -396,6 +475,11 @@ class remotecontrol_handle
         {
             if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
             {
+                $oSurvey=Survey::model()->findByPk($iSurveyID);
+                if (is_null($oSurvey))
+                {
+                    return array('status' => 'Error: Invalid survey ID');
+                }
                 if (is_array($aAttributeFields) && count($aAttributeFields)>0)
                 {
                     foreach ($aAttributeFields as &$sField)
@@ -425,17 +509,17 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey
-    * @param int $sid
+    * @param int $iSurveyID
     * @return string
     * @throws Zend_XmlRpc_Server_Exception
     */
-    public function delete_survey($sSessionKey, $sid)
+    public function delete_survey($sSessionKey, $iSurveyID)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (hasSurveyPermission($sid, 'survey', 'delete'))
+            if (hasSurveyPermission($iSurveyID, 'survey', 'delete'))
             {
-                Survey::model()->deleteSurvey($sid,true);
+                Survey::model()->deleteSurvey($iSurveyID,true);
                 return array('status' => 'OK');
             }
             else
@@ -449,18 +533,18 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey
-    * @param int $sid
+    * @param int $iSurveyID
     * @param struct $aResponseData
     * @return int
     * @throws Zend_XmlRpc_Server_Exception
     */
-    public function add_response($sSessionKey, $sid, $aResponseData)
+    public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (hasSurveyPermission($sid, 'response', 'create'))
+            if (hasSurveyPermission($iSurveyID, 'response', 'create'))
             {
-                if (!Yii::app()->db->schema->getTable('{{survey_' . $sid . '}}'))
+                if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}'))
                     return array('status' => 'No survey response table');
 
                 //set required values if not set
@@ -475,7 +559,7 @@ class remotecontrol_handle
                 if (!isset($aResponseData['startlanguage']))
                     $aResponseData['startlanguage'] = getBaseLanguageFromSurveyID($iSurveyID);
 
-                Survey_dynamic::sid($sid);
+                Survey_dynamic::sid($iSurveyID);
                 $survey_dynamic = new Survey_dynamic;
                 $result = $survey_dynamic->insert($aResponseData);
 
@@ -495,22 +579,28 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey
-    * @param int $sid
+    * @param int $iSurveyID
     * @param struct $participant_data
     * @param bool $create_token
     * @return array
     * @throws Zend_XmlRpc_Server_Exception
     */
-    public function add_participants($sSessionKey, $sid, $participant_data, $create_token)
+    public function add_participants($sSessionKey, $iSurveyID, $participant_data, $create_token)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (hasSurveyPermission($sid, 'tokens', 'create'))
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
             {
-                if (!Yii::app()->db->schema->getTable('{{tokens_' . $sid . '}}'))
+                return array('status' => 'Error: Invalid survey ID');
+            }
+
+            if (hasSurveyPermission($iSurveyID, 'tokens', 'create'))
+            {
+                if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
                     return array('status' => 'No token table');
 
-                $field_names = Yii::app()->db->schema->getTable('{{tokens_' . $sid . '}}')->getColumnNames();
+                $field_names = Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}')->getColumnNames();
                 $field_names = array_flip($field_names);
 
                 foreach ($participant_data as &$participant)
@@ -519,7 +609,7 @@ class remotecontrol_handle
                         if (!isset($field_names[$field_name]))
                             unset($participant[$field_name]);
 
-                        Tokens_dynamic::sid($sid);
+                        Tokens_dynamic::sid($iSurveyID);
                     $token = new Tokens_dynamic;
 
                     if ($token->insert($participant))
