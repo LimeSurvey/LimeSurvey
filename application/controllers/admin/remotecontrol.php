@@ -86,7 +86,17 @@ class remotecontrol extends Survey_Common_Action
         $aResult=$myJSONRPCClient->modify_survey_settings($sSessionKey, $iSurveyID,array('faxto'=>'0800-LIMESURVEY'));
         if ($aResult['status']=='OK')
         {
-            echo 'Modified survey settings for survey '.$iSurveyID;
+            echo 'Modified survey settings for survey '.$iSurveyID.'<br>';
+        }
+        $aResult=$myJSONRPCClient->add_survey_language($sSessionKey, $iSurveyID,'ar');
+        if ($aResult['status']=='OK')
+        {
+            echo 'Added Arabian as additional language'.'<br>';
+        }
+        $aResult=$myJSONRPCClient->delete_survey_language($sSessionKey, $iSurveyID,'ar');
+        if ($aResult['status']=='OK')
+        {
+            echo 'Removed Arabian as additional language'.'<br>';
         }
         die();
         $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
@@ -231,7 +241,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey
     * @param integer $iSurveyID  - ID of the survey
-    * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that partuclar survey
+    * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @return array OK, when save successful otherwise error text.
     */
     public function modify_survey_settings($sSessionKey, $iSurveyID, $aSurveyData)
@@ -276,6 +286,100 @@ class remotecontrol_handle
         }
     }
 
+    /**
+    * RPC routine to add a survey language
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param integer $iSurveyID ID of the survey where a token table will be created for
+    * @param string $sLanguage  A valid language shortcut to add to the current survey. If the language already exists no error will be given.
+    * @return array Status=>OK when successfull, otherwise the error description
+    */
+    public function add_survey_language($sSessionKey, $iSurveyID, $sLanguage)
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+            {
+                Yii::app()->loadHelper('surveytranslator');
+                $aLanguages=getLanguageData();
+
+                if(!isset($aLanguages[$sLanguage]))
+                {
+                    return array('status' => 'Invalid language');
+                }
+                $oSurvey=Survey::model()->findByPk($iSurveyID);
+                if ($sLanguage==$oSurvey->language)
+                {
+                    return array('status' => 'OK');
+                }
+                $aLanguages=$oSurvey->getAdditionalLanguages();
+                $aLanguages[]=$sLanguage;
+                $aLanguages=array_unique($aLanguages);
+                $oSurvey->additional_languages=implode(' ',$aLanguages);
+                try
+                {
+                    $oSurvey->save(); // save the change to database
+                    fixLanguageConsistency($iSurveyID,$sLanguage);
+                    return array('status' => 'OK');
+                }
+                catch(Exception $e)
+                {
+                    return array('status' => 'Error');
+                }
+
+            }
+            else
+                return array('status' => 'No permission');
+        }
+    }
+
+    /**
+    * RPC routine to delete a survey language
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param integer $iSurveyID ID of the survey where a token table will be created for
+    * @param string $sLanguage  A valid language shortcut to delete from the current survey. If the language does not exist in that survey no error will be given.
+    * @return array Status=>OK when successfull, otherwise the error description
+    */
+    public function delete_survey_language($sSessionKey, $iSurveyID, $sLanguage)
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+            {
+                Yii::app()->loadHelper('surveytranslator');
+                $aLanguages=getLanguageData();
+
+                if(!isset($aLanguages[$sLanguage]))
+                {
+                    return array('status' => 'Invalid language');
+                }
+                $oSurvey=Survey::model()->findByPk($iSurveyID);
+                if ($sLanguage==$oSurvey->language)
+                {
+                    return array('status' => 'Cannot remove base language');
+                }
+                $aLanguages=$oSurvey->getAdditionalLanguages();
+                unset($aLanguages[$sLanguage]);
+                $oSurvey->additional_languages=implode(' ',$aLanguages);
+                try
+                {
+                    $oSurvey->save(); // save the change to database
+                    cleanLanguagesFromSurvey($iSurveyID,$oSurvey->additional_languages);
+                    return array('status' => 'OK');
+                }
+                catch(Exception $e)
+                {
+                    return array('status' => 'Error');
+                }
+
+            }
+            else
+                return array('status' => 'No permission');
+        }
+    }
 
     /**
     * RPC routine to activate tokens
