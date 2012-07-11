@@ -2388,6 +2388,7 @@ function do_multiplechoice($ia)
     }
     $answer .= $wrapper['whole-end'];
 
+<<<<<<< HEAD
     $checkotherscript = "";
     if ($other == 'Y')
     {
@@ -2417,6 +2418,38 @@ function do_multiplechoice($ia)
     }
 
     $answer = $checkotherscript . $answer;
+=======
+#   No need $checkotherscript : already done by check mandatory
+#    $checkotherscript = "";
+#    if ($other == 'Y')
+#    {
+#        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
+#        // this means that if it is cehcked We must force the end-user to enter text in the input
+#        // box
+#        $checkotherscript = "<script type='text/javascript'>\n"
+#        . "\t<!--\n"
+#        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
+#        . "function ensureOther_{$ia[0]}()\n"
+#        . "{\n"
+#        . "\tothercboxval=document.getElementById('answer".$myfname."cbox').checked;\n"
+#        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
+#        . "\tif (otherval != '' || othercboxval != true) {\n"
+#        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
+#        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
+#        . "}\n"
+#        . "\t}\n"
+#        . "\telse {\n"
+#        . "alert('".sprintf($clang->gT("You've marked the '%s' field, please also fill in the accompanying comment field.","js"),$othertext)."');\n"
+#        . "return false;\n"
+#        . "\t}\n"
+#        . "}\n"
+#        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+#        . "\t-->\n"
+#        . "</script>\n";
+#    }
+
+#    $answer = $checkotherscript . $answer;
+>>>>>>> 9e50661356d8d9a1ef35e86cdb1e98194709dc7d
 
     $answer .= $postrow;
     return array($answer, $inputnames);

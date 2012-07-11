@@ -1018,7 +1018,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                                                    .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_ext_'.$i     .'" name="ext"      size=50 value="'.htmlspecialchars($metadata[$i]["ext"])     .'" /></td></tr>'
                                                    .'<tr><td></td><td><input type="hidden"  class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_filename_'.$i    .'" name="filename" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["filename"]))    .'" /></td></tr>';
                             }
-                            $dataentryoutput .= '<tr><td></td><td><input type="hidden" id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" size=50 value="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></tr>';
+                            $dataentryoutput .= '<tr><td></td><td><input type="hidden" id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" size=50 value="'.htmlspecialchars($idrow[$fname['fieldname']],ENT_QUOTES).'" /></td></tr>';
                             $dataentryoutput .= '</table>';
                             $dataentryoutput .= '<script type="text/javascript">
                                                      $(function() {
@@ -1046,7 +1046,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         }
                         else
                         {//file count
-                            $dataentryoutput .= '<input readonly id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" value ="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></table>';
+                            $dataentryoutput .= '<input readonly id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" value ="'.htmlspecialchars($idrow[$fname['fieldname']],ENT_QUOTES).'" /></td></table>';
                         }
                         break;
 
@@ -1102,7 +1102,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 					    }
 					    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
 
-					    $dataentryoutput .= $prefix. "<input type='text' size='".$tiwidth."' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}'
+					    $dataentryoutput .= $prefix. "<input type='text' size='".$tiwidth."' name='{$fname['fieldname']}' value='".htmlspecialchars($idrow[$fname['fieldname']],ENT_QUOTES)."'
     					title='".$clang->gT('Only numbers may be entered in this field')."' $maxlength onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" />".$suffix;
                         break;
 
@@ -1459,7 +1459,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             $dataentryoutput .= "<td>\n";
                             if ($qidattributes['input_boxes']!=0) {
                                 $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
-                                if (!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
+                                if (!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= htmlspecialchars($idrow[$fname['fieldname']],ENT_QUOTES);}
                                 $dataentryoutput .= "' size=\"4\" />";
                             } else {
                                 $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n";
@@ -1490,7 +1490,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             . "<td align='right' valign='top'>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                             $dataentryoutput .= "<td>\n";
                             $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
-                            if(!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
+                            if(!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= htmlspecialchars($idrow[$fname['fieldname']],ENT_QUOTES);}
                             $dataentryoutput .= "' /></td>\n"
                             ."\t</tr>\n";
                             $fname=next($fnames);
