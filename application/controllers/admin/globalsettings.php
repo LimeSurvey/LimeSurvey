@@ -163,7 +163,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('googletranslateapikey',$_POST['googletranslateapikey']);
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
         setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
-        setGlobalSetting('enableXMLRPCInterface', $_POST['enableXMLRPCInterface']);
+        setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
         $savetime = trim(strip_tags((float)$_POST['timeadjust']) . ' hours'); //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;

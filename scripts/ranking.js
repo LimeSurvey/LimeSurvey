@@ -3,7 +3,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
 if (typeof showpopups === 'undefined'){showpopups=true;}
 if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
 if (typeof samelistheight === 'undefined'){samelistheight=true;}
-
+      maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
   // Hide the default answers list
@@ -39,7 +39,7 @@ if (typeof samelistheight === 'undefined'){samelistheight=true;}
     if($(this).val()!=''){
       ranked.push($(this).val());
       htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
-      var liCode = '<li class="ui-widget-content choice" id="choice_'+$(this).val()+'">' + htmloption + '</li>'
+      var liCode = '<li class="ui-state-default choice" id="choice_'+$(this).val()+'">' + htmloption + '</li>'
       $(liCode).appendTo('#sortable-rank-'+qID+'');
     }
   });
@@ -47,7 +47,7 @@ if (typeof samelistheight === 'undefined'){samelistheight=true;}
     var thisvalue=$(this).val();
     if(thisvalue!='' && jQuery.inArray(thisvalue,ranked)<0){
         htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
-        var liCode = '<li class="ui-widget-content choice" id="choice_'+$(this).val()+'">' + htmloption + '</li>'
+        var liCode = '<li class="ui-state-default choice" id="choice_'+$(this).val()+'">' + htmloption + '</li>'
         $(liCode).appendTo('#sortable-choice-'+qID+'');
     }
   });
@@ -56,14 +56,15 @@ if (typeof samelistheight === 'undefined'){samelistheight=true;}
   // Set up the connected sortable			
   $('#sortable-choice-'+qID+', #sortable-rank-'+qID+'').sortable({
     connectWith: '.connectedSortable'+qID+'',
+    forceHelperSize: true,
+    forcePlaceholderSize: true,
     placeholder: 'ui-sortable-placeholder',
     helper: 'clone',
     revert: 50,
     receive: function(event, ui) {
-      maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
       if($(this).attr("id")=='sortable-rank-'+qID && $(maxanswers>0 && '#sortable-rank-'+qID+' li').length > maxanswers) {
-        sortableAlert (qID,showpopups);
-        $(ui.sender).sortable('cancel');
+        sortableAlert (qID,showpopups,maxanswers);
+        if(showpopups){$(ui.sender).sortable('cancel');}
       }
       },
     stop: function(event, ui) {
@@ -78,10 +79,9 @@ if (typeof samelistheight === 'undefined'){samelistheight=true;}
   
   // Allow users to double click to move to selections from list to list
   $('#sortable-choice-'+qID+' li').live('dblclick', function() {
-      maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
       if($(maxanswers>0 && '#sortable-rank-'+qID+' li').length >= maxanswers) {
-        sortableAlert (qID,showpopups);
-      return false;
+        sortableAlert (qID,showpopups,maxanswers);
+        if(showpopups){return false;}
     }
     else {
       $(this).appendTo('#sortable-rank-'+qID+'');
@@ -109,6 +109,9 @@ function updateDragDropRank(qID){
   $('#question'+qID+' .select-item select').each(function(){
     checkconditions($(this).val(),$(this).attr("name"),'select-one','onchange');
   });
+    $('#sortable-rank-'+qID+' li').removeClass("error");
+    $('#sortable-choice-'+qID+' li').removeClass("error");
+    $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("error");
 }
 
 function sortableAlert (qID,showpopups)
@@ -124,6 +127,9 @@ function loadDragDropRank(qID){
         $('#sortable-choice-'+qID+' li#choice_'+$(this).val()).appendTo('#sortable-rank-'+qID);
     }
   });
+  $('#sortable-rank-'+qID+' li').removeClass("error");
+  $('#sortable-choice-'+qID+' li').removeClass("error");
+  $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("error");
 }
 
 // All choice at same height
@@ -140,7 +146,7 @@ function fixChoiceHeight(qID){
 function fixListHeight(qID){
   totalHeight=0;
   $('.connectedSortable'+qID+' li').each(function(){
-    totalHeight=totalHeight+$(this).outerHeight();
+    totalHeight=totalHeight+$(this).outerHeight(true);
   });
   $('.connectedSortable'+qID).height(totalHeight);
 }
