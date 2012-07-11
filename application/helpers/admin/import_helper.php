@@ -2666,7 +2666,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
     if (empty($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated'] = new CDbExpression('NOW()'); }
 
-    $iNewSID = Survey::insertNewSurvey($surveyrowdata, $xssfilter) or safeDie ("<br />".$clang->gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
+    $iNewSID = Survey::insertNewSurvey($surveyrowdata) or safeDie ("<br />".$clang->gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
 
     // Now import the survey language settings
     $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
@@ -3415,7 +3415,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['showxquestions']=$insertdata['showXquestions'];
             unset($insertdata['showXquestions']);
         }
-        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata,$xssfilter) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
 
         $results['surveys']++;
     }

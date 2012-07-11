@@ -62,8 +62,8 @@ class Survey extends CActiveRecord
     public function relations()
     {
         return array(
-            'languagesettings' => array(self::HAS_MANY, 'Surveys_languagesettings', 'surveyls_survey_id'),
-            'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
+        'languagesettings' => array(self::HAS_MANY, 'Surveys_languagesettings', 'surveyls_survey_id'),
+        'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
         );
     }
 
@@ -76,11 +76,52 @@ class Survey extends CActiveRecord
     public function scopes()
     {
         return array(
-            'active' => array(
-                'condition' => "active = 'Y'",
-            ),
+        'active' => array(
+        'condition' => "active = 'Y'",
+        ),
         );
     }
+
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+        array('datecreated', 'default','value'=>date("Y-m-d")),
+        array('startdate', 'default','value'=>NULL),
+        array('expires', 'default','value'=>NULL),
+        array('admin', 'xssfilter'),
+        array('adminemail', 'xssfilter'),
+        array('bounce_email', 'xssfilter'),
+        array('faxto', 'xssfilter')
+        );
+    }
+
+
+
+
+
+    /**
+    * Defines the customs validation rule xssfilter
+    *
+    * @param mixed $attribute
+    * @param mixed $params
+    */
+    public function xssfilter($attribute,$params)
+    {
+        if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        {
+            $filter = new CHtmlPurifier();
+            $filter->options = array('URI.AllowedSchemes'=>array(
+            'http' => true,
+            'https' => true,
+            ));
+            $this->$attribute = $filter->purify($this->$attribute);
+        }
+    }
+
 
     /**
     * permission scope for this model
@@ -94,7 +135,7 @@ class Survey extends CActiveRecord
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
-            'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)',
+        'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)',
         ));
         $criteria->params[':uid'] = $loginID;
         $criteria->params[':permission'] = 'survey';
@@ -152,17 +193,16 @@ class Survey extends CActiveRecord
         return $attdescriptiondata;
     }
 
+
     /**
-    * !!! Shouldn't this be moved to beforeSave?
     * Creates a new survey - does some basic checks of the suppplied data
     *
     * @param array $aData Array with fieldname=>fieldcontents data
     * @param boolean $xssfiltering Sets if the data for the new survey should be filtered for XSS
     * @return integer The new survey id
     */
-    public function insertNewSurvey($aData, $xssfiltering = false)
+    public function insertNewSurvey($aData)
     {
-
         do
         {
             if (isset($aData['wishSID'])) // if wishSID is set check if it is not taken already
@@ -176,31 +216,6 @@ class Survey extends CActiveRecord
             $isresult = self::model()->findByPk($aData['sid']);
         }
         while (!is_null($isresult));
-
-     //   $aData['datecreated'] = date("Y-m-d");
-        if (isset($aData['startdate']) && trim($aData['startdate']) == '')
-            unset($aData['startdate']);
-
-        if (isset($aData['expires']) && trim($aData['expires']) == '')
-            unset($aData['expires']);
-
-        if (!isset($aData['datecreated']))
-        {
-            $aData['datecreated'] = date("Y-m-d");
-        }
-
-        if($xssfiltering)
-        {
-            $filter = new CHtmlPurifier();
-            $filter->options = array('URI.AllowedSchemes'=>array(
-            'http' => true,
-            'https' => true,
-            ));
-            $aData["admin"] = $filter->purify($aData["admin"]);
-            $aData["adminemail"] = $filter->purify($aData["adminemail"]);
-            $aData["bounce_email"] = $filter->purify($aData["bounce_email"]);
-            $aData["faxto"] = $filter->purify($aData["faxto"]);
-        }
 
         $survey = new self;
         foreach ($aData as $k => $v)

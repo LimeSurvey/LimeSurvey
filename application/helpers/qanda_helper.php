@@ -2477,35 +2477,37 @@ function do_multiplechoice($ia)
     //        //$answer = $minanswscript . $answer;
     //    }
 
-    $checkotherscript = "";
-    if ($other == 'Y')
-    {
-        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
-        // this means that if it is cehcked We must force the end-user to enter text in the input
-        // box
-        $checkotherscript = "<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-        . "function ensureOther_{$ia[0]}()\n"
-        . "{\n"
-        . "\tothercboxval=document.getElementById('answer".$myfname."cbox').checked;\n"
-        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
-        . "\tif (otherval != '' || othercboxval != true) {\n"
-        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-        . "}\n"
-        . "\t}\n"
-        . "\telse {\n"
-        . "alert('".sprintf($clang->gT("You've marked the 'Other:' field for question '%s'. Please also fill in the accompanying comment field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
-        . "return false;\n"
-        . "\t}\n"
-        . "}\n"
-        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-        . "\t-->\n"
-        . "</script>\n";
-    }
+#   No need $checkotherscript : already done by check mandatory
+#   TODO move it to EM
+#    $checkotherscript = "";
+#    if ($other == 'Y')
+#    {
+#        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
+#        // this means that if it is cehcked We must force the end-user to enter text in the input
+#        // box
+#        $checkotherscript = "<script type='text/javascript'>\n"
+#        . "\t<!--\n"
+#        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
+#        . "function ensureOther_{$ia[0]}()\n"
+#        . "{\n"
+#        . "\tothercboxval=document.getElementById('answer".$myfname."cbox').checked;\n"
+#        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
+#        . "\tif (otherval != '' || othercboxval != true) {\n"
+#        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
+#        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
+#        . "}\n"
+#        . "\t}\n"
+#        . "\telse {\n"
+#        . "alert('".sprintf($clang->gT("You've marked the 'Other:' field for question '%s'. Please also fill in the accompanying comment field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
+#        . "return false;\n"
+#        . "\t}\n"
+#        . "}\n"
+#        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+#        . "\t-->\n"
+#        . "</script>\n";
+#    }
 
-    $answer = $checkotherscript . $answer;
+#    $answer = $checkotherscript . $answer;
 
     $answer .= $postrow;
     return array($answer, $inputnames);

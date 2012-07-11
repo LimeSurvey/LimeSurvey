@@ -355,8 +355,9 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function activate($iSurveyID)
     {
+        if (!hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die();
         $clang = Yii::app()->lang;
-    
+
         $iSurveyID = (int) $iSurveyID;
 
         $aData = array();
@@ -1584,17 +1585,13 @@ class SurveyAdmin extends Survey_Common_Action
             'tokenlength' => $_POST['tokenlength']
             );
 
-            if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-                $xssfilter = true;
-            else
-                $xssfilter = false;
 
             if (!is_null($iSurveyId))
             {
                 $aInsertData['wishSID'] = $iSurveyId;
             }
 
-            $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData, $xssfilter);
+            $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
             if (!$iNewSurveyid)
                 die('Survey could not be created.');
 
