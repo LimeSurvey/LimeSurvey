@@ -83,7 +83,12 @@ class remotecontrol extends Survey_Common_Action
         {
             echo 'Tokens for Survey ID '.$iSurveyID.' successfully activated.<br>';
         }
-            die();
+        $aResult=$myJSONRPCClient->modify_survey_settings($sSessionKey, $iSurveyID,array('faxto'=>'0800-LIMESURVEY'));
+        if ($aResult['status']=='OK')
+        {
+            echo 'Modified survey settings for survey '.$iSurveyID;
+        }
+        die();
         $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
@@ -204,7 +209,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+            if (hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))
             {
                 Yii::app()->loadHelper('admin/activate');
                 $aImportResults = activateSurvey($iSurveyID);
@@ -213,6 +218,57 @@ class remotecontrol_handle
                 else
                 {
                     return $aImportResults;
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+    }
+
+    /**
+    * RPC routine to modify survey settings
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param integer $iSurveyID  - ID of the survey
+    * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that partuclar survey
+    * @return array OK, when save successful otherwise error text.
+    */
+    public function modify_survey_settings($sSessionKey, $iSurveyID, $aSurveyData)
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+            {
+                // Remove fields that may not be modified
+                unset($aSurveyData['active']);
+                unset($aSurveyData['language']);
+                unset($aSurveyData['additional_languages']);
+                // Remove invalid fields
+                $aDestinationFields=array_flip(Survey::model()->tableSchema->columnNames);
+                $aSurveyData=array_intersect_key($aSurveyData,$aDestinationFields);
+                $oSurvey=Survey::model()->findByPk($iSurveyID);
+                if ($oSurvey->active=='Y')
+                {
+                    // remove all fields that may not be changed when a survey is active
+                    unset($aSurveyData['anonymized']);
+                    unset($aSurveyData['datestamp']);
+                    unset($aSurveyData['savetimings']);
+                    unset($aSurveyData['ipaddr']);
+                    unset($aSurveyData['refurl']);
+                }
+                foreach($aSurveyData as $sFieldName=>$sValue)
+                {
+                    $oSurvey->$sFieldName=$sValue;
+                }
+                try
+                {
+                    $oSurvey->save(); // save the change to database
+                    return array('status' => 'OK');
+                }
+                catch(Exception $e)
+                {
+                    return array('status' => 'Error');
                 }
             }
             else

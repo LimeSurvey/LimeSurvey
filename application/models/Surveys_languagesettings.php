@@ -135,6 +135,8 @@ class Surveys_languagesettings extends CActiveRecord
 
 		return $this->insertSomeRecords($data);
     }
+
+    
     function getSurveyNames($surveyid)
     {
         $lang = Yii::app()->session['adminlang'];
