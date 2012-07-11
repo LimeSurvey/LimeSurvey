@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-07-06 08:17:10+00:00\n"
+"POT-Creation-Date: 2012-07-11 14:35:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -55,8 +55,8 @@ msgstr ""
 #: admin/userrighthandling.php:827 admin/userrighthandling.php:838
 #: admin/userrighthandling.php:867 admin/userrighthandling.php:872
 #: admin/userrighthandling.php:1028 admin/userrighthandling.php:1032
-#: admin/userrighthandling.php:1080 index.php:1723 index.php:1798
-#: index.php:1965 replacements.php:563
+#: admin/userrighthandling.php:1080 index.php:1721 index.php:1796
+#: index.php:1963 replacements.php:564
 msgid "Continue"
 msgstr ""
 
@@ -161,13 +161,13 @@ msgstr ""
 #: admin/import_functions.php:392 admin/import_functions.php:626
 #: admin/import_functions.php:701 admin/import_functions.php:728
 #: admin/import_functions.php:743 admin/import_functions.php:759
-#: admin/import_functions.php:1175 admin/import_functions.php:1208
-#: admin/import_functions.php:1236 admin/import_functions.php:1282
-#: admin/import_functions.php:1323 admin/import_functions.php:1354
-#: admin/import_functions.php:1376 admin/import_functions.php:1400
-#: admin/import_functions.php:1479 admin/import_functions.php:1505
-#: admin/import_functions.php:1527 admin/import_functions.php:1551
-#: admin/import_functions.php:1572 admin/import_resources_zip.php:37
+#: admin/import_functions.php:1176 admin/import_functions.php:1209
+#: admin/import_functions.php:1237 admin/import_functions.php:1283
+#: admin/import_functions.php:1324 admin/import_functions.php:1355
+#: admin/import_functions.php:1377 admin/import_functions.php:1401
+#: admin/import_functions.php:1480 admin/import_functions.php:1506
+#: admin/import_functions.php:1528 admin/import_functions.php:1552
+#: admin/import_functions.php:1573 admin/import_resources_zip.php:37
 #: admin/import_resources_zip.php:57 admin/import_resources_zip.php:81
 #: admin/import_resources_zip.php:122 admin/import_resources_zip.php:150
 #: admin/import_resources_zip.php:169 admin/import_resources_zip.php:201
@@ -191,14 +191,14 @@ msgstr ""
 #: admin/importquestion.php:565 admin/importquestion.php:778
 #: admin/importquestion.php:816 admin/importquestion.php:845
 #: admin/importquestion.php:868 admin/importquestion.php:892
-#: admin/importsurvey.php:115 admin/install/createdb.php:67
+#: admin/importsurvey.php:113 admin/install/createdb.php:67
 #: admin/install/createdb.php:104 admin/resetsurveylogic.php:27
 #: admin/templates.php:305 admin/templates.php:317 admin/templates.php:329
 #: admin/tokens.php:399 admin/tokens.php:413 admin/tokens.php:479
 #: admin/tokens.php:1002 admin/tokens.php:2149 admin/tokens.php:2740
 #: admin/tokens.php:2790 admin/tokens.php:3227 admin/tokens.php:3233
 #: admin/usercontrol.php:846 admin/vvimport.php:121 common_functions.php:5505
-#: index.php:572
+#: index.php:570
 msgid "Error"
 msgstr ""
 
@@ -526,7 +526,7 @@ msgid "There are no groups available."
 msgstr ""
 
 #: admin/assessments.php:113 admin/html.php:364 admin/http_importsurvey.php:181
-#: admin/importsurvey.php:87 admin/importsurvey.php:149 common_functions.php:35
+#: admin/importsurvey.php:85 admin/importsurvey.php:147 common_functions.php:35
 msgid "Assessments"
 msgstr ""
 
@@ -597,7 +597,7 @@ msgstr ""
 #: admin/assessments.php:173 admin/editsurveysettings.php:137
 #: admin/html.php:711 admin/html.php:1124 admin/labels.php:328
 #: admin/questiongrouphandling.php:58 admin/questiongrouphandling.php:144
-#: admin/questiongrouphandling.php:162 qanda.php:2695 uploader.php:95
+#: admin/questiongrouphandling.php:162 qanda.php:2696 uploader.php:95
 msgid "Title"
 msgstr ""
 
@@ -687,7 +687,7 @@ msgstr ""
 #: admin/exportresults.php:434 admin/exportresults.php:435
 #: admin/exportresults.php:757 admin/tokens.php:1025 admin/tokens.php:1028
 #: admin/tokens.php:1029 admin/tokens.php:2335 admin/tokens.php:2471
-#: common_functions.php:6237 replacements.php:514
+#: common_functions.php:6237 replacements.php:515
 msgid "First name"
 msgstr ""
 
@@ -695,7 +695,7 @@ msgstr ""
 #: admin/exportresults.php:429 admin/exportresults.php:430
 #: admin/exportresults.php:760 admin/tokens.php:1035 admin/tokens.php:1038
 #: admin/tokens.php:1039 admin/tokens.php:2339 admin/tokens.php:2473
-#: common_functions.php:6238 replacements.php:521
+#: common_functions.php:6238 replacements.php:522
 msgid "Last name"
 msgstr ""
 
@@ -1050,8 +1050,8 @@ msgstr ""
 #: common_functions.php:3812 common_functions.php:3838
 #: common_functions.php:3873 common_functions.php:3939
 #: common_functions.php:3949 common_functions.php:4063
-#: common_functions.php:4074 common_functions.php:4134 qanda.php:3767
-#: qanda.php:4189 qanda.php:4228
+#: common_functions.php:4074 common_functions.php:4134 qanda.php:3768
+#: qanda.php:4190 qanda.php:4229
 msgid "Yes"
 msgstr ""
 
@@ -1063,7 +1063,7 @@ msgstr ""
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
 #: classes/expressions/LimeExpressionManager.php:2807 common_functions.php:1922
-#: qanda.php:4190 qanda.php:4235
+#: qanda.php:4191 qanda.php:4236
 msgid "Uncertain"
 msgstr ""
 
@@ -1118,8 +1118,8 @@ msgstr ""
 #: common_functions.php:3823 common_functions.php:3837
 #: common_functions.php:3872 common_functions.php:3938
 #: common_functions.php:3948 common_functions.php:4062
-#: common_functions.php:4073 common_functions.php:4133 qanda.php:3774
-#: qanda.php:4191 qanda.php:4243
+#: common_functions.php:4073 common_functions.php:4133 qanda.php:3775
+#: qanda.php:4192 qanda.php:4244
 msgid "No"
 msgstr ""
 
@@ -1130,7 +1130,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
 #: classes/expressions/LimeExpressionManager.php:2810 common_functions.php:1928
-#: qanda.php:4337 qanda.php:4380
+#: qanda.php:4338 qanda.php:4381
 msgid "Increase"
 msgstr ""
 
@@ -1141,7 +1141,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
 #: classes/expressions/LimeExpressionManager.php:2811 common_functions.php:1930
-#: qanda.php:4338 qanda.php:4391
+#: qanda.php:4339 qanda.php:4392
 msgid "Same"
 msgstr ""
 
@@ -1152,7 +1152,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
 #: classes/expressions/LimeExpressionManager.php:2812 common_functions.php:1929
-#: qanda.php:4339 qanda.php:4403
+#: qanda.php:4340 qanda.php:4404
 msgid "Decrease"
 msgstr ""
 
@@ -1173,11 +1173,11 @@ msgstr ""
 #: admin/statistics_function.php:2772 common_functions.php:1906
 #: common_functions.php:1914 common_functions.php:5491
 #: common_functions.php:5496 qanda.php:926 qanda.php:1454 qanda.php:1731
-#: qanda.php:1835 qanda.php:1890 qanda.php:3783 qanda.php:3828 qanda.php:3917
-#: qanda.php:3981 qanda.php:4070 qanda.php:4116 qanda.php:4194 qanda.php:4260
-#: qanda.php:4342 qanda.php:4420 qanda.php:4521 qanda.php:4543 qanda.php:4611
-#: qanda.php:4742 qanda.php:5511 qanda.php:5512 qanda.php:5797 qanda.php:5872
-#: qanda.php:5973 qanda.php:6173 qanda.php:6227
+#: qanda.php:1835 qanda.php:1890 qanda.php:3784 qanda.php:3829 qanda.php:3918
+#: qanda.php:3982 qanda.php:4071 qanda.php:4117 qanda.php:4195 qanda.php:4261
+#: qanda.php:4343 qanda.php:4421 qanda.php:4522 qanda.php:4544 qanda.php:4612
+#: qanda.php:4743 qanda.php:5512 qanda.php:5513 qanda.php:5798 qanda.php:5873
+#: qanda.php:5974 qanda.php:6174 qanda.php:6228
 msgid "No answer"
 msgstr ""
 
@@ -1205,7 +1205,7 @@ msgstr ""
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
 #: classes/expressions/LimeExpressionManager.php:2798 common_functions.php:1913
-#: qanda.php:3811
+#: qanda.php:3812
 msgid "Female"
 msgstr ""
 
@@ -1217,7 +1217,7 @@ msgstr ""
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
 #: classes/expressions/LimeExpressionManager.php:2797 common_functions.php:1912
-#: qanda.php:3819
+#: qanda.php:3820
 msgid "Male"
 msgstr ""
 
@@ -1237,7 +1237,7 @@ msgstr ""
 #: common_functions.php:3743 common_functions.php:3901
 #: common_functions.php:4082 common_functions.php:4091
 #: common_functions.php:4100 common_functions.php:4109 qanda.php:1697
-#: qanda.php:2337 qanda.php:2574
+#: qanda.php:2337 qanda.php:2575
 msgid "Other"
 msgstr ""
 
@@ -1273,8 +1273,8 @@ msgstr ""
 #: admin/conditionshandling.php:1067 admin/conditionshandling.php:1881
 #: admin/exportresults.php:103 admin/html.php:1038
 #: admin/http_importsurvey.php:158 admin/importgroup.php:80
-#: admin/importquestion.php:89 admin/importsurvey.php:64
-#: admin/importsurvey.php:129 admin/translate_functions.php:384
+#: admin/importquestion.php:89 admin/importsurvey.php:62
+#: admin/importsurvey.php:127 admin/translate_functions.php:384
 msgid "Questions"
 msgstr ""
 
@@ -1323,7 +1323,7 @@ msgid "Edit scenario"
 msgstr ""
 
 #: admin/conditionshandling.php:1347 admin/http_importsurvey.php:182
-#: admin/importsurvey.php:88
+#: admin/importsurvey.php:86
 msgid "and"
 msgstr ""
 
@@ -1419,8 +1419,8 @@ msgstr ""
 #: admin/statistics_function.php:2188 admin/statistics_function.php:2197
 #: admin/statistics_function.php:2202 admin/statistics_function.php:2292
 #: admin/statistics_function.php:2295 admin/statistics_function.php:2303
-#: admin/statistics_function.php:2308 qanda.php:1176 qanda.php:3398
-#: qanda.php:3484 qanda.php:3577 qanda.php:3665 qanda.php:3733
+#: admin/statistics_function.php:2308 qanda.php:1176 qanda.php:3399
+#: qanda.php:3485 qanda.php:3578 qanda.php:3666 qanda.php:3734
 msgid "Answer"
 msgstr ""
 
@@ -1665,7 +1665,7 @@ msgid "Start Language:"
 msgstr ""
 
 #: admin/dataentry.php:198 admin/dataentry.php:1573 admin/dataentry.php:2939
-#: group.php:1030 index.php:2387 replacements.php:272
+#: group.php:1030 index.php:2385 replacements.php:273
 msgid "Submit"
 msgstr ""
 
@@ -1685,7 +1685,7 @@ msgstr ""
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
-#: admin/dataentry.php:390 admin/userrighthandling.php:865 replacements.php:448
+#: admin/dataentry.php:390 admin/userrighthandling.php:865 replacements.php:449
 #: save.php:172
 msgid "Name"
 msgstr ""
@@ -1693,7 +1693,7 @@ msgstr ""
 #: admin/dataentry.php:391 admin/login_check.php:225 admin/usercontrol.php:470
 #: admin/usercontrol.php:474 admin/usercontrol.php:688
 #: admin/usercontrol.php:700 admin/userrighthandling.php:228
-#: replacements.php:454 replacements.php:486 save.php:173
+#: replacements.php:455 replacements.php:487 save.php:173
 msgid "Password"
 msgstr ""
 
@@ -1712,8 +1712,8 @@ msgstr ""
 #: admin/import_resources_zip.php:449 admin/import_resources_zip.php:519
 #: admin/importgroup.php:52 admin/importgroup.php:76 admin/importlabel.php:35
 #: admin/importlabel.php:81 admin/importquestion.php:62
-#: admin/importquestion.php:86 admin/importsurvey.php:53
-#: admin/importsurvey.php:121 admin/iterate_survey.php:62 admin/tokens.php:2570
+#: admin/importquestion.php:86 admin/importsurvey.php:51
+#: admin/importsurvey.php:119 admin/iterate_survey.php:62 admin/tokens.php:2570
 #: admin/tokens.php:2629 admin/tokens.php:2733 admin/tokens.php:3199
 #: admin/vvimport.php:129
 msgid "Success"
@@ -1748,7 +1748,7 @@ msgstr ""
 #: admin/dataentry.php:2033 admin/dataentry.php:2066 admin/dataentry.php:2305
 #: admin/dataentry.php:2619 admin/dataentry.php:2634 admin/dataentry.php:2655
 #: admin/dataentry.php:2676 admin/dataentry.php:2696 admin/dataentry.php:2856
-#: qanda.php:1468 qanda.php:4722
+#: qanda.php:1468 qanda.php:4723
 msgid "Please choose"
 msgstr ""
 
@@ -1764,8 +1764,8 @@ msgstr ""
 msgid "Your Ranking"
 msgstr ""
 
-#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3399
-#: qanda.php:3403
+#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3400
+#: qanda.php:3404
 msgid "Only numbers may be entered in this field"
 msgstr ""
 
@@ -1789,7 +1789,7 @@ msgstr ""
 #: admin/exportresults.php:444 admin/exportresults.php:445
 #: admin/exportresults.php:769 admin/tokens.php:1065 admin/tokens.php:1068
 #: admin/tokens.php:1069 admin/tokens.php:2356 common_functions.php:2344
-#: index.php:1769 index.php:1936
+#: index.php:1767 index.php:1934
 msgid "Token"
 msgstr ""
 
@@ -1829,13 +1829,13 @@ msgstr ""
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
 #: common_functions.php:1411 common_functions.php:4826
 #: common_functions.php:4875 common_functions.php:4911
-#: common_functions.php:4947 qanda.php:1252 qanda.php:1430 qanda.php:6153
-#: qanda.php:6207
+#: common_functions.php:4947 qanda.php:1252 qanda.php:1430 qanda.php:6154
+#: qanda.php:6208
 msgid "Please choose..."
 msgstr ""
 
 #: admin/dataentry.php:2069 common_functions.php:2559 common_functions.php:2776
-#: qanda.php:2696 uploader.php:96
+#: qanda.php:2697 uploader.php:96
 msgid "Comment"
 msgstr ""
 
@@ -2889,7 +2889,7 @@ msgstr ""
 
 #: admin/exportresults.php:118 admin/http_importsurvey.php:159
 #: admin/importgroup.php:82 admin/importquestion.php:91
-#: admin/importsurvey.php:65 admin/importsurvey.php:130
+#: admin/importsurvey.php:63 admin/importsurvey.php:128
 #: admin/statistics_function.php:2861 admin/statistics_function.php:2865
 #: admin/statistics_function.php:2877 admin/statistics_function.php:2883
 msgid "Answers"
@@ -2972,7 +2972,7 @@ msgstr ""
 #: admin/exportresults.php:234 admin/exportresults.php:439
 #: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1045
 #: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6239
-#: replacements.php:528
+#: replacements.php:529
 msgid "Email address"
 msgstr ""
 
@@ -3541,8 +3541,8 @@ msgid "Users"
 msgstr ""
 
 #: admin/globalsettings.php:641 admin/html.php:2230
-#: admin/http_importsurvey.php:155 admin/importsurvey.php:61
-#: admin/importsurvey.php:123
+#: admin/http_importsurvey.php:155 admin/importsurvey.php:59
+#: admin/importsurvey.php:121
 msgid "Surveys"
 msgstr ""
 
@@ -3691,7 +3691,7 @@ msgstr ""
 msgid "You can't reorder question groups if there is only one group."
 msgstr ""
 
-#: admin/html.php:357 admin/http_importsurvey.php:182 admin/importsurvey.php:88
+#: admin/html.php:357 admin/http_importsurvey.php:182 admin/importsurvey.php:86
 #: common_functions.php:36
 msgid "Quotas"
 msgstr ""
@@ -3777,7 +3777,7 @@ msgstr ""
 msgid "Token management"
 msgstr ""
 
-#: admin/html.php:602 admin/http_importsurvey.php:157 admin/importsurvey.php:63
+#: admin/html.php:602 admin/http_importsurvey.php:157 admin/importsurvey.php:61
 #: admin/translate_functions.php:319
 msgid "Question groups"
 msgstr ""
@@ -4220,7 +4220,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: admin/html.php:1678 admin/userrighthandling.php:392 replacements.php:477
+#: admin/html.php:1678 admin/userrighthandling.php:392 replacements.php:478
 msgid "Save Now"
 msgstr ""
 
@@ -4281,7 +4281,7 @@ msgstr ""
 msgid "Please select a user first"
 msgstr ""
 
-#: admin/html.php:1988 admin/importgroup.php:79 admin/importsurvey.php:128
+#: admin/html.php:1988 admin/importgroup.php:79 admin/importsurvey.php:126
 msgid "Groups"
 msgstr ""
 
@@ -4519,80 +4519,80 @@ msgstr ""
 msgid "Import failed. You specified an invalid file type."
 msgstr ""
 
-#: admin/http_importsurvey.php:148 admin/importsurvey.php:56
+#: admin/http_importsurvey.php:148 admin/importsurvey.php:54
 msgid "Survey copy summary"
 msgstr ""
 
-#: admin/http_importsurvey.php:152 admin/importsurvey.php:59
-#: admin/importsurvey.php:122
+#: admin/http_importsurvey.php:152 admin/importsurvey.php:57
+#: admin/importsurvey.php:120
 msgid "Survey import summary"
 msgstr ""
 
-#: admin/http_importsurvey.php:156 admin/importsurvey.php:62
-#: admin/importsurvey.php:126
+#: admin/http_importsurvey.php:156 admin/importsurvey.php:60
+#: admin/importsurvey.php:124
 msgid "Languages"
 msgstr ""
 
 #: admin/http_importsurvey.php:162 admin/importgroup.php:81
-#: admin/importquestion.php:90 admin/importsurvey.php:68
-#: admin/importsurvey.php:133 admin/translate_functions.php:453
+#: admin/importquestion.php:90 admin/importsurvey.php:66
+#: admin/importsurvey.php:131 admin/translate_functions.php:453
 msgid "Subquestions"
 msgstr ""
 
-#: admin/http_importsurvey.php:166 admin/importsurvey.php:72
-#: admin/importsurvey.php:137
+#: admin/http_importsurvey.php:166 admin/importsurvey.php:70
+#: admin/importsurvey.php:135
 msgid "Default answers"
 msgstr ""
 
 #: admin/http_importsurvey.php:170 admin/importgroup.php:83
-#: admin/importsurvey.php:76 admin/importsurvey.php:141
+#: admin/importsurvey.php:74 admin/importsurvey.php:139
 msgid "Conditions"
 msgstr ""
 
 #: admin/http_importsurvey.php:174 admin/importgroup.php:85
 #: admin/importlabel.php:83 admin/importquestion.php:93
-#: admin/importsurvey.php:80 admin/importsurvey.php:145 admin/labels.php:74
+#: admin/importsurvey.php:78 admin/importsurvey.php:143 admin/labels.php:74
 msgid "Label sets"
 msgstr ""
 
-#: admin/http_importsurvey.php:178 admin/importsurvey.php:84
-#: admin/importsurvey.php:147
+#: admin/http_importsurvey.php:178 admin/importsurvey.php:82
+#: admin/importsurvey.php:145
 msgid "Not imported label sets"
 msgstr ""
 
-#: admin/http_importsurvey.php:178 admin/importsurvey.php:84
-#: admin/importsurvey.php:147
+#: admin/http_importsurvey.php:178 admin/importsurvey.php:82
+#: admin/importsurvey.php:145
 msgid "(Label sets were not imported since you do not have the permission to create new label sets.)"
 msgstr ""
 
-#: admin/http_importsurvey.php:180 admin/importsurvey.php:86
+#: admin/http_importsurvey.php:180 admin/importsurvey.php:84
 msgid "Question attributes"
 msgstr ""
 
-#: admin/http_importsurvey.php:182 admin/importsurvey.php:88
+#: admin/http_importsurvey.php:182 admin/importsurvey.php:86
 msgid "quota members"
 msgstr ""
 
-#: admin/http_importsurvey.php:182 admin/importsurvey.php:88
+#: admin/http_importsurvey.php:182 admin/importsurvey.php:86
 msgid "quota language settings"
 msgstr ""
 
 #: admin/http_importsurvey.php:186 admin/importlabel.php:73
-#: admin/importsurvey.php:91 admin/importsurvey.php:152 admin/tokens.php:2965
+#: admin/importsurvey.php:89 admin/importsurvey.php:150 admin/tokens.php:2965
 msgid "Warnings"
 msgstr ""
 
-#: admin/http_importsurvey.php:196 admin/importsurvey.php:104
-#: admin/importsurvey.php:151
+#: admin/http_importsurvey.php:196 admin/importsurvey.php:102
+#: admin/importsurvey.php:149
 msgid "Import of Survey is completed."
 msgstr ""
 
 #: admin/http_importsurvey.php:197 admin/http_importsurvey.php:202
-#: admin/importsurvey.php:101 admin/importsurvey.php:105
+#: admin/importsurvey.php:99 admin/importsurvey.php:103
 msgid "Go to survey"
 msgstr ""
 
-#: admin/http_importsurvey.php:201 admin/importsurvey.php:100
+#: admin/http_importsurvey.php:201 admin/importsurvey.php:98
 msgid "Copy of survey is completed."
 msgstr ""
 
@@ -4631,7 +4631,7 @@ msgstr ""
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
 
-#: admin/import_functions.php:1095
+#: admin/import_functions.php:1096
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 
@@ -4901,11 +4901,11 @@ msgstr ""
 msgid "The languages of the imported question file must at least include the base language of this survey."
 msgstr ""
 
-#: admin/importsurvey.php:116
+#: admin/importsurvey.php:114
 msgid "Import failed. You specified an invalid file."
 msgstr ""
 
-#: admin/importsurvey.php:148
+#: admin/importsurvey.php:146
 msgid "Question Attributes"
 msgstr ""
 
@@ -5586,8 +5586,8 @@ msgstr ""
 msgid "Please enter a date:"
 msgstr ""
 
-#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2557
-#: qanda.php:2558 qanda.php:2590
+#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2558
+#: qanda.php:2559 qanda.php:2591
 msgid "Make a comment on your choice here:"
 msgstr ""
 
@@ -5614,7 +5614,7 @@ msgstr ""
 #: admin/printablesurvey.php:758
 #: classes/expressions/LimeExpressionManager.php:2931
 #: classes/expressions/LimeExpressionManager.php:5481 qanda.php:1289
-#: qanda.php:1589 qanda.php:2184 qanda.php:2480
+#: qanda.php:1589 qanda.php:2184 qanda.php:2481
 msgid "Other:"
 msgstr ""
 
@@ -5922,7 +5922,7 @@ msgid "Select Question"
 msgstr ""
 
 #: admin/quota.php:725 admin/quota.php:788 admin/templates.php:429
-#: index.php:2371 index.php:2377 index.php:2382
+#: index.php:2369 index.php:2375 index.php:2380
 msgid "Next"
 msgstr ""
 
@@ -6473,7 +6473,7 @@ msgstr ""
 msgid "This group description is fairly vacuous, but quite important."
 msgstr ""
 
-#: admin/templates.php:430 index.php:2365 index.php:2770
+#: admin/templates.php:430 index.php:2363 index.php:2768
 msgid "Previous"
 msgstr ""
 
@@ -6481,7 +6481,7 @@ msgstr ""
 msgid "This is some help text."
 msgstr ""
 
-#: admin/templates.php:434 group.php:413 replacements.php:725
+#: admin/templates.php:434 group.php:413 replacements.php:726
 msgid "Thank you!"
 msgstr ""
 
@@ -6509,17 +6509,17 @@ msgstr ""
 msgid "Your answer"
 msgstr ""
 
-#: admin/templates.php:477 index.php:175 index.php:183
+#: admin/templates.php:477 index.php:173 index.php:181
 msgid "You have not provided a survey identification number"
 msgstr ""
 
-#: admin/templates.php:478 index.php:184 index.php:392 index.php:426
-#: index.php:533 index.php:552 index.php:574 printanswers.php:77
-#: replacements.php:85
+#: admin/templates.php:478 index.php:182 index.php:390 index.php:424
+#: index.php:531 index.php:550 index.php:572 printanswers.php:77
+#: replacements.php:86
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
-#: admin/templates.php:479 index.php:185
+#: admin/templates.php:479 index.php:183
 msgid "The following surveys are available:"
 msgstr ""
 
@@ -6671,7 +6671,7 @@ msgstr ""
 msgid "Please change the directory permissions of the folder %s in order to preview templates."
 msgstr ""
 
-#: admin/templates.php:1137 index.php:1050
+#: admin/templates.php:1137 index.php:1048
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
@@ -6839,7 +6839,7 @@ msgstr ""
 msgid "Please check your settings"
 msgstr ""
 
-#: admin/tokens.php:379 index.php:391
+#: admin/tokens.php:379 index.php:389
 msgid "We are sorry but you don't have permissions to do this."
 msgstr ""
 
@@ -7371,7 +7371,7 @@ msgid "Clicking yes will generate tokens for all those in this token list that h
 msgstr ""
 
 #: admin/tokens.php:2147
-msgid "%s tokens have been created"
+msgid "%s tokens have been created."
 msgstr ""
 
 #: admin/tokens.php:2150
@@ -10562,7 +10562,7 @@ msgstr ""
 msgid "Save your responses so far"
 msgstr ""
 
-#: group.php:346 index.php:1613
+#: group.php:346 index.php:1611
 msgid "Did Not Save"
 msgstr ""
 
@@ -10618,7 +10618,7 @@ msgstr ""
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: group.php:959 index.php:2890
+#: group.php:959 index.php:2888
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
@@ -10626,176 +10626,176 @@ msgstr ""
 msgid "Question index"
 msgstr ""
 
-#: index.php:162
+#: index.php:160
 msgid "View statistics"
 msgstr ""
 
-#: index.php:169
+#: index.php:167
 msgid "No available surveys"
 msgstr ""
 
-#: index.php:179 index.php:180
+#: index.php:177 index.php:178
 msgid "The survey identification number is invalid"
 msgstr ""
 
-#: index.php:219
+#: index.php:217
 msgid "Token mismatch"
 msgstr ""
 
-#: index.php:220
+#: index.php:218
 msgid "The token you provided doesn't match the one in your session."
 msgstr ""
 
-#: index.php:221 index.php:247
+#: index.php:219 index.php:245
 msgid "Please wait to begin with a new session."
 msgstr ""
 
-#: index.php:245
+#: index.php:243
 msgid "Previous session is set to be finished."
 msgstr ""
 
-#: index.php:246
+#: index.php:244
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
 msgstr ""
 
-#: index.php:390 index.php:423 printanswers.php:75
+#: index.php:388 index.php:421 printanswers.php:75
 msgid "ERROR"
 msgstr ""
 
-#: index.php:424 printanswers.php:76
+#: index.php:422 printanswers.php:76
 msgid "We are sorry but your session has expired."
 msgstr ""
 
-#: index.php:425 printanswers.php:76
+#: index.php:423 printanswers.php:76
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr ""
 
-#: index.php:532
+#: index.php:530
 msgid "This survey is no longer available."
 msgstr ""
 
-#: index.php:551
+#: index.php:549
 msgid "This survey is not yet started."
 msgstr ""
 
-#: index.php:573
+#: index.php:571
 msgid "You have already completed this survey."
 msgstr ""
 
-#: index.php:631
+#: index.php:629
 msgid "You did not provide a name"
 msgstr ""
 
-#: index.php:636
+#: index.php:634
 msgid "You did not provide a password"
 msgstr ""
 
-#: index.php:648 index.php:1691 index.php:1913 register.php:72 save.php:93
+#: index.php:646 index.php:1689 index.php:1911 register.php:72 save.php:93
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: index.php:667 index.php:671 replacements.php:339 replacements.php:351
+#: index.php:665 index.php:669 replacements.php:340 replacements.php:352
 msgid "Load Unfinished Survey"
 msgstr ""
 
-#: index.php:707 index.php:1763 index.php:1835 index.php:1879 index.php:1916
+#: index.php:705 index.php:1761 index.php:1833 index.php:1877 index.php:1914
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
-#: index.php:708 index.php:1836 index.php:1880
+#: index.php:706 index.php:1834 index.php:1878
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: index.php:709 index.php:745 index.php:1837 index.php:1881 index.php:2072
+#: index.php:707 index.php:743 index.php:1835 index.php:1879 index.php:2070
 msgid "For further information please contact %s"
 msgstr ""
 
-#: index.php:743
+#: index.php:741
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
-#: index.php:744
+#: index.php:742
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr ""
 
-#: index.php:904
+#: index.php:902
 msgid "Your responses were successfully saved."
 msgstr ""
 
-#: index.php:946
+#: index.php:944
 msgid "There is no matching saved survey"
 msgstr ""
 
-#: index.php:1234
+#: index.php:1232
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr ""
 
-#: index.php:1247 index.php:1253
+#: index.php:1245 index.php:1251
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
-#: index.php:1265
+#: index.php:1263
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: index.php:1614
+#: index.php:1612
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: index.php:1617
+#: index.php:1615
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: index.php:1622
+#: index.php:1620
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: index.php:1623
+#: index.php:1621
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: index.php:1628
+#: index.php:1626
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: index.php:1630
+#: index.php:1628
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: index.php:1632
+#: index.php:1630
 msgid "Error saving results"
 msgstr ""
 
-#: index.php:1640
+#: index.php:1638
 msgid "Try to submit again"
 msgstr ""
 
-#: index.php:1694
+#: index.php:1692
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr ""
 
-#: index.php:1718
+#: index.php:1716
 msgid "Security question:"
 msgstr ""
 
-#: index.php:1764 index.php:1921
+#: index.php:1762 index.php:1919
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
-#: index.php:1794 index.php:1962 replacements.php:474 replacements.php:494
-#: replacements.php:539
+#: index.php:1792 index.php:1960 replacements.php:475 replacements.php:495
+#: replacements.php:540
 msgid "Security Question"
 msgstr ""
 
-#: index.php:1940
+#: index.php:1938
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
-#: index.php:1954
+#: index.php:1952
 msgid "Token:"
 msgstr ""
 
-#: index.php:2071
+#: index.php:2069
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr ""
 
@@ -10944,55 +10944,51 @@ msgstr ""
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr ""
 
-#: qanda.php:2410
-msgid "You've marked the 'Other:' field for question '%s'. Please also fill in the accompanying comment field."
-msgstr ""
-
-#: qanda.php:2681
+#: qanda.php:2682
 msgid "Upload files"
 msgstr ""
 
-#: qanda.php:2693
+#: qanda.php:2694
 msgid "Upload your files"
 msgstr ""
 
-#: qanda.php:2694
+#: qanda.php:2695
 msgid "Return to survey"
 msgstr ""
 
-#: qanda.php:2697
+#: qanda.php:2698
 msgid "File name"
 msgstr ""
 
-#: qanda.php:2872 qanda.php:3131 qanda.php:4201 qanda.php:6023
+#: qanda.php:2873 qanda.php:3132 qanda.php:4202 qanda.php:6024
 msgid "Error: This question has no answers."
 msgstr ""
 
-#: qanda.php:3281
+#: qanda.php:3282
 msgid "Only numbers may be entered in these fields"
 msgstr ""
 
-#: qanda.php:3292
+#: qanda.php:3293
 msgid "Remaining: "
 msgstr ""
 
-#: qanda.php:3299
+#: qanda.php:3300
 msgid "Total: "
 msgstr ""
 
-#: qanda.php:3568 qanda.php:3569
+#: qanda.php:3569 qanda.php:3570
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: qanda.php:4766 qanda.php:5144 qanda.php:5478 qanda.php:5625 qanda.php:6253
+#: qanda.php:4767 qanda.php:5145 qanda.php:5479 qanda.php:5626 qanda.php:6254
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: qanda.php:5395
+#: qanda.php:5396
 msgid "..."
 msgstr ""
 
-#: qanda.php:5619
+#: qanda.php:5620
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
@@ -11016,139 +11012,139 @@ msgstr ""
 msgid "Survey Administrator"
 msgstr ""
 
-#: replacements.php:227
+#: replacements.php:228
 msgid "There are no questions in this survey"
 msgstr ""
 
-#: replacements.php:231
+#: replacements.php:232
 msgid "There is 1 question in this survey"
 msgstr ""
 
-#: replacements.php:235
+#: replacements.php:236
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr ""
 
-#: replacements.php:309
+#: replacements.php:310
 msgid "Exit and Clear Survey"
 msgstr ""
 
-#: replacements.php:310
+#: replacements.php:311
 msgid "Are you sure you want to clear all your responses?"
 msgstr ""
 
-#: replacements.php:340 replacements.php:344 replacements.php:364
+#: replacements.php:341 replacements.php:345 replacements.php:365
 msgid "Resume Later"
 msgstr ""
 
-#: replacements.php:410
+#: replacements.php:411
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr ""
 
-#: replacements.php:419 replacements.php:430
+#: replacements.php:420 replacements.php:431
 msgid "Restart this Survey"
 msgstr ""
 
-#: replacements.php:434
+#: replacements.php:435
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr ""
 
-#: replacements.php:446
+#: replacements.php:447
 msgid "Return To Survey"
 msgstr ""
 
-#: replacements.php:460
+#: replacements.php:461
 msgid "Repeat Password"
 msgstr ""
 
-#: replacements.php:466
+#: replacements.php:467
 msgid "Your Email"
 msgstr ""
 
-#: replacements.php:480
+#: replacements.php:481
 msgid "Saved name"
 msgstr ""
 
-#: replacements.php:498
+#: replacements.php:499
 msgid "Load Now"
 msgstr ""
 
-#: replacements.php:661
+#: replacements.php:662
 msgid "Answers Cleared"
 msgstr ""
 
-#: replacements.php:664
+#: replacements.php:665
 msgid "Your Assessment"
 msgstr ""
 
-#: replacements.php:665
+#: replacements.php:666
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr ""
 
-#: replacements.php:667
+#: replacements.php:668
 msgid "Close this window"
 msgstr ""
 
-#: replacements.php:681
+#: replacements.php:682
 msgid "Load A Previously Saved Survey"
 msgstr ""
 
-#: replacements.php:682
+#: replacements.php:683
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr ""
 
-#: replacements.php:682
+#: replacements.php:683
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr ""
 
-#: replacements.php:690
+#: replacements.php:691
 msgid "A Note On Privacy"
 msgstr ""
 
-#: replacements.php:690
+#: replacements.php:691
 msgid "This survey is anonymous."
 msgstr ""
 
-#: replacements.php:690
+#: replacements.php:691
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr ""
 
-#: replacements.php:709
+#: replacements.php:710
 msgid "You must be registered to complete this survey"
 msgstr ""
 
-#: replacements.php:710
+#: replacements.php:711
 msgid "You may register for this survey if you wish to take part."
 msgstr ""
 
-#: replacements.php:710
+#: replacements.php:711
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr ""
 
-#: replacements.php:718
+#: replacements.php:719
 msgid "Save Your Unfinished Survey"
 msgstr ""
 
-#: replacements.php:719
+#: replacements.php:720
 msgid "Enter a name and password for this survey and click save below."
 msgstr ""
 
-#: replacements.php:719
+#: replacements.php:720
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr ""
 
-#: replacements.php:719
+#: replacements.php:720
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr ""
 
-#: replacements.php:719
+#: replacements.php:720
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr ""
 
-#: replacements.php:725
+#: replacements.php:726
 msgid "You have completed answering the questions in this survey."
 msgstr ""
 
-#: replacements.php:725
+#: replacements.php:726
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr ""
 
