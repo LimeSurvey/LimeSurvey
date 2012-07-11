@@ -93,12 +93,17 @@ class remotecontrol extends Survey_Common_Action
         {
             echo 'Added Arabian as additional language'.'<br>';
         }
+        $aResult=$myJSONRPCClient->modify_survey_locale_settings($sSessionKey, $iSurveyID,array('surveyls_welcometext'=>'An Arabian welcome text!'),'ar');
+        if ($aResult['status']=='OK')
+        {
+            echo 'Modified survey locale setting welcometext for Arabian in survey ID '.$iSurveyID.'<br>';
+        }
+
         $aResult=$myJSONRPCClient->delete_survey_language($sSessionKey, $iSurveyID,'ar');
         if ($aResult['status']=='OK')
         {
             echo 'Removed Arabian as additional language'.'<br>';
         }
-        die();
         $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
@@ -392,6 +397,18 @@ class remotecontrol_handle
                 try
                 {
                     $oSurvey->save(); // save the change to database
+                    $languagedetails=getLanguageDetails($sLanguage);
+
+                    $insertdata = array(
+                    'surveyls_survey_id' => $iSurveyID,
+                    'surveyls_language' => $sLanguage,
+                    'surveyls_title' => '',
+                    'surveyls_dateformat' => $languagedetails['dateformat']
+                    );
+                    $setting= new Surveys_languagesettings;
+                    foreach ($insertdata as $k => $v)
+                        $setting->$k = $v;
+                    $setting->save();
                     fixLanguageConsistency($iSurveyID,$sLanguage);
                     return array('status' => 'OK');
                 }
@@ -446,6 +463,7 @@ class remotecontrol_handle
                 try
                 {
                     $oSurvey->save(); // save the change to database
+                    Surveys_languagesettings::model()->deleteByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
                     cleanLanguagesFromSurvey($iSurveyID,$oSurvey->additional_languages);
                     return array('status' => 'OK');
                 }

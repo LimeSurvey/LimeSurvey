@@ -1070,42 +1070,19 @@ class database extends Survey_Common_Action
                     $usresult = Surveys_languagesettings::model()->findAllByPk(array('surveyls_survey_id'=>$surveyid, 'surveyls_language'=>$langname));
                     if (count($usresult)==0)
                     {
-                        $bplang = $this->getController()->lang;
-                        $aDefaultTexts=templateDefaultTexts($bplang,'unescaped');
-                        if (getEmailFormat($surveyid) == "html")
-                        {
-                            $ishtml=true;
-                            $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
-                        }
-                        else
-                        {
-                            $ishtml=false;
-                        }
+
                         $languagedetails=getLanguageDetails($langname);
 
                         $insertdata = array(
                         'surveyls_survey_id' => $surveyid,
                         'surveyls_language' => $langname,
                         'surveyls_title' => '',
-                        'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
-                        'surveyls_email_invite' => $aDefaultTexts['invitation'],
-                        'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
-                        'surveyls_email_remind' => $aDefaultTexts['reminder'],
-                        'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
-                        'surveyls_email_confirm' => $aDefaultTexts['confirmation'],
-                        'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
-                        'surveyls_email_register' => $aDefaultTexts['registration'],
-                        'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
-                        'email_admin_notification' => $aDefaultTexts['admin_notification'],
-                        'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
-                        'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
                         'surveyls_dateformat' => $languagedetails['dateformat']
                         );
                         $setting= new Surveys_languagesettings;
                         foreach ($insertdata as $k => $v)
                             $setting->$k = $v;
                         $setting->save();
-                        unset($bplang);
                     }
                 }
             }

@@ -63,6 +63,102 @@ class Surveys_languagesettings extends CActiveRecord
 		);
 	}
 
+
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+            array('surveyls_email_invite_subj','lsdefault'),
+            array('surveyls_email_invite','lsdefault'),
+            array('surveyls_email_remind_subj','lsdefault'),
+            array('surveyls_email_remind','lsdefault'),
+            array('surveyls_email_confirm_subj','lsdefault'),
+            array('surveyls_email_confirm','lsdefault'),
+            array('surveyls_email_register_subj','lsdefault'),
+            array('surveyls_email_register','lsdefault'),
+            array('email_admin_notification_subj','lsdefault'),
+            array('email_admin_notification','lsdefault'),
+            array('email_admin_responses_subj','lsdefault'),
+            array('email_admin_responses','lsdefault'),
+
+            array('surveyls_email_invite_subj','xssfilter'),
+            array('surveyls_email_invite','xssfilter'),
+            array('surveyls_email_remind_subj','xssfilter'),
+            array('surveyls_email_remind','xssfilter'),
+            array('surveyls_email_confirm_subj','xssfilter'),
+            array('surveyls_email_confirm','xssfilter'),
+            array('surveyls_email_register_subj','xssfilter'),
+            array('surveyls_email_register','xssfilter'),
+            array('email_admin_notification_subj','xssfilter'),
+            array('email_admin_notification','xssfilter'),
+            array('email_admin_responses_subj','xssfilter'),
+            array('email_admin_responses','xssfilter'),
+
+            array('surveyls_title','xssfilter'),
+            array('surveyls_description','xssfilter'),
+            array('surveyls_welcometext','xssfilter'),
+            array('surveyls_endtext','xssfilter'),
+            array('surveyls_urldescription','xssfilter')
+        );
+    }
+
+
+    /**
+    * Defines the customs validation rule lsdefault
+    *
+    * @param mixed $attribute
+    * @param mixed $params
+    */
+    public function lsdefault($attribute,$params)
+    {
+
+        $oLanguageTranslator = new Limesurvey_lang($this->surveyls_language);
+        $aDefaultTexts=templateDefaultTexts($oLanguageTranslator,'unescaped');
+
+         $aDefaultTextData=array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
+                        'surveyls_email_invite' => $aDefaultTexts['invitation'],
+                        'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
+                        'surveyls_email_remind' => $aDefaultTexts['reminder'],
+                        'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
+                        'surveyls_email_confirm' => $aDefaultTexts['confirmation'],
+                        'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
+                        'surveyls_email_register' => $aDefaultTexts['registration'],
+                        'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
+                        'email_admin_notification' => $aDefaultTexts['admin_notification'],
+                        'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
+                        'email_admin_responses' => $aDefaultTexts['admin_detailed_notification']);
+        if (getEmailFormat($this->surveyls_survey_id) == "html")
+        {
+            $aDefaultTextData['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
+        }
+
+         if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
+    }
+
+
+    /**
+    * Defines the customs validation rule xssfilter
+    *
+    * @param mixed $attribute
+    * @param mixed $params
+    */
+    public function xssfilter($attribute,$params)
+    {
+        if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        {
+            $filter = new CHtmlPurifier();
+            $filter->options = array('URI.AllowedSchemes'=>array(
+            'http' => true,
+            'https' => true,
+            ));
+            $this->$attribute = $filter->purify($this->$attribute);
+        }
+    }
+
+
     /**
      * Returns the token's captions
      *
@@ -136,7 +232,7 @@ class Surveys_languagesettings extends CActiveRecord
 		return $this->insertSomeRecords($data);
     }
 
-    
+
     function getSurveyNames($surveyid)
     {
         $lang = Yii::app()->session['adminlang'];
