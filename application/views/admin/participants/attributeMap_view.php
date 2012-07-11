@@ -58,10 +58,11 @@
             <?php
             foreach ($selectedtokenattribute as $key => $value)
             {
-                echo "<li id='t_" . $value . "'>" . $value . "</li>";
+                echo "<li id='t_" . $key . "'>" . $value . "</li>";
             }
             ?>
         </ul>
+        <br /><input type='checkbox' id='overwriteman' name='overwriteman' /> <label for='overwriteman'><?php $clang->eT("Overwrite existing token attribute values if a participant already exists?") ?></label><br />&nbsp;
         <?php
         if(empty($selectedtokenattribute)) {echo "<br />&nbsp;";}
         if(!empty($alreadymappedattributename)) {
@@ -78,7 +79,7 @@
             }
             ?>
         </ul>
-        <br /><input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+        <br /><input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?></label>
         <?php
         }
         ?>

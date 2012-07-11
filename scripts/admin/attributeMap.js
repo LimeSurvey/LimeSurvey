@@ -7,14 +7,18 @@ $(document).ready(function(){
     var tokencurrentarray = {};
     var newcurrentarray = {};
     if($("#overwrite").is(':checked')) {var attoverwrite=true;} else {var attoverwrite=false;}
+    if($("#overwriteman").is(':checked')) {var attoverwriteman=true;} else {var attoverwriteman=false;}
 
     $('#tokenattribute').css({'height' : height-200});
     $('#centralattribute').css({'height' : height-200});
     $('#newcreated').css({'height' : height-200});
     $(".newcreate").sortable({connectWith:'.tokenatt,#cpdbatt'});
     $("#cpdbatt").sortable({connectWith:'.tokenatt,.newcreate',helper: 'clone',appendTo: 'body'});
-        $("#overwrite").click(function(){
+    $("#overwrite").click(function(){
         if($("#overwrite").is(':checked')) {attoverwrite=true;} else {attoverwrite=false;}
+    });
+    $("#overwriteman").click(function(){
+        if($("#overwriteman").is(':checked')) {attoverwriteman=true;} else {attoverwriteman=false;}
     });
     $("ul.tokenatt").sortable({
         helper: 'clone',
@@ -85,6 +89,7 @@ $(document).ready(function(){
         newarr: newcurrentarray,
         surveyid: surveyId,
         overwrite: attoverwrite,
+        overwriteman: attoverwriteman,
         participant_id : participant_id
         }, function(msg){
             $(this).dialog("close");

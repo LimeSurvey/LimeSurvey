@@ -1769,18 +1769,19 @@ class participantsaction extends Survey_Common_Action
         $iSurveyId = Yii::app()->request->getPost('surveyid');
         $mapped = Yii::app()->request->getPost('mapped');
         $newcreate = Yii::app()->request->getPost('newarr');
-        $overwrite = Yii::app()->request->getPost('overwrite');
+        $overwriteauto = Yii::app()->request->getPost('overwrite');
+        $overwriteman = Yii::app()->request->getPost('overwriteman');
         $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
-        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwrite);
+        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
             echo "\r\n";
             printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
         }
-        if($response['overwrite']=="true") {
+        if($response['overwriteauto']=="true" || $response['overwriteman']=="true") {
             echo "\r\n";
             $clang->eT("Attribute values for existing participants have been updated from the participants records");
         }
@@ -1800,7 +1801,8 @@ class participantsaction extends Survey_Common_Action
         $count = Yii::app()->request->getPost('count');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
         $attributes = ParticipantAttributeNames::getAttributes();
-        $arr = Yii::app()->db
+        $tokenattributefieldnames = getTokenFieldsAndNames($iSurveyId, TRUE);
+        /* $arr = Yii::app()->db
                          ->createCommand()
                          ->select('*')
                          ->from("{{tokens_$iSurveyId}}")
@@ -1814,7 +1816,7 @@ class participantsaction extends Survey_Common_Action
         else
         {
             $tokenattributefieldnames = array();
-        }
+        } */
 
         $selectedattribute = array(); //List of existing attribute fields that are not mapped
         $selectedcentralattribute = array(); //List of attributes that haven't already been mapped
@@ -1825,14 +1827,14 @@ class participantsaction extends Survey_Common_Action
 
         foreach ($tokenattributefieldnames as $key => $value)
         {
-            if (is_numeric($value[10])) //Assumes that if the 11th character is a number, it must be a token-table created attribute
+            if (is_numeric($key[10])) //Assumes that if the 11th character is a number, it must be a token-table created attribute
             {
-                $selectedattribute[$i] = $value;
+                $selectedattribute[$key] = $value;
                 $i++;
             }
             else
             {
-                array_push($alreadymappedattid, substr($value, 15));
+                array_push($alreadymappedattid, substr($key, 15));
             }
         }
         foreach ($attributes as $row)

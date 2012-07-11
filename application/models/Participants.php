@@ -1041,11 +1041,11 @@ function getParticipantsSearch($condition, $page, $limit)
                     {
                         if ($condition[$i] == 'and')
                         {
-                            $command->addCondition(':condition_p1 = :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1]." = '".$condition[$i+3]."'");
                         }
                         else
                         {
-                            $command->addCondition(':condition_p1 = :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1]." = '".$condition[$i+3]."'", 'OR');
                         }
                     }
                 }
@@ -1078,15 +1078,11 @@ function getParticipantsSearch($condition, $page, $limit)
                         $like="%".$condition[$i+3]."%";
                         if ($condition[$i] == 'and')
                         {
-                            $command->addCondition(':condition_p1 LIKE :condition_p3')
-                                    ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)
-                                    ->bindParam(":condition_p3", $like, PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1]." LIKE '".$like."'");
                         }
                         else
                         {
-                            $command->addCondition(':condition_p1 LIKE :condition_p3', 'OR')
-                                    ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)
-                                    ->bindParam(":condition_p3", $like, PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1]." LIKE '".$like."'", 'OR');
 						}
                     }
                 }
@@ -1118,17 +1114,17 @@ function getParticipantsSearch($condition, $page, $limit)
                     {
                         if ($condition[$i] == 'and')
                         {
-
-                            $command->addCondition(':condition_p1 NOT IN :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1]." NOT IN ('".$condition[$i + 3]."')");
                         }
                         else
                         {
-                            $command->addCondition(':condition_p1 NOT IN :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1]." NOT IN ('".$condition[$i + 3]."')", 'OR');
                         }
                     }
                 }
                 else if ($condition[$i + 2] == 'notcontains')
                 {
+                    $like="%".$condition[$i+3]."%";
                     if (is_numeric($condition[$i + 1]))
                     {
                         if ($condition[$i] == 'and')
@@ -1156,11 +1152,11 @@ function getParticipantsSearch($condition, $page, $limit)
                         if ($condition[$i] == 'and')
                         {
 
-                            $command->addCondition(':condition_p1 NOT LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1]." NOT LIKE '".$like."'");
                         }
                         else
                         {
-                            $command->addCondition(':condition_p1 NOT LIKE :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1]." NOT LIKE '".$like."'", 'OR');
                         }
                     }
                 }
@@ -1190,14 +1186,15 @@ function getParticipantsSearch($condition, $page, $limit)
                     }
                     else
                     {
+                        if(is_numeric($condition[$i+3])) {$c3=$condition[$i+3];} else {$c3="'".$condition[$i+3]."'";}
                         if ($condition[$i] == 'and')
                         {
 
-                            $command->addCondition(':condition_p1 > :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT);
+                            $command->addCondition($condition[$i+1]." > ".$c3);
                         }
                         else
                         {
-                            $command->addCondition(':condition_p1 > :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3",$condition[$i + 3], PDO::PARAM_INT);
+                            $command->addCondition($condition[$i+1]." > ".$c3, 'OR');
                         }
                     }
                 }
@@ -1226,13 +1223,13 @@ function getParticipantsSearch($condition, $page, $limit)
                     }
                     else
                     {
+                        if(is_numeric($condition[$i+3])) {$c3=$condition[$i+3];} else {$c3="'".$condition[$i+3]."'";}
                         if ($condition[$i] == 'and')
                         {
-                            $command->addCondition(':condition_p1 < :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT);
-                        }
+                            $command->addCondition($condition[$i+1]." < ".$c3);                        }
                         else
                         {
-                            $command->addCondition(':condition_p1 < :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT);
+                            $command->addCondition($condition[$i+1]." <>> ".$c3, 'OR');
                         }
                     }
                 }
@@ -1374,7 +1371,15 @@ function getParticipantsSearch($condition, $page, $limit)
         return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
     }
 
-    function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwrite=false)
+    /*
+     * Copies central attributes/participants to an individual survey token table
+     *
+     * @param int $surveyid The survey id
+     * @param array $mapped An array containing a list of already existing/mapped attributes in the form of "token_field_name"=>"participant_attribute_id"
+     * @param array $newcreate An array containing new attributes to create in the tokens table
+     * @param bool $overwrite If true, overwrite existing values in existint token attributes
+     * */
+    function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false)
     {
         Yii::app()->loadHelper('common');
         $duplicate = 0;
@@ -1398,13 +1403,16 @@ function getParticipantsSearch($condition, $page, $limit)
             $tokenfieldnames = array_keys($arr);
             $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
         }
-
+        //print_r($tokenattributefieldnames); die();
         foreach ($tokenattributefieldnames as $key => $value)
         {
             if ($value[10] == 'c') /* Existence of 'c' as 11th letter assume it is a CPDB link */
             {
                 $attid = substr($value, 15);
                 $mapped[$value] = $attid;
+            } elseif (is_numeric($value[10]))
+            {
+                $mapped[$key]=$value;
             }
         }
 
@@ -1469,9 +1477,9 @@ function getParticipantsSearch($condition, $page, $limit)
             {
                 //Participant already exists in token table - don't copy
                 $duplicate++;
-                // Here is where we can put code for updating the attribute data if so required
+                // Here is where we can put code for overwriting the attribute data if so required
 
-                if($overwrite=="true") {
+                if($overwriteauto=="true") {
                     //If there are new attributes created, add those values to the token entry for this participant
                     if (!empty($newcreate))
                     {
@@ -1481,6 +1489,8 @@ function getParticipantsSearch($condition, $page, $limit)
                             Participants::updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
                         }
                     }
+                }
+                if($overwriteman=="true") {
                     //If there are any automatically mapped attributes, add those values to the token entry for this participant
                     if (!empty($mapped))
                     {
@@ -1525,7 +1535,7 @@ function getParticipantsSearch($condition, $page, $limit)
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
-                if (!empty($mapped) && !empty($attributesadded))
+                if (!empty($mapped))
                 {
                     foreach ($mapped as $key => $value)
                     {
@@ -1535,7 +1545,7 @@ function getParticipantsSearch($condition, $page, $limit)
                 $sucessfull++;
             }
         }
-        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwrite'=>$overwrite);
+        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
         return $returndata;
     }
 
@@ -1637,7 +1647,7 @@ function getParticipantsSearch($condition, $page, $limit)
      * @return array An array contaning list of successful and list of failed ids
      */
 
-    function copyToCentral($surveyid, $newarr, $mapped, $overwrite=false)
+    function copyToCentral($surveyid, $newarr, $mapped, $overwriteauto=false, $overwriteman=false)
     {
         $tokenid = Yii::app()->session['participantid']; //List of token_id's to add to participants table
         $duplicate = 0;
@@ -1719,7 +1729,7 @@ function getParticipantsSearch($condition, $page, $limit)
                 {
                     $duplicate++;
                     //HERE is where we can add "overwrite" feature to update attribute values for existing participants
-                    if($overwrite == "true") {
+                    if($overwriteauto == "true") {
                         if (!empty($newarr))
                         {
                             foreach ($newarr as $key => $value)
@@ -1727,6 +1737,8 @@ function getParticipantsSearch($condition, $page, $limit)
                                 Participants::updateAttributeValueToken($surveyid, $query[0]['participant_id'], $attid[$key], $key);
                             }
                         }
+                    }
+                    if($overwriteman == "true") {
                         /* Now add mapped attribute values */
                         if (!empty($mapped))
                         {
@@ -1855,7 +1867,7 @@ function getParticipantsSearch($condition, $page, $limit)
                 }
             }
         }
-        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwrite'=>$overwrite);
+        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
         return $returndata;
     }
 
