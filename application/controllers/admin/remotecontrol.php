@@ -93,12 +93,17 @@ class remotecontrol extends Survey_Common_Action
         {
             echo 'Added Arabian as additional language'.'<br>';
         }
+        $aResult=$myJSONRPCClient->modify_survey_locale_settings($sSessionKey, $iSurveyID,array('surveyls_welcometext'=>'An Arabian welcome text!'),'ar');
+        if ($aResult['status']=='OK')
+        {
+            echo 'Modified survey locale setting welcometext for Arabian in survey ID '.$iSurveyID.'<br>';
+        }
+
         $aResult=$myJSONRPCClient->delete_survey_language($sSessionKey, $iSurveyID,'ar');
         if ($aResult['status']=='OK')
         {
             echo 'Removed Arabian as additional language'.'<br>';
         }
-        die();
         $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
@@ -392,6 +397,18 @@ class remotecontrol_handle
                 try
                 {
                     $oSurvey->save(); // save the change to database
+                    $languagedetails=getLanguageDetails($sLanguage);
+
+                    $insertdata = array(
+                    'surveyls_survey_id' => $iSurveyID,
+                    'surveyls_language' => $sLanguage,
+                    'surveyls_title' => '',
+                    'surveyls_dateformat' => $languagedetails['dateformat']
+                    );
+                    $setting= new Surveys_languagesettings;
+                    foreach ($insertdata as $k => $v)
+                        $setting->$k = $v;
+                    $setting->save();
                     fixLanguageConsistency($iSurveyID,$sLanguage);
                     return array('status' => 'OK');
                 }
@@ -446,6 +463,7 @@ class remotecontrol_handle
                 try
                 {
                     $oSurvey->save(); // save the change to database
+                    Surveys_languagesettings::model()->deleteByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
                     cleanLanguagesFromSurvey($iSurveyID,$oSurvey->additional_languages);
                     return array('status' => 'OK');
                 }
@@ -510,8 +528,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey
     * @param int $iSurveyID
-    * @return string
-    * @throws Zend_XmlRpc_Server_Exception
+    * @return array
     */
     public function delete_survey($sSessionKey, $iSurveyID)
     {
@@ -528,36 +545,45 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC routine to add a response to the survey table
+    * RPC routine to add a response to the survey response table
     * Returns the id of the inserted survey response
     *
     * @access public
     * @param string $sSessionKey
     * @param int $iSurveyID
     * @param struct $aResponseData
-    * @return int
-    * @throws Zend_XmlRpc_Server_Exception
+    * @return int The response ID
     */
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (hasSurveyPermission($iSurveyID, 'response', 'create'))
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
+            {
+                return array('status' => 'Error: Invalid survey ID');
+            }
+
+            if (hasSurveyPermission($iSurveyID, 'responses', 'create'))
             {
                 if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}'))
                     return array('status' => 'No survey response table');
 
                 //set required values if not set
 
-                // @todo: This is part of the validation and should be done in the model instead
+                // @todo: Some of this is part of the validation and should be done in the model instead
                 if (!isset($aResponseData['submitdate']))
                     $aResponseData['submitdate'] = date("Y-m-d H:i:s");
-                if (!isset($aResponseData['datestamp']))
-                    $aResponseData['datestamp'] = date("Y-m-d H:i:s");
-                if (!isset($aResponseData['startdate']))
-                    $aResponseData['startdate'] = date("Y-m-d H:i:s");
                 if (!isset($aResponseData['startlanguage']))
                     $aResponseData['startlanguage'] = getBaseLanguageFromSurveyID($iSurveyID);
+
+                if ($oSurvey->datestamp=='Y')
+                {
+                    if (!isset($aResponseData['datestamp']))
+                        $aResponseData['datestamp'] = date("Y-m-d H:i:s");
+                    if (!isset($aResponseData['startdate']))
+                        $aResponseData['startdate'] = date("Y-m-d H:i:s");
+                }
 
                 Survey_dynamic::sid($iSurveyID);
                 $survey_dynamic = new Survey_dynamic;
@@ -566,7 +592,7 @@ class remotecontrol_handle
                 if ($result)
                     return $survey_dynamic->primaryKey;
                 else
-                    return array('status' => 'Unable to add survey');
+                    return array('status' => 'Unable to add response');
             }
             else
                 return array('status' => 'No permission');
@@ -580,12 +606,12 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey
     * @param int $iSurveyID
-    * @param struct $participant_data
-    * @param bool $create_token
+    * @param struct $aParticipantData
+    * @param bool Optional - Defaults to true and determins if the access token automatically created
     * @return array
     * @throws Zend_XmlRpc_Server_Exception
     */
-    public function add_participants($sSessionKey, $iSurveyID, $participant_data, $create_token)
+    public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken=true)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -600,35 +626,34 @@ class remotecontrol_handle
                 if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
                     return array('status' => 'No token table');
 
-                $field_names = Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}')->getColumnNames();
-                $field_names = array_flip($field_names);
+                $aDestinationFields = Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}')->getColumnNames();
+                $aDestinationFields = array_flip($field_names);
 
-                foreach ($participant_data as &$participant)
+                foreach ($aParticipantData as &$aParticipant)
                 {
-                    foreach ($participant as $field_name => $value)
-                        if (!isset($field_names[$field_name]))
-                            unset($participant[$field_name]);
+                    $aParticipant=array_intersect_key($aParticipant,$aDestinationFields);
 
-                        Tokens_dynamic::sid($iSurveyID);
+                    Tokens_dynamic::sid($iSurveyID);
+
                     $token = new Tokens_dynamic;
 
-                    if ($token->insert($participant))
+                    if ($token->insert($aParticipant))
                     {
                         $new_token_id = $token->primaryKey;
 
-                        if ($create_token)
+                        if ($bCreateToken)
                             $token_string = Tokens_dynamic::model()->createToken($new_token_id);
                         else
                             $token_string = '';
 
-                        $participant = array_merge($participant, array(
+                        $aParticipant = array_merge($aParticipant, array(
                         'tid' => $new_token_id,
                         'token' => $token_string,
                         ));
                     }
                 }
 
-                return $participant_data;
+                return $aParticipantData;
             }
             else
                 return array('status' => 'No permission');

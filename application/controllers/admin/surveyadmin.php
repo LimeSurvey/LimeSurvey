@@ -1619,23 +1619,8 @@ class SurveyAdmin extends Survey_Common_Action
             $sDescription = fixCKeditorText($sDescription);
             $sWelcome = fixCKeditorText($sWelcome);
 
-            // Load default email templates for the chosen language
-            $oLanguage = new Limesurvey_lang($_POST['language']);
-            $aDefaultTexts = templateDefaultTexts($oLanguage, 'unescaped');
-            unset($oLanguage);
-
-            if ($_POST['htmlemail'] && $_POST['htmlemail'] == "Y")
-            {
-                $bIsHTMLEmail = true;
-                $aDefaultTexts['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification_css'] . conditionalNewlineToBreak($aDefaultTexts['admin_detailed_notification'], $bIsHTMLEmail, 'unescaped');
-            }
-            else
-            {
-                $bIsHTMLEmail = false;
-            }
 
             // Insert base language into surveys_language_settings table
-
             $aInsertData = array('surveyls_survey_id' => $iNewSurveyid,
             'surveyls_title' => $sTitle,
             'surveyls_description' => $sDescription,
@@ -1644,18 +1629,6 @@ class SurveyAdmin extends Survey_Common_Action
             'surveyls_urldescription' => $_POST['urldescrip'],
             'surveyls_endtext' => $_POST['endtext'],
             'surveyls_url' => $_POST['url'],
-            'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
-            'surveyls_email_invite' => conditionalNewlineToBreak($aDefaultTexts['invitation'], $bIsHTMLEmail, 'unescaped'),
-            'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
-            'surveyls_email_remind' => conditionalNewlineToBreak($aDefaultTexts['reminder'], $bIsHTMLEmail, 'unescaped'),
-            'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
-            'surveyls_email_confirm' => conditionalNewlineToBreak($aDefaultTexts['confirmation'], $bIsHTMLEmail, 'unescaped'),
-            'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
-            'surveyls_email_register' => conditionalNewlineToBreak($aDefaultTexts['registration'], $bIsHTMLEmail, 'unescaped'),
-            'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
-            'email_admin_notification' => conditionalNewlineToBreak($aDefaultTexts['admin_notification'], $bIsHTMLEmail, 'unescaped'),
-            'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
-            'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
             'surveyls_dateformat' => (int) $_POST['dateformat'],
             'surveyls_numberformat' => (int) $_POST['numberformat']
             );
