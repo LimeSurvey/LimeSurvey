@@ -2,7 +2,9 @@ var conditionid=1;
 function addcondition(newcid)
 {
     conditionid++;
-
+    if(typeof optionstring === "undefined") {
+        optionstring = "";
+    }
     html = "<tr name='joincondition_"+conditionid+"' id='joincondition_"+conditionid+"'><td>\n\
     <select name='join_"+conditionid+"' id='join_"+conditionid+"'>\n\
     <option value='and'>"+andTxt+"</option>\n\
@@ -18,7 +20,7 @@ function addcondition(newcid)
     <option value='survey'>"+surveyTxt+"</option>\n\
     <option value='language'>"+languageTxt+"</option>\n\
     <option value='owner_uid'>"+owneridTxt+"</option>\n\
-    <option value='owner_name'>"+ownernameTxt+"</option>\n\
+    <option value='owner_name'>"+ownernameTxt+"</option>"+optionstring+"\n\
     </select>\n\</td>\n\<td>\n\
     <select name='condition_"+conditionid+"' id='condition_"+conditionid+"'>\n\
     <option>"+selectTxt+"</option>\n\

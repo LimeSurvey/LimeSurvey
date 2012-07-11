@@ -731,7 +731,12 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else if (is_numeric($condition[0]))
             {
-                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = ' . $condition[0] . ' AND participant_attribute.value > "' . $condition[2] . '"');
+                $command = Yii::app()->db
+                                     ->createCommand()
+                                     ->select('{{participant_attribute}}.*,{{participants}}.*')
+                                     ->from('{{participant_attribute}}')
+                                     ->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')
+                                     ->where('{{participant_attribute}}.attribute_id = ' . $condition[0] . ' AND {{participant_attribute}}.value > "' . $condition[2] . '"');
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -744,7 +749,12 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else
             {
-                $command = Yii::app()->db->createCommand()->where(Yii::app()->db->quoteColumnName($condition[0]) . ' > :condition')->bindParam(":condition", $condition[2], PDO::PARAM_INT)->order("lastname", "asc")->select('*')->from('{{participants}}');
+                $command = Yii::app()->db
+                                     ->createCommand()
+                                     ->where(Yii::app()
+                                     ->db->quoteColumnName($condition[0]) . ' > :condition')
+                                     ->bindParam(":condition", $condition[2], PDO::PARAM_INT)->order("lastname", "asc")
+                                     ->select('*')->from('{{participants}}');
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -789,9 +799,18 @@ function getParticipantsSearch($condition, $page, $limit)
             else if ($condition[0] == 'owner_name')
             {
 
-                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = :condition_2')->bindParam(":condition_2", $condition[2], PDO::PARAM_STR)->from('{{users}}')->queryAll();
+                $userid = Yii::app()->db
+                                    ->createCommand()
+                                    ->select('uid')
+                                    ->where('full_name = :condition_2')
+                                    ->bindParam(":condition_2", $condition[2], PDO::PARAM_STR)
+                                    ->from('{{users}}')->queryAll();
                 $uid = $userid[0];
-                $command = Yii::app()->db->createCommand()->where('owner_uid < :uid')->bindParam(":uid", $uid['uid'], PDO::PARAM_INT)->select('*')->from('{{participants}}');
+                $command = Yii::app()->db
+                                     ->createCommand()
+                                     ->where('owner_uid < :uid')
+                                     ->bindParam(":uid", $uid['uid'], PDO::PARAM_INT)->select('*')
+                                     ->from('{{participants}}');
 
                 if ($page == 0 && $limit == 0)
                 {
@@ -805,21 +824,33 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else if (is_numeric($condition[0]))
             {
-                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = :condition_0')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->where(array('not like', 'participant_attribute.value < :condition_2'))->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+                if(is_numeric($condition[2])) {$value=intval($condition[2]);}
+                $command = Yii::app()->db
+                                     ->createCommand()
+                                     ->select('{{participant_attribute}}.*,{{participants}}.*')
+                                     ->from('{{participant_attribute}}')
+                                     ->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')
+                                     ->where('{{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value < :condition_2')
+                                     ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
+                                     ->bindParam(":condition_2", $value, PDO::PARAM_INT);
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
                 }
                 else
                 {
-                    $this->db->limit($limit, $start);
-                    $data = $command->limit($limit, $start);
+                    $data = $command->limit($limit, $start)->queryAll();
                 }
                 return $data;
             }
             else
             {
-                $command = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where(Yii::app()->db->quoteColumnName($condition[0]) . ' < :condition_2')->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+                $command = Yii::app()->db
+                                     ->createCommand()
+                                     ->select('*')
+                                     ->from('{{participants}}')
+                                     ->where(Yii::app()->db->quoteColumnName($condition[0]) . ' < :condition_2')
+                                     ->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -849,15 +880,20 @@ function getParticipantsSearch($condition, $page, $limit)
         $con = count($condition);
         while ($i < $con)
         {
-            if ($i < 3)
+            if ($i < 3) //Special set just for the first query/condition
             {
                 $i+=3;
+                if(is_numeric($condition[2])) $condition[2]=intval($condition[2]);
                 if ($condition[1] == 'equal')
                 {
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[0] . ' AND {{participant_attribute}}.value = "' . $condition[2] . '"')->queryAll();
+                        $arr = Yii::app()->db
+                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value = :condition_2')
+                                         ->bindParam(':condition_0', $condition[0], PDO::PARAM_INT)
+                                         ->bindParam(':condition_2', $condition[2], PDO::PARAM_INT)
+                                         ->queryAll();
                         $command->addInCondition('participant_id', $arr);
                         $j++;
                     }
@@ -873,17 +909,17 @@ function getParticipantsSearch($condition, $page, $limit)
                     {
                         $newsub = $j;
                         //$arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR)->queryAll();
-						$arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value LIKE '.$condition[2])->queryAll();
-
-
-                        $command->addInCondition('participant_id', $arr);
+						$arr = Yii::app()->db
+                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value LIKE '.$condition[2])
+                                         ->queryAll();
+                        $ins=array();
+                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                        $command->addInCondition('participant_id', $ins);
                         $j++;
                     }
                     else
                     {
-                    	//BUG: bindParam does not exist as a method
-                        //$command->addCondition(':condition_0 LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR);
-                        $command->addCondition($condition[0] . ' LIKE "'. $condition[2].'"');
+                    	$command->addCondition($condition[0] . ' LIKE "'. $condition[2].'"');
 					}
                 }
                 else if ($condition[1] == 'notequal')
@@ -891,31 +927,43 @@ function getParticipantsSearch($condition, $page, $limit)
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT IN (:condition_2)')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR)->queryAll();
+                        $arr = Yii::app()->db
+                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT IN (:condition_2)')
+                                         ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
+                                         ->bindParam(":condition_2", $condition[2], PDO::PARAM_STR)
+                                         ->queryAll();
 
-
-                        $command->addInCondition('participant_id', $arr);
+                        $ins=array();
+                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                        $command->addInCondition('participant_id', $ins);
                         $j++;
                     }
                     else
                     {
-                        $command->addCondition(':condition_0 NOT IN (:condition_2)')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR);
+                        $command->addCondition(':condition_0 NOT IN (:condition_2)');
+                        $command->addCondition($condition[0] . ' NOT IN ("'. $condition[2].'")');
                     }
                 }
                 else if ($condition[1] == 'notcontains')
                 {
+                    $like="%".$condition[2]."%";
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR)->queryAll();
+                        $arr = Yii::app()->db
+                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT LIKE :condition_2')
+                                         ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
+                                         ->bindParam(":condition_2", $like, PDO::PARAM_STR)
+                                         ->queryAll();
 
-
-                        $command->addInCondition('participant_id', $arr);
+                        $ins=array();
+                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                        $command->addInCondition('participant_id', $ins);
                         $j++;
                     }
                     else
                     {
-                        $command->addCondition(':condition_0 NOT LIKE  :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR);
+                        $command->addCondition($condition[0] . ' NOT LIKE "'. $like.'"');
                     }
                 }
                 else if ($condition[1] == 'greaterthan')
@@ -923,15 +971,21 @@ function getParticipantsSearch($condition, $page, $limit)
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value > :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT)->queryAll();
+                        $arr = Yii::app()->db
+                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value > :condition_2')
+                                         ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
+                                         ->bindParam(":condition_2", $condition[2], PDO::PARAM_INT)
+                                         ->queryAll();
 
-
-                        $command->addInCondition('participant_id', $arr);
+                        $ins=array();
+                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                        $command->addInCondition('participant_id', $ins);
                         $j++;
                     }
                     else
                     {
-                        $command->addCondition(':condition_0 > :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+                        $command->addCondition(':condition_0 > :condition_2');
+                        $command->addCondition($condition[0] . ' > '. $condition[2].'"');
                     }
                 }
                 else if ($condition[1] == 'lessthan')
@@ -939,10 +993,14 @@ function getParticipantsSearch($condition, $page, $limit)
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value < :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT)->queryAll();
-
-
-                        $command->addInCondition('participant_id', $arr);
+                        $arr = Yii::app()->db
+                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value < :condition_2')
+                                         ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
+                                         ->bindParam(":condition_2", $condition[2], PDO::PARAM_INT)
+                                         ->queryAll();
+                        $ins=array();
+                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                        $command->addInCondition('participant_id', $ins);
                         $j++;
                     }
                     else
@@ -953,17 +1011,25 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else if ($condition[$i] != '') //This section deals with subsequent filter conditions that have boolean joiner
             {
+                if(is_numeric($condition[$i+3])) $condition[$i+3]=intval($condition[$i+3]); //Force the type of numeric values to be numeric
+
                 if ($condition[$i + 2] == 'equal')
                 {
                     if (is_numeric($condition[$i + 1]))
                     {
                         if ($condition[$i] == 'and')
                         {
-
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value = :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR)->queryAll();
-                            $command->addInCondition('participant_id', $arr);
-                            $j++;
+                            $arr = Yii::app()->db
+                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value = :condition_p3')
+                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
+                                             ->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR)
+                                             ->queryAll();
+
+                        $ins=array();
+                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                        $command->addInCondition('participant_id', $ins);
+                        $j++;
                         }
                         else
                         {
@@ -990,10 +1056,15 @@ function getParticipantsSearch($condition, $page, $limit)
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            //$arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR)->queryAll();
-							$arr = Yii::app()->db->createComment('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[$i+1].' AND {{participant_attribute}}.value LIKE "%'.$condition[$i+3].'%"')->queryAll();
-
-                            $command->addInCondition('participant_id', $arr);
+                            $like="%".$condition[$i+3]."%";
+                            $arr = Yii::app()->db
+                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value LIKE :condition_p3')
+                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
+                                             ->bindParam(":condition_p3", $like, PDO::PARAM_STR)
+                                             ->queryAll();
+                            $ins=array();
+                            foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                            $command->addInCondition('participant_id', $ins);
                             $j++;
                         }
                         else
@@ -1004,15 +1075,18 @@ function getParticipantsSearch($condition, $page, $limit)
                     }
                     else
                     {
+                        $like="%".$condition[$i+3]."%";
                         if ($condition[$i] == 'and')
                         {
-                            //$command->addCondition(':condition_p1 LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
-                        	$command->addCondition($condition[$i+1].' LIKE "%'.$condition[$i+3].'%"');
+                            $command->addCondition(':condition_p1 LIKE :condition_p3')
+                                    ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)
+                                    ->bindParam(":condition_p3", $like, PDO::PARAM_STR);
                         }
                         else
                         {
-                            //$command->addCondition(':condition_p1 LIKE :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
-                            $command->addCondition($condition[$i+1].' LIKE "%'.$condition[$i+3].'%"', 'OR');
+                            $command->addCondition(':condition_p1 LIKE :condition_p3', 'OR')
+                                    ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)
+                                    ->bindParam(":condition_p3", $like, PDO::PARAM_STR);
 						}
                     }
                 }
@@ -1023,10 +1097,15 @@ function getParticipantsSearch($condition, $page, $limit)
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value NOT IN (:condition_p3)')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR)->queryAll();
+                            $arr = Yii::app()->db
+                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value NOT IN (:condition_p3)')
+                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
+                                             ->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR)
+                                             ->queryAll();
 
-
-                            $command->addInCondition('participant_id', $arr);
+                            $ins=array();
+                            foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                            $command->addInCondition('participant_id', $ins);
                             $j++;
                         }
                         else
@@ -1055,10 +1134,15 @@ function getParticipantsSearch($condition, $page, $limit)
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value NOT LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR)->queryAll();
+                            $arr = Yii::app()->db
+                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value NOT LIKE :condition_p3')
+                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
+                                             ->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR)
+                                             ->queryAll();
 
-
-                            $command->addInCondition('participant_id', $arr);
+                            $ins=array();
+                            foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                            $command->addInCondition('participant_id', $ins);
                             $j++;
                         }
                         else
@@ -1087,10 +1171,15 @@ function getParticipantsSearch($condition, $page, $limit)
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value > :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT)->queryAll();
+                            $arr = Yii::app()->db
+                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value > :condition_p3')
+                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
+                                             ->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT)
+                                             ->queryAll();
 
-
-                            $command->addInCondition('participant_id', $arr);
+                            $ins=array();
+                            foreach($arr as $item) {$ins[]=$item['participant_id'];}
+                            $command->addInCondition('participant_id', $ins);
                             $j++;
                         }
                         else
@@ -1119,7 +1208,11 @@ function getParticipantsSearch($condition, $page, $limit)
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value < :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT)->queryAll();
+                            $arr = Yii::app()->db
+                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value < :condition_p3')
+                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
+                                             ->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT)
+                                             ->queryAll();
 
 
                             $command->addInCondition('participant_id', $arr);
@@ -1150,7 +1243,7 @@ function getParticipantsSearch($condition, $page, $limit)
                 $i = $i + 4;
             }
         }
-    	//print_r($command); die();
+
     	if ($page == 0 && $limit == 0)
         {
             $arr = Participants::model()->findAll($command);
