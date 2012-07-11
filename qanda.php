@@ -2407,7 +2407,7 @@ function do_multiplechoice($ia)
         . "}\n"
         . "\t}\n"
         . "\telse {\n"
-        . "alert('".sprintf($clang->gT("Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+        . "alert('".sprintf($clang->gT("Please also fill in the accompanying \"other comment\" field."))."');\n"
         . "return false;\n"
         . "\t}\n"
         . "}\n"
