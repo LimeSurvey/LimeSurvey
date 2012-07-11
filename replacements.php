@@ -1,4 +1,5 @@
 <?php
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 global $rootdir;
 include_once($rootdir.'/classes/expressions/LimeExpressionManager.php');
 

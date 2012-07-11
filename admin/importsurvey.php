@@ -15,10 +15,8 @@
 
 //Ensure script is not run directly, avoid path disclosure
 //importsurvey.php should be called from cmdline_importsurvey.php or http_importsurvey.php, they set the $importingfrom variable
-if ((!isset($importingfrom) && !isset($copyfunction)) || isset($_REQUEST['importingfrom']))
-{
-    die("Cannot run this script directly");
-}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
+
 require_once('import_functions.php');
 
 if (!isset($copyfunction))
@@ -27,8 +25,8 @@ if (!isset($copyfunction))
     $aPathInfo = pathinfo($sFullFilepath);
     $sExtension = $aPathInfo['extension'];
 }
-                  
-$bImportFailed=false;  
+
+$bImportFailed=false;
 if (isset($sExtension) && strtolower($sExtension)=='csv')
 {
     $aImportResults=CSVImportSurvey($sFullFilepath);
@@ -46,18 +44,18 @@ else
 }
 
 // Create old fieldnames
-                 
-                
+
+
 if ((!$bImportFailed && isset($importingfrom) && $importingfrom == "http") || isset($copyfunction))
 {
     $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
     if (isset($copyfunction))
     {
-        $importsurvey .= "<strong><u>".$clang->gT("Survey copy summary")."</u></strong><br />\n";        
+        $importsurvey .= "<strong><u>".$clang->gT("Survey copy summary")."</u></strong><br />\n";
     } else
     {
-        $importsurvey .= "<strong><u>".$clang->gT("Survey import summary")."</u></strong><br />\n";        
-    }    
+        $importsurvey .= "<strong><u>".$clang->gT("Survey import summary")."</u></strong><br />\n";
+    }
     $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$aImportResults['surveys']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Languages").": {$aImportResults['languages']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Question groups").": {$aImportResults['groups']}</li>\n";
@@ -65,15 +63,15 @@ if ((!$bImportFailed && isset($importingfrom) && $importingfrom == "http") || is
     $importsurvey .= "\t<li>".$clang->gT("Answers").": {$aImportResults['answers']}</li>\n";
     if (isset($aImportResults['subquestions']))
     {
-        $importsurvey .= "\t<li>".$clang->gT("Subquestions").": {$aImportResults['subquestions']}</li>\n";     
+        $importsurvey .= "\t<li>".$clang->gT("Subquestions").": {$aImportResults['subquestions']}</li>\n";
     }
     if (isset($aImportResults['defaultvalues']))
     {
-        $importsurvey .= "\t<li>".$clang->gT("Default answers").": {$aImportResults['defaultvalues']}</li>\n";     
+        $importsurvey .= "\t<li>".$clang->gT("Default answers").": {$aImportResults['defaultvalues']}</li>\n";
     }
     if (isset($aImportResults['conditions']))
     {
-        $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";     
+        $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";
     }
     if (isset($aImportResults['labelsets']))
     {
@@ -86,7 +84,7 @@ if ((!$bImportFailed && isset($importingfrom) && $importingfrom == "http") || is
     $importsurvey .= "\t<li>".$clang->gT("Question attributes").": {$aImportResults['question_attributes']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Assessments").": {$aImportResults['assessments']}</li>\n";
     $importsurvey .= "\t<li>".$clang->gT("Quotas").": {$aImportResults['quota']} ({$aImportResults['quotamembers']} ".$clang->gT("quota members")." ".$clang->gT("and")." {$aImportResults['quotals']} ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
-    if (count($aImportResults['importwarnings'])>0) 
+    if (count($aImportResults['importwarnings'])>0)
     {
         $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">";
         foreach ($aImportResults['importwarnings'] as $warning)
@@ -98,23 +96,23 @@ if ((!$bImportFailed && isset($importingfrom) && $importingfrom == "http") || is
     if (isset($copyfunction))
     {
         $importsurvey .= "<strong>".$clang->gT("Copy of survey is completed.")."</strong><br />\n"
-        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";        
+        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
     } else
     {
         $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
-        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";        
+        . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n";
     }
     $importsurvey .= "</div><br />\n";
     if (!isset($copyfunction))
     {
-        unlink($sFullFilepath);    
+        unlink($sFullFilepath);
     }
 }
 elseif (isset($bImportFailed) && $bImportFailed==true)
 {
     echo "\n".$clang->gT("Error")."\n\n";
     echo $clang->gT("Import failed. You specified an invalid file.")."\n";
-    
+
 }
 else
 {
@@ -130,15 +128,15 @@ else
     echo $clang->gT("Answers").": {$aImportResults['answers']}\n";
     if (isset($aImportResults['subquestions']))
     {
-        echo $clang->gT("Subquestions").": {$aImportResults['subquestions']}\n";      
+        echo $clang->gT("Subquestions").": {$aImportResults['subquestions']}\n";
     }
     if (isset($aImportResults['defaultvalues']))
     {
-        echo $clang->gT("Default answers").": {$aImportResults['defaultvalues']}\n";     
+        echo $clang->gT("Default answers").": {$aImportResults['defaultvalues']}\n";
     }
     if (isset($aImportResults['conditions']))
     {
-        echo $clang->gT("Conditions").": {$aImportResults['conditions']}\n";       
+        echo $clang->gT("Conditions").": {$aImportResults['conditions']}\n";
     }
     if (isset($aImportResults['labelsets']))
     {
