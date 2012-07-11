@@ -78,6 +78,28 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+
+Changes from 1.92+ (build 120704) to 1.92+ (build 120711) July 11, 2012
+-Fixed issue #6207: Error "Ambiguous column name 'qid'" when using MSSQL server and editing answer options (Carsten Schmitz)
+-Fixed issue #6252: English warning message though German language set (Carsten Schmitz)
+-Fixed issue #6282: Error accessing a survey from a language that it hasn't (Carsten Schmitz)
+-Fixed issue #6284: In some cases statistics' layout is broken (Carsten Schmitz)
+-Fixed issue #6290: Array (texts) responses with single quotes are truncated on data entry screen (Carsten Schmitz)
+-Fixed issue #6300: Token can be duplicated under some condition (Denis Chenu)
+-Fixed issue #6305: Assessment values are not shown in logic file; nor in question, and group previews (Thomas White)
+-Fixed issue #6309 : Bad javascript for 	Multiple choice with "Other option" (Denis Chenu)
+-Fixed issue: Several remote file inclusion vulnerabilities (only when register_globals is activated) (Carsten Schmitz)
+-Fixed issue: When magic quotes enabled on the server then quoting was not correct on the response data (Carsten Schmitz)
+#Updated translation: Czech by slansky
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Polish by elisa
+#Updated translation: Russian by gdemin
+#Updated translation: Spanish (Spain) by gap1981
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 1.92+ (build 120623) to 1.92+ (build 120704) July 4, 2012
 #Updated translation: Czech by slansky
 #Updated translation: Italian by lfanfoni
