@@ -41,8 +41,19 @@ $(document).ready(function() {
         }
     });
 
-    jQuery('#attributeControl').jqGrid('navGrid','#pager', {add:true, del:true, edit:true}, {width:400}, {width:400, reloadAfterSubmit: false,
-            afterSubmit: function (response) { return [true, '', response.responseText]; }}, {}, {multipleSearch:true, width:600});
+    jQuery('#attributeControl').jqGrid('navGrid',
+                                       '#pager',
+                                       {add:true, del:true, edit:true},
+                                       {width:400},
+                                       {    width:400,
+                                            reloadAfterSubmit: false,
+                                            afterSubmit: function (response) {
+                                                return [true, '', response.responseText];
+                                            }
+                                       },
+                                       {},
+                                       {multipleSearch:true, width:600}
+                                      );
 
 });
 

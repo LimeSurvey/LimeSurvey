@@ -118,19 +118,24 @@ class ParticipantShares extends CActiveRecord
 
     function updateShare($data)
     {
-		$criteria = new CDbCriteria;
-		$criteria->addCondition('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR);
-		$criteria->addCondition('share_uid = :shareuid')->bindParam(":shareuid", $data['shareuid'], PDO::PARAM_INT);
-		ParticipantShares::model()->updateAll($data,$criteria);
+        list($participantId, $shareuid)=explode("--", $data['participant_id']);
+        $updatedata=array("participant_id"=>$participantId, "share_uid"=>$data['share_uid'], "can_edit"=>$data['can_edit']);
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("participant_id = '$participantId'");
+		$criteria->addCondition("share_uid = '$shareuid' ");
+        ParticipantShares::model()->updateAll($updatedata,$criteria);
     }
 
     function deleteRow($rows)
     {
 		// Converting the comma seperated id's to an array to delete multiple rows
-		$rowid=explode(",",$rows['id']);
-		foreach($rowid as $row)
+		$rowid=explode(",",$rows);
+        foreach($rowid as $row)
 		{
-			Yii::app()->db->createCommand()->delete('{{participant_shares}}','participant_id = :participant_id')->bindParam(":participant_id", $row, PDO::PARAM_STR);
+            list($participantId, $uId)=explode("--", $row);
+			Yii::app()->db
+                      ->createCommand()
+                      ->delete('{{participant_shares}}',"participant_id = '$participantId' AND share_uid = $uId");
 	    }
 	}
 }

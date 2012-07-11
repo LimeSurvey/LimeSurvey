@@ -207,7 +207,7 @@ class participantsaction extends Survey_Common_Action
             {
                 $oShared = User::getName($row['share_uid']); //for conversion of uid to human readable names
                 $owner = User::getName($row['owner_uid']);
-                $aData->rows[$i]['id'] = $row['participant_id'];
+                $aData->rows[$i]['id'] = $row['participant_id']."--".$row['share_uid']; //This is the unique combination per record
                 $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $oShared[0]['full_name'], $row['share_uid'], $owner[0]['full_name'], $row['date_added'], $row['can_edit']);
                 $i++;
             }
@@ -241,9 +241,10 @@ class participantsaction extends Survey_Common_Action
     function editShareInfo()
     {
         $operation = Yii::app()->request->getPost('oper');
+        $shareIds = Yii::app()->request->getPost('id');
         if ($operation == 'del') // If operation is delete , it will delete, otherwise edit it
         {
-            ParticipantShares::deleteRow($_POST);
+            ParticipantShares::deleteRow($shareIds);
         }
         else
         {
