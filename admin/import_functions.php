@@ -1081,6 +1081,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 {
     global $connect, $dbprefix, $clang, $timeadjust;
 
+    $iDesiredSurveyId=intval($iDesiredSurveyId);
     $results['error']=false;
     if ($sXMLdata == NULL)
     {
