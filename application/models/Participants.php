@@ -1527,6 +1527,16 @@ function getParticipantsSearch($condition, $page, $limit)
                             Participants::updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
                         }
                     }
+                    //If there are automapped attributes, add those values to the token entry for this participant
+                    if (!empty($mapped))
+                    {
+                        foreach ($mapped as $key => $value)
+                        {
+                            if ($key[10] == 'c') {
+                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                            }
+                        }
+                    }
                 }
                 if($overwriteman=="true") {
                     //If there are any automatically mapped attributes, add those values to the token entry for this participant
@@ -1534,7 +1544,9 @@ function getParticipantsSearch($condition, $page, $limit)
                     {
                         foreach ($mapped as $key => $value)
                         {
-                            Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                            if ($key[10] != 'c') {
+                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                            }
                         }
                     }
                 }
