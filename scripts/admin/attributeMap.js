@@ -8,6 +8,7 @@ $(document).ready(function(){
     var newcurrentarray = {};
     if($("#overwrite").is(':checked')) {var attoverwrite=true;} else {var attoverwrite=false;}
     if($("#overwriteman").is(':checked')) {var attoverwriteman=true;} else {var attoverwriteman=false;}
+    if($("#createautomap").is(':checked')) {var attcreateautomap=true;} else {var attcreateautomap=false;}
 
     $('#tokenattribute').css({'height' : height-200});
     $('#centralattribute').css({'height' : height-200});
@@ -19,6 +20,9 @@ $(document).ready(function(){
     });
     $("#overwriteman").click(function(){
         if($("#overwriteman").is(':checked')) {attoverwriteman=true;} else {attoverwriteman=false;}
+    });
+    $("#createautomap").click(function(){
+        if($("#createautomap").is(':checked')) {attcreateautomap=true;} else {attcreateautomap=false;}
     });
     $("ul.tokenatt").sortable({
         helper: 'clone',
@@ -43,9 +47,11 @@ $(document).ready(function(){
             }
             else {
                 $('ul.tokenatt > li:nth-child('+tattpos+')').css("color","white");
+                $('ul.tokenatt > li:nth-child('+tattpos+')').css("border-top","0");
                 $('ul.tokenatt > li:nth-child('+cattpos+')').css("color","white");
-                $("#"+cattid).css("border-color","#FFFFFF");
-                $("#"+tattid).css("border-color","#FFFFFF");
+                $('ul.tokenatt > li:nth-child('+cattpos+')').css("margin-top","-5px");
+                $('ul.tokenatt > li:nth-child('+cattpos+')').css("border-top","0");
+                $('ul.tokenatt > li:nth-child('+cattpos+')').css("min-height","20px");
                 $("#"+cattid).css("background-color","#696565");
                 $("#"+tattid).css("background-color","#696565");
             }
@@ -90,7 +96,8 @@ $(document).ready(function(){
         surveyid: surveyId,
         overwrite: attoverwrite,
         overwriteman: attoverwriteman,
-        participant_id : participant_id
+        participant_id : participant_id,
+        createautomap: attcreateautomap
         }, function(msg){
             $(this).dialog("close");
             alert(msg);

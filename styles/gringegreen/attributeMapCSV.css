@@ -15,8 +15,6 @@ html, body{
     border-width:1px;
     padding : 4px;
 }
-.newcreate ul{
-}
 
 .newcreate, .csvatt, .cpdbatt {
     min-height: 100px;
@@ -26,7 +24,9 @@ html, body{
 .cpdbatt {
    margin-top: -5px;
 }
+
 .cpdbatt li {
+  margin-top: 10px;
   border-bottom: 0px;
 }
 
@@ -48,9 +48,6 @@ html, body{
 }
 
 #csvattribute, #centralattribute {
-    height: 100%;
-}
-#centralattribute {
     height: 100%;
 }
 

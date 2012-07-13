@@ -1379,7 +1379,7 @@ function getParticipantsSearch($condition, $page, $limit)
      * @param array $newcreate An array containing new attributes to create in the tokens table
      * @param bool $overwrite If true, overwrite existing values in existint token attributes
      * */
-    function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false)
+    function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $createautomap=true)
     {
         Yii::app()->loadHelper('common');
         $duplicate = 0;
@@ -1403,7 +1403,45 @@ function getParticipantsSearch($condition, $page, $limit)
             $tokenfieldnames = array_keys($arr);
             $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
         }
-        //print_r($tokenattributefieldnames); die();
+        if($createautomap=="true") {
+            //Rename the token table fieldnames contained in the $key of $mapped to the cpdb name for the $val of $mapped
+            foreach($mapped as $key=>$val) {
+                $newname = 'attribute_cpdb_' . intval($val);
+
+                //$fields = array($value => array('name' => $newname, 'type' => 'TEXT'));
+                //Rename the field in the tokens_[sid] table
+                Yii::app()->db
+                          ->createCommand()
+                          ->renameColumn('{{tokens_' . intval($surveyid) . '}}', $key, $newname);
+                //Make the field a TEXT field
+                Yii::app()->db
+                          ->createCommand()
+                          ->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
+
+                $previousatt = Yii::app()->db
+                                         ->createCommand()
+                                         ->select('attributedescriptions')
+                                         ->from('{{surveys}}')
+                                         ->where("sid = ".$surveyid);
+                $patt=$previousatt->queryRow();
+                $previousattribute = unserialize($patt['attributedescriptions']);
+                $previousattribute[$newname]=$previousattribute[$key];
+                unset($previousattribute[$key]);
+                //Rename the token field the name of the participant_attribute
+                $attributedetails=ParticipantAttributeNames::getAttributeNames($val);
+                $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
+                $previousattribute=serialize($previousattribute);
+                Yii::app()->db
+                          ->createCommand()
+                          ->update('{{surveys}}',
+                                    array("attributedescriptions" => $previousattribute),
+                                    'sid = '.$surveyid); //load description in the surveys table
+                //Finally, update the $mapped key/val pair to reflect the new keyname of $newname
+                $mapped[$newname]=$mapped[$key];
+                unset($mapped[$key]);
+            }
+
+        }
         foreach ($tokenattributefieldnames as $key => $value)
         {
             if ($value[10] == 'c') /* Existence of 'c' as 11th letter assume it is a CPDB link */
@@ -1625,6 +1663,7 @@ function getParticipantsSearch($condition, $page, $limit)
             }
         }
     }
+
     /*
      * Copies token participants to the central participants table, and also copies
      * token attribute values where applicable. It checks for matching entries using
@@ -1632,22 +1671,20 @@ function getParticipantsSearch($condition, $page, $limit)
      *
      * TODO: Most of this belongs in the participantsaction.php controller file, not
      *       here in the model file. Portions of this should be moved out at some stage.
-     * TODO: Update to allow overwriting of attribute values, if so chosen, even if the
-     *       participant already exists
-     * TODO: Add code to determine whether or not to update attribute values per participant
-     *       using the "overwrite=false" or "overwrite=true" parameter
      *
      * @param int $surveyid The id of the survey, used to find the appropriate tokens table
      * @param array $newarr An array containing the names of token attributes that have to be created in the cpdb
      * @param array $mapped An array containing the names of token attributes that are to be mapped to an existing cpdb attribute
-     * @param bool $overwrite If true, overwrites existing attribute values
+     * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values (where token fieldname=attribute_cpdb_n)
+     * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
+     * @param bool $createautomap If true, updates manuall mapped token fields to fieldname=attribute_cpdb_n from fieldname=attribute_n, s in future mapping is automatic
      * @param array $tokenid is assumed, saved by an earlier script as a session string called "participantid". It holds a list of token_ids
      *                       for the token participants we are copying to the central db
      *
      * @return array An array contaning list of successful and list of failed ids
      */
 
-    function copyToCentral($surveyid, $newarr, $mapped, $overwriteauto=false, $overwriteman=false)
+    function copyToCentral($surveyid, $newarr, $mapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
     {
         $tokenid = Yii::app()->session['participantid']; //List of token_id's to add to participants table
         $duplicate = 0;
@@ -1842,8 +1879,10 @@ function getParticipantsSearch($condition, $page, $limit)
         {
             foreach ($mapped as $cpdbatt => $tatt)
             {
-                if ($tatt[10] != 'c')
+                if ($tatt[10] != 'c' && $createautomap=="true") //This attribute is not already mapped
                 {
+                    // Change the fieldname in the token table to attribute_cpdb_[participant_attribute_id]
+                    // so future mapping is done automatically
                     $newname = 'attribute_cpdb_' . $cpdbatt;
                     $fields = array($tatt => array('name' => $newname, 'type' => 'TEXT'));
                     Yii::app()->db
@@ -1855,15 +1894,21 @@ function getParticipantsSearch($condition, $page, $limit)
                     $previousatt = Yii::app()->db
                                              ->createCommand()
                                              ->select('attributedescriptions')
+                                             ->from('{{surveys}}')
                                              ->where("sid = :sid")
-                                             ->bindParam(":sid", $surveyid, PDO::PARAM_INT)
-                                             ->from('{{surveys}}');
-                    $previouseattribute = $previousatt->queryRow();
-                    $newstring = str_replace($tatt, $newname, $previouseattribute['attributedescriptions']);
+                                             ->bindParam(":sid", $surveyid, PDO::PARAM_INT);
+                    $previousattribute = $previousatt->queryRow();
+                    $previousattribute = unserialize($previousattribute['attributedescriptions']);
+                    $previousattribute[$newname]=$previousattribute[$tatt];
+                    unset($previousattribute[$tatt]);
+                    //Rename the token field the name of the participant_attribute
+                    $attributedetails=ParticipantAttributeNames::getAttributeNames($cpdbatt);
+                    $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
+                    $previousattribute = serialize($previousattribute);
+                    //$newstring = str_replace($tatt, $newname, $previousattribute['attributedescriptions']);
                     Yii::app()->db
                               ->createCommand()
-                              ->update('{{surveys}}', array("attributedescriptions" => $newstring), 'sid = :sid')
-                              ->bindParam(":sid", $surveyid, PDO::PARAM_INT); // load description in the surveys table
+                              ->update('{{surveys}}', array("attributedescriptions" => $previousattribute), 'sid = '.$surveyid);
                 }
             }
         }

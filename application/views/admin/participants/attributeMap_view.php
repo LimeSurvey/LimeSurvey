@@ -62,9 +62,14 @@
             }
             ?>
         </ul>
-        <br /><input type='checkbox' id='overwriteman' name='overwriteman' /> <label for='overwriteman'><?php $clang->eT("Overwrite existing token attribute values if a participant already exists?") ?></label><br />&nbsp;
+        <?php if(!empty($selectedtokenattribute)) { ?>
+        <br />
+        <div class='explanation'>
+            <input type='checkbox' id='overwriteman' name='overwriteman' /> <label for='overwriteman'><?php $clang->eT("Overwrite existing token attribute values if a participant already exists?") ?></label>
+            <br /><input type='checkbox' id='createautomap' name='createautomap' /> <label for='createautomap'><?php $clang->eT("Make these mappings automatic in future") ?></label><br />&nbsp;
+        </div>
         <?php
-        if(empty($selectedtokenattribute)) {echo "<br />&nbsp;";}
+        } else {echo "<br />&nbsp;";}
         if(!empty($alreadymappedattributename)) {
         ?>
         <br />
@@ -79,14 +84,17 @@
             }
             ?>
         </ul>
-        <br /><input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?></label>
+        <div class='explanation'>
+            <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?></label>
+        </div>
         <?php
         }
         ?>
     </div>
 	<p>
 		<input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
-		<input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue')?>" />
+        <input type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php $clang->eT('Reset') ?>" />
+        <input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue')?>" />
    	</p>
     <?php
     $ajaxloader = array(

@@ -44,7 +44,7 @@
             <ul class="newcreate" id="sortable" style ="height: 40px">
             </ul>
         </div>
-        <div id="centralattribute"><div class="heading"><?php $clang->eT("Existing participant attributes")?></div>
+        <div id="centralattribute"><div class="heading"><?php $clang->eT("Existing participant attributes")?></div><br />
             <ul class="centralatt">
                 <?php
                 if (!empty($attribute))
@@ -56,10 +56,14 @@
                 }
                 ?>
             </ul>
-            <?php
-            if(empty($attribute)) {
-                echo "<br />&nbsp;\n";
-            }
+            <?php if (!empty($attribute)) { ?>
+            <div class='explanation'>
+                <input type='checkbox' id='overwriteman' name='overwriteman' /> <label for='overwriteman'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+                <br /><input type='checkbox' id='createautomap' name='createautomap' /> <label for='createautomap'><?php $clang->eT("Make these mappings automatic in future") ?></label><br />&nbsp;
+            </div>
+            <?php } else { ?>
+            <br />&nbsp;
+            <?php }
             if(!empty($alreadymappedattributename)) {
                 ?>
                 <div class='heading'><?php $clang->eT("Pre-mapped attributes") ?></div><br />
@@ -71,13 +75,16 @@
                 }
                 ?>
                 </ul>
-                <br /><input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+                <div class='explanation'>
+                    <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+                </div>
                 <?php
             }
             ?>
         </div>
     <p>
         <input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
+        <input type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php $clang->eT('Reset') ?>" />
         <input type="button" name="attmap" id="attmap" value="Continue" />
     </p>
     <?php

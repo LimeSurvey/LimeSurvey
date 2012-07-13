@@ -53,16 +53,16 @@
                     <?php
                     foreach ($attributes as $key => $value)
                     {
-                        echo "<li id='c_" . $value['attribute_id'] . "' name='c_" . $key . "' style='margin-top: 10px;'>" . $value['attribute_name'] . "<br />&nbsp;</li>";
+                        echo "<li id='c_" . $value['attribute_id'] . "' name='c_" . $key . "'>" . $value['attribute_name'] . "<br />&nbsp;</li>";
                     }
                     ?>
                 </ul>
             </div>
         </ul>
     </div>
-    <p><input type="button" name="attmap" id="attmap" value="<?php $clang->eT("Continue"); ?>" />
-        <input type="button" name="attmapcancel" id="attmapcancel" value="<?php $clang->eT("Cancel") ?>" />
+    <p><input type="button" name="attmapcancel" id="attmapcancel" value="<?php $clang->eT("Cancel") ?>" />
         <input type="button" name="attreset" id="attreset" value="<?php $clang->eT("Reset") ?>" onClick="window.location.reload();" />
+        <input type="button" name="attmap" id="attmap" value="<?php $clang->eT("Continue"); ?>" />
     </p>
     <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
         <img src="<?php echo Yii::app()->getConfig('imageurl') . '/ajax-loader.gif'; ?>" alt="<?php $clang->eT('Loading...'); ?>" title="<?php $clang->eT('Loading...'); ?>" />

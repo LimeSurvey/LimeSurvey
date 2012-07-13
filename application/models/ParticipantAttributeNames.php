@@ -213,7 +213,9 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function delAttributeValues($attid,$valid)
     {
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = :attribute_id AND value_id = :value_id')->bindParam(":attribute_id", $attid, PDO::PARAM_INT)->bindParam(":value_id", $valid, PDO::PARAM_INT);
+        Yii::app()->db
+                  ->createCommand()
+                  ->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid);
     }
 
     function getAttributeNames($attributeid)

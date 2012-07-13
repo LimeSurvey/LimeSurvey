@@ -44,15 +44,17 @@ $(document).ready(function() {
     jQuery('#attributeControl').jqGrid('navGrid',
                                        '#pager',
                                        {add:true, del:true, edit:true},
-                                       {width:400},
+                                       {closeAfterAdd: true
+                                       }, //Add options
                                        {    width:400,
-                                            reloadAfterSubmit: false,
+                                            reloadAfterSubmit: true,
                                             afterSubmit: function (response) {
                                                 return [true, '', response.responseText];
                                             }
-                                       },
-                                       {},
-                                       {multipleSearch:true, width:600}
+                                       }, //Del options
+                                       {}, //Edit options
+                                       {multipleSearch:true, width:600},
+                                       {closeAfterAdd:true}
                                       );
 
 });

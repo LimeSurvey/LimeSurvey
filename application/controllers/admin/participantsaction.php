@@ -33,6 +33,7 @@ class participantsaction extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/src/grid.celledit.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
 
+
         if (!empty($sScript))
         {
             $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . $sScript . '.js');
@@ -1267,8 +1268,8 @@ class participantsaction extends Survey_Common_Action
             'attributevalues' => ParticipantAttributeNames::getAttributesValues($iAttributeId)
         );
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/'.Yii::app()->getConfig("admintheme").'/participants.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/'.Yii::app()->getConfig("admintheme").'/viewAttribute.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')       . 'participants.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')       . 'viewAttribute.css');
 
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
@@ -1720,9 +1721,11 @@ class participantsaction extends Survey_Common_Action
     {
         $newarr = Yii::app()->request->getPost('newarr');
         $mapped = Yii::app()->request->getPost('mapped');
-        $overwrite = Yii::app()->request->getPost('overwrite');
+        $overwriteauto = Yii::app()->request->getPost('overwriteauto');
+        $overwriteman = Yii::app()->request->getPost('overwriteman');
+        $createautomap = Yii::app()->request->getPost('createautomap');
 
-        $response = Participants::copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwrite);
+        $response = Participants::copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman);
         $clang = $this->getController()->lang;
 
         printf($clang->gT("%s participants have been copied to the central participants table"), $response['success']);
@@ -1730,7 +1733,7 @@ class participantsaction extends Survey_Common_Action
             echo "\r\n";
             printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
         }
-        if($response['overwrite']=="true") {
+        if($response['overwriteman']=="true" || $response['overwriteauto']) {
             echo "\r\n";
             $clang->eT("Attribute values for existing participants have been updated from the token records");
         }
@@ -1771,10 +1774,12 @@ class participantsaction extends Survey_Common_Action
         $newcreate = Yii::app()->request->getPost('newarr');
         $overwriteauto = Yii::app()->request->getPost('overwrite');
         $overwriteman = Yii::app()->request->getPost('overwriteman');
+        $createautomap = Yii::app()->request->getPost('createautomap');
+
         $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
-        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman);
+        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $createautomap);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {

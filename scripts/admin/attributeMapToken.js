@@ -7,6 +7,8 @@ $(document).ready(function(){
     var tokencurrentarray = {};
     var newcurrentarray = {};
     if($("#overwrite").is(':checked')) {var attoverwrite=true;} else {var attoverwrite=false;}
+    if($("#overwriteman").is(':checked')) {var attoverwriteman=true;} else {var attoverwriteman=false;}
+    if($("#createautomap").is(':checked')) {var attcreateautomap=true;} else {var attcreateautomap=false;}
 
     $('#tokenattribute').css({ 'height' : height-200});
     $('#centralattribute').css({ 'height' : height-200});
@@ -33,7 +35,11 @@ $(document).ready(function(){
                 $(ui.sender).sortable('cancel');
             } else {
                 $('ul.centralatt > li:nth-child('+tattpos+')').css("color","white");
+                $('ul.centralatt > li:nth-child('+tattpos+')').css("border-bottom","0");
                 $('ul.centralatt > li:nth-child('+cattpos+')').css("color","white");
+                $('ul.centralatt > li:nth-child('+cattpos+')').css("margin-top","-5px");
+                $('ul.centralatt > li:nth-child('+cattpos+')').css("border-top","0");
+                $('ul.centralatt > li:nth-child('+cattpos+')').css("min-height","20px");
                 $("#"+cattid).css("background-color","#696565");
                 $("#"+tattid).css("background-color","#696565");
             }
@@ -54,16 +60,26 @@ $(document).ready(function(){
                 alert(onlyOneAttributeMappedText);
                 $(ui.sender).sortable('cancel');
             } else {
-                $('.newcreate').append('<li id="tb"><input type="text" id="td_'+$(ui.item).attr('id')+'" value=\"'+$(ui.item).attr('name')+'\"></li>');
+                $('.newcreate').append('<li id="tb_'+$(ui.item).attr('id')+'"><input type="text" id="td_'+$(ui.item).attr('id')+'" value=\"'+$(ui.item).attr('name')+'\"></li>');
                 $(ui.item).html($(ui.item).attr('id').replace('t_',''));
                 cpdbattpos = cpdbattpos+1;
                 $('ul.newcreate > li:nth-child('+cpdbattpos+')').css("color", "white");
                 $('ul.newcreate > li:nth-child('+cpdbattpos+')').css("background-color","#696565");
+                $('ul.newcreate > li:nth-child('+cpdbattpos+')').css("border-bottom","0");
+                $('li#tb_'+$(ui.item).attr('id')).css("background-color", "#696565");
+                $('li#tb_'+$(ui.item).attr('id')).css("margin-top", "-5px");
+                $('li#tb_'+$(ui.item).attr('id')).css("border-top", "0");
             }
         }
     });
     $("#overwrite").click(function(){
         if($("#overwrite").is(':checked')) {attoverwrite=true;} else {attoverwrite=false;}
+    });
+    $("#overwriteman").click(function(){
+        if($("#overwriteman").is(':checked')) {attoverwriteman=true;} else {attoverwriteman=false;}
+    });
+    $("#createautomap").click(function(){
+        if($("#createautomap").is(':checked')) {attcreateautomap=true;} else {attcreateautomap=false;}
     });
     $('#attmap').click(function(){
         var mappedarray = {};
@@ -88,7 +104,9 @@ $(document).ready(function(){
             mapped: mappedarray,
             newarr: anewcurrentarray,
             surveyid: surveyId,
-            overwrite: attoverwrite
+            overwriteauto: attoverwrite,
+            overwriteman: attoverwriteman,
+            createautomap: attcreateautomap
         }, function(msg){
             alert(msg);
             $(this).dialog("close");
