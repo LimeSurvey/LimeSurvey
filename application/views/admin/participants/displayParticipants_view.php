@@ -85,7 +85,6 @@ else
     var tokenIdColTxt="<?php $clang->eT("Token ID") ?>";
     var dateAddedColTxt="<?php $clang->eT("Date added") ?>";
     var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSurveyInfo_json/pid/"); ?>";
-
     /* Colnames and heading for attributes subgrid */
     var attributesHeadingTxt="<?php $clang->eT("Participant's attribute information") ?>";
     var actionsColTxt="<?php $clang->eT("Actions") ?>";
@@ -94,6 +93,7 @@ else
     var attributeNameColTxt="<?php $clang->eT("Attribute name") ?>";
     var attributeValueColTxt="<?php $clang->eT("Attribute value") ?>";
     var attributePosValColTxt="<?php $clang->eT("Possible attribute values") ?>";
+    var addToSurveyTxt="<?php $clang->eT("Add participants to a survey") ?>";
 
     var resetBtn = "<?php $clang->eT("Reset"); ?>";
     var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
@@ -102,6 +102,7 @@ else
     var closeTxt = "<?php $clang->eT("Close"); ?>";
     var spTitle = "<?php $clang->eT("Sharing participants..."); ?>";
     var spAddBtn = "<?php $clang->eT("Share the selected participants"); ?>";
+    var shareParticipantTxt = "<?php $clang->eT("Share participants with other users") ?>";
     var sfNoUser = "<?php $clang->eT("No other user in the system"); ?>";
     var addpartTitle = "<?php $clang->eT("Add participant to survey"); ?>";
     var addAllInViewTxt="<?php $clang->eT("Add all %s participants in your current list to a survey."); ?>";
@@ -125,12 +126,13 @@ else
     var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
     var searchBtn = "<?php $clang->eT("Search") ?>";
     var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.") ?>"; //PLEASE REVIEW
-    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getParticipants_json"); ?>";
+    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/".$urlsearch); ?>";
     var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getParticipantsResults_json/search/"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editParticipant"); ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
     var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getaddtosurveymsg"); ?>";
     var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
+    var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl') ?>";
     var addbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>";
     var minusbuttonTxt = "<?php $clang->eT("Remove search condition") ?>";
     var addbuttonTxt = "<?php $clang->eT("Add search condition") ?>";
@@ -206,9 +208,8 @@ echo $colModels;
 </div>
 <br/>
 <table id="displayparticipants"></table> <div id="pager"></div>
-<p><input type="button" name="share" id="share" value="<?php $clang->eT("Share") ?>" /><input type="button" name="addtosurvey" id="addtosurvey" value="<?php $clang->eT("Add to survey") ?>" />
+<p><input type="button" name="addtosurvey" id="addtosurvey" value="<?php $clang->eT("Add to survey") ?>" />
 </p>
-</table>
 
 <div id="fieldnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
     <p>

@@ -130,6 +130,9 @@ $(document).ready(function() {
         loadonce : false,
         loadComplete: function()
         {
+            /* Sneaky way of adding custom icons to jqGrid pager buttons */
+            $("#pager").find(".ui-participant-link")
+                .css({"background-image":"url("+imageurl+"cpdb_12.png)", "background-position":"0", "color":"black"});
             window.editing = false;
             jQuery(".token_edit").unbind('click').bind('click', function(e)
             {
@@ -294,6 +297,14 @@ $(document).ready(function() {
         buttonicon:'ui-icon-mail-open',
         onClickButton:function(){
             window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+        }
+    });
+    $("#displaytokens").navButtonAdd('#pager', {
+        caption:"",
+        title:viewParticipantsLink,
+        buttonicon:'ui-participant-link',
+        onClickButton:function(){
+            window.open(participantlinkUrl, "_top");
         }
     });
     $.extend(jQuery.jgrid.edit,{

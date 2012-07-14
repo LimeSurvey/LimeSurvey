@@ -106,6 +106,9 @@ class participantsaction extends Survey_Common_Action
         $lang = Yii::app()->session['adminlang'];
         // loads the survey names to be shown in add to survey
         // if user is superadmin, all survey names
+        $urlSearch=Yii::app()->request->getQuery('searchurl');
+        $urlSearch=!empty($urlSearch) ? "getParticipantsResults_json/search/$urlSearch" : "getParticipants_json";
+        //echo $urlSearch; die();
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('surveyls_language=:lang', array(':lang'=>$lang));
@@ -135,7 +138,8 @@ class participantsaction extends Survey_Common_Action
             'allattributes' => ParticipantAttributeNames::getAllAttributes(),
             'attributeValues' => ParticipantAttributeNames::getAllAttributesValues(),
             'surveynames' => $aSurveyNames,
-            'tokensurveynames' => $tSurveyNames
+            'tokensurveynames' => $tSurveyNames,
+            'urlsearch' => $urlSearch
         );
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');

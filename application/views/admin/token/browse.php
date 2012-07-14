@@ -68,6 +68,8 @@
     var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"
     var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$surveyid}/tids/|"); ?>";
+    var viewParticipantsLink = "<?php $clang->eT("View participants of this survey in the central participant database panel") ?>";
+    var participantlinkUrl="<?php echo Yii::app()->getController()->createUrl("admin/participants/displayParticipants/searchurl/survey||equal||".$surveyid); ?>";
     var searchtypes = ["<?php $clang->eT("Equals") ?>","<?php $clang->eT("Contains") ?>","<?php $clang->eT("Not equal") ?>","<?php $clang->eT("Not contains") ?>","<?php $clang->eT("Greater than") ?>","<?php $clang->eT("Less than") ?>"]
     var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>",<?php echo $columnNames; ?>];
     var colModels = [
@@ -163,7 +165,6 @@
 <!--p><input type="button" name="sendinvitations" id="sendinvitations" value="Send Invitations" onclick='window.open("<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$surveyid}/tids/|"); ?>"+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")' /><input type="button" name="sendreminders" id="sendreminders" value="Send Reminders" onclick='window.open("<?php echo Yii::app()->getController()->createUrl("admin/tokens/remind/surveyid/{$surveyid}/tids/|"); ?>"+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")' />
 </p-->
 <p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
-
 <div id="addcpdb" title="addsurvey" style="display:none">
     <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
     <p>

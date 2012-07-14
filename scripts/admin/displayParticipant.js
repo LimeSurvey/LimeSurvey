@@ -58,6 +58,7 @@ $(document).ready(function() {
             .appendTo('body').submit().remove();
         };
     };
+
     // Code for AJAX download
     $("#addbutton").click(function(){
         conditionid++;
@@ -125,6 +126,13 @@ $(document).ready(function() {
         rowList: [25,50,100,250,500,1000,2000,5000],
         multiselect: true,
         loadonce : false,
+        loadComplete : function() {
+            /* Sneaky way of adding custom icons to jqGrid pager buttons */
+            $("#pager").find(".ui-share-icon")
+                .css({"background-image":"url("+imageurl+"share_12.png)", "background-position":"0", "color":"black"});
+            $("#pager").find(".ui-addtosurvey-icon")
+                .css({"background-image":"url("+imageurl+"tokens_12.png)", "background-position":"0", "color":"black"});
+        },
         loadError : function(xhr, st, str) {
             var dialog_buttons={};
             dialog_buttons[okBtn]=function(){
@@ -311,8 +319,7 @@ $(document).ready(function() {
     );
 
     /* Add the full Search Button to the main jqGrid Pager */
-    $("#displayparticipants").navButtonAdd(
-        '#pager',
+    $("#displayparticipants").navButtonAdd('#pager',
         {
             caption:"",
             title: fullSearchTitle,
@@ -406,8 +413,7 @@ $(document).ready(function() {
     );
 
     /* Add the CSV Export Button to the main jqGrid Pager */
-    $("#displayparticipants").navButtonAdd(
-        '#pager',
+    $("#displayparticipants").navButtonAdd('#pager',
         {
             caption:"",
             title:exportToCSVTitle,
@@ -441,6 +447,131 @@ $(document).ready(function() {
                         });
                     }
                 );
+            }
+        }
+    );
+    $("#displayparticipants").navButtonAdd('#pager',
+        {
+            caption: "",
+            title: shareParticipantTxt,
+            buttonicon: "ui-share-icon",
+            onClickButton:function(){
+                var myGrid = $("#displayparticipants").jqGrid();
+                var row = myGrid .getGridParam('selarrrow');
+                if(row=="") {
+                    /* build an array containing the various button functions */
+                    /* Needed because it's the only way to label a button with a variable */
+                    var dialog_buttons={};
+                    dialog_buttons[okBtn]=function(){
+                        $( this ).dialog( "close" );
+                    };
+                    /* End of building array for button functions */
+                    $('#norowselected').dialog({
+                        modal: true,
+                        buttons: dialog_buttons
+                    });
+                } else {
+                    /* build an array containing the various button functions */
+                    /* Needed because it's the only way to label a button with a variable */
+                    var dialog_buttons={};
+                    dialog_buttons[spAddBtn]=function(){
+                        var row = myGrid .getGridParam('selarrrow');
+                        shareParticipants(row);
+                    };
+                    dialog_buttons[cancelBtn]=function(){
+                        $(this).dialog("close");
+                    };
+                    /* End of building array for button functions */
+
+                    $("#shareform").dialog({
+                        height: 400,
+                        width: 400,
+                        modal: true,
+                        buttons: dialog_buttons
+                    });
+                }
+                if (!($("#shareuser").length > 0)) {
+                    $('#shareform').html(sfNoUser);
+                }
+            }
+        }
+    );
+    $("#displayparticipants").navButtonAdd('#pager',
+        {
+            caption: "",
+            title: addToSurveyTxt,
+            buttonicon: "ui-addtosurvey-icon",
+            onClickButton:function(){
+                var selected = "";
+                var myGrid = $("#displayparticipants").jqGrid();
+                /* the rows variable will contain the UUID of individual items that been ticked in the jqGrid */
+                /* if it is empty, then no items have been ticked */
+                var rows = myGrid.getGridParam('selarrrow');
+
+                if(rows=="") {
+                    var totalitems = myGrid.getGridParam('records');
+                    $('#allinview').text(addAllInViewTxt.replace('%s', totalitems));
+                    $('#allinview').show();
+                    $('#selecteditems').hide();
+                } else {
+                    var totalitems = rows.length;
+                    $('#selecteditems').text(addSelectedItemsTxt.replace('%s', totalitems));
+                    $('#selecteditems').show();
+                    $('#allinview').hide();
+                }
+
+                var dialog_buttons={};
+                dialog_buttons[mapButton]=function(){
+                    var survey_id=$('#survey_id').val();
+                    var redirect ="";
+                    if(survey_id===null) {
+                        /* No survey has been selected */
+                        alert(selectSurvey);
+                    } else {
+                        /* Check if user wants to see token table after adding new participants */
+                        if(jQuery('#redirect').is(":checked")) {
+                            redirect = "redirect";
+                        } else {
+                            redirect = "";
+                        }
+                        /* Submit the form with appropriate options depending on whether
+                        individual users are selected, or the whole grid is to be copied */
+                        if(rows=="") { /* All in grid */
+                            $.post(
+                            getSearchIDs,
+                            { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
+                            function(data) {
+                                $('#count').val(totalitems);
+                                $('#participant_id').val(data);
+                                $("#addsurvey").submit();
+                            });
+                        } else { /* Add selected (checked) jqGrid items only */
+                            rows = myGrid.getGridParam('selarrrow');
+                            $('#count').val(totalitems);
+                            $('#participant_id').val(rows);
+                            $("#addsurvey").submit();
+                        }
+                    }
+                };
+                dialog_buttons[cancelBtn]=function(){
+                    $(this).dialog("close");
+                };
+                /* End of building array containing button functions */
+
+                $("#addsurvey").dialog({
+                    height: 500,
+                    width: 500,
+                    title : addsurvey,
+                    modal: true,
+                    open: function(event, ui) {
+                        $('#addsurvey').dialog('option', 'title', addsurvey + ' ('+totalitems+')');
+                    },
+                    buttons: dialog_buttons
+                });
+
+                if (!($("#survey_id").length > 0)) {
+                    $('#addsurvey').html(addpartErrorMsg);
+                }
             }
         }
     );
@@ -484,46 +615,6 @@ $(document).ready(function() {
         }
         );
     }
-
-    $('#share').click(function(){
-        var myGrid = $("#displayparticipants").jqGrid();
-        var row = myGrid .getGridParam('selarrrow');
-        if(row=="") {
-            /* build an array containing the various button functions */
-            /* Needed because it's the only way to label a button with a variable */
-            var dialog_buttons={};
-            dialog_buttons[okBtn]=function(){
-                $( this ).dialog( "close" );
-            };
-            /* End of building array for button functions */
-            $('#norowselected').dialog({
-                modal: true,
-                buttons: dialog_buttons
-            });
-        } else {
-            /* build an array containing the various button functions */
-            /* Needed because it's the only way to label a button with a variable */
-            var dialog_buttons={};
-            dialog_buttons[spAddBtn]=function(){
-                var row = myGrid .getGridParam('selarrrow');
-                shareParticipants(row);
-            };
-            dialog_buttons[cancelBtn]=function(){
-                $(this).dialog("close");
-            };
-            /* End of building array for button functions */
-
-            $("#shareform").dialog({
-                height: 300,
-                width: 350,
-                modal: true,
-                buttons: dialog_buttons
-            });
-        }
-        if (!($("#shareuser").length > 0)) {
-            $('#shareform').html(sfNoUser);
-        }
-    });
 
     function basename(path) {
         return path.replace(/\\/g,'/').replace( /.*\//, '' );
@@ -601,4 +692,5 @@ $(document).ready(function() {
             $('#addsurvey').html(addpartErrorMsg);
         }
     });
+
 });
