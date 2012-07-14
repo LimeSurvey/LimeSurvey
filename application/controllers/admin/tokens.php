@@ -380,7 +380,15 @@ class tokens extends Survey_Common_Action
                 $token['validuntil'] = '';
 
             $aData->rows[$i]['id'] = $token['tid'];
-            $action = '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
+
+            $action="";
+            if($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] =="")) {
+                $action = '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
+            } elseif(1==2) { //TODO: If survey is completed and it is not anonymous, allow viewing response
+
+            } else {
+                $action = '<div style="width: 20px; height: 16px; float: left;"></div>';
+            }
             $action .= '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'token_delete.png" title="' . $clang->gT("Delete token entry") . '" alt="' . $clang->gT("Delete token entry") . '" onclick=\'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}\'>';
 
             if (strtolower($token['emailstatus']) == 'ok')
@@ -2182,14 +2190,14 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyId);
         }
-        $page = Yii::app()->request->getPost('page');
-        $limit = Yii::app()->request->getPost('rows');
+        $page = (Yii::app()->request->getPost('page') != "") ? Yii::app()->request->getPost('page') : 1;
+        $limit = (Yii::app()->request->getPost('rows') != "") ? Yii::app()->request->getPost('rows') : 25 ;
         $fields = array('tid', 'firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'sent', 'sentreminder', 'remindercount', 'completed', 'usesleft', 'validfrom', 'validuntil');
         $searchcondition = Yii::app()->request->getQuery('search');
         $searchcondition = urldecode($searchcondition);
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
-        $aData = new Object();
+        $aData = new stdClass();
         if (count($condition) == 3)
         {
             $records = Tokens_dynamic::model($iSurveyId)->getSearch($condition, $page, $limit);
