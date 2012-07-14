@@ -53,7 +53,7 @@
     var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/getSearch_json/surveyid/$surveyid/search"); ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
     var addbutton = "<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?>";
-    var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/deleteanswer.png" ?>";
+    var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
     var survey_id = "<?php echo $surveyid; ?>";
     var delUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/delete/surveyid/" . $surveyid); ?>";
     var cancelBtn = "<?php $clang->eT("Cancel") ?>";
