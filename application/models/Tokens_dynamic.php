@@ -254,8 +254,8 @@ class Tokens_dynamic extends LSActiveRecord
             $command = Yii::app()->db
                                  ->createCommand()
                                  ->select('*')
-                                 ->from(Tokens_dynamic::tableName()
-                                 ->where(array('like',$condition[0],$condition[2])));
+                                 ->from(Tokens_dynamic::tableName())
+                                 ->where(array('like',$condition[0],$condition[2]));
             if($page == 0 && $limit == 0)
               {
                   $data=$command->queryAll();
