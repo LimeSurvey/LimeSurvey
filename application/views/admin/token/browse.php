@@ -47,6 +47,7 @@
     var cancelBtn = "<?php $clang->eT("Cancel") ?>";
     var exportBtn = "<?php $clang->eT("Export") ?>";
     var okBtn = "<?php $clang->eT("OK") ?>";
+    var resetBtn = "<?php $clang->eT("Reset") ?>";
     var noRowSelected = "<?php $clang->eT("You have no row selected") ?>";
     var searchBtn = "<?php $clang->eT("Search") ?>";
     var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.") ?>"; //PLEASE REVIEW
