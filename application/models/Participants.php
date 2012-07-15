@@ -349,23 +349,29 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else if ($condition[0] == 'owner_name')
             {
-                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = :condition_2')->from('{{users}}')->bindParam("condition_2", $condition[2], PDO::PARAM_STR)->queryAll();
+                $userid = Yii::app()->db->createCommand()
+                                    ->select('uid')
+                                    ->where('full_name = :condition_2')
+                                    ->from('{{users}}')
+                                    ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
+                                    ->queryAll();
                 $uid = $userid[0];
                 $command = Yii::app()->db->createCommand();
                 $command->where('owner_uid = :uid');
+                $command->from('{{participants}}');
 				$command->bindParam(":uid", $uid['uid'], PDO::PARAM_INT);
                 $command->select('*');
                 if ($page == 0 && $limit == 0)
                 {
-                    $data = $command->from('{{participants}}')->queryAll();
+                    $data = $command->queryAll();
                 }
                 else
                 {
-                    $data = $command->from('{{participants}}')->limit(intval($limit), $start)->queryAll();
+                    $data = $command->limit(intval($limit), $start)->queryAll();
                 }
                 return $data;
             }
-            else if (is_numeric($condition[0]))
+            else if (is_numeric($condition[0])) //Attributes have numeric names
             {
                 $command = Yii::app()->db->createCommand()
                                     ->select('{{participant_attribute}}.*,{{participants}}.*')
@@ -385,7 +391,6 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else
             {
-
                 $command = Yii::app()->db->createCommand()->where($condition[0] . " = :cvalue", array(':cvalue' => $condition[2])); //Yii::app()->db->quoteValue($condition[2])
                 if ($page == 0 && $limit == 0)
                 {
@@ -867,12 +872,14 @@ function getParticipantsSearch($condition, $page, $limit)
         }
     }
 
-    function getParticipantsSearchMultiple($condition, $page, $limit)
+function getParticipantsSearchMultiple($condition, $page, $limit)
     {
     	//http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
     	//First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
+
+        //As we iterate through the conditions we build up the $command query by adding conditions to it
+        //
         $i = 0;
-        $j = 1;
         $tobedonelater = array();
         $start = $limit * $page - $limit;
         $command = new CDbCriteria;
@@ -882,355 +889,388 @@ function getParticipantsSearch($condition, $page, $limit)
         {
             if ($i < 3) //Special set just for the first query/condition
             {
-                $i+=3;
                 if(is_numeric($condition[2])) $condition[2]=intval($condition[2]);
                 if ($condition[1] == 'equal')
                 {
-                    if (is_numeric($condition[0]))
+                    if($condition[0]=="survey")
                     {
-                        $newsub = $j;
-                        $arr = Yii::app()->db
-                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value = :condition_2')
-                                         ->bindParam(':condition_0', $condition[0], PDO::PARAM_INT)
-                                         ->bindParam(':condition_2', $condition[2], PDO::PARAM_INT)
-                                         ->queryAll();
-                        $command->addInCondition('participant_id', $arr);
-                        $j++;
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title = :param2 OR {{survey_links}}.survey_id = :param2))');
+                        $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+                    }
+                    elseif($condition[0]=="owner_name")
+                    {
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name = :condition_2')
+                                            ->from('{{users}}')
+                                            ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid = $userid[0];
+                        $command->addCondition('owner_uid = :uid');
+                        $command->params=array(':uid'=>$uid['uid']);
+                    }
+                    elseif (is_numeric($condition[0])) //Searching for an attribute
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value=:condition_2)');
+                        $command->params=array(':condition_0'=>$condition[0], ':condition_2'=>$condition[2]);
                     }
                     else
                     {
-                        $command->addCondition($condition[0] . ' = "' . $condition[2] . '"');
+                        $command->addCondition($condition[0] . ' = :condition_2');
+                        $command->params=array(':condition_2'=>$condition[2]);
                     }
                 }
                 else if ($condition[1] == 'contains')
                 {
-                	$condition[2]="%".$condition[2]."%";
-                    if (is_numeric($condition[0]))
+                    $condition[2]="%".$condition[2]."%";
+
+                    if($condition[0]=="survey") {
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title LIKE :param2 OR {{survey_links}}.survey_id LIKE :param2))');
+                        $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+                    }
+                    elseif($condition[0]=="owner_name")
                     {
-                        $newsub = $j;
-                        //$arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR)->queryAll();
-						$arr = Yii::app()->db
-                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value LIKE '.$condition[2])
-                                         ->queryAll();
-                        $ins=array();
-                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                        $command->addInCondition('participant_id', $ins);
-                        $j++;
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name LIKE :condition_2')
+                                            ->from('{{users}}')
+                                            ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid);
+                    }
+                    elseif (is_numeric($condition[0]))
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value LIKE :condition_2)');
+                        $command->params=array(':condition_0'=>$condition[0], ':condition_2'=>$condition[2]);
+
                     }
                     else
                     {
-                    	$command->addCondition($condition[0] . ' LIKE "'. $condition[2].'"');
-					}
+                        $command->addCondition($condition[0] . ' LIKE :condition_2');
+                        $command->params=array(':condition_2'=>$condition[2]);
+	                }
                 }
                 else if ($condition[1] == 'notequal')
                 {
-                    if (is_numeric($condition[0]))
+                    if($condition[0]=="survey") {
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title != :param2 OR {{survey_links}}.survey_id != :param2))');
+                        $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+                    }
+                    elseif($condition[0]=="owner_name")
                     {
-                        $newsub = $j;
-                        $arr = Yii::app()->db
-                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT IN (:condition_2)')
-                                         ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
-                                         ->bindParam(":condition_2", $condition[2], PDO::PARAM_STR)
-                                         ->queryAll();
-
-                        $ins=array();
-                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                        $command->addInCondition('participant_id', $ins);
-                        $j++;
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name != :condition_2')
+                                            ->from('{{users}}')
+                                            ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid);
+                    }
+                    elseif (is_numeric($condition[0]))
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value != :condition_2)');
+                        $command->params=array(':condition_0'=>$condition[0], ':condition_2'=>$condition[2]);
                     }
                     else
                     {
-                        $command->addCondition(':condition_0 NOT IN (:condition_2)');
-                        $command->addCondition($condition[0] . ' NOT IN ("'. $condition[2].'")');
+                        $command->addCondition($condition[0] . ' != :condition_2');
+                        $command->params=array(':condition_2'=>$condition[2]);
                     }
                 }
                 else if ($condition[1] == 'notcontains')
                 {
-                    $like="%".$condition[2]."%";
-                    if (is_numeric($condition[0]))
-                    {
-                        $newsub = $j;
-                        $arr = Yii::app()->db
-                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT LIKE :condition_2')
-                                         ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
-                                         ->bindParam(":condition_2", $like, PDO::PARAM_STR)
-                                         ->queryAll();
+                    $condition[2]="%".$condition[2]."%";
 
-                        $ins=array();
-                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                        $command->addInCondition('participant_id', $ins);
-                        $j++;
+                    if($condition[0]=="survey") {
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title NOT LIKE :param2 OR {{survey_links}}.survey_id NOT LIKE :param2))');
+                        $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+                    }
+                    elseif($condition[0]=="owner_name")
+                    {
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name NOT LIKE :condition_2')
+                                            ->from('{{users}}')
+                                            ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid);
+                    }
+                    elseif (is_numeric($condition[0]))
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT LIKE :condition_2)');
+                        $command->params=array(':condition_0'=>$condition[0], ':condition_2'=>$condition[2]);
                     }
                     else
                     {
-                        $command->addCondition($condition[0] . ' NOT LIKE "'. $like.'"');
+                        $command->addCondition($condition[0] . ' NOT LIKE :condition_2');
+                        $command->params=array(':condition_2'=>$condition[2]);
                     }
                 }
                 else if ($condition[1] == 'greaterthan')
                 {
-                    if (is_numeric($condition[0]))
+                    if($condition[0]=="survey") {
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title > :param2 OR {{survey_links}}.survey_id > :param2))');
+                        $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+                    }
+                    elseif($condition[0]=="owner_name")
                     {
-                        $newsub = $j;
-                        $arr = Yii::app()->db
-                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value > :condition_2')
-                                         ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
-                                         ->bindParam(":condition_2", $condition[2], PDO::PARAM_INT)
-                                         ->queryAll();
-
-                        $ins=array();
-                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                        $command->addInCondition('participant_id', $ins);
-                        $j++;
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name > :condition_2')
+                                            ->from('{{users}}')
+                                            ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid);
+                    }
+                    elseif (is_numeric($condition[0]))
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value > :condition_2)');
+                        $command->params=array(':condition_0'=>$condition[0], ':condition_2'=>$condition[2]);
                     }
                     else
                     {
-                        $command->addCondition(':condition_0 > :condition_2');
-                        $command->addCondition($condition[0] . ' > '. $condition[2].'"');
+                        $command->addCondition($condition[0] . ' > :condition_2');
+                        $command->params=array(':condition_2'=>$condition[2]);
                     }
                 }
                 else if ($condition[1] == 'lessthan')
                 {
-                    if (is_numeric($condition[0]))
+                    if($condition[0]=="survey") {
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title < :param2 OR {{survey_links}}.survey_id < :param2))');
+                        $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
+                    }
+                    elseif($condition[0]=="owner_name")
                     {
-                        $newsub = $j;
-                        $arr = Yii::app()->db
-                                         ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value < :condition_2')
-                                         ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)
-                                         ->bindParam(":condition_2", $condition[2], PDO::PARAM_INT)
-                                         ->queryAll();
-                        $ins=array();
-                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                        $command->addInCondition('participant_id', $ins);
-                        $j++;
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name < :condition_2')
+                                            ->from('{{users}}')
+                                            ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid);
+                    }
+                    elseif (is_numeric($condition[0]))
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value < :condition_2)');
+                        $command->params=array(':condition_0'=>$condition[0], ':condition_2'=>$condition[2]);
                     }
                     else
                     {
-                        $command->addCondition(':condition_0 < :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+                        $command->addCondition($condition[0] . ' < :condition_2');
+                        $command->params=array(':condition_2'=>$condition[2]);
                     }
                 }
+                 $i+=3;
             }
             else if ($condition[$i] != '') //This section deals with subsequent filter conditions that have boolean joiner
             {
                 if(is_numeric($condition[$i+3])) $condition[$i+3]=intval($condition[$i+3]); //Force the type of numeric values to be numeric
+                $booloperator=strtoupper($condition[$i]);
+                $condition1name=":condition_".($i+1);
+                $condition2name=":condition_".($i+3);
 
                 if ($condition[$i + 2] == 'equal')
                 {
-                    if (is_numeric($condition[$i + 1]))
+                    if($condition[$i+1]=="survey")
                     {
-                        if ($condition[$i] == 'and')
-                        {
-                            $newsub = $j;
-                            $arr = Yii::app()->db
-                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value = :condition_p3')
-                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
-                                             ->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR)
-                                             ->queryAll();
-
-                        $ins=array();
-                        foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                        $command->addInCondition('participant_id', $ins);
-                        $j++;
-                        }
-                        else
-                        {
-                            $tobedonelater[$condition[$i + 1]][0] = $condition[$i + 2];
-                            $tobedonelater[$condition[$i + 1]][1] = $condition[$i + 3];
-                        }
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title = '.$condition2name.' OR {{survey_links}}.survey_id = '.$condition2name.'))', $booloperator);
+                        $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                    }
+                    elseif($condition[$i+1]=="owner_name")
+                    {
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name = '.$condition2name)
+                                            ->from('{{users}}')
+                                            ->bindParam($condition2name, $condition[$i+3], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid, $booloperator);
+                    }
+                    elseif (is_numeric($condition[$i+1])) //Searching for an attribute
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition1name.' AND {{participant_attribute}}.value='.$condition2name.')', $booloperator);
+                        $command->params=array_merge($command->params, array($condition1name=>$condition[$i+1], $condition2name=>$condition[$i+3]));
                     }
                     else
                     {
-                        if ($condition[$i] == 'and')
-                        {
-                            $command->addCondition($condition[$i+1]." = '".$condition[$i+3]."'");
-                        }
-                        else
-                        {
-                            $command->addCondition($condition[$i+1]." = '".$condition[$i+3]."'", 'OR');
-                        }
+                        $command->addCondition($condition[$i+1] . ' = '.$condition2name, $booloperator);
+                        $command->params=array_merge($command->params, array($condition2name=>$condition[$i+3]));
                     }
                 }
                 else if ($condition[$i + 2] == 'contains')
                 {
-                    if (is_numeric($condition[$i + 1]))
+                    $condition[$i+3]="%".$condition[$i+3]."%";
+                    if($condition[$i+1]=="survey")
                     {
-                        if ($condition[$i] == 'and')
-                        {
-                            $newsub = $j;
-                            $like="%".$condition[$i+3]."%";
-                            $arr = Yii::app()->db
-                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value LIKE :condition_p3')
-                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
-                                             ->bindParam(":condition_p3", $like, PDO::PARAM_STR)
-                                             ->queryAll();
-                            $ins=array();
-                            foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                            $command->addInCondition('participant_id', $ins);
-                            $j++;
-                        }
-                        else
-                        {
-                            $tobedonelater[$condition[$i + 1]][0] = $condition[$i + 2];
-                            $tobedonelater[$condition[$i + 1]][1] = $condition[$i + 3];
-                        }
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title LIKE '.$condition2name.' OR {{survey_links}}.survey_id LIKE '.$condition2name.'))', $booloperator);
+                        $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                    }
+                    elseif($condition[$i+1]=="owner_name")
+                    {
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name LIKE '.$condition2name)
+                                            ->from('{{users}}')
+                                            ->bindParam($condition2name, $condition[$i+3], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid, $booloperator);
+                    }
+                    elseif (is_numeric($condition[$i+1])) //Searching for an attribute
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition1name.' AND {{participant_attribute}}.value LIKE '.$condition2name.')', $booloperator);
+                        $command->params=array_merge($command->params, array($condition1name=>$condition[$i+1], $condition2name=>$condition[$i+3]));
                     }
                     else
                     {
-                        $like="%".$condition[$i+3]."%";
-                        if ($condition[$i] == 'and')
-                        {
-                            $command->addCondition($condition[$i+1]." LIKE '".$like."'");
-                        }
-                        else
-                        {
-                            $command->addCondition($condition[$i+1]." LIKE '".$like."'", 'OR');
-						}
+                        $command->addCondition($condition[$i+1] . ' LIKE '.$condition2name, $booloperator);
+                        $command->params=array_merge($command->params, array($condition2name=>$condition[$i+3]));
                     }
                 }
                 else if ($condition[$i + 2] == 'notequal')
                 {
-                    if (is_numeric($condition[$i + 1]))
+                    if($condition[$i+1]=="survey")
                     {
-                        if ($condition[$i] == 'and')
-                        {
-                            $newsub = $j;
-                            $arr = Yii::app()->db
-                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value NOT IN (:condition_p3)')
-                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
-                                             ->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR)
-                                             ->queryAll();
-
-                            $ins=array();
-                            foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                            $command->addInCondition('participant_id', $ins);
-                            $j++;
-                        }
-                        else
-                        {
-                            $tobedonelater[$condition[$i + 1]][0] = $condition[$i + 2];
-                            $tobedonelater[$condition[$i + 1]][1] = $condition[$i + 3];
-                        }
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title != '.$condition2name.' OR {{survey_links}}.survey_id != '.$condition2name.'))', $booloperator);
+                        $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                    }
+                    elseif($condition[$i+1]=="owner_name")
+                    {
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name != '.$condition2name)
+                                            ->from('{{users}}')
+                                            ->bindParam($condition2name, $condition[$i+3], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid, $booloperator);
+                    }
+                    elseif (is_numeric($condition[$i+1])) //Searching for an attribute
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition1name.' AND {{participant_attribute}}.value != '.$condition2name.')', $booloperator);
+                        $command->params=array_merge($command->params, array($condition1name=>$condition[$i+1], $condition2name=>$condition[$i+3]));
                     }
                     else
                     {
-                        if ($condition[$i] == 'and')
-                        {
-                            $command->addCondition($condition[$i+1]." NOT IN ('".$condition[$i + 3]."')");
-                        }
-                        else
-                        {
-                            $command->addCondition($condition[$i+1]." NOT IN ('".$condition[$i + 3]."')", 'OR');
-                        }
+                        $command->addCondition($condition[$i+1] . ' != '.$condition2name, $booloperator);
+                        $command->params=array_merge($command->params, array($condition2name=>$condition[$i+3]));
                     }
                 }
                 else if ($condition[$i + 2] == 'notcontains')
                 {
-                    $like="%".$condition[$i+3]."%";
-                    if (is_numeric($condition[$i + 1]))
+                    $condition[$i+3]="%".$condition[$i+3]."%";
+                    if($condition[$i+1]=="survey")
                     {
-                        if ($condition[$i] == 'and')
-                        {
-                            $newsub = $j;
-                            $arr = Yii::app()->db
-                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value NOT LIKE :condition_p3')
-                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
-                                             ->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR)
-                                             ->queryAll();
-
-                            $ins=array();
-                            foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                            $command->addInCondition('participant_id', $ins);
-                            $j++;
-                        }
-                        else
-                        {
-                            $tobedonelater[$condition[$i + 1]][0] = $condition[$i + 2];
-                            $tobedonelater[$condition[$i + 1]][1] = $condition[$i + 3];
-                        }
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title NOT LIKE '.$condition2name.' OR {{survey_links}}.survey_id NOT LIKE '.$condition2name.'))', $booloperator);
+                        $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                    }
+                    elseif($condition[$i+1]=="owner_name")
+                    {
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name NOT LIKE '.$condition2name)
+                                            ->from('{{users}}')
+                                            ->bindParam($condition2name, $condition[$i+3], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid, $booloperator);
+                    }
+                    elseif (is_numeric($condition[$i+1])) //Searching for an attribute
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition1name.' AND {{participant_attribute}}.value NOT LIKE '.$condition2name.')', $booloperator);
+                        $command->params=array_merge($command->params, array($condition1name=>$condition[$i+1], $condition2name=>$condition[$i+3]));
                     }
                     else
                     {
-                        if ($condition[$i] == 'and')
-                        {
-
-                            $command->addCondition($condition[$i+1]." NOT LIKE '".$like."'");
-                        }
-                        else
-                        {
-                            $command->addCondition($condition[$i+1]." NOT LIKE '".$like."'", 'OR');
-                        }
+                        $command->addCondition($condition[$i+1] . ' NOT LIKE '.$condition2name, $booloperator);
+                        $command->params=array_merge($command->params, array($condition2name=>$condition[$i+3]));
                     }
                 }
                 else if ($condition[$i + 2] == 'greaterthan')
                 {
-                    if (is_numeric($condition[$i + 1]))
+                    if($condition[$i+1]=="survey")
                     {
-                        if ($condition[$i] == 'and')
-                        {
-                            $newsub = $j;
-                            $arr = Yii::app()->db
-                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value > :condition_p3')
-                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
-                                             ->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT)
-                                             ->queryAll();
-
-                            $ins=array();
-                            foreach($arr as $item) {$ins[]=$item['participant_id'];}
-                            $command->addInCondition('participant_id', $ins);
-                            $j++;
-                        }
-                        else
-                        {
-                            $tobedonelater[$condition[$i + 1]][0] = $condition[$i + 2];
-                            $tobedonelater[$condition[$i + 1]][1] = $condition[$i + 3];
-                        }
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title > '.$condition2name.' OR {{survey_links}}.survey_id > '.$condition2name.'))', $booloperator);
+                        $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                    }
+                    elseif($condition[$i+1]=="owner_name")
+                    {
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name > '.$condition2name)
+                                            ->from('{{users}}')
+                                            ->bindParam($condition2name, $condition[$i+3], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid, $booloperator);
+                    }
+                    elseif (is_numeric($condition[$i+1])) //Searching for an attribute
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition1name.' AND {{participant_attribute}}.value > '.$condition2name.')', $booloperator);
+                        $command->params=array_merge($command->params, array($condition1name=>$condition[$i+1], $condition2name=>$condition[$i+3]));
                     }
                     else
                     {
-                        if(is_numeric($condition[$i+3])) {$c3=$condition[$i+3];} else {$c3="'".$condition[$i+3]."'";}
-                        if ($condition[$i] == 'and')
-                        {
-
-                            $command->addCondition($condition[$i+1]." > ".$c3);
-                        }
-                        else
-                        {
-                            $command->addCondition($condition[$i+1]." > ".$c3, 'OR');
-                        }
+                        $command->addCondition($condition[$i+1] . ' > '.$condition2name, $booloperator);
+                        $command->params=array_merge($command->params, array($condition2name=>$condition[$i+3]));
                     }
                 }
                 else if ($condition[$i + 2] == 'lessthan')
                 {
-                    if (is_numeric($condition[$i + 1]))
+                    if($condition[$i+1]=="survey")
                     {
-                        if ($condition[$i] == 'and')
-                        {
-                            $newsub = $j;
-                            $arr = Yii::app()->db
-                                             ->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value < :condition_p3')
-                                             ->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)
-                                             ->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT)
-                                             ->queryAll();
-
-
-                            $command->addInCondition('participant_id', $arr);
-                            $j++;
-                        }
-                        else
-                        {
-                            $tobedonelater[$condition[$i + 1]][0] = $condition[$i + 2];
-                            $tobedonelater[$condition[$i + 1]][1] = $condition[$i + 3];
-                        }
+                        $lang = Yii::app()->session['adminlang'];
+                        $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title < '.$condition2name.' OR {{survey_links}}.survey_id < '.$condition2name.'))', $booloperator);
+                        $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                    }
+                    elseif($condition[$i+1]=="owner_name")
+                    {
+                        $userid = Yii::app()->db->createCommand()
+                                            ->select('uid')
+                                            ->where('full_name < '.$condition2name)
+                                            ->from('{{users}}')
+                                            ->bindParam($condition2name, $condition[$i+3], PDO::PARAM_STR)
+                                            ->queryAll();
+                        $uid=array();
+                        foreach($userid as $row) {$uid[]=$row['uid'];}
+                        $command->addInCondition('owner_uid', $uid, $booloperator);
+                    }
+                    elseif (is_numeric($condition[$i+1])) //Searching for an attribute
+                    {
+                        $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition1name.' AND {{participant_attribute}}.value < '.$condition2name.')', $booloperator);
+                        $command->params=array_merge($command->params, array($condition1name=>$condition[$i+1], $condition2name=>$condition[$i+3]));
                     }
                     else
                     {
-                        if(is_numeric($condition[$i+3])) {$c3=$condition[$i+3];} else {$c3="'".$condition[$i+3]."'";}
-                        if ($condition[$i] == 'and')
-                        {
-                            $command->addCondition($condition[$i+1]." < ".$c3);                        }
-                        else
-                        {
-                            $command->addCondition($condition[$i+1]." <>> ".$c3, 'OR');
-                        }
+                        $command->addCondition($condition[$i+1] . ' < '.$condition2name, $booloperator);
+                        $command->params=array_merge($command->params, array($condition2name=>$condition[$i+3]));
                     }
                 }
                 $i = $i + 4;
@@ -1262,86 +1302,13 @@ function getParticipantsSearch($condition, $page, $limit)
             }
         }
 
-        $otherdata = $data;
-        if (!empty($tobedonelater))
-        {
-            $command = new CDBCriteria;
-            $command->select = 'participant_id';
-            $command->distinct = TRUE;
-            $command->condition = '';
-            foreach ($tobedonelater as $key => $value)
-            {
-                if ($value[0] == 'equal')
-                {
-                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
-                    $command->addCondition('value = :val1')->bindParam(":val1", $value[1], PDO::PARAM_STR);
-                }
-                if ($value[0] == 'contains')
-                {
-                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
-                    $command->addCondition('value LIKE :val1')->bindParam(":val1", "%".$value[1]."%", PDO::PARAM_STR);
-                }
-                if ($value[0] == 'notequal')
-                {
-                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
-                    $command->addCondition('value != :val1')->bindParam(":val1", $value[1], PDO::PARAM_STR);
-                }
-                if ($value[0] == 'greaterthan')
-                {
-                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
-                    $command->addCondition('value > :val1')->bindParam(":val1", $value[1], PDO::PARAM_STR);
-                }
-                if ($value[0] == 'lessthan')
-                {
-                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
-                    $command->addCondition('value < :val1')->bindParam(":val1", $value[1], PDO::PARAM_STR);
-                }
-            }
-            $participant_id = ParticipantAttributeNames::model()->findAll($command);
-            $command = new CDBCriteria;
-            $command->select = '*';
-            $command->condition = '';
-            foreach ($participant_id as $key => $value)
-            {
-                $command->addCondition('participant_id = :participant_id')->bindParam(":participant_id", $value->participant_id, PDO::PARAM_STR);
-            }
-            if ($page == 0 && $limit == 0)
-            {
-                $arr = Participants::model()->findAll($command);
-                $data = array();
-                foreach ($arr as $t)
-                {
-                    $data[$t->participant_id] = $t->attributes;
-                }
-            }
-            else
-            {
-                $command->limit = $limit;
-                $command->offset = $start;
-                $arr = Participants::model()->findAll($command);
-                $data = array();
-                foreach ($arr as $t)
-                {
-                    $data[$t->participant_id] = $t->attributes;
-                }
-            }
-
-
-            $orddata = $data;
-            $finalanswer = array_merge($otherdata, $orddata);
-            return $finalanswer;
-        }
-        else
-        {
-            return $otherdata;
-        }
+        return $data;
     }
 
     function is_owner($participant_id)
     {
         $userid = Yii::app()->session['loginID'];
         $is_owner = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
-        //$is_owner->num_rows();
         $is_shared = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
         if (count($is_shared) || count($is_owner))
         {
