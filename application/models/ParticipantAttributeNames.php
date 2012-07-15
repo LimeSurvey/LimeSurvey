@@ -305,7 +305,9 @@ class ParticipantAttributeNames extends CActiveRecord
     //updates the attribute values in participant_attribute_values
     function saveAttributeValue($data)
     {
-        Yii::app()->db->createCommand()->update('{{participant_attribute_values}}', $data, "attribute_id = :attribute_id AND value_id = :value_id", array(":attribute_id" => $data['attribute_id'], ":value_id" => $data['value_id'])); //->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":value_id", $data['value_id'], PDO::PARAM_INT);
+        Yii::app()->db->createCommand()
+                  ->update('{{participant_attribute_values}}', $data, "attribute_id = :attribute_id AND value_id = :value_id", array(":attribute_id" => $data['attribute_id'], ":value_id" => $data['value_id']));
+                  //->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":value_id", $data['value_id'], PDO::PARAM_INT);
     }
 
     function saveAttributeVisible($attid,$visiblecondition)

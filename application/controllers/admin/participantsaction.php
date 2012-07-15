@@ -108,7 +108,7 @@ class participantsaction extends Survey_Common_Action
         // if user is superadmin, all survey names
         $urlSearch=Yii::app()->request->getQuery('searchurl');
         $urlSearch=!empty($urlSearch) ? "getParticipantsResults_json/search/$urlSearch" : "getParticipants_json";
-        //echo $urlSearch; die();
+
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('surveyls_language=:lang', array(':lang'=>$lang));
@@ -123,7 +123,6 @@ class participantsaction extends Survey_Common_Action
         $tSurveyNames=array();
         foreach($aSurveyNames as $row)
         {
-            //echo $row['surveyls_survey_id']."<br />";
             $bTokenExists = tableExists('{{tokens_' . $row['surveyls_survey_id'] . '}}');
             if ($bTokenExists) //If tokens table exists
             {
@@ -1433,6 +1432,7 @@ class participantsaction extends Survey_Common_Action
         $mappedarray = Yii::app()->request->getPost('mappedarray');
         $sFilePath = Yii::app()->request->getPost('fullfilepath');
         $filterblankemails = Yii::app()->request->getPost('filterbea');
+        $overwrite = Yii::app()->request->getPost('overwrite');
         $errorinupload = "";
         $tokenlistarray = file($sFilePath);
         $recordcount = 0;
@@ -1440,6 +1440,7 @@ class participantsaction extends Survey_Common_Action
         $mincriteria = 0;
         $imported = 0;
         $dupcount = 0;
+        $overwritten = 0;
         $duplicatelist = array();
         $invalidemaillist = array();
         $invalidformatlist = array();
@@ -1556,10 +1557,29 @@ class participantsaction extends Survey_Common_Action
             	//HACK - converting into SQL instead of doing an array search
                 $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
                 //End of HACK
-				$aData = Participants::model()->checkforDuplicate($aData);
-                if ($aData == true) {
+				$aData = Participants::model()->checkforDuplicate($aData, "participant_id");
+                if ($aData !== false) {
                     $thisduplicate = 1;
                     $dupcount++;
+                    if($overwrite=="true")
+                    {
+                        //Although this person already exists, we want to update the mapped attribute values
+                        if (!empty($mappedarray)) {
+                            //The mapped array contains the attributes we are
+                            //saving in this import
+                            foreach ($mappedarray as $attid => $attname) {
+                                if (!empty($attname)) {
+                                    $bData = array('participant_id' => $aData,
+                                                       'attribute_id' => $attid,
+                                                       'value' => $writearray[$attname]);
+                                         Participant_attribute::model()->updateParticipantAttributeValue($bData);
+                                } else {
+                                    //If the value is empty, don't write the value
+                                }
+                            }
+                        }
+                        $overwritten++;
+                    }
                 }
                 if ($thisduplicate == 1) {
                     $dupfound = true;
@@ -1641,6 +1661,7 @@ class participantsaction extends Survey_Common_Action
             }
             $recordcount++;
         }
+
         unlink($sFilePath);
         $clang = $this->getController()->lang;
         $aData = array();
@@ -1655,6 +1676,7 @@ class participantsaction extends Survey_Common_Action
         $aData['invalidattribute'] = $invalidattribute;
         $aData['mandatory'] = $mandatory;
         $aData['invalidparticipantid'] = $invalidparticipantid;
+        $aData['overwritten'] = $overwritten;
         $this->getController()->render('/admin/participants/uploadSummary_view', $aData);
     }
 

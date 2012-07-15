@@ -9,6 +9,10 @@ $(document).ready(function() {
     $('#centralattribute').css({'height' : height-200});
     $('#csvattribute').css({'height' : height-200});
     $('#newcreated').css({'height' : height-200});
+    if($("#overwrite").is(':checked')) {var attoverwrite=true;} else {var attoverwrite=false;}
+    $("#overwrite").click(function(){
+        if($("#overwrite").is(':checked')) {attoverwrite=true;} else {attoverwrite=false;}
+    });
     //The original fieldnames bucket
     $(".csvatt").sortable({
         connectWith:".cpdbatt,.newcreate",
@@ -42,11 +46,13 @@ $(document).ready(function() {
                 $(ui.sender).sortable('cancel');
             } else {
 	            $('ul.cpdbatt > li:nth-child('+cpdbattpos+')').css("color","white");
-	            $('ul.cpdbatt > li:nth-child('+csvpos+')').css("color","white");
-	            $("#"+cpdbattid).css("background-color","#328639");
-	            $("#"+cpdbattid).css("border-color","#FFFFFF");
-	            $("#"+csvattid).css("border-color","#FFFFFF");
-	            $("#"+csvattid).css("background-color","#328639");
+                $('ul.cpdbatt > li:nth-child('+cpdbattpos+')').css("border-bottom","0");
+                $('ul.cpdbatt > li:nth-child('+csvpos+')').css("color","white");
+	            $('ul.cpdbatt > li:nth-child('+csvpos+')').css("margin-top","-5px");
+                $('ul.cpdbatt > li:nth-child('+csvpos+')').css("border-top","0");
+                $('ul.cpdbatt > li:nth-child('+csvpos+')').css("min-height","20px");
+                $('ul.cpdbatt > li:nth-child('+csvpos+')').css("background-color","#328639");
+                $("#"+cpdbattid).css("background-color","#328639");
        	    }
         }
     });
@@ -113,6 +119,7 @@ $(document).ready(function() {
 		    fullfilepath : thefilepath,
 		    newarray : newcurrentarray,
 		    mappedarray : mappedarray,
+            overwrite : attoverwrite,
             filterbea : filterblankemails
 		}, function(msg){
 		    $('#processing').parent().find("button").each(function() {

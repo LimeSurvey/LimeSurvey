@@ -57,6 +57,9 @@
                     }
                     ?>
                 </ul>
+            <div class='explanation'>
+                <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing token attribute values if a duplicate participant is found?") ?></label>
+            </div>
             </div>
         </ul>
     </div>

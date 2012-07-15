@@ -794,11 +794,12 @@ ul.assessmentscope li label:first-child {
 }
 
 .badtokenlist {
-    width: 400px;
+    width: 95%;
     background-color: #FFF;
     border: 1px solid #CCC;
     height: 50px;
     overflow: auto;
+    overflow-y: scroll;
     text-align: left;
     margin-bottom: 0px;
     font-size: 8pt

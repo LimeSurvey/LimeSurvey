@@ -87,3 +87,16 @@ li{
         background:#696565;
         color: white;
 }
+.explanation {
+    font-size: 0.8em;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    padding: 5px 0px 5px 15px;
+}
+.explanation input {
+    position: relative;
+    margin-left: -20px;
+    top: 3px;
+}

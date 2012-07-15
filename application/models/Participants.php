@@ -1909,12 +1909,13 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
      * The purpose of this function is to check for duplicate in participants
      */
 
-    function checkforDuplicate($fields)
+    function checkforDuplicate($fields, $output="bool")
     {
-        $query = Yii::app()->db->createCommand()->select('*')->where($fields)->from('{{participants}}')->queryAll();
+        $query = Yii::app()->db->createCommand()->select('participant_id')->where($fields)->from('{{participants}}')->queryAll();
         if (count($query) > 0)
         {
-            return true;
+            if($output=="bool") {return true;}
+            return $query[0][$output];
         }
         else
         {

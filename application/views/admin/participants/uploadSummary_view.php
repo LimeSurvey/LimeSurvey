@@ -20,28 +20,32 @@
             }
             else
             {
-                $uploadSummary .= "<div class='warningheader'>" . $clang->gT("Failed to create token entries") . "</div>";
+                $uploadSummary .= "<div class='warningheader'>" . $clang->gT("No new participants were created") . "</div>";
             }
             if (!empty($recordcount))
             {
-                $uploadSummary .= "<ul style='margin-left: 105px'><li>" . sprintf($clang->gT("%s records in CSV"), $recordcount) . "</li>";
+                $uploadSummary .= "<ul><li style='width: 80%'>" . sprintf($clang->gT("%s records found in CSV file"), $recordcount) . "</li>";
             }
             if (!empty($mandatory))
             {
-                $uploadSummary .= "<li>" . sprintf($clang->gT("%s records have empty mandatory fields"), $mandatory) . "</li>";
+                $uploadSummary .= "<li style='width: 80%'>" . sprintf($clang->gT("%s records have empty mandatory fields"), $mandatory) . "</li>";
             }
-            $uploadSummary .= "<li>" . sprintf($clang->gT("%s records met minumum requirements"), $mincriteria) . "</li>";
-            $uploadSummary .= "<li>" . sprintf($clang->gT("%s records imported"), $imported) . "</li></ul>";
+            $uploadSummary .= "<li style='width: 80%'>" . sprintf($clang->gT("%s records met minumum requirements"), $mincriteria) . "</li>";
+            $uploadSummary .= "<li style='width: 80%'>" . sprintf($clang->gT("%s new participants were created"), $imported) . "</li>";
+            if($overwritten > 0) {
+                $uploadSummary .= "<li style='width: 80%'>".sprintf($clang->gT("%s records were duplicate but had attributes updated"), $overwritten)."</li>";
+            }
+            $uploadSummary .="</ul>";
             if (count($duplicatelist) > 0 || count($invalidemaillist) > 0 || count($invalidattribute) > 0)
             {
                 $uploadSummary .= "<div class='warningheader'>" . $clang->gT('Warnings') . "</div><ul>";
                 if (!empty($duplicatelist) && (count($duplicatelist) > 0))
                 {
-                    $uploadSummary .= "<li style='width: 400px'>" . sprintf($clang->gT("%s duplicate records removed"), count($duplicatelist));
-                    $uploadSummary .= "<div class='badtokenlist' id='duplicateslist' ><ul>";
+                    $uploadSummary .= "<li style='width: 80%'>" . sprintf($clang->gT("%s duplicate entries not created"), count($duplicatelist));
+                    $uploadSummary .= "<div class='badtokenlist' id='duplicateslist'><ul>";
                     foreach ($duplicatelist as $data)
                     {
-                        $uploadSummary .= "<li>" . $data . "</li>";
+                        $uploadSummary .= "<li style='width: 95%; margin-left: 0px'>" . $data . "</li>";
                     }
                     $uploadSummary .= "</ul></div></li>";
                 }
