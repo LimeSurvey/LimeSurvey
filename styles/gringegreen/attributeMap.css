@@ -9,11 +9,11 @@ html, body{
  margin-top: 10px;
 }
 
-.tokenatt {
+.tokenatt, .standardfields {
    margin-top: -5px;
 }
 
-.tokenatt li {
+.tokenatt li, .standardfields li {
   margin-top: 10px;
   border-bottom: 0px;
   min-height: 35px;

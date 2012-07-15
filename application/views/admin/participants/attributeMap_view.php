@@ -90,6 +90,15 @@
         <?php
         }
         ?>
+        <div class='heading'><?php $clang->eT("Standard token fields") ?></div><br />
+        <ul class="standardfields">
+            <li id='t_token'><?php $clang->eT("Token") ?></li>
+        </ul>
+        <div class='explanation'>
+            <input type='checkbox' id='overwritest' name='overwritest' /> <label for='overwritest'><?php $clang->eT("Overwrite existing standard field values if a participant already exists?") ?></label>
+            <br /><?php $clang->eT("Note: Standard token fields cannot be automatically mapped") ?>
+        </div>
+
     </div>
 	<p>
 		<input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />

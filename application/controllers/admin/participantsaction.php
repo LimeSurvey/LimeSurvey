@@ -1778,12 +1778,13 @@ class participantsaction extends Survey_Common_Action
         $newcreate = Yii::app()->request->getPost('newarr');
         $overwriteauto = Yii::app()->request->getPost('overwrite');
         $overwriteman = Yii::app()->request->getPost('overwriteman');
+        $overwritest = Yii::app()->request->getPost('overwritest');
         $createautomap = Yii::app()->request->getPost('createautomap');
 
         $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
-        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $createautomap);
+        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {

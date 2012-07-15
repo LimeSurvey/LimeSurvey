@@ -224,8 +224,6 @@ $(document).ready(function() {
                 gridComplete: function () {
                     /* Removes the delete icon from the actions bar */
                     $('div.ui-inline-del').html('');
-                    /* Removes the edit icon from the actions bar */
-                    //$('div.ui-inline-edit').html('');
                 },
                 ondblClickRow: function(id,subgrid_id) {
                     var parid = id.split('_');
@@ -245,20 +243,21 @@ $(document).ready(function() {
                         });
                     } else {
                         var att_type = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'atttype');
-                        if(att_type=="DP") {
+                        if(att_type=="DP") { //Date
                             $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
                         }
-                        if(att_type=="DD") {
+                        if(att_type=="DD") { //Dropdown
                             var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
                             $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'select',editoptions:{ value:":Select One;"+att_p_values}});
                         }
-                        if(att_type=="TB") {
+                        if(att_type=="TB") { //Textbox
                             $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
                             $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
                         }
                         var attap = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attap');
-                        if(id && id!==lastSel2) {
+                        if(id && id!==lastSel2) { //If there was already another row open for editin save it before editing this one
                             jQuery("#displayparticipants_"+parid[0]+"_t").saveRow(lastSel2);
+                            //jQuery.fn.fmatter.rowactions('97358ea2-8227-483b-a225-5d13a522402e_50','displayparticipants_97358ea2-8227-483b-a225-5d13a522402e_t','cancel',0);
                             lastSel2=id;
                         }
                         $.fn.fmatter.rowactions(id,'displayparticipants_'+parid[0]+'_t','edit',0);
@@ -270,6 +269,7 @@ $(document).ready(function() {
             });
         }
     });
+
     $.jgrid.formatter.integer.thousandsSeparator=''; //Removes the default spacing as a thousands seperator
     //Todo - global setting for all jqGrids to match language/regional number formats
 
@@ -411,7 +411,6 @@ $(document).ready(function() {
         }
     }
     );
-
     /* Add the CSV Export Button to the main jqGrid Pager */
     $("#displayparticipants").navButtonAdd('#pager',
         {
@@ -609,11 +608,11 @@ $(document).ready(function() {
     //End of Script for sharing
 
     function addtoSurvey(participant_id,survey_id,redirect) {
-        $("#addsurvey").load(postUrl,{
-            participantid:participant_id},function(){
-            $(location).attr('href',attMapUrl+'/'+survey_id+'/'+redirect);
-        }
-        );
+        $("#addsurvey").load(postUrl,
+                            {participantid:participant_id},
+                            function(){
+                                $(location).attr('href',attMapUrl+'/'+survey_id+'/'+redirect);
+                            });
     }
 
     function basename(path) {

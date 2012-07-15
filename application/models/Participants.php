@@ -1346,7 +1346,7 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
      * @param array $newcreate An array containing new attributes to create in the tokens table
      * @param bool $overwrite If true, overwrite existing values in existint token attributes
      * */
-    function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $createautomap=true)
+    function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
     {
         Yii::app()->loadHelper('common');
         $duplicate = 0;
@@ -1483,7 +1483,6 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
                 //Participant already exists in token table - don't copy
                 $duplicate++;
                 // Here is where we can put code for overwriting the attribute data if so required
-
                 if($overwriteauto=="true") {
                     //If there are new attributes created, add those values to the token entry for this participant
                     if (!empty($newcreate))
@@ -1499,19 +1498,30 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
                     {
                         foreach ($mapped as $key => $value)
                         {
-                            if ($key[10] == 'c') {
+                            if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
                                 Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
                     }
                 }
                 if($overwriteman=="true") {
-                    //If there are any automatically mapped attributes, add those values to the token entry for this participant
+                    //If there are any manually mapped attributes, add those values to the token entry for this participant
                     if (!empty($mapped))
                     {
                         foreach ($mapped as $key => $value)
                         {
-                            if ($key[10] != 'c') {
+                            if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
+                                Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                            }
+                        }
+                    }
+                }
+                if($overwritest=="true") {
+                    if(!empty($mapped))
+                    {
+                        foreach($mapped as $key=>$value)
+                        {
+                            if($key[10] != 'c' && $key[9] !='_') {
                                 Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
