@@ -4062,12 +4062,12 @@
                             break;
                     }
                     $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
-                    $startingValues[$k]=array(
+                    $LEM->updatedValues[$knownVar['sgqa']]=array(
                         'type'=>$knownVar['type'],
                         'value'=>$value,
                     );
                 }
-                $LEM->_UpdateValuesInDatabase($startingValues);
+                $LEM->_UpdateValuesInDatabase(NULL);
             }
 
             return array(
