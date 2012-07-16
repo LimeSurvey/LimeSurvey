@@ -59,6 +59,14 @@
                 </ul>
             <div class='explanation'>
                 <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing token attribute values if a duplicate participant is found?") ?></label>
+                <br /><br /><?php
+                if($participant_id_exists) {
+                    $clang->eT("Duplicates will be detected using the participant_id field in this CSV file");
+                } else {
+                    $clang->eT("Duplicates will be detected by a combination of firstname, lastname and email addresses");
+                }
+
+                ?>
             </div>
             </div>
         </ul>

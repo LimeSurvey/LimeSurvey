@@ -1400,12 +1400,13 @@ class participantsaction extends Survey_Common_Action
             $selectedcsvfields = array();
             foreach ($firstline as $key => $value)
             {
-                if (!in_array($value, $regularfields))
+                $testvalue = preg_replace('/[^(\x20-\x7F)]*/','', $value); //Remove invalid characters from string
+                if (!in_array($testvalue, $regularfields))
                 {
                     array_push($selectedcsvfields, $value);
                 }
+                $fieldlist[]=$value;
             }
-
             $linecount = count(file($sFilePath));
 
             $attributes = ParticipantAttributeNames::model()->getAttributes();
@@ -1414,7 +1415,8 @@ class participantsaction extends Survey_Common_Action
                 'firstline' => $selectedcsvfields,
                 'fullfilepath' => $sFilePath,
                 'linecount' => $linecount - 1,
-                'filterbea' => $filterblankemails
+                'filterbea' => $filterblankemails,
+                'participant_id_exists' => in_array('participant_id', $fieldlist)
             );
             $this->_renderWrappedTemplate('participants', 'attributeMapCSV', $aData);
         }
@@ -1523,7 +1525,7 @@ class participantsaction extends Survey_Common_Action
                         $ignoredcolumns[] = $fieldname;
                     }
                 }
-                if (!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline))
+                if ((!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline)) || !in_array('participant_id', $firstline))
                 {
                     $recordcount = count($tokenlistarray);
                     break;
@@ -1555,7 +1557,13 @@ class participantsaction extends Survey_Common_Action
                          'owner_uid' => Yii::app()->session['loginID']
                          );
             	//HACK - converting into SQL instead of doing an array search
-                $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
+                if(in_array('participant_id', $firstline)) {
+                    $dupreason="participant_id";
+                    $aData = "participant_id = '".mysql_real_escape_string($writearray['participant_id'])."'";
+                } else {
+                    $dupreason="nameemail";
+                    $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
+                }
                 //End of HACK
 				$aData = Participants::model()->checkforDuplicate($aData, "participant_id");
                 if ($aData !== false) {
@@ -1577,8 +1585,8 @@ class participantsaction extends Survey_Common_Action
                                     //If the value is empty, don't write the value
                                 }
                             }
+                            $overwritten++;
                         }
-                        $overwritten++;
                     }
                 }
                 if ($thisduplicate == 1) {
@@ -1599,7 +1607,7 @@ class participantsaction extends Survey_Common_Action
                     }
                 }
             	if (!$dupfound && !$invalidemail) {
-            		//If it isn't a duplicate value or an invalid email, process the entry
+            		//If it isn't a duplicate value or an invalid email, process the entry as a new participant
 
                	    //First, process the known fields
                     if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "") {
@@ -1677,6 +1685,7 @@ class participantsaction extends Survey_Common_Action
         $aData['mandatory'] = $mandatory;
         $aData['invalidparticipantid'] = $invalidparticipantid;
         $aData['overwritten'] = $overwritten;
+        $aData['dupreason'] = $dupreason;
         $this->getController()->render('/admin/participants/uploadSummary_view', $aData);
     }
 
