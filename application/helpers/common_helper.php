@@ -4842,7 +4842,7 @@ function incompleteAnsFilterState()
 {
     global $filterout_incomplete_answers;
     $letsfilter='';
-    $letsfilter = returnGlobal('filterinc'); //read get/post filterinc
+    $letsfilter = returnGlobal('completionstate'); //read get/post completionstate
 
 
     // first let's initialize the incompleteanswers session variable
@@ -4855,14 +4855,8 @@ function incompleteAnsFilterState()
         Yii::app()->session['incompleteanswers'] = $filterout_incomplete_answers;
     }
 
-    if  (Yii::app()->session['incompleteanswers']=='filter') {
-        return "filter"; //COMPLETE ANSWERS ONLY
-    }
-    elseif (Yii::app()->session['incompleteanswers']=='show') {
-        return false; //ALL ANSWERS
-    }
-    elseif (Yii::app()->session['incompleteanswers']=='incomplete') {
-        return "inc"; //INCOMPLETE ANSWERS ONLY
+    if  (Yii::app()->session['incompleteanswers']=='complete' || Yii::app()->session['incompleteanswers']=='all' || Yii::app()->session['incompleteanswers']=='incomplete') {
+        return Yii::app()->session['incompleteanswers'];
     }
     else
     { // last resort is to prevent filtering
@@ -7537,7 +7531,7 @@ function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
     $str = trim(strip_tags($str));
 
     // Is the string long enough to ellipsize?
-    if (strlen($str) <= $max_length)
+    if (strlen($str) <= $max_length+3)
     {
         return $str;
     }

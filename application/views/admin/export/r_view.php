@@ -1,8 +1,8 @@
 <div class='header ui-widget-header'><?php $clang->eT("Export result data to R");?></div>
 <form action='<?php echo $this->createUrl("admin/export/exportr/sid/$surveyid");?>' id='exportspss' method='post'><ul>
-<li><label for='filterinc'><?php $clang->eT("Data selection:");?></label><select id='filterinc' name='filterinc' onchange='this.form.submit();'>
-<option value='filter' <?php echo$selecthide;?>><?php $clang->eT("Completed responses only");?></option>
-<option value='show' <?php echo$selectshow;?>><?php $clang->eT("All responses");?></option>
+<li><label for='completionstate'><?php $clang->eT("Data selection:");?></label><select id='completionstate' name='completionstate' onchange='this.form.submit();'>
+<option value='complete' <?php echo$selecthide;?>><?php $clang->eT("Completed responses only");?></option>
+<option value='all' <?php echo$selectshow;?>><?php $clang->eT("All responses");?></option>
 <option value='incomplete' <?php echo$selectinc;?>><?php $clang->eT("Incomplete responses only");?></option>
 </select></li>
 

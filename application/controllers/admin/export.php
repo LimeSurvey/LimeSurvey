@@ -188,12 +188,10 @@ class export extends Survey_Common_Action {
         if ( ! $exportstyle )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $excesscols = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
-            $excesscols = array_keys($excesscols);
+            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            $iFieldCount = count($aFieldMap);
 
-            $afieldcount = count($excesscols);
-
-            $selecthide = "'";
+            $selecthide = "";
             $selectshow = "";
             $selectinc = "";
             if ( incompleteAnsFilterState() == "filter" )
@@ -212,8 +210,8 @@ class export extends Survey_Common_Action {
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;
-            $data['afieldcount'] = $afieldcount;
-            $data['excesscols'] = $excesscols;
+            $data['afieldcount'] = $iFieldCount;
+            $data['excesscols'] = $aFieldMap;
 
             //get max number of datasets
             $max_datasets_query = Yii::app()->db->createCommand("SELECT COUNT(id) AS count FROM {{survey_".intval($iSurveyID)."}}")->query()->read();
@@ -272,7 +270,7 @@ class export extends Survey_Common_Action {
                 $_POST['attribute_select'] = array();
             }
 
-            $options->responseCompletionState = 'show';
+            $options->responseCompletionState = 'all';
 
             $dquery = '';
             if ( in_array('first_name', Yii::app()->request->getPost('attribute_select')) )
@@ -304,11 +302,6 @@ class export extends Survey_Common_Action {
                     $dquery .= ", {{tokens_$iSurveyID}}.$attr_name";
                 }
             }
-        }
-
-        if ( $options->responseCompletionState == 'inc' )
-        {
-            $options->responseCompletionState = 'incomplete';
         }
 
         $resultsService = new ExportSurveyResultsService();

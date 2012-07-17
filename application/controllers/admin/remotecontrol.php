@@ -60,6 +60,8 @@ class remotecontrol extends Survey_Common_Action
     */
     public function test()
     {
+        $sFileToImport=dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss';
+//        $sFileToImport=dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'survey_archive_example_feedback_survey.zip';
         Yii::app()->loadLibrary('jsonRPCClient');
         $myJSONRPCClient = new jsonRPCClient(Yii::app()->getBaseUrl(true).'/'.dirname(Yii::app()->request->getPathInfo()));
         $sSessionKey= $myJSONRPCClient->get_session_key('admin','password');
@@ -69,9 +71,16 @@ class remotecontrol extends Survey_Common_Action
             echo 'Retrieved session key'.'<br>';
         }
 
-        $sLSSData=file_get_contents(dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss');
-        $iSurveyID=$myJSONRPCClient->import_survey($sSessionKey, $sLSSData);
+        $sLSSData=base64_encode(file_get_contents($sFileToImport));
+        $iSurveyID=$myJSONRPCClient->import_survey($sSessionKey, $sLSSData, 'zip','Test import by JSON_RPC',1000);
         echo 'Created new survey SID:'.$iSurveyID.'<br>';
+
+/*
+        Very simple example to export responses as Excel file
+        $aResult=$myJSONRPCClient->export_reponses($sSessionKey,$iSurveyID,'xls');
+        file_put_contents('d:\test.xls',base64_decode(chunk_split($aResult)));
+*/
+
 
         $aResult=$myJSONRPCClient->activate_survey($sSessionKey, $iSurveyID);
         if ($aResult['status']=='OK')
@@ -104,6 +113,7 @@ class remotecontrol extends Survey_Common_Action
         {
             echo 'Removed Arabian as additional language'.'<br>';
         }
+        die();
         $aResult=$myJSONRPCClient->delete_survey($sSessionKey, $iSurveyID);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
@@ -204,7 +214,7 @@ class remotecontrol_handle
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
                 file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
                 $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
-
+                unlink($sFullFilePath);
                 if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
                 else
                 {
@@ -494,37 +504,35 @@ class remotecontrol_handle
     */
     public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
     {
-        if ($this->_checkSessionKey($sSessionKey))
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
         {
-            if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
             {
-                $oSurvey=Survey::model()->findByPk($iSurveyID);
-                if (is_null($oSurvey))
+                return array('status' => 'Error: Invalid survey ID');
+            }
+            if (is_array($aAttributeFields) && count($aAttributeFields)>0)
+            {
+                foreach ($aAttributeFields as &$sField)
                 {
-                    return array('status' => 'Error: Invalid survey ID');
+                    $sField= intval($sField);
+                    $sField='attribute_'.$sField;
                 }
-                if (is_array($aAttributeFields) && count($aAttributeFields)>0)
-                {
-                    foreach ($aAttributeFields as &$sField)
-                    {
-                        $sField= intval($sField);
-                        $sField='attribute_'.$sField;
-                    }
-                    $aAttributeFields=array_unique($aAttributeFields);
-                }
-                Yii::app()->loadHelper('admin/token');
-                if (createTokenTable($iSurveyID, $aAttributeFields))
-                {
-                    return array('status' => 'OK');
-                }
-                else
-                {
-                    return array('status' => 'Token table could not be created');
-                }
+                $aAttributeFields=array_unique($aAttributeFields);
+            }
+            Yii::app()->loadHelper('admin/token');
+            if (createTokenTable($iSurveyID, $aAttributeFields))
+            {
+                return array('status' => 'OK');
             }
             else
-                return array('status' => 'No permission');
+            {
+                return array('status' => 'Token table could not be created');
+            }
         }
+        else
+            return array('status' => 'No permission');
     }
 
     /**
@@ -561,47 +569,46 @@ class remotecontrol_handle
     */
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
-        if ($this->_checkSessionKey($sSessionKey))
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        if (is_null($oSurvey))
         {
-            $oSurvey=Survey::model()->findByPk($iSurveyID);
-            if (is_null($oSurvey))
-            {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-
-            if (hasSurveyPermission($iSurveyID, 'responses', 'create'))
-            {
-                if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}'))
-                    return array('status' => 'No survey response table');
-
-                //set required values if not set
-
-                // @todo: Some of this is part of the validation and should be done in the model instead
-                if (!isset($aResponseData['submitdate']))
-                    $aResponseData['submitdate'] = date("Y-m-d H:i:s");
-                if (!isset($aResponseData['startlanguage']))
-                    $aResponseData['startlanguage'] = getBaseLanguageFromSurveyID($iSurveyID);
-
-                if ($oSurvey->datestamp=='Y')
-                {
-                    if (!isset($aResponseData['datestamp']))
-                        $aResponseData['datestamp'] = date("Y-m-d H:i:s");
-                    if (!isset($aResponseData['startdate']))
-                        $aResponseData['startdate'] = date("Y-m-d H:i:s");
-                }
-
-                Survey_dynamic::sid($iSurveyID);
-                $survey_dynamic = new Survey_dynamic;
-                $result = $survey_dynamic->insert($aResponseData);
-
-                if ($result)
-                    return $survey_dynamic->primaryKey;
-                else
-                    return array('status' => 'Unable to add response');
-            }
-            else
-                return array('status' => 'No permission');
+            return array('status' => 'Error: Invalid survey ID');
         }
+
+        if (hasSurveyPermission($iSurveyID, 'responses', 'create'))
+        {
+            if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}'))
+                return array('status' => 'No survey response table');
+
+            //set required values if not set
+
+            // @todo: Some of this is part of the validation and should be done in the model instead
+            if (!isset($aResponseData['submitdate']))
+                $aResponseData['submitdate'] = date("Y-m-d H:i:s");
+            if (!isset($aResponseData['startlanguage']))
+                $aResponseData['startlanguage'] = getBaseLanguageFromSurveyID($iSurveyID);
+
+            if ($oSurvey->datestamp=='Y')
+            {
+                if (!isset($aResponseData['datestamp']))
+                    $aResponseData['datestamp'] = date("Y-m-d H:i:s");
+                if (!isset($aResponseData['startdate']))
+                    $aResponseData['startdate'] = date("Y-m-d H:i:s");
+            }
+
+            Survey_dynamic::sid($iSurveyID);
+            $survey_dynamic = new Survey_dynamic;
+            $result = $survey_dynamic->insert($aResponseData);
+
+            if ($result)
+                return $survey_dynamic->primaryKey;
+            else
+                return array('status' => 'Unable to add response');
+        }
+        else
+            return array('status' => 'No permission');
+
     }
 
     /**
@@ -618,52 +625,90 @@ class remotecontrol_handle
     */
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken=true)
     {
-        if ($this->_checkSessionKey($sSessionKey))
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        if (is_null($oSurvey))
         {
-            $oSurvey=Survey::model()->findByPk($iSurveyID);
-            if (is_null($oSurvey))
-            {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-
-            if (hasSurveyPermission($iSurveyID, 'tokens', 'create'))
-            {
-                if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
-                    return array('status' => 'No token table');
-
-                $aDestinationFields = Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}')->getColumnNames();
-                $aDestinationFields = array_flip($field_names);
-
-                foreach ($aParticipantData as &$aParticipant)
-                {
-                    $aParticipant=array_intersect_key($aParticipant,$aDestinationFields);
-
-                    Tokens_dynamic::sid($iSurveyID);
-
-                    $token = new Tokens_dynamic;
-
-                    if ($token->insert($aParticipant))
-                    {
-                        $new_token_id = $token->primaryKey;
-
-                        if ($bCreateToken)
-                            $token_string = Tokens_dynamic::model()->createToken($new_token_id);
-                        else
-                            $token_string = '';
-
-                        $aParticipant = array_merge($aParticipant, array(
-                        'tid' => $new_token_id,
-                        'token' => $token_string,
-                        ));
-                    }
-                }
-
-                return $aParticipantData;
-            }
-            else
-                return array('status' => 'No permission');
+            return array('status' => 'Error: Invalid survey ID');
         }
+
+        if (hasSurveyPermission($iSurveyID, 'tokens', 'create'))
+        {
+            if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
+                return array('status' => 'No token table');
+
+            $aDestinationFields = Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}')->getColumnNames();
+            $aDestinationFields = array_flip($field_names);
+
+            foreach ($aParticipantData as &$aParticipant)
+            {
+                $aParticipant=array_intersect_key($aParticipant,$aDestinationFields);
+
+                Tokens_dynamic::sid($iSurveyID);
+
+                $token = new Tokens_dynamic;
+
+                if ($token->insert($aParticipant))
+                {
+                    $new_token_id = $token->primaryKey;
+
+                    if ($bCreateToken)
+                        $token_string = Tokens_dynamic::model()->createToken($new_token_id);
+                    else
+                        $token_string = '';
+
+                    $aParticipant = array_merge($aParticipant, array(
+                    'tid' => $new_token_id,
+                    'token' => $token_string,
+                    ));
+                }
+            }
+
+            return $aParticipantData;
+        }
+        else
+            return array('status' => 'No permission');
     }
+
+    /**
+    * RPC routine to export responses
+    * Returns the requested file as base64 encoded string
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param int $iSurveyID
+    * @param string $sDocumentType pdf,csv,xls,doc
+    * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to complete
+    * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
+    * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
+    * @param integer $iFromResponseID Optional
+    * @param integer $iToResponseID Optional
+    * @return On success: Requested file as base 64-encoded string. On failure array with error information
+    **/
+    function export_reponses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        Yii::app()->loadHelper('admin/exportresults');
+        if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
+        if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if($sDocumentType=='xls'){
+           // Cut down to the first 255 fields
+           $aFields=array_slice($aFields,0,255);
+        }
+        $oFomattingOptions=new FormattingOptions();
+        $oFomattingOptions->format=$sDocumentType;
+        $oFomattingOptions->responseMinRecord=$iFromResponseID;
+        $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        $oFomattingOptions->selectedColumns=$aFields;
+        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFomattingOptions->headingFormat=$sHeadingType;
+        $oFomattingOptions->answerFormat=$sResponseType;
+        $oExport=new ExportSurveyResultsService();
+        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode,$oFomattingOptions,'return');
+        return base64_encode($sFileData);
+    }
+
 
     /**
     * Tries to login with username and password
