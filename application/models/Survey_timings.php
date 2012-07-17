@@ -14,11 +14,12 @@
  * 	Files Purpose: lots of common functions
  */
 
-class Survey_timings extends CActiveRecord
+class Survey_timings extends LSActiveRecord
 {
 
     protected static $sid = 0;
-
+    public $avg; 
+    public $count; 
 	/**
 	 * Returns the static model
 	 *
@@ -56,7 +57,7 @@ class Survey_timings extends CActiveRecord
      */
     public function tableName()
     {
-        return '{{survey_' . intval(self::sid) . '_timings}}';
+        return '{{survey_' . intval(self::$sid) . '_timings}}';
     }
 
 }

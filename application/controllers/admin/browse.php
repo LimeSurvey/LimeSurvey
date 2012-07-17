@@ -665,14 +665,14 @@ class browse extends Survey_Common_Action
                 }
             }
         }
-
+        $aData['fnames'] = $fnames;
         $start = Yii::app()->request->getParam('start', 0);
         $limit = Yii::app()->request->getParam('limit', 50);
 
         //LETS COUNT THE DATA
         $oCriteria = new CdbCriteria();
         $oCriteria->select = 'tid';
-        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyId}}} ON {{survey_{$iSurveyId}_timings}}.id={{survey_{$iSurveyId}}}.id";
+        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyId}}} s ON t.id=s.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
         $dtcount = Survey_timings::model($iSurveyId)->count($oCriteria); // or die("Couldn't get response data");
 
@@ -683,17 +683,13 @@ class browse extends Survey_Common_Action
 
         //NOW LETS SHOW THE DATA
         $oCriteria = new CdbCriteria();
-        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyId}}} ON {{survey_{$iSurveyId}_timings}}.id = {{survey_{$iSurveyId}}}.id";
+        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyId}}} s ON t.id=s.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
-        $oCriteria->order = "{{survey_{$iSurveyId}}}.id";
-        $oCriteria->limit = $limit;
+        $oCriteria->order = "s.id " . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
         $oCriteria->offset = $start;
-        if ($aData['order'] == "desc")
-        {
-            $oCriteria->order .= " DESC";
-        }
+        $oCriteria->limit = $limit;
 
-        $dtresult = Survey_timings::model($iSurveyId)->findAll($oCriteria) or die("Couldn't get surveys");
+        $dtresult = Survey_timings::model($iSurveyId)->findAllAsArray($oCriteria) or die("Couldn't get surveys");
         $dtcount2 = count($dtresult);
         $cells = $fncount + 1;
 
@@ -734,10 +730,16 @@ class browse extends Survey_Common_Action
         {
             $selectshow = " selected='selected'";
         }
-
+        $aData['start'] = $start;
+        $aData['limit'] = $limit;
+        $aData['last'] = $last;
+        $aData['next'] = $next;
+        $aData['end'] = $end;
         $aViewUrls[] = 'browsetimeheader_view';
-
+        
+        $aData['fncount'] = $fncount;
         $bgcc = 'oddrow';
+        
         foreach ($dtresult as $dtrow)
         {
                 if ($bgcc == "evenrow")
@@ -748,23 +750,21 @@ class browse extends Survey_Common_Action
                 {
                     $bgcc = "evenrow";
                 }
-
+            $browsedatafield=array();
             for ($i = 0; $i < $fncount; $i++)
             {
-                $browsedatafield = htmlspecialchars($dtrow[$fnames[$i][0]]);
-
+                $browsedatafield[$i] = $dtrow[$fnames[$i][0]];
                 // seconds -> minutes & seconds
                 if (strtolower(substr($fnames[$i][0], -4)) == "time")
                 {
-                    $minutes = (int) ($browsedatafield / 60);
-                    $seconds = $browsedatafield % 60;
-                    $browsedatafield = '';
+                    $minutes = (int) ($browsedatafield[$i] / 60);
+                    $seconds = $browsedatafield[$i] % 60;
+                    $browsedatafield[$i] = '';
                     if ($minutes > 0)
-                        $browsedatafield .= "$minutes min ";
-                    $browsedatafield .= "$seconds s";
+                        $browsedatafield[$i] .= "$minutes min ";
+                    $browsedatafield[$i] .= "$seconds s";
                 }
             }
-
             $aData['browsedatafield'] = $browsedatafield;
             $aData['bgcc'] = $bgcc;
             $aData['dtrow'] = $dtrow;
@@ -775,15 +775,16 @@ class browse extends Survey_Common_Action
         $count = false;
         //$survstats=substr($surveytableNq);
         $oCriteria = new CDbCriteria;
-        $oCriteria->select = 'AVG(interviewtime) AS avg, COUNT(id)';
-        $oCriteria->join = "{{survey_{$iSurveyId}}} AS surv ON id = surv.id";
-        $oCriteria->condition = 'surv.submitdate IS NOT NULL';
+        $oCriteria->select = 'AVG(interviewtime) AS avg, COUNT(*) as count';
+        $oCriteria->join = " INNER JOIN {{survey_{$iSurveyId}}} s ON t.id = s.id";
+        $oCriteria->condition = 'submitdate IS NOT NULL';
         $oCriteria->order = 'interviewtime';
         $queryAvg = Survey_timings::model($iSurveyId)->find($oCriteria);
 
         $oCriteria->select = 'interviewtime';
         $queryAll = Survey_timings::model($iSurveyId)->findAll($oCriteria);
 
+        $count = count($queryAll);
         if ($aData['result'] = $row = $queryAvg)
         {
             $aData['avgmin'] = (int) ($row['avg'] / 60);
@@ -825,13 +826,9 @@ class browse extends Survey_Common_Action
             $aData['allsec'] = $median % 60;
         }
 
-        $aViewUrls[] = 'browsetimefooter_view';
-
         $aData['num_total_answers'] = Survey_dynamic::model($iSurveyId)->count();
         $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyId)->count('submitdate IS NOT NULL');
-
-        $aViewUrls[] = 'browseindex_view';
-
+        $aViewUrls[] = 'browsetimefooter_view';
         $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
