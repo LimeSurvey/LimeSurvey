@@ -44,7 +44,7 @@
                     <img src='<?php echo $sImageURL; ?>statistics.png' alt='<?php $clang->eT("Get statistics from these responses"); ?>' /></a>
                 <?php if ($thissurvey['savetimings'] == "Y")
                     { ?>
-                    <a href='<?php echo $this->createUrl("admin/browse/browse/surveyid/$surveyid/subaction/time"); ?>'>
+                    <a href='<?php echo $this->createUrl("admin/browse/time/surveyid/$surveyid"); ?>'>
                         <img src='<?php echo $sImageURL; ?>statistics_time.png' alt='<?php $clang->eT("Get time statistics from these responses"); ?>' /></a>
                     <?php }
             } ?>
