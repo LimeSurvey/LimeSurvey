@@ -151,6 +151,7 @@ class ExpressionManager {
 'checkdate' => array('checkdate', 'checkdate', $this->gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://www.php.net/manual/en/function.checkdate.php', 3),
 'cos' => array('cos', 'Math.cos', $this->gT('Cosine'), 'number cos(number)', 'http://www.php.net/manual/en/function.cos.php', 1),
 'count' => array('exprmgr_count', 'LEMcount', $this->gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
+'countif' => array('exprmgr_countif', 'LEMcountif', $this->gT('Count the number of answered questions in the list equal the first argument'), 'number count(matches, arg1, arg2, ... argN)', '', -2),
 'date' => array('date', 'date', $this->gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
 'exp' => array('exp', 'Math.exp', $this->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
 'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as radix separator, if needed'), 'string fixnum(number)', '', 1),            
@@ -3209,6 +3210,24 @@ function exprmgr_count($args)
     foreach ($args as $arg)
     {
         if ($arg != '') {
+            ++$j;
+        }
+    }
+    return $j;
+}
+
+/**
+ * Count the number of answered questions (non-empty) which match the first argument
+ * @param <type> $args
+ * @return int
+ */
+function exprmgr_countif($args)
+{
+    $j=0;    // keep track of how many non-null values seen
+    $match = array_shift($args);
+    foreach ($args as $arg)
+    {
+        if ($arg == $match) {
             ++$j;
         }
     }
