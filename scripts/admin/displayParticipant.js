@@ -185,11 +185,13 @@ $(document).ready(function() {
                 url: surveylinkUrl+'/'+row_id,
                 height: "100%",
                 width: "100%",
-                colNames:[surveyNameColTxt,surveyIdColTxt,tokenIdColTxt,dateAddedColTxt],
-                colModel:[{ name:'surveyname',index:'surveyname', width:100,align:'center'},
-                { name:'surveyid',index:'surveyid', width:90,align:'center'},
-                { name:'tokenid',index:'tokenid', width:100,align:'center'},
-                { name:'dateadded',index:'added', width:120,align:'center'}],
+                colNames:[surveyNameColTxt,surveyIdColTxt,tokenIdColTxt,dateAddedColTxt,dateInvitedColTxt,dateCompletedColTxt],
+                colModel:[{ name:'survey_name',index:'survey_name', width:400,align:'center', sorttype:"string", sortable: true},
+                { name:'survey_id',index:'survey_id', width:90,align:'center', sorttype:"int", sortable: true},
+                { name:'token_id',index:'token_id', width:80, align:'center', sorttype:"int", sortable: true},
+                { name:'date_created',index:'date_created', width:100,align:'center', sorttype:"string", sortable: true},
+                { name:'date_invited',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true},
+                { name:'date_completed',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true}],
                 caption: linksHeadingTxt,
                 gridComplete: function () {
                     var recs = $("#"+second_subgrid_table_id).jqGrid('getGridParam','reccount');
@@ -197,6 +199,8 @@ $(document).ready(function() {
                         //$("#"+second_subgrid_table_id).setGridHeight(40);
                         $("#hide_"+second_subgrid_table_id).hide();
                         //$("#NoRecordContact").show();
+                    } else {
+                        $("#hide_"+second_subgrid_table_id).css("margin-bottom", "20px"); //Some spacing after the subgrid
                     }
                 }
             });
@@ -224,6 +228,7 @@ $(document).ready(function() {
                 gridComplete: function () {
                     /* Removes the delete icon from the actions bar */
                     $('div.ui-inline-del').html('');
+                    $("#gview_"+subgrid_table_id).css("margin-top", "20px"); //Some spacing after the subgrid
                 },
                 ondblClickRow: function(id,subgrid_id) {
                     var parid = id.split('_');

@@ -46,7 +46,7 @@
                     <?php $clang->eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
                     &nbsp;&nbsp; <?php $clang->eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
                     &nbsp;&nbsp; <input type='submit' value='<?php $clang->eT("Show"); ?>' />
-                    &nbsp;&nbsp; <?php $clang->eT("Display:"); ?> <select name='filterinc' onchange='javascript:submit();'>
+                    &nbsp;&nbsp; <?php $clang->eT("Display:"); ?> <select name='completionstate' onchange='javascript:submit();'>
                         <option value='show' <?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
                         <option value='filter' <?php echo $selecthide; ?>><?php $clang->eT("Completed responses only"); ?></option>
                         <option value='incomplete' <?php echo $selectinc; ?>><?php $clang->eT("Incomplete responses only"); ?></option>

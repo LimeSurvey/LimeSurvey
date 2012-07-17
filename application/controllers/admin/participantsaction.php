@@ -488,7 +488,7 @@ class participantsaction extends Survey_Common_Action
         foreach ($records as $row)
         {
             $surveyname = Surveys_languagesettings::getSurveyNames($row['survey_id']);
-            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created']);
+            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created'], $row['date_invited'], $row['date_completed']);
             $i++;
         }
 
@@ -511,14 +511,7 @@ class participantsaction extends Survey_Common_Action
             if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
             {
                 $condition = explode("||", $searchcondition);
-                if (count($condition) == 3)
-                {
-                    $query = Participants::getParticipantsSearch($condition, 0, 0);
-                }
-                else
-                {
-                    $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
-                }
+                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
             }
             else // if no search criteria all the participants will be counted
             {
@@ -649,14 +642,8 @@ class participantsaction extends Survey_Common_Action
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);
-            if (count($condition) == 3) // If there is no and condition , if the count is equal to 3 that means only one condition
-            {
-                $query = Participants::getParticipantsSearch($condition, 0, 0);
-            }
-            else  // if there are 'and' and 'or' condition in the condition the count is to be greater than 3
-            {
-                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
-            }
+
+            $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
 
             printf( $this->getController()->lang->gT("%s participant(s) are to be copied "), count($query));
         }
@@ -691,15 +678,9 @@ class participantsaction extends Survey_Common_Action
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);  // explode the condition to the array
-            // format for the condition is field||condition||value
-            if (count($condition) == 3) // if count is 3 , then it's a single search
-            {
-                $query = Participants::getParticipantsSearch($condition, 0, 0);
-            }
-            else// if count is more than 3 , then it's a multiple search
-            {
-                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
-            }
+
+            $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
+
             foreach ($query as $key => $value)
             {
                 $participantid = $participantid . "," . $value['participant_id']; // combine the participant id's in an string
@@ -743,14 +724,9 @@ class participantsaction extends Survey_Common_Action
             if ($searchcondition != 'getParticipants_json') // If there is a search condition then only does participants are exported
             {
                 $condition = explode("||", $searchcondition);
-                if (count($condition) == 3) // Single search
-                {
-                    $query = Participants::getParticipantsSearch($condition, 0, 0);
-                }
-                else //combined search
-                {
-                    $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
-                }
+
+                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
+
             } // else all the participants in the central table will be exported since it's superadmin
             else
             {
@@ -853,18 +829,11 @@ class participantsaction extends Survey_Common_Action
             $condition = explode("||", $searchcondition);
             $aData = new stdClass();
             $aData->page = $page;
-            if (count($condition) == 3)
-            {
-                $records = Participants::getParticipantsSearch($condition, $page, $limit);
-                $aData->records = count(Participants::getParticipantsSearch($condition, 0, 0));
-                $aData->total = ceil($aData->records / $limit);
-            }
-            else
-            {
-                $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
-                $aData->records = count(Participants::getParticipantsSearchMultiple($condition, 0, 0));
-                $aData->total = ceil($aData->records / $limit);
-            }
+
+            $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
+            $aData->records = count(Participants::getParticipantsSearchMultiple($condition, 0, 0));
+            $aData->total = ceil($aData->records / $limit);
+
             $i = 0;
 
             foreach ($records as $row => $value)
@@ -938,14 +907,9 @@ class participantsaction extends Survey_Common_Action
             $condition = explode("||", $searchcondition);
             $aData = new stdClass();
             $aData->page = $page;
-            if (count($condition) == 3)
-            {
-                $records = Participants::getParticipantsSearch($condition, $page, $limit);
-            }
-            else
-            {
-                $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
-            }
+
+            $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
+
             $i = 0;
             foreach ($records as $row => $value)
             {
@@ -1400,12 +1364,13 @@ class participantsaction extends Survey_Common_Action
             $selectedcsvfields = array();
             foreach ($firstline as $key => $value)
             {
-                if (!in_array($value, $regularfields))
+                $testvalue = preg_replace('/[^(\x20-\x7F)]*/','', $value); //Remove invalid characters from string
+                if (!in_array($testvalue, $regularfields))
                 {
                     array_push($selectedcsvfields, $value);
                 }
+                $fieldlist[]=$value;
             }
-
             $linecount = count(file($sFilePath));
 
             $attributes = ParticipantAttributeNames::model()->getAttributes();
@@ -1414,7 +1379,8 @@ class participantsaction extends Survey_Common_Action
                 'firstline' => $selectedcsvfields,
                 'fullfilepath' => $sFilePath,
                 'linecount' => $linecount - 1,
-                'filterbea' => $filterblankemails
+                'filterbea' => $filterblankemails,
+                'participant_id_exists' => in_array('participant_id', $fieldlist)
             );
             $this->_renderWrappedTemplate('participants', 'attributeMapCSV', $aData);
         }
@@ -1523,7 +1489,7 @@ class participantsaction extends Survey_Common_Action
                         $ignoredcolumns[] = $fieldname;
                     }
                 }
-                if (!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline))
+                if ((!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline)) || !in_array('participant_id', $firstline))
                 {
                     $recordcount = count($tokenlistarray);
                     break;
@@ -1555,7 +1521,13 @@ class participantsaction extends Survey_Common_Action
                          'owner_uid' => Yii::app()->session['loginID']
                          );
             	//HACK - converting into SQL instead of doing an array search
-                $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
+                if(in_array('participant_id', $firstline)) {
+                    $dupreason="participant_id";
+                    $aData = "participant_id = '".mysql_real_escape_string($writearray['participant_id'])."'";
+                } else {
+                    $dupreason="nameemail";
+                    $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
+                }
                 //End of HACK
 				$aData = Participants::model()->checkforDuplicate($aData, "participant_id");
                 if ($aData !== false) {
@@ -1577,8 +1549,8 @@ class participantsaction extends Survey_Common_Action
                                     //If the value is empty, don't write the value
                                 }
                             }
+                            $overwritten++;
                         }
-                        $overwritten++;
                     }
                 }
                 if ($thisduplicate == 1) {
@@ -1599,7 +1571,7 @@ class participantsaction extends Survey_Common_Action
                     }
                 }
             	if (!$dupfound && !$invalidemail) {
-            		//If it isn't a duplicate value or an invalid email, process the entry
+            		//If it isn't a duplicate value or an invalid email, process the entry as a new participant
 
                	    //First, process the known fields
                     if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "") {
@@ -1677,6 +1649,7 @@ class participantsaction extends Survey_Common_Action
         $aData['mandatory'] = $mandatory;
         $aData['invalidparticipantid'] = $invalidparticipantid;
         $aData['overwritten'] = $overwritten;
+        $aData['dupreason'] = $dupreason;
         $this->getController()->render('/admin/participants/uploadSummary_view', $aData);
     }
 

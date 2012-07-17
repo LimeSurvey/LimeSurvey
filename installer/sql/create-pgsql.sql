@@ -338,6 +338,8 @@ CREATE TABLE prefix_survey_links (
   "token_id" integer NOT NULL,
   "survey_id" integer NOT NULL,
   "date_created" timestamp,
+  "date_invited" timestamp,
+  "date_completed" timestamp
   CONSTRAINT prefix_survey_links_pkey PRIMARY KEY (participant_id,token_id,survey_id)
 );
 

@@ -25,10 +25,10 @@
             <legend><?php $clang->eT("Data selection"); ?></legend>
             <ul>
                 <li>
-                    <label for='filterinc'><?php $clang->eT("Include:"); ?> </label>
-                    <select name='filterinc' id='filterinc'>
-                        <option value='show' <?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
-                        <option value='filter' <?php echo $selecthide; ?> > <?php $clang->eT("Completed responses only"); ?></option>
+                    <label for='completionstate'><?php $clang->eT("Include:"); ?> </label>
+                    <select name='completionstate' id='completionstate'>
+                        <option value='all' <?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
+                        <option value='complete' <?php echo $selecthide; ?> > <?php $clang->eT("Completed responses only"); ?></option>
                         <option value='incomplete' <?php echo $selectinc; ?> > <?php $clang->eT("Incomplete responses only"); ?></option>
                     </select>
                 </li>

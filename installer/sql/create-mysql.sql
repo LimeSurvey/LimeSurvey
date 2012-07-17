@@ -331,6 +331,8 @@ CREATE TABLE `prefix_survey_links` (
   `token_id` int(11) NOT NULL,
   `survey_id` int(11) NOT NULL,
   `date_created` datetime,
+  `date_invited` datetime,
+  `date_completed` datetime,
    PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
  ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

@@ -768,11 +768,11 @@ ul.assessmentscope li label:first-child {
 }
 
 .badtokenlist {
-    width: 400px;
+    width: 95%;
     background-color: #FFF;
     border: 1px solid #CCC;
-    height: 50px;
-    overflow: auto;
+    height: 80px;
+    overflow-y: auto;
     text-align: left;
     margin-bottom: 0px;
     font-size: 8pt
@@ -979,6 +979,10 @@ div.errorheader{
     background-color: #FFC0C0;
     margin: 5px 0;
     padding:2px;
+}
+div.uploadsummary li {
+    width: 95%;
+    margin-left: -10px;
 }
 div.warningheader{
     font-weight:bold;

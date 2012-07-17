@@ -149,7 +149,7 @@ class SurveyRuntimeHelper {
             if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
             {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
-                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step']+1,false,false);   // if late in the survey, will re-validate contents, which may be overkill
+                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
                 unset($_SESSION[$LEMsessid]['LEMtokenResume']);
                 unset($_SESSION[$LEMsessid]['LEMreload']);
             }

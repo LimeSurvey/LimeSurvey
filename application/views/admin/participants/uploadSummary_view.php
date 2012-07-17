@@ -11,6 +11,7 @@
     <body>
         <?php
         $uploadSummary = "<div class='header ui-widget-header'>" . $clang->gT("CPDB CSV summary") . "</div><div class='messagebox ui-corner-all'>";
+        $uploadSummary .= "<div class='uploadsummary'>\n";
         if (empty($errorinupload))
         {
             $uploadSummary .= "<div class='successheader'>" . $clang->gT('Uploaded CSV file successfully') . "</div>";
@@ -24,16 +25,16 @@
             }
             if (!empty($recordcount))
             {
-                $uploadSummary .= "<ul><li style='width: 80%'>" . sprintf($clang->gT("%s records found in CSV file"), $recordcount) . "</li>";
+                $uploadSummary .= "<ul><li>" . sprintf($clang->gT("%s records found in CSV file"), $recordcount) . "</li>";
             }
             if (!empty($mandatory))
             {
-                $uploadSummary .= "<li style='width: 80%'>" . sprintf($clang->gT("%s records have empty mandatory fields"), $mandatory) . "</li>";
+                $uploadSummary .= "<li>" . sprintf($clang->gT("%s records have empty mandatory fields"), $mandatory) . "</li>";
             }
-            $uploadSummary .= "<li style='width: 80%'>" . sprintf($clang->gT("%s records met minumum requirements"), $mincriteria) . "</li>";
-            $uploadSummary .= "<li style='width: 80%'>" . sprintf($clang->gT("%s new participants were created"), $imported) . "</li>";
+            $uploadSummary .= "<li>" . sprintf($clang->gT("%s records met minumum requirements"), $mincriteria) . "</li>";
+            $uploadSummary .= "<li>" . sprintf($clang->gT("%s new participants were created"), $imported) . "</li>";
             if($overwritten > 0) {
-                $uploadSummary .= "<li style='width: 80%'>".sprintf($clang->gT("%s records were duplicate but had attributes updated"), $overwritten)."</li>";
+                $uploadSummary .= "<li>".sprintf($clang->gT("%s records were duplicate but had attributes updated"), $overwritten)."</li>";
             }
             $uploadSummary .="</ul>";
             if (count($duplicatelist) > 0 || count($invalidemaillist) > 0 || count($invalidattribute) > 0)
@@ -41,11 +42,16 @@
                 $uploadSummary .= "<div class='warningheader'>" . $clang->gT('Warnings') . "</div><ul>";
                 if (!empty($duplicatelist) && (count($duplicatelist) > 0))
                 {
-                    $uploadSummary .= "<li style='width: 80%'>" . sprintf($clang->gT("%s duplicate entries not created"), count($duplicatelist));
+                    $uploadSummary .= "<li>" . sprintf($clang->gT("%s were found to be duplicate entries and did not need a new participant to be created"), count($duplicatelist));
+                    if($dupreason == "participant_id") {
+                        $uploadSummary .= "<li>".sprintf($clang->gT("They were found to be duplicate using the participant id field"))."</li>\n";
+                    } else {
+                        $uploadSummary .= "<li>".sprintf($clang->gT("They were found to be duplicate using a combination of firstname, lastname and email fields"))."</li>\n";
+                    }
                     $uploadSummary .= "<div class='badtokenlist' id='duplicateslist'><ul>";
                     foreach ($duplicatelist as $data)
                     {
-                        $uploadSummary .= "<li style='width: 95%; margin-left: 0px'>" . $data . "</li>";
+                        $uploadSummary .= "<li>" . $data . "</li>";
                     }
                     $uploadSummary .= "</ul></div></li>";
                 }
@@ -70,7 +76,7 @@
                     $uploadSummary .= "</ul></div></li>";
                 }
             }
-            $uploadSummary .= "</div>";
+            $uploadSummary .= "</div></div>";
         }
         else
         {

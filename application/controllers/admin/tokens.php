@@ -1204,9 +1204,12 @@ class tokens extends Survey_Common_Action
 
                     $from = Yii::app()->request->getPost('from_' . $emrow['language']);
 
-                    $fieldsarray["{OPTOUTURL}"] = $this->getController()->createAbsoluteUrl("/optout/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
-                    $fieldsarray["{OPTINURL}"] = $this->getController()->createAbsoluteUrl("/optin/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
-                    $fieldsarray["{SURVEYURL}"] = $this->getController()->createAbsoluteUrl("/survey/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{OPTOUTURL}"] = $this->getController()
+                                                       ->createAbsoluteUrl("/optout/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{OPTINURL}"] = $this->getController()
+                                                      ->createAbsoluteUrl("/optin/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{SURVEYURL}"] = $this->getController()
+                                                       ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/langcode/" . trim($emrow['language']) . "/");
 
                     foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {
@@ -1239,37 +1242,45 @@ class tokens extends Survey_Common_Action
                     {
                         $tokenoutput .= $emrow['tid'] . " " . ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.") . "<br />", $fieldsarray);
                     }
-                    elseif (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), null, $customheaders))
-                    {
-                        // Put date into sent
-                        $udequery = Tokens_dynamic::model($iSurveyId)->findByPk($emrow['tid']);
-                        if ($bEmail)
-                        {
-                            $tokenoutput .= $clang->gT("Invitation sent to:");
-                            $udequery->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                        }
-                        else
-                        {
-                            $tokenoutput .= $clang->gT("Reminder sent to:");
-                            $udequery->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                            $udequery->remindercount = $udequery->remindercount + 1;
-                        }
-                        $udequery->save();
-
-                        $tokenoutput .= " {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']})<br />\n";
-                        if (Yii::app()->getConfig("emailsmtpdebug") == 2)
-                        {
-                            $tokenoutput .= $maildebug;
-                        }
-                    }
                     else
                     {
-                        $tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:") . " " . $maildebug . "<br />", $fieldsarray);
+                        if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), null, $customheaders))
+                        {
+                            // Put date into sent
+                            $udequery = Tokens_dynamic::model($iSurveyId)->findByPk($emrow['tid']);
+                            if ($bEmail)
+                            {
+                                $tokenoutput .= $clang->gT("Invitation sent to:");
+                                $udequery->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                            }
+                            else
+                            {
+                                $tokenoutput .= $clang->gT("Reminder sent to:");
+                                $udequery->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                                $udequery->remindercount = $udequery->remindercount + 1;
+                            }
+                            $udequery->save();
+                            //Update central participant survey_links
+                            if(!empty($emrow['participant_id']))
+                            {
+                                $slquery = Survey_links::model()->find('participant_id = "'.$emrow['participant_id'].'" AND survey_id = '.$iSurveyId.' AND token_id = '.$emrow['tid']);
+                                $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                                $slquery->save();
+                            }
+                            $tokenoutput .= " {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']})<br />\n";
+                            if (Yii::app()->getConfig("emailsmtpdebug") == 2)
+                            {
+                                $tokenoutput .= $maildebug;
+                            }
+                        } else {
+                            $tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:") . " " . $maildebug . "<br />", $fieldsarray);
+                        }
                     }
                     unset($fieldsarray);
                 }
 
                 $aViewUrls = array('tokenbar', 'emailpost');
+                $aData['tokenoutput']=$tokenoutput;
 
                 if ($ctcount > $emcount)
                 {
@@ -2010,6 +2021,7 @@ class tokens extends Survey_Common_Action
             $newtable = "old_tokens_{$iSurveyId}_$date";
 
             Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
+            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => "a:0:{}"));
 
             //Remove any survey_links to the CPDB
             Survey_links::deleteLinksBySurvey($iSurveyId);

@@ -105,6 +105,7 @@ class Survey_links extends CActiveRecord
                              ->bindParam(":survey_id", $surveyId)
                              ->query();
     }
+
 }
 
 ?>

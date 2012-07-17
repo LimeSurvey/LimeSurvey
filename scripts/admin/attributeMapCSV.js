@@ -17,7 +17,17 @@ $(document).ready(function() {
     $(".csvatt").sortable({
         connectWith:".cpdbatt,.newcreate",
         helper: "clone",
-        appendTo: "ul"
+        appendTo: "ul",
+        receive: function(event,ui) {
+            newcurrentarray = $(this).sortable('toArray');
+            var csvattpos = jQuery.inArray($(ui.item).attr('id'),newcurrentarray)
+            csvattpos = csvattpos+1;
+            $('ul.csvatt > li:nth-child('+csvattpos+')').css("color", "black");
+            $('ul.csvatt > li:nth-child('+csvattpos+')').css("background-color","white");
+            $('ul.csvatt > li:nth-child('+csvattpos+')').css("margin-top","3px");
+            $('ul.csvatt > li:nth-child('+csvattpos+')').css("border-top","2px solid #ddd");
+
+        }
     });
     //The 'create new' bucket
     $(".newcreate").sortable({
@@ -28,10 +38,8 @@ $(document).ready(function() {
     $("ul.cpdbatt").sortable({
         helper: "clone",
         appendTo: "body",
-        connectWith: "ul",
-        beforeStop: function(event,ui) {
-            $(this).sortable('cancel');
-        },
+        connectWith: "ul.cpdbatt,.csvatt,.newcreate",
+
         receive: function(event,ui) {
             cpdbattarray = $(this).sortable('toArray');
             var cpdbattpos = jQuery.inArray($(ui.item).attr('id'),cpdbattarray);
@@ -54,6 +62,9 @@ $(document).ready(function() {
                 $('ul.cpdbatt > li:nth-child('+csvpos+')').css("background-color","#328639");
                 $("#"+cpdbattid).css("background-color","#328639");
        	    }
+        },
+        remove: function(event,ui) {
+            /* TODO: Find out how to change the colour of the li item above the moved item back to white */
         }
     });
 
@@ -100,7 +111,7 @@ $(document).ready(function() {
 		};
 
 		$("#processing").dialog({
-			height: 450,
+			height: 550,
 		    width: 700,
 		    modal: true,
 		    buttons: dialog_buttons,

@@ -1009,7 +1009,11 @@ function db_upgrade_all($oldversion) {
         alterLanguageCode('it-formal','it');
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
     }
-
+    if ($oldversion < 161)
+    {
+        addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
+        addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
+    }
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';

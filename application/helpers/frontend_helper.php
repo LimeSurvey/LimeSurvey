@@ -1024,13 +1024,17 @@
         $sitename = Yii::app()->getConfig("sitename");
 
         // Shift the date due to global timeadjust setting
-        $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+        $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
         // check how many uses the token has left
-        $usesquery = "SELECT usesleft FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."'";
+        $usesquery = "SELECT usesleft, participant_id, tid FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."'";
         $usesresult = dbExecuteAssoc($usesquery);
         $usesrow = $usesresult->read();
-        if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
+        if (isset($usesrow)) {
+                $usesleft = $usesrow['usesleft'];
+                $participant_id=$usesrow['participant_id'];
+                $token_id=$usesrow['tid'];
+        }
 
         $utquery = "UPDATE {{tokens_$surveyid}}\n";
         if ($quotaexit==true)
@@ -1042,6 +1046,13 @@
             if (isset($usesleft) && $usesleft<=1)
             {
                 $utquery .= "SET usesleft=usesleft-1, completed='$today'\n";
+                if(!empty($participant_id))
+                {
+                    //Update the survey_links table if necessary
+                    $slquery = Survey_links::model()->find('participant_id = "'.$participant_id.'" AND survey_id = '.$surveyid.' AND token_id = '.$token_id);
+                    $slquery->date_completed = $today;
+                    $slquery->save();
+                }
             }
             else
             {
@@ -1053,6 +1064,13 @@
             if (isset($usesleft) && $usesleft<=1)
             {
                 $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
+                if(!empty($participant_id))
+                {
+                    //Update the survey_links table if necessary, to protect anonymity, use the date_created field date
+                    $slquery = Survey_links::model()->find('participant_id = "'.$participant_id.'" AND survey_id = '.$surveyid.' AND token_id = '.$token_id);
+                    $slquery->date_completed = $slquery->date_created;
+                    $slquery->save();
+                }
             }
             else
             {
