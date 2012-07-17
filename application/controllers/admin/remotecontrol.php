@@ -183,22 +183,27 @@ class remotecontrol_handle
 
 
     /**
-    * RPC routine to import a survey
+    * RPC routine to import a survey - imports lss,csv,xls or survey zip archive
     *
     * @access public
     * @param string $sSessionKey
-    * @param string $sLSSData String containing the data of an LSS file
+    * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,xls or survey zip archive
+    * @param string $sImportDataType  lss,csv,xls or zip
     * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
     * @return integer iSurveyID  - ID of the new survey
     */
-    public function import_survey($sSessionKey, $sLSSData, $sNewSurveyName=NULL, $DestSurveyID=NULL)
+    public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName=NULL, $DestSurveyID=NULL)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
             if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
             {
+                if (!in_array($sImportDataType,array('zip','csv','xls','lss'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
-                $aImportResults = XMLImportSurvey('', $sLSSData, $sNewSurveyName, $DestSurveyID);
+                // First save the data to a temporary file
+                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
+                file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
+                $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
 
                 if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
                 else

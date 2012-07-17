@@ -893,86 +893,8 @@ class SurveyAdmin extends Survey_Common_Action
 
             if ($action == 'importsurvey' && !$aData['bFailed'])
             {
-
-                if (isset($sExtension) && strtolower($sExtension) == 'csv')
-                {
-                    $aImportResults = CSVImportSurvey($sFullFilepath, null, (isset($_POST['translinksfields'])));
-                }
-                elseif (isset($sExtension) && strtolower($sExtension) == 'lss')
-                {
-                    $aImportResults = XMLImportSurvey($sFullFilepath, null, null, null, (isset($_POST['translinksfields'])));
-                }
-                elseif (isset($sExtension) && strtolower($sExtension) == 'xls')
-                {
-                    $aImportResults = ExcelImportSurvey($sFullFilepath);
-                }
-                elseif (isset($sExtension) && strtolower($sExtension) == 'zip')  // Import a survey archive
-                {
-                    Yii::import("application.libraries.admin.pclzip.pclzip", true);
-                    $pclzip = new PclZip(array('p_zipname' => $sFullFilepath));
-                    $aFiles = $pclzip->listContent();
-
-                    if ($pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/') == 0)
-                    {
-                        unset($pclzip);
-                    }
-                    // Step 1 - import the LSS file and activate the survey
-                    foreach ($aFiles as $aFile)
-                    {
-                        if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss')
-                        {
-                            //Import the LSS file
-                            $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, null, null, true);
-                            // Activate the survey
-                            Yii::app()->loadHelper("admin/activate");
-                            $activateoutput = activateSurvey($aImportResults['newsid']);
-                            unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
-                            break;
-                        }
-                    }
-                    // Step 2 - import the responses file
-                    foreach ($aFiles as $aFile)
-                    {
-                        if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsr')
-                        {
-                            //Import the LSS file
-                            $aResponseImportResults = XMLImportResponses(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
-                            $aImportResults = array_merge($aResponseImportResults, $aImportResults);
-                            unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
-                            break;
-                        }
-                    }
-                    // Step 3 - import the tokens file - if exists
-                    foreach ($aFiles as $aFile)
-                    {
-                        if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lst')
-                        {
-                            Yii::app()->loadHelper("admin/token");
-                            if (createTokenTable($aImportResults['newsid']))
-                                $aTokenCreateResults = array('tokentablecreated' => true);
-                            $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
-                            $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);
-                            $aImportResults = array_merge($aTokenImportResults, $aImportResults);
-                            unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
-                            break;
-                        }
-                    }
-                    // Step 4 - import the timings file - if exists
-                    foreach ($aFiles as $aFile)
-                    {
-                        if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings"))
-                        {
-                            $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
-                            $aImportResults = array_merge($aTimingsImportResults, $aImportResults);
-                            unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    $importerror = true;
-                }
+                $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
+                if (is_null($aImportResults)) $importerror = true; 
             }
             elseif ($action == 'copysurvey' && (empty($importerror) || !$importerror))
             {

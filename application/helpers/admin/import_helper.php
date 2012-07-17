@@ -3317,6 +3317,101 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 }
 
 
+function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyName=NULL, $DestSurveyID=NULL)
+{
+    $aPathInfo = pathinfo($sFullFilepath);
+    if (isset($aPathInfo['extension']))
+    {
+        $sExtension = $aPathInfo['extension'];
+    }
+    else
+    {
+        $sExtension = "";
+    }
+    if (isset($sExtension) && strtolower($sExtension) == 'csv')
+    {
+        return CSVImportSurvey($sFullFilepath, $DestSurveyID, $bTranslateLinksFields);
+    }
+    elseif (isset($sExtension) && strtolower($sExtension) == 'lss')
+    {
+        return XMLImportSurvey($sFullFilepath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+    }
+    elseif (isset($sExtension) && strtolower($sExtension) == 'xls')
+    {
+        return ExcelImportSurvey($sFullFilepath);
+    }
+    elseif (isset($sExtension) && strtolower($sExtension) == 'zip')  // Import a survey archive
+    {
+        Yii::import("application.libraries.admin.pclzip.pclzip", true);
+        $pclzip = new PclZip(array('p_zipname' => $sFullFilepath));
+        $aFiles = $pclzip->listContent();
+
+        if ($pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/') == 0)
+        {
+            unset($pclzip);
+        }
+        // Step 1 - import the LSS file and activate the survey
+        foreach ($aFiles as $aFile)
+        {
+            if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss')
+            {
+                //Import the LSS file
+                $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, null, null, true);
+                // Activate the survey
+                Yii::app()->loadHelper("admin/activate");
+                $activateoutput = activateSurvey($aImportResults['newsid']);
+                unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
+                break;
+            }
+        }
+        // Step 2 - import the responses file
+        foreach ($aFiles as $aFile)
+        {
+            if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsr')
+            {
+                //Import the LSS file
+                $aResponseImportResults = XMLImportResponses(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
+                $aImportResults = array_merge($aResponseImportResults, $aImportResults);
+                unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
+                break;
+            }
+        }
+        // Step 3 - import the tokens file - if exists
+        foreach ($aFiles as $aFile)
+        {
+            if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lst')
+            {
+                Yii::app()->loadHelper("admin/token");
+                if (createTokenTable($aImportResults['newsid']))
+                    $aTokenCreateResults = array('tokentablecreated' => true);
+                $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
+                $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);
+                $aImportResults = array_merge($aTokenImportResults, $aImportResults);
+                unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
+                break;
+            }
+        }
+        // Step 4 - import the timings file - if exists
+        foreach ($aFiles as $aFile)
+        {
+            if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings"))
+            {
+                $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
+                $aImportResults = array_merge($aTimingsImportResults, $aImportResults);
+                unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
+                break;
+            }
+        }
+        return $aImportResults;
+    }
+    else
+    {
+        return null;
+    }
+
+}
+
+
 
 /**
 * This function imports a LimeSurvey .lss survey XML file
@@ -4236,10 +4331,10 @@ function ExcelImportSurvey($sFullFilepath)
         $baselang = $surveyinfo['language'];    // the base language
     }
 
-  $rownumber = 1;
+    $rownumber = 1;
     foreach ($adata as $row)
     {
-    		$rownumber += 1;
+        $rownumber += 1;
         $row = str_replace(chr(0xA0),' ',$row);
         switch($row['class'])
         {
@@ -4310,11 +4405,11 @@ function ExcelImportSurvey($sFullFilepath)
 
                 $result = Questions::model()->insertRecords($insertdata); //or safeDie ($clang->gT("Error").": Failed to insert question<br />");
                 if(!$result){
-                	 $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
-                	 break;
+                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
+                    break;
                 }
 
-				  $newqid = $result;
+                $newqid = $result;
                 if (!isset($qinfo[$qname]))
                 {
                     $results['questions']++;
@@ -4459,7 +4554,7 @@ function ExcelImportSurvey($sFullFilepath)
 
                 $result = Answers::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
                 if(!$result){
-                	 $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert answer").". ".$clang->gT("Excel row number ").$rownumber;
+                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert answer").". ".$clang->gT("Excel row number ").$rownumber;
                 }
                 $results['answers']++;
                 break;
@@ -4468,10 +4563,10 @@ function ExcelImportSurvey($sFullFilepath)
     }
 
     // Delete the survey if error found
-		if(is_array($results['error']))
-		{
-			$result = Survey::model()->deleteSurvey($iNewSID);
-		}
+    if(is_array($results['error']))
+    {
+        $result = Survey::model()->deleteSurvey($iNewSID);
+    }
 
     return $results;
 }
