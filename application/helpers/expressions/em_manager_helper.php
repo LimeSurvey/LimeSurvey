@@ -4435,7 +4435,7 @@
         {
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
-            
+
             $message = '';
             $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             if ($this->surveyOptions['active'] && !isset($_SESSION[$this->sessid]['srid']))
@@ -4586,11 +4586,11 @@
 
                     }
                     else if ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
-                        {
-                            Saved_control::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
-                        }
-                        // Check Quotas
-                        $bQuotaMatched = false;
+                    {
+                        Saved_control::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
+                    }
+                    // Check Quotas
+                    $bQuotaMatched = false;
                     $aQuotas = check_quota('return', $this->sid);
                     if ($aQuotas !== false)
                     {
@@ -8047,7 +8047,7 @@ EOD;
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End URL") . ":</td><td colspan=2>" . $_linkreplace . "</td></tr>";
                 }
             }
-            
+
             $out .= "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
 
             $_gseq=-1;

@@ -84,6 +84,8 @@ else
     var surveyIdColTxt="<?php $clang->eT("Survey ID") ?>";
     var tokenIdColTxt="<?php $clang->eT("Token ID") ?>";
     var dateAddedColTxt="<?php $clang->eT("Date added") ?>";
+    var dateInvitedColTxt="<?php $clang->eT("Last invited") ?>";
+    var dateCompletedColTxt="<?php $clang->eT("Submitted") ?>";
     var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSurveyInfo_json/pid/"); ?>";
     /* Colnames and heading for attributes subgrid */
     var attributesHeadingTxt="<?php $clang->eT("Participant's attribute information") ?>";

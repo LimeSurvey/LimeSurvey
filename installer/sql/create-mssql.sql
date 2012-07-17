@@ -326,7 +326,9 @@ CREATE TABLE [prefix_survey_links] (
   [participant_id] varchar(50) NOT NULL,
   [token_id] int NOT NULL,
   [survey_id] int NOT NULL,
-  [date_created] datetime
+  [date_created] datetime,
+  [date_invited] datetime,
+  [date_completed] datetime
   PRIMARY KEY  ([participant_id],[token_id],[survey_id])
 );
 

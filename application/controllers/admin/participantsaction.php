@@ -488,7 +488,7 @@ class participantsaction extends Survey_Common_Action
         foreach ($records as $row)
         {
             $surveyname = Surveys_languagesettings::getSurveyNames($row['survey_id']);
-            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created']);
+            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created'], $row['date_invited'], $row['date_completed']);
             $i++;
         }
 

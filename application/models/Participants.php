@@ -434,6 +434,12 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
                     $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' :param2 OR {{survey_links}}.survey_id '.$operator.' :param2))');
                     $command->params=array(':lang'=>$lang, ':param2'=>$condition[2]);
                 }
+                elseif($condition[0]=="surveys") //Search by quantity of linked surveys
+                {
+                    $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM lime_survey_links)" : "";
+                    $command->addCondition('participant_id IN (SELECT participant_id FROM lime_survey_links GROUP BY participant_id HAVING count(*) '.$operator.' :param2 ORDER BY count(*))'.$addon);
+                    $command->params=array(':param2'=>$condition[2]);
+                }
                 elseif($condition[0]=="owner_name")
                 {
                     $userid = Yii::app()->db->createCommand()
@@ -491,6 +497,11 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
                     $lang = Yii::app()->session['adminlang'];
                     $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' '.$condition2name.' OR {{survey_links}}.survey_id '.$operator.' '.$condition2name.'))', $booloperator);
                     $command->params=array_merge($command->params, array(':lang'=>$lang, $condition2name=>$condition[$i+3]));
+                } elseif ($condition[$i+1]=="surveys") //search by quantity of linked surveys
+                {
+                    $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM lime_survey_links)" : "";
+                    $command->addCondition('participant_id IN (SELECT participant_id FROM lime_survey_links GROUP BY participant_id HAVING count(*) '.$operator.' :param2 ORDER BY count(*))'.$addon);
+                    $command->params=array(':param2'=>$condition[$i+3]);
                 }
                 elseif($condition[$i+1]=="owner_name")
                 {
@@ -614,39 +625,42 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
         if($createautomap=="true") {
             //Rename the token table fieldnames contained in the $key of $mapped to the cpdb name for the $val of $mapped
             foreach($mapped as $key=>$val) {
-                $newname = 'attribute_cpdb_' . intval($val);
+                if(is_numeric($val)) {
+                    $newname = 'attribute_cpdb_' . intval($val);
 
-                //$fields = array($value => array('name' => $newname, 'type' => 'TEXT'));
-                //Rename the field in the tokens_[sid] table
-                Yii::app()->db
-                          ->createCommand()
-                          ->renameColumn('{{tokens_' . intval($surveyid) . '}}', $key, $newname);
-                //Make the field a TEXT field
-                Yii::app()->db
-                          ->createCommand()
-                          ->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
+                    //$fields = array($value => array('name' => $newname, 'type' => 'TEXT'));
+                    //Rename the field in the tokens_[sid] table
+                    Yii::app()->db
+                              ->createCommand()
+                              ->renameColumn('{{tokens_' . intval($surveyid) . '}}', $key, $newname);
+                    //Make the field a TEXT field
+                    Yii::app()->db
+                              ->createCommand()
+                              ->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
 
-                $previousatt = Yii::app()->db
-                                         ->createCommand()
-                                         ->select('attributedescriptions')
-                                         ->from('{{surveys}}')
-                                         ->where("sid = ".$surveyid);
-                $patt=$previousatt->queryRow();
-                $previousattribute = unserialize($patt['attributedescriptions']);
-                $previousattribute[$newname]=$previousattribute[$key];
-                unset($previousattribute[$key]);
-                //Rename the token field the name of the participant_attribute
-                $attributedetails=ParticipantAttributeNames::getAttributeNames($val);
-                $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
-                $previousattribute=serialize($previousattribute);
-                Yii::app()->db
-                          ->createCommand()
-                          ->update('{{surveys}}',
-                                    array("attributedescriptions" => $previousattribute),
-                                    'sid = '.$surveyid); //load description in the surveys table
-                //Finally, update the $mapped key/val pair to reflect the new keyname of $newname
-                $mapped[$newname]=$mapped[$key];
-                unset($mapped[$key]);
+                    $previousatt = Yii::app()->db
+                                             ->createCommand()
+                                             ->select('attributedescriptions')
+                                             ->from('{{surveys}}')
+                                             ->where("sid = ".$surveyid);
+                    $patt=$previousatt->queryRow();
+                    $previousattribute = unserialize($patt['attributedescriptions']);
+                    $previousattribute[$newname]=$previousattribute[$key];
+                    unset($previousattribute[$key]);
+                    //Rename the token field the name of the participant_attribute
+                    $attributedetails=ParticipantAttributeNames::getAttributeNames($val);
+                    $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
+                    $previousattribute=serialize($previousattribute);
+                    Yii::app()->db
+                              ->createCommand()
+                              ->update('{{surveys}}',
+                                        array("attributedescriptions" => $previousattribute),
+                                        'sid = '.$surveyid); //load description in the surveys table
+                    //Finally, update the $mapped key/val pair to reflect the new keyname of $newname
+                    $mapped[$newname]=$mapped[$key];
+                    unset($mapped[$key]);
+                }
+
             }
 
         }
@@ -762,7 +776,7 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
                     {
                         foreach($mapped as $key=>$value)
                         {
-                            if($key[10] != 'c' && $key[9] !='_') {
+                            if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
                                 Participants::updateTokenAttributeValue($surveyid, $participant, $value, $key);
                             }
                         }
