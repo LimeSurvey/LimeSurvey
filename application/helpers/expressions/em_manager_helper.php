@@ -2137,13 +2137,12 @@
                         $sgqa = $qinfo['sgqa'];
                         switch ($type)
                         {
-                            // TODO oddly, the other field has value of 0 when empty instead of "", so cheating and looking for strlen > 1
                             case '!': //List - dropdown
                             case 'L': //LIST drop-down/radio-button list
-                                $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && strlen(trim(" . $sgqa . "other.NAOK))>1))";
+                                $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && !is_empty(trim(" . $sgqa . "other.NAOK))))";
                                 break;
                             case 'P': //Multiple choice with comments checkbox + text
-                                $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && strlen(trim(" . $sgqa . "othercomment.NAOK))>1))";
+                                $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && !is_empty(trim(" . $sgqa . "othercomment.NAOK))))";
                                 break;
                             default:
                                 break;
