@@ -511,14 +511,7 @@ class participantsaction extends Survey_Common_Action
             if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
             {
                 $condition = explode("||", $searchcondition);
-                if (count($condition) == 3)
-                {
-                    $query = Participants::getParticipantsSearch($condition, 0, 0);
-                }
-                else
-                {
-                    $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
-                }
+                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
             }
             else // if no search criteria all the participants will be counted
             {
@@ -649,14 +642,8 @@ class participantsaction extends Survey_Common_Action
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);
-            if (count($condition) == 3) // If there is no and condition , if the count is equal to 3 that means only one condition
-            {
-                $query = Participants::getParticipantsSearch($condition, 0, 0);
-            }
-            else  // if there are 'and' and 'or' condition in the condition the count is to be greater than 3
-            {
-                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
-            }
+
+            $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
 
             printf( $this->getController()->lang->gT("%s participant(s) are to be copied "), count($query));
         }
@@ -691,15 +678,9 @@ class participantsaction extends Survey_Common_Action
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);  // explode the condition to the array
-            // format for the condition is field||condition||value
-            if (count($condition) == 3) // if count is 3 , then it's a single search
-            {
-                $query = Participants::getParticipantsSearch($condition, 0, 0);
-            }
-            else// if count is more than 3 , then it's a multiple search
-            {
-                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
-            }
+
+            $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
+
             foreach ($query as $key => $value)
             {
                 $participantid = $participantid . "," . $value['participant_id']; // combine the participant id's in an string
@@ -743,14 +724,9 @@ class participantsaction extends Survey_Common_Action
             if ($searchcondition != 'getParticipants_json') // If there is a search condition then only does participants are exported
             {
                 $condition = explode("||", $searchcondition);
-                if (count($condition) == 3) // Single search
-                {
-                    $query = Participants::getParticipantsSearch($condition, 0, 0);
-                }
-                else //combined search
-                {
-                    $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
-                }
+
+                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
+
             } // else all the participants in the central table will be exported since it's superadmin
             else
             {
@@ -853,18 +829,11 @@ class participantsaction extends Survey_Common_Action
             $condition = explode("||", $searchcondition);
             $aData = new stdClass();
             $aData->page = $page;
-            if (count($condition) == 3)
-            {
-                $records = Participants::getParticipantsSearch($condition, $page, $limit);
-                $aData->records = count(Participants::getParticipantsSearch($condition, 0, 0));
-                $aData->total = ceil($aData->records / $limit);
-            }
-            else
-            {
-                $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
-                $aData->records = count(Participants::getParticipantsSearchMultiple($condition, 0, 0));
-                $aData->total = ceil($aData->records / $limit);
-            }
+
+            $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
+            $aData->records = count(Participants::getParticipantsSearchMultiple($condition, 0, 0));
+            $aData->total = ceil($aData->records / $limit);
+
             $i = 0;
 
             foreach ($records as $row => $value)
@@ -938,14 +907,9 @@ class participantsaction extends Survey_Common_Action
             $condition = explode("||", $searchcondition);
             $aData = new stdClass();
             $aData->page = $page;
-            if (count($condition) == 3)
-            {
-                $records = Participants::getParticipantsSearch($condition, $page, $limit);
-            }
-            else
-            {
-                $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
-            }
+
+            $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
+
             $i = 0;
             foreach ($records as $row => $value)
             {
