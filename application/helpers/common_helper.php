@@ -3223,7 +3223,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Equals sum value'));
 
     $qattributes["em_validation_q"]=array(
-    "types"=>";:STUNKQ",
+    "types"=>":;ABCEFKMNPQRSTU",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>200,
     'inputtype'=>'textarea',
@@ -3231,7 +3231,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Question validation equation'));
 
     $qattributes["em_validation_q_tip"]=array(
-    "types"=>";:STUNKQ",
+    "types"=>":;ABCEFKMNPQRSTU",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>210,
     'inputtype'=>'textarea',
