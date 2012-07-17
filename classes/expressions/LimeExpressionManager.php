@@ -1132,6 +1132,13 @@
                                                     // we know the suffix exists
                                                     $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK == '" . substr($sq['sqsuffix'],1) . "')";
                                                 }
+                                                else if ($this->q2subqInfo[$fqid]['type'] == ':' && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
+                                                {
+                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                    {
+                                                        $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK=="1"';
+                                                    }
+                                                }
                                                 else
                                                 {
                                                     if ($fsq['sqsuffix'] == $sq['sqsuffix'])
@@ -1174,6 +1181,13 @@
                                                 {
                                                     // we know the suffix exists
                                                     $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK != '" . substr($sq['sqsuffix'],1) . "')";
+                                                }
+                                                else if ($this->q2subqInfo[$fqid]['type'] == ':' && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
+                                                {
+                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                    {
+                                                        $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK!="1"';
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -2109,13 +2123,12 @@
                         $sgqa = $qinfo['sgqa'];
                         switch ($type)
                         {
-                            // TODO oddly, the other field has value of 0 when empty instead of "", so cheating and looking for strlen > 1
                             case '!': //List - dropdown
                             case 'L': //LIST drop-down/radio-button list
-                                $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && strlen(trim(" . $sgqa . "other.NAOK))>1))";
+                                $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && !is_empty(trim(" . $sgqa . "other.NAOK))))";
                                 break;
                             case 'P': //Multiple choice with comments checkbox + text
-                                $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && strlen(trim(" . $sgqa . "othercomment.NAOK))>1))";
+                                $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && !is_empty(trim(" . $sgqa . "othercomment.NAOK))))";
                                 break;
                             default:
                                 break;
@@ -2262,11 +2275,19 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
+                                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                                case 'F': //ARRAY (Flexible) - Row Format
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
                                 case 'Q': //MULTIPLE SHORT TEXT
                                 case ';': //ARRAY (Multi Flexi) Text
                                 case ':': //ARRAY (Multi Flexi) 1 to 10
+                                case 'M': //Multiple choice checkbox
                                 case 'N': //NUMERICAL QUESTION TYPE
+                                case 'P': //Multiple choice with comments checkbox + text
+                                case 'R': //RANKING STYLE
                                 case 'S': //SHORT FREE TEXT
                                 case 'T': //LONG FREE TEXT
                                 case 'U': //HUGE FREE TEXT
@@ -4061,13 +4082,13 @@
                             break;
                     }
                     $_SESSION[$knownVar['sgqa']] = $value;
-                    $startingValues[$k]=array(
+                    $LEM->updatedValues[$knownVar['sgqa']]=array(
                         'type'=>$knownVar['type'],
                         'value'=>$value,
                     );
 
                 }
-                $LEM->_UpdateValuesInDatabase($startingValues);
+                $LEM->_UpdateValuesInDatabase(NULL);
             }
 
             return array(

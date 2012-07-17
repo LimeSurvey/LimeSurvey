@@ -130,7 +130,7 @@ else
     if (isset($_SESSION['LEMtokenResume']))
     {
         LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
-        $moveResult = LimeExpressionManager::JumpTo($_SESSION['step']+1,false,false);   // if late in the survey, will re-validate contents, which may be overkill
+        $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
         unset($_SESSION['LEMtokenResume']);
         unset($_SESSION['LEMreload']);
     }

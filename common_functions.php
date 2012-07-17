@@ -966,9 +966,9 @@ function question_class($input)
         case 'X': return 'boilerplate';     //  BOILERPLATE QUESTION
         case '5': return 'choice-5-pt-radio';   //  5 POINT CHOICE radio-buttons
         case 'D': return 'date';        //  DATE
-        case 'Z': return 'list-radio-flexible'; //  LIST Flexible radio-button
+//        case 'Z': return 'list-radio-flexible'; //  LIST Flexible radio-button
         case 'L': return 'list-radio';      //  LIST radio-button
-        case 'W': return 'list-dropdown-flexible'; //   LIST drop-down (flexible label)
+//        case 'W': return 'list-dropdown-flexible'; //   LIST drop-down (flexible label)
         case '!': return 'list-dropdown';   //  List - dropdown
         case 'O': return 'list-with-comment';   //  LIST radio-button + textarea
         case 'R': return 'ranking';     //  RANKING STYLE
@@ -3194,7 +3194,7 @@ function questionAttributes($returnByName=false)
     // If you insert a new attribute please do it in correct alphabetical order!
 
     $qattributes["alphasort"]=array(
-    "types"=>"!LOWZ",
+    "types"=>"!LO",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3259,7 +3259,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Category separator'));
 
     $qattributes["display_columns"]=array(
-    "types"=>"GLMZ",
+    "types"=>"GLM",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'integer',
@@ -3345,7 +3345,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Equals sum value'));
 
     $qattributes["em_validation_q"]=array(
-    "types"=>";:STUNKQ",
+    "types"=>":;ABCEFKMNPQRSTU",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>200,
     'inputtype'=>'textarea',
@@ -3353,7 +3353,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Question validation equation'));
 
     $qattributes["em_validation_q_tip"]=array(
-    "types"=>";:STUNKQ",
+    "types"=>":;ABCEFKMNPQRSTU",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>210,
     'inputtype'=>'textarea',
@@ -3510,7 +3510,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Hide tip'));
 
     $qattributes['hidden']=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+    'types'=>'15ABCDEFGHIKLMNOPQRSTUXY!:;|*',
     'category'=>$clang->gT('Display'),
     'sortorder'=>101,
     'inputtype'=>'singleselect',
@@ -3690,7 +3690,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Text inputs"));
 
     $qattributes["other_comment_mandatory"]=array(
-    "types"=>"PLW!Z",
+    "types"=>"PL!",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3712,7 +3712,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Numbers only for 'Other'"));
 
     $qattributes["other_replace_text"]=array(
-    "types"=>"LMPWZ!",
+    "types"=>"LMP!",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3720,7 +3720,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Label for 'Other:' option"));
 
     $qattributes["page_break"]=array(
-    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
+    "types"=>"15ABCDEFGHKLMNOPQRSTUXY!:;|*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3739,7 +3739,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer prefix'));
 
     $qattributes["public_statistics"]=array(
-    "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
+    "types"=>"15ABCEFGHKLMNOPRY!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>80,
     'inputtype'=>'singleselect',
@@ -3750,7 +3750,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Show in public statistics'));
 
     $qattributes["random_order"]=array(
-    "types"=>"!ABCEFHKLMOPQRWZ1:;",
+    "types"=>"!ABCEFHKLMOPQR1:;",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3897,7 +3897,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Prefix for list items'));
 
     $qattributes["scale_export"]=array(
-    "types"=>"CEFGHLMOPWYZ1!:*",
+    "types"=>"CEFGHLMOPY1!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -4114,7 +4114,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Allowed file types"));
 
     $qattributes["random_group"]=array(
-    "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
+    "types"=>"15ABCDEFGHIKLMNOPQRSTUXY!:;|",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
