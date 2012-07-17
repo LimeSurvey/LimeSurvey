@@ -1146,6 +1146,13 @@
                                                     // we know the suffix exists
                                                     $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK == '" . substr($sq['sqsuffix'],1) . "')";
                                                 }
+                                                else if ($this->q2subqInfo[$fqid]['type'] == ':' && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
+                                                {
+                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                    {
+                                                        $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK=="1"';
+                                                    }
+                                                }
                                                 else
                                                 {
                                                     if ($fsq['sqsuffix'] == $sq['sqsuffix'])
@@ -1188,6 +1195,13 @@
                                                 {
                                                     // we know the suffix exists
                                                     $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK != '" . substr($sq['sqsuffix'],1) . "')";
+                                                }
+                                                else if ($this->q2subqInfo[$fqid]['type'] == ':' && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
+                                                {
+                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
+                                                    {
+                                                        $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK!="1"';
+                                                    }
                                                 }
                                                 else
                                                 {
