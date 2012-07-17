@@ -1204,9 +1204,12 @@ class tokens extends Survey_Common_Action
 
                     $from = Yii::app()->request->getPost('from_' . $emrow['language']);
 
-                    $fieldsarray["{OPTOUTURL}"] = $this->getController()->createAbsoluteUrl("/optout/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
-                    $fieldsarray["{OPTINURL}"] = $this->getController()->createAbsoluteUrl("/optin/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
-                    $fieldsarray["{SURVEYURL}"] = $this->getController()->createAbsoluteUrl("/survey/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{OPTOUTURL}"] = $this->getController()
+                                                       ->createAbsoluteUrl("/optout/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{OPTINURL}"] = $this->getController()
+                                                      ->createAbsoluteUrl("/optin/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                    $fieldsarray["{SURVEYURL}"] = $this->getController()
+                                                       ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/langcode/" . trim($emrow['language']) . "/");
 
                     foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {
@@ -2018,6 +2021,7 @@ class tokens extends Survey_Common_Action
             $newtable = "old_tokens_{$iSurveyId}_$date";
 
             Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
+            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => "a:0:{}"));
 
             //Remove any survey_links to the CPDB
             Survey_links::deleteLinksBySurvey($iSurveyId);
