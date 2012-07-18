@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-07-11 14:35:02+00:00\n"
+"POT-Creation-Date: 2012-07-18 14:19:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1033,8 +1033,8 @@ msgstr ""
 #: admin/statistics.php:991 admin/statistics_function.php:1588
 #: admin/statistics_function.php:1718 admin/surveylist.php:54
 #: admin/tokens.php:1507 admin/tokens.php:1805 admin/tokens.php:2092
-#: classes/expressions/LimeExpressionManager.php:2801
-#: classes/expressions/LimeExpressionManager.php:2805 common_functions.php:1898
+#: classes/expressions/LimeExpressionManager.php:2822
+#: classes/expressions/LimeExpressionManager.php:2826 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
 #: common_functions.php:3202 common_functions.php:3286
 #: common_functions.php:3393 common_functions.php:3406
@@ -1062,7 +1062,7 @@ msgstr ""
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
-#: classes/expressions/LimeExpressionManager.php:2807 common_functions.php:1922
+#: classes/expressions/LimeExpressionManager.php:2828 common_functions.php:1922
 #: qanda.php:4191 qanda.php:4236
 msgid "Uncertain"
 msgstr ""
@@ -1101,8 +1101,8 @@ msgstr ""
 #: admin/statistics.php:830 admin/statistics.php:1003
 #: admin/statistics_function.php:1589 admin/statistics_function.php:1719
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
-#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2802
-#: classes/expressions/LimeExpressionManager.php:2806 common_functions.php:1905
+#: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2823
+#: classes/expressions/LimeExpressionManager.php:2827 common_functions.php:1905
 #: common_functions.php:1921 common_functions.php:3201
 #: common_functions.php:3285 common_functions.php:3392
 #: common_functions.php:3407 common_functions.php:3418
@@ -1129,7 +1129,7 @@ msgstr ""
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
-#: classes/expressions/LimeExpressionManager.php:2810 common_functions.php:1928
+#: classes/expressions/LimeExpressionManager.php:2831 common_functions.php:1928
 #: qanda.php:4338 qanda.php:4381
 msgid "Increase"
 msgstr ""
@@ -1140,7 +1140,7 @@ msgstr ""
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
-#: classes/expressions/LimeExpressionManager.php:2811 common_functions.php:1930
+#: classes/expressions/LimeExpressionManager.php:2832 common_functions.php:1930
 #: qanda.php:4339 qanda.php:4392
 msgid "Same"
 msgstr ""
@@ -1151,7 +1151,7 @@ msgstr ""
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
-#: classes/expressions/LimeExpressionManager.php:2812 common_functions.php:1929
+#: classes/expressions/LimeExpressionManager.php:2833 common_functions.php:1929
 #: qanda.php:4340 qanda.php:4404
 msgid "Decrease"
 msgstr ""
@@ -1204,7 +1204,7 @@ msgstr ""
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
-#: classes/expressions/LimeExpressionManager.php:2798 common_functions.php:1913
+#: classes/expressions/LimeExpressionManager.php:2819 common_functions.php:1913
 #: qanda.php:3812
 msgid "Female"
 msgstr ""
@@ -1216,7 +1216,7 @@ msgstr ""
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
-#: classes/expressions/LimeExpressionManager.php:2797 common_functions.php:1912
+#: classes/expressions/LimeExpressionManager.php:2818 common_functions.php:1912
 #: qanda.php:3820
 msgid "Male"
 msgstr ""
@@ -2256,7 +2256,7 @@ msgstr ""
 #: admin/questiongrouphandling.php:149 admin/questiongrouphandling.php:165
 #: admin/questiongrouphandling.php:167 admin/translate_functions.php:238
 #: admin/userrighthandling.php:628 admin/userrighthandling.php:648
-#: classes/expressions/LimeExpressionManager.php:8015
+#: classes/expressions/LimeExpressionManager.php:8036
 msgid "Description:"
 msgstr ""
 
@@ -2268,7 +2268,7 @@ msgstr ""
 #: admin/editsurveysettings.php:147 admin/editsurveysettings.php:149
 #: admin/editsurveytextelements.php:58 admin/editsurveytextelements.php:60
 #: admin/html.php:795 admin/translate_functions.php:290
-#: classes/expressions/LimeExpressionManager.php:8029
+#: classes/expressions/LimeExpressionManager.php:8050
 msgid "End message:"
 msgstr ""
 
@@ -2732,7 +2732,7 @@ msgid "Survey title"
 msgstr ""
 
 #: admin/editsurveytextelements.php:56 admin/html.php:784
-#: classes/expressions/LimeExpressionManager.php:8022
+#: classes/expressions/LimeExpressionManager.php:8043
 msgid "Welcome:"
 msgstr ""
 
@@ -3908,7 +3908,7 @@ msgstr ""
 msgid "Flag"
 msgstr ""
 
-#: admin/html.php:872 classes/expressions/LimeExpressionManager.php:8036
+#: admin/html.php:872 classes/expressions/LimeExpressionManager.php:8057
 msgid "End URL"
 msgstr ""
 
@@ -5612,8 +5612,8 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr ""
 
 #: admin/printablesurvey.php:758
-#: classes/expressions/LimeExpressionManager.php:2931
-#: classes/expressions/LimeExpressionManager.php:5481 qanda.php:1289
+#: classes/expressions/LimeExpressionManager.php:2952
+#: classes/expressions/LimeExpressionManager.php:5502 qanda.php:1289
 #: qanda.php:1589 qanda.php:2184 qanda.php:2481
 msgid "Other:"
 msgstr ""
@@ -8788,573 +8788,585 @@ msgid "Count the number of answered questions in the list"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:154
-msgid "Format a local date/time"
+msgid "Count the number of answered questions in the list equal the first argument"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:155
-msgid "Calculates the exponent of e"
+msgid "Count the number of answered questions in the list which pass the critiera (arg op value)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:156
-msgid "Display numbers with comma as radix separator, if needed"
+msgid "Format a local date/time"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:157
-msgid "Round fractions down"
+msgid "Calculates the exponent of e"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:158
-msgid "Format a GMT date/time"
+msgid "Display numbers with comma as radix separator, if needed"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:159
-msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
+msgid "Round fractions down"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:160
-msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
+msgid "Format a GMT date/time"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:161
-msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
+msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:162
-msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
+msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:163
-msgid "Format a local time/date as integer"
+msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:164
-msgid "Conditional processing"
+msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:165
-msgid "Join array elements with a string"
+msgid "Format a local time/date as integer"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:166
-msgid "Get the integer value of a variable"
+msgid "Conditional processing"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:167
-msgid "Determine whether a variable is considered to be empty"
+msgid "Join array elements with a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:168
-msgid "Finds whether the type of a variable is float"
+msgid "Get the integer value of a variable"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:169
-msgid "Find whether the type of a variable is integer"
+msgid "Determine whether a variable is considered to be empty"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:170
-msgid "Finds whether a value is not a number"
+msgid "Finds whether the type of a variable is float"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:171
-msgid "Finds whether a variable is NULL"
+msgid "Find whether the type of a variable is integer"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:172
-msgid "Finds whether a variable is a number or a numeric string"
+msgid "Finds whether a value is not a number"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:173
-msgid "Find whether the type of a variable is string"
+msgid "Finds whether a variable is NULL"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:174
-msgid "Return comma-separated list of values"
+msgid "Finds whether a variable is a number or a numeric string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:175
-msgid "Natural logarithm"
+msgid "Find whether the type of a variable is string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:176
-msgid "Strip whitespace (or other characters) from the beginning of a string"
+msgid "Return comma-separated list of values"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:177
-msgid "Find highest value"
+msgid "Natural logarithm"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:178
-msgid "Find lowest value"
+msgid "Strip whitespace (or other characters) from the beginning of a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:179
-msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
+msgid "Find highest value"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:180
-msgid "Inserts HTML line breaks before all newlines in a string"
+msgid "Find lowest value"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:181
-msgid "Format a number with grouped thousands"
+msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:182
-msgid "Get value of pi"
+msgid "Inserts HTML line breaks before all newlines in a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:183
-msgid "Exponential expression"
+msgid "Format a number with grouped thousands"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:184
-msgid "Convert a quoted-printable string to an 8 bit string"
+msgid "Get value of pi"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:185
-msgid "Convert a 8 bit string to a quoted-printable string"
+msgid "Exponential expression"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:186
-msgid "Quote meta characters"
+msgid "Convert a quoted-printable string to an 8 bit string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:187
-msgid "Generate a random integer"
+msgid "Convert a 8 bit string to a quoted-printable string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:188
-msgid "Compare a string to a regular expression pattern"
+msgid "Quote meta characters"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:189
-msgid "Rounds a number to an optional precision"
+msgid "Generate a random integer"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:190
-msgid "Strip whitespace (or other characters) from the end of a string"
+msgid "Compare a string to a regular expression pattern"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:191
-msgid "Sine"
+msgid "Rounds a number to an optional precision"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:192
-msgid "Return a formatted string"
+msgid "Strip whitespace (or other characters) from the end of a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:193
-msgid "Square root"
+msgid "Sine"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:194
-msgid "Calculate the Sample Standard Deviation for the list of numbers"
+msgid "Return a formatted string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:195
-msgid "Pad a string to a certain length with another string"
+msgid "Square root"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:196
-msgid "Repeat a string"
+msgid "Calculate the Sample Standard Deviation for the list of numbers"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:197
-msgid "Replace all occurrences of the search string with the replacement string"
+msgid "Pad a string to a certain length with another string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:198
-msgid "Binary safe case-insensitive string comparison"
+msgid "Repeat a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:199
-msgid "Binary safe string comparison"
+msgid "Replace all occurrences of the search string with the replacement string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:200
-msgid "Strip HTML and PHP tags from a string"
+msgid "Binary safe case-insensitive string comparison"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:201
-msgid "Find position of first occurrence of a case-insensitive string"
+msgid "Binary safe string comparison"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:202
-msgid "Un-quotes a quoted string"
+msgid "Strip HTML and PHP tags from a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:203
-msgid "Case-insensitive strstr"
+msgid "Find position of first occurrence of a case-insensitive string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:204
-msgid "Get string length"
+msgid "Un-quotes a quoted string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:205
-msgid "Find position of first occurrence of a string"
+msgid "Case-insensitive strstr"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:206
-msgid "Reverse a string"
+msgid "Get string length"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:207
-msgid "Find first occurrence of a string"
+msgid "Find position of first occurrence of a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:208
-msgid "Make a string lowercase"
+msgid "Reverse a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:209
-msgid "Make a string uppercase"
+msgid "Find first occurrence of a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:210
-msgid "Return part of a string"
+msgid "Make a string lowercase"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:211
-msgid "Calculate the sum of values in an array"
+msgid "Make a string uppercase"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:212
-msgid "Tangent"
+msgid "Return part of a string"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:213
-msgid "Return current UNIX timestamp"
+msgid "Calculate the sum of values in an array"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:214
-msgid "Strip whitespace (or other characters) from the beginning and end of a string"
+msgid "Sum the values of answered questions in the list which pass the critiera (arg op value)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:215
+msgid "Tangent"
+msgstr ""
+
+#: classes/expressions/ExpressionManager.php:216
+msgid "Return current UNIX timestamp"
+msgstr ""
+
+#: classes/expressions/ExpressionManager.php:217
+msgid "Strip whitespace (or other characters) from the beginning and end of a string"
+msgstr ""
+
+#: classes/expressions/ExpressionManager.php:218
 msgid "Uppercase the first character of each word in a string"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:243
+#: classes/expressions/ExpressionManager.php:246
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:250
-#: classes/expressions/ExpressionManager.php:389
+#: classes/expressions/ExpressionManager.php:253
+#: classes/expressions/ExpressionManager.php:392
 msgid "Invalid value(s) on the stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:383
+#: classes/expressions/ExpressionManager.php:386
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:438
+#: classes/expressions/ExpressionManager.php:441
 msgid "Extra tokens found"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:453
+#: classes/expressions/ExpressionManager.php:456
 msgid "Unbalanced equation - values left on stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:459
+#: classes/expressions/ExpressionManager.php:462
 msgid "Not a valid expression"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:520
-#: classes/expressions/ExpressionManager.php:948
-#: classes/expressions/ExpressionManager.php:1029
+#: classes/expressions/ExpressionManager.php:523
+#: classes/expressions/ExpressionManager.php:951
+#: classes/expressions/ExpressionManager.php:1032
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:565
+#: classes/expressions/ExpressionManager.php:568
 msgid "This variable is not declared until a later page"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:572
-#: classes/expressions/ExpressionManager.php:1683
+#: classes/expressions/ExpressionManager.php:575
+#: classes/expressions/ExpressionManager.php:1686
 msgid "Undefined variable"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:579
+#: classes/expressions/ExpressionManager.php:582
 msgid "Should never  get to this line?"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:665
+#: classes/expressions/ExpressionManager.php:668
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:671
+#: classes/expressions/ExpressionManager.php:674
 msgid "Only variables can be assigned values"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:727
+#: classes/expressions/ExpressionManager.php:730
 msgid "Expected expressions separated by commas"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:735
+#: classes/expressions/ExpressionManager.php:738
 msgid "Extra token found after Expressions"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:751
+#: classes/expressions/ExpressionManager.php:754
 msgid "Undefined Function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:757
+#: classes/expressions/ExpressionManager.php:760
 msgid "Expected left parentheses after function name"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:781
+#: classes/expressions/ExpressionManager.php:784
 msgid "Extra comma found in function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:965
+#: classes/expressions/ExpressionManager.php:968
 msgid "Expected right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1667
+#: classes/expressions/ExpressionManager.php:1670
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1676
+#: classes/expressions/ExpressionManager.php:1679
 msgid "Undefined function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1688
+#: classes/expressions/ExpressionManager.php:1691
 msgid "Unsupported syntax"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1696
+#: classes/expressions/ExpressionManager.php:1699
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1981
+#: classes/expressions/ExpressionManager.php:1984
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2082
+#: classes/expressions/ExpressionManager.php:2085
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2087
+#: classes/expressions/ExpressionManager.php:2090
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2088
+#: classes/expressions/ExpressionManager.php:2091
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2321
+#: classes/expressions/ExpressionManager.php:2324
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3355
+#: classes/expressions/ExpressionManager.php:3444
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2423
+#: classes/expressions/LimeExpressionManager.php:2444
 msgid "Please select at least one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2424
+#: classes/expressions/LimeExpressionManager.php:2445
 msgid "Please select at least %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2428
+#: classes/expressions/LimeExpressionManager.php:2449
 msgid "Please select at most one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2429
+#: classes/expressions/LimeExpressionManager.php:2450
 msgid "Please select at most %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2433
+#: classes/expressions/LimeExpressionManager.php:2454
 msgid "Please select one answer"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2434
+#: classes/expressions/LimeExpressionManager.php:2455
 msgid "Please select %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2436
+#: classes/expressions/LimeExpressionManager.php:2457
 msgid "Please select between %s and %s answers"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2452
 #: classes/expressions/LimeExpressionManager.php:2473
+#: classes/expressions/LimeExpressionManager.php:2494
 msgid "Each answer must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2454
 #: classes/expressions/LimeExpressionManager.php:2475
+#: classes/expressions/LimeExpressionManager.php:2496
 msgid "Each answer must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2456
 #: classes/expressions/LimeExpressionManager.php:2477
+#: classes/expressions/LimeExpressionManager.php:2498
 msgid "Each answer must be %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2457
 #: classes/expressions/LimeExpressionManager.php:2478
+#: classes/expressions/LimeExpressionManager.php:2499
 msgid "Each answer must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2494
+#: classes/expressions/LimeExpressionManager.php:2515
 msgid "The sum must be at least %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2496
+#: classes/expressions/LimeExpressionManager.php:2517
 msgid "The sum must be at most %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2498
-#: classes/expressions/LimeExpressionManager.php:2540
+#: classes/expressions/LimeExpressionManager.php:2519
+#: classes/expressions/LimeExpressionManager.php:2561
 msgid "The sum must equal %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2499
+#: classes/expressions/LimeExpressionManager.php:2520
 msgid "The sum must be between %s and %s"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2517
+#: classes/expressions/LimeExpressionManager.php:2538
 msgid "Please upload at least one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2518
+#: classes/expressions/LimeExpressionManager.php:2539
 msgid "Please upload at least %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2522
+#: classes/expressions/LimeExpressionManager.php:2543
 msgid "Please upload at most one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2523
+#: classes/expressions/LimeExpressionManager.php:2544
 msgid "Please upload at most %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2527
+#: classes/expressions/LimeExpressionManager.php:2548
 msgid "Please upload one file"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2528
+#: classes/expressions/LimeExpressionManager.php:2549
 msgid "Please upload %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2530
+#: classes/expressions/LimeExpressionManager.php:2551
 msgid "Please upload between %s and %s files"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2546
+#: classes/expressions/LimeExpressionManager.php:2567
 msgid "Please also fill in the \"other comment\" field."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:2554
+#: classes/expressions/LimeExpressionManager.php:2575
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4491
+#: classes/expressions/LimeExpressionManager.php:4512
 msgid "Unable to insert record into survey table: "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:4507
+#: classes/expressions/LimeExpressionManager.php:4528
 msgid "Unable to insert record into timings table "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5458
+#: classes/expressions/LimeExpressionManager.php:5479
 msgid "This question is mandatory"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5472
+#: classes/expressions/LimeExpressionManager.php:5493
 msgid "Please check at least one item."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5483
+#: classes/expressions/LimeExpressionManager.php:5504
 msgid "If you choose '%s' you must provide a description."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5505
-#: classes/expressions/LimeExpressionManager.php:5542
+#: classes/expressions/LimeExpressionManager.php:5526
+#: classes/expressions/LimeExpressionManager.php:5563
 msgid "Please complete all parts"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5534
+#: classes/expressions/LimeExpressionManager.php:5555
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5550
+#: classes/expressions/LimeExpressionManager.php:5571
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8000
+#: classes/expressions/LimeExpressionManager.php:8021
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8006
+#: classes/expressions/LimeExpressionManager.php:8027
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8061
 msgid "Name [ID]"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8061
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8040
+#: classes/expressions/LimeExpressionManager.php:8061
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8091
-#: classes/expressions/LimeExpressionManager.php:8337
+#: classes/expressions/LimeExpressionManager.php:8112
+#: classes/expressions/LimeExpressionManager.php:8358
 msgid "DEFAULT:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8099
+#: classes/expressions/LimeExpressionManager.php:8120
 msgid "HELP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8100
+#: classes/expressions/LimeExpressionManager.php:8121
 msgid "TIP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8117
+#: classes/expressions/LimeExpressionManager.php:8138
 msgid "Question Attribute"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8117
+#: classes/expressions/LimeExpressionManager.php:8138
 msgid "Value"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8224
+#: classes/expressions/LimeExpressionManager.php:8245
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8238
+#: classes/expressions/LimeExpressionManager.php:8259
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8250
+#: classes/expressions/LimeExpressionManager.php:8271
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8409
+#: classes/expressions/LimeExpressionManager.php:8430
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8448
+#: classes/expressions/LimeExpressionManager.php:8469
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8454
+#: classes/expressions/LimeExpressionManager.php:8475
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8457
+#: classes/expressions/LimeExpressionManager.php:8478
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8460
+#: classes/expressions/LimeExpressionManager.php:8481
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
