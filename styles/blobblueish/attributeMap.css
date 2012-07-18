@@ -39,7 +39,12 @@ html, body{
     overflow : auto;
     text-align:center;
     width: 27%;
- }
+}
+
+#newcreated ul, #centralattribute ul, #tokenattribute ul{
+    margin-left: -35px;
+}
+
 #newcreated, #tokenattribute {
     height: 100%;
 }
@@ -76,7 +81,8 @@ li{
         color:#222222;
         width : 200px;
         margin-top: 2px;
-        margin-left: 10%;
+        margin-left: auto;
+        margin-right: auto;
         margin-bottom: 2px;
         list-style: none;
         padding:4px;

@@ -41,6 +41,10 @@ html, body{
     width:27%;
 }
 
+ #newcreated ul, #csvattribute ul, #centralttribute ul{
+    margin-left: -35px;
+ }
+
 #csvattribute, #centralattribute {
     height: 100%;
 }
@@ -69,7 +73,8 @@ li{
     color:#222222;
     width : 200px;
     margin-top: 2px;
-    margin-left:6%;
+    margin-left:auto;
+    margin-right: auto;
     margin-bottom: 2px;
     list-style: none;
     padding:4px;

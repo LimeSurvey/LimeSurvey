@@ -2156,6 +2156,26 @@ class tokens extends Survey_Common_Action
         /* Restore a previously deleted tokens table */
         elseif (returnGlobal('restoretable') == "Y" && Yii::app()->request->getPost('oldtable') && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
+            //Rebuild attributedescription value for the surveys table
+            $table = Yii::app()->db->schema->getTable(Yii::app()->request->getPost('oldtable'));
+            $fields=array_filter(array_keys($table->columns), 'filterForAttributes');
+            foreach ($fields as $fieldname)
+            {
+                $name=$fieldname;
+                if($fieldname[10]=='c') { //This belongs to a cpdb attribute
+                    $cpdbattid=substr($fieldname,15);
+                    $data=ParticipantAttributeNames::model()->getAttributeName($cpdbattid, Yii::app()->session['adminlang']);
+                    $name=$data['attribute_name'];
+                }
+                $fieldcontents[$fieldname] = array(
+                            'description' => $name,
+                            'mandatory' => 'N',
+                            'show_register' => 'N'
+                            );
+            }
+            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
+
+
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));
 
             //Add any survey_links from the renamed table
