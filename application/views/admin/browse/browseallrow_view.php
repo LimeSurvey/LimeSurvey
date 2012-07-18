@@ -17,12 +17,13 @@
     </td>
     <?php
         $i = 0;
+        $browsedatafield="";
         if ($surveyinfo['anonymized'] == "N" && $dtrow['token'])
         {
             if (isset($dtrow['tid']) && !empty($dtrow['tid']))
             {
                 //If we have a token, create a link to edit it
-                $browsedatafield = "<a href='" . $this->createUrl("admin/tokens/edit/surveyid/$surveyid/tokenid/{$dtrow['tid']}/") . "' title='" . $clang->gT("Edit this token") . "'>";
+                $browsedatafield .= "<a href='" . $this->createUrl("admin/tokens/edit/surveyid/$surveyid/tokenid/{$dtrow['tid']}/") . "' title='" . $clang->gT("Edit this token") . "'>";
                 $browsedatafield .= "{$dtrow['token']}";
                 $browsedatafield .= "</a>";
             }
