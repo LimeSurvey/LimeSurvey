@@ -1156,7 +1156,7 @@ function makelanguagechanger()
             {
                 $htmlcode .= " selected=\"selected\" ";
             }
-            $htmlcode .= ">".getLanguageNameFromCode($otherlang,false)."</option>\n";
+            $htmlcode .= ">".$aAllLanguages[$otherlang]['nativedescription']."</option>\n";
         }
 
         $htmlcode .= "</select>\n";
