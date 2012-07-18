@@ -1474,7 +1474,7 @@ if($action == "addsurveysecurity")
     $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
     $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
 
-    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id != ".$postuserid;
     $result = db_execute_assoc($query); //Checked
     if( ($result->RecordCount() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) ||
     $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
@@ -1522,7 +1522,7 @@ if($action == "addusergroupsurveysecurity")
     $addsummary = "<div class=\"header\">".$clang->gT("Add user group")."</div>\n";
     $addsummary .= "<div class=\"messagebox ui-corner-all\" >\n";
 
-    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
+    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid}";
     $result = db_execute_assoc($query); //Checked
     if( ($result->RecordCount() > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray'))) || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
@@ -1582,7 +1582,7 @@ if($action == "delsurveysecurity")
     $addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
     $addsummary .= "<div class=\"messagebox\">\n";
 
-    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id != ".$postuserid;
     $result = db_execute_assoc($query); //Checked
     if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
@@ -1609,7 +1609,7 @@ if($action == "delsurveysecurity")
 
 if($action == "setsurveysecurity" || $action == "setusergroupsurveysecurity")
 {
-    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
+    $query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid}";
     if ($action == "setsurveysecurity")
     {
       $query.=  " AND owner_id != ".$postuserid;
