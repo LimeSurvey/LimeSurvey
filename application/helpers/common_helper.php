@@ -5567,29 +5567,32 @@ function getTokenData($surveyid, $token)
 *
 * @param mixed $sTemplateName
 */
-function getTemplatePath($sTemplateName)
+function getTemplatePath($sTemplateName = false)
 {
+    if (!$sTemplateName)
+    {
+        $sTemplateName=Yii::app()->getConfig('defaulttemplate'); // if $sTemplateName is NULL or false or ""
+    }
     if (isStandardTemplate($sTemplateName))
     {
         return Yii::app()->getConfig("standardtemplaterootdir").'/'.$sTemplateName;
     }
     else
     {
-        if (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName))
+        if (is_dir(Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName))
         {
             return Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName;
+        }
+        elseif (isStandardTemplate(Yii::app()->getConfig('defaulttemplate')))
+        {
+            return Yii::app()->getConfig("standardtemplaterootdir").'/'.$sTemplateName;
         }
         elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
         {
             return Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate');
         }
-        elseif (file_exists(Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate');
-        }
         else
         {
-
             return Yii::app()->getConfig("standardtemplaterootdir").'/default';
         }
     }
