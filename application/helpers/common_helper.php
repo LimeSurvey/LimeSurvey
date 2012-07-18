@@ -2150,6 +2150,10 @@ function validateTemplateDir($templatename)
     {
         return $templatename;
     }
+    elseif (is_dir("$standardtemplaterootdir/{$defaulttemplate}/"))
+    {
+        return $defaulttemplate;
+    }
     elseif (is_dir("$usertemplaterootdir/{$defaulttemplate}/"))
     {
         return $defaulttemplate;

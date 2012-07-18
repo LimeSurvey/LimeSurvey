@@ -232,7 +232,7 @@
                 {
                     $sHTMLCode .=" selected='selected'";
                 }
-                $htmlcode .= ">".$aAllLanguages[$sLanguage]['nativedescription']."</option>\n";
+                $sHTMLCode .= ">".$aAllLanguages[$sLanguage]['nativedescription']."</option>\n";
 
             }
             $sHTMLCode .= "</select>\n";
