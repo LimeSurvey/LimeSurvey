@@ -5797,6 +5797,8 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=false)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
+    $oLanguage = new Limesurvey_lang($sLanguageCode);
+
     //Get response data
     $idrow = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
@@ -5845,7 +5847,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 }
                 else
                 {
-                    $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
+                    $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
@@ -5853,7 +5855,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         }
         else
         {
-            $answer=getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
+            $answer=getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
             $aResultTable[$fname['fieldname']]=array($question,'',$answer);
             continue;
         }
@@ -5866,7 +5868,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
 
-        $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
+        $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
         $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
     }
     return $aResultTable;
