@@ -45,7 +45,7 @@ if (isset($attributes) && count($attributes) > 0)
     foreach ($attributes as $row)
     {
         $attnames[] = '"' . $row['attribute_name'] . '"';
-        $uidNames[] = '{ "name": "' . $row['attribute_name'] . '", "index":"' . $row['attribute_name'] . '", "sorttype":"string", "sortable": true, "align":"center"}';
+        $uidNames[] = '{ "name": "' . $row['attribute_name'] . '", "index":"' . $row['attribute_id'] . '", "sorttype":"string", "sortable": true, "align":"center"}';
     }
     $columnNames = ',' . implode(",", $attnames) . ''; //Add to the end of the standard list of columnNames
 }
@@ -74,6 +74,7 @@ else
     var notcontainsTxt="<?php $clang->eT("Does not contain") ?>";
     var greaterthanTxt="<?php $clang->eT("Greater than") ?>";
     var lessthanTxt="<?php $clang->eT("Less than") ?>";
+    var beginswithTxt="<?php $clang->et("Begins with") ?>";
     var andTxt="<?php $clang->eT("AND") ?>";
     var orTxt="<?php $clang->eT("OR") ?>";
     /* End search form titles */
@@ -157,7 +158,7 @@ else
     colModels += '{ "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":120, "align":"center", "editable":true},';
     colModels += '{ "name":"email", "index":"email","align":"center","width":300, "sorttype":"string", "sortable": true, "editable":true},';
     colModels += '{ "name":"blacklisted", "index":"blacklisted","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},';
-    colModels += '{ "name":"surveys", "index":"surveys","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
+    colModels += '{ "name":"survey", "index":"survey","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
 
 <?php
 $colModels = "colModels += '" . implode(",';\n colModels += '", $langNames) . ",";
@@ -181,6 +182,7 @@ echo $colModels;
     $optioncontition = array('' =>  $clang->gT("Select..."),
         'equal' =>$clang->gT("Equals"),
         'contains' =>$clang->gT("Contains"),
+        'beginswith' =>$clang->gT("Begins with"),
         'notequal' => $clang->gT("Not equal"),
         'notcontains' => $clang->gT("Does not contain"),
         'greaterthan' => $clang->gT("Greater than"),

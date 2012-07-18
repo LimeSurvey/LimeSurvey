@@ -26,6 +26,7 @@ function addcondition(newcid)
     <option>"+selectTxt+"</option>\n\
     <option value='equal'>"+equalsTxt+"</option>\n\
     <option value='contains'>"+containsTxt+"</option>\n\
+    <option value='beginswith'>"+beginswithTxt+"</option>\n\
     <option value='notequal'>"+notequalTxt+"</option>\n\
     <option value='notcontains'>"+notcontainsTxt+"</option>\n\
     <option value='greaterthan'>"+greaterthanTxt+"</option>\n\
@@ -86,6 +87,7 @@ $(document).ready(function() {
         <option>"+selectTxt+"</option>\n\
         <option value='equal'>"+equalsTxt+"</option>\n\
         <option value='contains'>"+containsTxt+"</option>\n\
+        <option value='beginswith'>"+beginswithTxt+"</option>\n\
         <option value='notequal'>"+notequalTxt+"</option>\n\
         <option value='notcontains'>"+notcontainsTxt+"</option>\n\
         <option value='greaterthan'>"+greaterthanTxt+"</option>\n\
@@ -185,6 +187,8 @@ $(document).ready(function() {
                 url: surveylinkUrl+'/'+row_id,
                 height: "100%",
                 width: "100%",
+                loadonce: true,
+                sortable: true,
                 colNames:[surveyNameColTxt,surveyIdColTxt,tokenIdColTxt,dateAddedColTxt,dateInvitedColTxt,dateCompletedColTxt],
                 colModel:[{ name:'survey_name',index:'survey_name', width:400,align:'center', sorttype:"string", sortable: true},
                 { name:'survey_id',index:'survey_id', width:90,align:'center', sorttype:"int", sortable: true},

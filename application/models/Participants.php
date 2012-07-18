@@ -400,6 +400,29 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
         $start = $limit * $page - $limit;
         $command = new CDbCriteria;
         $command->condition = '';
+
+        //The following code performs an IN-SQL order, but this only works for standard participant fields
+        //For the time being, lets stick to just sorting the collected results, some thinking
+        //needs to be done about how we can sort the actual fullo query when combining with calculated
+        //or attribute based fields. I've switched this off, but left the code for future reference. JC
+        if(1==2)
+        {
+            $sord = Yii::app()->request->getPost('sord'); //Sort order
+            $sidx = Yii::app()->request->getPost('sidx'); //Sort index
+            if(is_numeric($sidx) || $sidx=="survey") {
+                $sord=""; $sidx="";
+            }
+            if(!empty($sidx)) {
+                $sortorder="$sidx $sord";
+            } else {
+                $sortorder="";
+            }
+            if(!empty($sortorder))
+            {
+                $command->order=$sortorder;
+            }
+        }
+
         $con = count($condition);
         while ($i < $con)
         {
@@ -414,6 +437,10 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
                     case 'contains':
                         $operator="LIKE";
                         $condition[2]="%".$condition[2]."%";
+                        break;
+                    case 'beginswith':
+                        $operator="LIKE";
+                        $condition[2]=$condition[2]."%";
                         break;
                     case 'notequal':
                         $operator="!=";
@@ -479,6 +506,10 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
                             $operator="LIKE";
                             $condition[$i+3]="%".$condition[$i+3]."%";
                             break;
+                        case 'beginswith':
+                            $operator="LIKE";
+                            $condition[$i+3]=$condition[$i+3]."%";
+                            break;
                         case 'notequal':
                             $operator="!=";
                             break;
@@ -500,8 +531,8 @@ function getParticipantsSearchMultiple($condition, $page, $limit)
                 } elseif ($condition[$i+1]=="surveys") //search by quantity of linked surveys
                 {
                     $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM lime_survey_links)" : "";
-                    $command->addCondition('participant_id IN (SELECT participant_id FROM lime_survey_links GROUP BY participant_id HAVING count(*) '.$operator.' :param2 ORDER BY count(*))'.$addon);
-                    $command->params=array(':param2'=>$condition[$i+3]);
+                    $command->addCondition('participant_id IN (SELECT participant_id FROM lime_survey_links GROUP BY participant_id HAVING count(*) '.$operator.' '.$condition2name.' ORDER BY count(*))'.$addon);
+                    $command->params=array_merge($command->params, array($condition2name=>$condition[$i+3]));
                 }
                 elseif($condition[$i+1]=="owner_name")
                 {

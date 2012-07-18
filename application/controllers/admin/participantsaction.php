@@ -813,11 +813,11 @@ class participantsaction extends Survey_Common_Action
         //First entry is field to search, second method, third value, seperated by double pipe "||"
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
-    	$page=($page) ? $page : 1;
+        $page=($page) ? $page : 1;
     	$limit=($limit) ? $limit : 25;
 
         $attid = ParticipantAttributeNames::getAttributeVisibleID();
-        $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'surveys', 'language', 'owner_uid');
+        $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
 
         //If super admin all the participants will be visible
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
@@ -831,6 +831,7 @@ class participantsaction extends Survey_Common_Action
             $aData->page = $page;
 
             $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
+
             $aData->records = count(Participants::getParticipantsSearchMultiple($condition, 0, 0));
             $aData->total = ceil($aData->records / $limit);
 
@@ -844,6 +845,7 @@ class participantsaction extends Survey_Common_Action
                 $attributes = ParticipantAttributeNames::getParticipantVisibleAttribute($value['participant_id']);
                 foreach ($attid as $iAttributeId)
                 {
+                    $participantfields[]=$iAttributeId['attribute_id'];
                     $answer = ParticipantAttributeNames::getAttributeValue($value['participant_id'], $iAttributeId['attribute_id']);
                     if (isset($answer['value']))
                     {
@@ -881,6 +883,10 @@ class participantsaction extends Survey_Common_Action
             if (!empty($sortablearray))
             {
                 $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
+                if(is_numeric(Yii::app()->request->getPost('sidx'))) {
+
+                }
+                //var_dump($sortablearray);echo "\r\n\r\n";
                 $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
                 $i = 0;
                 $count = count($sortedarray[0]);
@@ -1010,10 +1016,10 @@ class participantsaction extends Survey_Common_Action
     	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
         $attid = ParticipantAttributeNames::getAttributeVisibleID();
-        $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'surveys', 'language', 'owner_uid');
+        $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
         foreach ($attid as $key => $value)
         {
-            array_push($participantfields, $value['attribute_name']);
+            array_push($participantfields, $value['attribute_id']);
         }
 
         //If super admin all the participants will be visible
