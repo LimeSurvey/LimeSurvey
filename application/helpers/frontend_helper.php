@@ -209,6 +209,9 @@
 
         $slangs = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
         $slangs[]= GetBaseLanguageFromSurveyID($surveyid);
+        $aAllLanguages=getLanguageData();
+        $slangs=array_keys(array_intersect_key($aAllLanguages,array_flip($slangs))); // Sort languages by their locale name
+
         if (count($slangs)>1) // return a dropdow only of there are more than one lanagage
         {
             $previewgrp = false;
@@ -229,7 +232,8 @@
                 {
                     $sHTMLCode .=" selected='selected'";
                 }
-                $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false,$sLanguage)." - ".getLanguageNameFromCode($sLanguage,false,$sSelectedLanguage)."</option>\n";
+                $htmlcode .= ">".$aAllLanguages[$sLanguage]['nativedescription']."</option>\n";
+
             }
             $sHTMLCode .= "</select>\n";
             return $sHTMLCode;
