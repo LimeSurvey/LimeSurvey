@@ -380,14 +380,17 @@ class tokens extends Survey_Common_Action
                 $token['validuntil'] = '';
 
             $aData->rows[$i]['id'] = $token['tid'];
+            $prow = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
 
             $action="";
             if($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] =="")) {
-                $action = '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
-            } elseif(1==2) { //TODO: If survey is completed and it is not anonymous, allow viewing response
-
+                $action .= '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
+            } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N" ) {
+                //Get the survey response id of the matching entry
+                $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$token['token']));
+                $action .= '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/browse/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
             } else {
-                $action = '<div style="width: 20px; height: 16px; float: left;"></div>';
+                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             $action .= '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'token_delete.png" title="' . $clang->gT("Delete token entry") . '" alt="' . $clang->gT("Delete token entry") . '" onclick=\'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}\'>';
 
@@ -2223,6 +2226,7 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyId);
         }
+        $prow = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
         $page = (Yii::app()->request->getPost('page') != "") ? Yii::app()->request->getPost('page') : 1;
         $limit = (Yii::app()->request->getPost('rows') != "") ? Yii::app()->request->getPost('rows') : 25 ;
         $fields = array('tid', 'firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'sent', 'sentreminder', 'remindercount', 'completed', 'usesleft', 'validfrom', 'validuntil');
@@ -2250,7 +2254,10 @@ class tokens extends Survey_Common_Action
             $action="";
             if($value['token'] != "" && ($value['completed'] == "N" || $value['completed'] =="")) {
                 $action .= '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("survey/index/sid/{$iSurveyId}/token/{$value['token']}") . '", "_blank")\'>';
-            } elseif(1==2) { //TODO: If survey is completed and it is not anonymous, allow viewing response
+            } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N" ) {
+                //Get the survey response id of the matching entry
+                $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$value['token']));
+                $action .= '<input type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/browse/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
 
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
