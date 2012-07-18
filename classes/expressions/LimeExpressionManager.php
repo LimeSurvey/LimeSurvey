@@ -7338,7 +7338,7 @@ EOD;
             global $databasetype;
             if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n' || $databasetype =='mssqlnative')
             {
-                $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar) as value";
+                $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar(4000)) as value";
             }
             else
             {
