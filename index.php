@@ -108,6 +108,7 @@ if ( $embedded && $embedded_inc != '' )
 {
     require_once( $embedded_inc );
 }
+
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$surveyid || !$surveyexists)
 {
@@ -120,10 +121,6 @@ if (!$surveyid || !$surveyexists)
         $baselang=$defaultlang;
     }
     $clang = new limesurvey_lang($baselang);
-    if(!isset($defaulttemplate))
-    {
-        $defaulttemplate="default";
-    }
     $languagechanger = makelanguagechanger();
     //Find out if there are any publicly available surveys
     $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics,a.language
@@ -211,7 +208,7 @@ $clienttoken != $_SESSION['token'])
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("Token mismatch")."</span><br /><br />\n"
@@ -220,7 +217,7 @@ $clienttoken != $_SESSION['token'])
     ."\t</p>\n"
     ."\t</div>\n";
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -237,7 +234,7 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("Previous session is set to be finished.")."</span><br /><br />\n"
@@ -246,7 +243,7 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
     ."\t</p>\n"
     ."\t</div>\n";
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -382,7 +379,7 @@ $surveyPreview_require_Auth == true) &&  $previewgrp == false)
         sendcacheheaders();
         doHeader();
 
-        echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+        echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
         echo "\t<div id='wrapper'>\n"
         ."\t<p id='tokenmessage'>\n"
         ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -391,7 +388,7 @@ $surveyPreview_require_Auth == true) &&  $previewgrp == false)
         ."\t</p>\n"
         ."\t</div>\n";
 
-        echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+        echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
         doFooter();
         exit;
     }
@@ -415,7 +412,7 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -425,7 +422,7 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     ."\t</p>\n"
     ."\t</div>\n";
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
     doFooter();
     exit;
 };
