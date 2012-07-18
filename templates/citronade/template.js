@@ -28,27 +28,6 @@ function focusFirst(Event)
 	$('#limesurvey :input:visible:enabled:first').focus();
 }
 
-// This function deactivate comment on multi with comment
-function autoDisabledComment(){
-  $(".answers-wrapper li input.checkbox").each(function(){
-    if($(this).attr('checked')){
-      $(this).closest('li').find('input:text').attr('readonly','');
-    }else{
-      $(this).closest('li').find('input:text').val('');
-      $(this).closest('li').find('input:text').attr('readonly','readonly');
-    }
-  });
-  $(".answers-wrapper li input.checkbox").click(function(){
-    if($(this).attr('checked')){
-      $(this).closest('li').find('input:text').attr('readonly','');
-      $(this).closest('li').find('input:text').focus();
-    }else{
-      $(this).closest('li').find('input:text').val('');
-      $(this).closest('li').find('input:text').attr('readonly','readonly');
-    }
-  });
-}
-
 // Add empty class to input text and textarea
 function addClassEmpty(){
       $('.answers-wrapper input.text[value=""]').addClass('empty');
@@ -103,7 +82,6 @@ function jalert(text) {
 $(document).ready(function(){
   // focusFirst(); /** Uncomment if you want to use the focusFirst function **/
   addClassEmpty();
-  autoDisabledComment();
   //$(".help-wrapper > span,.help-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
   //$(".help-wrapper .error-wrapper > span,.help-wrapper .error-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
 })
