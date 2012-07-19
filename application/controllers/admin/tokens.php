@@ -404,6 +404,8 @@ class tokens extends Survey_Common_Action
                 } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
                 }
+            } else {
+                $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             $action .= '<input style="float: left; height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('adminimageurl') . 'edit_16.png" class="token_edit" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '">';
             if(!empty($token['participant_id']) && $token['participant_id'] != "") {
@@ -1326,9 +1328,9 @@ class tokens extends Survey_Common_Action
                     $from = Yii::app()->request->getPost('from_' . $emrow['language']);
 
                     $fieldsarray["{OPTOUTURL}"] = $this->getController()
-                                                       ->createAbsoluteUrl("/optout/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                                                       ->createAbsoluteUrl("/optout/tokens/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
                     $fieldsarray["{OPTINURL}"] = $this->getController()
-                                                      ->createAbsoluteUrl("/optin/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                                                      ->createAbsoluteUrl("/optin/tokens/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
                     $fieldsarray["{SURVEYURL}"] = $this->getController()
                                                        ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/langcode/" . trim($emrow['language']) . "/");
 
