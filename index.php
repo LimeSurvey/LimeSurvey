@@ -2256,25 +2256,17 @@ function buildsurveysession($previewGroup=false)
     }
 
     // Defaults need to be set within Expression Manager so that it can process defaults comprised of equations
-    //    // Prefill question/answer from defaultvalues
-    //    foreach ($fieldmap as $field)
-    //    {
-    //        if (isset($field['defaultvalue']))
-    //        {
-    //            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
-    //        }
-    //    }
-    // Prefill questions/answers from command line params
+    // Prefill questions/answers from command line params, except for Reserved var (put in in config-default.php ?)
+    $reservedStartingValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
-    if (isset($_GET))
+    if (isset($_GET) && !$previewgrp)
     {
         foreach ($_GET as $k=>$v)
         {
-            if (preg_match('/^(token|sid|lang|newtest)$/',$k))
+            if (!in_array($k,$reservedStartingValues))
             {
-                continue;
+                $startingValues[$k] = $v;
             }
-            $startingValues[$k] = $v;
         }
     }
     $_SESSION['startingValues']=$startingValues;
