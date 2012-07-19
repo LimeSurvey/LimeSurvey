@@ -4803,8 +4803,10 @@
                             else
                             {
                                 // display new group
-                                $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false,$setSubmitDate);
-                                $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                                if(!$preview){ // Save only if not in preview mode
+                                    $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false,$setSubmitDate);
+                                    $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                                }
                                 $LEM->lastMoveResult = array(
                                 'finished'=>false,
                                 'message'=>$message,
