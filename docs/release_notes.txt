@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.00 Release Candidate 5! 
+Welcome to LimeSurvey v2.00 Release Candidate 6! 
 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
@@ -78,6 +78,12 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 2.0RC5 to 2.0RC6 (build 120720) June 19, 2012
+Fixed issue #6343: Fatal DB Error during fresh install (c_schmitz)
+New feature: Ability to reset Expression Manager for admin with showlogicfile
+Fixed issue #6330: Regex engine does not accept a leading zero even if explicitly specified as acceptable
+Fixed issue #6335 : Group preview add answers
 
 
 Changes from 2.0RC4 to 2.0RC5 (build 120719) June 19, 2012
