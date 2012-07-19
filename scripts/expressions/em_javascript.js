@@ -523,7 +523,7 @@ function LEMval(alias)
                 return value;
             }
             else {
-                if (strlen(value) > 0 && value[0]==0) {
+                if (value.length > 0 && value[0]==0) {
                     return value;   // so keep 0 prefixes on numbers
                 }
                 return +value;  // convert it to numeric return type
