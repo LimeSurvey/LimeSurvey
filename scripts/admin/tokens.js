@@ -257,7 +257,7 @@ $(document).ready(function() {
                 } else {
                     if(id == 1) {
                         searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
-                        jQuery("#displaytokens").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
+                        //jQuery("#displaytokens").jqGrid('setGridParam',{url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
                     } else {
                         searchconditions = $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
                         for( i=2 ; i<=idexternal; i++) {
@@ -265,8 +265,25 @@ $(document).ready(function() {
                                 searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();
                             }
                         }
-                        jQuery("#displaytokens").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
+                        //jQuery("#displaytokens").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
                     }
+                    jQuery("#displaytokens").jqGrid('setGridParam',{
+                        url:jsonSearchUrl+'/'+searchconditions,
+                        datatype: "json",
+                        gridComplete: function(){
+                            if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
+                                var dialog_buttons={};
+                                dialog_buttons[okBtn]=function(){
+                                    $( this ).dialog( "close" );
+                                    };
+                                $("<p>"+noSearchResultsTxt+"</p>").dialog({
+                                    modal: true,
+                                    buttons: dialog_buttons,
+                                    resizable: false
+                                });
+                            }
+                        }
+                    }).trigger("reloadGrid");
                     $(this).dialog("close");
                 }
             };
