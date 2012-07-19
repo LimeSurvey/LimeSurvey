@@ -4790,7 +4790,7 @@
                             // then skip this group - assume already saved?
                             continue;
                         }
-                        else if (!($result['mandViolation'] || !$result['valid']) && $LEM->currentGroupSeq < $seq) {
+                        elseif (!($result['mandViolation'] || !$result['valid']) && $LEM->currentGroupSeq < $seq) {
                                 // if there is a violation while moving forward, need to stop and ask that set of questions
                                 // if there are no violations, can skip this group as long as changed values are saved.
                                 continue;
@@ -4798,8 +4798,10 @@
                             else
                             {
                                 // display new group
-                                $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
-                                $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                                if(!$preview){ // Save only if not in preview mode
+                                    $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                                    $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                                }
                                 $LEM->lastMoveResult = array(
                                 'finished'=>false,
                                 'message'=>$message,

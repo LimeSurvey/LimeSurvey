@@ -2096,16 +2096,16 @@
     //        }
     //    }
     // Prefill questions/answers from command line params
+    $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
-    if (isset($_GET))
+    if (isset($_GET) && !$previewGroup)
     {
         foreach ($_GET as $k=>$v)
         {
-            if (preg_match('/^(token|sid|lang|newtest)$/',$k))
+            if (!in_array($k,$reservedGetValues))
             {
-                continue;
+                $startingValues[$k] = $v;
             }
-            $startingValues[$k] = $v;
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
