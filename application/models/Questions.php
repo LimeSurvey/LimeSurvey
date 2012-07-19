@@ -205,10 +205,9 @@
             $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
             if ($sCondition != FALSE)
             {
-                $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND :scondition")
+                $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
                 ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
-                ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR)
-                ->bindParam(":scondition", $sCondition, PDO::PARAM_STR);
+                ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
             }
             $command->order("{{groups}}.group_order asc, {{questions}}.question_order asc");
 
