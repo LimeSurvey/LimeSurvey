@@ -299,6 +299,9 @@ function LEMval(alias)
         newval = str.split(',').join('.');
     }
     if (newval == parseFloat(newval)) {
+        if (newval.length > 0 && newval[0]==0) {
+            return newval;   // so keep 0 prefixes on numbers
+        }
         return +newval;
     }
 
@@ -520,6 +523,9 @@ function LEMval(alias)
                 return value;
             }
             else {
+                if (strlen(value) > 0 && value[0]==0) {
+                    return value;   // so keep 0 prefixes on numbers
+                }
                 return +value;  // convert it to numeric return type
             }
         }

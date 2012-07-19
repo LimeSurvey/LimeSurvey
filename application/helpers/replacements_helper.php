@@ -118,7 +118,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $templatename=Yii::app()->getConfig('defaulttemplate');
     }
-    $templatename=validateTemplateDir($templatename);
     if(!isset($templatedir)) $templatedir = getTemplatePath($templatename);
     if(!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
 

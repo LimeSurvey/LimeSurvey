@@ -7351,7 +7351,7 @@ EOD;
             $databasetype = Yii::app()->db->getDriverName();
             if ($databasetype=='mssql' || $databasetype=="sqlsrv")
             {
-                $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar) as value";
+                $query = "select distinct a.qid, a.attribute, CAST(a.value as varchar(max)) as value";
             }
             else
             {

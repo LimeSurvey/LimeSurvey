@@ -596,7 +596,9 @@ class index extends CAction {
             //Present the clear all page using clearall.pstpl template
             $this->_printTemplateContent($thistpl.'/clearall.pstpl', $redata, __LINE__);
 
-            $this->_niceExit($redata, __LINE__, $thistpl);
+            $this->_printTemplateContent($thistpl.'/endpage.pstpl', $redata, __LINE__);
+            doFooter();
+            exit;
         }
 
 
@@ -822,16 +824,14 @@ class index extends CAction {
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
-        if ( $sTemplateDir === null )
-            $sTemplateDir = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
-
+        $sTemplateDir= getTemplatePath($sTemplateDir);
         sendCacheHeaders();
 
         doHeader();
 
-        $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'startpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($sTemplateDir.'/startpage.pstpl', $redata, $iDebugLine);
         $this->_printMessage($asMessage);
-        $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'endpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($sTemplateDir.'/endpage.pstpl', $redata, $iDebugLine);
 
         doFooter();
 
