@@ -2259,7 +2259,7 @@ function buildsurveysession($previewGroup=false)
     // Prefill questions/answers from command line params, except for Reserved var (put in in config-default.php ?)
     $reservedStartingValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
-    if (isset($_GET) && !(isset($previewgrp) && $previewgrp))
+    if (isset($_GET) && !$previewGroup)
     {
         foreach ($_GET as $k=>$v)
         {
