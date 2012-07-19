@@ -270,6 +270,7 @@ if(isset($_SESSION['loginID']))
             $_POST['surveyMode'] = 'survey';
             $_POST['LEMcalledFromAdmin'] = 'Y';
             $_POST['assessments'] = $thissurvey['assessments'];
+            LimeExpressionManager::SetDirtyFlag();
             if (isset($_GET['gid'])) { $_POST['gid'] = $_GET['gid']; }
             if (isset($_GET['qid'])) { $_POST['qid'] = $_GET['qid']; }
             include($rootdir . '/classes/expressions/test/survey_logic_file.php');
