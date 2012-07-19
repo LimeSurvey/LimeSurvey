@@ -14,14 +14,14 @@
  */
 
 /**
- * Browse Controller
+ * Responses Controller
  *
  * This controller performs browse actions
  *
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class browse extends Survey_Common_Action
+class responses extends Survey_Common_Action
 {
 
     function __construct($controller, $id)
@@ -252,7 +252,7 @@ class browse extends Survey_Common_Action
                             if ($metadata === "size")
                                 $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                             else if ($metadata === "name")
-                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/browse/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
+                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
                             else
                                 $answervalue = rawurldecode($phparray[$index][$metadata]);
                         }
@@ -736,10 +736,10 @@ class browse extends Survey_Common_Action
         $aData['next'] = $next;
         $aData['end'] = $end;
         $aViewUrls[] = 'browsetimeheader_view';
-        
+
         $aData['fncount'] = $fncount;
         $bgcc = 'oddrow';
-        
+
         foreach ($dtresult as $dtrow)
         {
                 if ($bgcc == "evenrow")
@@ -931,7 +931,7 @@ class browse extends Survey_Common_Action
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = Yii::app()->lang->gT('Browse responses'); // browse is independent of the above
 
-        parent::_renderWrappedTemplate('browse', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }
 
 }

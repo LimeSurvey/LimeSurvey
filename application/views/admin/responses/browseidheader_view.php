@@ -28,9 +28,9 @@
                 <img src='<?php echo $sImageURL; ?>/export.png' alt='<?php $clang->eT("Export this Response"); ?>'/></a>
             <img src='<?php echo $sImageURL; ?>/separator.gif' class='separator' alt='' />
             <img src='<?php echo $sImageURL; ?>/blank.gif' width='20' height='20' alt='' />
-            <a href='<?php echo $this->createUrl("admin/browse/view/surveyid/$surveyid/id/$last"); ?>' title='<?php $clang->eT("Show previous..."); ?>' >
+            <a href='<?php echo $this->createUrl("admin/responses/view/surveyid/$surveyid/id/$last"); ?>' title='<?php $clang->eT("Show previous..."); ?>' >
                 <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous..."); ?>' /></a>
-            <a href='<?php echo $this->createUrl("admin/browse/view/surveyid/$surveyid/id/$next"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
+            <a href='<?php echo $this->createUrl("admin/responses/view/surveyid/$surveyid/id/$next"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
                 <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next..."); ?>' /></a>
         </div>
     </div>

@@ -82,7 +82,7 @@
         <br /><br />
 
         <?php if(isset($thisid)): ?>
-			<input type='submit' value='<?php $clang->eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/browse/action/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
+			<input type='submit' value='<?php $clang->eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/action/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
 			<br /><br />
         <?php endif; ?>
 

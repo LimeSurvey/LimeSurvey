@@ -478,7 +478,7 @@ class dataentry extends Survey_Common_Action
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
-                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/browse/index/surveyid/{$surveyid}"));
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/responses/index/surveyid/{$surveyid}"));
             }
         }
     }
@@ -1580,8 +1580,8 @@ class dataentry extends Survey_Common_Action
                 ob_end_flush();
             }
 
-            $onerecord_link = $this->getController()->createUrl('/').'/admin/browse/index/surveyid/'.$surveyid.'/id/'.$id;
-            $allrecords_link = $this->getController()->createUrl('/').'/admin/browse/index/surveyid/'.$surveyid.'/all';
+            $onerecord_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid.'/id/'.$id;
+            $allrecords_link = $this->getController()->createUrl('/').'/admin/responses/index/surveyid/'.$surveyid.'/all';
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
             .$clang->gT("Record has been updated.")."<br /><br />\n"
             ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"

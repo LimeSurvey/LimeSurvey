@@ -134,8 +134,8 @@ $(document).ready(function(){
 
 /*    $("#responseTable")
 	    .jqGrid({
-	        url: siteURL + "/admin/browse/" + surveyID + "/grid",
-	        editurl: siteURL + "/admin/browse/" + surveyID + "/grid",
+	        url: siteURL + "/admin/responses/" + surveyID + "/grid",
+	        editurl: siteURL + "/admin/responses/" + surveyID + "/grid",
 	        datatype: "json",
 	        mtype: "POST",
 	        caption: "Responses",
@@ -183,7 +183,7 @@ $(document).ready(function(){
  		 	  			return;
 	 		 	  	}
 
-					sendPost(siteURL + "/admin/browse/" + surveyID + "/grid", {
+					sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
 						'oper': 'downloadarchives',
 						'ids': rows
 					});
@@ -225,7 +225,7 @@ function sendPost(myaction, data)
 */
 function getFile(id, field, filename)
 {
-	sendPost(siteURL + "/admin/browse/" + surveyID + "/grid", {
+	sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
 		'id': id,
 		'fieldname': field,
 		'oper': 'downloadfile',
@@ -240,7 +240,7 @@ function getFile(id, field, filename)
 */
 function getArchive(id)
 {
-	sendPost(siteURL + "/admin/browse/" + surveyID + "/grid", {
+	sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
 		'oper': 'downloadarchive',
 		'id': id
 	});

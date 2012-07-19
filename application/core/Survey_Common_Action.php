@@ -896,7 +896,7 @@ class Survey_Common_Action extends CAction
         rsort($tmp_survlangs);
         $aData['tmp_survlangs'] = $tmp_survlangs;
 
-        $this->getController()->render("/admin/browse/browsemenubar_view", $aData);
+        $this->getController()->render("/admin/responses/browsemenubar_view", $aData);
     }
     /**
     * Load menu bar of user group controller.
