@@ -2102,7 +2102,7 @@
     {
         foreach ($_GET as $k=>$v)
         {
-            if (!in_array($k,$reservedStartingValues))
+            if (!in_array($k,$reservedGetValues))
             {
                 $startingValues[$k] = $v;
             }
