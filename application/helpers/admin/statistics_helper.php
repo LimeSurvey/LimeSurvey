@@ -3292,11 +3292,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     'sp' => $bShowPieChart
                     );
 
-                    Yii::app()->session['stats'][$rt] = array(
-                    'lbl' => $lbl,
-                    'gdata' => $gdata,
-                    'grawdata' => $grawdata
+                    $stats=Yii::app()->session['stats'];
+                    $stats[$rt]=array(
+                        'lbl' => $lbl,
+                        'gdata' => $gdata,
+                        'grawdata' => $grawdata
                     );
+                    Yii::app()->session['stats'] = $stats;
 
                     if (array_sum($gdata)>0 && $bShowGraph == true)
                     {

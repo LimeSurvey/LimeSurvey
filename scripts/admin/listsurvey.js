@@ -101,6 +101,7 @@ $(document).ready(function(){
         height: "100%",
         width: screen.width-20,
         shrinkToFit: true,
+        ignoreCase: true,
         rowNum: 25,
         editable:true,
         scrollOffset:0,
