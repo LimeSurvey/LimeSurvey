@@ -894,7 +894,7 @@ class SurveyAdmin extends Survey_Common_Action
             if ($action == 'importsurvey' && !$aData['bFailed'])
             {
                 $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
-                if (is_null($aImportResults)) $importerror = true; 
+                if (is_null($aImportResults)) $importerror = true;
             }
             elseif ($action == 'copysurvey' && (empty($importerror) || !$importerror))
             {
@@ -1556,7 +1556,7 @@ class SurveyAdmin extends Survey_Common_Action
             );
 
             $langsettings = new Surveys_languagesettings;
-            $langsettings->insertNewSurvey($aInsertData, $xssfilter);
+            $langsettings->insertNewSurvey($aInsertData);
 
             Yii::app()->session['flashmessage'] = $this->getController()->lang->gT("Survey was successfully added.");
 

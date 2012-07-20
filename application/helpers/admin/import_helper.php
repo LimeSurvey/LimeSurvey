@@ -2693,7 +2693,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         unset($surveylsrowdata['lastpage']);
         $surveylsrowdata['surveyls_survey_id']=$iNewSID;
 
-        $lsiresult = Surveys_languagesettings::model()->insertNewSurvey($surveylsrowdata, $xssfilter) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
+        $lsiresult = Surveys_languagesettings::model()->insertNewSurvey($surveylsrowdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
 
     }
 

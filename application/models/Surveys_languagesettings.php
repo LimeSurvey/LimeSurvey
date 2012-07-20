@@ -212,23 +212,9 @@ class Surveys_languagesettings extends CActiveRecord
         return $this->db->query($query, array($sid, $sid, $lcode));
     }
 
-    function insertNewSurvey($data, $xssfiltering = false)
+    function insertNewSurvey($data)
     {
         if (isset($data['surveyls_url']) && $data['surveyls_url']== 'http://') {$data['surveyls_url']="";}
-
-		if($xssfiltering)
-		{
-			$filter = new CHtmlPurifier();
-			$filter->options = array('URI.AllowedSchemes'=>array(
-  				'http' => true,
-  				'https' => true,
-			));
-			$data["description"] = $filter->purify($data["description"]);
-			$data["title"] = $filter->purify($data["title"]);
-			$data["welcome"] = $filter->purify($data["welcome"]);
-			$data["endtext"] = $filter->purify($data["endtext"]);
-		}
-
 		return $this->insertSomeRecords($data);
     }
 
