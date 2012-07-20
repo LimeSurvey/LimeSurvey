@@ -443,7 +443,7 @@ class participantsaction extends Survey_Common_Action
             $stg ->stg_value=Yii::app()->request->getPost('userideditable');
             $stg->save();
         }
-        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/userControl'));
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/userControl'));
     }
 
     /**
@@ -466,7 +466,7 @@ class participantsaction extends Survey_Common_Action
                 $stg->save();
             }
         }
-        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/blacklistControl'));
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/blacklistControl'));
     }
 
     /**
@@ -1311,7 +1311,7 @@ class participantsaction extends Survey_Common_Action
             );
             ParticipantAttributeNames::saveAttributeValue($editattvalue);
         }
-        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/attributeControl'));
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/attributeControl'));
     }
 
     /*
@@ -1322,7 +1322,7 @@ class participantsaction extends Survey_Common_Action
         $iAttributeId = Yii::app()->request->getQuery('aid');
         $iValueId = Yii::app()->request->getQuery('vid');
         ParticipantAttributeNames::delAttributeValues($iAttributeId, $iValueId);
-        CController::redirect(Yii::app()->getController()->createUrl('/admin/participants/viewAttribute/aid/' . $iAttributeId));
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('/admin/participants/viewAttribute/aid/' . $iAttributeId));
     }
 
     /*

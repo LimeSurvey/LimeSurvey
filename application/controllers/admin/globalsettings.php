@@ -58,7 +58,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
 
         //save refurl from where global settings screen is called!
-        $refurl = CHttpRequest::getUrlReferrer();
+        $refurl = Yii::app()->getRequest()->getUrlReferrer();
         Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
 
         $data['clang'] = $this->getController()->lang;
@@ -174,7 +174,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");
 
         $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-        if($url){CController::redirect($url);}
+        if($url){Yii::app()->getController()->redirect($url);}
     }
 
     private function _checkSettings()
