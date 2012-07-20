@@ -6,7 +6,9 @@
         exit;
     }
 ?>
-
+<script type='text/javascript'>
+    var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
+</script>
 <form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/index/surveyid/$surveyid"); ?>#start'>
     <div class='header ui-widget-header'><?php $clang->eT("General filters"); ?></div>
     <div id='statistics_general_filter'>

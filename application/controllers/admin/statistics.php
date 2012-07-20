@@ -559,7 +559,7 @@ class statistics extends Survey_Common_Action {
 
 	function graph()
 	{
-        Yii::app()->loadHelper('admin/statistics_helper');
+        Yii::app()->loadHelper('admin/statistics');
 		Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
@@ -571,8 +571,8 @@ class statistics extends Survey_Common_Action {
 
 	    $aData['success'] = 1;
 
-	    if (isset($_POST['cmd']) || !isset($_POST['id'])) {
-	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 1), 3);
+	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
+	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
 	        $qtype = substr($_POST['id'], 0, 1);
             $aattr = getQuestionAttributeValues($qqid, substr($_POST['id'], 0, 1));
             $field = substr($_POST['id'], 1);
@@ -655,7 +655,8 @@ class statistics extends Survey_Common_Action {
 	        $aData['success'] = 0;
 	    }
 
-        $this->_renderWrappedTemplate('export', 'statistics_graph_view', $aData);
+        //$this->_renderWrappedTemplate('export', 'statistics_graph_view', $aData);
+        $this->getController()->render('export/statistics_graph_view', $aData);
 	}
 
     /**

@@ -156,11 +156,11 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
         else
         {
             // this block is to remove the items with value == 0
-            // and an unelegant way to remove comments from List with Comments questions
+            // and an inelegant way to remove comments from List with Comments questions
             $i = 0;
             while (isset ($gdata[$i]))
             {
-                if ($gdata[$i] == 0 || ($qtype == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
+                if ($gdata[$i] == 0 || ($type == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
                 {
                     array_splice ($gdata, $i, 1);
                     array_splice ($lbl, $i, 1);
@@ -3418,7 +3418,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
             break;
         case 'html':
-            $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>"
+            $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>\n"
             ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
             return $statisticsoutput;
 
