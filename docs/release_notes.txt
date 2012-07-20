@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.00 Release Candidate 6! 
+Welcome to LimeSurvey v2.00 Release Candidate 7! 
 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
@@ -79,12 +79,17 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 2.0RC6 to 2.0RC7 (build 120721) June 20, 2012
+-Fixed issue #6192 - PHP notice "undefined variable" when using end URL (jcleeland)
+-Fixed issue #6277 - case insensitive search now enabled (default search changed ton "cn" (contains) in earlier update) (jcleeland)
+-Fixed issue: Error on survey creation (Carsten Schmitz)
+-Fixed issue "Indirect modification of overloaded element of CHttpSession has no effect" with statistics_helper - applying an array element to an object in Yii is problematic. (jcleeland)
+
 Changes from 2.0RC5 to 2.0RC6 (build 120720) June 19, 2012
 Fixed issue #6343: Fatal DB Error during fresh install (c_schmitz)
 New feature: Ability to reset Expression Manager for admin with showlogicfile
 Fixed issue #6330: Regex engine does not accept a leading zero even if explicitly specified as acceptable
 Fixed issue #6335 : Group preview add answers
-
 
 Changes from 2.0RC4 to 2.0RC5 (build 120719) June 19, 2012
 -Fixed issue #6257: Manage token attribute fields language url tabs show "Array" (tpartner)
