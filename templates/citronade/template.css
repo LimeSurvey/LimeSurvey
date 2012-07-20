@@ -357,7 +357,14 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 .answers-wrapper textarea.error, .answers-wrapper input[type=text].error{
 	border:1px solid #944;color:#444;background-color:#FEF;
 }
+.mandatory .answers-wrapper textarea.good,.mandatory .answers-wrapper input[type=text].good
+{
+	border:1px solid #999;color:#444;background-color:#FFF;
+}
 .answers-wrapper textarea.good, .answers-wrapper input[type=text].good{
+	border:1px solid #494;color:#444
+}
+.other .answers-wrapper textarea.good,.other .answers-wrapper input[type=text].good{
 	border:1px solid #494;color:#444
 }
 .answers-wrapper textarea.empty, .answers-wrapper input[type=text].empty{

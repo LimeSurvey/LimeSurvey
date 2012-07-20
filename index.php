@@ -108,6 +108,7 @@ if ( $embedded && $embedded_inc != '' )
 {
     require_once( $embedded_inc );
 }
+
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$surveyid || !$surveyexists)
 {
@@ -120,10 +121,6 @@ if (!$surveyid || !$surveyexists)
         $baselang=$defaultlang;
     }
     $clang = new limesurvey_lang($baselang);
-    if(!isset($defaulttemplate))
-    {
-        $defaulttemplate="default";
-    }
     $languagechanger = makelanguagechanger();
     //Find out if there are any publicly available surveys
     $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics,a.language
@@ -211,7 +208,7 @@ $clienttoken != $_SESSION['token'])
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("Token mismatch")."</span><br /><br />\n"
@@ -220,7 +217,7 @@ $clienttoken != $_SESSION['token'])
     ."\t</p>\n"
     ."\t</div>\n";
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -237,7 +234,7 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("Previous session is set to be finished.")."</span><br /><br />\n"
@@ -246,7 +243,7 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
     ."\t</p>\n"
     ."\t</div>\n";
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -382,7 +379,7 @@ $surveyPreview_require_Auth == true) &&  $previewgrp == false)
         sendcacheheaders();
         doHeader();
 
-        echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+        echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
         echo "\t<div id='wrapper'>\n"
         ."\t<p id='tokenmessage'>\n"
         ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -391,7 +388,7 @@ $surveyPreview_require_Auth == true) &&  $previewgrp == false)
         ."\t</p>\n"
         ."\t</div>\n";
 
-        echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+        echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
         doFooter();
         exit;
     }
@@ -415,7 +412,7 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -425,7 +422,7 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     ."\t</p>\n"
     ."\t</div>\n";
 
-    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
     doFooter();
     exit;
 };
@@ -1156,7 +1153,7 @@ function makelanguagechanger()
             {
                 $htmlcode .= " selected=\"selected\" ";
             }
-            $htmlcode .= ">".getLanguageNameFromCode($otherlang,false)."</option>\n";
+            $htmlcode .= ">".$aAllLanguages[$otherlang]['nativedescription']."</option>\n";
         }
 
         $htmlcode .= "</select>\n";
@@ -2259,25 +2256,17 @@ function buildsurveysession($previewGroup=false)
     }
 
     // Defaults need to be set within Expression Manager so that it can process defaults comprised of equations
-    //    // Prefill question/answer from defaultvalues
-    //    foreach ($fieldmap as $field)
-    //    {
-    //        if (isset($field['defaultvalue']))
-    //        {
-    //            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
-    //        }
-    //    }
-    // Prefill questions/answers from command line params
+    // Prefill questions/answers from command line params, except for Reserved var (put in in config-default.php ?)
+    $reservedStartingValues= array('token','sid','gid','qid','lang','newtest','action');
     $startingValues=array();
-    if (isset($_GET))
+    if (isset($_GET) && !$previewGroup)
     {
         foreach ($_GET as $k=>$v)
         {
-            if (preg_match('/^(token|sid|lang|newtest)$/',$k))
+            if (!in_array($k,$reservedStartingValues))
             {
-                continue;
+                $startingValues[$k] = $v;
             }
-            $startingValues[$k] = $v;
         }
     }
     $_SESSION['startingValues']=$startingValues;

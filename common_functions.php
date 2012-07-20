@@ -2239,14 +2239,18 @@ function strip_comments($comment, $email, $replace=''){
 
 function validate_templatedir($templatename)
 {
-    global $usertemplaterootdir, $standardtemplaterootdir, $defaulttemplate;
-    if (is_dir("$usertemplaterootdir/{$templatename}/"))
+    global $usertemplaterootdir, $defaulttemplate;
+    if (isStandardTemplate($templatename))
     {
         return $templatename;
     }
-    elseif (is_dir("$standardtemplaterootdir/{$templatename}/"))
+    elseif (is_dir("$usertemplaterootdir/{$templatename}/"))
     {
         return $templatename;
+    }
+    elseif (isStandardTemplate($defaulttemplate))
+    {
+        return $defaulttemplate;
     }
     elseif (is_dir("$usertemplaterootdir/{$defaulttemplate}/"))
     {
@@ -4799,7 +4803,7 @@ function createPassword()
 
     for ($i=0; $i<$password_length; $i++)
     {
-        $passwd .= $pwchars[floor(rand(0,strlen($pwchars)-1))];
+        $passwd .= $pwchars[(int)floor(rand(0,strlen($pwchars)-1))];
     }
     return $passwd;
 }
@@ -6535,15 +6539,15 @@ function sGetTemplatePath($sTemplateName)
     }
     else
     {
-        if (file_exists($usertemplaterootdir.'/'.$sTemplateName))
+        if (is_dir($usertemplaterootdir.'/'.$sTemplateName))
         {
             return $usertemplaterootdir.'/'.$sTemplateName;
         }
-        elseif (file_exists($usertemplaterootdir.'/'.$defaulttemplate))
+        elseif (is_dir($usertemplaterootdir.'/'.$defaulttemplate))
         {
             return $usertemplaterootdir.'/'.$defaulttemplate;
         }
-        elseif (file_exists($standardtemplaterootdir.'/'.$defaulttemplate))
+        elseif (isStandardTemplate($defaulttemplate))
         {
             return $standardtemplaterootdir.'/'.$defaulttemplate;
         }
@@ -6576,7 +6580,7 @@ function sGetTemplateURL($sTemplateName)
         {
             return $usertemplaterooturl.'/'.$defaulttemplate;
         }
-        elseif (file_exists($standardtemplaterootdir.'/'.$defaulttemplate))
+        elseif (isStandardTemplate($defaulttemplate))
         {
             return $standardtemplaterooturl.'/'.$defaulttemplate;
         }

@@ -44,7 +44,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
     {
         $_templatename = $defaulttemplate;
     }
-    $_templatename = validate_templatedir($_templatename);
+#    $_templatename = validate_templatedir($_templatename); // Not needed: sGetTemplateURL and sgetTemplatePath do validation
 
     // create absolute template URL and template dir vars
     $_templateurl = sGetTemplateURL($_templatename) . '/';

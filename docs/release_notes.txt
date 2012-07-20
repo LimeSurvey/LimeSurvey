@@ -78,6 +78,23 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120711) to 1.92+ (build 120718) July 18, 2012
+-Fixed issue #6328: pre-filling of hidden questions does not work (Thomas White)
+-Fixed issue #6304: Reloading unfinished survey can submit it without user interaction / reloading survey don't goe to actual step (Denis Chenu)
+-Fixed issue #6318: Attributes/validation cut off when checking with EM (Carsten Schmitz)
+-Fixed issue #6329: Language titles in language switcher are displayed in the currently used language instead of the native name (Carsten Schmitz)
+-Fixed issue #6330: Regex engine does not accept a leading zero even if explicitly specified as acceptable (Thomas White)
+-Fixed issue: Other comment mandatory requires 2 or more characters in comment field instead of 1 or more characters (Thomas White)
+-Fixed issue: Whole Question Validation (em_validation_q) missing from several question types (Thomas White)
+#Updated translation: Chinese (Simplified) by yooyooh
+#Updated translation: Czech by slansky
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by Mazi
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Polish by elisa
+#Updated translation: Spanish (Spain) by danielgeisler
+
 
 Changes from 1.92+ (build 120704) to 1.92+ (build 120711) July 11, 2012
 -Fixed issue #6207: Error "Ambiguous column name 'qid'" when using MSSQL server and editing answer options (Carsten Schmitz)

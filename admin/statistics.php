@@ -282,7 +282,7 @@ $language_options="";
 foreach ($survlangs as $survlang)
 {
     $language_options .= "\t<option value=\"{$survlang}\"";
-    if ($_SESSION['adminlang'] == $survlang)
+    if ($statlang == $survlang)
     {
         $language_options .= "selected=\"selected\" " ;
     }
