@@ -521,7 +521,7 @@ class participantsaction extends Survey_Common_Action
         else // If no search criteria it will simply return the number of participants
         {
             $iUserID = Yii::app()->session['loginID'];
-            $query = Particiapnts::getParticipantsOwner($iUserID);
+            $query = Participants::getParticipantsOwner($iUserID);
         }
 
         echo sprintf($clang->gT("Export %s participant(s) to CSV"), count($query));
