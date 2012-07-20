@@ -486,7 +486,9 @@ class SurveyRuntimeHelper {
                         $url = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
                         $url = templatereplace($url);    // TODO - check safety of this - provides access to any replacement value
                         $url = str_replace("{SAVEDID}", $saved_id, $url);               // to activate the SAVEDID in the END URL
-                        $url = str_replace("{TOKEN}", $clienttoken, $url);          // to activate the TOKEN in the END URL
+                        if(isset($clienttoken) && $clienttoken) {
+                            $url = str_replace("{TOKEN}", $clienttoken, $url);          // to activate the TOKEN in the END URL
+                        }
                         $url = str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
                         $url = str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
                         header("Location: {$url}");
