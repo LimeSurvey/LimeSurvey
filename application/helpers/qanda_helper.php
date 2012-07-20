@@ -1015,6 +1015,7 @@ function do_5pointchoice($ia)
         $('#$id input').each(function(){ $(this).removeAttr('checked');});
         $('#answer$ia[1]'+value).attr('checked','checked');
         }
+        checkconditions(value,'$ia[1]','radio');
         }
 
         });
