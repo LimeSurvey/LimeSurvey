@@ -703,6 +703,22 @@ class InstallerController extends CController {
             return sprintf('<img src="%s/installer/images/tick-%s.png" alt="Found" />', Yii::app()->baseUrl, $label[$result]);
         }
 
+
+        function is_writable_recursive($dir)
+        {
+            $folder = opendir($dir);
+            while($file = readdir( $folder ))
+                if($file != '.' && $file != '..' &&
+                ( !is_writable(  $dir."/".$file  ) ||
+                (  is_dir(   $dir."/".$file   ) && !is_writable_recursive(   $dir."/".$file   )  ) ))
+                {
+                    closedir($folder);
+                    return false;
+                }
+                closedir($folder);
+            return true;
+        }
+
         /**
         * check for a specific PHPFunction, return HTML image
         *
@@ -727,7 +743,7 @@ class InstallerController extends CController {
         * @param string $keyError key for error data
         * @return bool result of check (that it is writeable which implies existance)
         */
-        function check_PathWriteable($path, $type, &$data, $base, $keyError)
+        function check_PathWriteable($path, $type, &$data, $base, $keyError, $bRecursive=false)
         {
             $result = false;
             $data[$base.'Present'] = 'Not Found';
@@ -745,7 +761,7 @@ class InstallerController extends CController {
             if ($exists)
             {
                 $data[$base.'Present'] = 'Found';
-                if (is_writable($path))
+                if ((!$bRecursive && is_writable($path)) || ($bRecursive && is_writable_recursive($path)))
                 {
                     $data[$base.'Writable'] = 'Writable';
                     $result = true;
@@ -783,9 +799,9 @@ class InstallerController extends CController {
         * @param string $keyError key for error data
         * @return bool result of check (that it is writeable which implies existance)
         */
-        function check_DirectoryWriteable($directory, &$data, $base, $keyError)
+        function check_DirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive=false)
         {
-            return check_PathWriteable($directory, 2, $data, $base, $keyError);
+            return check_PathWriteable($directory, 2, $data, $base, $keyError, $bRecursive);
         }
 
         //  version check
@@ -803,11 +819,11 @@ class InstallerController extends CController {
             $bProceed = false;
 
         // templates directory check
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/templates/', $data, 'templatedir', 'tperror') )
+        if (!check_DirectoryWriteable(Yii::app()->getConfig('tempdir').'/', $data, 'tmpdir', 'tperror',true) )
             $bProceed = false;
 
         //upload directory check
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/upload/', $data, 'uploaddir', 'uerror') )
+        if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $data, 'uploaddir', 'uerror',true) )
             $bProceed = false;
 
         // ** optional settings check **

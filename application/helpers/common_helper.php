@@ -4752,7 +4752,7 @@ function createPassword()
 
     for ($i=0; $i<$password_length; $i++)
     {
-        $passwd .= $pwchars[floor(rand(0,strlen($pwchars)-1))];
+        $passwd .= $pwchars[(int)floor(rand(0,strlen($pwchars)-1))];
     }
     return $passwd;
 }
