@@ -191,7 +191,33 @@ class remotecontrol_handle
         return 'OK';
     }
 
-
+    /**
+     * RPC routine to get settings
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param string $sSetttingName
+     * @return string
+     */
+   public function get_site_settings($sSessionKey,$sSetttingName)
+    {
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+		   if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+		   {     
+			   if (Yii::app()->getRegistry($sSetttingName) !== false)
+					return Yii::app()->getRegistry($sSetttingName);
+				elseif (Yii::app()->getConfig($sSetttingName) !== false)
+					return Yii::app()->getConfig($sSetttingName);
+				else
+					return array('status' => 'Invalid setting');	
+			}
+			else
+				return array('status' => 'Invalid setting'); 	
+        }
+        else
+			return array('status' => 'Invalid session key');
+    }
 
     /**
     * RPC routine to delete a survey
