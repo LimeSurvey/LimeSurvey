@@ -46,7 +46,7 @@
                     foreach ($survlangs as $survlang)
                     {
                         $language_options .= "\t<option value=\"{$survlang}\"";
-                        if (Yii::app()->session['adminlang'] == $survlang)
+                        if ($sStatisticsLanguage == $survlang)
                         {
                             $language_options .= " selected=\"selected\" " ;
                         }
@@ -181,7 +181,7 @@
         <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
         <?php
             if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
-            || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
+            || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'){ ?>
             <td>
             <?php
                 //Multiple choice:
@@ -199,9 +199,11 @@
                     || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; } ?> />
             <label for='filter<?php echo $myfield; ?>'><?php echo _showSpeaker(flattenText($flt[5],true)); ?></label><br />
-            <?php if ($flt[2] != "N" && $flt[2] != "|"): ?>
-                <select name='<?php endif; if ($flt[2] == "M" ) { echo "M";}; if ($flt[2] == "P" ) { echo "P";}; echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?> multiple='multiple'>
-            <?php endif; ?>
+            <?php
+                if ($flt[2] != "N" && $flt[2] != "|"): ?>
+                <select name='<?php if ($flt[2] == "M" ) { echo "M";}; if ($flt[2] == "P" ) { echo "P";}; echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?> multiple='multiple'>
+                <?php endif;
+            };?>
         <!-- QUESTION TYPE = <?php echo $flt[2]; ?> -->
         <?php
 
@@ -273,7 +275,7 @@
                     echo "\t</tr>\n\t<tr>\n";
 
                     //get subqestions
-                    $result[$key1] = Questions::getQuestionsForStatistics('title as code, question as answer', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
+                    $result[$key1] = Questions::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
                     $counter2=0;
 
                     //loop through all answers
@@ -858,7 +860,7 @@
                     $counter2=0;
 
                     //check all the answers
-                    foreach($result[$key1] as $row)
+                    foreach($result[$key1] as $key=>$row)
                     {
                         $row=array_values($row);
                         $myfield2 = $myfield . "$row[0]";
