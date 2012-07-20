@@ -192,69 +192,23 @@ class remotecontrol_handle
     }
 
 
+
     /**
-    * RPC routine to import a survey - imports lss,csv,xls or survey zip archive
+    * RPC routine to delete a survey
     *
     * @access public
     * @param string $sSessionKey
-    * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,xls or survey zip archive
-    * @param string $sImportDataType  lss,csv,xls or zip
-    * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
-    * @return integer iSurveyID  - ID of the new survey
+    * @param int $iSurveyID
+    * @return array
     */
-    public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName=NULL, $DestSurveyID=NULL)
+    public function delete_survey($sSessionKey, $iSurveyID)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+            if (hasSurveyPermission($iSurveyID, 'survey', 'delete'))
             {
-                if (!in_array($sImportDataType,array('zip','csv','xls','lss'))) return array('status' => 'Invalid extension');
-                Yii::app()->loadHelper('admin/import');
-                // First save the data to a temporary file
-                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
-                file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
-                $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
-                unlink($sFullFilePath);
-                if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
-                else
-                {
-                    return $aImportResults['newsid'];
-                }
-            }
-            else
-                return array('status' => 'No permission');
-        }
-    }
-
-    /**
-    * RPC routine to activate a survey
-    *
-    * @access public
-    * @param string $sSessionKey
-    * @param string $sLSSData String containing the data of an LSS file
-    * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
-    * @return integer iSurveyID  - ID of the new survey
-    */
-    public function activate_survey($sSessionKey, $iSurveyID)
-    {
-        if ($this->_checkSessionKey($sSessionKey))
-        {
-            $oSurvey=Survey::model()->findByPk($iSurveyID);
-            if (is_null($oSurvey))
-            {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-
-            if (hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))
-            {
-                Yii::app()->loadHelper('admin/activate');
-                $aImportResults = activateSurvey($iSurveyID);
-
-                if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
-                else
-                {
-                    return $aImportResults;
-                }
+                Survey::model()->deleteSurvey($iSurveyID,true);
+                return array('status' => 'OK');
             }
             else
                 return array('status' => 'No permission');
@@ -303,62 +257,6 @@ class remotecontrol_handle
                 try
                 {
                     $oSurveyLocale->save(); // save the change to database
-                    return array('status' => 'OK');
-                }
-                catch(Exception $e)
-                {
-                    return array('status' => 'Error');
-                }
-            }
-            else
-                return array('status' => 'No permission');
-        }
-    }
-
-    /**
-    * RPC routine to modify survey settings
-    *
-    * @access public
-    * @param string $sSessionKey
-    * @param integer $iSurveyID  - ID of the survey
-    * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
-    * @return array OK, when save successful otherwise error text.
-    */
-    public function modify_survey_settings($sSessionKey, $iSurveyID, $aSurveyData)
-    {
-        if ($this->_checkSessionKey($sSessionKey))
-        {
-            $oSurvey=Survey::model()->findByPk($iSurveyID);
-            if (is_null($oSurvey))
-            {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-            if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
-            {
-                // Remove fields that may not be modified
-                unset($aSurveyData['active']);
-                unset($aSurveyData['language']);
-                unset($aSurveyData['additional_languages']);
-                // Remove invalid fields
-                $aDestinationFields=array_flip(Survey::model()->tableSchema->columnNames);
-                $aSurveyData=array_intersect_key($aSurveyData,$aDestinationFields);
-                $oSurvey=Survey::model()->findByPk($iSurveyID);
-                if ($oSurvey->active=='Y')
-                {
-                    // remove all fields that may not be changed when a survey is active
-                    unset($aSurveyData['anonymized']);
-                    unset($aSurveyData['datestamp']);
-                    unset($aSurveyData['savetimings']);
-                    unset($aSurveyData['ipaddr']);
-                    unset($aSurveyData['refurl']);
-                }
-                foreach($aSurveyData as $sFieldName=>$sValue)
-                {
-                    $oSurvey->$sFieldName=$sValue;
-                }
-                try
-                {
-                    $oSurvey->save(); // save the change to database
                     return array('status' => 'OK');
                 }
                 catch(Exception $e)
@@ -535,27 +433,7 @@ class remotecontrol_handle
             return array('status' => 'No permission');
     }
 
-    /**
-    * RPC routine to delete a survey
-    *
-    * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID
-    * @return array
-    */
-    public function delete_survey($sSessionKey, $iSurveyID)
-    {
-        if ($this->_checkSessionKey($sSessionKey))
-        {
-            if (hasSurveyPermission($iSurveyID, 'survey', 'delete'))
-            {
-                Survey::model()->deleteSurvey($iSurveyID,true);
-                return array('status' => 'OK');
-            }
-            else
-                return array('status' => 'No permission');
-        }
-    }
+
 
     /**
     * RPC routine to add a response to the survey response table
@@ -670,44 +548,6 @@ class remotecontrol_handle
             return array('status' => 'No permission');
     }
 
-    /**
-    * RPC routine to export responses
-    * Returns the requested file as base64 encoded string
-    *
-    * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID
-    * @param string $sDocumentType pdf,csv,xls,doc
-    * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to complete
-    * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
-    * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
-    * @param integer $iFromResponseID Optional
-    * @param integer $iToResponseID Optional
-    * @return On success: Requested file as base 64-encoded string. On failure array with error information
-    **/
-    function export_reponses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
-    {
-        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-        Yii::app()->loadHelper('admin/exportresults');
-        if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
-        if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
-        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
-        if($sDocumentType=='xls'){
-           // Cut down to the first 255 fields
-           $aFields=array_slice($aFields,0,255);
-        }
-        $oFomattingOptions=new FormattingOptions();
-        $oFomattingOptions->format=$sDocumentType;
-        $oFomattingOptions->responseMinRecord=$iFromResponseID;
-        $oFomattingOptions->responseMaxRecord=$iToResponseID;
-        $oFomattingOptions->selectedColumns=$aFields;
-        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
-        $oFomattingOptions->headingFormat=$sHeadingType;
-        $oFomattingOptions->answerFormat=$sResponseType;
-        $oExport=new ExportSurveyResultsService();
-        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode,$oFomattingOptions,'return');
-        return base64_encode($sFileData);
-    }
 
 
     /**
