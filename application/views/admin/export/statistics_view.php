@@ -899,7 +899,7 @@
                         * - sortorder
                         * - language
                         */
-                        $fresult = $fresults[$key1][$key];
+                        $fresult = $fresults[$key1];
 
                         //for debugging only:
                         //echo $fquery;
