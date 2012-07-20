@@ -1369,10 +1369,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if ($sql != "NULL") {$query .= " AND $sql";}
 
                     //execute query
-                    $result=Yii::app()->db->createCommand($query)->query();
+                    $result=Yii::app()->db->createCommand($query)->queryAll();
 
                     //get calculated data
-                    foreach ($nresult->readAll() as $row)
+                    foreach ($result as $row)
                     {
                         //put translation of mean and calculated data into $showem array
                         $showem[]=array($statlang->gT("Sum"), $row['sum']);
@@ -1540,7 +1540,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
                             $result = Yii::app()->db->createCommand($query)->limit(1, $q3c);
 
-                            foreach ($result->readAll() as $row)
+                            foreach ($result->queryAll() as $row)
                             {
                                 $showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);
                             }
