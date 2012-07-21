@@ -989,8 +989,8 @@ function do_5pointchoice($ia)
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
     if($aQuestionAttributes['slider_rating']==1){
-        header_includes('/admin/scripts/rating/jquery.rating.css','css');
-        header_includes('/admin/scripts/rating/jquery.rating.js','js');
+        header_includes('jquery.rating.css','css');
+        header_includes('jquery.rating.js','js');
         $answer.="
         <script type=\"text/javascript\">
         document.write('";
