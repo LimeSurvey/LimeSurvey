@@ -310,7 +310,9 @@ class participantsaction extends Survey_Common_Action
      */
     function editAttributeInfo()
     {
+        $clang = Yii::app()->lang;
         $operation = Yii::app()->request->getPost('oper');
+
         if ($operation == 'del' && Yii::app()->request->getPost('id'))
         {
             $aAttributeIds = (array) explode(',', Yii::app()->request->getPost('id'));
@@ -340,7 +342,9 @@ class participantsaction extends Survey_Common_Action
                 'visible' => Yii::app()->request->getPost('visible') == 'TRUE' ? 'TRUE' : 'FALSE'
             );
             ParticipantAttributeNames::saveAttribute($aData);
+            $clang->eT("Attribute display setting updated");
         }
+
     }
 
     /**
