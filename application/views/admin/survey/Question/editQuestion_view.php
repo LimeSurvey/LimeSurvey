@@ -14,6 +14,7 @@
         <?php } else { ?>
         <?php $clang->eT("Edit question"); ?>
         <?php } ?>
+
 </div>
 
 <div id='tabs'>
@@ -32,7 +33,11 @@
         ?>
     </ul>
     <form name='frmeditquestion' id='frmeditquestion' class='form30' action='<?php echo $this->createUrl("admin/database/index"); ?>' method='post' onsubmit="return isEmpty(document.getElementById('title'), '<?php $clang->eT("Error: You have to enter a question code.",'js'); ?>');">
-        <div id="<?php echo $eqrow['language']; ?>">
+             <div id='questionactioncopy' style='float: right; margin-top: -60px'>
+                <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+                <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
+            </div>
+            <div id="<?php echo $eqrow['language']; ?>">
             <?php $eqrow  = array_map('htmlspecialchars', $eqrow); ?>
             <ul><li>
                     <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' name='title' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
@@ -227,7 +232,6 @@
 					<div id="advancedquestionsettings"></div>
 				</div><br />
 			<?php } ?>
-
                 <?php if ($adding)
                     { ?>
                     <input type='hidden' name='action' value='insertquestion' />
@@ -244,8 +248,10 @@
                     else
                     { ?>
                     <input type='hidden' name='action' value='updatequestion' />
+                    <input type='hidden' id='newpage' name='newpage' value='' />
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
-					<p><input type='submit' value='<?php $clang->eT("Update question"); ?>' />
+					<p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+                    <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
                     <?php } ?>
                 <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p><br />
         </div></form></div>
