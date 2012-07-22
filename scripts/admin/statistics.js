@@ -18,16 +18,29 @@ $(document).ready(function(){
         }
      })
      $('#hidefilter').click( function(){
+            $('#statisticsresponsefilters').hide(1000);
             $('#filterchoices').hide();
             $('#filterchoice_state').val('1');
             $('#vertical_slide2').hide();
      })
      $('#showfilter').click( function(){
+            $('#statisticsresponsefilters').show(1000);
             $('#filterchoices').show();
             $('#filterchoice_state').val('');
             $('#vertical_slide2').show();
      })
-
+     $('#hidegfilter').click( function(){
+            $('#statisticsgeneralfilters').hide(1000);
+     })
+     $('#showgfilter').click( function(){
+            $('#statisticsgeneralfilters').show(1000);
+     })
+     $('#hidesfilter').click( function(){
+            $('#statisticsoutput').hide(1000);
+     })
+     $('#showsfilter').click( function(){
+            $('#statisticsoutput').show(1000);
+     })
      if (typeof aGMapData == "object") {
          for (var i in aGMapData) {
      		gMapInit("statisticsmap_" + i, aGMapData[i]);
