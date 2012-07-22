@@ -57,6 +57,9 @@ class tokens extends Survey_Common_Action
         }
         else
         {
+            //Check that the tokens table has the required fields
+            Tokens_dynamic::model($iSurveyId)->checkColumns();
+
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
             $aData['queries'] = Tokens_dynamic::model($iSurveyId)->summary();
