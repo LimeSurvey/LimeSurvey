@@ -24,4 +24,15 @@
 </script>
 <br/>
 <table id="displaysurveys"></table> <div id="pager"></div>
+<select id='gs_status_select' style='display: none'>
+    <option value=''><?php $clang->eT("Any") ?></option>
+    <option value='--a--'><?php $clang->eT("Expired") ?></option>
+    <option value='--e--'><?php $clang->eT("Inactive") ?></option>
+    <option value='--c--'><?php $clang->eT("Active") ?></option>
+</select>
+<select id='gs_access_select' style='display: none'>
+    <option value=''><?php $clang->eT("Any") ?></option>
+    <option value='Open'><?php $clang->eT("Open") ?></option>
+    <option value='Closed'><?php $clang->eT("Closed") ?></option>
+</select>
 <br />
