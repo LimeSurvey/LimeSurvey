@@ -3169,7 +3169,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $asrowdata["sid"]=$iNewSID;
             unset($asrowdata["id"]);
 
-            $result=Assesments::model()->insertRecords($asrowdata) or safeDie("Couldn't insert assessment<br />");
+            $result=Assessments::model()->insertRecords($asrowdata) or safeDie("Couldn't insert assessment<br />");
 
             unset($newgid);
         }
