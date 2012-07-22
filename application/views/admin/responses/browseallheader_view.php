@@ -11,15 +11,15 @@
         <div class='menubar-left'>
             <?php if (!isset($_POST['sql']))
                 { ?>
-                <a href='<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/all/start/0/limit/$limit"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/start/0/limit/$limit"); ?>'>
                     <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
-                <a href='<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/all/start/$last/limit/$limit"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/start/$last/limit/$limit"); ?>'>
                     <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' alt='' />
 
-                <a href='<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/all/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>' >
+                <a href='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/start/$next/limit/$limit"); ?>'>
                     <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
-                <a href='<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/all/start/$end/limit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>' >
+                <a href='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/start/$end/limit/$limit"); ?>'>
                     <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <?php
@@ -41,7 +41,7 @@
                     $selectshow = "selected='selected'";
                 }
             ?>
-            <form action='<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/all/"); ?>' id='browseresults' method='post'>
+            <form action='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid/"); ?>' id='browseresults' method='post'>
                     <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' alt='' />
                     <?php $clang->eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
                     &nbsp;&nbsp; <?php $clang->eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
@@ -63,7 +63,7 @@
     </div>
 </div>
 
-<form action='<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/all"); ?>' id='resulttableform' method='post'>
+<form action='<?php echo $this->createUrl("admin/responses/browse/surveyid/$surveyid"); ?>' id='resulttableform' method='post'>
 
 <!-- DATA TABLE -->
 <?php if ($fncount < 10) { ?>
