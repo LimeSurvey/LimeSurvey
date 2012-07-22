@@ -97,6 +97,20 @@ class Tokens_dynamic extends LSActiveRecord
         return $data;
     }
 
+    /**
+    * Checks to make sure that all required columns exist in this tokens table
+    * (some older tokens tables dont' get udated properly)
+    *
+    */
+    public function checkColumns() {
+        $sid = self::$sid;
+        $surveytable='{{tokens_'.$sid.'}}';
+        $columns = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
+        if(!in_array('participant_id', $columns)) Yii::app()->db->createCommand()->addColumn($surveytable, "participant_id", "text null");
+        if(!in_array('validuntil', $columns)) Yii::app()->db->createCommand()->addColumn($surveytable, 'validuntil', 'date null');
+        if(!in_array('validfrom', $columns)) Yii::app()->db->createCommand()->addColumn($surveytable, 'validfrom', 'date null');
+    }
+
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
         $emquery = "SELECT * FROM {{tokens_" . self::$sid . "}} WHERE ((completed ='N') or (completed='')) AND token <> '' AND email <> ''";
