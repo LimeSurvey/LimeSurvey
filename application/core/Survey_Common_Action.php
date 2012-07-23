@@ -352,7 +352,6 @@ class Survey_Common_Action extends CAction
         foreach ($qrresult as $qrrow)
         {
             $qrrow = $qrrow->attributes;
-            $qrrow = array_map('flattenText', $qrrow);
             if (hasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
             {
                 if (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) != 0)
