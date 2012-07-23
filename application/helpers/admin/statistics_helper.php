@@ -114,9 +114,9 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $counter++;
             }
 
-            if ($cache->IsInCache("graph".$statlang->langcode.$iSurveyID,$DataSet->GetData()))
+            if ($cache->IsInCache("graph".$language.$iSurveyID,$DataSet->GetData()))
             {
-                $cachefilename=basename($cache->GetFileFromCache("graph".$statlang->langcode.$iSurveyID,$DataSet->GetData()));
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
             }
             else
             {
@@ -146,8 +146,8 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
 
-                $cache->WriteToCache("graph".$statlang->langcode.$iSurveyID,$DataSet->GetData(),$graph);
-                $cachefilename=basename($cache->GetFileFromCache("graph".$statlang->langcode.$iSurveyID,$DataSet->GetData()));
+                $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
                 unset($graph);
             }
         }	//end if (bar chart)
@@ -203,9 +203,9 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $DataSet->AddAllSeries();
             $DataSet->SetAbsciseLabelSerie("Serie2");
 
-            if ($cache->IsInCache("graph".$statlang->langcode.$iSurveyID, $DataSet->GetData()))
+            if ($cache->IsInCache("graph".$language.$iSurveyID, $DataSet->GetData()))
             {
-                $cachefilename=basename($cache->GetFileFromCache("graph".$statlang->langcode.$iSurveyID,$DataSet->GetData()));
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
             }
             else
             {
@@ -221,8 +221,8 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
                 $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
                 $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
-                $cache->WriteToCache("graph".$statlang->langcode.$iSurveyID,$DataSet->GetData(),$graph);
-                $cachefilename=basename($cache->GetFileFromCache("graph".$statlang->langcode.$iSurveyID,$DataSet->GetData()));
+                $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
                 unset($graph);
             }
         }	//end else -> pie charts
