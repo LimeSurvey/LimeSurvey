@@ -8,11 +8,11 @@
             <?php }
             if (hasFileUploadQuestion($surveyid))
             { ?>
-            <a><img id='downloadfile_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>/down.png' alt='<?php $clang->eT('Download all files in this response as a zip file'); ?>' class='downloadfile'/></a>
+            <a><img id='downloadfile_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>down.png' alt='<?php $clang->eT('Download all files in this response as a zip file'); ?>' class='downloadfile'/></a>
             <?php }
             if (hasSurveyPermission($surveyid, 'responses', 'delete'))
             { ?>
-            <a><img id='deleteresponse_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>/token_delete.png' alt='<?php $clang->eT('Delete this response'); ?>' class='deleteresponse'/></a>
+            <a><img id='deleteresponse_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete this response'); ?>' class='deleteresponse'/></a>
             <?php } ?>
     </td>
     <?php

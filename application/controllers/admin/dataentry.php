@@ -1445,19 +1445,21 @@ class dataentry extends Survey_Common_Action
     */
     public function delete()
     {
-        $subaction = Yii::app()->request->getPost('subaction');
-        $surveyid = $_REQUEST['surveyid'];
+        if (isset($_REQUEST['surveyid']) && !empty($_REQUEST['surveyid']))
+        {
+            $surveyid = $_REQUEST['surveyid'];
+        }
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
 
         $surveyid = sanitize_int($surveyid);
-        $id = Yii::app()->request->getPost('id');
+        $id = $_REQUEST['id'];
 
         $aData = array(
         'surveyid' => $surveyid,
         'id' => $id
         );
 
-        if (hasSurveyPermission($surveyid, 'responses','read') && $subaction == "delete"  && hasSurveyPermission($surveyid, 'responses', 'delete'))
+        if (hasSurveyPermission($surveyid, 'responses','read') && hasSurveyPermission($surveyid, 'responses', 'delete'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
             $aData['thissurvey'] = getSurveyInfo($surveyid);
