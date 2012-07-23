@@ -592,7 +592,7 @@ class tokens extends Survey_Common_Action
                     $this->getController()->error(sprintf($this->controller->lang->gT('%s cannot be empty'), $desc['description']));
                 $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
-            $token = Tokens_dynamic::model()->find('tid=' . CHttpRequest::getPost('id'));
+            $token = Tokens_dynamic::model()->find('tid=' . Yii::app()->getRequest()->getPost('id'));
 
             foreach ($aData as $k => $v)
                 $token->$k = $v;
@@ -724,10 +724,10 @@ class tokens extends Survey_Common_Action
             $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
             foreach ($attrfieldnames as $attr_name => $desc)
             {
-                $value = CHttpRequest::getPost($attr_name);
+                $value = Yii::app()->getRequest()->getPost($attr_name);
                 if ($desc['mandatory'] == 'Y' && trim($value) == '')
                     $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
-                $aData[$attr_name] = CHttpRequest::getPost($attr_name);
+                $aData[$attr_name] = Yii::app()->getRequest()->getPost($attr_name);
             }
 
             $udresult = Tokens_dynamic::model($iSurveyId)->findAll("token <> '' and token = '$sanitizedtoken'");
