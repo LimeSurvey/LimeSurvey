@@ -5,11 +5,11 @@ div.rating-cancel,div.rating-cancel a{background:url(delete.gif) no-repeat 0 -16
 div.star-rating,div.star-rating a{background:url(star.gif) no-repeat 0 0px}
 */
 
-.starNr0 a{background:url(star1.gif) no-repeat 0 0px;}
-.starNr1 a{background:url(star2.gif) no-repeat 0 0px;}
-.starNr2 a{background:url(star3.gif) no-repeat 0 0px;}
-.starNr3 a{background:url(star4.gif) no-repeat 0 0px;}
-.starNr4 a{background:url(star5.gif) no-repeat 0 0px;}
+.starNr0 a{background:url("./rating-img/star1.gif") no-repeat 0 0px;}
+.starNr1 a{background:url("./rating-img/star2.gif") no-repeat 0 0px;}
+.starNr2 a{background:url("./rating-img/star3.gif") no-repeat 0 0px;}
+.starNr3 a{background:url("./rating-img/star4.gif") no-repeat 0 0px;}
+.starNr4 a{background:url("./rating-img/star5.gif") no-repeat 0 0px;}
 
 
 div.rating-cancel a,div.star-rating a{display:block;width:36px;height:100%;background-position:0 0px;border:0}

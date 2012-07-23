@@ -665,6 +665,20 @@ div.messagebox .warningheader {
     padding:3px 10px;
 
 }
+.statisticsbrowsecolumn {
+    text-align: left;
+    width: 100%;
+}
+.statisticscolumnid {
+    float: left;
+    text-align: center;
+    width: 9%;
+    padding-right: 4px;
+}
+.statisticscolumndata {
+    float: left;
+    width: 89%;
+}
 
 .conditionlist,
 .conditionlist table,

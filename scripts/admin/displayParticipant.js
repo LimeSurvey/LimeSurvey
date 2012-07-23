@@ -109,6 +109,7 @@ $(document).ready(function() {
     /* The main jqGrid, displaying Participants */
     jQuery("#displayparticipants").jqGrid({
         align:"center",
+        headertitles: true,
         url: jsonUrl,
         editurl: editUrl,
         datatype: "json",

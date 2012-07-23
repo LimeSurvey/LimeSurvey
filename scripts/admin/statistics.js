@@ -1,4 +1,14 @@
 $(document).ready(function(){
+     $('.statisticsbrowsebutton').click( function(){
+         var destinationdiv=$('#columnlist_'+this.id);
+         destinationdiv.parents("td:first").toggle();
+         if(destinationdiv.parents("td:first").css("display") != "none") {
+             $.post(listColumnUrl+'/'+this.id+'/sql/'+sql, function(data) {
+                 destinationdiv.html(data);
+             });
+         }
+
+     });
      $('#usegraph').click( function(){
         if ($('#grapherror').length>0)
         {
@@ -18,16 +28,29 @@ $(document).ready(function(){
         }
      })
      $('#hidefilter').click( function(){
+            $('#statisticsresponsefilters').hide(1000);
             $('#filterchoices').hide();
             $('#filterchoice_state').val('1');
             $('#vertical_slide2').hide();
      })
      $('#showfilter').click( function(){
+            $('#statisticsresponsefilters').show(1000);
             $('#filterchoices').show();
             $('#filterchoice_state').val('');
             $('#vertical_slide2').show();
      })
-
+     $('#hidegfilter').click( function(){
+            $('#statisticsgeneralfilters').hide(1000);
+     })
+     $('#showgfilter').click( function(){
+            $('#statisticsgeneralfilters').show(1000);
+     })
+     $('#hidesfilter').click( function(){
+            $('#statisticsoutput').hide(1000);
+     })
+     $('#showsfilter').click( function(){
+            $('#statisticsoutput').show(1000);
+     })
      if (typeof aGMapData == "object") {
          for (var i in aGMapData) {
      		gMapInit("statisticsmap_" + i, aGMapData[i]);
@@ -347,4 +370,5 @@ function changeGraphType (cmd, id) {
         $("#statzone_" + id + " .wait").remove();
         $("#statzone_" + id + ">img:first").attr("src", temppath +"/"+data.chartdata);
     });
+
 }

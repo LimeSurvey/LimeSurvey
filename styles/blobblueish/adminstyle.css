@@ -487,8 +487,17 @@ th.admincell {
 
 .header_statistics {
     height:21px;
-    padding:1px;
-    padding-left:42px;
+    padding:1px 8px 1px 15px;
+    margin-bottom: 0;
+}
+.statisticsfilters {
+    width: 99%;
+    border: 1px solid #C0FFC0;
+    margin-bottom: 20px;
+}
+.scrollheight_400 {
+    height: 400px;
+    overflow: auto;
 }
 
 .btnaddanswer,
@@ -950,6 +959,21 @@ table.statisticstable, table.statisticssummary {
 .statisticstable tfoot tr {
     background:#D2E0F2;
     text-align:center;
+}
+
+.statisticsbrowsecolumn {
+    text-align: left;
+    width: 100%;
+}
+.statisticscolumnid {
+    float: left;
+    text-align: center;
+    width: 9%;
+    padding-right: 4px;
+}
+.statisticscolumndata {
+    float: left;
+    width: 89%;
 }
 
 div.messagebox {

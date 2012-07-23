@@ -9,9 +9,8 @@
     * is derivative of works licensed under the GNU General Public License or
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
-    *
-    *	$Id$
     */
+
     function loadanswers()
     {
         global $surveyid;
@@ -1020,13 +1019,13 @@
     */
     function submittokens($quotaexit=false)
     {
-        global $thissurvey, $timeadjust, $emailcharset ;
+        global $thissurvey;
         global $surveyid;
         global $thistpl, $clienttoken;
 
         $clang = Yii::app()->lang;
         $sitename = Yii::app()->getConfig("sitename");
-
+        $emailcharset = Yii::app()->getConfig("emailcharset");
         // Shift the date due to global timeadjust setting
         $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
@@ -1163,7 +1162,6 @@
     function sendSubmitNotifications($surveyid)
     {
         global $thissurvey, $debug;
-        global $emailcharset;
         global $homeurl, $maildebug, $tokensexist;
 
         $clang = Yii::app()->lang;

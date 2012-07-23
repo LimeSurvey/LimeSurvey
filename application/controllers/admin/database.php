@@ -851,7 +851,11 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                if(Yii::app()->request->getPost('newpage') == "return") {
+                    $this->getController()->redirect($this->getController()->createUrl('admin/question/editquestion/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                } else {
+                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
+                }
             }
         }
 

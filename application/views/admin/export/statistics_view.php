@@ -8,162 +8,183 @@
 ?>
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
+    var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/listcolumn/surveyid/".$surveyid."/column/"); ?>";
+    var sql="<?php echo urlencode($sql) ?>";
 </script>
 <form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/index/surveyid/$surveyid"); ?>#start'>
-    <div class='header ui-widget-header'><?php $clang->eT("General filters"); ?></div>
-    <div id='statistics_general_filter'>
-        <?php
-            $error = '';
-            if (!function_exists("gd_info")) {
-                $error .= '<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
-                $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
-            }
-            else if (!function_exists("imageftbbox")) {
+    <div class='header ui-widget-header header_statistics'>
+        <div style='float:right;'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
+        <?php $clang->eT("General filters"); ?>
+    </div>
+    <!-- AUTOSCROLLING DIV CONTAINING GENERAL FILTERS -->
+    <div id='statisticsgeneralfilters' class='statisticsfilters' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
+
+        <div id='statistics_general_filter'>
+            <?php
+                $error = '';
+                if (!function_exists("gd_info")) {
+                    $error .= '<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+                    $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+                }
+                else if (!function_exists("imageftbbox")) {
                     $error .= '<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
                     $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
                 }
-        ?>
-        <fieldset style='clear:both;'>
-            <legend><?php $clang->eT("Data selection"); ?></legend>
-            <ul>
-                <li>
-                    <label for='completionstate'><?php $clang->eT("Include:"); ?> </label>
-                    <select name='completionstate' id='completionstate'>
-                        <option value='all' <?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
-                        <option value='complete' <?php echo $selecthide; ?> > <?php $clang->eT("Completed responses only"); ?></option>
-                        <option value='incomplete' <?php echo $selectinc; ?> > <?php $clang->eT("Incomplete responses only"); ?></option>
-                    </select>
-                </li>
-                <li>
-                    <label for='viewsummaryall'><?php $clang->eT("View summary of all available fields"); ?></label>
-                    <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
-                </li>
-                <li id='vertical_slide'>
-                    <label id='noncompletedlbl' for='noncompleted' title='<?php $clang->eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php $clang->eT("Subtotals based on displayed questions"); ?></label>
-                    <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
-                </li>
-                <?php
+            ?>
+            <fieldset style='clear:both;'>
+                <legend><?php $clang->eT("Data selection"); ?></legend>
+                <ul>
+                    <li>
+                        <label for='completionstate'><?php $clang->eT("Include:"); ?> </label>
+                        <select name='completionstate' id='completionstate'>
+                            <option value='all' <?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
+                            <option value='complete' <?php echo $selecthide; ?> > <?php $clang->eT("Completed responses only"); ?></option>
+                            <option value='incomplete' <?php echo $selectinc; ?> > <?php $clang->eT("Incomplete responses only"); ?></option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for='viewsummaryall'><?php $clang->eT("View summary of all available fields"); ?></label>
+                        <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
+                    </li>
+                    <li id='vertical_slide'>
+                        <label id='noncompletedlbl' for='noncompleted' title='<?php $clang->eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php $clang->eT("Subtotals based on displayed questions"); ?></label>
+                        <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
+                    </li>
+                    <?php
 
-                    $language_options="";
-                    foreach ($survlangs as $survlang)
-                    {
-                        $language_options .= "\t<option value=\"{$survlang}\"";
-                        if ($sStatisticsLanguage == $survlang)
+                        $language_options="";
+                        foreach ($survlangs as $survlang)
                         {
-                            $language_options .= " selected=\"selected\" " ;
+                            $language_options .= "\t<option value=\"{$survlang}\"";
+                            if ($sStatisticsLanguage == $survlang)
+                            {
+                                $language_options .= " selected=\"selected\" " ;
+                            }
+                            $temp = getLanguageNameFromCode($survlang,true);
+                            $language_options .= ">".$temp[1]."</option>\n";
+
                         }
-                        $temp = getLanguageNameFromCode($survlang,true);
-                        $language_options .= ">".$temp[1]."</option>\n";
 
-                    }
+                    ?>
+                    <li>
+                        <label for='statlang'><?php $clang->eT("Statistics report language"); ?></label>
+                        <select name="statlang" id="statlang"><?php echo $language_options; ?></select>
+                    </li>
+                </ul>
+            </fieldset>
 
-                ?>
-                <li>
-                    <label for='statlang'><?php $clang->eT("Statistics report language"); ?></label>
-                    <select name="statlang" id="statlang"><?php echo $language_options; ?></select>
-                </li>
-            </ul>
-        </fieldset>
+            <fieldset id='left'>
+                <legend><?php $clang->eT("Response ID"); ?></legend>
+                <ul>
+                    <li>
+                        <label for='idG'><?php $clang->eT("Greater than:"); ?></label>
+                        <input type='text' id='idG' name='idG' size='10' value='<?php if (isset($_POST['idG'])){ echo  sanitize_int($_POST['idG']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
+                    </li>
+                    <li>
+                        <label for='idL'><?php $clang->eT("Less than:"); ?></label>
+                        <input type='text' id='idL' name='idL' size='10' value='<?php if (isset($_POST['idL'])) { echo sanitize_int($_POST['idL']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
+                    </li>
+                </ul>
+            </fieldset>
 
-        <fieldset id='left'>
-            <legend><?php $clang->eT("Response ID"); ?></legend>
-            <ul>
-                <li>
-                    <label for='idG'><?php $clang->eT("Greater than:"); ?></label>
-                    <input type='text' id='idG' name='idG' size='10' value='<?php if (isset($_POST['idG'])){ echo  sanitize_int($_POST['idG']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
-                </li>
-                <li>
-                    <label for='idL'><?php $clang->eT("Less than:"); ?></label>
-                    <input type='text' id='idL' name='idL' size='10' value='<?php if (isset($_POST['idL'])) { echo sanitize_int($_POST['idL']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
-                </li>
-            </ul>
-        </fieldset>
+            <input type='hidden' name='summary[]' value='idG' />
+            <input type='hidden' name='summary[]' value='idL' />
 
-        <input type='hidden' name='summary[]' value='idG' />
-        <input type='hidden' name='summary[]' value='idL' />
+            <?php
 
-        <?php
+                if (isset($datestamp) && $datestamp == "Y") {
+                    echo "<fieldset id='right'><legend>".$clang->gT("Submission date")."</legend><ul><li>"
+                    ."<label for='datestampE'>".$clang->gT("Equals:")."</label>\n"
+                    ."<input class='popupdate' id='datestampE' name='datestampE' type='text' value='";
+                    if (isset($_POST['datestampE'])) { echo  $_POST['datestampE']; }
+                    echo "' /></li><li><label for='datestampG'>\n"
+                    ."&nbsp;&nbsp;".$clang->gT("Later than:")."</label>\n"
+                    ."<input class='popupdatetime' id='datestampG' name='datestampG' value='";
+                    if (isset($_POST['datestampG'])) { echo $_POST['datestampG']; }
+                    echo "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label><input  class='popupdatetime' id='datestampL' name='datestampL' value='";
+                    if (isset($_POST['datestampL'])) { echo $_POST['datestampL']; }
+                    echo "' type='text' /></li></ul></fieldset>\n";
+                    echo "<input type='hidden' name='summary[]' value='datestampE' />";
+                    echo "<input type='hidden' name='summary[]' value='datestampG' />";
+                    echo "<input type='hidden' name='summary[]' value='datestampL' />";
+                }
 
-            if (isset($datestamp) && $datestamp == "Y") {
-                echo "<fieldset id='right'><legend>".$clang->gT("Submission date")."</legend><ul><li>"
-                ."<label for='datestampE'>".$clang->gT("Equals:")."</label>\n"
-                ."<input class='popupdate' id='datestampE' name='datestampE' type='text' value='";
-                if (isset($_POST['datestampE'])) { echo  $_POST['datestampE']; }
-                echo "' /></li><li><label for='datestampG'>\n"
-                ."&nbsp;&nbsp;".$clang->gT("Later than:")."</label>\n"
-                ."<input class='popupdatetime' id='datestampG' name='datestampG' value='";
-                if (isset($_POST['datestampG'])) { echo $_POST['datestampG']; }
-                echo "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label><input  class='popupdatetime' id='datestampL' name='datestampL' value='";
-                if (isset($_POST['datestampL'])) { echo $_POST['datestampL']; }
-                echo "' type='text' /></li></ul></fieldset>\n";
-                echo "<input type='hidden' name='summary[]' value='datestampE' />";
-                echo "<input type='hidden' name='summary[]' value='datestampG' />";
-                echo "<input type='hidden' name='summary[]' value='datestampL' />";
-            }
+            ?>
 
-        ?>
+            <fieldset>
+                <legend><?php $clang->eT("Output options"); ?></legend>
+                <ul>
+                    <li>
+                        <label for='usegraph'><?php $clang->eT("Show graphs"); ?></label>
+                        <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> /><br />
+                        <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
+                    </li>
 
-        <fieldset>
-            <legend><?php $clang->eT("Output options"); ?></legend>
-            <ul>
-                <li>
-                    <label for='usegraph'><?php $clang->eT("Show graphs"); ?></label>
-                    <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> /><br />
-                    <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
-                </li>
-
-                <li>
-                    <label><?php $clang->eT("Select output format"); ?>:</label>
-                    <input type='radio' id="outputtypehtml" name='outputtype' value='html' checked='checked' />
-                    <label for='outputtypehtml'>HTML</label>
-                    <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
-                    <label for='outputtypepdf'>PDF</label>
-                    <input type='radio' id="outputtypexls" onclick='nographs();' name='outputtype' value='xls' />
-                    <label for='outputtypexls'>Excel</label>
-                </li>
-            </ul>
-        </fieldset>
+                    <li>
+                        <label><?php $clang->eT("Select output format"); ?>:</label>
+                        <input type='radio' id="outputtypehtml" name='outputtype' value='html' checked='checked' />
+                        <label for='outputtypehtml'>HTML</label>
+                        <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
+                        <label for='outputtypepdf'>PDF</label>
+                        <input type='radio' id="outputtypexls" onclick='nographs();' name='outputtype' value='xls' />
+                        <label for='outputtypexls'>Excel</label>
+                    </li>
+                </ul>
+            </fieldset>
+        </div>
+        <p>
+            <input type='submit' value='<?php $clang->eT("View stats"); ?>' />
+            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/surveyid/$surveyid"); ?>', '_top')" />
+        </p>
     </div>
-
-    <p>
-        <input type='submit' value='<?php $clang->eT("View stats"); ?>' />
-        <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/surveyid/$surveyid"); ?>', '_top')" />
-    </p>
-
+    <div style='clear: both'></div>
     <div class='header header_statistics'>
         <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidefilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
         <?php $clang->eT("Response filters"); ?>
     </div>
-
+    <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
+    <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
     <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
     <table id='filterchoices' <?php if ($filterchoice_state!='') { echo " style='display:none' "; } ?> >
-        <?php $currentgroup=''; ?>
-        <?php foreach ($filters as $key1 => $flt): ?>
-            <?php if (!isset($previousquestiontype)) {$previousquestiontype="";} ?>
-            <?php if ($flt[1] != $currentgroup): ?>
-                <?php if ($currentgroup!=''): ?>
+        <?php
+        $currentgroup='';
+        foreach ($filters as $key1 => $flt) {
+            if (!isset($previousquestiontype)) {$previousquestiontype="";}
+            if ($flt[1] != $currentgroup) {
+                if ($currentgroup!='') { ?>
                     <!-- Close filter group --></tr>
                 </table></div></td></tr>
-                <?php endif; ?>
-
+            <?php
+                }
+            ?>
+            <!-- GROUP TITLE -->
             <tr>
                 <td>
                     <div class='header ui-widget-header'>
-                        <input type="checkbox" id='btn_<?php echo $flt[1]; ?>' onclick="selectCheckboxes('grp_<?php echo $flt[1] ?>', 'summary[]', 'btn_<?php echo $flt[1]; ?>');" />
-                        <span class='smalltext'><strong><?php echo $flt[4]; ?></strong> (<?php echo $clang->gT("Question group").$flt[1]; ?>)</span>
+                        <input type="checkbox"
+                                 id='btn_<?php echo $flt[1]; ?>'
+                            onclick="selectCheckboxes('grp_<?php echo $flt[1] ?>', 'summary[]', 'btn_<?php echo $flt[1]; ?>');"
+                        />
+                        <span class='smalltext'>
+                            <strong>
+                                <?php echo $flt[4]; ?>
+                            </strong>
+                            (<?php echo $clang->gT("Question group").$flt[1]; ?>)
+                        </span>
                     </div>
                 </td>
             </tr>
             <tr>
             <td>
-            <div id='grp_<?php echo $flt[1]; ?>'>
-            <table class='filtertable'>
-            <tr>
-                <?php $counter=0; ?>
-                <?php endif; ?>
-            <?php
-                if (isset($counter) && $counter == 4 ||
+                <div id='grp_<?php echo $flt[1]; ?>'>
+                    <table class='filtertable'>
+                        <tr>
+                <?php
+                $counter=0;
+            }
+
+            if (isset($counter) && $counter == 4 ||
                 ($previousquestiontype == "1" ||
                 $previousquestiontype == "A" ||
                 $previousquestiontype == "B" ||
@@ -175,37 +196,49 @@
                 $previousquestiontype == "Q" ||
                 $previousquestiontype == "R" ||
                 $previousquestiontype == ":" ||
-                $previousquestiontype == ";")): ?>
+                $previousquestiontype == ";")) { ?>
             </tr>
             <tr>
-            <?php $counter=0; ?>
-            <?php endif; ?>
-        <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
-        <?php
-            if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
-            || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'){ ?>
-            <td>
             <?php
-                //Multiple choice:
-                if ($flt[2] == "M") {$myfield = "M$myfield";}
-                if ($flt[2] == "P") {$myfield = "P$myfield";}
+            $counter=0;
+            }
+        $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]);
 
-                // File Upload will need special filters in future, hence the special treatment
-                if ($flt[2] == "|") {$myfield = "|$myfield";}
+        if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
+            || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!')
+        { ?>
+            <td>
+        <?php
+            //Multiple choice:
+            if ($flt[2] == "M") {$myfield = "M$myfield";}
+            if ($flt[2] == "P") {$myfield = "P$myfield";}
 
-                //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-                if ($flt[2] == "N") {$myfield = "N$myfield";}
-            ?>
-            <input type='checkbox'  id='filter<?php echo $myfield; ?>' name='summary[]' value='<?php echo $myfield; ?>' <?php if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+            // File Upload will need special filters in future, hence the special treatment
+            if ($flt[2] == "|") {$myfield = "|$myfield";}
+
+            //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+            if ($flt[2] == "N") {$myfield = "N$myfield";}
+        ?>
+            <input type='checkbox'
+                    id='filter<?php echo $myfield; ?>'
+                    name='summary[]'
+                    value='<?php echo $myfield; ?>' <?php
+            if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; } ?> />
+                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; }
+            ?> />
+            <!-- QUESTION HEADING/TITLE -->
             <label for='filter<?php echo $myfield; ?>'><?php echo _showSpeaker(flattenText($flt[5],true)); ?></label><br />
             <?php
-                if ($flt[2] != "N" && $flt[2] != "|"): ?>
-                <select name='<?php if ($flt[2] == "M" ) { echo "M";}; if ($flt[2] == "P" ) { echo "P";}; echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?> multiple='multiple'>
-                <?php endif;
-            };?>
+                if ($flt[2] != "N" && $flt[2] != "|") {?>
+                <select name='<?php
+                    if ($flt[2] == "M" ) { echo "M";};
+                    if ($flt[2] == "P" ) { echo "P";};
+                    echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?> multiple='multiple'>
+                <?php
+                }
+        }?>
         <!-- QUESTION TYPE = <?php echo $flt[2]; ?> -->
         <?php
 
@@ -1126,7 +1159,6 @@
                         //output checkbox and question/label text
                         echo "\t<td align='center'>";
                         echo "<input type='checkbox' name='summary[]' value='$myfield2'";
-
                         //pre-check
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
@@ -1237,7 +1269,9 @@
             $previousquestiontype = $flt[2];
 
         ?>
-        <?php endforeach; ?>
+        <?php
+        }
+        ?>
     </tr>
     </table>
     </div>
@@ -1251,22 +1285,36 @@
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='display' value='stats' />
     </p>
-</form><br />
+    </div><!-- END OF AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
+</form>
+<div style='clear: both'></div>
+<div class='header ui-widget-header header_statistics'>
+    <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showsfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidesfilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
+    <?php $clang->eT("Statistics"); ?>
+</div>
+
+<div id='statisticsoutput' class='statisticsfilters'>
 <?php echo $output; ?>
+</div>
 
 <?php
 
+    /* This function builds the text description of eqch question in the filter section
+     *
+     * @param string $hinttext The question text
+     *
+     * */
     function _showSpeaker($hinttext)
     {
-        global $clang, $sImageURL, $maxchars;
+        global $maxchars; //Where does this come from? can it be replaced? passed with function call?
         $clang = Yii::app()->lang;
-        $sImageURL = Yii::app()->getConfig("imageurl");
+        $sImageURL = Yii::app()->getConfig('adminimageurl');
         if(!isset($maxchars))
         {
             $maxchars = 100;
         }
         $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
-        $jshinttext=javascriptEscape($hinttext,true,true);
+        $jshinttext=javascriptEscape($hinttext,true,true);  //Build a javascript safe version of the string
 
         if(strlen($hinttext) > ($maxchars))
         {
@@ -1275,15 +1323,15 @@
             $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $maxchars, 'UTF-8'));
 
             //output with hoover effect
-            $reshtml= "<span style='cursor: hand' title='".$htmlhinttext."' "
+            $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."' "
             ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\">"
             ." \"$shortstring...\" </span>"
-            ."<img style='cursor: hand' src='$sImageURL/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+            ."<img style='cursor: pointer' src='$sImageURL/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
             ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
         }
         else
         {
-            $reshtml= "<span title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";
+            $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";
         }
         return $reshtml;
     }

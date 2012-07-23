@@ -6,7 +6,18 @@
     var attributeTypeSearch = "<?php $clang->eT("Text box"); ?>:<?php $clang->eT("Text box"); ?>; <?php $clang->eT("Date"); ?>:<?php $clang->eT("Date"); ?>; <?php $clang->eT("Drop-down list"); ?>:<?php $clang->eT("Drop-down list"); ?>"
     var attributeEditUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/viewAttribute/aid"); ?>";
 </script>
+<div class="ui-notify" id="flashmessage" style="">
+    <div id="flashinfo" style="opacity: 0; overflow: hidden; height: 40px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px;" class="ui-state-highlight ui-corner-all ui-notify-message">
+        <!-- close link -->
+        <a class="ui-notify-close" href="#">
+            <span class="ui-icon ui-icon-close" style="float:right">&nbsp;</span>
+        </a>
 
+        <!-- alert icon -->
+        <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info">&nbsp;</span>
+        <p id='flashmessagetext'></p><br>
+    </div>
+</div>
 <div class='header ui-widget-header'><strong><?php $clang->eT("Attribute management"); ?></strong></div>
 
 <br/>

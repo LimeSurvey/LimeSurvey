@@ -166,20 +166,20 @@
             <?php $clang->eT("Question:"); ?></strong></td><td>
             <?php
                 templatereplace($qrrow['question']);
-                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
         ?></td></tr>
     <tr><td><strong>
             <?php $clang->eT("Help:"); ?></strong></td><td>
             <?php
                 if (trim($qrrow['help'])!=''){
                     templatereplace($qrrow['help']);
-                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                    echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
             } ?>
         </td></tr>
     <?php if ($qrrow['preg'])
         { ?>
         <tr ><td><strong>
-                <?php $clang->eT("Validation:"); ?></strong></td><td><?php echo $qrrow['preg']; ?>
+                <?php $clang->eT("Validation:"); ?></strong></td><td><?php echo htmlspecialchars($qrrow['preg']); ?>
             </td></tr>
         <?php } ?>
 
@@ -252,7 +252,7 @@
         <tr>
             <td><?php echo $aAdvancedSetting['caption'];?>:</td>
             <td><?php
-                    if ($aAdvancedSetting['i18n']==false)  echo $aAdvancedSetting['value']; else echo $aAdvancedSetting[$baselang]['value']?>
+                    if ($aAdvancedSetting['i18n']==false)  echo htmlspecialchars($aAdvancedSetting['value']); else echo htmlspecialchars($aAdvancedSetting[$baselang]['value'])?>
             </td>
         </tr>
         <?php } ?>
