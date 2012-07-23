@@ -110,13 +110,13 @@ $(document).ready(function() {
     var lastSel,lastSel2;
     jQuery("#displaytokens").jqGrid({
         align:"center",
+        headertitles: true,
         url: jsonUrl,
         editurl: editUrl,
         datatype: "json",
         mtype: "post",
         colNames : colNames,
         colModel: colModels,
-        toppager: true,
         height: "100%",
         rowNum: 25,
         editable:true,

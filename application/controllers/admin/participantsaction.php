@@ -310,7 +310,9 @@ class participantsaction extends Survey_Common_Action
      */
     function editAttributeInfo()
     {
+        $clang = Yii::app()->lang;
         $operation = Yii::app()->request->getPost('oper');
+
         if ($operation == 'del' && Yii::app()->request->getPost('id'))
         {
             $aAttributeIds = (array) explode(',', Yii::app()->request->getPost('id'));
@@ -340,7 +342,9 @@ class participantsaction extends Survey_Common_Action
                 'visible' => Yii::app()->request->getPost('visible') == 'TRUE' ? 'TRUE' : 'FALSE'
             );
             ParticipantAttributeNames::saveAttribute($aData);
+            $clang->eT("Attribute display setting updated");
         }
+
     }
 
     /**
@@ -521,7 +525,7 @@ class participantsaction extends Survey_Common_Action
         else // If no search criteria it will simply return the number of participants
         {
             $iUserID = Yii::app()->session['loginID'];
-            $query = Particiapnts::getParticipantsOwner($iUserID);
+            $query = Participants::getParticipantsOwner($iUserID);
         }
 
         echo sprintf($clang->gT("Export %s participant(s) to CSV"), count($query));
@@ -1413,6 +1417,7 @@ class participantsaction extends Survey_Common_Action
         $imported = 0;
         $dupcount = 0;
         $overwritten = 0;
+        $dupreason="nameemail";
         $duplicatelist = array();
         $invalidemaillist = array();
         $invalidformatlist = array();
@@ -1495,7 +1500,7 @@ class participantsaction extends Survey_Common_Action
                         $ignoredcolumns[] = $fieldname;
                     }
                 }
-                if ((!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline)) || !in_array('participant_id', $firstline))
+                if ((!in_array('firstname', $firstline) && !in_array('lastname', $firstline) && !in_array('email', $firstline)) && !in_array('participant_id', $firstline))
                 {
                     $recordcount = count($tokenlistarray);
                     break;
@@ -1503,6 +1508,7 @@ class participantsaction extends Survey_Common_Action
         	} else {
                 // After looking at the first line, we now import the actual values
                 $line = convertCSVRowToArray($buffer, $separator, '"');
+
                 if (count($firstline) != count($line))
                 {
                     $invalidformatlist[] = $recordcount;

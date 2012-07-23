@@ -156,11 +156,11 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
         else
         {
             // this block is to remove the items with value == 0
-            // and an unelegant way to remove comments from List with Comments questions
+            // and an inelegant way to remove comments from List with Comments questions
             $i = 0;
             while (isset ($gdata[$i]))
             {
-                if ($gdata[$i] == 0 || ($qtype == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
+                if ($gdata[$i] == 0 || ($type == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
                 {
                     array_splice ($gdata, $i, 1);
                     array_splice ($lbl, $i, 1);
@@ -1369,10 +1369,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if ($sql != "NULL") {$query .= " AND $sql";}
 
                     //execute query
-                    $result=Yii::app()->db->createCommand($query)->query();
+                    $result=Yii::app()->db->createCommand($query)->queryAll();
 
                     //get calculated data
-                    foreach ($nresult->readAll() as $row)
+                    foreach ($result as $row)
                     {
                         //put translation of mean and calculated data into $showem array
                         $showem[]=array($statlang->gT("Sum"), $row['sum']);
@@ -1540,7 +1540,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
                             $result = Yii::app()->db->createCommand($query)->limit(1, $q3c);
 
-                            foreach ($result->readAll() as $row)
+                            foreach ($result->queryAll() as $row)
                             {
                                 $showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);
                             }
@@ -1834,8 +1834,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             $qrow=array_values($qrow);
                             $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
-                            $fresult = dbExecuteAssoc($fquery);
-                            foreach ($result->readAll() as $frow)
+                            $fresult = Yii::app()->db->createCommand($fquery)->query();
+                            foreach ($fresult->readAll() as $frow)
                             {
                                 $alist[]=array($frow['code'], $frow['answer']);
                                 $ltext=$frow['answer'];
@@ -1895,13 +1895,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $qresult=Yii::app()->db->createCommand($qquery)->query();
 
                         //loop through answers
-                        foreach ($result->readAll() as $qrow)
+                        foreach ($qresult->readAll() as $qrow)
                         {
                             $qrow=array_values($qrow);
 
                             //this question type uses its own labels
                             $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND language='{$language}'ORDER BY sortorder, code";
-                            $fresult = dbExecuteAssoc($fquery);
+                            $fresult = Yii::app()->db->createCommand($fquery)->query();
 
                             //add code and title to results for outputting them later
                             foreach ($fresult->readAll() as $frow)
@@ -3351,7 +3351,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                 //close table/output
                 if($outputType=='html') {
-                    if ($usegraph) {
+                    if ($usegraph==1) {
                         $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
                         $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
@@ -3418,7 +3418,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
             break;
         case 'html':
-            $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>"
+            $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>\n"
             ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
             return $statisticsoutput;
 
