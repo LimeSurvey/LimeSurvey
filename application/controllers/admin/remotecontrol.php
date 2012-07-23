@@ -219,6 +219,95 @@ class remotecontrol_handle
 			return array('status' => 'Invalid session key');
     }
 
+	/**
+     * RPC routine to create an empty survey with minimum details
+     * Used as a placeholder for importing groups and/or questions
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+	 * @param string $sSurveyTitle
+	 * @param string $sSurveyLanguage	 
+	 * @param string $sformat
+     * @return string
+     * @throws Zend_XmlRpc_Server_Exception
+     */
+	public function create_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
+	{
+		Yii::app()->loadHelper("surveytranslator");
+		if ($this->_checkSessionKey($sSessionKey))
+        {
+			if (Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
+			{	
+				if( $sSurveyTitle=='' || $sSurveyLanguage=='' || !array_key_exists($sSurveyLanguage,getLanguageDataRestricted()) || !in_array($sformat, array('A','G','S')))
+					return array('status' => 'Faulty parameters');
+					
+				$aInsertData = array('template' => 'default',
+									'owner_id' => Yii::app()->session['loginID'],
+									'active' => 'N',
+									'language'=>$sSurveyLanguage,
+									'format' => $sformat
+									);
+
+				if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+					$xssfilter = true;
+				else
+					$xssfilter = false;
+
+				if (!is_null($iSurveyID))
+					$aInsertData['wishSID'] = $iSurveyID;
+					
+				try 
+				{
+					$iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData, $xssfilter);
+					if (!$iNewSurveyid)
+							return array('status' => 'Creation Failed');
+				   
+					$sTitle = html_entity_decode($sSurveyTitle, ENT_QUOTES, "UTF-8");
+
+					// Load default email templates for the chosen language
+					$oLanguage = new Limesurvey_lang($sSurveyLanguage);
+					$aDefaultTexts = templateDefaultTexts($oLanguage, 'unescaped');
+					unset($oLanguage);
+					
+					$bIsHTMLEmail = false;
+					
+					$aInsertData = array(
+						'surveyls_survey_id' => $iNewSurveyid,
+						'surveyls_title' => $sTitle,
+						'surveyls_language' => $sSurveyLanguage,          
+						'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
+						'surveyls_email_invite' => conditionalNewlineToBreak($aDefaultTexts['invitation'], $bIsHTMLEmail, 'unescaped'),
+						'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
+						'surveyls_email_remind' => conditionalNewlineToBreak($aDefaultTexts['reminder'], $bIsHTMLEmail, 'unescaped'),
+						'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
+						'surveyls_email_confirm' => conditionalNewlineToBreak($aDefaultTexts['confirmation'], $bIsHTMLEmail, 'unescaped'),
+						'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
+						'surveyls_email_register' => conditionalNewlineToBreak($aDefaultTexts['registration'], $bIsHTMLEmail, 'unescaped'),
+						'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
+						'email_admin_notification' => conditionalNewlineToBreak($aDefaultTexts['admin_notification'], $bIsHTMLEmail, 'unescaped'),
+						'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
+						'email_admin_responses' => $aDefaultTexts['admin_detailed_notification']
+						);
+					
+					$langsettings = new Surveys_languagesettings;
+					$langsettings->insertNewSurvey($aInsertData, $xssfilter);
+					Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+
+					return 	$iNewSurveyid;	
+				}
+				catch(Exception $e)
+				{
+					return array('status' => $e->getmessage());
+				}			
+			}
+			else
+				return array('status' => 'No permission');
+		}
+		else
+			return array('status' => 'Invalid session key');			
+	}
+
     /**
     * RPC routine to delete a survey
     *
@@ -239,20 +328,308 @@ class remotecontrol_handle
             else
                 return array('status' => 'No permission');
         }
+        else
+			return array('status' => 'Invalid session key');
     }
 
+    /**
+    * RPC routine to activate a survey
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param int $iSurveyID The id of the survey to be activated
+    * @param string dStart - Optional parameter Startdate
+    * @param string dEnd - Optional parameter Expires
+    * @return array the result of the activation
+    */
+    public function activate_survey($sSessionKey, $iSurveyID, $dStart='', $dEnd='')
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
+                return array('status' => 'Error: Invalid survey ID');
+
+			$date_pattern = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
+			try
+			{
+				if($dStart!='' && filter_var($dStart, FILTER_VALIDATE_REGEXP,array("options"=>array("regexp"=>$date_pattern))))
+						Survey::model()->updateByPk($iSurveyID, array('startdate'=> $dStart));
+				
+				if($dEnd!='' && filter_var($dEnd, FILTER_VALIDATE_REGEXP,array("options"=>array("regexp"=>$date_pattern))))
+						Survey::model()->updateByPk($iSurveyID, array('expires'=> $dEnd));
+			}
+			catch(Exception $e)
+			{
+				//return array('status' => $e->getmessage());
+			}
+
+            if (hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))
+            {
+                Yii::app()->loadHelper('admin/activate');
+                $aActivateResults = activateSurvey($iSurveyID);
+
+                if (isset($aActivateResults['error'])) return array('status' => 'Error: '.$aActivateResults['error']);
+                else
+                {
+                    return $aActivateResults;
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+ 		else
+			return array('status' => 'Invalid session key');         
+    }
+
+    /**
+    * RPC routine to import a survey - imports lss,csv,xls or survey zip archive
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,xls or survey zip archive
+    * @param string $sImportDataType  lss,csv,xls or zip
+    * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
+    * @return integer iSurveyID  - ID of the new survey
+    */
+    public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName=NULL, $DestSurveyID=NULL)
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+            {
+                if (!in_array($sImportDataType,array('zip','csv','xls','lss'))) return array('status' => 'Invalid extension');
+                Yii::app()->loadHelper('admin/import');
+                // First save the data to a temporary file
+                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
+                file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
+                $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
+                unlink($sFullFilePath);
+                if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
+                else
+                {
+                    return $aImportResults['newsid'];
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+        else
+			return array('status' => 'Invalid session key');        
+    }
+
+  /**
+     * RPC routine to return the ids and info of surveys belonging to a user
+     * Returns array of ids and info
+     * If user is admin he can get surveys of every user 
+     * else only the syrveys belonging to the user requesting will be shown
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param string $suser
+     * @return array
+     * @throws Zend_XmlRpc_Server_Exception
+     */
+	public function get_survey_list($sSessionKey, $suser='')
+	{
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+		   $current_user =  Yii::app()->session['user'];
+		   if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 and $suser !='')
+				$current_user = $suser;
+
+		   $aUserData = User::model()->findByAttributes(array('users_name' => $current_user));		   
+		   if (!isset($aUserData))
+				return array('status' => 'Invalid user');	   
+	  	  		   
+		   $user_surveys = Survey::model()->findAllByAttributes(array("owner_id"=>$aUserData->attributes['uid'])); 		   
+		   if(count($user_surveys)==0)
+				return array('status' => 'No surveys found');
+			
+			foreach ($user_surveys as $asurvey)
+				{
+				$asurvey_ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $asurvey->primaryKey, 'surveyls_language' => $asurvey->language));
+				if (!isset($asurvey_ls))
+					$asurvey_title = '';
+				else
+					$asurvey_title = $asurvey_ls->attributes['surveyls_title'];
+				$aData[]= array('sid'=>$asurvey->primaryKey,'surveyls_title'=>$asurvey_title,'startdate'=>$asurvey->attributes['startdate'],'expires'=>$asurvey->attributes['expires'],'active'=>$asurvey->attributes['active']);
+				}
+			return $aData;
+        }
+        else
+			return array('status' => 'Invalid session key');				
+	}
+
+     /**
+     * RPC routine to get survey summary, regarding token usage and survey participation
+     * Return integer with the requested value
+     * @access public
+     * @param string $sSessionKey
+     * @param int $sid
+     * @param string $stats_name
+     * @return string
+     */
+   public function get_survey_summary($sSessionKey,$iSurveyID, $stat_name)
+    {
+       $permitted_stats = array();
+       if ($this->_checkSessionKey($sSessionKey))
+       { 	   	  
+			$permitted_token_stats = array('token_count', 
+									'token_invalid', 
+									'token_sent', 
+									'token_opted_out',
+									'token_completed'
+									);					
+			$permitted_survey_stats  = array('completed_responses',  
+									'incomplete_responses', 
+									'full_responses' 
+									);  
+			$permitted_stats = array_merge($permitted_survey_stats, $permitted_token_stats);						
+			$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
+			if (!isset($surveyidExists))
+				return array('status' => 'Invalid surveyid');
+				
+			if(in_array($stat_name, $permitted_token_stats))	
+			{
+				if (tableExists('{{tokens_' . $iSurveyID . '}}'))
+					$summary = Tokens_dynamic::model($iSurveyID)->summary();
+				else
+					return array('status' => 'No available data');
+			}
+			
+			if(in_array($stat_name, $permitted_survey_stats) && !tableExists('{{survey_' . $iSurveyID . '}}'))	
+				return array('status' => 'No available data');
+									
+			if (!in_array($stat_name, $permitted_stats)) 
+				return array('status' => 'No such property');
+		
+			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			{	
+				switch($stat_name) 
+				{
+					case 'token_count':
+						if (isset($summary))
+							return $summary['tkcount'];
+						break;
+					case 'token_invalid':
+						if (isset($summary))
+							return $summary['tkinvalid'];
+						break;	
+					case 'token_sent':
+						if (isset($summary))
+							return $summary['tksent'];
+						break;
+					case 'token_opted_out':
+						if (isset($summary))
+							return $summary['tkoptout'];
+						break;
+					case 'token_completed';
+						if (isset($summary))
+							return $summary['tkcompleted'];
+						break;
+					case 'completed_responses':
+						return Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
+						break;
+					case 'incomplete_responses':
+						return Survey_dynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
+						break;
+					case 'full_responses';
+						return Survey_dynamic::model($iSurveyID)->count();
+						break;			
+					default:
+						return array('status' => 'Data is not available');
+				}
+			}
+			else
+			return array('status' => 'No permission'); 		
+        }
+        else
+			return array('status' => 'Invalid session key');	        
+    } 
+    
+    /**
+    * RPC routine to modify survey settings
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param integer $iSurveyID  - ID of the survey
+    * @param array|struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @return array of succeeded and failed nodifications according to internal validation.
+    */
+    public function modify_survey_settings($sSessionKey, $iSurveyID, $aSurveyData)
+    { 
+        if ($this->_checkSessionKey($sSessionKey))
+        {               
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey))
+            {
+                return array('status' => 'Error: Invalid survey ID');
+            }
+            if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+            {
+                // Remove fields that may not be modified
+                unset($aSurveyData['active']);
+                unset($aSurveyData['language']);
+                unset($aSurveyData['additional_languages']);
+                // Remove invalid fields
+                $aDestinationFields=array_flip(Survey::model()->tableSchema->columnNames);
+                $aSurveyData=array_intersect_key($aSurveyData,$aDestinationFields);
+                $oSurvey=Survey::model()->findByPk($iSurveyID);
+                $succeded = array();
+                $failed = array();
+                if ($oSurvey->active=='Y')
+                {
+                    // remove all fields that may not be changed when a survey is active
+                    unset($aSurveyData['anonymized']);
+                    unset($aSurveyData['datestamp']);
+                    unset($aSurveyData['savetimings']);
+                    unset($aSurveyData['ipaddr']);
+                    unset($aSurveyData['refurl']);
+
+                }
+                foreach($aSurveyData as $sFieldName=>$sValue)
+                {
+                    if($this->_internal_validate($sFieldName,$sValue))
+                    {
+						$oSurvey->$sFieldName=$sValue;
+						$succeded[$sFieldName]=$sValue;						
+					}
+					else
+						$failed[$sFieldName]=$sValue;
+                }
+                try
+                {
+                    $oSurvey->save(); // save the change to database
+                    $result = array('succeded'=>$succeded,'failed'=>$failed);
+                    return $result;
+                }
+                catch(Exception $e)
+                {
+                    return array('status' => 'Error');
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+        else
+			return array('status' => 'Invalid Session key');        
+    }
+
+    
     /**
     * RPC routine to modify survey locale settings
     *
     * @access public
     * @param string $sSessionKey
     * @param integer $iSurveyID  - ID of the survey
-    * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @param array|struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @param string $aLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
     * @return array status=>OK, when save successful otherwise error text.
     */
     public function modify_survey_locale_settings($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage=NULL)
     {
+        Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
             $oSurvey=Survey::model()->findByPk($iSurveyID);
@@ -260,10 +637,14 @@ class remotecontrol_handle
             {
                 return array('status' => 'Error: Invalid survey ID');
             }
+            
             if (is_null($sLanguage))
             {
                 $sLanguage=$oSurvey->language;
             }
+
+			if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+				return array('status' => 'Error: Invalid language');
 
             if (hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
             {
@@ -276,14 +657,23 @@ class remotecontrol_handle
 
                 $aSurveyLocaleData=array_intersect_key($aSurveyLocaleData,$aDestinationFields);
                 $oSurveyLocale = Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
+                $succeded = array();
+                $failed = array();
                 foreach($aSurveyLocaleData as $sFieldName=>$sValue)
                 {
-                    $oSurveyLocale->$sFieldName=$sValue;
+					if($this->_internal_validate($sFieldName,$sValue))
+                    {
+						$oSurveyLocale->$sFieldName=$sValue;
+						$succeded[$sFieldName]=$sValue;						
+					}
+					else
+						$failed[$sFieldName]=$sValue;
                 }
                 try
                 {
                     $oSurveyLocale->save(); // save the change to database
-                    return array('status' => 'OK');
+                    $result = array('succeded'=>$succeded,'failed'=>$failed);
+                    return $result;
                 }
                 catch(Exception $e)
                 {
@@ -293,9 +683,175 @@ class remotecontrol_handle
             else
                 return array('status' => 'No permission');
         }
+        else
+			return array('status' => 'Invalid Session key'); 
     }
 
+    /**
+     * RPC routine to get survey settings
+     * Properties are those defined in tables surveys and surveys_language_settings
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @param array $aSurveySettings
+	 * @param string $slang
+     * @return array
+     */
+   public function get_survey_settings($sSessionKey,$iSurveyID, $aSurveySettings, $slang=NULL)
+    {
+		Yii::app()->loadHelper("surveytranslator");
+       if ($this->_checkSessionKey($sSessionKey))
+       { 
+			$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
+			if (!isset($surveyidExists))
+			{
+				return array('status' => 'Error: Invalid survey ID');
+			}		   
+			if (hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
+				{
+					$aBasicDestinationFields=Surveys_languagesettings::model()->tableSchema->columnNames;
+					$aLanguageDestinationFields=Survey::model()->tableSchema->columnNames;
+					$aSurveyFields = array_merge($aBasicDestinationFields,$aLanguageDestinationFields);
 
+					$aSurveySettings=array_intersect($aSurveySettings,$aSurveyFields);
+					
+					$abasic_attrs = Survey::model()->findByPk($iSurveyID)->getAttributes();
+					
+					if ($slang == NULL || !array_key_exists($slang,getLanguageDataRestricted()))
+						$slang = $abasic_attrs['language'];
+
+					$alang_attrs = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $slang))->getAttributes();	
+
+					$result = array();
+					foreach($aSurveySettings as $sproperty_name)
+					{
+						if (isset($abasic_attrs[$sproperty_name]))
+							$result[$sproperty_name]=$abasic_attrs[$sproperty_name];
+						elseif (isset($alang_attrs[$sproperty_name]))
+							$result[$sproperty_name]=$alang_attrs[$sproperty_name];
+						else
+							$result[$sproperty_name]='Not available';
+					}
+					return $result;
+				}
+			else
+				return array('status' => 'No permission');  
+        }
+        else
+			return array('status' => 'Invalid Session key');  
+    }
+
+    /**
+    * RPC routine to export responses
+    * Returns the requested file as base64 encoded string
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param int $iSurveyID
+    * @param string $sDocumentType pdf,csv,xls,doc
+    * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to complete
+    * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
+    * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
+    * @param integer $iFromResponseID Optional
+    * @param integer $iToResponseID Optional
+    * @return On success: Requested file as base 64-encoded string. On failure array with error information
+    **/
+    function export_reponses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        Yii::app()->loadHelper('admin/exportresults');
+        if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
+        if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if($sDocumentType=='xls'){
+           // Cut down to the first 255 fields
+           $aFields=array_slice($aFields,0,255);
+        }
+        $oFomattingOptions=new FormattingOptions();
+        $oFomattingOptions->format=$sDocumentType;
+        $oFomattingOptions->responseMinRecord=$iFromResponseID;
+        $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        $oFomattingOptions->selectedColumns=$aFields;
+        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFomattingOptions->headingFormat=$sHeadingType;
+        $oFomattingOptions->answerFormat=$sResponseType;
+        $oExport=new ExportSurveyResultsService();
+        $sFileData=$oExport->exportSurvey($iSurveyID,$sLanguageCode,$oFomattingOptions,'return');
+        return base64_encode($sFileData);
+    }
+
+   /**
+     * RPC routine to export statistics of a survey to a user
+     * Returns string - base64 encoding of the statistics
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @param string $docType
+     * @param string $graph
+     * @return string
+     * @throws Zend_XmlRpc_Server_Exception
+     */
+    public function send_statistics($sSessionKey, $iSurveyID, $docType='pdf', $graph='0')
+    {
+		Yii::app()->loadHelper('admin/statistics');
+		
+		if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+
+		$surveyidExists = Survey::model()->findByPk($iSurveyID);
+		if (!isset($surveyidExists))
+			return array('status' => 'Error: Invalid survey ID');;
+				
+		if(Survey::model()->findByPk($iSurveyID)->owner_id != $_SESSION['loginID'])
+			return array('status' => 'Error: No Permission');
+
+		$allqs = Questions::model()->findAll("sid = '".$iSurveyID."'");
+		foreach($allqs as $field)
+		{
+				$myField = $iSurveyID."X".$field['gid']."X".$field['qid'];					 
+				// Multiple choice get special treatment
+				if ($field['type'] == "M" || $field['type'] == "P") {$myField = "M$myField";}
+				//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+				if ($field['type'] == "N") {$myField = "N$myField";}					 
+				if ($field['type'] == "Q") {$myField = "Q$myField";}
+				// textfields get special treatment
+				if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U"){$myField = "T$myField";}
+				//statistics for Date questions are not implemented yet.
+				if ($field['type'] == "D") {$myField = "D$myField";}
+				if ($field['type'] == "F" || $field['type'] == "H")
+				{
+					$result3 = Answers::model()->findAllByAttributes(array('qid' => $field['qid'],'language' => getBaseLanguageFromSurveyID($sid)), array('order' => 'sortorder, answer'));
+					foreach ($result3 as $row)
+					{
+						$myField = "$myField{$row['code']}";
+					}
+				}
+				$summary[]=$myField;
+		}
+
+		switch ($docType)
+		{
+			case 'pdf':
+				$tempFile = generate_statistics($iSurveyID,$summary,'all',$graph,$docType,'F');
+				break;
+			case 'xls':
+				$tempFile = generate_statistics($iSurveyID,$summary,'all',0,$docType, 'F');
+				break;
+			case 'html':
+				$html = generate_statistics($iSurveyID,$summary,'all',0,$docType, 'F');
+				break;
+		}
+		
+		if(isset($html))
+			return base64_encode($html);
+		else 
+		{
+		$result = file_get_contents($tempfile);
+		unlink($tempfile);
+		return base64_encode($result);
+		}		
+	}
 
     /**
     * RPC routine to add a survey language
@@ -652,4 +1208,156 @@ class remotecontrol_handle
             return true;
         }
     }
+    
+    /**
+     * This function validates parameters to be inserted in survey model
+     * 
+     * @access protected
+     * @param string $sparam_name
+     * @param string $sparam_value
+     * @return bool|string
+     * @throws Zend_XmlRpc_Server_Exception
+     */
+    protected function _internal_validate($sparam_name, $sparam_value)
+    {   	
+		$date_pattern = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
+		$validation_categories = array(
+								'active'=>'char',
+								'anonymized'=>'char',
+								'savetimings'=>'char',
+								'datestamp'=>'char',
+								'ipaddr'=>'char',
+								'refurl'=>'char',
+								'usecookie'=>'char',
+								'allowregister'=>'char',
+								'allowsave'=>'char',
+								'autoredirect'=>'char',
+								'allowprev'=>'char',
+								'printanswers'=>'char',
+								'publicstatistics'=>'char',
+								'publicgraphs'=>'char',
+								'listpublic'=>'char',
+								'htmlemail'=>'char',
+								'sendconfirmation'=>'char',
+								'tokenanswerspersistence'=>'char',
+								'assessments'=>'char',
+								'usecaptcha'=>'captcha_format',
+								'usetokens'=>'char',
+								'showxquestions'=>'char',
+								'showgroupinfo'=>'group_format',
+								'shownoanswer'=>'char',
+								'showqnumcode'=>'gnum_format',
+								'showwelcome'=>'char',
+								'showprogress'=>'char',
+								'allowjumps'=>'char',
+								'nokeyboard'=>'char',
+								'alloweditaftercompletion'=>'char',
+								'googleanalyticsstyle'=>'ga_format',
+								'bounceprocessing'=>'char',
+								'autonumber_start'=>'int',
+								'tokenlength'=>'int',
+								'bouncetime'=>'int',
+								'navigationdelay'=>'int',
+								'expires'=>'date',
+								'startdate'=>'date',
+								'datecreated'=>'date',
+								'adminemail'=>'email',
+								'bounce_email'=>'email',
+								'surveyls_dateformat'=>'dateformat',
+								'surveyls_numberformat'=>'numberformat',
+								'template'=>'tmpl',
+								'format'=>'gsa_format',
+								//group  parameters
+								'group_order'=>'int',
+								//question_parameters
+								'other'=>'char',
+								'mandatory'=>'char',
+								'question_order'=>'int',
+								'scale_id'=>'int',
+								'same_default'=>'int',
+								//token parameters
+								'email'=>'email',
+								'remindercount'=>'int',
+								'remindersent'=>'int',
+								'usesleft'=>'int',
+								'validfrom'=>'date',
+								'validuntil'=>'date',
+								'mpid'=>'int',
+								'blacklisted'=>'char',
+								'sent'=>'char',
+								'completed'=>'char'
+								);
+		
+		if (array_key_exists($sparam_name, $validation_categories))
+		{
+			switch($validation_categories[$sparam_name])
+			{
+			case 'char':
+				if(in_array($sparam_value, array('Y','N')))
+					return $sparam_value;
+				else
+					return false;
+				break;
+			
+			case 'int':
+				return filter_var($sparam_value, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>999999999)));
+				break;
+			
+			case 'date':
+				return filter_var($sparam_value, FILTER_VALIDATE_REGEXP,array("options"=>array("regexp"=>$date_pattern)));
+				break;
+
+			case 'email':
+				return filter_var($sparam_value, FILTER_VALIDATE_EMAIL);
+				break;
+							
+			case 'dateformat':
+				return filter_var($sparam_value, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>12)));
+				break;
+				
+			case 'numberformat':
+				return filter_var($sparam_value, FILTER_VALIDATE_INT, array("options" => array("min_range"=>0, "max_range"=>1)));
+				break;
+			case 'tmpl':
+				if(array_key_exists($sparam_value,getTemplateList()))
+					return $sparam_value;
+				else
+					return false;
+				break;
+			case 'gsa_format':
+				if(in_array($sparam_value, array('G','S','A')))
+					return $sparam_value;
+				else
+					return false;
+				break;	
+			case 'captcha_format':
+				if(in_array($sparam_value, array('A','B','C','D','X','R','S','N')))
+					return $sparam_value;
+				else
+					return false;
+				break;
+			case 'group_format':
+				if(in_array($sparam_value, array('B','N','D','X')))
+					return $sparam_value;
+				else
+					return false;
+				break;	
+			case 'gnum_format':
+				if(in_array($sparam_value, array('B','N','C','X')))
+					return $sparam_value;
+				else
+					return false;
+				break;	
+			case 'ga_format':
+				return filter_var($sparam_value, FILTER_VALIDATE_INT, array("options" => array("min_range"=>0, "max_range"=>2)));
+				break;																
+			default:
+				return $sparam_value;
+	
+			}
+		}
+		else
+			return $sparam_value;
+	}     
+    
 }
