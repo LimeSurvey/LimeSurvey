@@ -1834,8 +1834,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             $qrow=array_values($qrow);
                             $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
-                            $fresult = dbExecuteAssoc($fquery);
-                            foreach ($result->readAll() as $frow)
+                            $fresult = Yii::app()->db->createCommand($fquery)->query();
+                            foreach ($fresult->readAll() as $frow)
                             {
                                 $alist[]=array($frow['code'], $frow['answer']);
                                 $ltext=$frow['answer'];
@@ -1895,13 +1895,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $qresult=Yii::app()->db->createCommand($qquery)->query();
 
                         //loop through answers
-                        foreach ($result->readAll() as $qrow)
+                        foreach ($qresult->readAll() as $qrow)
                         {
                             $qrow=array_values($qrow);
 
                             //this question type uses its own labels
                             $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND language='{$language}'ORDER BY sortorder, code";
-                            $fresult = dbExecuteAssoc($fquery);
+                            $fresult = Yii::app()->db->createCommand($fquery)->query();
 
                             //add code and title to results for outputting them later
                             foreach ($fresult->readAll() as $frow)
@@ -3351,7 +3351,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                 //close table/output
                 if($outputType=='html') {
-                    if ($usegraph) {
+                    if ($usegraph==1) {
                         $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
                         $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"

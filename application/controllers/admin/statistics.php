@@ -527,10 +527,11 @@ class statistics extends Survey_Common_Action {
 		    {
 		        $usegraph = 0;
 		    }
+
             $aData['usegraph'] = $usegraph;
 		    $outputType = $_POST['outputtype'];
-		    switch($outputType){
 
+		    switch($outputType){
 		        case 'html':
 		            $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 		            break;
@@ -552,6 +553,7 @@ class statistics extends Survey_Common_Action {
 
         $aData['sStatisticsLanguage']=$statlang;
 		$aData['output'] = $statisticsoutput;
+        $aData['summary'] = $summary;
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 

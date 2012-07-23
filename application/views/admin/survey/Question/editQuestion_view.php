@@ -33,25 +33,26 @@
         ?>
     </ul>
     <form name='frmeditquestion' id='frmeditquestion' class='form30' action='<?php echo $this->createUrl("admin/database/index"); ?>' method='post' onsubmit="return isEmpty(document.getElementById('title'), '<?php $clang->eT("Error: You have to enter a question code.",'js'); ?>');">
-             <div id='questionactioncopy' style='float: right; margin-top: -60px'>
+            <div id='questionactioncopy' style='float: right; margin-top: -60px'>
                 <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
             </div>
+
             <div id="<?php echo $eqrow['language']; ?>">
             <?php $eqrow  = array_map('htmlspecialchars', $eqrow); ?>
-            <ul><li>
-                    <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' name='title' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
-                </li><li>
-                    <label for='question_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Question:"); ?></label>
-                    <textarea cols='50' rows='4' id='question_<?php echo $eqrow['language']; ?>' name='question_<?php echo $eqrow['language']; ?>'><?php echo $eqrow['question']; ?></textarea>
-                    <?php echo getEditor("question-text","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
-                </li><li>
-                    <label for='help_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Help:"); ?></label>
-                    <textarea cols='50' rows='4' id='help_<?php echo $eqrow['language']; ?>' name='help_<?php echo $eqrow['language']; ?>'><?php echo $eqrow['help']; ?></textarea>
-                    <?php echo getEditor("question-help","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
-                </li>
-            </ul>
-        </div>
+                <ul><li>
+                        <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' name='title' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
+                    </li><li>
+                        <label for='question_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Question:"); ?></label>
+                        <textarea cols='50' rows='4' id='question_<?php echo $eqrow['language']; ?>' name='question_<?php echo $eqrow['language']; ?>'><?php echo $eqrow['question']; ?></textarea>
+                        <?php echo getEditor("question-text","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
+                    </li><li>
+                        <label for='help_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Help:"); ?></label>
+                        <textarea cols='50' rows='4' id='help_<?php echo $eqrow['language']; ?>' name='help_<?php echo $eqrow['language']; ?>'><?php echo $eqrow['help']; ?></textarea>
+                        <?php echo getEditor("question-help","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
+                    </li>
+                </ul>
+            </div>
 
 
         <?php if (!$adding)

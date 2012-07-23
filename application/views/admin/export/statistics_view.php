@@ -25,9 +25,9 @@
                     $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
                 }
                 else if (!function_exists("imageftbbox")) {
-                        $error .= '<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
-                        $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
-                    }
+                    $error .= '<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+                    $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+                }
             ?>
             <fieldset style='clear:both;'>
                 <legend><?php $clang->eT("Data selection"); ?></legend>
@@ -145,32 +145,44 @@
     <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
     <table id='filterchoices' <?php if ($filterchoice_state!='') { echo " style='display:none' "; } ?> >
-        <?php $currentgroup=''; ?>
-        <?php foreach ($filters as $key1 => $flt): ?>
-            <?php if (!isset($previousquestiontype)) {$previousquestiontype="";} ?>
-            <?php if ($flt[1] != $currentgroup): ?>
-                <?php if ($currentgroup!=''): ?>
+        <?php
+        $currentgroup='';
+        foreach ($filters as $key1 => $flt) {
+            if (!isset($previousquestiontype)) {$previousquestiontype="";}
+            if ($flt[1] != $currentgroup) {
+                if ($currentgroup!='') { ?>
                     <!-- Close filter group --></tr>
                 </table></div></td></tr>
-                <?php endif; ?>
+            <?php
+                }
+            ?>
             <!-- GROUP TITLE -->
             <tr>
                 <td>
                     <div class='header ui-widget-header'>
-                        <input type="checkbox" id='btn_<?php echo $flt[1]; ?>' onclick="selectCheckboxes('grp_<?php echo $flt[1] ?>', 'summary[]', 'btn_<?php echo $flt[1]; ?>');" />
-                        <span class='smalltext'><strong><?php echo $flt[4]; ?></strong> (<?php echo $clang->gT("Question group").$flt[1]; ?>)</span>
+                        <input type="checkbox"
+                                 id='btn_<?php echo $flt[1]; ?>'
+                            onclick="selectCheckboxes('grp_<?php echo $flt[1] ?>', 'summary[]', 'btn_<?php echo $flt[1]; ?>');"
+                        />
+                        <span class='smalltext'>
+                            <strong>
+                                <?php echo $flt[4]; ?>
+                            </strong>
+                            (<?php echo $clang->gT("Question group").$flt[1]; ?>)
+                        </span>
                     </div>
                 </td>
             </tr>
             <tr>
             <td>
-            <div id='grp_<?php echo $flt[1]; ?>'>
-            <table class='filtertable'>
-            <tr>
-                <?php $counter=0; ?>
-                <?php endif; ?>
-            <?php
-                if (isset($counter) && $counter == 4 ||
+                <div id='grp_<?php echo $flt[1]; ?>'>
+                    <table class='filtertable'>
+                        <tr>
+                <?php
+                $counter=0;
+            }
+
+            if (isset($counter) && $counter == 4 ||
                 ($previousquestiontype == "1" ||
                 $previousquestiontype == "A" ||
                 $previousquestiontype == "B" ||
@@ -182,39 +194,49 @@
                 $previousquestiontype == "Q" ||
                 $previousquestiontype == "R" ||
                 $previousquestiontype == ":" ||
-                $previousquestiontype == ";")): ?>
+                $previousquestiontype == ";")) { ?>
             </tr>
             <tr>
-            <?php $counter=0; ?>
-            <?php endif; ?>
-        <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
-        <?php
-            if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
-            || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!')
-            { ?>
-            <td>
             <?php
-                //Multiple choice:
-                if ($flt[2] == "M") {$myfield = "M$myfield";}
-                if ($flt[2] == "P") {$myfield = "P$myfield";}
+            $counter=0;
+            }
+        $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]);
 
-                // File Upload will need special filters in future, hence the special treatment
-                if ($flt[2] == "|") {$myfield = "|$myfield";}
+        if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
+            || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!')
+        { ?>
+            <td>
+        <?php
+            //Multiple choice:
+            if ($flt[2] == "M") {$myfield = "M$myfield";}
+            if ($flt[2] == "P") {$myfield = "P$myfield";}
 
-                //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-                if ($flt[2] == "N") {$myfield = "N$myfield";}
-            ?>
-            <input type='checkbox'  id='filter<?php echo $myfield; ?>' name='summary[]' value='<?php echo $myfield; ?>' <?php if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+            // File Upload will need special filters in future, hence the special treatment
+            if ($flt[2] == "|") {$myfield = "|$myfield";}
+
+            //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+            if ($flt[2] == "N") {$myfield = "N$myfield";}
+        ?>
+            <input type='checkbox'
+                    id='filter<?php echo $myfield; ?>'
+                    name='summary[]'
+                    value='<?php echo $myfield; ?>' <?php
+            if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; } ?> />
+                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; }
+            ?> />
             <!-- QUESTION HEADING/TITLE -->
             <label for='filter<?php echo $myfield; ?>'><?php echo _showSpeaker(flattenText($flt[5],true)); ?></label><br />
             <?php
-                if ($flt[2] != "N" && $flt[2] != "|"): ?>
-                <select name='<?php if ($flt[2] == "M" ) { echo "M";}; if ($flt[2] == "P" ) { echo "P";}; echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?> multiple='multiple'>
-                <?php endif;
-            };?>
+                if ($flt[2] != "N" && $flt[2] != "|") {?>
+                <select name='<?php
+                    if ($flt[2] == "M" ) { echo "M";};
+                    if ($flt[2] == "P" ) { echo "P";};
+                    echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?> multiple='multiple'>
+                <?php
+                }
+        }?>
         <!-- QUESTION TYPE = <?php echo $flt[2]; ?> -->
         <?php
 
@@ -1135,7 +1157,6 @@
                         //output checkbox and question/label text
                         echo "\t<td align='center'>";
                         echo "<input type='checkbox' name='summary[]' value='$myfield2'";
-
                         //pre-check
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
@@ -1246,7 +1267,9 @@
             $previousquestiontype = $flt[2];
 
         ?>
-        <?php endforeach; ?>
+        <?php
+        }
+        ?>
     </tr>
     </table>
     </div>
