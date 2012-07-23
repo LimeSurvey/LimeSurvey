@@ -1085,12 +1085,12 @@ class export extends Survey_Common_Action {
         switch ( Yii::app()->request->getParam('export') )
         {
             case 'survey' :
-                $iSurveyID = sanitize_int(CHttpRequest::getParam('surveyid'));
+                $iSurveyID = sanitize_int(Yii::app()->getRequest()->getParam('surveyid'));
                 $resourcesdir = 'surveys/' . $iSurveyID;
                 $zipfilename = "resources-survey-$iSurveyID.zip";
                 break;
             case 'label' :
-                $lid = sanitize_int(CHttpRequest::getParam('lid'));
+                $lid = sanitize_int(Yii::app()->getRequest()->getParam('lid'));
                 $resourcesdir = 'labels/' . $lid;
                 $zipfilename = "resources-labelset-$lid.zip";
                 break;
