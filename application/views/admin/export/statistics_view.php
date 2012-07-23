@@ -1017,7 +1017,7 @@
                             //pre-select
                             if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$ans[0]", $_POST[$myfield3])) {echo " selected";}
 
-                            echo ">$ans[1]</option>\n";
+                            echo ">".flattenText($ans[1])."</option>\n";
                         }
 
                         echo "\t</select>\n\t</td>\n";
