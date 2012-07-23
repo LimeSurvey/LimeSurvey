@@ -3165,9 +3165,9 @@
                                 $counter++;
                             }
 
-                            if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
+                            if ($MyCache->IsInCache("graph".$statlang->langcode.$surveyid,$DataSet->GetData()))
                             {
-                                $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                                $cachefilename=basename($MyCache->GetFileFromCache("graph".$statlang->langcode.$surveyid,$DataSet->GetData()));
                             }
                             else
                             {
@@ -3197,8 +3197,8 @@
                                 $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
                                 $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
 
-                                $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
-                                $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                                $MyCache->WriteToCache("graph".$statlang->langcode.$surveyid,$DataSet->GetData(),$graph);
+                                $cachefilename=basename($MyCache->GetFileFromCache("graph".$statlang->langcode.$surveyid,$DataSet->GetData()));
                                 unset($graph);
                             }
                         }	//end if (bar chart)
@@ -3260,9 +3260,9 @@
                                 $DataSet->AddAllSeries();
                                 $DataSet->SetAbsciseLabelSerie("Serie2");
 
-                                if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
+                                if ($MyCache->IsInCache("graph".$statlang->langcode.$surveyid,$DataSet->GetData()))
                                 {
-                                    $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                                    $cachefilename=basename($MyCache->GetFileFromCache("graph".$statlang->langcode.$surveyid,$DataSet->GetData()));
                                 }
                                 else
                                 {
@@ -3278,8 +3278,8 @@
                                     $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
                                     $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
                                     $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
-                                    $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
-                                    $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                                    $MyCache->WriteToCache("graph".$statlang->langcode.$surveyid,$DataSet->GetData(),$graph);
+                                    $cachefilename=basename($MyCache->GetFileFromCache("graph".$statlang->langcode.$surveyid,$DataSet->GetData()));
                                     unset($graph);
                                 }
                                 //print_r($DataSet->GetData()); echo "<br/><br/>";
