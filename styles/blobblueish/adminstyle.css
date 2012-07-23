@@ -961,6 +961,21 @@ table.statisticstable, table.statisticssummary {
     text-align:center;
 }
 
+.statisticsbrowsecolumn {
+    text-align: left;
+    width: 100%;
+}
+.statisticscolumnid {
+    float: left;
+    text-align: center;
+    width: 9%;
+    padding-right: 4px;
+}
+.statisticscolumndata {
+    float: left;
+    width: 89%;
+}
+
 div.messagebox {
     width: 550px;
     margin:10px auto;

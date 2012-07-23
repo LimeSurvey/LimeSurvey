@@ -531,6 +531,9 @@ class statistics extends Survey_Common_Action {
             $aData['usegraph'] = $usegraph;
 		    $outputType = $_POST['outputtype'];
 
+            $selects=buildSelects($summary, $surveyid, $statlang);
+            $aData['sql']=implode(" AND ", $selects);
+
 		    switch($outputType){
 		        case 'html':
 		            $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
@@ -559,6 +562,23 @@ class statistics extends Survey_Common_Action {
 
 	}
 
+    /* Returns a simple list of values in a particular column, that meet the
+     * requirements of the SQL
+     *
+     * */
+    function listcolumn($surveyid, $column, $sql)
+    {
+        $results=Survey_dynamic::model($surveyid)->findAll($column." != ''");
+        foreach($results as $row) {
+            ?><div class='statisticscolumnid'>
+                <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank'><?php echo $row['id'] ?></a>
+              </div>
+              <div class='statisticscolumndata'>
+                <?php echo $row[$column] ?>
+            </div>
+            <div style='clear: both'></div><?php
+        }
+    }
 	function graph()
 	{
         Yii::app()->loadHelper('admin/statistics');

@@ -8,6 +8,8 @@
 ?>
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
+    var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/listcolumn/surveyid/".$surveyid."/column/"); ?>";
+    var sql="<?php echo urlencode($sql) ?>";
 </script>
 <form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/index/surveyid/$surveyid"); ?>#start'>
     <div class='header ui-widget-header header_statistics'>
@@ -15,7 +17,7 @@
         <?php $clang->eT("General filters"); ?>
     </div>
     <!-- AUTOSCROLLING DIV CONTAINING GENERAL FILTERS -->
-    <div id='statisticsgeneralfilters' class='statisticsfilters' <?php if ($filterchoice_state!='') { echo " style='display:none' "; } ?>>
+    <div id='statisticsgeneralfilters' class='statisticsfilters' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
 
         <div id='statistics_general_filter'>
             <?php
@@ -141,7 +143,7 @@
         <?php $clang->eT("Response filters"); ?>
     </div>
     <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
-    <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='') { echo " style='display:none' "; } ?>>
+    <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
     <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
     <table id='filterchoices' <?php if ($filterchoice_state!='') { echo " style='display:none' "; } ?> >

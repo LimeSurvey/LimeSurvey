@@ -1,4 +1,14 @@
 $(document).ready(function(){
+     $('.statisticsbrowsebutton').click( function(){
+         var destinationdiv=$('#columnlist_'+this.id);
+         destinationdiv.parents("td:first").toggle();
+         if(destinationdiv.parents("td:first").css("display") != "none") {
+             $.post(listColumnUrl+'/'+this.id+'/sql/'+sql, function(data) {
+                 destinationdiv.html(data);
+             });
+         }
+
+     });
      $('#usegraph').click( function(){
         if ($('#grapherror').length>0)
         {
@@ -360,4 +370,5 @@ function changeGraphType (cmd, id) {
         $("#statzone_" + id + " .wait").remove();
         $("#statzone_" + id + ">img:first").attr("src", temppath +"/"+data.chartdata);
     });
+
 }
