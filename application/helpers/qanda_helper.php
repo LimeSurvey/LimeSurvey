@@ -2112,7 +2112,7 @@ function do_ranking($ia)
                     $answer .= SELECTED;
                     $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                 }
-            $answer .=">".htmlspecialchars($ansrow['answer'], ENT_QUOTES)."</option>\n";
+            $answer .=">".flattenText($ansrow['answer'])."</option>\n";
         }
         $answer .="</select>";
         // Hidden form: maybe can be replaced with ranking.js
