@@ -494,7 +494,7 @@ function buildSelects($allfields, $surveyid, $language) {
 * @output array $output An array containing "alist"=>A list of answers to the question, "qtitle"=>The title of the question,
 *                                           "qquestion"=>The description of the question, "qtype"=>The question type code
 */
-function buildOutputList($rt, $language, $surveyid, $outputType) {
+function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
     //Set up required variables
     $alist=array();
@@ -506,7 +506,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
     $firstletter = substr($rt, 0, 1);
     $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
     $sDatabaseType = Yii::app()->db->getDriverName();
-
+    $statisticsoutput="";
 
     /* Some variable depend on output type, actually : only line feed */
     switch($outputType)
@@ -1726,7 +1726,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
 
     }
 
-    return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype);
+    return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput);
 }
 
 /**
@@ -3442,8 +3442,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         {
 
             //Step 1: Get information about this response field (SGQA) for the summary
-            $outputs=buildOutputList($rt, $language, $surveyid, $outputType);
-
+            $outputs=buildOutputList($rt, $language, $surveyid, $outputType, $sql);
+            $statisticsoutput .= $outputs['statisticsoutput'];
             //2. Collect and Display results #######################################################################
             if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
             {
