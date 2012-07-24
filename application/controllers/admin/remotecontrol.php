@@ -1130,6 +1130,335 @@ class remotecontrol_handle
             return array('status' => 'No permission');
     }
 
+    /**
+     * RPC routine to create an empty group with minimum details
+     * Used as a placeholder for importing questions
+     * Returns the groupid of the created group
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+	 * @param string $sGroupTitle
+	 * @param string $sGroupDescription	 
+     * @return string
+     * @throws Zend_XmlRpc_Server_Exception
+     */
+  	public function create_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
+	{   
+		if ($this->_checkSessionKey($sSessionKey))
+        {
+			if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
+            {		
+				$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
+				if (!isset($surveyidExists))
+					return array('status' => 'Error: Invalid survey ID');
+					
+				if($surveyidExists['active']=='Y')
+					return array('status' => 'Error:Survey is active and not editable');
+					
+				$group = new Groups;
+				$group->sid = $iSurveyID;
+				$group->group_name =  $sGroupTitle;
+                $group->description = $sGroupDescription;
+                $group->group_order = getMaxGroupOrder($iSurveyID);
+                $group->language =  Survey::model()->findByPk($iSurveyID)->language;
+				if($group->save())
+					return $group->gid;
+				else
+					return array('status' => 'Creation Failed');
+			}
+			else
+				return array('status' => 'No permission');		
+		}
+        else
+            return array('status' => 'Invalid Session Key');		
+	} 
+
+
+    /**
+    * RPC routine to import a group - imports lsg,csv
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param int $iSurveyID the id of the survey that the group will belong
+    * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
+    * @param string $sImportDataType  lsg,csv
+    * @param string $sNewGroupName  Optional new name for the group
+    * @param string $sNewGroupDescription  Optional new description for the group
+    * @return integer iGroupID  - ID of the new group
+    */
+    public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName=NULL, $sNewGroupDescription=NULL)
+    {
+		
+        if ($this->_checkSessionKey($sSessionKey))
+        { 
+			$surveyidExists = Survey::model()->findByPk($iSurveyID);
+			if (!isset($surveyidExists))
+				return array('status' => 'Error: Invalid survey ID');
+				
+			if($surveyidExists->getAttribute('active') =='Y')
+				return array('status' => 'Error:Survey is aCctive and not editable');	
+
+            if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
+            {
+                if (!in_array($sImportDataType,array('csv','lsg'))) return array('status' => 'Invalid extension');
+				libxml_use_internal_errors(true);
+                Yii::app()->loadHelper('admin/import');
+                // First save the data to a temporary file
+                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
+                file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
+
+				if (strtolower($sImportDataType)=='csv')
+				{
+					$aImportResults = CSVImportGroup($sFullFilePath, $iSurveyID);
+				}
+				elseif ( strtolower($sImportDataType)=='lsg')
+				{
+					
+					$xml = simplexml_load_file($sFullFilePath);
+					if(!$xml)
+					{
+						unlink($sFullFilePath);
+						return array('status' => 'Error: Invalid LimeSurvey group structure XML ');
+					}
+					$aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID);
+				}
+				else
+					return array('status' => 'Invalid extension'); //just for symmetry!
+
+				unlink($sFullFilePath);
+
+				if (isset($aImportResults['fatalerror'])) return array('status' => 'Error: '.$aImportResults['fatalerror']);
+                else
+                {
+					$iNewgid = $aImportResults['newgid'];	
+				
+					$group = Groups::model()->findByAttributes(array('gid' => $iNewgid));
+					$slang=$group['language'];
+					if($sNewGroupName!='')
+					$group->setAttribute('group_name',$sNewGroupName);
+					if($sNewGroupDescription!='')
+					$group->setAttribute('description',$sNewGroupDescription);
+					try
+					{
+						$group->save();
+					}
+					catch(Exception $e)	
+					{
+						// no need to throw exception
+					}
+                    return $aImportResults['newgid'];
+                }                
+            }
+            else
+                return array('status' => 'No permission');
+        }
+        else
+			return array('status' => 'Invalid session key');       
+    }
+
+
+  /**
+     * RPC routine to delete a group of a survey 
+     * Returns the id of the deleted group
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @param int $iGroupID
+     * @return int
+     * @throws Zend_XmlRpc_Server_Exception
+     */
+	public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
+	{
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+			$iSurveyID = sanitize_int($iSurveyID);
+			$iGroupID = sanitize_int($iGroupID);
+			$surveyidExists = Survey::model()->findByPk($iSurveyID);
+			if (!isset($surveyidExists))
+				return array('status' => 'Error: Invalid survey ID');
+           		   
+			$groupidExists = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+			if (!isset($groupidExists))
+				return array('status' => 'Error: Invalid group ID');
+		   
+			if($surveyidExists['active']=='Y')
+				return array('status' => 'Error:Survey is active and not editable');
+
+            if (hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
+            {
+				LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+				$iGroupsDeleted = Groups::deleteWithDependency($iGroupID, $iSurveyID);
+				
+				if ($iGroupsDeleted === 1)
+					fixSortOrderGroups($iSurveyID);
+					
+				LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+
+				if ($iGroupsDeleted === 1)
+					return $iGroupID;
+				else
+					return array('status' => 'Group deletion failed');
+            }
+            else
+                return array('status' => 'No permission');
+        }
+        else
+            return array('status' => 'Invalid Session Key');		
+	}
+
+   /**
+     * RPC routine to return the ids and info of groups belonging to survey 
+     * Returns array of ids and info
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @return array
+     * @throws Zend_XmlRpc_Server_Exception
+     */
+	public function get_group_list($sSessionKey, $iSurveyID)
+	{
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+			$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
+			if (!isset($surveyidExists))
+				return array('status' => 'Error: Invalid survey ID');
+		   
+			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			{	
+				$group_list = Groups::model()->findAllByAttributes(array("sid"=>$iSurveyID)); 		   
+				if(count($group_list)==0)
+					return array('status' => 'No groups found');
+				
+				foreach ($group_list as $group)
+				{
+					$aData[]= array('id'=>$group->primaryKey,'group_name'=>$group->attributes['group_name']);
+				}
+				return $aData;					
+			}
+			else
+				return array('status' => 'No permission');
+        }
+        else
+            return array('status' => 'Invalid Session Key');
+	}
+
+
+  /**
+     * RPC routine to return settings of a group of a survey 
+     * Returns array of properties 
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iGroupID
+     * @param array  $aGroupSettings
+     * @return array
+     * @throws Zend_XmlRpc_Server_Exception
+     */
+	public function get_group_settings($sSessionKey, $iGroupID, $aGroupSettings)
+	{
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+		   $current_group = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+			if (!isset($current_group))
+				return array('status' => 'Error: Invalid group ID');
+		
+			$aBasicDestinationFields=Groups::model()->tableSchema->columnNames;	
+			$aGroupSettings=array_intersect($aGroupSettings,$aBasicDestinationFields);
+				   
+			if (hasSurveyPermission($current_group->sid, 'survey', 'read'))
+			{		
+                $abasic_attrs = $current_group ->getAttributes();
+                foreach($aGroupSettings as $sGroupSetting)
+                {
+					if (isset($abasic_attrs[$sGroupSetting]))
+						$result[$sGroupSetting]=$abasic_attrs[$sGroupSetting];
+					else
+						$result[$sGroupSetting]='Data not available';	
+				}
+                return $result;						
+			}
+			else
+				return array('status' => 'No permission');	   
+        }
+        else
+            return array('status' => 'Invalid Session Key');
+	}
+
+
+    /**
+    * RPC routine to modify group settings
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param integer $iGroupID  - ID of the survey
+    * @param array|struct $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @return array of succeeded and failed modifications according to internal validation.
+    */
+    public function modify_group_settings($sSessionKey, $iGroupID, $aGroupData)
+    { 
+        if ($this->_checkSessionKey($sSessionKey))
+        {               
+            $oGroup=Groups::model()->findByAttributes(array('gid' => $iGroupID));
+            if (is_null($oGroup))
+            {
+                return array('status' => 'Error: Invalid group ID');
+            }
+            if (hasSurveyPermission($oGroup->sid, 'survey', 'update'))
+            {
+                $succeded = array();
+                $failed = array();      
+                // Remove fields that may not be modified
+                unset($aGroupData['sid']);
+                unset($aGroupData['gid']);
+                // Remove invalid fields
+                $aDestinationFields=array_flip(Groups::model()->tableSchema->columnNames);
+                $aGroupData=array_intersect_key($aGroupData,$aDestinationFields);
+
+                foreach($aGroupData as $sFieldName=>$sValue)
+                {
+					$valid_value = $this->_internal_validate($sFieldName,$sValue);
+					
+					if ($valid_value === false)
+						$failed[$sFieldName]=$sValue;
+					else
+					{
+						//all dependencies this group has 
+						$has_dependencies=getGroupDepsForConditions($oGroup->sid,$iGroupID);
+						//all dependencies on this group 
+						$depented_on = getGroupDepsForConditions($oGroup->sid,"all",$iGroupID,"by-targgid");
+						//We do not allow groups with dependencies to change order - that would lead to broken dependencies
+						
+						if((isset($has_dependencies) || isset($depented_on))  && $sFieldName == 'group_order')
+							$failed[$sFieldName]='Group with dependencies - Order cannot be changed';
+						else
+						{
+							$oGroup->setAttribute($sFieldName,$valid_value);
+							$succeded[$sFieldName]=$sValue;	
+						}					
+					}
+                }
+                try
+                {
+                    $oGroup->save(); // save the change to database
+                    fixSortOrderGroups($oGroup->sid);
+                    $result = array('succeded'=>$succeded,'failed'=>$failed);
+                    return $result;
+                }
+                catch(Exception $e)
+                {
+                    return array('status' => 'Error');
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+        else
+			return array('status' => 'Invalid Session key');        
+    }
+
 
 
     /**

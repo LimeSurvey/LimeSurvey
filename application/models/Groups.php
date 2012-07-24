@@ -86,7 +86,7 @@
             ->order('group_order, group_name ASC')
             ->from('{{groups}}')
             ->bindParam(':sid', $sid, PDO::PARAM_INT)
-            ->bindParam(':language', $language, PDO::PARAM_STR)
+            ->bindParam(':language', $lang, PDO::PARAM_STR)
             ->query();
 
             $position = intval($position);
