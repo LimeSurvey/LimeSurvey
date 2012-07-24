@@ -9,7 +9,7 @@
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
     var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/listcolumn/surveyid/".$surveyid."/column/"); ?>";
-    var sql="<?php echo urlencode($sql) ?>";
+    var sql="<?php //echo urlencode($sql) ?>";
 </script>
 <form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/index/surveyid/$surveyid"); ?>#start'>
     <div class='header ui-widget-header header_statistics'>
@@ -1017,7 +1017,7 @@
                             //pre-select
                             if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$ans[0]", $_POST[$myfield3])) {echo " selected";}
 
-                            echo ">$ans[1]</option>\n";
+                            echo ">".flattenText($ans[1])."</option>\n";
                         }
 
                         echo "\t</select>\n\t</td>\n";

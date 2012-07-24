@@ -294,13 +294,36 @@ class responses extends Survey_Common_Action
             $aViewUrls[] = 'browseallfiltered_view';
         }
 
+            $clang = $aData['clang'];
+            $aData['num_total_answers'] = Survey_dynamic::model($iSurveyId)->count();
+            $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyId)->count('submitdate IS NOT NULL');
+            $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyId . '}}');
+            if($aData['with_token'])
+            {
+                $aData['tokeninfo'] = Tokens_dynamic::model($iSurveyId)->summary();
+            }
+
+            $aViewUrls[] = 'browseindex_view';
+            $this->_renderWrappedTemplate('',$aViewUrls, $aData);
+    }
+
+
+    function browse($iSurveyId)
+    {
+        $aData = $this->_getData($iSurveyId);
+        extract($aData);
+        $aViewUrls = array();
+        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
+
+
+
         //Delete Individual answer using inrow delete buttons/links - checked
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && hasSurveyPermission($iSurveyId, 'responses', 'delete'))
         {
-            $_POST['deleteanswer'] = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
+            $iResponseID = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
             // delete the files as well if its a fuqt
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,Yii::app()->session['browselang']);
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oBrowseLanguage->langcode);
             $fuqtquestions = array();
             // find all fuqt questions
             foreach ($fieldmap as $field)
@@ -329,7 +352,9 @@ class responses extends Survey_Common_Action
             }
 
             // delete the row
-            Survey_dynamic::model($iSurveyId)->deleteAllByAttributes(array('id' => mysql_real_escape_string(Yii::app()->request->getPost('deleteanswer'))));
+            Survey_dynamic::model($iSurveyId)->deleteAllByAttributes(array('id' => $iResponseID));
+            Yii::app()->session['flashmessage'] = sprintf($clang->gT("Response ID %s was successfully deleted."),$iResponseID);
+
         }
         // Marked responses -> deal with the whole batch of marked responses
         if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0 && hasSurveyPermission($iSurveyId, 'responses', 'delete'))
@@ -337,7 +362,7 @@ class responses extends Survey_Common_Action
             // Delete the marked responses - checked
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
             {
-                $fieldmap = createFieldMap($iSurveyId,'full',false,false,Yii::app()->session['browselang']);
+                $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oBrowseLanguage->langcode);
                 $fuqtquestions = array();
                 // find all fuqt questions
                 foreach ($fieldmap as $field)
@@ -371,6 +396,8 @@ class responses extends Survey_Common_Action
 
                     Survey_dynamic::model($iSurveyId)->deleteAllByAttributes(array('id' => $iResponseID));
                 }
+                Yii::app()->session['flashmessage'] = sprintf($clang->ngT("%s response was successfully deleted.","%s responses were successfully deleted.",count(Yii::app()->request->getPost('markedresponses'))),count(Yii::app()->request->getPost('markedresponses')));
+
             }
             // Download all files for all marked responses  - checked
             else if (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') === 'marked')
@@ -421,25 +448,6 @@ class responses extends Survey_Common_Action
                 }
             }
         }
-
-            $clang = $aData['clang'];
-            $aData['num_total_answers'] = Survey_dynamic::model($iSurveyId)->count();
-            $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyId)->count('submitdate IS NOT NULL');
-            $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyId . '}}');
-            if($aData['with_token'])
-            {
-                $aData['tokeninfo'] = Tokens_dynamic::model($iSurveyId)->summary();
-            }
-
-            $aViewUrls[] = 'browseindex_view';
-            $this->_renderWrappedTemplate('',$aViewUrls, $aData);
-    }
-    function browse($iSurveyId)
-    {
-        $aData = $this->_getData($iSurveyId);
-        extract($aData);
-        $aViewUrls = array();
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
 
         /**
          * fnames is used as informational array

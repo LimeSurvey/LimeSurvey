@@ -17,8 +17,8 @@
 /**
 *
 *  Generate a chart for a question
-*  @param mixed $qid      ID of the question
-*  @param mixed $sid      ID of the survey
+*  @param mixed $iQuestionID      ID of the question
+*  @param mixed $iSurveyID      ID of the survey
 *  @param mixed $type     Type of the chart to be created
 *  @param mixed $cache
 *  @param mixed $lbl
@@ -27,7 +27,7 @@
 *  @param mixed $cache
 *  @return                Name
 */
-function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
+function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $cache)
 {
     $rootdir = Yii::app()->getConfig("rootdir");
     $homedir = Yii::app()->getConfig("homedir");
@@ -36,7 +36,7 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
     $scriptname = Yii::app()->getConfig("scriptname");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
-    $language = Survey::model()->findByPk($sid)->language;
+    $language = Survey::model()->findByPk($iSurveyID)->language;
 
     if ($chartfontfile=='auto')
     {
@@ -114,9 +114,9 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
                 $counter++;
             }
 
-            if ($cache->IsInCache("graph".$sid,$DataSet->GetData()))
+            if ($cache->IsInCache("graph".$language.$iSurveyID,$DataSet->GetData()))
             {
-                $cachefilename=basename($cache->GetFileFromCache("graph".$sid,$DataSet->GetData()));
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
             }
             else
             {
@@ -146,8 +146,8 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
 
-                $cache->WriteToCache("graph".$sid,$DataSet->GetData(),$graph);
-                $cachefilename=basename($cache->GetFileFromCache("graph".$sid,$DataSet->GetData()));
+                $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
                 unset($graph);
             }
         }	//end if (bar chart)
@@ -203,9 +203,9 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
             $DataSet->AddAllSeries();
             $DataSet->SetAbsciseLabelSerie("Serie2");
 
-            if ($cache->IsInCache("graph".$sid, $DataSet->GetData()))
+            if ($cache->IsInCache("graph".$language.$iSurveyID, $DataSet->GetData()))
             {
-                $cachefilename=basename($cache->GetFileFromCache("graph".$sid,$DataSet->GetData()));
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
             }
             else
             {
@@ -221,8 +221,8 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
                 $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
                 $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
                 $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
-                $cache->WriteToCache("graph".$sid,$DataSet->GetData(),$graph);
-                $cachefilename=basename($cache->GetFileFromCache("graph".$sid,$DataSet->GetData()));
+                $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
                 unset($graph);
             }
         }	//end else -> pie charts
@@ -629,13 +629,13 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
         while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1);
 
         //length of QID
-        $qidlength=strlen($tmpqid);
+        $iQuestionIDlength=strlen($tmpqid);
 
         //we somehow get the answer code (see SQL later) from the $qqid
-        $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
+        $qaid=substr($qqid, $iQuestionIDlength, strlen($qqid)-$iQuestionIDlength);
 
         //get some question data
-        $nquery = "SELECT title, type, question, other FROM {{questions}} WHERE qid='".substr($qqid, 0, $qidlength)."' AND parent_qid=0 AND language='{$language}'";
+        $nquery = "SELECT title, type, question, other FROM {{questions}} WHERE qid='".substr($qqid, 0, $iQuestionIDlength)."' AND parent_qid=0 AND language='{$language}'";
         $nresult = Yii::app()->db->createCommand($nquery)->query();
 
         //more substrings
@@ -651,7 +651,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
         }
 
         //get answers
-        $qquery = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid='".substr($qqid, 0, $qidlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order";
+        $qquery = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid='".substr($qqid, 0, $iQuestionIDlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order";
         $qresult=Yii::app()->db->createCommand($qquery)->query();
 
         //loop through answer data
@@ -884,15 +884,15 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
                     $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1);
 
                 //check lenght of ID
-                $qidlength=strlen($tmpqid);
+                $iQuestionIDlength=strlen($tmpqid);
 
                 //get answer ID from qid
-                $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
+                $qaid=substr($qqid, $iQuestionIDlength, strlen($qqid)-$iQuestionIDlength);
 
                 //get question details from DB
                 $nquery = "SELECT title, type, question, qid, parent_qid
                 FROM {{questions}}
-                WHERE parent_qid=0 AND qid='".substr($qqid, 0, $qidlength)."'
+                WHERE parent_qid=0 AND qid='".substr($qqid, 0, $iQuestionIDlength)."'
                 AND language='{$language}'";
                 $nresult = Yii::app()->db->createCommand($nquery)->query();
             }
@@ -1208,7 +1208,6 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
 
                     $showem[]=array($statlang->gT("3rd quartile (Q3)"), $q3total);
                 }
-
                 else
                 {
                     $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
@@ -1520,33 +1519,32 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
                 $qtitle .= "($qanswer)";
                 break;
 
-
             case ":": //Array (Multiple Flexi) (Numbers)
-                $qidattributes=getQuestionAttributeValues($qiqid);
-                if (trim($qidattributes['multiflexible_max'])!='') {
-                    $maxvalue=$qidattributes['multiflexible_max'];
+                $aQuestionAttributes=getQuestionAttributeValues($qiqid);
+                if (trim($aQuestionAttributes['multiflexible_max'])!='') {
+                    $maxvalue=$aQuestionAttributes['multiflexible_max'];
                 }
                 else {
                     $maxvalue=10;
                 }
 
-                if (trim($qidattributes['multiflexible_min'])!='')
+                if (trim($aQuestionAttributes['multiflexible_min'])!='')
                 {
-                    $minvalue=$qidattributes['multiflexible_min'];
+                    $minvalue=$aQuestionAttributes['multiflexible_min'];
                 }
                 else {
                     $minvalue=1;
                 }
 
-                if (trim($qidattributes['multiflexible_step'])!='')
+                if (trim($aQuestionAttributes['multiflexible_step'])!='')
                 {
-                    $stepvalue=$qidattributes['multiflexible_step'];
+                    $stepvalue=$aQuestionAttributes['multiflexible_step'];
                 }
                 else {
                     $stepvalue=1;
                 }
 
-                if ($qidattributes['multiflexible_checkbox']!=0) {
+                if ($aQuestionAttributes['multiflexible_checkbox']!=0) {
                     $minvalue=0;
                     $maxvalue=1;
                     $stepvalue=1;
@@ -1628,10 +1626,11 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
 
                 $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                 $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
-                $sSubquestion = flattenText($questionDesc["question"]);
+                $sSubquestion = flattenText($questionDesc['question']);
 
                 //get question attributes
-                $qidattributes=getQuestionAttributeValues($qqid);
+                $aQuestionAttributes=getQuestionAttributeValues($qqid);
+
 
                 //check last character -> label 1
                 if (substr($rt,-1,1) == 0)
@@ -1640,9 +1639,9 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
                     $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qqid}' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, code";
 
                     //header available?
-                    if (trim($qidattributes['dualscale_headerA'][$language])!='') {
+                    if (trim($aQuestionAttributes['dualscale_headerA'][$language])!='') {
                         //output
-                        $labelheader= "[".$qidattributes['dualscale_headerA'][$language]."]";
+                        $labelheader= "[".$aQuestionAttributes['dualscale_headerA'][$language]."]";
                     }
 
                     //no header
@@ -1662,9 +1661,9 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
                     $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qqid}' AND scale_id=1 AND language='{$language}' ORDER BY sortorder, code";
 
                     //header available?
-                    if (trim($qidattributes['dualscale_headerB'][$language])!='') {
+                    if (trim($aQuestionAttributes['dualscale_headerB'][$language])!='') {
                         //output
-                        $labelheader= "[".$qidattributes['dualscale_headerB'][$language]."]";
+                        $labelheader= "[".$aQuestionAttributes['dualscale_headerB'][$language]."]";
                     }
 
                     //no header
@@ -1749,6 +1748,18 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
     $statlang = new Limesurvey_lang($statlangcode);
     $statisticsoutput="";
     $sDatabaseType = Yii::app()->db->getDriverName();
+    $tempdir = Yii::app()->getConfig("tempdir");
+    $tempurl = Yii::app()->getConfig("tempurl");
+    $firstletter = substr($rt, 0, 1);
+
+    if ($usegraph==1)
+    {
+        //for creating graphs we need some more scripts which are included here
+        require_once(APPPATH.'/third_party/pchart/pchart/pChart.class');
+        require_once(APPPATH.'/third_party/pchart/pchart/pData.class');
+        require_once(APPPATH.'/third_party/pchart/pchart/pCache.class');
+        $MyCache = new pCache($tempdir.'/');
+    }
 
     switch($outputType)
     {
@@ -1873,7 +1884,6 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                     $query .= " 'Y'";
                 }
             }
-
         }    //end if -> alist set
 
         else
@@ -2037,7 +2047,6 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 break;
                         }
 
-
                         $showheadline = false;
                     }
                     else
@@ -2045,7 +2054,6 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                         switch($outputType)
                         {
                             case 'xls':
-
                                 $headXLS = array();
                                 $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 
@@ -2072,7 +2080,6 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 ."\t</tr></thead>\n";
                                 break;
                             default:
-
 
                                 break;
                         }
@@ -2246,10 +2253,10 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
     if (($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
     {
         //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
-        //if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
+        //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == "on") && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
         // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
         // showaggreagated data is set and set to 1
-        if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") )
+        if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on") )
         {
             //counter
             $i=0;
@@ -3141,15 +3148,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
     // Set language for questions and answers to base language of this survey
     $language=$statlangcode;
-
-    if ($usegraph==1)
-    {
-        //for creating graphs we need some more scripts which are included here
-        require_once(APPPATH.'/third_party/pchart/pchart/pChart.class');
-        require_once(APPPATH.'/third_party/pchart/pchart/pData.class');
-        require_once(APPPATH.'/third_party/pchart/pchart/pCache.class');
-        $MyCache = new pCache($tempdir.'/');
-    }
 
     if($q2show=='all' )
     {
