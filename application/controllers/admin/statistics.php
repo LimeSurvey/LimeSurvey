@@ -42,6 +42,7 @@ class statistics extends Survey_Common_Action {
 
 		$imageurl = Yii::app()->getConfig("imageurl");
 		$aData = array('clang' => $clang, 'imageurl' => $imageurl);
+        $aData['sql']='';
 
 		/*
 		 * We need this later:

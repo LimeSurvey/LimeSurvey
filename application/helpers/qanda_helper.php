@@ -1427,7 +1427,7 @@ function do_list_dropdown($ia)
             if ($prefixStyle == 1) {
                 $_prefix = ++$_rowNum . ') ';
             }
-            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$_prefix}{$ansrow['answer']}</option>\n";
+            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>".flattenText($_prefix.$ansrow['answer'])."</option>\n";
         }
     }
     else
@@ -1451,7 +1451,7 @@ function do_list_dropdown($ia)
 
         foreach ($optgroups as $categoryname => $optionlistarray)
         {
-            $answer .= '                                   <optgroup class="dropdowncategory" label="'.$categoryname.'">
+            $answer .= '                                   <optgroup class="dropdowncategory" label="'.flattenText($categoryname).'">
             ';
 
             foreach ($optionlistarray as $optionarray)
@@ -1465,7 +1465,7 @@ function do_list_dropdown($ia)
                     $opt_select = '';
                 }
 
-                $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.$optionarray['answer'].'</option>
+                $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
                 ';
             }
 
@@ -1483,7 +1483,7 @@ function do_list_dropdown($ia)
                 $opt_select = '';
             }
 
-            $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.$optionarray['answer'].'</option>
+            $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
             ';
         }
     }
@@ -1506,7 +1506,7 @@ function do_list_dropdown($ia)
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
         }
-        $answer .= '					<option value="-oth-"'.$opt_select.'>'.$_prefix.$othertext."</option>\n";
+        $answer .= '					<option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
     }
 
     if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -2112,7 +2112,7 @@ function do_ranking($ia)
                     $answer .= SELECTED;
                     $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                 }
-            $answer .=">".htmlspecialchars($ansrow['answer'], ENT_QUOTES)."</option>\n";
+            $answer .=">".flattenText($ansrow['answer'])."</option>\n";
         }
         $answer .="</select>";
         // Hidden form: maybe can be replaced with ranking.js
@@ -5071,7 +5071,7 @@ function do_array($ia)
                 {
                     $answer .= SELECTED;
                 }
-                $answer .= '>'.$lrow['answer']."</option>\n";
+                $answer .= '>'.flattenText($lrow['answer'])."</option>\n";
             }
             // If not mandatory and showanswer, show no ans
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -6517,7 +6517,7 @@ function do_array_dual($ia)
                     {
                         $answer .= SELECTED;
                     }
-                    $answer .= '>'.$lrow['title']."</option>\n";
+                    $answer .= '>'.flattenText($lrow['title'])."</option>\n";
                 }
                 // If not mandatory and showanswer, show no ans
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -6571,7 +6571,7 @@ function do_array_dual($ia)
                     {
                         $answer .= SELECTED;
                     }
-                    $answer .= '>'.$lrow1['title']."</option>\n";
+                    $answer .= '>'.flattenText($lrow1['title'])."</option>\n";
                 }
                 // If not mandatory and showanswer, show no ans
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
