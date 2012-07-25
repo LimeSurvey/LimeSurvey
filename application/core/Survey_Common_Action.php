@@ -365,7 +365,7 @@ class Survey_Common_Action extends CAction
                 }
             }
             $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
-            if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action == "copyquestion")
+            if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action =="editdefaultvalues" || $action == "copyquestion")
             {
                 $qshowstyle = "style='display: none'";
             }
