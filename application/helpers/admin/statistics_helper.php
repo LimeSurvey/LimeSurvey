@@ -17,17 +17,16 @@
 /**
 *
 *  Generate a chart for a question
-*  @param mixed $iQuestionID      ID of the question
-*  @param mixed $iSurveyID      ID of the survey
-*  @param mixed $type     Type of the chart to be created
-*  @param mixed $cache
-*  @param mixed $lbl
-*  @param mixed $gdata
-*  @param mixed $grawdata
-*  @param mixed $cache
+*  @param int $iQuestionID      ID of the question
+*  @param int $iSurveyID        ID of the survey
+*  @param mixed $type           Type of the chart to be created - null produces bar chart, any other value produces pie chart
+*  @param array $lbl            An array containing the labels for the chart items
+*  @param mixed $gdata          An array containing the percentages for the chart items
+*  @param mixed $grawdata       An array containing the raw count for the chart items
+*  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
 *  @return                Name
 */
-function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $cache)
+function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache)
 {
     $rootdir = Yii::app()->getConfig("rootdir");
     $homedir = Yii::app()->getConfig("homedir");
@@ -37,7 +36,9 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $language = Survey::model()->findByPk($iSurveyID)->language;
+    $cachefilename = "";
 
+    /* Set the fonts for the chart */
     if ($chartfontfile=='auto')
     {
         $chartfontfile='vera.ttf';
@@ -59,13 +60,10 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
         }
     }
 
-    $cachefilename = "";
-
-    if (array_sum($gdata ) > 0)
+    if (array_sum($gdata ) > 0) //Make sure that the percentages add up to more than 0
     {
         $graph = "";
         $p1 = "";
-
         $i = 0;
         foreach ($gdata as $data)
         {
@@ -75,8 +73,9 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             }
         }
 
+        /* Totatllines is the number of entries to show in the key and we need to reduce the font
+           and increase the size of the chart if there are lots of them (ie more than 15) */
         $totallines=$i;
-
         if ($totallines>15)
         {
             $gheight=320+(6.7*($totallines-15));
@@ -121,13 +120,12 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             else
             {
                 $graph = new pChart(1,1);
-
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
 
                 if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                 $graph = new pChart(690+$legendsize[0],$gheight);
-                $graph->loadColorPalette($rootdir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
+                $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
                 $graph->setGraphArea(50,30,500,$gheight-60);
                 $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
@@ -259,9 +257,9 @@ function getQuestionMapData($sField, $qsid)
 /** Builds the list of addon SQL select statements
 *   that builds the query result set
 *
-*   @param $allfields
-*   @param $fieldmap
-*   @param $language
+*   @param $allfields   An array containing the names of the fields/answers we want to display in the statistics summary
+*   @param $fieldmap    The fieldmap for the survey
+*   @param $language    The language to use
 *
 *   @return array $selects array of individual select statements that can be added/appended to
 *                          the 'where' portion of a SQL statement to restrict the result set
@@ -270,19 +268,20 @@ function getQuestionMapData($sField, $qsid)
 */
 function buildSelects($allfields, $surveyid, $language) {
 
+    //Create required variables
     $selects=array();
-
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
-
     $aQuestionMap=array();
 
+    $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
     foreach ($fieldmap as $field)
     {
         if(isset($field['qid']) && $field['qid']!='')
             $aQuestionMap[]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
     }
+
     // creates array of post variable names
     for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;}
+
    /*
     * Iterate through postvars to create "nice" data for SQL later.
     *
@@ -299,7 +298,15 @@ function buildSelects($allfields, $surveyid, $language) {
         foreach ($postvars as $pv)
         {
             //Only do this if there is actually a value for the $pv
-            if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap) || (($pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K') && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)))
+            if (
+                    in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap)
+                    || (
+                            (
+                                $pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K'
+                            )
+                            && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)
+                       )
+               )
             {
                 $firstletter=substr($pv,0,1);
                 /*
@@ -339,27 +346,23 @@ function buildSelects($allfields, $surveyid, $language) {
                     //create a list out of the $pv array
                     list($lsid, $lgid, $lqid) = explode("X", $pv);
 
-                    $aquery="SELECT title FROM {{questions}} WHERE parent_qid=$lqid AND language='{$language}' and scale_id=0 ORDER BY question_order";
-                    $aresult=Yii::app()->db->createCommand($aquery)->query();
-
-                    // go through every possible answer
-                    foreach ($aresult->readAll() as $arow)
+                    $aresult=Questions::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(":parent_qid"=>$lqid)));
+                    foreach ($aresult as $arow)
                     {
-                        $arow=array_values($arow);
                         // only add condition if answer has been chosen
-                        if (in_array($arow[0], $_POST[$pv]))
+                        if (in_array($arow['title'], $_POST[$pv]))
                         {
-                            $mselects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)).$arow[0])." = 'Y'";
+                            $mselects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)).$arow['title'])." = 'Y'";
                         }
                     }
+                    /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
                     if ($mselects)
                     {
                         $thismulti=implode(" OR ", $mselects);
                         $selects[]="($thismulti)";
-                        $mselects = "";
+                        unset($mselects);
                     }
                 }
-
 
                 //N - Numerical Input
                 //K - Multiple Numerical Input
@@ -380,14 +383,14 @@ function buildSelects($allfields, $surveyid, $language) {
 
                 //| - File Upload Question Type
                 else if ($firstletter == "|")
-                    {
+                {
                         // no. of files greater than
                         if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                             $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
 
                         // no. of files less than
                         if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
                 }
 
                 //"id" is a built in field, the unique database id key of each response row
@@ -476,11 +479,9 @@ function buildSelects($allfields, $surveyid, $language) {
                     }
                 }
             }
-
     }    //end foreach -> loop through filter options to create SQL
 
     return $selects;
-
 }
 
 /**
@@ -494,7 +495,7 @@ function buildSelects($allfields, $surveyid, $language) {
 * @output array $output An array containing "alist"=>A list of answers to the question, "qtitle"=>The title of the question,
 *                                           "qquestion"=>The description of the question, "qtype"=>The question type code
 */
-function buildOutputList($rt, $language, $surveyid, $outputType) {
+function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
     //Set up required variables
     $alist=array();
@@ -506,14 +507,12 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
     $firstletter = substr($rt, 0, 1);
     $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
     $sDatabaseType = Yii::app()->db->getDriverName();
-
+    $statisticsoutput="";
 
     /* Some variable depend on output type, actually : only line feed */
     switch($outputType)
     {
         case 'xls':
-            $linefeed = "\n";
-            break;
         case 'pdf':
             $linefeed = "\n";
             break;
@@ -524,7 +523,6 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
             break;
     }
 
-    // 1. Get answers for question ##############################################################
     //M - Multiple choice, therefore multiple fields
     if ($firstletter == "M" || $firstletter == "P")
     {
@@ -532,32 +530,28 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
         list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
         //select details for this question
-        $nquery = "SELECT title, type, question, parent_qid, other FROM {{questions}} WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
-        $nresult = Yii::app()->db->createCommand($nquery)->query();
+        $nresult = Questions::model()->findAll('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
+        //$nquery = "SELECT title, type, question, parent_qid, other FROM {{questions}} WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
+        //$nresult = Yii::app()->db->createCommand($nquery)->query();
 
         //loop through question data
-        foreach ($nresult->readAll() as $nrow)
+        foreach ($nresult as $nrow)
         {
-            $nrow=array_values($nrow);
-            $qtitle=$nrow[0];
-            $qtype=$nrow[1];
-            $qquestion=flattenText($nrow[2]);
-            $qlid=$nrow[3];
-            $qother=$nrow[4];
+            $qtitle=$nrow['title'];
+            $qtype=$nrow['type'];
+            $qquestion=flattenText($nrow['question']);
+            $qlid=$nrow['parent_qid'];
+            $qother=$nrow['other'];
         }
 
         //1. Get list of answers
-        $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' and scale_id=0 ORDER BY question_order";
-        $result=Yii::app()->db->createCommand($query)->query();
-
-        //loop through multiple answers
-        foreach ($result->readAll() as $row)
+        $result=Questions::model()->findAll(array('order'=>'question_order', 'condition'=>'language=:language AND parent_qid=:qid AND scale_id=0', 'params'=>array(':language'=>$language, ':qid'=>$qqid)));
+        foreach ($result as $row)
         {
-            $row=array_values($row);
-            $mfield=substr($rt, 1, strlen($rt))."$row[0]";
+            $mfield=substr($rt, 1, strlen($rt)).$row['title'];
 
             //create an array containing answer code, answer and fieldname(??)
-            $alist[]=array("$row[0]", flattenText($row[1]), $mfield);
+            $alist[]=array($row['title'], flattenText($row['question']), $mfield);
         }
 
         //check "other" field. is it set?
@@ -580,29 +574,19 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
         $fld = substr($rt, 1, strlen($rt));
         $fielddata=$fieldmap[$fld];
 
-        //get SGQA IDs
-        $qsid=$fielddata['sid'];
-        $qgid=$fielddata['gid'];
-        $qqid=$fielddata['qid'];
-
-
         list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
         //get SGQ data
         //list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
 
         //get question data
-        $nquery = "SELECT title, type, question, other, parent_qid FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
-        $nresult = Yii::app()->db->createCommand($nquery)->query();
-
-        //loop through question data
-        foreach ($nresult->readAll() as $nrow)
+        $nresult = Questions::model()->findAll('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
+        foreach ($nresult as $nrow)
         {
-            $nrow=array_values($nrow);
-            $qtitle=flattenText($nrow[0]);
-            $qtype=$nrow[1];
-            $qquestion=flattenText($nrow[2]);
-            $nlid=$nrow[4];
+            $qtitle=$nrow['title'];
+            $qtype=$nrow['type'];
+            $qquestion=flattenText($nrow['question']);
+            $nlid=$nrow['parent_qid'];
         }
 
         $mfield=substr($rt, 1, strlen($rt));
@@ -1726,7 +1710,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType) {
 
     }
 
-    return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype);
+    return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput);
 }
 
 /**
@@ -2987,7 +2971,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
         $bAllowPieChart = ($outputs['qtype'] != "M" && $outputs['qtype'] != "P");
         $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
         $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
-        $bShowPieChart = ($bAllowPieChart && $aattr["statistics_graphtype"] == "1");
+        $bShowPieChart = ($bAllowPieChart && (isset($aattr["statistics_graphtype"]) && $aattr["statistics_graphtype"] == "1"));
 
         $astatdata[$rt] = array(
         'id' => $rt,
@@ -3093,8 +3077,6 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 */
 function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true)
 {
-    //$allfields ="";
-
     global $pdfdefaultfont, $pdffontsize;
 
     //load surveytranslator helper
@@ -3442,8 +3424,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         {
 
             //Step 1: Get information about this response field (SGQA) for the summary
-            $outputs=buildOutputList($rt, $language, $surveyid, $outputType);
-
+            $outputs=buildOutputList($rt, $language, $surveyid, $outputType, $sql);
+            $statisticsoutput .= $outputs['statisticsoutput'];
             //2. Collect and Display results #######################################################################
             if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
             {

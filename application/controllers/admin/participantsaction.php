@@ -109,27 +109,26 @@ class participantsaction extends Survey_Common_Action
         $urlSearch=Yii::app()->request->getQuery('searchurl');
         $urlSearch=!empty($urlSearch) ? "getParticipantsResults_json/search/$urlSearch" : "getParticipants_json";
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
-        {
-            $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('surveyls_language=:lang', array(':lang'=>$lang));
-        }
-        // otherwise owned by him
-        else
-        {
-            $aSurveyNames = Surveys_languagesettings::model()->with('survey', 'owner')->findAll('survey.owner_id=:uid AND surveyls_language=:lang',array('survey.uid'=>Yii::app()->session['loginID'], ':lang'=>$lang));
-        }
+        //Get list of surveys.
+        //Should be all surveys owned by user (or all surveys for super admin)
+        $surveys = Survey::model();
+        //!!! Is this even possible to execute?
+        if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
+            $surveys->permission(Yii::app()->user->getId());
+
+        $aSurveyNames = $surveys->model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
 
         /* Build a list of surveys that have tokens tables */
         $tSurveyNames=array();
         foreach($aSurveyNames as $row)
         {
-            $bTokenExists = tableExists('{{tokens_' . $row['surveyls_survey_id'] . '}}');
+            $row = array_merge($row->attributes, $row->languagesettings[0]->attributes);
+            $bTokenExists = tableExists('{{tokens_' . $row['sid'] . '}}');
             if ($bTokenExists) //If tokens table exists
             {
                 $tSurveyNames[]=$row;
             }
         }
-
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),

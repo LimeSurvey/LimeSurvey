@@ -7,7 +7,7 @@
         </ul></div>
     <?php } ?>
 <div class='menubar-title ui-widget-header'>
-    <strong><?php $clang->eT("Question"); ?></strong> <span class='basic'><?php echo $qrrow['question']; ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
+    <strong><?php $clang->eT("Question"); ?></strong> <span class='basic'><?php echo FlattenText($qrrow['question']); ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
 </div>
 <div class='menubar-main'>
     <div class='menubar-left'>
