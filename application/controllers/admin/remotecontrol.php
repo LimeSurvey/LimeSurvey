@@ -1713,6 +1713,362 @@ class remotecontrol_handle
     }
 
 
+    /**
+    * RPC routine to import a question - imports lsq,csv
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param int $iSurveyID the id of the survey that the question will belong
+    * @param int $iGroupID the id of the group that the question will belong
+    * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
+    * @param string $sImportDataType  lsq,csv
+    * @param string $sMandatory 
+    * @param string $sNewQuestionTitle  Optional new title for the question
+    * @param string $sNewqQuestion An optional new question
+    * @param string $sNewQuestionHelp An optional new question help text
+    * @return integer iQuestionID  - ID of the new question
+    */
+    public function import_question($sSessionKey, $iSurveyID,$iGroupID, $sImportData, $sImportDataType, $sMandatory='N', $sNewQuestionTitle=NULL, $sNewqQuestion=NULL, $sNewQuestionHelp=NULL)
+    {
+        if ($this->_checkSessionKey($sSessionKey))
+        { 
+			$oSurvey = Survey::model()->findByPk($iSurveyID);
+			if (!isset($oSurvey))
+				return array('status' => 'Error: Invalid survey ID');
+				
+			if($oSurvey->getAttribute('active') =='Y')
+				return array('status' => 'Error:Survey is Active and not editable');	
+				
+			$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+			if (!isset($oGroup))
+				return array('status' => 'Error: Invalid group ID');
+			
+			$gsid = $oGroup['sid'];	
+			if($gsid != $iSurveyID)
+				return array('status' => 'Error: IMissmatch in surveyid and groupid');
+				
+            if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
+            {
+                if (!in_array($sImportDataType,array('csv','lsq'))) return array('status' => 'Invalid extension');
+				libxml_use_internal_errors(true);
+                Yii::app()->loadHelper('admin/import');
+                // First save the data to a temporary file
+                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
+                file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
+
+				if (strtolower($sImportDataType)=='csv')
+				{
+					$aImportResults = CSVImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
+				}
+				elseif ( strtolower($sImportDataType)=='lsq')
+				{
+				
+					$xml = simplexml_load_file($sFullFilePath);
+					if(!$xml)
+					{
+						unlink($sFullFilePath);
+						return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
+					}
+					$aImportResults =  XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
+				}
+				else
+					return array('status' => 'Really Invalid extension'); //just for symmetry!
+
+				unlink($sFullFilePath);
+
+				if (isset($aImportResults['fatalerror'])) return array('status' => 'Error: '.$aImportResults['fatalerror']);
+                else
+                {
+					fixLanguageConsistency($iSurveyID);
+					$iNewqid = $aImportResults['newqid'];	
+				
+					$oQuestion = Questions::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
+					if($sNewQuestionTitle!=NULL)
+						$oQuestion->setAttribute('title',$sNewQuestionTitle);
+					if($sNewqQuestion!='')
+						$oQuestion->setAttribute('question',$sNewqQuestion);					
+					if($sNewQuestionHelp!='')
+						$oQuestion->setAttribute('help',$sNewQuestionHelp);					
+					if(in_array($sMandatory, array('Y','N')))
+						$oQuestion->setAttribute('mandatory',$sMandatory);
+					else
+						$oQuestion->setAttribute('mandatory','N');	
+					
+					try
+					{
+						$oQuestion->save();
+					}
+					catch(Exception $e)	
+					{
+						// no need to throw exception
+					}
+                    return $aImportResults['newqid'];
+                }                           
+            }
+            else
+                return array('status' => 'No permission');
+        }
+        else
+			return array('status' => 'Invalid session key');       
+    }
+
+
+  /**
+     * RPC routine to delete a question of a survey 
+     * Returns the id of the deleted question
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int iQuestionID
+     * @return string
+     */
+	public function delete_question($sSessionKey, $iQuestionID)
+	{
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+
+			$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID));
+			if (!isset($oQuestion))
+				return array('status' => 'Error: Invalid question ID');
+		
+			$iSurveyID = $oQuestion['sid'];
+			$oSurvey = Survey::model()->findByPk($iSurveyID);
+
+			if($oSurvey['active']=='Y')
+				return array('status' => 'Survey is active and not editable');
+			$iGroupID=$oQuestion['gid'];	
+			
+            if (hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
+            {
+				$oCondition = Conditions::model()->findAllByAttributes(array('cqid' => $iQuestionID));
+				if(count($oCondition)>0)
+					return array('status' => 'Cannot delete Question. Others rely on this question');
+				
+				LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$iQuestionID);
+				
+				try
+				{
+					Conditions::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					Question_attributes::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					Answers::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+
+					$criteria = new CDbCriteria;
+					$criteria->addCondition('qid = :qid or parent_qid = :qid');
+					$criteria->params[':qid'] = $iQuestionID;
+					Questions::model()->deleteAll($criteria);
+
+					Defaultvalues::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					Quota_members::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+					Questions::updateSortOrder($iGroupID, $iSurveyID);
+				
+                return $iQuestionID;
+				}
+				catch(Exception $e)
+                {
+                    return array('status' => 'Error');
+                }
+	
+            }
+            else
+                return array('status' => 'No permission');
+        }
+        else
+			return array('status' => 'Invalid session key');         		
+	}
+
+
+
+   /**
+     * RPC routine to return the ids and info  of questions of a survey/group 
+     * Returns array of ids and info
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @param int $iGroupID
+     * @return array
+     */
+	public function get_question_list($sSessionKey, $iSurveyID, $iGroupID=NULL)
+	{
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+			$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
+			if (!isset($surveyidExists))
+				return array('status' => 'Error: Invalid survey ID');
+  
+			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
+			{	
+				if($iGroupID!=NULL)
+				{
+					$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+					$gsid = $oGroup['sid'];
+					
+					if($gsid != $iSurveyID)
+						return array('status' => 'Error: IMissmatch in surveyid and groupid');	
+					else
+						$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0"));
+				}
+				else
+					$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0"));
+	   
+				if(count($aQuestionList)==0)
+					return array('status' => 'No questions found');
+				
+				foreach ($aQuestionList as $question)
+				{
+					$aData[]= array('id'=>$question->primaryKey,'type'=>$question->attributes['type'], 'question'=>$question->attributes['question']);
+				}
+				return $aData;					
+			}
+			else
+				return array('status' => 'No permission'); 	   
+        }
+        else
+			return array('status' => 'Invalid session key');          				
+	}
+
+
+  /**
+     * RPC routine to return  properties of a question of a survey 
+     * Returns string 
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iQuestionID
+     * @param array $aQuestionSettings
+     * @return array
+     */
+	public function get_question_settings($sSessionKey, $iQuestionID, $aQuestionSettings)
+	{
+	
+       if ($this->_checkSessionKey($sSessionKey))
+       {
+			$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID));
+			if (!isset($oQuestion))
+				return array('status' => 'Error: Invalid questionid', 22);
+				
+			$aBasicDestinationFields=Questions::model()->tableSchema->columnNames;
+			array_push($aBasicDestinationFields,'available_answers')	;
+			$aQuestionSettings=array_intersect($aQuestionSettings,$aBasicDestinationFields);
+
+			if (empty($aQuestionSettings))	
+			   	return array('status' => 'No valid Data');   
+			   	
+			if (hasSurveyPermission($oQuestion->sid, 'survey', 'read'))
+			{		
+                $abasic_attrs = $oQuestion->getAttributes();  
+                $result=array();
+                foreach ($aQuestionSettings as $sproperty_name )
+                {
+					if ($sproperty_name == 'available_answers')
+					{
+						$subgroups =  Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionID),array('order'=>'title') );
+						if (count($subgroups)>0)
+						{
+							foreach($subgroups as $subgroup)
+								$aData[$subgroup['title']]= $subgroup['question'];
+							
+							$result['available_answers']=$aData;
+						}
+						else
+							$result['available_answers']='No available answers';
+					}
+					else
+					{					
+					if (isset($abasic_attrs[$sproperty_name]))
+						$result[$sproperty_name]=$abasic_attrs[$sproperty_name];
+					else
+						$result[$sproperty_name]='Data not available';
+					
+					}
+				}
+                return $result;				
+			}
+			else
+				return array('status' => 'No permission');  	    
+        }
+        else
+			return array('status' => 'Invalid session key');       				
+	}
+
+    /**
+    * RPC routine to modify group settings
+    *
+    * @access public
+    * @param string $sSessionKey
+    * @param integer $iQuestionID  - ID of the question
+    * @param array|struct $aQuestionData - An array with the particular fieldnames as keys and their values to set on that particular question
+    * @return array of succeeded and failed modifications according to internal validation.
+    */
+    public function modify_question_settings($sSessionKey, $iQuestionID, $aQuestionData)
+    { 
+        if ($this->_checkSessionKey($sSessionKey))
+        {               
+            $oQuestion=Questions::model()->findByAttributes(array('qid' => $iQuestionID));
+            if (is_null($oQuestion))
+                return array('status' => 'Error: Invalid group ID');
+
+            if (hasSurveyPermission($oQuestion->sid, 'survey', 'update'))
+            {
+                $succeded = array();
+                $failed = array();      
+                // Remove fields that may not be modified
+                unset($aQuestionData['qid']);
+                unset($aQuestionData['gid']);
+                unset($aQuestionData['sid']);                
+                unset($aQuestionData['parent_qid']);
+                unset($aQuestionData['language']);
+                unset($aQuestionData['type']);                
+                // Remove invalid fields
+                $aDestinationFields=array_flip(Questions::model()->tableSchema->columnNames);
+                $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
+				
+				if (empty($aQuestionData))	
+					return array('status' => 'No valid Data');   
+
+                foreach($aQuestionData as $sFieldName=>$sValue)
+                {
+					$valid_value = $this->_internal_validate($sFieldName,$sValue);
+					
+					if ($valid_value === false)
+						$failed[$sFieldName]=$sValue;
+					else
+					{
+						//all the dependencies that this question has to other questions
+						$dependencies=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,$iQuestionID);
+						//all dependencies by other questions to this question
+						$is_criteria_question=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,"all",$iQuestionID,"by-targqid");
+						//We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies						
+						
+						if((isset($dependencies) || isset($is_criteria_question))  && $sFieldName == 'question_order')
+							$failed[$sFieldName]='Questions with dependencies - Order cannot be changed';
+						else
+						{
+							$oQuestion->setAttribute($sFieldName,$valid_value);
+							$succeded[$sFieldName]=$sValue;	
+						}					
+					}
+                }
+                try
+                {
+                    $oQuestion->save(); // save the change to database
+                    fixSortOrderQuestions($oQuestion->gid, $oQuestion->sid);
+                    $result = array('succeded'=>$succeded,'failed'=>$failed);
+                    return $result;
+                }
+                catch(Exception $e)
+                {
+                    return array('status' => 'Error');
+                }
+            }
+            else
+                return array('status' => 'No permission');
+        }
+        else
+			return array('status' => 'Invalid Session key');        
+    }
+
+
 
     /**
     * Tries to login with username and password
