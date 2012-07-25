@@ -230,7 +230,6 @@ class remotecontrol_handle
 	 * @param string $sSurveyLanguage	 
 	 * @param string $sformat
      * @return string
-     * @throws Zend_XmlRpc_Server_Exception
      */
 	public function create_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
 	{
@@ -428,7 +427,6 @@ class remotecontrol_handle
      * @param string $sSessionKey
      * @param string $suser
      * @return array
-     * @throws Zend_XmlRpc_Server_Exception
      */
 	public function get_survey_list($sSessionKey, $suser='')
 	{
@@ -588,6 +586,10 @@ class remotecontrol_handle
                     unset($aSurveyData['refurl']);
 
                 }
+                
+				if (empty($aSurveyData))	
+					return array('status' => 'No valid Data');                    
+                                
                 foreach($aSurveyData as $sFieldName=>$sValue)
                 {
                     if($this->_internal_validate($sFieldName,$sValue))
@@ -659,6 +661,10 @@ class remotecontrol_handle
                 $oSurveyLocale = Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
                 $succeded = array();
                 $failed = array();
+                
+                if (empty($aSurveyLocaleData))	
+					return array('status' => 'No valid Data');                
+
                 foreach($aSurveyLocaleData as $sFieldName=>$sValue)
                 {
 					if($this->_internal_validate($sFieldName,$sValue))
@@ -791,7 +797,6 @@ class remotecontrol_handle
      * @param string $docType
      * @param string $graph
      * @return string
-     * @throws Zend_XmlRpc_Server_Exception
      */
     public function send_statistics($sSessionKey, $iSurveyID, $docType='pdf', $graph='0')
     {
@@ -1081,7 +1086,6 @@ class remotecontrol_handle
     * @param struct $aParticipantData
     * @param bool Optional - Defaults to true and determins if the access token automatically created
     * @return array
-    * @throws Zend_XmlRpc_Server_Exception
     */
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken=true)
     {
@@ -1301,6 +1305,9 @@ class remotecontrol_handle
                 $aTokenProperties=array_intersect($aTokenProperties,$aBasicDestinationFields);     
 				$abasic_attrs = $oToken->getAttributes();   
 				  
+				if (empty($aTokenProperties))	
+					return array('status' => 'No valid Data'); 
+									  
                 foreach($aTokenProperties as $sproperty_name )
                 {       				
 					if (isset($abasic_attrs[$sproperty_name]))
@@ -1353,7 +1360,10 @@ class remotecontrol_handle
             $aTokenData=array_intersect_key($aTokenData,$aBasicDestinationFields);     
 
 			if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
-			{		
+			{		             
+				if (empty($aTokenData))	
+					return array('status' => 'No valid Data'); 
+					               
                foreach($aTokenData as $sFieldName=>$sValue)
                {
                     if($this->_internal_validate($sFieldName,$sValue))
@@ -1394,7 +1404,6 @@ class remotecontrol_handle
 	 * @param string $sGroupTitle
 	 * @param string $sGroupDescription	 
      * @return string
-     * @throws Zend_XmlRpc_Server_Exception
      */
   	public function create_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
 	{   
@@ -1520,7 +1529,6 @@ class remotecontrol_handle
      * @param int $iSurveyID
      * @param int $iGroupID
      * @return int
-     * @throws Zend_XmlRpc_Server_Exception
      */
 	public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
 	{
@@ -1569,7 +1577,6 @@ class remotecontrol_handle
      * @param string $sSessionKey
      * @param int $iSurveyID
      * @return array
-     * @throws Zend_XmlRpc_Server_Exception
      */
 	public function get_group_list($sSessionKey, $iSurveyID)
 	{
@@ -1608,7 +1615,6 @@ class remotecontrol_handle
      * @param int $iGroupID
      * @param array  $aGroupSettings
      * @return array
-     * @throws Zend_XmlRpc_Server_Exception
      */
 	public function get_group_settings($sSessionKey, $iGroupID, $aGroupSettings)
 	{
@@ -1624,6 +1630,10 @@ class remotecontrol_handle
 			if (hasSurveyPermission($current_group->sid, 'survey', 'read'))
 			{		
                 $abasic_attrs = $current_group ->getAttributes();
+                
+				if (empty($aGroupSettings))	
+					return array('status' => 'No valid Data');                 
+                
                 foreach($aGroupSettings as $sGroupSetting)
                 {
 					if (isset($abasic_attrs[$sGroupSetting]))
@@ -1669,7 +1679,10 @@ class remotecontrol_handle
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Groups::model()->tableSchema->columnNames);
                 $aGroupData=array_intersect_key($aGroupData,$aDestinationFields);
-
+				
+				if (empty($aGroupData))	
+					return array('status' => 'No valid Data');
+					
                 foreach($aGroupData as $sFieldName=>$sValue)
                 {
 					$valid_value = $this->_internal_validate($sFieldName,$sValue);
