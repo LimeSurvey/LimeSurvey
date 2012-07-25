@@ -657,6 +657,7 @@ EOD;
     // Please put any conditional logic above this section.  Here below should just be an alphabetical list of replacement values with no embedded logic.
 
 	$coreReplacements = array();
+	$coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
 	$coreReplacements['AID'] = $_aid;  // global
 	$coreReplacements['ANSWER'] = $answer;  // global
 	$coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
