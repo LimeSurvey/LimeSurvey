@@ -775,6 +775,7 @@ EOD;
     // Set the array of replacement variables here - don't include curly braces
 
     $coreReplacements = array();
+	$coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['AID'] = isset($questiondetails['aid']) ? $questiondetails['aid'] : '';
     $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
     $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
