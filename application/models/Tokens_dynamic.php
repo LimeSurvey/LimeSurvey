@@ -105,10 +105,24 @@ class Tokens_dynamic extends LSActiveRecord
     public function checkColumns() {
         $sid = self::$sid;
         $surveytable='{{tokens_'.$sid.'}}';
+        $columncheck=array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus","token","language","blacklisted","sent","remindersent","completed","usesleft","validfrom","validuntil");
         $columns = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
-        if(!in_array('participant_id', $columns)) Yii::app()->db->createCommand()->addColumn($surveytable, "participant_id", "text null");
-        if(!in_array('validuntil', $columns)) Yii::app()->db->createCommand()->addColumn($surveytable, 'validuntil', 'date null');
-        if(!in_array('validfrom', $columns)) Yii::app()->db->createCommand()->addColumn($surveytable, 'validfrom', 'date null');
+        $missingcolumns=array_diff($columncheck,$columns);
+        if(count($missingcolumns)>0) //Some columns are missing - we need to create them
+        {
+            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            setVarchar(); //Set the appropriate varchar settings according to the database
+            $sVarchar=Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
+            $columninfo=array('validfrom'=>'datetime',
+                              'validuntil'=>'datetime',
+                              'blacklisted'=>$sVarchar.'(17) NOT NULL',
+                              'participant_id'=>$sVarchar.'(50) NOT NULL',
+                              'remindercount'=>"integer DEFAULT '0'",
+                              'usesleft'=>'integer NOT NULL default 1'); //Not sure if any other fields would ever turn up here - please add if you can think of any others
+            foreach($missingcolumns as $columnname) {
+                addColumn($surveytable,$columnname,$columninfo[$columnname]);
+            }
+        }
     }
 
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')

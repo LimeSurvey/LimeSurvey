@@ -28,28 +28,8 @@ function db_upgrade_all($oldversion) {
     $clang = Yii::app()->lang;
     echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $clang->gT('Please be patient...')."<br /><br />\n";
 
-    $sDBDriverName=Yii::app()->db->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-
-    // Special customization because Yii is too limited to handle a varchar field of a length other than 255 in a cross-DB compatible way
-    // see http://www.yiiframework.com/forum/index.php/topic/32289-cross-db-compatible-varchar-field-length-definitions/
-    // and http://github.com/yiisoft/yii/issues/765
-    if ($sDBDriverName=='pgsql')
-    {
-        Yii::app()->setConfig('varchar',$sVarchar='character varying');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='serial');
-    }
-    elseif ($sDBDriverName=='mssql')
-    {
-        Yii::app()->setConfig('varchar',$sVarchar='varchar');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='integer NOT NULL IDENTITY (1,1)');
-    }
-    else
-    {
-        Yii::app()->setConfig('varchar',$sVarchar='varchar');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='int(11) NOT NULL AUTO_INCREMENT');
-    }
+    $sDBDriverName=setsDBDriverName();
+    setVarchar($sDBDriverName);
 
     if ($oldversion < 111)
     {
@@ -1714,4 +1694,49 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
         Yii::app()->db->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
     }
 
+}
+
+/**
+* Returns the name of the DB Driver - used for other functions that make db specific calls
+*
+*/
+function setsDBDriverName() {
+    $sDBDriverName=Yii::app()->db->getDriverName();
+    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
+    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
+    return $sDBDriverName;
+}
+
+/**
+* Special customisation because Yii is limited in its ability to handle varchar fields of lenghts other than 255 in a cross-db
+* compatible way. see http://www.yiiframework.com/forum/index.php/topic/32289-cross-db-compatible-varchar-field-length-definitions/
+* and http://github.com/yiisoft/yii/issues/765
+*
+* Note that it sets values for the config files for use later, and does not return any values.
+* Access the set values using Yii::app()->getConfig('varchar') or Yii::app()->getConfigu('autoincrement');
+*
+* @param mixed $sDBDriverName The name of the db driver being used. If the parameter is forgotten, the
+*                             function is capable of retrieving it itself.
+*/
+function setVarchar($sDBDriverName=null) {
+
+    if(!$sDBDriverName) {
+        $sDBDriverName=setsDBDriverName();
+    }
+
+    if ($sDBDriverName=='pgsql')
+    {
+        Yii::app()->setConfig('varchar',$sVarchar='character varying');
+        Yii::app()->setConfig('autoincrement', $sAutoIncrement='serial');
+    }
+    elseif ($sDBDriverName=='mssql')
+    {
+        Yii::app()->setConfig('varchar',$sVarchar='varchar');
+        Yii::app()->setConfig('autoincrement', $sAutoIncrement='integer NOT NULL IDENTITY (1,1)');
+    }
+    else
+    {
+        Yii::app()->setConfig('varchar',$sVarchar='varchar');
+        Yii::app()->setConfig('autoincrement', $sAutoIncrement='int(11) NOT NULL AUTO_INCREMENT');
+    }
 }
