@@ -701,10 +701,58 @@ class remotecontrol_handle
      * @param string $sSessionKey
      * @param int $iSurveyID
      * @param array $aSurveySettings
+     * @return array
+     */
+   public function get_survey_settings($sSessionKey,$iSurveyID, $aSurveySettings)
+    {
+		Yii::app()->loadHelper("surveytranslator");
+       if ($this->_checkSessionKey($sSessionKey))
+       { 
+			$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
+			if (!isset($surveyidExists))
+			{
+				return array('status' => 'Error: Invalid survey ID');
+			}		   
+			if (hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
+				{
+					$aBasicDestinationFields=Survey::model()->tableSchema->columnNames;
+					$aSurveySettings=array_intersect($aSurveySettings,$aBasicDestinationFields);
+					
+					$abasic_attrs = Survey::model()->findByPk($iSurveyID)->getAttributes();
+					
+					$result = array();
+					
+					if (empty($aSurveySettings))	
+					return array('status' => 'No valid Data');					
+					
+					foreach($aSurveySettings as $sproperty_name)
+					{
+						if (isset($abasic_attrs[$sproperty_name]))
+							$result[$sproperty_name]=$abasic_attrs[$sproperty_name];
+						else
+							$result[$sproperty_name]='Not available';
+					}
+					return $result;
+				}
+			else
+				return array('status' => 'No permission');  
+        }
+        else
+			return array('status' => 'Invalid Session key');  
+    }
+
+    /**
+     * RPC routine to get survey settings
+     * Properties are those defined in tables surveys and surveys_language_settings
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @param array $aSurveyLocaleSettings
 	 * @param string $slang
      * @return array
      */
-   public function get_survey_settings($sSessionKey,$iSurveyID, $aSurveySettings, $slang=NULL)
+   public function get_survey_locale_settings($sSessionKey,$iSurveyID, $aSurveyLocaleSettings, $slang=NULL)
     {
 		Yii::app()->loadHelper("surveytranslator");
        if ($this->_checkSessionKey($sSessionKey))
@@ -717,10 +765,8 @@ class remotecontrol_handle
 			if (hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
 				{
 					$aBasicDestinationFields=Surveys_languagesettings::model()->tableSchema->columnNames;
-					$aLanguageDestinationFields=Survey::model()->tableSchema->columnNames;
-					$aSurveyFields = array_merge($aBasicDestinationFields,$aLanguageDestinationFields);
 
-					$aSurveySettings=array_intersect($aSurveySettings,$aSurveyFields);
+					$aSurveyLocaleSettings=array_intersect($aSurveyLocaleSettings,$aBasicDestinationFields);
 					
 					$abasic_attrs = Survey::model()->findByPk($iSurveyID)->getAttributes();
 					
@@ -730,11 +776,13 @@ class remotecontrol_handle
 					$alang_attrs = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $slang))->getAttributes();	
 
 					$result = array();
-					foreach($aSurveySettings as $sproperty_name)
+					
+					if (empty($aSurveyLocaleSettings))	
+					return array('status' => 'No valid Data'); 					
+					
+					foreach($aSurveyLocaleSettings as $sproperty_name)
 					{
-						if (isset($abasic_attrs[$sproperty_name]))
-							$result[$sproperty_name]=$abasic_attrs[$sproperty_name];
-						elseif (isset($alang_attrs[$sproperty_name]))
+						if (isset($alang_attrs[$sproperty_name]))
 							$result[$sproperty_name]=$alang_attrs[$sproperty_name];
 						else
 							$result[$sproperty_name]='Not available';
