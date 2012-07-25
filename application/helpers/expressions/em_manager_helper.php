@@ -4602,7 +4602,7 @@
                         Yii::app()->db->createCommand($query)->execute();
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-                            $message .= ';<br/>'.$query;
+                            $message .= ';<br />'.$query;
                         }
 
                     }
@@ -5084,7 +5084,7 @@
             if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
             {
                 $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
-                $debug_message .= '<br/>[G#' . $LEM->currentGroupSeq . ']'
+                $debug_message .= '<br />[G#' . $LEM->currentGroupSeq . ']'
                 . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
                 . "[<a href='$editlink'>"
                 .  'GID:' . $gid . "</a>]:  "
@@ -5093,7 +5093,7 @@
                 . (($ghidden && $grel) ? " <span style='color:red'>always-hidden</span> " : ' ')
                 . ($gmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
                 . ($gvalid ? '' : " <span style='color:red'>(fails at least one validation rule)</span> ")
-                . "<br/>\n"
+                . "<br />\n"
                 . implode('', $messages);
 
                 if ($grel == true)
@@ -5102,16 +5102,16 @@
                     {
                         if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                         {
-                            $debug_message .= "**At least one relevant question was invalid, so re-show this group<br/>\n";
-                            $debug_message .= "**Validity Violators: " . implode(', ', explode('|',$invalidSQList)) . "<br/>\n";
+                            $debug_message .= "**At least one relevant question was invalid, so re-show this group<br />\n";
+                            $debug_message .= "**Validity Violators: " . implode(', ', explode('|',$invalidSQList)) . "<br />\n";
                         }
                     }
                     if ($gmandViolation)
                     {
                         if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                         {
-                            $debug_message .= "**At least one relevant question was mandatory but unanswered, so re-show this group<br/>\n";
-                            $debug_message .= '**Mandatory Violators: ' . implode(', ', explode('|',$unansweredSQList)). "<br/>\n";
+                            $debug_message .= "**At least one relevant question was mandatory but unanswered, so re-show this group<br />\n";
+                            $debug_message .= '**Mandatory Violators: ' . implode(', ', explode('|',$unansweredSQList)). "<br />\n";
                         }
                     }
 
@@ -5127,7 +5127,7 @@
                 {
                     if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                     {
-                        $debug_message .= '** Page is irrelevant, so NULL all questions in this group<br/>';
+                        $debug_message .= '** Page is irrelevant, so NULL all questions in this group<br />';
                     }
                 }
             }
@@ -5696,31 +5696,31 @@
                 . (($hasValidationEqn) ? (!$qvalid ? " <span style='color:red'>(fails validation rule)</span> " : ' valid') : '')
                 . ($qmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
                 . $prettyPrintRelEqn
-                . "<br/>\n";
+                . "<br />\n";
 
                 if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                 {
                     if ($mandatoryTip != '')
                     {
-                        $debug_qmessage .= '----Mandatory Tip: ' . flattenText($mandatoryTip) . "<br/>\n";
+                        $debug_qmessage .= '----Mandatory Tip: ' . flattenText($mandatoryTip) . "<br />\n";
                     }
 
                     if ($prettyPrintValidTip != '')
                     {
-                        $debug_qmessage .= '----Pretty Validation Tip: <br/>' . $prettyPrintValidTip . "<br/>\n";
+                        $debug_qmessage .= '----Pretty Validation Tip: <br />' . $prettyPrintValidTip . "<br />\n";
                     }
                     if ($validTip != '')
                     {
-                        $debug_qmessage .= '----Validation Tip: <br/>' . $validTip . "<br/>\n";
+                        $debug_qmessage .= '----Validation Tip: <br />' . $validTip . "<br />\n";
                     }
 
                     if ($prettyPrintValidEqn != '')
                     {
-                        $debug_qmessage .= '----Validation Eqn: ' . $prettyPrintValidEqn . "<br/>\n";
+                        $debug_qmessage .= '----Validation Eqn: ' . $prettyPrintValidEqn . "<br />\n";
                     }
                     if ($validationJS != '')
                     {
-                        $debug_qmessage .= '----Validation JavaScript: ' . $validationJS . "<br/>\n";
+                        $debug_qmessage .= '----Validation JavaScript: ' . $validationJS . "<br />\n";
                     }
 
                     // what are the database question codes for this question?
@@ -5728,16 +5728,16 @@
                     // pretty-print them
                     $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
                     $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                    $debug_qmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br/>\n";
+                    $debug_qmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br />\n";
 
                     if (count($prettyPrintSQRelEqns) > 0)
                     {
-                        $debug_qmessage .= "----Array Filters Applied:<br/>\n";
+                        $debug_qmessage .= "----Array Filters Applied:<br />\n";
                         foreach ($prettyPrintSQRelEqns as $key => $value)
                         {
-                            $debug_qmessage .= '------' . $key . ': ' . $value . "<br/>\n";
+                            $debug_qmessage .= '------' . $key . ': ' . $value . "<br />\n";
                         }
-                        $debug_qmessage .= "<br/>\n";
+                        $debug_qmessage .= "<br />\n";
                     }
 
                     if (count($relevantSQs) > 0)
@@ -5746,7 +5746,7 @@
                         // pretty-print them
                         $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
                         $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                        $debug_qmessage .= '----Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                        $debug_qmessage .= '----Relevant SubQs: ' . $prettyPrintSubQList . "<br />\n";
                     }
 
                     if (count($irrelevantSQs) > 0)
@@ -5755,7 +5755,7 @@
                         // pretty-print them
                         $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
                         $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                        $debug_qmessage .= '----Irrelevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                        $debug_qmessage .= '----Irrelevant SubQs: ' . $prettyPrintSubQList . "<br />\n";
                     }
 
                     // show which relevant subQs were not answered
@@ -5765,7 +5765,7 @@
                         // pretty-print them
                         $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
                         $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                        $debug_qmessage .= '----Unanswered Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                        $debug_qmessage .= '----Unanswered Relevant SubQs: ' . $prettyPrintSubQList . "<br />\n";
                     }
                 }
             }
@@ -5802,7 +5802,7 @@
                     if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                     {
                         $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
-                        $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
+                        $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br />\n";
                     }
             }
             foreach ($irrelevantSQs as $sq)
@@ -5845,7 +5845,7 @@
             'invalidSQs' => (isset($invalidSQs) ? $invalidSQs : ''),
             'relevantSQs' => implode('|',$relevantSQs),
             'irrelevantSQs' => implode('|',$irrelevantSQs),
-            'subQrelEqn' => implode('<br/>',$prettyPrintSQRelEqns),
+            'subQrelEqn' => implode('<br />',$prettyPrintSQRelEqns),
             'mandViolation' => $qmandViolation,
             'anyUnanswered' => $anyUnanswered,
             'mandTip' => $mandatoryTip,
@@ -6872,25 +6872,25 @@
             );
 
             $tests = <<<EOD
-<b>Here is an example of OK syntax with tooltips</b><br/>Hello {if(gender=='M','Mr.','Mrs.')} {surname}, it is now {date('g:i a',time())}.  Do you know where your {sum(numPets,numKids)} chidren and pets are?
-<b>Here are common errors so you can see the tooltips</b><br/>Variables used before they are declared:  {notSetYet}<br/>Unknown Function:  {iff(numPets>numKids,1,2)}<br/>Unknown Variable: {sum(age,num_pets,numKids)}<br/>Wrong # parameters: {sprintf()},{if(1,2)},{date()}<br/>Assign read-only-vars:{TOKEN:ATTRIBUTE_1+=10},{name='Sally'}<br/>Unbalanced parentheses: {pow(3,4},{(pow(3,4)},{pow(3,4))}
-<b>Here is some of the unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age,age % 2);}<br/>Nor '|', '&', '^': {(sum(2 | 3,3 & 4,5 ^ 6)}}<br/>Nor arrays: {name[2], name['mine']}
-<b>Inline JavaScipt that forgot to add spaces after curly brace</b><br/>[script type="text/javascript" language="Javascript"] var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES');}[/script]
-<b>Unknown/Misspelled Variables, Functions, and Operators</b><br/>{if(sex=='M','Mr.','Mrs.')} {surname}, next year you will be {age++} years old.
+<b>Here is an example of OK syntax with tooltips</b><br />Hello {if(gender=='M','Mr.','Mrs.')} {surname}, it is now {date('g:i a',time())}.  Do you know where your {sum(numPets,numKids)} chidren and pets are?
+<b>Here are common errors so you can see the tooltips</b><br />Variables used before they are declared:  {notSetYet}<br />Unknown Function:  {iff(numPets>numKids,1,2)}<br />Unknown Variable: {sum(age,num_pets,numKids)}<br />Wrong # parameters: {sprintf()},{if(1,2)},{date()}<br />Assign read-only-vars:{TOKEN:ATTRIBUTE_1+=10},{name='Sally'}<br />Unbalanced parentheses: {pow(3,4},{(pow(3,4)},{pow(3,4))}
+<b>Here is some of the unsupported syntax</b><br />No support for '++', '--', '%',';': {min(++age, --age,age % 2);}<br />Nor '|', '&', '^': {(sum(2 | 3,3 & 4,5 ^ 6)}}<br />Nor arrays: {name[2], name['mine']}
+<b>Inline JavaScipt that forgot to add spaces after curly brace</b><br />[script type="text/javascript" language="Javascript"] var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES');}[/script]
+<b>Unknown/Misspelled Variables, Functions, and Operators</b><br />{if(sex=='M','Mr.','Mrs.')} {surname}, next year you will be {age++} years old.
 <b>Warns if use = instead of == or perform value assignments</b><br>Hello, {if(gender='M','Mr.','Mrs.')} {surname}, next year you will be {age+=1} years old.
-<b>Wrong number of arguments for functions:</b><br/>{if(gender=='M','Mr.','Mrs.','Other')} {surname}, sum(age,numKids,numPets)={sum(age,numKids,numPets,)}
-<b>Mismatched parentheses</b><br/>pow(3,4)={pow(3,4)}<br/>but these are wrong: {pow(3,4}, {(((pow(3,4)}, {pow(3,4))}
-<b>Unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age, age % 2);}<br/>Nor '|', '&', '^':  {(sum(2 | 3, 3 & 4, 5 ^ 6)}}<br/>Nor arrays:  {name[2], name['mine']}
-<b>Invalid assignments</b><br/>Assign values to equations or strings:  {(3 + 4)=5}, {'hi'='there'}<br/>Assign read-only vars:  {TOKEN:ATTRIBUTE_1='boss'}, {name='Sally'}
-<b>Values:</b><br/>name={name}; surname={surname}<br/>gender={gender}; age={age}; numPets={numPets}<br/>numKids=INSERTANS:61764X1X3={numKids}={INSERTANS:61764X1X3}<br/>TOKEN:ATTRIBUTE_1={TOKEN:ATTRIBUTE_1}
-<b>Question attributes:</b><br/>numKids.question={numKids.question}; Question#={numKids.qid}; .relevance={numKids.relevance}
+<b>Wrong number of arguments for functions:</b><br />{if(gender=='M','Mr.','Mrs.','Other')} {surname}, sum(age,numKids,numPets)={sum(age,numKids,numPets,)}
+<b>Mismatched parentheses</b><br />pow(3,4)={pow(3,4)}<br />but these are wrong: {pow(3,4}, {(((pow(3,4)}, {pow(3,4))}
+<b>Unsupported syntax</b><br />No support for '++', '--', '%',';': {min(++age, --age, age % 2);}<br />Nor '|', '&', '^':  {(sum(2 | 3, 3 & 4, 5 ^ 6)}}<br />Nor arrays:  {name[2], name['mine']}
+<b>Invalid assignments</b><br />Assign values to equations or strings:  {(3 + 4)=5}, {'hi'='there'}<br />Assign read-only vars:  {TOKEN:ATTRIBUTE_1='boss'}, {name='Sally'}
+<b>Values:</b><br />name={name}; surname={surname}<br />gender={gender}; age={age}; numPets={numPets}<br />numKids=INSERTANS:61764X1X3={numKids}={INSERTANS:61764X1X3}<br />TOKEN:ATTRIBUTE_1={TOKEN:ATTRIBUTE_1}
+<b>Question attributes:</b><br />numKids.question={numKids.question}; Question#={numKids.qid}; .relevance={numKids.relevance}
 <b>Math:</b><br/>5+7={5+7}; 2*pi={2*pi()}; sin(pi/2)={sin(pi()/2)}; max(age,numKids,numPets)={max(age,numKids,numPets)}
-<b>Text Processing:</b><br/>{str_replace('like','love','I like LimeSurvey')}<br/>{ucwords('hi there')}, {name}<br/>{implode('--',name,'this is','a convenient way','way to','concatenate strings')}
-<b>Dates:</b><br/>{name}, the current date/time is: {date('F j, Y, g:i a',time())}
-<b>Conditional:</b><br/>Hello, {if(gender=='M','Mr.','Mrs.')} {surname}, may I call you {name}?
-<b>Tailored Paragraph:</b><br/>{name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.<p>Since you have more {if((numKids > numPets),'children','pets')} than you do {if((numKids > numPets),'pets','children')}, do you feel that the {if((numKids > numPets),'pets','children')} are at a disadvantage?</p>
-<b>EM processes within strings:</b><br/>Here is your picture [img src='images/users_{name}_{surname}.jpg' alt='{if(gender=='M','Mr.','Mrs.')} {name} {surname}'/];
-<b>EM doesn't process curly braces like these:</b><br/>{name}, { this is not an expression}<br/>{nor is this }, { nor  this }<br/>\{nor this\},{this\},\{or this }
+<b>Text Processing:</b><br />{str_replace('like','love','I like LimeSurvey')}<br />{ucwords('hi there')}, {name}<br />{implode('--',name,'this is','a convenient way','way to','concatenate strings')}
+<b>Dates:</b><br />{name}, the current date/time is: {date('F j, Y, g:i a',time())}
+<b>Conditional:</b><br />Hello, {if(gender=='M','Mr.','Mrs.')} {surname}, may I call you {name}?
+<b>Tailored Paragraph:</b><br />{name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.<p>Since you have more {if((numKids > numPets),'children','pets')} than you do {if((numKids > numPets),'pets','children')}, do you feel that the {if((numKids > numPets),'pets','children')} are at a disadvantage?</p>
+<b>EM processes within strings:</b><br />Here is your picture [img src='images/users_{name}_{surname}.jpg' alt='{if(gender=='M','Mr.','Mrs.')} {name} {surname}'/];
+<b>EM doesn't process curly braces like these:</b><br />{name}, { this is not an expression}<br />{nor is this }, { nor  this }<br />\{nor this\},{this\},\{or this }
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
 Since you have more {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','pets')} than you do {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')}, do you feel that the {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')} are at a disadvantage?
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children','kiddies')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
@@ -7105,8 +7105,8 @@ EOD;
 
             // Print Table of questions
             print "<h3>This is a test of dynamic relevance.</h3>";
-            print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br/>\n";
-            print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br/>";
+            print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
+            print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
             print "<table border='1'><tr><td>";
             foreach ($argInfo as $arg)
             {
@@ -7888,7 +7888,7 @@ EOD;
                     $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                     return ($grel && $qrel && $sqrel);
                 default:
-                    print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
+                    print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br />\n";
                     return $default;
             }
             return $default;    // and throw and error?
@@ -8037,8 +8037,8 @@ EOD;
 
             $surveyname = templatereplace('{SURVEYNAME}');
 
-            $out = '<H3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
-            $out .= "<table border='1'>";
+            $out = '<div id="showlogicfilediv" ><H3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
+            $out .= "<table id='logicfiletable'>";
 
             if (is_null($gid) && is_null($qid))
             {
@@ -8096,7 +8096,7 @@ EOD;
                     $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                     $groupRow = "<tr class='LEMgroup'>"
                     . "<td>G-$gseq</td>"
-                    . "<td><b>".$ginfo['group_name']."</b><br/>[<a target='_blank' href='$editlink'>GID ".$gid."</a>]</td>"
+                    . "<td><b>".$ginfo['group_name']."</b><br />[<a target='_blank' href='$editlink'>GID ".$gid."</a>]</td>"
                     . "<td>".$grelevance."</td>"
                     . "<td>".$gtext."</td>"
                     . "</tr>\n";
@@ -8111,7 +8111,7 @@ EOD;
                 //////
                 // SHOW QUESTION-LEVEL INFO
                 //////
-                $mandatory = (($q['info']['mandatory']=='Y') ? "<span style='color:red'>*</span>" : '');
+                $mandatory = (($q['info']['mandatory']=='Y') ? "<span class='mandatory'>*</span>" : '');
                 $type = $q['info']['type'];
                 $typedesc = $qtypes[$type]['description'];
 
@@ -8123,7 +8123,7 @@ EOD;
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
-                    $default = '<br/>(' . $LEM->gT('Default:') . '  ' . $_default . ')';
+                    $default = '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                 }
                 else
                 {
@@ -8149,7 +8149,7 @@ EOD;
                     $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
                 }
                 if (count($attrs) > 0) {
-                    $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
+                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
                     foreach ($attrs as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
@@ -8368,7 +8368,7 @@ EOD;
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
                         }
-                        $subQeqn .= '<br/>(' . $LEM->gT('Default:') . '  ' . $_default . ')';
+                        $subQeqn .= '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                     }
 
                     $sqRows .= "<tr class='LEMsubq'>"
@@ -8453,12 +8453,12 @@ EOD;
                 else
                 {
                     $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
-                    $questionRow .= "<span style='border-style: solid; border-width: 2px; border-color: #FF00FF; color: red;' title='" . $varNameError['message'] . "' "
+                    $questionRow .= "<span class='highlighterror' title='" . $varNameError['message'] . "' "
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
                 }
                 $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
-                $questionRow .= "</b><br/>[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type]</td>"
+                $questionRow .= "</b><br />[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type]</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
@@ -8494,7 +8494,7 @@ EOD;
                         $message = $LEM->gT('This question, by itself, does not contain any syntax errors');
                         break;
                 }
-                $out = "<p class='LEMerror'>$message</p>\n" . $out;
+                $out = "<p class='LEMheading'>$message</p>\n" . $out."</div>";
             }
 
             return array(
