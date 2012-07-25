@@ -152,10 +152,10 @@ class ExpressionManager {
 'cos' => array('cos', 'Math.cos', $this->gT('Cosine'), 'number cos(number)', 'http://www.php.net/manual/en/function.cos.php', 1),
 'count' => array('exprmgr_count', 'LEMcount', $this->gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
 'countif' => array('exprmgr_countif', 'LEMcountif', $this->gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
-'countifop' => array('exprmgr_countifop', 'LEMcountifop', $this->gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
+'countifop' => array('exprmgr_countifop', 'LEMcountifop', $this->gT('Count the number of answered questions in the list which pass the criteria (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
 'date' => array('date', 'date', $this->gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
 'exp' => array('exp', 'Math.exp', $this->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
-'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as radix separator, if needed'), 'string fixnum(number)', '', 1),            
+'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as radix separator, if needed'), 'string fixnum(number)', '', 1),
 'floor' => array('floor', 'Math.floor', $this->gT('Round fractions down'), 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
 'gmdate' => array('gmdate', 'gmdate', $this->gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.gmdate.php', 1,2),
 'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', $this->gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://www.php.net/manual/en/function.html-entity-decode.php', 1),
@@ -211,7 +211,7 @@ class ExpressionManager {
 'strtoupper' => array('strtoupper', 'LEMstrtoupper', $this->gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
 'substr' => array('substr', 'substr', $this->gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
 'sum' => array('array_sum', 'LEMsum', $this->gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
-'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', $this->gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
+'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', $this->gT('Sum the values of answered questions in the list which pass the criteria (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
 'tan' => array('tan', 'Math.tan', $this->gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
 'time' => array('time', 'time', $this->gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
 'trim' => array('trim', 'trim', $this->gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
@@ -3449,7 +3449,7 @@ function exprmgr_regexMatch($pattern, $input)
 /**
  * Display number with comma as radix separator, if needed
  * @param type $value
- * @return type 
+ * @return type
  */
 function exprmgr_fixnum($value)
 {
