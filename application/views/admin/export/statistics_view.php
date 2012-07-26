@@ -10,6 +10,7 @@
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/graph"); ?>";
     var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/listcolumn/surveyid/".$surveyid."/column/"); ?>";
     var sql="<?php //echo urlencode($sql) ?>";
+    var showTextInline="<?php echo $showtextinline ?>";
 </script>
 <form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/index/surveyid/$surveyid"); ?>#start'>
     <div class='header ui-widget-header header_statistics'>
@@ -114,6 +115,10 @@
             <fieldset>
                 <legend><?php $clang->eT("Output options"); ?></legend>
                 <ul>
+                    <li>
+                        <label for='showtextinline'><?php $clang->eT("Show text responses inline:") ?></label>
+                        <input type='checkbox' id='showtextinline' name='showtextinline'<?php if(isset($showtextinline) && $showtextinline == 1) {echo "checked='checked'"; } ?> /><br />
+                    </li>
                     <li>
                         <label for='usegraph'><?php $clang->eT("Show graphs"); ?></label>
                         <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> /><br />
