@@ -122,6 +122,7 @@
  * -------------------------------------------------------------------
  */
 
+
 	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
@@ -154,6 +155,19 @@
 
 		define('APPPATH', BASEPATH . $application_folder . '/');
 	}
+
+    $aSettings= include(APPPATH.'config'.DIRECTORY_SEPARATOR.'config.php');
+    if ($aSettings['config']['debug']>0)
+    {
+        define('YII_DEBUG', true);
+    }
+    else
+    {
+        define('YII_DEBUG', false);
+        error_reporting(0);
+    }
+
+
 
 /*
  * --------------------------------------------------------------------
