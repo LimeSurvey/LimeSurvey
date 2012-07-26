@@ -1150,18 +1150,19 @@ class remotecontrol_handle
                 return array('status' => 'No token table');
 
             $aDestinationFields = Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}')->getColumnNames();
-            $aDestinationFields = array_flip($field_names);
+            $aDestinationFields = array_flip($aDestinationFields);
 
             foreach ($aParticipantData as &$aParticipant)
             {
                 $aParticipant=array_intersect_key($aParticipant,$aDestinationFields);
-
                 Tokens_dynamic::sid($iSurveyID);
-
                 $token = new Tokens_dynamic;
 
-                if ($token->insert($aParticipant))
+                if ($token->insert())
                 {
+					foreach ($aParticipant as $k => $v)
+						$token->$k = $v;
+					$inresult = $token->save();						
                     $new_token_id = $token->primaryKey;
 
                     if ($bCreateToken)

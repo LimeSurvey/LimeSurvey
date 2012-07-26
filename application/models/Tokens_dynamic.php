@@ -163,6 +163,42 @@ class Tokens_dynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
+ 
+   /**
+     * Creates and inserts token for a specific token record and returns the token string created
+     *
+     * @param int $iTokenID
+     * @return string  token string
+     */
+    function createToken($iTokenID)
+    {
+		//get token length from survey settings
+        $tlrow = Survey::model()->findByAttributes(array("sid"=>self::$sid));
+        $iTokenLength = $tlrow->tokenlength;
+       
+		//get all existing tokens
+        $criteria = $this->getDbCriteria();
+        $criteria->select = 'token';
+		$ntresult = $this->findAllAsArray($criteria);   
+        foreach ($ntresult as $tkrow)
+        {
+            $existingtokens[] = $tkrow['token'];
+        }
+        //create new_token
+		$bIsValidToken = false;
+		while ($bIsValidToken == false)
+		{
+			$newtoken = randomChars($iTokenLength);
+			if (!in_array($newtoken, $existingtokens)) {
+				$existingtokens[] = $newtoken;
+				$bIsValidToken = true;
+			}
+		}
+		//update specific token row
+        $itresult = $this->updateToken($iTokenID, $newtoken);
+		return $newtoken;
+	}  
+	 
     /**
      * Creates tokens for all token records that have empty token fields and returns the number
      * of tokens created
