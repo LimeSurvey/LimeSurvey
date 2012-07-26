@@ -1091,10 +1091,24 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
             //no more comment from Mazi regarding the calculation
 
+            /* IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT */
+            /* IF YOU DON'T UNDERSTAND WHAT QUARTILES ARE DO NOT MODIFY THIS CODE */
+            /* Quartiles and Median values are NOT related to average, and the sum is irrelevent */
+
             // Calculating only makes sense with more than one result
             if ($medcount>1)
             {
                 //1ST QUARTILE (Q1)
+                /*  L=(1/4)(n+1), U=(3/4)(n+1) */
+                /*  Minitab linear interpolation between the two
+                    closest data points. Minitab would let L = 2.5 and find the value half way between the
+                    2nd and 3rd data points. In our example, that would be (4+9)/2 =
+                    6.5. Similarly, the upper quartile value would be half way between
+                    the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
+                    were 2.25, Minitab would find the value one fourth of the way
+                    between the 2nd and 3rd data points and if L were 2.75, Minitab
+                    would find the value three fourths of the way between the 2nd and
+                    3rd data points. */
                 $q1=(1/4)*($medcount+1);
                 $q1b=(int)((1/4)*($medcount+1));
                 $q1c=$q1b-1;
@@ -1104,36 +1118,31 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 // fix if there are too few values to evaluate.
                 if ($q1c<0) {$q1c=0;}
 
-                if ($q1 != $q1b)
+                if ($q1 != $q1b) //The value will be between two of the individual results
                 {
-                    //ODD NUMBER
                     $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
-                    $result=Yii::app()->db->createCommand($query)->limit(2, $q1c)->query();
-
-                    foreach ($result->readAll() as $row)
+                    $result = Yii::app()->db->createCommand($query)->query();
+                    $i=0;
+                    foreach ($result as $row)
                     {
-                        if ($total == 0)    {$total=$total-$row[$fieldname];}
-
-                        else                {$total=$total+$row[$fieldname];}
-
-                        $lastnumber=$row[$fieldname];
+                        if($row[$fieldname]) {$i++;}
+                        if($i==$q1c) {$secondlastnumber=$row[$fieldname];}
+                        if($i==$q1b) {$lastnumber=$row[$fieldname];}
                     }
-
-                    $q1total=$lastnumber-((1-$q1diff)*$total);
-
-                    if ($q1total < $minimum) {$q1total=$minimum;}
+                    $q1total=$lastnumber-((1-$q1diff)*$secondlastnumber);
+                    //if ($q3total < $maximum) {$q1total=$maximum;} //What the? If the 3rd quartiel is higher than the highest, then make the 1st quartile the highest? This makes no sense!
 
                     $showem[]=array($statlang->gT("1st quartile (Q1)"), $q1total);
                 }
                 else
                 {
-                    //EVEN NUMBER
-                    $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
-                    $result=Yii::app()->db->createCommand($query)->limit(1, $q1c)->query();
+                    $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
+                    $result = Yii::app()->db->createCommand($query)->query();
 
-                    foreach ($result->readAll() as $row)
+                    foreach ($result as $row)
                     {
-                        $showem[]=array($statlang->gT("1st quartile (Q1)"), $row[$fieldname]);
+                        if($row[$fieldname]) {$i++;}
+                        if($i==$q1b) {$showem[]=array($statlang->gT("1st quartile (Q1)"), $row[$fieldname]);}
                     }
                 }
 
@@ -1150,22 +1159,31 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 {
                     //remainder
                     $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
-                    $result=Yii::app()->db->createCommand($query)->limit(2, $medianc)->query();
+                    $result=Yii::app()->db->createCommand($query)->query();
 
-                    foreach ($result->readAll() as $row) {$total=$total+$row[$fieldname];}
+                    $i=0;
+                    foreach ($result as $row) {
+                        if($row[$fieldname]) {$i++;}
+                        if($i==$medianc) {$secondlastnumber=$row[$fieldname];}
+                        if($i==$medianb) {$lastnumber=$row[$fieldname];}
 
-                    $showem[]=array($statlang->gT("2nd quartile (Median)"), $total/2);
+                    }
+                    $mediantotal=$lastnumber-((1-$mediandiff)*$secondlastnumber);
+                    //if ($q3total < $maximum) {$q1total=$maximum;} //What the? If the 3rd quartiel is higher than the highest, then make the 1st quartile the highest? This makes no sense!
+
+                    $showem[]=array($statlang->gT("2nd quartile (Median)"), $mediantotal);
+
                 }
 
                 else
                 {
-                    //EVEN NUMBER
-                    $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
-                    $result = Yii::app()->db->createCommand($query)->limit(1, $medianc-1)->query();
+                    $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
+                    $result = Yii::app()->db->createCommand($query)->query();
 
-                    foreach ($result->readAll() as $row)
+                    foreach ($result as $row)
                     {
-                        $showem[]=array($statlang->gT("Median value"), $row[$fieldname]);
+                        if($row[$fieldname]) {$i++;}
+                        if($i==$medianb) {$showem[]=array($statlang->gT("2nd quartile (Median)"), $row[$fieldname]);}
                     }
                 }
 
@@ -1173,38 +1191,46 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
 
                 //3RD QUARTILE (Q3)
-                $q3=(3/4)*($medcount+1);
-                $q3b=(int)((3/4)*($medcount+1));
-                $q3c=$q3b-1;
+                /*  L=(1/4)(n+1), U=(3/4)(n+1) */
+                /*  Minitab linear interpolation between the two
+                    closest data points. Minitab would let L = 2.5 and find the value half way between the
+                    2nd and 3rd data points. In our example, that would be (4+9)/2 =
+                    6.5. Similarly, the upper quartile value would be half way between
+                    the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
+                    were 2.25, Minitab would find the value one fourth of the way
+                    between the 2nd and 3rd data points and if L were 2.75, Minitab
+                    would find the value three fourths of the way between the 2nd and
+                    3rd data points. */
+                $q3=(3/4)*($medcount+1); //Find the 75th percentile according to count of items
+                $q3b=(int)((3/4)*($medcount+1)); //The int version of $q3
+                $q3c=$q3b-1; //The number before the int version of $q3
                 $q3diff=$q3-$q3b;
 
-                if ($q3 != $q3b)
+                if ($q3 != $q3b) //The value will be between two of the individual results
                 {
                     $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1 ";
-                    $result = Yii::app()->db->createCommand($query)->limit(2,$q3c)->query();
-
-                    foreach ($result->readAll() as $row)
+                    $result = Yii::app()->db->createCommand($query)->query();
+                    $i=0;
+                    foreach ($result as $row)
                     {
-                        if ($total == 0)    {$total=$total-$row[$fieldname];}
-
-                        else                {$total=$total+$row[$fieldname];}
-
-                        $lastnumber=$row[$fieldname];
+                        if($row[$fieldname]) {$i++;}
+                        if($i==$q3c) {$secondlastnumber=$row[$fieldname];}
+                        if($i==$q3b) {$lastnumber=$row[$fieldname];}
                     }
-                    $q3total=$lastnumber-((1-$q3diff)*$total);
-
-                    if ($q3total < $maximum) {$q1total=$maximum;}
+                    $q3total=$lastnumber-((1-$q3diff)*$secondlastnumber);
+                    //if ($q3total < $maximum) {$q1total=$maximum;} //What the? If the 3rd quartiel is higher than the highest, then make the 1st quartile the highest? This makes no sense!
 
                     $showem[]=array($statlang->gT("3rd quartile (Q3)"), $q3total);
                 }
                 else
                 {
                     $query = $querystarter . " ORDER BY ".Yii::app()->db->quoteColumnName($fieldname)."*1";
-                    $result = Yii::app()->db->createCommand($query)->limit(1, $q3c);
+                    $result = Yii::app()->db->createCommand($query)->query();
 
-                    foreach ($result->queryAll() as $row)
+                    foreach ($result as $row)
                     {
-                        $showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);
+                        if($row[$fieldname]) {$i++;}
+                        if($i==$q3b) {$showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);}
                     }
                 }
 
@@ -1281,7 +1307,14 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                         ."\t\t\t".sprintf($statlang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$statlang->gT("minitab method")."</a>")
                         ."</font>\n"
                         ."\t\t</td>\n"
-                        ."\t</tr>\n</table>\n";
+                        ."\t</tr>\n";
+                        $statisticsoutput .= "\t<tr>\n"
+                        ."\t\t<td align='center'  colspan='4'>
+                        <input type='button' class='statisticsbrowsebutton' value='"
+                        .$statlang->gT("Browse")."' id='$fieldname' /></td>\n</tr>";
+                        $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
+                            <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
+                        $statisticsoutput .= "</table>\n";
 
                         break;
                     default:
