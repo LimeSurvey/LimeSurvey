@@ -2658,10 +2658,10 @@ function do_file_upload($ia)
     $basic .= '<br /><br /><a href="#" onclick="hideBasic()">Hide Simple Uploader</a>';
     */
     $currentdir = getcwd();
-    $pos = stripos($currentdir, "admin");
+    $bIsPreview = (substr($currentdir,strlen(dirname($currentdir))+1)=="admin");
     $scriptloc = $rooturl.'/uploader.php';
 
-    if ($pos)
+    if ($bIsPreview)
     {
         $_SESSION['preview'] = 1;
         $questgrppreview = 1;   // Preview is launched from Question or group level
@@ -2686,7 +2686,7 @@ function do_file_upload($ia)
         function upload_$ia[1]() {
             var uploadurl = '{$scriptloc}?sid={$surveyid}&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}';
             uploadurl += '&amp;preview={$questgrppreview}&amp;show_title={$qidattributes['show_title']}';
-            uploadurl += '&amp;show_comment={$qidattributes['show_comment']}&amp;pos=".($pos?1:0)."';
+            uploadurl += '&amp;show_comment={$qidattributes['show_comment']}&amp;pos=".($bIsPreview?1:0)."';
             uploadurl += '&amp;minfiles=' + LEMval('{$qidattributes['min_num_of_files']}');
             uploadurl += '&amp;maxfiles=' + LEMval('{$qidattributes['max_num_of_files']}');
             $('#upload_$ia[1]').attr('href',uploadurl);
@@ -2738,7 +2738,7 @@ function do_file_upload($ia)
                         var json = $("#"+fieldname).val();
                         var show_title = "'.$qidattributes["show_title"].'";
                         var show_comment = "'.$qidattributes["show_comment"].'";
-                        var pos = "'.($pos ? 1 : 0).'";
+                        var pos = "'.($bIsPreview ? 1 : 0).'";
                         displayUploadedFiles(json, filecount, fieldname, show_title, show_comment, pos);
                     });
                 </script>';
