@@ -115,6 +115,10 @@
                 <legend><?php $clang->eT("Output options"); ?></legend>
                 <ul>
                     <li>
+                        <label for='showtextinline'><?php $clang->eT("Show text responses inline:") ?></label>
+                        <input type='checkbox' id='showtextinline' name='showtextinline'<?php if(isset($showtextinline) && $showtextinline == 1) {echo "checked='checked'"; } ?> /><br />
+                    </li>
+                    <li>
                         <label for='usegraph'><?php $clang->eT("Show graphs"); ?></label>
                         <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> /><br />
                         <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
