@@ -1,4 +1,18 @@
 $(document).ready(function(){
+    if(showTextInline==1) {
+        /* Enable all the browse divs, and fill with data */
+        $('.statisticsbrowsebutton').each( function (){
+            if (!$(this).hasClass('numericalbrowse')) {
+                var destinationdiv=$('#columnlist_'+this.id);
+                 destinationdiv.parents("td:first").toggle();
+                 if(destinationdiv.parents("td:first").css("display") != "none") {
+                     $.post(listColumnUrl+'/'+this.id+'/sql/'+sql, function(data) {
+                         destinationdiv.html(data);
+                     });
+                 }
+            }
+        });
+    }
      $('.statisticsbrowsebutton').click( function(){
          var destinationdiv=$('#columnlist_'+this.id);
          destinationdiv.parents("td:first").toggle();
@@ -26,6 +40,7 @@ $(document).ready(function(){
 
         }
      });
+
     /* Show and hide the three major sections of the statistics page */
     /* The response filters */
     $('#hidefilter').click( function(){

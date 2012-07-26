@@ -1310,7 +1310,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                         ."\t</tr>\n";
                         $statisticsoutput .= "\t<tr>\n"
                         ."\t\t<td align='center'  colspan='4'>
-                        <input type='button' class='statisticsbrowsebutton' value='"
+                        <input type='button' class='statisticsbrowsebutton numericalbrowse' value='"
                         .$statlang->gT("Browse")."' id='$fieldname' /></td>\n</tr>";
                         $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
@@ -2391,22 +2391,8 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
         * */
         if(strpos($label[$i], "class='statisticsbrowsebutton'"))
         {
-            $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: ";
-            if(!isset($_POST['showtextinline'])) $extraline.=" none";
-            $extraline.="'><div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM}'>";
-            if(isset($_POST['showtextinline'])) {
-                $results=Survey_dynamic::model($surveyid)->findAll($ColumnName_RM." != ''");
-                foreach($results as $row) {
-                    $extraline .= "<div class='statisticscolumnid'>
-                        <a href='".Yii::app()->getController()->createUrl("admin/responses/view/surveyid/".$surveyid."/id/".$row['id']) ."' target='_blank'>
-                            {$row['id']}
-                        </a>
-                      </div>
-                      <div class='statisticscolumndata'>".$row[$ColumnName_RM]."</div>
-                    <div style='clear: both'></div>";
-                }
-            }
-            $extraline.="</div></td></tr>\n";
+            $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
+            <div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM}'></div></td></tr>\n";
         }
 
         //output absolute number of records
