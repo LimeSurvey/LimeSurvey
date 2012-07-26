@@ -1182,71 +1182,35 @@ class remotecontrol_handle
             return array('status' => 'No permission');
     }
 
-
-    /**
-     * RPC routing to to return unused Tokens.
-     * Returns the unused tokens in an Array.
-     *
-     * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @return array
-     */
-	public function token_return($sSessionKey, $iSurveyID)
-	{	
-        if ($this->_checkSessionKey($sSessionKey))
-        {
-			$surveyidExists = Survey::model()->findByPk($iSurveyID);
-			if (!isset($surveyidExists))
-				return array('status' => 'Error: Invalid survey ID');	
-				
-			if(!tableExists("{{tokens_$iSurveyID}}"))
-				return array('status' => 'Error: No token table');
-
-			if (hasSurveyPermission($iSurveyID, 'tokens', 'read'))
-			{
-				$oTokens = Tokens_dynamic::model($iSurveyID)->findAll("completed = 'N'");
-				if(count($oTokens)==0)
-					return array('status' => 'No unused Tokens found');
-				
-				foreach ($oTokens as $token)
-					{
-						$aData[] = $token->attributes['token'];
-					}
-				return $aData;
-			}
-			else
-				return array('status' => 'No permission');
-        }
-        else
-            return array('status' => 'Invalid Session Key');	        			
-	}
-
    /**
      * RPC routine to return the ids and info  of tokens of a survey 
      * Returns array of ids and info
+     * if $bUnused is true, user will get the list of not completed tokens (old token_return functionality)
      *
      * @access public
      * @param string $sSessionKey
      * @param int $iSurveyID
+     * @param bool $bUnused
      * @return array
      */
-	public function get_token_list($sSessionKey, $iSurveyID)
+	public function get_token_list($sSessionKey, $iSurveyID, $bUnused=false)
 	{
        if ($this->_checkSessionKey($sSessionKey))
        {
 			$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
 			if (!isset($surveyidExists))
 				return array('status' => 'Error: Invalid survey ID');
-
 			
 			if(!tableExists("{{tokens_$iSurveyID}}"))
 				return array('status' => 'Error: No token table');
-
-			 
+ 
 			if (hasSurveyPermission($iSurveyID, 'tokens', 'read'))
 			{	
-				$oTokens = Tokens_dynamic::model($iSurveyID)->findAll();
+				if($bUnused)
+					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll("completed = 'N'");
+				else
+					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll();
+					
 				if(count($oTokens)==0)
 					return array('status' => 'No Tokens found');
 				
