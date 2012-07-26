@@ -55,7 +55,7 @@ class Question_attributes extends CActiveRecord
     {
 		return Yii::app()->db->createCommand()
 			->select()
-			->from(self::tableName())
+			->from($this->tableName())
 			->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid, PDO::PARAM_STR)
 			->order('qaid asc')
 			->query();
@@ -73,7 +73,7 @@ class Question_attributes extends CActiveRecord
     {
         $command = Yii::app()->db->createCommand()
         ->select($fields)
-        ->from(self::tableName())
+        ->from($this->tableName())
         ->where($condition);
         if ($orderby != FALSE)
         {

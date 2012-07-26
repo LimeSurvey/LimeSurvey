@@ -475,7 +475,7 @@ class database extends Survey_Common_Action
                         if (returnGlobal('copysubquestions') == "Y")
                         {
                             $aSQIDMappings = array();
-                            $r1 = Questions::getSubQuestions(returnGlobal('oldqid'));
+                            $r1 = Questions::model()->getSubQuestions(returnGlobal('oldqid'));
 
                             while ($qr1 = $r1->read())
                             {
@@ -488,19 +488,19 @@ class database extends Survey_Common_Action
                                     unset($qr1['qid']);
                                 }
                                 $qr1['gid'] = $postgid;
-                                $ir1 = Questions::insertRecords($qr1);
+                                $iInsertID = Questions::model()->insertRecords($qr1);
                                 if (!isset($qr1['qid']))
                                 {
-                                    $aSQIDMappings[$oldqid] = Yii::app()->db->getLastInsertID('qid');
+                                    $aSQIDMappings[$oldqid] = $iInsertID;
                                 }
                             }
                         }
                         if (returnGlobal('copyanswers') == "Y")
                         {
-                            $r1 = Answers::getAnswers(returnGlobal('oldqid'));
+                            $r1 = Answers::model()->getAnswers(returnGlobal('oldqid'));
                             while ($qr1 = $r1->read())
                             {
-                                Answers::insertRecords(array(
+                                Answers::model()->insertRecords(array(
                                 'qid' => $qid,
                                 'code' => $qr1['code'],
                                 'answer' => $qr1['answer'],
@@ -512,14 +512,12 @@ class database extends Survey_Common_Action
                         }
                         if (returnGlobal('copyattributes') == "Y")
                         {
-                            $r1 = Question_attributes::getQuestionAttributes(returnGlobal('oldqid'));
+                            $r1 = Question_attributes::model()->getQuestionAttributes(returnGlobal('oldqid'));
                             while($qr1 = $r1->read())
                             {
-                                Question_attributes::insertRecords(array(
-                                'qid' => $qid,
-                                'attribute' => $qr1['attribute'],
-                                'value' => $qr1['value']
-                                ));
+                                $qr1['qid']=$qid;
+                                unset($qr1['qaid']);
+                                Question_attributes::model()->insertRecords($qr1);
                             }
                         }
                     } else {
@@ -535,7 +533,7 @@ class database extends Survey_Common_Action
                                 'attribute' => $validAttribute['name']
                                 );
 
-                                Question_attributes::insertRecords($data);
+                                Question_attributes::model()->insertRecords($data);
 
                             }
                         }

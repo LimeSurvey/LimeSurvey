@@ -189,8 +189,8 @@
             return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
-            ->where(array('and', 'parent_qid=:parent_qid'))
-            ->bindParam(":parent_qid", $qid, PDO::PARAM_INT)
+            ->where('parent_qid=:parent_qid')
+            ->bindParam(":parent_qid", $parent_qid, PDO::PARAM_INT)
             ->order('question_order asc')
             ->query();
         }
