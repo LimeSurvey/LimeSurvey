@@ -560,20 +560,23 @@ class statistics extends Survey_Common_Action {
     /* Returns a simple list of values in a particular column, that meet the
      * requirements of the SQL
      *
-     * TODO: Move the html into a view to fit with standard mvc methodology
      * */
-    function listcolumn($surveyid, $column, $sql)
+    function listcolumn($surveyid, $column, $sql, $sortby="", $sortmethod="", $sorttype="")
     {
-        $results=Survey_dynamic::model($surveyid)->findAll($column." != ''");
+        $search['condition']=$column." != ''";
+        if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
+        if($sortby != "") $search['order']=$sortby.' '.$sortmethod;
+        $results=Survey_dynamic::model($surveyid)->findAll($search);
         foreach($results as $row) {
-            ?><div class='statisticscolumnid'>
-                <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank'><?php echo $row['id'] ?></a>
-              </div>
-              <div class='statisticscolumndata'>
-                <?php echo $row[$column] ?>
-            </div>
-            <div style='clear: both'></div><?php
+            $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
         }
+        $aData['surveyid']=$surveyid;
+        $aData['data']=$output;
+        $aData['column']=$column;
+        $aData['sortby']=$sortby;
+        $aData['sortmethod']=$sortmethod;
+        $aData['sorttype']=$sorttype;
+        $this->getController()->render('export/statistics_browse_view', $aData);
     }
 
 	function graph()

@@ -672,7 +672,7 @@ div.messagebox .warningheader {
 .statisticscolumnid {
     float: left;
     text-align: center;
-    width: 9%;
+    width: 25px;
     padding-right: 4px;
 }
 .statisticscolumndata {
@@ -806,8 +806,8 @@ tr.editedrow {
 
 
 /* main DIV element */
-#showlogicfilediv {	
-  	margin: 0px 50px 20px 50px; 
+#showlogicfilediv {
+  	margin: 0px 50px 20px 50px;
   	padding:0px;
 	text-align: left;
 }
@@ -816,13 +816,13 @@ tr.editedrow {
 
 /* main table */
 #logicfiletable {
-	margin-top: 20px;	
+	margin-top: 20px;
 	text-align: center;
 	width: 100%;
 }
 
 table#logicfiletable, #logicfiletable td, #logicfiletable th {
-	border: 1px solid #000; 
+	border: 1px solid #000;
 	border-collapse: collapse;
 	padding: 4px;
 }
@@ -836,7 +836,7 @@ table#logicfiletable th {
 
 /* inner table listing question attributes */
 table#logicfileattributetable, #logicfileattributetable td, #logicfileattributetable th {
-	border: 1px dotted #000; 
+	border: 1px dotted #000;
 	border-collapse: collapse;
 	padding: 4px;
 }
@@ -885,7 +885,7 @@ tr.LEMsubq td {
 
 .LEMheading, .LEMerror{
 	text-align: left;
-	margin:20px 50px 0px 50px; 
+	margin:20px 50px 0px 50px;
 	color: red;
 	font-size: 12pt;
 }
@@ -900,6 +900,6 @@ td.LEMerror  {
 
 
 .highlighterror {
-	border: 2px solid #FF00FF; 
+	border: 2px solid #FF00FF;
 	color: red;
 }

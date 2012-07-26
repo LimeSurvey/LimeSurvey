@@ -3,25 +3,42 @@ $(document).ready(function(){
         /* Enable all the browse divs, and fill with data */
         $('.statisticsbrowsebutton').each( function (){
             if (!$(this).hasClass('numericalbrowse')) {
-                var destinationdiv=$('#columnlist_'+this.id);
-                 destinationdiv.parents("td:first").toggle();
-                 if(destinationdiv.parents("td:first").css("display") != "none") {
-                     $.post(listColumnUrl+'/'+this.id+'/sql/'+sql, function(data) {
-                         destinationdiv.html(data);
-                     });
-                 }
+                loadBrowse(this.id,'');
             }
         });
     }
      $('.statisticsbrowsebutton').click( function(){
-         var destinationdiv=$('#columnlist_'+this.id);
-         destinationdiv.parents("td:first").toggle();
+         if($(this).hasClass('numericalbrowse')) {
+             var destinationdiv=$('#columnlist_'+this.id);
+             var extra='';
+             if(destinationdiv.parents("td:first").css("display") == "none") {
+                 extra='sortby/'+this.id+'/sortmethod/asc/sorttype/N/'
+             }
+             loadBrowse(this.id, extra);
+         } else {
+            loadBrowse(this.id,'');
+         }
+
+     });
+     $(".sortorder").live("click", function(e) {
+         var details=this.id.split('_');
+         var order='sortby/'+details[2]+'/sortmethod/'+details[3]+'/sorttype/'+details[4];
+         loadBrowse(details[1],order);
+     });
+
+     function loadBrowse(id,extra) {
+         var destinationdiv=$('#columnlist_'+id);
+         if(extra=='') {
+             destinationdiv.parents("td:first").toggle();
+         } else {
+             destinationdiv.parents("td:first").show();
+         }
          if(destinationdiv.parents("td:first").css("display") != "none") {
-             $.post(listColumnUrl+'/'+this.id+'/sql/'+sql, function(data) {
+             $.post(listColumnUrl+'/'+id+'/sql/'+sql+'/'+extra, function(data) {
                  destinationdiv.html(data);
              });
          }
-     });
+     }
      $('#usegraph').click( function(){
         if ($('#grapherror').length>0)
         {
