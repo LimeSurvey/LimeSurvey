@@ -28,6 +28,10 @@
 */
 function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache)
 {
+    /* This is a lazy solution to bug #6389. A better solution would be to find out how
+       the "T" gets passed to this function from the statistics.js file in the first place! */
+    if(substr($iSurveyID,0,1)=="T") {$iSurveyID=substr($iSurveyID,1);}
+
     $rootdir = Yii::app()->getConfig("rootdir");
     $homedir = Yii::app()->getConfig("homedir");
     $homeurl = Yii::app()->getConfig("homeurl");
@@ -36,6 +40,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $language = Survey::model()->findByPk($iSurveyID)->language;
+    $statlang = new Limesurvey_lang($language);
     $cachefilename = "";
 
     /* Set the fonts for the chart */
@@ -1735,6 +1740,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
     $tempdir = Yii::app()->getConfig("tempdir");
     $tempurl = Yii::app()->getConfig("tempurl");
     $firstletter = substr($rt, 0, 1);
+    $astatdata=array();
 
     if ($usegraph==1)
     {
@@ -2352,7 +2358,22 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
         * */
         if(strpos($label[$i], "class='statisticsbrowsebutton'"))
         {
-            $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'><div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM}'></div></td></tr>\n";
+            $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: ";
+            if(!isset($_POST['showtextinline'])) $extraline.=" none";
+            $extraline.="'><div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM}'>";
+            if(isset($_POST['showtextinline'])) {
+                $results=Survey_dynamic::model($surveyid)->findAll($ColumnName_RM." != ''");
+                foreach($results as $row) {
+                    $extraline .= "<div class='statisticscolumnid'>
+                        <a href='".Yii::app()->getController()->createUrl("admin/responses/view/surveyid/".$surveyid."/id/".$row['id']) ."' target='_blank'>
+                            {$row['id']}
+                        </a>
+                      </div>
+                      <div class='statisticscolumndata'>".$row[$ColumnName_RM]."</div>
+                    <div style='clear: both'></div>";
+                }
+            }
+            $extraline.="</div></td></tr>\n";
         }
 
         //output absolute number of records
@@ -3045,22 +3066,21 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
             $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
             $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
-            ."<img class='stats-showgraph' src='$sImgUrl/chart_disabled.png'/>"
-            ."<img class='stats-hidegraph' src='$sImgUrl/chart.png'/>"
-            ."<img class='stats-showbar' src='$sImgUrl/chart_bar.png'/>"
-            ."<img class='stats-showpie' src='$sImgUrl/chart_pie.png'/>"
-            ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png'/>"
-            ."<img class='stats-hidemap' src='$sImgUrl/map.png'/>"
+            ."<img class='stats-hidegraph' src='$sImgUrl/chart_disabled.png' title='". $statlang->gT("Disable chart") ."' />"
+            ."<img class='stats-showgraph' src='$sImgUrl/chart.png' title='". $statlang->gT("Enable chart") ."' />"
+            ."<img class='stats-showbar' src='$sImgUrl/chart_bar.png' title='". $statlang->gT("Display as bar chart") ."' />"
+            ."<img class='stats-showpie' src='$sImgUrl/chart_pie.png' title='". $statlang->gT("Display as pie chart") ."' />"
+            ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png' title='". $statlang->gT("Disable map display") ."' />"
+            ."<img class='stats-hidemap' src='$sImgUrl/map.png' title='". $statlang->gT("Enable map display") ."' />"
             ."</div></td></tr>";
 
         }
         $statisticsoutput .= "</table><br /> \n";
     }
 
-    return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$pdf);
+    return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$pdf, "astatdata"=>$astatdata);
 
 }
-
 
 /**
 * Generates statistics
@@ -3079,6 +3099,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 {
     global $pdfdefaultfont, $pdffontsize;
 
+    $astatdata=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
+
     //load surveytranslator helper
     Yii::import('application.helpers.surveytranslator_helper', true);
 
@@ -3089,8 +3111,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     $clang = Yii::app()->lang;
     $pdf=array(); //Make sure $pdf exists - it will be replaced with an object if a $pdf is actually being created
 
-
-    $astatdata = array();
 
     // Used for getting coordinates for google maps
     $agmapdata = array();
@@ -3431,6 +3451,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             {
                 $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf);
                 $statisticsoutput .= $display['statisticsoutput'];
+                $astatdata = array_merge($astatdata, $display['astatdata']);
             }	//end if -> collect and display results
 
 
@@ -3486,7 +3507,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     }
 
 }
-
 
 /**
 * Simple function to square a value

@@ -520,16 +520,10 @@ class statistics extends Survey_Common_Action {
 		//Show Summary results
 		if (isset($summary) && $summary)
 		{
-		    if(isset($_POST['usegraph']))
-		    {
-		        $usegraph = 1;
-		    }
-		    else
-		    {
-		        $usegraph = 0;
-		    }
-
+		    $usegraph=isset($_POST['usegraph']) ? 1 : 0;
             $aData['usegraph'] = $usegraph;
+            $showtextinline=isset($_POST['showtextinline']) ? 1 : 0;
+            $aData['showtextinline'] = $showtextinline;
 		    $outputType = $_POST['outputtype'];
 
             $selects=buildSelects($summary, $surveyid, $statlang);
@@ -566,6 +560,7 @@ class statistics extends Survey_Common_Action {
     /* Returns a simple list of values in a particular column, that meet the
      * requirements of the SQL
      *
+     * TODO: Move the html into a view to fit with standard mvc methodology
      * */
     function listcolumn($surveyid, $column, $sql)
     {
@@ -580,6 +575,7 @@ class statistics extends Survey_Common_Action {
             <div style='clear: both'></div><?php
         }
     }
+
 	function graph()
 	{
         Yii::app()->loadHelper('admin/statistics');
