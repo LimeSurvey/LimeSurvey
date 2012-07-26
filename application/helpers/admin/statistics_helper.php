@@ -40,6 +40,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $language = Survey::model()->findByPk($iSurveyID)->language;
+    $statlang = new Limesurvey_lang($language);
     $cachefilename = "";
 
     /* Set the fonts for the chart */
