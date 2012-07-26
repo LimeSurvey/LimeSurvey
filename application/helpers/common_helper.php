@@ -2916,7 +2916,7 @@ function buildLabelSetCheckSumArray()
     /**$query = "SELECT lid
     FROM ".db_table_name('labelsets')."
     ORDER BY lid"; */
-    $result = Labelsets::getLID();//($query) or safeDie("safe_died collecting labelset ids<br />$query<br />");  //Checked)
+    $result = Labelsets::model()->getLID();//($query) or safeDie("safe_died collecting labelset ids<br />$query<br />");  //Checked)
     $csarray=array();
     foreach($result as $row)
     {

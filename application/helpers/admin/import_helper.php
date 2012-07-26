@@ -9,7 +9,6 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
 */
 
 
@@ -2024,15 +2023,12 @@ function CSVImportLabelset($sFullFilepath, $options)
 
             unset($labelsetrowdata['lid']);
 
-            $newvalues=array_values($labelsetrowdata);
             if ($xssfilter)
                 XSSFilterArray($newvalues);
-            $lsainsert = "insert INTO {{labelsets}} (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-            $lsiresult= Yii::app()->db->createCommand($lsainsert)->query();
+            // Insert the label set entry and get the new insert id for the labels inside this labelset
+            $newlid=Labelsets::model()->insertRecords($labelsetrowdata);
             $results['labelsets']++;
 
-            // Get the new insert id for the labels inside this labelset
-            $newlid=Yii::app()->db->getLastInsertID();
 
             if ($labelsarray) {
                 $count=0;
@@ -2055,12 +2051,9 @@ function CSVImportLabelset($sFullFilepath, $options)
                             $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
                         }
 
-                        $newvalues=array_values($labelrowdata);
                         if ($xssfilter)
                             XSSFilterArray($newvalues);
-                        $lainsert = "insert INTO {{labels}} (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-                        $liresult=Yii::app()->db->createCommand($lainsert)->query();
-
+                        Label::model()->insertRecords($labelrowdata);
                         $results['labels']++;
                     }
                 }
