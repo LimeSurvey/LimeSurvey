@@ -115,6 +115,7 @@ abstract class LSYii_Controller extends CController
 		enforceSSLMode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
         if (Yii::app()->getConfig('debug')>0) {//For debug purposes - switch on in config.php
+            define('YII_DEBUG', true);
             @ini_set("display_errors", 1);
             error_reporting(E_ALL);
         }

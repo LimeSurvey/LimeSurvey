@@ -294,7 +294,6 @@ class InstallerController extends CController {
                     if ($bDBExists == true) {
                         try {
                             $this->connection->createCommand()->select()->from('{{surveys}}')->queryAll();
-                            $bTablesDoNotExist = false;
                         } catch(Exception $e) {
                             $bTablesDoNotExist = true;
                         }
