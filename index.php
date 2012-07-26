@@ -2,18 +2,6 @@
 
 /*
  *---------------------------------------------------------------
- * PHP ERROR REPORTING LEVEL
- *---------------------------------------------------------------
- *
- * By default CI runs with error reporting set to ALL.  For security
- * reasons you are encouraged to change this to 0 when your site goes live.
- * For more info visit:  http://www.php.net/error_reporting
- *
- */
-	error_reporting(E_ALL);
-
-/*
- *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
  *---------------------------------------------------------------
  *
@@ -157,9 +145,10 @@
 	}
 
     $aSettings= include(APPPATH.'config'.DIRECTORY_SEPARATOR.'config.php');
-    if ($aSettings['config']['debug']>0)
+    if (isset($aSettings['config']['debug']) && $aSettings['config']['debug']>0)
     {
         define('YII_DEBUG', true);
+        error_reporting(E_ALL);
     }
     else
     {
