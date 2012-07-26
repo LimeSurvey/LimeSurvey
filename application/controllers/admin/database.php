@@ -64,11 +64,7 @@ class database extends Survey_Common_Action
             $baselang = Survey::model()->findByPk($surveyid)->language;
             array_unshift($questlangs,$baselang);
 
-            $uqresult = Questions::model()->updateAll(array('same_default'=> Yii::app()->request->getPost('samedefault')?1:0), 'sid=:sid ANd qid=:qid', array(':sid'=>$surveyid, ':qid'=>$qid));
-            if (!$uqresult)
-            {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
-            }
+            Questions::model()->updateAll(array('same_default'=> Yii::app()->request->getPost('samedefault')?1:0), 'sid=:sid ANd qid=:qid', array(':sid'=>$surveyid, ':qid'=>$qid));
 
             $resrow = Questions::model()->findByAttributes(array('qid'=>$qid));
             $questiontype = $resrow['type'];
@@ -116,9 +112,9 @@ class database extends Survey_Common_Action
             {
                 foreach ($questlangs as $language)
                 {
-                    if (Yii::app()->request->getPost($_POST['defaultanswerscale_0_'.$language.'_0']))
+                    if (Yii::app()->request->getPost('defaultanswerscale_0_'.$language.'_0'))
                     {
-                        $this->_updateDefaultValues($postqid,0,0,'',$language,Yii::app()->request->getPost['defaultanswerscale_0_'.$language.'_0'],true);
+                        $this->_updateDefaultValues($postqid,0,0,'',$language,Yii::app()->request->getPost('defaultanswerscale_0_'.$language.'_0'),true);
                     }
                 }
             }
@@ -1135,24 +1131,18 @@ class database extends Survey_Common_Action
     */
     function _updateDefaultValues($qid,$sqid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
     {
-        //$this->load->helper('database');
         if ($defaultvalue=='')  // Remove the default value if it is empty
         {
             Defaultvalues::model()->deleteByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
         }
         else
         {
-            $res = Defaultvalues::model()->findByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
-            $exists=count($res);
+            $arDefaultValue = Defaultvalues::model()->findByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
 
-            if ($exists == 0)
+            if (is_null($arDefaultValue))
             {
                 $data=array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
-
-                $value = new Defaultvalues;
-                foreach ($data as $k => $v)
-                    $value->$k = $v;
-                $value->save();
+                Defaultvalues::model()->insertRecords($data);
             }
             else
             {
