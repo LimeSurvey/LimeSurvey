@@ -78,6 +78,20 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120718) to 1.92+ (build 120725) July 25, 2012
+-Fixed issue #6312: Editing Survey Security Permissions as non-super-admin and non-survey owner throws PHP Fatal Error (Stephanie King)
+-Fixed Issue #6312 - Editing Survey Security Permissions as non-super-admin and non-survey owner throws PHP Fatal Error (Stephanie King)
+-Fixed issue #6335 : Group preview add answer (Denis Chenu)
+-Fixed issue #6336 : Bad template URL if templatedir is not exist (Denis Chenu)
+-Fixed issue #6337 : $defaulttemplate aren't allways used (Denis Chenu)
+-Fixed issue #6340: Error "String offset cast occured" when adding user and using PHP 5.4 or later (Carsten Schmitz)
+-Fixed issue #6346: Statistic page filter not remembering statistics language (Carsten Schmitz)
+-Fixed issue #6348: Bar chart not translated in statistics when changing statistics language (Carsten Schmitz)
+-Fixed issue #6349: condition does not work while using slider with stars (Thomas White)
+-Fixed issue: Bad CSS for empty other comment in mandatory question for citronade (Denis Chenu)
+-New feature: Ability to reset Expression Manager for admin with showlogicfile (Denis Chenu)
+
+
 Changes from 1.92+ (build 120711) to 1.92+ (build 120718) July 18, 2012
 -Fixed issue #6328: pre-filling of hidden questions does not work (Thomas White)
 -Fixed issue #6304: Reloading unfinished survey can submit it without user interaction / reloading survey don't goe to actual step (Denis Chenu)
