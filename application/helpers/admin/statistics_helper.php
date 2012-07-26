@@ -1735,6 +1735,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
     $tempdir = Yii::app()->getConfig("tempdir");
     $tempurl = Yii::app()->getConfig("tempurl");
     $firstletter = substr($rt, 0, 1);
+    $astatdata=array();
 
     if ($usegraph==1)
     {
@@ -3045,19 +3046,19 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
             $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
             $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
-            ."<img class='stats-showgraph' src='$sImgUrl/chart_disabled.png'/>"
-            ."<img class='stats-hidegraph' src='$sImgUrl/chart.png'/>"
-            ."<img class='stats-showbar' src='$sImgUrl/chart_bar.png'/>"
-            ."<img class='stats-showpie' src='$sImgUrl/chart_pie.png'/>"
-            ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png'/>"
-            ."<img class='stats-hidemap' src='$sImgUrl/map.png'/>"
+            ."<img class='stats-hidegraph' src='$sImgUrl/chart_disabled.png' title='". $statlang->gT("Disable chart") ."' />"
+            ."<img class='stats-showgraph' src='$sImgUrl/chart.png' title='". $statlang->gT("Enable chart") ."' />"
+            ."<img class='stats-showbar' src='$sImgUrl/chart_bar.png' title='". $statlang->gT("Display as bar chart") ."' />"
+            ."<img class='stats-showpie' src='$sImgUrl/chart_pie.png' title='". $statlang->gT("Display as pie chart") ."' />"
+            ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png' title='". $statlang->gT("Disable map display") ."' />"
+            ."<img class='stats-hidemap' src='$sImgUrl/map.png' title='". $statlang->gT("Enable map display") ."' />"
             ."</div></td></tr>";
 
         }
         $statisticsoutput .= "</table><br /> \n";
     }
 
-    return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$pdf);
+    return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$pdf, "astatdata"=>$astatdata);
 
 }
 
@@ -3079,6 +3080,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 {
     global $pdfdefaultfont, $pdffontsize;
 
+    $astatdata=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
+
     //load surveytranslator helper
     Yii::import('application.helpers.surveytranslator_helper', true);
 
@@ -3089,8 +3092,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     $clang = Yii::app()->lang;
     $pdf=array(); //Make sure $pdf exists - it will be replaced with an object if a $pdf is actually being created
 
-
-    $astatdata = array();
 
     // Used for getting coordinates for google maps
     $agmapdata = array();
@@ -3431,6 +3432,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             {
                 $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf);
                 $statisticsoutput .= $display['statisticsoutput'];
+                $astatdata = array_merge($astatdata, $display['astatdata']);
             }	//end if -> collect and display results
 
 

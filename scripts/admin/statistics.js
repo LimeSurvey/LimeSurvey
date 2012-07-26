@@ -7,7 +7,6 @@ $(document).ready(function(){
                  destinationdiv.html(data);
              });
          }
-
      });
      $('#usegraph').click( function(){
         if ($('#grapherror').length>0)
@@ -15,7 +14,7 @@ $(document).ready(function(){
             $('#grapherror').show();
             $('#usegraph').attr('checked',false);
         }
-     })
+     });
      $('#viewsummaryall').click( function(){
         if ($('#viewsummaryall').attr('checked')==true)
         {
@@ -26,31 +25,44 @@ $(document).ready(function(){
             $('#filterchoices input[type=checkbox]').attr('checked', false);
 
         }
-     })
-     $('#hidefilter').click( function(){
-            $('#statisticsresponsefilters').hide(1000);
-            $('#filterchoices').hide();
-            $('#filterchoice_state').val('1');
-            $('#vertical_slide2').hide();
-     })
-     $('#showfilter').click( function(){
-            $('#statisticsresponsefilters').show(1000);
-            $('#filterchoices').show();
-            $('#filterchoice_state').val('');
-            $('#vertical_slide2').show();
-     })
-     $('#hidegfilter').click( function(){
-            $('#statisticsgeneralfilters').hide(1000);
-     })
-     $('#showgfilter').click( function(){
-            $('#statisticsgeneralfilters').show(1000);
-     })
-     $('#hidesfilter').click( function(){
-            $('#statisticsoutput').hide(1000);
-     })
-     $('#showsfilter').click( function(){
-            $('#statisticsoutput').show(1000);
-     })
+     });
+    /* Show and hide the three major sections of the statistics page */
+    /* The response filters */
+    $('#hidefilter').click( function(){
+        $('#statisticsresponsefilters').hide(1000);
+        $('#filterchoices').hide();
+        $('#filterchoice_state').val('1');
+        $('#vertical_slide2').hide();
+    });
+    $('#showfilter').click( function(){
+        $('#statisticsresponsefilters').show(1000);
+        $('#filterchoices').show();
+        $('#filterchoice_state').val('');
+        $('#vertical_slide2').show();
+    });
+    /* The general settings/filters */
+    $('#hidegfilter').click( function(){
+        $('#statisticsgeneralfilters').hide(1000);
+    });
+    $('#showgfilter').click( function(){
+        $('#statisticsgeneralfilters').show(1000);
+    });
+    /* The actual statistics results */
+    $('#hidesfilter').click( function(){
+        $('#statisticsoutput').hide(1000);
+    });
+    $('#showsfilter').click( function(){
+        $('#statisticsoutput').show(1000);
+    });
+    function showhidefilters(value) {
+     if(value == true) {
+       hide('filterchoices');
+     } else {
+       show('filterchoices');
+     }
+    }
+     /* End of show/hide sections */
+
      if (typeof aGMapData == "object") {
          for (var i in aGMapData) {
      		gMapInit("statisticsmap_" + i, aGMapData[i]);
@@ -201,7 +213,7 @@ $(document).ready(function(){
 	 });
 
 	 $(".stats-showpie").click(function ()
-	 {
+     {
 	    changeGraphType('showpie', this.parentNode);
 	 });
 });
@@ -234,14 +246,6 @@ function ajaxError()
     alert ("An error occured! Please reload the page!");
 }
 
-function showhidefilters(value) {
- if(value == true) {
-   hide('filterchoices');
- } else {
-   show('filterchoices');
- }
-}
-
 function selectCheckboxes(Div, CheckBoxName, Button)
 {
 	var aDiv = document.getElementById(Div);
@@ -255,6 +259,7 @@ function selectCheckboxes(Div, CheckBoxName, Button)
 		nInput[i].checked = Value;
 	}
 }
+
 function nographs()
 {
 	document.getElementById('usegraph').checked = false;
@@ -336,12 +341,14 @@ function statInit(data)
     }
 }
 
-
-
 function changeGraphType (cmd, id) {
     id = statGetId(id);
     if (!id) {
         return;
+    }
+
+    if (!aStatData[id]) {
+        alert('Error');
     }
 
     if (!aStatData[id].ap) {
