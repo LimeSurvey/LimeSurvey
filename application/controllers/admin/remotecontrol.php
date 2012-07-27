@@ -149,7 +149,7 @@ class remotecontrol_handle
 
 
     /**
-    * RPC routine to create a session key
+    * RPC routine to create a session key.
     *
     * @access public
     * @param string $username
@@ -192,12 +192,12 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC routine to get settings
+     * RPC Routine to get settings.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param string $sSetttingName
-     * @return string
+     * @param string $sSessionKey Auth Credentials
+     * @param string $sSetttingName Name of the setting to get
+     * @return string The requested value
      */
    public function get_site_settings($sSessionKey,$sSetttingName)
     {
@@ -223,15 +223,15 @@ class remotecontrol_handle
 	/* Survey specific functions */
 
 	/**
-     * RPC routine to add an empty survey with minimum details
-     * Used as a placeholder for importing groups and/or questions
+     * RPC Routine to add an empty survey with minimum details.
+     * Used as a placeholder for importing groups and/or questions.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-	 * @param string $sSurveyTitle
-	 * @param string $sSurveyLanguage	 
-	 * @param string $sformat
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID The wish id of the Survey to add
+	 * @param string $sSurveyTitle Title of the new Survey
+	 * @param string $sSurveyLanguage	Default language of the Survey 
+	 * @param string $sformat Question appearance format
      * @return string
      */
 	public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
@@ -311,12 +311,12 @@ class remotecontrol_handle
 	}
 
     /**
-    * RPC routine to delete a survey
+    * RPC Routine to delete a survey.
     *
     * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID
-    * @return array
+    * @param string $sSessionKey Auth credentials
+    * @param int $iSurveyID The id of the Survey to be deleted
+    * @return array Returns Status
     */
     public function delete_survey($sSessionKey, $iSurveyID)
     {
@@ -335,12 +335,13 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC routine to import a survey - imports lss,csv,xls or survey zip archive
+    * RPC Routine to import a survey - imports lss,csv,xls or survey zip archive.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth Credentials
     * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,xls or survey zip archive
     * @param string $sImportDataType  lss,csv,xls or zip
+    * @param string $sNewSurveyName The optional new name of the survey
     * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
     * @return integer iSurveyID  - ID of the new survey
     */
@@ -371,13 +372,12 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC routine to get survey properties
-     * Properties are those defined in table surveys 
+     * RPC Routine to get survey properties.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @param array $aSurveySettings
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID The id of the Survey to be checked
+     * @param array $aSurveySettings The properties to get
      * @return array
      */
    public function get_survey_properties($sSessionKey,$iSurveyID, $aSurveySettings)
@@ -419,14 +419,13 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC routine to set survey properties
-    * Properties are those defined in table surveys 
+    * RPC Routine to set survey properties.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @param integer $iSurveyID  - ID of the survey
     * @param array|struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
-    * @return array of succeeded and failed nodifications according to internal validation.
+    * @return array Of succeeded and failed nodifications according to internal validation.
     */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
     { 
@@ -492,15 +491,15 @@ class remotecontrol_handle
     }
 
   /**
-     * RPC routine to list the ids and info of surveys belonging to a user
-     * Returns array of ids and info
-     * If user is admin he can get surveys of every user 
-     * else only the syrveys belonging to the user requesting will be shown
-     *
+     * RPC Routine to list the ids and info of surveys belonging to a user.
+     * Returns array of ids and info.
+     * If user is admin he can get surveys of every user (parameter sUser)
+     * else only the syrveys belonging to the user requesting will be shown.
+     * 
      * @access public
-     * @param string $sSessionKey
-     * @param string $suser
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param string $suser Optional username to get list of surveys
+     * @return array The list of surveys
      */
 	public function list_surveys($sSessionKey, $suser='')
 	{
@@ -535,13 +534,12 @@ class remotecontrol_handle
 
 
     /**
-    * RPC routine to activate a survey
+    * RPC Routine that launches a newly created survey.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID The id of the survey to be activated
-
-    * @return array the result of the activation
+    * @return array The result of the activation
     */
     public function activate_survey($sSessionKey, $iSurveyID)
     {
@@ -570,17 +568,17 @@ class remotecontrol_handle
     }
 
    /**
-     * RPC routine to export statistics of a survey to a user
-     * Returns string - base64 encoding of the statistics
+     * RPC routine to export statistics of a survey to a user.
+     * Returns string - base64 encoding of the statistics.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @param string $docType
-     * @param string $graph
-     * @return string
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey
+     * @param string $docType Type of documents the exported statistics should be
+     * @param string $graph Create graph option
+     * @return string Base64 encoded string with the statistics file
      */
-    public function export_survey_statistics($sSessionKey, $iSurveyID, $docType='pdf', $graph='0')
+    public function export_statistics($sSessionKey, $iSurveyID, $docType='pdf', $graph='0')
     {
 		Yii::app()->loadHelper('admin/statistics');
 		
@@ -641,15 +639,16 @@ class remotecontrol_handle
 	}
 
      /**
-     * RPC routine to get survey summary, regarding token usage and survey participation
-     * Return integer with the requested value
+     * RPC routine to get survey summary, regarding token usage and survey participation.
+     * Returns the requested value as string.
+     * 
      * @access public
-     * @param string $sSessionKey
-     * @param int $sid
-     * @param string $stats_name
-     * @return string
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey to get summary
+     * @param string $stat_name Name of the sumamry option
+     * @return string The requested value
      */
-   public function get_survey_summary($sSessionKey,$iSurveyID, $stat_name)
+   public function get_summary($sSessionKey,$iSurveyID, $stat_name)
     {
        $permitted_stats = array();
        if ($this->_checkSessionKey($sSessionKey))
@@ -730,15 +729,15 @@ class remotecontrol_handle
 	/*Survey language specific  functions */
 
     /**
-    * RPC routine to add a survey language
+    * RPC Routine to add a survey language.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @param integer $iSurveyID ID of the survey where a token table will be created for
     * @param string $sLanguage  A valid language shortcut to add to the current survey. If the language already exists no error will be given.
     * @return array Status=>OK when successfull, otherwise the error description
     */
-    public function add_survey_language($sSessionKey, $iSurveyID, $sLanguage)
+    public function add_language($sSessionKey, $iSurveyID, $sLanguage)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -795,15 +794,15 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC routine to delete a survey language
+    * RPC Routine to delete a survey language.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @param integer $iSurveyID ID of the survey where a token table will be created for
     * @param string $sLanguage  A valid language shortcut to delete from the current survey. If the language does not exist in that survey no error will be given.
     * @return array Status=>OK when successfull, otherwise the error description
     */
-    public function delete_survey_language($sSessionKey, $iSurveyID, $sLanguage)
+    public function delete_language($sSessionKey, $iSurveyID, $sLanguage)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -851,17 +850,16 @@ class remotecontrol_handle
 
 
     /**
-     * RPC routine to get survey language properties
-     * Properties are those defined in table surveys_language_settings
+     * RPC Routine to get survey language properties.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @param array $aSurveyLocaleSettings
-	 * @param string $slang
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Dd of the Survey
+     * @param array $aSurveyLocaleSettings Properties to get
+	 * @param string $slang Language to use
+     * @return array The requested values
      */
-   public function get_survey_language_properties($sSessionKey,$iSurveyID, $aSurveyLocaleSettings, $slang=NULL)
+   public function get_language_properties($sSessionKey,$iSurveyID, $aSurveyLocaleSettings, $slang=NULL)
     {
 		Yii::app()->loadHelper("surveytranslator");
        if ($this->_checkSessionKey($sSessionKey))
@@ -906,17 +904,16 @@ class remotecontrol_handle
     }
     
     /**
-    * RPC routine to set survey language properties
-    * Properties are those defined in table surveys_languagesettings
+    * RPC Routine to set survey language properties.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @param integer $iSurveyID  - ID of the survey
-    * @param array|struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
-    * @param string $aLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
-    * @return array status=>OK, when save successful otherwise error text.
+    * @param array|struct $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @param string $sLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
+    * @return array Status=>OK, when save successful otherwise error text.
     */
-    public function set_survey_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage=NULL)
+    public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage=NULL)
     {
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
@@ -983,16 +980,16 @@ class remotecontrol_handle
 	/* Group specific functions */
 
     /**
-     * RPC routine to add an empty group with minimum details
-     * Used as a placeholder for importing questions
-     * Returns the groupid of the created group
+     * RPC Routine to add an empty group with minimum details.
+     * Used as a placeholder for importing questions.
+     * Returns the groupid of the created group.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-	 * @param string $sGroupTitle
-	 * @param string $sGroupDescription	 
-     * @return string
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Dd of the Survey to add the group
+	 * @param string $sGroupTitle Name of the group
+	 * @param string $sGroupDescription	 Optional description of the group
+     * @return string The id of the new group
      */
   	public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
 	{   
@@ -1026,14 +1023,14 @@ class remotecontrol_handle
 	} 
 
   /**
-     * RPC routine to delete a group of a survey 
-     * Returns the id of the deleted group
+     * RPC Routine to delete a group of a survey .
+     * Returns the id of the deleted group.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @param int $iGroupID
-     * @return int
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that the group belongs
+     * @param int $iGroupID Id of the group to delete
+     * @return int The id of the deleted group
      */
 	public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
 	{
@@ -1075,11 +1072,11 @@ class remotecontrol_handle
 	}
 
    /**
-    * RPC routine to import a group - imports lsg,csv
+    * RPC Routine to import a group - imports lsg,csv
     *
     * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID the id of the survey that the group will belong
+    * @param string $sSessionKey Auth credentials
+    * @param int $iSurveyID The id of the survey that the group will belong
     * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
     * @param string $sImportDataType  lsg,csv
     * @param string $sNewGroupName  Optional new name for the group
@@ -1157,14 +1154,14 @@ class remotecontrol_handle
 
 
   /**
-     * RPC routine to return properties of a group of a survey 
+     * RPC Routine to return properties of a group of a survey .
      * Returns array of properties 
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iGroupID
-     * @param array  $aGroupSettings
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iGroupID Id of the group to get properties
+     * @param array  $aGroupSettings The properties to get
+     * @return array The requested values
      */
 	public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings)
 	{
@@ -1202,13 +1199,13 @@ class remotecontrol_handle
 
 
     /**
-    * RPC routine to set group properties
+    * RPC Routine to set group properties.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @param integer $iGroupID  - ID of the survey
     * @param array|struct $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
-    * @return array of succeeded and failed modifications according to internal validation.
+    * @return array Of succeeded and failed modifications according to internal validation.
     */
     public function set_group_properties($sSessionKey, $iGroupID, $aGroupData)
     { 
@@ -1276,13 +1273,13 @@ class remotecontrol_handle
     }
 
    /**
-     * RPC routine to return the ids and info of groups belonging to survey 
-     * Returns array of ids and info
+     * RPC Routine to return the ids and info of groups belonging to survey .
+     * Returns array of ids and info.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey containing the groups
+     * @return array The list of groups
      */
 	public function list_groups($sSessionKey, $iSurveyID)
 	{
@@ -1316,13 +1313,13 @@ class remotecontrol_handle
 
 
   /**
-     * RPC routine to delete a question of a survey 
-     * Returns the id of the deleted question
+     * RPC Routine to delete a question of a survey .
+     * Returns the id of the deleted question.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int iQuestionID
-     * @return string
+     * @param string $sSessionKey Auth credentials
+     * @param int iQuestionID Id of the question to delete 
+     * @return string Id of the deleted Question
      */
 	public function delete_question($sSessionKey, $iQuestionID)
 	{
@@ -1380,15 +1377,15 @@ class remotecontrol_handle
 
 
     /**
-    * RPC routine to import a question - imports lsq,csv
+    * RPC Routine to import a question - imports lsq,csv.
     *
     * @access public
     * @param string $sSessionKey
-    * @param int $iSurveyID the id of the survey that the question will belong
-    * @param int $iGroupID the id of the group that the question will belong
+    * @param int $iSurveyID The id of the survey that the question will belong
+    * @param int $iGroupID The id of the group that the question will belong
     * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
     * @param string $sImportDataType  lsq,csv
-    * @param string $sMandatory 
+    * @param string $sMandatory Optional Mandatory question option (default to No)
     * @param string $sNewQuestionTitle  Optional new title for the question
     * @param string $sNewqQuestion An optional new question
     * @param string $sNewQuestionHelp An optional new question help text
@@ -1480,14 +1477,14 @@ class remotecontrol_handle
 
 
   /**
-     * RPC routine to return  properties of a question of a survey 
+     * RPC Routine to return properties of a question of a survey. 
      * Returns string 
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iQuestionID
-     * @param array $aQuestionSettings
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iQuestionID Id of the question to get properties
+     * @param array $aQuestionSettings The properties to get
+     * @return array The requested values
      */
 	public function get_question_properties($sSessionKey, $iQuestionID, $aQuestionSettings)
 	{
@@ -1543,13 +1540,13 @@ class remotecontrol_handle
 	}
 
     /**
-    * RPC routine to set question properties
+    * RPC Routine to set question properties.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @param integer $iQuestionID  - ID of the question
     * @param array|struct $aQuestionData - An array with the particular fieldnames as keys and their values to set on that particular question
-    * @return array of succeeded and failed modifications according to internal validation.
+    * @return array Of succeeded and failed modifications according to internal validation.
     */
     public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData)
     { 
@@ -1621,14 +1618,14 @@ class remotecontrol_handle
 
 
    /**
-     * RPC routine to return the ids and info of questions of a survey/group 
-     * Returns array of ids and info
+     * RPC Routine to return the ids and info of questions of a survey/group. 
+     * Returns array of ids and info.
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @param int $iGroupID
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey to list questions
+     * @param int $iGroupID Optional id of the group to list questions
+     * @return array The list of questions
      */
 	public function list_questions($sSessionKey, $iSurveyID, $iGroupID=NULL)
 	{
@@ -1674,15 +1671,15 @@ class remotecontrol_handle
 
 
     /**
-    * RPC routine to add a participant to a token table
-    * Returns the inserted data including additional new information like the Token entry ID and the token
+    * RPC Routine to add a participant to the tokens placeholder of the survey.
+    * Returns the inserted data including additional new information like the Token entry ID and the token string.
     *
     * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID
-    * @param struct $aParticipantData
+    * @param string $sSessionKey Auth credentials
+    * @param int $iSurveyID Id of the Survey
+    * @param struct $aParticipantData Data of the participants to be added
     * @param bool Optional - Defaults to true and determins if the access token automatically created
-    * @return array
+    * @return array The values added
     */
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken=true)
     {
@@ -1733,14 +1730,14 @@ class remotecontrol_handle
     }
 
   /**
-     * RPC routine to delete multiple participant token records 
+     * RPC Routine to delete multiple participants of a Survey. 
      * Returns the id of the deleted token
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @param array $aTokenIDs
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey that the participants belong to
+     * @param array $aTokenIDs Id of the tokens/participants to delete
+     * @return array Result of deletion
      */
 	public function delete_participants($sSessionKey, $iSurveyID, $aTokenIDs)
 	{
@@ -1783,15 +1780,14 @@ class remotecontrol_handle
 
 
   /**
-     * RPC routine to return settings of a token/participant of a survey 
-     * Returns string 
+     * RPC Routine to return settings of a token/participant of a survey . 
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-	 * @param int $iTokenID
-     * @param array $aTokenProperties
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey to get token properties
+	 * @param int $iTokenID Id of the participant to check
+     * @param array $aTokenProperties The properties to get
+     * @return array The requested values
      */
 	public function get_participant_properties($sSessionKey, $iSurveyID, $iTokenID, $aTokenProperties)
 	{
@@ -1835,15 +1831,15 @@ class remotecontrol_handle
 	}
 
   /**
-     * RPC routine to set properties of a survey participant/token  
+     * RPC Routine to set properties of a survey participant/token. 
      * Returns array 
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-	 * @param int $iTokenID
-     * @param array|struct $aTokenData
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that participants belong
+	 * @param int $iTokenID Id of the participant to alter
+     * @param array|struct $aTokenData Data to change
+     * @return array Result of the change action
      */
 	public function set_participant_properties($sSessionKey, $iSurveyID, $iTokenID, $aTokenData)
 	{
@@ -1905,15 +1901,14 @@ class remotecontrol_handle
 
 
    /**
-     * RPC routine to return the ids and info  of token/participants of a survey 
-     * Returns array of ids and info
-     * if $bUnused is true, user will get the list of not completed tokens (old token_return functionality)
+     * RPC Routine to return the ids and info  of token/participants of a survey.
+     * if $bUnused is true, user will get the list of not completed tokens (token_return functionality).
      *
      * @access public
-     * @param string $sSessionKey
-     * @param int $iSurveyID
-     * @param bool $bUnused
-     * @return array
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey to list participants
+     * @param bool $bUnused If you want unused tokensm, set true
+     * @return array The list of tokens
      */
 	public function list_participants($sSessionKey, $iSurveyID, $bUnused=false)
 	{
@@ -1957,15 +1952,15 @@ class remotecontrol_handle
 	}
 
     /**
-    * RPC routine to activate tokens
+    * RPC routine to to initialise the survey's placeholder where new participant tokens may be later added.
     *
     * @access public
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @param integer $iSurveyID ID of the survey where a token table will be created for
     * @param array $aAttributeFields  An array of integer describing any additional attribute fields
     * @return array Status=>OK when successfull, otherwise the error description
     */
-    public function activate_participant_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
+    public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
@@ -2003,13 +1998,13 @@ class remotecontrol_handle
 
 
     /**
-    * RPC routine to add a response to the survey response table
+    * RPC Routine to add a response to the survey responses collection.
     * Returns the id of the inserted survey response
     *
     * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID
-    * @param struct $aResponseData
+    * @param string $sSessionKey Auth credentials 
+    * @param int $iSurveyID Id of the Survey to insert responses
+    * @param struct $aResponseData The actual response
     * @return int The response ID
     */
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
@@ -2057,19 +2052,21 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC routine to export responses
+    * RPC Routine to export responses.
     * Returns the requested file as base64 encoded string
     *
     * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID
+    * @param string $sSessionKey Auth credentials 
+    * @param int $iSurveyID Id of the Survey
     * @param string $sDocumentType pdf,csv,xls,doc
+    * @param string $sLanguageCode The language to be used
     * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to complete
     * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
     * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
     * @param integer $iFromResponseID Optional
     * @param integer $iToResponseID Optional
-    * @return On success: Requested file as base 64-encoded string. On failure array with error information
+    * @param array $aFields Optional Selected fields
+    * @return array On success: Requested file as base 64-encoded string. On failure array with error information
     **/
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
     {
@@ -2100,8 +2097,8 @@ class remotecontrol_handle
     * Tries to login with username and password
     *
     * @access protected
-    * @param string $sUsername
-    * @param mixed $sPassword
+    * @param string $sUsername The username
+    * @param mixed $sPassword The Password
     * @return bool
     */
     protected function _doLogin($sUsername, $sPassword)
@@ -2124,7 +2121,7 @@ class remotecontrol_handle
     * Fills the session with necessary user info on the fly
     *
     * @access protected
-    * @param string $sUsername
+    * @param string $username The username
     * @return bool
     */
     protected function _jumpStartSession($username)
@@ -2153,9 +2150,8 @@ class remotecontrol_handle
     * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
     *
     * @access protected
-    * @param string $sSessionKey
+    * @param string $sSessionKey Auth credentials
     * @return bool
-    * @throws Zend_XmlRpc_Server_Exception
     */
     protected function _checkSessionKey($sSessionKey)
     {
@@ -2174,13 +2170,12 @@ class remotecontrol_handle
     }
     
     /**
-     * This function validates parameters to be inserted in survey model
+     * This function validates parameters to be changed
      * 
      * @access protected
-     * @param string $sparam_name
-     * @param string $sparam_value
-     * @return bool|string
-     * @throws Zend_XmlRpc_Server_Exception
+     * @param string $sparam_name Name of the parameter
+     * @param string $sparam_value Value to be validated
+     * @return bool|string Result valid value or false
      */
     protected function _internal_validate($sparam_name, $sparam_value)
     {   	
