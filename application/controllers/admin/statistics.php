@@ -476,9 +476,7 @@ class statistics extends Survey_Common_Action {
 		            exit;
 		            break;
 		        default:
-
 		            break;
-
 		    }
 
 		}	//end if -> show summary results
