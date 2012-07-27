@@ -1,3 +1,6 @@
+<?php
+$clang = Yii::app()->lang;
+?>
 <div class='statisticscolumnid'>
     <?php
     $image="sort_none.png";
@@ -37,11 +40,11 @@ foreach ($data as $row) {
 ?>
 <div class='statisticscolumnid'>
     <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank'>
-        <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/search.gif" ?>' />
+        <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/search.gif" ?>' title='<?php $clang->eT("View response"); ?>'/>
     </a>
 </div>
 <div class='statisticscolumndata'>
-    <?php echo $row['value'] ?>
+    <?php echo stripslashes($row['value']) ?>
 </div>
 <div style='clear: both'></div>
 <?php
