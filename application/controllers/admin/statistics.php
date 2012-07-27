@@ -37,8 +37,7 @@ class statistics extends Survey_Common_Action {
 	{
 		$surveyid = sanitize_int($surveyid);
 		//TODO: Convert question types to views
-
-		$clang = $this->getController()->lang;
+        $clang = $this->getController()->lang;
 
 		$imageurl = Yii::app()->getConfig("imageurl");
 		$aData = array('clang' => $clang, 'imageurl' => $imageurl);
@@ -89,15 +88,6 @@ class statistics extends Survey_Common_Action {
 		 */
 		$maxchars = 50;
 
-
-
-		//don't call this script directly!
-		//if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-
-		//some includes, the progressbar is used to show a progressbar while generating the graphs
-		//include_once("login_check.php");
-		//require_once('classes/core/class.progressbar.php');
-
 		//we collect all the output within this variable
 		$statisticsoutput ='';
 
@@ -124,54 +114,8 @@ class statistics extends Survey_Common_Action {
 		$language = Survey::model()->findByPk($surveyid)->language;
 		$aData['language'] = $language;
 
-//		$chartfontfile = Yii::app()->getConfig("chartfontfile");
-//		//pick the best font file if font setting is 'auto'
-//		if ($chartfontfile=='auto')
-//		{
-//		    $chartfontfile='vera.ttf';
-//		    if ( $language=='ar')
-//		    {
-//		        $chartfontfile='KacstOffice.ttf';
-//		    }
-//		    elseif  ($language=='fa' )
-//		    {
-//		        $chartfontfile='KacstFarsi.ttf';
-//		    }
-//		    elseif  ($language=='el' )
-//		    {
-//		        $chartfontfile='DejaVuLGCSans.ttf';
-//		    }
-//		    elseif  ($language=='zh-Hant-HK' || $language=='zh-Hant-TW' || $language=='zh-Hans')
-//		    {
-//		        $chartfontfile='fireflysung.ttf';
-//		    }
-//
-//		}
 
-		//$statisticsoutput .= "
-		//<script type='text/javascript'' >
-		//<!--
-		//function selectAll(name){
-		//	//var name=name;
-		//
-		//	alert(name);
-		//
-		//	temp = document.+name+.elements.length;
-		//
-		//    for (i=0; i < temp; i++) {
-		//    if(document.+name+.elements[i].checked == 1)
-		//    	{document.+name+.elements[i].checked = 0;
-		//    	 document.+name+.+name+_btn.value = 'Select All'; }
-		//    else {document.+name.elements[i].checked = 1;
-		//   	 document.+name+.+name+_btn.value = 'Deselect All'; }
-		//	}
-		//}
-		////-->
-		//</script>";
-
-		//hide/show the filter
-		//filtersettings by default aren't shown when showing the results
-		//$statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
+		//Call the javascript file
 		$this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'statistics.js');
 
 		$aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
@@ -275,11 +219,6 @@ class statistics extends Survey_Common_Action {
 		$aData['selectinc'] = $selectinc;
         $aData['error'] = $error;
 
-		//if ($selecthide!='')
-		//{
-		//    $statisticsoutput .= " style='display:none' ";
-		//}
-
 		$survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
 		$survlangs[] = Survey::model()->findByPk($surveyid)->language;
 		$aData['survlangs'] = $survlangs;
@@ -287,12 +226,9 @@ class statistics extends Survey_Common_Action {
 
 		//if the survey contains timestamps you can filter by timestamp, too
 
-
 		//Output selector
 
-
 		//second row below options -> filter settings headline
-
 
 		$filterchoice_state=returnGlobal('filterchoice_state');
 		$aData['filterchoice_state'] = $filterchoice_state;
@@ -510,8 +446,6 @@ class statistics extends Survey_Common_Action {
 		    //used to adjust linebreaks
 		    $previousquestiontype = $flt[2];
 
-		    //Group close
-		    //$statisticsoutput .= "\n\t\t\t\t<!-- --></tr>\n\t\t\t</table></div></td></tr>\n";
 		}
 
 		// ----------------------------------- END FILTER FORM ---------------------------------------

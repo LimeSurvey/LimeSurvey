@@ -1293,6 +1293,9 @@
     </div><!-- END OF AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
 </form>
 <div style='clear: both'></div>
+<?php
+flush(); //Let's give the user something to look at while they wait for the pretty pictures
+?>
 <div class='header ui-widget-header header_statistics'>
     <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showsfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidesfilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
     <?php $clang->eT("Statistics"); ?>

@@ -497,8 +497,12 @@ function buildSelects($allfields, $surveyid, $language) {
 * @param mixed $surveyid The survey id
 * @param string $outputType
 *
-* @output array $output An array containing "alist"=>A list of answers to the question, "qtitle"=>The title of the question,
-*                                           "qquestion"=>The description of the question, "qtype"=>The question type code
+* @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
+*                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
+*                       of the question, and the fieldname where the data is stored.
+*                       "qtitle"=>The title of the question,
+*                       "qquestion"=>The description of the question,
+*                       "qtype"=>The question type code
 */
 function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
@@ -528,71 +532,54 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
             break;
     }
 
-    //M - Multiple choice, therefore multiple fields
+    //M - Multiple choice, therefore multiple fields - one for each answer
     if ($firstletter == "M" || $firstletter == "P")
     {
         //get SGQ data
         list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
         //select details for this question
-        $nresult = Questions::model()->findAll('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
-        //$nquery = "SELECT title, type, question, parent_qid, other FROM {{questions}} WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
-        //$nresult = Yii::app()->db->createCommand($nquery)->query();
-
-        //loop through question data
-        foreach ($nresult as $nrow)
-        {
-            $qtitle=$nrow['title'];
-            $qtype=$nrow['type'];
-            $qquestion=flattenText($nrow['question']);
-            $qlid=$nrow['parent_qid'];
-            $qother=$nrow['other'];
-        }
+        $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
+        $qtitle=$nresult->title;
+        $qtype=$nresult->type;
+        $qquestion=flattenText($nresult->question);
+        $qlid=$nresult->parent_qid;
+        $qother=$nresult->other;
 
         //1. Get list of answers
-        $result=Questions::model()->findAll(array('order'=>'question_order', 'condition'=>'language=:language AND parent_qid=:qid AND scale_id=0', 'params'=>array(':language'=>$language, ':qid'=>$qqid)));
+        $result=Questions::model()->findAll(array('order'=>'question_order',
+                                                  'condition'=>'language=:language AND parent_qid=:qid AND scale_id=0',
+                                                  'params'=>array(':language'=>$language, ':qid'=>$qqid)
+                                                  ));
         foreach ($result as $row)
         {
             $mfield=substr($rt, 1, strlen($rt)).$row['title'];
-
-            //create an array containing answer code, answer and fieldname(??)
             $alist[]=array($row['title'], flattenText($row['question']), $mfield);
         }
 
-        //check "other" field. is it set?
+        //Add the "other" answer if it exists
         if ($qother == "Y")
         {
             $mfield=substr($rt, 1, strlen($rt))."other";
-
-            //create an array containing answer code, answer and fieldname(??)
             $alist[]=array($statlang->gT("Other"), $statlang->gT("Other"), $mfield);
         }
     }
 
-
-    //S - Short Free Text
-    //T - Long Free Text
+    //S - Short Free Text and T - Long Free Text
     elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
     {
-
         //search for key
         $fld = substr($rt, 1, strlen($rt));
         $fielddata=$fieldmap[$fld];
 
         list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
-        //get SGQ data
-        //list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-
 
         //get question data
-        $nresult = Questions::model()->findAll('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
-        foreach ($nresult as $nrow)
-        {
-            $qtitle=$nrow['title'];
-            $qtype=$nrow['type'];
-            $qquestion=flattenText($nrow['question']);
-            $nlid=$nrow['parent_qid'];
-        }
+        $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
+        $qtitle=$nresult->title;
+        $qtype=$nresult->type;
+        $qquestion=flattenText($nresult->question);
+        $qlid=$nresult->parent_qid;
 
         $mfield=substr($rt, 1, strlen($rt));
 
@@ -604,53 +591,41 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
         $alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
     }
 
-
-    //Multiple short text
+    //Q - Multiple short text
     elseif ($firstletter == "Q")
     {
+        //Build an array of legitimate qid's for testing later
+        $qidquery = Questions::model()->findAll("sid=:surveyid AND parent_qid=0", array(":surveyid"=>$surveyid));
+        foreach ($qidquery as $row) { $legitqids[] = $row['qid']; }
         //get SGQ data
         list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-
         //separating another ID
         $tmpqid=substr($qqid, 0, strlen($qqid)-1);
 
-        //check if we have legid QIDs. if not create them by substringing
+        //check if we have a QID that actually exists. if not create them by substringing. Note that
+        //all of this is due to the fact that when we create a field for an subquestion, we don't seperate
+        //the question id from the subquestion id - and this is a weird, backwards way of doing that.
         while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1);
-
         //length of QID
         $iQuestionIDlength=strlen($tmpqid);
-
         //we somehow get the answer code (see SQL later) from the $qqid
         $qaid=substr($qqid, $iQuestionIDlength, strlen($qqid)-$iQuestionIDlength);
 
-        //get some question data
-        $nquery = "SELECT title, type, question, other FROM {{questions}} WHERE qid='".substr($qqid, 0, $iQuestionIDlength)."' AND parent_qid=0 AND language='{$language}'";
-        $nresult = Yii::app()->db->createCommand($nquery)->query();
+        //get question data
+        $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
+        $qtitle=$nresult->title;
+        $qtype=$nresult->type;
+        $qquestion=flattenText($nresult->question);
 
         //more substrings
         $count = substr($qqid, strlen($qqid)-1);
 
-        //loop through question data
-        foreach ($nresult->readAll() as $nrow)
-        {
-            $nrow=array_values($nrow);
-            $qtitle=flattenText($nrow[0]).'-'.$count;
-            $qtype=$nrow[1];
-            $qquestion=flattenText($nrow[2]);
-        }
-
         //get answers
-        $qquery = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid='".substr($qqid, 0, $iQuestionIDlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order";
-        $qresult=Yii::app()->db->createCommand($qquery)->query();
-
-        //loop through answer data
-        foreach ($qresult->readAll() as $qrow)
-        {
-            $qrow=array_values($qrow);
-            //store each answer here
-            $atext=flattenText($qrow[1]);
-        }
-
+        $nresult = Questions::model()->find(array('order'=>'question_order',
+                                                  'condition'=>'language=:language AND parent_qid=:parent_qid AND title=:title',
+                                                  'params'=>array(':language'=>$language, ':parent_qid'=>substr($qqid, 0, $iQuestionIDlength), ':title'=>$qaid)
+                                                  ));
+        $atext=flattenText($nresult->question);
         //add this to the question title
         $qtitle .= " [$atext]";
 
@@ -664,7 +639,6 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
         $alist[]=array("Answers", $statlang->gT("Answer"), $mfield);
         $alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
     }
-
 
     //RANKING OPTION
     elseif ($firstletter == "R")
@@ -707,20 +681,12 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
         list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
         //select details for this question
-        $nquery = "SELECT title, type, question, parent_qid, other FROM {{questions}} WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
-        $nresult = Yii::app()->db->createCommand($nquery)->query();
-
-        //loop through question data
-        foreach ($nresult->readAll() as $nrow)
-        {
-            $nrow=array_values($nrow);
-            $qtitle=$nrow[0];
-            $qtype=$nrow[1];
-            $qquestion=flattenText($nrow[2]);
-            $qlid=$nrow[3];
-            $qother=$nrow[4];
-        }
-
+        $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
+        $qtitle=$nresult->title;
+        $qtype=$nresult->type;
+        $qquestion=flattenText($nresult->question);
+        $qlid=$nresult->parent_qid;
+        $qother=$nresult->other;
         /*
         4)      Average size of file per respondent
         5)      Average no. of files
@@ -756,7 +722,6 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
         foreach ($result->readAll() as $row)
         {
-
             $json = $row['json'];
             $phparray = json_decode($json);
 
@@ -865,6 +830,9 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
             //multiple numerical input
             if($firstletter == "K")
             {
+                //Build an array of legitimate qid's for testing later
+                $qidquery = Questions::model()->findAll("sid=:surveyid AND parent_qid=0", array(":surveyid"=>$surveyid));
+                foreach ($qidquery as $row) { $legitqids[] = $row['qid']; }
                 // This is a multiple numerical question so we need to strip of the answer id to find the question title
                 $tmpqid=substr($qqid, 0, strlen($qqid)-1);
 
@@ -879,19 +847,21 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 $qaid=substr($qqid, $iQuestionIDlength, strlen($qqid)-$iQuestionIDlength);
 
                 //get question details from DB
-                $nquery = "SELECT title, type, question, qid, parent_qid
+                $nresult=Questions::model()->findAll('parent_qid=0 AND qid=:qid AND language=:language', array(':qid'=>substr($qqid, 0, $iQuestionIDlength), ':language'=>$language));
+                /* $nquery = "SELECT title, type, question, qid, parent_qid
                 FROM {{questions}}
                 WHERE parent_qid=0 AND qid='".substr($qqid, 0, $iQuestionIDlength)."'
                 AND language='{$language}'";
-                $nresult = Yii::app()->db->createCommand($nquery)->query();
+                $nresult = Yii::app()->db->createCommand($nquery)->query(); */
             }
 
             //probably question type "N" = numerical input
             else
             {
+                $nresult=Questions::model()->findAll('parent_qid=0 AND qid=:qid AND language=:language', array(':qid'=>$qqid, ':language'=>$language));
                 //we can use the qqid without any editing
-                $nquery = "SELECT title, type, question, qid, parent_qid FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
-                $nresult = Yii::app()->db->createCommand($nquery)->query();
+                /* $nquery = "SELECT title, type, question, qid, parent_qid FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                $nresult = Yii::app()->db->createCommand($nquery)->query(); */
             }
 
             //loop through results
@@ -1394,19 +1364,14 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
     {
         //search for key
         $fielddata=$fieldmap[$rt];
-        //print_r($fielddata);
         //get SGQA IDs
         $qsid=$fielddata['sid'];
         $qgid=$fielddata['gid'];
         $qqid=$fielddata['qid'];
         $qanswer=$fielddata['aid'];
-
-        //question type
         $qtype=$fielddata['type'];
-
         //question string
         $qastring=$fielddata['question'];
-
         //question ID
         $rqid=$qqid;
 
@@ -1843,8 +1808,8 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
         //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
         if (isset($al[2]) && $al[2])
         {
-            //handling for "other" option
 
+            //handling for "other" option
             if ($al[0] == $statlang->gT("Other"))
             {
                 if($outputs['qtype']=='!' || $outputs['qtype']=='L')
@@ -1869,7 +1834,6 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
             * S = short free text
             * Q = multiple short text
             */
-
             elseif ($outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "S" || $outputs['qtype'] == "Q" || $outputs['qtype'] == ";")
             {
                 $sDatabaseType = Yii::app()->db->getDriverName();
@@ -3453,10 +3417,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $runthrough=$summary;
 
         //START Chop up fieldname and find matching questions
-
-        //Build an array of legitimate qid's for testing later
-        $qidquery = Questions::model()->findAll("sid=:surveyid AND parent_qid=0", array(":surveyid"=>$surveyid));
-        foreach ($qidquery as $row) { $legitqids[] = $row['qid']; }
 
         //loop through all selected questions
         foreach ($runthrough as $rt)
