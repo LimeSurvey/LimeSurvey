@@ -356,10 +356,14 @@ class tokens extends Survey_Common_Action
         }
         $clang = $this->getController()->lang;
         $page  = Yii::app()->request->getPost('page');
+        $sidx = Yii::app()->request->getPost('sidx');
+        $sidx = !empty($sidx) ? $sidx : "lastname";
+        $sord = Yii::app()->request->getPost('sord');
+        $sord = !empty($sord) ? $sord : "asc";
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 25; //Stop division by zero errors
         $page = isset($page) ? $page : 1; //Stop division by zero errors
-        $tokens = Tokens_dynamic::model($iSurveyId)->findAll();
+        $tokens = Tokens_dynamic::model($iSurveyId)->findAll(array("order"=>$sidx. " ". $sord));
 
         $aData = new stdClass;
         $aData->page = $page;

@@ -122,12 +122,12 @@ $(document).ready(function() {
         editable:true,
         scrollOffset:0,
         sortable : true,
-        sortname: 'id',
+        sortname: 'tid',
         sortorder: 'asc',
         viewrecords : true,
         rowList: [25,50,100,250,500,1000,5000,10000],
         multiselect: true,
-        loadonce : true,
+        loadonce : false,
         loadComplete: function()
         {
             /* Sneaky way of adding custom icons to jqGrid pager buttons */
