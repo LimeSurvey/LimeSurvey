@@ -599,7 +599,7 @@ function quickaddlabels()
             }
             else
                 {
-                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "");
+                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,5);
             }
 
             if (typeof thisrow[parseInt(x)+1]=='undefined')
