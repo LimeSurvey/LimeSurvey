@@ -559,7 +559,7 @@ function quickaddlabels()
             }
             else
                 {
-                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "");
+                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,5);
             }
             var randomid='new'+Math.floor(Math.random()*111111)
 

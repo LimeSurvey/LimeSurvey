@@ -92,7 +92,7 @@ function quickaddfunction(){
         params = element.split(seperatorchar);
         k = 0;
         if (params.length > $(".lslanguage").length){
-            code = params[0].replace(/[^a-zA-Z 0-9]+/g,'');
+            code = params[0].replace(/[^a-zA-Z 0-9]+/g,'').substr(0,5);
 
             i++;
         }
