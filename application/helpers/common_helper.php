@@ -2137,26 +2137,26 @@ function stripComments($comment, $email, $replace=''){
 }
 
 
-function validateTemplateDir($templatename)
+function validateTemplateDir($sTemplateName)
 {
     $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
     $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-    $defaulttemplate = Yii::app()->getConfig('defaulttemplate');
-    if (is_dir("$usertemplaterootdir/{$templatename}/"))
+    $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');
+    if (is_dir("$usertemplaterootdir/{$sTemplateName}/"))
     {
-        return $templatename;
+        return $sTemplateName;
     }
-    elseif (is_dir("$standardtemplaterootdir/{$templatename}/"))
+    elseif (is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
     {
-        return $templatename;
+        return $sTemplateName;
     }
-    elseif (is_dir("$standardtemplaterootdir/{$defaulttemplate}/"))
+    elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
     {
-        return $defaulttemplate;
+        return $sDefaultTemplate;
     }
-    elseif (is_dir("$usertemplaterootdir/{$defaulttemplate}/"))
+    elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
     {
-        return $defaulttemplate;
+        return $sDefaultTemplate;
     }
     else
     {
@@ -5575,25 +5575,25 @@ function getTemplatePath($sTemplateName = false)
     }
     if (isStandardTemplate($sTemplateName))
     {
-        return Yii::app()->getConfig("standardtemplaterootdir").'/'.$sTemplateName;
+        return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
     }
     else
     {
-        if (is_dir(Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName))
+        if (is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName))
         {
-            return Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName;
+            return Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
         }
         elseif (isStandardTemplate(Yii::app()->getConfig('defaulttemplate')))
         {
-            return Yii::app()->getConfig("standardtemplaterootdir").'/'.$sTemplateName;
+            return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
         }
-        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
+        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.Yii::app()->getConfig('defaulttemplate')))
         {
-            return Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate');
+            return Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.Yii::app()->getConfig('defaulttemplate');
         }
         else
         {
-            return Yii::app()->getConfig("standardtemplaterootdir").'/default';
+            return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
         }
     }
 }

@@ -410,7 +410,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($surveyid) && !$iscompleted)
     {
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
-        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
+        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",array('move'=>'clearall','lang'=>$s_lang),'&amp;');
 
         if (returnGlobal('token'))
         {
