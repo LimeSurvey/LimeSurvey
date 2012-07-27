@@ -816,65 +816,11 @@ function QueXMLFixedArray($array)
 * @return bool|string Text of item to skip to otherwise false if nothing to skip to
 * @author Adam Zammit <adam.zammit@acspri.org.au>
 * @since  2010-10-28
+* @TODO Correctly handle conditions in a database agnostic way
 */
 function QueXMLSkipTo($qid,$value,$cfieldname = "")
 {
-    global $iSurveyID, $quexmllang;
-    $qlang = new limesurvey_lang($quexmllang);
-
-    $zeros = "0000000000";
-
-    $Query = "SELECT q.*," . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." as globalorder
-    FROM {{questions}} as q, {{questions}} as q2, {{groups}} as g, {{groups}} as g2
-    WHERE q.parent_qid = 0
-    AND q2.parent_qid = 0
-    AND q.sid=$iSurveyID
-    AND q2.sid=$iSurveyID
-    AND q2.qid = $qid
-    AND g2.gid =q2.gid
-    AND g.gid = q.gid
-    AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." > " . concat("RIGHT(" . concat($zeros,'g2.gid') . ",10)","RIGHT(". concat($zeros,'q2.question_order') .",10)") ."
-    ORDER BY globalorder";
-
-    $QueryResult = Yii::app()->db->createCommand($Query)->query();
-
-    $nextqid="";
-    $nextorder="";
-
-    $Row = $QueryResult->read();
-    if ($Row)
-    {
-        $nextqid = $Row['qid'];
-        $nextorder = $Row['globalorder'];
-    }
-    else
-        return false;
-
-
-    $Query = "SELECT q.*
-    FROM {{questions}} as q
-    JOIN {{groups}} as g ON (g.gid = q.gid)
-    LEFT JOIN {{conditions}} as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
-    WHERE q.sid = $iSurveyID
-    AND q.parent_qid = 0
-    AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." >= $nextorder
-    AND c.cqid IS NULL
-    ORDER BY  " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)");
-
-
-    $QueryResult = Yii::app()->db->createCommand($Query)->query();
-
-    $Row = $QueryResult->read();
-    if ($Row)
-    {
-        if ($nextqid == $Row['qid'])
-            return false;
-        else
-            return $Row['title'];
-    }
-    else
-        return $qlang->gT("End");
-
+    return false;
 }
 
 /**
