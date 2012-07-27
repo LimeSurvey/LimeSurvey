@@ -619,14 +619,14 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     $platform = Yii::app()->db->getDriverName();
     if ($platform == 'mssql' || $platform =='sqlsrv')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     }
     else {
-        $query="SELECT qa.qid, qa.attribute, qa.value
+        $query="SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
     }
 
     buildXMLFromQuery($xmlwriter,$query,'question_attributes');
@@ -1671,14 +1671,14 @@ function groupGetXMLStructure($xml,$gid)
     $platform = Yii::app()->db->getDriverName();
     if ($platform == 'mssql' || $platform =='sqlsrv')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     }
     else {
-        $query="SELECT qa.qid, qa.attribute, qa.value
+        $query="SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
     }
     buildXMLFromQuery($xml,$query,'question_attributes');
 
@@ -1704,25 +1704,14 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();
 
-    if($action=='exportstructureLsrcCsvQuestion')
-    {
-        include_once(APPPATH.'/remotecontrol/lsrc.config.php');
-        //Select title as Filename and save
-        $question = Questions::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid));
-        $questionTitle = $question->title;
-        $xml->openURI('remotecontrol/'.$queDir.substr($questionTitle,0,20).".lsq");
-    }
-    else
-    {
-        header("Content-Type: text/html/force-download");
-        header("Content-Disposition: attachment; filename=$fn");
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Pragma: cache");
-        // HTTP/1.0
-        $xml->openURI('php://output');
-    }
+    header("Content-Type: text/html/force-download");
+    header("Content-Disposition: attachment; filename=$fn");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: cache");
+    // HTTP/1.0
+    $xml->openURI('php://output');
 
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
@@ -1772,14 +1761,14 @@ function questionGetXMLStructure($xml,$gid,$qid)
     $platform = Yii::app()->db->getDriverName();
     if ($platform == 'mssql' || $platform =='sqlsrv')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     }
     else {
-        $query="SELECT qa.qid, qa.attribute, qa.value
+        $query="SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
     }
     buildXMLFromQuery($xml,$query);
 

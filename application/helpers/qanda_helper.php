@@ -9,9 +9,8 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-*	$Id$
 */
+
 // Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
@@ -214,25 +213,6 @@ function retrieveAnswers($ia)
                     . $clang->gT('Check any that apply').'</span>';
                     $question_text['help'] = $clang->gT('Check any that apply');
                 }
-                //                else
-                //                {
-                //                    if ($maxansw && $minansw)
-                //                    {
-                //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw)."</span>";
-                //                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw);
-                //                    } elseif ($maxansw)
-                //                    {
-                //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                        . sprintf($clang->gT("Check at most %d answers"), $maxansw)."</span>";
-                //                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw);
-                //                    } else
-                //                    {
-                //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                        . sprintf($clang->gT("Check at least %d answers"), $minansw)."</span>";
-                //                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw);
-                //                    }
-                //                }
             }
             break;
         case '|': //File Upload
@@ -1318,7 +1298,8 @@ function do_language($ia)
         {
             $answer .= SELECTED;
         }
-        $answer .= '>'.getLanguageNameFromCode($ansrow, true)."</option>\n";
+        $aLanguage=getLanguageNameFromCode($ansrow, true);
+        $answer .= '>'.$aLanguage[1]."</option>\n";
     }
     $answer .= "</select>\n";
     $answer .= "<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
@@ -2133,7 +2114,7 @@ function do_ranking($ia)
     $answer .="</div>";
     header_includes("ranking.js");
     header_includes("ranking.css","css");
-    
+
     if(trim($aQuestionAttributes['choice_title'][$clang->langcode]) != '')
     {
         $choice_title=htmlspecialchars(trim($aQuestionAttributes['choice_title'][$clang->langcode]), ENT_QUOTES);
@@ -2141,7 +2122,7 @@ function do_ranking($ia)
     else
     {
         $choice_title=$clang->gT("Your Choices",'js');
-    } 
+    }
     if(trim($aQuestionAttributes['rank_title'][$clang->langcode]) != '')
     {
         $rank_title=htmlspecialchars(trim($aQuestionAttributes['rank_title'][$clang->langcode]), ENT_QUOTES);
