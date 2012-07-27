@@ -4571,6 +4571,12 @@
                             }
                             // otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses()
                             break;
+                        case '|': //File upload
+                            // This block can be removed once we require 5.3 or later
+                            if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+                                $val=addslashes($val);
+                            }
+                            break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
                             if (trim($val)=='') {
