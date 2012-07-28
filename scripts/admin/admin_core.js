@@ -244,6 +244,9 @@ function qTypeDropdownInit()
                 corner:{
                     target: 'leftMiddle',
                     tooltip:'rightMiddle'
+                },
+                adjust{
+                    screen: true
                 }
             },
             show: 'mouseover'
