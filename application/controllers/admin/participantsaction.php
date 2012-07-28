@@ -73,7 +73,7 @@ class participantsaction extends Survey_Common_Action
         // if not only the participants on which he has right on (shared and owned)
         else
         {
-            $iTotalRecords = Participants::getParticipantsOwnerCount($iUserID);
+            $iTotalRecords = Participants::model()->getParticipantsOwnerCount($iUserID);
         }
 
         // gets the count of participants, their attributes and other such details
@@ -81,7 +81,7 @@ class participantsaction extends Survey_Common_Action
         $aData = array(
             'totalrecords' => $iTotalRecords,
             'owned' => Participants::model()->count('owner_uid = ' . $iUserID),
-            'shared' => Participants::getParticipantsSharedCount($iUserID),
+            'shared' => Participants::model()->getParticipantsSharedCount($iUserID),
             'attributecount' => ParticipantAttributeNames::model()->count(),
             'blacklisted' => Participants::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
         );
@@ -132,9 +132,9 @@ class participantsaction extends Survey_Common_Action
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
-            'attributes' => ParticipantAttributeNames::getVisibleAttributes(),
-            'allattributes' => ParticipantAttributeNames::getAllAttributes(),
-            'attributeValues' => ParticipantAttributeNames::getAllAttributesValues(),
+            'attributes' => ParticipantAttributeNames::model()->getVisibleAttributes(),
+            'allattributes' => ParticipantAttributeNames::model()->getAllAttributes(),
+            'attributeValues' => ParticipantAttributeNames::model()->getAllAttributesValues(),
             'surveynames' => $aSurveyNames,
             'tokensurveynames' => $tSurveyNames,
             'urlsearch' => $urlSearch
@@ -201,15 +201,15 @@ class participantsaction extends Survey_Common_Action
         // If super administrator all the share info in the links table will be shown
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
-            $records = Participants::getParticipantSharedAll();
+            $records = Participants::model()->getParticipantSharedAll();
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
 
             foreach ($records as $row)
             {
-                $oShared = User::getName($row['share_uid']); //for conversion of uid to human readable names
-                $owner = User::getName($row['owner_uid']);
+                $oShared = User::model()->getName($row['share_uid']); //for conversion of uid to human readable names
+                $owner = User::model()->getName($row['owner_uid']);
                 $aData->rows[$i]['id'] = $row['participant_id']."--".$row['share_uid']; //This is the unique combination per record
                 $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $oShared[0]['full_name'], $row['share_uid'], $owner[0]['full_name'], $row['date_added'], $row['can_edit']);
                 $i++;
@@ -220,14 +220,14 @@ class participantsaction extends Survey_Common_Action
         // otherwise only the shared participants by that user
         else
         {
-            $records = User::getParticipantShared(Yii::app()->session['loginID']);
+            $records = User::model()->getParticipantShared(Yii::app()->session['loginID']);
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
 
             foreach ($records as $row)
             {
-                $sharename = User::getName($row['share_uid']); //for conversion of uid to human readable names
+                $sharename = User::model()->getName($row['share_uid']); //for conversion of uid to human readable names
                 $aData->rows[$i]['id'] = $row['participant_id'];
                 $aData['rows'][$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sharename['full_name'], $row['share_uid'], $row['date_added'], $row['can_edit']);
                 $i++;
@@ -247,7 +247,7 @@ class participantsaction extends Survey_Common_Action
         $shareIds = Yii::app()->request->getPost('id');
         if ($operation == 'del') // If operation is delete , it will delete, otherwise edit it
         {
-            ParticipantShares::deleteRow($shareIds);
+            ParticipantShares::model()->deleteRow($shareIds);
         }
         else
         {
@@ -256,7 +256,7 @@ class participantsaction extends Survey_Common_Action
                 'can_edit' => Yii::app()->request->getPost('can_edit'),
                 'share_uid' => Yii::app()->request->getPost('shared_uid')
             );
-            ParticipantShares::updateShare($aData);
+            ParticipantShares::model()->updateShare($aData);
         }
     }
 
@@ -280,7 +280,7 @@ class participantsaction extends Survey_Common_Action
         $limit = Yii::app()->request->getPost('rows');
     	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
-        $records = ParticipantAttributeNames::getAttributes();
+        $records = ParticipantAttributeNames::model()->getAttributes();
 
         $attribute_types = array(
             'DD' => $clang->gT("Drop-down list"),
@@ -290,7 +290,7 @@ class participantsaction extends Survey_Common_Action
 
         $aData->page = $page;
         $aData->records = count($records);
-        $aData->total = ceil(ParticipantAttributeNames::getAttributes(true) / $limit);
+        $aData->total = ceil(ParticipantAttributeNames::model()->getAttributes(true) / $limit);
 
         $i = 0;
         foreach ($records as $row)
@@ -320,7 +320,7 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($aAttributeIds as $iAttributeId)
             {
-                ParticipantAttributeNames::delAttribute($iAttributeId);
+                ParticipantAttributeNames::model()->delAttribute($iAttributeId);
             }
         }
         elseif ($operation == 'add' && Yii::app()->request->getPost('attribute_name'))
@@ -330,7 +330,7 @@ class participantsaction extends Survey_Common_Action
                 'attribute_type' => Yii::app()->request->getPost('attribute_type'),
                 'visible' => Yii::app()->request->getPost('visible') == 'TRUE' ? 'TRUE' : 'FALSE'
             );
-            echo ParticipantAttributeNames::storeAttribute($aData);
+            echo ParticipantAttributeNames::model()->storeAttribute($aData);
         }
         elseif ($operation == 'edit' && Yii::app()->request->getPost('id'))
         {
@@ -340,7 +340,7 @@ class participantsaction extends Survey_Common_Action
                 'attribute_type' => Yii::app()->request->getPost('attribute_type'),
                 'visible' => Yii::app()->request->getPost('visible') == 'TRUE' ? 'TRUE' : 'FALSE'
             );
-            ParticipantAttributeNames::saveAttribute($aData);
+            ParticipantAttributeNames::model()->saveAttribute($aData);
             $clang->eT("Attribute display setting updated");
         }
 
@@ -359,17 +359,17 @@ class participantsaction extends Survey_Common_Action
         // Deletes from participants only
         if ($selectoption == 'po')
         {
-            Participants::deleteParticipant($iParticipantId);
+            Participants::model()->deleteParticipant($iParticipantId);
         }
         // Deletes from central and token table
         elseif ($selectoption == 'ptt')
         {
-            Participants::deleteParticipantToken($iParticipantId);
+            Participants::model()->deleteParticipantToken($iParticipantId);
         }
         // Deletes from central , token and assosiated responses as well
         else
         {
-            Participants::deleteParticipantTokenAnswer($iParticipantId);
+            Participants::model()->deleteParticipantTokenAnswer($iParticipantId);
         }
     }
 
@@ -411,7 +411,7 @@ class participantsaction extends Survey_Common_Action
                 'blacklisted' => Yii::app()->request->getPost('blacklisted'),
                 'owner_uid' => $oid
             );
-            Participants::updateRow($aData);
+            Participants::model()->updateRow($aData);
         }
         // if add it will insert a new row
         elseif ($operation == 'add')
@@ -426,7 +426,7 @@ class participantsaction extends Survey_Common_Action
                 'blacklisted' => Yii::app()->request->getPost('blacklisted'),
                 'owner_uid' => $oid
             );
-            Participants::insertParticipant($aData);
+            Participants::model()->insertParticipant($aData);
         }
     }
 
@@ -490,7 +490,7 @@ class participantsaction extends Survey_Common_Action
 
         foreach ($records as $row)
         {
-            $surveyname = Surveys_languagesettings::getSurveyNames($row['survey_id']);
+            $surveyname = Surveys_languagesettings::model()->getSurveyNames($row['survey_id']);
             $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created'], $row['date_invited'], $row['date_completed']);
             $i++;
         }
@@ -514,17 +514,17 @@ class participantsaction extends Survey_Common_Action
             if ($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
             {
                 $condition = explode("||", $searchcondition);
-                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
+                $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
             }
             else // if no search criteria all the participants will be counted
             {
-                $query = Participants::getParticipantsWithoutLimit();
+                $query = Participants::model()->getParticipantsWithoutLimit();
             }
         }
         else // If no search criteria it will simply return the number of participants
         {
             $iUserID = Yii::app()->session['loginID'];
-            $query = Participants::getParticipantsOwner($iUserID);
+            $query = Participants::model()->getParticipantsOwner($iUserID);
         }
 
         echo sprintf($clang->gT("Export %s participant(s) to CSV"), count($query));
@@ -537,12 +537,12 @@ class participantsaction extends Survey_Common_Action
     {
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants in the central table will be counted
         {
-            $query = Participants::getParticipantsWithoutLimit();
+            $query = Participants::model()->getParticipantsWithoutLimit();
         }
         else // otherwise only the participants on which the logged in user has the rights
         {
             $iUserID = Yii::app()->session['loginID'];
-            $query = Participants::getParticipantsOwner($iUserID);
+            $query = Participants::model()->getParticipantsOwner($iUserID);
         }
 
         if (count($query) > 0) // If count is greater than 0 it will show the message
@@ -563,12 +563,12 @@ class participantsaction extends Survey_Common_Action
         Yii::app()->loadHelper('export');  // loads the export helper
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be exported
         {
-            $query = Participants::getParticipantsWithoutLimit();
+            $query = Participants::model()->getParticipantsWithoutLimit();
         }
         else // otherwise only the ones over which the user has rights on
         {
             $iUserID = Yii::app()->session['loginID'];
-            $query = Participants::getParticipantsOwner($iUserID);
+            $query = Participants::model()->getParticipantsOwner($iUserID);
         }
 
         if (!$query)
@@ -585,7 +585,7 @@ class participantsaction extends Survey_Common_Action
             $i++;
         }
 
-        $attributenames = ParticipantAttributeNames::getAttributes();
+        $attributenames = ParticipantAttributeNames::model()->getAttributes();
         // Attribute names are being added to the index 0 of the array
         foreach ($attributenames as $key => $value)
         {
@@ -610,7 +610,7 @@ class participantsaction extends Survey_Common_Action
             // that are to be exported to the CSV file
             foreach ($attributenames as $key => $value)
             {
-                $answer = ParticipantAttributeNames::getAttributeValue($aData['participant_id'], $value['attribute_id']);
+                $answer = ParticipantAttributeNames::model()->getAttributeValue($aData['participant_id'], $value['attribute_id']);
                 if (isset($answer['value']))
                 { // if the attribute value is there for that attribute and the user then it will written to the array
                     $outputarray[$i][$j] = $answer['value'];
@@ -646,7 +646,7 @@ class participantsaction extends Survey_Common_Action
             $participantid = "";
             $condition = explode("||", $searchcondition);
 
-            $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
+            $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
 
             printf( $this->getController()->lang->gT("%s participant(s) are to be copied "), count($query));
         }
@@ -655,11 +655,11 @@ class participantsaction extends Survey_Common_Action
         {
             if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
             {
-                $query = Participants::getParticipantsWithoutLimit();
+                $query = Participants::model()->getParticipantsWithoutLimit();
             }
             else
             {
-                $query = Participants::getParticipantsOwner(Yii::app()->session['loginID']);
+                $query = Participants::model()->getParticipantsOwner(Yii::app()->session['loginID']);
             }
 
             printf($this->getController()->lang->gT("%s participant(s) are to be copied "), count($query));
@@ -682,7 +682,7 @@ class participantsaction extends Survey_Common_Action
             $participantid = "";
             $condition = explode("||", $searchcondition);  // explode the condition to the array
 
-            $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
+            $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
 
             foreach ($query as $key => $value)
             {
@@ -695,11 +695,11 @@ class participantsaction extends Survey_Common_Action
             $participantid = ""; // initiallise the participant id to blank
             if (Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
             {
-                $query = Participants::getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
+                $query = Participants::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
             }
             else // get participants on which the user has right on
             {
-                $query = Participants::getParticipantsOwner(Yii::app()->session['loginID']);
+                $query = Participants::model()->getParticipantsOwner(Yii::app()->session['loginID']);
             }
 
             foreach ($query as $key => $value)
@@ -728,18 +728,18 @@ class participantsaction extends Survey_Common_Action
             {
                 $condition = explode("||", $searchcondition);
 
-                $query = Participants::getParticipantsSearchMultiple($condition, 0, 0);
+                $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
 
             } // else all the participants in the central table will be exported since it's superadmin
             else
             {
-                $query = Participants::getParticipantsWithoutLimit();
+                $query = Participants::model()->getParticipantsWithoutLimit();
             }
         }
         else
         {
             $iUserID = Yii::app()->session['loginID']; // else only the
-            $query = Participants::getParticipantsOwner($iUserID);
+            $query = Participants::model()->getParticipantsOwner($iUserID);
         }
 
         if (!$query)
@@ -775,7 +775,7 @@ class participantsaction extends Survey_Common_Action
             $iAttributeId = explode(",", Yii::app()->request->getQuery('id'));
             foreach ($iAttributeId as $key => $value)
             {
-                $attributename = ParticipantAttributeNames::getAttributeNames($value);
+                $attributename = ParticipantAttributeNames::model()->getAttributeNames($value);
                 $outputarray[0][$i] = $attributename[0]['attribute_name'];
                 $i++;
             }
@@ -791,7 +791,7 @@ class participantsaction extends Survey_Common_Action
                 }
                 foreach ($iAttributeId as $key => $value)
                 {
-                    $answer = ParticipantAttributeNames::getAttributeValue($aData['participant_id'], $value);
+                    $answer = ParticipantAttributeNames::model()->getAttributeValue($aData['participant_id'], $value);
                     if (isset($answer['value']))
                     {
                         $outputarray[$i][$j] = $answer['value'];
@@ -819,7 +819,7 @@ class participantsaction extends Survey_Common_Action
         $page=($page) ? $page : 1;
     	$limit=($limit) ? $limit : 25;
 
-        $attid = ParticipantAttributeNames::getAttributeVisibleID();
+        $attid = ParticipantAttributeNames::model()->getAttributeVisibleID();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
 
         //If super admin all the participants will be visible
@@ -833,23 +833,23 @@ class participantsaction extends Survey_Common_Action
             $aData = new stdClass();
             $aData->page = $page;
 
-            $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
+            $records = Participants::model()->getParticipantsSearchMultiple($condition, $page, $limit);
 
-            $aData->records = count(Participants::getParticipantsSearchMultiple($condition, 0, 0));
+            $aData->records = count(Participants::model()->getParticipantsSearchMultiple($condition, 0, 0));
             $aData->total = ceil($aData->records / $limit);
 
             $i = 0;
 
             foreach ($records as $row => $value)
             {
-                $username = User::getName($value['owner_uid']); //for conversion of uid to human readable names
-                $surveycount = Participants::getSurveyCount($value['participant_id']);
+                $username = User::model()->getName($value['owner_uid']); //for conversion of uid to human readable names
+                $surveycount = Participants::model()->getSurveyCount($value['participant_id']);
                 $sortablearray[$i] = array($value['participant_id'], "true", $value['firstname'], $value['lastname'], $value['email'], $value['blacklisted'], $surveycount, $value['language'], $username[0]['full_name']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                $attributes = ParticipantAttributeNames::getParticipantVisibleAttribute($value['participant_id']);
+                $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($value['participant_id']);
                 foreach ($attid as $iAttributeId)
                 {
                     $participantfields[]=$iAttributeId['attribute_id'];
-                    $answer = ParticipantAttributeNames::getAttributeValue($value['participant_id'], $iAttributeId['attribute_id']);
+                    $answer = ParticipantAttributeNames::model()->getAttributeValue($value['participant_id'], $iAttributeId['attribute_id']);
                     if (isset($answer['value']))
                     {
                         array_push($sortablearray[$i], $answer['value']);
@@ -917,20 +917,20 @@ class participantsaction extends Survey_Common_Action
             $aData = new stdClass();
             $aData->page = $page;
 
-            $records = Participants::getParticipantsSearchMultiple($condition, $page, $limit);
+            $records = Participants::model()->getParticipantsSearchMultiple($condition, $page, $limit);
 
             $i = 0;
             foreach ($records as $row => $value)
             {
-                if (Participants::is_owner($value['participant_id']))
+                if (Participants::model()->is_owner($value['participant_id']))
                 {
-                    $username = User::getName($value['owner_uid']); //for conversion of uid to human readable names
-                    $surveycount = Participants::getSurveyCount($value['participant_id']);
+                    $username = User::model()->getName($value['owner_uid']); //for conversion of uid to human readable names
+                    $surveycount = Participants::model()->getSurveyCount($value['participant_id']);
                     $sortablearray[$i] = array($value['participant_id'], "true", $value['firstname'], $value['lastname'], $value['email'], $value['blacklisted'], $surveycount, $value['language'], $username[0]['full_name']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                    $attributes = ParticipantAttributeNames::getParticipantVisibleAttribute($value['participant_id']);
+                    $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($value['participant_id']);
                     foreach ($attid as $iAttributeId)
                     {
-                        $answer = ParticipantAttributeNames::getAttributeValue($value['participant_id'], $iAttributeId['attribute_id']);
+                        $answer = ParticipantAttributeNames::model()->getAttributeValue($value['participant_id'], $iAttributeId['attribute_id']);
                         if (isset($answer['value']))
                         {
                             array_push($sortablearray[$i], $answer['value']);
@@ -1018,7 +1018,7 @@ class participantsaction extends Survey_Common_Action
         $limit = Yii::app()->request->getPost('rows');
     	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
-        $attid = ParticipantAttributeNames::getAttributeVisibleID();
+        $attid = ParticipantAttributeNames::model()->getAttributeVisibleID();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
         foreach ($attid as $key => $value)
         {
@@ -1028,7 +1028,7 @@ class participantsaction extends Survey_Common_Action
         //If super admin all the participants will be visible
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
-            $records = Participants::getParticipants($page, $limit);
+            $records = Participants::model()->getParticipants($page, $limit);
             $aData->page = $page;
             $aData->records = Participants::model()->count();
             $aData->total = ceil($aData->records / $limit);
@@ -1036,13 +1036,13 @@ class participantsaction extends Survey_Common_Action
         	$sortablearray=array();
         	foreach ($records as $key => $row)
             {
-                $username = User::getName($row['owner_uid']); //for conversion of uid to human readable names
-                $surveycount = Participants::getSurveyCount($row['participant_id']);
+                $username = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
+                $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
                 $sortablearray[$i] = array($row['participant_id'], "true", $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $username[0]['full_name']); // since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                $attributes = ParticipantAttributeNames::getParticipantVisibleAttribute($row['participant_id']);
+                $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($row['participant_id']);
                 foreach ($attid as $iAttributeId)
                 {
-                    $answer = ParticipantAttributeNames::getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
+                    $answer = ParticipantAttributeNames::model()->getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
                     if (isset($answer['value']))
                     {
                         array_push($sortablearray[$i], $answer['value']);
@@ -1077,22 +1077,22 @@ class participantsaction extends Survey_Common_Action
         else
         {
             $iUserID = Yii::app()->session['loginID'];
-            $records = Participants::getParticipantsOwner($iUserID);
+            $records = Participants::model()->getParticipantsOwner($iUserID);
             $aData->page = $page;
             $aData->records = count($records);
             $aData->total = ceil($aData->records / $limit);
-            $attid = ParticipantAttributeNames::getAttributeVisibleID();
+            $attid = ParticipantAttributeNames::model()->getAttributeVisibleID();
             $i = 0;
         	$sortablearray=array();
             foreach ($records as $row)
             {
-                $surveycount = Participants::getSurveyCount($row['participant_id']);
-                $ownername = User::getName($row['owner_uid']); //for conversion of uid to human readable names
+                $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
+                $ownername = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
                 $sortablearray[$i] = array($row['participant_id'], $row['can_edit'], $row['firstname'], $row['lastname'], $row['email'], $row['blacklisted'], $surveycount, $row['language'], $ownername[0]['full_name']);
-                $attributes = ParticipantAttributeNames::getParticipantVisibleAttribute($row['participant_id']);
+                $attributes = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($row['participant_id']);
                 foreach ($attid as $iAttributeId)
                 {
-                    $answer = ParticipantAttributeNames::getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
+                    $answer = ParticipantAttributeNames::model()->getAttributeValue($row['participant_id'], $iAttributeId['attribute_id']);
                     if (isset($answer['value']))
                     {
                         array_push($sortablearray[$i], $answer['value']);
@@ -1131,8 +1131,8 @@ class participantsaction extends Survey_Common_Action
     function getAttribute_json()
     {
         $iParticipantId = Yii::app()->request->getQuery('pid');
-        $records = ParticipantAttributeNames::getParticipantVisibleAttribute($iParticipantId);
-        $getallattributes = ParticipantAttributeNames::getAttributes();
+        $records = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($iParticipantId);
+        $getallattributes = ParticipantAttributeNames::model()->getAttributes();
         $aData = new stdClass();
         $aData->page = 1;
         $aData->records = count($records);
@@ -1148,7 +1148,7 @@ class participantsaction extends Survey_Common_Action
             $aData->rows[$i]['cell'] = array("", $row['participant_id'], $row['attribute_type'], $row['attribute_name'], $row['value']);
             if ($row['attribute_type'] == "DD")
             {
-                $attvalues = ParticipantAttributeNames::getAttributesValues($row['attribute_id']);
+                $attvalues = ParticipantAttributeNames::model()->getAttributesValues($row['attribute_id']);
                 if (!empty($attvalues))
                 {
                     $attval = "";
@@ -1174,11 +1174,11 @@ class participantsaction extends Survey_Common_Action
         }
         if (count($doneattributes) == 0)
         {
-            $attributenotdone = ParticipantAttributeNames::getAttributes();
+            $attributenotdone = ParticipantAttributeNames::model()->getAttributes();
         }
         else
         {
-            $attributenotdone = ParticipantAttributeNames::getnotaddedAttributes($doneattributes);
+            $attributenotdone = ParticipantAttributeNames::model()->getnotaddedAttributes($doneattributes);
         }
         if ($attributenotdone > 0)
         {
@@ -1189,7 +1189,7 @@ class participantsaction extends Survey_Common_Action
                 $aData->rows[$i]['cell'] = array("", $iParticipantId, $row['attribute_type'], $row['attribute_name'], "");
                 if ($row['attribute_type'] == "DD")
                 {
-                    $attvalues = ParticipantAttributeNames::getAttributesValues($row['attribute_id']);
+                    $attvalues = ParticipantAttributeNames::model()->getAttributesValues($row['attribute_id']);
                     if (!empty($attvalues))
                     {
                         $attval = "";
@@ -1229,7 +1229,7 @@ class participantsaction extends Survey_Common_Action
             'blacklisted' => Yii::app()->request->getPost('blacklisted'),
             'owner_uid' => Yii::app()->request->getPost('owner_uid'));
 
-        Participants::insertParticipant($aData);
+        Participants::model()->insertParticipant($aData);
     }
 
     /*
@@ -1239,9 +1239,9 @@ class participantsaction extends Survey_Common_Action
     {
         $iAttributeId = Yii::app()->request->getQuery('aid');
         $aData = array(
-            'attributes' => ParticipantAttributeNames::getAttribute($iAttributeId),
-            'attributenames' => ParticipantAttributeNames::getAttributeNames($iAttributeId),
-            'attributevalues' => ParticipantAttributeNames::getAttributesValues($iAttributeId)
+            'attributes' => ParticipantAttributeNames::model()->getAttribute($iAttributeId),
+            'attributenames' => ParticipantAttributeNames::model()->getAttributeNames($iAttributeId),
+            'attributevalues' => ParticipantAttributeNames::model()->getAttributesValues($iAttributeId)
         );
 
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')       . 'participants.css');
@@ -1262,7 +1262,7 @@ class participantsaction extends Survey_Common_Action
             'attribute_type' => Yii::app()->request->getPost('attribute_type'),
             'visible' => Yii::app()->request->getPost('visible')
         );
-        ParticipantAttributeNames::saveAttribute($aData);
+        ParticipantAttributeNames::model()->saveAttribute($aData);
 
         foreach ($_POST as $key => $value)
         {
@@ -1275,7 +1275,7 @@ class participantsaction extends Survey_Common_Action
                     'lang' => $key
                 );
 
-                ParticipantAttributeNames::saveAttributeLanguages($langdata);
+                ParticipantAttributeNames::model()->saveAttributeLanguages($langdata);
             }
         }
         if (Yii::app()->request->getPost('langdata'))
@@ -1286,7 +1286,7 @@ class participantsaction extends Survey_Common_Action
                 'lang' => Yii::app()->request->getPost('langdata')
             );
 
-            ParticipantAttributeNames::saveAttributeLanguages($langdata);
+            ParticipantAttributeNames::model()->saveAttributeLanguages($langdata);
         }
         if (Yii::app()->request->getPost('attribute_value_name_1'))
         {
@@ -1303,7 +1303,7 @@ class participantsaction extends Survey_Common_Action
                 }
                 $i++;
             } while (isset($_POST[$attvaluename]));
-            ParticipantAttributeNames::storeAttributeValues($aDatavalues);
+            ParticipantAttributeNames::model()->storeAttributeValues($aDatavalues);
         }
         if (Yii::app()->request->getPost('editbox'))
         {
@@ -1312,7 +1312,7 @@ class participantsaction extends Survey_Common_Action
                 'value_id' => Yii::app()->request->getPost('value_id'),
                 'value' => Yii::app()->request->getPost('editbox')
             );
-            ParticipantAttributeNames::saveAttributeValue($editattvalue);
+            ParticipantAttributeNames::model()->saveAttributeValue($editattvalue);
         }
         Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('admin/participants/attributeControl'));
     }
@@ -1324,7 +1324,7 @@ class participantsaction extends Survey_Common_Action
     {
         $iAttributeId = Yii::app()->request->getQuery('aid');
         $iValueId = Yii::app()->request->getQuery('vid');
-        ParticipantAttributeNames::delAttributeValues($iAttributeId, $iValueId);
+        ParticipantAttributeNames::model()->delAttributeValues($iAttributeId, $iValueId);
         Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl('/admin/participants/viewAttribute/aid/' . $iAttributeId));
     }
 
@@ -1337,7 +1337,7 @@ class participantsaction extends Survey_Common_Action
         {
             $iAttributeId = explode("_", Yii::app()->request->getPost('id'));
             $aData = array('participant_id' => Yii::app()->request->getPost('participant_id'), 'attribute_id' => $iAttributeId[1], 'value' => Yii::app()->request->getPost('attvalue'));
-            ParticipantAttributeNames::editParticipantAttributeValue($aData);
+            ParticipantAttributeNames::model()->editParticipantAttributeValue($aData);
         }
     }
 
@@ -1382,7 +1382,7 @@ class participantsaction extends Survey_Common_Action
             }
             $linecount = count(file($sFilePath));
 
-            $attributes = ParticipantAttributeNames::model()->getAttributes();
+            $attributes = ParticipantAttributeNames::model()->model()->getAttributes();
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
@@ -1714,7 +1714,7 @@ class participantsaction extends Survey_Common_Action
                 'share_uid' => $iShareUserId,
                 'date_added' => date(DATE_W3C, $time),
                 'can_edit' => $bCanEdit);
-            ParticipantShares::storeParticipantShare($aData);
+            ParticipantShares::model()->storeParticipantShare($aData);
             $i++;
         }
 
@@ -1735,7 +1735,7 @@ class participantsaction extends Survey_Common_Action
         $overwriteman = Yii::app()->request->getPost('overwriteman');
         $createautomap = Yii::app()->request->getPost('createautomap');
 
-        $response = Participants::copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman);
+        $response = Participants::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman);
         $clang = $this->getController()->lang;
 
         printf($clang->gT("%s participants have been copied to the central participants table"), $response['success']);
@@ -1754,7 +1754,7 @@ class participantsaction extends Survey_Common_Action
      */
     function addToToken()
     {
-        $response = Participants::copytoSurvey(Yii::app()->request
+        $response = Participants::model()->copytoSurvey(Yii::app()->request
                                                          ->getPost('participantid'),
                                                Yii::app()->request
                                                          ->getPost('surveyid'), Yii::app()
@@ -1790,7 +1790,7 @@ class participantsaction extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
-        $response = Participants::copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
+        $response = Participants::model()->copytosurveyatt($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
@@ -1816,7 +1816,7 @@ class participantsaction extends Survey_Common_Action
         $redirect = Yii::app()->request->getPost('redirect');
         $count = Yii::app()->request->getPost('count');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
-        $attributes = ParticipantAttributeNames::getAttributes();
+        $attributes = ParticipantAttributeNames::model()->getAttributes();
         $tokenattributefieldnames = getTokenFieldsAndNames($iSurveyId, TRUE);
         /* $arr = Yii::app()->db
                          ->createCommand()
@@ -1887,7 +1887,7 @@ class participantsaction extends Survey_Common_Action
         Yii::app()->loadHelper('common');
 
         $iSurveyId = Yii::app()->request->getQuery('sid');
-        $attributes = ParticipantAttributeNames::getAttributes();
+        $attributes = ParticipantAttributeNames::model()->getAttributes();
         $tokenattributefieldnames = getTokenFieldsAndNames($iSurveyId, TRUE);
 
         $selectedattribute = array();
