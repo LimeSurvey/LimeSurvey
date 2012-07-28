@@ -65,6 +65,8 @@ class participantsaction extends Survey_Common_Action
      */
     function index()
     {
+        $iUserID = Yii::app()->session['loginID'];
+
         // if superadmin all the records in the cpdb will be displayed
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
@@ -77,7 +79,6 @@ class participantsaction extends Survey_Common_Action
         }
 
         // gets the count of participants, their attributes and other such details
-        $iUserID = Yii::app()->session['loginID'];
         $aData = array(
             'totalrecords' => $iTotalRecords,
             'owned' => Participants::model()->count('owner_uid = ' . $iUserID),
