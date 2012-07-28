@@ -2659,7 +2659,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
     if (empty($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated'] = new CDbExpression('NOW()'); }
 
-    $iNewSID = Survey::insertNewSurvey($surveyrowdata) or safeDie ("<br />".$clang->gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
+    $iNewSID = Survey::model()->insertNewSurvey($surveyrowdata) or safeDie ("<br />".$clang->gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
 
     // Now import the survey language settings
     $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');

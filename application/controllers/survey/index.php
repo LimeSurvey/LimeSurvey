@@ -20,7 +20,7 @@ class index extends CAction {
 
     function action()
     {
-        global $surveyid, $thistpl, $totalquestions;
+        global $surveyid, $totalquestions;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
         $clang = Yii::app()->lang;
@@ -160,10 +160,7 @@ class index extends CAction {
                 $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
             }
             $clang = $this->_loadLimesurveyLang($sDisplayLanguage);
-            if(!isset($defaulttemplate))
-            {
-                $defaulttemplate=Yii::app()->getConfig("defaulttemplate");
-            }
+
             $languagechanger = makeLanguageChanger($sDisplayLanguage);
             //Find out if there are any publicly available surveys
             $query = "SELECT sid, surveyls_title, publicstatistics, language
@@ -276,24 +273,23 @@ class index extends CAction {
             "list"=>implode("\n",$list),
             );
 
-            $thissurvey['templatedir'] = $defaulttemplate;
 
             $data['thissurvey'] = $thissurvey;
             //$data['privacy'] = $privacy;
             $data['surveylist'] = $surveylist;
             $data['surveyid'] = $surveyid;
-            $data['templatedir'] = getTemplatePath($defaulttemplate);
-            $data['templateurl'] = getTemplateURL($defaulttemplate)."/";
-            $data['templatename'] = $defaulttemplate;
+            $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+            $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
+            $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
             $data['sitename'] = Yii::app()->getConfig("sitename");
             $data['languagechanger'] = $languagechanger;
 
             //A nice exit
             sendCacheHeaders();
             doHeader();
-            $this->_printTemplateContent(getTemplatePath($defaulttemplate)."/startpage.pstpl", $data, __LINE__);
+            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/startpage.pstpl", $data, __LINE__);
 
-            $this->_printTemplateContent(getTemplatePath($defaulttemplate)."/surveylist.pstpl", $data, __LINE__);
+            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/surveylist.pstpl", $data, __LINE__);
 
             echo '<script type="text/javascript" >
             function sendreq(surveyid)
@@ -338,14 +334,9 @@ class index extends CAction {
         }
 
         //SET THE TEMPLATE DIRECTORY
-        if (!$thissurvey['templatedir'])
-        {
-            $thistpl = getTemplatePath($defaulttemplate);
-        }
-        else
-        {
-            $thistpl = getTemplatePath($thissurvey['templatedir']);
-        }
+
+        $thistpl = getTemplatePath($thissurvey['templatedir']);
+
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED

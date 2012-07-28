@@ -97,7 +97,7 @@ function quickaddfunction(){
             i++;
         }
 
-        if (index!=0){
+        if (index!=0 || (!lsreplace && $("#tabs>div:not(:last) tbody>tr").length > 0)){
             event = {};
             event.target = $(".btnaddanswer:last");
             var retcode = add_label(event);

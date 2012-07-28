@@ -17,10 +17,10 @@ class Load_answers {
 	function run($args) {
 		extract($args);
 		$redata = compact(array_keys(get_defined_vars()));
-		if (!isset($thistpl)) {die ("Error!");}
+        $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 		sendCacheHeaders();
 		doHeader();
-		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+		echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata);
 
 		echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 		."\t<script type='text/javascript'>\n"
@@ -30,7 +30,7 @@ class Load_answers {
 		."\t</script>\n\n";
 
 		echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."'>\n";
-		echo templatereplace(file_get_contents("$thistpl/load.pstpl"),array(),$redata);
+		echo templatereplace(file_get_contents($sTemplatePath."load.pstpl"),array(),$redata);
 		//PRESENT OPTIONS SCREEN (Replace with Template Later)
 		//END
 		echo "<input type='hidden' name='sid' value='{$surveyid}' />\n";
@@ -41,7 +41,7 @@ class Load_answers {
 		}
 		echo "</form>";
 
-		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+		echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata);
 		doFooter();
 		exit;
 
