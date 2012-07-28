@@ -97,6 +97,34 @@ class Tokens_dynamic extends LSActiveRecord
         return $data;
     }
 
+    /**
+    * Checks to make sure that all required columns exist in this tokens table
+    * (some older tokens tables dont' get udated properly)
+    *
+    */
+    public function checkColumns() {
+        $sid = self::$sid;
+        $surveytable='{{tokens_'.$sid.'}}';
+        $columncheck=array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus","token","language","blacklisted","sent","remindersent","completed","usesleft","validfrom","validuntil");
+        $columns = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
+        $missingcolumns=array_diff($columncheck,$columns);
+        if(count($missingcolumns)>0) //Some columns are missing - we need to create them
+        {
+            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            setVarchar(); //Set the appropriate varchar settings according to the database
+            $sVarchar=Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
+            $columninfo=array('validfrom'=>'datetime',
+                              'validuntil'=>'datetime',
+                              'blacklisted'=>$sVarchar.'(17) NOT NULL',
+                              'participant_id'=>$sVarchar.'(50) NOT NULL',
+                              'remindercount'=>"integer DEFAULT '0'",
+                              'usesleft'=>'integer NOT NULL default 1'); //Not sure if any other fields would ever turn up here - please add if you can think of any others
+            foreach($missingcolumns as $columnname) {
+                addColumn($surveytable,$columnname,$columninfo[$columnname]);
+            }
+        }
+    }
+
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
         $emquery = "SELECT * FROM {{tokens_" . self::$sid . "}} WHERE ((completed ='N') or (completed='')) AND token <> '' AND email <> ''";

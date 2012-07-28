@@ -112,10 +112,6 @@ class question extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
 
-        $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
-        $aData['display']['menu_bars']['gid_action'] = 'editdefaultvalues';
-        $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
-
         $clang = $this->getController()->lang;
 
         Yii::app()->loadHelper('surveytranslator');
@@ -171,8 +167,7 @@ class question extends Survey_Common_Action
                         ));
 
                         $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
-                        $langopts[$language][$questionrow['type']]['Ydefaultvalue'] =
-                                $defaultvalue == null ? '' : $defaultvalue->defaultvalue;
+                        $langopts[$language][$questionrow['type']]['Ydefaultvalue'] = $defaultvalue;
                     }
                 }
             }
@@ -217,6 +212,18 @@ class question extends Survey_Common_Action
                     }
                 }
             }
+            if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
+            $qtproperties[$questionrow['type']]['subquestions'] == 0)
+            {
+                $defaultvalue = Defaultvalues::model()->findByAttributes(array(
+                'specialtype' => '',
+                'qid' => $qid,
+                'scale_id' => 0,
+                'language' => $language
+                ));
+                $langopts[$language][$questionrow['type']][0] = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
+            }
+
         }
 
         $aData = array(
@@ -229,6 +236,8 @@ class question extends Survey_Common_Action
             'qtproperties' => $qtproperties,
             'baselang' => $baselang,
         );
+        $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
+        $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
 
         $this->_renderWrappedTemplate('survey/Question', 'editdefaultvalues_view', $aData);
     }

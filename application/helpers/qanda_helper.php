@@ -9,9 +9,8 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
-*	$Id$
 */
+
 // Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
@@ -214,25 +213,6 @@ function retrieveAnswers($ia)
                     . $clang->gT('Check any that apply').'</span>';
                     $question_text['help'] = $clang->gT('Check any that apply');
                 }
-                //                else
-                //                {
-                //                    if ($maxansw && $minansw)
-                //                    {
-                //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw)."</span>";
-                //                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw);
-                //                    } elseif ($maxansw)
-                //                    {
-                //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                        . sprintf($clang->gT("Check at most %d answers"), $maxansw)."</span>";
-                //                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw);
-                //                    } else
-                //                    {
-                //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                        . sprintf($clang->gT("Check at least %d answers"), $minansw)."</span>";
-                //                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw);
-                //                    }
-                //                }
             }
             break;
         case '|': //File Upload
@@ -989,8 +969,8 @@ function do_5pointchoice($ia)
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
     if($aQuestionAttributes['slider_rating']==1){
-        header_includes('/admin/scripts/rating/jquery.rating.css','css');
-        header_includes('/admin/scripts/rating/jquery.rating.js','js');
+        header_includes('jquery.rating.css','css');
+        header_includes('jquery.rating.js','js');
         $answer.="
         <script type=\"text/javascript\">
         document.write('";
@@ -1015,6 +995,7 @@ function do_5pointchoice($ia)
         $('#$id input').each(function(){ $(this).removeAttr('checked');});
         $('#answer$ia[1]'+value).attr('checked','checked');
         }
+        checkconditions(value,'$ia[1]','radio');
         }
 
         });
@@ -1317,7 +1298,8 @@ function do_language($ia)
         {
             $answer .= SELECTED;
         }
-        $answer .= '>'.getLanguageNameFromCode($ansrow, true)."</option>\n";
+        $aLanguage=getLanguageNameFromCode($ansrow, true);
+        $answer .= '>'.$aLanguage[1]."</option>\n";
     }
     $answer .= "</select>\n";
     $answer .= "<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
@@ -1426,7 +1408,7 @@ function do_list_dropdown($ia)
             if ($prefixStyle == 1) {
                 $_prefix = ++$_rowNum . ') ';
             }
-            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$_prefix}{$ansrow['answer']}</option>\n";
+            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>".flattenText($_prefix.$ansrow['answer'])."</option>\n";
         }
     }
     else
@@ -1450,7 +1432,7 @@ function do_list_dropdown($ia)
 
         foreach ($optgroups as $categoryname => $optionlistarray)
         {
-            $answer .= '                                   <optgroup class="dropdowncategory" label="'.$categoryname.'">
+            $answer .= '                                   <optgroup class="dropdowncategory" label="'.flattenText($categoryname).'">
             ';
 
             foreach ($optionlistarray as $optionarray)
@@ -1464,7 +1446,7 @@ function do_list_dropdown($ia)
                     $opt_select = '';
                 }
 
-                $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.$optionarray['answer'].'</option>
+                $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
                 ';
             }
 
@@ -1482,7 +1464,7 @@ function do_list_dropdown($ia)
                 $opt_select = '';
             }
 
-            $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.$optionarray['answer'].'</option>
+            $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
             ';
         }
     }
@@ -1505,7 +1487,7 @@ function do_list_dropdown($ia)
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
         }
-        $answer .= '					<option value="-oth-"'.$opt_select.'>'.$_prefix.$othertext."</option>\n";
+        $answer .= '					<option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
     }
 
     if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -2111,7 +2093,7 @@ function do_ranking($ia)
                     $answer .= SELECTED;
                     $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                 }
-            $answer .=">".htmlspecialchars($ansrow['answer'], ENT_QUOTES)."</option>\n";
+            $answer .=">".flattenText($ansrow['answer'])."</option>\n";
         }
         $answer .="</select>";
         // Hidden form: maybe can be replaced with ranking.js
@@ -2132,7 +2114,7 @@ function do_ranking($ia)
     $answer .="</div>";
     header_includes("ranking.js");
     header_includes("ranking.css","css");
-    
+
     if(trim($aQuestionAttributes['choice_title'][$clang->langcode]) != '')
     {
         $choice_title=htmlspecialchars(trim($aQuestionAttributes['choice_title'][$clang->langcode]), ENT_QUOTES);
@@ -2140,7 +2122,7 @@ function do_ranking($ia)
     else
     {
         $choice_title=$clang->gT("Your Choices",'js');
-    } 
+    }
     if(trim($aQuestionAttributes['rank_title'][$clang->langcode]) != '')
     {
         $rank_title=htmlspecialchars(trim($aQuestionAttributes['rank_title'][$clang->langcode]), ENT_QUOTES);
@@ -3693,12 +3675,12 @@ function do_numerical($ia)
     // --> START NEW FEATURE - SAVE
     $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
     . " <label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t"
-    . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".$clang->gT('Only numbers may be entered in this field')."\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" title=\"".$clang->gT('Only numbers may be entered in this field')."\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
+    . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".$clang->gT('Only numbers may be entered in this field.')."\" "
+    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
     if ($aQuestionAttributes['hide_tip']==0)
     {
-        $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
+        $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field.')."</p>\n";
     }
 
     // --> END NEW FEATURE - SAVE
@@ -5070,7 +5052,7 @@ function do_array($ia)
                 {
                     $answer .= SELECTED;
                 }
-                $answer .= '>'.$lrow['answer']."</option>\n";
+                $answer .= '>'.flattenText($lrow['answer'])."</option>\n";
             }
             // If not mandatory and showanswer, show no ans
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -6516,7 +6498,7 @@ function do_array_dual($ia)
                     {
                         $answer .= SELECTED;
                     }
-                    $answer .= '>'.$lrow['title']."</option>\n";
+                    $answer .= '>'.flattenText($lrow['title'])."</option>\n";
                 }
                 // If not mandatory and showanswer, show no ans
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -6570,7 +6552,7 @@ function do_array_dual($ia)
                     {
                         $answer .= SELECTED;
                     }
-                    $answer .= '>'.$lrow1['title']."</option>\n";
+                    $answer .= '>'.flattenText($lrow1['title'])."</option>\n";
                 }
                 // If not mandatory and showanswer, show no ans
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)

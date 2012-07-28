@@ -36,12 +36,12 @@ class surveypermission extends Survey_Common_Action {
 
         if(hasSurveyPermission($surveyid,'survey','read'))
         {
-            $aBaseSurveyPermissions=Survey_permissions::getBasePermissions();
+            $aBaseSurveyPermissions=Survey_permissions::model()->getBasePermissions();
 
             $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/jquery.tablesorter.min.js');
             $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/surveysecurity.js');
 
-            $result2 = Survey_permissions::getUserDetails($surveyid);
+            $result2 = Survey_permissions::model()->getUserDetails($surveyid);
 
             $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n"
 	            . "<table class='surveysecurity'><thead>"
@@ -219,7 +219,7 @@ class surveypermission extends Survey_Common_Action {
             if( (count($result) > 0 && in_array($postusergroupid,getSurveyUserGroupList('simpleugidarray',$surveyid))) ||Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
                 if($postusergroupid > 0){
-                    $result2 = User::getCommonUID($surveyid, $postusergroupid); //Checked
+                    $result2 = User::model()->getCommonUID($surveyid, $postusergroupid); //Checked
                     if($result2->getRowCount() > 0)
                     {
                         foreach ($result2->readAll() as $row2 )
@@ -302,7 +302,7 @@ class surveypermission extends Survey_Common_Action {
 
                 if($postuserid > 0){
 
-                    $isrresult = Survey_permissions::insertSomeRecords(array('sid' => $surveyid, 'uid' => $postuserid, 'permission' => 'survey', 'read_p' => 1));
+                    $isrresult = Survey_permissions::model()->insertSomeRecords(array('sid' => $surveyid, 'uid' => $postuserid, 'permission' => 'survey', 'read_p' => 1));
 
                     if($isrresult)
                     {
@@ -405,7 +405,7 @@ class surveypermission extends Survey_Common_Action {
                 . "</tr></thead>\n";
 
                 //content
-                $aBasePermissions=Survey_permissions::getBasePermissions();
+                $aBasePermissions=Survey_permissions::model()->getBasePermissions();
 
                 $oddcolumn=false;
                 foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
@@ -548,7 +548,7 @@ class surveypermission extends Survey_Common_Action {
                 $iOwnerID=$resrow['owner_id'];
             }
 
-            $aBaseSurveyPermissions = Survey_permissions::getBasePermissions();
+            $aBaseSurveyPermissions = Survey_permissions::model()->getBasePermissions();
             $aPermissions=array();
             foreach ($aBaseSurveyPermissions as $sPermissionKey=>$aCRUDPermissions)
             {
@@ -575,14 +575,14 @@ class surveypermission extends Survey_Common_Action {
                 {
                     foreach ($oResult as $aRow)
                     {
-						Survey_permissions::setPermission($aRow->uid, $surveyid, $aPermissions);
+						Survey_permissions::model()->setPermission($aRow->uid, $surveyid, $aPermissions);
                     }
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions for all users in this group were successfully updated.")."</div>\n";
                 }
             }
             else
             {
-                if (Survey_permissions::setPermission($postuserid, $surveyid, $aPermissions))
+                if (Survey_permissions::model()->setPermission($postuserid, $surveyid, $aPermissions))
                 {
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions were successfully updated.")."</div>\n";
                 }

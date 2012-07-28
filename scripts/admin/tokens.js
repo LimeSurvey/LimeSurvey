@@ -110,24 +110,24 @@ $(document).ready(function() {
     var lastSel,lastSel2;
     jQuery("#displaytokens").jqGrid({
         align:"center",
+        headertitles: true,
         url: jsonUrl,
         editurl: editUrl,
         datatype: "json",
         mtype: "post",
         colNames : colNames,
         colModel: colModels,
-        toppager: true,
         height: "100%",
         rowNum: 25,
         editable:true,
         scrollOffset:0,
         sortable : true,
-        sortname: 'id',
+        sortname: 'tid',
         sortorder: 'asc',
         viewrecords : true,
         rowList: [25,50,100,250,500,1000,5000,10000],
         multiselect: true,
-        loadonce : true,
+        loadonce : false,
         loadComplete: function()
         {
             /* Sneaky way of adding custom icons to jqGrid pager buttons */

@@ -493,8 +493,17 @@ th.admincell {
 
 .header_statistics {
     height:21px;
-    padding:1px;
-    padding-left:42px;
+    padding:1px 8px 1px 15px;
+    margin-bottom: 0;
+}
+.statisticsfilters {
+    width: 99%;
+    border: 1px solid #85BD00;
+    margin-bottom: 20px;
+}
+.scrollheight_400 {
+    height: 400px;
+    overflow: auto;
 }
 
 .btnaddanswer,
@@ -975,6 +984,22 @@ table.statisticstable, table.statisticssummary {
 .statisticstable tfoot tr {
     background:#D2E0F2;
     text-align:center;
+}
+
+.statisticsbrowsecolumn {
+    text-align: left;
+    width: 100%;
+    background-color: #EFFBDB;
+}
+.statisticscolumnid {
+    float: left;
+    text-align: center;
+    width: 25px;
+    padding-right: 4px;
+}
+.statisticscolumndata {
+    float: left;
+    width: 89%;
 }
 
 div.messagebox {
@@ -1666,4 +1691,109 @@ ol.organizer {
 
 legend{
     margin:1em;
+}
+
+
+
+
+/* Expression Manager - Show Logic File */
+
+
+/* main DIV element */
+#showlogicfilediv {
+  	margin: 0px 50px 20px 50px;
+  	padding:0px;
+	text-align: left;
+}
+
+
+
+/* main table */
+#logicfiletable {
+	margin-top: 20px;
+	text-align: center;
+	width: 100%;
+}
+
+table#logicfiletable, #logicfiletable td, #logicfiletable th {
+	border: 1px solid #000;
+	border-collapse: collapse;
+	padding: 4px;
+}
+
+table#logicfiletable th {
+	font-size: 12pt;
+	font-type: bold;
+}
+
+
+
+/* inner table listing question attributes */
+table#logicfileattributetable, #logicfileattributetable td, #logicfileattributetable th {
+	border: 1px dotted #000;
+	border-collapse: collapse;
+	padding: 4px;
+}
+
+table#logicfileattributetable {
+	margin: 10px auto;
+}
+
+table#logicfileattributetable th {
+	background-color: #D3D3D3;
+	font-size: 10pt;
+	font-type: bold;
+}
+table#logicfileattributetable td {
+	background-color: #FFFFFF;
+}
+
+
+
+/* different background colors for different survey elements */
+tr.LEMgroup td {
+	background-color: lightgrey;
+}
+
+tr.LEMquestion {
+	background-color: #EAF2D3;
+}
+
+tr.LEManswer td {
+	background-color: white;
+}
+
+tr.LEMsubq td {
+	background-color: lightyellow;
+}
+
+
+
+/* some classes to highlight certain elements */
+.error {
+    background-color: #000;
+}
+.ok {
+    background-color: #00ff00
+}
+
+.LEMheading, .LEMerror{
+	text-align: left;
+	margin:20px 50px 0px 50px;
+	color: red;
+	font-size: 12pt;
+}
+
+td.LEMerror  {
+	text-align: center;
+}
+
+.mandatory {
+	color: red;
+}
+
+
+.highlighterror {
+	border: 2px solid #FF00FF;
+	color: red;
 }

@@ -57,6 +57,9 @@ class tokens extends Survey_Common_Action
         }
         else
         {
+            //Check that the tokens table has the required fields
+            Tokens_dynamic::model($iSurveyId)->checkColumns();
+
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
             $aData['queries'] = Tokens_dynamic::model($iSurveyId)->summary();
@@ -353,10 +356,14 @@ class tokens extends Survey_Common_Action
         }
         $clang = $this->getController()->lang;
         $page  = Yii::app()->request->getPost('page');
+        $sidx = Yii::app()->request->getPost('sidx');
+        $sidx = !empty($sidx) ? $sidx : "lastname";
+        $sord = Yii::app()->request->getPost('sord');
+        $sord = !empty($sord) ? $sord : "asc";
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 25; //Stop division by zero errors
         $page = isset($page) ? $page : 1; //Stop division by zero errors
-        $tokens = Tokens_dynamic::model($iSurveyId)->findAll();
+        $tokens = Tokens_dynamic::model($iSurveyId)->findAll(array("order"=>$sidx. " ". $sord));
 
         $aData = new stdClass;
         $aData->page = $page;
@@ -564,7 +571,7 @@ class tokens extends Survey_Common_Action
             //            {
             //                $sLang = Yii::app()->request->getPost('language');
             //            }
-            Tokens_dynamic::sid($iSurveyId);
+            Tokens_dynamic::model()->sid($iSurveyId);
 
             echo $from . ',' . $until;
             $aData = array(
@@ -877,7 +884,7 @@ class tokens extends Survey_Common_Action
             $aTokenIds = explode(',', $iTokenId); //Make the tokenids string into an array
 
             //Delete any survey_links
-            Survey_links::deleteTokenLink($aTokenIds, $iSurveyId);
+            Survey_links::model()->deleteTokenLink($aTokenIds, $iSurveyId);
 
             //Then delete the tokens
             Tokens_dynamic::model($iSurveyId)->deleteRecords($aTokenIds);
@@ -994,7 +1001,7 @@ class tokens extends Survey_Common_Action
                 if($isvalidtoken)
                 {
                     $aDataToInsert['token'] = $newtoken;
-                    Tokens_dynamic::insertToken($iSurveyId, $aDataToInsert);
+                    Tokens_dynamic::model()->insertToken($iSurveyId, $aDataToInsert);
                     $newDummyToken ++;
                 }
 
@@ -2147,7 +2154,7 @@ class tokens extends Survey_Common_Action
             Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => "a:0:{}"));
 
             //Remove any survey_links to the CPDB
-            Survey_links::deleteLinksBySurvey($iSurveyId);
+            Survey_links::model()->deleteLinksBySurvey($iSurveyId);
 
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Delete Tokens Table"),
@@ -2302,7 +2309,7 @@ class tokens extends Survey_Common_Action
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));
 
             //Add any survey_links from the renamed table
-            Survey_links::rebuildLinksFromTokenTable($iSurveyId);
+            Survey_links::model()->rebuildLinksFromTokenTable($iSurveyId);
 
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => $clang->gT("Import old tokens"),

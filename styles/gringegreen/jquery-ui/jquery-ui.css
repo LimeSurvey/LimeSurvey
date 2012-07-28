@@ -147,7 +147,8 @@
 }
 
 .ui-state-active,.ui-widget-content .ui-state-active {
-  background-color: #797979;
+  /* background-color: #797979; */
+  background-color: #DBEAF9;
   font-weight: bold;
   color: #4e8632;
   outline: none;

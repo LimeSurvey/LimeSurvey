@@ -792,18 +792,18 @@ class conditionsaction extends Survey_Common_Action {
                         $x_axis[$frow['title']]=$frow['question'];
                     }
 
-                    foreach ($y_axis_db->readAll() as $arow)
+                    foreach ($y_axis_db->readAll() as $yrow)
                     {
                         foreach($x_axis as $key=>$val)
                         {
-                            $shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . flattenText($rows['question']);
-                            $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key);
+                            $shortquestion=$rows['title'].":{$yrow['title']}:$key: [".strip_tags($yrow['question']). "][" .strip_tags($val). "] " . flattenText($rows['question']);
+                            $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key);
 
                             if ($rows['type'] == ":")
                             {
                                 for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key, $ii, $ii);
+                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key, $ii, $ii);
                                 }
                             }
                         }

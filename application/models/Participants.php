@@ -154,16 +154,20 @@ class Participants extends CActiveRecord
     }
 
     /*
-     * This function combines the shared participant and the central participant
-     * table and searches for any reference of owner id or shared owner id in the rows
+     * This function returns a list of participants who are either owned or shared
+     * with a specific user
+     *
+     * @params int $userid The ID of the user that we are listing participants for
+     *
+     * @return object containing all the users
      */
-
     function getParticipantsOwner($userid)
     {
         return Yii::app()->db->createCommand()
             ->select('{{participants}}.*,{{participant_shares}}.can_edit')
-            ->from('{{participants}}')->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
-            ->where('owner_uid = :userid OR share_uid = ' . $userid)
+            ->from('{{participants}}')
+            ->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
+            ->where('owner_uid = :userid OR share_uid = :userid')
             ->group('{{participants}}.participant_id')
             ->bindParam(":userid", $userid, PDO::PARAM_INT)
             ->queryAll();
@@ -171,7 +175,14 @@ class Participants extends CActiveRecord
 
     function getParticipantsOwnerCount($userid)
     {
-        return count(Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.can_edit')->from('{{participants}}')->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')->where('owner_uid = :userid OR share_uid = ' . $userid)->group('{{participants}}.participant_id')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll());
+
+        return count(Yii::app()->db->createCommand()
+                               ->select('{{participants}}.*,{{participant_shares}}.can_edit')
+                               ->from('{{participants}}')
+                               ->leftJoin('{{participant_shares}}', '{{participants}}.participant_id={{participant_shares}}.participant_id')
+                               ->where('owner_uid = :userid OR share_uid = :userid')
+                               ->bindParam(":userid", $userid, PDO::PARAM_INT)
+                               ->queryAll());
     }
 
     function getParticipantsWithoutLimit()
@@ -286,13 +297,13 @@ class Participants extends CActiveRecord
 		}
 	}
 
-/*
- * Builds a select query for searching through participants limited to searches with only one line (no more than 3 entries in condition array)
- *
- * Deprecated, use "getParticipantsSearchMultiple()" instead.
- *
- * */
-function getParticipantsSearch($condition, $page, $limit)
+    /*
+     * Builds a select query for searching through participants limited to searches with only one line (no more than 3 entries in condition array)
+     *
+     * Deprecated, use "getParticipantsSearchMultiple()" instead.
+     *
+     * */
+    function getParticipantsSearch($condition, $page, $limit)
     {
         $start = $limit * $page - $limit;
         $command = new CDbCriteria;
@@ -375,20 +386,20 @@ function getParticipantsSearch($condition, $page, $limit)
         return $data;
     }
 
-/*
- * Function builds a select query for searches through participants using the $condition field passed
- * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
- * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
- *
- * @param array $condition an array containing the search string exploded using || so that "firstname||equal||jason" is $condition(1=>'firstname', 2=>'equal', 3=>'jason')
- * @param int $page Which page number to display
- * @param in $limit The limit/number of reords to return
- *
- * @returns array $output
- *
- *
- * */
-function getParticipantsSearchMultiple($condition, $page, $limit)
+    /*
+     * Function builds a select query for searches through participants using the $condition field passed
+     * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
+     * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
+     *
+     * @param array $condition an array containing the search string exploded using || so that "firstname||equal||jason" is $condition(1=>'firstname', 2=>'equal', 3=>'jason')
+     * @param int $page Which page number to display
+     * @param in $limit The limit/number of reords to return
+     *
+     * @returns array $output
+     *
+     *
+     * */
+    function getParticipantsSearchMultiple($condition, $page, $limit)
     {
     	//http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
     	//First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
