@@ -1142,11 +1142,14 @@ class participantsaction extends Survey_Common_Action
         $aData->rows[0]['cell'] = array();
         $i = 0;
 
-        $doneattributes = array();
+        $doneattributes = array(); //If the user has any actual attribute values, they'll be stored here
+
+        /* Iterate through each attribute owned by this user */
         foreach ($records as $row)
         {
             $aData->rows[$i]['id'] = $row['participant_id'] . "_" . $row['attribute_id'];
             $aData->rows[$i]['cell'] = array("", $row['participant_id'], $row['attribute_type'], $row['attribute_name'], $row['value']);
+            /* Collect allowed values for a DropDown attribute */
             if ($row['attribute_type'] == "DD")
             {
                 $attvalues = ParticipantAttributeNames::model()->getAttributesValues($row['attribute_id']);
@@ -1173,47 +1176,54 @@ class participantsaction extends Survey_Common_Action
             array_push($doneattributes, $row['attribute_id']);
             $i++;
         }
+
+        /* Build a list of attribute names for which this user has NO values stored, keep it in $attributenotdone */
+        $attributenotdone=array();
+        /* The user has NO values stored against any attribute */
         if (count($doneattributes) == 0)
         {
             $attributenotdone = ParticipantAttributeNames::model()->getAttributes();
         }
+        /* The user has SOME values stored against attributes */
         else
         {
             $attributenotdone = ParticipantAttributeNames::model()->getnotaddedAttributes($doneattributes);
         }
-        if ($attributenotdone > 0)
-        {
-            foreach ($attributenotdone as $row)
-            {
 
-                $aData->rows[$i]['id'] = $iParticipantId . "_" . $row['attribute_id'];
-                $aData->rows[$i]['cell'] = array("", $iParticipantId, $row['attribute_type'], $row['attribute_name'], "");
-                if ($row['attribute_type'] == "DD")
+        /* Go through the empty attributes and build an entry in the output for them */
+        foreach ($attributenotdone as $row)
+        {
+            $aData->rows[$i]['id'] = $iParticipantId . "_" . $row['attribute_id'];
+            $aData->rows[$i]['cell'] = array("", $iParticipantId, $row['attribute_type'], $row['attribute_name'], "");
+            if ($row['attribute_type'] == "DD")
+            {
+                $attvalues = ParticipantAttributeNames::model()->getAttributesValues($row['attribute_id']);
+                if (!empty($attvalues))
                 {
-                    $attvalues = ParticipantAttributeNames::model()->getAttributesValues($row['attribute_id']);
-                    if (!empty($attvalues))
+                    $attval = "";
+                    foreach ($attvalues as $val)
                     {
-                        $attval = "";
-                        foreach ($attvalues as $val)
-                        {
-                            $attval .= $val['value'] . ":" . $val['value'];
-                            $attval .= ";";
-                        }
-                        $attval = substr($attval, 0, -1);
-                        array_push($aData->rows[$i]['cell'], $attval);
+                        $attval .= $val['value'] . ":" . $val['value'];
+                        $attval .= ";";
                     }
-                    else
-                    {
-                        array_push($aData->rows[$i]['cell'], "");
-                    }
+                    $attval = substr($attval, 0, -1);
+                    array_push($aData->rows[$i]['cell'], $attval);
                 }
                 else
                 {
                     array_push($aData->rows[$i]['cell'], "");
                 }
-                $i++;
             }
+            else
+            {
+                array_push($aData->rows[$i]['cell'], "");
+            }
+            $i++;
         }
+        /* TODO: It'd be nice to do a natural sort on the attribute list at some point.
+                 Currently they're returned in order of attributes WITH values, then WITHOUT values
+         */
+
         echo ls_json_encode($aData);
     }
 

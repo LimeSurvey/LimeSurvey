@@ -171,19 +171,26 @@ class ParticipantAttributeNames extends CActiveRecord
     		$notin[] = $row;
     	}
         $attrid = array('not in','{{participant_attribute_names}}.attribute_id', $notin);
-        return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where($attrid)->queryAll();
+        return Yii::app()->db->createCommand()
+                         ->select('*')
+                         ->from('{{participant_attribute_names}}')
+                         ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
+                         ->where($attrid)
+                         ->queryAll();
     }
 
     function storeAttribute($data)
     {
         $insertnames = array('attribute_type' => $data['attribute_type'],
                             'visible' => $data['visible']);
-        Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}',$insertnames);
+        Yii::app()->db->createCommand()
+                  ->insert('{{participant_attribute_names}}',$insertnames);
         $attribute_id = Yii::app()->db->getLastInsertID();
         $insertnameslang = array('attribute_id' => intval($attribute_id),
                                  'attribute_name'=> $data['attribute_name'],
                                  'lang' => Yii::app()->session['adminlang']);
-        Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
+        Yii::app()->db->createCommand()
+                  ->insert('{{participant_attribute_names_lang}}',$insertnameslang);
 
         return $attribute_id;
 
@@ -191,15 +198,23 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function editParticipantAttributeValue($data)
     {
-	   	$query = Yii::app()->db->createCommand()->where('participant_id = :participant_id AND attribute_id = :attribute_id')->from('{{participant_attribute}}')->select('*')->bindParam(":participant_id", $data["participant_id"], PDO::PARAM_INT)->bindParam(":attribute_id", $data["attribute_id"], PDO::PARAM_INT)->queryAll();
-	        if(count($query) == 0)
-	        {
-	            Yii::app()->db->createCommand()->insert('{{participant_attribute}}',$data);
-	        }
-	        else
-	        {
-	        	Yii::app()->db->createCommand()->update('{{participant_attribute}}',$data,'participant_id = :participant_id  AND attribute_id = :attribute_id')->bindParam(":participant_id", $data["participant_id"], PDO::PARAM_INT)->bindParam(":attribute_id", $data["attribute_id"], PDO::PARAM_INT);
-		    }
+        $query = Participant_attribute::model()->find('participant_id = :participant_id AND attribute_id=:attribute_id',
+                                                      array(':participant_id'=>$data['participant_id'],
+                                                            ':attribute_id'=>$data['attribute_id'])
+                                                      );
+        if(count($query) == 0)
+	    {
+            Yii::app()->db->createCommand()
+                      ->insert('{{participant_attribute}}',$data);
+	    }
+	    else
+	    {
+            Yii::app()->db->createCommand()
+                      ->update('{{participant_attribute}}',
+                               $data,
+                               'participant_id = :participant_id AND attribute_id = :attribute_id',
+                               array(':participant_id' => $data['participant_id'], ':attribute_id'=>$data['attribute_id']));
+		}
 
     }
 

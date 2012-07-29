@@ -150,7 +150,11 @@ class Participants extends CActiveRecord
 
     function updateRow($data)
     {
-        Yii::app()->db->createCommand()->update('{{participants}}', $data, 'participant_id = :participant_id')->bindParam(":participant_id", $data["participant_id"], PDO::PARAM_INT);
+        Yii::app()->db->createCommand()
+                  ->update('{{participants}}',
+                           $data,
+                           'participant_id = :participant_id',
+                           array(':participant_id'=>$data['participant_id']));
     }
 
     /*
