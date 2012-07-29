@@ -245,7 +245,7 @@ function qTypeDropdownInit()
                     target: 'leftMiddle',
                     tooltip:'rightMiddle'
                 },
-                adjust{
+                adjust:{
                     screen: true
                 }
             },
