@@ -2,3 +2,5 @@
 /upload/surveys/*
 /styles/gringegreen/images/Thumbs.db
 /upload/templates/*
+
+/tmp/runtime/HTML

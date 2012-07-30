@@ -7,7 +7,8 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = {
+$.jgrid = $.jgrid || {};
+$.extend($.jgrid,{
 	defaults : {
 		recordtext: "Преглед {0} - {1} од {2}",
 		emptyrecords: "Не постоји ниједан запис",
@@ -124,5 +125,5 @@ $.jgrid = {
 		checkbox : {disabled:true},
 		idName : 'id'
 	}
-};
+});
 })(jQuery);

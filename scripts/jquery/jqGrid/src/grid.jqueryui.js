@@ -52,7 +52,7 @@ $.jgrid.extend({
 	sortableColumns : function (tblrow)
 	{
 		return this.each(function (){
-			var ts = this, tid= ts.p.id;
+			var ts = this, tid= $.jgrid.jqID( ts.p.id );
 			function start() {ts.p.disableClick = true;}
 			var sortable_opts = {
 				"tolerance" : "pointer",
@@ -78,7 +78,7 @@ $.jgrid.extend({
 					cmMap = {}, tid= ts.p.id+"_";
 					$.each(colModel, function(i) { cmMap[this.name]=i; });
 					var permutation = [];
-					th.each(function(i) {
+					th.each(function() {
 						var id = $(">div", this).get(0).id.replace(/^jqgh_/, "").replace(tid,"");
 							if (id in cmMap) {
 								permutation.push(cmMap[id]);
@@ -114,7 +114,7 @@ $.jgrid.extend({
 	},
     columnChooser : function(opts) {
         var self = this;
-		if($("#colchooser_"+self[0].p.id).length ) { return; }
+		if($("#colchooser_"+$.jgrid.jqID(self[0].p.id)).length ) { return; }
         var selector = $('<div id="colchooser_'+self[0].p.id+'" style="position:relative;overflow:hidden"><div><select multiple="multiple"></select></div></div>');
         var select = $('select', selector);
 		
@@ -147,7 +147,9 @@ $.jgrid.extend({
                "destroy")
                */
             "dlog" : "dialog",
-
+			"dialog_opts" : {
+				"minWidth": 470
+			},
             /* dlog_opts is either an option object to be passed 
                to "dlog", or (more likely) a function that creates
                the options object.
@@ -162,7 +164,7 @@ $.jgrid.extend({
                 buttons[opts.bCancel] = function() {
                     opts.cleanup(true);
                 };
-                return {
+                return $.extend(true, {
                     "buttons": buttons,
                     "close": function() {
                         opts.cleanup(true);
@@ -170,12 +172,12 @@ $.jgrid.extend({
 					"modal" : opts.modal ? opts.modal : false,
 					"resizable": opts.resizable ? opts.resizable : true,
                     "width": opts.width+20
-                };
+                }, opts.dialog_opts || {});
             },
             /* Function to get the permutation array, and pass it to the
                "done" function */
             "apply_perm" : function() {
-                $('option',select).each(function(i) {
+                $('option',select).each(function() {
                     if (this.selected) {
                         self.jqGrid("showCol", colModel[this.value].name);
                     } else {
@@ -185,7 +187,7 @@ $.jgrid.extend({
                 
                 var perm = [];
 				//fixedCols.slice(0);
-                $('option[selected]',select).each(function() { perm.push(parseInt(this.value,10)); });
+                $('option:selected',select).each(function() { perm.push(parseInt(this.value,10)); });
                 $.each(perm, function() { delete colMap[colModel[parseInt(this,10)].name]; });
                 $.each(colMap, function() {
 					var ti = parseInt(this,10);
@@ -250,7 +252,7 @@ $.jgrid.extend({
             }
 
             select.append("<option value='"+i+"' "+
-                          (this.hidden?"":"selected='selected'")+">"+colNames[i]+"</option>");
+                          (this.hidden?"":"selected='selected'")+">"+jQuery.jgrid.stripHtml(colNames[i])+"</option>");
         });
         function call(fn, obj) {
             if (!fn) { return; }
@@ -308,8 +310,8 @@ $.jgrid.extend({
 				opts.update = function (ev,ui) {
 					$(ui.item).css("border-width","");
 					if($t.p.rownumbers === true) {
-						$("td.jqgrid-rownum",$t.rows).each(function(i){
-							$(this).html(i+1);
+						$("td.jqgrid-rownum",$t.rows).each(function( i ){
+							$(this).html( i+1+(parseInt($t.p.page,10)-1)*parseInt($t.p.rowNum,10) );
 						});
 					}
 					if(opts._update_) {
@@ -368,8 +370,9 @@ $.jgrid.extend({
 						if(opts.onstart && $.isFunction(opts.onstart) ) { opts.onstart.call($($t),ev,ui); }
 					},
 					stop :function(ev,ui) {
-						if(ui.helper.dropped) {
+						if(ui.helper.dropped && !opts.dragcopy) {
 							var ids = $(ui.helper).attr("id");
+							if(ids === undefined) { ids = $(this).attr("id"); }
 							$($t).jqGrid('delRowData',ids );
 						}
 						// if we have a empty row inserted from start event try to delete it
@@ -387,22 +390,24 @@ $.jgrid.extend({
 						var tid = $(d).closest("table.ui-jqgrid-btable");
 						if(tid.length > 0 && $.data(tid[0],"dnd") !== undefined) {
 						    var cn = $.data(tid[0],"dnd").connectWith;
-						    return $.inArray('#'+this.id,cn) != -1 ? true : false;
+						    return $.inArray('#'+$.jgrid.jqID(this.id),cn) != -1 ? true : false;
 						}
-						return d;
+						return false;
 					},
 					drop: function(ev, ui) {
 						if (!$(ui.draggable).hasClass('jqgrow')) { return; }
 						var accept = $(ui.draggable).attr("id");
 						var getdata = ui.draggable.parent().parent().jqGrid('getRowData',accept);
 						if(!opts.dropbyname) {
-							var j =0, tmpdata = {}, dropname;
-							var dropmodel = $("#"+this.id).jqGrid('getGridParam','colModel');
+							var j =0, tmpdata = {}, nm;
+							var dropmodel = $("#"+$.jgrid.jqID(this.id)).jqGrid('getGridParam','colModel');
 							try {
 								for (var key in getdata) {
-									if(getdata.hasOwnProperty(key) && dropmodel[j]) {
-										dropname = dropmodel[j].name;
-										tmpdata[dropname] = getdata[key];
+									nm = dropmodel[j].name;
+									if( !(nm == 'cb' || nm =='rn' || nm == 'subgrid' )) {
+										if(getdata.hasOwnProperty(key) && dropmodel[j]) {
+											tmpdata[nm] = getdata[key];
+										}
 									}
 									j++;
 								}
@@ -413,7 +418,7 @@ $.jgrid.extend({
 						if(opts.beforedrop && $.isFunction(opts.beforedrop) ) {
 							//parameters to this callback - event, element, data to be inserted, sender, reciever
 							// should return object which will be inserted into the reciever
-							var datatoinsert = opts.beforedrop.call(this,ev,ui,getdata,$('#'+$t.id),$(this));
+							var datatoinsert = opts.beforedrop.call(this,ev,ui,getdata,$('#'+$.jgrid.jqID($t.p.id)),$(this));
 							if (typeof datatoinsert != "undefined" && datatoinsert !== null && typeof datatoinsert == "object") { getdata = datatoinsert; }
 						}
 						if(ui.helper.dropped) {
@@ -427,7 +432,7 @@ $.jgrid.extend({
 								}
 							}
 							// NULL is interpreted as undefined while null as object
-							$("#"+this.id).jqGrid('addRowData',grid,getdata,opts.droppos);
+							$("#"+$.jgrid.jqID(this.id)).jqGrid('addRowData',grid,getdata,opts.droppos);
 						}
 						if(opts.ondrop && $.isFunction(opts.ondrop) ) { opts.ondrop.call(this,ev,ui, getdata); }
 					}}, opts.drop_opts || {});
@@ -447,6 +452,7 @@ $.jgrid.extend({
 				"appendTo" : "#jqgrid_dnd",
 				"zIndex": 5000
 			},
+			"dragcopy": false,
 			"dropbyname" : false,
 			"droppos" : "first",
 			"autoid" : true,
@@ -470,7 +476,7 @@ $.jgrid.extend({
 	},
 	gridResize : function(opts) {
 		return this.each(function(){
-			var $t = this;
+			var $t = this, gID = $.jgrid.jqID($t.p.id);
 			if(!$t.grid || !$.fn.resizable) { return; }
 			opts = $.extend({}, opts || {});
 			if(opts.alsoResize ) {
@@ -486,18 +492,18 @@ $.jgrid.extend({
 				opts._stop_ = false;
 			}
 			opts.stop = function (ev, ui) {
-				$($t).jqGrid('setGridParam',{height:$("#gview_"+$t.p.id+" .ui-jqgrid-bdiv").height()});
+				$($t).jqGrid('setGridParam',{height:$("#gview_"+gID+" .ui-jqgrid-bdiv").height()});
 				$($t).jqGrid('setGridWidth',ui.size.width,opts.shrinkToFit);
 				if(opts._stop_) { opts._stop_.call($t,ev,ui); }
 			};
 			if(opts._alsoResize_) {
-				var optstest = "{\'#gview_"+$t.p.id+" .ui-jqgrid-bdiv\':true,'" +opts._alsoResize_+"':true}";
+				var optstest = "{\'#gview_"+gID+" .ui-jqgrid-bdiv\':true,'" +opts._alsoResize_+"':true}";
 				opts.alsoResize = eval('('+optstest+')'); // the only way that I found to do this
 			} else {
-				opts.alsoResize = $(".ui-jqgrid-bdiv","#gview_"+$t.p.id);
+				opts.alsoResize = $(".ui-jqgrid-bdiv","#gview_"+gID);
 			}
 			delete opts._alsoResize_;
-			$("#gbox_"+$t.p.id).resizable(opts);
+			$("#gbox_"+gID).resizable(opts);
 		});
 	}
 });

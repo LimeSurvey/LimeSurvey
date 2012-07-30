@@ -12,52 +12,8 @@
 * $Id: browse.js 10251 2011-06-10 17:33:49Z tpartner $
 */
 $(document).ready(function(){
-    // Delete individual file
-    $(".deleteresponse").click(function(){
-        thisid=removechars($(this).attr('id'));
-        answer = confirm(strdeleteconfirm);
-        if (answer==true)
-        {
-            $('#deleteanswer').val(thisid);
-            $('.cbResponseMarker').attr('checked',false);
-            $('#resulttableform').submit();
-        }
-    });
 
-    // Delete all marked responses
-    $("#imgDeleteMarkedResponses").click(function(){
-        if ($('.cbResponseMarker:checked').size()>0)
-        {
-            thisid=removechars($(this).attr('id'));
-            answer = confirm(strDeleteAllConfirm);
-            if (answer==true)
-            {
-                $('#deleteanswer').val('marked');
-                $('#resulttableform').submit();
-            }
-        }
-        else
-            alert(noFilesSelectedForDeletion)
-    });
 
-    // Download individual file bundle
-    $(".downloadfile").click(function() {
-        thisid = removechars($(this).attr('id'));
-        $('#downloadfile').val(thisid);
-        $('.cbResponseMarker').attr('checked', false);
-        $('#resulttableform').submit();
-    });
-
-    // Download all marked files
-    $("#imgDownloadMarkedFiles").click(function() {
-        if ($('.cbResponseMarker:checked').size() > 0)
-        {
-            $('#downloadfile').val('marked');
-            $('#resulttableform').submit();
-        }
-        else
-            alert(noFilesSelectedForDnld)
-    });
 
     $("#selectall").click(function(){
         $('.cbResponseMarker').attr('checked',$(this).attr('checked'));
@@ -65,30 +21,30 @@ $(document).ready(function(){
 
     $('#browseresponses').qtip({
         content:{
-                text:$('#browselangpopup')
+            text:$('#browselangpopup')
         },
         style: { name: 'cream',
-                        tip:true,
-                color:'#111111',
-                border: {
-                     width: 1,
-                     radius: 5,
-                     color: '#EADF95'}
-               },
+            tip:true,
+            color:'#111111',
+            border: {
+                width: 1,
+                radius: 5,
+                color: '#EADF95'}
+        },
         position: { adjust: {
                 screen: true, scroll:true },
-                corner: {
-                        target: 'bottomMiddle',
-                        tooltip: 'topMiddle'}
-                },
+            corner: {
+                target: 'bottomMiddle',
+                tooltip: 'topMiddle'}
+        },
         show: {effect: { length:50},
-               when: {
-                   event:'click'
-               }},
+            when: {
+                event:'click'
+        }},
         hide: {fixed:true,
-               when: {
-                   event:'unfocus'
-               }}
+            when: {
+                event:'unfocus'
+        }}
     });
 
     // Fix the heigh of the cell
@@ -102,7 +58,7 @@ $(document).ready(function(){
             $(this).addClass("content");
             $(this).attr("title",$(this).text());
         }
-   });
+    });
 
     $('.browsetable td span.content').qtip({
         hide: {
@@ -128,121 +84,168 @@ $(document).ready(function(){
             }
         }
     });
+    // Delete individual file
+    $(".deleteresponse").click(function(){
+        thisid=removechars($(this).attr('id'));
+        answer = confirm(strdeleteconfirm);
+        if (answer==true)
+            {
+            $('#deleteanswer').val(thisid);
+            $('.cbResponseMarker').attr('checked',false);
+            $('#resulttableform').submit();
+        }
+    });
+    // Delete all marked responses
+    $("#imgDeleteMarkedResponses").click(function(){
+        if ($('.cbResponseMarker:checked').size()>0)
+            {
+            thisid=removechars($(this).attr('id'));
+            answer = confirm(strDeleteAllConfirm);
+            if (answer==true)
+                {
+                $('#deleteanswer').val('marked');
+                $('#resulttableform').submit();
+            }
+        }
+        else
+            alert(noFilesSelectedForDeletion)
+    });
+
+    // Download individual file bundle
+    $(".downloadfile").click(function() {
+        thisid = removechars($(this).attr('id'));
+        $('#downloadfile').val(thisid);
+        $('.cbResponseMarker').attr('checked', false);
+        $('#resulttableform').submit();
+    });
+
+    // Download all marked files
+    $("#imgDownloadMarkedFiles").click(function() {
+        if ($('.cbResponseMarker:checked').size() > 0)
+            {
+            $('#downloadfile').val('marked');
+            $('#resulttableform').submit();
+        }
+        else
+            alert(noFilesSelectedForDnld)
+    });
+
+
 });
 
 
 
 /*    $("#responseTable")
-	    .jqGrid({
-	        url: siteURL + "/admin/browse/" + surveyID + "/grid",
-	        editurl: siteURL + "/admin/browse/" + surveyID + "/grid",
-	        datatype: "json",
-	        mtype: "POST",
-	        caption: "Responses",
-	        width: "100%",
-	        height: "100%",
-	        rowNum: 25,
-	        pager: "#responsePager",
-	        editable: true,
-	        colNames: colNames,
-	        colModel: colModel,
-	        sortname: 'id',
-	        sortorder: 'asc',
-	        viewrecords : true,
-	        gridview: true,
-	        multiselect: true,
-	        loadonce: true,
-	        rowList: [25,50,100,250,500,1000,5000,10000],
-			ondblClickRow: function(id) {
-                if (lastSel != id) {
-                    $('#responseTable').saveRow(lastSel);
-                    $('#responseTable').editRow(id, true);
-                    lastSel=id;
-                }
-		    },
-		    onSelectRow: function(id) {
-			    $('#responseTable').saveRow(lastSel);
-		    }
-	    })
-	    .filterToolbar({
- 		 	  'autosearch': true,
- 		 	  'searchOnEnter': false
- 		 })
-	    .navGrid("#responsePager", {
- 			  'add': false,
- 			  'refresh': false,
- 			  'edit': false
- 		 })
- 		 .navButtonAdd("#responsePager", {
- 		 	  'caption': 'Download marked files',
- 		 	  'onClickButton': function (rows) {
- 		 	  		var rows = $("#responseTable").getGridParam('selarrrow');
+.jqGrid({
+url: siteURL + "/admin/responses/" + surveyID + "/grid",
+editurl: siteURL + "/admin/responses/" + surveyID + "/grid",
+datatype: "json",
+mtype: "POST",
+caption: "Responses",
+width: "100%",
+height: "100%",
+rowNum: 25,
+pager: "#responsePager",
+editable: true,
+colNames: colNames,
+colModel: colModel,
+sortname: 'id',
+sortorder: 'asc',
+viewrecords : true,
+gridview: true,
+multiselect: true,
+loadonce: true,
+rowList: [25,50,100,250,500,1000,5000,10000],
+ondblClickRow: function(id) {
+if (lastSel != id) {
+$('#responseTable').saveRow(lastSel);
+$('#responseTable').editRow(id, true);
+lastSel=id;
+}
+},
+onSelectRow: function(id) {
+$('#responseTable').saveRow(lastSel);
+}
+})
+.filterToolbar({
+'autosearch': true,
+'searchOnEnter': false
+})
+.navGrid("#responsePager", {
+'add': false,
+'refresh': false,
+'edit': false
+})
+.navButtonAdd("#responsePager", {
+'caption': 'Download marked files',
+'onClickButton': function (rows) {
+var rows = $("#responseTable").getGridParam('selarrrow');
 
- 		 	  		if (rows.length <= 0) {
- 		 	  			alert ("Please select some records first!");
- 		 	  			return;
-	 		 	  	}
+if (rows.length <= 0) {
+alert ("Please select some records first!");
+return;
+}
 
-					sendPost(siteURL + "/admin/browse/" + surveyID + "/grid", {
-						'oper': 'downloadarchives',
-						'ids': rows
-					});
-			  }
-		 })  */
+sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
+'oper': 'downloadarchives',
+'ids': rows
+});
+}
+})  */
 
 
 /**
-    Send a post request to the server to download a file
+Send a post request to the server to download a file
 
-    @param myaction     post action
-    @param data         parameters for $_POST
+@param myaction     post action
+@param data         parameters for $_POST
 
 */
 function sendPost(myaction, data)
 {
-	var myform = document.createElement('form');
-	document.body.appendChild(myform);
-	myform.action = myaction;
-	myform.method = 'POST';
+    var myform = document.createElement('form');
+    document.body.appendChild(myform);
+    myform.action = myaction;
+    myform.method = 'POST';
 
-	for (var key in data) {
+    for (var key in data) {
         var myel = document.createElement('input');
         myel.type = 'hidden';
         myel.name = key;
         myform.appendChild(myel);
         myel.value = data[key];
-	}
+    }
 
-	myform.submit();
+    myform.submit();
 }
 
 
 /**
-    Dowload a file from a response
-    @param id       ID of the response
-    @param column   Field of the text upload question
-    @param filename Name of the file
+Dowload a file from a response
+@param id       ID of the response
+@param column   Field of the text upload question
+@param filename Name of the file
 */
 function getFile(id, field, filename)
 {
-	sendPost(siteURL + "/admin/browse/" + surveyID + "/grid", {
-		'id': id,
-		'fieldname': field,
-		'oper': 'downloadfile',
-		'filename': filename
-	});
+    sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
+        'id': id,
+        'fieldname': field,
+        'oper': 'downloadfile',
+        'filename': filename
+    });
 }
 
 
 /**
-    Get an archive containing all the file from a response
-    @param id       ID of the response
+Get an archive containing all the file from a response
+@param id       ID of the response
 */
 function getArchive(id)
 {
-	sendPost(siteURL + "/admin/browse/" + surveyID + "/grid", {
-		'oper': 'downloadarchive',
-		'id': id
-	});
+    sendPost(siteURL + "/admin/responses/" + surveyID + "/grid", {
+        'oper': 'downloadarchive',
+        'id': id
+    });
 }
 

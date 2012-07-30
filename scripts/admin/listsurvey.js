@@ -101,6 +101,7 @@ $(document).ready(function(){
         height: "100%",
         width: screen.width-20,
         shrinkToFit: true,
+        ignoreCase: true,
         rowNum: 25,
         editable:true,
         scrollOffset:0,
@@ -116,7 +117,7 @@ $(document).ready(function(){
         caption: "Surveys",
     });
     jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ add:false,del:true,edit:false,refresh: false,search: true},{},{},{ msg:delmsg, width : 700 });
-    jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false});
+    jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false,defaultSearch: 'cn'});
     jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
         buttonicon:"ui-icon-refresh",
         caption:"",
@@ -143,5 +144,32 @@ $(document).ready(function(){
             });
         }
     });
+
+	$('.wrapper').width($('#displaysurveys').width()*1.006);
+	$('.footer').width(($('#displaysurveys').width()*1.006)-10);
+
+    /* Trigger the inline search when the status list changes */
+    $('#gs_status_select').change(function() {
+        $("#gs_status").val($('#gs_status_select').val());
+        var e = jQuery.Event("keydown");
+        $("#gs_status").trigger(e);
+    });
+    /* Trigger the inline search when the access list changes */
+    $('#gs_access_select').change(function() {
+        $("#gs_access").val($('#gs_access_select').val());
+        var e = jQuery.Event("keydown");
+        $("#gs_access").trigger(e);
+    });
+    /* Change the text search above "Status" icons to a dropdown */
+    var parentDiv=$('#gs_status').parent();
+    parentDiv.prepend($('#gs_status_select'));
+    $('#gs_status_select').css("display", "");
+    $('#gs_status').css("display", "none");
+    /* Change the text search above "Access" to a dropdown */
+    var parentADiv=$('#gs_access').parent();
+    parentADiv.prepend($('#gs_access_select'));
+    $('#gs_access_select').css("display", "");
+    $('#gs_access').css("display", "none");
+
 
 });

@@ -70,7 +70,7 @@
                         foreach ($cquestions as $cqn)
                         {
                             $isDisabled="";
-                            elseif ($cqn[3] === false)
+                            if ($cqn[3] === false)
                             {
                                 $isDisabled=" disabled='disabled'";
                             }

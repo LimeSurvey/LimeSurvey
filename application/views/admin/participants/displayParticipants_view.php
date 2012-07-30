@@ -45,7 +45,7 @@ if (isset($attributes) && count($attributes) > 0)
     foreach ($attributes as $row)
     {
         $attnames[] = '"' . $row['attribute_name'] . '"';
-        $uidNames[] = '{ "name": "' . $row['attribute_name'] . '", "index":"' . $row['attribute_name'] . '", "sorttype":"string", "sortable": true, "align":"center"}';
+        $uidNames[] = '{ "name": "' . $row['attribute_name'] . '", "index":"' . $row['attribute_id'] . '", "sorttype":"string", "sortable": true, "align":"center"}';
     }
     $columnNames = ',' . implode(",", $attnames) . ''; //Add to the end of the standard list of columnNames
 }
@@ -74,6 +74,7 @@ else
     var notcontainsTxt="<?php $clang->eT("Does not contain") ?>";
     var greaterthanTxt="<?php $clang->eT("Greater than") ?>";
     var lessthanTxt="<?php $clang->eT("Less than") ?>";
+    var beginswithTxt="<?php $clang->et("Begins with") ?>";
     var andTxt="<?php $clang->eT("AND") ?>";
     var orTxt="<?php $clang->eT("OR") ?>";
     /* End search form titles */
@@ -84,8 +85,9 @@ else
     var surveyIdColTxt="<?php $clang->eT("Survey ID") ?>";
     var tokenIdColTxt="<?php $clang->eT("Token ID") ?>";
     var dateAddedColTxt="<?php $clang->eT("Date added") ?>";
+    var dateInvitedColTxt="<?php $clang->eT("Last invited") ?>";
+    var dateCompletedColTxt="<?php $clang->eT("Submitted") ?>";
     var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSurveyInfo_json/pid/"); ?>";
-
     /* Colnames and heading for attributes subgrid */
     var attributesHeadingTxt="<?php $clang->eT("Participant's attribute information") ?>";
     var actionsColTxt="<?php $clang->eT("Actions") ?>";
@@ -94,6 +96,7 @@ else
     var attributeNameColTxt="<?php $clang->eT("Attribute name") ?>";
     var attributeValueColTxt="<?php $clang->eT("Attribute value") ?>";
     var attributePosValColTxt="<?php $clang->eT("Possible attribute values") ?>";
+    var addToSurveyTxt="<?php $clang->eT("Add participants to a survey") ?>";
 
     var resetBtn = "<?php $clang->eT("Reset"); ?>";
     var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
@@ -102,6 +105,7 @@ else
     var closeTxt = "<?php $clang->eT("Close"); ?>";
     var spTitle = "<?php $clang->eT("Sharing participants..."); ?>";
     var spAddBtn = "<?php $clang->eT("Share the selected participants"); ?>";
+    var shareParticipantTxt = "<?php $clang->eT("Share participants with other users") ?>";
     var sfNoUser = "<?php $clang->eT("No other user in the system"); ?>";
     var addpartTitle = "<?php $clang->eT("Add participant to survey"); ?>";
     var addAllInViewTxt="<?php $clang->eT("Add all %s participants in your current list to a survey."); ?>";
@@ -125,12 +129,13 @@ else
     var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
     var searchBtn = "<?php $clang->eT("Search") ?>";
     var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.") ?>"; //PLEASE REVIEW
-    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getParticipants_json"); ?>";
+    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/".$urlsearch); ?>";
     var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getParticipantsResults_json/search/"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editParticipant"); ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
     var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getaddtosurveymsg"); ?>";
     var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
+    var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl') ?>";
     var addbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>";
     var minusbuttonTxt = "<?php $clang->eT("Remove search condition") ?>";
     var addbuttonTxt = "<?php $clang->eT("Add search condition") ?>";
@@ -153,7 +158,7 @@ else
     colModels += '{ "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":120, "align":"center", "editable":true},';
     colModels += '{ "name":"email", "index":"email","align":"center","width":300, "sorttype":"string", "sortable": true, "editable":true},';
     colModels += '{ "name":"blacklisted", "index":"blacklisted","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},';
-    colModels += '{ "name":"surveys", "index":"surveys","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
+    colModels += '{ "name":"survey", "index":"survey","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
 
 <?php
 $colModels = "colModels += '" . implode(",';\n colModels += '", $langNames) . ",";
@@ -177,6 +182,7 @@ echo $colModels;
     $optioncontition = array('' =>  $clang->gT("Select..."),
         'equal' =>$clang->gT("Equals"),
         'contains' =>$clang->gT("Contains"),
+        'beginswith' =>$clang->gT("Begins with"),
         'notequal' => $clang->gT("Not equal"),
         'notcontains' => $clang->gT("Does not contain"),
         'greaterthan' => $clang->gT("Greater than"),
@@ -206,9 +212,8 @@ echo $colModels;
 </div>
 <br/>
 <table id="displayparticipants"></table> <div id="pager"></div>
-<p><input type="button" name="share" id="share" value="<?php $clang->eT("Share") ?>" /><input type="button" name="addtosurvey" id="addtosurvey" value="<?php $clang->eT("Add to survey") ?>" />
+<p><input type="button" name="addtosurvey" id="addtosurvey" value="<?php $clang->eT("Add to survey") ?>" />
 </p>
-</table>
 
 <div id="fieldnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
     <p>

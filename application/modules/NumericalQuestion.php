@@ -76,12 +76,12 @@ class NumericalQuestion extends QuestionModule
         // --> START NEW FEATURE - SAVE
         $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
         . " <label for='answer{$this->fieldname}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t"
-        . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$this->fieldname\"  title=\"".$clang->gT('Only numbers may be entered in this field')."\" "
-        . "id=\"answer{$this->fieldname}\" value=\"{$dispVal}\" title=\"".$clang->gT('Only numbers may be entered in this field')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)' "
+        . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$this->fieldname\"  title=\"".$clang->gT('Only numbers may be entered in this field.')."\" "
+        . "id=\"answer{$this->fieldname}\" value=\"{$dispVal}\" onkeyup='$checkconditionFunction(this.value, this.name, this.type)' "
         . " {$maxlength} />\t{$suffix}\n</p>\n";
         if ($aQuestionAttributes['hide_tip']==0)
         {
-            $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
+            $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field.')."</p>\n";
         }
 
         // --> END NEW FEATURE - SAVE
@@ -119,7 +119,7 @@ class NumericalQuestion extends QuestionModule
     
     public function getDBField()
     {
-        return 'float';
+        return 'decimal (30,10)';
     }
     
     public function adjustSize($size)

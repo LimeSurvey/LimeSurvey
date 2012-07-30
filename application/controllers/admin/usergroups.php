@@ -277,7 +277,7 @@ class Usergroups extends Survey_Common_Action
 
         $aViewUrls = array();
         $aData['ugid'] = $ugid;
-
+        $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
         $clang = Yii::app()->lang;
 
         if (Yii::app()->session['loginID']) {

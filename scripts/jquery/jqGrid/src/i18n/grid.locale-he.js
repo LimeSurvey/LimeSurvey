@@ -7,7 +7,8 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = {
+$.jgrid = $.jgrid || {};
+$.extend($.jgrid,{
 	defaults : {
 		recordtext: "מציג {0} - {1} מתוך {2}",
 		emptyrecords: "אין רשומות להציג",
@@ -123,5 +124,5 @@ $.jgrid = {
 		checkbox : {disabled:true},
 		idName : 'id'
 	}
-};
+});
 })(jQuery);

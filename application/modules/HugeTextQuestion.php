@@ -59,7 +59,7 @@ class HugeTextQuestion extends TextQuestion
         // --> START NEW FEATURE - SAVE
         $answer = "<p class=\"question answer-item text-item {$extraclass}\"><label for='answer{$this->fieldname}' class='hide label'>{$clang->gT('Answer')}</label>";
         $answer .='<textarea class="textarea '.$kpclass.'" name="'.$this->fieldname.'" id="answer'.$this->fieldname.'" '
-        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)">';
+        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
         // --> END NEW FEATURE - SAVE
 
         if ($_SESSION['survey_'.$this->surveyid][$this->fieldname]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.$this->surveyid][$this->fieldname]);}

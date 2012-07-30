@@ -4,10 +4,7 @@ class RankingQuestion extends QuestionModule
     protected $answers;
     public function getAnswerHTML()
     {
-        global $thissurvey, $showpopups;
-
-        // the future string that goes into the answer segment of templates
-        $answer = '';
+        global $thissurvey;
 
         $clang=Yii::app()->lang;
         $imageurl = Yii::app()->getConfig("imageurl");
@@ -15,217 +12,98 @@ class RankingQuestion extends QuestionModule
         $checkconditionFunction = "checkconditions";
 
         $aQuestionAttributes = $this->getAttributeValues();
-        $answer = '';
-        $ansresult = $this->getAnswers();
-        $anscount = count($ansresult);
+        var_dump($aQuestionAttributes);
+        $answers = $this->getAnswers();
+        $anscount = count($answers);
         if (trim($aQuestionAttributes["max_answers"])!='')
         {
             $max_answers=trim($aQuestionAttributes["max_answers"]);
         } else {
             $max_answers=$anscount;
         }
-        $finished=$anscount-$max_answers;
-        $answer .= "\t<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "function rankthis_{$this->id}(\$code, \$value)\n"
-        . "\t{\n"
-        . "\t\$index=document.getElementById('CHOICES_{$this->id}').selectedIndex;\n"
-        . "\tfor (i=1; i<=$max_answers; i++)\n"
-        . "{\n"
-        . "\$b=i;\n"
-        . "\$b += '';\n"
-        . "\$inputname=\"RANK_{$this->id}\"+\$b;\n"
-        . "\$hiddenname=\"fvalue_{$this->id}\"+\$b;\n"
-        . "\$cutname=\"cut_{$this->id}\"+i;\n"
-        . "document.getElementById(\$cutname).style.display='none';\n"
-        . "if (!document.getElementById(\$inputname).value)\n"
-        . "\t{\n"
-        . "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n"
-        . "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n"
-        . "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n"
-        . "\t\t\t\t\t\t\tfor (var b=document.getElementById('CHOICES_{$this->id}').options.length-1; b>=0; b--)\n"
-        . "\t\t\t\t\t\t\t\t{\n"
-        . "\t\t\t\t\t\t\t\tif (document.getElementById('CHOICES_{$this->id}').options[b].value == \$code)\n"
-        . "\t\t\t\t\t\t\t\t\t{\n"
-        . "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_{$this->id}').options[b] = null;\n"
-        . "\t\t\t\t\t\t\t\t\t}\n"
-        . "\t\t\t\t\t\t\t\t}\n"
-        . "\t\t\t\t\t\t\ti=$max_answers;\n"
-        . "\t\t\t\t\t\t\t}\n"
-        . "\t\t\t\t\t\t}\n"
-        . "\t\t\t\t\tif (document.getElementById('CHOICES_{$this->id}').options.length == $finished)\n"
-        . "\t\t\t\t\t\t{\n"
-        . "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$this->id}').disabled=true;\n"
-        . "\t\t\t\t\t\t}\n"
-        . "\t\t\t\t\tdocument.getElementById('CHOICES_{$this->id}').selectedIndex=-1;\n"
-        . "\t\t\t\t\t$checkconditionFunction(\$code);\n"
-        . "\t\t\t\t\t}\n"
-        . "\t\t\t\tfunction deletethis_{$this->id}(\$text, \$value, \$name, \$thisname)\n"
-        . "\t\t\t\t\t{\n"
-        . "\t\t\t\t\tvar qid='{$this->id}';\n"
-        . "\t\t\t\t\tvar lngth=qid.length+4;\n"
-        . "\t\t\t\t\tvar cutindex=\$thisname.substring(lngth, \$thisname.length);\n"
-        . "\t\t\t\t\tcutindex=parseFloat(cutindex);\n"
-        . "\t\t\t\t\tdocument.getElementById(\$name).value='';\n"
-        . "\t\t\t\t\tdocument.getElementById(\$thisname).style.display='none';\n"
-        . "\t\t\t\t\tif (cutindex > 1)\n"
-        . "\t\t\t\t\t\t{\n"
-        . "\t\t\t\t\t\t\$cut1name=\"cut_{$this->id}\"+(cutindex-1);\n"
-        . "\t\t\t\t\t\t\$cut2name=\"fvalue_{$this->id}\"+(cutindex);\n"
-        . "\t\t\t\t\t\tdocument.getElementById(\$cut1name).style.display='';\n"
-        . "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n"
-        . "\t\t\t\t\t\t}\n"
-        . "\t\t\t\t\telse\n"
-        . "\t\t\t\t\t\t{\n"
-        . "\t\t\t\t\t\t\$cut2name=\"fvalue_{$this->id}\"+(cutindex);\n"
-        . "\t\t\t\t\t\tdocument.getElementById(\$cut2name).value='';\n"
-        . "\t\t\t\t\t\t}\n"
-        . "\t\t\t\t\tvar i=document.getElementById('CHOICES_{$this->id}').options.length;\n"
-        . "\t\t\t\t\tdocument.getElementById('CHOICES_{$this->id}').options[i] = new Option(\$text, \$value);\n"
-        . "\t\t\t\t\tif (document.getElementById('CHOICES_{$this->id}').options.length > 0)\n"
-        . "\t\t\t\t\t\t{\n"
-        . "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$this->id}').disabled=false;\n"
-        . "\t\t\t\t\t\t}\n"
-        . "\t\t\t\t\t$checkconditionFunction('');\n"
-        . "\t\t\t\t\t}\n"
-        . "\t\t\t//-->\n"
-        . "\t\t\t</script>\n";
-        $ranklist = '';
-
-        foreach ($ansresult as $ansrow)
+        if (trim($aQuestionAttributes["min_answers"])!='')
         {
-            $answers[] = array($ansrow['code'], $ansrow['answer']);
+            $min_answers=trim($aQuestionAttributes["min_answers"]);
+        } else {
+            $min_answers=0;
         }
-        $existing=0;
+
+        // First start by a ranking without javascript : just a list of select box
+        // construction select box
+        $answer = '<div class="ranking-answers">
+        <ul class="answers-list select-list">';
+
         for ($i=1; $i<=$anscount; $i++)
         {
             $myfname=$this->fieldname.$i;
-            if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname])
-            {
-                $existing++;
+            $answer .= "\n<li class=\"select-item\">";
+            $answer .="<label for=\"answer{$myfname}\">";
+            if($i==1){
+                $answer .=$clang->gT('First choice');
+            }else{
+                $answer .=$clang->gT('Next choice');
             }
-        }
-        for ($i=1; $i<=$max_answers; $i++)
-        {
-            $myfname = $this->fieldname.$i;
-            if (!empty($_SESSION['survey_'.$this->surveyid][$myfname]))
+            $answer .= "</label>";
+            $answer .= "<select name=\"{$myfname}\" id=\"answer{$myfname}\">\n";
+            if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->fieldname])
             {
-                foreach ($answers as $ans)
-                {
-                    if ($ans[0] == $_SESSION['survey_'.$this->surveyid][$myfname])
+                $answer .= "\t<option value=\"\"".SELECTED.">".$clang->gT('Please choose...')."</option>\n";
+            }
+            foreach ($answers as $ansrow)
+            {
+                $thisvalue="";
+                $answer .="\t<option value=\"{$ansrow['code']}\"";
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
                     {
-                        $thiscode = $ans[0];
-                        $thistext = $ans[1];
+                        $answer .= SELECTED;
+                        $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                     }
-                }
+                $answer .=">".flattenText($ansrow['answer'])."</option>\n";
             }
-            $ranklist .= "\t<tr><td class=\"position\">&nbsp;<label for='RANK_{$this->id}$i'>"
-            ."$i:&nbsp;</label></td><td class=\"item\"><input class=\"text\" type=\"text\" name=\"RANK_{$this->id}$i\" id=\"RANK_{$this->id}$i\"";
-            if (!empty($_SESSION['survey_'.$this->surveyid][$myfname]))
-            {
-                $ranklist .= " value='";
-                $ranklist .= htmlspecialchars($thistext, ENT_QUOTES);
-                $ranklist .= "'";
-            }
-            $ranklist .= " onfocus=\"this.blur()\" />\n";
-            $ranklist .= "<input type=\"hidden\" name=\"$myfname\" id=\"fvalue_{$this->id}$i\" value='";
-            $chosen[]=""; //create array
-            if (!empty($_SESSION['survey_'.$this->surveyid][$myfname]))
-            {
-                $ranklist .= $thiscode;
-                $chosen[]=array($thiscode, $thistext);
-            }
-            $ranklist .= "' />\n";
-            $ranklist .= "<img src=\"$imageurl/cut.gif\" alt=\"".$clang->gT("Remove this item")."\" title=\"".$clang->gT("Remove this item")."\" ";
-            if ($i != $existing)
-            {
-                $ranklist .= "style=\"display:none\"";
-            }
-            $ranklist .= " id=\"cut_{$this->id}$i\" onclick=\"deletethis_{$this->id}(document.getElementById('RANK_{$this->id}$i').value, document.getElementById('fvalue_{$this->id}$i').value, document.getElementById('RANK_{$this->id}$i').name, this.id)\" /><br />\n";
-            $ranklist .= "</td></tr>\n";
+            $answer .="</select>";
+            // Hidden form: maybe can be replaced with ranking.js
+            $answer .="<input type=\"hidden\" id=\"java{$myfname}\" disabled=\"disabled\" value=\"{$thisvalue}\"/>";
+            $answer .="</li>";
         }
-
-        $maxselectlength=0;
-        $choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$this->id}\" ";
-        if (isset($choicewidth)) {$choicelist.=$choicewidth;}
-
-        $choicelist .= " id=\"CHOICES_{$this->id}\" onchange=\"if (this.options.length>0 && this.selectedIndex<0) { this.options[this.options.length-1].selected=true;}; rankthis_{$this->id}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
-
-        foreach ($answers as $ans)
+        $answer .="</ul>"
+            . "<div style='display:none' id='ranking-{$this->id}-maxans'>{".$max_answers."}</div>"
+            . "<div style='display:none' id='ranking-{$this->id}-minans'>{".$min_answers."}</div>"
+            . "</div>";
+        // The list with HTML answres
+        $answer .="<div style=\"display:none\">";
+        foreach ($answers as $ansrow)
         {
-            if (!in_array($ans, $chosen))
-            {
-                $choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-            }
-            if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
+            $answer.="<div id=\"htmlblock-{$this->id}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
         }
-        $choicelist .= "</select>\n";
+        $answer .="</div>";
+        header_includes("ranking.js");
+        header_includes("ranking.css","css");
 
-        $answer .= "\t<table border='0' cellspacing='0' class='rank'>\n"
-        . "<tr>\n"
-        . "\t<td align='left' valign='top' class='rank label'>\n"
-        . "<strong>&nbsp;&nbsp;<label for='CHOICES_{$this->id}'>".$clang->gT("Your Choices").":</label></strong><br />\n"
-        . "&nbsp;".$choicelist
-        . "\t&nbsp;</td>\n";
-        $maxselectlength=$maxselectlength+2;
-        if ($maxselectlength > 60)
+        if(trim($aQuestionAttributes['choice_title'][$clang->langcode]) != '')
         {
-            $maxselectlength=60;
+            $choice_title=htmlspecialchars(trim($aQuestionAttributes['choice_title'][$clang->langcode]), ENT_QUOTES);
         }
-        $ranklist = str_replace("<input class=\"text\"", "<input size='{$maxselectlength}' class='text'", $ranklist);
-        $answer .= "\t<td style=\"text-align:left; white-space:nowrap;\" class='rank output'>\n"
-        . "\t<table border='0' cellspacing='1' cellpadding='0'>\n"
-        . "\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
-
-        $answer .= $ranklist
-        . "\t</table>\n"
-        . "\t</td>\n"
-        . "</tr>\n"
-        . "<tr>\n"
-        . "\t<td colspan='2' class='rank helptext'>\n"
-        . "".$clang->gT("Click on the scissors next to each item on the right to remove the last entry in your ranked list")
-        . "\t</td>\n"
-        . "</tr>\n"
-        . "\t</table>\n";
-
-        if (trim($aQuestionAttributes["min_answers"]) != '')
+        else
         {
-            $minansw=trim($aQuestionAttributes["min_answers"]);
-            if(!isset($showpopups) || $showpopups == 0)
-            {
-                $answer .= "<div id='rankingminanswarning{$this->id}' style='display: none; color: red' class='errormandatory'>"
-                .sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\".",$minansw),$minansw, trim(str_replace(array("\n", "\r"), "", $this->text)))."</div>";
-            }
-            $minanswscript = "<script type='text/javascript'>\n"
-            . "  <!--\n"
-            . "  oldonsubmit_{$this->id} = document.limesurvey.onsubmit;\n"
-            . "  function ensureminansw_{$this->id}()\n"
-            . "  {\n"
-            . "     count={$anscount} - document.getElementById('CHOICES_{$this->id}').options.length;\n"
-            . "     if (count < {$minansw} && $('#relevance{$this->id}').val()==1){\n";
-            if(!isset($showpopups) || $showpopups == 0)
-            {
-                $minanswscript .= "\n
-                document.getElementById('rankingminanswarning{$this->id}').style.display='';\n";
-            } else {
-                $minanswscript .="
-                alert('".sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\"",$minansw,'js'),$minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$this->text),true,true)))."');\n";
-            }
-            $minanswscript .= ""
-            . "     return false;\n"
-            . "   } else {\n"
-            . "     if (oldonsubmit_{$this->id}){\n"
-            . "         return oldonsubmit_{$this->id}();\n"
-            . "     }\n"
-            . "     return true;\n"
-            . "     }\n"
-            . "  }\n"
-            . "  document.limesurvey.onsubmit = ensureminansw_{$this->id}\n"
-            . "  -->\n"
-            . "  </script>\n";
-            $answer = $minanswscript . $answer;
+            $choice_title=$clang->gT("Your Choices",'js');
         }
-
+        if(trim($aQuestionAttributes['rank_title'][$clang->langcode]) != '')
+        {
+            $rank_title=htmlspecialchars(trim($aQuestionAttributes['rank_title'][$clang->langcode]), ENT_QUOTES);
+        }
+        else
+        {
+            $rank_title=$clang->gT("Your Ranking",'js');
+        }
+        $answer .= "<script type='text/javascript'>\n"
+        . "  <!--\n"
+        . "var translt = {
+                choicetitle: '{$choice_title}',
+                ranktitle: '{$rank_title}'
+            };\n"
+        ." doDragDropRank({$this->id},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]});\n"
+        ." -->\n"
+        ."</script>\n";
         return $answer;
     }
 
@@ -401,36 +279,7 @@ class RankingQuestion extends QuestionModule
         } else {
             $ansquery = "SELECT * FROM {{answers}} WHERE qid=$this->id AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
         }
-        return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
-    }
-    
-    public function getTitle()
-    {
-        $clang=Yii::app()->lang;
-        $aQuestionAttributes = $this->getAttributeValues();
-        $max_answers = trim($aQuestionAttributes["max_answers"])!=''?trim($aQuestionAttributes["max_answers"]):count($this->getAnswers());
-        if ($max_answers > 1 && $aQuestionAttributes['hide_tip']==0 && trim($aQuestionAttributes['min_answers'])!='')
-        {
-           return $this->text."<br />\n<span class=\"questionhelp\">".sprintf($clang->ngT("Check at least %d item.","Check at least %d items.",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers'])."</span>";
-        }
-        return $this->text;
-    }
-    
-    public function getHelp()
-    {
-        $clang=Yii::app()->lang;
-        $aQuestionAttributes = $this->getAttributeValues();
-        $help = '';
-        $max_answers = trim($aQuestionAttributes["max_answers"])!=''?trim($aQuestionAttributes["max_answers"]):count($this->getAnswers());
-        if ($max_answers > 1 && $aQuestionAttributes['hide_tip']==0)
-        {
-            $help = $clang->gT("Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item.");
-            if (trim($aQuestionAttributes['min_answers'])!='')
-            {
-                $help .=' '.sprintf($clang->ngT("Check at least %d item.","Check at least %d items.",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers']);
-            }
-        }
-        return $help;
+        return $this->answers = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
     
     public function createFieldmap($type=null)
@@ -521,7 +370,7 @@ class RankingQuestion extends QuestionModule
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");
+        $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

@@ -24,16 +24,7 @@ class Expressions extends Survey_Common_Action {
         <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'jquery/jquery.js'; ?>"></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'expressions/em_javascript.js'; ?>" /></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'survey_runtime.js'; ?>" /></script>
-        <style type="text/css">
-            <!--
-                .error {
-                    background-color: #ff0000;
-                }
-                .ok {
-                    background-color: #00ff00
-                }
-            -->
-        </style>
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl')."adminstyle.css"; ?>" />
     </head>
     <body <?php $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'))?>>
     <?php

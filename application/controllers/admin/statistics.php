@@ -37,11 +37,11 @@ class statistics extends Survey_Common_Action {
 	{
 		$surveyid = sanitize_int($surveyid);
 		//TODO: Convert question types to views
-
-		$clang = $this->getController()->lang;
+        $clang = $this->getController()->lang;
 
 		$imageurl = Yii::app()->getConfig("imageurl");
 		$aData = array('clang' => $clang, 'imageurl' => $imageurl);
+        $aData['sql']='';
 
 		/*
 		 * We need this later:
@@ -88,15 +88,6 @@ class statistics extends Survey_Common_Action {
 		 */
 		$maxchars = 50;
 
-
-
-		//don't call this script directly!
-		//if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-
-		//some includes, the progressbar is used to show a progressbar while generating the graphs
-		//include_once("login_check.php");
-		//require_once('classes/core/class.progressbar.php');
-
 		//we collect all the output within this variable
 		$statisticsoutput ='';
 
@@ -123,54 +114,8 @@ class statistics extends Survey_Common_Action {
 		$language = Survey::model()->findByPk($surveyid)->language;
 		$aData['language'] = $language;
 
-//		$chartfontfile = Yii::app()->getConfig("chartfontfile");
-//		//pick the best font file if font setting is 'auto'
-//		if ($chartfontfile=='auto')
-//		{
-//		    $chartfontfile='vera.ttf';
-//		    if ( $language=='ar')
-//		    {
-//		        $chartfontfile='KacstOffice.ttf';
-//		    }
-//		    elseif  ($language=='fa' )
-//		    {
-//		        $chartfontfile='KacstFarsi.ttf';
-//		    }
-//		    elseif  ($language=='el' )
-//		    {
-//		        $chartfontfile='DejaVuLGCSans.ttf';
-//		    }
-//		    elseif  ($language=='zh-Hant-HK' || $language=='zh-Hant-TW' || $language=='zh-Hans')
-//		    {
-//		        $chartfontfile='fireflysung.ttf';
-//		    }
-//
-//		}
 
-		//$statisticsoutput .= "
-		//<script type='text/javascript'' >
-		//<!--
-		//function selectAll(name){
-		//	//var name=name;
-		//
-		//	alert(name);
-		//
-		//	temp = document.+name+.elements.length;
-		//
-		//    for (i=0; i < temp; i++) {
-		//    if(document.+name+.elements[i].checked == 1)
-		//    	{document.+name+.elements[i].checked = 0;
-		//    	 document.+name+.+name+_btn.value = 'Select All'; }
-		//    else {document.+name.elements[i].checked = 1;
-		//   	 document.+name+.+name+_btn.value = 'Deselect All'; }
-		//	}
-		//}
-		////-->
-		//</script>";
-
-		//hide/show the filter
-		//filtersettings by default aren't shown when showing the results
-		//$statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
+		//Call the javascript file
 		$this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'statistics.js');
 
 		$aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
@@ -209,7 +154,7 @@ class statistics extends Survey_Common_Action {
 		 */
 
 		//store all the data in $rows
-		$rows = Questions::getQuestionList($surveyid, $language);
+		$rows = Questions::model()->getQuestionList($surveyid, $language);
 
 		//SORT IN NATURAL ORDER!
 		usort($rows, 'groupOrderThenQuestionOrder');
@@ -243,7 +188,7 @@ class statistics extends Survey_Common_Action {
             $error.='<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
             $error.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
 		}
-        
+
 		if ($grapherror)
 		{
 		    unset($_POST['usegraph']);
@@ -274,11 +219,6 @@ class statistics extends Survey_Common_Action {
 		$aData['selectinc'] = $selectinc;
         $aData['error'] = $error;
 
-		//if ($selecthide!='')
-		//{
-		//    $statisticsoutput .= " style='display:none' ";
-		//}
-
 		$survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
 		$survlangs[] = Survey::model()->findByPk($surveyid)->language;
 		$aData['survlangs'] = $survlangs;
@@ -286,12 +226,9 @@ class statistics extends Survey_Common_Action {
 
 		//if the survey contains timestamps you can filter by timestamp, too
 
-
 		//Output selector
 
-
 		//second row below options -> filter settings headline
-
 
 		$filterchoice_state=returnGlobal('filterchoice_state');
 		$aData['filterchoice_state'] = $filterchoice_state;
@@ -357,7 +294,7 @@ class statistics extends Survey_Common_Action {
 		    {
 		        case "K": // Multiple Numerical
 		            //get answers
-		            $result = Questions::getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1]['key1'] = $result;
 		            break;
 
@@ -366,7 +303,7 @@ class statistics extends Survey_Common_Action {
 		        case "Q": // Multiple Short Text
 
 		            //get subqestions
-		            $result = Questions::getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            break;
 
@@ -375,7 +312,7 @@ class statistics extends Survey_Common_Action {
 		        case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
 
 		            //get answers
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            break;
 
@@ -383,7 +320,7 @@ class statistics extends Survey_Common_Action {
 
 		            //just like above only a different loop
 		        case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            break;
 
@@ -391,7 +328,7 @@ class statistics extends Survey_Common_Action {
 
 		        case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
 		            //get answers
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            break;
 
@@ -399,26 +336,26 @@ class statistics extends Survey_Common_Action {
 
 		            //similiar to the above one
 		        case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            break;
 
 		        case ";":  //ARRAY (Multi Flex) (Text)
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            foreach($result as $key => $row)
 		            {
-		            	$fresult = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 1", 'question_order');
+		            	$fresult = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 1", 'question_order');
 		                $aData['fresults'][$key1][$key] = $fresult;
 		            }
 		            break;
 
 		        case ":":  //ARRAY (Multi Flex) (Numbers)
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            foreach($result as $row)
 		            {
-		            	$fresult = Questions::getQuestionsForStatistics('*', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 1", 'question_order, title');
+		            	$fresult = Questions::model()->getQuestionsForStatistics('*', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 1", 'question_order, title');
 		            	$aData['fresults'][$key1] = $fresult;
 		            }
 		            break;
@@ -430,13 +367,13 @@ class statistics extends Survey_Common_Action {
 		        case "F": // FlEXIBLE ARRAY
 		        case "H": // ARRAY (By Column)
 		            //Get answers. We always use the answer code because the label might be too long elsewise
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1] = $result;
 
 		            //check all the answers
 		            foreach($result as $row)
 		            {
-		                $fresult = Answers::getQuestionsForStatistics('*', "qid=$flt[0] AND language = '{$language}'", 'sortorder, code');
+		                $fresult = Answers::model()->getQuestionsForStatistics('*', "qid=$flt[0] AND language = '{$language}'", 'sortorder, code');
 		                $aData['fresults'][$key1] = $fresult;
 		            }
 
@@ -448,14 +385,14 @@ class statistics extends Survey_Common_Action {
 
 		        case "R": //RANKING
 		            //get some answers
-		            $result = Answers::getQuestionsForStatistics('code, answer', "qid=$flt[0] AND language = '{$language}'", 'sortorder, answer');
+		            $result = Answers::model()->getQuestionsForStatistics('code, answer', "qid=$flt[0] AND language = '{$language}'", 'sortorder, answer');
 		            $aData['result'][$key1] = $result;
 		            break;
 
 		        case "1": // MULTI SCALE
 
 		            //get answers
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            //loop through answers
 		            foreach($result as $key => $row)
@@ -466,7 +403,7 @@ class statistics extends Survey_Common_Action {
 		                $aData['dshresults'][$key1][$key] = $dshresult;
 
 
-		                $fresult = Answers::getQuestionsForStatistics('*', "qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'sortorder, code');
+		                $fresult = Answers::model()->getQuestionsForStatistics('*', "qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'sortorder, code');
 
 		                $aData['fresults'][$key1][$key] = $fresult;
 
@@ -480,7 +417,7 @@ class statistics extends Survey_Common_Action {
 		        case "M":  //M - Multiple choice
 
 		            //get answers
-		            $result = Questions::getQuestionsForStatistics('title, question', "parent_qid = $flt[0] AND language = '$language'", 'question_order');
+		            $result = Questions::model()->getQuestionsForStatistics('title, question', "parent_qid = $flt[0] AND language = '$language'", 'question_order');
 		            $aData['result'][$key1] = $result;
 		            break;
 
@@ -495,7 +432,7 @@ class statistics extends Survey_Common_Action {
 		        default:
 
 		            //get answers
-		            $result = Answers::getQuestionsForStatistics('code, answer', "qid=$flt[0] AND language = '$language'", 'sortorder, answer');
+		            $result = Answers::model()->getQuestionsForStatistics('code, answer', "qid=$flt[0] AND language = '$language'", 'sortorder, answer');
 		            $aData['result'][$key1] = $result;
 		            break;
 
@@ -509,8 +446,6 @@ class statistics extends Survey_Common_Action {
 		    //used to adjust linebreaks
 		    $previousquestiontype = $flt[2];
 
-		    //Group close
-		    //$statisticsoutput .= "\n\t\t\t\t<!-- --></tr>\n\t\t\t</table></div></td></tr>\n";
 		}
 
 		// ----------------------------------- END FILTER FORM ---------------------------------------
@@ -519,18 +454,16 @@ class statistics extends Survey_Common_Action {
 		//Show Summary results
 		if (isset($summary) && $summary)
 		{
-		    if(isset($_POST['usegraph']))
-		    {
-		        $usegraph = 1;
-		    }
-		    else
-		    {
-		        $usegraph = 0;
-		    }
+		    $usegraph=isset($_POST['usegraph']) ? 1 : 0;
             $aData['usegraph'] = $usegraph;
+            $showtextinline=isset($_POST['showtextinline']) ? 1 : 0;
+            $aData['showtextinline'] = $showtextinline;
 		    $outputType = $_POST['outputtype'];
-		    switch($outputType){
 
+            $selects=buildSelects($summary, $surveyid, $statlang);
+            $aData['sql']=implode(" AND ", $selects);
+
+		    switch($outputType){
 		        case 'html':
 		            $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 		            break;
@@ -543,22 +476,44 @@ class statistics extends Survey_Common_Action {
 		            exit;
 		            break;
 		        default:
-
 		            break;
-
 		    }
 
 		}	//end if -> show summary results
-        
+
+        $aData['sStatisticsLanguage']=$statlang;
 		$aData['output'] = $statisticsoutput;
+        $aData['summary'] = $summary;
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 
 	}
 
+    /* Returns a simple list of values in a particular column, that meet the
+     * requirements of the SQL
+     *
+     * */
+    function listcolumn($surveyid, $column, $sql, $sortby="", $sortmethod="", $sorttype="")
+    {
+        $search['condition']=$column." != ''";
+        if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
+        if($sortby != "") $search['order']=$sortby.' '.$sortmethod;
+        $results=Survey_dynamic::model($surveyid)->findAll($search);
+        foreach($results as $row) {
+            $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
+        }
+        $aData['surveyid']=$surveyid;
+        $aData['data']=$output;
+        $aData['column']=$column;
+        $aData['sortby']=$sortby;
+        $aData['sortmethod']=$sortmethod;
+        $aData['sorttype']=$sorttype;
+        $this->getController()->render('export/statistics_browse_view', $aData);
+    }
+
 	function graph()
 	{
-        Yii::app()->loadHelper('admin/statistics_helper');
+        Yii::app()->loadHelper('admin/statistics');
 		Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
@@ -570,8 +525,8 @@ class statistics extends Survey_Common_Action {
 
 	    $aData['success'] = 1;
 
-	    if (isset($_POST['cmd']) || !isset($_POST['id'])) {
-	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 1), 3);
+	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
+	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
 	        $qtype = substr($_POST['id'], 0, 1);
             $aattr = getQuestionAttributeValues($qqid, substr($_POST['id'], 0, 1));
             $field = substr($_POST['id'], 1);
@@ -654,7 +609,8 @@ class statistics extends Survey_Common_Action {
 	        $aData['success'] = 0;
 	    }
 
-        $this->_renderWrappedTemplate('export', 'statistics_graph_view', $aData);
+        //$this->_renderWrappedTemplate('export', 'statistics_graph_view', $aData);
+        $this->getController()->render('export/statistics_graph_view', $aData);
 	}
 
     /**

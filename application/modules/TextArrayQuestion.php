@@ -44,8 +44,12 @@ class TextArrayQuestion extends ArrayQuestion
         $grand_total = '';
         $q_table_id = '';
         $q_table_id_HTML = '';
-        $numbersonly = '';
 
+        if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+        {
+            $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+            $minrepeatheadings = 0;
+        }
         if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
         {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -62,7 +66,6 @@ class TextArrayQuestion extends ArrayQuestion
             $checkconditionFunction = "fixnum_checkconditions";
             $q_table_id = 'totals_'.$this->id;
             $q_table_id_HTML = ' id="'.$q_table_id.'"';
-            //	$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
             $num_class = ' numbers-only';
             $extraclass.=" numberonly";
             switch ($aQuestionAttributes['show_totals'])
@@ -146,7 +149,6 @@ class TextArrayQuestion extends ArrayQuestion
         }
         else
         {
-            $numbersonly = '';
         };
         if (trim($aQuestionAttributes['answer_width'])!='')
         {
@@ -205,34 +207,33 @@ class TextArrayQuestion extends ArrayQuestion
             $answer_cols = "\t<colgroup class=\"col-responses\">\n"
             ."\n\t\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
 
-            $answer_head = "\n\t<thead>\n"
-            . "\t\t<tr>\n"
-            . "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";
+            $answer_head_line= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";
 
             $odd_even = '';
             foreach ($labelans as $ld)
             {
-                $answer_head .= "\t<th class=\"answertext\">".$ld."</th>\n";
+                $answer_head_line .= "\t<th class=\"answertext\">".$ld."</th>\n";
                 $odd_even = alternation($odd_even);
                 $answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
             }
             if ($right_exists)
             {
-                $answer_head .= "\t<td>&nbsp;</td>\n";// class=\"answertextright\"
+                $answer_head_line .= "\t<td>&nbsp;</td>\n";// class=\"answertextright\"
                 $odd_even = alternation($odd_even);
                 $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
             }
 
             if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
             {
-                $answer_head .= $col_head;
+                $answer_head_line .= $col_head;
                 $odd_even = alternation($odd_even);
                 $answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
             }
             $answer_cols .= "\t</colgroup>\n";
 
-            $answer_head .= "</tr>\n"
-            . "\t</thead>\n";
+            $answer_head = "\n\t<thead>\n\t\t<tr>\n"
+            . $answer_head_line
+            . "</tr>\n\t</thead>\n";
 
             $answer = "\n<table$q_table_id_HTML class=\"question subquestions-list questions-list{$extraclass}$num_class"."$totals_class\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array of text responses\">\n" . $answer_cols . $answer_head;
             $answer .= "<tbody>";
@@ -245,12 +246,8 @@ class TextArrayQuestion extends ArrayQuestion
                     {
                         $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
                         $answer .= "<tr class=\"repeat headings\">\n"
-                        . "\t<td>&nbsp;</td>\n";
-                        foreach ($labelans as $ld)
-                        {
-                            $answer .= "\t<th>".$ld."</th>\n";
-                        }
-                        $answer .= "</tr>\n";
+                        . $answer_head_line
+                        . "</tr>\n";
                     }
                 }
                 $myfname = $this->fieldname.$ansrow['title'];
@@ -350,7 +347,7 @@ class TextArrayQuestion extends ArrayQuestion
 $(document).ready(function()
 {
     $('#question{$this->id} :input:visible:enabled').each(function(index){
-        $(this).bind('change',function(e) {
+        $(this).bind('keyup',function(e) {
             checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'));
             return true;
         })
@@ -473,7 +470,7 @@ EOD;
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","show_totals","show_grand_total","page_break","random_order","parent_order","text_input_width","random_group");
+        $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","show_totals","show_grand_total","page_break","random_order","parent_order","text_input_width","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

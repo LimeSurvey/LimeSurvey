@@ -83,7 +83,7 @@ abstract class QuestionModule
         foreach ($result as $row)
         {
             $row = $row->attributes;
-            if (!isset($avaliable[$row['attribute']]))
+            if (!in_array($row['attribute'], $available))
             {
                 continue; // Sort out attributes not belonging to this question
             }
@@ -218,7 +218,8 @@ abstract class QuestionModule
         "value"=>$row['value'],
         "matchfield"=>$row['cfieldname'],
         "matchvalue"=>$row['value'],
-        "matchmethod"=>$row['method']
+        "matchmethod"=>$row['method'],
+        "subqid"=>$row['cfieldname'].'NAOK'
         );
     }
     

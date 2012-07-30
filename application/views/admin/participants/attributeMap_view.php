@@ -16,6 +16,13 @@
     var cannotAcceptTokenAttributesText="<?php $clang->et("This list cannot accept token attributes.") ?>";
 
     </script>
+</head>
+<body>
+    <div class='header ui-widget-header'>
+        <strong>
+            <?php $clang->eT("Map your participant attributes to an existing token attribute or create a new one"); ?>
+        </strong>
+    </div>
 <?php
 	$columncount = 0;
 	if (!empty($selectedcentralattribute))
@@ -24,76 +31,80 @@
 		$columncount++;
 	$columnstyle = "attrcol_".$columncount;
 ?>
-<div class='header ui-widget-header'>
-    <strong>
-        <?php echo $count ?>
-    </strong>
-</div>
-<div class="main">
-	<p><?php $clang->eT("Select any attributes you'd like use in your survey by dropping the attribute in the right hand column."); ?><br />
-		<?php $clang->eT("Click on 'Continue' when you are done."); ?>
-	</p>
-    <?php
-    if (!empty($selectedcentralattribute))
-    {
-        ?>
-        <div id="centralattribute" class="<?php echo $columnstyle ?>">
-            <div class="heading"><?php $clang->eT("Already mapped"); ?></div>
-            <ul id="cpdbatt">
-                <?php
-                foreach ($selectedcentralattribute as $key => $value)
-                {
-                    ?>
-                    <li id='c_<?php echo $key; ?>'><?php echo $value; ?></li>
-                    <?php
-                }
+
+    <div id="centralattribute" class="<?php echo $columnstyle ?>">
+        <div class="heading"><?php $clang->eT("Unmapped participant attributes"); ?></div>
+        <ul id="cpdbatt">
+            <?php
+            foreach ($selectedcentralattribute as $key => $value)
+            {
                 ?>
-            </ul>
-            <ul class="notsortable">
+                <li id='c_<?php echo $key; ?>'><?php echo $value; ?></li>
                 <?php
-                foreach ($alreadymappedattributename as $key => $value)
-                {
-                    ?>
-                    <li title='This attribute is already mapped' id=''><?php echo $value; ?></li>
-                    <?php
-                }
-                ?>
-            </ul>
+            }
+            ?>
+        </ul>
+    </div>
+    <div id="newcreated" class="<?php echo $columnstyle ?>">
+        <div class="heading"><?php $clang->eT("Token attributes to create"); ?></div>
+        <ul class="newcreate" id="sortable" style ="height:40px">
+        </ul>
+    </div>
+    <div id="tokenattribute" class="<?php echo $columnstyle ?>">
+        <div class="heading">
+            <?php $clang->eT("Existing token attributes"); ?>
+        </div>
+        <ul class="tokenatt">
+            <?php
+            foreach ($selectedtokenattribute as $key => $value)
+            {
+                echo "<li id='t_" . $key . "'>" . $value . "</li>";
+            }
+            ?>
+        </ul>
+        <?php if(!empty($selectedtokenattribute)) { ?>
+        <br />
+        <div class='explanation'>
+            <input type='checkbox' id='overwriteman' name='overwriteman' /> <label for='overwriteman'><?php $clang->eT("Overwrite existing token attribute values if a participant already exists?") ?></label>
+            <br /><input type='checkbox' id='createautomap' name='createautomap' /> <label for='createautomap'><?php $clang->eT("Make these mappings automatic in future") ?></label><br />&nbsp;
         </div>
         <?php
-        if (!empty($selectedcentralattribute))
-        {
-            ?>
-            <div id="newcreated" class="<?php echo $columnstyle ?>">
-                <div class="heading"><?php $clang->eT("Attributes to be created"); ?></div>
-                <ul class="newcreate" id="sortable" style ="height:40px">
-                </ul>
-            </div>
-            <?php
-        }
-    }
-    if (!empty($selectedtokenattribute))
-    {
+        } else {echo "<br />&nbsp;";}
+        if(!empty($alreadymappedattributename)) {
         ?>
-        <div id="tokenattribute" class="<?php echo $columnstyle ?>">
-            <div class="heading">
-                <?php $clang->eT("Token table attribute"); ?>
-            </div>
-            <ul class="tokenatt">
-                <?php
-                foreach ($selectedtokenattribute as $key => $value)
-                {
-                    echo "<li id='t_" . $value . "'>" . $value . "</li>";
-                }
+        <br />
+        <div class='heading'><?php $clang->eT("Pre-mapped attributes") ?></div><br />
+        <ul class="notsortable">
+            <?php
+            foreach ($alreadymappedattributename as $key => $value)
+            {
                 ?>
-            </ul>
+                <li title='This attribute is already mapped' id=''><?php echo $value; ?></li>
+                <?php
+            }
+            ?>
+        </ul>
+        <div class='explanation'>
+            <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?></label>
         </div>
-    <?php }
-    ?>
-	<div id="controllingarea">
+        <?php
+        }
+        ?>
+        <div class='heading'><?php $clang->eT("Standard token fields") ?></div><br />
+        <ul class="standardfields">
+            <li id='t_token'><?php $clang->eT("Token") ?></li>
+        </ul>
+        <div class='explanation'>
+            <input type='checkbox' id='overwritest' name='overwritest' /> <label for='overwritest'><?php $clang->eT("Overwrite existing standard field values if a participant already exists?") ?></label>
+            <br /><?php $clang->eT("Note: Standard token fields cannot be automatically mapped") ?>
+        </div>
+
+    </div>
+	<p>
 		<input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
-		<input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue')?>" />
-   	</div>
+        <input type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php $clang->eT('Reset') ?>" />
+        <input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue')?>" />
+   	</p>
     <?php
     $ajaxloader = array(
         'src' => Yii::app()->baseUrl . '/images/ajax-loader.gif',
@@ -102,6 +113,8 @@
     );
     ?>
     <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
-<?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
+    <?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
     </div>
-</div>
+
+</body>
+</html>

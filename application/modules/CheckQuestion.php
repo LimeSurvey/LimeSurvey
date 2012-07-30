@@ -60,12 +60,10 @@ class CheckQuestion extends QuestionModule
         {
             $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
             $sSeperator= $sSeperator['seperator'];
-            $numbersonly = " onkeypress='return goodchars(event,\"-0123456789$sSeperator\")'";
             $oth_checkconditionFunction = "fixnum_checkconditions";
         }
         else
         {
-            $numbersonly = '';
             $oth_checkconditionFunction = "checkconditions";
         }
 
@@ -185,7 +183,7 @@ class CheckQuestion extends QuestionModule
             }
             $answer .= $startitem;
             $answer .= $hiddenfield.'
-            <input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
+            <input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox" style="display:none"';// othercbox can be not display, because only input text goes to database
 
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && trim($_SESSION['survey_'.$this->surveyid][$myfname])!='')
             {
@@ -205,7 +203,7 @@ class CheckQuestion extends QuestionModule
                 }
                 $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
             }
-            $answer .= "\" onchange='$(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
+            $answer .= "\" onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));'/>";
             $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
@@ -237,36 +235,6 @@ class CheckQuestion extends QuestionModule
             }
         }
         $answer .= $wrapper['whole-end'];
-
-        $checkotherscript = "";
-        if ($this->getOther() == 'Y')
-        {
-            // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
-            // this means that if it is cehcked We must force the end-user to enter text in the input
-            // box
-            $checkotherscript = "<script type='text/javascript'>\n"
-            . "\t<!--\n"
-            . "oldonsubmitOther_{$this->id} = document.limesurvey.onsubmit;\n"
-            . "function ensureOther_{$this->id}()\n"
-            . "{\n"
-            . "\tothercboxval=document.getElementById('answer".$myfname."cbox').checked;\n"
-            . "\totherval=document.getElementById('answer".$myfname."').value;\n"
-            . "\tif (otherval != '' || othercboxval != true) {\n"
-            . "if(typeof oldonsubmitOther_{$this->id} == 'function') {\n"
-            . "\treturn oldonsubmitOther_{$this->id}();\n"
-            . "}\n"
-            . "\t}\n"
-            . "\telse {\n"
-            . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($this->text,true,true)))."');\n"
-            . "return false;\n"
-            . "\t}\n"
-            . "}\n"
-            . "document.limesurvey.onsubmit = ensureOther_{$this->id};\n"
-            . "\t-->\n"
-            . "</script>\n";
-        }
-
-        $answer = $checkotherscript . $answer;
 
         $answer .= $postrow;
         return $answer;
@@ -478,7 +446,8 @@ class CheckQuestion extends QuestionModule
             "value"=>$row['value'],
             "matchfield"=>$row['cfieldname'],
             "matchvalue"=>$row['value'],
-            "matchmethod"=>$row['method']
+            "matchmethod"=>$row['method'],
+            "subqid"=>$cfieldnamematch[1].'NAOK'
             );
         }
         
@@ -486,7 +455,8 @@ class CheckQuestion extends QuestionModule
         "value"=>$row['value'],
         "matchfield"=>$row['cfieldname'],
         "matchvalue"=>"Y",
-        "matchmethod"=>$row['method']
+        "matchmethod"=>$row['method'],
+        "subqid"=>$row['cfieldname']
         );
     }
 
@@ -591,7 +561,7 @@ class CheckQuestion extends QuestionModule
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","em_validation_q","em_validation_q_tip","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

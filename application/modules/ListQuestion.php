@@ -66,7 +66,7 @@ class ListQuestion extends QuestionModule
         //Time Limit Code
         if (trim($aQuestionAttributes['time_limit'])!='')
         {
-            $answer .= return_timer_script($aQuestionAttributes, $ia);
+            $answer .= return_timer_script($aQuestionAttributes, $this);
         }
         //End Time Limit Code
 
@@ -123,12 +123,10 @@ class ListQuestion extends QuestionModule
 
             if ($aQuestionAttributes['other_numbers_only']==1)
             {
-                $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
                 $oth_checkconditionFunction = 'fixnum_checkconditions';
             }
             else
             {
-                $numbersonly = '';
                 $oth_checkconditionFunction = 'checkconditions';
             }
 
@@ -170,7 +168,7 @@ class ListQuestion extends QuestionModule
             $answer .= '		<input class="radio" type="radio" value="-oth-" name="'.$this->fieldname.'" id="SOTH'.$this->fieldname.'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
             <label for="SOTH'.$this->fieldname.'" class="answertext">'.$othertext.'</label>
             <label for="answer'.$this->fieldname.'othertext">
-            <input type="text" class="text '.$kpclass.'" id="answer'.$this->fieldname.'othertext" name="'.$this->fieldname.'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onchange="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$this->fieldname.'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
+            <input type="text" class="text '.$kpclass.'" id="answer'.$this->fieldname.'othertext" name="'.$this->fieldname.'other" title="'.$clang->gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$this->fieldname.'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
             </label>
             '.$wrapper['item-end'];
 

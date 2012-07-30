@@ -29,7 +29,7 @@ class SelectQuestion extends ListQuestion
         //Time Limit Code
         if (trim($aQuestionAttributes['time_limit'])!='')
         {
-            $answer .= return_timer_script($aQuestionAttributes, $ia);
+            $answer .= return_timer_script($aQuestionAttributes, $this);
         }
         //End Time Limit Code
 
@@ -92,7 +92,7 @@ class SelectQuestion extends ListQuestion
                 if ($prefixStyle == 1) {
                     $_prefix = ++$_rowNum . ') ';
                 }
-                $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$_prefix}{$ansrow['answer']}</option>\n";
+                $answer .= "<option value='{$ansrow['code']}' {$opt_select}>".flattenText($_prefix.$ansrow['answer'])."</option>\n";
             }
         }
         else
@@ -116,7 +116,7 @@ class SelectQuestion extends ListQuestion
 
             foreach ($optgroups as $categoryname => $optionlistarray)
             {
-                $answer .= '                                   <optgroup class="dropdowncategory" label="'.$categoryname.'">
+                $answer .= '                                   <optgroup class="dropdowncategory" label="'.flattenText($categoryname).'">
                 ';
 
                 foreach ($optionlistarray as $optionarray)
@@ -130,7 +130,7 @@ class SelectQuestion extends ListQuestion
                         $opt_select = '';
                     }
 
-                    $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.$optionarray['answer'].'</option>
+                    $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
                     ';
                 }
 
@@ -148,7 +148,7 @@ class SelectQuestion extends ListQuestion
                     $opt_select = '';
                 }
 
-                $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.$optionarray['answer'].'</option>
+                $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
                 ';
             }
         }
@@ -171,7 +171,7 @@ class SelectQuestion extends ListQuestion
             if ($prefixStyle == 1) {
                 $_prefix = ++$_rowNum . ') ';
             }
-            $answer .= '					<option value="-oth-"'.$opt_select.'>'.$_prefix.$othertext."</option>\n";
+            $answer .= '					<option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
         }
 
         if (($_SESSION['survey_'.$this->surveyid][$this->fieldname] || $_SESSION['survey_'.$this->surveyid][$this->fieldname] != '') && $this->mandatory != 'Y' && $this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)

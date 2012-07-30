@@ -15,13 +15,11 @@ class MultitextQuestion extends QuestionModule
         {
             $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
             $sSeperator = $sSeperator['seperator'];
-            $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
             $extraclass .=" numberonly";
             $checkconditionFunction = "fixnum_checkconditions";
         }
         else
         {
-            $numbersonly = '';
             $checkconditionFunction = "checkconditions";
         }
         if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
@@ -109,7 +107,7 @@ class MultitextQuestion extends QuestionModule
                     . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                     . "\t<span>\n".$prefix."\n".'
                     <textarea class="textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
-                    rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
+                    rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
 
                     if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                     {
@@ -168,7 +166,7 @@ class MultitextQuestion extends QuestionModule
                     }
 
                     // --> START NEW FEATURE - SAVE
-                    $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' '.$maxlength.' />'."\n".$suffix."\n\t</span>\n"
+                    $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$maxlength.' />'."\n".$suffix."\n\t</span>\n"
                     . "\t</li>\n";
                     // --> END NEW FEATURE - SAVE
 
@@ -248,7 +246,7 @@ class MultitextQuestion extends QuestionModule
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("array_filter","array_filter_exclude","array_filter_style","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");
+        $attrs=array("array_filter","array_filter_exclude","array_filter_style","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

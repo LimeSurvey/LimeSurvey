@@ -28,11 +28,11 @@ $(document).ready(function(){
 
             previewblock += "</td>";
             if ($('#'+fieldname+'_show_title').val() == 1 && $('#'+fieldname+'_show_comment').val() == 1)
-                previewblock += "<td align='center'><label>"+translt.titleFld+"</label><br /><br /><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='"+json[i-1].title+"' id='"+fieldname+"_title_"+i+"' /><br /><br /><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
+                previewblock += "<td align='center'><label>"+translt.titleFld+"</label><br /><br /><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='"+escapeHtml(json[i-1].title)+"' id='"+fieldname+"_title_"+i+"' /><br /><br /><input type='text' value='"+escapeHtml(json[i-1].comment)+"' id='"+fieldname+"_comment_"+i+"' /></td>";
             else if ($('#'+fieldname+'_show_title').val() == 1)
-                previewblock += "<td align='center'><label>"+translt.titleFld+"</label></td><td align='center'><input type='text' value='"+json[i-1].title+"' id='"+fieldname+"_title_"+i+"' /></td>";
+                previewblock += "<td align='center'><label>"+translt.titleFld+"</label></td><td align='center'><input type='text' value='"+escapeHtml(json[i-1].title)+"' id='"+fieldname+"_title_"+i+"' /></td>";
             else if ($('#'+fieldname+'_show_comment').val() == 1)
-                previewblock += "<td align='center'><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
+                previewblock += "<td align='center'><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='"+escapeHtml(json[i-1].comment)+"' id='"+fieldname+"_comment_"+i+"' /></td>";
 
             previewblock += "<td align='center' width='20%' ><img style='cursor:pointer' src='"+imageurl+"delete.png' onclick='deletefile(\""+fieldname+"\", "+i+")' /></td></tr></table>"+
                     "<input type='hidden' id='"+fieldname+"_size_"    +i+"' value="+json[i-1].size+" />"+
@@ -202,7 +202,7 @@ function passJSON(fieldname, show_title, show_comment, pos) {
     var i = 1;
     while (i <= licount)
     {
-        
+
         if ($("#"+fieldname+"_li_"+i).is(':visible'))
         {
             if (filecount > 0)
@@ -210,9 +210,9 @@ function passJSON(fieldname, show_title, show_comment, pos) {
             json += '{';
 
             if ($("#"+fieldname+"_show_title").val() == 1)
-                json += '"title":"' +$("#"+fieldname+"_title_"  +i).val()+'",';
+                json += '"title":"' +$("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\"')+'",';
             if ($("#"+fieldname+"_show_comment").val() == 1)
-                json += '"comment":"'+$("#"+fieldname+"_comment_"+i).val()+'",';
+                json += '"comment":"'+$("#"+fieldname+"_comment_"+i).val().replace(/"/g, '\"')+'",';
             json += '"size":"'   +$("#"+fieldname+"_size_"   +i).val()+'",'+
                     '"name":"'   +$("#"+fieldname+"_name_"   +i).val()+'",'+
                     '"filename":"'   +$("#"+fieldname+"_filename_"   +i).val()+'",'+
@@ -296,4 +296,14 @@ function deletefile(fieldname, count) {
     name=$("#"+fieldname+"_name_"+count).val();
     xmlhttp.open('GET',uploadurl+'/delete/1/fieldname/'+fieldname+'/filename/'+filename+'/name/'+encodeURI(name), true);
     xmlhttp.send();
+}
+
+
+function escapeHtml(unsafe) {
+  return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 }

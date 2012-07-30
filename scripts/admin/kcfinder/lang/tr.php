@@ -6,7 +6,7 @@
 
 $lang = array(
 
-    '_locale' => "tr_ZA.UTF-8",  // UNIX localization code
+    '_locale' => "en_US.UTF-8",  // UNIX localization code
     '_charset' => "utf-8",       // Browser charset
 
     // Date time formats. See http://www.php.net/manual/en/function.strftime.php
@@ -169,9 +169,9 @@ $lang = array(
     "Order by:" => "Sıralama:",
     "Thumbnails" => "Önizleme",
     "List" => "Liste",
-    "Name" => "Adı",
-    "Size" => "Boyutu",
-    "Date" => "Tarihi",
+    "Name" => "Ad",
+    "Size" => "Boyut",
+    "Date" => "Tarih",
     "Descending" => "Azalarak",
     "Uploading file..." => "Dosya Gönderiliyor...",
     "Loading image..." => "Resim Yükleniyor...",
@@ -236,6 +236,22 @@ $lang = array(
     "Type" => "Tür",
     "Select Thumbnails" => "Önizleme Resimlerini Seç",
     "Download files" => "Dosyaları İndir",
+
+    // SINCE 2.4
+
+    "Checking for new version..." => "Yeni versiyon kontrol ediliyor...",
+    "Unable to connect!" => "Bağlantı yapılamıyor!",
+    "Download version {version} now!" => " {version} versiyonunu hemen indir!",
+    "KCFinder is up to date!" => "KCFinder güncel durumda!",
+    "Licenses:" => "Lisanslar:",
+    "Attention" => "Dikkat",
+    "Question" => "Soru",
+    "Yes" => "Evet",
+    "No" => "Hayır",
+
+    // SINCE 2.41
+
+    "You cannot rename the extension of files!" => "Dosya uzantılarını değiştiremezsiniz!",
 );
 
 ?>

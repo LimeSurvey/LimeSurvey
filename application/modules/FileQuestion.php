@@ -53,7 +53,7 @@ class FileQuestion extends QuestionModule
                  returnTxt: '" . $clang->gT('Return to survey','js') . "',
                  headTitle: '" . $clang->gT('Title','js') . "',
                  headComment: '" . $clang->gT('Comment','js') . "',
-                 headFileName: '" . $clang->gT('File name','js') . "',
+                 headFileName: '" . $clang->gT('File name','js') . "'
                 };
         </script>\n";
 

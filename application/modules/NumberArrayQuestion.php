@@ -81,7 +81,11 @@ class NumberArrayQuestion extends ArrayQuestion
         {
             $answertypeclass .=" dropdown";
         }
-
+        if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+        {
+            $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+            $minrepeatheadings = 0;
+        }
         if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
         {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -158,30 +162,27 @@ class NumberArrayQuestion extends ArrayQuestion
 
             $mycols = "\t<colgroup class=\"col-responses\">\n"
             . "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-
-            $myheader = "\n\t<thead>\n"
-            . "<tr>\n"
-            . "\t<td >&nbsp;</td>\n";
-
+            $answer_head_line = "\t<td >&nbsp;</td>\n";
             $odd_even = '';
             foreach ($labelans as $ld)
             {
-                $myheader .= "\t<th>".$ld."</th>\n";
+                $answer_head_line .= "\t<th>".$ld."</th>\n";
                 $odd_even = alternation($odd_even);
                 $mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
             }
             if ($right_exists)
             {
-                $myheader .= "\t<td>&nbsp;</td>";
+                $answer_head_line .= "\t<td>&nbsp;</td>";
                 $odd_even = alternation($odd_even);
                 $mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
             }
-            $myheader .= "</tr>\n"
-            . "\t</thead>\n";
+            $answer_head = "\n\t<thead>\n<tr>\n"
+            . $answer_head_line
+            . "</tr>\n\t</thead>\n";
             $mycols .= "\t</colgroup>\n";
 
             $trbc = '';
-            $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n";
+            $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array type question with dropdown responses\">\n" . $mycols . $answer_head . "\n";
             $answer .= "<tbody>";
             foreach ($ansresult as $ansrow)
             {
@@ -191,12 +192,8 @@ class NumberArrayQuestion extends ArrayQuestion
                     {
                         $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
                         $answer .= "<tr class=\"repeat headings\">\n"
-                        . "\t<td>&nbsp;</td>\n";
-                        foreach ($labelans as $ld)
-                        {
-                            $answer .= "\t<th>".$ld."</th>\n";
-                        }
-                        $answer .= "</tr>\n\n";
+                        . $answer_head_line
+                        . "</tr>\n\n";
                     }
                 }
                 $myfname = $this->fieldname.$ansrow['title'];
@@ -278,7 +275,7 @@ class NumberArrayQuestion extends ArrayQuestion
                             $sSeperator = $sSeperator['seperator'];
                             $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
                             . HTMLEscape($labelans[$thiskey]).'"'
-                            . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'-0123456789$sSeperator')\""
+                            . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
                             . " value=\"";
                             if(isset($_SESSION['survey_'.$this->surveyid][$myfname2]) && $_SESSION['survey_'.$this->surveyid][$myfname2]) {
                                 $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.$this->surveyid][$myfname2]);
@@ -530,7 +527,7 @@ class NumberArrayQuestion extends ArrayQuestion
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

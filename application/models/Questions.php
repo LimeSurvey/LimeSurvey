@@ -97,6 +97,24 @@
             }
         }
 
+        function updateQuestionOrder($gid,$language,$position=0)
+        {
+            $data=Yii::app()->db->createCommand()->select('qid')
+            ->where(array('and','gid=:gid','language=:language'))
+            ->order('question_order, title ASC')
+            ->from('{{questions}}')
+            ->bindParam(':gid', $gid, PDO::PARAM_INT)
+            ->bindParam(':language', $language, PDO::PARAM_STR)
+            ->query();
+
+            $position = intval($position);
+            foreach($data->readAll() as $row)
+            {
+                Yii::app()->db->createCommand()->update($this->tableName(),array('question_order' => $position),'qid='.$row['qid']);
+                $position++;
+            }
+        }
+
         /**
         * This function returns an array of the advanced attributes for the particular question
         * including their values set in the database
@@ -166,8 +184,8 @@
             return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
-            ->where(array('and', 'parent_qid=:parent_qid'))
-            ->bindParam(":parent_qid", $qid, PDO::PARAM_INT)
+            ->where('parent_qid=:parent_qid')
+            ->bindParam(":parent_qid", $parent_qid, PDO::PARAM_INT)
             ->order('question_order asc')
             ->query();
         }
@@ -182,10 +200,9 @@
             $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
             if ($sCondition != FALSE)
             {
-                $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND :scondition")
+                $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
                 ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
-                ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR)
-                ->bindParam(":scondition", $sCondition, PDO::PARAM_STR);
+                ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
             }
             $command->order("{{groups}}.group_order asc, {{questions}}.question_order asc");
 

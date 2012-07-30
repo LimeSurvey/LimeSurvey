@@ -29,9 +29,9 @@ class RegisterController extends LSYii_Controller {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('replacements');
         $redata = compact(array_keys(get_defined_vars()));
-        $thistpl = Yii::app()->getConfig("standardtemplaterootdir").'/default';
         $surveyid = sanitize_int($surveyid);
         $row = Survey::model()->find('sid=:sid',array(':sid' => $surveyid)) or show_error("Can't find survey data");
+        $thistpl=getTemplatePath(validateTemplateDir($row->template));
         $data['sid'] = $surveyid;
         $data['startdate'] = $row->startdate;
         $data['enddate'] = $row->expires;

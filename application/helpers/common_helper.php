@@ -386,7 +386,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 {
     $clang = Yii::app()->lang;
     $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0));
+    $qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
 
     if (!isset($sQuestionselecter)) {$sQuestionselecter="";}
     foreach ($qrows as $qrow)
@@ -1464,12 +1464,7 @@ function getQuestion($fieldcode)
     foreach($fields as $field)
     {
         $q=$field['q'];
-        //try {
-        //echo 'test';
         if($q->id==$qid && $q->surveyid==$sid && $q->gid==$gid) return $q;
-        //} catch(Exception $e) {
-        //    var_dump($q);die();
-        //}
     }
     return false;
 }
@@ -1728,22 +1723,26 @@ function stripComments($comment, $email, $replace=''){
 }
 
 
-function validateTemplateDir($templatename)
+function validateTemplateDir($sTemplateName)
 {
     $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
     $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-    $defaulttemplate = Yii::app()->getConfig('defaulttemplate');
-    if (is_dir("$usertemplaterootdir/{$templatename}/"))
+    $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');
+    if (is_dir("$usertemplaterootdir/{$sTemplateName}/"))
     {
-        return $templatename;
+        return $sTemplateName;
     }
-    elseif (is_dir("$standardtemplaterootdir/{$templatename}/"))
+    elseif (is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
     {
-        return $templatename;
+        return $sTemplateName;
     }
-    elseif (is_dir("$usertemplaterootdir/{$defaulttemplate}/"))
+    elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
     {
-        return $defaulttemplate;
+        return $sDefaultTemplate;
+    }
+    elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
+    {
+        return $sDefaultTemplate;
     }
     else
     {
@@ -2115,7 +2114,7 @@ function buildLabelSetCheckSumArray()
     /**$query = "SELECT lid
     FROM ".db_table_name('labelsets')."
     ORDER BY lid"; */
-    $result = Labelsets::getLID();//($query) or safeDie("safe_died collecting labelset ids<br />$query<br />");  //Checked)
+    $result = Labelsets::model()->getLID();//($query) or safeDie("safe_died collecting labelset ids<br />$query<br />");  //Checked)
     $csarray=array();
     foreach($result as $row)
     {
@@ -2216,6 +2215,14 @@ function questionAttributes()
     'max'=>'100',
     "help"=>$clang->gT('Set the percentage width of the answer column (1-100)'),
     "caption"=>$clang->gT('Answer width'));
+
+    $qattributes["repeat_headings"]=array(
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>100,
+    'inputtype'=>'integer',
+     'default'=>'',
+    "help"=>$clang->gT('Repeat headings every X subquestions (Set to 0 to deactivate heading repeat, deactivate minimum repeat headings from config).'),
+    "caption"=>$clang->gT('Repeat headers'));
 
     $qattributes["array_filter"]=array(
     'category'=>$clang->gT('Logic'),
@@ -2628,7 +2635,7 @@ function questionAttributes()
 
     $qattributes["numbers_only"]=array(
     'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
+    'sortorder'=>150,
     'inputtype'=>'singleselect',
     'options'=>array(
     0=>$clang->gT('No'),
@@ -2641,7 +2648,7 @@ function questionAttributes()
 
     $qattributes['show_totals'] =	array(
     'category' =>	$clang->gT('Other'),
-    'sortorder' =>	100,
+    'sortorder' =>	151,
     'inputtype'	=> 'singleselect',
     'options' =>	array(
     'X' =>	$clang->gT('Off'),
@@ -2656,7 +2663,7 @@ function questionAttributes()
 
     $qattributes['show_grand_total'] =	array(
     'category' =>	$clang->gT('Other'),
-    'sortorder' =>	100,
+    'sortorder' =>	152,
     'inputtype' =>	'singleselect',
     'options' =>	array(
     0 =>	$clang->gT('No'),
@@ -2744,6 +2751,34 @@ function questionAttributes()
     'default'=>0,
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
+
+    $qattributes["showpopups"]=array(
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>110,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+    "caption"=>$clang->gT('Show javascript alert'),
+    "help"=>$clang->gT('Show an alert if answers exceeds the number of max answers'));
+    $qattributes["samechoiceheight"]=array(
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>120,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+    "caption"=>$clang->gT('Same height for all choice'),
+    "help"=>$clang->gT('Force each choice to have the same height'));
+    $qattributes["samelistheight"]=array(
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>121,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+    1=>$clang->gT('Yes')),
+    'default'=>1,
+    "caption"=>$clang->gT('Same height for lists'),
+    "help"=>$clang->gT('Force the choice list and the rank list to have the same height'));
 
     $qattributes["parent_order"]=array(
     'category'=>$clang->gT('Display'),
@@ -2887,6 +2922,24 @@ function questionAttributes()
     'default'=>0,
     "help"=>$clang->gT("Set a specific SPSS export scale type for this question"),
     "caption"=>$clang->gT('SPSS export scale type'));
+
+    $qattributes["choice_title"]=array(
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>200,
+    "inputtype"=>"text",
+    'i18n'=>true,
+    'default'=>"",
+    "help"=>sprintf($clang->gT("Replace choice header (default: \"%s\")",'js'),$clang->gT("Your Choices")),
+    "caption"=>$clang->gT("Choice header"));
+
+    $qattributes["rank_title"]=array(
+    'category'=>$clang->gT('Other'),
+    'sortorder'=>201,
+    "inputtype"=>"text",
+    'i18n'=>true,
+    'default'=>"",
+    "help"=>sprintf($clang->gT("Replace rank header (default: \"%s\")",'js'),$clang->gT("Your Ranking")),
+    "caption"=>$clang->gT("Rank header"));
 
     //Timer attributes
     $qattributes["time_limit"]=array(
@@ -3374,7 +3427,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
-    //if(!$sent) var_dump($maildebug);
     return $sent;
 }
 
@@ -3673,7 +3725,7 @@ function createPassword()
 
     for ($i=0; $i<$password_length; $i++)
     {
-        $passwd .= $pwchars[floor(rand(0,strlen($pwchars)-1))];
+        $passwd .= $pwchars[(int)floor(rand(0,strlen($pwchars)-1))];
     }
     return $passwd;
 }
@@ -3767,7 +3819,7 @@ function incompleteAnsFilterState()
 {
     global $filterout_incomplete_answers;
     $letsfilter='';
-    $letsfilter = returnGlobal('filterinc'); //read get/post filterinc
+    $letsfilter = returnGlobal('completionstate'); //read get/post completionstate
 
 
     // first let's initialize the incompleteanswers session variable
@@ -3780,14 +3832,8 @@ function incompleteAnsFilterState()
         Yii::app()->session['incompleteanswers'] = $filterout_incomplete_answers;
     }
 
-    if  (Yii::app()->session['incompleteanswers']=='filter') {
-        return "filter"; //COMPLETE ANSWERS ONLY
-    }
-    elseif (Yii::app()->session['incompleteanswers']=='show') {
-        return false; //ALL ANSWERS
-    }
-    elseif (Yii::app()->session['incompleteanswers']=='incomplete') {
-        return "inc"; //INCOMPLETE ANSWERS ONLY
+    if  (Yii::app()->session['incompleteanswers']=='complete' || Yii::app()->session['incompleteanswers']=='all' || Yii::app()->session['incompleteanswers']=='incomplete') {
+        return Yii::app()->session['incompleteanswers'];
     }
     else
     { // last resort is to prevent filtering
@@ -3950,7 +3996,7 @@ function hasTemplateManageRights($userid, $templatefolder) {
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('uid' => $userid));
     $criteria->addSearchCondition('folder', $templatefolder);
-    $query=Templates_rights_model::model()->find($criteria);
+    $query=Templates_rights::model()->find($criteria);
     //if ($result->RecordCount() == 0)  return false;
     if (is_null($query))  return false;
 
@@ -4334,14 +4380,14 @@ function cleanTempDirectory()
     $dir =  Yii::app()->getConfig('tempdir').'/';
     $dp = opendir($dir) or show_error('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
             @unlink($dir.$file);
         }
     }
     $dir=  Yii::app()->getConfig('tempdir').'/uploads/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
             @unlink($dir.$file);
         }
     }
@@ -4495,30 +4541,33 @@ function getTokenData($surveyid, $token)
 *
 * @param mixed $sTemplateName
 */
-function getTemplatePath($sTemplateName)
+function getTemplatePath($sTemplateName = false)
 {
+    if (!$sTemplateName)
+    {
+        $sTemplateName=Yii::app()->getConfig('defaulttemplate'); // if $sTemplateName is NULL or false or ""
+    }
     if (isStandardTemplate($sTemplateName))
     {
-        return Yii::app()->getConfig("standardtemplaterootdir").'/'.$sTemplateName;
+        return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
     }
     else
     {
-        if (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName))
+        if (is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName))
         {
-            return Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName;
+            return Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
         }
-        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
+        elseif (isStandardTemplate(Yii::app()->getConfig('defaulttemplate')))
         {
-            return Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate');
+            return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
         }
-        elseif (file_exists(Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
+        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.Yii::app()->getConfig('defaulttemplate')))
         {
-            return Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate');
+            return Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.Yii::app()->getConfig('defaulttemplate');
         }
         else
         {
-
-            return Yii::app()->getConfig("standardtemplaterootdir").'/default';
+            return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
         }
     }
 }
@@ -4607,7 +4656,7 @@ function getXMLWriter() {
 
 
 /**
-* Returns true when a token can not be used (either doesn't exist or has less then one usage left
+* Returns true when a token can not be used (either doesn't exist, has less then one usage left )
 *
 * @param mixed $tid Token
 */
@@ -4616,7 +4665,6 @@ function usedTokens($token, $surveyid)
     $utresult = true;
     Tokens_dynamic::sid($surveyid);
     $query=Tokens_dynamic::model()->findAllByAttributes(array("token"=>$token));
-
     if (count($query) > 0) {
         $row = $query[0];
         if ($row->usesleft > 0) $utresult = false;
@@ -4725,6 +4773,8 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=false)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode); //AJS#
+    $oLanguage = new Limesurvey_lang($sLanguageCode);
+
     //Get response data
     $idrow = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
@@ -4775,7 +4825,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 }
                 else
                 {
-                    $answer = getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$sLanguageCode);
+                    $answer = getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$oLanguage);
                     $aResultTable[$q->fieldname]=array($question,'',$answer);
                     continue;
                 }
@@ -4783,7 +4833,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         }
         else
         {
-            $answer=getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$sLanguageCode);
+            $answer=getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$oLanguage);
             $aResultTable[$fname['fieldname']]=array($question,'',$answer);
             continue;
         }
@@ -4796,7 +4846,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
 
-        $answer = getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$sLanguageCode);
+        $answer = getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$oLanguage);
         $aResultTable[$q->fieldname]=array('',$subquestion,$answer);
     }
     return $aResultTable;
@@ -4942,7 +4992,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
     $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {{quota_languagesettings}} qls, {{quota}} q
     WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')";
-    $res = dbExecuteAssoc($sql) or safeDie("Can't read quota table in transInsertAns");     // Checked
+    $result = dbExecuteAssoc($sql) or safeDie("Can't read quota table in transInsertAns");     // Checked
 
     foreach ($result->readAll() as $qentry)
     {
@@ -6420,7 +6470,7 @@ function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
     $str = trim(strip_tags($str));
 
     // Is the string long enough to ellipsize?
-    if (strlen($str) <= $max_length)
+    if (strlen($str) <= $max_length+3)
     {
         return $str;
     }

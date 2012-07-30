@@ -20,7 +20,8 @@ class LanguageQuestion extends QuestionModule
             {
                 $answer .= SELECTED;
             }
-            $answer .= '>'.getLanguageNameFromCode($ansrow, true)."</option>\n";
+            $aLanguage=getLanguageNameFromCode($ansrow, true);
+            $answer .= '>'.$aLanguage[1]."</option>\n";
         }
         $answer .= "</select>\n";
         $answer .= "<input type=\"hidden\" name=\"java$this->fieldname\" id=\"java$this->fieldname\" value=\"".$_SESSION['survey_'.$this->surveyid][$this->fieldname]."\" />\n";

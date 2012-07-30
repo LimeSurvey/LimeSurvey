@@ -57,6 +57,7 @@ class FiveListQuestion extends QuestionModule
             $('#$id input').each(function(){ $(this).removeAttr('checked');});
             $('#answer$this->fieldname'+value).attr('checked','checked');
             }
+            checkconditions(value,'$this->fieldname','radio');
             }
 
             });

@@ -3,8 +3,8 @@ width: 16px;
 height: 16px;
 background-image:url('images/search.gif');
 }
-#selectable .ui-selecting { background: #7FFFD4;  }
-#selectable .ui-selected { background: 	#5CB3FF; color: #000000; }
+#selectable .ui-selecting { background: #8CCE00;  }
+#selectable .ui-selected { background: 	#C1DD7F; color: #000000; }
 #selectable { list-style-type: none; margin: 2px; padding: 0; width: 90%; }
 #selectable li {  padding: 1em; font-size: 1em; height: 9px;text-align: center;margin: 4px;}
 

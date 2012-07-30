@@ -195,9 +195,16 @@ class Survey_Common_Action extends CAction
             $sViewPath .= $sAction . '/';
         }
 
+
+
         // Header
         if(!isset($aData['display']['header']) || $aData['display']['header'] !== false)
+        {
+            // Send HTTP header
+            header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             Yii::app()->getController()->_getAdminHeader();
+        }
+
 
         // Menu bars
         if (!isset($aData['display']['menu_bars']) || ($aData['display']['menu_bars'] !== false && (!is_array($aData['display']['menu_bars']) || !in_array('browse', array_keys($aData['display']['menu_bars'])))))
@@ -345,7 +352,7 @@ class Survey_Common_Action extends CAction
         foreach ($qrresult as $qrrow)
         {
             $q = createQuestion($qrrow->question_types['class'], array('surveyid'=>$iSurveyId, 'id'=>$qid));
-            $flatrow = array_map('flattenText', $qrrow->attributes);
+            $qrrow = $qrrow->attributes;
             if (hasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
             {
                 if (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) != 0)
@@ -359,7 +366,7 @@ class Survey_Common_Action extends CAction
                 }
             }
             $aData['qproperties']=$q->questionProperties();
-            if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action == "copyquestion")
+            if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action =="editdefaultvalues" || $action == "copyquestion")
             {
                 $qshowstyle = "style='display: none'";
             }
@@ -373,7 +380,7 @@ class Survey_Common_Action extends CAction
             $aData['qid'] = $qid;
             $aData['gid'] = $gid;
             $aData['clang'] = $clang;
-            $aData['qrrow'] = $flatrow;
+            $aData['qrrow'] = $qrrow;
             $aData['baselang'] = $baselang;
             $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($q, $baselang);
             $DisplayArray = array();
@@ -889,7 +896,7 @@ class Survey_Common_Action extends CAction
         rsort($tmp_survlangs);
         $aData['tmp_survlangs'] = $tmp_survlangs;
 
-        $this->getController()->render("/admin/browse/browsemenubar_view", $aData);
+        $this->getController()->render("/admin/responses/browsemenubar_view", $aData);
     }
     /**
     * Load menu bar of user group controller.
@@ -903,8 +910,8 @@ class Survey_Common_Action extends CAction
 
         if (!empty($ugid)) {
             $grpquery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=" . Yii::app()->session['loginID'];
-            $grpresult = dbExecuteAssoc($grpquery);
-            $grpresultcount = dbRecordsCount($grpquery);
+            $grpresult = Yii::app()->db->createCommand($grpquery)->query();  //Checked
+            $grpresultcount = $grpresult->getRowCount();
 
             if ($grpresultcount > 0) {
                 $grow = array_map('htmlspecialchars', $grpresult->read());
@@ -920,7 +927,7 @@ class Survey_Common_Action extends CAction
         }
 
         $data['ugid'] = $ugid;
-
+        $data['imageurl'] = Yii::app()->getConfig("adminimageurl"); // Don't came from rendertemplate ?
         $this->getController()->render('/admin/usergroup/usergroupbar_view', $data);
     }
 

@@ -4,7 +4,7 @@
 ?>
 <script type="text/javascript">
     var jsonUrl = "<?php echo $yii->homeUrl.("/admin/survey/getUrlParamsJSON/surveyid/{$surveyid}");?>";
-    var imageUrl = "<?php echo $yii->getConfig("imageurl");?>";
+    var imageUrl = "<?php echo $yii->getConfig("adminimageurl");?>";
     var sAction = "<?php $clang->eT('Action','js');?>";
     var sParameter = "<?php $clang->eT('Parameter','js');?>";
     var sTargetQuestion = "<?php $clang->eT('Target question','js');?>";

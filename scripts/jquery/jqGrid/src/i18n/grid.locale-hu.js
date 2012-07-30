@@ -8,7 +8,8 @@
  * http://www.gnu.org/licenses/gpl.html
 **/
 
-$.jgrid = {
+$.jgrid = $.jgrid || {};
+$.extend($.jgrid,{
 	defaults : {
 		recordtext: "Oldal {0} - {1} / {2}",
 		emptyrecords: "Nincs találat",
@@ -125,5 +126,5 @@ $.jgrid = {
 		checkbox : {disabled:true},
 		idName : 'id'
 	}
-};
+});
 })(jQuery);

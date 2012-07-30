@@ -1,6 +1,6 @@
-[============================< KCFinder 2.21 >===============================]
+[===========================< KCFinder 2.51 >================================]
 [                                                                            ]
-[                    Copyright 2010 KCFinder Project                         ]
+[                 Copyright 2010, 2011 KCFinder Project                      ]
 [                     http://kcfinder.sunhater.com                           ]
 [              Pavel Tzonkov <pavelc@users.sourceforge.net>                  ]
 [                                                                            ]
@@ -9,16 +9,16 @@
 
 I. DESCRIPTION
 
-    KCFinder is an alternative to the CKFinder Web file manager. It can be
-    integrated into FCKeditor, CKEditor, and TinyMCE WYSIWYG web editors or
-    your custom web applications to upload and manage images, flash movies,
-    and other files that can be embedded in an editor's generated HTML
+    KCFinder free open-source alternative to the CKFinder Web file manager. It
+    can be integrated into FCKeditor, CKEditor, and TinyMCE WYSIWYG web
+    editors or your custom web applications to upload and manage images, flash
+    movies, and other files that can be embedded in an editor's generated HTML
     content. Only PHP server-side scripting is supported.
 
 
 II. FEATURES
 
-    1. Fully integrated Ajax engine.
+    1. Ajax engine with JSON responses.
 
     2. Easy to integrate and configure in web applications.
 
@@ -36,13 +36,19 @@ II. FEATURES
 
     9. Multilanguage system.
 
+    10. Slideshow.
+
+    11. Multiple files upload (ala Facebook)
+
+    12. Drag and drop uploading
+
 
 III. REQUIREMENTS
 
-    1. Web server (Apache 2 is tested only)
+    1. Web server (only Apache 2 is well tested)
 
     2. PHP 5.x.x. with GD extension. Safe mode should be disabled. To work
-       width client-side HTTP cache, the PHP must be configured as Apache
+       with client-side HTTP cache, the PHP must be installed as Apache
        module.
 
     3. PHP ZIP extension for multiple files download. If it's not available,

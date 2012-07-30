@@ -14,13 +14,11 @@ class ShortTextQuestion extends TextQuestion
         {
             $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
             $sSeperator = $sSeperator['seperator'];
-            $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
             $extraclass .=" numberonly";
             $checkconditionFunction = "fixnum_checkconditions";
         }
         else
         {
-            $numbersonly = '';
             $checkconditionFunction = "checkconditions";
         }
         if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
@@ -86,7 +84,7 @@ class ShortTextQuestion extends TextQuestion
             // --> START NEW FEATURE - SAVE
             $answer ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$this->fieldname}' class='hide label'>{$clang->gT('Answer')}</label>"
             . '<textarea class="textarea '.$kpclass.'" name="'.$this->fieldname.'" id="answer'.$this->fieldname.'" '
-            .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
+            .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
             // --> END NEW FEATURE - SAVE
 
             if ($_SESSION['survey_'.$this->surveyid][$this->fieldname]) {
@@ -188,7 +186,7 @@ class ShortTextQuestion extends TextQuestion
             $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
             $answer .= " value=\"$dispVal\"";
 
-            $answer .=" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
+            $answer .=" {$maxlength} onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\"/>\n\t$suffix\n</p>\n";
         }
 
         if (trim($aQuestionAttributes['time_limit'])!='')

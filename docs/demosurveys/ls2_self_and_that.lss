@@ -1,0 +1,1029 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+ <LimeSurveyDocType>Survey</LimeSurveyDocType>
+ <DBVersion>155.5</DBVersion>
+ <languages>
+  <language>en</language>
+ </languages>
+ <groups>
+  <fields>
+   <fieldname>gid</fieldname>
+   <fieldname>sid</fieldname>
+   <fieldname>group_name</fieldname>
+   <fieldname>group_order</fieldname>
+   <fieldname>description</fieldname>
+   <fieldname>language</fieldname>
+   <fieldname>randomization_group</fieldname>
+   <fieldname>grelevance</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <gid><![CDATA[757]]></gid>
+    <sid><![CDATA[12947]]></sid>
+    <group_name><![CDATA[G1]]></group_name>
+    <group_order><![CDATA[0]]></group_order>
+    <description><![CDATA[<i>self.suffix</i> is internally expanded to a comma-separated list of all variable names for the current question.  Thus, it is useful for functions that take a variable number of arguments, like sum(), count(), min(), max(), and implode().<br/>
+<i>that.suffix</i> is also expanded.]]></description>
+    <language><![CDATA[en]]></language>
+    <randomization_group><![CDATA[]]></randomization_group>
+    <grelevance><![CDATA[]]></grelevance>
+   </row>
+  </rows>
+ </groups>
+ <questions>
+  <fields>
+   <fieldname>qid</fieldname>
+   <fieldname>parent_qid</fieldname>
+   <fieldname>sid</fieldname>
+   <fieldname>gid</fieldname>
+   <fieldname>type</fieldname>
+   <fieldname>title</fieldname>
+   <fieldname>question</fieldname>
+   <fieldname>preg</fieldname>
+   <fieldname>help</fieldname>
+   <fieldname>other</fieldname>
+   <fieldname>mandatory</fieldname>
+   <fieldname>question_order</fieldname>
+   <fieldname>language</fieldname>
+   <fieldname>scale_id</fieldname>
+   <fieldname>same_default</fieldname>
+   <fieldname>relevance</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <parent_qid><![CDATA[0]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[:]]></type>
+    <title><![CDATA[q1]]></title>
+    <question><![CDATA[Enter some numbers]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[count = {count(self.NAOK)}<br/>
+sum = {sum(self.NAOK)}<br/>
+min = {min(self.NAOK)}<br/>
+max = {max(self.NAOK)}<br/>
+list = {list(self.NAOK)}<br/>
+stddev = {stddev(self.NAOK)}<br/>
+mean = {if(count(self.NAOK)>0,sum(self.NAOK) / count(self.NAOK),'')}]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <question_order><![CDATA[0]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <parent_qid><![CDATA[0]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[X]]></type>
+    <title><![CDATA[q2]]></title>
+    <question><![CDATA[<p>
+	Here is what you entered for question 1, along with the row, column and grand totals.</p>
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="row">
+				 </th>
+			<th scope="col">
+				A</th>
+			<th scope="col">
+				B</th>
+			<th scope="col">
+				C</th>
+			<th scope="col">
+				Total</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th scope="row">
+				1</th>
+			<td>
+				{q1_1_A}</td>
+			<td>
+				{q1_1_B}</td>
+			<td>
+				{q1_1_C}</td>
+			<td>
+				<span style="background-color:#d3d3d3;">{sum(that.q1.sq_1)}</span></td>
+		</tr>
+		<tr>
+			<th scope="row">
+				2</th>
+			<td>
+				{q1_2_A}</td>
+			<td>
+				{q1_2_B}</td>
+			<td>
+				{q1_2_C}</td>
+			<td>
+				<span style="background-color:#d3d3d3;">{sum(that.q1.sq_2)}</span></td>
+		</tr>
+		<tr>
+			<th scope="row">
+				3</th>
+			<td>
+				{q1_3_A}</td>
+			<td>
+				{q1_3_B}</td>
+			<td>
+				{q1_3_C}</td>
+			<td>
+				<span style="background-color:#d3d3d3;">{sum(that.q1.sq_3)}</span></td>
+		</tr>
+		<tr>
+			<th scope="row">
+				Total</th>
+			<td>
+				<span style="background-color:#d3d3d3;">{sum(that.q1.sq_A)}</span></td>
+			<td>
+				<span style="background-color:#d3d3d3;">{sum(that.q1.sq_B)}</span></td>
+			<td>
+				<span style="background-color:#d3d3d3;">{sum(that.q1.sq_C)}</span></td>
+			<td>
+				<span style="background-color:#d3d3d3;">{sum(that.q1)}</span></td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	 </p>
+]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[<p>
+	This is only shown if you answered q1 (e.g. relevance = <span style="background-color:#d3d3d3;">{ count(that.q1)>0 }</span>)</p>
+<p>
+	Note that you can use multiple sub-selectors on <em>self</em> and <em>that</em>.  You can also use the <em>nosq</em> selector to select all columns or rows that do not match the desired pattern.</p>
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="col">
+				Goal</th>
+			<th scope="col">
+				Syntax</th>
+			<th scope="col">
+				Result</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				Sum of odd columns</td>
+			<td>
+				{ sum(that.q1.sq_1.sq_3) }</td>
+			<td>
+				{sum(that.q1.sq_1.sq_3)}</td>
+		</tr>
+		<tr>
+			<td>
+				# answered in odd rows</td>
+			<td>
+				{ count(that.q1.nosq_B) }</td>
+			<td>
+				{count(that.q1.nosq_B)}</td>
+		</tr>
+		<tr>
+			<td>
+				Max of values in row 2 and column B</td>
+			<td>
+				{ max(that.q1.sq_2.sq_B) }</td>
+			<td>
+				{max(that.q1.sq_2.sq_B)}</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	 </p>
+]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <question_order><![CDATA[7]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[count(that.q1.NAOK) > 0]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <parent_qid><![CDATA[0]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[P]]></type>
+    <title><![CDATA[q3]]></title>
+    <question><![CDATA[Multiple choice:<br/>
+how many checked = {count(self.nocomments)}<br/>
+comments = {list(self.comments)}<br/>]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[Y]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <question_order><![CDATA[8]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+   </row>
+  </rows>
+ </questions>
+ <subquestions>
+  <fields>
+   <fieldname>qid</fieldname>
+   <fieldname>parent_qid</fieldname>
+   <fieldname>sid</fieldname>
+   <fieldname>gid</fieldname>
+   <fieldname>type</fieldname>
+   <fieldname>title</fieldname>
+   <fieldname>question</fieldname>
+   <fieldname>preg</fieldname>
+   <fieldname>help</fieldname>
+   <fieldname>other</fieldname>
+   <fieldname>mandatory</fieldname>
+   <fieldname>question_order</fieldname>
+   <fieldname>language</fieldname>
+   <fieldname>scale_id</fieldname>
+   <fieldname>same_default</fieldname>
+   <fieldname>relevance</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <qid><![CDATA[16270]]></qid>
+    <parent_qid><![CDATA[16267]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[1]]></title>
+    <question><![CDATA[1st sub-question]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[1]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16271]]></qid>
+    <parent_qid><![CDATA[16267]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[2]]></title>
+    <question><![CDATA[2nd sub-question]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[3]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16272]]></qid>
+    <parent_qid><![CDATA[16267]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[3]]></title>
+    <question><![CDATA[3rd sub-question]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[5]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16273]]></qid>
+    <parent_qid><![CDATA[16267]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[A]]></title>
+    <question><![CDATA[A]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[2]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[1]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16274]]></qid>
+    <parent_qid><![CDATA[16267]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[B]]></title>
+    <question><![CDATA[B]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[4]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[1]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16275]]></qid>
+    <parent_qid><![CDATA[16267]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[C]]></title>
+    <question><![CDATA[C]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[6]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[1]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16279]]></qid>
+    <parent_qid><![CDATA[16277]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[1]]></title>
+    <question><![CDATA[1st sub-question]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[1]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16280]]></qid>
+    <parent_qid><![CDATA[16277]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[2]]></title>
+    <question><![CDATA[2nd sub-question]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[2]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16281]]></qid>
+    <parent_qid><![CDATA[16277]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[3]]></title>
+    <question><![CDATA[3rd sub-question]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[3]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16282]]></qid>
+    <parent_qid><![CDATA[16277]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[4]]></title>
+    <question><![CDATA[4th sub-question]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[4]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[16283]]></qid>
+    <parent_qid><![CDATA[16277]]></parent_qid>
+    <sid><![CDATA[12947]]></sid>
+    <gid><![CDATA[757]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[5]]></title>
+    <question><![CDATA[5th sub-question]]></question>
+    <preg><![CDATA[]]></preg>
+    <help><![CDATA[]]></help>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[]]></mandatory>
+    <question_order><![CDATA[5]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[]]></relevance>
+   </row>
+  </rows>
+ </subquestions>
+ <question_attributes>
+  <fields>
+   <fieldname>qid</fieldname>
+   <fieldname>attribute</fieldname>
+   <fieldname>value</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[answer_width]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[array_filter]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[array_filter_exclude]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[array_filter_style]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[em_validation_q]]></attribute>
+    <value><![CDATA[count(self.NAOK)>=3]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[em_validation_q_tip]]></attribute>
+    <value><![CDATA[Please answer at least 3 questions]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[em_validation_sq]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[em_validation_sq_tip]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[exclude_all_others]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[hidden]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[hide_tip]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[input_boxes]]></attribute>
+    <value><![CDATA[1]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[max_answers]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[maximum_chars]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[min_answers]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[multiflexible_checkbox]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[multiflexible_max]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[multiflexible_min]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[multiflexible_step]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[page_break]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[public_statistics]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[random_group]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[random_order]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[reverse]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16267]]></qid>
+    <attribute><![CDATA[scale_export]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[hidden]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[hide_tip]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[page_break]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[random_group]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_action]]></attribute>
+    <value><![CDATA[1]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_disable_next]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_disable_prev]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_message_delay]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_message_style]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_timer_style]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_warning]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_warning_2]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16276]]></qid>
+    <attribute><![CDATA[time_limit_warning_style]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[array_filter]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[array_filter_exclude]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[array_filter_style]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[assessment_value]]></attribute>
+    <value><![CDATA[1]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[exclude_all_others]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[exclude_all_others_auto]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[hidden]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[hide_tip]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[max_answers]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[min_answers]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[other_comment_mandatory]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[other_numbers_only]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[other_replace_text]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[page_break]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[public_statistics]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[random_group]]></attribute>
+    <value><![CDATA[]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[random_order]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[16277]]></qid>
+    <attribute><![CDATA[scale_export]]></attribute>
+    <value><![CDATA[0]]></value>
+   </row>
+  </rows>
+ </question_attributes>
+ <surveys>
+  <fields>
+   <fieldname>sid</fieldname>
+   <fieldname>admin</fieldname>
+   <fieldname>expires</fieldname>
+   <fieldname>startdate</fieldname>
+   <fieldname>adminemail</fieldname>
+   <fieldname>anonymized</fieldname>
+   <fieldname>faxto</fieldname>
+   <fieldname>format</fieldname>
+   <fieldname>savetimings</fieldname>
+   <fieldname>template</fieldname>
+   <fieldname>language</fieldname>
+   <fieldname>additional_languages</fieldname>
+   <fieldname>datestamp</fieldname>
+   <fieldname>usecookie</fieldname>
+   <fieldname>allowregister</fieldname>
+   <fieldname>allowsave</fieldname>
+   <fieldname>autonumber_start</fieldname>
+   <fieldname>autoredirect</fieldname>
+   <fieldname>allowprev</fieldname>
+   <fieldname>printanswers</fieldname>
+   <fieldname>ipaddr</fieldname>
+   <fieldname>refurl</fieldname>
+   <fieldname>publicstatistics</fieldname>
+   <fieldname>publicgraphs</fieldname>
+   <fieldname>listpublic</fieldname>
+   <fieldname>htmlemail</fieldname>
+   <fieldname>tokenanswerspersistence</fieldname>
+   <fieldname>assessments</fieldname>
+   <fieldname>usecaptcha</fieldname>
+   <fieldname>usetokens</fieldname>
+   <fieldname>bounce_email</fieldname>
+   <fieldname>attributedescriptions</fieldname>
+   <fieldname>emailresponseto</fieldname>
+   <fieldname>emailnotificationto</fieldname>
+   <fieldname>tokenlength</fieldname>
+   <fieldname>showxquestions</fieldname>
+   <fieldname>showgroupinfo</fieldname>
+   <fieldname>shownoanswer</fieldname>
+   <fieldname>showqnumcode</fieldname>
+   <fieldname>bouncetime</fieldname>
+   <fieldname>bounceprocessing</fieldname>
+   <fieldname>bounceaccounttype</fieldname>
+   <fieldname>bounceaccounthost</fieldname>
+   <fieldname>bounceaccountpass</fieldname>
+   <fieldname>bounceaccountencryption</fieldname>
+   <fieldname>bounceaccountuser</fieldname>
+   <fieldname>showwelcome</fieldname>
+   <fieldname>showprogress</fieldname>
+   <fieldname>allowjumps</fieldname>
+   <fieldname>navigationdelay</fieldname>
+   <fieldname>nokeyboard</fieldname>
+   <fieldname>alloweditaftercompletion</fieldname>
+   <fieldname>googleanalyticsstyle</fieldname>
+   <fieldname>googleanalyticsapikey</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <sid><![CDATA[12947]]></sid>
+    <admin><![CDATA[]]></admin>
+    <expires><![CDATA[]]></expires>
+    <startdate><![CDATA[]]></startdate>
+    <adminemail><![CDATA[]]></adminemail>
+    <anonymized><![CDATA[N]]></anonymized>
+    <faxto><![CDATA[]]></faxto>
+    <format><![CDATA[G]]></format>
+    <savetimings><![CDATA[N]]></savetimings>
+    <template><![CDATA[default]]></template>
+    <language><![CDATA[en]]></language>
+    <additional_languages><![CDATA[]]></additional_languages>
+    <datestamp><![CDATA[N]]></datestamp>
+    <usecookie><![CDATA[N]]></usecookie>
+    <allowregister><![CDATA[N]]></allowregister>
+    <allowsave><![CDATA[Y]]></allowsave>
+    <autonumber_start><![CDATA[0]]></autonumber_start>
+    <autoredirect><![CDATA[N]]></autoredirect>
+    <allowprev><![CDATA[N]]></allowprev>
+    <printanswers><![CDATA[N]]></printanswers>
+    <ipaddr><![CDATA[N]]></ipaddr>
+    <refurl><![CDATA[N]]></refurl>
+    <publicstatistics><![CDATA[N]]></publicstatistics>
+    <publicgraphs><![CDATA[N]]></publicgraphs>
+    <listpublic><![CDATA[N]]></listpublic>
+    <htmlemail><![CDATA[Y]]></htmlemail>
+    <tokenanswerspersistence><![CDATA[N]]></tokenanswerspersistence>
+    <assessments><![CDATA[N]]></assessments>
+    <usecaptcha><![CDATA[D]]></usecaptcha>
+    <usetokens><![CDATA[N]]></usetokens>
+    <bounce_email><![CDATA[]]></bounce_email>
+    <attributedescriptions><![CDATA[]]></attributedescriptions>
+    <emailresponseto><![CDATA[]]></emailresponseto>
+    <emailnotificationto><![CDATA[]]></emailnotificationto>
+    <tokenlength><![CDATA[15]]></tokenlength>
+    <showxquestions><![CDATA[Y]]></showxquestions>
+    <showgroupinfo><![CDATA[B]]></showgroupinfo>
+    <shownoanswer><![CDATA[Y]]></shownoanswer>
+    <showqnumcode><![CDATA[X]]></showqnumcode>
+    <bouncetime><![CDATA[]]></bouncetime>
+    <bounceprocessing><![CDATA[N]]></bounceprocessing>
+    <bounceaccounttype><![CDATA[]]></bounceaccounttype>
+    <bounceaccounthost><![CDATA[]]></bounceaccounthost>
+    <bounceaccountpass><![CDATA[]]></bounceaccountpass>
+    <bounceaccountencryption><![CDATA[]]></bounceaccountencryption>
+    <bounceaccountuser><![CDATA[]]></bounceaccountuser>
+    <showwelcome><![CDATA[Y]]></showwelcome>
+    <showprogress><![CDATA[Y]]></showprogress>
+    <allowjumps><![CDATA[N]]></allowjumps>
+    <navigationdelay><![CDATA[0]]></navigationdelay>
+    <nokeyboard><![CDATA[N]]></nokeyboard>
+    <alloweditaftercompletion><![CDATA[N]]></alloweditaftercompletion>
+    <googleanalyticsstyle><![CDATA[]]></googleanalyticsstyle>
+    <googleanalyticsapikey><![CDATA[]]></googleanalyticsapikey>
+   </row>
+  </rows>
+ </surveys>
+ <surveys_languagesettings>
+  <fields>
+   <fieldname>surveyls_survey_id</fieldname>
+   <fieldname>surveyls_language</fieldname>
+   <fieldname>surveyls_title</fieldname>
+   <fieldname>surveyls_description</fieldname>
+   <fieldname>surveyls_welcometext</fieldname>
+   <fieldname>surveyls_endtext</fieldname>
+   <fieldname>surveyls_url</fieldname>
+   <fieldname>surveyls_urldescription</fieldname>
+   <fieldname>surveyls_email_invite_subj</fieldname>
+   <fieldname>surveyls_email_invite</fieldname>
+   <fieldname>surveyls_email_remind_subj</fieldname>
+   <fieldname>surveyls_email_remind</fieldname>
+   <fieldname>surveyls_email_register_subj</fieldname>
+   <fieldname>surveyls_email_register</fieldname>
+   <fieldname>surveyls_email_confirm_subj</fieldname>
+   <fieldname>surveyls_email_confirm</fieldname>
+   <fieldname>surveyls_dateformat</fieldname>
+   <fieldname>email_admin_notification_subj</fieldname>
+   <fieldname>email_admin_notification</fieldname>
+   <fieldname>email_admin_responses_subj</fieldname>
+   <fieldname>email_admin_responses</fieldname>
+   <fieldname>surveyls_numberformat</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <surveyls_survey_id><![CDATA[12947]]></surveyls_survey_id>
+    <surveyls_language><![CDATA[en]]></surveyls_language>
+    <surveyls_title><![CDATA[Tests using "self" and "that" variable]]></surveyls_title>
+    <surveyls_description><![CDATA[These variables make it easier to do assessments and check whether any part of a question has been answered.]]></surveyls_description>
+    <surveyls_welcometext><![CDATA[The following syntax is available:<br />
+<ul>
+	<li>
+		    <em>self</em></li>
+	<li>
+		    <em>self</em>.<em>suffix</em></li>
+	<li>
+		    <em>self</em>.<em>sub-selector</em></li>
+	<li>
+		    <em>self</em>.<em>sub-selector</em>.<em>suffix</em></li>
+</ul>
+<br />
+<em>suffix </em>is any of the normal qcode suffixes (e.g. NAOK, value, shown)<br />
+<em>sub-selector</em> is one of:<br />
+<br />
+    comments - only subquestions that are comments (e.g. from multiple choice with comment and list with comment)<br />
+    nocomments - only subquestions that are not comments<br />
+    sq_X - where X is a row or column identifier. Only sub-questions matching pattern X are selected.<br />
+<br />
+The 'that' variable is like the 'self' variable, but lets you refer to other questions. Its syntax is:<br />
+<ul>
+	<li>
+		    that.<em>qname</em></li>
+	<li>
+		    that.<em>qname.suffix</em></li>
+	<li>
+		    that.<em>qname.sub-selector</em></li>
+	<li>
+		    that.<em>qname.sub-selector.suffix</em></li>
+</ul>
+<br />
+<em>qname </em>is the question name without any sub-question extensions. So, say you create a question 'q1', that is its qname<br />
+<br />
+Examples:<br />
+<ul>
+	<li>
+		    Has any part of question q1 been answered? { count(that.q1.NAOK)>0 }</li>
+	<li>
+		    What is the assessment score for q2? { sum(that.q2.valueNAOK) }</li>
+	<li>
+		    What is the grand total of q3? { sum(that.q3.NAOK) }</li>
+	<li>
+		    What is the total of row C in q4? { sum(that.q4.sq_C.NAOK) }</li>
+	<li>
+		    What is the total of column 2 in q4? { sum(that.q4.sq_2.NAOK) }</li>
+</ul>
+]]></surveyls_welcometext>
+    <surveyls_endtext><![CDATA[]]></surveyls_endtext>
+    <surveyls_url><![CDATA[]]></surveyls_url>
+    <surveyls_urldescription><![CDATA[]]></surveyls_urldescription>
+    <surveyls_email_invite_subj><![CDATA[Invitation to participate in a survey]]></surveyls_email_invite_subj>
+    <surveyls_email_invite><![CDATA[Dear {FIRSTNAME},<br /><br />you have been invited to participate in a survey.<br /><br />The survey is titled:<br />"{SURVEYNAME}"<br /><br />"{SURVEYDESCRIPTION}"<br /><br />To participate, please click on the link below.<br /><br />Sincerely,<br /><br />{ADMINNAME} ({ADMINEMAIL})<br /><br />----------------------------------------------<br />Click here to do the survey:<br />{SURVEYURL}<br /><br />If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br />{OPTOUTURL}]]></surveyls_email_invite>
+    <surveyls_email_remind_subj><![CDATA[Reminder to participate in a survey]]></surveyls_email_remind_subj>
+    <surveyls_email_remind><![CDATA[Dear {FIRSTNAME},<br /><br />Recently we invited you to participate in a survey.<br /><br />We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.<br /><br />The survey is titled:<br />"{SURVEYNAME}"<br /><br />"{SURVEYDESCRIPTION}"<br /><br />To participate, please click on the link below.<br /><br />Sincerely,<br /><br />{ADMINNAME} ({ADMINEMAIL})<br /><br />----------------------------------------------<br />Click here to do the survey:<br />{SURVEYURL}<br /><br />If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br />{OPTOUTURL}]]></surveyls_email_remind>
+    <surveyls_email_register_subj><![CDATA[Survey registration confirmation]]></surveyls_email_register_subj>
+    <surveyls_email_register><![CDATA[Dear {FIRSTNAME},<br /><br />You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.<br /><br />To complete this survey, click on the following URL:<br /><br />{SURVEYURL}<br /><br />If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.]]></surveyls_email_register>
+    <surveyls_email_confirm_subj><![CDATA[Confirmation of your participation in our survey]]></surveyls_email_confirm_subj>
+    <surveyls_email_confirm><![CDATA[Dear {FIRSTNAME},<br /><br />this email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.<br /><br />If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.<br /><br />Sincerely,<br /><br />{ADMINNAME}]]></surveyls_email_confirm>
+    <surveyls_dateformat><![CDATA[1]]></surveyls_dateformat>
+    <email_admin_notification_subj><![CDATA[Response submission for survey {SURVEYNAME}]]></email_admin_notification_subj>
+    <email_admin_notification><![CDATA[Hello,<br /><br />A new response was submitted for your survey '{SURVEYNAME}'.<br /><br />Click the following link to reload the survey:<br />{RELOADURL}<br /><br />Click the following link to see the individual response:<br />{VIEWRESPONSEURL}<br /><br />Click the following link to edit the individual response:<br />{EDITRESPONSEURL}<br /><br />View statistics by clicking here:<br />{STATISTICSURL}]]></email_admin_notification>
+    <email_admin_responses_subj><![CDATA[Response submission for survey {SURVEYNAME} with results]]></email_admin_responses_subj>
+    <email_admin_responses><![CDATA[<style type="text/css">
+                                                .printouttable {
+                                                  margin:1em auto;
+                                                }
+                                                .printouttable th {
+                                                  text-align: center;
+                                                }
+                                                .printouttable td {
+                                                  border-color: #ddf #ddf #ddf #ddf;
+                                                  border-style: solid;
+                                                  border-width: 1px;
+                                                  padding:0.1em 1em 0.1em 0.5em;
+                                                }
+
+                                                .printouttable td:first-child {
+                                                  font-weight: 700;
+                                                  text-align: right;
+                                                  padding-right: 5px;
+                                                  padding-left: 5px;
+
+                                                }
+                                                .printouttable .printanswersquestion td{
+                                                  background-color:#F7F8FF;
+                                                }
+
+                                                .printouttable .printanswersquestionhead td{
+                                                  text-align: left;
+                                                  background-color:#ddf;
+                                                }
+
+                                                .printouttable .printanswersgroup td{
+                                                  text-align: center;        
+                                                  font-weight:bold;
+                                                  padding-top:1em;
+                                                }
+                                                </style>Hello,<br /><br />A new response was submitted for your survey '{SURVEYNAME}'.<br /><br />Click the following link to reload the survey:<br />{RELOADURL}<br /><br />Click the following link to see the individual response:<br />{VIEWRESPONSEURL}<br /><br />Click the following link to edit the individual response:<br />{EDITRESPONSEURL}<br /><br />View statistics by clicking here:<br />{STATISTICSURL}<br /><br /><br />The following answers were given by the participant:<br />{ANSWERTABLE}]]></email_admin_responses>
+    <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
+   </row>
+  </rows>
+ </surveys_languagesettings>
+</document>

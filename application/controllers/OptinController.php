@@ -93,7 +93,7 @@ class OptinController extends LSYii_Controller {
         //PRINT COMPLETED PAGE
         if (!$thissurvey['templatedir'])
         {
-            $thistpl=getTemplatePath($defaulttemplate);
+            $thistpl=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
         }
         else
         {

@@ -139,7 +139,7 @@ function modlabelsetanswers($lid)
     }
 
     //unescape single quotes
-    $labeldata = CHttpRequest::getPost('dataToSend');
+    $labeldata = Yii::app()->getRequest()->getPost('dataToSend');
     $labeldata = str_replace("\'","'",$labeldata);
 
 

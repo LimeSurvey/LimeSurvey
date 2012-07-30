@@ -533,19 +533,17 @@ class update extends Survey_Common_Action
     {
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper("update/update");
-        $getHeader = true;
         if(isset($continue) && $continue=="yes")
         {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             updateCheck();
-            $getHeader = false;
+            $aData['display']['header'] = false;
         }
         else
         {
+            $aData['display']['header'] = true;
             $aViewUrls['output'] = CheckForDBUpgrades();
         }
-
-        $aData['display']['header'] = false;
 
         $this->_renderWrappedTemplate('update', $aViewUrls, $aData);
     }

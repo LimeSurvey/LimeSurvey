@@ -53,24 +53,23 @@ class Failed_login_attempts extends CActiveRecord
 	 * Deletes all the attempts by IP
 	 *
 	 * @access public
-	 * @param string $ip
 	 * @return void
 	 */
-	public function deleteAttempts($ip)
+	public function deleteAttempts()
 	{
+		$ip = substr(Yii::app()->request->getUserHostAddress(),0,40);
 		$this->deleteAllByAttributes(array('ip' => $ip));
 	}
 
 	/**
 	 * Check if an IP address is allowed to login or not
 	 *
-	 * @param string $sIPAddress IP Address to check
 	 * @return boolean Returns true if the user is blocked
 	 */
-	public function isLockedOut($ip)
+	public function isLockedOut()
 	{
 		$isLockedOut = false;
-
+		$ip = substr(Yii::app()->request->getUserHostAddress(),0,40);
 		$criteria = new CDbCriteria;
 		$criteria->condition = 'number_attempts > :attempts AND ip = :ip';
 		$criteria->params = array(':attempts' => Yii::app()->getConfig('maxLoginAttempt'), ':ip' => $ip);
@@ -103,13 +102,12 @@ class Failed_login_attempts extends CActiveRecord
 	 * Creates an attempt
 	 *
 	 * @access public
-	 * @param string $ip
 	 * @return true
 	 */
-	public function addAttempt($ip)
+	public function addAttempt()
 	{
 		$timestamp = date("Y-m-d H:i:s");
-
+		$ip = substr(Yii::app()->request->getUserHostAddress(),0,40);
 		$row = $this->findByAttributes(array('ip' => $ip));
 
 		if ($row !== null)

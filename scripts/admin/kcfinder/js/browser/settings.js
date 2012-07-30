@@ -4,9 +4,9 @@
   *
   *      @desc Settings panel functionality
   *   @package KCFinder
-  *   @version 2.21
+  *   @version 2.51
   *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010 KCFinder Project
+  * @copyright 2010, 2011 KCFinder Project
   *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
   *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
   *      @link http://kcfinder.sunhater.com
@@ -41,7 +41,7 @@ browser.initSettings = function() {
 
     $.each(shows, function(i, val) {
         var checked = (_.kuki.get('show' + val) == 'on') ? 'checked' : '';
-        $('#show input[name="' + val + '"]').attr('checked', checked);
+        $('#show input[name="' + val + '"]').get(0).checked = checked;
     });
 
     if (!this.orders.length) {
@@ -59,10 +59,8 @@ browser.initSettings = function() {
     if (!_.kuki.isSet('orderDesc'))
         _.kuki.set('orderDesc', 'off');
 
-    $('#order input[value="' + _.kuki.get('order') + '"]').attr('checked', 'checked');
-    $('#order input[name="desc"]').attr('checked',
-        (_.kuki.get('orderDesc') == 'on') ? 'checked' : ''
-    );
+    $('#order input[value="' + _.kuki.get('order') + '"]').get(0).checked = true;
+    $('#order input[name="desc"]').get(0).checked = (_.kuki.get('orderDesc') == 'on');
 
     $('#order input[type="radio"]').click(function() {
         _.kuki.set('order', $(this).get(0).value);
@@ -70,33 +68,33 @@ browser.initSettings = function() {
     });
 
     $('#order input[name="desc"]').click(function() {
-        _.kuki.set('orderDesc', $(this).get(0).checked ? "on" : "off");
+        _.kuki.set('orderDesc', $(this).get(0).checked ? 'on' : 'off');
         browser.orderFiles();
     });
 
     if (!_.kuki.isSet('view'))
         _.kuki.set('view', 'thumbs');
 
-    if (_.kuki.get('view') == "list") {
-        $('#show input').attr('checked', 'checked');
-        $('#show input').attr('disabled', 'disabled');
+    if (_.kuki.get('view') == 'list') {
+        $('#show input').each(function() { this.checked = true; });
+        $('#show input').each(function() { this.disabled = true; });
     }
 
-    $('#view input[value="' + _.kuki.get('view') + '"]').attr('checked', 'checked');
+    $('#view input[value="' + _.kuki.get('view') + '"]').get(0).checked = true;
 
     $('#view input').click(function() {
         var view = $(this).attr('value');
         if (_.kuki.get('view') != view) {
             _.kuki.set('view', view);
             if (view == 'list') {
-                $('#show input').attr('checked', 'checked');
-                $('#show input').attr('disabled', 'disabled');
+                $('#show input').each(function() { this.checked = true; });
+                $('#show input').each(function() { this.disabled = true; });
             } else {
                 $.each(browser.shows, function(i, val) {
-                    if (_.kuki.get('show' + val) != "on")
-                        $('#show input[name="' + val + '"]').attr('checked', '');
+                    $('#show input[name="' + val + '"]').get(0).checked =
+                        (_.kuki.get('show' + val) == "on");
                 });
-                $('#show input').attr('disabled', '');
+                $('#show input').each(function() { this.disabled = false; });
             }
         }
         browser.refresh();

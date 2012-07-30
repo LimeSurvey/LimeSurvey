@@ -6,6 +6,13 @@ if (count($_GET) > 0) {
         }
         $_REQUEST[$key] = $val;
     }
+    $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
+
+    $surveyinfo = getSurveyInfo(sanitize_int($_REQUEST['sid']));
+    if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
+    {
+        $_REQUEST['assessments'] = 'Y';
+    }
 }
 
 $clang = Yii::app()->lang;
@@ -107,9 +114,7 @@ EOD;
 
 
     SetSurveyLanguage($surveyid, $language);
-
-    echo '<H3>' . sprintf($clang->gT('Logic file for survey ID %s'),$surveyid) . "</H3>\n";
-
+    LimeExpressionManager::SetDirtyFlag();
     $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $gid, $qid,$LEMdebugLevel,$assessments);
     print $result['html'];
 

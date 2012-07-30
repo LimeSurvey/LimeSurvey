@@ -14,7 +14,6 @@ class MultinumericalQuestion extends QuestionModule
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
         //Must turn on the "numbers only javascript"
-        $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\''.$sSeperator.'\')>0 && String.fromCharCode(getkey(event))==\''.$sSeperator.'\') return false; return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
         $extraclass .=" numberonly";
         if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
         {
@@ -222,7 +221,7 @@ class MultinumericalQuestion extends QuestionModule
                         $answer_main .= $dispVal;
                     }
 
-                    $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$numbersonly} {$maxlength} />\t{$suffix}\n</span>\n\t</li>\n";
+                    $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$maxlength} />\n\t".$suffix."\n</span>\n\t</li>\n";
                 }
                 else
                 {
@@ -425,7 +424,7 @@ class MultinumericalQuestion extends QuestionModule
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("array_filter","array_filter_exclude","array_filter_style","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group","value_range_allows_missing");
+        $attrs=array("array_filter","array_filter_exclude","array_filter_style","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group","value_range_allows_missing");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

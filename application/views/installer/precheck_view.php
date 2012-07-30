@@ -83,9 +83,9 @@ function dirReport($dir, $write, $clang)
        <td align="center" style="width: 225px;"><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;">/templates <?php $clang->eT("directory"); ?></td>
+       <td style="width: 209px;">/tmp <?php $clang->eT("directory"); ?></td>
        <td align="center" style="width: 225px;"><?php $clang->eT("Found & writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($templatedirPresent,$templatedirWritable,$clang); ?></td>
+       <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
 </tr>
 
 </table>

@@ -2,7 +2,9 @@ var conditionid=1;
 function addcondition(newcid)
 {
     conditionid++;
-
+    if(typeof optionstring === "undefined") {
+        optionstring = "";
+    }
     html = "<tr name='joincondition_"+conditionid+"' id='joincondition_"+conditionid+"'><td>\n\
     <select name='join_"+conditionid+"' id='join_"+conditionid+"'>\n\
     <option value='and'>"+andTxt+"</option>\n\
@@ -18,12 +20,13 @@ function addcondition(newcid)
     <option value='survey'>"+surveyTxt+"</option>\n\
     <option value='language'>"+languageTxt+"</option>\n\
     <option value='owner_uid'>"+owneridTxt+"</option>\n\
-    <option value='owner_name'>"+ownernameTxt+"</option>\n\
+    <option value='owner_name'>"+ownernameTxt+"</option>"+optionstring+"\n\
     </select>\n\</td>\n\<td>\n\
     <select name='condition_"+conditionid+"' id='condition_"+conditionid+"'>\n\
     <option>"+selectTxt+"</option>\n\
     <option value='equal'>"+equalsTxt+"</option>\n\
     <option value='contains'>"+containsTxt+"</option>\n\
+    <option value='beginswith'>"+beginswithTxt+"</option>\n\
     <option value='notequal'>"+notequalTxt+"</option>\n\
     <option value='notcontains'>"+notcontainsTxt+"</option>\n\
     <option value='greaterthan'>"+greaterthanTxt+"</option>\n\
@@ -56,6 +59,7 @@ $(document).ready(function() {
             .appendTo('body').submit().remove();
         };
     };
+
     // Code for AJAX download
     $("#addbutton").click(function(){
         conditionid++;
@@ -83,6 +87,7 @@ $(document).ready(function() {
         <option>"+selectTxt+"</option>\n\
         <option value='equal'>"+equalsTxt+"</option>\n\
         <option value='contains'>"+containsTxt+"</option>\n\
+        <option value='beginswith'>"+beginswithTxt+"</option>\n\
         <option value='notequal'>"+notequalTxt+"</option>\n\
         <option value='notcontains'>"+notcontainsTxt+"</option>\n\
         <option value='greaterthan'>"+greaterthanTxt+"</option>\n\
@@ -104,6 +109,7 @@ $(document).ready(function() {
     /* The main jqGrid, displaying Participants */
     jQuery("#displayparticipants").jqGrid({
         align:"center",
+        headertitles: true,
         url: jsonUrl,
         editurl: editUrl,
         datatype: "json",
@@ -120,9 +126,16 @@ $(document).ready(function() {
         sortname: 'firstname',
         sortorder: 'asc',
         viewrecords : true,
-        rowList: [25,50,100,250,500,1000,5000,10000],
+        rowList: [25,50,100,250,500,1000,2000,5000],
         multiselect: true,
         loadonce : false,
+        loadComplete : function() {
+            /* Sneaky way of adding custom icons to jqGrid pager buttons */
+            $("#pager").find(".ui-share-icon")
+                .css({"background-image":"url("+imageurl+"share_12.png)", "background-position":"0", "color":"black"});
+            $("#pager").find(".ui-addtosurvey-icon")
+                .css({"background-image":"url("+imageurl+"tokens_12.png)", "background-position":"0", "color":"black"});
+        },
         loadError : function(xhr, st, str) {
             var dialog_buttons={};
             dialog_buttons[okBtn]=function(){
@@ -175,11 +188,15 @@ $(document).ready(function() {
                 url: surveylinkUrl+'/'+row_id,
                 height: "100%",
                 width: "100%",
-                colNames:[surveyNameColTxt,surveyIdColTxt,tokenIdColTxt,dateAddedColTxt],
-                colModel:[{ name:'surveyname',index:'surveyname', width:100,align:'center'},
-                { name:'surveyid',index:'surveyid', width:90,align:'center'},
-                { name:'tokenid',index:'tokenid', width:100,align:'center'},
-                { name:'dateadded',index:'added', width:120,align:'center'}],
+                loadonce: true,
+                sortable: true,
+                colNames:[surveyNameColTxt,surveyIdColTxt,tokenIdColTxt,dateAddedColTxt,dateInvitedColTxt,dateCompletedColTxt],
+                colModel:[{ name:'survey_name',index:'survey_name', width:400,align:'center', sorttype:"string", sortable: true},
+                { name:'survey_id',index:'survey_id', width:90,align:'center', sorttype:"int", sortable: true},
+                { name:'token_id',index:'token_id', width:80, align:'center', sorttype:"int", sortable: true},
+                { name:'date_created',index:'date_created', width:100,align:'center', sorttype:"string", sortable: true},
+                { name:'date_invited',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true},
+                { name:'date_completed',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true}],
                 caption: linksHeadingTxt,
                 gridComplete: function () {
                     var recs = $("#"+second_subgrid_table_id).jqGrid('getGridParam','reccount');
@@ -187,9 +204,12 @@ $(document).ready(function() {
                         //$("#"+second_subgrid_table_id).setGridHeight(40);
                         $("#hide_"+second_subgrid_table_id).hide();
                         //$("#NoRecordContact").show();
+                    } else {
+                        $("#hide_"+second_subgrid_table_id).css("margin-bottom", "20px"); //Some spacing after the subgrid
                     }
                 }
             });
+
             /* Subgrid that displays user attributes */
             jQuery("#"+subgrid_table_id).jqGrid( {
                 url: getAttribute_json+'/'+row_id,
@@ -200,66 +220,33 @@ $(document).ready(function() {
                 recordtext:'',
                 pgtext:'',
                 caption: attributesHeadingTxt,
-                editable:true,
+                editable: true,
                 loadonce : true,
                 colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
-                colModel: [ { name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){ }}},
+                colModel: [ { name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){
+                    var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
+                    editModifier(id,iRow, method='edit');
+                }}},
                 { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:false,hidden:true},
                 { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
                 { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
-                { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:true,hidden:true}],
+                { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:false,hidden:true}],
                 rowNum:20,
                 pager: pager_id,
                 gridComplete: function () {
                     /* Removes the delete icon from the actions bar */
                     $('div.ui-inline-del').html('');
-                    /* Removes the edit icon from the actions bar */
-                    //$('div.ui-inline-edit').html('');
+                    $("#gview_"+subgrid_table_id).css("margin-top", "20px"); //Some spacing after the subgrid
                 },
                 ondblClickRow: function(id,subgrid_id) {
-                    var parid = id.split('_');
-                    var participant_id = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'participant_id');
-                    var lsel = parid[0];
-                    var can_edit = $('#displayparticipants').getCell(participant_id,'can_edit');
-                    if(can_edit == 'false') {
-                        var dialog_buttons={};
-                        dialog_buttons[okBtn]=function(){
-                            $( this ).dialog( closeTxt );
-                        };
-                        /* End of building array for button functions */
-                        $('#notauthorised').dialog({
-                            modal: true,
-                            title: accessDeniedTxt,
-                            buttons: dialog_buttons
-                        });
-                    } else {
-                        var att_type = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'atttype');
-                        if(att_type=="DP") {
-                            $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
-                        }
-                        if(att_type=="DD") {
-                            var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
-                            $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'select',editoptions:{ value:":Select One;"+att_p_values}});
-                        }
-                        if(att_type=="TB") {
-                            $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
-                            $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
-                        }
-                        var attap = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attap');
-                        if(id && id!==lastSel2) {
-                            jQuery("#displayparticipants_"+parid[0]+"_t").saveRow(lastSel2);
-                            lastSel2=id;
-                        }
-                        $.fn.fmatter.rowactions(id,'displayparticipants_'+parid[0]+'_t','edit',0);
-                        jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
-                        jQuery("#displayparticipants_"+parid[0]+"_t").editRow(id,true);
-                    }
+                    editModifier(id, subgrid_id, method='click');
                 },
                 height: '100%'
             });
         }
     });
+
     $.jgrid.formatter.integer.thousandsSeparator=''; //Removes the default spacing as a thousands seperator
     //Todo - global setting for all jqGrids to match language/regional number formats
 
@@ -308,49 +295,8 @@ $(document).ready(function() {
         {multipleSearch:true, multipleGroup:true}
     );
 
-    /* Add the CSV Export Button to the main jqGrid Pager */
-    $("#displayparticipants").navButtonAdd(
-        '#pager',
-        {
-            caption:"",
-            title:exportToCSVTitle,
-            buttonicon:'exporticon',
-            onClickButton:function() {
-                $.post(
-                    exporttocsvcount,
-                    { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
-                    function(data) {
-                        titlemsg = data;
-                        var dialog_buttons={};
-                        dialog_buttons[cancelBtn]=function(){
-                            $(this).dialog("close");
-                        };
-                        dialog_buttons[exportBtn]=function(){
-                            //$.load(exporttocsv+"/"+$('#attributes').val(),{ } );
-                            var url = jQuery('#displayparticipants').jqGrid('getGridParam', 'url');
-                            $.download(exporttocsv+"/"+$('#attributes').val(),'searchcondition='+url );
-                            $(this).dialog("close");
-                        };
-                        /* End of building array for button functions */
-                        $('#exportcsv').dialog({
-                            modal: true,
-                            title: titlemsg,
-                            buttons: dialog_buttons,
-                            width : 400,
-                            height : 400,
-                            open: function(event, ui) {
-                                $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true}).multiselectfilter();
-                            }
-                        });
-                    }
-                );
-            }
-        }
-    );
-
     /* Add the full Search Button to the main jqGrid Pager */
-    $("#displayparticipants").navButtonAdd(
-        '#pager',
+    $("#displayparticipants").navButtonAdd('#pager',
         {
             caption:"",
             title: fullSearchTitle,
@@ -411,26 +357,26 @@ $(document).ready(function() {
                 };
                 dialog_buttons[cancelBtn]=function(){
                 $( this ).dialog( "close" );
-            };
-            dialog_buttons[resetBtn]=function(){
-                jQuery("#displayparticipants").jqGrid('setGridParam',{
-                    url:jsonUrl,
-                    gridComplete: function(){
-                        if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
-                            var dialog_buttons={};
-                            dialog_buttons[okBtn]=function(){
-                                $( this ).dialog( "close" );
-                            };
-                            $("<p>"+noSearchResultsTxt+"</p>").dialog({
-                                modal: true,
-                                buttons: dialog_buttons,
-                                resizable: false
-                            });
+                };
+                dialog_buttons[resetBtn]=function(){
+                    jQuery("#displayparticipants").jqGrid('setGridParam',{
+                        url:jsonUrl,
+                        gridComplete: function(){
+                            if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
+                                var dialog_buttons={};
+                                dialog_buttons[okBtn]=function(){
+                                    $( this ).dialog( "close" );
+                                };
+                                $("<p>"+noSearchResultsTxt+"</p>").dialog({
+                                    modal: true,
+                                    buttons: dialog_buttons,
+                                    resizable: false
+                                });
+                            }
                         }
-                    }
-                });
-                $("#displayparticipants").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
-            };
+                    });
+                    $("#displayparticipants").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
+                };
             /* End of building array for button functions */
             $("#search").dialog({
                 height: 300,
@@ -441,6 +387,170 @@ $(document).ready(function() {
             });
         }
     }
+    );
+    /* Add the CSV Export Button to the main jqGrid Pager */
+    $("#displayparticipants").navButtonAdd('#pager',
+        {
+            caption:"",
+            title:exportToCSVTitle,
+            buttonicon:'ui-icon-extlink',
+            onClickButton:function() {
+                $.post(
+                    exporttocsvcount,
+                    { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
+                    function(data) {
+                        titlemsg = data;
+                        var dialog_buttons={};
+                        dialog_buttons[cancelBtn]=function(){
+                            $(this).dialog("close");
+                        };
+                        dialog_buttons[exportBtn]=function(){
+                            //$.load(exporttocsv+"/"+$('#attributes').val(),{ } );
+                            var url = jQuery('#displayparticipants').jqGrid('getGridParam', 'url');
+                            $.download(exporttocsv+"/"+$('#attributes').val(),'searchcondition='+url );
+                            $(this).dialog("close");
+                        };
+                        /* End of building array for button functions */
+                        $('#exportcsv').dialog({
+                            modal: true,
+                            title: titlemsg,
+                            buttons: dialog_buttons,
+                            width : 400,
+                            height : 400,
+                            open: function(event, ui) {
+                                $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true}).multiselectfilter();
+                            }
+                        });
+                    }
+                );
+            }
+        }
+    );
+    $("#displayparticipants").navButtonAdd('#pager',
+        {
+            caption: "",
+            title: shareParticipantTxt,
+            buttonicon: "ui-share-icon",
+            onClickButton:function(){
+                var myGrid = $("#displayparticipants").jqGrid();
+                var row = myGrid .getGridParam('selarrrow');
+                if(row=="") {
+                    /* build an array containing the various button functions */
+                    /* Needed because it's the only way to label a button with a variable */
+                    var dialog_buttons={};
+                    dialog_buttons[okBtn]=function(){
+                        $( this ).dialog( "close" );
+                    };
+                    /* End of building array for button functions */
+                    $('#norowselected').dialog({
+                        modal: true,
+                        buttons: dialog_buttons
+                    });
+                } else {
+                    /* build an array containing the various button functions */
+                    /* Needed because it's the only way to label a button with a variable */
+                    var dialog_buttons={};
+                    dialog_buttons[spAddBtn]=function(){
+                        var row = myGrid .getGridParam('selarrrow');
+                        shareParticipants(row);
+                    };
+                    dialog_buttons[cancelBtn]=function(){
+                        $(this).dialog("close");
+                    };
+                    /* End of building array for button functions */
+
+                    $("#shareform").dialog({
+                        height: 400,
+                        width: 400,
+                        modal: true,
+                        buttons: dialog_buttons
+                    });
+                }
+                if (!($("#shareuser").length > 0)) {
+                    $('#shareform').html(sfNoUser);
+                }
+            }
+        }
+    );
+    $("#displayparticipants").navButtonAdd('#pager',
+        {
+            caption: "",
+            title: addToSurveyTxt,
+            buttonicon: "ui-addtosurvey-icon",
+            onClickButton:function(){
+                var selected = "";
+                var myGrid = $("#displayparticipants").jqGrid();
+                /* the rows variable will contain the UUID of individual items that been ticked in the jqGrid */
+                /* if it is empty, then no items have been ticked */
+                var rows = myGrid.getGridParam('selarrrow');
+
+                /* Show summary of how many participants will be added to the survey */
+                if(rows=="") {
+                    var totalitems = myGrid.getGridParam('records');
+                    $('#allinview').text(addAllInViewTxt.replace('%s', totalitems));
+                    $('#allinview').show();
+                    $('#selecteditems').hide();
+                } else {
+                    var totalitems = rows.length;
+                    $('#selecteditems').text(addSelectedItemsTxt.replace('%s', totalitems));
+                    $('#selecteditems').show();
+                    $('#allinview').hide();
+                }
+
+                var dialog_buttons={};
+                dialog_buttons[mapButton]=function(){
+                    var survey_id=$('#survey_id').val();
+                    var redirect ="";
+                    if(survey_id===null) {
+                        /* No survey has been selected */
+                        alert(selectSurvey);
+                    } else {
+                        /* Check if user wants to see token table after adding new participants */
+                        if(jQuery('#redirect').is(":checked")) {
+                            redirect = "redirect";
+                        } else {
+                            redirect = "";
+                        }
+                        /* Submit the form with appropriate options depending on whether
+                        individual users are selected, or the whole grid is to be copied */
+                        if(rows=="") { /* All in grid */
+                            $.post(
+                            getSearchIDs,
+                            { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
+                            function(data) {
+                                $('#count').val(totalitems);
+                                $('#participant_id').val(data);
+                                $("#addsurvey").submit();
+                            });
+                        } else { /* Add selected (checked) jqGrid items only */
+                            rows = myGrid.getGridParam('selarrrow');
+                            $('#count').val(totalitems);
+                            $('#participant_id').val(rows);
+                            $("#addsurvey").submit();
+                        }
+                    }
+                };
+                dialog_buttons[cancelBtn]=function(){
+                    $(this).dialog("close");
+                };
+                /* End of building array containing button functions */
+
+                $("#addsurvey").dialog({
+                    height: 500,
+                    width: 500,
+                    title : addsurvey,
+                    modal: true,
+                    open: function(event, ui) {
+                        $('#addsurvey').dialog('option', 'title', addsurvey + ' ('+totalitems+')');
+                    },
+                    buttons: dialog_buttons
+                });
+
+                if (!($("#survey_id").length > 0)) {
+                    $('#addsurvey').html(addpartErrorMsg);
+                }
+            }
+        }
     );
 
     $.extend(jQuery.jgrid.edit,{
@@ -476,52 +586,12 @@ $(document).ready(function() {
     //End of Script for sharing
 
     function addtoSurvey(participant_id,survey_id,redirect) {
-        $("#addsurvey").load(postUrl,{
-            participantid:participant_id},function(){
-            $(location).attr('href',attMapUrl+'/'+survey_id+'/'+redirect);
-        }
-        );
+        $("#addsurvey").load(postUrl,
+                            {participantid:participant_id},
+                            function(){
+                                $(location).attr('href',attMapUrl+'/'+survey_id+'/'+redirect);
+                            });
     }
-
-    $('#share').click(function(){
-        var myGrid = $("#displayparticipants").jqGrid();
-        var row = myGrid .getGridParam('selarrrow');
-        if(row=="") {
-            /* build an array containing the various button functions */
-            /* Needed because it's the only way to label a button with a variable */
-            var dialog_buttons={};
-            dialog_buttons[okBtn]=function(){
-                $( this ).dialog( "close" );
-            };
-            /* End of building array for button functions */
-            $('#norowselected').dialog({
-                modal: true,
-                buttons: dialog_buttons
-            });
-        } else {
-            /* build an array containing the various button functions */
-            /* Needed because it's the only way to label a button with a variable */
-            var dialog_buttons={};
-            dialog_buttons[spAddBtn]=function(){
-                var row = myGrid .getGridParam('selarrrow');
-                shareParticipants(row);
-            };
-            dialog_buttons[cancelBtn]=function(){
-                $(this).dialog("close");
-            };
-            /* End of building array for button functions */
-
-            $("#shareform").dialog({
-                height: 300,
-                width: 350,
-                modal: true,
-                buttons: dialog_buttons
-            });
-        }
-        if (!($("#shareuser").length > 0)) {
-            $('#shareform').html(sfNoUser);
-        }
-    });
 
     function basename(path) {
         return path.replace(/\\/g,'/').replace( /.*\//, '' );
@@ -567,13 +637,13 @@ $(document).ready(function() {
                     getSearchIDs,
                     { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
                     function(data) {
-                        $('#count').val($('#ui-dialog-title-addsurvey').text());
+                        $('#count').val(totalitems);
                         $('#participant_id').val(data);
                         $("#addsurvey").submit();
                     });
                 } else { /* Add selected (checked) jqGrid items only */
                     rows = myGrid.getGridParam('selarrrow');
-                    $('#count').val($('#ui-dialog-title-addsurvey').text());
+                    $('#count').val(totalitems);
                     $('#participant_id').val(rows);
                     $("#addsurvey").submit();
                 }
@@ -585,8 +655,8 @@ $(document).ready(function() {
         /* End of building array containing button functions */
 
         $("#addsurvey").dialog({
-            height: 400,
-            width: 450,
+            height: 500,
+            width: 500,
             title : addsurvey,
             modal: true,
             open: function(event, ui) {
@@ -599,4 +669,50 @@ $(document).ready(function() {
             $('#addsurvey').html(addpartErrorMsg);
         }
     });
+
+    function editModifier(id, subgrid_id, method) {
+        var parid = id.split('_');
+        var participant_id = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'participant_id');
+        var lsel = parid[0];
+        var can_edit = $('#displayparticipants').getCell(participant_id,'can_edit');
+        if(can_edit == 'false') {
+            var dialog_buttons={};
+            dialog_buttons[okBtn]=function(){
+                $( this ).dialog( closeTxt );
+            };
+            /* End of building array for button functions */
+            $('#notauthorised').dialog({
+                modal: true,
+                title: accessDeniedTxt,
+                buttons: dialog_buttons
+            });
+        } else {
+            var att_type = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'atttype');
+            if(att_type=="DP") { //Date
+                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
+            }
+            if(att_type=="DD") { //Dropdown
+                var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
+                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'select',editoptions:{ value:":Select One;"+att_p_values}});
+            }
+            if(att_type=="TB") { //Textbox
+                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
+                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
+            }
+            var attap = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attap');
+            if(id && id!==lastSel2) { //If there was already another row open for editin save it before editing this one
+                jQuery("#displayparticipants_"+parid[0]+"_t").saveRow(lastSel2);
+                //jQuery.fn.fmatter.rowactions('97358ea2-8227-483b-a225-5d13a522402e_50','displayparticipants_97358ea2-8227-483b-a225-5d13a522402e_t','cancel',0);
+                lastSel2=id;
+            }
+            $.fn.fmatter.rowactions(id,'displayparticipants_'+parid[0]+'_t','edit',0);
+            if(method=='edit') {
+                jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
+                jQuery("#displayparticipants_"+parid[0]+"_t").restoreRow(id);
+            }
+            jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
+            jQuery("#displayparticipants_"+parid[0]+"_t").editRow(id,true);
+        }
+    }
+
 });

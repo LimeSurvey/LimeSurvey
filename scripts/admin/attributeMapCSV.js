@@ -9,11 +9,25 @@ $(document).ready(function() {
     $('#centralattribute').css({'height' : height-200});
     $('#csvattribute').css({'height' : height-200});
     $('#newcreated').css({'height' : height-200});
+    if($("#overwrite").is(':checked')) {var attoverwrite=true;} else {var attoverwrite=false;}
+    $("#overwrite").click(function(){
+        if($("#overwrite").is(':checked')) {attoverwrite=true;} else {attoverwrite=false;}
+    });
     //The original fieldnames bucket
     $(".csvatt").sortable({
         connectWith:".cpdbatt,.newcreate",
         helper: "clone",
-        appendTo: "ul"
+        appendTo: "ul",
+        receive: function(event,ui) {
+            newcurrentarray = $(this).sortable('toArray');
+            var csvattpos = jQuery.inArray($(ui.item).attr('id'),newcurrentarray)
+            csvattpos = csvattpos+1;
+            $('ul.csvatt > li:nth-child('+csvattpos+')').css("color", "black");
+            $('ul.csvatt > li:nth-child('+csvattpos+')').css("background-color","white");
+            $('ul.csvatt > li:nth-child('+csvattpos+')').css("margin-top","3px");
+            $('ul.csvatt > li:nth-child('+csvattpos+')').css("border-top","2px solid #ddd");
+
+        }
     });
     //The 'create new' bucket
     $(".newcreate").sortable({
@@ -24,10 +38,8 @@ $(document).ready(function() {
     $("ul.cpdbatt").sortable({
         helper: "clone",
         appendTo: "body",
-        connectWith: "ul",
-        beforeStop: function(event,ui) {
-            $(this).sortable('cancel');
-        },
+        connectWith: "ul.cpdbatt,.csvatt,.newcreate",
+
         receive: function(event,ui) {
             cpdbattarray = $(this).sortable('toArray');
             var cpdbattpos = jQuery.inArray($(ui.item).attr('id'),cpdbattarray);
@@ -42,12 +54,17 @@ $(document).ready(function() {
                 $(ui.sender).sortable('cancel');
             } else {
 	            $('ul.cpdbatt > li:nth-child('+cpdbattpos+')').css("color","white");
-	            $('ul.cpdbatt > li:nth-child('+csvpos+')').css("color","white");
-	            $("#"+cpdbattid).css("background-color","#328639");
-	            $("#"+cpdbattid).css("border-color","#FFFFFF");
-	            $("#"+csvattid).css("border-color","#FFFFFF");
-	            $("#"+csvattid).css("background-color","#328639");
+                $('ul.cpdbatt > li:nth-child('+cpdbattpos+')').css("border-bottom","0");
+                $('ul.cpdbatt > li:nth-child('+csvpos+')').css("color","white");
+	            $('ul.cpdbatt > li:nth-child('+csvpos+')').css("margin-top","-5px");
+                $('ul.cpdbatt > li:nth-child('+csvpos+')').css("border-top","0");
+                $('ul.cpdbatt > li:nth-child('+csvpos+')').css("min-height","20px");
+                $('ul.cpdbatt > li:nth-child('+csvpos+')').css("background-color","#328639");
+                $("#"+cpdbattid).css("background-color","#328639");
        	    }
+        },
+        remove: function(event,ui) {
+            /* TODO: Find out how to change the colour of the li item above the moved item back to white */
         }
     });
 
@@ -94,7 +111,7 @@ $(document).ready(function() {
 		};
 
 		$("#processing").dialog({
-			height: 450,
+			height: 550,
 		    width: 700,
 		    modal: true,
 		    buttons: dialog_buttons,
@@ -113,6 +130,7 @@ $(document).ready(function() {
 		    fullfilepath : thefilepath,
 		    newarray : newcurrentarray,
 		    mappedarray : mappedarray,
+            overwrite : attoverwrite,
             filterbea : filterblankemails
 		}, function(msg){
 		    $('#processing').parent().find("button").each(function() {

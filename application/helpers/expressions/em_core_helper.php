@@ -29,7 +29,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
+    static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
@@ -80,9 +80,9 @@ class ExpressionManager {
         $RDP_regex_inc_dec = '\+\+|--';
         $RDP_regex_binary = '[+*/-]';
         $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
-        $RDP_regex_assign = '=|\+=|-=|\*=|/=';
+        $RDP_regex_assign = '=';    // '=|\+=|-=|\*=|/=';
         $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
-        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
+        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
         $RDP_regex_lcb = '{';
@@ -163,6 +163,8 @@ class ExpressionManager {
 'checkdate' => array('checkdate', 'checkdate', $this->gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://www.php.net/manual/en/function.checkdate.php', 3),
 'cos' => array('cos', 'Math.cos', $this->gT('Cosine'), 'number cos(number)', 'http://www.php.net/manual/en/function.cos.php', 1),
 'count' => array('exprmgr_count', 'LEMcount', $this->gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
+'countif' => array('exprmgr_countif', 'LEMcountif', $this->gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
+'countifop' => array('exprmgr_countifop', 'LEMcountifop', $this->gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
 'date' => array('date', 'date', $this->gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
 'exp' => array('exp', 'Math.exp', $this->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
 'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
@@ -221,6 +223,7 @@ class ExpressionManager {
 'strtoupper' => array('strtoupper', 'LEMstrtoupper', $this->gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
 'substr' => array('substr', 'substr', $this->gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
 'sum' => array('array_sum', 'LEMsum', $this->gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
+'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', $this->gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
 'tan' => array('tan', 'Math.tan', $this->gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
 'time' => array('time', 'time', $this->gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
 'trim' => array('trim', 'trim', $this->gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
@@ -1310,7 +1313,10 @@ class ExpressionManager {
         {
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
             {
-                $nonNAvarsUsed[] = $var;
+                if ($this->GetVarAttribute($var,'jsName','') != '')
+                {
+                    $nonNAvarsUsed[] = $var;
+                }
             }
         }
         $mainClause = implode('', $stringParts);
@@ -1752,6 +1758,7 @@ class ExpressionManager {
         $this->groupSeq = $groupSeq;
         $this->questionSeq = $questionSeq;
 
+        $expr = $this->ExpandThisVar($expr);
         $status = $this->RDP_Evaluate($expr);
         if (!$status) {
             return false;    // if there are errors in the expression, hide it?
@@ -1820,6 +1827,7 @@ class ExpressionManager {
         $this->groupSeq = $groupSeq;
         $result = $src;
         $prettyPrint = '';
+        $errors = array();
 
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
@@ -1829,8 +1837,10 @@ class ExpressionManager {
             {
                 $prettyPrint = $this->prettyPrintSource;
             }
+            $errors = array_merge($errors, $this->RDP_errs);
         }
         $this->prettyPrintSource = $prettyPrint;    // ensure that if doing recursive substition, can get original source to pretty print
+        $this->RDP_errs = $errors;
         return $result;
     }
 
@@ -1858,7 +1868,8 @@ class ExpressionManager {
             }
             else {
                 ++$this->substitutionNum;
-                if ($this->RDP_Evaluate(substr($stringPart[0],1,-1)))
+                $expr = $this->ExpandThisVar(substr($stringPart[0],1,-1));
+                if ($this->RDP_Evaluate($expr))
                 {
                     $resolvedPart = $this->GetResult();
                 }
@@ -1886,7 +1897,7 @@ class ExpressionManager {
                         'raw' => $stringPart[0],
                         'result' => $resolvedPart,
                         'vars' => implode('|',$jsVarsUsed),
-                        'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, substr($stringPart[0],1,-1)),
+                        'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, $expr),
                     );
                 }
                 else
@@ -1899,6 +1910,30 @@ class ExpressionManager {
         $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
         $this->RDP_errs = $allErrors;   // so that has all errors from this string
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
+    }
+
+    /**
+     * If the equation contains refernece to this, expand to comma separated list if needed.
+     * @param type $eqn
+     */
+    function ExpandThisVar($src)
+    {
+        $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*';
+        $parts = preg_split("/(" . $splitter . ")/i",$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+        $result = '';
+        foreach ($parts as $part)
+        {
+            if (preg_match("/" . $splitter . "/",$part))
+            {
+                $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq,$part);
+            }
+            else
+            {
+                $result .= $part;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -3125,6 +3160,7 @@ EOD;
         $pre .= "<!--\n";
         $pre .= "var LEMalias2varName= {". implode(",\n", $LEMalias2varName) ."};\n";
         $pre .= "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
+        $pre .= "var LEMradix = '.';\n";
         $pre .= "//-->\n</script>\n";
 
         print $pre;
@@ -3213,6 +3249,92 @@ function exprmgr_count($args)
         }
     }
     return $j;
+}
+
+/**
+ * Count the number of answered questions (non-empty) which match the first argument
+ * @param <type> $args
+ * @return int
+ */
+function exprmgr_countif($args)
+{
+    $j=0;    // keep track of how many non-null values seen
+    $match = array_shift($args);
+    foreach ($args as $arg)
+    {
+        if ($arg == $match) {
+            ++$j;
+        }
+    }
+    return $j;
+}
+
+/**
+ * Count the number of answered questions (non-empty) which meet the criteria (arg op value)
+ * @param <type> $args
+ * @return int
+ */
+function exprmgr_countifop($args)
+{
+    $j=0;
+    $op = array_shift($args);
+    $value = array_shift($args);
+    foreach ($args as $arg)
+    {
+        switch($op)
+        {
+            case '==':  case 'eq': if ($arg == $value) { ++$j; } break;
+            case '>=':  case 'ge': if ($arg >= $value) { ++$j; } break;
+            case '>':   case 'gt': if ($arg > $value) { ++$j; } break;
+            case '<=':  case 'le': if ($arg <= $value) { ++$j; } break;
+            case '<':   case 'lt': if ($arg < $value) { ++$j; } break;
+            case '!=':  case 'ne': if ($arg != $value) { ++$j; } break;
+            case 'RX':
+                try {
+                    if (@preg_match($value, $arg))
+                    {
+                        ++$j;
+                    }
+                }
+                catch (Exception $e) { }
+                break;
+        }
+    }
+    return $j;
+}
+
+/**
+ * Sum of values of answered questions which meet the criteria (arg op value)
+ * @param <type> $args
+ * @return int
+ */
+function exprmgr_sumifop($args)
+{
+    $result=0;
+    $op = array_shift($args);
+    $value = array_shift($args);
+    foreach ($args as $arg)
+    {
+        switch($op)
+        {
+            case '==':  case 'eq': if ($arg == $value) { $result += $arg; } break;
+            case '>=':  case 'ge': if ($arg >= $value) { $result += $arg; } break;
+            case '>':   case 'gt': if ($arg > $value) { $result += $arg; } break;
+            case '<=':  case 'le': if ($arg <= $value) { $result += $arg; } break;
+            case '<':   case 'lt': if ($arg < $value) { $result += $arg; } break;
+            case '!=':  case 'ne': if ($arg != $value) { $result += $arg; } break;
+            case 'RX':
+                try {
+                    if (@preg_match($value, $arg))
+                    {
+                        $result += $arg;
+                    }
+                }
+                catch (Exception $e) { }
+                break;
+        }
+    }
+    return $result;
 }
 
 /**

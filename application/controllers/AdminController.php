@@ -181,7 +181,6 @@ class AdminController extends LSYii_Controller
         return array(
         'assessments'      => 'assessments',
         'authentication'   => 'authentication',
-        'browse'           => 'browse',
         'checkintegrity'   => 'checkintegrity',
         'conditions'       => 'conditionsaction',
         'database'         => 'database',
@@ -202,6 +201,7 @@ class AdminController extends LSYii_Controller
         'questiongroup'    => 'questiongroup',
         'quotas'           => 'quotas',
         'remotecontrol'    => 'remotecontrol',
+        'responses'        => 'responses',
         'saved'            => 'saved',
         'statistics'       => 'statistics',
         'survey'           => 'surveyadmin',

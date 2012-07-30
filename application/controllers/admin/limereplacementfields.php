@@ -96,7 +96,7 @@ class limereplacementfields extends Survey_Common_Action
         return $questionList;
     }
 
-    private function _shouldAddQuestion($action, $gid, $qid, array $q, $previousQ)
+    private function _shouldAddQuestion($action, $gid, $qid, $q, $previousQ)
     {
         switch ($action)
         {

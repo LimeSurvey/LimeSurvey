@@ -118,7 +118,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $templatename=Yii::app()->getConfig('defaulttemplate');
     }
-    $templatename=validateTemplateDir($templatename);
     if(!isset($templatedir)) $templatedir = getTemplatePath($templatename);
     if(!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
 
@@ -127,12 +126,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if(stripos ($line,"{TEMPLATECSS}"))
     {
         $css_header_includes=Yii::app()->getConfig("css_header_includes");
-        // TODO: only one jquery-ui.css, but break slider actually
-        if (file_exists($templatedir . '/jquery-ui-custom.css'))
+        if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
             $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui-custom.css' />\n";
         }
-        elseif(file_exists($templatedir . '/jquery-ui.css'))
+        elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
             $template_jqueryui_css= "<link rel='stylesheet' type='text/css' media='all' href='{$templateurl}/jquery-ui.css' />\n";
         }
@@ -144,10 +142,21 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         if($css_header_includes){
             foreach ($css_header_includes as $cssinclude)
             {
-                if (substr($cssinclude,0,1) == '/')
-                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->baseUrl.$cssinclude."' />\n";
+                if (substr($cssinclude,0,4) == 'http' || substr($cssinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
+                {
+                    $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".$cssinclude."' />\n";
+                }
                 else
+                {
+                    if(file_exists($templatedir.DIRECTORY_SEPARATOR.$cssinclude))
+                    {
+                        $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='{$$templateurl}/{$cssinclude}' />\n";
+                    }
+                    else
+                    {
                     $_templatecss .= "<link rel='stylesheet' type='text/css' media='all' href='".Yii::app()->getConfig('publicstyleurl').$cssinclude."' />\n";
+            }
+        }
             }
         }
         $_templatecss.= $template_jqueryui_css; // Template jquery ui after default css
@@ -163,14 +172,19 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_jqueryuijsurl=Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js";
         $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.js'></script>\n";
         $_templatejs.= "<script type='text/javascript' src='{$_jqueryuijsurl}'></script>\n";
+        $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."jquery/jquery.ui.touch-punch.min.js'></script>\n";
         if($js_header_includes){
             foreach ($js_header_includes as $jsinclude)
             {
-                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,strlen(Yii::app()->getConfig('generalscripts'))) == Yii::app()->getConfig('generalscripts'))
+                if (substr($jsinclude,0,4) == 'http' || substr($jsinclude,0,strlen(Yii::app()->getConfig('publicurl'))) == Yii::app()->getConfig('publicurl'))
+                {
                     $_templatejs .= "<script type='text/javascript' src='{$jsinclude}'></script>\n";
+                }
                 else
-                    $_templatejs .= "<script type='text/javascript' src='".Yii::app()->baseUrl.$jsinclude."'></script>\n";
+                {
+                    $_templatejs .= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts').$jsinclude."'></script>\n";
             }
+        }
         }
         $_templatejs.= "<script type='text/javascript' src='".Yii::app()->getConfig('generalscripts')."survey_runtime.js'></script>\n";
         $_templatejs.= "<script type='text/javascript' src='{$templateurl}template.js'></script>\n";
@@ -378,9 +392,18 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_linkreplace='';
     }
 
-    if (isset($surveyid)) {
+    if(isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active']=='Y')
+    {
+        $iscompleted=Survey_dynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
+    }
+    else
+    {
+        $iscompleted=false;
+    }
+    if (isset($surveyid) && !$iscompleted)
+    {
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
-        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
+        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",array('move'=>'clearall','lang'=>$s_lang),'&amp;');
 
         if (returnGlobal('token'))
         {
@@ -401,7 +424,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
-
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
     {
         // Find out if the user has any saved data
@@ -417,7 +439,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 $_saveall = "\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
             };
         }
-        elseif (!isset(Yii::app()->session['step']) || !Yii::app()->session['step'])
+        elseif (isset($surveyid) && (!isset($_SESSION['survey_'.$surveyid]['step']) || !$_SESSION['survey_'.$surveyid]['step']))
         {  //First page, show LOAD
             if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
             {
@@ -736,10 +758,18 @@ EOD;
         }
     }
 
+    $_endtext = '';
+    if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext'])!='')
+    {
+        $_endtext = $thissurvey['surveyls_endtext'];
+    }
+
+
     // Set the array of replacement variables here - don't include curly braces
 
     $coreReplacements = array();
-    $coreReplacements['AID'] = isset($questiondetails->aid) ? $questiondetails->aid : '';
+	$coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
+    $coreReplacements['AID'] = isset($questiondetials->aid) ? $questiondetails->aid : '';
     $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
     $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
@@ -750,6 +780,7 @@ EOD;
     $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>";
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
+	$coreReplacements['ENDTEXT'] = $_endtext;
     $coreReplacements['EXPIRY'] = $_dateoutput;
     $coreReplacements['GID'] = isset($questiondetails->gid) ? $questiondetails->gid: '';
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;

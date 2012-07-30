@@ -33,7 +33,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $extraclass .=" radio-list";
             $answertypeclass .=" radio";
         }
-
+        if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+        {
+            $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+            $minrepeatheadings = 0;
+        }
         if (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.$this->surveyid]['s_lang']])!='') {
             $leftheader= $clang->gT($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.$this->surveyid]['s_lang']]);
         }
@@ -134,12 +138,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $mycolumns = "\t<colgroup class=\"col-responses group-1\">\n"
             ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
-            $myheader2 = "\n<tr class=\"array1 header_row\">\n"
-            . "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
+            $answer_head_line = "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
             $odd_even = '';
             foreach ($labelans as $ld)
             {
-                $myheader2 .= "\t<th>".$ld."</th>\n";
+                $answer_head_line .= "\t<th>".$ld."</th>\n";
                 $odd_even = alternation($odd_even);
                 $mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
             }
@@ -149,10 +152,10 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             {
                 $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n"
                 . "\t<col class=\"seperator\" />\n";
-                $myheader2 .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator
+                $answer_head_line .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator
                 foreach ($labelans1 as $ld)
                 {
-                    $myheader2 .= "\t<th>".$ld."</th>\n";
+                    $answer_head_line .= "\t<th>".$ld."</th>\n";
                     $odd_even = alternation($odd_even);
                     $mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
                 }
@@ -160,54 +163,56 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             }
             if ($right_exists)
             {
-                $myheader2 .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
+                $answer_head_line .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
                 $mycolumns .= "\n\t<col class=\"answertextright\" />\n\n";
             }
             if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
             {
-                $myheader2 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
-                $myheader2 .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
+                $answer_head_line .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
+                $answer_head_line .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
                 $odd_even = alternation($odd_even);
                 $mycolumns .= "\n\t<col class=\"seperator\" />\n\n";
                 $mycolumns .= "\t<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
             }
 
             $mycolumns .= "\t</colgroup>\n";
-            $myheader2 .= "</tr>\n";
+            $answer_head2 = "\n<tr class=\"array1 header_row\">\n"
+            . $answer_head_line
+            . "</tr>\n";
 
             // build first row of header if needed
             if ($leftheader != '' || $rightheader !='')
             {
-                $myheader1 = "<tr class=\"array1 groups header_row\">\n"
+                $answer_head1 = "<tr class=\"array1 groups header_row\">\n"
                 . "\t<th class=\"header_answer_text\">&nbsp;</th>\n"
                 . "\t<th colspan=\"".count($labelans)."\" class=\"dsheader\">$leftheader</th>\n";
 
                 if (count($labelans1)>0)
                 {
-                    $myheader1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n" // Separator
+                    $answer_head1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n" // Separator
                     ."\t<th colspan=\"".count($labelans1)."\" class=\"dsheader\">$rightheader</th>\n";
                 }
                 if ($right_exists)
                 {
-                    $myheader1 .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
+                    $answer_head1 .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
                 }
                 if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
                 {
-                    $myheader1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
-                    $myheader1 .= "\t<th class=\"header_no_answer\">&nbsp;</th>\n";
+                    $answer_head1 .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
+                    $answer_head1 .= "\t<th class=\"header_no_answer\">&nbsp;</th>\n";
                 }
                 $myheader1 .= "</tr>\n";
             }
             else
             {
-                $myheader1 = '';
+                $answer_head1 = '';
             }
 
             $answer .= "\n<table class=\"question subquestions-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - a dual array type question\">\n"
             . $mycolumns
             . "\n\t<thead>\n"
-            . $myheader1
-            . $myheader2
+            . $answer_head1
+            . $answer_head2
             . "\n\t</thead>\n"
             . "<tbody>\n";
 
@@ -220,30 +225,9 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                     {
                         $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                        $answer .= "\n<tr  class=\"repeat headings\">\n"
-                        . "\t<th class=\"header_answer_text\">&nbsp;</th>\n";
-                        foreach ($labelans as $ld)
-                        {
-                            $answer .= "\t<th>".$ld."</th>\n";
-                        }
-                        if (count($labelans1)>0) // if second label set is used
-                        {
-                            $answer .= "<th class=\"header_separator\">&nbsp;</th>\n"; // Separator
-                            foreach ($labelans1 as $ld)
-                            {
-                                $answer .= "\t<th>".$ld."</th>\n";
-                            }
-                        }
-                        if ($right_exists)
-                        {
-                            $answer .= "\t<td class=\"header_answer_text_right\">&nbsp;</td>\n";
-                        }
-                        if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
-                        {
-                            $answer .= "\t<td class=\"header_separator\">&nbsp;</td>\n"; // Separator
-                            $answer .= "\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
-                        }
-                        $answer .= "</tr>\n";
+                        $answer .= "\n<tr class=\"repeat headings\">\n"
+                        . $answer_head_line
+                        . "</tr>\n";
                     }
                 }
 
@@ -522,7 +506,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                         {
                             $answer .= SELECTED;
                         }
-                        $answer .= '>'.$lrow['title']."</option>\n";
+                        $answer .= '>'.flattenText($lrow['title'])."</option>\n";
                     }
                     // If not mandatory and showanswer, show no ans
                     if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
@@ -574,7 +558,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                         {
                             $answer .= SELECTED;
                         }
-                        $answer .= '>'.$lrow1['title']."</option>\n";
+                        $answer .= '>'.flattenText($lrow1['title'])."</option>\n";
                     }
                     // If not mandatory and showanswer, show no ans
                     if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
@@ -701,7 +685,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

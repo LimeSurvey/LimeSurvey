@@ -36,7 +36,11 @@ class RadioArrayQuestion extends ArrayQuestion
         {
             $useDropdownLayout = false;
         }
-
+        if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+        {
+            $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+            $minrepeatheadings = 0;
+        }
         $lresult = dbExecuteAssoc($lquery);   //Checked
         if ($useDropdownLayout === false && $lresult->count() > 0)
         {
@@ -68,19 +72,17 @@ class RadioArrayQuestion extends ArrayQuestion
             $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
             $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"".str_replace('"','' ,strip_tags($this->text))." - an array type question\" >\n";
-            $answer_head = "\t<thead>\n"
-            . "<tr>\n"
-            . "\t<td>&nbsp;</td>\n";
+            $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
             {
-                $answer_head .= "\t<th>".$ld."</th>\n";
+                $answer_head_line .= "\t<th>".$ld."</th>\n";
             }
-            if ($right_exists) {$answer_head .= "\t<td>&nbsp;</td>\n";}
+            if ($right_exists) {$answer_head_line .= "\t<td>&nbsp;</td>\n";}
             if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
             {
-                $answer_head .= "\t<th>".$clang->gT('No answer')."</th>\n";
+                $answer_head_line .= "\t<th>".$clang->gT('No answer')."</th>\n";
             }
-            $answer_head .= "</tr>\n\t</thead>\n\n\t\n";
+            $answer_head = "\t<thead><tr>\n".$answer_head_line."</thead></tr>\n\t\n";
 
             $answer = '<tbody>';
             $trbc = '';
@@ -92,17 +94,7 @@ class RadioArrayQuestion extends ArrayQuestion
                     if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                     {
                         $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                        $answer .= "<tr class=\"repeat headings\">\n"
-                        . "\t<td>&nbsp;</td>\n";
-                        foreach ($labelans as $ld)
-                        {
-                            $answer .= "\t<th>".$ld."</th>\n";
-                        }
-                        if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
-                        {
-                            $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
-                        }
-                        $answer .= "</tr>\n";
+                        $answer .= "<tr class=\"repeat headings\">{$answer_head_line}</tr>";
                     }
                 }
                 $myfname = $this->fieldname.$ansrow['title'];
@@ -283,7 +275,7 @@ class RadioArrayQuestion extends ArrayQuestion
                     {
                         $answer .= SELECTED;
                     }
-                    $answer .= '>'.$lrow['answer']."</option>\n";
+                    $answer .= '>'.flattenText($lrow['answer'])."</option>\n";
                 }
                 // If not mandatory and showanswer, show no ans
                 if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
@@ -424,7 +416,7 @@ class RadioArrayQuestion extends ArrayQuestion
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
+        $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 

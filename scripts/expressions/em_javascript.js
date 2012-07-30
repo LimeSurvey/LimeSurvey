@@ -15,6 +15,88 @@ function LEMcount()
     return result;
 }
 
+function LEMcountif()
+{
+    // takes variable number of arguments - returns count of those arguments that match the first parameter
+    var result=0;
+    var match=arguments[0];
+    for (i=1;i<arguments.length;++i) {
+        var arg = arguments[i];
+        if (arg == match) {
+            ++result;
+        }
+    }
+    return result;
+}
+
+function LEMcountifop()
+{
+    // takes variable number of arguments - returns count of answered questions which meet the criteria (arg op value)
+    var result=0;
+    var op=arguments[0];
+    var value=arguments[1];
+    if (op == 'RX') {
+        var reg = new RegExp(value.substr(1,value.length-2));
+    }
+    for (i=2;i<arguments.length;++i) {
+        var arg = arguments[i];
+        switch(op)
+        {
+            case '==': case 'eq': if (arg == value) { ++result; } break;
+            case '>=': case 'ge': if (arg >= value) { ++result; } break;
+            case '>':  case 'gt': if (arg > value) { ++result; } break;
+            case '<=': case 'le': if (arg <= value) { ++result; } break;
+            case '<':  case 'lt': if (arg < value) { ++result; } break;
+            case '!=': case 'ne': if (arg != value) { ++result; } break;
+            case 'RX': {
+                try {
+                    if (reg.test(arg)) {
+                        ++result;
+                    }
+                }
+                catch (err) {
+                    return false;
+                }
+            }
+        }
+    }
+    return result;
+}
+
+function LEMsumifop()
+{
+    // takes variable number of arguments - returns sum of answered questions which meet the criteria (arg op value)
+    var result=0;
+    var op=arguments[0];
+    var value=arguments[1];
+    if (op == 'RX') {
+        var reg = new RegExp(value.substr(1,value.length-2));
+    }
+    for (i=2;i<arguments.length;++i) {
+        var arg = arguments[i];
+        switch(op)
+        {
+            case '==': case 'eq': if (arg == value) { result += arg; } break;
+            case '>=': case 'ge': if (arg >= value) { result += arg; } break;
+            case '>':  case 'gt': if (arg > value) { result += arg; } break;
+            case '<=': case 'le': if (arg <= value) { result += arg; } break;
+            case '<':  case 'lt': if (arg < value) { result += arg; } break;
+            case '!=': case 'ne': if (arg != value) { result += arg; } break;
+            case 'RX': {
+                try {
+                    if (reg.test(arg)) {
+                        result += arg;
+                    }
+                }
+                catch (err) {
+                    return false;
+                }
+            }
+        }
+    }
+    return result;
+}
+
 function LEMpi()
 {
     return Math.PI;
@@ -209,6 +291,20 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
+
+    /* If passed a number, return that number */
+    if (str == '') return '';
+    newval = str;
+    if (LEMradix === ',') {
+        newval = str.split(',').join('.');
+    }
+    if (newval == parseFloat(newval)) {
+        if (newval.length > 0 && newval[0]==0) {
+            return newval;   // so keep 0 prefixes on numbers
+        }
+        return +newval;
+    }
+
     if (str.match(/^INSERTANS:/)) {
         suffix = 'shown';
         varName = varName.substr(10);
@@ -427,6 +523,9 @@ function LEMval(alias)
                 return value;
             }
             else {
+                if (value.length > 0 && value[0]==0) {
+                    return value;   // so keep 0 prefixes on numbers
+                }
                 return +value;  // convert it to numeric return type
             }
         }

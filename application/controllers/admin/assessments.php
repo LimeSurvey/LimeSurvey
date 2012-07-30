@@ -116,7 +116,7 @@ class Assessments extends Survey_Common_Action
 
     private function _collectGroupData($iSurveyID)
     {
-        $aData = array();		
+        $aData = array();
         $groups = Groups::model()->findAllByAttributes(array('sid' => $iSurveyID));
         foreach ($groups as $group) {
             $groupId = $group->attributes['gid'];
@@ -156,7 +156,7 @@ class Assessments extends Survey_Common_Action
                 if ($first == false) {
                     $aData['id'] = $assessmentId;
                 }
-                $assessment = Assessment::insertRecords($aData);
+                $assessment = Assessment::model()->insertRecords($aData);
                 if ($first == true) {
                     $first = false;
                     $assessmentId = $assessment->id;
@@ -177,7 +177,7 @@ class Assessments extends Survey_Common_Action
             foreach ($languages as $language)
             {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $language);
-                Assessment::updateAssessment($aid, $language, $aData);
+                Assessment::model()->updateAssessment($aid, $language, $aData);
             }
         }
     }

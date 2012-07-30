@@ -466,14 +466,14 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     $platform = Yii::app()->db->getDriverName();
     if ($platform == 'mssql' || $platform =='sqlsrv')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     }
     else {
-        $query="SELECT qa.qid, qa.attribute, qa.value
+        $query="SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
     }
 
     buildXMLFromQuery($xmlwriter,$query,'question_attributes');
@@ -663,65 +663,11 @@ function QueXMLFixedArray($array)
 * @return bool|string Text of item to skip to otherwise false if nothing to skip to
 * @author Adam Zammit <adam.zammit@acspri.org.au>
 * @since  2010-10-28
+* @TODO Correctly handle conditions in a database agnostic way
 */
 function QueXMLSkipTo($qid,$value,$cfieldname = "")
 {
-    global $iSurveyID, $quexmllang;
-    $qlang = new limesurvey_lang($quexmllang);
-
-    $zeros = "0000000000";
-
-    $Query = "SELECT q.*," . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." as globalorder
-    FROM {{questions}} as q, {{questions}} as q2, {{groups}} as g, {{groups}} as g2
-    WHERE q.parent_qid = 0
-    AND q2.parent_qid = 0
-    AND q.sid=$iSurveyID
-    AND q2.sid=$iSurveyID
-    AND q2.qid = $qid
-    AND g2.gid =q2.gid
-    AND g.gid = q.gid
-    AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." > " . concat("RIGHT(" . concat($zeros,'g2.gid') . ",10)","RIGHT(". concat($zeros,'q2.question_order') .",10)") ."
-    ORDER BY globalorder";
-
-    $QueryResult = Yii::app()->db->createCommand($Query)->query();
-
-    $nextqid="";
-    $nextorder="";
-
-    $Row = $QueryResult->read();
-    if ($Row)
-    {
-        $nextqid = $Row['qid'];
-        $nextorder = $Row['globalorder'];
-    }
-    else
-        return false;
-
-
-    $Query = "SELECT q.*
-    FROM {{questions}} as q
-    JOIN {{groups}} as g ON (g.gid = q.gid)
-    LEFT JOIN {{conditions}} as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
-    WHERE q.sid = $iSurveyID
-    AND q.parent_qid = 0
-    AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." >= $nextorder
-    AND c.cqid IS NULL
-    ORDER BY  " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)");
-
-
-    $QueryResult = Yii::app()->db->createCommand($Query)->query();
-
-    $Row = $QueryResult->read();
-    if ($Row)
-    {
-        if ($nextqid == $Row['qid'])
-            return false;
-        else
-            return $Row['title'];
-    }
-    else
-        return $qlang->gT("End");
-
+    return false;
 }
 
 /**
@@ -1518,14 +1464,14 @@ function groupGetXMLStructure($xml,$gid)
     $platform = Yii::app()->db->getDriverName();
     if ($platform == 'mssql' || $platform =='sqlsrv')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     }
     else {
-        $query="SELECT qa.qid, qa.attribute, qa.value
+        $query="SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
     }
     buildXMLFromQuery($xml,$query,'question_attributes');
 
@@ -1551,25 +1497,14 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();
 
-    if($action=='exportstructureLsrcCsvQuestion')
-    {
-        include_once(APPPATH.'/remotecontrol/lsrc.config.php');
-        //Select title as Filename and save
-        $question = Questions::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid));
-        $questionTitle = $question->title;
-        $xml->openURI('remotecontrol/'.$queDir.substr($questionTitle,0,20).".lsq");
-    }
-    else
-    {
-        header("Content-Type: text/html/force-download");
-        header("Content-Disposition: attachment; filename=$fn");
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Pragma: cache");
-        // HTTP/1.0
-        $xml->openURI('php://output');
-    }
+    header("Content-Type: text/html/force-download");
+    header("Content-Disposition: attachment; filename=$fn");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: cache");
+    // HTTP/1.0
+    $xml->openURI('php://output');
 
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
@@ -1619,14 +1554,14 @@ function questionGetXMLStructure($xml,$gid,$qid)
     $platform = Yii::app()->db->getDriverName();
     if ($platform == 'mssql' || $platform =='sqlsrv')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     }
     else {
-        $query="SELECT qa.qid, qa.attribute, qa.value
+        $query="SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
     }
     buildXMLFromQuery($xml,$query);
 

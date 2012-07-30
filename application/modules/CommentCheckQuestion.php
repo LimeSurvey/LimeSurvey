@@ -39,12 +39,10 @@ class CommentCheckQuestion extends CheckQuestion
         {
             $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
             $sSeperator = $sSeperator['seperator'];
-            $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
             $oth_checkconditionFunction = "fixnum_checkconditions";
         }
         else
         {
-            $numbersonly = '';
             $oth_checkconditionFunction = "checkconditions";
         }
 
@@ -105,8 +103,7 @@ class CommentCheckQuestion extends CheckQuestion
                     $answer_main .= CHECKED;
                 }
             }
-            $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);' "
-            . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
+            $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);if (!$(this).attr(\"checked\")) { $(\"#answer$myfname2\").val(\"\"); $checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"checkbox\");}' />\n"
             . "\t<label for=\"answer$myfname\" class=\"answertext\">\n"
             . $ansrow['question']."</label>\n";
 
@@ -124,7 +121,7 @@ class CommentCheckQuestion extends CheckQuestion
             ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT('Make a comment on your choice here:')."' value='";
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.$this->surveyid][$myfname2],ENT_QUOTES);}
             // --> START NEW FEATURE - SAVE
-            $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n</span>\n"
+            $answer_main .= "' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname2}\").value,\"$myfname2\",\"text\");}' />\n</span>\n"
             . "\t</li>\n";
             // --> END NEW FEATURE - SAVE
 
@@ -136,8 +133,8 @@ class CommentCheckQuestion extends CheckQuestion
             $myfname2 = $myfname.'comment';
             $anscount = $anscount + 2;
             $answer_main .= "\t<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
-            . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
-            $answer_main .= " onchange='$oth_checkconditionFunction(this.value, this.name, this.type)'";
+            . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+            $answer_main .= " onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type); if($.trim(this.value)==\"\") { $(\"#answer$myfname2\").val(\"\"); $checkconditionFunction(\"\",\"$myfname2\",\"text\"); }'";
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && $_SESSION['survey_'.$this->surveyid][$myfname])
             {
                 $dispVal = $_SESSION['survey_'.$this->surveyid][$myfname];
@@ -151,8 +148,9 @@ class CommentCheckQuestion extends CheckQuestion
             // --> START NEW FEATURE - SAVE
             $answer_main .= "  $callmaxanswscriptother />\n\t</label>\n</span>\n"
             . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".$clang->gT('Make a comment on your choice here:')."\t</label>\n"
-            . '
-            <input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
+            . '<input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'"'
+            . " onkeyup='$checkconditionFunction(this.value,this.name,this.type);'"
+            . ' title="'.$clang->gT('Make a comment on your choice here:').'" value="';
             // --> END NEW FEATURE - SAVE
 
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.$this->surveyid][$myfname2],ENT_QUOTES);}
@@ -248,7 +246,7 @@ class CommentCheckQuestion extends CheckQuestion
     
     public function availableAttributes($attr = false)
     {
-        $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","exclude_all_others","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
+        $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","em_validation_q","em_validation_q_tip","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
         return $attr?array_key_exists($attr,$attrs):$attrs;
     }
 
