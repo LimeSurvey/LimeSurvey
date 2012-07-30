@@ -1437,21 +1437,24 @@ class participantsaction extends Survey_Common_Action
         $filterblankemails = Yii::app()->request->getPost('filterbea');
         $overwrite = Yii::app()->request->getPost('overwrite');
         $errorinupload = "";
-        $tokenlistarray = file($sFilePath);
         $recordcount = 0;
         $mandatory = 0;
         $mincriteria = 0;
         $imported = 0;
         $dupcount = 0;
         $overwritten = 0;
-        $dupreason="nameemail";
+        $dupreason="nameemail"; //Default duplicate comparison method
         $duplicatelist = array();
         $invalidemaillist = array();
         $invalidformatlist = array();
         $invalidattribute = array();
         $invalidparticipantid = array();
-        // This allows to read file with MAC line endings too
+
+        /* Adjust system settings to read file with MAC line endings */
         @ini_set('auto_detect_line_endings', true);
+        /* Open the uploaded file into an array */
+        $tokenlistarray = file($sFilePath);
+
         // open it and trim the endings
         $separator = Yii::app()->request->getPost('seperatorused');
         $uploadcharset = Yii::app()->request->getPost('characterset');
