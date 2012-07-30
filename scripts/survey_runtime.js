@@ -588,6 +588,7 @@ function multi_set(ids,_radix)
 	//match for total
 	var _match_total = new RegExp('total');
     var radix = _radix; // comma, period, X (for not using numbers only)
+    var numRegex = new RegExp('[^-' + radix + '0-9]','g');
 	//main function (obj)
 	//id = wrapper id
 	function multi_total(id)
@@ -647,8 +648,7 @@ function multi_set(ids,_radix)
 								//add it to the array @ counter
 								_bits[_counter].push(_tdin);
 								//set key board actions
-								_tdin.onkeydown = _in_key;
-								_tdin.onchange = calc;
+								_tdin.onkeyup = calc;
 								//check for total and grand total
 								if(_td[_a].className && _td[_a].className.match(_match_total,'ig'))
 								{
@@ -738,7 +738,7 @@ function multi_set(ids,_radix)
 			{
 				var addaclass=!_bits[id][i].getAttribute(ie ? 'className' : 'class') ? '' : _bits[id][i].getAttribute(ie ? 'className' : 'class') + ' ';
 				_bits[id][i].setAttribute((ie ? 'className' : 'class'), addaclass + 'horo_' + id);
-				_bits[id][i].onChange = calc;
+				_bits[id][i].onkeyup = calc;
 				if(i == (l - 1))
 				{
 					_bits[id][i].value = round(qt,12)
@@ -769,7 +769,7 @@ function multi_set(ids,_radix)
 			{
 				var addaclass=!_bits[i][id].getAttribute(ie ? 'className' : 'class') ? '' : _bits[i][id].getAttribute(ie ? 'className' : 'class') + ' ';
 				_bits[i][id].setAttribute((ie ? 'className' : 'class'), addaclass + 'vert_' + id);
-				_bits[i][id].onchange = calc;
+				_bits[i][id].onkeyup = calc;
 				if(i == (l - 1))
 				{
 					_bits[i][id].value = round(qt,12);
@@ -797,12 +797,21 @@ function multi_set(ids,_radix)
 			var _id=el.getAttribute(ie ? 'className' : 'class');
 
             // eliminate bad numbers
-            _aval=el.value;
+            _aval=new String(el.value);
+            if (radix!=='X') {
+                _aval=_aval.replace(numRegex,'');
+            }
             if (radix===',') {
                 _aval = _aval.split(',').join('.');
             }
-            if (radix!=='X' && _aval != parseFloat(_aval)) {
-                el.value = "";
+            if (radix!=='X' && _aval != '-' && _aval != '.' && _aval != '-.' && _aval != parseFloat(_aval)) {
+                _aval = "";
+            }
+            if (radix===',') {
+                el.value = _aval.split('.').join(',');
+            }
+            else if (radix!=='X') {
+                el.value = _aval;
             }
 
 			//vert_[id] horo_[id] in class trigger vert or horo calc on row[id]
@@ -910,60 +919,6 @@ function multi_set(ids,_radix)
 		{
 			return(false);
 		};
-		//limit to numbers and .
-		function _in_key(e)
-		{
-			e = e || window.event;
-			//alert(e.keyCode);
-			switch(e.keyCode)
-			{
-				case 8:
-				case 9:
-				case 48:
-				case 49:
-				case 50:
-				case 51:
-				case 52:
-				case 53:
-				case 54:
-				case 55:
-				case 56:
-				case 57:
-				case 190:
-				case 45:
-				case 35:
-				case 40:
-				case 34:
-				case 37:
-				case 12:
-				case 39:
-				case 36:
-				case 38:
-				case 33:
-				case 46:
-				case 96:
-				case 97:
-				case 98:
-				case 99:
-				case 100:
-				case 101:
-				case 102:
-				case 103:
-				case 104:
-				case 105:
-				case 110:
-				case 109:
-                case 189:
-                case 188:
-                    if (radix===',' && e.keyCode == 190) { return false; }
-                    if (radix==='.' && e.keyCode == 188) { return false; }
-					return(e.keyCode);
-				default:
-				//alert(e.keyCode);
-					return(false);
-					break;
-			}
-		}
 	};
 	//set up the dom
 	//alert('multi called called value ' + ids);
@@ -1020,187 +975,3 @@ function maxlengthtextarea(){
         }
     });
 }
-
-
-/* DRAG N DROP RANKING QUESTIONS */
-// @param setItemssameSize, Boolean, whether to have items the same size or not
-function readyRankingQuestion(qID, maxAnswer, conditionFunction, setItemsSameSize) { 
-	// Set up the connected sortable (the drag and drop using jquery ui
-	var sortable1 = '#sortable1'+qID+'';
-	var sortable2 = '#sortable2'+qID+'';
-	var defaultPlaceholderHeight = 0;
-			
-	$(sortable1+', '+ sortable2).sortable({ 			
-		connectWith: '.connectedSortable'+qID+'',
-		placeholder: 'ui-sortable-placeholder',
-		helper: function( event, element ) { 
-			return element.clone().addClass("ui-sortable-helper");
-		} ,
-		items: '.state-sorted',
-		revert: 50,
-		stop: function(event, ui) {  			
-			refreshAndUpdateRankingQuestion(qID, conditionFunction);
-			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
-		} ,
-		create: function(event, ui) { 
-			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
-			if (setItemsSameSize) {defaultPlaceholderHeight = setSameHeightForRankingChoices(qID);}
-		} ,
-		start: function(event, ui) { 
-			//make sure the background is displayed correctly
-			ui.placeholder.height(ui.item.height());
-			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
-		} ,	
-		change: function(event, ui) {
-			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
-		} ,
-		forcePlaceholderSize: true,
-		scrollSensitivity: 40,
-		tolerance: 'pointer'
-	} ).disableSelection();
-	
-	
-	// enforce maximum answers intuitively
-	$(sortable1 + ' li').mousedown(function(){  
-        // Check number of elements already present in every possible destination (namely sortable2)
-	    $(sortable2).not($(this).parent()).each(function(){  // somtimes sortable1 li is already in sortable2 due to jQuery lack of updating DOM
-	    	$destination = $(this);
-	    	$destinationUI = $(this).prev('.DDRbackground');
-			// disable possible destinations if they're already maxed out
-	        if($destination.find('.ui-state-default').length >= maxAnswer){  
-	            $destination.sortable('disable');
-	            $destinationUI.addClass('dragDropRankMaxedOut');
-	        }  else { 
-	            $destination.sortable('enable');
-	            $destinationUI.removeClass('dragDropRankMaxedOut');
-	        } 
-	    } );
-	} );
-	
-	// Allow users to double click to move to selections from list to list
-	$(sortable1 +' li').live('dblclick', function() { 
-		if($(sortable2+' .ui-state-default').length == maxAnswer) { 
-			$(sortable2).prev('.DDRbackground').addClass('dragDropRankMaxedOut');
-			return false;
-		} 
-		else { 
-			$(this).appendTo(sortable2);
-			refreshAndUpdateRankingQuestion(qID, conditionFunction);
-			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
-		} 
-	} );
-	$(sortable2 +' li').live('dblclick', function() { 
-		$(this).appendTo(sortable1);
-		refreshAndUpdateRankingQuestion(qID, conditionFunction);
-		refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
-	} );
-} 
-
-/* eliminate bias and make all options the same height */
-function setSameHeightForRankingChoices(qID) {
-	var biggestHeight = 0;
-	var sortable1 = '#sortable1'+qID+'';
-	var sortable2 = '#sortable2'+qID+'';
-	
-	$(sortable1 + '  li,' + sortable2 + '  li' ).each(function(index) { 
-		// could be more efficient, but JS is pretty fast now, todo
-		var sNumberPrefix = "<span class='DDRnumberprefix'>"+0+"</span>";
-		$(this).prepend(sNumberPrefix);
-		if ($(this).height()>biggestHeight) biggestHeight = $(this).height();
-		$(this).children('.DDRnumberprefix').remove();
-	});
-	$(sortable1 + '  li,' + sortable2 + '  li' ).height(biggestHeight);
-	return biggestHeight;
-}
-
-	
-/* update background of drag/drop to match */
-function refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight) {  
-	var sortable1 = '#sortable1'+qID+'';
-	var sortable2 = '#sortable2'+qID+'';
-	// go through each background li and give each the same text as the item above it
-	$('#question' + qID + ' .DDRbackground li').each(function(index) { 
-		
-		//(object = any visible placeholder or original that's not a helper )
-		
-		var sNot = ".ui-sortable-helper";
-		var $object = $(sortable2+' li:visible').not(sNot).eq(index);
-		
-		if ($object.length!=0) {  // if there is an object
-			//$(this).text($object.text());
-			$(this).height($object.height());
-		}  else { 
-			//$(this).text(index+1+'.');
-			//$(this).text('');
-			if (defaultPlaceholderHeight==0) {	
-				//no default phheight
-				$(this).height('auto');
-			} else {
-				$(this).height(defaultPlaceholderHeight);
-			}
-		} 
-	} );
-	
-	
-	$(sortable2+', '+sortable1).children('li:visible').children('.DDRnumberprefix').remove();	
-		
-	$(sortable2+', '+sortable1).children('li:visible').not(sortable1+' li').not('.ui-sortable-helper').each(function(index) {
-		// the ones that should have an index
-		var sNumberPrefix = "<span class='DDRnumberprefix'>"+(index+1)+"</span>";
-		if ($(this).hasClass('ui-sortable-placeholder')) {
-			// placeholder shouldn't have prefix, and helper should
-			// $(this).siblings('.ui-sortable-helper').prepend(sNumberPrefix);
-			// helper = $(ui.helper)
-			$(ui.helper).prepend(sNumberPrefix);
-			if (defaultPlaceholderHeight==0) {	
-				$(ui.helper).height('auto');
-				$(this).height($(ui.helper).height());
-			}
-		} else {
-			$(this).prepend(sNumberPrefix);
-			if (defaultPlaceholderHeight==0) {	
-				$(this).height('auto');
-			}
-		}
-		
-	});
-	
-} 
-
-
-/* resets displays, refreshes sortables, and updates input data */
-function refreshAndUpdateRankingQuestion(qID, conditionFunction) { 
-	var sortable1 = '#sortable1'+qID+'';
-	var sortable2 = '#sortable2'+qID+'';
-	$(sortable1).sortable('refresh').sortable('enable');
-	$(sortable2).sortable('refresh').sortable('enable').prev('.DDRbackground').removeClass('dragDropRankMaxedOut');
-	updateDragDropRank(qID, conditionFunction);
-} 
-
-function updateDragDropRank(qID, conditionFunction)
-{ 
-	var sortable1 = '#sortable1'+qID+'';
-	var sortable2 = '#sortable2'+qID+'';
-	var rankedIDs = [];
-	$(sortable2+' li').each(function(index) { 
-		// Get id of ranked item
-		var liID = $(this).attr("id");
-		liIDArray = liID.split('_');	
-		// Save to an array (slot number => chosen value)
-		rankedIDs[rankedIDs.length] = liIDArray[1];
-	} );
-
-	$('#question'+qID+' .hiddenRankingInputs').children('input[id^="fvalue_"]').each(function(index) { 
-		// cycle through each hidden input field, each of which correspond with a possible ranking
-		if (rankedIDs.length > index) {  // if there is a ranking for this field
-			$(this).val(rankedIDs[index]);
-		}  else { 
-			$(this).val('');
-		} 
-		
-  	} );
-  	
-  	// check conditions, show other questions
-	conditionFunction();
-		
-} 

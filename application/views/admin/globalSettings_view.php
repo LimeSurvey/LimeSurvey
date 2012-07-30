@@ -178,11 +178,11 @@
                 <?php $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); ?>
                 <li><label for='timeadjust'><?php $clang->eT("Time difference (in hours):"); ?></label>
                     <span><input type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust'))); ?>" />
-                        <?php $clang->eT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time :").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
+                        <?php echo $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time :").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                     </span></li>
 
-                <li><label for='sess_expiration'><?php $clang->eT("Session lifetime (seconds):"); ?></label>
-                    <input type='text' size='10' id='sess_expiration' name='sess_expiration' value="<?php echo htmlspecialchars(getGlobalSetting('sess_expiration')); ?>" /></li>
+                <li><label for='iSessionExpirationTime'><?php $clang->eT("Session lifetime (seconds):"); ?></label>
+                    <input type='text' size='10' id='iSessionExpirationTime' name='iSessionExpirationTime' value="<?php echo htmlspecialchars(getGlobalSetting('iSessionExpirationTime')); ?>" /></li>
                 <li><label for='ipInfoDbAPIKey'><?php $clang->eT("IP Info DB API Key:"); ?></label>
                     <input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey')); ?>" /></li>
                 <li><label for='googleMapsAPIKey'><?php $clang->eT("Google Maps API key:"); ?></label>
@@ -471,15 +471,18 @@
         </div>
         <div id='interfaces'>
             <ul>
-                <?php $enableXMLRPCInterface=getGlobalSetting('enableXMLRPCInterface'); ?>
-                <li><label for='enableXMLRPCInterface'><?php $clang->eT("XML-RPC interface enabled:"); ?></label>
-                    <select id='enableXMLRPCInterface' name='enableXMLRPCInterface'>
-                        <option value='1'
-                            <?php if ($enableXMLRPCInterface == true) { echo " selected='selected'";}?>
-                            ><?php $clang->eT("Yes"); ?></option>
-                        <option value='0'
-                            <?php if ($enableXMLRPCInterface == false) { echo " selected='selected'";}?>
-                            ><?php $clang->eT("No"); ?></option>
+                <?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
+                <li><label for='RPCInterface'><?php $clang->eT("RPC interface enabled:"); ?></label>
+                    <select id='RPCInterface' name='RPCInterface'>
+                        <option value='off'
+                            <?php if ($RPCInterface == 'off') { echo " selected='selected'";}?>
+                            ><?php $clang->eT("Off"); ?></option>
+                        <option value='json'
+                            <?php if ($RPCInterface == 'json') { echo " selected='selected'";}?>
+                            ><?php $clang->eT("JSON-RPC"); ?></option>
+                        <option value='xml'
+                            <?php if ($RPCInterface == 'xml') { echo " selected='selected'";}?>
+                            ><?php $clang->eT("XML-RPC"); ?></option>
                     </select></li>
             </ul>
         </div>

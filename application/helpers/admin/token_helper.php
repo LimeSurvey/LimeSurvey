@@ -23,20 +23,21 @@
 */
 function createTokenTable($iSurveyID, $aAttributeFields=array())
 {
+    Yii::app()->loadHelper('database');
     $fields = array(
     'tid' => 'pk',
-    'participant_id' => 'VARCHAR(50)',
-    'firstname' => 'VARCHAR(40)',
-    'lastname' => 'VARCHAR(40)',
+    'participant_id' => 'varchar(50)',
+    'firstname' => 'varchar(40)',
+    'lastname' => 'varchar(40)',
     'email' => 'text',
     'emailstatus' => 'text',
-    'token' => 'VARCHAR(35)',
-    'language' => 'VARCHAR(25)',
-    'blacklisted' => 'CHAR(17)',
-    'sent' => "VARCHAR(17) DEFAULT 'N'",
-    'remindersent' => "VARCHAR(17) DEFAULT 'N'",
+    'token' => 'varchar(35)',
+    'language' => 'varchar(25)',
+    'blacklisted' => 'varchar(17)',
+    'sent' => "varchar(17) DEFAULT 'N'",
+    'remindersent' => "varchar(17) DEFAULT 'N'",
     'remindercount' => 'integer DEFAULT 0',
-    'completed' => "VARCHAR(17) DEFAULT 'N'",
+    'completed' => "varchar(17) DEFAULT 'N'",
     'usesleft' => 'integer DEFAULT 1',
     'validfrom' => 'datetime',
     'validuntil' => 'datetime',
@@ -47,7 +48,7 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
         $fields[$sAttributeField]='string';
     }
     try{
-        Yii::app()->db->createCommand()->createTable("{{tokens_".intval($iSurveyID)."}}", $fields);
+        createTable("{{tokens_".intval($iSurveyID)."}}", $fields);
         return true;
     } catch(Exception $e) {
         return false;

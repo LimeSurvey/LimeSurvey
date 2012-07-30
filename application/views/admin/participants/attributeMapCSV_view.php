@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl') . "admin/default/adminstyle.css" ?>" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl') . "admin/default/attributeMapCSV.css" ?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" ?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl') . "attributeMapCSV.css" ?>" />
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.js" ?>" type="text/javascript"></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery-ui.js" ?>" type="text/javascript"></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.qtip.js" ?>" type="text/javascript"></script>
@@ -53,16 +53,27 @@
                     <?php
                     foreach ($attributes as $key => $value)
                     {
-                        echo "<li id='c_" . $value['attribute_id'] . "' name='c_" . $key . "' style='margin-top: 10px;'>" . $value['attribute_name'] . "<br />&nbsp;</li>";
+                        echo "<li id='c_" . $value['attribute_id'] . "' name='c_" . $key . "'>" . $value['attribute_name'] . "<br />&nbsp;</li>";
                     }
                     ?>
                 </ul>
+            <div class='explanation'>
+                <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing token attribute values if a duplicate participant is found?") ?></label>
+                <br /><br /><?php
+                if($participant_id_exists) {
+                    $clang->eT("Duplicates will be detected using the participant_id field in this CSV file");
+                } else {
+                    $clang->eT("Duplicates will be detected by a combination of firstname, lastname and email addresses");
+                }
+
+                ?>
+            </div>
             </div>
         </ul>
     </div>
-    <p><input type="button" name="attmap" id="attmap" value="<?php $clang->eT("Continue"); ?>" />
-        <input type="button" name="attmapcancel" id="attmapcancel" value="<?php $clang->eT("Cancel") ?>" />
+    <p><input type="button" name="attmapcancel" id="attmapcancel" value="<?php $clang->eT("Cancel") ?>" />
         <input type="button" name="attreset" id="attreset" value="<?php $clang->eT("Reset") ?>" onClick="window.location.reload();" />
+        <input type="button" name="attmap" id="attmap" value="<?php $clang->eT("Continue"); ?>" />
     </p>
     <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
         <img src="<?php echo Yii::app()->getConfig('imageurl') . '/ajax-loader.gif'; ?>" alt="<?php $clang->eT('Loading...'); ?>" title="<?php $clang->eT('Loading...'); ?>" />

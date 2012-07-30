@@ -185,7 +185,7 @@
             <li><a href='#'><img src='<?php echo $sImageURL;?>responses.png' alt='<?php $clang->eT("Responses");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
                     <?php if($respstatsread) {
                             if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/");?>' >
+                            <li><a href='<?php echo $this->createUrl("admin/responses/index/surveyid/$surveyid/");?>' >
                                 <img src='<?php echo $sImageURL;?>browse_30.png' alt='' /> <?php $clang->eT("Responses & statistics");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("This survey is not active - no responses are available.","js");?>');" >

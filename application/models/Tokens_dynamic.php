@@ -80,10 +80,10 @@ class Tokens_dynamic extends LSActiveRecord
         $sid = self::$sid;
         if(Yii::app()->db->schema->getTable("{{tokens_$sid}}")){
             $data=Yii::app()->db->createCommand()
-                ->select("COUNT(*) as tkcount, 
-                            SUM(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE 0 END) as tkinvalid, 
-                            SUM(CASE WHEN (sent!='N' and sent<>'') THEN 1 ELSE 0 END) as tksent, 
-                            SUM(CASE WHEN (emailstatus = 'OptOut') THEN 1 ELSE 0 END) as tkoptout,
+                ->select("COUNT(*) as tkcount,
+                            SUM(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE 0 END) as tkinvalid,
+                            SUM(CASE WHEN (sent!='N' AND sent<>'') THEN 1 ELSE 0 END) as tksent,
+                            SUM(CASE WHEN (emailstatus LIKE 'OptOut%') THEN 1 ELSE 0 END) as tkoptout,
                             SUM(CASE WHEN (completed!='N' and completed<>'') THEN 1 ELSE 0 END) as tkcompleted
                             ")
                 ->from("{{tokens_$sid}}")
@@ -95,6 +95,34 @@ class Tokens_dynamic extends LSActiveRecord
         }
 
         return $data;
+    }
+
+    /**
+    * Checks to make sure that all required columns exist in this tokens table
+    * (some older tokens tables dont' get udated properly)
+    *
+    */
+    public function checkColumns() {
+        $sid = self::$sid;
+        $surveytable='{{tokens_'.$sid.'}}';
+        $columncheck=array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus","token","language","blacklisted","sent","remindersent","completed","usesleft","validfrom","validuntil");
+        $columns = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
+        $missingcolumns=array_diff($columncheck,$columns);
+        if(count($missingcolumns)>0) //Some columns are missing - we need to create them
+        {
+            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            setVarchar(); //Set the appropriate varchar settings according to the database
+            $sVarchar=Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
+            $columninfo=array('validfrom'=>'datetime',
+                              'validuntil'=>'datetime',
+                              'blacklisted'=>$sVarchar.'(17) NOT NULL',
+                              'participant_id'=>$sVarchar.'(50) NOT NULL',
+                              'remindercount'=>"integer DEFAULT '0'",
+                              'usesleft'=>'integer NOT NULL default 1'); //Not sure if any other fields would ever turn up here - please add if you can think of any others
+            foreach($missingcolumns as $columnname) {
+                addColumn($surveytable,$columnname,$columninfo[$columnname]);
+            }
+        }
     }
 
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
@@ -135,20 +163,18 @@ class Tokens_dynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
-
     /**
      * Creates tokens for all token records that have empty token fields and returns the number
      * of tokens created
      *
      * @param int $iSurveyID
-     * @return int number of created tokens
+     * @return array ( int number of created tokens, int number to be created tokens)
      */
     function createTokens($iSurveyID)
     {
         $tkresult = $this->selectEmptyTokens($iSurveyID);
-
         //Exit early if there are not empty tokens
-        if (count($tkresult)===0) return 0;
+        if (count($tkresult)===0) return array(0,0);
 
         //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>$iSurveyID));
@@ -159,35 +185,48 @@ class Tokens_dynamic extends LSActiveRecord
         {
             $iTokenLength = 15;
         }
-
         //Add some criteria to select only the token field
         $criteria = $this->getDbCriteria();
         $criteria->select = 'token';
-		$ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
+        $ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
 
         // select all existing tokens
         foreach ($ntresult as $tkrow)
         {
-            $existingtokens[] = $tkrow['token'];
+            $existingtokens[$tkrow['token']] = true;
         }
 
         $newtokencount = 0;
+        $invalidtokencount=0;
         foreach ($tkresult as $tkrow)
         {
             $bIsValidToken = false;
-            while ($bIsValidToken == false)
+            while ($bIsValidToken == false && $invalidtokencount<50)
             {
                 $newtoken = randomChars($iTokenLength);
-                if (!in_array($newtoken, $existingtokens)) {
-                    $existingtokens[] = $newtoken;
+                if (!isset($existingtokens[$newtoken]))
+                {
+                    $existingtokens[$newtoken] = true;
                     $bIsValidToken = true;
+                    $invalidtokencount=0;
+                }
+                else
+                {
+                    $invalidtokencount ++;
                 }
             }
-            $itresult = $this->updateToken($tkrow['tid'], $newtoken);
-            $newtokencount++;
+            if($bIsValidToken)
+            {
+                $itresult = $this->updateToken($tkrow['tid'], $newtoken);
+                $newtokencount++;
+            }
+            else
+            {
+                break;
+            }
         }
 
-        return $newtokencount;
+        return array($newtokencount,count($tkresult));
     }
 
     public function search()
@@ -222,7 +261,11 @@ class Tokens_dynamic extends LSActiveRecord
 	    $start = $limit*$page - $limit;
 	    if($condition[1]=='equal')
         {
-            $command = Yii::app()->db->createCommand()->where( ':condition_0 = :condition_2') ->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+            $command = Yii::app()->db
+                                 ->createCommand()
+                                 ->select('*')
+                                 ->from(Tokens_dynamic::tableName())
+                                 ->where( $condition[0]." = :condition2", array(':condition2'=>$condition[2]));
             if($page == 0 && $limit == 0)
               {
             $data=$command->select('*')->from(Tokens_dynamic::tableName())->queryAll();
@@ -236,20 +279,28 @@ class Tokens_dynamic extends LSActiveRecord
         else if($condition[1]=='contains')
         {
             $condition[2] = '%'.$condition[2].'%';
-            $command = Yii::app()->db->createCommand()->where(array('like',":condition_0",":condition_2"))->select('*')->from(Tokens_dynamic::tableName())->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR);
+            $command = Yii::app()->db
+                                 ->createCommand()
+                                 ->select('*')
+                                 ->from(Tokens_dynamic::tableName())
+                                 ->where(array('like',$condition[0],$condition[2]));
             if($page == 0 && $limit == 0)
               {
-            $data=$command->queryAll();
+                  $data=$command->queryAll();
               }
               else
               {
-                $data = $command->limit($limit,$start)->queryAll();
+                  $data = $command->limit($limit,$start)->queryAll();
               }
             return $data;
         }
         else if($condition[1]=='notequal')
         {
-            $command = Yii::app()->db->createCommand()->where(array('not in',":condition_0",":condition_2"))->from(Tokens_dynamic::tableName())->select('*')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR);
+            $command = Yii::app()->db
+                                 ->createCommand()
+                                 ->select('*')
+                                 ->from(Tokens_dynamic::tableName())
+                                 ->where(array('not in',$condition[0],$condition[2]));
             if($page == 0 && $limit == 0)
                   {
             $data=$command->queryAll();
@@ -263,7 +314,11 @@ class Tokens_dynamic extends LSActiveRecord
         else if($condition[1]=='notcontains')
         {
             $condition[2] = '%'.$condition[2].'%';
-            $command = Yii::app()->db->createCommand()->where(array('not like',":condition_0",":condition_2"))->from(Tokens_dynamic::tableName())->select('*')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR);
+            $command = Yii::app()->db
+                                 ->createCommand()
+                                 ->where(array('not like',$condition[0],$condition[2]))
+                                 ->from(Tokens_dynamic::tableName())
+                                 ->select('*');
             if($page == 0 && $limit == 0)
                   {
             $data=$command->queryAll();
@@ -276,7 +331,12 @@ class Tokens_dynamic extends LSActiveRecord
         }
         else if($condition[1]=='greaterthan')
         {
-            $command = Yii::app()->db->createCommand()->where(":condition_0 > :condition_2")->order("lastname", "asc")->select('*')->from(Tokens_dynamic::tableName())->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+            $command = Yii::app()->db
+                                 ->createCommand()
+                                 ->where($condition[0]." > :condition2", array(':condition2'=>$condition[2]))
+                                 ->order("lastname", "asc")
+                                 ->select('*')
+                                 ->from(Tokens_dynamic::tableName());
             if($page == 0 && $limit == 0)
                   {
             $data=$command->queryAll();
@@ -289,7 +349,12 @@ class Tokens_dynamic extends LSActiveRecord
         }
         else if($condition[1]=='lessthan')
         {
-            $command = Yii::app()->db->createCommand()->select('*')->from(Tokens_dynamic::tableName())->where(":condition_0 < :condition_2")->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+            $command = Yii::app()->db
+                                 ->createCommand()
+                                 ->where($condition[0]." < :condition2", array(':condition2'=>$condition[2]))
+                                 ->order("lastname", "asc")
+                                 ->select('*')
+                                 ->from(Tokens_dynamic::tableName());
             if($page == 0 && $limit == 0)
             {
             $data= $command->queryAll();
@@ -316,27 +381,33 @@ class Tokens_dynamic extends LSActiveRecord
                 $i+=3;
                 if($condition[1]=='equal')
                 {
-                    $command->addCondition(':condition_0 = :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+                    $command->addCondition($condition[0].' = :condition_2')
+                            ->params = array(':condition_2'=>$condition[2]);
                 }
                 else if($condition[1]=='contains')
                 {
-                    $command->addCondition(':condition_0 LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR);
+                    $command->addCondition($condition[0].' LIKE :condition_2')
+                            ->params = array(':condition_2'=>"%".$condition[2]."%");
                 }
                 else if($condition[1]=='notequal')
                 {
-                    $command->addCondition(':condition_0 NOT IN (:condition_2)')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR);
+                    $command->addCondition($condition[0].' != (:condition_2)')
+                            ->params = array(':condition_2'=>$condition[2]);
                 }
                 else if($condition[1]=='notcontains')
                 {
-                    $command->addCondition(':condition_0 NOT LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR);
+                    $command->addCondition($condition[0].' NOT LIKE :condition_2')
+                            ->params = array(':condition_2'=>"%".$condition[2]."%");
                 }
                 else if($condition[1]=='greaterthan')
                 {
-                    $command->addCondition(':condition_0 > :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+                    $command->addCondition($condition[0].' > :condition_2')
+                            ->params = array(':condition_2'=>$condition[2]);
                 }
                 else if($condition[1]=='lessthan')
                 {
-                    $command->addCondition(':condition_0 < :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
+                    $command->addCondition($condition[0].' < :condition_2')
+                            ->params = array(':condition_2'=>$condition[2]);
                 }
             }
 	        else if($condition[$i]!='')
@@ -345,66 +416,78 @@ class Tokens_dynamic extends LSActiveRecord
 	           {
                     if($condition[$i]=='and')
                     {
-						$command->addCondition(':condition_0 = :condition_2')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_INT)->bindParam(":condition_2", $condition[$i+3], PDO::PARAM_INT);
+						$command->addCondition($condition[$i+1].' = :condition_2')
+                                ->params = array(':condition_2'=>$condition[$i+3]);
                     }
                     else
                     {
-						$command->addCondition(':condition_0 = :condition_2', 'OR')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_INT)->bindParam(":condition_2", $condition[$i+3], PDO::PARAM_INT);
+                        $command->addCondition($condition[$i+1].' = :condition_2', 'OR')
+                                ->params = array(':condition_2'=>$condition[$i+3]);
                     }
 	            }
 	            else if($condition[$i+2]=='contains')
 	            {
                     if($condition[$i]=='and')
                     {
-                    	$command->addCondition(':condition_0 LIKE :condition_2')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[$i+3]."%", PDO::PARAM_STR);
+                        $command->addCondition($condition[$i+1].' LIKE :condition_2')
+                                ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
                     }
                     else
                     {
-                    	$command->addCondition(':condition_0 LIKE :condition_2', 'OR')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[$i+3]."%", PDO::PARAM_STR);
+                        $command->addCondition($condition[$i+1].' LIKE :condition_2', 'OR')
+                                ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
                     }
 	            }
 	            else if($condition[$i+2]=='notequal')
 	            {
                     if($condition[$i]=='and')
                     {
-                    	$command->addCondition(':condition_0 NOT IN (:condition_2)')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_STR)->bindParam(":condition_2", $condition[$i+3], PDO::PARAM_STR);
+                        $command->addCondition($condition[$i+1].' != :condition_2')
+                                ->params = array(':condition_2'=>$condition[$i+3]);
                     }
                     else
                     {
-                    	$command->addCondition(':condition_0 NOT IN (:condition_2)', 'OR')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_STR)->bindParam(":condition_2", $condition[$i+3], PDO::PARAM_STR);
+                        $command->addCondition($condition[$i+1].' != :condition_2', 'OR')
+                                ->params = array(':condition_2'=>$condition[$i+3]);
                     }
 	            }
 	           else if($condition[$i+2]=='notcontains')
 	            {
                     if($condition[$i]=='and')
                     {
-                    	$command->addCondition(':condition_0 NOT LIKE :condition_2')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[$i+3]."%", PDO::PARAM_STR);
+                        $command->addCondition($condition[$i+1].' NOT LIKE :condition_2')
+                                ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
                     }
                     else
                     {
-                    	$command->addCondition(':condition_0 NOT LIKE :condition_2', 'OR')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[$i+3]."%", PDO::PARAM_STR);
+                        $command->addCondition($condition[$i+1].' NOT LIKE :condition_2', 'OR')
+                                ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
                     }
 	            }
 	            else if($condition[$i+2]=='greaterthan')
 	            {
                     if($condition[$i]=='and')
                     {
-	                    $command->addCondition(':condition_0 > :condition_2')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_INT)->bindParam(":condition_2", $condition[$i+3], PDO::PARAM_INT);
+                        $command->addCondition($condition[$i+1].' > :condition_2')
+                                ->params = array(':condition_2'=>$condition[$i+3]);
                     }
                     else
                     {
-	                    $command->addCondition(':condition_0 > :condition_2', 'OR')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_INT)->bindParam(":condition_2", $condition[$i+3], PDO::PARAM_INT);
+                        $command->addCondition($condition[$i+1].' > :condition_2', 'OR')
+                                ->params = array(':condition_2'=>$condition[$i+3]);
                     }
 	            }
 	            else if($condition[$i+2]=='lessthan')
 	            {
                     if($condition[$i]=='and')
                     {
-	                    $command->addCondition(':condition_0 < :condition_2')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_INT)->bindParam(":condition_2", $condition[$i+3], PDO::PARAM_INT);
+                        $command->addCondition($condition[$i+1].' < :condition_2')
+                                ->params = array(':condition_2'=>$condition[$i+3]);
                     }
                     else
                     {
-	                    $command->addCondition(':condition_0 < :condition_2', 'OR')->bindParam(":condition_0", $condition[$i+1], PDO::PARAM_INT)->bindParam(":condition_2", $condition[$i+3], PDO::PARAM_INT);
+                        $command->addCondition($condition[$i+1].' < :condition_2', 'OR')
+                                ->params = array(':condition_2'=>$condition[$i+3]);
                     }
 	            }
 	            $i=$i+4;

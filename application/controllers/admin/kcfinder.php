@@ -46,13 +46,13 @@ class kcfinder extends Survey_Common_Action
                     $_SESSION['KCFINDER']['disabled'] = false;
                     if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
                     {
-                        $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createAbsoluteUrl("upload/surveys/{$surveyid}/");
+                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getRequest()->getHostInfo($schema).Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
                     else
                     {
-                        $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");
+                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
-                    $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/surveys/{$surveyid}/";
+                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
                 }
             }
             elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
@@ -63,31 +63,32 @@ class kcfinder extends Survey_Common_Action
                 if (Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1 && isset($labelid) && $labelid != '')
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
-                    $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/labels/{$labelid}/");
-                    $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/labels/{$labelid}/";
+                    $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";
+                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
                 }
             }
         }
 
         Yii::registerAutoloader(array($this, 'kcfinder_autoload'));
-        if (!empty($load) && file_exists(ROOT . "/scripts/admin/kcfinder/" . $load . EXT))
+        if (!empty($load) && file_exists(Yii::app()->getConfig('generalscripts')."admin/kcfinder/" . $load . EXT))
         {
-            require_once(ROOT . "/scripts/admin/kcfinder/" . $load . EXT);
+            chdir(Yii::app()->getConfig('generalscripts')."admin/kcfinder/");
+            require_once(Yii::app()->getConfig('generalscripts')."admin/kcfinder/" . $load . EXT);
         }
     }
 
     function kcfinder_autoload($class)
     {
         if ($class == "uploader")
-            require ROOT . "/scripts/admin/kcfinder/core/uploader.php";
+            require Yii::app()->getConfig('generalscripts')."kcfinder/core/uploader.php";
         elseif ($class == "browser")
-            require ROOT . "/scripts/admin/kcfinder/core/browser.php";
-        elseif (file_exists(ROOT . "/scripts/admin/kcfinder/core/types/$class.php"))
-            require ROOT . "/scripts/admin/kcfinder/core/types/$class.php";
-        elseif (file_exists(ROOT . "/scripts/admin/kcfinder/lib/class_$class.php"))
-            require ROOT . "/scripts/admin/kcfinder/lib/class_$class.php";
-        elseif (file_exists(ROOT . "/scripts/admin/kcfinder/lib/helper_$class.php"))
-            require ROOT . "/scripts/admin/kcfinder/lib/helper_$class.php";
+            require Yii::app()->getConfig('generalscripts')."admin/kcfinder/core/browser.php";
+        elseif (file_exists(Yii::app()->getConfig('generalscripts')."admin/kcfinder/core/types/$class.php"))
+            require Yii::app()->getConfig('generalscripts')."admin/kcfinder/core/types/$class.php";
+        elseif (file_exists(Yii::app()->getConfig('generalscripts')."admin/kcfinder/lib/class_$class.php"))
+            require Yii::app()->getConfig('generalscripts')."admin/kcfinder/lib/class_$class.php";
+        elseif (file_exists(Yii::app()->getConfig('generalscripts')."admin/kcfinder/lib/helper_$class.php"))
+            require Yii::app()->getConfig('generalscripts')."admin/kcfinder/lib/helper_$class.php";
     }
 
     function css()
@@ -335,8 +336,8 @@ class kcfinder extends Survey_Common_Action
         $input = new input();
         if (!isset($input->get['lng']) || ($input->get['lng'] == 'en'))
             die;
-        $file = ROOT . "/scripts/admin/kcfinder/lang/" . $input->get['lng'] . ".php";
-        $files = glob(ROOT . "/scripts/admin/kcfinder/lang/*.php");
+        $file = Yii::app()->getConfig('generalscripts')."admin/kcfinder/lang/" . $input->get['lng'] . ".php";
+        $files = glob(Yii::app()->getConfig('generalscripts')."admin/kcfinder/lang/*.php");
         if (!in_array($file, $files))
             die;
         $mtime = @filemtime($file);

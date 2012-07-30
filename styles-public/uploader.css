@@ -40,7 +40,7 @@ img {
     margin: 0.5em 0.4em 0.5em 0;
     overflow: visible;
     padding: 0.6em 0.6em 0.6em 0.6em;
-    width: 100px;
+    min-width: 100px;
     text-align: center;
 }
 

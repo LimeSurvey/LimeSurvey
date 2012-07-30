@@ -56,6 +56,18 @@ class Participant_attribute extends CActiveRecord
     {
         return self::model()->findAllByAttributes(array('participant_id' => $participantid));
     }
+    function updateParticipantAttributeValue($data)
+    {
+        $query = Yii::app()->db->createCommand()->select('*')->where('participant_id="'.$data['participant_id'].'" AND attribute_id = '.$data['attribute_id'])->from('{{participant_attribute}}')->queryAll();
+        if (count($query) > 0)
+        {
+            Yii::app()->db->createCommand()
+                  ->update('{{participant_attribute}}', $data, 'participant_id = "'.$data['participant_id'].'" AND attribute_id = '.$data['attribute_id']);
+        } else {
+            Yii::app()->db->createCommand()
+                  ->insert('{{participant_attribute}}', $data);
+        }
+    }
 
 }
 

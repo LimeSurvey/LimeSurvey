@@ -1,8 +1,8 @@
 <?php
 
 /** Russian localization file for KCFinder
-  * author: Dark Preacher
-  * E-mail: dark@darklab.ru
+	* author: Dark Preacher
+	* E-mail: dark@darklab.ru
   */
 
 $lang = array(
@@ -237,6 +237,22 @@ $lang = array(
     "Type" => "Тип",
     "Select Thumbnails" => "Выбрать миниатюры",
     "Download files" => "Скачать файлы",
+
+    // SINCE 2.4
+
+    "Checking for new version..." => "Проверяем наличие обновлений...",
+    "Unable to connect!" => "Невозможно подключиться!",
+    "Download version {version} now!" => "Скачать версию {version} сейчас!",
+    "KCFinder is up to date!" => "Вы используете последнюю версию KCFinder'а!",
+    "Licenses:" => "Лицензии:",
+    "Attention" => "Внимание",
+    "Question" => "Вопрос",
+    "Yes" => "Да",
+    "No" => "Нет",
+
+    // SINCE 2.41
+
+    "You cannot rename the extension of files!" => "Вы не можете изменять расширения файлов!",
 );
 
 ?>

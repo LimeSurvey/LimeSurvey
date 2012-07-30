@@ -6,9 +6,10 @@
     var strCantDeleteLastAnswer='<?php $clang->eT('You cannot delete the last subquestion.','js'); ?>';
     var lsbrowsertitle='<?php $clang->eT('Label set browser','js'); ?>';
     var quickaddtitle='<?php $clang->eT('Quick-add subquestions','js'); ?>';
-    var duplicateanswercode='<?php $clang->eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
+    var duplicatesubquestioncode='<?php $clang->eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
     var strNoLabelSet='<?php $clang->eT('There are no label sets which match the survey default language','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
+    var otherisreserved='<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>';
     var sImageURL ='<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
     var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
@@ -25,7 +26,7 @@
 <div class='header ui-widget-header'>
     <?php $clang->eT("Edit subquestions"); ?>
 </div>
-<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='<?php echo $this->createUrl("admin/database"); ?>' onsubmit="return codeCheck('code_',<?php echo $maxsortorder; ?>,'<?php $clang->eT("Error: You are trying to use duplicate answer codes.",'js'); ?>','<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>');">
+<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='<?php echo $this->createUrl("admin/database"); ?>'>
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
     <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
@@ -103,12 +104,12 @@
 
                                         <?php if ($activated == 'Y' ) // if activated
                                             { ?>
-                                            &nbsp;</td><td><input type='hidden' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='5' size='5'
+                                            &nbsp;</td><td><input type='hidden' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='5'
                                                 /><?php echo $row->title; ?>
                                             <?php }
                                             elseif ($activated != 'Y' && $first) // If survey is decactivated
                                             { ?>
-                                            <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" /><input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='5' size='5'
+                                            <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" /><input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='5'
                                                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;} " />
 
                                             <?php }

@@ -41,8 +41,21 @@ $(document).ready(function() {
         }
     });
 
-    jQuery('#attributeControl').jqGrid('navGrid','#pager', {add:true, del:true, edit:true}, {width:400}, {width:400, reloadAfterSubmit: false,
-            afterSubmit: function (response) { return [true, '', response.responseText]; }}, {}, {multipleSearch:true, width:600});
+    jQuery('#attributeControl').jqGrid('navGrid',
+                                       '#pager',
+                                       {add:true, del:true, edit:true},
+                                       {closeAfterAdd: true
+                                       }, //Add options
+                                       {    width:400,
+                                            reloadAfterSubmit: true,
+                                            afterSubmit: function (response) {
+                                                return [true, '', response.responseText];
+                                            }
+                                       }, //Del options
+                                       {}, //Edit options
+                                       {multipleSearch:true, width:600},
+                                       {closeAfterAdd:true}
+                                      );
 
 });
 
@@ -63,5 +76,16 @@ function ajaxSave(rowid) {
     {
         state = "FALSE";
     }
-    $.post(editAttributeUrl, { id: rowid, visible: state, oper : 'edit' } );
+    $.post(editAttributeUrl, {
+        id: rowid,
+        visible: state,
+        oper : 'edit'
+        },
+        function (data) {
+            $("p#flashmessagetext").html(data);
+            $("#flashinfo").css("display", "");
+            $("#flashinfo").css("opacity", 0);
+            $("#flashinfo").animate({opacity: 1.0}, 1500).fadeOut("slow");
+        }
+    );
 }

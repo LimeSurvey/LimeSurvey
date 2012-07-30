@@ -111,7 +111,9 @@ else {echo "<tr class='evenrow'>\n";} ?>
 	    <ul><li><label for='name_<?php echo $assessmentlang;?>'><?php $clang->eT("Heading");?>:</label>
 	    <input type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/></li>
 	    <li><label for='assessmentmessage_<?php echo $assessmentlang;?>'><?php $clang->eT("Message");?>:</label>
-	    <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea></li>
+	    <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea>
+        <?php echo getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
+        </li>
         <li style="text-align:center;"><input type='submit' value='<?php $clang->eT("Save");?>'/></li></ul>
 	    </div>
     <?php } ?>
@@ -123,7 +125,5 @@ else {echo "<tr class='evenrow'>\n";} ?>
     <input type='hidden' name='id' value='<?php echo $editId;?>' />
     </div>
     </form>
-    <?php foreach ($assessmentlangs as $assessmentlang) {
-	    echo getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,null,$action);
-    }
+    <?php 
 } ?>

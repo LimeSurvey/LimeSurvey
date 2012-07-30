@@ -306,15 +306,13 @@ $config['showsgqacode'] =  false;
 
 /**
 *  PDF Export Settings
-*  This feature configures PDF export for Print Answers
-*  The PDF export is totally experimental. The output is mostly ugly.
-*  At this point no support can be given - if you want to help to fix it please get in touch with us
+*  This feature configures PDF export for Export Answers
 */
 
-//$config['pdfdefaultfont'] = 'freemono';              //Default font for the pdf Export
-//$config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
+$config['pdfdefaultfont'] = 'freemono';              //Default font for the pdf Export
+$config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
-//$config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
+$config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 
 
 
@@ -476,13 +474,19 @@ $config['ckeditexpandtoolbar']     = true;
 $config['restrictToLanguages'] = '';
 
 /**
-* This parameter enables/disables the XML-RPC interface
-* Set 1 to enable and 0 to disable
+* This parameter enables/disables the RPC interface
+* Set to 'json' (for JSON-RPC) )or 'xml' (for XML-RPC) to enable and 'off' to disable
+* @var string
+*/
+$config['RPCInterface'] = 'off';
+
+
+/**
+* This parameter sets the default session expiration time in seconds
+* Default is 8 hours
 * @var integer
 */
-$config['enableXMLRPCInterface'] = 0;
-
-
+$config['iSessionExpirationTime'] = 28800;
 
 // === Advanced Setup
 // The following parameters need information from config.php

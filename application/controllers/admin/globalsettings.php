@@ -58,7 +58,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
 
         //save refurl from where global settings screen is called!
-        $refurl = CHttpRequest::getUrlReferrer();
+        $refurl = Yii::app()->getRequest()->getUrlReferrer();
         Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
 
         $data['clang'] = $this->getController()->lang;
@@ -154,16 +154,16 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('repeatheadings', $repeatheadingstemp);
 
         setGlobalSetting('maxemails', sanitize_int($maxemails));
-        $iSessionExpirationTime = (int)($_POST['sess_expiration']);
+        $iSessionExpirationTime = (int)($_POST['iSessionExpirationTime']);
         if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 3600;
-        setGlobalSetting('sess_expiration', $iSessionExpirationTime);
+        setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
         setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);
         setGlobalSetting('googleanalyticsapikey',$_POST['googleanalyticsapikey']);
         setGlobalSetting('googletranslateapikey',$_POST['googletranslateapikey']);
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
         setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
-        setGlobalSetting('enableXMLRPCInterface', $_POST['enableXMLRPCInterface']);
+        setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
         $savetime = trim(strip_tags((float)$_POST['timeadjust']) . ' hours'); //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;
@@ -174,7 +174,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");
 
         $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-        if($url){CController::redirect($url);}
+        if($url){Yii::app()->getController()->redirect($url);}
     }
 
     private function _checkSettings()

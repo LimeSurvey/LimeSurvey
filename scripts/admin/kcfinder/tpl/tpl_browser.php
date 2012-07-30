@@ -12,6 +12,7 @@ $('body').noContext();
 <div id="resizer"></div>
 <div id="shadow"></div>
 <div id="dialog"></div>
+<div id="alert"></div>
 <div id="clipboard"></div>
 <div id="all">
 <div id="left">

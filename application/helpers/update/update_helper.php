@@ -55,7 +55,7 @@ function ShowDBUpgradeNotice() {
     ."<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->db->tablePrefix . "</li>"
     ."<li><b>" .$clang->gT('Site name') . ":</b> " . Yii::app()->getConfig("sitename") . "</li>"
     ."<li><b>" .$clang->gT('Root URL') . ":</b> " . Yii::app()->getController()->createUrl('') . "</li>"
-    .'</ul>'
+    .'</ul><br/>'
     ."<p>"
     ."<a href='".Yii::app()->getController()->createUrl("admin/update/db/continue/yes")."'>" . $clang->gT('Click here to continue') . "</a>"
     ."</p>"

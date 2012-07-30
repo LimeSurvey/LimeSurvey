@@ -112,10 +112,6 @@ class question extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
 
-        $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
-        $aData['display']['menu_bars']['gid_action'] = 'editdefaultvalues';
-        $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
-
         $clang = $this->getController()->lang;
 
         Yii::app()->loadHelper('surveytranslator');
@@ -172,8 +168,7 @@ class question extends Survey_Common_Action
                         ));
 
                         $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
-                        $langopts[$language][$questionrow['type']]['Ydefaultvalue'] =
-                                $defaultvalue == null ? '' : $defaultvalue->defaultvalue;
+                        $langopts[$language][$questionrow['type']]['Ydefaultvalue'] = $defaultvalue;
                     }
                 }
             }
@@ -218,6 +213,18 @@ class question extends Survey_Common_Action
                     }
                 }
             }
+            if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
+            $qtproperties[$questionrow['type']]['subquestions'] == 0)
+            {
+                $defaultvalue = Defaultvalues::model()->findByAttributes(array(
+                'specialtype' => '',
+                'qid' => $qid,
+                'scale_id' => 0,
+                'language' => $language
+                ));
+                $langopts[$language][$questionrow['type']][0] = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
+            }
+
         }
 
         $aData = array(
@@ -230,6 +237,8 @@ class question extends Survey_Common_Action
             'qtproperties' => $qtproperties,
             'baselang' => $baselang,
         );
+        $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
+        $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
 
         $this->_renderWrappedTemplate('survey/Question', 'editdefaultvalues_view', $aData);
     }
@@ -1080,20 +1089,31 @@ class question extends Survey_Common_Action
             <script type='text/javascript'>
             <!--
             LEMradix='$radix';
-            function fixnum_checkconditions(value, name, type, evt_type)
+            var numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
+            var intRegex = new RegExp('[^-0-9]','g');
+            function fixnum_checkconditions(value, name, type, evt_type, intonly)
             {
-                newval = value;
+                newval = new String(value);
+                if (typeof intonly !=='undefined' && intonly==1) {
+                    newval = newval.replace(intRegex,'');
+                }
+                else {
+                    newval = newval.replace(numRegex,'');
+                }
                 if (LEMradix === ',') {
-                    newval = new String(value);
                     newval = newval.split(',').join('.');
                 }
-                if (newval != parseFloat(newval)) {
+                if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {
                     newval = '';
-                    if (name.match(/other$/)) {
-                        $('#answer'+name+'text').val('');
-                    }
-                    $('#answer'+name).val('');
                 }
+                displayVal = newval;
+                if (LEMradix === ',') {
+                    displayVal = displayVal.split('.').join(',');
+                }
+                if (name.match(/other$/)) {
+                    $('#answer'+name+'text').val(displayVal);
+                }
+                $('#answer'+name).val(displayVal);
 
                 if (typeof evt_type === 'undefined')
                 {

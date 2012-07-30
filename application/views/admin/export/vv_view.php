@@ -2,19 +2,19 @@
 <div class='header ui-widget-header'><?php $clang->eT("Export a VV survey file");?></div>
 <ul>
 <li>
-<label for='sid'><?php $clang->eT("Export Survey");?>:</label>
+<label for='sid'><?php $clang->eT("Export survey");?>:</label>
 <input type='text' size='10' value='<?php echo $surveyid;?>' id='sid' name='sid' readonly='readonly' />
 </li>
 <li>
- <label for='filterinc'><?php $clang->eT("Export");?>:</label>
- <select name='filterinc' id='filterinc'>
-  <option value='filter' <?php echo $selecthide;?>><?php $clang->eT("Completed responses only");?></option>
-  <option value='show' <?php echo $selectshow;?>><?php $clang->eT("All responses");?></option>
+ <label for='completionstate'><?php $clang->eT("Export");?>:</label>
+ <select name='completionstate' id='completionstate'>
+  <option value='complete' <?php echo $selecthide;?>><?php $clang->eT("Completed responses only");?></option>
+  <option value='all' <?php echo $selectshow;?>><?php $clang->eT("All responses");?></option>
   <option value='incomplete' <?php echo $selectinc;?>><?php $clang->eT("Incomplete responses only");?></option>
  </select>
 </li>
 <li>
- <label for='extension'><?php $clang->eT("File Extension");?>: </label>
+ <label for='extension'><?php $clang->eT("File extension");?>: </label>
  <input type='text' id='extension' name='extension' size='3' value='csv' /><span style='font-size: 7pt'>*</span>
 </li>
 </ul>

@@ -21,36 +21,16 @@ function db_upgrade_all($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $usertemplaterootdir, $standardtemplaterootdir;
+    Yii::app()->loadHelper('database');
+
     $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
     $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     $clang = Yii::app()->lang;
     echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $clang->gT('Please be patient...')."<br /><br />\n";
 
-    $sDBDriverName=Yii::app()->db->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-
-    // Special customization because Yii is too limited to handle a varchar field of a length other than 255 in a cross-DB compatible way
-    // see http://www.yiiframework.com/forum/index.php/topic/32289-cross-db-compatible-varchar-field-length-definitions/
-    // and http://github.com/yiisoft/yii/issues/765
-    if ($sDBDriverName=='pgsql')
-    {
-        Yii::app()->setConfig('char',$sChar='character');
-        Yii::app()->setConfig('varchar',$sVarchar='character varying');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='serial');
-    }
-    elseif ($sDBDriverName=='mssql')
-    {
-        Yii::app()->setConfig('char',$sChar='char');
-        Yii::app()->setConfig('varchar',$sVarchar='varchar');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='integer NOT NULL IDENTITY (1,1)');
-    }
-    else
-    {
-        Yii::app()->setConfig('char',$sChar='char');
-        Yii::app()->setConfig('varchar',$sVarchar='varchar');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='int(11) NOT NULL AUTO_INCREMENT');
-    }
+    $sDBDriverName=setsDBDriverName();
+    setVarchar($sDBDriverName);
+    $sVarchar = Yii::app()->getConfig('varchar');
 
     if ($oldversion < 111)
     {
@@ -998,8 +978,24 @@ function db_upgrade_all($oldversion) {
         LimeExpressionManager::UpgradeConditionsToRelevance();
         Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
     }
-
     if ($oldversion < 159)
+    {
+        alterColumn('{{failed_login_attempts}}', 'ip', "{$sVarchar}(40)",false);
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
+    }
+
+    if ($oldversion < 160)
+    {
+        alterLanguageCode('it','it-informal');
+        alterLanguageCode('it-formal','it');
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
+    }
+    if ($oldversion < 161)
+    {
+        addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
+        addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
+    }
+    if ($oldversion < 162)
     {
         Yii::app()->db->createCommand()->createTable('{{question_types}}',array(
         'tid' => 'pk',
@@ -1024,15 +1020,15 @@ function db_upgrade_all($oldversion) {
 
         Yii::app()->db->createCommand()->addColumn('{{questions}}','tid',"integer NOT NULL DEFAULT '0' AFTER `gid`");
 
-        upgradeSurveys159();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
+        upgradeSurveys162();
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
     }
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
 }
 
-function upgradeSurveys159()
+function upgradeSurveys162()
 {
     $types = array(array(1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),array(2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),array(3, 3, 1, 'List (radio)', 'List', 'L', 'Y'),array(4, 4, 1, 'List with comment', 'CommentList', 'O', 'Y'),array(5, 1, 2, 'Array', 'RadioArray', 'F', 'Y'),array(6, 2, 2, 'Array (10 point choice)', 'TenRadioArray', 'B', 'Y'),array(7, 3, 2, 'Array (5 point choice)', 'FiveRadioArray', 'A', 'Y'),array(8, 4, 2, 'Array (Increase/Same/Decrease)', 'IDRadioArray', 'E', 'Y'),array(9, 5, 2, 'Array (Numbers)', 'NumberArray', ':', 'Y'),array(10, 6, 2, 'Array (Texts)', 'TextArray', ';', 'Y'),array(11, 7, 2, 'Array (Yes/No/Uncertain)', 'YNRadioArray', 'C', 'Y'),array(12, 8, 2, 'Array by column', 'ColumnRadioArray', 'H', 'Y'),array(13, 9, 2, 'Array dual scale', 'DualRadioArray', '1', 'Y'),array(14, 1, 3, 'Date/Time', 'Date', 'D', 'Y'),array(15, 2, 3, 'Equation', 'Equation', '*', 'Y'),array(16, 3, 3, 'File upload', 'File', '|', 'Y'),array(17, 4, 3, 'Gender', 'Gender', 'G', 'Y'),array(18, 5, 3, 'Language switch', 'Language', 'I', 'Y'),array(19, 6, 3, 'Multiple numerical input', 'Multinumerical', 'K', 'Y'),array(20, 7, 3, 'Numerical input', 'Numerical', 'N', 'Y'),array(21, 8, 3, 'Ranking', 'Ranking', 'R', 'Y'),array(22, 9, 3, 'Text display', 'Display', 'X', 'Y'),array(23, 10, 3, 'Yes/No', 'YN', 'Y', 'Y'),array(24, 1, 4, 'Huge free text', 'HugeText', 'U', 'Y'),array(25, 2, 4, 'Long free text', 'LongText', 'T', 'Y'),array(26, 3, 4, 'Multiple short text', 'Multitext', 'Q', 'Y'),array(27, 4, 4, 'Short free text', 'ShortText', 'S', 'Y'),array(28, 1, 5, 'Multiple choice', 'Check', 'M', 'Y'),array(29, 2, 5, 'Multiple choice with comments', 'CommentCheck', 'P', 'Y')); 
     $groups = array(array(1, 'Single choice questions', 1, 'Y'),array(2, 'Arrays', 2, 'Y'),array(3, 'Mask questions', 3, 'Y'),array(4, 'Text questions', 4, 'Y'),array(5, 'Multiple choice questions', 5, 'Y'));
@@ -1707,7 +1703,7 @@ function dropColumn($sTableName, $sColumnName)
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
+    if ($sDBDriverName=='mssql')
     {
         dropDefaultValueMSSQL($sColumnName,$sTableName);
     }
@@ -1717,28 +1713,13 @@ function dropColumn($sTableName, $sColumnName)
 
 
 
-function createTable($sTableName, $aColumns, $aOptions=null)
-{
-    $sDBDriverName=Yii::app()->db->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
-    {
-        foreach ($aColumns as $sName=>&$sType)
-        {
-            $sType=str_replace('text','varchar(max)',$sType);
-            $sType=str_replace('binary','text',$sType);
-        }
-    }
-    Yii::app()->db->createCommand()->createTable($sTableName,$aColumns,$aOptions);
-}
 
 function addColumn($sTableName, $sColumn, $sType)
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
-    if ($sDBDriverName='mssql')
+    if ($sDBDriverName=='mssql')
     {
         $sType=str_replace('text','varchar(max)',$sType);
         $sType=str_replace('binary','text',$sType);
@@ -1764,4 +1745,49 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
         Yii::app()->db->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
     }
 
+}
+
+/**
+* Returns the name of the DB Driver - used for other functions that make db specific calls
+*
+*/
+function setsDBDriverName() {
+    $sDBDriverName=Yii::app()->db->getDriverName();
+    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
+    if ($sDBDriverName=='sqlsrv') $sDBDriverName='mssql';
+    return $sDBDriverName;
+}
+
+/**
+* Special customisation because Yii is limited in its ability to handle varchar fields of lenghts other than 255 in a cross-db
+* compatible way. see http://www.yiiframework.com/forum/index.php/topic/32289-cross-db-compatible-varchar-field-length-definitions/
+* and http://github.com/yiisoft/yii/issues/765
+*
+* Note that it sets values for the config files for use later, and does not return any values.
+* Access the set values using Yii::app()->getConfig('varchar') or Yii::app()->getConfigu('autoincrement');
+*
+* @param mixed $sDBDriverName The name of the db driver being used. If the parameter is forgotten, the
+*                             function is capable of retrieving it itself.
+*/
+function setVarchar($sDBDriverName=null) {
+
+    if(!$sDBDriverName) {
+        $sDBDriverName=setsDBDriverName();
+    }
+
+    if ($sDBDriverName=='pgsql')
+    {
+        Yii::app()->setConfig('varchar',$sVarchar='character varying');
+        Yii::app()->setConfig('autoincrement', $sAutoIncrement='serial');
+    }
+    elseif ($sDBDriverName=='mssql')
+    {
+        Yii::app()->setConfig('varchar',$sVarchar='varchar');
+        Yii::app()->setConfig('autoincrement', $sAutoIncrement='integer NOT NULL IDENTITY (1,1)');
+    }
+    else
+    {
+        Yii::app()->setConfig('varchar',$sVarchar='varchar');
+        Yii::app()->setConfig('autoincrement', $sAutoIncrement='int(11) NOT NULL AUTO_INCREMENT');
+    }
 }

@@ -20,11 +20,11 @@ class index extends CAction {
 
     function action()
     {
-        global $surveyid, $thistpl, $totalquestions;
+        global $surveyid, $totalquestions;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
         $clang = Yii::app()->lang;
-        @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('sess_expiration'));
+        @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
 
         $this->_loadRequiredHelpersAndLibraries();
 
@@ -160,10 +160,7 @@ class index extends CAction {
                 $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
             }
             $clang = $this->_loadLimesurveyLang($sDisplayLanguage);
-            if(!isset($defaulttemplate))
-            {
-                $defaulttemplate=Yii::app()->getConfig("defaulttemplate");
-            }
+
             $languagechanger = makeLanguageChanger($sDisplayLanguage);
             //Find out if there are any publicly available surveys
             $query = "SELECT sid, surveyls_title, publicstatistics, language
@@ -276,24 +273,23 @@ class index extends CAction {
             "list"=>implode("\n",$list),
             );
 
-            $thissurvey['templatedir'] = $defaulttemplate;
 
             $data['thissurvey'] = $thissurvey;
             //$data['privacy'] = $privacy;
             $data['surveylist'] = $surveylist;
             $data['surveyid'] = $surveyid;
-            $data['templatedir'] = getTemplatePath($defaulttemplate);
-            $data['templateurl'] = getTemplateURL($defaulttemplate)."/";
-            $data['templatename'] = $defaulttemplate;
+            $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+            $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
+            $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
             $data['sitename'] = Yii::app()->getConfig("sitename");
             $data['languagechanger'] = $languagechanger;
 
             //A nice exit
             sendCacheHeaders();
             doHeader();
-            $this->_printTemplateContent(getTemplatePath($defaulttemplate)."/startpage.pstpl", $data, __LINE__);
+            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/startpage.pstpl", $data, __LINE__);
 
-            $this->_printTemplateContent(getTemplatePath($defaulttemplate)."/surveylist.pstpl", $data, __LINE__);
+            $this->_printTemplateContent(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/surveylist.pstpl", $data, __LINE__);
 
             echo '<script type="text/javascript" >
             function sendreq(surveyid)
@@ -338,14 +334,9 @@ class index extends CAction {
         }
 
         //SET THE TEMPLATE DIRECTORY
-        if (!$thissurvey['templatedir'])
-        {
-            $thistpl = getTemplatePath($defaulttemplate);
-        }
-        else
-        {
-            $thistpl = getTemplatePath($thissurvey['templatedir']);
-        }
+
+        $thistpl = getTemplatePath($thissurvey['templatedir']);
+
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
@@ -470,7 +461,7 @@ class index extends CAction {
             }
             $tkresult = dbExecuteAssoc($tkquery); //Checked
             $tokendata = $tkresult->read();
-            if ($tkresult->count()==0 || $areTokensUsed)
+            if ($tkresult->count()==0 || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y'))
             {
                 sendCacheHeaders();
                 doHeader();
@@ -524,9 +515,11 @@ class index extends CAction {
         //Clear session and remove the incomplete response if requested.
         if (isset($move) && $move == "clearall")
         {
+            // delete the response but only if not already completed
             $s_lang = $_SESSION['survey_'.$surveyid]['s_lang'];
-            if (isset($_SESSION['survey_'.$surveyid]['srid']))
+            if (isset($_SESSION['survey_'.$surveyid]['srid']) && !Survey_dynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']))
             {
+<<<<<<< HEAD
                 // find out if there are any fuqt questions - checked
                 $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
                 foreach ($fieldmap as $field)
@@ -535,16 +528,26 @@ class index extends CAction {
                     if ($q->fileUpload() && !strpos($q->fieldname, "_filecount"))
                     {
                         $questions[] = $q;
-                    }
-                }
-
-                // if yes, extract the response json to those questions
-                if (isset($qid))
-                {
-                    $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['survey_'.$surveyid]['srid'];
-                    $result = dbExecuteAssoc($query);
-                    foreach($result->readAll() as $row)
+=======
+                // delete the response but only if not already completed
+                 $result= dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
+                if($result->count()>0){
+                    // find out if there are any fuqt questions - checked
+                    $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
+                    foreach ($fieldmap as $field)
                     {
+                        if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
+                        {
+                            if (!isset($qid)) { $qid = array(); }
+                            $qid[] = $field['fieldname'];
+                        }
+>>>>>>> 39b5089519acbd1c950066dd62fb9f672bebcdf8
+                    }
+
+                    // if yes, extract the response json to those questions
+                    if (isset($qid))
+                    {
+<<<<<<< HEAD
                         foreach ($questions as $q)
                         {
                             $json = $row[$q->fieldname];
@@ -555,19 +558,32 @@ class index extends CAction {
                             $phparray = json_decode($json);
 
                             foreach ($phparray as $metadata)
+=======
+                        $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['survey_'.$surveyid]['srid'];
+                        $result = dbExecuteAssoc($query);
+                        foreach($result->readAll() as $row)
+                        {
+                            foreach ($qid as $question)
+>>>>>>> 39b5089519acbd1c950066dd62fb9f672bebcdf8
                             {
-                                $target = Yii::app()->getConfig("uploaddir")."/surveys/".$surveyid."/files/";
-                                // delete those files
-                                unlink($target.$metadata->filename);
+                                $json = $row[$question];
+                                if ($json == "" || $json == NULL)
+                                    continue;
+
+                                // decode them
+                                $phparray = json_decode($json);
+
+                                foreach ($phparray as $metadata)
+                                {
+                                    $target = Yii::app()->getConfig("uploaddir")."/surveys/".$surveyid."/files/";
+                                    // delete those files
+                                    unlink($target.$metadata->filename);
+                                }
                             }
                         }
                     }
+                    // done deleting uploaded files
                 }
-                // done deleting uploaded files
-
-
-                // delete the response but only if not already completed
-                dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
 
                 // also delete a record from saved_control when there is one
                 dbExecuteAssoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);
@@ -595,7 +611,9 @@ class index extends CAction {
             //Present the clear all page using clearall.pstpl template
             $this->_printTemplateContent($thistpl.'/clearall.pstpl', $redata, __LINE__);
 
-            $this->_niceExit($redata, __LINE__, $thistpl);
+            $this->_printTemplateContent($thistpl.'/endpage.pstpl', $redata, __LINE__);
+            doFooter();
+            exit;
         }
 
 
@@ -612,26 +630,24 @@ class index extends CAction {
         //  - a token information has been provided
         //  - the survey is setup to allow token-response-persistence
 
-        if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
+        if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
             // load previous answers if any (dataentry with nosubmit)
-            $srquery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']}"
-            . " WHERE {$thissurvey['tablename']}.token='".$token."' order by id desc";
-
+            $srquery="SELECT id,submitdate,lastpage FROM {$thissurvey['tablename']} WHERE {$thissurvey['tablename']}.token='{$token}' order by id desc";
             $result = dbSelectLimitAssoc($srquery,1);
             if ($result->count()>0)
             {
-                $row=reset($result->read());
+                $row=$result->read();
                 if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
                 {
                     $_SESSION['survey_'.$surveyid]['srid'] = $row['id'];
-                    if (!is_null($row['lastpage']))
+                    if (!is_null($row['lastpage']) && $row['submitdate']=='')
                     {
                         $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
                         $_SESSION['survey_'.$surveyid]['step'] = $row['lastpage'];
                     }
                 }
-                buildsurveysession();
+                buildsurveysession($surveyid);
                 loadanswers();
             }
         }
@@ -823,16 +839,14 @@ class index extends CAction {
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
-        if ( $sTemplateDir === null )
-            $sTemplateDir = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
-
+        $sTemplateDir= getTemplatePath($sTemplateDir);
         sendCacheHeaders();
 
         doHeader();
 
-        $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'startpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($sTemplateDir.'/startpage.pstpl', $redata, $iDebugLine);
         $this->_printMessage($asMessage);
-        $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'endpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($sTemplateDir.'/endpage.pstpl', $redata, $iDebugLine);
 
         doFooter();
 

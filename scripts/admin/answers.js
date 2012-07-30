@@ -1,4 +1,3 @@
-// $Id: answers.js 10065 2011-05-15 09:28:52Z c_schmitz $
 var labelcache=[];
 $(document).ready(function(){
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
@@ -600,7 +599,7 @@ function quickaddlabels()
             }
             else
                 {
-                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "");
+                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,5);
             }
 
             if (typeof thisrow[parseInt(x)+1]=='undefined')

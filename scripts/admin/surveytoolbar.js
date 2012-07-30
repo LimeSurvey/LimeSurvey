@@ -2,7 +2,7 @@
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
-    // Load the superfish menu 
+    // Load the superfish menu
     $('ul.sf-menu').superfish({
         speed:'fast'
     });
@@ -12,18 +12,18 @@ $(document).ready(function(){
         {
              $(this).qtip({
                style: { name: 'cream',
-                        tip:true, 
-                        color:'#1D2D45', 
+                        tip:true,
+                        color:'#1D2D45',
                         border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
-                       },  
-               position: { adjust: { 
+                       },
+               position: { adjust: {
                         screen: true, scroll:true },
                         corner: {
                                 target: 'topRight',
-                                tooltip: 'bottomLeft'}       
+                                tooltip: 'bottomLeft'}
                         },
                 show: {effect: { length:50},
                        delay:1000
@@ -33,5 +33,10 @@ $(document).ready(function(){
 
                });
         }
-    });       
+    });
+    $(".saveandreturn").click(function() {
+        var form=$(this).parents('form:first'); //Get the parent form info
+        $("#newpage").val('return');
+        form.submit();
+    });
 });

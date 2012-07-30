@@ -12,8 +12,6 @@ if (!defined('BASEPATH'))
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
  */
 
  /**
@@ -22,7 +20,6 @@ if (!defined('BASEPATH'))
  * @package LimeSurvey
  * @author
  * @copyright 2011
- * @version $Id$
  * @access public
  */
 class labels extends Survey_Common_Action
@@ -384,9 +381,9 @@ class labels extends Survey_Common_Action
 
     public function ajaxSets()
     {
-        $lid = CHttpRequest::getPost('lid');
-        $answers = CHttpRequest::getPost('answers');
-        $code = CHttpRequest::getPost('code');
+        $lid = Yii::app()->getRequest()->getPost('lid');
+        $answers = Yii::app()->getRequest()->getPost('answers');
+        $code = Yii::app()->getRequest()->getPost('code');
         //Create new label set
         $language = "";
         foreach ($answers as $lang => $answer) {
@@ -396,7 +393,7 @@ class labels extends Survey_Common_Action
         if ($lid == 0)
         {
             $lset = new Labelsets;
-            $lset->label_name = sanitize_xss_string(CHttpRequest::getPost('laname'));
+            $lset->label_name = sanitize_xss_string(Yii::app()->getRequest()->getPost('laname'));
             $lset->languages = sanitize_xss_string($language);
             $lset->save();
 

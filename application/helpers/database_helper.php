@@ -171,7 +171,7 @@ function dbRandom()
             $srandom= 0 + lcg_value()*(abs(1));
             break;
     }
-    
+
     return $srandom;
 
 }
@@ -208,4 +208,33 @@ function dbSelectTablesLike($table)
 function dbGetTablesLike($table)
 {
     return (array) Yii::app()->db->createCommand(dbSelectTablesLike("{{{$table}}}"))->queryAll();
+}
+
+/**
+* Creates a table using the YII DB Schema function but properly handles custom field types for the various DB types
+*
+* @param mixed $sTableName
+* @param mixed $aColumns
+* @param mixed $aOptions
+*/
+function createTable($sTableName, $aColumns, $aOptions=null)
+{
+    $sDBDriverName=Yii::app()->db->getDriverName();
+
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql')
+    {
+        foreach ($aColumns as $sName=>&$sType)
+        {
+            $sType=str_replace('text','varchar(max)',$sType);
+            $sType=str_replace('binary','text',$sType);
+        }
+    }
+    if ($sDBDriverName=='pgsql')
+    {
+        foreach ($aColumns as $sName=>&$sType)
+        {
+            $sType=str_replace('varchar','character varying',$sType);
+        }
+    }
+    Yii::app()->db->createCommand()->createTable($sTableName,$aColumns,$aOptions);
 }

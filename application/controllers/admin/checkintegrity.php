@@ -194,9 +194,11 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteSurveys(array $surveys, array $aData, Limesurvey_lang $clang)
     {
-        foreach ($surveys as $survey) $surveys_ids[] = $survey['sid'];
+        foreach ($surveys as $survey)
+        {
+            Survey::model()->deleteByPk($survey['sid']);
+        }
 
-        Survey::model()->deleteByPk('sid',$surveys_ids);
         if (Survey::model()->hasErrors()) safeDie(Survey::model()->getError());
         $aData['messages'][] = sprintf($clang->gT('Deleting surveys: %u surveys deleted'), count($surveys));
         return $aData;

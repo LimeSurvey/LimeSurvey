@@ -62,8 +62,8 @@ class Survey extends CActiveRecord
     public function relations()
     {
         return array(
-            'languagesettings' => array(self::HAS_MANY, 'Surveys_languagesettings', 'surveyls_survey_id'),
-            'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
+        'languagesettings' => array(self::HAS_MANY, 'Surveys_languagesettings', 'surveyls_survey_id'),
+        'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
         );
     }
 
@@ -81,6 +81,47 @@ class Survey extends CActiveRecord
         ),
         );
     }
+
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+        array('datecreated', 'default','value'=>date("Y-m-d")),
+        array('startdate', 'default','value'=>NULL),
+        array('expires', 'default','value'=>NULL),
+        array('admin', 'xssfilter'),
+        array('adminemail', 'xssfilter'),
+        array('bounce_email', 'xssfilter'),
+        array('faxto', 'xssfilter')
+        );
+    }
+
+
+
+
+
+    /**
+    * Defines the customs validation rule xssfilter
+    *
+    * @param mixed $attribute
+    * @param mixed $params
+    */
+    public function xssfilter($attribute,$params)
+    {
+        if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        {
+            $filter = new CHtmlPurifier();
+            $filter->options = array('URI.AllowedSchemes'=>array(
+            'http' => true,
+            'https' => true,
+            ));
+            $this->$attribute = $filter->purify($this->$attribute);
+        }
+    }
+
 
     /**
     * permission scope for this model
@@ -152,54 +193,36 @@ class Survey extends CActiveRecord
         return $attdescriptiondata;
     }
 
+
     /**
-    * !!! Shouldn't this be moved to beforeSave?
     * Creates a new survey - does some basic checks of the suppplied data
     *
-    * @param string $data
-    * @return mixed
+    * @param array $aData Array with fieldname=>fieldcontents data
+    * @param boolean $xssfiltering Sets if the data for the new survey should be filtered for XSS
+    * @return integer The new survey id
     */
-    public function insertNewSurvey($data, $xssfiltering = false)
+    public function insertNewSurvey($aData)
     {
         do
         {
-            if (isset($data['wishSID'])) // if wishSID is set check if it is not taken already
+            if (isset($aData['wishSID'])) // if wishSID is set check if it is not taken already
             {
-                $data['sid'] = $data['wishSID'];
-                unset($data['wishSID']);
+                $aData['sid'] = $aData['wishSID'];
+                unset($aData['wishSID']);
             }
             else
-                $data['sid'] = randomChars(6, '123456789');
+                $aData['sid'] = randomChars(6, '123456789');
 
-            $isresult = self::model()->findByPk($data['sid']);
+            $isresult = self::model()->findByPk($aData['sid']);
         }
         while (!is_null($isresult));
 
-        $data['datecreated'] = date("Y-m-d");
-        if (isset($data['startdate']) && trim($data['startdate']) == '')
-            $data['startdate'] = null;
-
-        if (isset($data['expires']) && trim($data['expires']) == '')
-            $data['expires'] = null;
-
-        if($xssfiltering)
-        {
-            $filter = new CHtmlPurifier();
-            $filter->options = array('URI.AllowedSchemes'=>array(
-            'http' => true,
-            'https' => true,
-            ));
-            $data["admin"] = $filter->purify($data["admin"]);
-            $data["adminemail"] = $filter->purify($data["adminemail"]);
-            $data["bounce_email"] = $filter->purify($data["bounce_email"]);
-            $data["faxto"] = $filter->purify($data["faxto"]);
-        }
-
         $survey = new self;
-        foreach ($data as $k => $v)
+        foreach ($aData as $k => $v)
             $survey->$k = $v;
         $survey->save();
-        return $data['sid'];
+
+        return $aData['sid'];
     }
 
     /**

@@ -74,8 +74,6 @@ class printablesurvey extends Survey_Common_Action
         $surveyfaxto = $desrow['faxto'];
         $dateformattype = $desrow['surveyls_dateformat'];
 
-        $data['welcome']=$welcome;
-        $data['surveydesc']=$surveydesc;
 
         if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
@@ -96,14 +94,19 @@ class printablesurvey extends Survey_Common_Action
         };
 
         //define('PRINT_TEMPLATE' , '/templates/print/' , true);
-        if(is_file(Yii::app()->getConfig('usertemplaterootdir').'/'.$template.'/print_survey.pstpl'))
+        if(is_file(Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR.'print_survey.pstpl'))
         {
-            define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('usertemplaterootdir').'/'.$template.'/' , true);
+            define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR , true);
             define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('usertemplaterooturl').'/'.$template.'/' , true);
+        }
+        elseif(is_file(Yii::app()->getConfig('usertemplaterootdir').'/'.$template.'/print_survey.pstpl'))
+        {
+            define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('standardtemplaterootdir').DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR , true);
+            define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('standardtemplaterooturl').'/'.$template.'/' , true);
         }
         else
         {
-            define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('standardtemplaterootdir').'/default/' , true);
+            define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('standardtemplaterootdir').DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR , true);
             define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('standardtemplaterooturl').'/default/' , true);
         }
 
@@ -1260,7 +1263,7 @@ class printablesurvey extends Survey_Common_Action
                             } else {
                                 $checkboxlayout=false;
                             }
-                           $mearesult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ", array('question_order'));
+                           $mearesult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' and scale_id=0 AND language='{$surveyprintlang}' ", array('question_order'));
 
 
 //                            if ($checkboxlayout === false)
@@ -1283,7 +1286,7 @@ class printablesurvey extends Survey_Common_Action
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                             $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-                            $fresult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ", array('question_order'));
+                            $fresult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' and scale_id=1 AND language='{$surveyprintlang}' ", array('question_order'));
 
                             $fcount = $fresult->getRowCount();
                             $fwidth = "120";
@@ -1308,12 +1311,13 @@ class printablesurvey extends Survey_Common_Action
                             $a=1; //Counter for pdfoutput
                             $rowclass = 'array1';
 
+                            $result = $mearesult->readAll();
                             foreach ($result as $frow)
                             {
                                 $question['ANSWER'] .= "\t<tr class=\"$rowclass\">\n";
                                 $rowclass = alternation($rowclass,'row');
 
-                                $answertext=$mearow['question'];
+                                $answertext=$frow['question'];
                                 if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
                                 $question['ANSWER'] .= "\t\t\t\t\t<th class=\"answertext\">$answertext</th>\n";
                                 //$printablesurveyoutput .="\t\t\t\t\t<td>";
@@ -1690,7 +1694,7 @@ class printablesurvey extends Survey_Common_Action
         }
 
         $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
-        $data['numques']=$survey_output['THEREAREXQUESTIONS'];
+        
         // START recursive tag stripping.
         // PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression.
         // Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
@@ -1759,7 +1763,6 @@ class printablesurvey extends Survey_Common_Action
         }
 
         $survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '\1&nbsp;\2' , $survey_output['GROUPS']);
-        $data['survey_output']=$survey_output;
 
         // END recursive empty tag stripping.
 
@@ -1776,7 +1779,7 @@ class printablesurvey extends Survey_Common_Action
             $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
             $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
         } else {
-            $this->getController()->render('/admin/survey/printablesurvey_view', $data);
+            echo self::_populate_template( 'survey' , $survey_output );
         }
     }
 

@@ -76,7 +76,7 @@ class templates extends Survey_Common_Action
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
-        
+
         if ($action == 'templateupload') {
             if (Yii::app()->getConfig('demoMode'))
                 $this->getController()->error($clang->gT("Demo mode: Uploading templates is disabled."));
@@ -187,7 +187,7 @@ class templates extends Survey_Common_Action
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
         $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
         $fullfilepath=$basedestdir."/".$templatename . "/" . $filename;
-        
+
         if($action=="templateuploadfile")
         {
             if(Yii::app()->getConfig('demoMode'))
@@ -200,7 +200,7 @@ class templates extends Survey_Common_Action
             }
             elseif(!in_array(substr(strrchr($filename, '.'),1),explode ( "," , $allowedtemplateuploads )))
             {
-            
+
                 $uploadresult = $clang->gT("This file type is not allowed to be uploaded.");
             }
             else
@@ -350,15 +350,16 @@ class templates extends Survey_Common_Action
     {
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
             $clang = Yii::app()->lang;
-            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('newname');
+            $newname=sanitize_paranoid_string(returnGlobal('newname'));
+            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
             $olddirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
             if (isStandardTemplate(returnGlobal('newname')))
-                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), returnGlobal('newname')) . " " . $clang->gT("This name is reserved for standard template.", "js"));
+                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $newname) . " " . $clang->gT("This name is reserved for standard template.", "js"));
             elseif (rename($olddirname, $newdirname) == false)
-                $this->getController()->error(sprintf($clang->gT("Directory could not be renamed to `%s`.", "js"), returnGlobal('newname')) . " " . $clang->gT("Maybe you don't have permission.", "js"));
+                $this->getController()->error(sprintf($clang->gT("Directory could not be renamed to `%s`.", "js"), $newname) . " " . $clang->gT("Maybe you don't have permission.", "js"));
             else
             {
-                $templatename = returnGlobal('newname');
+                $templatename = $newname;
                 $this->index("startpage.pstpl", "welcome", $templatename);
             }
         }
@@ -378,7 +379,8 @@ class templates extends Survey_Common_Action
             // Copies all the files from one template directory to a new one
             // This is a security issue because it is allowing copying from get variables...
             Yii::app()->loadHelper('admin/template');
-            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('newname');
+            $newname= sanitize_paranoid_string(returnGlobal('newname'));
+            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
             $copydirname = getTemplatePath(returnGlobal('copydir'));
             $mkdirresult = mkdir_p($newdirname);
 
@@ -392,13 +394,13 @@ class templates extends Survey_Common_Action
                         $this->getController()->error(sprintf($clang->gT("Failed to copy %s to new template directory.", "js"), $file));
                 }
 
-                $templatename = returnGlobal('newname');
+                $templatename = $newname;
                 $this->index("startpage.pstpl", "welcome", $templatename);
             }
             elseif ($mkdirresult == 2)
-                $this->getController()->error(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name", "js"), returnGlobal('newname')));
+                $this->getController()->error(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name", "js"), $newname));
             else
-                $this->getController()->error(sprintf($clang->gT("Unable to create directory `%s`.", "js"), returnGlobal('newname')) . " " . $clang->gT("Please check the directory permissions.", "js"));
+                $this->getController()->error(sprintf($clang->gT("Unable to create directory `%s`.", "js"), $newname) . " " . $clang->gT("Please check the directory permissions.", "js"));
             ;
         }
     }

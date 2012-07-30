@@ -17,12 +17,12 @@
  * fixes the numbering of questions
  * @param <type> $fixnumbering
  */
-function fixNumbering($fixnumbering, $surveyid)
+function fixNumbering($fixnumbering, $iSurveyID)
 {
 
     Yii::app()->loadHelper("database");
 
-    LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
      //Fix a question id - requires renumbering a question
     $oldqid = $fixnumbering;
     $query = "SELECT qid FROM {{questions}} ORDER BY qid DESC";
@@ -63,7 +63,7 @@ function fixNumbering($fixnumbering, $surveyid)
     $query = "UPDATE {{answers}} SET qid=$newqid WHERE qid=$oldqid";
     $result = db_execute_assosc($query);
 
-    LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
 }
 /**
  * checks consistency of groups
@@ -92,15 +92,16 @@ function checkGroup($postsid)
 /**
  * checks questions in a survey for consistency
  * @param <type> $postsid
- * @param <type> $surveyid
+* @param <type> $iSurveyID
  * @return array $faildcheck
  */
-function checkQuestions($postsid, $surveyid)
+function checkQuestions($postsid, $iSurveyID)
 {
     $clang = Yii::app()->lang;
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 
+    $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$iSurveyID} and parent_qid=0";
     $chkresult = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $surveyid, 'parent_qid' => 0));
     
     foreach ($chkresult as $chkrow)
@@ -131,7 +132,7 @@ function checkQuestions($postsid, $surveyid)
 
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
     //$chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$_GET['sid']} AND type = ''";
-    $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$surveyid} AND type = ''";
+    $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$iSurveyID} AND type = ''";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow)
     {
@@ -143,7 +144,7 @@ function checkQuestions($postsid, $surveyid)
 
     //ChECK THAT certain array question types have answers set
     //$chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
-    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$surveyid} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
+    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach($chkresult as $chkrow){
         $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires answers, but none are set."), $chkrow['gid']);
@@ -151,7 +152,7 @@ function checkQuestions($postsid, $surveyid)
 
     //CHECK THAT DUAL Array has answers set
     //$chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type='1' and q.parent_qid=0";
-    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$surveyid} AND type='1' and q.parent_qid=0";
+    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow){
         $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second answer set but none is set."), $chkrow['gid']);
@@ -172,7 +173,7 @@ function checkQuestions($postsid, $surveyid)
     //		$c++;
     //		}
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND type not in ('S', 'D', 'T', 'Q')";
+    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('S', 'D', 'T', 'Q')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {$qrows[] = $qrow;} // Get table output into array
@@ -219,7 +220,7 @@ function checkQuestions($postsid, $surveyid)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
     if (isset($fieldmap))
     {
         foreach($fieldmap as $fielddata)
@@ -237,7 +238,7 @@ function checkQuestions($postsid, $surveyid)
         foreach ($duplicates as $dup)
         {
             $q = $fieldmap[$dup]['q'];
-            $fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$q->id."'>Click Here to Fix</a>]";
+            $fix = "[<a href='$scriptname?action=activate&amp;sid=$iSurveyID&amp;fixnumbering=".$q->id."'>Click Here to Fix</a>]";
             $failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
         }
     }
@@ -249,16 +250,15 @@ function checkQuestions($postsid, $surveyid)
 
 /**
  * Function to activate a survey
- * @param int $surveyid The Survey ID
+* @param int $iSurveyID The Survey ID
  * @param bool $simulate
  * @return string
  */
 
 
-function activateSurvey($surveyid, $simulate = false)
+function activateSurvey($iSurveyID, $simulate = false)
 {
 
-    $clang = Yii::app()->lang;
 
     $createsurvey='';
     $activateoutput='';
@@ -266,19 +266,10 @@ function activateSurvey($surveyid, $simulate = false)
     $fieldstiming = array();
     $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM {{surveys}} WHERE sid={$surveyid}";
-    $prow = Yii::app()->db->createCommand($pquery)->query()->read();
-    if ($prow['allowregister'] == "Y")
-    {
-        $surveyallowsregistration="TRUE";
-    }
-    if ($prow['savetimings'] == "Y")
-    {
-        $savetimings="TRUE";
-    }
+    $prow = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($surveyid,'full',true,false,getBaseLanguageFromSurveyID($surveyid)); //AJS
+    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($surveyid)); //AJS
 
     $createsurvey = array();
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
@@ -303,15 +294,15 @@ function activateSurvey($surveyid, $simulate = false)
                 $createsurvey[$q->fieldname] = "integer";
                 break;
             case "ipaddr":
-                if ($prow['ipaddr'] == "Y")
+                if ($prow->ipaddr == "Y")
                     $createsurvey[$q->fieldname] = "text";
                 break;
             case "refurl":
-                if ($prow['refurl'] == "Y")
+                if ($prow->refurl == "Y")
                     $createsurvey[$q->fieldname] = "text";
                 break;
             case "token":
-                if ($prow['anonymized'] == "N")
+                if ($prow->anonymized == "N")
                 {
                     $createsurvey[$q->fieldname] = "VARCHAR(36)";
                 }
@@ -344,36 +335,18 @@ function activateSurvey($surveyid, $simulate = false)
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
-    $tabname = "{{survey_{$surveyid}}}";
+    $tabname = "{{survey_{$iSurveyID}}}";
     $command = new CDbCommand(Yii::app()->db);
     try
     {
         $execresult = $command->createTable($tabname,$createsurvey);
-        $execresult = true;
     }
     catch (CDbException $e)
     {
-        echo $e->getMessage();
-        $execresult = false;
+        return array('error'=>'surveytablecreation');
     }
 
-
-    if (!$execresult)
-    {
-        $link = Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$surveyid);
-        $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n" .
-        "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n" .
-        "<div class='warningheader'>".$clang->gT("Survey could not be actived.")."</div>\n" .
-        "<p>" .
-        $clang->gT("Database error!!")."\n <font color='red'>" ."</font>\n" .
-        "<pre>".implode(' ', $createsurvey)."</pre>\n
-        <a href='$link'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
-    }
-
-    if ($execresult)
-    {
-
-        $anquery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$surveyid}";
+    $anquery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
         if ($anresult=Yii::app()->db->createCommand($anquery)->query()->readAll())
         {
             //if there is an autonumber_start field, start auto numbering here
@@ -382,25 +355,25 @@ function activateSurvey($surveyid, $simulate = false)
                 if ($row['autonumber_start'] > 0)
                 {
                     if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv') {
-                        mssql_drop_primary_index('survey_'.$surveyid);
-                        mssql_drop_constraint('id','survey_'.$surveyid);
-                        $autonumberquery = "alter table {{survey_{$surveyid}}} drop column id ";
-                        Yii::app()->db->createCommand($autonumberquery)->query()->readAll();
-                        $autonumberquery = "alter table {{survey_{$surveyid}}} add [id] int identity({$row['autonumber_start']},1)";
-                        Yii::app()->db->createCommand($autonumberquery)->query()->readAll();
+                    mssql_drop_primary_index('survey_'.$iSurveyID);
+                    mssql_drop_constraint('id','survey_'.$iSurveyID);
+                    $autonumberquery = "alter table {{survey_{$iSurveyID}}} drop column id ";
+                    Yii::app()->db->createCommand($autonumberquery)->execute();
+                    $autonumberquery = "alter table {{survey_{$iSurveyID}}} add [id] int identity({$row['autonumber_start']},1)";
+                    Yii::app()->db->createCommand($autonumberquery)->execute();
                     }
                     else
                     {
-                        $autonumberquery = "ALTER TABLE {{survey_{$surveyid}}} AUTO_INCREMENT = ".$row['autonumber_start'];
+                    $autonumberquery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = ".$row['autonumber_start'];
                         $result = @Yii::app()->db->createCommand($autonumberquery)->execute();
                     }
                 }
             }
         }
 
-        if (isset($savetimings) && $savetimings=="TRUE")
+    if ($prow->savetimings == "Y")
         {
-            $timingsfieldmap = createFieldMap($surveyid,"short",false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+            $timingsfieldmap = createFieldMap($iSurveyID,"short",false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
             $column['id'] = $createsurvey['id'];
             $column['interviewtime'] = 'FLOAT';
@@ -417,63 +390,36 @@ function activateSurvey($surveyid, $simulate = false)
             }
 
             $command = new CDbCommand(Yii::app()->db);
-            $tabname = "{{survey_{$surveyid}}}_timings";
+        $tabname = "{{survey_{$iSurveyID}}}_timings";
             try
             {
                 $execresult = $command->createTable($tabname,$column);
-                $execresult = true;
             }
             catch (CDbException $e)
             {
-                echo $e->getMessage();
-                $execresult = false;
+            return array('error'=>'timingstablecreation');
             }
 
         }
-
-        $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
-        $activateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
-        $activateoutput .= "<div class='successheader'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
-
+    $aResult=array('status'=>'OK');
         // create the survey directory where the uploaded files can be saved
         if ($createsurveydirectory)
         {
-            if (!file_exists(Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyid . "/files"))
+        if (!file_exists(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files"))
             {
-                if (!(mkdir(Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyid . "/files", 0777, true)))
+            if (!(mkdir(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files", 0777, true)))
                 {
-                    $activateoutput .= "<div class='warningheader'>" .
-                        $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.") . "</div>";
+                $aResult['warning']='nouploadsurveydir';
                 } else {
-                    file_put_contents(Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyid . "/files/index.html", '<html><head></head><body></body></html>');
+                file_put_contents(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/index.html", '<html><head></head><body></body></html>');
                 }
             }
         }
-        $acquery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$surveyid;
+    $acquery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
         $acresult = Yii::app()->db->createCommand($acquery)->query();
 
-        if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
-        {
-            $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/index/surveyid/".$surveyid))."\" />\n";
+    return $aResult;
         }
-        else
-        {
-            $link = Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$surveyid);
-
-            $activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
-            $activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/index/surveyid/".$surveyid))."\" />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".convertGETtoPOST("$link")."\" />\n";
-        }
-        $activateoutput .= "</div><br />&nbsp;\n";
-        $lsrcOutput = true;
-    }
-
-
-    return $activateoutput;
-
-}
 
 function mssql_drop_constraint($fieldname, $tablename)
 {
@@ -487,7 +433,7 @@ function mssql_drop_constraint($fieldname, $tablename)
                       sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
                       sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
                       sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
-                WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name={{{$tablename}}})";
+    WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{{{$tablename}}}')";
     $result = dbExecuteAssoc($dfquery)->read();
     $defaultname=$result['CONTRAINT_NAME'];
     if ($defaultname!=false)
@@ -505,12 +451,11 @@ function mssql_drop_primary_index($tablename)
     // find out the constraint name of the old primary key
     $pkquery = "SELECT CONSTRAINT_NAME "
               ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
-              ."WHERE     (TABLE_NAME = {{{$tablename}}}) AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+    ."WHERE     (TABLE_NAME = '{{{$tablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
-    $result = dbExecuteAssoc($pkquery)->read();
-    $primarykey=$result['CONTSTRAINT_NAME'];
-    if ($primarykey!=false)
+    $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
+    if ($primarykey!==false)
     {
-        modifyDatabase("","ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$primarykey}"); echo $modifyoutput; flush();
+        Yii::app()->db->createCommand("ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$primarykey[0]}")->execute();
     }
 }

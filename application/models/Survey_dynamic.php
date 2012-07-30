@@ -145,5 +145,31 @@ class Survey_dynamic extends LSActiveRecord
         return $newCriteria;
     }
 
+    /**
+     * Return true if actual survey is completed
+     *
+     * @param $srid : actual save survey id
+     *
+     * @return boolean
+     */
+    public function isCompleted($srid)
+    {
+        $sid = self::$sid;
+        $completed=false;
+
+        if(Yii::app()->db->schema->getTable($this->tableName())){
+            $data=Yii::app()->db->createCommand()
+                ->select("submitdate")
+                ->from($this->tableName())
+                ->where('id=:id', array(':id'=>$srid))
+                ->queryRow();
+            if($data && $data['submitdate'])
+            {
+                $completed=true;
+            }
+        }
+        return $completed;
+    }
+
 }
 ?>

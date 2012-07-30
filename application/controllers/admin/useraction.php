@@ -223,7 +223,7 @@ class UserAction extends Survey_Common_Action
                     }
 
                     if ($action == "finaldeluser") {
-                        $this->deleteFinalUser($ownerUser, $transfer_surveys_to);
+                        $aViewUrls=$this->deleteFinalUser($ownerUser, $transfer_surveys_to);
                     }
                     else
                     {
@@ -246,7 +246,7 @@ class UserAction extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate('user', $aViewUrls);
+        return $aViewUrls;
     }
 
     function deleteFinalUser($result, $transfer_surveys_to)
@@ -413,7 +413,7 @@ class UserAction extends Survey_Common_Action
         ) //	if(Yii::app()->session['loginID'] != $postuserid)
         {
             $aData['postuserid'] = $postuserid;
-            $this->_renderWrappedTemplate('user', 'setUserRights', $aData);
+            $this->_renderWrappedTemplate('user', 'setuserrights', $aData);
         } // if
         else
         {
