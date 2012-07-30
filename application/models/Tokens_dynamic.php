@@ -68,7 +68,27 @@ class Tokens_dynamic extends LSActiveRecord
 	{
 		return 'tid';
 	}
-
+	
+	
+	/**
+	* Returns this model's validation rules
+	*
+	*/
+	public function rules()
+	{
+		return array(
+		array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+		array('remindersent' ,'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+		array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+		array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 	
+		array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+        array('sent', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+        array('completed', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),             			 
+		);  
+	}	
+	
     /**
      * Returns summary information of this token table
      *
@@ -163,7 +183,7 @@ class Tokens_dynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
- 
+
    /**
      * Creates and inserts token for a specific token record and returns the token string created
      *
@@ -198,7 +218,7 @@ class Tokens_dynamic extends LSActiveRecord
         $itresult = $this->updateToken($iTokenID, $newtoken);
 		return $newtoken;
 	}  
-	 
+
     /**
      * Creates tokens for all token records that have empty token fields and returns the number
      * of tokens created

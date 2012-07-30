@@ -464,13 +464,10 @@ class remotecontrol_handle
                                 
                 foreach($aSurveyData as $sFieldName=>$sValue)
                 {
-                    if($this->_internal_validate($sFieldName,$sValue))
-                    {
+
 						$oSurvey->$sFieldName=$sValue;
 						$aSucceded[$sFieldName]=$sValue;						
-					}
-					else
-						$aFailed[$sFieldName]=$sValue;
+
                 }
                 try
                 {
@@ -889,7 +886,7 @@ class remotecontrol_handle
 					
 					foreach($aSurveyLocaleSettings as $sPropertyName)
 					{
-						if (isset($alangAttributes[$sPropertyName]))
+						if (isset($aLangAttributes[$sPropertyName]))
 							$aResult[$sPropertyName]=$aLangAttributes[$sPropertyName];
 						else
 							$aResult[$sPropertyName]='Not available';
@@ -951,13 +948,10 @@ class remotecontrol_handle
 
                 foreach($aSurveyLocaleData as $sFieldName=>$sValue)
                 {
-					if($this->_internal_validate($sFieldName,$sValue))
-                    {
+
 						$oSurveyLocale->$sFieldName=$sValue;
 						$aSucceded[$sFieldName]=$sValue;						
-					}
-					else
-						$aFailed[$sFieldName]=$sValue;
+
                 }
                 try
                 {
@@ -1232,12 +1226,7 @@ class remotecontrol_handle
 					
                 foreach($aGroupData as $sFieldName=>$sValue)
                 {
-					$sValidValue = $this->_internal_validate($sFieldName,$sValue);
-					
-					if ($sValidValue === false)
-						$aFailed[$sFieldName]=$sValue;
-					else
-					{
+
 						//all dependencies this group has 
 						$has_dependencies=getGroupDepsForConditions($oGroup->sid,$iGroupID);
 						//all dependencies on this group 
@@ -1248,10 +1237,10 @@ class remotecontrol_handle
 							$aFailed[$sFieldName]='Group with dependencies - Order cannot be changed';
 						else
 						{
-							$oGroup->setAttribute($sFieldName,$sValidValue);
+							$oGroup->setAttribute($sFieldName,$sValue);
 							$aSucceded[$sFieldName]=$sValue;	
 						}					
-					}
+
                 }
                 try
                 {
@@ -1576,12 +1565,7 @@ class remotecontrol_handle
 
                 foreach($aQuestionData as $sFieldName=>$sValue)
                 {
-					$valid_value = $this->_internal_validate($sFieldName,$sValue);
-					
-					if ($valid_value === false)
-						$aFailed[$sFieldName]=$sValue;
-					else
-					{
+
 						//all the dependencies that this question has to other questions
 						$dependencies=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,$iQuestionID);
 						//all dependencies by other questions to this question
@@ -1592,10 +1576,10 @@ class remotecontrol_handle
 							$aFailed[$sFieldName]='Questions with dependencies - Order cannot be changed';
 						else
 						{
-							$oQuestion->setAttribute($sFieldName,$valid_value);
+							$oQuestion->setAttribute($sFieldName,$sValue);
 							$aSucceded[$sFieldName]=$sValue;	
 						}					
-					}
+
                 }
                 try
                 {
@@ -1872,13 +1856,8 @@ class remotecontrol_handle
 					               
                foreach($aTokenData as $sFieldName=>$sValue)
                {
-                    if($this->_internal_validate($sFieldName,$sValue))
-                    {
 						$oToken->$sFieldName=$sValue;
-						$aSucceded[$sFieldName]=$sValue;						
-					}
-					else
-						$aFailed[$sFieldName]=$sValue;				   				   
+						$aSucceded[$sFieldName]=$sValue;						   
 			   }
                try
                {
@@ -2169,154 +2148,6 @@ class remotecontrol_handle
         }
     }
     
-    /**
-     * This function validates parameters to be changed
-     * 
-     * @access protected
-     * @param string $sparam_name Name of the parameter
-     * @param string $sparam_value Value to be validated
-     * @return bool|string Result valid value or false
-     */
-    protected function _internal_validate($sparam_name, $sparam_value)
-    {   	
-		$date_pattern = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/';
-		$validation_categories = array(
-								'active'=>'char',
-								'anonymized'=>'char',
-								'savetimings'=>'char',
-								'datestamp'=>'char',
-								'ipaddr'=>'char',
-								'refurl'=>'char',
-								'usecookie'=>'char',
-								'allowregister'=>'char',
-								'allowsave'=>'char',
-								'autoredirect'=>'char',
-								'allowprev'=>'char',
-								'printanswers'=>'char',
-								'publicstatistics'=>'char',
-								'publicgraphs'=>'char',
-								'listpublic'=>'char',
-								'htmlemail'=>'char',
-								'sendconfirmation'=>'char',
-								'tokenanswerspersistence'=>'char',
-								'assessments'=>'char',
-								'usecaptcha'=>'captcha_format',
-								'usetokens'=>'char',
-								'showxquestions'=>'char',
-								'showgroupinfo'=>'group_format',
-								'shownoanswer'=>'char',
-								'showqnumcode'=>'gnum_format',
-								'showwelcome'=>'char',
-								'showprogress'=>'char',
-								'allowjumps'=>'char',
-								'nokeyboard'=>'char',
-								'alloweditaftercompletion'=>'char',
-								'googleanalyticsstyle'=>'ga_format',
-								'bounceprocessing'=>'char',
-								'autonumber_start'=>'int',
-								'tokenlength'=>'int',
-								'bouncetime'=>'int',
-								'navigationdelay'=>'int',
-								'expires'=>'date',
-								'startdate'=>'date',
-								'datecreated'=>'date',
-								'adminemail'=>'email',
-								'bounce_email'=>'email',
-								'surveyls_dateformat'=>'dateformat',
-								'surveyls_numberformat'=>'numberformat',
-								'template'=>'tmpl',
-								'format'=>'gsa_format',
-								//group  parameters
-								'group_order'=>'int',
-								//question_parameters
-								'other'=>'char',
-								'mandatory'=>'char',
-								'question_order'=>'int',
-								'scale_id'=>'int',
-								'same_default'=>'int',
-								//token parameters
-								'email'=>'email',
-								'remindercount'=>'int',
-								'remindersent'=>'int',
-								'usesleft'=>'int',
-								'validfrom'=>'date',
-								'validuntil'=>'date',
-								'mpid'=>'int',
-								'blacklisted'=>'char',
-								'sent'=>'char',
-								'completed'=>'char'
-								);
-		
-		if (array_key_exists($sparam_name, $validation_categories))
-		{
-			switch($validation_categories[$sparam_name])
-			{
-			case 'char':
-				if(in_array($sparam_value, array('Y','N')))
-					return $sparam_value;
-				else
-					return false;
-				break;
-			
-			case 'int':
-				return filter_var($sparam_value, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>999999999)));
-				break;
-			
-			case 'date':
-				return filter_var($sparam_value, FILTER_VALIDATE_REGEXP,array("options"=>array("regexp"=>$date_pattern)));
-				break;
-
-			case 'email':
-				return filter_var($sparam_value, FILTER_VALIDATE_EMAIL);
-				break;
-							
-			case 'dateformat':
-				return filter_var($sparam_value, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1, "max_range"=>12)));
-				break;
-				
-			case 'numberformat':
-				return filter_var($sparam_value, FILTER_VALIDATE_INT, array("options" => array("min_range"=>0, "max_range"=>1)));
-				break;
-			case 'tmpl':
-				if(array_key_exists($sparam_value,getTemplateList()))
-					return $sparam_value;
-				else
-					return false;
-				break;
-			case 'gsa_format':
-				if(in_array($sparam_value, array('G','S','A')))
-					return $sparam_value;
-				else
-					return false;
-				break;	
-			case 'captcha_format':
-				if(in_array($sparam_value, array('A','B','C','D','X','R','S','N')))
-					return $sparam_value;
-				else
-					return false;
-				break;
-			case 'group_format':
-				if(in_array($sparam_value, array('B','N','D','X')))
-					return $sparam_value;
-				else
-					return false;
-				break;	
-			case 'gnum_format':
-				if(in_array($sparam_value, array('B','N','C','X')))
-					return $sparam_value;
-				else
-					return false;
-				break;	
-			case 'ga_format':
-				return filter_var($sparam_value, FILTER_VALIDATE_INT, array("options" => array("min_range"=>0, "max_range"=>2)));
-				break;																
-			default:
-				return $sparam_value;
-	
-			}
-		}
-		else
-			return $sparam_value;
-	}     
+      
     
 }
