@@ -34,7 +34,7 @@ class tokens extends Survey_Common_Action
 
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
         {
-            die("no permissions"); // TODO Replace
+            die("You do not have permission to view this page"); // TODO Replace
         }
 
         Yii::app()->loadHelper("surveytranslator");
@@ -244,6 +244,12 @@ class tokens extends Survey_Common_Action
     */
     function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
     {
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        {
+            die("You do not have permission to view this page"); // TODO Replace
+        }
+
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -870,6 +876,11 @@ class tokens extends Survey_Common_Action
     */
     function delete($iSurveyId)
     {
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        {
+            die("You do not have permission to view this page"); // TODO Replace
+        }
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -1053,6 +1064,11 @@ class tokens extends Survey_Common_Action
     */
     function managetokenattributes($iSurveyId)
     {
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        {
+            die("You do not have permission to view this page"); // TODO Replace
+        }
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -1183,6 +1199,11 @@ class tokens extends Survey_Common_Action
     */
     function email($iSurveyId, $aTokenIds = null)
     {
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        {
+            die("You do not have permission to view this page"); // TODO Replace
+        }
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -2039,7 +2060,6 @@ class tokens extends Survey_Common_Action
 
                 $this->_renderWrappedTemplate('token', array('tokenbar', 'csvpost'), $aData);
             }
-
         }
         else
         {

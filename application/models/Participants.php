@@ -603,6 +603,12 @@ class Participants extends CActiveRecord
         return $data;
     }
 
+    /**
+    * Returns true if participant_id has ownership or shared rights over this participant false if not
+    *
+    * @param mixed $participant_id
+    * @returns bool true/false
+    */
     function is_owner($participant_id)
     {
         $userid = Yii::app()->session['loginID'];
