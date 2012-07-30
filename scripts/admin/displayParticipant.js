@@ -484,6 +484,7 @@ $(document).ready(function() {
                 /* if it is empty, then no items have been ticked */
                 var rows = myGrid.getGridParam('selarrrow');
 
+                /* Show summary of how many participants will be added to the survey */
                 if(rows=="") {
                     var totalitems = myGrid.getGridParam('records');
                     $('#allinview').text(addAllInViewTxt.replace('%s', totalitems));

@@ -682,12 +682,20 @@ class participantsaction extends Survey_Common_Action
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);  // explode the condition to the array
-
             $query = Participants::model()->getParticipantsSearchMultiple($condition, 0, 0);
 
             foreach ($query as $key => $value)
             {
-                $participantid = $participantid . "," . $value['participant_id']; // combine the participant id's in an string
+                if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
+                {
+                    $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
+                } else
+                {
+                    if(Participants::model()->is_owner($value['participant_id']))
+                    {
+                        $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
+                    }
+                }
             }
             echo $participantid; //echo the participant id's
         }
@@ -1951,10 +1959,15 @@ class participantsaction extends Survey_Common_Action
         $this->_renderWrappedTemplate('participants', 'attributeMapToken', $aData);
     }
 
+    /**
+    * This function deletes the uploaded csv file if the import is cancelled
+    *
+    */
     function mapCSVcancelled()
     {
         unlink(Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath')));
     }
+
 
     function blacklistParticipant()
     {
