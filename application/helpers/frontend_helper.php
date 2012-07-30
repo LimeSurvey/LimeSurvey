@@ -1814,7 +1814,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         $copyFieldMap2 = array();
         foreach ($copyFieldMap as $key=>$val)
         {
-            $q = clone $val['q'];
+            $q = $val['q'];
             if (isset($q->randomgid))
             {
                 if ($q->gid != '' && $q->randomgid != '' && $q->randomgid != $_gid)
@@ -1843,7 +1843,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 $val['questionSeq'] = $qseq; //AJS
                 $q->groupcount = $gseq;
                 $q->questioncount = $qseq;
-                $val['q'] = $q;
             }
             $copyFieldMap2[$key] = $val;
         }

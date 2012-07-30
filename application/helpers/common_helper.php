@@ -1997,38 +1997,46 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $masterFieldmap = Yii::app()->session['fieldmap-' . $surveyid . '-randMaster'];
             $mfieldmap = Yii::app()->session[$masterFieldmap];
 
-            foreach ($mfieldmap as $fieldname => $mf)
+            foreach ($mfieldmap as $fieldname => $mf) //AJS
             {
+                $mq = $mf['q'];
                 if (isset($fieldmap[$fieldname]))
                 {
-                    $f = $fieldmap[$fieldname];
-                    if (isset($f['question']))
+                    $q = $fieldmap[$fieldname]['q'];
+                    if (isset($q->text))
                     {
-                        $mf['question'] = $f['question'];
+                        $mq->text = $q->text;
+                        $mf['question'] = $q->text;
                     }
-                    if (isset($f['subquestion']))
+                    if (isset($q->sq))
                     {
-                        $mf['subquestion'] = $f['subquestion'];
+                        $mq->sq = $q->sq;
+                        $mf['subquestion'] = $q->sq;
                     }
-                    if (isset($f['subquestion1']))
+                    if (isset($q->sq1))
                     {
-                        $mf['subquestion1'] = $f['subquestion1'];
+                        $mq->sq1 = $q->sq1;
+                        $mf['subquestion'] = $q->sq1;
                     }
-                    if (isset($f['subquestion2']))
+                     if (isset($q->sq2))
                     {
-                        $mf['subquestion2'] = $f['subquestion2'];
+                        $mq->sq2 = $q->sq2;
+                        $mf['subquestion2'] = $q->sq2;
                     }
-                    if (isset($f['group_name']))
+                    if (isset($q->groupname))
                     {
-                        $mf['group_name'] = $f['group_name'];
+                        $mq->groupname = $q->groupname;
+                        $mf['group_name'] = $q->groupname;
                     }
-                    if (isset($f['defaultvalue']))
+                    if (isset($q->default))
                     {
-                        $mf['defaultvalue'] = $f['defaultvalue'];
+                        $mq->default = $q->default;
+                        $mf['defaultvalue'] = $q->default;
                     }
-                    if (isset($f['help']))
+                    if (isset($q->help))
                     {
-                        $mf['help'] = $f['help'];
+                        $mq->help = $q->help;
+                        $mf['help'] = $q->help;
                     }
                 }
                 $mfieldmap[$fieldname] = $mf;
@@ -4746,7 +4754,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 continue;
             }
         }
-        $question = $q->question;
+        $question = $q->text;
         $subquestion='';
         if (isset($q->gid) && !empty($q->gid)) {
             //Check to see if gid is the same as before. if not show group name
@@ -4763,7 +4771,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 $oldqid = $q->id;
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) //AJS
                 {
-                    $aResultTable['qid_'.$q->surveyid.'X'.$q->gid.'X'.$q->id]=array($q->question,'','');
+                    $aResultTable['qid_'.$q->surveyid.'X'.$q->gid.'X'.$q->id]=array($q->text,'','');
                 }
                 else
                 {

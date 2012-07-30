@@ -396,9 +396,14 @@ class CheckQuestion extends QuestionModule
             $field['preg']=$this->preg;
             $q = clone $this;
             if(isset($this->defaults) && isset($this->defaults[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->defaults[$abrow['qid']];
+            else
+            {
+                unset($field['defaultvalues']);
+                unset($q->default);
+            }
             $q->fieldname = $fieldname;
             $q->aid=$field['aid'];
-            $q->question=$abrow['question'];
+            $q->text=$abrow['question'];
             $q->sq=$abrow['question'];
             $q->sqid=$abrow['qid'];
             $field['q']=$q;

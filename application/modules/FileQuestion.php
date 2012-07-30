@@ -232,9 +232,10 @@ class FileQuestion extends QuestionModule
         $field2['aid']='filecount';
         $field2['question']="filecount - ".$this->text;
         $q = clone $this;
-        $q->fieldname = $fieldname;
+        $this->maxfiles = $qidattributes['max_num_of_files'];
+        $q->fieldname = $fieldname2;
         $q->aid=$field2['aid'];
-        $q->question=$field2['question'];
+        $q->text=$field2['question'];
         $field2['q']=$q;
         $map[$fieldname]=$field;
         $map[$fieldname2]=$field2;

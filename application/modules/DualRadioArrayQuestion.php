@@ -654,7 +654,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             $field2['scale_id']=1;
             $field2['scale']=$clang->gT('Scale 2');
             $q2 = clone $field['q'];
-            $q2->fieldname = $fieldname;
+            $q2->fieldname = $fieldname2;
             $q2->scale=1;
             $q2->scalename=$clang->gT('Scale 2');
             $field2['q']=$q2;
