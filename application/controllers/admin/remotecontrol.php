@@ -251,17 +251,12 @@ class remotecontrol_handle
 									'format' => $sformat
 									);
 
-				if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-					$xssfilter = true;
-				else
-					$xssfilter = false;
-
 				if (!is_null($iSurveyID))
 					$aInsertData['wishSID'] = $iSurveyID;
 					
 				try 
 				{
-					$iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData, $xssfilter);
+					$iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
 					if (!$iNewSurveyid)
 							return array('status' => 'Creation Failed');
 				   
@@ -277,23 +272,11 @@ class remotecontrol_handle
 					$aInsertData = array(
 						'surveyls_survey_id' => $iNewSurveyid,
 						'surveyls_title' => $sTitle,
-						'surveyls_language' => $sSurveyLanguage,          
-						'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
-						'surveyls_email_invite' => conditionalNewlineToBreak($aDefaultTexts['invitation'], $bIsHTMLEmail, 'unescaped'),
-						'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
-						'surveyls_email_remind' => conditionalNewlineToBreak($aDefaultTexts['reminder'], $bIsHTMLEmail, 'unescaped'),
-						'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
-						'surveyls_email_confirm' => conditionalNewlineToBreak($aDefaultTexts['confirmation'], $bIsHTMLEmail, 'unescaped'),
-						'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
-						'surveyls_email_register' => conditionalNewlineToBreak($aDefaultTexts['registration'], $bIsHTMLEmail, 'unescaped'),
-						'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
-						'email_admin_notification' => conditionalNewlineToBreak($aDefaultTexts['admin_notification'], $bIsHTMLEmail, 'unescaped'),
-						'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
-						'email_admin_responses' => $aDefaultTexts['admin_detailed_notification']
+						'surveyls_language' => $sSurveyLanguage,
 						);
 					
 					$langsettings = new Surveys_languagesettings;
-					$langsettings->insertNewSurvey($aInsertData, $xssfilter);
+					$langsettings->insertNewSurvey($aInsertData);
 					Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
 					return 	$iNewSurveyid;	
