@@ -519,6 +519,46 @@ class ListQuestion extends QuestionModule
         return array_key_exists('other_numbers_only', $attributes) && $attributes['numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
     }
 
+    public function generateQuestionInfo($type)
+    {
+        $q2subq = array(
+            'qid' => $this->id,
+            'qseq' => $this->questioncount,
+            'gseq' => $this->groupcount,
+            'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+            'mandatory'=>$this->mandatory,
+            'varName' => $this->getVarName(),
+            'type' => $type,
+            'fieldname' => $q->fieldname,
+            'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
+            'rootVarName' => $this->title,
+            'subqs' => array()
+            );
+    }
+
+    public function generateSQInfo($ansArray)
+    {
+        $SQs = array();
+        if (!is_null($ansArray))
+        {
+            foreach (array_keys($ansArray) as $key)
+            {
+                $parts = explode('~',$key);
+                if ($parts[1] == '-oth-') {
+                    $parts[1] = 'other';
+                }
+                $SQs[] = array(
+                'rowdivid' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id . $parts[1],
+                'varName' => $this->getVarName,
+                'sqsuffix' => '_' . $parts[1],
+                );
+            }
+            return $SQs;
+        } else {
+            return array();
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","array_filter","array_filter_exclude","array_filter_style","display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style");

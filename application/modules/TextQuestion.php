@@ -27,5 +27,32 @@ abstract class TextQuestion extends QuestionModule
         }
         return false;
     }
+
+    public function generateQuestionInfo($type)
+    {
+        return array(
+            'qid' => $this->id,
+            'qseq' => $this->questioncount,
+            'gseq' => $this->groupcount,
+            'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+            'mandatory'=>$this->mandatory,
+            'varName' => $this->getVarName(),
+            'type' => $type,
+            'fieldname' => $q->fieldname,
+            'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
+            'rootVarName' => $this->title,
+            'subqs' => array()
+            );
+    }
+    
+    public function generateSQInfo($ansArray)
+    {
+        return array(
+            'varName' => $this->getVarName(),
+            'rowdivid' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+            'jsVarName' => 'java' . $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+            'jsVarName_on' => $this->jsVarNameOn(),
+            );
+    }
 }
 ?>

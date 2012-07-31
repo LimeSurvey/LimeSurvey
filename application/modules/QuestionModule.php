@@ -323,6 +323,45 @@ abstract class QuestionModule
         return null;
     }
 
+    public function generateQuestionInfo($type)
+    {
+        if (!is_null($this->rowdivid) || (isset($this->preg) && trim($this->preg) != ''))
+        {
+            return array(
+                'qid' => $this->id,
+                'qseq' => $this->questioncount,
+                'gseq' => $this->groupcount,
+                'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+                'mandatory'=>$this->mandatory,
+                'varName' => $this->getVarName(),
+                'type' => $type,
+                'fieldname' => $q->fieldname,
+                'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
+                'rootVarName' => $this->title,
+                'subqs' => array()
+                );
+        } else {
+            return null;
+        }
+    }
+
+    public function generateSQInfo($ansArray)
+    {
+        if (!is_null($this->getRowdivid()) || (isset($this->preg) && trim($this->preg) != ''))
+        {
+            return array(
+                'rowdivid' => $this->getRowDivID,
+                'varName' => $this->getVarName,
+                'jsVarName_on' => $this->jsVarNameOn(),
+                'jsVarName' => $this->jsVarName(),
+                'csuffix' => $this->getCsuffix,
+                'sqsuffix' => $this->getSqsuffix,
+                );
+        } else {
+            return array();
+        }
+    }
+
     abstract public function availableAttributes($attr = false);
     abstract public function questionProperties($prop = false);
 }
