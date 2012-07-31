@@ -132,6 +132,35 @@ class NumericalQuestion extends QuestionModule
         return true;
     }
 
+    public function generateQuestionInfo($type)
+    {
+        return array(
+            'q' => $this,
+            'qid' => $this->id,
+            'qseq' => $this->questioncount,
+            'gseq' => $this->groupcount,
+            'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+            'mandatory'=>$this->mandatory,
+            'varName' => $this->getVarName(),
+            'type' => $type,
+            'fieldname' => $q->fieldname,
+            'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
+            'rootVarName' => $this->title,
+            'subqs' => array()
+            );
+    }
+
+    public function generateSQInfo($ansArray)
+    {
+        return array(
+            'q' => $this,
+            'varName' => $this->getVarName(),
+            'rowdivid' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+            'jsVarName' => 'java' . $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+            'jsVarName_on' => $this->jsVarNameOn(),
+            );
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_num_value_n","maximum_chars","min_num_value_n","num_value_int_only","page_break","prefix","public_statistics","suffix","text_input_width","random_group");

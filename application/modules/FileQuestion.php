@@ -329,6 +329,37 @@ class FileQuestion extends QuestionModule
         return $this->fieldname;
     }
 
+    public function generateQuestionInfo($type)
+    {
+        return array(
+            'q' => $this,
+            'qid' => $this->id,
+            'qseq' => $this->questioncount,
+            'gseq' => $this->groupcount,
+            'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
+            'mandatory'=>$this->mandatory,
+            'varName' => $this->getVarName(),
+            'type' => $type,
+            'fieldname' => $q->fieldname,
+            'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
+            'rootVarName' => $this->title,
+            'subqs' => array()
+            );
+    }
+
+    public function generateSQInfo($ansArray)
+    {
+        return array(
+            'q' => $this,
+            'rowdivid' => $this->getRowDivID,
+            'varName' => $this->getVarName,
+            'jsVarName_on' => $this->jsVarNameOn(),
+            'jsVarName' => $this->jsVarName(),
+            'csuffix' => $this->getCsuffix,
+            'sqsuffix' => $this->getSqsuffix,
+            );
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","show_title","show_comment","max_filesize","max_num_of_files","min_num_of_files","allowed_filetypes","random_group");

@@ -1203,26 +1203,6 @@
                                                 $afe_names[] = '(' . implode(' and ', $fsqs) . ')';
                                             }
                                         }
-//                                    }
-//                                    else  // TODO - implement qcode naming for this
-//                                    {
-//                                        foreach ($cascadedAF as $_caf)
-//                                        {
-//                                            $sgq = $_caf . $sq['sqsuffix'];
-//                                            if (isset($this->knownVars[$sgq]))
-//                                            {
-//                                                $af_names[] = $sgq . '.NAOK';
-//                                            }
-//                                        }
-//                                        foreach ($cascadedAFE as $_cafe)
-//                                        {
-//                                            $sgq = $_cafe . $sq['sqsuffix'];
-//                                            if (isset($this->knownVars[$sgq]))
-//                                            {
-//                                                $afe_names[] = $sgq . '.NAOK';
-//                                            }
-//                                        }
-//                                    }
                                     break;
                                 default:
                                     break;
@@ -2841,46 +2821,42 @@
                     continue;   // not an SGQA value
                 }
                 $type = $fielddata['type'];
-                $mandatory = $q->mandatory;
+                $q->mandatory = $q->mandatory;
                 $fieldNameParts = explode('X',$q->fieldname);
-                $groupNum = $fieldNameParts[1];
-                $aid = (isset($q->aid) ? $q->aid : '');
-                $sqid = (isset($q->sqid) ? $q->sqid : '');
+                $q->aid = (isset($q->aid) ? $q->aid : '');
+                $q->sqid = (isset($q->sqid) ? $q->sqid : '');
 
-                $questionId = $fieldNameParts[2];
-                $relevance = (isset($q->relevance)) ? $q->relevance : 1;
+                $q->relevance = (isset($q->relevance)) ? $q->relevance : 1;
                 $grelevance = (isset($q->grelevance)) ? $q->grelevance : 1;
                 $hidden = (isset($qattr[$q->id]['hidden'])) ? ($qattr[$q->id]['hidden'] == '1') : false;
-                $scale_id = (isset($q->scale)) ? $q->scale : '0';
-                $preg = (isset($q->preg) && trim($preg) != '') ? $q->preg : NULL; // a perl regular exrpession validation function
-                $defaultValue = (isset($q->default) ? $q->default : NULL);
-                $help = (isset($q->help)) ? $q->help: '';
-                $other = (isset($q->other)) ? $q->other : '';
+                $q->scale = (isset($q->scale)) ? $q->scale : '0';
+                $q->default = (isset($q->default) ? $q->default : NULL);
+                $q->other = (isset($q->other)) ? $q->other : '';
 
                 if (isset($this->questionId2groupSeq[$q->id])) {
-                    $groupSeq = $this->questionId2groupSeq[$q->id];
+                    $q->groupcount = $this->questionId2groupSeq[$q->id];
                 }
                 else {
-                    $groupSeq = (isset($q->groupcount)) ? $q->groupcount : -1;
-                    $this->questionId2groupSeq[$q->id] = $groupSeq;
+                    $q->groupcount = (isset($q->groupcount)) ? $q->groupcount : -1;
+                    $this->questionId2groupSeq[$q->id] = $q->groupcount;
                 }
 
                 if (isset($this->questionId2questionSeq[$q->id])) {
-                    $questionSeq = $this->questionId2questionSeq[$q->id];
+                    $q->questioncount = $this->questionId2questionSeq[$q->id];
                 }
                 else {
-                    $questionSeq = (isset($q->questioncount)) ? $q->questioncount : -1;
-                    $this->questionId2questionSeq[$q->id] = $questionSeq;
+                    $q->questioncount = (isset($q->questioncount)) ? $q->questioncount : -1;
+                    $this->questionId2questionSeq[$q->id] = $q->questioncount;
                 }
 
-                if (!isset($this->groupSeqInfo[$groupSeq])) {
-                    $this->groupSeqInfo[$groupSeq] = array(
-                    'qstart' => $questionSeq,
-                    'qend' => $questionSeq,
+                if (!isset($this->groupSeqInfo[$q->groupcount])) {
+                    $this->groupSeqInfo[$q->groupcount] = array(
+                    'qstart' => $q->questioncount,
+                    'qend' => $q->questioncount,
                     );
                 }
                 else {
-                    $this->groupSeqInfo[$groupSeq]['qend'] = $questionSeq;  // with each question, update so know ending value
+                    $this->groupSeqInfo[$q->groupcount]['qend'] = $q->questioncount;  // with each question, update so know ending value
                 }
 
 
@@ -2928,66 +2904,16 @@
                 // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
                 $jsVarName_on = $q->jsVarNameOn();
                 $jsVarName = $q->jsVarName();
-
-                if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
-                || $type == 'S' || $type == 'T' || $type == 'U' || $type == '|') {
-                    if (!isset($q2subqInfo[$q->id])) {
-                        $q2subqInfo[$q->id] = array(
-                        'qid' => $q->id,
-                        'qseq' => $questionSeq,
-                        'gseq' => $groupSeq,
-                        'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $q->id,
-                        'mandatory'=>$mandatory,
-                        'varName' => $varName,
-                        'type' => $type,
-                        'fieldname' => $q->fieldname,
-                        'preg' => $preg,
-                        'rootVarName' => $q->title,
-                        );
-                    }
-                    if (!isset($q2subqInfo[$q->id]['subqs'])) {
-                        $q2subqInfo[$q->id]['subqs'] = array();
-                    }
-                    if ($type == 'L' || $type == '!')
-                    {
-                        if (!is_null($ansArray))
-                        {
-                            foreach (array_keys($ansArray) as $key)
-                            {
-                                $parts = explode('~',$key);
-                                if ($parts[1] == '-oth-') {
-                                    $parts[1] = 'other';
-                                }
-                                $q2subqInfo[$q->id]['subqs'][] = array(
-                                'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $q->id . $parts[1],
-                                'varName' => $varName,
-                                'sqsuffix' => '_' . $parts[1],
-                                );
-                            }
-                        }
-                    }
-                    else if ($type == 'N'
-                        || $type == 'S' || $type == 'T' || $type == 'U')    // for $preg
-                        {
-                            $q2subqInfo[$q->id]['subqs'][] = array(
-                            'varName' => $varName,
-                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $q->id,
-                            'jsVarName' => 'java' . $surveyid . 'X' . $groupNum . 'X' . $q->id,
-                            'jsVarName_on' => $jsVarName_on,
-                            );
-                        }
-                        else
-                        {
-                            $q2subqInfo[$q->id]['subqs'][] = array(
-                            'rowdivid' => $rowdivid,
-                            'varName' => $varName,
-                            'jsVarName_on' => $jsVarName_on,
-                            'jsVarName' => $jsVarName,
-                            'csuffix' => $csuffix,
-                            'sqsuffix' => $sqsuffix,
-                            );
-                    }
+                
+                $qInfo = $q->generateQuestionInfo($type);
+                if (!isset($q2subqInfo[$q->id]) && !is_null($qInfo)) {
+                    $q2subqInfo[$q->id] = $qInfo;
                 }
+                $sqInfo = $q->generateSQInfo($type);
+                if (!is_null($sqInfo)) {
+                    $q2subqInfo[$q->id]['subqs'][] = $sqInfo;
+                }
+                $q2subqInfo[$q->id]['subqs'] = array_merge($q2subqInfo[$q->id], $q->generateSQInfo($ansArray));
 
                 $ansList = '';
                 if (isset($ansArray) && !is_null($ansArray)) {
@@ -3006,53 +2932,53 @@
                 'hidden'=>$hidden,
                 'question'=>$question,
                 'qid'=>$q->id,
-                'gid'=>$groupNum,
+                'gid'=>$q->gid,
                 'grelevance'=>$grelevance,
-                'relevance'=>$relevance,
+                'relevance'=>$q->relevance,
                 'qcode'=>$varName,
-                'qseq'=>$questionSeq,
-                'gseq'=>$groupSeq,
+                'qseq'=>$q->questioncount,
+                'gseq'=>$q->groupcount,
                 'type'=>$type,
                 'sgqa'=>$q->fieldname,
                 'ansList'=>$ansList,
                 'ansArray'=>$ansArray,
-                'scale_id'=>$scale_id,
-                'default'=>$defaultValue,
+                'scale_id'=>$q->scale,
+                'default'=>$q->default,
                 'rootVarName'=>$q->title,
                 'subqtext'=>$subqtext,
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
                 'onlynum'=>$onlynum,
                 );
 
-                $this->questionSeq2relevance[$questionSeq] = array(
-                'relevance'=>$relevance,
+                $this->questionSeq2relevance[$q->questioncount] = array(
+                'relevance'=>$q->relevance,
                 'grelevance'=>$grelevance,
                 'qid'=>$q->id,
-                'qseq'=>$questionSeq,
-                'gseq'=>$groupSeq,
+                'qseq'=>$q->questioncount,
+                'gseq'=>$q->groupcount,
                 'jsResultVar_on'=>$jsVarName_on,
                 'jsResultVar'=>$jsVarName,
                 'type'=>$type,
                 'hidden'=>$hidden,
-                'gid'=>$groupNum,
-                'mandatory'=>$mandatory,
+                'gid'=>$q->gid,
+                'mandatory'=>$q->mandatory,
                 'eqn'=>(($type == '*') ? $question : ''),
-                'help'=>$help,
+                'help'=>$q->help,
                 'qtext'=>$q->text,    // $question,
                 'code'=>$varName,
-                'other'=>$other,
-                'default'=>$defaultValue,
+                'other'=>$q->other,
+                'default'=>$q->default,
                 'rootVarName'=>$q->title,
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
-                'aid'=>$aid,
-                'sqid'=>$sqid,
+                'aid'=>$q->aid,
+                'sqid'=>$q->sqid,
                 );
 
                 $this->knownVars[$q->fieldname] = $varInfo_Code;
                 $this->qcode2sgqa[$varName]=$q->fieldname;
 
                 $this->jsVar2qid[$jsVarName] = $q->id;
-                $this->qcode2sgq[$q->title] = $surveyid . 'X' . $groupNum . 'X' . $q->id;
+                $this->qcode2sgq[$q->title] = $surveyid . 'X' . $q->gid . 'X' . $q->id;
 
                 // Create JavaScript arrays
                 $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
@@ -3063,8 +2989,8 @@
                 . "','jsName_on':'" . $jsVarName_on
                 . "','sgqa':'" . $q->fieldname
                 . "','qid':" . $q->id
-                . ",'gid':" . $groupNum
-                //                . ",'mandatory':'" . $mandatory
+                . ",'gid':" . $q->gid
+                //                . ",'mandatory':'" . $q->mandatory
                 //                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
                 . ",'type':'" . $type
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
@@ -3073,8 +2999,8 @@
                 . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
-                . "','gseq':" . $groupSeq
-                //                . ",'qseq':" . $questionSeq
+                . "','gseq':" . $q->groupcount
+                //                . ",'qseq':" . $q->questioncount
                 .$ansList;
 
                 if ($type == 'M' || $type == 'P')

@@ -243,6 +243,16 @@ class CommentListQuestion extends ListQuestion
         }
     }
 
+    public function generateQuestionInfo($type)
+    {
+        return QuestionModule::generateQuestionInfo($type);
+    }
+
+    public function generateSQInfo($ansArray)
+    {
+        return QuestionModule::generateSQInfo($ansArray);
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
