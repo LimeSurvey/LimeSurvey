@@ -368,8 +368,8 @@ class remotecontrol_handle
 		Yii::app()->loadHelper("surveytranslator");
        if ($this->_checkSessionKey($sSessionKey))
        { 
-			$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
-			if (!isset($surveyidExists))
+			$oSurvey = Survey::model()->findByPk($iSurveyID);		   
+			if (!isset($oSurvey))
 			{
 				return array('status' => 'Error: Invalid survey ID');
 			}		   
@@ -377,20 +377,13 @@ class remotecontrol_handle
 				{
 					$aBasicDestinationFields=Survey::model()->tableSchema->columnNames;
 					$aSurveySettings=array_intersect($aSurveySettings,$aBasicDestinationFields);
-					
-					$aBasicAttributes = Survey::model()->findByPk($iSurveyID)->getAttributes();
-					
-					$aResult = array();
-					
+
 					if (empty($aSurveySettings))	
-					return array('status' => 'No valid Data');					
-					
+						return array('status' => 'No valid Data');					
+					$aResult = array();					
 					foreach($aSurveySettings as $sPropertyName)
 					{
-						if (isset($aBasicAttributes[$sPropertyName]))
-							$aResult[$sPropertyName]=$aBasicAttributes[$sPropertyName];
-						else
-							$aResult[$sPropertyName]='Not available';
+						$aResult[$sPropertyName]=$oSurvey->$sPropertyName;	
 					}
 					return $aResult;
 				}
@@ -429,8 +422,9 @@ class remotecontrol_handle
                 $aDestinationFields=array_flip(Survey::model()->tableSchema->columnNames);
                 $aSurveyData=array_intersect_key($aSurveyData,$aDestinationFields);
                 $oSurvey=Survey::model()->findByPk($iSurveyID);
-                $aSucceded = array();
-                $aFailed = array();
+                $aBasicAttributes = $oSurvey->getAttributes();
+                $aResult = array();
+
                 if ($oSurvey->active=='Y')
                 {
                     // remove all fields that may not be changed when a survey is active
@@ -439,7 +433,6 @@ class remotecontrol_handle
                     unset($aSurveyData['savetimings']);
                     unset($aSurveyData['ipaddr']);
                     unset($aSurveyData['refurl']);
-
                 }
                 
 				if (empty($aSurveyData))	
@@ -447,21 +440,22 @@ class remotecontrol_handle
                                 
                 foreach($aSurveyData as $sFieldName=>$sValue)
                 {
-
-						$oSurvey->$sFieldName=$sValue;
-						$aSucceded[$sFieldName]=$sValue;						
-
+					$oSurvey->$sFieldName=$sValue;		
+					try
+					{	
+						$bSaveResult=$oSurvey->save(); // save the change to database
+						//unset the value if it fails, so as to prevent future fails
+						$aResult[$sFieldName]=$bSaveResult;
+						if (!$bSaveResult)
+							$oSurvey->$sFieldName=$aBasicAttributes[$sFieldName];
+					}
+					catch(Exception $e)
+					{
+						//unset the value that caused the exception
+						$oSurvey->$sFieldName=$aBasicAttributes[$sFieldName];
+					}
                 }
-                try
-                {
-                    $oSurvey->save(); // save the change to database
-                    $aResult = array('succeded'=>$aSucceded,'failed'=>$aFailed);
-                    return $aResult;
-                }
-                catch(Exception $e)
-                {
-                    return array('status' => 'Error');
-                }
+                return $aResult;
             }
             else
                 return array('status' => 'No permission');
@@ -844,24 +838,21 @@ class remotecontrol_handle
 		Yii::app()->loadHelper("surveytranslator");
        if ($this->_checkSessionKey($sSessionKey))
        { 
-			$surveyidExists = Survey::model()->findByPk($iSurveyID);		   
-			if (!isset($surveyidExists))
+			$oSurvey = Survey::model()->findByPk($iSurveyID);		   
+			if (!isset($oSurvey))
 			{
 				return array('status' => 'Error: Invalid survey ID');
 			}		   
 			if (hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
 				{
 					$aBasicDestinationFields=Surveys_languagesettings::model()->tableSchema->columnNames;
-
 					$aSurveyLocaleSettings=array_intersect($aSurveyLocaleSettings,$aBasicDestinationFields);
 					
-					$aBasicAttributes = Survey::model()->findByPk($iSurveyID)->getAttributes();
-					
 					if ($sLang == NULL || !array_key_exists($sLang,getLanguageDataRestricted()))
-						$sLang = $aBasicAttributes['language'];
+						$sLang = $oSurvey->language;
 
-					$aLangAttributes = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();	
-
+					
+					$oSurveyLocale=Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang));	
 					$aResult = array();
 					
 					if (empty($aSurveyLocaleSettings))	
@@ -869,10 +860,8 @@ class remotecontrol_handle
 					
 					foreach($aSurveyLocaleSettings as $sPropertyName)
 					{
-						if (isset($aLangAttributes[$sPropertyName]))
-							$aResult[$sPropertyName]=$aLangAttributes[$sPropertyName];
-						else
-							$aResult[$sPropertyName]='Not available';
+							$aResult[$sPropertyName]=$oSurveyLocale->$sPropertyName;					
+						//$aResult[$sPropertyName]=$aLangAttributes[$sPropertyName];
 					}
 					return $aResult;
 				}
@@ -923,29 +912,31 @@ class remotecontrol_handle
 
                 $aSurveyLocaleData=array_intersect_key($aSurveyLocaleData,$aDestinationFields);
                 $oSurveyLocale = Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
-                $aSucceded = array();
-                $aFailed = array();
+                
+                $aLangAttributes = $oSurveyLocale->getAttributes();	
+                $aResult = array();
                 
                 if (empty($aSurveyLocaleData))	
 					return array('status' => 'No valid Data');                
 
                 foreach($aSurveyLocaleData as $sFieldName=>$sValue)
                 {
-
-						$oSurveyLocale->$sFieldName=$sValue;
-						$aSucceded[$sFieldName]=$sValue;						
-
+					$oSurveyLocale->$sFieldName=$sValue;
+					try
+					{
+						// save the change to database - Every single change alone - to allow for validation to work 
+						$bSaveResult=$oSurveyLocale->save();  
+						$aResult[$sFieldName]=$bSaveResult;
+						//unset failed values
+						if (!$bSaveResult)
+							$oSurveyLocale->$sFieldName=$aLangAttributes[$sFieldName];
+					}
+					catch(Exception $e)
+					{
+						$oSurveyLocale->$sFieldName=$aLangAttributes[$sFieldName];
+					}
                 }
-                try
-                {
-                    $oSurveyLocale->save(); // save the change to database
-                    $aResult = array('succeded'=>$aSucceded,'failed'=>$aFailed);
-                    return $aResult;
-                }
-                catch(Exception $e)
-                {
-                    return array('status' => 'Error');
-                }
+                return $aResult;
             }
             else
                 return array('status' => 'No permission');
@@ -1152,18 +1143,13 @@ class remotecontrol_handle
 			$aGroupSettings=array_intersect($aGroupSettings,$aBasicDestinationFields);
 				   
 			if (hasSurveyPermission($oGroup->sid, 'survey', 'read'))
-			{		
-                $aBasicAttributes = $oGroup ->getAttributes();
-                
+			{		    
 				if (empty($aGroupSettings))	
 					return array('status' => 'No valid Data');                 
                 
                 foreach($aGroupSettings as $sGroupSetting)
                 {
-					if (isset($aBasicAttributes[$sGroupSetting]))
-						$aResult[$sGroupSetting]=$aBasicAttributes[$sGroupSetting];
-					else
-						$aResult[$sGroupSetting]='Data not available';	
+					$aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
 				}
                 return $aResult;						
 			}
@@ -1195,21 +1181,19 @@ class remotecontrol_handle
             }
             if (hasSurveyPermission($oGroup->sid, 'survey', 'update'))
             {
-                $aSucceded = array();
-                $aFailed = array();      
+                $aResult = array();     
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
                 unset($aGroupData['gid']);
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Groups::model()->tableSchema->columnNames);
                 $aGroupData=array_intersect_key($aGroupData,$aDestinationFields);
-				
+				$aGroupAttributes = $oGroup->getAttributes();	
 				if (empty($aGroupData))	
 					return array('status' => 'No valid Data');
 					
                 foreach($aGroupData as $sFieldName=>$sValue)
                 {
-
 						//all dependencies this group has 
 						$has_dependencies=getGroupDepsForConditions($oGroup->sid,$iGroupID);
 						//all dependencies on this group 
@@ -1220,22 +1204,25 @@ class remotecontrol_handle
 							$aFailed[$sFieldName]='Group with dependencies - Order cannot be changed';
 						else
 						{
-							$oGroup->setAttribute($sFieldName,$sValue);
-							$aSucceded[$sFieldName]=$sValue;	
-						}					
-
+							$oGroup->setAttribute($sFieldName,$sValue);	
+						}
+						try
+						{
+							// save the change to database - one by one to allow for validation to work
+							$bSaveResult=$oGroup->save(); 
+							fixSortOrderGroups($oGroup->sid);
+							$aResult[$sFieldName] = $bSaveResult;
+							//unset failed values
+							if (!$bSaveResult)
+								$oGroup->$sFieldName=$aGroupAttributes[$sFieldName];
+						}
+						catch(Exception $e)
+						{
+							//unset values that cause exception
+							$oGroup->$sFieldName=$aGroupAttributes[$sFieldName];
+						}							
                 }
-                try
-                {
-                    $oGroup->save(); // save the change to database
-                    fixSortOrderGroups($oGroup->sid);
-                    $aResult = array('succeded'=>$aSucceded,'failed'=>$aFailed);
-                    return $aResult;
-                }
-                catch(Exception $e)
-                {
-                    return array('status' => 'Error');
-                }
+                return $aResult;
             }
             else
                 return array('status' => 'No permission');
@@ -1475,8 +1462,7 @@ class remotecontrol_handle
 			   	return array('status' => 'No valid Data');   
 			   	
 			if (hasSurveyPermission($oQuestion->sid, 'survey', 'read'))
-			{		
-                $aBasicAttributes = $oQuestion->getAttributes();  
+			{		  
                 $aResult=array();
                 foreach ($aQuestionSettings as $sPropertyName )
                 {
@@ -1494,12 +1480,8 @@ class remotecontrol_handle
 							$aResult['available_answers']='No available answers';
 					}
 					else
-					{					
-					if (isset($aBasicAttributes[$sPropertyName]))
-						$aResult[$sPropertyName]=$aBasicAttributes[$sPropertyName];
-					else
-						$aResult[$sPropertyName]='Data not available';
-					
+					{	
+							$aResult[$sPropertyName]=$oQuestion->$sPropertyName;
 					}
 				}
                 return $aResult;				
@@ -1529,9 +1511,7 @@ class remotecontrol_handle
                 return array('status' => 'Error: Invalid group ID');
 
             if (hasSurveyPermission($oQuestion->sid, 'survey', 'update'))
-            {
-                $aSucceded = array();
-                $aFailed = array();      
+            {    
                 // Remove fields that may not be modified
                 unset($aQuestionData['qid']);
                 unset($aQuestionData['gid']);
@@ -1542,6 +1522,7 @@ class remotecontrol_handle
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Questions::model()->tableSchema->columnNames);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
+                $aQuestionAttributes = $oQuestion->getAttributes();
 				
 				if (empty($aQuestionData))	
 					return array('status' => 'No valid Data');   
@@ -1560,21 +1541,24 @@ class remotecontrol_handle
 						else
 						{
 							$oQuestion->setAttribute($sFieldName,$sValue);
-							$aSucceded[$sFieldName]=$sValue;	
-						}					
-
+						}
+							
+						try
+						{
+							$bSaveResult=$oQuestion->save(); // save the change to database
+							fixSortOrderQuestions($oQuestion->gid, $oQuestion->sid);
+							$aResult[$sFieldName]=$bSaveResult;
+							//unset fields that failed
+							if (!$bSaveResult)
+								$oQuestion->$sFieldName=$aQuestionAttributes[$sFieldName];
+						}
+						catch(Exception $e)
+						{
+							//unset fields that caused exception
+							$oQuestion->$sFieldName=$aQuestionAttributes[$sFieldName];
+						}						
                 }
-                try
-                {
-                    $oQuestion->save(); // save the change to database
-                    fixSortOrderQuestions($oQuestion->gid, $oQuestion->sid);
-                    $aResult = array('succeded'=>$aSucceded,'failed'=>$aFailed);
-                    return $aResult;
-                }
-                catch(Exception $e)
-                {
-                    return array('status' => 'Error');
-                }
+                return $aResult;
             }
             else
                 return array('status' => 'No permission');
@@ -1776,17 +1760,13 @@ class remotecontrol_handle
                 $aResult=array();
                 $aBasicDestinationFields=Tokens_dynamic::model()->tableSchema->columnNames;	
                 $aTokenProperties=array_intersect($aTokenProperties,$aBasicDestinationFields);     
-				$aBasicAttributes = $oToken->getAttributes();   
 				  
 				if (empty($aTokenProperties))	
 					return array('status' => 'No valid Data'); 
 									  
                 foreach($aTokenProperties as $sPropertyName )
                 {       				
-					if (isset($aBasicAttributes[$sPropertyName]))
-						$aResult[$sPropertyName]=$aBasicAttributes[$sPropertyName];
-					else
-						$aResult[$sPropertyName]='Data not available';
+					$aResult[$sPropertyName]=$oToken->$sPropertyName;
 				}
 				return $aResult;				
 			}
@@ -1824,13 +1804,13 @@ class remotecontrol_handle
 			if (!isset($oToken))
 				return array('status' => 'Error: Invalid tokenid');
 							
-			$aSucceded = array();
-			$aFailed = array();      
+			$aResult = array();
 			// Remove fields that may not be modified
 			unset($aTokenData['tid']);
 			
 			$aBasicDestinationFields=array_flip(Tokens_dynamic::model()->tableSchema->columnNames);	
             $aTokenData=array_intersect_key($aTokenData,$aBasicDestinationFields);     
+			$aTokenAttributes = $oToken->getAttributes();
 
 			if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
 			{		             
@@ -1839,19 +1819,21 @@ class remotecontrol_handle
 					               
                foreach($aTokenData as $sFieldName=>$sValue)
                {
-						$oToken->$sFieldName=$sValue;
-						$aSucceded[$sFieldName]=$sValue;						   
+					$oToken->$sFieldName=$sValue;
+				   try
+				   {
+						$bSaveResult=$oToken->save(); 
+						$aResult[$sFieldName]=$bSaveResult;
+						//unset fields that failed
+						if (!$bSaveResult)
+							$oToken->$sFieldName=$aTokenAttributes[$sFieldName];
+				   }
+				   catch(Exception $e)
+				   {
+						$oToken->$sFieldName=$aTokenAttributes[$sFieldName];
+				   }
 			   }
-               try
-               {
-                    $oToken->save(); 
-                    $result = array('succeded'=>$aSucceded,'failed'=>$aFailed);
-                    return $result;
-               }
-               catch(Exception $e)
-               {
-                    return array('status' => 'Error');
-               }			   		
+			   	return $aResult;	
 			}
 			else
 				return array('status' => 'No permission');  	   
