@@ -12,7 +12,6 @@ class RankingQuestion extends QuestionModule
         $checkconditionFunction = "checkconditions";
 
         $aQuestionAttributes = $this->getAttributeValues();
-        var_dump($aQuestionAttributes);
         $answers = $this->getAnswers();
         $anscount = count($answers);
         if (trim($aQuestionAttributes["max_answers"])!='')

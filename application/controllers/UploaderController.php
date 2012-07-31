@@ -70,7 +70,6 @@ class UploaderController extends AdminController {
 			       $_SESSION[$sFieldname] = ls_json_encode($aFiles);
 			    }
 			}
-			//var_dump($sFileDir.$sFilename);
 		    if (@unlink($sFileDir.$sFilename))
 		    {
 		       echo sprintf($clang->gT('File %s deleted'), $sOriginalFileName);

@@ -2833,7 +2833,6 @@
             $now = microtime(true);
 
             $q2subqInfo = array();
-//var_dump($fieldmap);
             foreach($fieldmap as $fielddata)
             {
                 $q = $fielddata['q'];
