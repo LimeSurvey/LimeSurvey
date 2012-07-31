@@ -1642,7 +1642,7 @@ class remotecontrol_handle
 
 
     /**
-    * RPC Routine to add a participant to the tokens placeholder of the survey.
+    * RPC Routine to add participants to the tokens collection of the survey.
     * Returns the inserted data including additional new information like the Token entry ID and the token string.
     *
     * @access public
@@ -1916,7 +1916,7 @@ class remotecontrol_handle
 	}
 
     /**
-    * RPC routine to to initialise the survey's placeholder where new participant tokens may be later added.
+    * RPC routine to to initialise the survey's collection of tokens where new participant tokens may be later added.
     *
     * @access public
     * @param string $sSessionKey Auth credentials
