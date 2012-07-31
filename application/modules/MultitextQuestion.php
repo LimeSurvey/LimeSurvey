@@ -137,7 +137,7 @@ class MultitextQuestion extends QuestionModule
                 {
                     $myfname = $this->fieldname.$ansrow['title'];
                     if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
-                    
+
                     // color code missing mandatory questions red
                     if ($this->mandatory=='Y' && (($_SESSION['survey_'.$this->surveyid]['step'] == $_SESSION['survey_'.$this->surveyid]['prevstep'])
                             || ($_SESSION['survey_'.$this->surveyid]['maxstep'] > $_SESSION['survey_'.$this->surveyid]['step']))
@@ -201,7 +201,7 @@ class MultitextQuestion extends QuestionModule
         }
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
-    
+
     public function createFieldmap($type=null)
     {
         $map = array();
@@ -238,12 +238,43 @@ class MultitextQuestion extends QuestionModule
         }
         return $map;
     }
-    
+
     public function getDBField()
     {
         return 'text';
     }
-    
+
+    public function onlyNumeric()
+    {
+        $attributes = $this->getAttributeValues();
+        return array_key_exists('numbers_only', $attributes) && $attributes['numbers_only'] == 1;
+    }
+
+    public function getCsuffix()
+    {
+        return $this->aid;
+    }
+
+    public function getSqsuffix()
+    {
+        return '_' . $this->aid;
+    }
+
+    public function getVarName()
+    {
+        return $this->title . '_' . $this->aid;
+    }
+
+    public function getQuestion()
+    {
+        return $this->sq;
+    }
+
+    public function getRowDivID()
+    {
+        return $this->fieldname;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");

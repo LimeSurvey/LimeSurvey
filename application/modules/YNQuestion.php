@@ -59,7 +59,7 @@ class YNQuestion extends QuestionModule
         ."\t</select>\n";
         return $output;
     }
-  
+
     public function getExtendedAnswer($value, $language)
     {
         switch($value)
@@ -69,17 +69,17 @@ class YNQuestion extends QuestionModule
             default: return $language->gT("No answer")." [$value]";
         }
     }
-    
+
     public function getQuotaValue($value)
     {
         return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
     }
-    
+
     public function getDBField()
     {
         return 'VARCHAR(1)';
     }
-    
+
     public function transformResponseValues($value, $options)
     {
         if ($value == 'N' && $options->convertN)
@@ -94,7 +94,7 @@ class YNQuestion extends QuestionModule
         }
         return parent::transformResponseValues($value, $options);
     }
-    
+
     public function getFullAnswer($answerCode, $export, $survey)
     {
         switch ($answerCode)
@@ -107,14 +107,14 @@ class YNQuestion extends QuestionModule
                 return $export->translator->translate('N/A', $export->languageCode);
         }
     }
-    
+
     public function getSPSSAnswers()
     {
         $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
         $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
         return $answers;
     }
-    
+
     public function getSPSSData($data, $iLength, $na)
     {
         if ($data == 'Y')
@@ -126,13 +126,18 @@ class YNQuestion extends QuestionModule
             return $na;
         }
     }
-    
+
     public function getAnswerArray($em)
     {
         $clang = Yii::app()->lang;
         return array('Y' => $clang->gT("Yes"), 'N' => $clang->gT("No"));
     }
-    
+
+    public function jsVarNameOn()
+    {
+        return 'java'.$this->fieldname;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

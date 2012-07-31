@@ -64,7 +64,7 @@ class CommentCheckQuestion extends CheckQuestion
         $answer_main = '';
 
         $fn = 1;
-        
+
         if($this->getOther() == 'Y')
         {
             $label_width = 25;
@@ -207,9 +207,9 @@ class CommentCheckQuestion extends CheckQuestion
     }
 
     //public function getTitle() - inherited
-    
+
     //public function getHelp() - inherited
-    
+
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;
@@ -238,12 +238,44 @@ class CommentCheckQuestion extends CheckQuestion
         }
         return $map;
     }
-    
+
     public function getQuotaValue($value)
     {
         return false;
     }
-    
+
+    public function jsVarNameOn()
+    {
+        if (preg_match("/(other|comment)$/",$this->fieldname))
+        {
+            return 'answer' . $this->fieldname;
+        }
+        else
+        {
+            return $jsVarName;
+        }
+    }
+
+    public function getSqsuffix()
+    {
+        if (preg_match("/comment$/", $q->fieldname))
+        {
+            return '';
+        } else {
+            return '_' . $this->aid;
+        }
+    }
+
+    public function getRowDivID()
+    {
+        if (preg_match("/comment$/", $q->fieldname))
+        {
+            return null;
+        } else {
+            return $this->fieldname;
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","em_validation_q","em_validation_q_tip","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

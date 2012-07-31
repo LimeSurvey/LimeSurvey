@@ -2,7 +2,7 @@
 abstract class ArrayQuestion extends QuestionModule
 {
     protected $children;
-    
+
     protected function getChildren()
     {
         if ($this->children) return $this->children;
@@ -52,6 +52,36 @@ abstract class ArrayQuestion extends QuestionModule
             $map[$fieldname]=$field;
         }
         return $map;
+    }
+
+    public function jsVarNameOn()
+    {
+        return 'java'.$this->fieldname;
+    }
+
+    public function getCsuffix()
+    {
+        return $this->aid;
+    }
+
+    public function getSqsuffix()
+    {
+        return '_' . $this->aid;
+    }
+
+    public function getVarName()
+    {
+        return $this->title . '_' . $this->aid;
+    }
+
+    public function getQuestion()
+    {
+        return $this->sq;
+    }
+
+    public function getRowDivID()
+    {
+        return $this->fieldname;
     }
 }
 ?>

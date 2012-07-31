@@ -125,7 +125,7 @@ class FiveListQuestion extends QuestionModule
             ";
 
         }
-        
+
         return $answer;
     }
 
@@ -138,17 +138,22 @@ class FiveListQuestion extends QuestionModule
         }
         return $output;
     }
-    
+
     public function getDBField()
     {
         return 'VARCHAR(1)';
     }
-    
+
     public function getSPSSAnswers()
     {
         return array();
     }
-    
+
+    public function jsVarNameOn()
+    {
+        return 'java'.$this->fieldname;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","slider_rating","random_group");

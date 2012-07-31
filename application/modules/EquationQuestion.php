@@ -23,12 +23,23 @@ class EquationQuestion extends QuestionModule
     {
         return '<div class="em_equation">' . $this->text . '</div>';
     }
-    
+
     public function getDBField()
     {
         return 'text';
     }
-    
+
+    public function jsVarNameOn()
+    {
+        return 'java'.$this->fieldname;
+    }
+
+    public function onlyNumeric()
+    {
+        $attributes = $this->getAttributeValues();
+        return array_key_exists('numbers_only', $attributes) && $attributes['numbers_only'] == 1;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hidden","numbers_only","page_break","public_statistics","scale_export");

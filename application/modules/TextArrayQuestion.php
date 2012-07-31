@@ -388,7 +388,7 @@ EOD;
     }
 
     //public function getInputNames() - inherited
-        
+
     public function createFieldmap($type=null)
     {
         $map = array();
@@ -435,12 +435,12 @@ EOD;
         }
         return $map;
     }
-    
+
     public function getDBField()
     {
         return 'text';
     }
-    
+
     public function getFieldSubHeading($survey, $export, $code)
     {
         //The headers created by this section of code are significantly different from
@@ -467,7 +467,33 @@ EOD;
         return ' ['.$export->stripTagsFull($scaleZeroText).
                ']['.$export->stripTagsFull($scaleOneText).']';
     }
-    
+
+    public function jsVarNameOn()
+    {
+        return 'answer'.$this->fieldname;
+    }
+
+    public function onlyNumeric()
+    {
+        $attributes = $this->getAttributeValues();
+        return array_key_exists('numbers_only', $attributes) && $attributes['numbers_only'] == 1;
+    }
+
+    public function getSqsuffix()
+    {
+        return '_' . substr($this->aid,0,strpos($this->aid,'_'));
+    }
+
+    public function getQuestion()
+    {
+        return $this->sq1 . '[' . $this->sq2 . ']';
+    }
+
+    public function getRowDivID()
+    {
+        return substr($this->fieldname,0,strpos($this->fieldname,'_'));
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","show_totals","show_grand_total","page_break","random_order","parent_order","text_input_width","random_group");

@@ -368,7 +368,7 @@ class RadioArrayQuestion extends ArrayQuestion
         }
         return $value;
     }
-    
+
     public function setAssessment()
     {
         $this->assessment_value = 0;
@@ -384,13 +384,13 @@ class RadioArrayQuestion extends ArrayQuestion
         }
         return true;
     }
-    
+
     public function getFullAnswer($answerCode, $export, $survey)
     {
         $answers = $survey->getAnswers($this->id, 0);
         return (isset($answers[$answerCode])) ? $answers[$answerCode]['answer'] : "";
     }
-    
+
     public function getSPSSAnswers()
     {
         global $language, $length_vallabel;
@@ -408,12 +408,12 @@ class RadioArrayQuestion extends ArrayQuestion
         }
         return $answers;
     }
-    
+
     public function getAnswerArray($em)
     {
         return (isset($em->qans[$this->id]) ? $em->qans[$this->id] : NULL);
     }
-    
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

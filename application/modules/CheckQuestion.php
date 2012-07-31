@@ -276,7 +276,7 @@ class CheckQuestion extends QuestionModule
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
-        
+
         if (trim($aQuestionAttributes['exclude_all_others'])!='' && $aQuestionAttributes['random_order']==1)
         {
             //if  exclude_all_others is set then the related answer should keep its position at all times
@@ -296,7 +296,7 @@ class CheckQuestion extends QuestionModule
         }
         return $this->children  = $ansresult;
     }
-    
+
     protected function getOther()
     {
         if ($this->other) return $this->other;
@@ -320,7 +320,7 @@ class CheckQuestion extends QuestionModule
         }
         return $this->text;
     }
-    
+
     public function getHelp()
     {
         $clang=Yii::app()->lang;
@@ -336,7 +336,7 @@ class CheckQuestion extends QuestionModule
         }
         return '';
     }
-    
+
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;
@@ -399,21 +399,21 @@ class CheckQuestion extends QuestionModule
             $other['q']=$q;
             $map[$other['fieldname']]=$other;
         }
-        
+
         return $map;
     }
-        
+
     public function getExtendedAnswer($value, $language)
     {
         if($value=="Y") return $language->gT("Yes")." [$value]";
         return $value;
     }
-    
+
     public function getQuotaValue($value)
     {
         return array($this->surveyid.'X'.$this->gid.'X'.$this->id.$value => 'Y');
     }
-    
+
     public function setAssessment()
     {
         if (isset($_SESSION['survey_'.$this->surveyid][$this->fieldname]) && $_SESSION['survey_'.$this->surveyid][$this->fieldname] == "Y")
@@ -425,7 +425,7 @@ class CheckQuestion extends QuestionModule
         }
         return true;
     }
-    
+
     public function getDBField()
     {
         if ($this->aid != 'other' && strpos($this->aid,'comment')===false && strpos($this->aid,'othercomment')===false)
@@ -437,7 +437,7 @@ class CheckQuestion extends QuestionModule
             return "text";
         }
     }
-    
+
     public function prepareConditions($row)
     {
         if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
@@ -450,7 +450,7 @@ class CheckQuestion extends QuestionModule
             "subqid"=>$cfieldnamematch[1].'NAOK'
             );
         }
-        
+
         return array("cfieldname"=>$rows['cfieldname'].$rows['value'],
         "value"=>$row['value'],
         "matchfield"=>$row['cfieldname'],
@@ -474,7 +474,7 @@ class CheckQuestion extends QuestionModule
         }
         return parent::transformResponseValue($export, $value, $options);
     }
-    
+
     public function getFullAnswer($answerCode, $export, $survey)
     {
         if (mb_substr($this->fieldname, -5, 5) == 'other' || mb_substr($this->fieldname, -7, 7) == 'comment')
@@ -497,7 +497,7 @@ class CheckQuestion extends QuestionModule
             }
         }
     }
-    
+
     public function getFieldSubHeading($survey, $export, $code)
     {
         //This section creates differing output from the old code base, but I do think
@@ -538,7 +538,7 @@ class CheckQuestion extends QuestionModule
             return ' '.$export->getCommentSubHeading();
         }
     }
-    
+
     public function getSPSSAnswers()
     {
         if ($this->aid == 'other' || strpos($this->aid,'comment') !== false) return array();
@@ -546,7 +546,7 @@ class CheckQuestion extends QuestionModule
         $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
         return $answers;
     }
-    
+
     public function getSPSSData($data, $iLength, $na)
     {
         if ($this->aid == 'other' || strpos($this->aid,'comment') !== false)
@@ -558,7 +558,43 @@ class CheckQuestion extends QuestionModule
             return "'0'";
         }
     }
-    
+
+    public function jsVarNameOn()
+    {
+        return 'java'.$this->fieldname;
+    }
+
+    public function onlyNumeric()
+    {
+        $attributes = $this->getAttributeValues();
+        return array_key_exists('other_numbers_only', $attributes) && $attributes['numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
+    }
+
+    public function getCsuffix()
+    {
+        return $this->aid;
+    }
+
+    public function getSqsuffix()
+    {
+        return '_' . $this->aid;
+    }
+
+    public function getVarName()
+    {
+        return $this->title . '_' . $this->aid;
+    }
+
+    public function getQuestion()
+    {
+        return $this->sq;
+    }
+
+    public function getRowDivID()
+    {
+        return $this->fieldname;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","em_validation_q","em_validation_q_tip","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

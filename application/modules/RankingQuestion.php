@@ -280,7 +280,7 @@ class RankingQuestion extends QuestionModule
         }
         return $this->answers = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
-    
+
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;
@@ -312,7 +312,7 @@ class RankingQuestion extends QuestionModule
         }
         return $map;
     }
-        
+
     public function getExtendedAnswer($value, $language)
     {
         if ($value == "-oth-")
@@ -327,7 +327,7 @@ class RankingQuestion extends QuestionModule
         }
         return $value;
     }
-    
+
     public function getFullAnswer($answerCode, $export, $survey)
     {
         $answers = $survey->getAnswers($this->id);
@@ -340,12 +340,12 @@ class RankingQuestion extends QuestionModule
             return null;
         }
     }
-    
+
     public function getFieldSubHeading($survey, $export, $code)
     {
         return ' ['.$export->translate('Ranking', $export->languageCode).' '.$this->aid.']';
     }
-    
+
     public function getSPSSAnswers()
     {
         global $language, $length_vallabel;
@@ -361,12 +361,12 @@ class RankingQuestion extends QuestionModule
         }
         return $answers;
     }
-    
+
     public function getAnswerArray($em)
     {
         return (isset($em->qans[$this->id]) ? $em->qans[$this->id] : NULL);
     }
-    
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");

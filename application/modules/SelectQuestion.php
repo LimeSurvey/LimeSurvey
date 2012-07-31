@@ -25,7 +25,7 @@ class SelectQuestion extends ListQuestion
         {
             $optCategorySeparator = $aQuestionAttributes['category_separator'];
         }
-        
+
         //Time Limit Code
         if (trim($aQuestionAttributes['time_limit'])!='')
         {
@@ -255,18 +255,30 @@ class SelectQuestion extends ListQuestion
         $result = Yii::app()->db->createCommand($query)->query()->readAll();
         return $this->other = $result[0]['other'];  //Checked
     }
-    
+
     //public function getTitle() - inherited
-    
+
     //public function getHelp() - inherited
-       
+
     //public function createFieldmap($type=null) - inherited
-    
+
     public function getQuotaValue($value)
     {
         return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
     }
-    
+
+    public function jsVarNameOn()
+    {
+        if (preg_match("/other$/",$this->fieldname))
+        {
+            return 'othertext' . substr($this->fieldname,0,-5);
+        }
+        else
+        {
+            return 'java' . $this->fieldname;
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","category_separator","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_replace_text","page_break","public_statistics","random_order","parent_order","dropdown_size","dropdown_prefix","scale_export","random_group","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style");

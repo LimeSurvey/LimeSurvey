@@ -185,7 +185,7 @@ class MultinumericalQuestion extends QuestionModule
                     $sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
                     $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
                 }
-                
+
                 // color code missing mandatory questions red
                 if ($this->mandatory=='Y' && (($_SESSION['survey_'.$this->surveyid]['step'] == $_SESSION['survey_'.$this->surveyid]['prevstep'])
                         || ($_SESSION['survey_'.$this->surveyid]['maxstep'] > $_SESSION['survey_'.$this->surveyid]['step']))
@@ -352,7 +352,7 @@ class MultinumericalQuestion extends QuestionModule
         }
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
-    
+
     public function createFieldmap($type=null)
     {
         $map = array();
@@ -390,7 +390,7 @@ class MultinumericalQuestion extends QuestionModule
         }
         return $map;
     }
-        
+
     public function filter($value, $type)
     {
         if (trim($value)=='') {
@@ -406,22 +406,27 @@ class MultinumericalQuestion extends QuestionModule
             return $value;
         }
     }
-        
+
     public function loadAnswer($value)
     {
         return $value==null?'':$value;
     }
-    
+
     public function getDBField()
     {
         return 'float';
     }
-    
+
     public function adjustSize($size)
     {
         return $size . '.' . ($size-1);
     }
-    
+
+    public function onlyNumeric()
+    {
+        return true;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group","value_range_allows_missing");

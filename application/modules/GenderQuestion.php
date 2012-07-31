@@ -54,7 +54,7 @@ class GenderQuestion extends QuestionModule
         );
         return CHtml::listBox($this->fieldname, $idrow[$this->fieldname], $select_options);
     }
-    
+
     public function getExtendedAnswer($value, $language)
     {
         switch($value)
@@ -64,17 +64,17 @@ class GenderQuestion extends QuestionModule
             default: return $language->gT("No answer")." [$value]";
         }
     }
-    
+
     public function getQuotaValue($value)
     {
         return array($this->surveyid.'X'.$this->gid.'X'.$this->id => $value);
     }
-    
+
     public function getDBField()
     {
         return 'VARCHAR(1)';
     }
-    
+
     public function getFullAnswer($answerCode, $export, $survey)
     {
         switch ($answerCode)
@@ -87,14 +87,14 @@ class GenderQuestion extends QuestionModule
                 return $export->translator->translate('N/A', $export->languageCode);
         }
     }
-    
+
     public function getSPSSAnswers()
     {
         $answers[] = array('code'=>1, 'value'=>$clang->gT('Female'));
         $answers[] = array('code'=>2, 'value'=>$clang->gT('Male'));
         return $answers;
     }
-    
+
     public function getSPSSData($data, $iLength, $na)
     {
         if ($data == 'F')
@@ -106,13 +106,18 @@ class GenderQuestion extends QuestionModule
             return $na;
         }
     }
-    
+
     public function getAnswerArray($em)
     {
         $clang = Yii::app()->lang;
         return array('M' => $clang->gT("Male"), 'F' => $clang->gT("Female"));
     }
-    
+
+    public function jsVarNameOn()
+    {
+        return 'java'.$this->fieldname;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

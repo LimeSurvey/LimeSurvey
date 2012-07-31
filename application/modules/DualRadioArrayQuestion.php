@@ -647,7 +647,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         }
         return $map;
     }
-    
+
     public function getFullAnswer($answerCode, $export, $survey)
     {
         if (mb_substr($this->fieldname, -1) == 0)
@@ -668,7 +668,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
             return null;
         }
     }
-    
+
     public function getFieldSubHeading($survey, $export, $code)
     {
         $answerScale = substr($this->fieldname, -1) + 1;
@@ -682,7 +682,32 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         }
         return '';
     }
-    
+
+    public function getCsuffix()
+    {
+        return $this->aid . '#' . $this->scale;
+    }
+
+    public function getSqsuffix()
+    {
+        return '_' . $this->aid;
+    }
+
+    public function getVarName()
+    {
+        return $this->title . '_' . $this->aid . '_' . $this->scale;
+    }
+
+    public function getQuestion()
+    {
+        return $this->sq . '[' . $this->scalename . ']';
+    }
+
+    public function getRowDivID()
+    {
+        return substr($this->fieldname,0,-2);
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

@@ -274,24 +274,24 @@ class DateQuestion extends QuestionModule
             return $datetimeobj->convert("Y-m-d H:i:s");
         }
     }
-    
+
     public function getExtendedAnswer($value, $language)
     {
         $qidattributes = getQuestionAttributeValues($this->id);
         $dateformatdetails = getDateFormatDataForQID($qidattributes, $this->surveyid);
         return convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
     }
-    
+
     public function loadAnswer($value)
     {
         return $value==null?'':$value;
     }
-    
+
     public function getDBField()
     {
         return 'datetime';
     }
-    
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");

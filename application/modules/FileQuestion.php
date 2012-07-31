@@ -204,7 +204,7 @@ class FileQuestion extends QuestionModule
         }
         return $qtitle;
     }
-    
+
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;
@@ -241,12 +241,12 @@ class FileQuestion extends QuestionModule
         $map[$fieldname2]=$field2;
         return $map;
     }
-    
+
     public function fileUpload()
     {
         return true;
     }
-        
+
     public function filter($value, $type)
     {
         switch ($type)
@@ -293,7 +293,7 @@ class FileQuestion extends QuestionModule
             }
         }
     }
-                
+
     public function getExtendedAnswer($value, $language)
     {
         if (substr($this->fieldname, -9) == 'filecount') return $language->gT("File count")." [$value]";
@@ -310,7 +310,7 @@ class FileQuestion extends QuestionModule
         }
         return '';
     }
-    
+
     public function getDBField()
     {
         if (strpos($this->fieldname, "_"))
@@ -318,7 +318,17 @@ class FileQuestion extends QuestionModule
         else
            return "text";
     }
-    
+
+    public function jsVarNameOn()
+    {
+        return $this->fieldname;
+    }
+
+    public function jsVarName()
+    {
+        return $this->fieldname;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","show_title","show_comment","max_filesize","max_num_of_files","min_num_of_files","allowed_filetypes","random_group");

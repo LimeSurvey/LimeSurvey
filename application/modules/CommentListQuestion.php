@@ -184,11 +184,11 @@ class CommentListQuestion extends ListQuestion
         .htmlspecialchars($idrow[$q->fieldname]) . "</textarea>\n";
         return $output;
     }
-  
+
     //public function getTitle() - inherited
-    
+
     //public function getHelp() - inherited
-    
+
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;
@@ -206,7 +206,7 @@ class CommentListQuestion extends ListQuestion
         $map[$comment['fieldname']]=$comment;
         return $map;
     }
-    
+
     public function getFullAnswer($answerCode, $export, $survey)
     {
         $answers = $survey->getAnswers($this->id);
@@ -221,7 +221,7 @@ class CommentListQuestion extends ListQuestion
             return $answerCode;
         }
     }
-    
+
     public function getFieldSubHeading($survey, $export, $code)
     {
         if ($this->aid == 'comment')
@@ -230,7 +230,19 @@ class CommentListQuestion extends ListQuestion
         }
         return '';
     }
-    
+
+    public function jsVarNameOn()
+    {
+        if ($this->aid == 'comment')
+        {
+            return 'answer' . $this->fieldname;
+        }
+        else
+        {
+            return 'java' . $this->fieldname;
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
