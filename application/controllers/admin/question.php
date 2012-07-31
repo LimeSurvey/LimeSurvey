@@ -944,7 +944,7 @@ class question extends Survey_Common_Action
                 }
             }
         }
-
+        $aData['bIsActive'] = ($thissurvey['active']=='Y');
         $aData['attributedata'] = $aAttributesPrepared;
         $this->getController()->render('/admin/survey/Question/advanced_settings_view', $aData);
     }
