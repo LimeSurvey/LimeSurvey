@@ -1018,17 +1018,18 @@ class remotecontrol_handle
 				return array('status' => 'Error:Survey is active and not editable');
 
             if (hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
-            {
-				LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+            {			
+				$depented_on = getGroupDepsForConditions($oGroup->sid,"all",$iGroupID,"by-targgid");
+				if(isset($depented_on))
+					return array('status' => 'Group with depencdencies - deletion not allowed');	
+
 				$iGroupsDeleted = Groups::deleteWithDependency($iGroupID, $iSurveyID);
-				
-				if ($iGroupsDeleted === 1)
-					fixSortOrderGroups($iSurveyID);
-					
-				LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
 
 				if ($iGroupsDeleted === 1)
+				{
+					fixSortOrderGroups($iSurveyID);
 					return $iGroupID;
+				}
 				else
 					return array('status' => 'Group deletion failed');
             }
