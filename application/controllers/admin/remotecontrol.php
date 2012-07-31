@@ -691,7 +691,7 @@ class remotecontrol_handle
         Yii::app()->loadHelper('admin/exportresults');
         if (!hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
-        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode)); //AJS#
         if($sDocumentType=='xls'){
            // Cut down to the first 255 fields
            $aFields=array_slice($aFields,0,255);

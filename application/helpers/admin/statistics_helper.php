@@ -277,11 +277,12 @@ function buildSelects($allfields, $surveyid, $language) {
     $selects=array();
     $aQuestionMap=array();
 
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
+    $fieldmap=createFieldMap($surveyid, "full", false, false, $language); //AJS#
     foreach ($fieldmap as $field)
     {
-        if(isset($field['qid']) && $field['qid']!='')
-            $aQuestionMap[]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+        $q = $field['q'];
+        if(isset($q->id) && $q->id!='')
+            $aQuestionMap[]=$q->surveyid.'X'.$q->gid.'X'.$q->id;
     }
 
     // creates array of post variable names
@@ -514,7 +515,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
     $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
     $statlang = new Limesurvey_lang($statlangcode);
     $firstletter = substr($rt, 0, 1);
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
+    $fieldmap=createFieldMap($surveyid, "full", false, false, $language); //AJS#
     $sDatabaseType = Yii::app()->db->getDriverName();
     $statisticsoutput="";
 
@@ -3120,8 +3121,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //Get an array of codes of all available languages in this survey
     $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
     $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
-
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $statlang->getlangcode());
 
     // Set language for questions and answers to base language of this survey
     $language=$statlangcode;
