@@ -467,44 +467,63 @@ class remotecontrol_handle
   /**
      * RPC Routine to list the ids and info of surveys belonging to a user.
      * Returns array of ids and info.
-     * If user is admin he can get surveys of every user (parameter sUser)
-     * else only the syrveys belonging to the user requesting will be shown.
+     * If user is admin he can get surveys of every user (parameter sUser) or all surveys (sUser=null)
+     * Else only the syrveys belonging to the user requesting will be shown.
      * 
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param string $suser Optional username to get list of surveys
+     * @param string $sUser Optional username to get list of surveys
      * @return array The list of surveys
      */
-	public function list_surveys($sSessionKey, $suser='')
+	public function list_surveys($sSessionKey, $sUser=NULL)
 	{
        if ($this->_checkSessionKey($sSessionKey))
        {
-		   $current_user =  Yii::app()->session['user'];
-		   if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 and $suser !='')
-				$current_user = $suser;
-
-		   $aUserData = User::model()->findByAttributes(array('users_name' => $current_user));		   
-		   if (!isset($aUserData))
-				return array('status' => 'Invalid user');	   
-	  	  		   
-		   $aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$aUserData->attributes['uid'])); 		   
-		   if(count($aUserSurveys)==0)
-				return array('status' => 'No surveys found');
-			
-			foreach ($aUserSurveys as $aSurvey)
+		   $sCurrentUser =  Yii::app()->session['user'];
+		   
+		   if( Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+		   {
+				if ($sUser == null)
+					$aUserSurveys = Survey::model()->findAll(); //list all surveys
+				else
 				{
-				$aSurveyLanguageSettings = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $aSurvey->primaryKey, 'surveyls_language' => $aSurvey->language));
-				if (!isset($aSurveyLanguageSettings))
+				   $aUserData = User::model()->findByAttributes(array('users_name' => $sUser));		   
+				   if (!isset($aUserData))
+						return array('status' => 'Invalid user');
+					else
+						$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$aUserData->attributes['uid'])); 					
+				}		
+			}
+			else
+			{
+				if (($sCurrentUser == $sUser) || ($sUser == null) )
+				{
+					$sUid =  User::model()->findByAttributes(array('users_name' => $sCurrentUser))->uid;
+					$aUserSurveys = Survey::model()->findAllByAttributes(array("owner_id"=>$sUid)); 										
+				}
+				else
+					return array('status' => 'No permission');
+			}
+			
+		   if(count($aUserSurveys)==0)
+				return array('status' => 'No surveys found');		   
+		   
+			foreach ($aUserSurveys as $oSurvey)
+				{
+				$oSurveyLanguageSettings = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $oSurvey->primaryKey, 'surveyls_language' => $oSurvey->language));
+				if (!isset($oSurveyLanguageSettings))
 					$aSurveyTitle = '';
 				else
-					$aSurveyTitle = $aSurveyLanguageSettings->attributes['surveyls_title'];
-				$aData[]= array('sid'=>$aSurvey->primaryKey,'surveyls_title'=>$aSurveyTitle,'startdate'=>$aSurvey->attributes['startdate'],'expires'=>$aSurvey->attributes['expires'],'active'=>$aSurvey->attributes['active']);
+					$aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
+				$aData[]= array('sid'=>$oSurvey->primaryKey,'surveyls_title'=>$aSurveyTitle,'startdate'=>$oSurvey->attributes['startdate'],'expires'=>$oSurvey->attributes['expires'],'active'=>$oSurvey->attributes['active']);
 				}
-			return $aData;
+			return $aData;		   
         }
         else
 			return array('status' => 'Invalid session key');				
 	}
+
+
 
 
     /**

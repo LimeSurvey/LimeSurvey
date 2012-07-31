@@ -97,7 +97,7 @@ class Survey extends CActiveRecord
         array('bounce_email', 'xssfilter'),
         array('faxto', 'xssfilter'),
         array('active', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),        
+       array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),        
         array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),        
         array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
         array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),   
@@ -172,7 +172,7 @@ class Survey extends CActiveRecord
     public function tmplfilter($attribute,$params)
     {
         if(!array_key_exists($this->$attribute,getTemplateList()))
-			$this->addError($attribute, 'Invalid template!');
+			$this->$attribute = 'default';
     }
 
 
