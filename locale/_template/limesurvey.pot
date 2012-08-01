@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-07-25 20:45:53+00:00\n"
+"POT-Creation-Date: 2012-07-28 15:19:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1015,7 +1015,7 @@ msgstr ""
 #: admin/editsurveysettings.php:954 admin/editsurveysettings.php:970
 #: admin/export_data_functions.php:232 admin/export_data_functions.php:236
 #: admin/export_data_functions.php:244 admin/export_data_functions.php:248
-#: admin/export_structure_quexml.php:617 admin/export_structure_quexml.php:636
+#: admin/export_structure_quexml.php:561 admin/export_structure_quexml.php:580
 #: admin/exportresults.php:894 admin/exportresults.php:895
 #: admin/exportresults.php:941 admin/exportresults.php:942
 #: admin/exportresults.php:963 admin/exportresults.php:964
@@ -1057,7 +1057,7 @@ msgstr ""
 
 #: admin/conditionshandling.php:653 admin/dataentry.php:1346
 #: admin/dataentry.php:2678 admin/export_data_functions.php:250
-#: admin/export_structure_quexml.php:636 admin/exportresults.php:971
+#: admin/export_structure_quexml.php:580 admin/exportresults.php:971
 #: admin/exportresults.php:972 admin/printablesurvey.php:978
 #: admin/printablesurvey.php:995 admin/printablesurvey.php:999
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
@@ -1083,7 +1083,7 @@ msgstr ""
 #: admin/editsurveysettings.php:929 admin/editsurveysettings.php:944
 #: admin/editsurveysettings.php:959 admin/editsurveysettings.php:976
 #: admin/export_data_functions.php:245 admin/export_data_functions.php:249
-#: admin/export_structure_quexml.php:617 admin/export_structure_quexml.php:636
+#: admin/export_structure_quexml.php:561 admin/export_structure_quexml.php:580
 #: admin/exportresults.php:898 admin/exportresults.php:899
 #: admin/exportresults.php:945 admin/exportresults.php:946
 #: admin/exportresults.php:949 admin/exportresults.php:950
@@ -1124,7 +1124,7 @@ msgid "No"
 msgstr ""
 
 #: admin/conditionshandling.php:657 admin/dataentry.php:2697
-#: admin/export_data_functions.php:253 admin/export_structure_quexml.php:641
+#: admin/export_data_functions.php:253 admin/export_structure_quexml.php:585
 #: admin/exportresults.php:979 admin/exportresults.php:980
 #: admin/printablesurvey.php:1018 admin/printablesurvey.php:1034
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
@@ -1135,7 +1135,7 @@ msgid "Increase"
 msgstr ""
 
 #: admin/conditionshandling.php:658 admin/dataentry.php:2698
-#: admin/export_data_functions.php:254 admin/export_structure_quexml.php:641
+#: admin/export_data_functions.php:254 admin/export_structure_quexml.php:585
 #: admin/exportresults.php:983 admin/exportresults.php:984
 #: admin/printablesurvey.php:1019 admin/printablesurvey.php:1035
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
@@ -1146,7 +1146,7 @@ msgid "Same"
 msgstr ""
 
 #: admin/conditionshandling.php:659 admin/dataentry.php:2699
-#: admin/export_data_functions.php:255 admin/export_structure_quexml.php:641
+#: admin/export_data_functions.php:255 admin/export_structure_quexml.php:585
 #: admin/exportresults.php:987 admin/exportresults.php:988
 #: admin/printablesurvey.php:1020 admin/printablesurvey.php:1036
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
@@ -1199,7 +1199,7 @@ msgstr ""
 
 #: admin/conditionshandling.php:913 admin/dataentry.php:632
 #: admin/dataentry.php:1900 admin/export_data_functions.php:240
-#: admin/export_structure_quexml.php:621 admin/exportresults.php:915
+#: admin/export_structure_quexml.php:565 admin/exportresults.php:915
 #: admin/exportresults.php:916 admin/printablesurvey.php:542
 #: admin/printablesurvey.php:547 admin/quota.php:33 admin/results.php:253
 #: admin/results.php:335 admin/statistics.php:806
@@ -1211,7 +1211,7 @@ msgstr ""
 
 #: admin/conditionshandling.php:914 admin/dataentry.php:635
 #: admin/dataentry.php:1901 admin/export_data_functions.php:241
-#: admin/export_structure_quexml.php:621 admin/exportresults.php:911
+#: admin/export_structure_quexml.php:565 admin/exportresults.php:911
 #: admin/exportresults.php:912 admin/printablesurvey.php:543
 #: admin/printablesurvey.php:547 admin/quota.php:32 admin/results.php:252
 #: admin/results.php:334 admin/statistics.php:812
@@ -1224,9 +1224,9 @@ msgstr ""
 #: admin/conditionshandling.php:977 admin/dataentry.php:720
 #: admin/dataentry.php:1960 admin/dataentry.php:1966 admin/dataentry.php:2044
 #: admin/dataentry.php:2050 admin/dataentry.php:2276 admin/dataentry.php:2292
-#: admin/dataentry.php:2336 admin/export_structure_quexml.php:225
-#: admin/export_structure_quexml.php:234 admin/export_structure_quexml.php:331
-#: admin/export_structure_quexml.php:346 admin/exportresults.php:841
+#: admin/dataentry.php:2336 admin/export_structure_quexml.php:169
+#: admin/export_structure_quexml.php:178 admin/export_structure_quexml.php:275
+#: admin/export_structure_quexml.php:290 admin/exportresults.php:841
 #: admin/exportresults.php:842 admin/results.php:339
 #: admin/statistics_function.php:693 admin/statistics_function.php:1826
 #: admin/statistics_function.php:1917 admin/statistics_function.php:2049
@@ -2256,7 +2256,7 @@ msgstr ""
 #: admin/questiongrouphandling.php:149 admin/questiongrouphandling.php:165
 #: admin/questiongrouphandling.php:167 admin/translate_functions.php:238
 #: admin/userrighthandling.php:628 admin/userrighthandling.php:648
-#: classes/expressions/LimeExpressionManager.php:8038
+#: classes/expressions/LimeExpressionManager.php:8044
 msgid "Description:"
 msgstr ""
 
@@ -2268,7 +2268,7 @@ msgstr ""
 #: admin/editsurveysettings.php:147 admin/editsurveysettings.php:149
 #: admin/editsurveytextelements.php:58 admin/editsurveytextelements.php:60
 #: admin/html.php:795 admin/translate_functions.php:290
-#: classes/expressions/LimeExpressionManager.php:8052
+#: classes/expressions/LimeExpressionManager.php:8058
 msgid "End message:"
 msgstr ""
 
@@ -2732,7 +2732,7 @@ msgid "Survey title"
 msgstr ""
 
 #: admin/editsurveytextelements.php:56 admin/html.php:784
-#: classes/expressions/LimeExpressionManager.php:8045
+#: classes/expressions/LimeExpressionManager.php:8051
 msgid "Welcome:"
 msgstr ""
 
@@ -2841,10 +2841,6 @@ msgstr ""
 
 #: admin/export_structure_lsrc.php:48 admin/export_structure_xml.php:51
 msgid "No SID has been provided. Cannot dump survey"
-msgstr ""
-
-#: admin/export_structure_quexml.php:171
-msgid "End"
 msgstr ""
 
 #: admin/exportresults.php:62
@@ -3908,7 +3904,7 @@ msgstr ""
 msgid "Flag"
 msgstr ""
 
-#: admin/html.php:872 classes/expressions/LimeExpressionManager.php:8059
+#: admin/html.php:872 classes/expressions/LimeExpressionManager.php:8065
 msgid "End URL"
 msgstr ""
 
@@ -5613,7 +5609,7 @@ msgstr ""
 
 #: admin/printablesurvey.php:758
 #: classes/expressions/LimeExpressionManager.php:2952
-#: classes/expressions/LimeExpressionManager.php:5504 qanda.php:1290
+#: classes/expressions/LimeExpressionManager.php:5510 qanda.php:1290
 #: qanda.php:1590 qanda.php:2185 qanda.php:2482
 msgid "Other:"
 msgstr ""
@@ -8792,7 +8788,7 @@ msgid "Count the number of answered questions in the list equal the first argume
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:155
-msgid "Count the number of answered questions in the list which pass the critiera (arg op value)"
+msgid "Count the number of answered questions in the list which pass the criteria (arg op value)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:156
@@ -9028,7 +9024,7 @@ msgid "Calculate the sum of values in an array"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:214
-msgid "Sum the values of answered questions in the list which pass the critiera (arg op value)"
+msgid "Sum the values of answered questions in the list which pass the criteria (arg op value)"
 msgstr ""
 
 #: classes/expressions/ExpressionManager.php:215
@@ -9272,101 +9268,101 @@ msgstr ""
 msgid "Unable to insert record into timings table "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5481
+#: classes/expressions/LimeExpressionManager.php:5487
 msgid "This question is mandatory"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5495
+#: classes/expressions/LimeExpressionManager.php:5501
 msgid "Please check at least one item."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5506
+#: classes/expressions/LimeExpressionManager.php:5512
 msgid "If you choose '%s' you must provide a description."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5528
-#: classes/expressions/LimeExpressionManager.php:5565
+#: classes/expressions/LimeExpressionManager.php:5534
+#: classes/expressions/LimeExpressionManager.php:5571
 msgid "Please complete all parts"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5557
+#: classes/expressions/LimeExpressionManager.php:5563
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:5573
+#: classes/expressions/LimeExpressionManager.php:5579
 msgid "Please rank all items"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8023
+#: classes/expressions/LimeExpressionManager.php:8029
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8029
+#: classes/expressions/LimeExpressionManager.php:8035
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8063
+#: classes/expressions/LimeExpressionManager.php:8069
 msgid "Name [ID]"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8063
+#: classes/expressions/LimeExpressionManager.php:8069
 msgid "Relevance [Validation] (Default)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8063
+#: classes/expressions/LimeExpressionManager.php:8069
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8114
-#: classes/expressions/LimeExpressionManager.php:8360
+#: classes/expressions/LimeExpressionManager.php:8120
+#: classes/expressions/LimeExpressionManager.php:8366
 msgid "DEFAULT:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8122
+#: classes/expressions/LimeExpressionManager.php:8128
 msgid "HELP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8123
+#: classes/expressions/LimeExpressionManager.php:8129
 msgid "TIP:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8140
+#: classes/expressions/LimeExpressionManager.php:8146
 msgid "Question Attribute"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8140
+#: classes/expressions/LimeExpressionManager.php:8146
 msgid "Value"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8247
+#: classes/expressions/LimeExpressionManager.php:8253
 msgid "VALIDATION:"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8261
+#: classes/expressions/LimeExpressionManager.php:8267
 msgid "This variable name has already been used."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8273
+#: classes/expressions/LimeExpressionManager.php:8279
 msgid "Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8432
+#: classes/expressions/LimeExpressionManager.php:8438
 msgid "This question has at least %s error(s)"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8471
+#: classes/expressions/LimeExpressionManager.php:8477
 msgid "%s question(s) contain errors that need to be corrected"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8477
+#: classes/expressions/LimeExpressionManager.php:8483
 msgid "No syntax errors detected in this survey"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8480
+#: classes/expressions/LimeExpressionManager.php:8486
 msgid "This group, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: classes/expressions/LimeExpressionManager.php:8483
+#: classes/expressions/LimeExpressionManager.php:8489
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
