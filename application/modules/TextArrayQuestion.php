@@ -189,8 +189,8 @@ class TextArrayQuestion extends ArrayQuestion
             $cellwidth=sprintf('%02d', $cellwidth);
 
             $ansquery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$this->id} and scale_id=0 AND question like '%|%'";
-            $ansresult = reset(dbExecuteAssoc($ansquery)->read());
-            if ($ansresult>0)
+            $ansresult = dbExecuteAssoc($ansquery)->read();
+            if ($ansresult['count(question)']>0)
             {
                 $right_exists=true;
                 $answerwidth=$answerwidth/2;

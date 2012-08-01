@@ -16,7 +16,6 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         $labelans1=array();
         $labelans=array();
         $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
-        $other = reset(dbExecuteAssoc($qquery)->read());    //Checked
         $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$this->id} AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY sortorder, code";
         $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$this->id} AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY sortorder, code";
         $aQuestionAttributes = $this->getAttributeValues();

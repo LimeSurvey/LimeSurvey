@@ -252,13 +252,13 @@ class CommentCheckQuestion extends CheckQuestion
         }
         else
         {
-            return $jsVarName;
+            return 'java'.$this->fieldname;
         }
     }
 
     public function getSqsuffix()
     {
-        if (preg_match("/comment$/", $q->fieldname))
+        if (preg_match("/comment$/", $this->fieldname))
         {
             return '';
         } else {
@@ -268,7 +268,7 @@ class CommentCheckQuestion extends CheckQuestion
 
     public function getRowDivID()
     {
-        if (preg_match("/comment$/", $q->fieldname))
+        if (preg_match("/comment$/", $this->fieldname))
         {
             return null;
         } else {

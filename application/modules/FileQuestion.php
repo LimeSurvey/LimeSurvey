@@ -340,7 +340,7 @@ class FileQuestion extends QuestionModule
             'mandatory'=>$this->mandatory,
             'varName' => $this->getVarName(),
             'type' => $type,
-            'fieldname' => $q->fieldname,
+            'fieldname' => $this->fieldname,
             'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
             'rootVarName' => $this->title,
             'subqs' => array()
@@ -351,12 +351,12 @@ class FileQuestion extends QuestionModule
     {
         return array(
             'q' => $this,
-            'rowdivid' => $this->getRowDivID,
-            'varName' => $this->getVarName,
+            'rowdivid' => $this->getRowDivID(),
+            'varName' => $this->getVarName(),
             'jsVarName_on' => $this->jsVarNameOn(),
             'jsVarName' => $this->jsVarName(),
-            'csuffix' => $this->getCsuffix,
-            'sqsuffix' => $this->getSqsuffix,
+            'csuffix' => $this->getCsuffix(),
+            'sqsuffix' => $this->getSqsuffix(),
             );
     }
 

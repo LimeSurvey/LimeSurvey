@@ -1762,6 +1762,7 @@ function validateTemplateDir($sTemplateName)
 */
 function array2Object($array) //AJS
 {
+    $object = new stdClass;
     $object->fieldname=$array['fieldname'];
     $object->surveyid=$array['sid'];
     $object->gid=$array['gid'];

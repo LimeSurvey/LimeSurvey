@@ -567,7 +567,7 @@ class CheckQuestion extends QuestionModule
     public function onlyNumeric()
     {
         $attributes = $this->getAttributeValues();
-        return array_key_exists('other_numbers_only', $attributes) && $attributes['numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
+        return array_key_exists('other_numbers_only', $attributes) && $attributes['other_numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
     }
 
     public function getCsuffix()

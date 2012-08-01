@@ -367,6 +367,30 @@ class RankingQuestion extends QuestionModule
         return (isset($em->qans[$this->id]) ? $em->qans[$this->id] : NULL);
     }
 
+    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $symbol = '==', $join = 'and')
+    {
+        $rankables = array();
+        foreach ($qans[$fqid] as $k=>$v)
+        {
+            $rankable = explode('~',$k);
+            $rankables[] = '_' . $rankable[1];
+        }
+        if (array_search($sqsuffix,$rankables) !== false)
+        {
+            $fsqs = array();
+            foreach ($subqs as $fsq)
+            {
+                // we know the suffix exists
+                $fsqs[] = '(' . $sgq . $fsq['csuffix'] . '.NAOK ' . $symbol . " '" . substr($sqsuffix,1) . "')";
+            }
+            if (count($fsqs) > 0)
+            {
+                return '(' . implode(' ' . $join . ' ', $fsqs) . ')';
+            }
+        }
+        return null;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");

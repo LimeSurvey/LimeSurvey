@@ -325,7 +325,7 @@ abstract class QuestionModule
 
     public function generateQuestionInfo($type)
     {
-        if (!is_null($this->rowdivid) || (isset($this->preg) && trim($this->preg) != ''))
+        if (!is_null($this->getRowDivID()) || (isset($this->preg) && trim($this->preg) != ''))
         {
             return array(
                 'q' => $this,
@@ -336,7 +336,7 @@ abstract class QuestionModule
                 'mandatory'=>$this->mandatory,
                 'varName' => $this->getVarName(),
                 'type' => $type,
-                'fieldname' => $q->fieldname,
+                'fieldname' => $this->fieldname,
                 'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
                 'rootVarName' => $this->title,
                 'subqs' => array()
@@ -348,18 +348,38 @@ abstract class QuestionModule
 
     public function generateSQInfo($ansArray)
     {
-        if (!is_null($this->getRowdivid()) || (isset($this->preg) && trim($this->preg) != ''))
+        if (!is_null($this->getRowDivID()) || (isset($this->preg) && trim($this->preg) != ''))
         {
             return array(
                 'q' => $this,
-                'rowdivid' => $this->getRowDivID,
-                'varName' => $this->getVarName,
+                'rowdivid' => $this->getRowDivID(),
+                'varName' => $this->getVarName(),
                 'jsVarName_on' => $this->jsVarNameOn(),
                 'jsVarName' => $this->jsVarName(),
-                'csuffix' => $this->getCsuffix,
-                'sqsuffix' => $this->getSqsuffix,
+                'csuffix' => $this->getCsuffix(),
+                'sqsuffix' => $this->getSqsuffix(),
                 );
         } else {
+            return null;
+        }
+    }
+
+    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $symbol = '==', $join = 'or')
+    {
+        $fsqs = array();
+        foreach ($subqs as $fsq)
+        {
+            if ($fsq['sqsuffix'] == $sqsuffix)
+            {
+                $fsqs[] = '!is_empty(' . $this->fieldname . $fsq['csuffix'] . '.NAOK)';
+            }
+        }
+        if (count($fsqs) > 0)
+        {
+            return '(' . implode(' ' . $join . ' ', $fsqs) . ')';
+        }
+        else
+        {
             return null;
         }
     }

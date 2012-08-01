@@ -39,7 +39,7 @@ abstract class TextQuestion extends QuestionModule
             'mandatory'=>$this->mandatory,
             'varName' => $this->getVarName(),
             'type' => $type,
-            'fieldname' => $q->fieldname,
+            'fieldname' => $this->fieldname,
             'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
             'rootVarName' => $this->title,
             'subqs' => array()

@@ -516,7 +516,7 @@ class ListQuestion extends QuestionModule
     public function onlyNumeric()
     {
         $attributes = $this->getAttributeValues();
-        return array_key_exists('other_numbers_only', $attributes) && $attributes['numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
+        return array_key_exists('other_numbers_only', $attributes) && $attributes['other_numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
     }
 
     public function generateQuestionInfo($type)
@@ -530,7 +530,7 @@ class ListQuestion extends QuestionModule
             'mandatory'=>$this->mandatory,
             'varName' => $this->getVarName(),
             'type' => $type,
-            'fieldname' => $q->fieldname,
+            'fieldname' => $this->fieldname,
             'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
             'rootVarName' => $this->title,
             'subqs' => array()
@@ -540,9 +540,9 @@ class ListQuestion extends QuestionModule
     public function generateSQInfo($ansArray)
     {
         $SQs = array();
-        if (!is_null($ansArray))
+        if (!is_null($ansArray[$this->id]))
         {
-            foreach (array_keys($ansArray) as $key)
+            foreach (array_keys($ansArray[$this->id]) as $key)
             {
                 $parts = explode('~',$key);
                 if ($parts[1] == '-oth-') {
@@ -551,7 +551,7 @@ class ListQuestion extends QuestionModule
                 $SQs[] = array(
                     'q' => $this,
                     'rowdivid' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id . $parts[1],
-                    'varName' => $this->getVarName,
+                    'varName' => $this->getVarName(),
                     'sqsuffix' => '_' . $parts[1],
                     );
             }

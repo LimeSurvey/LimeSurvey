@@ -550,6 +550,37 @@ class NumberArrayQuestion extends ArrayQuestion
         return substr($this->fieldname,0,strpos($this->fieldname,'_'));
     }
 
+    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $symbol = '==', $join = 'and')
+    {
+        $fsqs = array();
+        foreach ($subqs as $fsq)
+        {
+            $attributes = $this->getAttributesValues();
+            if ($attributes['multiflexible_checkbox']=='1')
+            {
+                if ($fsq['sqsuffix'] == $sqsuffix)
+                {
+                    $fsqs[] = $this->fieldname . $fsq['csuffix'] . '.NAOK' . $symbol . '"1"';
+                }
+            }
+            else
+            {
+                if ($fsq['sqsuffix'] == $sqsuffix)
+                {
+                    $fsqs[] = '!is_empty(' . $this->fieldname . $fsq['csuffix'] . '.NAOK)';
+                }
+            }
+        }
+        if (count($fsqs) > 0)
+        {
+            return '(' . implode(' ' . $join . ' ', $fsqs) . ')';
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
