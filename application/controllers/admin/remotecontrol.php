@@ -1903,14 +1903,17 @@ class remotecontrol_handle
    /**
      * RPC Routine to return the ids and info  of token/participants of a survey.
      * if $bUnused is true, user will get the list of not completed tokens (token_return functionality).
+     * Parameters iStart and ilimit are used to limit the number of results of this call.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the survey to list participants
+     * @param int $iStart Start id of the token list
+     * @param int  $iLimit Number of participants to return 
      * @param bool $bUnused If you want unused tokensm, set true
      * @return array The list of tokens
      */
-	public function list_participants($sSessionKey, $iSurveyID, $bUnused=false)
+	public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false)
 	{
        if ($this->_checkSessionKey($sSessionKey))
        {
@@ -1924,9 +1927,9 @@ class remotecontrol_handle
 					return array('status' => 'Error: No token table');
 
 				if($bUnused)
-					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll("completed = 'N'");
+					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array("completed = 'N'", 'limit' => $iLimit, 'offset' => $iStart));
 				else
-					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll();
+					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 					
 				if(count($oTokens)==0)
 					return array('status' => 'No Tokens found');
