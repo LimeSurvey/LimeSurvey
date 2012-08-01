@@ -122,7 +122,7 @@ class Tokens_dynamic extends LSActiveRecord
     * (some older tokens tables dont' get udated properly)
     *
     */
-    public function checkColumns() {
+public function checkColumns() {
         $sid = self::$sid;
         $surveytable='{{tokens_'.$sid.'}}';
         $columncheck=array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus","token","language","blacklisted","sent","remindersent","completed","usesleft","validfrom","validuntil");
@@ -159,6 +159,22 @@ class Tokens_dynamic extends LSActiveRecord
 
         return Yii::app()->db->createCommand($emquery)->queryAll();
     }
+
+	function insertParticipant($data)
+	{
+            $token = new self;
+            foreach ($data as $k => $v)
+                $token->$k = $v;
+            try
+            {
+            	$token->save();
+            	return $token->tid;
+            }
+            catch(Exception $e)
+            {
+            	return false;
+        	}
+	}
 
     function insertToken($iSurveyID, $data)
     {

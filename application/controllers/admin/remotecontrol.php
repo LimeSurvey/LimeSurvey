@@ -1712,14 +1712,9 @@ class remotecontrol_handle
                 Tokens_dynamic::sid($iSurveyID);
                 $token = new Tokens_dynamic;
 
-                if ($token->insert())
+                if ($new_token_id=$token->insertParticipant($aParticipant))
                 {
-					foreach ($aParticipant as $k => $v)
-						$token->$k = $v;
-					$inresult = $token->save();						
-                    $new_token_id = $token->primaryKey;
-
-                    if ($bCreateToken)
+                     if ($bCreateToken)
                         $token_string = Tokens_dynamic::model()->createToken($new_token_id);
                     else
                         $token_string = '';
@@ -1729,8 +1724,11 @@ class remotecontrol_handle
                     'token' => $token_string,
                     ));
                 }
+                else
+                {
+					$aParticipant=false;
+				}
             }
-
             return $aParticipantData;
         }
         else
