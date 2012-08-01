@@ -15,6 +15,20 @@ function LEMcount()
     return result;
 }
 
+function LEMunique()
+{
+    var uniqs = new Array();
+    for (i=0;i<arguments.length;++i) {
+        var arg = arguments[i];
+        if (trim(arg)=='')
+            continue;
+        if (typeof uniqs[arg] !== 'undefined')
+            return false;
+        uniqs[arg] = 1;
+    }
+    return true;
+}
+
 function LEMcountif()
 {
     // takes variable number of arguments - returns count of those arguments that match the first parameter

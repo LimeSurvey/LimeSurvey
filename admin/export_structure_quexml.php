@@ -109,67 +109,11 @@ function fixed_array($array)
  * @return bool|string Text of item to skip to otherwise false if nothing to skip to
  * @author Adam Zammit <adam.zammit@acspri.org.au>
  * @since  2010-10-28
- */
+ * @TODO Correctly handle conditions in a database agnostic way
+*/
 function skipto($qid,$value,$cfieldname = "")
 {
-	global $connect ;
-	global $dbprefix ;
-	global $surveyid ;
-	global $qlang ;
-
-	$zeros = $connect->qstr("0000000000");
-
-	$Query = "SELECT q.*," . $connect->concat("RIGHT(" . $connect->concat($zeros,'g.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q.question_order') .",10)") ." as globalorder
-                  FROM {$dbprefix}questions as q, {$dbprefix}questions as q2, {$dbprefix}groups as g, {$dbprefix}groups as g2
-                  WHERE q.parent_qid = 0 
-                  AND q2.parent_qid = 0
-                  AND q.sid=$surveyid
-                  AND q2.sid=$surveyid
-                  AND q2.qid = $qid       
-                  AND g2.gid =q2.gid                      
-                  AND g.gid = q.gid
-                  AND " . $connect->concat("RIGHT(" . $connect->concat($zeros,'g.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q.question_order') .",10)") ." > " . $connect->concat("RIGHT(" . $connect->concat($zeros,'g2.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q2.question_order') .",10)") ."
-                  ORDER BY globalorder";
-
-	$QueryResult = db_execute_assoc($Query);
-	
-	$nextqid="";
-	$nextorder="";
-
-	$Row = $QueryResult->FetchRow();
-	if ($Row)
-	{
-		$nextqid = $Row['qid'];
-		$nextorder = $Row['globalorder'];
-	}
-	else
-		return false;
-
-
-	$Query = "SELECT q.*
-		FROM {$dbprefix}questions as q
-		JOIN {$dbprefix}groups as g ON (g.gid = q.gid)
-		LEFT JOIN {$dbprefix}conditions as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
-		WHERE q.sid = $surveyid
-		AND q.parent_qid = 0
-		AND " . $connect->concat("RIGHT(" . $connect->concat($zeros,'g.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q.question_order') .",10)") ." >= $nextorder
-		AND c.cqid IS NULL
-		ORDER BY  " . $connect->concat("RIGHT(" . $connect->concat($zeros,'g.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q.question_order') .",10)"); 
-
-
-	$QueryResult = db_execute_assoc($Query);
-
-	$Row = $QueryResult->FetchRow();
-	if ($Row)
-	{
-		if ($nextqid == $Row['qid'])
-			return false;
-		else
-			return $Row['title'];
-	}
-	else
-		return $qlang->gT("End");
-
+	return false;
 }
 
 
