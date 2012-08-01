@@ -1466,19 +1466,32 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iQuestionID Id of the question to get properties
      * @param array $aQuestionSettings The properties to get
+     * @param string $sLanguage Optional parameter language for multilingual questions
      * @return array The requested values
      */
-	public function get_question_properties($sSessionKey, $iQuestionID, $aQuestionSettings)
+	public function get_question_properties($sSessionKey, $iQuestionID, $aQuestionSettings, $sLanguage=NULL)
 	{
-	
        if ($this->_checkSessionKey($sSessionKey))
        {
+		    Yii::app()->loadHelper("surveytranslator");
 			$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID));
 			if (!isset($oQuestion))
-				return array('status' => 'Error: Invalid questionid', 22);
-			   	
-			if (hasSurveyPermission($oQuestion->sid, 'survey', 'read'))
+				return array('status' => 'Error: Invalid questionid');		    
+		    
+		    $iSurveyID = $oQuestion->sid;
+		   	
+			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
 			{		  
+				if (is_null($sLanguage))
+					$sLanguage=Survey::model()->findByPk($iSurveyID)->language;
+
+				if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+					return array('status' => 'Error: Invalid language');			
+				
+				$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
+				if (!isset($oQuestion))
+					return array('status' => 'Error: Invalid questionid');				
+
 				$aBasicDestinationFields=Questions::model()->tableSchema->columnNames;
 				array_push($aBasicDestinationFields,'available_answers')	;
 				$aQuestionSettings=array_intersect($aQuestionSettings,$aBasicDestinationFields);
@@ -1491,7 +1504,7 @@ class remotecontrol_handle
                 {
 					if ($sPropertyName == 'available_answers')
 					{
-						$oSubQuestions =  Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionID),array('order'=>'title') );
+						$oSubQuestions =  Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionID,'language'=>$sLanguage ),array('order'=>'title') );
 						if (count($oSubQuestions)>0)
 						{
 							foreach($oSubQuestions as $oSubQuestion)
@@ -1523,18 +1536,32 @@ class remotecontrol_handle
     * @param string $sSessionKey Auth credentials
     * @param integer $iQuestionID  - ID of the question
     * @param array|struct $aQuestionData - An array with the particular fieldnames as keys and their values to set on that particular question
+    * @param string $sLanguage Optional parameter language for multilingual questions
     * @return array Of succeeded and failed modifications according to internal validation.
     */
-    public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData)
+    public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData,$sLanguage=NULL)
     { 
         if ($this->_checkSessionKey($sSessionKey))
         {               
+            Yii::app()->loadHelper("surveytranslator");
             $oQuestion=Questions::model()->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion))
                 return array('status' => 'Error: Invalid group ID');
+                
+			$iSurveyID = $oQuestion->sid;
 
-            if (hasSurveyPermission($oQuestion->sid, 'survey', 'update'))
+            if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {    
+				if (is_null($sLanguage))
+					$sLanguage=Survey::model()->findByPk($iSurveyID)->language;
+
+				if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+					return array('status' => 'Error: Invalid language');			
+
+				$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
+				if (!isset($oQuestion))
+					return array('status' => 'Error: Invalid questionid');	                
+
                 // Remove fields that may not be modified
                 unset($aQuestionData['qid']);
                 unset($aQuestionData['gid']);
@@ -1552,34 +1579,33 @@ class remotecontrol_handle
 
                 foreach($aQuestionData as $sFieldName=>$sValue)
                 {
-
-						//all the dependencies that this question has to other questions
-						$dependencies=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,$iQuestionID);
-						//all dependencies by other questions to this question
-						$is_criteria_question=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,"all",$iQuestionID,"by-targqid");
-						//We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies						
+					//all the dependencies that this question has to other questions
+					$dependencies=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,$iQuestionID);
+					//all dependencies by other questions to this question
+					$is_criteria_question=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,"all",$iQuestionID,"by-targqid");
+					//We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies						
+					
+					if((isset($dependencies) || isset($is_criteria_question))  && $sFieldName == 'question_order')
+						$aFailed[$sFieldName]='Questions with dependencies - Order cannot be changed';
+					else
+					{
+						$oQuestion->setAttribute($sFieldName,$sValue);
+					}
 						
-						if((isset($dependencies) || isset($is_criteria_question))  && $sFieldName == 'question_order')
-							$aFailed[$sFieldName]='Questions with dependencies - Order cannot be changed';
-						else
-						{
-							$oQuestion->setAttribute($sFieldName,$sValue);
-						}
-							
-						try
-						{
-							$bSaveResult=$oQuestion->save(); // save the change to database
-							fixSortOrderQuestions($oQuestion->gid, $oQuestion->sid);
-							$aResult[$sFieldName]=$bSaveResult;
-							//unset fields that failed
-							if (!$bSaveResult)
-								$oQuestion->$sFieldName=$aQuestionAttributes[$sFieldName];
-						}
-						catch(Exception $e)
-						{
-							//unset fields that caused exception
+					try
+					{
+						$bSaveResult=$oQuestion->save(); // save the change to database
+						fixSortOrderQuestions($oQuestion->gid, $oQuestion->sid);
+						$aResult[$sFieldName]=$bSaveResult;
+						//unset fields that failed
+						if (!$bSaveResult)
 							$oQuestion->$sFieldName=$aQuestionAttributes[$sFieldName];
-						}						
+					}
+					catch(Exception $e)
+					{
+						//unset fields that caused exception
+						$oQuestion->$sFieldName=$aQuestionAttributes[$sFieldName];
+					}						
                 }
                 return $aResult;
             }
@@ -1599,18 +1625,26 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the survey to list questions
      * @param int $iGroupID Optional id of the group to list questions
+     * @param string $sLanguage Optional parameter language for multilingual questions
      * @return array The list of questions
      */
-	public function list_questions($sSessionKey, $iSurveyID, $iGroupID=NULL)
+	public function list_questions($sSessionKey, $iSurveyID, $iGroupID=NULL, $sLanguage=NULL)
 	{
        if ($this->_checkSessionKey($sSessionKey))
        {
+			Yii::app()->loadHelper("surveytranslator");
 			$oSurvey = Survey::model()->findByPk($iSurveyID);		   
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
   
 			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
 			{	
+				if (is_null($sLanguage))
+					$sLanguage=$oSurvey->language;
+
+				if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+					return array('status' => 'Error: Invalid language');				
+				
 				if($iGroupID!=NULL)
 				{
 					$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
@@ -1619,10 +1653,10 @@ class remotecontrol_handle
 					if($sGroupSurveyID != $iSurveyID)
 						return array('status' => 'Error: IMissmatch in surveyid and groupid');	
 					else
-						$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0"));
+						$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0","language"=>$sLanguage));
 				}
 				else
-					$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0"));
+					$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0", "language"=>$sLanguage));
 	   
 				if(count($aQuestionList)==0)
 					return array('status' => 'No questions found');
