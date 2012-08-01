@@ -372,7 +372,7 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 			{
 				return array('status' => 'Error: Invalid survey ID');
-			}		   
+			}	   
 			if (hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
 				{
 					$aBasicDestinationFields=Survey::model()->tableSchema->columnNames;
@@ -660,23 +660,24 @@ class remotecontrol_handle
 			$oSurvey = Survey::model()->findByPk($iSurveyID);		   
 			if (!isset($oSurvey))
 				return array('status' => 'Invalid surveyid');
-				
-			if(in_array($sStatName, $aPermittedTokenStats))	
-			{
-				if (tableExists('{{tokens_' . $iSurveyID . '}}'))
-					$summary = Tokens_dynamic::model($iSurveyID)->summary();
-				else
-					return array('status' => 'No available data');
-			}
-			
-			if(in_array($sStatName, $aPermittedSurveyStats) && !tableExists('{{survey_' . $iSurveyID . '}}'))	
-				return array('status' => 'No available data');
-									
-			if (!in_array($sStatName, $aPermittedStats)) 
-				return array('status' => 'No such property');
 		
 			if (hasSurveyPermission($iSurveyID, 'survey', 'read'))
 			{	
+				if(in_array($sStatName, $aPermittedTokenStats))	
+				{
+					if (tableExists('{{tokens_' . $iSurveyID . '}}'))
+						$summary = Tokens_dynamic::model($iSurveyID)->summary();
+					else
+						return array('status' => 'No available data');
+				}
+				
+				if(in_array($sStatName, $aPermittedSurveyStats) && !tableExists('{{survey_' . $iSurveyID . '}}'))	
+					return array('status' => 'No available data');
+										
+				if (!in_array($sStatName, $aPermittedStats)) 
+					return array('status' => 'No such property');
+
+
 				switch($sStatName) 
 				{
 					case 'token_count':
@@ -1029,15 +1030,15 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
            		   
-			$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
-			if (!isset($oGroup))
-				return array('status' => 'Error: Invalid group ID');
-		   
-			if($oSurvey['active']=='Y')
-				return array('status' => 'Error:Survey is active and not editable');
-
             if (hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
-            {			
+            {
+				$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+				if (!isset($oGroup))
+					return array('status' => 'Error: Invalid group ID');
+			   
+				if($oSurvey['active']=='Y')
+					return array('status' => 'Error:Survey is active and not editable');				
+							
 				$depented_on = getGroupDepsForConditions($oGroup->sid,"all",$iGroupID,"by-targgid");
 				if(isset($depented_on))
 					return array('status' => 'Group with depencdencies - deletion not allowed');	
@@ -1078,13 +1079,13 @@ class remotecontrol_handle
         { 
 			$oSurvey = Survey::model()->findByPk($iSurveyID);
 			if (!isset($oSurvey))
-				return array('status' => 'Error: Invalid survey ID');
-				
-			if($oSurvey->getAttribute('active') =='Y')
-				return array('status' => 'Error:Survey is aCctive and not editable');	
+				return array('status' => 'Error: Invalid survey ID');	
 
             if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
+				if($oSurvey->getAttribute('active') =='Y')
+					return array('status' => 'Error:Survey is active and not editable');				
+				
                 if (!in_array($sImportDataType,array('csv','lsg'))) return array('status' => 'Invalid extension');
 				libxml_use_internal_errors(true);
                 Yii::app()->loadHelper('admin/import');
@@ -1158,12 +1159,12 @@ class remotecontrol_handle
 		   $oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
 			if (!isset($oGroup))
 				return array('status' => 'Error: Invalid group ID');
-		
-			$aBasicDestinationFields=Groups::model()->tableSchema->columnNames;	
-			$aGroupSettings=array_intersect($aGroupSettings,$aBasicDestinationFields);
-				   
+			   
 			if (hasSurveyPermission($oGroup->sid, 'survey', 'read'))
 			{		    
+				$aBasicDestinationFields=Groups::model()->tableSchema->columnNames;	
+				$aGroupSettings=array_intersect($aGroupSettings,$aBasicDestinationFields);
+
 				if (empty($aGroupSettings))	
 					return array('status' => 'No valid Data');                 
                 
@@ -1304,20 +1305,20 @@ class remotecontrol_handle
 	{
         if ($this->_checkSessionKey($sSessionKey))
         {
-
 			$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID));
 			if (!isset($oQuestion))
 				return array('status' => 'Error: Invalid question ID');
 		
 			$iSurveyID = $oQuestion['sid'];
-			$oSurvey = Survey::model()->findByPk($iSurveyID);
-
-			if($oSurvey['active']=='Y')
-				return array('status' => 'Survey is active and not editable');
-			$iGroupID=$oQuestion['gid'];	
-			
+		
             if (hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
             {
+				$oSurvey = Survey::model()->findByPk($iSurveyID);
+
+				if($oSurvey['active']=='Y')
+					return array('status' => 'Survey is active and not editable');
+				$iGroupID=$oQuestion['gid'];					
+				
 				$oCondition = Conditions::model()->findAllByAttributes(array('cqid' => $iQuestionID));
 				if(count($oCondition)>0)
 					return array('status' => 'Cannot delete Question. Others rely on this question');
@@ -1378,19 +1379,21 @@ class remotecontrol_handle
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 				
-			if($oSurvey->getAttribute('active') =='Y')
-				return array('status' => 'Error:Survey is Active and not editable');	
-				
-			$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
-			if (!isset($oGroup))
-				return array('status' => 'Error: Invalid group ID');
-			
-			$sGroupSurveyID = $oGroup['sid'];	
-			if($sGroupSurveyID != $iSurveyID)
-				return array('status' => 'Error: Missmatch in surveyid and groupid');
+
 				
             if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
+				if($oSurvey->getAttribute('active') =='Y')
+					return array('status' => 'Error:Survey is Active and not editable');	
+					
+				$oGroup = Groups::model()->findByAttributes(array('gid' => $iGroupID));
+				if (!isset($oGroup))
+					return array('status' => 'Error: Invalid group ID');
+				
+				$sGroupSurveyID = $oGroup['sid'];	
+				if($sGroupSurveyID != $iSurveyID)
+					return array('status' => 'Error: Missmatch in surveyid and groupid');
+
                 if (!in_array($sImportDataType,array('csv','lsq'))) return array('status' => 'Invalid extension');
 				libxml_use_internal_errors(true);
                 Yii::app()->loadHelper('admin/import');
@@ -1473,16 +1476,16 @@ class remotecontrol_handle
 			$oQuestion = Questions::model()->findByAttributes(array('qid' => $iQuestionID));
 			if (!isset($oQuestion))
 				return array('status' => 'Error: Invalid questionid', 22);
-				
-			$aBasicDestinationFields=Questions::model()->tableSchema->columnNames;
-			array_push($aBasicDestinationFields,'available_answers')	;
-			$aQuestionSettings=array_intersect($aQuestionSettings,$aBasicDestinationFields);
-
-			if (empty($aQuestionSettings))	
-			   	return array('status' => 'No valid Data');   
 			   	
 			if (hasSurveyPermission($oQuestion->sid, 'survey', 'read'))
 			{		  
+				$aBasicDestinationFields=Questions::model()->tableSchema->columnNames;
+				array_push($aBasicDestinationFields,'available_answers')	;
+				$aQuestionSettings=array_intersect($aQuestionSettings,$aBasicDestinationFields);
+
+				if (empty($aQuestionSettings))	
+					return array('status' => 'No valid Data');   
+
                 $aResult=array();
                 foreach ($aQuestionSettings as $sPropertyName )
                 {
@@ -1719,12 +1722,12 @@ class remotecontrol_handle
 			$oSurvey = Survey::model()->findByPk($iSurveyID);
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
-			
-			if(!tableExists("{{tokens_$iSurveyID}}"))
-				return array('status' => 'Error: No token table');
-				
+
 			if (hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
 			{
+				if(!tableExists("{{tokens_$iSurveyID}}"))
+					return array('status' => 'Error: No token table');
+									
 				$aResult=array();
 				foreach($aTokenIDs as $iTokenID)
 				{
@@ -1766,17 +1769,17 @@ class remotecontrol_handle
        {
 			$surveyidExists = Survey::model()->findByPk($iSurveyID);
 			if (!isset($surveyidExists))
-				return array('status' => 'Error: Invalid survey ID');
-			
-			if(!tableExists("{{tokens_$iSurveyID}}"))
-				return array('status' => 'Error: No token table');
-			
-			$oToken = Tokens_dynamic::model($iSurveyID)->findByPk($iTokenID);
-			if (!isset($oToken))
-				return array('status' => 'Error: Invalid tokenid');
+				return array('status' => 'Error: Invalid survey ID');	
 							
 			if (hasSurveyPermission($iSurveyID, 'tokens', 'read'))
-			{		
+			{	
+				if(!tableExists("{{tokens_$iSurveyID}}"))
+					return array('status' => 'Error: No token table');
+				
+				$oToken = Tokens_dynamic::model($iSurveyID)->findByPk($iTokenID);
+				if (!isset($oToken))
+					return array('status' => 'Error: Invalid tokenid');				
+					
                 $aResult=array();
                 $aBasicDestinationFields=Tokens_dynamic::model()->tableSchema->columnNames;	
                 $aTokenProperties=array_intersect($aTokenProperties,$aBasicDestinationFields);     
@@ -1812,28 +1815,27 @@ class remotecontrol_handle
 	{
        if ($this->_checkSessionKey($sSessionKey))
        {
-
 			$oSurvey = Survey::model()->findByPk($iSurveyID);
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
 			
-			if(!tableExists("{{tokens_$iSurveyID}}"))
-				return array('status' => 'Error: No token table');
-			
-			$oToken = Tokens_dynamic::model($iSurveyID)->findByPk($iTokenID);
-			if (!isset($oToken))
-				return array('status' => 'Error: Invalid tokenid');
-							
-			$aResult = array();
-			// Remove fields that may not be modified
-			unset($aTokenData['tid']);
-			
-			$aBasicDestinationFields=array_flip(Tokens_dynamic::model()->tableSchema->columnNames);	
-            $aTokenData=array_intersect_key($aTokenData,$aBasicDestinationFields);     
-			$aTokenAttributes = $oToken->getAttributes();
-
 			if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
 			{		             
+				if(!tableExists("{{tokens_$iSurveyID}}"))
+					return array('status' => 'Error: No token table');
+				
+				$oToken = Tokens_dynamic::model($iSurveyID)->findByPk($iTokenID);
+				if (!isset($oToken))
+					return array('status' => 'Error: Invalid tokenid');
+								
+				$aResult = array();
+				// Remove fields that may not be modified
+				unset($aTokenData['tid']);
+				
+				$aBasicDestinationFields=array_flip(Tokens_dynamic::model()->tableSchema->columnNames);	
+				$aTokenData=array_intersect_key($aTokenData,$aBasicDestinationFields);     
+				$aTokenAttributes = $oToken->getAttributes();
+
 				if (empty($aTokenData))	
 					return array('status' => 'No valid Data'); 
 					               
@@ -1881,12 +1883,12 @@ class remotecontrol_handle
 			$oSurvey = Survey::model()->findByPk($iSurveyID);		   
 			if (!isset($oSurvey))
 				return array('status' => 'Error: Invalid survey ID');
-			
-			if(!tableExists("{{tokens_$iSurveyID}}"))
-				return array('status' => 'Error: No token table');
- 
+
 			if (hasSurveyPermission($iSurveyID, 'tokens', 'read'))
 			{	
+				if(!tableExists("{{tokens_$iSurveyID}}"))
+					return array('status' => 'Error: No token table');
+
 				if($bUnused)
 					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll("completed = 'N'");
 				else
