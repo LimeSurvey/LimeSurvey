@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-07-28 15:19:00+00:00\n"
+"POT-Creation-Date: 2012-08-01 22:00:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9043,119 +9043,123 @@ msgstr ""
 msgid "Uppercase the first character of each word in a string"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:246
+#: classes/expressions/ExpressionManager.php:219
+msgid "Returns true if all non-empty responses are unique"
+msgstr ""
+
+#: classes/expressions/ExpressionManager.php:247
 msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:253
-#: classes/expressions/ExpressionManager.php:392
+#: classes/expressions/ExpressionManager.php:254
+#: classes/expressions/ExpressionManager.php:393
 msgid "Invalid value(s) on the stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:386
+#: classes/expressions/ExpressionManager.php:387
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:441
+#: classes/expressions/ExpressionManager.php:442
 msgid "Extra tokens found"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:456
+#: classes/expressions/ExpressionManager.php:457
 msgid "Unbalanced equation - values left on stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:462
+#: classes/expressions/ExpressionManager.php:463
 msgid "Not a valid expression"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:523
-#: classes/expressions/ExpressionManager.php:951
-#: classes/expressions/ExpressionManager.php:1032
+#: classes/expressions/ExpressionManager.php:524
+#: classes/expressions/ExpressionManager.php:952
+#: classes/expressions/ExpressionManager.php:1033
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:568
+#: classes/expressions/ExpressionManager.php:569
 msgid "This variable is not declared until a later page"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:575
-#: classes/expressions/ExpressionManager.php:1686
+#: classes/expressions/ExpressionManager.php:576
+#: classes/expressions/ExpressionManager.php:1687
 msgid "Undefined variable"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:582
+#: classes/expressions/ExpressionManager.php:583
 msgid "Should never  get to this line?"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:668
+#: classes/expressions/ExpressionManager.php:669
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:674
+#: classes/expressions/ExpressionManager.php:675
 msgid "Only variables can be assigned values"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:730
+#: classes/expressions/ExpressionManager.php:731
 msgid "Expected expressions separated by commas"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:738
+#: classes/expressions/ExpressionManager.php:739
 msgid "Extra token found after Expressions"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:754
+#: classes/expressions/ExpressionManager.php:755
 msgid "Undefined Function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:760
+#: classes/expressions/ExpressionManager.php:761
 msgid "Expected left parentheses after function name"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:784
+#: classes/expressions/ExpressionManager.php:785
 msgid "Extra comma found in function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:968
+#: classes/expressions/ExpressionManager.php:969
 msgid "Expected right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1670
+#: classes/expressions/ExpressionManager.php:1671
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1679
+#: classes/expressions/ExpressionManager.php:1680
 msgid "Undefined function"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1691
+#: classes/expressions/ExpressionManager.php:1692
 msgid "Unsupported syntax"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1699
+#: classes/expressions/ExpressionManager.php:1700
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:1984
+#: classes/expressions/ExpressionManager.php:1985
 msgid "Function must have at least %s argument(s)"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2085
+#: classes/expressions/ExpressionManager.php:2086
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2090
+#: classes/expressions/ExpressionManager.php:2091
 msgid "Function does not support %s arguments. "
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2091
+#: classes/expressions/ExpressionManager.php:2092
 msgid "Function supports this many arguments, where -1=unlimited: %s."
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:2324
+#: classes/expressions/ExpressionManager.php:2325
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: classes/expressions/ExpressionManager.php:3444
+#: classes/expressions/ExpressionManager.php:3445
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
