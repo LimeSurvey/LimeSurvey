@@ -1047,6 +1047,7 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $records = Participants::model()->getParticipants($page, $limit);
+            $aData =  new stdClass;
             $aData->page = $page;
             $aData->records = Participants::model()->count();
             $aData->total = ceil($aData->records / $limit);
