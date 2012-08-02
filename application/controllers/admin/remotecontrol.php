@@ -568,13 +568,14 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey
      * @param string $docType Type of documents the exported statistics should be
+     * $param string $sLanguage Optional language of the survey to use
      * @param string $graph Create graph option
      * @return string Base64 encoded string with the statistics file
      */
-    public function export_statistics($sSessionKey, $iSurveyID, $docType='pdf', $graph='0')
+    public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0')
     {
 		Yii::app()->loadHelper('admin/statistics');
-		
+		$tempdir = Yii::app()->getConfig("tempdir");
 		if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
 		$oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -583,52 +584,33 @@ class remotecontrol_handle
 				
 		if(Survey::model()->findByPk($iSurveyID)->owner_id != $_SESSION['loginID'])
 			return array('status' => 'Error: No Permission');
+		$aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
 
-		$oAllQuestions = Questions::model()->findAll("sid = '".$iSurveyID."'");
-		foreach($oAllQuestions as $sField)
-		{
-				$sMyField = $iSurveyID."X".$sField['gid']."X".$sField['qid'];					 
-				// Multiple choice get special treatment
-				if ($sField['type'] == "M" || $sField['type'] == "P") {$sMyField = "M$myField";}
-				//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-				if ($sField['type'] == "N") {$sMyField = "N$myField";}					 
-				if ($sField['type'] == "Q") {$sMyField = "Q$myField";}
-				// textfields get special treatment
-				if ($sField['type'] == "S" || $sField['type'] == "T" || $sField['type'] == "U"){$sMyField = "T$myField";}
-				//statistics for Date questions are not implemented yet.
-				if ($sField['type'] == "D") {$sMyField = "D$myField";}
-				if ($sField['type'] == "F" || $sField['type'] == "H")
-				{
-					$result3 = Answers::model()->findAllByAttributes(array('qid' => $sField['qid'],'language' => getBaseLanguageFromSurveyID($iSurveyID)), array('order' => 'sortorder, answer'));
-					foreach ($result3 as $row)
-					{
-						$sMyField = "$sMyField{$row['code']}";
-					}
-				}
-				$aSummary[]=$myField;
-		}
+		if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
+			$sLanguage = $oSurvey->language;
+
+		$oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
+		$aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
 
 		switch ($docType)
 		{
 			case 'pdf':
-				$tempFile = generate_statistics($iSurveyID,$aSummary,'all',$graph,$docType,'F');
+				$sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,$graph,$docType,'F',$sLanguage);
+				$sResult = file_get_contents($sTempFile);
+				unlink($sTempFile);
 				break;
 			case 'xls':
-				$tempFile = generate_statistics($iSurveyID,$aSummary,'all',0,$docType, 'F');
+				$sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'F',$sLanguage);
+				$sResult = file_get_contents($sTempFile);
+				unlink($sTempFile);
 				break;
 			case 'html':
-				$html = generate_statistics($iSurveyID,$aSummary,'all',0,$docType, 'F');
+				$sResult = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'DD',$sLanguage);
 				break;
 		}
 		
-		if(isset($html))
-			return base64_encode($html);
-		else 
-		{
-		$sResult = file_get_contents($tempfile);
-		unlink($tempfile);
 		return base64_encode($sResult);
-		}		
+
 	}
 
      /**
