@@ -1136,7 +1136,7 @@ class conditionsaction extends Survey_Common_Action {
 
         //END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/css/jquery.multiselect.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig("publicstyleurl").'jquery.multiselect.css');
 
         $aViewUrls = array();
 
