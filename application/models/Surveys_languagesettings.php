@@ -101,7 +101,10 @@ class Surveys_languagesettings extends CActiveRecord
             array('surveyls_description','xssfilter'),
             array('surveyls_welcometext','xssfilter'),
             array('surveyls_endtext','xssfilter'),
-            array('surveyls_urldescription','xssfilter')
+            array('surveyls_urldescription','xssfilter'),
+            
+            array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true), 
+            array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true), 
         );
     }
 

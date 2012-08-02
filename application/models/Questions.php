@@ -73,6 +73,22 @@
             );
         }
 
+		/**
+		* Returns this model's validation rules
+		*
+		*/
+		public function rules()
+		{
+			return array(
+			array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+			array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+			array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+			array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),			
+			array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),			
+			);  
+		}
+
+
         /**
         * Fixes sort order for questions in a group
         *
