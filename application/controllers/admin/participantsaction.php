@@ -1043,6 +1043,7 @@ class participantsaction extends Survey_Common_Action
             array_push($participantfields, $value['attribute_id']);
         }
 
+        $aData = new stdClass;
         //If super admin all the participants will be visible
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
@@ -1089,7 +1090,6 @@ class participantsaction extends Survey_Common_Action
         			$i++;
         		}
         	}
-            echo ls_json_encode($aData);
         }
         // Only the owned and shared participants will be visible
         else
@@ -1139,8 +1139,8 @@ class participantsaction extends Survey_Common_Action
 	                $i++;
 	            }
         	}
-            echo ls_json_encode($aData);
         }
+        echo ls_json_encode($aData);
     }
 
     /*
