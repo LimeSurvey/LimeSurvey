@@ -329,7 +329,7 @@ class FileQuestion extends QuestionModule
         return $this->fieldname;
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
         return array(
             'q' => $this,
@@ -339,7 +339,6 @@ class FileQuestion extends QuestionModule
             'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
             'mandatory'=>$this->mandatory,
             'varName' => $this->getVarName(),
-            'type' => $type,
             'fieldname' => $this->fieldname,
             'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
             'rootVarName' => $this->title,

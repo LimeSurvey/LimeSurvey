@@ -243,14 +243,24 @@ class CommentListQuestion extends ListQuestion
         }
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
-        return QuestionModule::generateQuestionInfo($type);
+        return QuestionModule::generateQuestionInfo();
     }
 
     public function generateSQInfo($ansArray)
     {
         return QuestionModule::generateSQInfo($ansArray);
+    }
+
+    public function compareField($sgqa, $sq)
+    {
+        return false;
+    }
+
+    public function includeList()
+    {
+        return false;
     }
 
     public function availableAttributes($attr = false)

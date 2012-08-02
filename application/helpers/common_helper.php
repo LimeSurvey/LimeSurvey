@@ -4812,7 +4812,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             if ($oldgid !== $q->gid)
             {
                 $oldgid = $q->gid;
-                $aResultTable['gid_'.$q->gid]=array($q->group_name);
+                $aResultTable['gid_'.$q->gid]=array($q->groupname);
             }
         }
         if (!empty($q->id))

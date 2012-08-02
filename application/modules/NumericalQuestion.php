@@ -132,7 +132,7 @@ class NumericalQuestion extends QuestionModule
         return true;
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
         return array(
             'q' => $this,
@@ -142,7 +142,6 @@ class NumericalQuestion extends QuestionModule
             'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
             'mandatory'=>$this->mandatory,
             'varName' => $this->getVarName(),
-            'type' => $type,
             'fieldname' => $this->fieldname,
             'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
             'rootVarName' => $this->title,
@@ -159,6 +158,19 @@ class NumericalQuestion extends QuestionModule
             'jsVarName' => 'java' . $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
             'jsVarName_on' => $this->jsVarNameOn(),
             );
+    }
+
+    public function getPregSQ($sgqaNaming, $sq)
+    {
+        $sgqa = substr($sq['jsVarName'],4);
+        if ($sgqaNaming)
+        {
+            return '(if(is_empty('.$sgqa.'.NAOK),0,!regexMatch("' . $this->preg . '", ' . $sgqa . '.NAOK)))';
+        }
+        else
+        {
+            return '(if(is_empty('.$sq['varName'].'.NAOK),0,!regexMatch("' . $this->preg . '", ' . $sq['varName'] . '.NAOK)))';
+        }
     }
 
     public function availableAttributes($attr = false)

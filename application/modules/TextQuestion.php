@@ -28,7 +28,7 @@ abstract class TextQuestion extends QuestionModule
         return false;
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
         return array(
             'q' => $this,
@@ -38,14 +38,26 @@ abstract class TextQuestion extends QuestionModule
             'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
             'mandatory'=>$this->mandatory,
             'varName' => $this->getVarName(),
-            'type' => $type,
             'fieldname' => $this->fieldname,
             'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
             'rootVarName' => $this->title,
             'subqs' => array()
             );
     }
-    
+
+    public function getPregSQ($sgqaNaming, $sq)
+    {
+        $sgqa = substr($sq['jsVarName'],4);
+        if ($sgqaNaming)
+        {
+            return '(if(is_empty('.$sgqa.'.NAOK),0,!regexMatch("' . $this->preg . '", ' . $sgqa . '.NAOK)))';
+        }
+        else
+        {
+            return '(if(is_empty('.$sq['varName'].'.NAOK),0,!regexMatch("' . $this->preg . '", ' . $sq['varName'] . '.NAOK)))';
+        }
+    }
+
     public function generateSQInfo($ansArray)
     {
         return array(

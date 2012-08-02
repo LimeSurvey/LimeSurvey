@@ -637,7 +637,7 @@ class responses extends Survey_Common_Action
                 $fieldname="{$q->surveyid}X{$q->gid}time";
                 if (!isset($fnames[$fieldname]))
                 {
-                    $fnames[$fieldname]=$clang->gT('Group').": ".$q->group_name;
+                    $fnames[$fieldname]=$clang->gT('Group').": ".$q->groupname;
                 }
             }
         }

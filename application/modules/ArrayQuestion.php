@@ -83,5 +83,15 @@ abstract class ArrayQuestion extends QuestionModule
     {
         return $this->fieldname;
     }
+
+    public function compareField($sgqa, $sq)
+    {
+        return $sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment');
+    }
+
+    public function includeRelevanceStatus()
+    {
+        return true;
+    }
 }
 ?>

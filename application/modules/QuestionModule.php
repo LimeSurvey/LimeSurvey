@@ -323,7 +323,7 @@ abstract class QuestionModule
         return null;
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
         if (!is_null($this->getRowDivID()) || (isset($this->preg) && trim($this->preg) != ''))
         {
@@ -335,7 +335,6 @@ abstract class QuestionModule
                 'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
                 'mandatory'=>$this->mandatory,
                 'varName' => $this->getVarName(),
-                'type' => $type,
                 'fieldname' => $this->fieldname,
                 'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
                 'rootVarName' => $this->title,
@@ -382,6 +381,53 @@ abstract class QuestionModule
         {
             return null;
         }
+    }
+
+    public function getAnswerCountSQ($sgqaNaming, $sq)
+    {
+        if ($sgqaNaming)
+        {
+            return substr($sq['jsVarName'],4) . '.NAOK';
+        }
+        else
+        {
+            return $sq['varName'] . '.NAOK';
+        }
+    }
+
+    public function getCommentMandatorySQ()
+    {
+        return "(" . $this->fieldname . ".NAOK!='-oth-' || (" . $this->fieldname . ".NAOK=='-oth-' && !is_empty(trim(" . $this->fieldname . "other.NAOK))))";
+    }
+
+    public function getPregSQ($sgqaNaming, $sq)
+    {
+        return null;
+    }
+
+    public function getPregEqn($sgqaNaming, $sq)
+    {
+        return null;
+    }
+
+    public function compareField($sgqa, $sq)
+    {
+        return false;
+    }
+
+    public function includeRelevanceStatus()
+    {
+        return false;
+    }
+
+    public function includeList()
+    {
+        return false;
+    }
+
+    public function includeRanks()
+    {
+        return false;
     }
 
     abstract public function availableAttributes($attr = false);

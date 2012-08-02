@@ -150,6 +150,11 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
         return null;
     }
 
+    public function compareField($sgqa, $sq)
+    {
+        return false;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

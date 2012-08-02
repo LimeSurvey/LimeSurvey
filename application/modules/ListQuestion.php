@@ -519,7 +519,7 @@ class ListQuestion extends QuestionModule
         return array_key_exists('other_numbers_only', $attributes) && $attributes['other_numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
         $q2subq = array(
             'q' => $this,
@@ -529,7 +529,6 @@ class ListQuestion extends QuestionModule
             'sgqa' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
             'mandatory'=>$this->mandatory,
             'varName' => $this->getVarName(),
-            'type' => $type,
             'fieldname' => $this->fieldname,
             'preg' => (isset($this->preg) && trim($this->preg) != '') ? $this->preg : NULL,
             'rootVarName' => $this->title,
@@ -559,6 +558,21 @@ class ListQuestion extends QuestionModule
         } else {
             return null;
         }
+    }
+
+    public function compareField($sgqa, $sq)
+    {
+        return $sgqa == ($sq['sgqa'] . 'other') && $sgqa == $sq['rowdivid'];
+    }
+
+    public function includeRelevanceStatus()
+    {
+        return false;
+    }
+
+    public function includeList()
+    {
+        return true;
     }
 
     public function availableAttributes($attr = false)

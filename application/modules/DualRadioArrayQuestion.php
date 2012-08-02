@@ -707,6 +707,30 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return substr($this->fieldname,0,-2);
     }
 
+    public function getAnswerCountSQ($sgqaNaming, $sq)
+    {
+        if ($sgqaNaming)
+        {
+            $base = substr(substr($sq['jsVarName'],4),0,-1);
+            return "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+        }
+        else
+        {
+            $base = substr($sq['varName'],0,-1);
+            return "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+        }
+    }
+
+    public function compareField($sgqa, $sq)
+    {
+        return $sgqa == ($sq['rowdivid'] . '#0') || $sgqa == ($sq['rowdivid'] . '#1');
+    }
+
+    public function includeRelevanceStatus()
+    {
+        return true;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

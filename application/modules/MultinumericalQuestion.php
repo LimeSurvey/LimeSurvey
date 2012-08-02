@@ -452,6 +452,42 @@ class MultinumericalQuestion extends QuestionModule
         return $this->fieldname;
     }
 
+    public function getPregSQ($sgqaNaming, $sq)
+    {
+        $sgqa = substr($sq['jsVarName'],4);
+        if ($sgqaNaming)
+        {
+            return '(if(is_empty('.$sgqa.'.NAOK),0,!regexMatch("' . $this->preg . '", ' . $sgqa . '.NAOK)))';
+        }
+        else
+        {
+            return '(if(is_empty('.$sq['varName'].'.NAOK),0,!regexMatch("' . $this->preg . '", ' . $sq['varName'] . '.NAOK)))';
+        }
+    }
+
+    public function getPregEqn($sgqaNaming, $sq)
+    {
+        $sgqa = substr($sq['jsVarName'],4);
+        if ($sgqaNaming)
+        {
+            return '(is_empty('.$sgqa.'.NAOK) || regexMatch("' . $this->preg . '", ' . $sgqa . '.NAOK))';
+        }
+        else
+        {
+            return '(is_empty('.$sq['varName'].'.NAOK) || regexMatch("' . $this->preg . '", ' . $sq['varName'] . '.NAOK))';
+        }
+    }
+
+    public function compareField($sgqa, $sq)
+    {
+        return $sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment');
+    }
+
+    public function includeRelevanceStatus()
+    {
+        return true;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group","value_range_allows_missing");
