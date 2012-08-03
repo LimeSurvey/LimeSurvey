@@ -193,6 +193,16 @@ class pdf extends MyPDF {
 	 * @access private
 	 */
 	private $_config = array();
+	
+	/**
+     * Set _config for pdf
+	 * @access public
+     * @param mixed $tcpdf
+     * @return
+     */
+	public function setConfig($tcpdf) {
+		$this->_config=$tcpdf;
+	}
 
 
 	/**
