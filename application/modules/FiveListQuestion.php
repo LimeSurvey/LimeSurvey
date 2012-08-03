@@ -31,8 +31,6 @@ class FiveListQuestion extends QuestionModule
         }
         $answer .= "</ul>\n<input type=\"hidden\" name=\"java$this->fieldname\" id=\"java$this->fieldname\" value=\"".$_SESSION['survey_'.$this->surveyid][$this->fieldname]."\" />\n";
         if($aQuestionAttributes['slider_rating']==1){
-            header_includes('/admin/scripts/rating/jquery.rating.css','css');
-            header_includes('/admin/scripts/rating/jquery.rating.js','js');
             $answer.="
             <script type=\"text/javascript\">
             document.write('";
@@ -127,6 +125,21 @@ class FiveListQuestion extends QuestionModule
         }
 
         return $answer;
+    }
+
+    public function getHeaderIncludes()
+    {
+        
+        $aQuestionAttributes = $this->getAttributeValues();
+        if($aQuestionAttributes['slider_rating']==1)
+        {
+            return array('/admin/scripts/rating/jquery.rating.css' => 'css',
+                '/admin/scripts/rating/jquery.rating.js' => 'js');
+        }
+        else
+        {
+            return array();
+        }
     }
 
     public function getDataEntry($idrow, &$fnames, $language)

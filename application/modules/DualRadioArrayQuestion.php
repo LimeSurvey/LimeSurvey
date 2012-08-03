@@ -597,8 +597,6 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $answer;
     }
 
-    //public function getDataEntry($idrow, $fnames, $language) - inherited
-
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;

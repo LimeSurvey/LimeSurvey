@@ -41,6 +41,11 @@ abstract class QuestionModule
     abstract public function getAnswerHTML();
     abstract public function getDataEntry($idrow, &$fnames, $language);
 
+    public function getHeaderIncludes()
+    {
+        return array();
+    }
+
     public function getAttributeValues()
     {
         if ($this->attributes) return $this->attributes;

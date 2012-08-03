@@ -166,8 +166,6 @@ class FiveRadioArrayQuestion extends RadioArrayQuestion
         return $output;
     }
 
-    //public function getInputNames() - inherited
-
     public function getExtendedAnswer($value, $language)
     {
         return $value;

@@ -69,7 +69,6 @@ class MultinumericalQuestion extends QuestionModule
         }
         if ($aQuestionAttributes['slider_layout']==1)
         {
-            header_includes( Yii::app()->getConfig("generalscripts").'jquery/lime-slider.js');
             $slider_layout=true;
             $extraclass .=" withslider";
             if (trim($aQuestionAttributes['slider_accuracy'])!='')
@@ -351,6 +350,20 @@ class MultinumericalQuestion extends QuestionModule
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$this->id AND scale_id=0 AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ORDER BY question_order";
         }
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
+    }
+
+    public function getHeaderIncludes()
+    {
+        
+        $aQuestionAttributes = $this->getAttributeValues();
+        if ($aQuestionAttributes['slider_layout']==1)
+        {
+            return array(Yii::app()->getConfig("generalscripts").'jquery/lime-slider.js' => 'js');
+        }
+        else
+        {
+            return array();
+        }
     }
 
     public function createFieldmap($type=null)

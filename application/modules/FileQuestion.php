@@ -3,7 +3,7 @@ class FileQuestion extends QuestionModule
 {
     public function getAnswerHTML()
     {
-        global $js_header_includes, $thissurvey;
+        global $thissurvey;
 
         $clang = Yii::app()->lang;
 
@@ -56,8 +56,6 @@ class FileQuestion extends QuestionModule
                  headFileName: '" . $clang->gT('File name','js') . "'
                 };
         </script>\n";
-
-        header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
 
         // Modal dialog
         $answer .= $uploadbutton;
@@ -184,6 +182,11 @@ class FileQuestion extends QuestionModule
             $output .= '<input readonly id="'.$this->fieldname.'" name="'.$this->fieldname.'" value ="'.htmlspecialchars($idrow[$this->fieldname]).'" /></td></table>';
         }
         return $output;
+    }
+
+    public function getHeaderIncludes()
+    {
+        return array(Yii::app()->getConfig('generalscripts')."modaldialog.js" => 'js');
     }
 
     public function getFileValidationMessage()

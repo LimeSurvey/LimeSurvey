@@ -655,9 +655,14 @@ class SurveyRuntimeHelper {
                         continue;
                     }
                     $qidattributes = $q->getAttributeValues();
-                    if ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)
+                    if (!$q->isEquation() && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
                     {
                         continue;
+                    }
+
+                    foreach($q->getHeaderIncludes() as $key=>$value)
+                    {
+                        header_includes($key, $value);
                     }
 
                     $qanda[] = $q;
@@ -682,7 +687,7 @@ class SurveyRuntimeHelper {
                         list($filevalidationpopup, $fpopup) = file_validation_popup($filenotvalidated);
                     }
                 }
-                if (array_key_exists('max_filesize', $q->questionProperties()))
+                if ($q->fileUpload())
                     $upload_file = TRUE;
             } //end iteration
         }
@@ -968,8 +973,8 @@ END;
                 $question['sgq'] = $q->fieldname;
                 $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
-                //===================================================================
                 $answer = $q->getAnswerHTML();
+                //===================================================================
                 $help = $qinfo['info']['help'];   // $qa[2];
 
                 $redata = compact(array_keys(get_defined_vars()));

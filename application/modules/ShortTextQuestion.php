@@ -157,13 +157,6 @@ class ShortTextQuestion extends TextQuestion
             <div id=\"gmap_canvas_$this->fieldname_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
             </div>";
 
-            if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
-                header_includes("https://maps.googleapis.com/maps/api/js?sensor=false");
-            else if ($aQuestionAttributes['location_mapservice']==1)
-                header_includes("http://maps.googleapis.com/maps/api/js?sensor=false");
-            elseif ($aQuestionAttributes['location_mapservice']==2)
-                header_includes("http://www.openlayers.org/api/OpenLayers.js");
-
             if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
             {
                 $answer .= "<div class=\"questionhelp\">"
@@ -201,6 +194,19 @@ class ShortTextQuestion extends TextQuestion
     {
         return "\t<input type='text' name='{$this->fieldname}' value='"
         .htmlspecialchars($idrow[$this->fieldname], ENT_QUOTES) . "' />\n";
+    }
+
+    public function getHeaderIncludes()
+    {
+        $aQuestionAttributes = $this->getAttributeValues();
+        if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
+            return array('https://maps.googleapis.com/maps/api/js?sensor=false' => 'js');
+        elseif ($aQuestionAttributes['location_mapservice']==1)
+            return array('http://maps.googleapis.com/maps/api/js?sensor=false' => 'js');
+        elseif ($aQuestionAttributes['location_mapservice']==2)
+            return array('http://www.openlayers.org/api/OpenLayers.js' => 'js');
+        else
+            return array();
     }
 
     public function getDBField()

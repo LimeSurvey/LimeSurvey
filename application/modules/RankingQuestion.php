@@ -75,8 +75,6 @@ class RankingQuestion extends QuestionModule
             $answer.="<div id=\"htmlblock-{$this->id}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
         }
         $answer .="</div>";
-        header_includes("ranking.js");
-        header_includes("ranking.css","css");
 
         if(trim($aQuestionAttributes['choice_title'][$clang->langcode]) != '')
         {
@@ -104,6 +102,12 @@ class RankingQuestion extends QuestionModule
         ." -->\n"
         ."</script>\n";
         return $answer;
+    }
+
+    public function getHelp()
+    {
+        $clang = Yii::app()->lang;
+        return $clang->gT("Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item.");
     }
 
     public function getDataEntry($idrow, &$fnames, $language)
@@ -281,6 +285,12 @@ class RankingQuestion extends QuestionModule
         return $this->answers = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
 
+    public function getHeaderIncludes()
+    {
+        
+        return array('ranking.js' => 'js', 'ranking.css' => 'css');
+    }
+
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;
@@ -365,6 +375,11 @@ class RankingQuestion extends QuestionModule
     public function getAnswerArray($em)
     {
         return (isset($em->qans[$this->id]) ? $em->qans[$this->id] : NULL);
+    }
+
+    public function getQuestion()
+    {
+        return $this->sq;
     }
 
     public function getArrayFilterNames($subqs, $qans, $sqsuffix, $symbol = '==', $join = 'and')

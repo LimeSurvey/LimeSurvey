@@ -159,12 +159,6 @@ class DateQuestion extends QuestionModule
         }
         else
         {
-            header_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-calendar.js');
-            if ($clang->langcode !== 'en')
-            {
-                header_includes(Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js');
-            }
-
             // Format the date  for output
             if (trim($_SESSION['survey_'.$this->surveyid][$this->fieldname])!='')
             {
@@ -242,6 +236,23 @@ class DateQuestion extends QuestionModule
         {
             return CHtml::textField($this->fieldname, $thisdate);
         }
+    }
+
+    public function getHeaderIncludes()
+    {
+        $clang=Yii::app()->lang;
+        $aQuestionAttributes=$this->getAttributeValues();
+        
+        $includes = array();
+        if (trim($aQuestionAttributes['dropdown_dates'])==0) {
+            $includes[Yii::app()->getConfig("generalscripts").'jquery/lime-calendar.js'] = 'js';
+            if ($clang->langcode !== 'en')
+            {
+                $includes[Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js'] = 'js';
+            }
+        }
+
+        return $includes;
     }
 
     public function filter($value, $type)

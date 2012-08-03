@@ -136,10 +136,6 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
         return $answer;
     }
 
-    //public function getDataEntry($idrow, $fnames, $language) - inherited
-
-    //public function getInputNames() - inherited
-
     public function getSqsuffix()
     {
         return '';

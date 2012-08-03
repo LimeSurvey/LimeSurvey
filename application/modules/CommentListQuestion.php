@@ -185,10 +185,6 @@ class CommentListQuestion extends ListQuestion
         return $output;
     }
 
-    //public function getTitle() - inherited
-
-    //public function getHelp() - inherited
-
     public function createFieldmap($type=null)
     {
         $clang = Yii::app()->lang;

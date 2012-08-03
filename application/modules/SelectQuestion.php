@@ -246,8 +246,6 @@ class SelectQuestion extends ListQuestion
         return $answer;
     }
 
-    //public function getDataEntry($idrow, $fnames, $language) - inherited
-
     protected function getOther()
     {
         if ($this->other) return $this->other;
@@ -255,12 +253,6 @@ class SelectQuestion extends ListQuestion
         $result = Yii::app()->db->createCommand($query)->query()->readAll();
         return $this->other = $result[0]['other'];  //Checked
     }
-
-    //public function getTitle() - inherited
-
-    //public function getHelp() - inherited
-
-    //public function createFieldmap($type=null) - inherited
 
     public function getQuotaValue($value)
     {

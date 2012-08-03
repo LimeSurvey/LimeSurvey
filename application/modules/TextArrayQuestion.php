@@ -387,8 +387,6 @@ EOD;
         return $output;
     }
 
-    //public function getInputNames() - inherited
-
     public function createFieldmap($type=null)
     {
         $map = array();
