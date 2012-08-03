@@ -438,7 +438,7 @@ class RadioArrayQuestion extends ArrayQuestion
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
-        return $attr?array_key_exists($attr,$attrs):$attrs;
+        return $attr?in_array($attr,$attrs):$attrs;
     }
 
     public function questionProperties($prop = false)

@@ -618,7 +618,7 @@ class NumberArrayQuestion extends ArrayQuestion
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
-        return $attr?array_key_exists($attr,$attrs):$attrs;
+        return $attr?in_array($attr,$attrs):$attrs;
     }
 
     public function questionProperties($prop = false)

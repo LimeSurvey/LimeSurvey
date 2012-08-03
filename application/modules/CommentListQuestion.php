@@ -321,7 +321,7 @@ class CommentListQuestion extends ListQuestion
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
-        return $attr?array_key_exists($attr,$attrs):$attrs;
+        return $attr?in_array($attr,$attrs):$attrs;
     }
 
     public function questionProperties($prop = false)

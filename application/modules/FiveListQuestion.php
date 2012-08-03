@@ -170,7 +170,7 @@ class FiveListQuestion extends QuestionModule
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","slider_rating","random_group");
-        return $attr?array_key_exists($attr,$attrs):$attrs;
+        return $attr?in_array($attr,$attrs):$attrs;
     }
 
     public function questionProperties($prop = false)

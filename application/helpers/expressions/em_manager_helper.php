@@ -1010,7 +1010,7 @@
                 else if (!$this->allOnOnePage && $this->currentGroupSeq != $qinfo['gseq']) {
                     continue; // only need subq relevance for current page.
                 }
-                //if(!array_key_exists('type', $qinfo)) {var_dump($qinfo);die();}
+
                 $q = $qinfo['q'];
                 $hasSubqs = (isset($qinfo['subqs']) && count($qinfo['subqs'] > 0));
                 $qattr = isset($this->qattr[$q->id]) ? $this->qattr[$q->id] : array();
@@ -1096,7 +1096,7 @@
                                         continue;
                                     }
                                     $qq = $this->q2subqInfo[$fqid[2]]['q'];
-                                    $afname = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['suffix'], '==', 'or');
+                                    $afname = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], '==', 'or');
                                     if (!is_null($afname)) $afnames[] = $afname;
                                 }
                                 foreach ($cascadedAFE as $_cafe)
@@ -1108,7 +1108,7 @@
                                         continue;
                                     }
                                     $qq = $this->q2subqInfo[$fqid[2]]['q'];
-                                    $afename = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['suffix'], '!=', 'and');
+                                    $afename = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], '!=', 'and');
                                     if (!is_null($afename)) $afenames[] = $afename;
                                 }
                             }
@@ -1342,7 +1342,7 @@
                         foreach ($subqs as $sq) {
                             if ($q->availableAttributes('min_answers'))
                             {
-                                $sq_names[] = $q->getMinAnswerCountSQ($this->sgqaNaming, $sq);
+                                $sq_names[] = $q->getAnswerCountSQ($this->sgqaNaming, $sq);
                             }
                         }
                         if (count($sq_names) > 0) {

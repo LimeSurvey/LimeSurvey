@@ -306,7 +306,7 @@ class DateQuestion extends QuestionModule
     public function availableAttributes($attr = false)
     {
         $attrs=array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");
-        return $attr?array_key_exists($attr,$attrs):$attrs;
+        return $attr?in_array($attr,$attrs):$attrs;
     }
 
     public function questionProperties($prop = false)
