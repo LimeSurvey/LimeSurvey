@@ -143,8 +143,8 @@ class participantsaction extends Survey_Common_Action
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/css/jquery.multiselect.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/css/jquery.multiselect.filter.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')       . 'displayParticipants.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/ui.jqgrid.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/jquery.ui.datepicker.css');
@@ -1043,10 +1043,12 @@ class participantsaction extends Survey_Common_Action
             array_push($participantfields, $value['attribute_id']);
         }
 
+        $aData = new stdClass;
         //If super admin all the participants will be visible
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $records = Participants::model()->getParticipants($page, $limit);
+            $aData =  new stdClass;
             $aData->page = $page;
             $aData->records = Participants::model()->count();
             $aData->total = ceil($aData->records / $limit);
@@ -1089,7 +1091,6 @@ class participantsaction extends Survey_Common_Action
         			$i++;
         		}
         	}
-            echo ls_json_encode($aData);
         }
         // Only the owned and shared participants will be visible
         else
@@ -1139,8 +1140,8 @@ class participantsaction extends Survey_Common_Action
 	                $i++;
 	            }
         	}
-            echo ls_json_encode($aData);
         }
+        echo ls_json_encode($aData);
     }
 
     /*

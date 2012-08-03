@@ -68,7 +68,27 @@ class Tokens_dynamic extends LSActiveRecord
 	{
 		return 'tid';
 	}
-
+	
+	
+	/**
+	* Returns this model's validation rules
+	*
+	*/
+	public function rules()
+	{
+		return array(
+		array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+		array('remindersent' ,'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+		array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+		array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 	
+		array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+        array('sent', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+        array('completed', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),             			 
+		);  
+	}	
+	
     /**
      * Returns summary information of this token table
      *
@@ -102,7 +122,7 @@ class Tokens_dynamic extends LSActiveRecord
     * (some older tokens tables dont' get udated properly)
     *
     */
-    public function checkColumns() {
+public function checkColumns() {
         $sid = self::$sid;
         $surveytable='{{tokens_'.$sid.'}}';
         $columncheck=array("tid", "participant_id", "firstname", "lastname", "email", "emailstatus","token","language","blacklisted","sent","remindersent","completed","usesleft","validfrom","validuntil");
@@ -140,6 +160,22 @@ class Tokens_dynamic extends LSActiveRecord
         return Yii::app()->db->createCommand($emquery)->queryAll();
     }
 
+	function insertParticipant($data)
+	{
+            $token = new self;
+            foreach ($data as $k => $v)
+                $token->$k = $v;
+            try
+            {
+            	$token->save();
+            	return $token->tid;
+            }
+            catch(Exception $e)
+            {
+            	return false;
+        	}
+	}
+
     function insertToken($iSurveyID, $data)
     {
 		self::sid($iSurveyID);
@@ -163,6 +199,42 @@ class Tokens_dynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
+
+   /**
+     * Creates and inserts token for a specific token record and returns the token string created
+     *
+     * @param int $iTokenID
+     * @return string  token string
+     */
+    function createToken($iTokenID)
+    {
+		//get token length from survey settings
+        $tlrow = Survey::model()->findByAttributes(array("sid"=>self::$sid));
+        $iTokenLength = $tlrow->tokenlength;
+       
+		//get all existing tokens
+        $criteria = $this->getDbCriteria();
+        $criteria->select = 'token';
+		$ntresult = $this->findAllAsArray($criteria);   
+        foreach ($ntresult as $tkrow)
+        {
+            $existingtokens[] = $tkrow['token'];
+        }
+        //create new_token
+		$bIsValidToken = false;
+		while ($bIsValidToken == false)
+		{
+			$newtoken = randomChars($iTokenLength);
+			if (!in_array($newtoken, $existingtokens)) {
+				$existingtokens[] = $newtoken;
+				$bIsValidToken = true;
+			}
+		}
+		//update specific token row
+        $itresult = $this->updateToken($iTokenID, $newtoken);
+		return $newtoken;
+	}  
+
     /**
      * Creates tokens for all token records that have empty token fields and returns the number
      * of tokens created
