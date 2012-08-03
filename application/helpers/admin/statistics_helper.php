@@ -3246,7 +3246,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
         if($pdfOutput=='F')
         {
-			$sFileName = $tempdir.'/statistic-survey'.$surveyid.'.xls'
+			$sFileName = $tempdir.'/statistic-survey'.$surveyid.'.xls';
             $workbook = new Xlswriter($sFileName);
 		}
         else

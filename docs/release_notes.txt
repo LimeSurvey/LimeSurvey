@@ -1,5 +1,4 @@
-Welcome to LimeSurvey v2.00 Release Candidate 7! 
-
+Welcome to LimeSurvey v2.00 Release Candidate 8! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -21,7 +20,7 @@ Check out detailed requirements at http://docs.limesurvey.org/tiki-index.php?pag
 HOW TO INSTALL
 ---------------
 If you are doing a complete new installation please refer to the manual at
-http://docs.limesurvey.org
+http://docs.limesurvey.org/Installation+Version+2.0+or+later
 
 Please also have a look at the "Installation security hints" section of the online manual in order to secure your installation.
 
@@ -46,9 +45,7 @@ HOW TO UPGRADE from LimeSurvey 1.45 or later (<=1.70)
 2. Backup your config.php.
 3. Delete all old files 
 4. Upload the new version to the same place.
-5. Adjust the settings in config.php to the setting from the backup config.php. 
-   --Do NOT just copy over the old config.php over the new one.--
-6. Run the installer in /admin/install/index.php to update the database.
+6. Run the installer
 7. Done.
 
 Special note for UPGRADING from 1.53 to 1.72(+)
@@ -78,6 +75,107 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+
+
+Changes from 2.0RC6 to 2.0RC7 (build 120803) Aug 3, 2012
+-New feature: Added link from deactivation page to export page and corrected language (jcleeland)
+-New Feature: Added remotecontrol function get_site_settings (Spiros Trougakos)
+-New feature: CSS styles for EM's "Show Logic File" feature (Marcel Minke)
+-New feature: Dropdown inline search options for jqGrid survey list (useful for active/expired/inactive) (jcleeland)
+-New feature: Question save/save and close options - instead of just updating and closing, now choice is to save and keep editing, or to save and return to question view. My wife made me do it. (jcleeland)
+-New feature: Remotecontrol functions for manipulation of groups (Spiros Trougakos)
+-New feature: Remotecontrol functions for manipulation of questions (Spiros Trougakos)
+-New feature: Remotecontrol functions for manipulation of surveys (Spiros Trougakos)
+-New feature: Remotecontrol functions for manipulation of tokens (Spiros Trougakos)
+-New feature: Sorting for inline text listing in statistics display, also initial sorting for text display of numerical responses. Todo: fix some of the sorting problems for numerical responses (jcleeland)
+-New feature: Statistics browse, etc - view file and generic sort icons (jcleeland)
+-New feature: Statistics output screen cleaned up, placed inside collapsible divs (jcleeland)
+-Updated feature:  Remote control functions new naming schema (Spiros Trougakos)
+#Updated translation: Czech by slansky
+#Updated translation: Turkish by kayazeren
+-Fixed issue #6401: Question type list and aample popups fall off the screen (Sam Mousa)
+-Fixed issue #5795: No save message at attribute management (jcleeland)
+-Fixed issue #6066: File upload fails if single oder double quotes are used (Carsten Schmitz)
+-Fixed issue #6067: jqGrid behaviours for editing attributes has errors (jcleeland)
+-Fixed issue #6113: Import participants from CSV does not work. Adjusted system settings to cope with mac file endings (jcleeland)
+-Fixed issue #6259: PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ls2.lime_surveys' doesn't exist (Carsten Schmitz)
+-Fixed issue #6287: Unable to export QueXML with Postgresql 9.1 Fixed issue #6297: QueXML Export broken Dev Removed condition checking for queXML export (Adam Zammit)
+-Fixed issue #6340: Error "String offset cast occured" when adding user and using PHP 5.4 or later (Carsten Schmitz)
+-Fixed issue #6341: Installation fails if ./tmp/runtime is not writable (Carsten Schmitz)
+-Fixed issue #6344: Printable survey shows wrong content for Array (Numbers) (Carsten Schmitz)
+-Fixed issue #6346: Statistic page filter not remembering statistics language (Carsten Schmitz)
+-Fixed issue #6347: display of question text different in 1.92+ and 2.0 when view question in admin mode (Carsten Schmitz)
+-Fixed issue #6348: Bar chart not translated in statistics when changing statistics language (Carsten Schmitz)
+-Fixed issue #6349: Condition does not work while using slider with stars (Thomas White)
+-Fixed issue #6350: Error html_entity_decode(): charset `ANSI_X3.4-1968' not supported, assuming iso-8859-1 on survey save when sending confirmation email (Carsten Schmitz)
+-Fixed issue #6351: Error when deleting a user (Carsten Schmitz)
+-Fixed issue #6354: Typo in sPostgres installation script (jcleeland)
+-Fixed issue #6355: Change graph type in statistics view not working (jcleeland)
+-Fixed issue #6359: Installations with postgres as database fail because of syntax error (jcleeland)
+-Fixed issue #6360: No Server time displayed in global settings (Carsten Schmitz)
+-Fixed issue #6363: Statistics repsonse filters don't display speaker icon, show question text twice (jcleeland)
+-Fixed issue #6363: Updated blobblueish style for earlier fix (jcleeland)
+-Fixed issue #6367: Participants database not importing from CSV even though CSV file in correct format (jcleeland)
+-Fixed issue #6368: Missing variable after creating function (jcleeland)
+-Fixed issue #6371: Statistics not checking selected checkboxes in response filter section after displaying stats (jcleeland)
+-Fixed issue #6372: Browse text responses doesn't work. Also reworked much of the stats function a lot of which is still spaghetti code. (jcleeland)
+-Fixed issue #6374: Cannot delete survey response (Carsten Schmitz)
+-Fixed issue #6377: Large integer values corrupted in survey responses (Carsten Schmitz)
+-Fixed issue #6378: Fatal error when editing conditions and using Text (Array) question (Carsten Schmitz)
+-Fixed issue #6379: Cannot define default answer for question (Carsten Schmitz)
+-Fixed issue #6381: Central participant database, admin language should not determine the list of available surveys (jcleeland)
+-Fixed issue #6383: All languages are presented when editing label set even restricted ones (Carsten Schmitz)
+-Fixed issue #6385: Graphs produces "Undefined offset: 8" error when there are more than 7 items to display. Problem was the directory location of the pchart color palette. Also some code tidying, changing db calls to use standard Yii models rather than raw SQL. Also fixed bug caused when the 'statistics_graphtype' question attribute did not exist. (jcleeland)
+-Fixed issue #6386: Importing CSV labels sets from LS website throws SQL exception (Carsten Schmitz)
+-Fixed issue #6387: Broken Add vs Replace Buttons on Quick Add for Labels (tpartner)
+-Fixed issue #6388: Graph cannot be changed from bar-graph to pie-graph javascript error occurs. Also added text explanations to the icons for mouseovers. (jcleeland)
+-Fixed issue #6389: Changing bar graph to pie graph for text based question fails (jcleeland)
+-Fixed issue #6389: Show text responses inline option no longer available. Fixed methodology to improve script efficiency. (jcleeland)
+-Fixed issue #6390: Show text responses inline option no longer available in general filter of statistics page (jcleeland)
+-Fixed issue #6391: Quartile calculations seem to be wrong. They really were. The limit/offset functions weren't working properly, and the method was calculating quartiles based on sum values, which is just wrong. Corrected methodology and database call, although the database call should probably be improved later. (jcleeland)
+-Fixed issue #6392: Language switch question type broken (Carsten Schmitz)
+-Fixed issue #6393: Multilingual attributes are lost when copying or importing survey (Carsten Schmitz)
+-Fixed issue #6395: QuickAdd permits longer codes than 5 characters (Carsten Schmitz)
+-Fixed issue #6397: Non-Superadmin user is unable to create a survey (Carsten Schmitz)
+-Fixed issue #6398: New user unable to access CPD (jcleeland)
+-Fixed issue #6402: adding participants to survey without selecting individual ones copies participants you don't own (jcleeland)
+-Fixed issue #6403: Link from participants grid to surveys bypasses survey permissions (jcleeland)
+-Fixed issue #6410: No options for some location atributes (Carsten Schmitz)
+-Fixed issue #6419: Failed to reproduce statistic with large survey in Yii Branch (missing semi-colon) (jcleeland)
+-Fixed issue: 5 point star rating breaked in Yii (Denis Chenu)
+-Fixed issue: Add offset and limit to list_participant (Spiros Trougakos)
+-Fixed issue: Change get and set functions(Survey,Group,Question,Tokens) invalid properties check (Spiros Trougakos)
+-Fixed issue: Clean up remotecontrol of dublicate functions (Spiros Trougakos)
+-Fixed issue: Discriminate get_survey_locale_settings from get_survey_settings function (Spiros Trougakos)
+-Fixed issue: Empty settings array returns status message in get-modify survey,group,token (Spiros Trougakos)
+-Fixed issue: escaping in statistics browse text responses view, also added title/hover info for browse view (jcleeland)
+-Fixed issue: Fixed error messages and functionality in list_surveys (Spiros Trougakos)
+-Fixed issue: Fix get_question_properties, set_question_properties, list_questions to take into account multilingual questions (Spiros Trougakos)
+-Fixed issue: Fix naming according to hungarian rule (Spiros Trougakos)
+-Fixed issue: Fix PHP notice that breaks participants display - strict standards creating default object from empty value (extended version of Aaron's fix) (jcleeland)
+-Fixed Issue: Fix  wrong function descriptions (Spiros Trougakos)
+-Fixed issue: Incorporated token_return functionality into get_token_list (Spiros Trougakos)
+-Fixed issue: Link for next/previous breaked (Denis Chenu)
+-Fixed issue: more statistics_help script fixes (jcleeland)
+-Fixed issue: Move hasSurveyPermission higher to avoid not needed calls (Spiros Trougakos)
+-Fixed issue: Move insertParticipant from remotecontrol to model (Spiros Trougakos)
+-Fixed issue: Move remotecontrol validation in model (Spiros Trougakos)
+-Fixed issue: multiple short text and multiple numerical results in statistics were endlessly looping, continued cleaning up code (jcleeland)
+-Fixed issue: numerical calculations in statistics were not working (jcleeland)
+-Fixed issue: Printable survey not properly using the configured template (Carsten Schmitz)
+-Fixed issue: questions with advanced-settting set to default to bar-graph weren't working in statistics page (jcleeland)
+-Fixed issue: Remotecontrol function add_participants (Spiros Trougakos)
+-Fixed issue: Removed obsolete features from add_survey (Spiros Trougakos)
+-Fixed issue: Remove obsolete RevertUpgradeConditionsToRelevance in delete_group (Spiros Trougakos)
+-Fixed issue: Resume later button not showing (Carsten Schmitz)
+-Fixed issue: Simplify in export_statistics (Spiros Trougakos)
+-Fixed issue: statistics pdf header was referring to old /image directory - updated to default to admin style image directory (jcleeland)
+-Fixed issue: statistics script not able to build query selector for array(column) question type (jcleeland)
+-Fixed issue: Subquestions and attributes were not properly copied when copying question (Carsten Schmitz)
+-Fixed issue: Survey breaking if configured template does not exist (Carsten Schmitz)
+-Fixed issue: the background color of the jqGrid loading modal is too dark. This may not be the best colour, but it's better :-) (jcleeland)
+-Fixed issue: tokens table not displaying more than 25 entries. Also added sort capabilities. (jcleeland)
+-Fixed issue: Path error for certain CSS files. (Aaron Schmitz)
 
 Changes from 2.0RC6 to 2.0RC7 (build 120721) June 20, 2012
 -Fixed issue #6192 - PHP notice "undefined variable" when using end URL (jcleeland)
