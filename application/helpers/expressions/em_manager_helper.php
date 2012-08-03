@@ -2486,7 +2486,7 @@
                 if (!isset($q2subqInfo[$q->id]) && !is_null($qInfo)) {
                     $q2subqInfo[$q->id] = $qInfo;
                 }
-                $sqInfo = $q->generateSQInfo($this->qans);
+                $sqInfo = $q->generateSQInfo($ansArray);
                 if (!is_null($qInfo) && !is_null($sqInfo)) {
                     $q2subqInfo[$q->id]['subqs'][] = $sqInfo;
                 }

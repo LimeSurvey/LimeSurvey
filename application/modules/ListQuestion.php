@@ -539,9 +539,9 @@ class ListQuestion extends QuestionModule
     public function generateSQInfo($ansArray)
     {
         $SQs = array();
-        if (!is_null($ansArray[$this->id]))
+        if (!is_null($ansArray))
         {
-            foreach (array_keys($ansArray[$this->id]) as $key)
+            foreach (array_keys($ansArray) as $key)
             {
                 $parts = explode('~',$key);
                 if ($parts[1] == '-oth-') {
