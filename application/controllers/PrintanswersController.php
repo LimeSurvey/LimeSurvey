@@ -133,7 +133,7 @@ class PrintanswersController extends LSYii_Controller {
             require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
             Yii::import('application.libraries.admin.pdf', true);
             $pdf = new pdf();
-            $pdf->_config = $tcpdf;
+            $pdf->setConfig($tcpdf);
             //$pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
             $pdf->AddPage();
             //$pdf->titleintopdf($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
