@@ -4592,7 +4592,7 @@ function do_array_yesnouncertain($ia)
             $fn++;
         }
     }
-    $answer .=  $answer_t_content . "\t\</tbody>\n</table>\n";
+    $answer .=  $answer_t_content . "\t\n</tbody>\n</table>\n";
     return array($answer, $inputnames);
 }
 
