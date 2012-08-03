@@ -5285,7 +5285,8 @@ function do_array_multitext($ia)
         $cellwidth=sprintf('%02d', $cellwidth);
 
         $ansquery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} and scale_id=0 AND question like '%|%'";
-        $ansresult = reset(dbExecuteAssoc($ansquery)->read());
+        $ansresult = dbExecuteAssoc($ansquery)->read();
+        $ansresult = reset($ansresult);
         if ($ansresult>0)
         {
             $right_exists=true;
@@ -5992,7 +5993,8 @@ function do_array_dual($ia)
     $labelans1=array();
     $labelans=array();
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $other = reset(dbExecuteAssoc($qquery)->read());    //Checked
+    $other = dbExecuteAssoc($qquery)->read();
+    $other = reset($other);    //Checked
     $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
     $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
