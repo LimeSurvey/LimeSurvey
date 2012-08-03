@@ -430,6 +430,21 @@ abstract class QuestionModule
         return false;
     }
 
+    public function getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $ansArray)
+    {
+        return LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+    }
+
+    public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
+    {
+        return LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+    }
+
+    public function isEquation()
+    {
+        return false;
+    }
+
     abstract public function availableAttributes($attr = false);
     abstract public function questionProperties($prop = false);
 }

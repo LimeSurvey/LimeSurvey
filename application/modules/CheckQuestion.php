@@ -605,6 +605,22 @@ class CheckQuestion extends QuestionModule
         return true;
     }
 
+    public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
+    {
+        $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+        if ($code == 'Y' && isset($this->sq) && !preg_match('/comment$/',$this->fieldname))
+        {
+            return $this->sq;
+        }
+        elseif (preg_match('/comment$/',$this->fieldname) && isset($_SESSION[$this->fieldname])) {
+            return $_SESSION[$this->fieldname];
+        }
+        else
+        {
+            return $default;
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","em_validation_q","em_validation_q_tip","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

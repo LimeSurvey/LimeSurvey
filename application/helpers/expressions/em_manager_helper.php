@@ -2515,6 +2515,7 @@
                 'qseq'=>$q->questioncount,
                 'gseq'=>$q->groupcount,
                 'type'=>$type,
+                'q'=>$q,
                 'sgqa'=>$q->fieldname,
                 'ansList'=>$ansList,
                 'ansArray'=>$ansArray,
@@ -3273,36 +3274,12 @@
                     {
                         continue;
                     }
-                    switch ($knownVar['type'])
-                    {
-                        case 'D': //DATE
-                            if (trim($value)=="")
-                            {
-                                $value = NULL;
-                            }
-                            else
-                            {
-                                $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                                $value=$datetimeobj->convert("Y-m-d");
-                            }
-                            break;
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
-                            if (trim($value)=="") {
-                                $value = NULL;
-                            }
-                            else {
-                                $value = sanitize_float($value);
-                            }
-                            break;
-                        case '|': //File Upload
-                            $value=NULL;  // can't upload a file via GET
-                            break;
-                    }
+                    $q = $knownVar['q'];
+                    $value = $q->filter($value,'get');
+                    
                     $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
                     $LEM->updatedValues[$knownVar['sgqa']]=array(
-                        'type'=>$knownVar['type'],
+                        'q'=>$q,
                         'value'=>$value,
                     );
                 }
@@ -4892,7 +4869,7 @@
                     // Store the result of the Equation in the SESSION
                     $_SESSION[$LEM->sessid][$sgqa] = $result;
                     $_update = array(
-                    'type'=>'*',
+                    'q'=> new EquationQuestion,
                     'value'=>$result,
                     );
                     $updatedValues[$sgqa] = $_update;
@@ -5854,7 +5831,8 @@
                         if ($jsVar == $knownVar['jsName'])
                         {
                             if ($LEM->surveyMode=='group' && $knownVar['gseq'] == $LEM->currentGroupSeq) {
-                                if ($knownVar['hidden'] && $knownVar['type'] != '*') {
+                                $q = $knownVar['q'];
+                                if ($knownVar['hidden'] && !$q->isEquation()) {
                                     ;   // need to  declare a hidden variable for non-equation hidden variables so can do dynamic lookup.
                                 }
                                 else {
@@ -6113,7 +6091,7 @@ EOT;
             foreach(explode("\n",$tests) as $test)
             {
                 $args = explode("~",$test);
-                $type = (($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S');
+                $q = (($args[1]=='expr') ? new EquationQuestion : ($args[1]=='message') ? new DisplayQuestion : newShortTextQuestion);
                 $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>$type, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
                 $varSeq[] = $args[0];
                 $testArgs[] = $args;
@@ -6125,7 +6103,7 @@ EOT;
                 'qseq'=>$i,
                 'gseq'=>1,
                 'jsResultVar'=>'java' . $args[0],
-                'type'=>$type,
+                'q'=>$q,
                 'hidden'=>false,
                 'gid'=>1,   // ($i % 3),
                 );
@@ -6668,7 +6646,7 @@ EOD;
                         }
                         $_SESSION[$LEM->sessid][$sq] = $value;
                         $_update = array (
-                        'type'=>$type,
+                        'type'=>$type, //AJS
                         'value'=>$value,
                         );
                         $updatedValues[$sq] = $_update;
@@ -6678,7 +6656,7 @@ EOD;
                         // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
                         unset($_SESSION[$LEM->sessid][$sq]);
                         $_update = array (
-                        'type'=>$type,
+                        'type'=>$type, //AJS
                         'value'=>NULL,
                         );
                         $updatedValues[$sq] = $_update;
@@ -6781,52 +6759,8 @@ EOD;
                 case 'value':
                 case 'valueNAOK':
                 {
-                    $type = $var['type'];
-                    $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
-                    switch($type)
-                    {
-                        case '!': //List - dropdown
-                        case 'L': //LIST drop-down/radio-button list
-                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        case '1': //Array (Flexible Labels) dual scale  // need scale
-                        case 'H': //ARRAY (Flexible) - Column Format
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'R': //RANKING STYLE
-                            if ($type == 'O' && preg_match('/comment\.value/',$name))
-                            {
-                                $value = $code;
-                            }
-                            else if (($type == 'L' || $type == '!') && preg_match('/_other\.value/',$name))
-                            {
-                                $value = $code;
-                            }
-                            else
-                            {
-                                $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
-                                $which_ans = $scale_id . '~' . $code;
-                                $ansArray = $var['ansArray'];
-                                if (is_null($ansArray))
-                                {
-                                    $value = $default;
-                                }
-                                else
-                                {
-                                    if (isset($ansArray[$which_ans])) {
-                                        $answerInfo = explode('|',$ansArray[$which_ans]);
-                                        $answer = $answerInfo[0];
-                                    }
-                                    else {
-                                        $answer = $default;
-                                    }
-                                    $value = $answer;
-                                }
-                            }
-                            break;
-                        default:
-                            $value = $code;
-                            break;
-                    }
-                    return $value;
+                    $q = $var['q'];
+                    return $q->getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $var['ansArray']);
                 }
                 break;
                 case 'jsName':
@@ -6863,104 +6797,8 @@ EOD;
                     }
                     else
                     {
-                        $type = $var['type'];
-                        $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
-                        switch($type)
-                        {
-                            case '!': //List - dropdown
-                            case 'L': //LIST drop-down/radio-button list
-                            case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                            case '1': //Array (Flexible Labels) dual scale  // need scale
-                            case 'H': //ARRAY (Flexible) - Column Format
-                            case 'F': //ARRAY (Flexible) - Row Format
-                            case 'R': //RANKING STYLE
-                                if ($type == 'O' && preg_match('/comment$/',$name))
-                                {
-                                    $shown = $code;
-                                }
-                                else if (($type == 'L' || $type == '!') && preg_match('/_other$/',$name))
-                                {
-                                    $shown = $code;
-                                }
-                                else
-                                {
-                                    $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
-                                    $which_ans = $scale_id . '~' . $code;
-                                    $ansArray = $var['ansArray'];
-                                    if (is_null($ansArray))
-                                    {
-                                        $shown=$code;
-                                    }
-                                    else
-                                    {
-                                        if (isset($ansArray[$which_ans])) {
-                                            $answerInfo = explode('|',$ansArray[$which_ans]);
-                                            array_shift($answerInfo);
-                                            $answer = join('|',$answerInfo);
-                                        }
-                                        else {
-                                            $answer = $code;
-                                        }
-                                        $shown = $answer;
-                                    }
-                                }
-                                break;
-                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                            case ':': //ARRAY (Multi Flexi) 1 to 10
-                            case '5': //5 POINT CHOICE radio-buttons
-                                $shown = $code;
-                                break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                            case 'Q': //MULTIPLE SHORT TEXT
-                            case ';': //ARRAY (Multi Flexi) Text
-                            case 'S': //SHORT FREE TEXT
-                            case 'T': //LONG FREE TEXT
-                            case 'U': //HUGE FREE TEXT
-                            case 'D': //DATE
-                            case '*': //Equation
-                            case 'I': //Language Question
-                            case '|': //File Upload
-                            case 'X': //BOILERPLATE QUESTION
-                                $shown = $code;
-                                break;
-                            case 'M': //Multiple choice checkbox
-                            case 'P': //Multiple choice with comments checkbox + text
-                                if ($code == 'Y' && isset($var['question']) && !preg_match('/comment$/',$sgqa))
-                                {
-                                    $shown = $var['question'];
-                                }
-                                elseif (preg_match('/comment$/',$sgqa) && isset($_SESSION[$sgqa])) {
-                                    $shown = $_SESSION[$sgqa];
-                                }
-                                else
-                                {
-                                    $shown = $default;
-                                }
-                                break;
-                            case 'G': //GENDER drop-down list
-                            case 'Y': //YES/NO radio-buttons
-                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                $ansArray = $var['ansArray'];
-                                if (is_null($ansArray))
-                                {
-                                    $shown=$default;
-                                }
-                                else
-                                {
-                                    if (isset($ansArray[$code])) {
-                                        $answer = $ansArray[$code];
-                                    }
-                                    else {
-                                        $answer = $default;
-                                    }
-                                    $shown = $answer;
-                                }
-                                break;
-                        }
-                        return $shown;
+                        $q = $var['q'];
+                        return $q->getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $var['ansArray']);
                     }
                 case 'relevanceStatus':
                     $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;
@@ -7010,7 +6848,7 @@ EOD;
                 $_result = $LEM->tempVars[$name]['code'];
                 $_SESSION[$LEM->sessid][$name] = $_result;
                 $LEM->updatedValues[$name] = array(
-                    'type'=>'*',
+                    'q'=>new EquationQuestion,
                     'value'=>$_result,
                 );
                 return $_result;
@@ -7056,9 +6894,9 @@ EOD;
                         break;
                 }
                 $_SESSION[$LEM->sessid][$name] = $_result;
-                $_type = $LEM->knownVars[$name]['type'];
+                $q = $LEM->knownVars[$name]['q'];
                 $LEM->updatedValues[$name] = array(
-                    'type'=>$_type,
+                    'q'=>$q,
                     'value'=>$_result,
                 );
                 return $_result;

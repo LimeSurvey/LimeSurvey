@@ -40,6 +40,11 @@ class EquationQuestion extends QuestionModule
         return array_key_exists('numbers_only', $attributes) && $attributes['numbers_only'] == 1;
     }
 
+    public function isEquation()
+    {
+        return true;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hidden","numbers_only","page_break","public_statistics","scale_export");

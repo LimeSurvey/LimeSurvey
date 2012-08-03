@@ -138,6 +138,26 @@ class YNQuestion extends QuestionModule
         return 'java'.$this->fieldname;
     }
 
+    public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
+    {
+        $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+    
+        if (is_null($ansArray))
+        {
+            return $default;
+        }
+        else
+        {
+            if (isset($ansArray[$code])) {
+                $answer = $ansArray[$code];
+            }
+            else {
+                $answer = $default;
+            }
+            return $answer;
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

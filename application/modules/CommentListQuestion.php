@@ -263,6 +263,64 @@ class CommentListQuestion extends ListQuestion
         return false;
     }
 
+    public function getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $ansArray)
+    {
+        if (preg_match('/comment\.value/',$name))
+        {
+            return LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+        }
+        else
+        {
+            $scale_id = LimeExpressionManager::GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+            $which_ans = $scale_id . '~' . $code;
+            if (is_null($ansArray))
+            {
+                return $default;
+            }
+            else
+            {
+                if (isset($ansArray[$which_ans])) {
+                    $answerInfo = explode('|',$ansArray[$which_ans]);
+                    $answer = $answerInfo[0];
+                }
+                else {
+                    $answer = $default;
+                }
+                return $answer;
+            }
+        }
+    }
+
+    public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
+    {
+        $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+        if (preg_match('/comment$/',$name))
+        {
+            return $code;
+        }
+        else
+        {
+            $scale_id = LimeExpressionManager::GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+            $which_ans = $scale_id . '~' . $code;
+            if (is_null($ansArray))
+            {
+                return $code;
+            }
+            else
+            {
+                if (isset($ansArray[$which_ans])) {
+                    $answerInfo = explode('|',$ansArray[$which_ans]);
+                    array_shift($answerInfo);
+                    $answer = join('|',$answerInfo);
+                }
+                else {
+                    $answer = $code;
+                }
+                return $answer;
+            }
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

@@ -396,6 +396,28 @@ class RankingQuestion extends QuestionModule
         return true;
     }
 
+    public function getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $ansArray)
+    {
+        $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+        $scale_id = LimeExpressionManager::GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+        $which_ans = $scale_id . '~' . $code;
+        if (is_null($ansArray))
+        {
+            return $default;
+        }
+        else
+        {
+            if (isset($ansArray[$which_ans])) {
+                $answerInfo = explode('|',$ansArray[$which_ans]);
+                $answer = $answerInfo[0];
+            }
+            else {
+                $answer = $default;
+            }
+            return $answer;
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");

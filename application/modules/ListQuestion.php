@@ -575,6 +575,64 @@ class ListQuestion extends QuestionModule
         return true;
     }
 
+    public function getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $ansArray)
+    {
+        if (preg_match('/_other\.value/',$name))
+        {
+            return LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+        }
+        else
+        {
+            $scale_id = LimeExpressionManager::GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+            $which_ans = $scale_id . '~' . $code;
+            if (is_null($ansArray))
+            {
+                return $default;
+            }
+            else
+            {
+                if (isset($ansArray[$which_ans])) {
+                    $answerInfo = explode('|',$ansArray[$which_ans]);
+                    $answer = $answerInfo[0];
+                }
+                else {
+                    $answer = $default;
+                }
+                return $answer;
+            }
+        }
+    }
+
+    public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
+    {
+        $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
+        if (preg_match('/_other$/',$name))
+        {
+            return $code;
+        }
+        else
+        {
+            $scale_id = LimeExpressionManager::GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+            $which_ans = $scale_id . '~' . $code;
+            if (is_null($ansArray))
+            {
+                return $code;
+            }
+            else
+            {
+                if (isset($ansArray[$which_ans])) {
+                    $answerInfo = explode('|',$ansArray[$which_ans]);
+                    array_shift($answerInfo);
+                    $answer = join('|',$answerInfo);
+                }
+                else {
+                    $answer = $code;
+                }
+                return $answer;
+            }
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","array_filter","array_filter_exclude","array_filter_style","display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style");
