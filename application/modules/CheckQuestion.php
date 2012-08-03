@@ -371,7 +371,6 @@ class CheckQuestion extends QuestionModule
             }
             $q->fieldname = $fieldname;
             $q->aid=$field['aid'];
-            $q->text=$abrow['question'];
             $q->sq=$abrow['question'];
             $q->sqid=$abrow['qid'];
             $field['q']=$q;

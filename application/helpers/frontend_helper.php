@@ -1887,19 +1887,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
         {
             $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$q->fieldname]=$q->surveyid.'X'.$q->gid.'X'.$q->id;
             $_SESSION['survey_'.$surveyid]['insertarray'][]=$q->fieldname;
-            //fieldarray ARRAY CONTENTS -
-            //            [0]=questions.qid,
-            //			[1]=fieldname,
-            //			[2]=questions.title,
-            //			[3]=questions.question
-            //                 	[4]=questions.type,
-            //			[5]=questions.gid,
-            //			[6]=questions.mandatory,
-            //			[7]=conditionsexist,
-            //			[8]=usedinconditions
-            //			[8]=usedinconditions
-            //			[9]=used in group.php for question count
-            //			[10]=new group id for question in randomization group (GroupbyGroup Mode)
 
             if (!isset($_SESSION['survey_'.$surveyid]['questions'][$q->surveyid.'X'.$q->gid.'X'.$q->id]))
             {

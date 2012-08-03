@@ -33,6 +33,8 @@ class SelectQuestion extends ListQuestion
         }
         //End Time Limit Code
 
+        $other = $this->getOther();
+        
         //question attribute random order set?
         if ($aQuestionAttributes['random_order']==1)
         {
@@ -158,7 +160,7 @@ class SelectQuestion extends ListQuestion
             $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
         }
 
-        if (isset($other) && $other=='Y')
+        if ($other=='Y')
         {
             if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == '-oth-')
             {
@@ -184,7 +186,7 @@ class SelectQuestion extends ListQuestion
         $answer .= '				</select>
         <input type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.$this->surveyid][$this->fieldname].'" />';
 
-        if (isset($other) && $other=='Y')
+        if ($other=='Y')
         {
             $sselect_show_hide = ' showhideother(this.name, this.value);';
         }
@@ -198,7 +200,7 @@ class SelectQuestion extends ListQuestion
         ';
         $answer = $sselect.$answer;
 
-        if (isset($other) && $other=='Y')
+        if ($other=='Y')
         {
             $answer = "\n<script type=\"text/javascript\">\n"
             ."<!--\n"

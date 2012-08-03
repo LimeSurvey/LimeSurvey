@@ -203,18 +203,6 @@ function validation_message($q,$show)
     $tip = '<span class="' . $class . '" id="vmsg_' . $q->id . '">' . $qinfo['validTip'] . "</span>";
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
-    //    if (!$qinfo['valid']) {
-    //        if (strlen($tip) == 0) {
-    //            $help = $clang->gT('This question must be answered correctly');
-    //        }
-    //        else {
-    //            $tip =' <span class="questionhelp">'.$tip.'</span>';
-    //        }
-    //        return '<br /><span class="errormandatory">'.$tip.'</span><br />';
-    //    }
-    //    else {
-    //        return $tip;
-    //    }
 }
 
 // TMSW Validation -> EM

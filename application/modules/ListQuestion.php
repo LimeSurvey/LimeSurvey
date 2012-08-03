@@ -115,7 +115,7 @@ class ListQuestion extends QuestionModule
             }
         }
 
-        if (isset($other) && $other=='Y')
+        if ($this->getOther()=='Y')
         {
 
             $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);

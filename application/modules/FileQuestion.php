@@ -40,7 +40,7 @@ class FileQuestion extends QuestionModule
         $uploadbutton .=">" .$clang->gT('Upload files'). "</a></h2>";
 
         $answer = "<script type='text/javascript'>
-            function upload_$this->fieldname[1]() {
+            function upload_{$this->fieldname}() {
                 var uploadurl = '{$scriptloc}?sid=".$this->surveyid."&amp;fieldname={$this->fieldname}&amp;qid={$this->id}';
                 uploadurl += '&amp;preview={$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}';
                 uploadurl += '&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."';
@@ -371,7 +371,7 @@ class FileQuestion extends QuestionModule
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("File upload"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'file','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("File upload"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'generic_question','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

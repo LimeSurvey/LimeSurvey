@@ -195,6 +195,7 @@ class CommentListQuestion extends ListQuestion
         $comment['subquestion']=$clang->gT("Comment");
         unset($comment['defaultvalue']);
         $q = clone $comment['q'];
+        unset($q->default);
         $q->fieldname .= 'comment';
         $q->aid='comment';
         $q->sq=$clang->gT("Comment");
