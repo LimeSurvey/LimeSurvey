@@ -1877,36 +1877,15 @@
                         $subqValidEqns = array();
                         foreach ($subqs as $sq) {
                             $sq_name = $q->getPregSQ($this->sgqaNaming, $sq);
-                            $sgqa = substr($sq['jsVarName'],4);
-                            switch ($type)
-                            {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                    if ($this->sgqaNaming)
-                                    {
-                                        $subqValidEqn = '(is_empty('.$sgqa.'.NAOK) || regexMatch("' . $preg . '", ' . $sgqa . '.NAOK))';
-                                    }
-                                    else
-                                    {
-                                        $subqValidEqn = '(is_empty('.$sq['varName'].'.NAOK) || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
-                                    }
-                                    $subqValidSelector = $sq['jsVarName_on'];
-                                    break;
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                    //                                $subqValidEqn = '(strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
-                                    //                                $subqValidSelector = 'question' . $questionNum . ' :input';
-                                    break;
-                                default:
-                                    break;
-                            }
                             if (!is_null($sq_name)) {
                                 $sq_names[] = $sq_name;
-                                if (isset($subqValidSelector)) {
+                                $eqn = $q->getPregEqn($this->sgqaNaming, $sq);
+                                if (!is_null($eqn)) {
+                                    $subqValidEqn = $eqn;
+                                    $subqValidSelector = $sq['jsVarName_on'];
+                                }
+                                if (isset($subqValidSelector))
+                                {
                                     $subqValidEqns[$subqValidSelector] = array(
                                     'subqValidEqn' => $subqValidEqn,
                                     'subqValidSelector' => $subqValidSelector,

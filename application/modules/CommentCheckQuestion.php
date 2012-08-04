@@ -216,7 +216,6 @@ class CommentCheckQuestion extends CheckQuestion
             $comment = $field;
             $comment['fieldname'].='comment';
             $comment['subquestion']=$comment['aid']=='other'?$clang->gT("Other comment"):$clang->gT("Comment");
-            if ($comment['aid']!='other') unset($comment['other']);
             $comment['aid'].='comment';
             unset($comment['defaultvalue']);
             unset($comment['sqid']);
