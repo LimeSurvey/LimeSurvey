@@ -369,14 +369,14 @@ abstract class QuestionModule
         }
     }
 
-    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $equal = true)
+    public function getArrayFilterNames($sgq, $subqs, $qans, $sqsuffix, $equal = true)
     {
         $fsqs = array();
         foreach ($subqs as $fsq)
         {
             if ($fsq['sqsuffix'] == $sqsuffix)
             {
-                $fsqs[] = ($equal ? '!' : '') . 'is_empty(' . $this->fieldname . $fsq['csuffix'] . '.NAOK)';
+                $fsqs[] = ($equal ? '!' : '') . 'is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
             }
         }
         if (count($fsqs) > 0)

@@ -387,7 +387,7 @@ class RankingQuestion extends QuestionModule
         return $this->fieldname;
     }
 
-    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $equal = true)
+    public function getArrayFilterNames($sgq, $subqs, $qans, $sqsuffix, $equal = true)
     {
         $rankables = array();
         foreach ($qans[$fqid] as $k=>$v)
