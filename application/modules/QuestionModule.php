@@ -389,7 +389,7 @@ abstract class QuestionModule
         }
     }
 
-    public function getAnswerCountSQ($sgqaNaming, $sq)
+    public function getAnswerCountSQ($sgqaNaming, $sq, $min = true)
     {
         if ($sgqaNaming)
         {

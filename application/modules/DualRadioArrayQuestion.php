@@ -705,18 +705,22 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return substr($this->fieldname,0,-2);
     }
 
-    public function getAnswerCountSQ($sgqaNaming, $sq)
+    public function getAnswerCountSQ($sgqaNaming, $sq, $min = true)
     {
-        if ($sgqaNaming)
+        if (substr($sq['varName'],-1,1) == '0')
         {
-            $base = substr(substr($sq['jsVarName'],4),0,-1);
-            return "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+            if ($sgqaNaming)
+            {
+                $base = substr(substr($sq['jsVarName'],4),0,-1);
+                return "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+            }
+            else
+            {
+                $base = substr($sq['varName'],0,-1);
+                return "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+            }
         }
-        else
-        {
-            $base = substr($sq['varName'],0,-1);
-            return "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-        }
+        return null;
     }
 
     public function compareField($sgqa, $sq)

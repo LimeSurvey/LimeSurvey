@@ -272,21 +272,21 @@ class CommentCheckQuestion extends CheckQuestion
         }
     }
 
-    public function getAnswerCountSQ($sgqaNaming, $sq)
+    public function getAnswerCountSQ($sgqaNaming, $sq, $min = true)
     {
         if (!preg_match('/comment$/',$sq['varName'])) {
-            if ($sgqaNaming)
+            if ($sgqaNaming || $min)
             {
                 return $sq['rowdivid'] . '.NAOK';
             }
             else
             {
-                return $sq['rowdivid'] . '.NAOK';
+                return $sq['varName'] . '.NAOK';
             }
         }
         else
         {
-            return parent::getMinAnswerSQ();
+            return parent::getAnswerCountSQ();
         }
     }
 
