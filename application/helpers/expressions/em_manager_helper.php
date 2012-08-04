@@ -5529,8 +5529,6 @@
                     {
                         $valJsVarsUsed = array_unique($valJsVarsUsed);
                         $qvalJS = "function LEMval" . $arg['qid'] . "(sgqa){\n";
-                        //                    $qvalJS .= "  var UsesVars = ' " . implode(' ', $valJsVarsUsed) . " ';\n";
-                        //                    $qvalJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n return;\n }\n";
                         $qvalJS .= implode("",$valParts);
                         $qvalJS .= "}\n";
                         $valEqns[] = $qvalJS;
