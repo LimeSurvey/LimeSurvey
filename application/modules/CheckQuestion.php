@@ -366,7 +366,7 @@ class CheckQuestion extends QuestionModule
             if(isset($this->defaults) && isset($this->defaults[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->defaults[$abrow['qid']];
             else
             {
-                unset($field['defaultvalues']);
+                unset($field['defaultvalue']);
                 unset($q->default);
             }
             $q->fieldname = $fieldname;

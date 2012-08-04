@@ -363,6 +363,7 @@ class ListQuestion extends QuestionModule
             else
             {
                 unset($other['defaultvalues']);
+                unset($q->default);
             }
             $q->fieldname .= 'other';
             $q->aid = 'other';
