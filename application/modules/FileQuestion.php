@@ -332,10 +332,11 @@ class FileQuestion extends QuestionModule
         return $this->fieldname;
     }
 
-    public function generateQuestionInfo()
+    public function generateQuestionInfo($type)
     {
         return array(
             'q' => $this,
+            'type' => $type,
             'qid' => $this->id,
             'qseq' => $this->questioncount,
             'gseq' => $this->groupcount,
@@ -351,7 +352,7 @@ class FileQuestion extends QuestionModule
 
     public function generateSQInfo($ansArray)
     {
-        return array(
+        return array(array(
             'q' => $this,
             'rowdivid' => $this->getRowDivID(),
             'varName' => $this->getVarName(),
@@ -359,7 +360,7 @@ class FileQuestion extends QuestionModule
             'jsVarName' => $this->jsVarName(),
             'csuffix' => $this->getCsuffix(),
             'sqsuffix' => $this->getSqsuffix(),
-            );
+            ));
     }
 
     public function availableAttributes($attr = false)

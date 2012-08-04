@@ -240,9 +240,9 @@ class CommentListQuestion extends ListQuestion
         }
     }
 
-    public function generateQuestionInfo()
+    public function generateQuestionInfo($type)
     {
-        return QuestionModule::generateQuestionInfo();
+        return QuestionModule::generateQuestionInfo($type);
     }
 
     public function generateSQInfo($ansArray)

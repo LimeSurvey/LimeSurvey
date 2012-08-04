@@ -57,7 +57,7 @@ class ListQuestion extends QuestionModule
             $othertext=$clang->gT('Other:');
         }
 
-        if ($this->getOther()=='Y') {$anscount++;} //Count up for the Other answer
+        if ($this->isother=='Y') {$anscount++;} //Count up for the Other answer
         if ($this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
         $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
@@ -115,7 +115,7 @@ class ListQuestion extends QuestionModule
             }
         }
 
-        if ($this->getOther()=='Y')
+        if ($this->isother=='Y')
         {
 
             $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -316,14 +316,6 @@ class ListQuestion extends QuestionModule
         return $output;
     }
 
-    protected function getOther()
-    {
-        if ($this->other) return $this->other;
-        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ";
-        $result = Yii::app()->db->createCommand($query)->query()->readAll();
-        return $this->other = $result[count($result)-1];  //Checked
-    }
-
     public function getTitle()
     {
         $clang=Yii::app()->lang;
@@ -352,7 +344,7 @@ class ListQuestion extends QuestionModule
     {
         $clang = Yii::app()->lang;
         $map = parent::createFieldmap($type);
-        if($this->other=='Y')
+        if($this->isother=='Y')
         {
             $other = $map[$this->fieldname];
             $other['fieldname'].='other';
@@ -362,7 +354,7 @@ class ListQuestion extends QuestionModule
             if (isset($this->defaults) && isset($this->defaults['other'])) $q->default=$other['defaultvalue']=$this->defaults['other'];
             else
             {
-                unset($other['defaultvalues']);
+                unset($other['defaultvalue']);
                 unset($q->default);
             }
             $q->fieldname .= 'other';
@@ -520,10 +512,11 @@ class ListQuestion extends QuestionModule
         return array_key_exists('other_numbers_only', $attributes) && $attributes['other_numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
     }
 
-    public function generateQuestionInfo()
+    public function generateQuestionInfo($type)
     {
-        $q2subq = array(
+        return array(
             'q' => $this,
+            'type' => $type,
             'qid' => $this->id,
             'qseq' => $this->questioncount,
             'gseq' => $this->groupcount,
@@ -557,7 +550,7 @@ class ListQuestion extends QuestionModule
             }
             return $SQs;
         } else {
-            return null;
+            return array();
         }
     }
 

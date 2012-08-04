@@ -328,12 +328,13 @@ abstract class QuestionModule
         return null;
     }
 
-    public function generateQuestionInfo()
+    public function generateQuestionInfo($type)
     {
         if (!is_null($this->getRowDivID()) || (isset($this->preg) && trim($this->preg) != ''))
         {
             return array(
                 'q' => $this,
+                'type' => $type,
                 'qid' => $this->id,
                 'qseq' => $this->questioncount,
                 'gseq' => $this->groupcount,
@@ -354,7 +355,7 @@ abstract class QuestionModule
     {
         if (!is_null($this->getRowDivID()) || (isset($this->preg) && trim($this->preg) != ''))
         {
-            return array(
+            return array(array(
                 'q' => $this,
                 'rowdivid' => $this->getRowDivID(),
                 'varName' => $this->getVarName(),
@@ -362,9 +363,9 @@ abstract class QuestionModule
                 'jsVarName' => $this->jsVarName(),
                 'csuffix' => $this->getCsuffix(),
                 'sqsuffix' => $this->getSqsuffix(),
-                );
+                ));
         } else {
-            return null;
+            return array();
         }
     }
 

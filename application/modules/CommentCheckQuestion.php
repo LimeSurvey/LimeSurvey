@@ -65,7 +65,7 @@ class CommentCheckQuestion extends CheckQuestion
 
         $fn = 1;
 
-        if($this->getOther() == 'Y')
+        if($this->isother == 'Y')
         {
             $label_width = 25;
         }
@@ -127,7 +127,7 @@ class CommentCheckQuestion extends CheckQuestion
 
             $fn++;
         }
-        if ($this->getOther() == 'Y')
+        if ($this->isother == 'Y')
         {
             $myfname = $this->fieldname.'other';
             $myfname2 = $myfname.'comment';

@@ -225,7 +225,7 @@ class MultitextQuestion extends QuestionModule
             $field['usedinconditions']=$this->usedinconditions;
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
-            $field['preg']=$this->preg;
+            $field['preg']=$this->haspreg;
             $q = clone $this;
             if(isset($this->defaults) && isset($this->defaults[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->defaults[$abrow['qid']];
             $q->fieldname = $fieldname;
@@ -233,6 +233,7 @@ class MultitextQuestion extends QuestionModule
             $q->question=$abrow['question'];
             $q->sq=$abrow['question'];
             $q->sqid=$abrow['qid'];
+            $q->preg=$this->haspreg;
             $field['q']=$q;
             $map[$fieldname]=$field;
         }

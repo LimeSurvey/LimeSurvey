@@ -88,7 +88,7 @@ class CheckQuestion extends QuestionModule
             }
         }
 
-        if ($this->getOther() == 'Y')
+        if ($this->isother == 'Y')
         {
             $anscount++; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
         }
@@ -170,7 +170,7 @@ class CheckQuestion extends QuestionModule
             }
         }
 
-        if ($this->getOther() == 'Y')
+        if ($this->isother == 'Y')
         {
             $myfname = $this->fieldname.'other';
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($this, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","question-item answer-item checkbox-item other-item");
@@ -297,14 +297,6 @@ class CheckQuestion extends QuestionModule
         return $this->children  = $ansresult;
     }
 
-    protected function getOther()
-    {
-        if ($this->other) return $this->other;
-        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' and parent_qid=0";
-        $result = Yii::app()->db->createCommand($query)->query()->readAll();
-        return $this->other = $result[0]['other'];  //Checked
-    }
-
     public function getTitle()
     {
         $clang=Yii::app()->lang;
@@ -361,7 +353,7 @@ class CheckQuestion extends QuestionModule
             $field['usedinconditions']=$this->usedinconditions;
             $field['questionSeq']=$this->questioncount;
             $field['groupSeq']=$this->groupcount;
-            $field['preg']=$this->preg;
+            $field['preg']=$this->haspreg;
             $q = clone $this;
             if(isset($this->defaults) && isset($this->defaults[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->defaults[$abrow['qid']];
             else
@@ -373,28 +365,29 @@ class CheckQuestion extends QuestionModule
             $q->aid=$field['aid'];
             $q->sq=$abrow['question'];
             $q->sqid=$abrow['qid'];
+            $q->preg=$this->haspreg;
             $field['q']=$q;
             $map[$fieldname]=$field;
         }
-        if ($this->other=='Y')
+        if ($this->isother=='Y')
         {
             $other = parent::createFieldmap($type);
             $other = $other[$this->fieldname];
             $other['fieldname'].='other';
             $other['aid']='other';
             $other['subquestion']=$clang->gT("Other");
-            $other['other']=$this->other;
+            $other['other']=$this->isother;
             $q = clone $this;
             if (isset($this->defaults) && isset($this->defaults['other'])) $q->default=$other['defaultvalue']=$this->defaults['other'];
             else
             {
-                unset($other['defaultvalues']);
+                unset($other['defaultvalue']);
                 unset($q->default);
             }
             $q->fieldname .= 'other';
             $q->aid = 'other';
             $q->sq = $clang->gT("Other");
-            $q->other = $this->other;
+            $q->other = $this->isother;
             $other['q']=$q;
             $map[$other['fieldname']]=$other;
         }

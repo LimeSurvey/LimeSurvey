@@ -420,13 +420,14 @@ EOD;
                 $field['usedinconditions']=$this->usedinconditions;
                 $field['questionSeq']=$this->questioncount;
                 $field['groupSeq']=$this->groupcount;
-                $field['preg']=$this->preg;
+                $field['preg']=$this->haspreg;
                 $q = clone $this;
                 $q->fieldname = $fieldname;
                 $q->aid = $field['aid'];
                 $q->sq1=$abrow['question'];
                 $q->sq2=$answer['question'];
                 $q->sqid=$abrow['qid'];
+                $q->preg=$this->haspreg;
                 $field['q']=$q;
                 $map[$fieldname]=$field;
             }

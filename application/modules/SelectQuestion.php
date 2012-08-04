@@ -32,8 +32,6 @@ class SelectQuestion extends ListQuestion
             $answer .= return_timer_script($aQuestionAttributes, $this);
         }
         //End Time Limit Code
-
-        $other = $this->getOther();
         
         //question attribute random order set?
         if ($aQuestionAttributes['random_order']==1)
@@ -61,7 +59,7 @@ class SelectQuestion extends ListQuestion
             if ((!empty($_SESSION['survey_'.$this->surveyid][$this->fieldname])) && $this->mandatory != 'Y' && $this->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
                 ++$_maxHeight;  // for No Answer
             }
-            if ($this->getOther()=='Y') {
+            if ($this->isother=='Y') {
                 ++$_maxHeight;  // for Other
             }
             if (!$_SESSION['survey_'.$this->surveyid][$this->fieldname]) {
@@ -160,7 +158,7 @@ class SelectQuestion extends ListQuestion
             $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
         }
 
-        if ($other=='Y')
+        if ($this->isother=='Y')
         {
             if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == '-oth-')
             {
@@ -186,7 +184,7 @@ class SelectQuestion extends ListQuestion
         $answer .= '				</select>
         <input type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.$this->surveyid][$this->fieldname].'" />';
 
-        if ($other=='Y')
+        if ($this->isother=='Y')
         {
             $sselect_show_hide = ' showhideother(this.name, this.value);';
         }
@@ -200,7 +198,7 @@ class SelectQuestion extends ListQuestion
         ';
         $answer = $sselect.$answer;
 
-        if ($other=='Y')
+        if ($this->isother=='Y')
         {
             $answer = "\n<script type=\"text/javascript\">\n"
             ."<!--\n"
@@ -246,14 +244,6 @@ class SelectQuestion extends ListQuestion
         }
 
         return $answer;
-    }
-
-    protected function getOther()
-    {
-        if ($this->other) return $this->other;
-        $query = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."' ";
-        $result = Yii::app()->db->createCommand($query)->query()->readAll();
-        return $this->other = $result[0]['other'];  //Checked
     }
 
     public function getQuotaValue($value)

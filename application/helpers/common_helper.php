@@ -2087,8 +2087,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $pq->aid = '';
         if(isset($defaults[$arow['qid']])) $pq->defaults = $defaults[$arow['qid']];
 
-        $pq->preg = $arow['preg'];
-        $pq->other = $arow['other'];
+        $pq->haspreg = $arow['preg'];
+        $pq->isother = $arow['other'];
         $pq->groupname = $arow->groups['group_name'];
         $pq->groupcount = $groupSeq;
         $add = $pq->createFieldmap($arow['type']); //AJS
@@ -2100,15 +2100,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $q = $add[$fieldname]['q'];
             $add[$fieldname]['relevance']=$arow['relevance'];
             $add[$fieldname]['grelevance']=$arow->groups['grelevance'];
-            $add[$fieldname]['questionSeq']=$questionSeq;
-            $add[$fieldname]['groupSeq']=$groupSeq;
             $add[$fieldname]['preg']=$arow['preg'];
             $add[$fieldname]['other']=$arow['other'];
             $add[$fieldname]['help']=$arow['help'];
             $q->relevance=$arow['relevance'];
             $q->grelevance=$arow->groups['grelevance'];
-            $q->questionSeq=$questionSeq;
-            $q->groupSeq=$groupSeq;
             $q->preg=$arow['preg'];
             $q->other=$arow['other'];
             $q->help=$arow['help'];

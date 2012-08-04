@@ -28,10 +28,11 @@ abstract class TextQuestion extends QuestionModule
         return false;
     }
 
-    public function generateQuestionInfo()
+    public function generateQuestionInfo($type)
     {
         return array(
             'q' => $this,
+            'type' => $type,
             'qid' => $this->id,
             'qseq' => $this->questioncount,
             'gseq' => $this->groupcount,
@@ -60,12 +61,12 @@ abstract class TextQuestion extends QuestionModule
 
     public function generateSQInfo($ansArray)
     {
-        return array(
+        return array(array(
             'varName' => $this->getVarName(),
             'rowdivid' => $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
             'jsVarName' => 'java' . $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
             'jsVarName_on' => $this->jsVarNameOn(),
-            );
+            ));
     }
 }
 ?>

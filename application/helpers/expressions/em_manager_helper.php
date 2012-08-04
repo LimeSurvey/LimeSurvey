@@ -233,7 +233,7 @@
         *
         * @var type
         */
-        private $qans;
+        public $qans;
         /**
         * map of gid to 0-based sequence number of groups
         *
@@ -500,7 +500,7 @@
         *
         * @var type
         */
-        private $qattr;
+        public $qattr;
         /**
         * list of needed sub-question relevance (e.g. array_filter)
         * Indexed by qid then sgqa; only generated for current group of questions
@@ -2827,27 +2827,6 @@
             $this->groupSeqInfo = array();
             $this->gseq2relevanceStatus = array();
 
-            // Since building array of allowable answers, need to know preset values for certain question types
-            $presets = array();
-            $presets['G'] = array(  //GENDER drop-down list
-            'M' => $this->gT("Male"),
-            'F' => $this->gT("Female"),
-            );
-            $presets['Y'] = array(  //YES/NO radio-buttons
-            'Y' => $this->gT("Yes"),
-            'N' => $this->gT("No"),
-            );
-            $presets['C'] = array(   //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-            'Y' => $this->gT("Yes"),
-            'N' => $this->gT("No"),
-            'U' => $this->gT("Uncertain"),
-            );
-            $presets['E'] = array(  //ARRAY (Increase/Same/Decrease) radio-buttons
-            'I' => $this->gT("Increase"),
-            'S' => $this->gT("Same"),
-            'D' => $this->gT("Decrease"),
-            );
-
             $this->gseq2info = $this->getGroupInfoForEM($surveyid,$_SESSION['LEMlang']);
             foreach ($this->gseq2info as $aGroupInfo)
             {
@@ -2861,414 +2840,110 @@
             $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getQuestionAttributesForEM',(microtime(true) - $now));
             $now = microtime(true);
 
-            $this->qans = $this->getAnswerSetsForEM($surveyid,NULL,$_SESSION['LEMlang']);
+            $this->qans = $this->getAnswerSetsForEM($surveyid, $_SESSION['LEMlang']);
 
             $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAnswerSetsForEM',(microtime(true) - $now));
             $now = microtime(true);
 
             $q2subqInfo = array();
-
-            $this->multiflexiAnswers=array();
-
             foreach($fieldmap as $fielddata)
             {
-                if (!isset($fielddata['fieldname']) || !preg_match('#^\d+X\d+X\d+#',$fielddata['fieldname']))
+                $q = $fielddata['q'];
+                if (!isset($q->fieldname) || !preg_match('#^\d+X\d+X\d+#',$q->fieldname))
                 {
                     continue;   // not an SGQA value
                 }
-                $sgqa = $fielddata['fieldname'];
                 $type = $fielddata['type'];
-                $mandatory = $fielddata['mandatory'];
-                $fieldNameParts = explode('X',$sgqa);
-                $groupNum = $fieldNameParts[1];
-                $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
-                $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
+                $q->mandatory = $q->mandatory;
+                $fieldNameParts = explode('X',$q->fieldname);
+                $q->aid = (isset($q->aid) ? $q->aid : '');
+                $q->sqid = (isset($q->sqid) ? $q->sqid : '');
 
-                $questionId = $fieldNameParts[2];
-                $questionNum = $fielddata['qid'];
-                $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
-                $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
-                $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
-                $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
-                $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : NULL; // a perl regular exrpession validation function
-                $defaultValue = (isset($fielddata['defaultvalue']) ? $fielddata['defaultvalue'] : NULL);
-                if (trim($preg) == '') {
-                    $preg = NULL;
-                }
-                $help = (isset($fielddata['help'])) ? $fielddata['help']: '';
-                $other = (isset($fielddata['other'])) ? $fielddata['other'] : '';
+                $q->relevance = (isset($q->relevance)) ? $q->relevance : 1;
+                $grelevance = (isset($q->grelevance)) ? $q->grelevance : 1;
+                $hidden = (isset($qattr[$q->id]['hidden'])) ? ($qattr[$q->id]['hidden'] == '1') : false;
+                $q->scale = (isset($q->scale)) ? $q->scale : '0';
+                $q->default = (isset($q->default) ? $q->default : NULL);
+                $q->other = (isset($q->other)) ? $q->other : '';
 
-                if (isset($this->questionId2groupSeq[$questionNum])) {
-                    $groupSeq = $this->questionId2groupSeq[$questionNum];
+                if (isset($this->questionId2groupSeq[$q->id])) {
+                    $q->groupcount = $this->questionId2groupSeq[$q->id];
                 }
                 else {
-                    $groupSeq = (isset($fielddata['groupSeq'])) ? $fielddata['groupSeq'] : -1;
-                    $this->questionId2groupSeq[$questionNum] = $groupSeq;
+                    $q->groupcount = (isset($q->groupcount)) ? $q->groupcount : -1;
+                    $this->questionId2groupSeq[$q->id] = $q->groupcount;
                 }
 
-                if (isset($this->questionId2questionSeq[$questionNum])) {
-                    $questionSeq = $this->questionId2questionSeq[$questionNum];
+                if (isset($this->questionId2questionSeq[$q->id])) {
+                    $q->questioncount = $this->questionId2questionSeq[$q->id];
                 }
                 else {
-                    $questionSeq = (isset($fielddata['questionSeq'])) ? $fielddata['questionSeq'] : -1;
-                    $this->questionId2questionSeq[$questionNum] = $questionSeq;
+                    $q->questioncount = (isset($q->questioncount)) ? $q->questioncount : -1;
+                    $this->questionId2questionSeq[$q->id] = $q->questioncount;
                 }
 
-                if (!isset($this->groupSeqInfo[$groupSeq])) {
-                    $this->groupSeqInfo[$groupSeq] = array(
-                    'qstart' => $questionSeq,
-                    'qend' => $questionSeq,
+                if (!isset($this->groupSeqInfo[$q->groupcount])) {
+                    $this->groupSeqInfo[$q->groupcount] = array(
+                    'qstart' => $q->questioncount,
+                    'qend' => $q->questioncount,
                     );
                 }
                 else {
-                    $this->groupSeqInfo[$groupSeq]['qend'] = $questionSeq;  // with each question, update so know ending value
+                    $this->groupSeqInfo[$q->groupcount]['qend'] = $q->questioncount;  // with each question, update so know ending value
                 }
 
 
                 // Create list of codes associated with each question
-                $codeList = (isset($this->qid2code[$questionNum]) ? $this->qid2code[$questionNum] : '');
+                $codeList = (isset($this->qid2code[$q->id]) ? $this->qid2code[$q->id] : '');
                 if ($codeList == '')
                 {
-                    $codeList = $sgqa;
+                    $codeList = $q->fieldname;
                 }
                 else
                 {
-                    $codeList .= '|' . $sgqa;
+                    $codeList .= '|' . $q->fieldname;
                 }
-                $this->qid2code[$questionNum] = $codeList;
+                $this->qid2code[$q->id] = $codeList;
 
                 $readWrite = 'Y';
 
-                // Set $ansArray
-                switch($type)
-                {
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case '1': //Array (Flexible Labels) dual scale  // need scale
-                    case 'H': //ARRAY (Flexible) - Column Format
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'R': //RANKING STYLE
-                        $ansArray = (isset($this->qans[$questionNum]) ? $this->qans[$questionNum] : NULL);
-                        if ($other == 'Y' && ($type == 'L' || $type == '!'))
-                        {
-                            if (preg_match('/other$/',$sgqa))
-                            {
-                                $ansArray = NULL;   // since the other variable doesn't need it
-                            }
-                            else
-                            {
-                                $_qattr = isset($qattr[$questionNum]) ? $qattr[$questionNum] : array();
-                                if (isset($_qattr['other_replace_text']) && trim($_qattr['other_replace_text']) != '') {
-                                    $othertext = trim($_qattr['other_replace_text']);
-                                }
-                                else {
-                                    $othertext = $this->gT('Other:');
-                                }
-                                $ansArray['0~-oth-'] = '0|' . $othertext;
-                            }
-                        }
-                        break;
-                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case '5': //5 POINT CHOICE radio-buttons
-                        $ansArray=NULL;
-                        break;
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                    case 'Q': //MULTIPLE SHORT TEXT
-                    case ';': //ARRAY (Multi Flexi) Text
-                    case 'S': //SHORT FREE TEXT
-                    case 'T': //LONG FREE TEXT
-                    case 'U': //HUGE FREE TEXT
-                    case 'M': //Multiple choice checkbox
-                    case 'P': //Multiple choice with comments checkbox + text
-                    case 'D': //DATE
-                    case '*': //Equation
-                    case 'I': //Language Question
-                    case '|': //File Upload
-                    case 'X': //BOILERPLATE QUESTION
-                        $ansArray = NULL;
-                        break;
-                    case 'G': //GENDER drop-down list
-                    case 'Y': //YES/NO radio-buttons
-                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        $ansArray = $presets[$type];
-                        break;
-                }
+                $ansArray = $q->getAnswerArray($this);
 
                 // set $subqtext text - for display of primary sub-question
-                $subqtext = '';
-                switch ($type)
-                {
-                    default:
-                        $subqtext = (isset($fielddata['subquestion']) ? $fielddata['subquestion'] : '');
-                        break;
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case ';': //ARRAY (Multi Flexi) Text
-                        $subqtext = (isset($fielddata['subquestion1']) ? $fielddata['subquestion1'] : '');
-                        $ansList = array();
-                        if (isset($fielddata['answerList']))
-                        {
-                            foreach ($fielddata['answerList'] as $ans) {
-                                $ansList['1~' . $ans['code']] = $ans['code'] . '|' . $ans['answer'];
-                            }
-                            $this->multiflexiAnswers[$questionNum] = $ansList;
-                        }
-                        break;
-                }
 
+                if (isset($q->sq1))
+                {
+                    $subqtext = $q->sq1;
+                }
+                else if (isset($q->sq))
+                {
+                    $subqtext = $q->sq;
+                }
+                else
+                {
+                    $subqtext = '';
+                }
 
                 // Set $varName (question code / questions.title), $rowdivid, $csuffix, $sqsuffix, and $question
-                $rowdivid=NULL;   // so that blank for types not needing it.
-                $sqsuffix='';
-                switch($type)
-                {
-                    case '!': //List - dropdown
-                    case '5': //5 POINT CHOICE radio-buttons
-                    case 'D': //DATE
-                    case 'G': //GENDER drop-down list
-                    case 'I': //Language Question
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case 'S': //SHORT FREE TEXT
-                    case 'T': //LONG FREE TEXT
-                    case 'U': //HUGE FREE TEXT
-                    case 'X': //BOILERPLATE QUESTION
-                    case 'Y': //YES/NO radio-buttons
-                    case '|': //File Upload
-                    case '*': //Equation
-                        $csuffix = '';
-                        $sqsuffix = '';
-                        $varName = $fielddata['title'];
-                        if ($fielddata['aid'] != '') {
-                            $varName .= '_' . $fielddata['aid'];
-                        }
-                        $question = $fielddata['question'];
-                        break;
-                    case '1': //Array (Flexible Labels) dual scale
-                        $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
-                        $sqsuffix = '_' . $fielddata['aid'];
-                        $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
-                        $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                        $rowdivid = substr($sgqa,0,-2);
-                        break;
-                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'H': //ARRAY (Flexible) - Column Format    // note does not have javatbd equivalent - so array filters don't work on it
-                    case 'K': //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
-                    case 'M': //Multiple choice checkbox
-                    case 'P': //Multiple choice with comments checkbox + text
-                    case 'Q': //MULTIPLE SHORT TEXT                 // note does not have javatbd equivalent - so array filters don't work on it
-                    case 'R': //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
-                        $csuffix = $fielddata['aid'];
-                        $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                        $question = $fielddata['subquestion'];
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        if ($type != 'H') {
-                            if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
-                                //                            $rowdivid = substr($sgqa,0,-7);
-                            }
-                            else {
-                                $sqsuffix = '_' . $fielddata['aid'];
-                                $rowdivid = $sgqa;
-                            }
-                        }
-                        break;
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case ';': //ARRAY (Multi Flexi) Text
-                        $csuffix = $fielddata['aid'];
-                        $sqsuffix = '_' . substr($fielddata['aid'],0,strpos($fielddata['aid'],'_'));
-                        $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                        $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                        //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                        $rowdivid = substr($sgqa,0,strpos($sgqa,'_'));
-                        break;
-                }
+                $csuffix = $q->getCsuffix();
+                $sqsuffix = $q->getSqsuffix();
+                $varName = $q->getVarName();
+                $question = $q->getQuestion();
+                $rowdivid = $q->getRowDivID();
 
                 // $onlynum
-                $onlynum=false; // the default
-                switch($type)
-                {
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                        $onlynum=true;
-                        break;
-                    case '*': // Equation
-                    case ';': //ARRAY (Multi Flexi) Text
-                    case 'Q': //MULTIPLE SHORT TEXT
-                    case 'S': //SHORT FREE TEXT
-                        if (isset($qattr[$questionNum]['numbers_only']) && $qattr[$questionNum]['numbers_only']=='1')
-                        {
-                            $onlynum=true;
-                        }
-                        break;
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'M': //Multiple choice checkbox
-                    case 'P': //Multiple choice with comments checkbox + text
-                        if (isset($qattr[$questionNum]['other_numbers_only']) && $qattr[$questionNum]['other_numbers_only']=='1' && preg_match('/other$/',$sgqa))
-                        {
-                            $onlynum=true;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                $onlynum=$q->onlyNumeric();
 
                 // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
-                switch($type)
-                {
-                    case 'R': //RANKING STYLE
-                        $jsVarName_on = 'answer' . $sgqa;
-                        $jsVarName = 'java' . $sgqa;
-                        break;
-                    case 'D': //DATE
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'S': //SHORT FREE TEXT
-                    case 'T': //LONG FREE TEXT
-                    case 'U': //HUGE FREE TEXT
-                    case 'Q': //MULTIPLE SHORT TEXT
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                    case 'X': //BOILERPLATE QUESTION
-                        $jsVarName_on = 'answer' . $sgqa;
-                        $jsVarName = 'java' . $sgqa;
-                        break;
-                    case '!': //List - dropdown
-                        if (preg_match("/other$/",$sgqa))
-                        {
-                            $jsVarName = 'java' . $sgqa;
-                            $jsVarName_on = 'othertext' . substr($sgqa,0,-5);
-                        }
-                        else
-                        {
-                            $jsVarName = 'java' . $sgqa;
-                            $jsVarName_on = $jsVarName;
-                        }
-                        break;
-                    case 'L': //LIST drop-down/radio-button list
-                        if (preg_match("/other$/",$sgqa))
-                        {
-                            $jsVarName = 'java' . $sgqa;
-                            $jsVarName_on = 'answer' . $sgqa . "text";
-                        }
-                        else
-                        {
-                            $jsVarName = 'java' . $sgqa;
-                            $jsVarName_on = $jsVarName;
-                        }
-                        break;
-                    case '5': //5 POINT CHOICE radio-buttons
-                    case 'G': //GENDER drop-down list
-                    case 'I': //Language Question
-                    case 'Y': //YES/NO radio-buttons
-                    case '*': //Equation
-                    case '1': //Array (Flexible Labels) dual scale
-                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'H': //ARRAY (Flexible) - Column Format
-                    case 'M': //Multiple choice checkbox
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        if ($type == 'O' && preg_match('/_comment$/', $varName))
-                        {
-                            $jsVarName_on = 'answer' . $sgqa;
-                        }
-                        else
-                        {
-                            $jsVarName_on = 'java' . $sgqa;
-                        }
-                        $jsVarName = 'java' . $sgqa;
-                        break;
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case ';': //ARRAY (Multi Flexi) Text
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = 'answer' . $sgqa;;
-                        break;
-                    case '|': //File Upload
-                        $jsVarName = $sgqa;
-                        $jsVarName_on = $jsVarName;
-                        break;
-                    case 'P': //Multiple choice with comments checkbox + text
-                        if (preg_match("/(other|comment)$/",$sgqa))
-                        {
-                            $jsVarName_on = 'answer' . $sgqa;  // is this true for survey.php and not for group.php?
-                            $jsVarName = 'java' . $sgqa;
-                        }
-                        else
-                        {
-                            $jsVarName = 'java' . $sgqa;
-                            $jsVarName_on = $jsVarName;
-                        }
-                        break;
+                $jsVarName_on = $q->jsVarNameOn();
+                $jsVarName = $q->jsVarName();
+                
+                $qInfo = $q->generateQuestionInfo($type);
+                if (!isset($q2subqInfo[$q->id]) && !is_null($qInfo)) {
+                    $q2subqInfo[$q->id] = $qInfo;
                 }
-                if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
-                || $type == 'S' || $type == 'T' || $type == 'U' || $type == '|') {
-                    if (!isset($q2subqInfo[$questionNum])) {
-                        $q2subqInfo[$questionNum] = array(
-                        'qid' => $questionNum,
-                        'qseq' => $questionSeq,
-                        'gseq' => $groupSeq,
-                        'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                        'mandatory'=>$mandatory,
-                        'varName' => $varName,
-                        'type' => $type,
-                        'fieldname' => $sgqa,
-                        'preg' => $preg,
-                        'rootVarName' => $fielddata['title'],
-                        );
-                    }
-                    if (!isset($q2subqInfo[$questionNum]['subqs'])) {
-                        $q2subqInfo[$questionNum]['subqs'] = array();
-                    }
-                    if ($type == 'L' || $type == '!')
-                    {
-                        if (!is_null($ansArray))
-                        {
-                            foreach (array_keys($ansArray) as $key)
-                            {
-                                $parts = explode('~',$key);
-                                if ($parts[1] == '-oth-') {
-                                    $parts[1] = 'other';
-                                }
-                                $q2subqInfo[$questionNum]['subqs'][] = array(
-                                'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
-                                'varName' => $varName,
-                                'sqsuffix' => '_' . $parts[1],
-                                );
-                            }
-                        }
-                    }
-                    else if ($type == 'N'
-                        || $type == 'S' || $type == 'T' || $type == 'U')    // for $preg
-                        {
-                            $q2subqInfo[$questionNum]['subqs'][] = array(
-                            'varName' => $varName,
-                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                            'jsVarName' => 'java' . $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                            'jsVarName_on' => $jsVarName_on,
-                            );
-                        }
-                        else
-                        {
-                            $q2subqInfo[$questionNum]['subqs'][] = array(
-                            'rowdivid' => $rowdivid,
-                            'varName' => $varName,
-                            'jsVarName_on' => $jsVarName_on,
-                            'jsVarName' => $jsVarName,
-                            'csuffix' => $csuffix,
-                            'sqsuffix' => $sqsuffix,
-                            );
-                    }
+                if (!is_null($qInfo)) {
+                    $q2subqInfo[$q->id]['subqs'] = array_merge($q2subqInfo[$q->id]['subqs'], $q->generateSQInfo($ansArray));
                 }
 
                 $ansList = '';
@@ -3287,76 +2962,77 @@
                 'readWrite'=>$readWrite,
                 'hidden'=>$hidden,
                 'question'=>$question,
-                'qid'=>$questionNum,
-                'gid'=>$groupNum,
+                'qid'=>$q->id,
+                'gid'=>$q->gid,
                 'grelevance'=>$grelevance,
-                'relevance'=>$relevance,
+                'relevance'=>$q->relevance,
                 'qcode'=>$varName,
-                'qseq'=>$questionSeq,
-                'gseq'=>$groupSeq,
+                'qseq'=>$q->questioncount,
+                'gseq'=>$q->groupcount,
                 'type'=>$type,
-                'sgqa'=>$sgqa,
+                'q'=>$q,
+                'sgqa'=>$q->fieldname,
                 'ansList'=>$ansList,
                 'ansArray'=>$ansArray,
-                'scale_id'=>$scale_id,
-                'default'=>$defaultValue,
-                'rootVarName'=>$fielddata['title'],
+                'scale_id'=>$q->scale,
+                'default'=>$q->default,
+                'rootVarName'=>$q->title,
                 'subqtext'=>$subqtext,
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
                 'onlynum'=>$onlynum,
                 );
 
-                $this->questionSeq2relevance[$questionSeq] = array(
-                'relevance'=>$relevance,
+                $this->questionSeq2relevance[$q->questioncount] = array(
+                'relevance'=>$q->relevance,
                 'grelevance'=>$grelevance,
-                'qid'=>$questionNum,
-                'qseq'=>$questionSeq,
-                'gseq'=>$groupSeq,
+                'qid'=>$q->id,
+                'qseq'=>$q->questioncount,
+                'gseq'=>$q->groupcount,
                 'jsResultVar_on'=>$jsVarName_on,
                 'jsResultVar'=>$jsVarName,
                 'type'=>$type,
                 'hidden'=>$hidden,
-                'gid'=>$groupNum,
-                'mandatory'=>$mandatory,
+                'gid'=>$q->gid,
+                'mandatory'=>$q->mandatory,
                 'eqn'=>(($type == '*') ? $question : ''),
-                'help'=>$help,
-                'qtext'=>$fielddata['question'],    // $question,
+                'help'=>isset($q->help) ? $q->help : '',
+                'qtext'=>$q->text,    // $question,
                 'code'=>$varName,
-                'other'=>$other,
-                'default'=>$defaultValue,
-                'rootVarName'=>$fielddata['title'],
+                'other'=>$q->other,
+                'default'=>$q->default,
+                'rootVarName'=>$q->title,
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
-                'aid'=>$aid,
-                'sqid'=>$sqid,
+                'aid'=>$q->aid,
+                'sqid'=>$q->sqid,
                 );
 
-                $this->knownVars[$sgqa] = $varInfo_Code;
-                $this->qcode2sgqa[$varName]=$sgqa;
+                $this->knownVars[$q->fieldname] = $varInfo_Code;
+                $this->qcode2sgqa[$varName]=$q->fieldname;
 
-                $this->jsVar2qid[$jsVarName] = $questionNum;
-                $this->qcode2sgq[$fielddata['title']] = $surveyid . 'X' . $groupNum . 'X' . $questionNum;
+                $this->jsVar2qid[$jsVarName] = $q->id;
+                $this->qcode2sgq[$q->title] = $surveyid . 'X' . $q->gid . 'X' . $q->id;
 
                 // Create JavaScript arrays
                 $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
-                $this->alias2varName[$sgqa] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $sgqa . "':'" . $jsVarName . "'");
+                $this->alias2varName[$q->fieldname] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $q->fieldname . "':'" . $jsVarName . "'");
 
                 $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName
                 . "','jsName_on':'" . $jsVarName_on
-                . "','sgqa':'" . $sgqa
-                . "','qid':" . $questionNum
-                . ",'gid':" . $groupNum
-                //                . ",'mandatory':'" . $mandatory
+                . "','sgqa':'" . $q->fieldname
+                . "','qid':" . $q->id
+                . ",'gid':" . $q->gid
+                //                . ",'mandatory':'" . $q->mandatory
                 //                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
                 . ",'type':'" . $type
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 //                . "','readWrite':'" . $readWrite
                 //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
+                . "','default':'" . (is_null($q->default) ? '' : $q->default)
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
-                . "','gseq':" . $groupSeq
-                //                . ",'qseq':" . $questionSeq
+                . "','gseq':" . $q->groupcount
+                //                . ",'qseq':" . $q->questioncount
                 .$ansList;
 
                 if ($type == 'M' || $type == 'P')
@@ -3365,7 +3041,6 @@
                 }
                 $this->varNameAttr[$jsVarName] .= "}";
             }
-
             $this->q2subqInfo = $q2subqInfo;
 
             // Now set tokens
@@ -7200,7 +6875,7 @@ EOD;
             }
         }
 
-        private function gT($string)
+        public function gT($string)
         {
             // eventually replace this with i8n
             if (isset(Yii::app()->lang))
@@ -7402,15 +7077,12 @@ EOD;
         * @return <type>
         */
 
-        function getAnswerSetsForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
+        function getAnswerSetsForEM($surveyid=NULL,$lang=NULL)
         {
-            if (!is_null($qid)) {
-                $where = "a.qid = ".$qid;
-            }
-            else if (!is_null($surveyid)) {
+            if (!is_null($surveyid)) {
                     $where = "a.qid = q.qid and q.sid = ".$surveyid;
-                }
-                else {
+            }
+            else {
                     $where = "1";
             }
             if (!is_null($lang)) {
