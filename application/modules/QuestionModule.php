@@ -364,19 +364,19 @@ abstract class QuestionModule
         }
     }
 
-    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $symbol = '==', $join = 'or')
+    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $equal = true)
     {
         $fsqs = array();
         foreach ($subqs as $fsq)
         {
             if ($fsq['sqsuffix'] == $sqsuffix)
             {
-                $fsqs[] = '!is_empty(' . $this->fieldname . $fsq['csuffix'] . '.NAOK)';
+                $fsqs[] = ($equal ? '!' : '') . 'is_empty(' . $this->fieldname . $fsq['csuffix'] . '.NAOK)';
             }
         }
         if (count($fsqs) > 0)
         {
-            return '(' . implode(' ' . $join . ' ', $fsqs) . ')';
+            return '(' . implode(' ' . ($equal ? 'or' : 'and') . ' ', $fsqs) . ')';
         }
         else
         {

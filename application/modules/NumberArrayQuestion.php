@@ -550,7 +550,7 @@ class NumberArrayQuestion extends ArrayQuestion
         return substr($this->fieldname,0,strpos($this->fieldname,'_'));
     }
 
-    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $symbol = '==', $join = 'and')
+    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $equal = true)
     {
         $fsqs = array();
         foreach ($subqs as $fsq)
@@ -560,20 +560,20 @@ class NumberArrayQuestion extends ArrayQuestion
             {
                 if ($fsq['sqsuffix'] == $sqsuffix)
                 {
-                    $fsqs[] = $this->fieldname . $fsq['csuffix'] . '.NAOK' . $symbol . '"1"';
+                    $fsqs[] = $this->fieldname . $fsq['csuffix'] . '.NAOK' . ($equal ? '==' : '!=') . '"1"';
                 }
             }
             else
             {
                 if ($fsq['sqsuffix'] == $sqsuffix)
                 {
-                    $fsqs[] = '!is_empty(' . $this->fieldname . $fsq['csuffix'] . '.NAOK)';
+                    $fsqs[] = ($equal ? '!' : '') . 'is_empty(' . $this->fieldname . $fsq['csuffix'] . '.NAOK)';
                 }
             }
         }
         if (count($fsqs) > 0)
         {
-            return '(' . implode(' ' . $join . ' ', $fsqs) . ')';
+            return '(' . implode(' ' . ($equal ? 'or' : 'and') . ' ', $fsqs) . ')';
         }
         else
         {

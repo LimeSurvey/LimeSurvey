@@ -1086,127 +1086,32 @@
                             $last_rowdivid = $sq['rowdivid'];
                             $af_names = array();
                             $afe_names = array();
-                            switch ($type)
+                            if ($q->availableAttributes('array_filter') && $q->availableAttributes('array_filter_exclude'))
                             {
-                                case '1':   //Array (Flexible Labels) dual scale
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                case 'F': //ARRAY (Flexible) - Row Format
-                                case 'L': //LIST drop-down/radio-button list
-                                case 'M': //Multiple choice checkbox
-                                case 'P': //Multiple choice with comments checkbox + text
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-//                                case 'R': //Ranking
-//                                    if ($this->sgqaNaming)
-//                                    {
-                                        foreach ($cascadedAF as $_caf)
+                                foreach ($cascadedAF as $_caf)
                                 {
                                     $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
                                     $fqid = explode('X',$sgq);
                                     if (!isset($fqid[2]))
                                     {
-                                                continue;
-                                            }
-                                            $fqid = $fqid[2];
-                                            if ($this->q2subqInfo[$fqid]['type'] == 'R')
-                                            {
-                                                $rankables = array();
-                                                foreach ($this->qans[$fqid] as $k=>$v)
-                                                {
-                                                    $rankable = explode('~',$k);
-                                                    $rankables[] = '_' . $rankable[1];
-                                        }
-                                                if (array_search($sq['sqsuffix'],$rankables) === false)
-                                        {
-                                                    continue;
-                                                }
-                                            }
-                                            $fsqs = array();
-                                            foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
-                                            {
-                                                if ($this->q2subqInfo[$fqid]['type'] == 'R')
-                                                {
-                                                    // we know the suffix exists
-                                                    $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK == '" . substr($sq['sqsuffix'],1) . "')";
-                                            }
-                                                else if ($this->q2subqInfo[$fqid]['type'] == ':' && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
-                                                {
-                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
-                                                    {
-                                                        $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK=="1"';
-                                        }
+                                        continue;
                                     }
-                                    else
-                                    {
-                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
-                                        {
-                                                        $fsqs[] = '!is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
-                                                    }
-                                                }
-                                            }
-                                            if (count($fsqs) > 0)
-                                            {
-                                                $af_names[] = '(' . implode(' or ', $fsqs) . ')';
-                                            }
-                                        }
-                                        foreach ($cascadedAFE as $_cafe)
-                                        {
+                                    $qq = $this->q2subqInfo[$fqid[2]]['q'];
+                                    $af_name = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], true);
+                                    if (!is_null($af_name)) $af_names[] = $af_name;
+                                }
+                                foreach ($cascadedAFE as $_cafe)
+                                {
                                     $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
                                     $fqid = explode('X',$sgq);
                                     if (!isset($fqid[2]))
                                     {
-                                                continue;
-                                            }
-                                            $fqid = $fqid[2];
-                                            if ($this->q2subqInfo[$fqid]['type'] == 'R')
-                                            {
-                                                $rankables = array();
-                                                foreach ($this->qans[$fqid] as $k=>$v)
-                                                {
-                                                    $rankable = explode('~',$k);
-                                                    $rankables[] = '_' . $rankable[1];
-                                        }
-                                                if (array_search($sq['sqsuffix'],$rankables) === false)
-                                                {
-                                                    continue;
+                                        continue;
                                     }
-                                            }
-                                            $fsqs = array();
-                                            foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
-                                            {
-                                                if ($this->q2subqInfo[$fqid]['type'] == 'R')
-                                                {
-                                                    // we know the suffix exists
-                                                    $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK != '" . substr($sq['sqsuffix'],1) . "')";
-                                                }
-                                                else if ($this->q2subqInfo[$fqid]['type'] == ':' && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
-                                                {
-                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
-                                                    {
-                                                        $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK!="1"';
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if ($fsq['sqsuffix'] == $sq['sqsuffix'])
-                                                    {
-                                                        $fsqs[] = 'is_empty(' . $sgq . $fsq['csuffix'] . '.NAOK)';
-                                                    }
-                                                }
-                                            }
-                                            if (count($fsqs) > 0)
-                                            {
-                                                $afe_names[] = '(' . implode(' and ', $fsqs) . ')';
-                                            }
-                                        }
-                                    break;
-                                default:
-                                    break;
+                                    $qq = $this->q2subqInfo[$fqid[2]]['q'];
+                                    $afe_name = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], false);
+                                    if (!is_null($afe_name)) $afe_names[] = $afe_name;
+                                }
                             }
                             $af_names = array_unique($af_names);
                             $afe_names= array_unique($afe_names);
