@@ -1876,30 +1876,8 @@
                         $sq_names = array();
                         $subqValidEqns = array();
                         foreach ($subqs as $sq) {
-                            $sq_name = NULL;
+                            $sq_name = $q->getPregSQ($this->sgqaNaming, $sq);
                             $sgqa = substr($sq['jsVarName'],4);
-                            switch ($type)
-                            {
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                    if ($this->sgqaNaming)
-                                    {
-                                        $sq_name = '(if(is_empty('.$sgqa.'.NAOK),0,!regexMatch("' . $preg . '", ' . $sgqa . '.NAOK)))';
-                                    }
-                                    else
-                                    {
-                                        $sq_name = '(if(is_empty('.$sq['varName'].'.NAOK),0,!regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK)))';
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
                             switch ($type)
                             {
                                 case 'K': //MULTIPLE NUMERICAL QUESTION
@@ -4590,8 +4568,8 @@
                         {
                             case '1':   //Array (Flexible Labels) dual scale
                                 if ($sgqa == ($sq['rowdivid'] . '#0') || $sgqa == ($sq['rowdivid'] . '#1')) {
-                                    $foundSQrelevance=true;
-                                    if (isset($LEM->ParseResultCache[$sq['eqn']]))
+                            $foundSQrelevance=true;
+                            if (isset($LEM->ParseResultCache[$sq['eqn']]))
                             {
                                 $sqrel = $LEM->ParseResultCache[$sq['eqn']]['result'];
                                 if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
@@ -4607,14 +4585,14 @@
                                 if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                 {
                                     $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
-                                            $prettyPrintSQRelEqns[$sq['rowdivid']] = $prettyPrintSQRelEqn;
-                                        }
-                                        $LEM->ParseResultCache[$sq['eqn']] = array(
-                                        'result'=>$sqrel,
-                                        'prettyprint'=>$prettyPrintSQRelEqn,
-                                        'hasErrors'=>$hasErrors,
-                                        );
-                                    }
+                                    $prettyPrintSQRelEqns[$sq['rowdivid']] = $prettyPrintSQRelEqn;
+                                }
+                                $LEM->ParseResultCache[$sq['eqn']] = array(
+                                'result'=>$sqrel,
+                                'prettyprint'=>$prettyPrintSQRelEqn,
+                                'hasErrors'=>$hasErrors,
+                                );
+                            }
                                     if ($sqrel)
                                     {
                                         $relevantSQs[] = $sgqa;
