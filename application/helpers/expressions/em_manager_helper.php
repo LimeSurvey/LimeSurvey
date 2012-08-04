@@ -1010,10 +1010,11 @@
                 else if (!$this->allOnOnePage && $this->currentGroupSeq != $qinfo['gseq']) {
                     continue; // only need subq relevance for current page.
                 }
-                $questionNum = $qinfo['qid'];
+                //if(!array_key_exists('type', $qinfo)) {var_dump($qinfo);die();}
                 $type = $qinfo['type'];
+                $q = $qinfo['q'];
                 $hasSubqs = (isset($qinfo['subqs']) && count($qinfo['subqs'] > 0));
-                $qattr = isset($this->qattr[$questionNum]) ? $this->qattr[$questionNum] : array();
+                $qattr = isset($this->qattr[$q->id]) ? $this->qattr[$q->id] : array();
                 if (isset($qattr['input_boxes']) && $qattr['input_boxes'] == '1')
                 {
                     $input_boxes='1';
@@ -1065,7 +1066,7 @@
                         $cascadedAFE = array_reverse($cascadedAFE);
 
                         $subqs = $qinfo['subqs'];
-                        if ($type == 'R') {
+                        if ($type == 'R') { //AJS
                             $subqs = array();
                             foreach ($this->qans[$qinfo['qid']] as $k=>$v)
                             {
@@ -1104,11 +1105,11 @@
 //                                    if ($this->sgqaNaming)
 //                                    {
                                         foreach ($cascadedAF as $_caf)
-                                        {
-                                            $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                            $fqid = explode('X',$sgq);
-                                            if (!isset($fqid[2]))
-                                            {
+                                {
+                                    $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
+                                    $fqid = explode('X',$sgq);
+                                    if (!isset($fqid[2]))
+                                    {
                                                 continue;
                                             }
                                             $fqid = $fqid[2];
@@ -1155,10 +1156,10 @@
                                         }
                                         foreach ($cascadedAFE as $_cafe)
                                         {
-                                            $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                            $fqid = explode('X',$sgq);
-                                            if (!isset($fqid[2]))
-                                            {
+                                    $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
+                                    $fqid = explode('X',$sgq);
+                                    if (!isset($fqid[2]))
+                                    {
                                                 continue;
                                             }
                                             $fqid = $fqid[2];
@@ -1230,16 +1231,14 @@
                                 'type' => 'array_filter',
                                 'rowdivid' => $sq['rowdivid'],
                                 'eqn' => '(' . $afs_eqn . ')',
-                                'qid' => $questionNum,
+                                'qid' => $q->id,
                                 'sgqa' => $qinfo['sgqa'],
+                                'q' => $q
                                 );
                             }
                         }
                     }
                 }
-
-                // code_filter:  WZ
-                // This can be skipped, since question types 'W' (list-dropdown-flexible) and 'Z'(list-radio-flexible) are no longer supported
 
                 // equals_num_value
                 // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
@@ -1271,9 +1270,9 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
                             // sumEqn and sumRemainingEqn may need to be rounded if using sliders
                             $precision=LEM_DEFAULT_PRECISION;    // default is not to round
@@ -1307,12 +1306,12 @@
                                 $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
                             }
 
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_range',
                             'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'sumEqn' => $sumEqn,
                             'sumRemainingEqn' => $sumRemainingEqn,
                             );
@@ -1339,43 +1338,28 @@
                             $subqs = $qinfo['subqs'];
                             $sq_names = array();
                             foreach ($subqs as $sq) {
-                                $sq_name = NULL;
                                 if ($sq['csuffix'] == $exclusive_option)
                                 {
                                     continue;   // so don't make the excluded option irrelevant
                                 }
-                                switch ($type)
+                                if ($q->availableAttributes('exclude_all_others'))
                                 {
-                                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                    case 'F': //ARRAY (Flexible) - Row Format
-                                    case 'M': //Multiple choice checkbox
-                                    case 'P': //Multiple choice with comments checkbox + text
-                                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                                    case 'Q': //MULTIPLE SHORT TEXT
-                                        if ($this->sgqaNaming)
-                                        {
-                                            $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
-                                        }
-                                        else
-                                        {
-                                            $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                if (!is_null($sq_name)) {
+                                    if ($this->sgqaNaming)
+                                    {
+                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
+                                    }
+                                    else
+                                    {
+                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
+                                    }
                                     $subQrels[] = array(
                                     'qtype' => $type,
                                     'type' => 'exclude_all_others',
                                     'rowdivid' => $sq['rowdivid'],
                                     'eqn' => 'is_empty(' . $sq_name . ')',
-                                    'qid' => $questionNum,
+                                    'qid' => $q->id,
                                     'sgqa' => $qinfo['sgqa'],
+                                    'q' => $q
                                     );
                                 }
                             }
@@ -1397,26 +1381,19 @@
                     if ($hasSubqs) {
                         $subqs = $qinfo['subqs'];
                         $sq_names = array();
-                        foreach ($subqs as $sq) {
-                            $sq_name = NULL;
-                            switch ($type)
+                        foreach ($subqs as $sq)
+                        {
+                            if ($q->availableAttributes('exclude_all_others'))
                             {
-                                case 'M': //Multiple choice checkbox
-                                case 'P': //Multiple choice with comments checkbox + text
-                                    if ($this->sgqaNaming)
-                                    {
-                                        $sq_name = substr($sq['jsVarName'],4);
-                                    }
-                                    else
-                                    {
-                                        $sq_name = $sq['varName'];
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if (!is_null($sq_name))
-                            {
+                                if ($this->sgqaNaming)
+                                {
+                                    $sq_name = substr($sq['jsVarName'],4);
+                                }
+                                else
+                                {
+                                    $sq_name = $sq['varName'];
+                                }
+
                                 if ($sq['csuffix'] == $exclusive_option)
                                 {
                                     $eoVarName = substr($sq['jsVarName'],4);
@@ -1440,17 +1417,17 @@
 
                             // Unset all checkboxes and hidden values for this question (irregardless of whether they are array filtered)
                             $eosaJS = "if (" . $relevanceJS . ") {\n";
-                            $eosaJS .="  $('#question" . $questionNum . " [type=checkbox]').attr('checked',false);\n";
+                            $eosaJS .="  $('#question" . $q->id . " [type=checkbox]').attr('checked',false);\n";
                             $eosaJS .="  $('#java" . $qinfo['sgqa'] . "other').val('');\n";
                             $eosaJS .="  $('#answer" . $qinfo['sgqa'] . "other').val('');\n";
                             $eosaJS .="  $('[id^=java" . $qinfo['sgqa'] . "]').val('');\n";
                             $eosaJS .="  $('#answer" . $eoVarName . "').attr('checked',true);\n";
                             $eosaJS .="  $('#java" . $eoVarName . "').val('Y');\n";
-                            $eosaJS .="  LEMrel" . $questionNum . "();\n";
-                            $eosaJS .="  relChange" . $questionNum ."=true;\n";
+                            $eosaJS .="  LEMrel" . $q->id . "();\n";
+                            $eosaJS .="  relChange" . $q->id ."=true;\n";
                             $eosaJS .="}\n";
 
-                            $this->qid2exclusiveAuto[$questionNum] = array(
+                            $this->qid2exclusiveAuto[$q->id] = array(
                                 'js'=>$eosaJS,
                                 'relevanceVars'=>$relevanceVars,    // so that EM knows which variables to declare
                                 'rowdivid'=>$eoVarName, // to ensure that EM creates a hidden relevanceSGQA input for the exclusive option
@@ -1526,16 +1503,16 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'min_answers',
                             'class' => 'num_answers',
                             'eqn' => 'if(is_empty('.$min_answers.'),1,(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . ')))',
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             );
                         }
                     }
@@ -1612,16 +1589,16 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'max_answers',
                             'class' => 'num_answers',
                             'eqn' => '(if(is_empty('.$max_answers.'),1,count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . ')))',
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             );
                         }
                     }
@@ -1694,16 +1671,16 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value_n',
                             'class' => 'value_range',
                             'eqn' => implode(' && ', $sq_names),
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'subqValidEqns' => $subqValidEqns,
                             );
                         }
@@ -1761,16 +1738,16 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value_n',
                             'class' => 'value_range',
                             'eqn' => implode(' && ', $sq_names),
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'subqValidEqns' => $subqValidEqns,
                             );
                         }
@@ -1811,9 +1788,9 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
 
                             $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
@@ -1829,12 +1806,12 @@
                                 $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
                             }
 
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value',
                             'class' => 'sum_range',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ')' . $noanswer_option . ')',
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'sumEqn' => $sumEqn,
                             );
                         }
@@ -1875,9 +1852,9 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
 
                             $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
@@ -1893,12 +1870,12 @@
                                 $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
                             }
 
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value',
                             'class' => 'sum_range',
                             'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ')' . $noanswer_option . ')',
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'sumEqn' => $sumEqn,
                             );
                         }
@@ -1946,16 +1923,16 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'multiflexible_min',
                             'class' => 'value_range',
                             'eqn' => implode(' && ', $sq_names),
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'subqValidEqns' => $subqValidEqns,
                             );
                         }
@@ -2003,16 +1980,16 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'multiflexible_max',
                             'class' => 'value_range',
                             'eqn' => implode(' && ', $sq_names),
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'subqValidEqns' => $subqValidEqns,
                             );
                         }
@@ -2040,16 +2017,16 @@
                     }
                     if ($eqn != '')
                     {
-                        if (!isset($validationEqn[$questionNum]))
+                        if (!isset($validationEqn[$q->id]))
                         {
-                            $validationEqn[$questionNum] = array();
+                            $validationEqn[$q->id] = array();
                         }
-                        $validationEqn[$questionNum][] = array(
+                        $validationEqn[$q->id][] = array(
                         'qtype' => $type,
                         'type' => 'min_num_of_files',
                         'class' => 'num_answers',
                         'eqn' => $eqn,
-                        'qid' => $questionNum,
+                        'qid' => $q->id,
                         );
                     }
                 }
@@ -2075,16 +2052,16 @@
                     }
                     if ($eqn != '')
                     {
-                        if (!isset($validationEqn[$questionNum]))
+                        if (!isset($validationEqn[$q->id]))
                         {
-                            $validationEqn[$questionNum] = array();
+                            $validationEqn[$q->id] = array();
                         }
-                        $validationEqn[$questionNum][] = array(
+                        $validationEqn[$q->id][] = array(
                         'qtype' => $type,
                         'type' => 'max_num_of_files',
                         'class' => 'num_answers',
                         'eqn' => $eqn,
-                        'qid' => $questionNum,
+                        'qid' => $q->id,
                         );
                     }
                 }
@@ -2117,16 +2094,16 @@
                     }
                     if ($eqn != '')
                     {
-                        if (!isset($validationEqn[$questionNum]))
+                        if (!isset($validationEqn[$q->id]))
                         {
-                            $validationEqn[$questionNum] = array();
+                            $validationEqn[$q->id] = array();
                         }
-                        $validationEqn[$questionNum][] = array(
+                        $validationEqn[$q->id][] = array(
                         'qtype' => $type,
                         'type' => 'other_comment_mandatory',
                         'class' => 'other_comment_mandatory',
                         'eqn' => $eqn,
-                        'qid' => $questionNum,
+                        'qid' => $q->id,
                         );
                     }
                 }
@@ -2194,13 +2171,6 @@
                                     }
                                     $subqValidSelector = $sq['jsVarName_on'];
                                     break;
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                    //                                $subqValidEqn = '(strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
-                                    //                                $subqValidSelector = 'question' . $questionNum . ' :input';
-                                    break;
                                 default:
                                     break;
                             }
@@ -2215,16 +2185,16 @@
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'preg',
                             'class' => 'regex_validation',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'subqValidEqns' => $subqValidEqns,
                             );
                         }
@@ -2253,53 +2223,31 @@
                     if ($hasSubqs) {
                         $subqs = $qinfo['subqs'];
                         $sq_names = array();
-                        foreach ($subqs as $sq) {
-                            $sq_name = NULL;
-                            switch ($type)
+                        foreach ($subqs as $sq)
+                        {
+                            if ($q->availableAttributes('em_validation_q'))
                             {
-                                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                case 'F': //ARRAY (Flexible) - Row Format
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case 'M': //Multiple choice checkbox
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'P': //Multiple choice with comments checkbox + text
-                                case 'R': //RANKING STYLE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                    if ($this->sgqaNaming)
-                                    {
-                                        $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_q) . ')';
-                                    }
-                                    else
-                                    {
-                                        $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if (!is_null($sq_name)) {
-                                $sq_names[] = $sq_name;
+                                if ($this->sgqaNaming)
+                                {
+                                    $sq_names[] = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_q) . ')';
+                                }
+                                else
+                                {
+                                    $sq_names[] = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
+                                }
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'em_validation_q',
                             'class' => 'q_fn_validation',
                             'eqn' => '(sum(' . implode(', ', array_unique($sq_names)) . ') == 0)',
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             );
                         }
                     }
@@ -2330,72 +2278,36 @@
                         $subqValidEqns = array();
                         foreach ($subqs as $sq) {
                             $sq_name = NULL;
-                            switch ($type)
+                            if ($q->availableAttributes('em_validation_sq'))
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                    if ($this->sgqaNaming)
-                                    {
-                                        $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
-                                    }
-                                    else
-                                    {
-                                        $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_sq) . ')';
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                            switch ($type)
-                            {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                    if ($this->sgqaNaming)
-                                    {
-                                        $subqValidEqn = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
-                                    }
-                                    else
-                                    {
-                                        $subqValidEqn = '(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_sq) . ')';
-                                    }
-                                    $subqValidSelector = $sq['jsVarName_on'];
-                                    break;
-                                default:
-                                    break;
-                            }
-                            if (!is_null($sq_name)) {
-                                $sq_names[] = $sq_name;
-                                if (isset($subqValidSelector)) {
-                                    $subqValidEqns[$subqValidSelector] = array(
+                                if ($this->sgqaNaming)
+                                {
+                                    $sq_names[] = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
+                                    $subqValidEqn = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
+                                }
+                                else
+                                {
+                                    $sq_names[] = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_sq) . ')';
+                                    $subqValidEqn = '(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_sq) . ')';
+                                }
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                $subqValidEqns[$subqValidSelector] = array(
                                     'subqValidEqn' => $subqValidEqn,
                                     'subqValidSelector' => $subqValidSelector,
                                     );
-                                }
                             }
                         }
                         if (count($sq_names) > 0) {
-                            if (!isset($validationEqn[$questionNum]))
+                            if (!isset($validationEqn[$q->id]))
                             {
-                                $validationEqn[$questionNum] = array();
+                                $validationEqn[$q->id] = array();
                             }
-                            $validationEqn[$questionNum][] = array(
+                            $validationEqn[$q->id][] = array(
                             'qtype' => $type,
                             'type' => 'em_validation_sq',
                             'class' => 'sq_fn_validation',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
-                            'qid' => $questionNum,
+                            'qid' => $q->id,
                             'subqValidEqns' => $subqValidEqns,
                             );
                         }
@@ -2593,7 +2505,7 @@
 
                 if (count($qtips) > 0)
                 {
-                    $validationTips[$questionNum] = $qtips;
+                    $validationTips[$q->id] = $qtips;
                 }
             }
 
@@ -2909,11 +2821,10 @@
                 if (!isset($q2subqInfo[$q->id]) && !is_null($qInfo)) {
                     $q2subqInfo[$q->id] = $qInfo;
                 }
-                $sqInfo = $q->generateSQInfo($type);
-                if (!is_null($sqInfo)) {
+                $sqInfo = $q->generateSQInfo($ansArray);
+                if (!is_null($qInfo) && !is_null($sqInfo)) {
                     $q2subqInfo[$q->id]['subqs'][] = $sqInfo;
                 }
-                $q2subqInfo[$q->id]['subqs'] = array_merge($q2subqInfo[$q->id], $q->generateSQInfo($ansArray));
 
                 $ansList = '';
                 if (isset($ansArray) && !is_null($ansArray)) {
@@ -2963,7 +2874,7 @@
                 'gid'=>$q->gid,
                 'mandatory'=>$q->mandatory,
                 'eqn'=>(($type == '*') ? $question : ''),
-                'help'=>$q->help,
+                'help'=>isset($q->help) ? $q->help : '',
                 'qtext'=>$q->text,    // $question,
                 'code'=>$varName,
                 'other'=>$q->other,
@@ -2996,7 +2907,7 @@
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 //                . "','readWrite':'" . $readWrite
                 //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
+                . "','default':'" . (is_null($q->default) ? '' : $q->default)
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $q->groupcount
