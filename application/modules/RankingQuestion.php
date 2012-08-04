@@ -387,7 +387,7 @@ class RankingQuestion extends QuestionModule
         return $this->fieldname;
     }
 
-    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $symbol = '==', $join = 'and')
+    public function getArrayFilterNames($subqs, $qans, $sqsuffix, $equal = true)
     {
         $rankables = array();
         foreach ($qans[$fqid] as $k=>$v)
@@ -401,11 +401,11 @@ class RankingQuestion extends QuestionModule
             foreach ($subqs as $fsq)
             {
                 // we know the suffix exists
-                $fsqs[] = '(' . $sgq . $fsq['csuffix'] . '.NAOK ' . $symbol . " '" . substr($sqsuffix,1) . "')";
+                $fsqs[] = '(' . $sgq . $fsq['csuffix'] . '.NAOK ' . ($equal ? '==' : '!=') . " '" . substr($sqsuffix,1) . "')";
             }
             if (count($fsqs) > 0)
             {
-                return '(' . implode(' ' . $join . ' ', $fsqs) . ')';
+                return '(' . implode(' ' . ($equal ? 'or' : 'and'). ' ', $fsqs) . ')';
             }
         }
         return null;

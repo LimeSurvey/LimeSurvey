@@ -1096,8 +1096,8 @@
                                         continue;
                                     }
                                     $qq = $this->q2subqInfo[$fqid[2]]['q'];
-                                    $afname = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], '==', 'or');
-                                    if (!is_null($afname)) $afnames[] = $afname;
+                                    $af_name = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], true);
+                                    if (!is_null($af_name)) $af_names[] = $af_name;
                                 }
                                 foreach ($cascadedAFE as $_cafe)
                                 {
@@ -1108,8 +1108,8 @@
                                         continue;
                                     }
                                     $qq = $this->q2subqInfo[$fqid[2]]['q'];
-                                    $afename = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], '!=', 'and');
-                                    if (!is_null($afename)) $afenames[] = $afename;
+                                    $afe_name = $qq->getArrayFilterNames($this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], false);
+                                    if (!is_null($afe_name)) $afe_names[] = $afe_name;
                                 }
                             }
                             $af_names = array_unique($af_names);
@@ -2960,6 +2960,7 @@
                 'relevanceVars' => $relevanceVars,
                 'rowdivid' => $rowdivid,
                 'type'=>$type,
+                'q' => $q,
                 'sgqa'=>$sgqa,
                 'hasErrors'=>$hasErrors,
                 'isExclusiveJS'=>$isExclusiveJS,
