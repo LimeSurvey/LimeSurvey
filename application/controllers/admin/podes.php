@@ -40,8 +40,7 @@ class Podes extends Survey_Common_Action
     }
     
     /**
-    * This function show form to select location for podes
-    *
+    * This function show form to select location for podes    
     */
     function index()
     {
@@ -59,7 +58,8 @@ class Podes extends Survey_Common_Action
 
 		if(isset($_POST['PotensiForm']))
 		{
-			$model->attributes=$_POST['PotensiForm'];
+                        echo print_r($_POST['PotensiForm']);
+			/* $model->attributes=$_POST['PotensiForm'];
 			if($model->validate())
 			{
 				//echo $model['provinsiid'];
@@ -76,13 +76,13 @@ class Podes extends Survey_Common_Action
 					'kat12'=>$model['kat12'],
 				));
 				return;
-			}
-		}
+			} */
+		}		
 		
-		foreach ($model as $k => $v) {
-			$aData[$k] = $v;
-		}
-		$aData['model'] = $model;
+                $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'podes.js');
+		//$aData['display']['menu_bars']['browse'] = "Quick statistics";
+                
+                $aData['model'] = $model;
         $this->_renderWrappedTemplate('podes', 'index_view', $aData);
     }
     
@@ -98,5 +98,26 @@ class Podes extends Survey_Common_Action
         //$this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+    }
+    
+    /**
+    * Fungsi untuk mengambil data kabupaten dari Ajax berdasarkan ID provinsi
+    */
+    function getkabupaten(){
+        /*if(!Yii::app()->request->isAjaxRequest)
+               throw new CHttpException(404); */
+
+        $data=Kabupaten::model()->findAll(
+                'provinsiid=:provinsiid',
+                array(':provinsiid'=>(int)$_POST['provinsiid'])                
+        );
+
+        $data=CHtml::listData($data, 'id', 'nama');        
+        foreach ($data as $value=>$nama)
+        {
+            echo CHtml::tag('option',array('value'=>$value), CHtml::encode($nama), true);                        
+            //echo '< option value="'.$value.'" selected="'.$nama.'">< /option>';
+            
+        }
     }
 }
