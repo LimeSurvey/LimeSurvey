@@ -46,11 +46,43 @@ class Podes extends Survey_Common_Action
     function index()
     {
         /* if (!hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
-            $this->getController()->error('No permission'); */          
-      
-        $aData['nilai'] = "nilai pertama";     
-        //$aData = array_merge($aData, $this->_tabTokens($esrow));
-        
+            $this->getController()->error('No permission'); */                      		
+		$model=new PotensiForm;
+
+		// uncomment the following code to enable ajax-based validation
+		
+		if(isset($_POST['ajax']) && $_POST['ajax']==='potensi-form-Index-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+
+		if(isset($_POST['PotensiForm']))
+		{
+			$model->attributes=$_POST['PotensiForm'];
+			if($model->validate())
+			{
+				//echo $model['provinsiid'];
+				$this->render('view',array(
+					'id'=>$model['desaid'],
+					'kat3'=>$model['kat3'],
+					'kat4'=>$model['kat4'],
+					'kat5'=>$model['kat5'],
+					'kat6'=>$model['kat6'],
+					'kat7'=>$model['kat7'],
+					'kat8'=>$model['kat8'],
+					'kat9'=>$model['kat9'],
+					'kat10'=>$model['kat10'],
+					'kat12'=>$model['kat12'],
+				));
+				return;
+			}
+		}
+		
+		foreach ($model as $k => $v) {
+			$aData[$k] = $v;
+		}
+		$aData['model'] = $model;
         $this->_renderWrappedTemplate('podes', 'index_view', $aData);
     }
     
@@ -63,7 +95,8 @@ class Podes extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'podes', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+        //$this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
+        $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }
