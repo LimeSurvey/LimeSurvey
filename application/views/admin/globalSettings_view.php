@@ -56,48 +56,48 @@
                     }
                 ?>
 
-                <br /><br/></p><div class='header ui-widget-header'><?php echo $clang->eT("Updates"); ?></div><br/><ul>
-                <li><label for='updatecheckperiod'><?php echo $clang->eT("Check for updates:"); ?></label>
+                <br /><br/></p><!--<div class='header ui-widget-header'><?php //echo $clang->eT("Updates"); ?></div><br/><ul>
+                <li><label for='updatecheckperiod'><?php //echo $clang->eT("Check for updates:"); ?></label>
                     <select name='updatecheckperiod' id='updatecheckperiod'>
                         <option value='0'
-                            <?php if ($thisupdatecheckperiod==0) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->eT("Never"); ?></option>
+                            <?php //if ($thisupdatecheckperiod==0) { echo "selected='selected'";} ?>
+                            ><?php //echo $clang->eT("Never"); ?></option>
                         <option value='1'
-                            <?php if ($thisupdatecheckperiod==1) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->eT("Every day"); ?></option>
+                            <?php //if ($thisupdatecheckperiod==1) { echo "selected='selected'";} ?>
+                            ><?php //echo $clang->eT("Every day"); ?></option>
                         <option value='7'
-                            <?php if ($thisupdatecheckperiod==7) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->eT("Every week"); ?></option>
+                            <?php //if ($thisupdatecheckperiod==7) { echo "selected='selected'";} ?>
+                            ><?php //echo $clang->eT("Every week"); ?></option>
                         <option value='14'
-                            <?php if ($thisupdatecheckperiod==14) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->eT("Every 2 weeks"); ?></option>
+                            <?php //if ($thisupdatecheckperiod==14) { echo "selected='selected'";} ?>
+                            ><?php //echo $clang->eT("Every 2 weeks"); ?></option>
                         <option value='30'
-                            <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->eT("Every month"); ?></option>
-                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/updatecheck"); ?>', '_top')" value='<?php $clang->eT("Check now"); ?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck); ?></span></li></ul><p>
+                            <?php //if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
+                            ><?php //echo $clang->eT("Every month"); ?></option>
+                    </select>&nbsp;<input type='button' onclick="window.open('<?php //echo $this->createUrl("admin/globalsettings/updatecheck"); ?>', '_top')" value='<?php //$clang->eT("Check now"); ?>' />&nbsp;<span id='lastupdatecheck'><?php //echo sprintf($clang->gT("Last check: %s"),$updatelastcheck); ?></span></li></ul><p>
 
                 <?php
-                    if (isset($updateavailable) && $updateavailable==1)
-                    { ?>
-                    <span style="font-weight: bold;"><?php echo sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)"); ?></span><br />
-                    <?php echo sprintf($clang->gT('You can update %smanually%s or use the %s'),"<a href='http://docs.limesurvey.org/tiki-index.php?page=Upgrading+from+a+previous+version'>","</a>","<a href='".site_url('admin/update')."'>".$clang->gT('3-Click ComfortUpdate').'</a>'); ?><br />
-                    <?php }
-                    elseif (isset($updateinfo['errorcode']))
-                    { echo sprintf($clang->gT('There was an error on update check (%s)'),$updateinfo['errorcode']); ?><br />
-                    <textarea readonly='readonly' style='width:35%; height:60px; overflow: auto;'><?php echo strip_tags($updateinfo['errorhtml']); ?></textarea>
+                    //if (isset($updateavailable) && $updateavailable==1){ ?>
+                    <span style="font-weight: bold;"><?php //echo sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)"); ?></span><br />
+                    <?php //echo sprintf($clang->gT('You can update %smanually%s or use the %s'),"<a href='http://docs.limesurvey.org/tiki-index.php?page=Upgrading+from+a+previous+version'>","</a>","<a href='".site_url('admin/update')."'>".$clang->gT('3-Click ComfortUpdate').'</a>'); ?><br />
+                    <?php //}
+                    //elseif (isset($updateinfo['errorcode']))
+                    //{ echo sprintf($clang->gT('There was an error on update check (%s)'),$updateinfo['errorcode']); ?><br />
+                    <textarea readonly='readonly' style='width:35%; height:60px; overflow: auto;'><?php //echo strip_tags($updateinfo['errorhtml']); ?></textarea>
 
-                    <?php }
-                    elseif ($updatable)
-                    {
-                        $clang->eT('There is currently no newer LimeSurvey version available.');
-                    }
-                    else
-                    {
-                        printf($clang->gT('This is an unstable version and cannot be updated using ComfortUpdate. Please check %sour website%s regularly for a newer version.'),"<a href='http://www.limesurvey.org'>","</a>");
-                    }
-
+                    <?php// }
+                    //elseif ($updatable)
+                    //{
+                    //    $clang->eT('There is currently no newer LimeSurvey version available.');
+                    //}
+                    //else
+                    //{
+                    //    printf($clang->gT('This is an unstable version and cannot be updated using ComfortUpdate. Please check %sour website%s regularly for a newer version.'),"<a href='http://www.limesurvey.org'>","</a>");
+                    //}
                 ?>
-            </p></div>
+            </p>
+			
+			--></div>
 
         <div id='general'>
             <ul>
