@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-02 22:05:44+00:00\n"
+"POT-Creation-Date: 2012-08-03 22:05:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1287,12 +1287,12 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4850
 #: application/helpers/qanda_helper.php:4933
 #: application/helpers/qanda_helper.php:5065
-#: application/helpers/qanda_helper.php:5856
 #: application/helpers/qanda_helper.php:5857
-#: application/helpers/qanda_helper.php:6149
-#: application/helpers/qanda_helper.php:6310
-#: application/helpers/qanda_helper.php:6511
-#: application/helpers/qanda_helper.php:6565
+#: application/helpers/qanda_helper.php:5858
+#: application/helpers/qanda_helper.php:6151
+#: application/helpers/qanda_helper.php:6312
+#: application/helpers/qanda_helper.php:6513
+#: application/helpers/qanda_helper.php:6567
 #: application/views/admin/dataentry/content_view.php:29
 msgid "No answer"
 msgstr ""
@@ -3663,8 +3663,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1293
 #: application/helpers/qanda_helper.php:1474
 #: application/helpers/qanda_helper.php:2085
-#: application/helpers/qanda_helper.php:6491
-#: application/helpers/qanda_helper.php:6545
+#: application/helpers/qanda_helper.php:6493
+#: application/helpers/qanda_helper.php:6547
 #: application/views/admin/dataentry/content_view.php:84
 #: application/views/admin/dataentry/content_view.php:94
 #: application/views/admin/labels/labelsetsbar_view.php:22
@@ -7272,7 +7272,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:2967
 #: application/helpers/qanda_helper.php:3286
 #: application/helpers/qanda_helper.php:4517
-#: application/helpers/qanda_helper.php:6362
+#: application/helpers/qanda_helper.php:6364
 msgid "Error: This question has no answers."
 msgstr ""
 
@@ -7300,18 +7300,18 @@ msgid "Drag and drop the pin to the desired location. You may also right click o
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5089
-#: application/helpers/qanda_helper.php:5467
-#: application/helpers/qanda_helper.php:5823
-#: application/helpers/qanda_helper.php:5971
-#: application/helpers/qanda_helper.php:6591
+#: application/helpers/qanda_helper.php:5468
+#: application/helpers/qanda_helper.php:5824
+#: application/helpers/qanda_helper.php:5972
+#: application/helpers/qanda_helper.php:6593
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5740
+#: application/helpers/qanda_helper.php:5741
 msgid "..."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5965
+#: application/helpers/qanda_helper.php:5966
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 

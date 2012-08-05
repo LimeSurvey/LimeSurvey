@@ -70,6 +70,8 @@
     var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$surveyid}/tids/|"); ?>";
     var viewParticipantsLink = "<?php $clang->eT("View participants of this survey in the central participant database panel") ?>";
+    var sBounceProcessing = "<?php $clang->eT("Start bounce processing") ?>";
+    var sBounceProcessingURL = "<?php echo Yii::app()->getController()->createUrl('admin/tokens/bounceprocessing/surveyid/' . $surveyid); ?>";
     var participantlinkUrl="<?php echo Yii::app()->getController()->createUrl("admin/participants/displayParticipants/searchurl/survey||equal||".$surveyid); ?>";
     var searchtypes = ["<?php $clang->eT("Equals") ?>","<?php $clang->eT("Contains") ?>","<?php $clang->eT("Not equal") ?>","<?php $clang->eT("Not contains") ?>","<?php $clang->eT("Greater than") ?>","<?php $clang->eT("Less than") ?>"]
     var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>",<?php echo $columnNames; ?>];
@@ -204,3 +206,4 @@
 </div>
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
 <div>
+<div id ='dialog-modal'></div>
