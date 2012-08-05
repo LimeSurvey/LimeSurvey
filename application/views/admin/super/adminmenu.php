@@ -105,8 +105,8 @@
             <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>" >
                 <img src='<?php echo $sImageURL;?>logout.png' alt='<?php $clang->eT("Logout");?>' /></a>
 
-            <a href="http://docs.limesurvey.org" target="_blank">
-                <img src='<?php echo $sImageURL;?>showhelp.png' alt='<?php $clang->eT("LimeSurvey online manual");?>' /></a>
+            <!--<a href="http://docs.limesurvey.org" target="_blank">
+                <img src='<?php echo $sImageURL;?>showhelp.png' alt='<?php $clang->eT("LimeSurvey online manual");?>' /></a>-->
         </div>
     </div>
 </div>
