@@ -52,6 +52,12 @@ $(document).ready(function(){
 
     $('#btnSave').click(saveParameter);
     $('#addnewsurvey').submit(PostParameterGrid);
+    $( "#tabs" ).bind( "tabsselect", function(event, ui) {
+        if (ui.index>4)
+        {$('#btnSave').hide();}
+        else
+        {$('#btnSave').show();}
+});
 
 });
 
