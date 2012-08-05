@@ -85,8 +85,12 @@ class tokens extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $thissurvey = getSurveyInfo($iSurveyId);
 
-        if (($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') == 'off'))
-            && hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        {
+            $clang->eT("We are sorry but you don't have permissions to do this.");
+            return;
+        }
+        if ($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off'))
         {
             $bouncetotal = 0;
             $checktotal = 0;
@@ -233,8 +237,10 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $clang->eT("We are sorry but you don't have permissions to do this.");
+            $clang->eT("Bounce processing is deactivated either application-wide or for this survey in particular.");
+            return;
         }
+
 
         exit; // if bounceprocessing : javascript : no more todo
     }
@@ -401,7 +407,12 @@ class tokens extends Survey_Common_Action
             } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N" ) {
                 //Get the survey response id of the matching entry
                 $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$token['token']));
-                $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
+                if (count($id)>0)
+                {
+                    $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
+                } else {
+                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+                }
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
