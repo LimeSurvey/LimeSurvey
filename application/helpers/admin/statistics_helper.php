@@ -3264,6 +3264,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $workbook->setVersion(8);
         // Inform the module that our data will arrive as UTF-8.
         // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+        $workbook->setTempDir($tempdir);
+        
+        // Inform the module that our data will arrive as UTF-8.
+        // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
         if (!empty($tempdir)) {
             $workbook->setTempDir($tempdir);
         }
