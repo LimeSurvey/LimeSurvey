@@ -63,7 +63,8 @@
         ?>
 <ul>
 
-    <?php if (isset($tokenids))
+    <?php
+    if (count($tokenids)>0)
     { ?>
         <li>
             <label><?php $clang->eT("Send reminder to token ID(s):"); ?></label>
