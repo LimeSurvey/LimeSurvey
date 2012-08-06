@@ -31,7 +31,7 @@ Default styles for the jQuery UI progress bar
 
 #progress-wrapper #progress-post {
   float: left;
-  margin: 0 0 0 5px;
+  /*margin: 0 0 0 5px;*/
   width: 45px;
   text-align: left;
 }

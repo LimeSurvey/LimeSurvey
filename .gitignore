@@ -4,3 +4,5 @@
 /upload/templates/*
 
 /tmp/runtime/HTML
+/nbproject/private/
+/nbproject/*
