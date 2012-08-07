@@ -14,7 +14,60 @@
     */
     //include_once("login_check.php");
     //Security Checked: POST/GET/SESSION/DB/returnGlobal
+    function initKcfinder()
+    {
+     Yii::app()->session['KCFINDER'] = array();
 
+        $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));
+        $_SESSION['KCFINDER']['types'] = array(
+            'files' => $sAllowedExtensions,
+            'flash' => $sAllowedExtensions,
+            'images' => $sAllowedExtensions
+        );
+
+        if (Yii::app()->getConfig('demoMode') === false &&
+                isset(Yii::app()->session['loginID']) &&
+                isset(Yii::app()->session['FileManagerContext']))
+        {
+            // disable upload at survey creation time
+            // because we don't know the sid yet
+            if (preg_match('/^(create|edit):(question|group|answer)/', Yii::app()->session['FileManagerContext']) != 0 ||
+                    preg_match('/^edit:survey/', Yii::app()->session['FileManagerContext']) != 0 ||
+                    preg_match('/^edit:assessments/', Yii::app()->session['FileManagerContext']) != 0 ||
+                    preg_match('/^edit:emailsettings/', Yii::app()->session['FileManagerContext']) != 0)
+            {
+                $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
+                $surveyid = $contextarray[2];
+
+                if (hasSurveyPermission($surveyid, 'surveycontent', 'update'))
+                {
+                    $_SESSION['KCFINDER']['disabled'] = false;
+                    if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
+                    {
+                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getRequest()->getHostInfo($schema).Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
+                    }
+                    else
+                    {
+                        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
+                    }
+                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
+                }
+            }
+            elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
+            {
+                $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
+                $labelid = $contextarray[2];
+                // check if the user has label management right and labelid defined
+                if (Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1 && isset($labelid) && $labelid != '')
+                {
+                    $_SESSION['KCFINDER']['disabled'] = false;
+                    $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";
+                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
+                }
+            }
+        }
+
+    } 
 
     function sTranslateLangCode2CK($sLanguageCode){
 
@@ -57,8 +110,10 @@
 
     function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
+        initKcfinder();
         //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
         $session = &Yii::app()->session;
+
         if ($session['htmleditormode'] &&
         $session['htmleditormode'] == 'none')
         {
@@ -170,7 +225,7 @@
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
         . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-        customConfig : \"".Yii::app()->getConfig('sCKEditorURL')."/limesurvey-config.js\"
+        customConfig : \"".Yii::app()->getConfig('adminscripts')."/ckeditor-config.js\"
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsSID : \"".$surveyID."\"
         ,LimeReplacementFieldsGID : \"".$gID."\"
@@ -186,7 +241,7 @@
         ."});
         \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
         });";
-
+        
 
         $htmlcode.= '</script>';
 

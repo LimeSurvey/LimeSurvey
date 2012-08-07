@@ -281,7 +281,7 @@ class participantsaction extends Survey_Common_Action
         $limit = Yii::app()->request->getPost('rows');
     	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
-        $records = ParticipantAttributeNames::model()->getAttributes();
+        $records = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll();
 
         $attribute_types = array(
             'DD' => $clang->gT("Drop-down list"),
@@ -294,12 +294,17 @@ class participantsaction extends Survey_Common_Action
         $aData->total = ceil(ParticipantAttributeNames::model()->getAttributes(true) / $limit);
 
         $i = 0;
-        foreach ($records as $row)
-        {
-            $aData->rows[$i]['id'] = $row['attribute_id'];
-            $aData->rows[$i]['cell'] = array('', $row['attribute_name'], $attribute_types[$row['attribute_type']], $row['visible']);
+        foreach($records as $row) { //Iterate through each attribute
+            $thisname="";
+            foreach($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+                if($thisname=="") {$thisname=$names->attribute_name;} //Choose the first item by default
+                if($names->lang == Yii::app()->session['adminlang']) {$thisname=$names->attribute_name;} //Override the default with the admin language version if found
+            }
+            $aData->rows[$i]['id'] = $row->attribute_id;
+            $aData->rows[$i]['cell'] = array('', $thisname, $attribute_types[$row->attribute_type], $row->visible);
             $i++;
         }
+
 
         echo ls_json_encode($aData);
     }
@@ -1151,7 +1156,7 @@ class participantsaction extends Survey_Common_Action
     {
         $iParticipantId = Yii::app()->request->getQuery('pid');
         $records = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($iParticipantId);
-        $getallattributes = ParticipantAttributeNames::model()->getAttributes();
+        //$getallattributes = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll();
         $aData = new stdClass();
         $aData->page = 1;
         $aData->records = count($records);
