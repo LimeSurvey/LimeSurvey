@@ -1077,10 +1077,10 @@ function do_date($ia)
 
     $checkconditionFunction = "checkconditions";
 
-    $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
+    $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
     $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
 
-    if (trim($aQuestionAttributes['dropdown_dates'])!=0) {
+    if (trim($aQuestionAttributes['dropdown_dates'])==1) {
         if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
         {
             $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])->getTimeStamp());
@@ -1093,9 +1093,11 @@ function do_date($ia)
             $currentdate='';
             $currentmonth='';
             $currentyear='';
+            $currenthour = '';
+            $currentminute = '';
         }
 
-        $dateorder = preg_split('/[-\.\/ ]/', $dateformatdetails['phpdate']);
+        $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'],-1,PREG_SPLIT_DELIM_CAPTURE );
         $answer='<p class="question answer-item dropdown-item date-item">';
         foreach($dateorder as $datepart)
         {
@@ -1103,7 +1105,7 @@ function do_date($ia)
             {
                 // Show day select box
                 case 'j':
-                case 'd':   $answer .= ' <label for="day'.$ia[1].'" class="hide">'.$clang->gT('Day').'</label><select id="day'.$ia[1].'" name="day'.$ia[1].'" class="day">
+                case 'd':   $answer .= '<label for="day'.$ia[1].'" class="hide">'.$clang->gT('Day').'</label><select id="day'.$ia[1].'" name="day'.$ia[1].'" class="day">
                     <option value="">'.$clang->gT('Day')."</option>\n";
                     for ($i=1; $i<=31; $i++) {
                         if ($i == $currentdate)
@@ -1114,13 +1116,13 @@ function do_date($ia)
                         {
                             $i_date_selected = '';
                         }
-                        $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
+                        $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
                     }
                     $answer .='</select>';
                     break;
                     // Show month select box
                 case 'n':
-                case 'm':   $answer .= ' <label for="month'.$ia[1].'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month">
+                case 'm':   $answer .= '<label for="month'.$ia[1].'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month">
                     <option value="">'.$clang->gT('Month')."</option>\n";
                     $montharray=array(
                     $clang->gT('Jan'),
@@ -1145,12 +1147,12 @@ function do_date($ia)
                             $i_date_selected = '';
                         }
 
-                        $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
+                        $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
                     }
-                    $answer .= '    </select>';
+                    $answer .= '</select>';
                     break;
                     // Show year select box
-                case 'Y':   $answer .= ' <label for="year'.$ia[1].'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year">
+                case 'Y':   $answer .= '<label for="year'.$ia[1].'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year">
                     <option value="">'.$clang->gT('Year').'</option>';
 
                     /*
@@ -1207,11 +1209,64 @@ function do_date($ia)
                         {
                             $i_date_selected = '';
                         }
-                        $answer .= '  <option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
+                        $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
                     }
                     $answer .= '</select>';
 
                     break;
+                case 'H':
+                case 'h':
+                case 'g':
+                case 'G':
+                    $answer .= '<label for="hour'.$ia[1].'" class="hide">'.$clang->gT('Hour').'</label><select id="hour'.$ia[1].'" name="hour'.$ia[1].'" class="hour"><option value="">'.$clang->gT('Hour').'</option>';
+                    for ($i=0; $i<24; $i++) {
+                        if ($i === $currenthour)
+                        {
+                            $i_date_selected = SELECTED;
+                        }
+                        else
+                        {
+                            $i_date_selected = '';
+                        }
+                        if ($datepart=='H')
+                        {
+                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>';
+                        }
+                        else
+                        {
+                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
+
+                        }
+                    }
+                    $answer .= '</select>';
+
+                    break;
+                case 'i':   $answer .= '<label for="minute'.$ia[1].'" class="hide">'.$clang->gT('Minute').'</label><select id="minute'.$ia[1].'" name="minute'.$ia[1].'" class="minute">
+                    <option value="">'.$clang->gT('Minute').'</option>';
+
+                    for ($i=0; $i<60; $i+=$aQuestionAttributes['dropdown_dates_minute_step']) {
+                        if ($i === $currentminute)
+                        {
+                            $i_date_selected = SELECTED;
+                        }
+                        else
+                        {
+                            $i_date_selected = '';
+                        }
+                        if ($datepart=='i')
+                        {
+                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>';
+                        }
+                        else
+                        {
+                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
+
+                        }
+                    }
+                    $answer .= '</select>';
+
+                    break;
+                default:  $answer .= $datepart;
             }
         }
 
