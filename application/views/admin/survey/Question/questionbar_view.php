@@ -1,4 +1,6 @@
-<?php if (isset($tmp_survlangs)) { ?>
+<?php
+$aReplacementData=array();
+if (isset($tmp_survlangs)) { ?>
     <div class="langpopup" id="previewquestionpopup"><?php $clang->eT("Please select a language:"); ?><ul>
             <?php foreach ($tmp_survlangs as $tmp_lang)
                 { ?>
@@ -165,14 +167,14 @@
     <tr><td><strong>
             <?php $clang->eT("Question:"); ?></strong></td><td>
             <?php
-                templatereplace($qrrow['question']);
+                templatereplace($qrrow['question'],array(),$aReplacementData,'Unspecified', false ,$qid);
                 echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
         ?></td></tr>
     <tr><td><strong>
             <?php $clang->eT("Help:"); ?></strong></td><td>
             <?php
                 if (trim($qrrow['help'])!=''){
-                    templatereplace($qrrow['help']);
+                    templatereplace($qrrow['help'],array(),$aReplacementData,'Unspecified', false ,$qid);
                     echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
             } ?>
         </td></tr>
