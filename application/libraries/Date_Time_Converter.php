@@ -58,15 +58,15 @@ class Date_Time_Converter
      * 	without leading zeros (n,j,g,G) as long as they aren't bunched together.
      *   ie: ("1152008", "njY") wont work;   ("1/15/2008", "n/j/2008") will work.
      *   Example: $obj = new Date_Time_Calc('12/30/2008 17:40:00', 'm/d/Y H:i:s'); 	*/
-    public function __construct($data) {
+    public function __construct($sDate, $sFormat) {
 
     	require_once(APPPATH . '/helpers/adodb/adodb-time.inc_helper.php');
         $this->_default_date_time_units();				//set date&time units to default values
-        $this->date_time = $data[0];
-        $this->date_time_mask = $data[1];
+        $this->date_time = $sDate;
+        $this->date_time_mask = $sFormat;
 
         //convert date to timestamp
-        $this->date_time_stamp = $this->_date_to_timestamp($data[0], $data[1]);
+        $this->date_time_stamp = $this->_date_to_timestamp($sDate, $sFormat);
     }
 
 

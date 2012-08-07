@@ -1491,7 +1491,7 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 Yii::import('application.libraries.Date_Time_Converter');
                 $converter = new Date_Time_Converter($sStartDate, $aDateFormatData['phpdate'] . ' H:i:s');
-                $sExpiryDate = $converter->convert("Y-m-d H:i:s");
+                $sStartDate = $converter->convert("Y-m-d H:i:s");
             }
 
             // If expiry date supplied convert it to the right format
