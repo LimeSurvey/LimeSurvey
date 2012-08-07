@@ -6,6 +6,8 @@ $(document).ready(function() {
         {name: 'visible', index: 'visible', width: 250, align: 'center', editable: true, formatter: checkboxFormatter, edittype: 'checkbox', edittype: "checkbox", editoptions: {value: "TRUE"}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value: "TRUE:Yes;FALSE:No"}}
     ];
 
+    $("#flashinfo").css("opacity", 0); //Make sure the flash message doesn't display in IE
+
     jQuery("#attributeControl").jqGrid({
         align:"center",
         url: attributeInfoUrl,

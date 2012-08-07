@@ -23,13 +23,25 @@
 class ParticipantAttributeNames extends CActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
+	 * Returns the static model of Participant Attribute Names table
 	 *
 	 * @static
 	 * @access public
      * @param string $class
 	 * @return CActiveRecord
 	 */
+
+    /**
+    * Returns the primary key of this table
+    *
+    * @access public
+    * @return string
+    */
+    public function primaryKey()
+    {
+        return 'attribute_id';
+    }
+
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
@@ -68,6 +80,8 @@ class ParticipantAttributeNames extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+            'participant_attribute_names_lang'=>array(self::HAS_MANY, 'ParticipantAttributeNamesLang', 'attribute_id'),
+            'participant_attribute'=>array(self::HAS_ONE, 'Participant_attribute', 'attribute_id')
 		);
 	}
 
@@ -128,13 +142,56 @@ class ParticipantAttributeNames extends CActiveRecord
         return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names_lang}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where("{{participant_attribute_names_lang}}.lang = '".Yii::app()->session['adminlang']."' AND {{participant_attribute_names}}.visible = 'TRUE'")->queryAll();
     }
 
+    /**
+    * Returns a list of attributes, with name and value. Currently not working for alternate languages
+    *
+    * @param mixed $participant_id the id of the participant to return values/names for (if empty, returns all)
+    */
     function getParticipantVisibleAttribute($participant_id)
     {
+        $output=array();
+
         if($participant_id != ''){
-            return Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute}}')->order('{{participant_attribute}}.attribute_id','desc')->join('{{participant_attribute_names_lang}}','{{participant_attribute}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->join('{{participant_attribute_names}}', '{{participant_attribute}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND lang = "'.Yii::app()->session['adminlang'].'" AND participant_id = "'.$participant_id.'"')->queryAll();
-        }
-        else {
-            return Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute}}')->order('{{participant_attribute}}.attribute_id','desc')->join('{{participant_attribute_names_lang}}','{{participant_attribute}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->join('{{participant_attribute_names}}', '{{participant_attribute}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND lang = "'.Yii::app()->session['adminlang'].'"')->queryAll();
+            $findCriteria=new CDbCriteria();
+            $findCriteria->addCondition('participant_id = :participant_id');
+            $findCriteria->params = array(':participant_id'=>$participant_id);
+            $records=ParticipantAttributeNames::model()->with('participant_attribute_names_lang', 'participant_attribute')->findAll($findCriteria);
+            foreach($records as $row) { //Iterate through each attribute
+                $thisname="";
+                $thislang="";
+                foreach($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+                    if($thisname=="") {$thisname=$names->attribute_name; $thislang=$names->lang;} //Choose the first item by default
+                    if($names->lang == Yii::app()->session['adminlang']) {$thisname=$names->attribute_name; $thislang=$names->lang;} //Override the default with the admin language version if found
+                }
+                $output[]=array('participant_id'=>$row->participant_attribute->participant_id,
+                                'attribute_id'=>$row->attribute_id,
+                                'attribute_type'=>$row->attribute_type,
+                                'attribute_display'=>$row->visible,
+                                'attribute_name'=>$thisname,
+                                'value'=>$row->participant_attribute->value,
+                                'lang'=>$thislang);
+            }
+            return $output;
+
+        } else {
+            $findCriteria=new CDbCriteria();
+            $records=ParticipantAttributeNames::model()->with('participant_attribute_names_lang', 'participant_attribute')->findAll($findCriteria);
+            foreach($records as $row) { //Iterate through each attribute
+                $thisname="";
+                $thislang="";
+                foreach($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+                    if($thisname=="") {$thisname=$names->attribute_name; $thislang=$names->lang;} //Choose the first item by default
+                    if($names->lang == Yii::app()->session['adminlang']) {$thisname=$names->attribute_name; $thislang=$names->lang;} //Override the default with the admin language version if found
+                }
+                $output[]=array('participant_id'=>$row->participant_attribute->participant_id,
+                                'attribute_id'=>$row->attribute_id,
+                                'attribute_type'=>$row->attribute_type,
+                                'attribute_display'=>$row->visible,
+                                'attribute_name'=>$thisname,
+                                'value'=>$row->participant_attribute->value,
+                                'lang'=>$thislang);
+            }
+            return $output;
         }
     }
 
@@ -146,14 +203,37 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAttributes($count = false, $limit = -1, $offset = -1)
     {
-        $command = Yii::app()->db->createCommand()->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('lang = "'.Yii::app()->session['adminlang'].'"')->limit(intval($limit), intval($offset));
+        $findCriteria=new CDbCriteria();
+        $findCriteria->offset=$offset;
+        $findCriteria->limit=$limit;
+        $output=array();
+        $records = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
+        foreach($records as $row) { //Iterate through each attribute
+            $thisname="";
+            $thislang="";
+            foreach($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+                if($thisname=="") {$thisname=$names->attribute_name; $thislang=$names->lang;} //Choose the first item by default
+                if($names->lang == Yii::app()->session['adminlang']) {$thisname=$names->attribute_name; $thislang=$names->lang;} //Override the default with the admin language version if found
+            }
+            $output[]=array('attribute_id'=>$row->attribute_id,
+                            'attribute_type'=>$row->attribute_type,
+                            'attribute_display'=>$row->visible,
+                            'attribute_name'=>$thisname,
+                            'lang'=>$thislang);
+        }
+
+        /* $command = Yii::app()->db->createCommand()
+                                 ->from('{{participant_attribute_names}}')
+                                 ->leftjoin('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
+                                 ->where('lang = "'.Yii::app()->session['adminlang'].'"')
+                                 ->limit(intval($limit), intval($offset)); */
         if (empty($count))
         {
-            return $command->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->queryAll();
+            return $output;
         }
         else
         {
-            return array_shift($command->select('count(*)')->queryColumn());
+            return count($output);
         }
     }
 
@@ -170,13 +250,25 @@ class ParticipantAttributeNames extends CActiveRecord
     	{
     		$notin[] = $row;
     	}
-        $attrid = array('not in','{{participant_attribute_names}}.attribute_id', $notin);
-        return Yii::app()->db->createCommand()
-                         ->select('*')
-                         ->from('{{participant_attribute_names}}')
-                         ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
-                         ->where($attrid)
-                         ->queryAll();
+
+        $criteria = new CDbCriteria();
+        $criteria->addNotInCondition('t.attribute_id', $attributeid);
+        $records = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll($criteria);
+        foreach($records as $row) { //Iterate through each attribute
+            $thisname="";
+            $thislang="";
+            foreach($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+                if($thisname=="") {$thisname=$names->attribute_name; $thislang=$names->lang;} //Choose the first item by default
+                if($names->lang == Yii::app()->session['adminlang']) {$thisname=$names->attribute_name; $thislang=$names->lang;} //Override the default with the admin language version if found
+            }
+            $output[]=array('attribute_id'=>$row->attribute_id,
+                            'attribute_type'=>$row->attribute_type,
+                            'attribute_display'=>$row->visible,
+                            'attribute_name'=>$thisname,
+                            'lang'=>$thislang);
+        }
+        return $output;
+
     }
 
     function storeAttribute($data)
