@@ -69,6 +69,50 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }
 
+    public function regenquestioncodes($iSurveyID, $sStyle ='straight')
+    {
+        if (hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
+        {
+            $clang = $this->getController()->lang;
+
+            //Automatically renumbers the "question codes" so that they follow
+            //a methodical numbering method
+            $question_number=1;
+            $group_number=0;
+            $gseq=0;
+            $gselect="SELECT a.qid, a.gid\n"
+            ."FROM {{questions}} as a, {{groups}} g "
+            ."WHERE a.gid=g.gid AND a.sid={$iSurveyID} AND a.parent_qid=0 "
+            ."GROUP BY a.gid, a.qid, g.group_order, question_order "
+            ."ORDER BY g.group_order, question_order";
+            $gresult=dbExecuteAssoc($gselect) or safe_die ("Error: ".$connect->ErrorMsg());  // Checked
+            $grows = array(); //Create an empty array in case FetchRow does not return any rows
+            foreach ($gresult->readAll() as $grow) {$grows[] = $grow;} // Get table output into array
+            foreach($grows as $grow)
+            {
+                //Go through all the questions
+                if ($sStyle == 'bygroup' && (!isset($group_number) || $group_number != $grow['gid']))
+                { //If we're doing this by group, restart the numbering when the group number changes
+                    $question_number=1;
+                    $group_number = $grow['gid'];
+                    $gseq++;
+                }
+                $usql="UPDATE {{questions}} "
+                ."SET title='"
+                .(($sStyle == 'bygroup') ? ('G' . $gseq . '_') : '')."Q".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
+                ."WHERE qid=".$grow['qid'];
+                //$databaseoutput .= "[$sql]";
+                $uresult=dbExecuteAssoc($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked
+                $question_number++;
+                $group_number=$grow['gid'];
+            }
+            $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+        }
+        $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyID));
+    }
+
+
     /**
     * This function prepares the view for a new survey
     *
@@ -660,15 +704,15 @@ class SurveyAdmin extends Survey_Common_Action
     public function delete($iSurveyID, $delete = 'no')
     {
         $aData = $aViewUrls = array();
-        $aData['surveyid'] = $iSurveyId = (int) $iSurveyID;
+        $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
         $clang = $this->getController()->lang;
 
-        if (hasSurveyPermission($iSurveyId, 'survey', 'delete'))
+        if (hasSurveyPermission($iSurveyID, 'survey', 'delete'))
         {
             if ($delete == 'yes')
             {
                 $aData['issuperadmin'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == true);
-                $this->_deleteSurvey($iSurveyId);
+                $this->_deleteSurvey($iSurveyID);
                 Yii::app()->session['flashmessage'] = $clang->gT("Survey deleted.");
                 $this->getController()->redirect($this->getController()->createUrl("admin/index"));
             }
@@ -930,39 +974,39 @@ class SurveyAdmin extends Survey_Common_Action
     * Load ordering of question group screen.
     * @return
     */
-    public function organize($iSurveyId)
+    public function organize($iSurveyID)
     {
-        $iSurveyId = (int)$iSurveyId;
+        $iSurveyID = (int)$iSurveyID;
 
-        if (!empty($_POST['orgdata']) && hasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
+        if (!empty($_POST['orgdata']) && hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
-            $this->_reorderGroup($iSurveyId);
+            $this->_reorderGroup($iSurveyID);
         }
         else
         {
-            $this->_showReorderForm($iSurveyId);
+            $this->_showReorderForm($iSurveyID);
         }
     }
 
-    private function _showReorderForm($iSurveyId)
+    private function _showReorderForm($iSurveyID)
     {
         // Prepare data for the view
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
 
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
-        $aGrouplist = Groups::model()->getGroups($iSurveyId);
+        $aGrouplist = Groups::model()->getGroups($iSurveyID);
         $initializedReplacementFields = false;
 
         foreach ($aGrouplist as $iGID => $aGroup)
         {
-            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyId);
+            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyID);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
                 $initializedReplacementFields = true;
             }
 
-            $oQuestionData = Questions::model()->getQuestions($iSurveyId, $aGroup['gid'], $sBaseLanguage);
+            $oQuestionData = Questions::model()->getQuestions($iSurveyID, $aGroup['gid'], $sBaseLanguage);
 
             $qs = array();
             $junk = array();
@@ -982,7 +1026,7 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::FinishProcessingPage();
 
         $aData['aGroupsAndQuestions'] = $aGrouplist;
-        $aData['surveyid'] = $iSurveyId;
+        $aData['surveyid'] = $iSurveyID;
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'admin/organize.js');
@@ -990,7 +1034,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', 'organizeGroupsAndQuestions_view', $aData);
     }
 
-    private function _reorderGroup($iSurveyId)
+    private function _reorderGroup($iSurveyID)
     {
         $AOrgData = array();
         parse_str($_POST['orgdata'], $AOrgData);
@@ -1015,7 +1059,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("The new question group/question order was successfully saved.");
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyId));
+        $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyID));
     }
 
     /**
@@ -1302,43 +1346,43 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
-    function expire($iSurveyId)
+    function expire($iSurveyID)
     {
-        $iSurveyId = (int) $iSurveyId;
-        if (!hasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
+        $iSurveyID = (int) $iSurveyID;
+        if (!hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
         {
             die();
         }
         $clang = $this->getController()->lang;
         Yii::app()->session['flashmessage'] = $clang->gT("The survey was successfully expired by setting an expiration date in the survey settings.");
-        $this->_expireSurvey($iSurveyId);
+        $this->_expireSurvey($iSurveyID);
         $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
-        Survey::model()->updateByPk($iSurveyId,array('expires' => $dExpirationdate));
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyId));
+        Survey::model()->updateByPk($iSurveyID,array('expires' => $dExpirationdate));
+        $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyID));
     }
 
     /**
     * Expires a survey
     *
-    * @param mixed $iSurveyId The survey ID
+    * @param mixed $iSurveyID The survey ID
     * @return False if not successful
     */
-    private function _expireSurvey($iSurveyId)
+    private function _expireSurvey($iSurveyID)
     {
         $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
-        return Survey::model()->updateByPk($iSurveyId,array('expires' => $dExpirationdate));
+        return Survey::model()->updateByPk($iSurveyID,array('expires' => $dExpirationdate));
     }
 
-    function getUrlParamsJSON($iSurveyId)
+    function getUrlParamsJSON($iSurveyID)
     {
-        $iSurveyId = (int) $iSurveyId;
+        $iSurveyID = (int) $iSurveyID;
         Yii::app()->loadHelper('database');
         $oResult = dbExecuteAssoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
         left join {{questions}} q on q.qid=up.targetqid
         left join {{questions}} sq on q.qid=up.targetqid
-        where up.sid={$iSurveyId}");
+        where up.sid={$iSurveyID}");
         $i = 0;
 
         foreach ($oResult->readAll() as $oRow)
@@ -1369,12 +1413,12 @@ class SurveyAdmin extends Survey_Common_Action
     * This private function deletes a survey
     * Important: If you change this function also change the remotecontrol XMLRPC function
     *
-    * @param mixed $iSurveyId  The survey ID to delete
+    * @param mixed $iSurveyID  The survey ID to delete
     */
-    private function _deleteSurvey($iSurveyId)
+    private function _deleteSurvey($iSurveyID)
     {
-        Survey::model()->deleteSurvey($iSurveyId);
-        rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyId);
+        Survey::model()->deleteSurvey($iSurveyID);
+        rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID);
     }
 
     /**
@@ -1416,9 +1460,9 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * Saves the new survey after the creation screen is submitted
     *
-    * @param $iSurveyId  The survey id to be used for the new survey. If already taken a new random one will be used.
+    * @param $iSurveyID  The survey id to be used for the new survey. If already taken a new random one will be used.
     */
-    function insert($iSurveyId=null)
+    function insert($iSurveyID=null)
     {
         if (Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
         {
@@ -1507,9 +1551,9 @@ class SurveyAdmin extends Survey_Common_Action
             );
 
 
-            if (!is_null($iSurveyId))
+            if (!is_null($iSurveyID))
             {
-                $aInsertData['wishSID'] = $iSurveyId;
+                $aInsertData['wishSID'] = $iSurveyID;
             }
 
             $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
