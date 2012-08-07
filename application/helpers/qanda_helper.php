@@ -1071,6 +1071,9 @@ function do_date($ia)
 {
     global $thissurvey;
 
+    header_includes(Yii::app()->getConfig("generalscripts").'date.js', 'js');
+
+
     $clang=Yii::app()->lang;
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
