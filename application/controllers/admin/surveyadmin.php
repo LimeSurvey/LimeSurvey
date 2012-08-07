@@ -69,7 +69,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }
 
-    public function regenquestioncodes($iSurveyID, $sStyle ='straight')
+    public function regenquestioncodes($iSurveyID, $sSubAction )
     {
         if (hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
@@ -91,15 +91,14 @@ class SurveyAdmin extends Survey_Common_Action
             foreach($grows as $grow)
             {
                 //Go through all the questions
-                if ($sStyle == 'bygroup' && (!isset($group_number) || $group_number != $grow['gid']))
+                if ($sSubAction == 'bygroup' && (!isset($group_number) || $group_number != $grow['gid']))
                 { //If we're doing this by group, restart the numbering when the group number changes
                     $question_number=1;
                     $group_number = $grow['gid'];
                     $gseq++;
                 }
                 $usql="UPDATE {{questions}} "
-                ."SET title='"
-                .(($sStyle == 'bygroup') ? ('G' . $gseq . '_') : '')."Q".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
+                ."SET title='".(($sSubAction == 'bygroup') ? ('G' . $gseq . '_') : '')."Q".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
                 ."WHERE qid=".$grow['qid'];
                 //$databaseoutput .= "[$sql]";
                 $uresult=dbExecuteAssoc($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked

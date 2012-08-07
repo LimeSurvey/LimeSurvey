@@ -123,10 +123,10 @@
                                 <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php $clang->eT("Regenerate question codes");?></a>
                                 <ul>
                                 <li>
-                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/straight"); ?>">
+                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
                                 <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php $clang->eT("Straight");?></a></li>
                                 <li>
-                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/bygroup"); ?>">
+                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
                                 <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php $clang->eT("By question group");?></a></li>
                                 </ul>
                         </li>
