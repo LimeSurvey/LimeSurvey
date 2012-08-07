@@ -690,7 +690,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
                 $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '')
@@ -699,7 +699,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
                 $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
@@ -810,7 +810,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '')
@@ -819,7 +819,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
@@ -946,7 +946,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '')
@@ -955,7 +955,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 

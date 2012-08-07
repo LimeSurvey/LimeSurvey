@@ -628,7 +628,7 @@ class SurveyAdmin extends Survey_Common_Action
 
                 //Set Date
                 Yii::import('application.libraries.Date_Time_Converter', true);
-                $datetimeobj = new Date_Time_Converter(array($rows['datecreated'], "Y-m-d H:i:s"));
+                $datetimeobj = new Date_Time_Converter($rows['datecreated'], "Y-m-d H:i:s");
                 $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
 
                 //Set Owner
@@ -1228,19 +1228,16 @@ class SurveyAdmin extends Survey_Common_Action
         $startdate = '';
         if ($esrow['startdate'])
         {
-            $items = array($esrow["startdate"], "Y-m-d H:i:s"); // $dateformatdetails['phpdate']
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new date_time_converter($items); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+            $datetimeobj = new date_time_converter($esrow["startdate"],"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
             $startdate = $datetimeobj->convert("d.m.Y H:i"); //$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
 
         $expires = '';
         if ($esrow['expires'])
         {
-            $items = array($esrow['expires'], "Y-m-d H:i:s");
-
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new date_time_converter($items); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+            $datetimeobj = new date_time_converter($esrow['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
             $expires = $datetimeobj->convert("d.m.Y H:i");
         }
         $aData['clang'] = $clang;

@@ -371,9 +371,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['expiry']))
     {
         $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
-        $items = array($thissurvey['expiry'],"Y-m-d");
         Yii::import('application.libraries.Date_Time_Converter', true);
-        $datetimeobj = new Date_Time_Converter($items) ;
+        $datetimeobj = new Date_Time_Converter($thissurvey['expiry'],"Y-m-d") ;
         $_dateoutput=$datetimeobj->convert($dateformatdetails['phpdate']);
     }
     else
