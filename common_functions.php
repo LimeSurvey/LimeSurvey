@@ -484,7 +484,7 @@ function db_select_tables_like($table)
         case 'mssql_n' :
         case 'mssqlnative':
         case 'odbc_mssql' :
-            return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
+            return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table' ESCAPE '\'";
         case 'postgres' :
             $table=str_replace('\\','\\\\',$table);
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
