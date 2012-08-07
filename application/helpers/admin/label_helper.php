@@ -47,9 +47,15 @@ function updateset($lid)
             foreach ($oldcodesarray as $oldcode => $olddata)
                 $sqlvalues[]= array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
 
-    if (isset($sqlvalues))
-        foreach ($sqlvalues as $sqlvalue)
-            Label::model()->insert($sqlvalue);
+    if (isset($sqlvalues)) {
+        foreach ($sqlvalues as $sqlvalue) {
+            $label = new Label();
+            foreach ($sqlvalue as $name => $value) {
+                $label->setAttribute($name, $value);
+            }
+            $label->save();
+        }
+    }
 
     // If languages are removed, delete labels for these languages
     $criteria = new CDbCriteria;
