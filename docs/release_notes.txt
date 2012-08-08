@@ -78,6 +78,23 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120801) to 1.92+ (build 120808) August 8, 2012
+-Fixed issue #6066: File upload fails if single oder double quotes are used (Carsten Schmitz)
+-Fixed issue #6287: unable to export QueXML with Postgresql 9.1 Fixed issue #6297: QueXML Export broken Dev Removed condition checking for queXML export (Adam Zammit)
+-Fixed issue #6334: Don't have a valid session in file upload question (Carsten Schmitz)
+-Fixed issue #6387: Broken Add vs Replace Buttons on Quick Add for Labels (tpartner)
+-Fixed issue #6395: QuickAdd permits longer codes than 5 characters (Carsten Schmitz)
+#Updated translation: Albanian by emiljan
+#Updated translation: Czech by slansky
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Formal) by gifino
+#Updated translation: Norwegian (Bokmål) by reidarborgersen, dittaeva
+#Updated translation: Polish by elisa
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 1.92+ (build 120725) to 1.92+ (build 120801) August 1, 2012
 -Fixed issue #6066: File upload fails if single oder double quotes are used (Carsten Schmitz)
 -Fixed issue #6287: Unable to export QueXML with Postgresql 9.1 (Adam Zammit)
