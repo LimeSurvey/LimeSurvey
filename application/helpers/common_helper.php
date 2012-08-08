@@ -7325,8 +7325,8 @@ function getPrintableHeader()
     global $rooturl,$homeurl;
     $headelements = '
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
+    <script type="text/javascript" src="'.Yii::app()->getConfig('generalscripts').'jquery/jquery.js"></script>
+    <script type="text/javascript" src="'.Yii::app()->getConfig('adminscripts').'printablesurvey.js"></script>
     ';
     return $headelements;
 }

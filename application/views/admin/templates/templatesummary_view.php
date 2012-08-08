@@ -1,15 +1,15 @@
 <?php if (is_template_editable($templatename)==true)
     { ?>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
     <?php if ($sEditorFileType=='htmlmixed')
         {?>
-        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.js" ></script>
-        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
-        <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/css/css.js" ></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/xml/xml.js" ></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/css/css.js" ></script>
         <?php }
     ?>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/<?php echo $sEditorFileType; ?>/<?php echo $sEditorFileType; ?>.js" ></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/codemirror-ui.js" ></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/lib/CodeMirror-2.0/mode/<?php echo $sEditorFileType; ?>/<?php echo $sEditorFileType; ?>.js" ></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/js/codemirror-ui.js" ></script>
     <script type="text/javascript">
         var editorfiletype='<?php echo $sEditorFileType; ?>';
     </script>
@@ -44,7 +44,7 @@
                 } ?>
             </textarea>
             <script type="text/javascript">
-                var codemirropath = '<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/';
+                var codemirropath = '<?php echo Yii::app()->getConfig('adminscripts'); ?>codemirror_ui/js/';
             </script>
             <p>
                 <?php if (is_writable($templates[$templatename])) { ?>

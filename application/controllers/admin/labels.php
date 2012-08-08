@@ -235,8 +235,8 @@ class labels extends Survey_Common_Action
         $aData = array();
 
         // Includes some javascript files
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/labels.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/updateset.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'labels.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'updateset.js');
 
         // Checks if user have the sufficient rights to manage the labels
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
@@ -361,7 +361,7 @@ class labels extends Survey_Common_Action
      */
     public function exportmulti()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/labels.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'labels.js');
         $this->_renderWrappedTemplate('labels', 'exportmulti_view');
     }
 

@@ -256,11 +256,11 @@ class question extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.dd.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/admin/answers.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.blockUI.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.selectboxes.min.js');
-        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'answers.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -1249,8 +1249,8 @@ EOD;
      */
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
-        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
