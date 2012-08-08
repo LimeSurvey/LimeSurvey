@@ -78,6 +78,19 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120801) to 1.92+ (build 120808) August 8, 2012
+-Fixed issue #6424: Lastpage field not being added in MSSQL when upgrading from 1.85 or older (Carsten Schmitz)
+-Fixed issue #6439: Question type Array (numbers) does not work with numbers >10 as labels (Thomas White)
+-Release 1.92+ Build 120808 (Carsten Schmitz)
+#Updated translation: Czech by slansky
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Malay by ayahanda
+#Updated translation: Polish by elisa
+#Updated translation: Turkish by kayazeren
+
+
+
 Changes from 1.92+ (build 120725) to 1.92+ (build 120801) August 1, 2012
 -Fixed issue #6066: File upload fails if single oder double quotes are used (Carsten Schmitz)
 -Fixed issue #6287: Unable to export QueXML with Postgresql 9.1 (Adam Zammit)
