@@ -5317,7 +5317,7 @@
                                 break;
                             case ':': //ARRAY (Multi Flexi) 1 to 10
                             case ';': //ARRAY (Multi Flexi) Text
-                                if (preg_match('/^' . $sq['rowdivid'] . '/', $sgqa))
+                                if (preg_match('/^' . $sq['rowdivid'] . '_/', $sgqa))
                                 {
                                     $foundSQrelevance=true;
                                     if (isset($LEM->ParseResultCache[$sq['eqn']]))
