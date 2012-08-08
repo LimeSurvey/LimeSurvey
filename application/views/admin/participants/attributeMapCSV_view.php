@@ -76,7 +76,7 @@
         <input type="button" name="attmap" id="attmap" value="<?php $clang->eT("Continue"); ?>" />
     </p>
     <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
-        <img src="<?php echo Yii::app()->getConfig('imageurl') . '/ajax-loader.gif'; ?>" alt="<?php $clang->eT('Loading...'); ?>" title="<?php $clang->eT('Loading...'); ?>" />
+        <img src="<?php echo Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif'; ?>" alt="<?php $clang->eT('Loading...'); ?>" title="<?php $clang->eT('Loading...'); ?>" />
     </div>
 </body>
 </html>
