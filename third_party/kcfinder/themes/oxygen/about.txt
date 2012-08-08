@@ -1,0 +1,11 @@
+This folder contains files for designing Oxygen visual theme for KCFinder
+Icons and color schemes are taken from default KDE4 visual theme
+http://www.kde.org
+
+Theme Details:
+
+Project:  KCFinder - http://kcfinder.sunhater.com
+Version:  2.51
+Author:   Pavel Tzonkov <pavelc@users.sourceforge.net>
+Licenses: GPLv2 - http://www.opensource.org/licenses/gpl-2.0.php
+          LGPLv2 - http://www.opensource.org/licenses/lgpl-2.1.php
