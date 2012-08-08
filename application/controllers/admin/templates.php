@@ -71,7 +71,7 @@ class templates extends Survey_Common_Action
     {
         $clang = $this->getController()->lang;
 
-//        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/templates.js');
+//        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'templates.js');
 
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');

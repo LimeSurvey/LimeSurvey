@@ -263,8 +263,8 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
         // Javascript
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "admin/tokens.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "admin/tokentocpdb.js");
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokens.js");
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokentocpdb.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.multiselect.min.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
@@ -1798,7 +1798,7 @@ class tokens extends Survey_Common_Action
             die('access denied');
         }
 
-        $this->getController()->_js_admin_includes('scripts/tokens.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'tokens.js');
 
         $aEncodings = array(
         "armscii8" => $clang->gT("ARMSCII-8 Armenian")

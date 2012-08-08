@@ -51,7 +51,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.coookie.js");
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . "/scripts/admin/listsurvey.js");
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
@@ -757,7 +757,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts').'surveysettings.js');
 
         if (hasSurveyPermission($iSurveyID, 'surveylocale', 'read'))
         {
@@ -1028,7 +1028,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID;
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'admin/organize.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'organize.js');
 
         $this->_renderWrappedTemplate('survey', 'organizeGroupsAndQuestions_view', $aData);
     }
@@ -1428,10 +1428,11 @@ class SurveyAdmin extends Survey_Common_Action
         if (empty($files))
         {
             $generalscripts_path = Yii::app()->getConfig('generalscripts');
+	    $adminscripts_path = Yii::app()->getConfig('adminscripts');
             $styleurl = Yii::app()->getConfig('styleurl');
 
             $js_files = array(
-            $generalscripts_path . 'admin/surveysettings.js',
+            $adminscripts_path . 'surveysettings.js',
             $generalscripts_path . 'jquery/jqGrid/js/i18n/grid.locale-en.js',
             $generalscripts_path . 'jquery/jqGrid/js/jquery.jqGrid.min.js',
             $generalscripts_path . 'jquery/jquery.json.min.js',
