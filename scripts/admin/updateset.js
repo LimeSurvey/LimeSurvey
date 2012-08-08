@@ -167,7 +167,7 @@ function add_label(event)
         {
             next_code='L001';
         }
-        while ($('.answertable').find('input[value="'+next_code+'"]').length>0)
+        while ($('.answertable').find('input[value="'+next_code+'"]').length>0 && next_code!=$(this).closest('tr').find('.codeval').val())
         {
             next_code=getNextCode(next_code);
         }
