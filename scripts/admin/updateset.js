@@ -157,19 +157,25 @@ function sort_complete(event, ui){
 
 function add_label(event)
 {
-    if ($(this).closest('tr').find('.codeval').size()>0)
+    if(event!=undefined)
     {
-        next_code=getNextCode($(this).closest('tr').find('.codeval').val());
+        if ($(this).closest('tr').find('.codeval').size()>0)
+        {
+            next_code=getNextCode($(this).closest('tr').find('.codeval').val());
+        }
+        else
+        {
+            next_code='L001';
+        }
+        while ($('.answertable').find('input[value="'+next_code+'"]').length>0)
+        {
+            next_code=getNextCode(next_code);
+        }
     }
     else
-        {
+    {
         next_code='L001';
     }
-    while ($('.answertable').find('input[value="'+next_code+'"]').length>0 && next_code!=$(this).closest('tr').find('.codeval').val())
-    {
-        next_code=getNextCode(next_code);
-    }
-
 
     var html = createNewLabelTR(true,true);
 
