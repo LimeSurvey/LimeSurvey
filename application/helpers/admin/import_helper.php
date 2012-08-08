@@ -674,7 +674,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
         $gres = Yii::app()->db->createCommand($gquery)->query();
         foreach ($gres->readAll() as $grow)
         {
-            fixSortOrderQuestions($grow['gid'], $iNewSID);
+            Questions::model()->updateQuestionOrder($grow['gid'], $iNewSID);
         }
     }
 
@@ -3123,7 +3123,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $gres = Yii::app()->db->createCommand($gquery)->query();
     foreach ($gres->readAll() as $grow)
     {
-        fixSortOrderQuestions($grow['gid'], $iNewSID);
+        Questions::model()->updateQuestionOrder($grow['gid'], $iNewSID);
     }
 
     //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents

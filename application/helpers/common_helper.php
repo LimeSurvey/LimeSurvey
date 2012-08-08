@@ -1585,10 +1585,11 @@ function fixSortOrderAnswers($qid,$surveyid=null) //Function rewrites the sortor
 
 /**
 * This function rewrites the sortorder for questions inside the named group
-*
+* REMOVED the 2012-08-08 : replaced by Questions::model()->updateQuestionOrder 
 * @param integer $groupid the group id
 * @param integer $surveyid the survey id
 */
+/**
 function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sortorder for questions
 {
     $gid = sanitize_int($groupid);
@@ -1604,7 +1605,7 @@ function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sort
         $p++;
     }
 }
-
+*/
 
 function shiftOrderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
 {

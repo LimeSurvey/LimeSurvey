@@ -373,18 +373,16 @@ class database extends Survey_Common_Action
             {
                 if (!Yii::app()->request->getPost('lid') || Yii::app()->request->getPost('lid') == '') {$_POST['lid']="0";}
                 if (!Yii::app()->request->getPost('lid1') || Yii::app()->request->getPost('lid1') == '') {$_POST['lid1']="0";}
-                if (Yii::app()->request->getPost('questionposition'))
+                if (Yii::app()->request->getPost('questionposition',"")!="")
                 {
-                    $question_order=(sanitize_int(Yii::app()->request->getPost('questionposition')));
+                    $question_order= intval(Yii::app()->request->getPost('questionposition'));
                     //Need to renumber all questions on or after this
                     $cdquery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=:gid AND question_order >= :order";
-
                     $cdresult=Yii::app()->db->createCommand($cdquery)->bindValues(array(':gid'=>$gid, ':order'=>$question_order))->query();
                 } else {
                     $question_order=(getMaxQuestionOrder($gid,$surveyid));
                     $question_order++;
                 }
-
                 $_POST['title'] = html_entity_decode(Yii::app()->request->getPost('title'), ENT_QUOTES, "UTF-8");
                 $_POST['question_'.$baselang] = html_entity_decode(Yii::app()->request->getPost('question_'.$baselang), ENT_QUOTES, "UTF-8");
                 $_POST['help_'.$baselang] = html_entity_decode(Yii::app()->request->getPost('help_'.$baselang), ENT_QUOTES, "UTF-8");
@@ -404,7 +402,6 @@ class database extends Survey_Common_Action
                     $_POST['help_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$baselang));
                 }
 
-                $data = array();
                 $data = array(
                 'sid' => $surveyid,
                 'gid' => $gid,
@@ -419,18 +416,9 @@ class database extends Survey_Common_Action
                 'question_order' => $question_order,
                 'language' => $baselang
                 );
-
-                $question = new Questions;
-                foreach ($data as $k => $v)
-                    $question->$k = $v;
-                $result = $question->save();
-
-                // Checked
-                // Get the last inserted questionid for other languages
-                $qid=$question->qid;
-
+                 $qid=Questions::model()->insertRecords($data);
                 // Add other languages
-                if ($result)
+                if ($qid)
                 {
                     $addlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
                     foreach ($addlangs as $alang)
@@ -451,13 +439,10 @@ class database extends Survey_Common_Action
                             'question_order' => $question_order,
                             'language' => $alang
                             );
-                            $ques = new Questions;
-                            foreach ($data as $k => $v)
-                                $ques->$k = $v;
-                            $result2 = $ques->save();
+                            $langqid=Questions::model()->insertRecords($data);
 
                             // Checked */
-                            if (!$result2)
+                            if (!$langqid)
                             {
                                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".sprintf($clang->gT("Question in language %s could not be created.","js"),$alang)."\\n\")\n //-->\n</script>\n";
                             }
@@ -466,7 +451,7 @@ class database extends Survey_Common_Action
                 }
 
 
-                if (!$result)
+                if (!$qid)
                 {
                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n\")\n //-->\n</script>\n";
 
@@ -538,8 +523,7 @@ class database extends Survey_Common_Action
                             }
                         }
                     }
-
-                    fixSortOrderQuestions($gid, $surveyid);
+                    Questions::model()->updateQuestionOrder($gid, $surveyid);
                     Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");
 
                 }
@@ -781,8 +765,8 @@ class database extends Survey_Common_Action
                     {
                         Questions::model()->updateAll(array('gid'=>$gid), 'qid=:qid and parent_qid>0', array(':qid'=>$qid));
                         // if the group has changed then fix the sortorder of old and new group
-                        fixSortOrderQuestions($oldgid, $surveyid);
-                        fixSortOrderQuestions($gid, $surveyid);
+                        Questions::model()->updateQuestionOrder($oldgid, $surveyid);
+                        Questions::model()->updateQuestionOrder($gid, $surveyid);
                         // If some questions have conditions set on this question's answers
                         // then change the cfieldname accordingly
                         fixMovedQuestionConditions($qid, $oldgid, $gid);

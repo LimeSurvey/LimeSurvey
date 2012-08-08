@@ -885,7 +885,7 @@ class question extends Survey_Common_Action
                 Defaultvalues::model()->deleteAllByAttributes(array('qid' => $qid));
                 Quota_members::model()->deleteAllByAttributes(array('qid' => $qid));
 
-                Questions::updateSortOrder($gid, $surveyid);
+                Questions::updateQuestionOrder($gid, $surveyid);
 
                 $qid = "";
                 $postqid = "";
