@@ -157,15 +157,15 @@ function sort_complete(event, ui){
 
 function add_label(event)
 {
-    if ($('.answertable').find('.codeval').size()>0)
-        {
-        next_code=getNextCode($('.answertable').find('.codeval').val());
+    if ($(this).closest('tr').find('.codeval').size()>0)
+    {
+        next_code=getNextCode($(this).closest('tr').find('.codeval').val());
     }
     else
         {
         next_code='L001';
     }
-    while ($('.answertable').find('input[value="'+next_code+'"]').length>0)
+    while ($('.answertable').find('input[value="'+next_code+'"]').length>0 && next_code!=$(this).closest('tr').find('.codeval').val())
     {
         next_code=getNextCode(next_code);
     }
@@ -308,7 +308,7 @@ function getNextCode(sourcecode)
         }
     }
     if (foundnumber==-1)
-        {
+    {
         return(sourcecode);
     }
     else
