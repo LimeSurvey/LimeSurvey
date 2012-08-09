@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-01 22:00:37+00:00\n"
+"POT-Creation-Date: 2012-08-09 22:00:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -197,7 +197,7 @@ msgstr ""
 #: admin/tokens.php:399 admin/tokens.php:413 admin/tokens.php:479
 #: admin/tokens.php:1002 admin/tokens.php:2149 admin/tokens.php:2740
 #: admin/tokens.php:2790 admin/tokens.php:3227 admin/tokens.php:3233
-#: admin/usercontrol.php:846 admin/vvimport.php:121 common_functions.php:5509
+#: admin/usercontrol.php:846 admin/vvimport.php:121 common_functions.php:5510
 #: index.php:567
 msgid "Error"
 msgstr ""
@@ -687,7 +687,7 @@ msgstr ""
 #: admin/exportresults.php:434 admin/exportresults.php:435
 #: admin/exportresults.php:757 admin/tokens.php:1025 admin/tokens.php:1028
 #: admin/tokens.php:1029 admin/tokens.php:2335 admin/tokens.php:2471
-#: common_functions.php:6241 replacements.php:515
+#: common_functions.php:6242 replacements.php:515
 msgid "First name"
 msgstr ""
 
@@ -695,7 +695,7 @@ msgstr ""
 #: admin/exportresults.php:429 admin/exportresults.php:430
 #: admin/exportresults.php:760 admin/tokens.php:1035 admin/tokens.php:1038
 #: admin/tokens.php:1039 admin/tokens.php:2339 admin/tokens.php:2473
-#: common_functions.php:6242 replacements.php:522
+#: common_functions.php:6243 replacements.php:522
 msgid "Last name"
 msgstr ""
 
@@ -1171,8 +1171,8 @@ msgstr ""
 #: admin/statistics_function.php:2567 admin/statistics_function.php:2581
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
-#: common_functions.php:1914 common_functions.php:5495
-#: common_functions.php:5500 qanda.php:926 qanda.php:1455 qanda.php:1732
+#: common_functions.php:1914 common_functions.php:5496
+#: common_functions.php:5501 qanda.php:926 qanda.php:1455 qanda.php:1732
 #: qanda.php:1836 qanda.php:1891 qanda.php:3785 qanda.php:3830 qanda.php:3919
 #: qanda.php:3983 qanda.php:4072 qanda.php:4118 qanda.php:4196 qanda.php:4262
 #: qanda.php:4344 qanda.php:4422 qanda.php:4523 qanda.php:4545 qanda.php:4613
@@ -1827,9 +1827,9 @@ msgstr ""
 #: admin/dataentry.php:1932 admin/dataentry.php:1944 admin/labels.php:78
 #: admin/translate_functions.php:148 common_functions.php:646
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
-#: common_functions.php:1411 common_functions.php:4830
-#: common_functions.php:4879 common_functions.php:4915
-#: common_functions.php:4951 qanda.php:1253 qanda.php:1431 qanda.php:6155
+#: common_functions.php:1411 common_functions.php:4831
+#: common_functions.php:4880 common_functions.php:4916
+#: common_functions.php:4952 qanda.php:1253 qanda.php:1431 qanda.php:6155
 #: qanda.php:6209
 msgid "Please choose..."
 msgstr ""
@@ -2967,7 +2967,7 @@ msgstr ""
 
 #: admin/exportresults.php:234 admin/exportresults.php:439
 #: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1045
-#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6243
+#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6244
 #: replacements.php:529
 msgid "Email address"
 msgstr ""
@@ -3052,7 +3052,7 @@ msgstr ""
 #: admin/fck_LimeReplacementFields.php:149
 #: admin/fck_LimeReplacementFields.php:165
 #: admin/fck_LimeReplacementFields.php:222 admin/tokens.php:1125
-#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6249
+#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6250
 msgid "Uses left"
 msgstr ""
 
@@ -3781,8 +3781,8 @@ msgstr ""
 #: admin/html.php:611 admin/tokens.php:823 admin/tokens.php:857
 #: common_functions.php:651 common_functions.php:654 common_functions.php:1312
 #: common_functions.php:1337 common_functions.php:1412
-#: common_functions.php:3896 common_functions.php:4880
-#: common_functions.php:4916
+#: common_functions.php:3896 common_functions.php:4881
+#: common_functions.php:4917
 msgid "None"
 msgstr ""
 
@@ -10506,55 +10506,55 @@ msgstr ""
 msgid "Value range allows missing"
 msgstr ""
 
-#: common_functions.php:4328
+#: common_functions.php:4329
 msgid "Version"
 msgstr ""
 
-#: common_functions.php:4337
+#: common_functions.php:4338
 msgid "Online Manual"
 msgstr ""
 
-#: common_functions.php:4340
+#: common_functions.php:4341
 msgid "Support this project - Donate to "
 msgstr ""
 
-#: common_functions.php:4343
+#: common_functions.php:4344
 msgid "Visit our website!"
 msgstr ""
 
-#: common_functions.php:4458
+#: common_functions.php:4459
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
-#: common_functions.php:4586
+#: common_functions.php:4587
 msgid "SMTP debug output:"
 msgstr ""
 
-#: common_functions.php:4730
+#: common_functions.php:4731
 msgid "SQL command failed: %s Reason: %s"
 msgstr ""
 
-#: common_functions.php:6244
+#: common_functions.php:6245
 msgid "Token code"
 msgstr ""
 
-#: common_functions.php:6245
+#: common_functions.php:6246
 msgid "Language code"
 msgstr ""
 
-#: common_functions.php:6246
+#: common_functions.php:6247
 msgid "Invitation sent date"
 msgstr ""
 
-#: common_functions.php:6247
+#: common_functions.php:6248
 msgid "Last Reminder sent date"
 msgstr ""
 
-#: common_functions.php:6248
+#: common_functions.php:6249
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: common_functions.php:6270
+#: common_functions.php:6271
 msgid "Attribute %s"
 msgstr ""
 
