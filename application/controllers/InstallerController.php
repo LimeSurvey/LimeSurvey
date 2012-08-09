@@ -919,7 +919,6 @@ class InstallerController extends CController {
         //write config.php if database exists and has been populated.
         if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist'])
         {
-            $this->loadHelper('file');
 
             extract(self::_getDatabaseConfig());
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
@@ -1031,7 +1030,7 @@ class InstallerController extends CController {
             . "/* Location: ./application/config/config.php */";
 
             if (is_writable(APPPATH . 'config')) {
-                write_file(APPPATH . 'config/config.php', $dbdata);
+                file_put_contents(APPPATH . 'config/config.php', $dbdata);
                 Yii::app()->session['configFileWritten'] = true;
             } else {
                 header('refresh:5;url='.$this->createUrl("installer/welcome"));
