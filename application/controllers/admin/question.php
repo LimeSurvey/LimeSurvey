@@ -3,37 +3,37 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
- /**
- * question
- *
- * @package LimeSurvey
- * @author
- * @copyright 2011
- * @version $Id$
- * @access public
- */
+/**
+* question
+*
+* @package LimeSurvey
+* @author
+* @copyright 2011
+* @version $Id$
+* @access public
+*/
 class question extends Survey_Common_Action
 {
 
     /**
-     * Function responsible to import a question.
-     *
-     * @access public
-     * @return void
-     */
+    * Function responsible to import a question.
+    *
+    * @access public
+    * @return void
+    */
     public function import()
     {
         $action = returnGlobal('action');
@@ -98,14 +98,14 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * Load edit default values of a question screen
-     *
-     * @access public
-     * @param int $surveyid
-     * @param int $gid
-     * @param int $qid
-     * @return void
-     */
+    * Load edit default values of a question screen
+    *
+    * @access public
+    * @param int $surveyid
+    * @param int $gid
+    * @param int $qid
+    * @return void
+    */
     public function editdefaultvalues($surveyid, $gid, $qid)
     {
         $surveyid = sanitize_int($surveyid);
@@ -121,9 +121,9 @@ class question extends Survey_Common_Action
         array_unshift($questlangs, $baselang);
 
         $questionrow = Questions::model()->findByAttributes(array(
-            'qid' => $qid,
-            'gid' => $gid,
-            'language' => $baselang
+        'qid' => $qid,
+        'gid' => $gid,
+        'language' => $baselang
         ))->attributes;
         $qtproperties = getQuestionTypeList('', 'array');
 
@@ -141,10 +141,10 @@ class question extends Survey_Common_Action
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
                     $defaultvalue = Defaultvalues::model()->findByAttributes(array(
-                        'specialtype' => '',
-                        'qid' => $qid,
-                        'scale_id' => $scale_id,
-                        'language' => $language
+                    'specialtype' => '',
+                    'qid' => $qid,
+                    'scale_id' => $scale_id,
+                    'language' => $language
                     ));
 
                     $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
@@ -152,18 +152,18 @@ class question extends Survey_Common_Action
                     $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
                     $answerresult = Answers::model()->findAllByAttributes(array(
-                        'qid' => $qid,
-                        'language' => $language
+                    'qid' => $qid,
+                    'language' => $language
                     ), array('order' => 'sortorder'));
                     $langopts[$language][$questionrow['type']][$scale_id]['answers'] = $answerresult;
 
                     if ($questionrow['other'] == 'Y')
                     {
                         $defaultvalue = Defaultvalues::model()->findByAttributes(array(
-                            'specialtype' => 'other',
-                            'qid' => $qid,
-                            'scale_id' => $scale_id,
-                            'language' => $language
+                        'specialtype' => 'other',
+                        'qid' => $qid,
+                        'scale_id' => $scale_id,
+                        'language' => $language
                         ));
 
                         $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
@@ -174,18 +174,18 @@ class question extends Survey_Common_Action
 
             // If there are subquestions and no answerscales
             if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
-                    $qtproperties[$questionrow['type']]['subquestions'] > 0)
+            $qtproperties[$questionrow['type']]['subquestions'] > 0)
             {
                 for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['subquestions']; $scale_id++)
                 {
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
                     $sqresult = Questions::model()->findAllByAttributes(array(
-                        'sid' => $surveyid,
-                        'gid' => $gid,
-                        'parent_qid' => $qid,
-                        'language' => $language,
-                        'scale_id' => 0
+                    'sid' => $surveyid,
+                    'gid' => $gid,
+                    'parent_qid' => $qid,
+                    'language' => $language,
+                    'scale_id' => 0
                     ), array('order' => 'question_order'));
 
                     $langopts[$language][$questionrow['type']][$scale_id]['sqresult'] = array();
@@ -197,10 +197,10 @@ class question extends Survey_Common_Action
                     foreach ($sqresult as $aSubquestion)
                     {
                         $defaultvalue = Defaultvalues::model()->findByAttributes(array(
-                            'specialtype' => '',
-                            'qid' => $qid,
-                            'scale_id' => $scale_id,
-                            'language' => $language
+                        'specialtype' => '',
+                        'qid' => $qid,
+                        'scale_id' => $scale_id,
+                        'language' => $language
                         ));
                         $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
 
@@ -227,14 +227,14 @@ class question extends Survey_Common_Action
         }
 
         $aData = array(
-            'qid' => $qid,
-            'surveyid' => $surveyid,
-            'langopts' => $langopts,
-            'questionrow' => $questionrow,
-            'questlangs' => $questlangs,
-            'gid' => $gid,
-            'qtproperties' => $qtproperties,
-            'baselang' => $baselang,
+        'qid' => $qid,
+        'surveyid' => $surveyid,
+        'langopts' => $langopts,
+        'questionrow' => $questionrow,
+        'questlangs' => $questlangs,
+        'gid' => $gid,
+        'qtproperties' => $qtproperties,
+        'baselang' => $baselang,
         );
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
         $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
@@ -243,24 +243,24 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * Load complete editing of answer options screen.
-     *
-     * @access public
-     * @param int $surveyid
-     * @param int $gid
-     * @param int $qid
-     * @return
-     */
+    * Load complete editing of answer options screen.
+    *
+    * @access public
+    * @param int $surveyid
+    * @param int $gid
+    * @param int $qid
+    * @return
+    */
     public function answeroptions($surveyid, $gid, $qid)
     {
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.dd.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/admin/answers.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.blockUI.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.selectboxes.min.js');
-        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'answers.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -278,14 +278,14 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * Load editing of answer options specific screen only.
-     *
-     * @access public
-     * @param int $surveyid
-     * @param int $gid
-     * @param int $qid
-     * @return void
-     */
+    * Load editing of answer options specific screen only.
+    *
+    * @access public
+    * @param int $surveyid
+    * @param int $gid
+    * @param int $qid
+    * @return void
+    */
     public function _editansweroptions($surveyid, $gid, $qid)
     {
         Yii::app()->loadHelper('database');
@@ -313,15 +313,15 @@ class question extends Survey_Common_Action
             $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
             $qresult = Answers::model()->count($ans);
 
-            if ((int)$qresult=0)
-                Answers::model()->insert(array(
-                    'qid' => $qid,
-                    'code' => 'A1',
-                    'answer' => $clang->gT('Some example answer option'),
-                    'language' => $baselang,
-                    'sortorder' => 0,
-                    'scale_id' => $i,
-                ));
+            if ((int)$qresult==0)
+                $oAnswer= new Answers;
+            $oAnswer->qid = $qid;
+            $oAnswer->code = 'A1';
+            $oAnswer->answer = $clang->gT('Some example answer option');
+            $oAnswer->language = $baselang;
+            $oAnswer->sortorder = 0;
+            $oAnswer->scale_id = $i;
+            $oAnswer->save();
         }
 
 
@@ -337,19 +337,20 @@ class question extends Survey_Common_Action
                 // Means that no record for the language exists in the answers table
                 if (empty($iAnswerCount))
                     foreach (Answers::model()->findAllByAttributes(array(
-                                'qid' => $qid,
-                                'scale_id' => $i,
-                                'language' => $baselang
-                            )) as $answer)
-                        Answers::model()->insert(array(
-                            'qid' => $answer->qid,
-                            'code' => $answer->code,
-                            'answer' => $answer->answer,
-                            'language' => $language,
-                            'sortorder' => $answer->sortorder,
-                            'scale_id' => $i,
-                            'assessment_value' => $answer->assessment_value,
-                        ));
+                    'qid' => $qid,
+                    'scale_id' => $i,
+                    'language' => $baselang
+                    )) as $answer)
+
+                        $oAnswer= new Answers;
+                $oAnswer->qid = $answer->qid;
+                $oAnswer->code = $answer->code;
+                $oAnswer->answer = $answer->answer;
+                $oAnswer->language = $language;
+                $oAnswer->sortorder = $answer->sortorder;
+                $oAnswer->scale_id = $i;
+                $oAnswer->assessment_value = $answer->assessment_value;
+                $oAnswer->save();
             }
         }
 
@@ -375,8 +376,8 @@ class question extends Survey_Common_Action
         Yii::app()->loadHelper('admin/htmleditor');
 
         $row = Answers::model()->findByAttributes(array(
-            'qid' => $qid,
-            'language' => Survey::model()->findByPk($surveyid)->language
+        'qid' => $qid,
+        'language' => Survey::model()->findByPk($surveyid)->language
         ), array('order' => 'sortorder desc'));
 
         if (!is_null($row))
@@ -407,14 +408,14 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * Load complete subquestions screen.
-     *
-     * @access public
-     * @param int $surveyid
-     * @param int $gid
-     * @param int $qid
-     * @return void
-     */
+    * Load complete subquestions screen.
+    *
+    * @access public
+    * @param int $surveyid
+    * @param int $gid
+    * @param int $qid
+    * @return void
+    */
     public function subquestions($surveyid, $gid, $qid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
@@ -437,14 +438,14 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * Load only subquestion specific screen only.
-     *
-     * @access public
-     * @param int $surveyid
-     * @param int $gid
-     * @param int $qid
-     * @return void
-     */
+    * Load only subquestion specific screen only.
+    *
+    * @access public
+    * @param int $surveyid
+    * @param int $gid
+    * @param int $qid
+    * @return void
+    */
     public function _editsubquestion($surveyid, $gid, $qid)
     {
         $surveyid = sanitize_int($surveyid);
@@ -466,30 +467,30 @@ class question extends Survey_Common_Action
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
         {
             $subquestiondata = Questions::model()->findAllByAttributes(array(
-                'parent_qid' => $qid,
-                'language' => $baselang,
-                'scale_id' => $iScale
+            'parent_qid' => $qid,
+            'language' => $baselang,
+            'scale_id' => $iScale
             ));
 
             if (empty($subquestiondata))
             {
                 //Questions::model()->insert();
                 $data = array(
-                    'sid' => $surveyid,
-                    'gid' => $gid,
-                    'parent_qid' => $qid,
-                    'title' => 'SQ001',
-                    'question' => $clang->gT('Some example subquestion'),
-                    'question_order' => 1,
-                    'language' => $baselang,
-                    'scale_id' => $iScale,
+                'sid' => $surveyid,
+                'gid' => $gid,
+                'parent_qid' => $qid,
+                'title' => 'SQ001',
+                'question' => $clang->gT('Some example subquestion'),
+                'question_order' => 1,
+                'language' => $baselang,
+                'scale_id' => $iScale,
                 );
                 Questions::model()->insertRecords($data);
 
                 $subquestiondata = Questions::model()->findAllByAttributes(array(
-                    'parent_qid' => $qid,
-                    'language' => $baselang,
-                    'scale_id' => $iScale
+                'parent_qid' => $qid,
+                'language' => $baselang,
+                'scale_id' => $iScale
                 ));
             }
 
@@ -499,14 +500,14 @@ class question extends Survey_Common_Action
                 foreach ($subquestiondata as $row)
                 {
                     $qrow = Questions::model()->count('
-                        parent_qid = :qid AND
-                        language = :language AND
-                        qid = '.$row->qid.' AND
-                        scale_id = :iScale',
-                        array(
-                            ':qid' => $qid,
-                            ':language' => $language,
-                            ':iScale' => $iScale
+                    parent_qid = :qid AND
+                    language = :language AND
+                    qid = '.$row->qid.' AND
+                    scale_id = :iScale',
+                    array(
+                    ':qid' => $qid,
+                    ':language' => $language,
+                    ':iScale' => $iScale
                     ));
 
                     // Means that no record for the language exists in the questions table
@@ -527,15 +528,15 @@ class question extends Survey_Common_Action
                         $question->save();
                         /** //activerecord is not not new bugfix!
                         Questions::model()->insert(array(
-                            'qid' => $row->qid,
-                            'sid' => $surveyid,
-                            'gid' => $row->gid,
-                            'parent_qid' => $qid,
-                            'title' => $row->title,
-                            'question' => $row->question,
-                            'question_order' => $row->question_order,
-                            'language' => $language,
-                            'scale_id' => $iScale,
+                        'qid' => $row->qid,
+                        'sid' => $surveyid,
+                        'gid' => $row->gid,
+                        'parent_qid' => $qid,
+                        'title' => $row->title,
+                        'question' => $row->question,
+                        'question_order' => $row->question_order,
+                        'language' => $language,
+                        'scale_id' => $iScale,
                         ));
                         */
                         switchMSSQLIdentityInsert('questions', false);
@@ -561,9 +562,9 @@ class question extends Survey_Common_Action
         {
             // Check if any nulls exist. If they do, redo the sortorders
             $cacount = Questions::model()->count(array(
-                'parent_qid' => $qid,
-                'question_order' => null,
-                'language' => $baselang
+            'parent_qid' => $qid,
+            'question_order' => null,
+            'language' => $baselang
             ));
 
             if ($cacount)
@@ -574,8 +575,8 @@ class question extends Survey_Common_Action
 
         // Print Key Control JavaScript
         $result = Questions::model()->findAllBYAttributes(array(
-            'parent_qid' => $qid,
-            'language' => Survey::model()->findByPk($surveyid)->language
+        'parent_qid' => $qid,
+        'language' => Survey::model()->findByPk($surveyid)->language
         ), array('order' => 'question_order desc'));
 
         $aData['anscount'] = $anscount = count($result);
@@ -584,9 +585,9 @@ class question extends Survey_Common_Action
         $maxsortorder = $row['question_order'] + 1;
 
         /**
-         * The following line decides if the assessment input fields are visible or not
-         * for some question types the assessment values is set in the label set instead of the answers
-         */
+        * The following line decides if the assessment input fields are visible or not
+        * for some question types the assessment values is set in the label set instead of the answers
+        */
         $qtypes = getQuestionTypeList('', 'array');
         Yii::app()->loadHelper('surveytranslator');
 
@@ -625,15 +626,15 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * Load edit/new question screen depending on $action.
-     *
-     * @access public
-     * @param string $action
-     * @param int $surveyid
-     * @param int $gid
-     * @param int $qid
-     * @return void
-     */
+    * Load edit/new question screen depending on $action.
+    *
+    * @access public
+    * @param string $action
+    * @param int $surveyid
+    * @param int $gid
+    * @param int $qid
+    * @return void
+    */
     public function index($sa, $surveyid, $gid, $qid=null)
     {
         $action = $sa;
@@ -686,14 +687,14 @@ class question extends Survey_Common_Action
                     {
                         $esrow = $esrow->attributes;
                         $basesettings = array(
-                            'question_order' => $esrow['question_order'],
-                            'other' => $esrow['other'],
-                            'mandatory' => $esrow['mandatory'],
-                            'type' => $esrow['type'],
-                            'title' => $esrow['title'],
-                            'preg' => $esrow['preg'],
-                            'question' => $esrow['question'],
-                            'help' => $esrow['help']
+                        'question_order' => $esrow['question_order'],
+                        'other' => $esrow['other'],
+                        'mandatory' => $esrow['mandatory'],
+                        'type' => $esrow['type'],
+                        'title' => $esrow['title'],
+                        'preg' => $esrow['preg'],
+                        'question' => $esrow['question'],
+                        'help' => $esrow['help']
                         );
                     }
                 }
@@ -706,27 +707,27 @@ class question extends Survey_Common_Action
                     if ($value != 99)
                     {
                         Questions::model()->insert(array(
-                            'qid' => $qid,
-                            'sid' => $surveyid,
-                            'gid' => $gid,
-                            'type' => $basesettings['type'],
-                            'title' => $basesettings['title'],
-                            'question' => $basesettings['question'],
-                            'preg' => $basesettings['preg'],
-                            'help' => $basesettings['help'],
-                            'other' => $basesettings['other'],
-                            'mandatory' => $basesettings['mandatory'],
-                            'question_order' => $basesettings['question_order'],
-                            'language' => $key,
+                        'qid' => $qid,
+                        'sid' => $surveyid,
+                        'gid' => $gid,
+                        'type' => $basesettings['type'],
+                        'title' => $basesettings['title'],
+                        'question' => $basesettings['question'],
+                        'preg' => $basesettings['preg'],
+                        'help' => $basesettings['help'],
+                        'other' => $basesettings['other'],
+                        'mandatory' => $basesettings['mandatory'],
+                        'question_order' => $basesettings['question_order'],
+                        'language' => $key,
                         ));
                     }
                 }
 
                 $eqresult = Questions::model()->with('groups')->together()->findByAttributes(array(
-                    'sid' => $surveyid,
-                    'gid' => $gid,
-                    'qid' => $qid,
-                    'language' => $baselang
+                'sid' => $surveyid,
+                'gid' => $gid,
+                'qid' => $qid,
+                'language' => $baselang
                 ));
             }
             else
@@ -828,15 +829,15 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * Function responsible for deleting a question.
-     *
-     * @access public
-     * @param string $action
-     * @param int $surveyid
-     * @param int $gid
-     * @param int $qid
-     * @return void
-     */
+    * Function responsible for deleting a question.
+    *
+    * @access public
+    * @param string $action
+    * @param int $surveyid
+    * @param int $gid
+    * @param int $qid
+    * @return void
+    */
     public function delete($surveyid, $gid, $qid)
     {
         $clang = $this->getController()->lang;
@@ -884,7 +885,7 @@ class question extends Survey_Common_Action
                 Defaultvalues::model()->deleteAllByAttributes(array('qid' => $qid));
                 Quota_members::model()->deleteAllByAttributes(array('qid' => $qid));
 
-                Questions::updateSortOrder($gid, $surveyid);
+                Questions::updateQuestionOrder($gid, $surveyid);
 
                 $qid = "";
                 $postqid = "";
@@ -903,11 +904,11 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * This function prepares the data for the advanced question attributes view
-     *
-     * @access public
-     * @return void
-     */
+    * This function prepares the data for the advanced question attributes view
+    *
+    * @access public
+    * @return void
+    */
     public function ajaxquestionattributes()
     {
         $surveyid = (int) $_POST['sid'];
@@ -944,17 +945,17 @@ class question extends Survey_Common_Action
                 }
             }
         }
-
+        $aData['bIsActive'] = ($thissurvey['active']=='Y');
         $aData['attributedata'] = $aAttributesPrepared;
         $this->getController()->render('/admin/survey/Question/advanced_settings_view', $aData);
     }
 
     /**
-     * This function prepares the data for label set details
-     *
-     * @access public
-     * @return void
-     */
+    * This function prepares the data for label set details
+    *
+    * @access public
+    * @return void
+    */
     public function ajaxlabelsetdetails()
     {
         $lid=returnglobal('lid');
@@ -991,11 +992,11 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * This function prepares the data for labelset
-     *
-     * @access public
-     * @return void
-     */
+    * This function prepares the data for labelset
+    *
+    * @access public
+    * @return void
+    */
     public function ajaxlabelsetpicker()
     {
         $match=(int)returnglobal('match');
@@ -1013,14 +1014,14 @@ class question extends Survey_Common_Action
     }
 
     /**
-     * Load preview of a question screen.
-     *
-     * @access public
-     * @param int $surveyid
-     * @param int $qid
-     * @param string $lang
-     * @return void
-     */
+    * Load preview of a question screen.
+    *
+    * @access public
+    * @param int $surveyid
+    * @param int $qid
+    * @param string $lang
+    * @return void
+    */
     public function preview($surveyid, $qid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
@@ -1054,7 +1055,7 @@ class question extends Survey_Common_Action
             if (isset($field['defaultvalue']))
                 $_SESSION['survey_'.$surveyid][$field['fieldname']] = $field['defaultvalue'];
 
-        $clang = new limesurvey_lang($language);
+            $clang = new limesurvey_lang($language);
 
         $thissurvey = getSurveyInfo($surveyid);
 
@@ -1065,22 +1066,22 @@ class question extends Survey_Common_Action
         $qrows = Questions::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
 
         $ia = array(
-            0 => $qid,
-            1 => $surveyid . 'X' . $qrows['gid'] . 'X' . $qid,
-            2 => $qrows['title'],
-            3 => $qrows['question'],
-            4 => $qrows['type'],
-            5 => $qrows['gid'],
-            6 => $qrows['mandatory'],
-            7 => 'N',
-            8 => 'N'
+        0 => $qid,
+        1 => $surveyid . 'X' . $qrows['gid'] . 'X' . $qid,
+        2 => $qrows['title'],
+        3 => $qrows['question'],
+        4 => $qrows['type'],
+        5 => $qrows['gid'],
+        6 => $qrows['mandatory'],
+        7 => 'N',
+        8 => 'N'
         );
 
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['seperator'];
         $surveyOptions = array(
-            'radix'=>$radix,
-            );
+        'radix'=>$radix,
+        );
         LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
         $qseq = LimeExpressionManager::GetQuestionSeq($qid);
         $moveResult = LimeExpressionManager::JumpTo($qseq + 1, true, false, true);
@@ -1179,7 +1180,7 @@ EOD;
 
 
         $answer = $answers[0][1];
-//        $help = $answers[0][2];
+        //        $help = $answers[0][2];
 
         $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
         $help = $qinfo['info']['help'];
@@ -1232,7 +1233,7 @@ EOD;
             echo LimeExpressionManager::GetDebugTimingMessage();
         }
         if ($LEMdebugLevel >= 2) {
-             echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
+            echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
         }
 
         echo "</html>\n";
@@ -1241,16 +1242,16 @@ EOD;
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
+    * Renders template(s) wrapped in header and footer
+    *
+    * @param string $sAction Current action, the folder to fetch views from
+    * @param string|array $aViewUrls View url(s)
+    * @param array $aData Data to be passed on. Optional.
+    */
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
-        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

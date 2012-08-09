@@ -41,7 +41,7 @@
                     <tr>
                         <td style="width: 428px;">
                             <b><?php echo CHtml::activeLabelEx($model, 'dbname', array('label' => $clang->gT("Database name"))); ?></b><br />
-                            <div class="description-field"><?php $clang->eT("If the database not exists it will be created (necessary permission provided). If there are existing LimeSurvey tables these will be upgraded automatically after installation"); ?></div>
+                            <div class="description-field"><?php $clang->eT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."); ?></div>
                         </td>
                         <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model, 'dbname', array('required' => 'required')) ?></td>
                     </tr>

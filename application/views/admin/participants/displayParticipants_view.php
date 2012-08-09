@@ -40,6 +40,7 @@ $langnames = implode(";", $lname) . '"}}';
 $langNames[] = $lang . $langnames;
 /* Build the columnNames for the extra attributes */
 /* and, build the columnModel */
+$autowidth='true';
 if (isset($attributes) && count($attributes) > 0)
 {
     foreach ($attributes as $row)
@@ -48,6 +49,7 @@ if (isset($attributes) && count($attributes) > 0)
         $uidNames[] = '{ "name": "' . $row['attribute_name'] . '", "index":"' . $row['attribute_id'] . '", "sorttype":"string", "sortable": true, "align":"center"}';
     }
     $columnNames = ',' . implode(",", $attnames) . ''; //Add to the end of the standard list of columnNames
+    if(count($attributes) > 5) $autowidth='false';
 }
 else
 {
@@ -88,6 +90,7 @@ else
     var dateInvitedColTxt="<?php $clang->eT("Last invited") ?>";
     var dateCompletedColTxt="<?php $clang->eT("Submitted") ?>";
     var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSurveyInfo_json/pid/"); ?>";
+
     /* Colnames and heading for attributes subgrid */
     var attributesHeadingTxt="<?php $clang->eT("Participant's attribute information") ?>";
     var actionsColTxt="<?php $clang->eT("Actions") ?>";
@@ -132,6 +135,7 @@ else
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/".$urlsearch); ?>";
     var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getParticipantsResults_json/search/"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editParticipant"); ?>";
+    var autowidth = "<?php echo $autowidth ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
     var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getaddtosurveymsg"); ?>";
     var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";

@@ -1585,10 +1585,11 @@ function fixSortOrderAnswers($qid,$surveyid=null) //Function rewrites the sortor
 
 /**
 * This function rewrites the sortorder for questions inside the named group
-*
+* REMOVED the 2012-08-08 : replaced by Questions::model()->updateQuestionOrder 
 * @param integer $groupid the group id
 * @param integer $surveyid the survey id
 */
+/**
 function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sortorder for questions
 {
     $gid = sanitize_int($groupid);
@@ -1604,7 +1605,7 @@ function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sort
         $p++;
     }
 }
-
+*/
 
 function shiftOrderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
 {
@@ -2163,6 +2164,137 @@ function validateTemplateDir($sTemplateName)
         return 'default';
     }
 }
+
+
+
+/**
+ *This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
+ * It can be used for the generation of statistics. Derived from Statistics_userController
+ * @param int $iSurveyID Id of the Survey in question
+ * @param array $aFilters an array which is the result of a query in Questions model
+ * @param string $sLanguage
+ * @return array The summary
+ */
+ function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage) {
+
+ foreach ($aFilters as $flt)
+ {
+	Yii::app()->loadHelper("surveytranslator");
+	$myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
+	$oSurvey = Survey::model()->findByPk($iSurveyID);
+	$aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
+	if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
+		$sLanguage = $oSurvey->language;
+
+	switch ($flt['type'])
+		    {
+		        case "K": // Multiple Numerical
+		        case "Q": // Multiple Short Text
+		            //get answers
+		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
+		            $result =  Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+
+		            //go through all the (multiple) answers
+		            foreach($result as $row)
+		            {
+		                $myfield2=$flt['type'].$myfield.reset($row);
+		                $allfields[] = $myfield2;
+		            }
+		            break;
+		        case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
+		        case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
+		        case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+		        case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
+		        case "F": // FlEXIBLE ARRAY
+		        case "H": // ARRAY (By Column)
+		            //get answers
+		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
+					$result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+
+		            //go through all the (multiple) answers
+		            foreach($result as $row)
+		            {
+		                $myfield2 = $myfield.reset($row);
+		                $allfields[]=$myfield2;
+		            }
+		            break;
+		        // all "free text" types (T, U, S)  get the same prefix ("T")
+		        case "T": // Long free text
+		        case "U": // Huge free text
+		        case "S": // Short free text
+		            $myfield="T$myfield";
+		            $allfields[] = $myfield;
+		            break;
+		        case ";":  //ARRAY (Multi Flex) (Text)
+		        case ":":  //ARRAY (Multi Flex) (Numbers)
+                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid=:flt_0 AND language=:lang AND scale_id = 0 ORDER BY question_order";
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+		            foreach($result as $row)
+		            {
+		                $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
+		                $fresult = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+		                foreach($fresult as $frow)
+		                {
+		                    $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
+		                $allfields[]=$myfield2;
+		            }
+		            }
+		            break;
+		        case "R": //RANKING
+		            //get some answers
+		            $query = "SELECT code, answer FROM {{answers}} WHERE qid = :flt_0 AND language = :lang ORDER BY sortorder, answer";
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+
+		            //get number of answers
+		            $count = $result->num_rows();
+
+		            //loop through all answers. if there are 3 items to rate there will be 3 statistics
+		            for ($i=1; $i<=$count; $i++)
+		            {
+		                $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
+		                $allfields[]=$myfield2;
+		            }
+		            break;
+		        //Boilerplate questions are only used to put some text between other questions -> no analysis needed
+		        case "X":  //This is a boilerplate question and it has no business in this script
+		            break;
+		        case "1": // MULTI SCALE
+		            //get answers
+		            $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang ORDER BY question_order";
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+
+		            //loop through answers
+		            foreach($result as $row)
+		            {
+		                //----------------- LABEL 1 ---------------------
+		                $myfield2 = $myfield . reset($row[0])."#0";
+		                $allfields[]=$myfield2;
+		                //----------------- LABEL 2 ---------------------
+		                $myfield2 = $myfield . "$row[0]#1";
+		                $allfields[]=$myfield2;
+		            }	//end WHILE -> loop through all answers
+		            break;
+
+		        case "P":  //P - Multiple choice with comments
+		        case "M":  //M - Multiple choice
+		        case "N":  //N - Numerical input
+		        case "D":  //D - Date
+		            $myfield2 = $flt['type'].$myfield;
+		                    $allfields[]=$myfield2;
+		            break;
+		        default:   //Default settings
+		            $allfields[] = $myfield;
+		            break;
+
+		} //end switch
+ }
+
+return $allfields;
+
+}
+
+
+
 
 
 /**
@@ -4092,6 +4224,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     "inputtype"=>"integer",
+    'default'=>1,
     "help"=>$clang->gT("Minute step interval when using select boxes"),
     "caption"=>$clang->gT("Minute step interval"));
 
@@ -5439,7 +5572,7 @@ function useFirebug()
 function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 {
     Yii::import('application.libraries.Date_Time_Converter', true);
-    $date = new Date_Time_Converter(array($value, $fromdateformat));
+    $date = new Date_Time_Converter($value, $fromdateformat);
     return $date->convert($todateformat);
 }
 
@@ -7193,8 +7326,8 @@ function getPrintableHeader()
     global $rooturl,$homeurl;
     $headelements = '
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
+    <script type="text/javascript" src="'.Yii::app()->getConfig('generalscripts').'jquery/jquery.js"></script>
+    <script type="text/javascript" src="'.Yii::app()->getConfig('adminscripts').'printablesurvey.js"></script>
     ';
     return $headelements;
 }

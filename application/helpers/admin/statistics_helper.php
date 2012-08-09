@@ -865,14 +865,13 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
             }
 
             //loop through results
-            foreach ($nresult->readAll() as $nrow)
+            foreach ($nresult as $nrow)
             {
-                $nrow=array_values($nrow);
-                $qtitle=flattenText($nrow[0]); //clean up title
-                $qtype=$nrow[1];
-                $qquestion=flattenText($nrow[2]);
-                $qiqid=$nrow[3];
-                $qlid=$nrow[4];
+                $qtitle=flattenText($nrow->title); //clean up title
+                $qtype=$nrow->type;
+                $qquestion=flattenText($nrow->question);
+                $qiqid=$nrow->qid;
+                $qlid=$nrow->parent_qid;
             }
 
             //Get answer texts for multiple numerical
@@ -3254,11 +3253,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         */
         Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
         if($pdfOutput=='F')
-            $workbook = new Xlswriter($tempdir.'/statistic-survey'.$surveyid.'.xls');
+        {
+			$sFileName = $tempdir.'/statistic-survey'.$surveyid.'.xls';
+            $workbook = new Xlswriter($sFileName);
+		}
         else
             $workbook = new Xlswriter();
 
         $workbook->setVersion(8);
+        // Inform the module that our data will arrive as UTF-8.
+        // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+        $workbook->setTempDir($tempdir);
+
         // Inform the module that our data will arrive as UTF-8.
         // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
         if (!empty($tempdir)) {

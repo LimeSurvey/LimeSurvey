@@ -223,7 +223,7 @@
                     <input type='password' size='50' id='emailsmtppassword' name='emailsmtppassword' value='somepassword' /></li>
                 <li><label for='emailsmtpssl'><?php $clang->eT("SMTP SSL/TLS:"); ?></label>
                     <select id='emailsmtpssl' name='emailsmtpssl'>
-                        <option value=''
+                        <option value='off'
                             <?php if (getGlobalSetting('emailsmtpssl')=='') { echo "selected='selected'";} ?>
                             ><?php $clang->eT("Off"); ?></option>
                         <option value='ssl'
@@ -235,8 +235,9 @@
                     </select></li>
                 <li><label for='emailsmtpdebug'><?php $clang->eT("SMTP debug mode:"); ?></label>
                     <select id='emailsmtpdebug' name='emailsmtpdebug'>
-                        <option value=''
-                            <?php if (getGlobalSetting('emailsmtpdebug')=='0') { echo "selected='selected'";} ?>
+                        <option value='0'
+                            <?php
+                            if (getGlobalSetting('emailsmtpdebug')=='0') { echo "selected='selected'";} ?>
                             ><?php $clang->eT("Off"); ?></option>
                         <option value='1'
                             <?php if (getGlobalSetting('emailsmtpdebug')=='1' || getGlobalSetting('emailsmtpssl')==1) { echo "selected='selected'";} ?>

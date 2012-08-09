@@ -34,7 +34,7 @@ class tokens extends Survey_Common_Action
 
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
         {
-            die("no permissions"); // TODO Replace
+            die("You do not have permission to view this page"); // TODO Replace
         }
 
         Yii::app()->loadHelper("surveytranslator");
@@ -85,8 +85,12 @@ class tokens extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $thissurvey = getSurveyInfo($iSurveyId);
 
-        if (($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') == 'off'))
-            && hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        {
+            $clang->eT("We are sorry but you don't have permissions to do this.");
+            return;
+        }
+        if ($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off'))
         {
             $bouncetotal = 0;
             $checktotal = 0;
@@ -233,8 +237,10 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $clang->eT("We are sorry but you don't have permissions to do this.");
+            $clang->eT("Bounce processing is deactivated either application-wide or for this survey in particular.");
+            return;
         }
+
 
         exit; // if bounceprocessing : javascript : no more todo
     }
@@ -244,6 +250,12 @@ class tokens extends Survey_Common_Action
     */
     function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
     {
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        {
+            die("You do not have permission to view this page"); // TODO Replace
+        }
+
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -251,8 +263,8 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
         // Javascript
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "admin/tokens.js");
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "admin/tokentocpdb.js");
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokens.js");
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokentocpdb.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.multiselect.min.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
@@ -395,7 +407,12 @@ class tokens extends Survey_Common_Action
             } elseif ($token['completed'] != "N" && $token['completed'] != "" && $prow['anonymized'] == "N" ) {
                 //Get the survey response id of the matching entry
                 $id=Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$token['token']));
-                $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
+                if (count($id)>0)
+                {
+                    $action .= '<input type="image" style="float: left" src="' . Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png" title="' . $clang->gT("View response details"). '" alt="' . $clang->gT("View response details"). '" onClick=\'window.open("'. Yii::app()->getController()->createUrl("admin/responses/view/surveyid/{$iSurveyId}/id/{$id[0]['id']}").'", "_top")\'>';
+                } else {
+                    $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
+                }
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
@@ -674,7 +691,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
                 $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '')
@@ -683,7 +700,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
                 $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
@@ -794,7 +811,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '')
@@ -803,7 +820,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
@@ -871,6 +888,11 @@ class tokens extends Survey_Common_Action
     */
     function delete($iSurveyId)
     {
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        {
+            die("You do not have permission to view this page"); // TODO Replace
+        }
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -925,7 +947,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '')
@@ -934,7 +956,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
@@ -1054,6 +1076,11 @@ class tokens extends Survey_Common_Action
     */
     function managetokenattributes($iSurveyId)
     {
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        {
+            die("You do not have permission to view this page"); // TODO Replace
+        }
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -1184,6 +1211,11 @@ class tokens extends Survey_Common_Action
     */
     function email($iSurveyId, $aTokenIds = null)
     {
+        /* Check permissions */
+        if (!hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        {
+            die("You do not have permission to view this page"); // TODO Replace
+        }
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -1767,7 +1799,7 @@ class tokens extends Survey_Common_Action
             die('access denied');
         }
 
-        $this->getController()->_js_admin_includes('scripts/tokens.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'tokens.js');
 
         $aEncodings = array(
         "armscii8" => $clang->gT("ARMSCII-8 Armenian")
@@ -2040,7 +2072,6 @@ class tokens extends Survey_Common_Action
 
                 $this->_renderWrappedTemplate('token', array('tokenbar', 'csvpost'), $aData);
             }
-
         }
         else
         {

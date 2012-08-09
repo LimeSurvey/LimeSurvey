@@ -1,14 +1,14 @@
 $(document).ready(function(){
     // pupup calendar
-	$(".popupdate").each(function(i,e) { 
-        var basename = e.id.substr(6);         
+	$(".popupdate").each(function(i,e) {
+        var basename = e.id.substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
         yearrange=$('#dateyearrange'+basename).val();
         range=yearrange.split(':');
-        $(e).datepicker({ dateFormat: format, 
+        $(e).datepicker({ dateFormat: format,
                           showOn: 'both',
-                          changeYear: true, 
+                          changeYear: true,
                           changeMonth: true,
                           yearRange: yearrange,
                           defaultDate: +0,
@@ -21,6 +21,8 @@ $(document).ready(function(){
     // dropdown dates
     $('.month').change(dateUpdater);
     $('.day').change(dateUpdater)
+    $('.minute').change(dateUpdater)
+    $('.hour').change(dateUpdater)
     $('.year').change(dateUpdater);
     $('.year').change();
 });
@@ -86,8 +88,46 @@ function dateUpdater() {
                 answer = answer.replace(/M+/, $('#minute'+thisid).val());
             }
         }
-        $('#answer'+thisid).val(answer);
+         ValidDate(this,$('#year'+thisid).val()+'-'+$('#month'+thisid).val()+'-'+$('#day'+thisid).val());          
+         parseddate=$.datepicker.parseDate( 'dd-mm-yy', $('#day'+thisid).val()+'-'+$('#month'+thisid).val()+'-'+$('#year'+thisid).val());
+         $('#answer'+thisid).val($.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate)); 
         $('#answer'+thisid).change();
         $('#qattribute_answer'+thisid).val('');
     }
 }
+
+
+function ValidDate(oObject, value) {// Regular expression used to check if date is in correct format 
+    var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/; 
+    var pattern = new RegExp(str_regexp); 
+    if ((value.match(pattern)!=null)) 
+    {
+        var date_array = value.split('-'); 
+        var day = date_array[2]; 
+        var month = date_array[1]; 
+        var year = date_array[0]; 
+        str_regexp = /1|3|5|7|8|10|12/; 
+        pattern = new RegExp(str_regexp); 
+        if ( day <= 31 && (month.match(pattern)!=null)) 
+        { 
+            return true; 
+        } 
+        str_regexp = /4|6|9|11/; 
+        pattern = new RegExp(str_regexp); 
+        if ( day <= 30 && (month.match(pattern)!=null)) 
+        { 
+            return true; 
+        } 
+        if (day == 29 && month == 2 && (year % 4 == 0)) 
+        { 
+            return true; 
+        } 
+        if (day <= 28 && month == 2) 
+        { 
+            return true; 
+        }         
+    } 
+    window.alert('Date is not valid!'); 
+    oObject.focus(); 
+    return false; 
+} 

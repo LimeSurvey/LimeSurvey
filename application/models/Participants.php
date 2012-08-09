@@ -150,7 +150,11 @@ class Participants extends CActiveRecord
 
     function updateRow($data)
     {
-        Yii::app()->db->createCommand()->update('{{participants}}', $data, 'participant_id = :participant_id')->bindParam(":participant_id", $data["participant_id"], PDO::PARAM_INT);
+        Yii::app()->db->createCommand()
+                  ->update('{{participants}}',
+                           $data,
+                           'participant_id = :participant_id',
+                           array(':participant_id'=>$data['participant_id']));
     }
 
     /*
@@ -599,6 +603,12 @@ class Participants extends CActiveRecord
         return $data;
     }
 
+    /**
+    * Returns true if participant_id has ownership or shared rights over this participant false if not
+    *
+    * @param mixed $participant_id
+    * @returns bool true/false
+    */
     function is_owner($participant_id)
     {
         $userid = Yii::app()->session['loginID'];
@@ -646,7 +656,7 @@ class Participants extends CActiveRecord
         $duplicate = 0;
         $sucessfull = 0;
         $participantid = explode(",", $participantid); //List of participant ids to add to tokens table
-            if ($participantid[0] == "") { $participantid = array_slice($participantid, 1); }
+        if ($participantid[0] == "") { $participantid = array_slice($participantid, 1); }
         $number2add = sanitize_int(count($newcreate)); //Number of tokens being created
         $tokenattributefieldnames=array(); //Will contain descriptions of existing token attribute fields
         $tokenfieldnames=array(); //Will contain the actual field names of existing token attribute fields

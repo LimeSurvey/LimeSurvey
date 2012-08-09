@@ -1,3 +1,12 @@
+<script type="text/javascript">
+    var jsonUrl = '';
+    var sAction = '';
+    var sParameter = '';
+    var sTargetQuestion = '';
+    var sNoParametersDefined = '';
+    var sURLParameters = '';
+    var sAddParam = '';
+</script>
 <div id='tabs'>
     <ul>
         <li><a href='#general'><?php $clang->eT("General"); ?></a></li>

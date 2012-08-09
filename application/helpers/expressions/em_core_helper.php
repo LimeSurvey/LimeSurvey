@@ -228,6 +228,7 @@ class ExpressionManager {
 'time' => array('time', 'time', $this->gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
 'trim' => array('trim', 'trim', $this->gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
 'ucwords' => array('ucwords', 'ucwords', $this->gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
+'unique' => array('exprmgr_unique', 'LEMunique', $this->gT('Returns true if all non-empty responses are unique'), 'boolean unique(arg1, ..., argN)', '', -1),
         );
 
     }
@@ -3497,4 +3498,25 @@ function exprmgr_fixnum($value)
     return $value;
 }
 
+/**
+ * Returns true if all non-empty values are unique
+ * @param type $args
+ */
+function exprmgr_unique($args)
+{
+    $uniqs = array();
+    foreach ($args as $arg)
+    {
+        if (trim($arg)=='')
+        {
+            continue;   // ignore blank answers
+        }
+        if (isset($uniqs[$arg]))
+        {
+            return false;
+        }
+        $uniqs[$arg]=1;
+    }
+    return true;
+}
 ?>

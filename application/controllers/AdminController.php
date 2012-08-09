@@ -302,7 +302,7 @@ class AdminController extends LSYii_Controller
         $data['baseurl'] = Yii::app()->baseUrl . '/';
         $data['datepickerlang']="";
         if (Yii::app()->session["adminlang"] != 'en')
-            $data['datepickerlang'] = "<script type=\"text/javascript\" src=\"".$data['baseurl']."scripts/jquery/locale/jquery.ui.datepicker-".Yii::app()->session["adminlang"].".js\"></script>\n";
+            $data['datepickerlang'] = "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/locale/jquery.ui.datepicker-".Yii::app()->session["adminlang"].".js\"></script>\n";
 
         $data['sitename'] = Yii::app()->getConfig("sitename");
         $data['admintheme'] = Yii::app()->getConfig("admintheme");

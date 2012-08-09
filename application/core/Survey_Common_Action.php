@@ -729,17 +729,6 @@ class Survey_Common_Action extends CAction
             $surveysummary2 .= $clang->gT("Detailed email notification with response data is sent to:") . " {$surveyinfo['emailresponseto']}<br />\n";
         }
 
-        if (hasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
-        {
-            $surveysummary2 .= $clang->gT("Regenerate question codes:")
-            . " [<a href='#' "
-            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " .convertGETtoPOST(Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=straight") . "}\" "
-            . ">" . $clang->gT("Straight") . "</a>] "
-            . " [<a href='#' "
-            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " .convertGETtoPOST(Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=bygroup") . "}\" "
-            . ">" . $clang->gT("By Group") . "</a>]";
-        }
-
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim($surveyinfo['startdate']) != '')
         {
