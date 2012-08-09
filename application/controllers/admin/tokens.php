@@ -571,7 +571,8 @@ class tokens extends Survey_Common_Action
             //            {
             //                $sLang = Yii::app()->request->getPost('language');
             //            }
-            Tokens_dynamic::model()->sid($iSurveyId);
+            Tokens_dynamic::model($iSurveyId);
+            
 
             echo $from . ',' . $until;
             $aData = array(
