@@ -33,7 +33,7 @@ class statistics extends Survey_Common_Action {
 	/**
 	 * Constructor
 	 */
-	public function run($surveyid, $subaction = null)
+	public function run($surveyid = 0, $subaction = null)
 	{
 		$surveyid = sanitize_int($surveyid);
 		//TODO: Convert question types to views
