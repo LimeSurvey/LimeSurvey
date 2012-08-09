@@ -7288,26 +7288,26 @@ function getHeader($meta = false)
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
 
+    $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+    . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
+    if (getLanguageRTL($languagecode))
+    {
+        $header.=" dir=\"rtl\" ";
+    }
+    $header.= ">\n\t<head>\n";
+
+    if ($meta)
+        $header .= $meta;
+
     if ( !$embedded )
     {
-        $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
-        if (getLanguageRTL($languagecode))
-        {
-            $header.=" dir=\"rtl\" ";
-        }
-        $header.= ">\n\t<head>\n";
-
-        if ($meta)
-            $header .= $meta;
-
         return $header;
     }
 
     global $embedded_headerfunc;
 
     if ( function_exists( $embedded_headerfunc ) )
-        return $embedded_headerfunc();
+        return $embedded_headerfunc($header);
 }
 
 
