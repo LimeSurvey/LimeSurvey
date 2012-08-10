@@ -314,14 +314,16 @@ class question extends Survey_Common_Action
             $qresult = Answers::model()->count($ans);
 
             if ((int)$qresult==0)
+            {
                 $oAnswer= new Answers;
-            $oAnswer->qid = $qid;
-            $oAnswer->code = 'A1';
-            $oAnswer->answer = $clang->gT('Some example answer option');
-            $oAnswer->language = $baselang;
-            $oAnswer->sortorder = 0;
-            $oAnswer->scale_id = $i;
-            $oAnswer->save();
+                $oAnswer->qid = $qid;
+                $oAnswer->code = 'A1';
+                $oAnswer->answer = $clang->gT('Some example answer option');
+                $oAnswer->language = $baselang;
+                $oAnswer->sortorder = 0;
+                $oAnswer->scale_id = $i;
+                $oAnswer->save();
+            }
         }
 
 
@@ -336,21 +338,23 @@ class question extends Survey_Common_Action
 
                 // Means that no record for the language exists in the answers table
                 if (empty($iAnswerCount))
+                {
                     foreach (Answers::model()->findAllByAttributes(array(
                     'qid' => $qid,
                     'scale_id' => $i,
                     'language' => $baselang
                     )) as $answer)
 
-                        $oAnswer= new Answers;
-                $oAnswer->qid = $answer->qid;
-                $oAnswer->code = $answer->code;
-                $oAnswer->answer = $answer->answer;
-                $oAnswer->language = $language;
-                $oAnswer->sortorder = $answer->sortorder;
-                $oAnswer->scale_id = $i;
-                $oAnswer->assessment_value = $answer->assessment_value;
-                $oAnswer->save();
+                    $oAnswer= new Answers;
+                    $oAnswer->qid = $answer->qid;
+                    $oAnswer->code = $answer->code;
+                    $oAnswer->answer = $answer->answer;
+                    $oAnswer->language = $language;
+                    $oAnswer->sortorder = $answer->sortorder;
+                    $oAnswer->scale_id = $i;
+                    $oAnswer->assessment_value = $answer->assessment_value;
+                    $oAnswer->save();
+                }
             }
         }
 
