@@ -124,7 +124,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             $chacount=count($charesult);
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a subquestion type question but has no configured subquestions."), $chkrow['gid']);
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no subquestions."), $chkrow['gid']);
             }
         }
         if ($qtypes[$chkrow['type']]['answerscales']>0)
@@ -134,13 +134,12 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             $chacount=count($charesult);
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a multiple answer type question but has no answers."), $chkrow['gid']);
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no answers."), $chkrow['gid']);
             }
         }
     }
 
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
-    //$chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$_GET['sid']} AND type = ''";
     $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$iSurveyID} AND type = ''";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow)
@@ -151,8 +150,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
 
 
-    //ChECK THAT certain array question types have answers set
-    //$chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
+    //Check that certain array question types have answers set
     $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach($chkresult as $chkrow){
@@ -160,27 +158,12 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     } // while
 
     //CHECK THAT DUAL Array has answers set
-    //$chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type='1' and q.parent_qid=0";
     $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow){
         $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
-
-    // TMSW Conditions->Relevance:  Have EM do this, since already detects cases where try to use variables before they are declared.
-    //
-    //CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
-    //A: Make an array of all the qids in order of appearance
-    //	$qorderquery="SELECT * FROM {{questions}}, {{groups}} WHERE {{questions}}.gid={{groups}}.gid AND {{questions}}.sid={$_GET['sid']} ORDER BY {{groups}}.sortorder, {{questions}}.title";
-    //	$qorderresult=db_execute_assosc($qorderquery) or safeDie("Couldn't generate a list of questions in order<br />$qorderquery<br />");
-    //	$qordercount=$qorderresult->RecordCount();
-    //	$c=0;
-    //	while ($qorderrow=$qorderresult->FetchRow())
-    //		{
-    //		$qidorder[]=array($c, $qorderrow['qid']);
-    //		$c++;
-    //		}
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
     $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('S', 'D', 'T', 'Q')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();

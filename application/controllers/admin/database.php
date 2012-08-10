@@ -927,7 +927,7 @@ class database extends Survey_Common_Action
             else
             {
                 Yii::app()->loadLibrary('Date_Time_Converter');
-                $datetimeobj = new date_time_converter(array($expires, $formatdata['phpdate'].' H:i')); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+                $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
                 $expires=$datetimeobj->convert("Y-m-d H:i:s");
             }
             $startdate = $_POST['startdate'];
@@ -938,7 +938,7 @@ class database extends Survey_Common_Action
             else
             {
                 Yii::app()->loadLibrary('Date_Time_Converter');
-                $datetimeobj = new date_time_converter(array($startdate,$formatdata['phpdate'].' H:i')); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
+                $datetimeobj = new date_time_converter($startdate,$formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
                 $startdate=$datetimeobj->convert("Y-m-d H:i:s");
             }
 
