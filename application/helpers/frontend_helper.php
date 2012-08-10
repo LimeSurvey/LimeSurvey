@@ -2827,24 +2827,15 @@ function SetSurveyLanguage($surveyid, $language)
 
     if (isset($surveyid) && $surveyid>0)
     {
-        // see if language actually is present in survey
-        $result = Survey::model()->findAll('sid = :sid', array(':sid' => $surveyid));
-
-        foreach ($result as $row) {//while ($result && ($row=$result->FetchRow())) {)
-            $additional_languages = $row->additional_languages;
-            $default_language = $row->language;
-        }
-
+        $default_survey_language= Survey::model()->findByPk($surveyid)->language;
+        $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
         if (!isset($language) || ($language=='')
-        || (isset($additional_languages) && strpos($additional_languages, $language) === false)
-        || (isset($default_language) && $default_language == $language)
+        || !( in_array($language,$additional_survey_languages) || $language==$default_survey_language)
         )
         {
             // Language not supported, fall back to survey's default language
-            $_SESSION['survey_'.$surveyid]['s_lang'] = $default_language;
-        }
-        else
-        {
+            $_SESSION['survey_'.$surveyid]['s_lang'] = $default_survey_language;
+        } else {
             $_SESSION['survey_'.$surveyid]['s_lang'] =  $language;
         }
         Yii::import('application.libraries.Limesurvey_lang', true);
