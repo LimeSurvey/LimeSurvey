@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-09 22:00:37+00:00\n"
+"POT-Creation-Date: 2012-08-10 22:00:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -197,7 +197,7 @@ msgstr ""
 #: admin/tokens.php:399 admin/tokens.php:413 admin/tokens.php:479
 #: admin/tokens.php:1002 admin/tokens.php:2149 admin/tokens.php:2740
 #: admin/tokens.php:2790 admin/tokens.php:3227 admin/tokens.php:3233
-#: admin/usercontrol.php:846 admin/vvimport.php:121 common_functions.php:5510
+#: admin/usercontrol.php:846 admin/vvimport.php:121 common_functions.php:5512
 #: index.php:567
 msgid "Error"
 msgstr ""
@@ -687,7 +687,7 @@ msgstr ""
 #: admin/exportresults.php:434 admin/exportresults.php:435
 #: admin/exportresults.php:757 admin/tokens.php:1025 admin/tokens.php:1028
 #: admin/tokens.php:1029 admin/tokens.php:2335 admin/tokens.php:2471
-#: common_functions.php:6242 replacements.php:515
+#: common_functions.php:6244 replacements.php:515
 msgid "First name"
 msgstr ""
 
@@ -695,7 +695,7 @@ msgstr ""
 #: admin/exportresults.php:429 admin/exportresults.php:430
 #: admin/exportresults.php:760 admin/tokens.php:1035 admin/tokens.php:1038
 #: admin/tokens.php:1039 admin/tokens.php:2339 admin/tokens.php:2473
-#: common_functions.php:6243 replacements.php:522
+#: common_functions.php:6245 replacements.php:522
 msgid "Last name"
 msgstr ""
 
@@ -1036,21 +1036,21 @@ msgstr ""
 #: classes/expressions/LimeExpressionManager.php:2822
 #: classes/expressions/LimeExpressionManager.php:2826 common_functions.php:1898
 #: common_functions.php:1904 common_functions.php:1920
-#: common_functions.php:3206 common_functions.php:3290
-#: common_functions.php:3397 common_functions.php:3410
-#: common_functions.php:3421 common_functions.php:3432
-#: common_functions.php:3443 common_functions.php:3481
-#: common_functions.php:3511 common_functions.php:3522
-#: common_functions.php:3613 common_functions.php:3624
-#: common_functions.php:3636 common_functions.php:3648
-#: common_functions.php:3678 common_functions.php:3691
-#: common_functions.php:3702 common_functions.php:3713
-#: common_functions.php:3732 common_functions.php:3751
-#: common_functions.php:3762 common_functions.php:3773
-#: common_functions.php:3816 common_functions.php:3842
-#: common_functions.php:3877 common_functions.php:3943
-#: common_functions.php:3953 common_functions.php:4067
-#: common_functions.php:4078 common_functions.php:4138 qanda.php:3769
+#: common_functions.php:3208 common_functions.php:3292
+#: common_functions.php:3399 common_functions.php:3412
+#: common_functions.php:3423 common_functions.php:3434
+#: common_functions.php:3445 common_functions.php:3483
+#: common_functions.php:3513 common_functions.php:3524
+#: common_functions.php:3615 common_functions.php:3626
+#: common_functions.php:3638 common_functions.php:3650
+#: common_functions.php:3680 common_functions.php:3693
+#: common_functions.php:3704 common_functions.php:3715
+#: common_functions.php:3734 common_functions.php:3753
+#: common_functions.php:3764 common_functions.php:3775
+#: common_functions.php:3818 common_functions.php:3844
+#: common_functions.php:3879 common_functions.php:3945
+#: common_functions.php:3955 common_functions.php:4069
+#: common_functions.php:4080 common_functions.php:4140 qanda.php:3769
 #: qanda.php:4191 qanda.php:4230
 msgid "Yes"
 msgstr ""
@@ -1103,22 +1103,22 @@ msgstr ""
 #: admin/surveylist.php:56 admin/tokens.php:1508 admin/tokens.php:1806
 #: admin/tokens.php:2094 classes/expressions/LimeExpressionManager.php:2823
 #: classes/expressions/LimeExpressionManager.php:2827 common_functions.php:1905
-#: common_functions.php:1921 common_functions.php:3205
-#: common_functions.php:3289 common_functions.php:3396
-#: common_functions.php:3411 common_functions.php:3422
-#: common_functions.php:3433 common_functions.php:3444
-#: common_functions.php:3482 common_functions.php:3510
-#: common_functions.php:3521 common_functions.php:3612
-#: common_functions.php:3623 common_functions.php:3635
-#: common_functions.php:3647 common_functions.php:3677
-#: common_functions.php:3690 common_functions.php:3701
-#: common_functions.php:3712 common_functions.php:3731
-#: common_functions.php:3750 common_functions.php:3761
-#: common_functions.php:3772 common_functions.php:3815
-#: common_functions.php:3827 common_functions.php:3841
-#: common_functions.php:3876 common_functions.php:3942
-#: common_functions.php:3952 common_functions.php:4066
-#: common_functions.php:4077 common_functions.php:4137 qanda.php:3776
+#: common_functions.php:1921 common_functions.php:3207
+#: common_functions.php:3291 common_functions.php:3398
+#: common_functions.php:3413 common_functions.php:3424
+#: common_functions.php:3435 common_functions.php:3446
+#: common_functions.php:3484 common_functions.php:3512
+#: common_functions.php:3523 common_functions.php:3614
+#: common_functions.php:3625 common_functions.php:3637
+#: common_functions.php:3649 common_functions.php:3679
+#: common_functions.php:3692 common_functions.php:3703
+#: common_functions.php:3714 common_functions.php:3733
+#: common_functions.php:3752 common_functions.php:3763
+#: common_functions.php:3774 common_functions.php:3817
+#: common_functions.php:3829 common_functions.php:3843
+#: common_functions.php:3878 common_functions.php:3944
+#: common_functions.php:3954 common_functions.php:4068
+#: common_functions.php:4079 common_functions.php:4139 qanda.php:3776
 #: qanda.php:4193 qanda.php:4245
 msgid "No"
 msgstr ""
@@ -1171,8 +1171,8 @@ msgstr ""
 #: admin/statistics_function.php:2567 admin/statistics_function.php:2581
 #: admin/statistics_function.php:2642 admin/statistics_function.php:2705
 #: admin/statistics_function.php:2772 common_functions.php:1906
-#: common_functions.php:1914 common_functions.php:5496
-#: common_functions.php:5501 qanda.php:926 qanda.php:1455 qanda.php:1732
+#: common_functions.php:1914 common_functions.php:5498
+#: common_functions.php:5503 qanda.php:926 qanda.php:1455 qanda.php:1732
 #: qanda.php:1836 qanda.php:1891 qanda.php:3785 qanda.php:3830 qanda.php:3919
 #: qanda.php:3983 qanda.php:4072 qanda.php:4118 qanda.php:4196 qanda.php:4262
 #: qanda.php:4344 qanda.php:4422 qanda.php:4523 qanda.php:4545 qanda.php:4613
@@ -1232,11 +1232,11 @@ msgstr ""
 #: admin/statistics_function.php:1917 admin/statistics_function.php:2049
 #: common_functions.php:1890 common_functions.php:1948
 #: common_functions.php:2534 common_functions.php:2799
-#: common_functions.php:3643 common_functions.php:3657
-#: common_functions.php:3673 common_functions.php:3728
-#: common_functions.php:3747 common_functions.php:3905
-#: common_functions.php:4086 common_functions.php:4095
-#: common_functions.php:4104 common_functions.php:4113 qanda.php:1698
+#: common_functions.php:3645 common_functions.php:3659
+#: common_functions.php:3675 common_functions.php:3730
+#: common_functions.php:3749 common_functions.php:3907
+#: common_functions.php:4088 common_functions.php:4097
+#: common_functions.php:4106 common_functions.php:4115 qanda.php:1698
 #: qanda.php:2338 qanda.php:2576
 msgid "Other"
 msgstr ""
@@ -1827,9 +1827,9 @@ msgstr ""
 #: admin/dataentry.php:1932 admin/dataentry.php:1944 admin/labels.php:78
 #: admin/translate_functions.php:148 common_functions.php:646
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
-#: common_functions.php:1411 common_functions.php:4831
-#: common_functions.php:4880 common_functions.php:4916
-#: common_functions.php:4952 qanda.php:1253 qanda.php:1431 qanda.php:6155
+#: common_functions.php:1411 common_functions.php:4833
+#: common_functions.php:4882 common_functions.php:4918
+#: common_functions.php:4954 qanda.php:1253 qanda.php:1431 qanda.php:6155
 #: qanda.php:6209
 msgid "Please choose..."
 msgstr ""
@@ -1979,7 +1979,7 @@ msgid "Quick-add answers"
 msgstr ""
 
 #: admin/editansweroptions.php:119 admin/editansweroptions.php:148
-#: admin/labels.php:327 common_functions.php:3255
+#: admin/labels.php:327 common_functions.php:3257
 msgid "Assessment value"
 msgstr ""
 
@@ -2967,7 +2967,7 @@ msgstr ""
 
 #: admin/exportresults.php:234 admin/exportresults.php:439
 #: admin/exportresults.php:440 admin/saved.php:81 admin/tokens.php:1045
-#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6244
+#: admin/tokens.php:1048 admin/tokens.php:1049 common_functions.php:6246
 #: replacements.php:529
 msgid "Email address"
 msgstr ""
@@ -3052,7 +3052,7 @@ msgstr ""
 #: admin/fck_LimeReplacementFields.php:149
 #: admin/fck_LimeReplacementFields.php:165
 #: admin/fck_LimeReplacementFields.php:222 admin/tokens.php:1125
-#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6250
+#: admin/tokens.php:1128 admin/tokens.php:1129 common_functions.php:6252
 msgid "Uses left"
 msgstr ""
 
@@ -3323,8 +3323,8 @@ msgstr ""
 #: admin/globalsettings.php:254 admin/globalsettings.php:265
 #: admin/globalsettings.php:317 admin/globalsettings.php:329
 #: admin/globalsettings.php:350 admin/globalsettings.php:370
-#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3453
-#: common_functions.php:3661
+#: admin/globalsettings.php:443 admin/tokens.php:838 common_functions.php:3455
+#: common_functions.php:3663
 msgid "Off"
 msgstr ""
 
@@ -3583,7 +3583,7 @@ msgid "HTML editor mode"
 msgstr ""
 
 #: admin/html.php:118 admin/html.php:129 admin/html.php:139
-#: admin/login_check.php:229 common_functions.php:3908
+#: admin/login_check.php:229 common_functions.php:3910
 msgid "Default"
 msgstr ""
 
@@ -3781,8 +3781,8 @@ msgstr ""
 #: admin/html.php:611 admin/tokens.php:823 admin/tokens.php:857
 #: common_functions.php:651 common_functions.php:654 common_functions.php:1312
 #: common_functions.php:1337 common_functions.php:1412
-#: common_functions.php:3896 common_functions.php:4881
-#: common_functions.php:4917
+#: common_functions.php:3898 common_functions.php:4883
+#: common_functions.php:4919
 msgid "None"
 msgstr ""
 
@@ -3802,7 +3802,7 @@ msgstr ""
 msgid "No next question group"
 msgstr ""
 
-#: admin/html.php:663 admin/html.php:1085 common_functions.php:3243
+#: admin/html.php:663 admin/html.php:1085 common_functions.php:3245
 msgid "Disabled"
 msgstr ""
 
@@ -9638,923 +9638,923 @@ msgstr ""
 msgid "Question time"
 msgstr ""
 
-#: common_functions.php:3202 common_functions.php:3213
-#: common_functions.php:3259 common_functions.php:3267
-#: common_functions.php:3278 common_functions.php:3286
-#: common_functions.php:3297 common_functions.php:3305
-#: common_functions.php:3313 common_functions.php:3321
-#: common_functions.php:3329 common_functions.php:3337
-#: common_functions.php:3507 common_functions.php:3518
-#: common_functions.php:3585 common_functions.php:3593
-#: common_functions.php:3601 common_functions.php:3609
-#: common_functions.php:3620 common_functions.php:3687
-#: common_functions.php:3720 common_functions.php:3739
-#: common_functions.php:3758 common_functions.php:3823
-#: common_functions.php:3857 common_functions.php:3865
-#: common_functions.php:3873 common_functions.php:3884
-#: common_functions.php:3893
+#: common_functions.php:3204 common_functions.php:3215
+#: common_functions.php:3261 common_functions.php:3269
+#: common_functions.php:3280 common_functions.php:3288
+#: common_functions.php:3299 common_functions.php:3307
+#: common_functions.php:3315 common_functions.php:3323
+#: common_functions.php:3331 common_functions.php:3339
+#: common_functions.php:3509 common_functions.php:3520
+#: common_functions.php:3587 common_functions.php:3595
+#: common_functions.php:3603 common_functions.php:3611
+#: common_functions.php:3622 common_functions.php:3689
+#: common_functions.php:3722 common_functions.php:3741
+#: common_functions.php:3760 common_functions.php:3825
+#: common_functions.php:3859 common_functions.php:3867
+#: common_functions.php:3875 common_functions.php:3886
+#: common_functions.php:3895
 msgid "Display"
 msgstr ""
 
-#: common_functions.php:3208
+#: common_functions.php:3210
 msgid "Sort the answer options alphabetically"
 msgstr ""
 
-#: common_functions.php:3209
+#: common_functions.php:3211
 msgid "Sort answers alphabetically"
 msgstr ""
 
-#: common_functions.php:3218
+#: common_functions.php:3220
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr ""
 
-#: common_functions.php:3219
+#: common_functions.php:3221
 msgid "Answer width"
 msgstr ""
 
-#: common_functions.php:3223 common_functions.php:3231
-#: common_functions.php:3239 common_functions.php:3250
-#: common_functions.php:3353 common_functions.php:3361
-#: common_functions.php:3369 common_functions.php:3377
-#: common_functions.php:3385 common_functions.php:3393
-#: common_functions.php:3529 common_functions.php:3561
-#: common_functions.php:3698 common_functions.php:3709
-#: common_functions.php:4122
+#: common_functions.php:3225 common_functions.php:3233
+#: common_functions.php:3241 common_functions.php:3252
+#: common_functions.php:3355 common_functions.php:3363
+#: common_functions.php:3371 common_functions.php:3379
+#: common_functions.php:3387 common_functions.php:3395
+#: common_functions.php:3531 common_functions.php:3563
+#: common_functions.php:3700 common_functions.php:3711
+#: common_functions.php:4124
 msgid "Logic"
 msgstr ""
 
-#: common_functions.php:3226
+#: common_functions.php:3228
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."
 msgstr ""
 
-#: common_functions.php:3227
+#: common_functions.php:3229
 msgid "Array filter"
 msgstr ""
 
-#: common_functions.php:3234
+#: common_functions.php:3236
 msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."
 msgstr ""
 
-#: common_functions.php:3235
+#: common_functions.php:3237
 msgid "Array filter exclusion"
 msgstr ""
 
-#: common_functions.php:3242
+#: common_functions.php:3244
 msgid "Hidden"
 msgstr ""
 
-#: common_functions.php:3245
+#: common_functions.php:3247
 msgid "Specify how array-filtered sub-questions should be displayed"
 msgstr ""
 
-#: common_functions.php:3246
+#: common_functions.php:3248
 msgid "Array filter style"
 msgstr ""
 
-#: common_functions.php:3254
+#: common_functions.php:3256
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr ""
 
-#: common_functions.php:3262 common_functions.php:3263
+#: common_functions.php:3264 common_functions.php:3265
 msgid "Category separator"
 msgstr ""
 
-#: common_functions.php:3273
+#: common_functions.php:3275
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr ""
 
-#: common_functions.php:3274
+#: common_functions.php:3276
 msgid "Display columns"
 msgstr ""
 
-#: common_functions.php:3281
+#: common_functions.php:3283
 msgid "How many rows to display"
 msgstr ""
 
-#: common_functions.php:3282
+#: common_functions.php:3284
 msgid "Display rows"
 msgstr ""
 
-#: common_functions.php:3292
+#: common_functions.php:3294
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr ""
 
-#: common_functions.php:3293
+#: common_functions.php:3295
 msgid "Display dropdown boxes"
 msgstr ""
 
-#: common_functions.php:3300
+#: common_functions.php:3302
 msgid "Minimum year value in calendar"
 msgstr ""
 
-#: common_functions.php:3301
+#: common_functions.php:3303
 msgid "Minimum year"
 msgstr ""
 
-#: common_functions.php:3308
+#: common_functions.php:3310
 msgid "Maximum year value for calendar"
 msgstr ""
 
-#: common_functions.php:3309
+#: common_functions.php:3311
 msgid "Maximum year"
 msgstr ""
 
-#: common_functions.php:3316
+#: common_functions.php:3318
 msgid "Prefix|Suffix for dropdown lists"
 msgstr ""
 
-#: common_functions.php:3317
+#: common_functions.php:3319
 msgid "Dropdown prefix/suffix"
 msgstr ""
 
-#: common_functions.php:3324
+#: common_functions.php:3326
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr ""
 
-#: common_functions.php:3325
+#: common_functions.php:3327
 msgid "Dropdown separator"
 msgstr ""
 
-#: common_functions.php:3332
+#: common_functions.php:3334
 msgid "Enter a header text for the first scale"
 msgstr ""
 
-#: common_functions.php:3333
+#: common_functions.php:3335
 msgid "Header for first scale"
 msgstr ""
 
-#: common_functions.php:3340
+#: common_functions.php:3342
 msgid "Enter a header text for the second scale"
 msgstr ""
 
-#: common_functions.php:3341
+#: common_functions.php:3343
 msgid "Header for second scale"
 msgstr ""
 
-#: common_functions.php:3345 common_functions.php:3537
-#: common_functions.php:3545 common_functions.php:3553
-#: common_functions.php:3569 common_functions.php:3577
-#: common_functions.php:3631 common_functions.php:4134
+#: common_functions.php:3347 common_functions.php:3539
+#: common_functions.php:3547 common_functions.php:3555
+#: common_functions.php:3571 common_functions.php:3579
+#: common_functions.php:3633 common_functions.php:4136
 msgid "Input"
 msgstr ""
 
-#: common_functions.php:3348
+#: common_functions.php:3350
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr ""
 
-#: common_functions.php:3349
+#: common_functions.php:3351
 msgid "Equals sum value"
 msgstr ""
 
-#: common_functions.php:3356
+#: common_functions.php:3358
 msgid "Boolean equation to validate the whole question."
 msgstr ""
 
-#: common_functions.php:3357
+#: common_functions.php:3359
 msgid "Question validation equation"
 msgstr ""
 
-#: common_functions.php:3364
+#: common_functions.php:3366
 msgid "Tip to show user describing the question validation equation."
 msgstr ""
 
-#: common_functions.php:3365
+#: common_functions.php:3367
 msgid "Question validation tip"
 msgstr ""
 
-#: common_functions.php:3372
+#: common_functions.php:3374
 msgid "Boolean equation to validate each sub-question."
 msgstr ""
 
-#: common_functions.php:3373
+#: common_functions.php:3375
 msgid "Sub-question validation equation"
 msgstr ""
 
-#: common_functions.php:3380
+#: common_functions.php:3382
 msgid "Tip to show user describing the sub-question validation equation."
 msgstr ""
 
-#: common_functions.php:3381
+#: common_functions.php:3383
 msgid "Sub-question validation tip"
 msgstr ""
 
-#: common_functions.php:3388
+#: common_functions.php:3390
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr ""
 
-#: common_functions.php:3389
+#: common_functions.php:3391
 msgid "Exclusive option"
 msgstr ""
 
-#: common_functions.php:3399
+#: common_functions.php:3401
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr ""
 
-#: common_functions.php:3400
+#: common_functions.php:3402
 msgid "Auto-check exclusive option if all others are checked"
 msgstr ""
 
-#: common_functions.php:3407 common_functions.php:3418
-#: common_functions.php:3429 common_functions.php:3440
-#: common_functions.php:3450 common_functions.php:3460
-#: common_functions.php:3469 common_functions.php:3478
-#: common_functions.php:3488 common_functions.php:3496
+#: common_functions.php:3409 common_functions.php:3420
+#: common_functions.php:3431 common_functions.php:3442
+#: common_functions.php:3452 common_functions.php:3462
+#: common_functions.php:3471 common_functions.php:3480
+#: common_functions.php:3490 common_functions.php:3498
 msgid "Location"
 msgstr ""
 
-#: common_functions.php:3412
+#: common_functions.php:3414
 msgid "Store the city?"
 msgstr ""
 
-#: common_functions.php:3413
+#: common_functions.php:3415
 msgid "Save city"
 msgstr ""
 
-#: common_functions.php:3423
+#: common_functions.php:3425
 msgid "Store the state?"
 msgstr ""
 
-#: common_functions.php:3424
+#: common_functions.php:3426
 msgid "Save state"
 msgstr ""
 
-#: common_functions.php:3434
+#: common_functions.php:3436
 msgid "Store the postal code?"
 msgstr ""
 
-#: common_functions.php:3435
+#: common_functions.php:3437
 msgid "Save postal code"
 msgstr ""
 
-#: common_functions.php:3445
+#: common_functions.php:3447
 msgid "Store the country?"
 msgstr ""
 
-#: common_functions.php:3446
+#: common_functions.php:3448
 msgid "Save country"
 msgstr ""
 
-#: common_functions.php:3454
+#: common_functions.php:3456
 msgid "Google Maps"
 msgstr ""
 
-#: common_functions.php:3455
+#: common_functions.php:3457
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr ""
 
-#: common_functions.php:3456
+#: common_functions.php:3458
 msgid "Use mapping service"
 msgstr ""
 
-#: common_functions.php:3464
+#: common_functions.php:3466
 msgid "Width of the map in pixel"
 msgstr ""
 
-#: common_functions.php:3465
+#: common_functions.php:3467
 msgid "Map width"
 msgstr ""
 
-#: common_functions.php:3473
+#: common_functions.php:3475
 msgid "Height of the map in pixel"
 msgstr ""
 
-#: common_functions.php:3474
+#: common_functions.php:3476
 msgid "Map height"
 msgstr ""
 
-#: common_functions.php:3483
+#: common_functions.php:3485
 msgid "Get the default location using the user's IP address?"
 msgstr ""
 
-#: common_functions.php:3484
+#: common_functions.php:3486
 msgid "IP as default location"
 msgstr ""
 
-#: common_functions.php:3491
+#: common_functions.php:3493
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr ""
 
-#: common_functions.php:3492
+#: common_functions.php:3494
 msgid "Default position"
 msgstr ""
 
-#: common_functions.php:3500
+#: common_functions.php:3502
 msgid "Map zoom level"
 msgstr ""
 
-#: common_functions.php:3501
+#: common_functions.php:3503
 msgid "Zoom level"
 msgstr ""
 
-#: common_functions.php:3513
+#: common_functions.php:3515
 msgid "Hide the tip that is normally shown with a question"
 msgstr ""
 
-#: common_functions.php:3514
+#: common_functions.php:3516
 msgid "Hide tip"
 msgstr ""
 
-#: common_functions.php:3524
+#: common_functions.php:3526
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr ""
 
-#: common_functions.php:3525
+#: common_functions.php:3527
 msgid "Always hide this question"
 msgstr ""
 
-#: common_functions.php:3532
+#: common_functions.php:3534
 msgid "Limit the number of possible answers"
 msgstr ""
 
-#: common_functions.php:3533
+#: common_functions.php:3535
 msgid "Maximum answers"
 msgstr ""
 
-#: common_functions.php:3540
+#: common_functions.php:3542
 msgid "Maximum sum value of multiple numeric input"
 msgstr ""
 
-#: common_functions.php:3541
+#: common_functions.php:3543
 msgid "Maximum sum value"
 msgstr ""
 
-#: common_functions.php:3548
+#: common_functions.php:3550
 msgid "Maximum value of the numeric input"
 msgstr ""
 
-#: common_functions.php:3549 common_functions.php:3589
+#: common_functions.php:3551 common_functions.php:3591
 msgid "Maximum value"
 msgstr ""
 
-#: common_functions.php:3556
+#: common_functions.php:3558
 msgid "Maximum characters allowed"
 msgstr ""
 
-#: common_functions.php:3557
+#: common_functions.php:3559
 msgid "Maximum characters"
 msgstr ""
 
-#: common_functions.php:3564
+#: common_functions.php:3566
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr ""
 
-#: common_functions.php:3565
+#: common_functions.php:3567
 msgid "Minimum answers"
 msgstr ""
 
-#: common_functions.php:3572
+#: common_functions.php:3574
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr ""
 
-#: common_functions.php:3573
+#: common_functions.php:3575
 msgid "Minimum sum value"
 msgstr ""
 
-#: common_functions.php:3580
+#: common_functions.php:3582
 msgid "Minimum value of the numeric input"
 msgstr ""
 
-#: common_functions.php:3581 common_functions.php:3597
+#: common_functions.php:3583 common_functions.php:3599
 msgid "Minimum value"
 msgstr ""
 
-#: common_functions.php:3588
+#: common_functions.php:3590
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr ""
 
-#: common_functions.php:3596
+#: common_functions.php:3598
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr ""
 
-#: common_functions.php:3604 common_functions.php:3605
+#: common_functions.php:3606 common_functions.php:3607
 msgid "Step value"
 msgstr ""
 
-#: common_functions.php:3615
+#: common_functions.php:3617
 msgid "Use checkbox layout"
 msgstr ""
 
-#: common_functions.php:3616
+#: common_functions.php:3618
 msgid "Checkbox layout"
 msgstr ""
 
-#: common_functions.php:3626
+#: common_functions.php:3628
 msgid "Present answer options in reverse order"
 msgstr ""
 
-#: common_functions.php:3627
+#: common_functions.php:3629
 msgid "Reverse answer order"
 msgstr ""
 
-#: common_functions.php:3638
+#: common_functions.php:3640
 msgid "Restrict input to integer values"
 msgstr ""
 
-#: common_functions.php:3639
+#: common_functions.php:3641
 msgid "Integer only"
 msgstr ""
 
-#: common_functions.php:3651
+#: common_functions.php:3653
 msgid "Allow only numerical input"
 msgstr ""
 
-#: common_functions.php:3652
+#: common_functions.php:3654
 msgid "Numbers only"
 msgstr ""
 
-#: common_functions.php:3662
+#: common_functions.php:3664
 msgid "Rows"
 msgstr ""
 
-#: common_functions.php:3663
+#: common_functions.php:3665
 msgid "Columns"
 msgstr ""
 
-#: common_functions.php:3664
+#: common_functions.php:3666
 msgid "Both rows and columns"
 msgstr ""
 
-#: common_functions.php:3667
+#: common_functions.php:3669
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr ""
 
-#: common_functions.php:3668
+#: common_functions.php:3670
 msgid "Show totals for"
 msgstr ""
 
-#: common_functions.php:3681
+#: common_functions.php:3683
 msgid "Show grand total for either columns or rows"
 msgstr ""
 
-#: common_functions.php:3682
+#: common_functions.php:3684
 msgid "Show grand total"
 msgstr ""
 
-#: common_functions.php:3693
+#: common_functions.php:3695
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr ""
 
-#: common_functions.php:3694
+#: common_functions.php:3696
 msgid "Text inputs"
 msgstr ""
 
-#: common_functions.php:3704
+#: common_functions.php:3706
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr ""
 
-#: common_functions.php:3705
+#: common_functions.php:3707
 msgid "'Other:' comment mandatory"
 msgstr ""
 
-#: common_functions.php:3715
+#: common_functions.php:3717
 msgid "Allow only numerical input for 'Other' text"
 msgstr ""
 
-#: common_functions.php:3716
+#: common_functions.php:3718
 msgid "Numbers only for 'Other'"
 msgstr ""
 
-#: common_functions.php:3723
+#: common_functions.php:3725
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr ""
 
-#: common_functions.php:3724
+#: common_functions.php:3726
 msgid "Label for 'Other:' option"
 msgstr ""
 
-#: common_functions.php:3734
+#: common_functions.php:3736
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr ""
 
-#: common_functions.php:3735
+#: common_functions.php:3737
 msgid "Insert page break in printable view"
 msgstr ""
 
-#: common_functions.php:3742
+#: common_functions.php:3744
 msgid "Add a prefix to the answer field"
 msgstr ""
 
-#: common_functions.php:3743
+#: common_functions.php:3745
 msgid "Answer prefix"
 msgstr ""
 
-#: common_functions.php:3753
+#: common_functions.php:3755
 msgid "Show statistics of this question in the public statistics page"
 msgstr ""
 
-#: common_functions.php:3754
+#: common_functions.php:3756
 msgid "Show in public statistics"
 msgstr ""
 
-#: common_functions.php:3764
+#: common_functions.php:3766
 msgid "Present answers in random order"
 msgstr ""
 
-#: common_functions.php:3765
+#: common_functions.php:3767
 msgid "Random answer order"
 msgstr ""
 
-#: common_functions.php:3769 common_functions.php:3780
-#: common_functions.php:3788 common_functions.php:3796
-#: common_functions.php:3804 common_functions.php:3812
-#: common_functions.php:3838 common_functions.php:3849
+#: common_functions.php:3771 common_functions.php:3782
+#: common_functions.php:3790 common_functions.php:3798
+#: common_functions.php:3806 common_functions.php:3814
+#: common_functions.php:3840 common_functions.php:3851
 msgid "Slider"
 msgstr ""
 
-#: common_functions.php:3775 common_functions.php:3776
-#: common_functions.php:3832 common_functions.php:3833
+#: common_functions.php:3777 common_functions.php:3778
+#: common_functions.php:3834 common_functions.php:3835
 msgid "Use slider layout"
 msgstr ""
 
-#: common_functions.php:3783 common_functions.php:3784
+#: common_functions.php:3785 common_functions.php:3786
 msgid "Slider minimum value"
 msgstr ""
 
-#: common_functions.php:3791 common_functions.php:3792
+#: common_functions.php:3793 common_functions.php:3794
 msgid "Slider maximum value"
 msgstr ""
 
-#: common_functions.php:3799 common_functions.php:3800
+#: common_functions.php:3801 common_functions.php:3802
 msgid "Slider accuracy"
 msgstr ""
 
-#: common_functions.php:3807 common_functions.php:3808
+#: common_functions.php:3809 common_functions.php:3810
 msgid "Slider initial value"
 msgstr ""
 
-#: common_functions.php:3818
+#: common_functions.php:3820
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr ""
 
-#: common_functions.php:3819
+#: common_functions.php:3821
 msgid "Slider starts at the middle position"
 msgstr ""
 
-#: common_functions.php:3828
+#: common_functions.php:3830
 msgid "Yes - stars"
 msgstr ""
 
-#: common_functions.php:3829
+#: common_functions.php:3831
 msgid "Yes - slider with emoticon"
 msgstr ""
 
-#: common_functions.php:3844
+#: common_functions.php:3846
 msgid "Display min and max value under the slider"
 msgstr ""
 
-#: common_functions.php:3845
+#: common_functions.php:3847
 msgid "Display slider min and max value"
 msgstr ""
 
-#: common_functions.php:3852
+#: common_functions.php:3854
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
-#: common_functions.php:3853
+#: common_functions.php:3855
 msgid "Slider left/right text separator"
 msgstr ""
 
-#: common_functions.php:3860
+#: common_functions.php:3862
 msgid "Add a suffix to the answer field"
 msgstr ""
 
-#: common_functions.php:3861
+#: common_functions.php:3863
 msgid "Answer suffix"
 msgstr ""
 
-#: common_functions.php:3868
+#: common_functions.php:3870
 msgid "Width of text input box"
 msgstr ""
 
-#: common_functions.php:3869
+#: common_functions.php:3871
 msgid "Input box width"
 msgstr ""
 
-#: common_functions.php:3879
+#: common_functions.php:3881
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr ""
 
-#: common_functions.php:3880
+#: common_functions.php:3882
 msgid "Use dropdown boxes"
 msgstr ""
 
-#: common_functions.php:3888
+#: common_functions.php:3890
 msgid "For list dropdown boxes, show up to this many rows"
 msgstr ""
 
-#: common_functions.php:3889
+#: common_functions.php:3891
 msgid "Height of dropdown"
 msgstr ""
 
-#: common_functions.php:3897
+#: common_functions.php:3899
 msgid "Order"
 msgstr ""
 
-#: common_functions.php:3900
+#: common_functions.php:3902
 msgid "Accelerator keys for list items"
 msgstr ""
 
-#: common_functions.php:3901
+#: common_functions.php:3903
 msgid "Prefix for list items"
 msgstr ""
 
-#: common_functions.php:3909
+#: common_functions.php:3911
 msgid "Nominal"
 msgstr ""
 
-#: common_functions.php:3910
+#: common_functions.php:3912
 msgid "Ordinal"
 msgstr ""
 
-#: common_functions.php:3911
+#: common_functions.php:3913
 msgid "Scale"
 msgstr ""
 
-#: common_functions.php:3913
+#: common_functions.php:3915
 msgid "Set a specific SPSS export scale type for this question"
 msgstr ""
 
-#: common_functions.php:3914
+#: common_functions.php:3916
 msgid "SPSS export scale type"
 msgstr ""
 
-#: common_functions.php:3919 common_functions.php:3927
-#: common_functions.php:3938 common_functions.php:3949
-#: common_functions.php:3959 common_functions.php:3967
-#: common_functions.php:3975 common_functions.php:3983
-#: common_functions.php:3991 common_functions.php:3999
-#: common_functions.php:4007 common_functions.php:4015
-#: common_functions.php:4023 common_functions.php:4031
-#: common_functions.php:4039 common_functions.php:4047
-#: common_functions.php:4055
+#: common_functions.php:3921 common_functions.php:3929
+#: common_functions.php:3940 common_functions.php:3951
+#: common_functions.php:3961 common_functions.php:3969
+#: common_functions.php:3977 common_functions.php:3985
+#: common_functions.php:3993 common_functions.php:4001
+#: common_functions.php:4009 common_functions.php:4017
+#: common_functions.php:4025 common_functions.php:4033
+#: common_functions.php:4041 common_functions.php:4049
+#: common_functions.php:4057
 msgid "Timer"
 msgstr ""
 
-#: common_functions.php:3922
+#: common_functions.php:3924
 msgid "Limit time to answer question (in seconds)"
 msgstr ""
 
-#: common_functions.php:3923
+#: common_functions.php:3925
 msgid "Time limit"
 msgstr ""
 
-#: common_functions.php:3930
+#: common_functions.php:3932
 msgid "Warn and move on"
 msgstr ""
 
-#: common_functions.php:3931
+#: common_functions.php:3933
 msgid "Move on without warning"
 msgstr ""
 
-#: common_functions.php:3932
+#: common_functions.php:3934
 msgid "Disable only"
 msgstr ""
 
-#: common_functions.php:3933
+#: common_functions.php:3935
 msgid "Action to perform when time limit is up"
 msgstr ""
 
-#: common_functions.php:3934
+#: common_functions.php:3936
 msgid "Time limit action"
 msgstr ""
 
-#: common_functions.php:3944
+#: common_functions.php:3946
 msgid "Disable the next button until time limit expires"
 msgstr ""
 
-#: common_functions.php:3945
+#: common_functions.php:3947
 msgid "Time limit disable next"
 msgstr ""
 
-#: common_functions.php:3954
+#: common_functions.php:3956
 msgid "Disable the prev button until the time limit expires"
 msgstr ""
 
-#: common_functions.php:3955
+#: common_functions.php:3957
 msgid "Time limit disable prev"
 msgstr ""
 
-#: common_functions.php:3962
+#: common_functions.php:3964
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: common_functions.php:3963
+#: common_functions.php:3965
 msgid "Time limit countdown message"
 msgstr ""
 
-#: common_functions.php:3970
+#: common_functions.php:3972
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: common_functions.php:3971
+#: common_functions.php:3973
 msgid "Time limit timer CSS style"
 msgstr ""
 
-#: common_functions.php:3978
+#: common_functions.php:3980
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr ""
 
-#: common_functions.php:3979
+#: common_functions.php:3981
 msgid "Time limit expiry message display time"
 msgstr ""
 
-#: common_functions.php:3986
+#: common_functions.php:3988
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:3987
+#: common_functions.php:3989
 msgid "Time limit expiry message"
 msgstr ""
 
-#: common_functions.php:3994
+#: common_functions.php:3996
 msgid "CSS style for the 'time limit expiry message'"
 msgstr ""
 
-#: common_functions.php:3995
+#: common_functions.php:3997
 msgid "Time limit message CSS style"
 msgstr ""
 
-#: common_functions.php:4002
+#: common_functions.php:4004
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: common_functions.php:4003
+#: common_functions.php:4005
 msgid "1st time limit warning message timer"
 msgstr ""
 
-#: common_functions.php:4010
+#: common_functions.php:4012
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:4011
+#: common_functions.php:4013
 msgid "1st time limit warning message display time"
 msgstr ""
 
-#: common_functions.php:4018
+#: common_functions.php:4020
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: common_functions.php:4019
+#: common_functions.php:4021
 msgid "1st time limit warning message"
 msgstr ""
 
-#: common_functions.php:4026
+#: common_functions.php:4028
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr ""
 
-#: common_functions.php:4027
+#: common_functions.php:4029
 msgid "1st time limit warning CSS style"
 msgstr ""
 
-#: common_functions.php:4034
+#: common_functions.php:4036
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: common_functions.php:4035
+#: common_functions.php:4037
 msgid "2nd time limit warning message timer"
 msgstr ""
 
-#: common_functions.php:4042
+#: common_functions.php:4044
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: common_functions.php:4043
+#: common_functions.php:4045
 msgid "2nd time limit warning message display time"
 msgstr ""
 
-#: common_functions.php:4050
+#: common_functions.php:4052
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: common_functions.php:4051
+#: common_functions.php:4053
 msgid "2nd time limit warning message"
 msgstr ""
 
-#: common_functions.php:4058
+#: common_functions.php:4060
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr ""
 
-#: common_functions.php:4059
+#: common_functions.php:4061
 msgid "2nd time limit warning CSS style"
 msgstr ""
 
-#: common_functions.php:4063 common_functions.php:4074
+#: common_functions.php:4065 common_functions.php:4076
 msgid "File metadata"
 msgstr ""
 
-#: common_functions.php:4069
+#: common_functions.php:4071
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr ""
 
-#: common_functions.php:4070
+#: common_functions.php:4072
 msgid "Show title"
 msgstr ""
 
-#: common_functions.php:4080
+#: common_functions.php:4082
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr ""
 
-#: common_functions.php:4081
+#: common_functions.php:4083
 msgid "Show comment"
 msgstr ""
 
-#: common_functions.php:4090
+#: common_functions.php:4092
 msgid "The participant cannot upload a single file larger than this size"
 msgstr ""
 
-#: common_functions.php:4091
+#: common_functions.php:4093
 msgid "Maximum file size allowed (in KB)"
 msgstr ""
 
-#: common_functions.php:4099
+#: common_functions.php:4101
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr ""
 
-#: common_functions.php:4100
+#: common_functions.php:4102
 msgid "Max number of files"
 msgstr ""
 
-#: common_functions.php:4108
+#: common_functions.php:4110
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
-#: common_functions.php:4109
+#: common_functions.php:4111
 msgid "Min number of files"
 msgstr ""
 
-#: common_functions.php:4117
+#: common_functions.php:4119
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: common_functions.php:4118
+#: common_functions.php:4120
 msgid "Allowed file types"
 msgstr ""
 
-#: common_functions.php:4125
+#: common_functions.php:4127
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr ""
 
-#: common_functions.php:4126
+#: common_functions.php:4128
 msgid "Randomization group name"
 msgstr ""
 
-#: common_functions.php:4140
+#: common_functions.php:4142
 msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
 msgstr ""
 
-#: common_functions.php:4141
+#: common_functions.php:4143
 msgid "Value range allows missing"
 msgstr ""
 
-#: common_functions.php:4329
+#: common_functions.php:4331
 msgid "Version"
 msgstr ""
 
-#: common_functions.php:4338
+#: common_functions.php:4340
 msgid "Online Manual"
 msgstr ""
 
-#: common_functions.php:4341
+#: common_functions.php:4343
 msgid "Support this project - Donate to "
 msgstr ""
 
-#: common_functions.php:4344
+#: common_functions.php:4346
 msgid "Visit our website!"
 msgstr ""
 
-#: common_functions.php:4459
+#: common_functions.php:4461
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
-#: common_functions.php:4587
+#: common_functions.php:4589
 msgid "SMTP debug output:"
 msgstr ""
 
-#: common_functions.php:4731
+#: common_functions.php:4733
 msgid "SQL command failed: %s Reason: %s"
 msgstr ""
 
-#: common_functions.php:6245
+#: common_functions.php:6247
 msgid "Token code"
 msgstr ""
 
-#: common_functions.php:6246
+#: common_functions.php:6248
 msgid "Language code"
 msgstr ""
 
-#: common_functions.php:6247
+#: common_functions.php:6249
 msgid "Invitation sent date"
 msgstr ""
 
-#: common_functions.php:6248
+#: common_functions.php:6250
 msgid "Last Reminder sent date"
 msgstr ""
 
-#: common_functions.php:6249
+#: common_functions.php:6251
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: common_functions.php:6271
+#: common_functions.php:6273
 msgid "Attribute %s"
 msgstr ""
 
