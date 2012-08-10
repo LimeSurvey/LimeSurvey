@@ -2992,14 +2992,14 @@ function getSavedCount($surveyid)
 function GetBaseLanguageFromSurveyID($surveyid)
 {
     static $cache = array();
-    global $connect;
+    global $connect,$defaultlang;
     $surveyid=(int)($surveyid);
     if (!isset($cache[$surveyid])) {
         $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
         $surveylanguage = $connect->GetOne($query); //Checked
         if (is_null($surveylanguage))
         {
-            $surveylanguage='en';
+            $surveylanguage=$defaultlang;
         }
         $cache[$surveyid] = $surveylanguage;
     } else {
@@ -3044,16 +3044,16 @@ function SetSurveyLanguage($surveyid, $language)
     if (isset($surveyid) && $surveyid>0)
     {
         // see if language actually is present in survey
-        $query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-        $result = db_execute_assoc($query); //Checked
-        while ($result && ($row=$result->FetchRow())) {
-            $additional_languages = $row['additional_languages'];
-            $default_language = $row['language'];
-        }
-
-        if (!isset($language) || ($language=='')
-        || (isset($additional_languages) && strpos($additional_languages, $language) === false)
-        || (isset($default_language) && $default_language != $language)
+#        $query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+#        $result = db_execute_assoc($query); //Checked
+#        while ($result && ($row=$result->FetchRow())) {
+#            $additional_languages = $row['additional_languages'];
+#            $default_language = $row['language'];
+#        }
+        $default_language=GetBaseLanguageFromSurveyID($surveyid);
+        $additional_languages=GetAdditionalLanguagesFromSurveyID($surveyid);
+        if  ( !isset($language) || ($language=='')
+        || !( in_array($language,$additional_languages) || $language==$default_language)
         )
         {
             // Language not supported, fall back to survey's default language
