@@ -1100,7 +1100,7 @@ class SurveyAdmin extends Survey_Common_Action
             $esrow['refurl'] = 'N';
             $esrow['tokenanswerspersistence'] = 'N';
             $esrow['alloweditaftercompletion'] = 'N';
-            $esrow['assesments'] = 'N';
+            $esrow['assessments'] = 'N';
             $esrow['startdate'] = '';
             $esrow['savetimings'] = 'N';
             $esrow['expires'] = '';

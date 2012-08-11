@@ -2175,7 +2175,7 @@
 
                 // assessment_value
                 // TODO?  How does it work?
-                // The assesment value (referenced how?) = count(sq1,...,sqN) * assessment_value
+                // The assessment value (referenced how?) = count(sq1,...,sqN) * assessment_value
                 // Since there are easy work-arounds to this, skipping it for now
 
                 // preg - a PHP Regular Expression to validate text input fields
