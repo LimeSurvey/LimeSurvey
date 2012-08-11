@@ -240,7 +240,7 @@ function db_upgrade($oldversion) {
         // copy any valid codes from code field to assessment field
         modify_database("","update [prefix_answers] set [assessment_value]=CAST([code] as int)");// no output here is intended
         modify_database("","update [prefix_labels] set [assessment_value]=CAST([code] as int)");// no output here is intended
-        // activate assessment where assesment rules exist
+        // activate assessment where assessment rules exist
         modify_database("","update [prefix_surveys] set [assessments]='Y' where [sid] in (SELECT [sid] FROM [prefix_assessments] group by [sid])"); echo $modifyoutput; flush();ob_flush();
         // add language field to assessment table
         modify_database("","ALTER TABLE [prefix_assessments] ADD [language] varchar(20) NOT NULL default 'en'"); echo $modifyoutput; flush();ob_flush();
