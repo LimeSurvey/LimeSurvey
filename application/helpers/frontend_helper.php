@@ -2827,23 +2827,16 @@ function SetSurveyLanguage($surveyid, $language)
 
     if (isset($surveyid) && $surveyid>0)
     {
-        // see if language actually is present in survey
-        $result = Survey::model()->findAll('sid = :sid', array(':sid' => $surveyid));
-
-        foreach ($result as $row) {//while ($result && ($row=$result->FetchRow())) {)
-            $additional_languages = $row->additional_languages;
-            $default_language = $row->language;
-        }
-
-        if (!isset($language) || ($language=='') || (isset($additional_languages) && strpos($additional_languages, $language) === false)
-        or (isset($default_language) && $default_language == $language)
-        ) {
-            // Language not supported, or default language for survey, fall back to survey's default language
-            $_SESSION['survey_'.$surveyid]['s_lang'] = $default_language;
-            //echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
+        $default_survey_language= Survey::model()->findByPk($surveyid)->language;
+        $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
+        if (!isset($language) || ($language=='')
+        || !( in_array($language,$additional_survey_languages) || $language==$default_survey_language)
+        )
+        {
+            // Language not supported, fall back to survey's default language
+            $_SESSION['survey_'.$surveyid]['s_lang'] = $default_survey_language;
         } else {
             $_SESSION['survey_'.$surveyid]['s_lang'] =  $language;
-            //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
         }
         Yii::import('application.libraries.Limesurvey_lang', true);
         $clang = new limesurvey_lang($_SESSION['survey_'.$surveyid]['s_lang']);
