@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-10 22:00:34+00:00\n"
+"POT-Creation-Date: 2012-08-11 22:00:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -597,7 +597,7 @@ msgstr ""
 #: admin/assessments.php:173 admin/editsurveysettings.php:137
 #: admin/html.php:711 admin/html.php:1124 admin/labels.php:328
 #: admin/questiongrouphandling.php:58 admin/questiongrouphandling.php:144
-#: admin/questiongrouphandling.php:162 qanda.php:2697 uploader.php:95
+#: admin/questiongrouphandling.php:162 qanda.php:2698 uploader.php:95
 msgid "Title"
 msgstr ""
 
@@ -1050,8 +1050,8 @@ msgstr ""
 #: common_functions.php:3818 common_functions.php:3844
 #: common_functions.php:3879 common_functions.php:3945
 #: common_functions.php:3955 common_functions.php:4069
-#: common_functions.php:4080 common_functions.php:4140 qanda.php:3769
-#: qanda.php:4191 qanda.php:4230
+#: common_functions.php:4080 common_functions.php:4140 qanda.php:3770
+#: qanda.php:4192 qanda.php:4231
 msgid "Yes"
 msgstr ""
 
@@ -1063,7 +1063,7 @@ msgstr ""
 #: admin/results.php:232 admin/results.php:361 admin/statistics.php:997
 #: admin/statistics_function.php:1590
 #: classes/expressions/LimeExpressionManager.php:2828 common_functions.php:1922
-#: qanda.php:4192 qanda.php:4237
+#: qanda.php:4193 qanda.php:4238
 msgid "Uncertain"
 msgstr ""
 
@@ -1118,8 +1118,8 @@ msgstr ""
 #: common_functions.php:3829 common_functions.php:3843
 #: common_functions.php:3878 common_functions.php:3944
 #: common_functions.php:3954 common_functions.php:4068
-#: common_functions.php:4079 common_functions.php:4139 qanda.php:3776
-#: qanda.php:4193 qanda.php:4245
+#: common_functions.php:4079 common_functions.php:4139 qanda.php:3777
+#: qanda.php:4194 qanda.php:4246
 msgid "No"
 msgstr ""
 
@@ -1130,7 +1130,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:236 admin/results.php:353
 #: admin/statistics.php:1047 admin/statistics_function.php:1607
 #: classes/expressions/LimeExpressionManager.php:2831 common_functions.php:1928
-#: qanda.php:4339 qanda.php:4382
+#: qanda.php:4340 qanda.php:4383
 msgid "Increase"
 msgstr ""
 
@@ -1141,7 +1141,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:237 admin/results.php:354
 #: admin/statistics.php:1052 admin/statistics_function.php:1608
 #: classes/expressions/LimeExpressionManager.php:2832 common_functions.php:1930
-#: qanda.php:4340 qanda.php:4393
+#: qanda.php:4341 qanda.php:4394
 msgid "Same"
 msgstr ""
 
@@ -1152,7 +1152,7 @@ msgstr ""
 #: admin/printablesurvey.php:1038 admin/results.php:238 admin/results.php:355
 #: admin/statistics.php:1057 admin/statistics_function.php:1609
 #: classes/expressions/LimeExpressionManager.php:2833 common_functions.php:1929
-#: qanda.php:4341 qanda.php:4405
+#: qanda.php:4342 qanda.php:4406
 msgid "Decrease"
 msgstr ""
 
@@ -1173,11 +1173,11 @@ msgstr ""
 #: admin/statistics_function.php:2772 common_functions.php:1906
 #: common_functions.php:1914 common_functions.php:5498
 #: common_functions.php:5503 qanda.php:926 qanda.php:1455 qanda.php:1732
-#: qanda.php:1836 qanda.php:1891 qanda.php:3785 qanda.php:3830 qanda.php:3919
-#: qanda.php:3983 qanda.php:4072 qanda.php:4118 qanda.php:4196 qanda.php:4262
-#: qanda.php:4344 qanda.php:4422 qanda.php:4523 qanda.php:4545 qanda.php:4613
-#: qanda.php:4744 qanda.php:5513 qanda.php:5514 qanda.php:5799 qanda.php:5874
-#: qanda.php:5975 qanda.php:6175 qanda.php:6229
+#: qanda.php:1836 qanda.php:1891 qanda.php:3786 qanda.php:3831 qanda.php:3920
+#: qanda.php:3984 qanda.php:4073 qanda.php:4119 qanda.php:4197 qanda.php:4263
+#: qanda.php:4345 qanda.php:4423 qanda.php:4524 qanda.php:4546 qanda.php:4614
+#: qanda.php:4745 qanda.php:5514 qanda.php:5515 qanda.php:5800 qanda.php:5875
+#: qanda.php:5976 qanda.php:6176 qanda.php:6230
 msgid "No answer"
 msgstr ""
 
@@ -1205,7 +1205,7 @@ msgstr ""
 #: admin/results.php:335 admin/statistics.php:806
 #: admin/statistics_function.php:1711
 #: classes/expressions/LimeExpressionManager.php:2819 common_functions.php:1913
-#: qanda.php:3813
+#: qanda.php:3814
 msgid "Female"
 msgstr ""
 
@@ -1217,7 +1217,7 @@ msgstr ""
 #: admin/results.php:334 admin/statistics.php:812
 #: admin/statistics_function.php:1712
 #: classes/expressions/LimeExpressionManager.php:2818 common_functions.php:1912
-#: qanda.php:3821
+#: qanda.php:3822
 msgid "Male"
 msgstr ""
 
@@ -1237,7 +1237,7 @@ msgstr ""
 #: common_functions.php:3749 common_functions.php:3907
 #: common_functions.php:4088 common_functions.php:4097
 #: common_functions.php:4106 common_functions.php:4115 qanda.php:1698
-#: qanda.php:2338 qanda.php:2576
+#: qanda.php:2338 qanda.php:2577
 msgid "Other"
 msgstr ""
 
@@ -1419,8 +1419,8 @@ msgstr ""
 #: admin/statistics_function.php:2188 admin/statistics_function.php:2197
 #: admin/statistics_function.php:2202 admin/statistics_function.php:2292
 #: admin/statistics_function.php:2295 admin/statistics_function.php:2303
-#: admin/statistics_function.php:2308 qanda.php:1177 qanda.php:3400
-#: qanda.php:3486 qanda.php:3579 qanda.php:3667 qanda.php:3735
+#: admin/statistics_function.php:2308 qanda.php:1177 qanda.php:3401
+#: qanda.php:3487 qanda.php:3580 qanda.php:3668 qanda.php:3736
 msgid "Answer"
 msgstr ""
 
@@ -1748,7 +1748,7 @@ msgstr ""
 #: admin/dataentry.php:2033 admin/dataentry.php:2066 admin/dataentry.php:2305
 #: admin/dataentry.php:2619 admin/dataentry.php:2634 admin/dataentry.php:2655
 #: admin/dataentry.php:2676 admin/dataentry.php:2696 admin/dataentry.php:2856
-#: qanda.php:1469 qanda.php:4724
+#: qanda.php:1469 qanda.php:4725
 msgid "Please choose"
 msgstr ""
 
@@ -1764,8 +1764,8 @@ msgstr ""
 msgid "Your Ranking"
 msgstr ""
 
-#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3401
-#: qanda.php:3405
+#: admin/dataentry.php:1106 admin/dataentry.php:2474 qanda.php:3402
+#: qanda.php:3406
 msgid "Only numbers may be entered in this field"
 msgstr ""
 
@@ -1829,13 +1829,13 @@ msgstr ""
 #: common_functions.php:700 common_functions.php:1311 common_functions.php:1336
 #: common_functions.php:1411 common_functions.php:4833
 #: common_functions.php:4882 common_functions.php:4918
-#: common_functions.php:4954 qanda.php:1253 qanda.php:1431 qanda.php:6155
-#: qanda.php:6209
+#: common_functions.php:4954 qanda.php:1253 qanda.php:1431 qanda.php:6156
+#: qanda.php:6210
 msgid "Please choose..."
 msgstr ""
 
 #: admin/dataentry.php:2069 common_functions.php:2563 common_functions.php:2780
-#: qanda.php:2698 uploader.php:96
+#: qanda.php:2699 uploader.php:96
 msgid "Comment"
 msgstr ""
 
@@ -5582,8 +5582,8 @@ msgstr ""
 msgid "Please enter a date:"
 msgstr ""
 
-#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2559
-#: qanda.php:2560 qanda.php:2592
+#: admin/printablesurvey.php:651 admin/printablesurvey.php:653 qanda.php:2560
+#: qanda.php:2561 qanda.php:2593
 msgid "Make a comment on your choice here:"
 msgstr ""
 
@@ -5610,7 +5610,7 @@ msgstr ""
 #: admin/printablesurvey.php:758
 #: classes/expressions/LimeExpressionManager.php:2952
 #: classes/expressions/LimeExpressionManager.php:5510 qanda.php:1290
-#: qanda.php:1590 qanda.php:2185 qanda.php:2482
+#: qanda.php:1590 qanda.php:2185 qanda.php:2483
 msgid "Other:"
 msgstr ""
 
@@ -10956,51 +10956,51 @@ msgstr ""
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr ""
 
-#: qanda.php:2683
+#: qanda.php:2684
 msgid "Upload files"
 msgstr ""
 
-#: qanda.php:2695
+#: qanda.php:2696
 msgid "Upload your files"
 msgstr ""
 
-#: qanda.php:2696
+#: qanda.php:2697
 msgid "Return to survey"
 msgstr ""
 
-#: qanda.php:2699
+#: qanda.php:2700
 msgid "File name"
 msgstr ""
 
-#: qanda.php:2874 qanda.php:3133 qanda.php:4203 qanda.php:6025
+#: qanda.php:2875 qanda.php:3134 qanda.php:4204 qanda.php:6026
 msgid "Error: This question has no answers."
 msgstr ""
 
-#: qanda.php:3283
+#: qanda.php:3284
 msgid "Only numbers may be entered in these fields"
 msgstr ""
 
-#: qanda.php:3294
+#: qanda.php:3295
 msgid "Remaining: "
 msgstr ""
 
-#: qanda.php:3301
+#: qanda.php:3302
 msgid "Total: "
 msgstr ""
 
-#: qanda.php:3570 qanda.php:3571
+#: qanda.php:3571 qanda.php:3572
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: qanda.php:4768 qanda.php:5146 qanda.php:5480 qanda.php:5627 qanda.php:6255
+#: qanda.php:4769 qanda.php:5147 qanda.php:5481 qanda.php:5628 qanda.php:6256
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: qanda.php:5397
+#: qanda.php:5398
 msgid "..."
 msgstr ""
 
-#: qanda.php:5621
+#: qanda.php:5622
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
