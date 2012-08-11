@@ -2404,7 +2404,8 @@ function do_multiplechoice($ia)
         }
         $answer .= $startitem;
         $answer .= $hiddenfield.'
-        <input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox" style="display:none"';// othercbox can be not display, because only input text goes to database
+        <input class="checkbox other-checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
+        // othercbox can be not display, because only input text goes to database
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])!='')
         {

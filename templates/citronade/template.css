@@ -718,7 +718,10 @@ table.rank input{border:1px solid #999}
 {
 	margin-left:-30px;vertical-align: middle;
 }
-
+.multiple-opt .answers-wrapper ul li input.other-checkbox
+{
+	visibility:hidden;
+}
 @media screen and (max-width: 640px) {
 	.multiple-opt .answers-wrapper ul li
 	, .list-radio .answers-wrapper ul li
