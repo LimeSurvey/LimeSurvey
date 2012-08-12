@@ -42,7 +42,6 @@ function getSurveyDefaultSettings()
     'refurl'                   => 'N',
     'tokenanswerspersistence'  => 'N',
     'alloweditaftercompletion' => 'N',
-    'assessments'               => 'N',
     'startdate'                => '',
     'savetimings'              => 'N',
     'expires'                  => '',
