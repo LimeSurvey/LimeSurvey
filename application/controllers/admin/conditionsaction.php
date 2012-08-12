@@ -22,9 +22,9 @@
 */
 class conditionsaction extends Survey_Common_Action {
 
-    function index($subaction, $surveyid=null, $gid=null, $qid=null)
+    function index($subaction, $iSurveyID=null, $gid=null, $qid=null)
     {
-        $surveyid = sanitize_int($surveyid);
+        $iSurveyID = sanitize_int($iSurveyID);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
 
@@ -35,7 +35,7 @@ class conditionsaction extends Survey_Common_Action {
         if( !empty($_POST['subaction']) ) $subaction=Yii::app()->request->getPost('subaction');
 
         //BEGIN Sanitizing POSTed data
-        if ( !isset($surveyid) ) { $surveyid = returnGlobal('sid'); }
+        if ( !isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
         if ( !isset($qid) ) { $qid = returnGlobal('qid'); }
         if ( !isset($gid) ) { $gid = returnGlobal('gid'); }
         if ( !isset($p_scenario)) {$p_scenario=returnGlobal('scenario');}
@@ -120,7 +120,7 @@ class conditionsaction extends Survey_Common_Action {
         $br = CHtml::openTag('br /');
 
         //MAKE SURE THAT THERE IS A SID
-        if (!isset($surveyid) || !$surveyid)
+        if (!isset($iSurveyID) || !$iSurveyID)
         {
             $conditionsoutput = $clang->gT("You have not selected a survey").str_repeat($br, 2);
             $conditionsoutput .= CHtml::submitButton($clang->gT("Main admin screen"), array(
@@ -129,6 +129,50 @@ class conditionsaction extends Survey_Common_Action {
             safeDie($conditionsoutput);
             return;
         }
+
+
+
+        if (isset($p_subaction) && $p_subaction == "resetsurveylogic")
+        {
+
+            $clang = $this->getController()->lang;
+            $resetsurveylogicoutput = $br;
+            $resetsurveylogicoutput .= CHtml::openTag('table', array('class'=>'alertbox'));
+            $resetsurveylogicoutput .= CHtml::openTag('tr').CHtml::openTag('td', array('colspan'=>'2'));
+            $resetsurveylogicoutput .= CHtml::tag('font', array('size'=>'1'), CHtml::tag('strong', array(), $clang->gT("Reset Survey Logic")));
+            $resetsurveylogicoutput .= CHtml::closeTag('td').CHtml::closeTag('tr');
+
+            if (!isset($_GET['ok']))
+            {
+                $button_yes = CHtml::submitButton($clang->gT("Yes"), array(
+                'onclick' => "window.open('".$this->getController()->createUrl("admin/conditions/index/subaction/resetsurveylogic/surveyid/$iSurveyID")."?ok=Y"."', '_top')"
+                ));
+                $button_cancel = CHtml::submitButton($clang->gT("Cancel"), array(
+                'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/view/surveyid/$iSurveyID")."', '_top')"
+                ));
+
+                $messagebox_content = $clang->gT("You are about to delete all conditions on this survey's questions")."($iSurveyID)"
+                . $br . $clang->gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")
+                . $br . $clang->gT("Continue?")
+                . $br . $button_yes . $button_cancel;
+
+                $this->_renderWrappedTemplate('conditions', array('message' => array(
+                'title' => $clang->gT("Warning"),
+                'message' => $messagebox_content
+                )));
+                exit;
+            }
+            else
+            {
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+                Conditions::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
+                Yii::app()->session['flashmessage']=$clang->gT("All conditions in this survey have been deleted.");
+                $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/surveyid/'.$iSurveyID));
+
+            }
+        }
+
+
 
         // MAKE SURE THAT THERE IS A QID
         if ( !isset($qid) || !$qid )
@@ -161,54 +205,6 @@ class conditionsaction extends Survey_Common_Action {
 
         //BEGIN PROCESS ACTIONS
         // ADD NEW ENTRY IF THIS IS AN ADD
-
-        if (isset($p_subaction) && $p_subaction == "resetsurveylogic")
-        {
-
-            $clang = $this->getController()->lang;
-            $resetsurveylogicoutput = $br;
-            $resetsurveylogicoutput .= CHtml::openTag('table', array('class'=>'alertbox'));
-            $resetsurveylogicoutput .= CHtml::openTag('tr').CHtml::openTag('td', array('colspan'=>'2'));
-            $resetsurveylogicoutput .= CHtml::tag('font', array('size'=>'1'), CHtml::tag('strong', array(), $clang->gT("Reset Survey Logic")));
-            $resetsurveylogicoutput .= CHtml::closeTag('td').CHtml::closeTag('tr');
-
-            if (!isset($_GET['ok']))
-            {
-                $this->getController()->_getAdminHeader();
-                $button_yes = CHtml::submitButton($clang->gT("Yes"), array(
-                'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/resetsurveylogic/surveyid/$surveyid")."?ok=Y"."', '_top')"
-                ));
-                $button_cancel = CHtml::submitButton($clang->gT("Cancel"), array(
-                'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/view/surveyid/$surveyid")."', '_top')"
-                ));
-
-                $messagebox_content = $clang->gT("You are about to delete all conditions on this survey's questions")."($surveyid)"
-                . $br . $clang->gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")
-                . $br . $button_yes . $button_cancel;
-
-                $this->_renderWrappedTemplate('conditions', array('message' => array(
-                'title' => $clang->gT("Warning"),
-                'message' => $messagebox_content
-                )));
-                exit;
-            }
-            else
-            {
-                LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
-                Conditions::model()->deleteRecords('qid in (select qid from {{questions}} where sid=$surveyid)');
-
-                $resetsurveylogicoutput .= CHtml::openTag('tr');
-                $resetsurveylogicoutput .= CHtml::openTag('tr', array('align'=>'center')).$br;
-                $resetsurveylogicoutput .= CHtml::openTag('strong');
-                $resetsurveylogicoutput .= $clang->gT("All conditions in this survey have been deleted.").str_repeat($br, 2);
-                $resetsurveylogicoutput .= submitButton($clang->gT("Continue"), array(
-                'onclick' => "window.open('".$this->getController()->createUrl('/admin/survey/view/surveyid/'.$surveyid)."', '_top')"
-                ));
-                $resetsurveylogicoutput .= CHtml::closeTag('strong').CHtml::closeTag('td');
-                $resetsurveylogicoutput .= CHtml::closeTag('tr');
-                $aData['conditionsoutput'] = $resetsurveylogicoutput;
-            }
-        }
 
         if (isset($p_subaction) && $p_subaction == "insertcondition")
         {
@@ -511,7 +507,7 @@ class conditionsaction extends Survey_Common_Action {
                     );
                 }
             }
-            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid); // do for whole survey, since don't know which questions affected.
+            LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID); // do for whole survey, since don't know which questions affected.
         }
         //END PROCESS ACTIONS
 
@@ -521,10 +517,10 @@ class conditionsaction extends Survey_Common_Action {
         //BEGIN: GATHER INFORMATION
         // 1: Get information for this question
         if (!isset($qid)) { $qid = returnGlobal('qid'); }
-        if (!isset($surveyid)) { $surveyid = returnGlobal('sid'); }
-        $thissurvey = getSurveyInfo($surveyid);
+        if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
+        $thissurvey = getSurveyInfo($iSurveyID);
 
-        $qresult = Questions::model()->with('groups')->findByAttributes(array('qid' => $qid, 'parent_qid' => 0, 'language' => Survey::model()->findByPk($surveyid)->language));
+        $qresult = Questions::model()->with('groups')->findByAttributes(array('qid' => $qid, 'parent_qid' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language));
         $questiongroupname = $qresult->groups->group_name;
         $questiontitle = $qresult['title'];
         $questiontext = $qresult['question'];
@@ -538,9 +534,9 @@ class conditionsaction extends Survey_Common_Action {
         $qresult = Questions::model()->with(array(
         'groups' => array(
         'condition' => 'groups.language = :lang',
-        'params' => array(':lang' => Survey::model()->findByPk($surveyid)->language),
+        'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
         ),
-        ))->findAllByAttributes(array('parent_qid' => 0, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language));
+        ))->findAllByAttributes(array('parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
         $qrows = array();
         foreach ($qresult as $k => $v)
             $qrows[$k] = array_merge($v->attributes, $v->groups->attributes);
@@ -590,9 +586,9 @@ class conditionsaction extends Survey_Common_Action {
                 $result = Questions::model()->with(array(
                 'groups' => array(
                 'condition' => 'groups.language = :lang',
-                'params' => array(':lang' => Survey::model()->findByPk($surveyid)->language),
+                'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
                 ),
-                ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language));
+                ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
 
                 $thiscount = count($result);
 
@@ -620,9 +616,9 @@ class conditionsaction extends Survey_Common_Action {
                 $result = Questions::model()->with(array(
                 'groups' => array(
                 'condition' => 'groups.language = :lang',
-                'params' => array(':lang' => Survey::model()->findByPk($surveyid)->language),
+                'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
                 ),
-                ))->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language));
+                ))->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
 
                 $postcount = count($result);
 
@@ -671,7 +667,7 @@ class conditionsaction extends Survey_Common_Action {
                 $rows['type'] == "H"
                 )
                 {
-                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => Survey::model()->findByPk($surveyid)->language), array('order' => 'question_order ASC'));
+                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order ASC'));
 
                     foreach ($aresult as $arows)
                     {
@@ -710,7 +706,7 @@ class conditionsaction extends Survey_Common_Action {
 
                                 $fresult = Answers::model()->findAllByAttributes(array(
                                 'qid' => $rows['qid'],
-                                "language" => Survey::model()->findByPk($surveyid)->language,
+                                "language" => Survey::model()->findByPk($iSurveyID)->language,
                                 'scale_id' => 0,
                                 ), array('order' => 'sortorder, code'));
 
@@ -759,13 +755,13 @@ class conditionsaction extends Survey_Common_Action {
 
                     $fquery = "SELECT sq.*, q.other"
                     ." FROM {{questions sq}}, {{questions q}}"
-                    ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
+                    ." WHERE sq.sid=$iSurveyID AND sq.parent_qid=q.qid "
                     . "AND q.language=:lang"
                     ." AND sq.language=:lang"
                     ." AND q.qid=:qid
                     AND sq.scale_id=0
                     ORDER BY sq.question_order";
-                    $sLanguage=Survey::model()->findByPk($surveyid)->language;
+                    $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
                     $y_axis_db = Yii::app()->db->createCommand($fquery)
                         ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
@@ -774,7 +770,7 @@ class conditionsaction extends Survey_Common_Action {
                     // Get the X-Axis
                     $aquery = "SELECT sq.*
                     FROM {{questions q}}, {{questions sq}}
-                    WHERE q.sid=$surveyid
+                    WHERE q.sid=$iSurveyID
                     AND sq.parent_qid=q.qid
                     AND q.language=:lang
                     AND sq.language=:lang
@@ -812,7 +808,7 @@ class conditionsaction extends Survey_Common_Action {
                 } //if A,B,C,E,F,H
                 elseif ($rows['type'] == "1") //Multi Scale
                 {
-                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => Survey::model()->findByPk($surveyid)->language), array('order' => 'question_order desc'));
+                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order desc'));
 
                     foreach ($aresult as $arows)
                     {
@@ -828,7 +824,7 @@ class conditionsaction extends Survey_Common_Action {
                         $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
 
                         // first label
-                        $lresult = Answers::model()->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0, 'language' => Survey::model()->findByPk($surveyid)->language), array('order' => 'sortorder, answer'));
+                        $lresult = Answers::model()->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'sortorder, answer'));
                         foreach ($lresult as $lrows)
                         {
                             $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
@@ -838,7 +834,7 @@ class conditionsaction extends Survey_Common_Action {
                         $lresult = Answers::model()->findAllByAttributes(array(
                         'qid' => $rows['qid'],
                         'scale_id' => 1,
-                        'language' => Survey::model()->findByPk($surveyid)->language,
+                        'language' => Survey::model()->findByPk($iSurveyID)->language,
                         ), array('order' => 'sortorder, answer'));
 
                         foreach ($lresult as $lrows)
@@ -858,7 +854,7 @@ class conditionsaction extends Survey_Common_Action {
                 {
                     $aresult = Questions::model()->findAllByAttributes(array(
                     "parent_qid" => $rows['qid'],
-                    "language" =>Survey::model()->findByPk($surveyid)->language,
+                    "language" =>Survey::model()->findByPk($iSurveyID)->language,
                     ), array('order' => 'question_order desc'));
 
                     foreach ($aresult as $arows)
@@ -880,7 +876,7 @@ class conditionsaction extends Survey_Common_Action {
                     $aresult = Answers::model()->findAllByAttributes(array(
                     "qid" => $rows['qid'],
                     "scale_id" => 0,
-                    "language" => Survey::model()->findByPk($surveyid)->language,
+                    "language" => Survey::model()->findByPk($iSurveyID)->language,
                     ), array('order' => 'sortorder, answer'));
 
                     $acount = count($aresult);
@@ -912,7 +908,7 @@ class conditionsaction extends Survey_Common_Action {
 
                     $aresult = Questions::model()->findAllByAttributes(array(
                     "parent_qid" => $rows['qid'],
-                    "language" => Survey::model()->findByPk($surveyid)->language,
+                    "language" => Survey::model()->findByPk($iSurveyID)->language,
                     ), array('order' => 'question_order desc'));
 
                     foreach ($aresult as $arows)
@@ -981,7 +977,7 @@ class conditionsaction extends Survey_Common_Action {
                             $aresult = Answers::model()->findAllByAttributes(array(
                             'qid' => $rows['qid'],
                             'scale_id' => 0,
-                            'language' => Survey::model()->findByPk($surveyid)->language,
+                            'language' => Survey::model()->findByPk($iSurveyID)->language,
                             ), array('order' => 'sortorder, answer'));
 
                             foreach ($aresult as $arows)
@@ -1041,7 +1037,7 @@ class conditionsaction extends Survey_Common_Action {
             }
 
             $questionNavOptions .= CHtml::tag('option', array(
-            'value' => $this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+            'value' => $this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
             $questionselecter
             );
         }
@@ -1059,7 +1055,7 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         $questionNavOptions .= CHtml::tag('option', array(
-        'value'=>$this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
+        'value'=>$this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$gid/qid/$qid"),
         'selected'=>'selected'),
         $questiontitle .': '. $questiontextshort);
         $questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1079,7 +1075,7 @@ class conditionsaction extends Survey_Common_Action {
                 $questionselecter = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
             }
             $questionNavOptions .=  CHtml::tag('option', array(
-            'value' => $this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+            'value' => $this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
             $row['title'].':'.$questionselecter
             );
         }
@@ -1141,7 +1137,7 @@ class conditionsaction extends Survey_Common_Action {
         $aViewUrls = array();
 
         $aData['clang'] = $clang;
-        $aData['surveyid'] = $surveyid;
+        $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
         $aData['gid'] = $gid;
         $aData['imageurl'] = $imageurl;
@@ -1261,7 +1257,7 @@ class conditionsaction extends Survey_Common_Action {
                     ."AND c.scenario=:scenario "
                     ."AND c.cfieldname NOT LIKE '{%' " // avoid catching SRCtokenAttr conditions
                     ."ORDER BY g.group_order, q.question_order, c.cfieldname";
-                    $sLanguage=Survey::model()->findByPk($surveyid)->language;
+                    $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
                     $result=Yii::app()->db->createCommand($query)
                     ->bindValue(":scenario", $scenarionr['scenario'])
                     ->bindValue(":qid", $qid, PDO::PARAM_INT)
@@ -1335,7 +1331,7 @@ class conditionsaction extends Survey_Common_Action {
                             }
 
                             $aViewUrls['output'] .= "\t<tr class='{$markcidstyle}'>\n"
-                            ."\t<td colspan='2'><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."'>\n"
+                            ."\t<td colspan='2'><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/index/subaction/$subaction/surveyid/$iSurveyID/gid/$gid/qid/$qid/")."'>\n"
                             ."<table>\n"
                             ."\t<tr>\n";
 
@@ -1354,7 +1350,7 @@ class conditionsaction extends Survey_Common_Action {
                             if ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
                             {
                                 $leftOperandType = 'tokenattr';
-                                $aTokenAttrNames=getTokenFieldsAndNames($surveyid);
+                                $aTokenAttrNames=getTokenFieldsAndNames($iSurveyID);
                                 if (count($aTokenAttrNames) != 0)
                                 {
                                     $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
@@ -1427,7 +1423,7 @@ class conditionsaction extends Survey_Common_Action {
                             elseif ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
                             {
                                 $rightOperandType = 'tokenAttr';
-                                $aTokenAttrNames=getTokenFieldsAndNames($surveyid);
+                                $aTokenAttrNames=getTokenFieldsAndNames($iSurveyID);
                                 if (count($aTokenAttrNames) != 0)
                                 {
                                     $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
@@ -1566,7 +1562,7 @@ class conditionsaction extends Survey_Common_Action {
         if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
         {
             $aViewUrls['output'] .= "<tr class=''><td colspan='3'>\n"
-            ."<form action='".$this->getController()->createUrl("admin/conditions/index/subaction/copyconditions/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='copyconditions' id='copyconditions' method='post'>\n";
+            ."<form action='".$this->getController()->createUrl("admin/conditions/index/subaction/copyconditions/surveyid/$iSurveyID/gid/$gid/qid/$qid/")."' name='copyconditions' id='copyconditions' method='post'>\n";
 
             $aViewUrls['output'] .= "<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
 
@@ -1615,7 +1611,7 @@ class conditionsaction extends Survey_Common_Action {
                 //        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){ prepareCopyconditions(); return true;} else { return false;}\" $disableCopyCondition/>\n"
                 ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"prepareCopyconditions(); return true;\" $disableCopyCondition/>\n"
                 ."<input type='hidden' name='subaction' value='copyconditions' />\n"
-                ."<input type='hidden' name='sid' value='$surveyid' />\n"
+                ."<input type='hidden' name='sid' value='$iSurveyID' />\n"
                 ."<input type='hidden' name='gid' value='$gid' />\n"
                 ."<input type='hidden' name='qid' value='$qid' />\n"
                 ."</div>\n";
@@ -1670,7 +1666,7 @@ class conditionsaction extends Survey_Common_Action {
         $subaction == "updatescenario" ||
         $subaction == "editthiscondition" || $subaction == "delete")
         {
-            $aViewUrls['output'] .= "<form action='".$this->getController()->createUrl("/admin/conditions/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='editconditions' id='editconditions' method='post'>\n";
+            $aViewUrls['output'] .= "<form action='".$this->getController()->createUrl("/admin/conditions/index/subaction/$subaction/surveyid/$iSurveyID/gid/$gid/qid/$qid/")."' name='editconditions' id='editconditions' method='post'>\n";
             if ($subaction == "editthiscondition" &&  isset($p_cid))
             {
                 $mytitle = $clang->gT("Edit condition");
@@ -1746,7 +1742,7 @@ class conditionsaction extends Survey_Common_Action {
 
             // Source token Tab
             $aViewUrls['output'] .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' size='".($qcount+1)."' >\n";
-            foreach (getTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
+            foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
             {
                 // Check to select
                 if (isset($p_csrctoken) && $p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}')
@@ -1874,7 +1870,7 @@ class conditionsaction extends Survey_Common_Action {
             // Token tab
             $aViewUrls['output'] .= "\t<div id='TOKENATTRS'>\n"
             ."\t\t<select name='tokenAttr' id='tokenAttr' size='7'>\n";
-            foreach (getTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
+            foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
             {
                 $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".HTMLEscape($tokenattrName)."</option>\n";
             }
@@ -1915,7 +1911,7 @@ class conditionsaction extends Survey_Common_Action {
             $aViewUrls['output'] .= "<div class='condition-tbl-full'>\n"
             ."\t<input type='reset' id='resetForm' value='".$clang->gT("Clear")."' />\n"
             ."\t<input type='submit' value='".$submitLabel."' />\n"
-            ."<input type='hidden' name='sid' value='$surveyid' />\n"
+            ."<input type='hidden' name='sid' value='$iSurveyID' />\n"
             ."<input type='hidden' name='gid' value='$gid' />\n"
             ."<input type='hidden' name='qid' value='$qid' />\n"
             ."<input type='hidden' name='subaction' value='$submitSubaction' />\n"
