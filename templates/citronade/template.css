@@ -359,8 +359,7 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 .form input[type=text],input.text,.answers-wrapper input.text,.answers-wrapper textarea, .answers-wrapper input[type=text]
 	{border:1px solid #999;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius:3px;}
 
-
-.mandatory .answers-wrapper textarea.empty,.mandatory  .answers-wrapper input[type=text].empty,
+.mandatory .answers-wrapper .text-item textarea.empty,.mandatory .answers-wrapper .text-item input[type=text].empty,
 .answers-wrapper textarea.error, .answers-wrapper input[type=text].error{
 	border:1px solid #944;color:#444;background-color:#FEF;
 }
@@ -372,16 +371,17 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 	border:1px solid #494;color:#444
 }
 .other .answers-wrapper textarea.good,.other .answers-wrapper input[type=text].good{
-	border:1px solid #999;color:#444
+	border:1px solid #494;color:#444
 }
 .answers-wrapper textarea.empty, .answers-wrapper input[type=text].empty{
 	border:1px solid #999;color:#444;background-color:#FFF;
 }
-.answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]{
-  background-color:#FFF;border-color:#EEE;
-}
-.answers-wrapper textarea.empty[disabled], .answers-wrapper input[type=text].empty[disabled]{
-	border:1px solid #EEE;color:#444;background-color:#FFF;
+  .answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]
+, .answers-wrapper input.text.good[disabled], .answers-wrapper input.good[type=text][disabled]
+, .answers-wrapper input.text.error[disabled], .answers-wrapper input.error[type=text][disabled]
+, .answers-wrapper textarea.empty[disabled], .answers-wrapper input[type=text].empty[disabled]
+{
+  background-color:#FFF;border-color:#EEE;color:#EEE;
 }
 
 .form input[type=text]:focus,input.text:focus,.answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
@@ -391,6 +391,9 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
   box-shadow: 1px 1px 3px #555;
 }
 
+.answers-wrapper input.checkbox[disabled],.answers-wrapper input.radio[disabled]{
+  opacity:0.3;
+}
 /* specific questions color and background*/
 table.question{border-color:#D5DBE7;}
 table.question tbody{border-color:#D5DBE7;}
@@ -718,7 +721,7 @@ table.rank input{border:1px solid #999}
 {
 	margin-left:-30px;vertical-align: middle;
 }
-.multiple-opt .answers-wrapper ul li input.other-checkbox
+.multiple-opt .answers-wrapper ul li.other-item input.checkbox
 {
 	visibility:hidden;
 }

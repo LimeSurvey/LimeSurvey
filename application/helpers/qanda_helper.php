@@ -2425,7 +2425,13 @@ function do_multiplechoice($ia)
             }
             $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
         }
-        $answer .= "\" onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));'/>";
+#        $answer .= "\" onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));'/>";
+        $answer .="\" />";
+        $answer .="<script type='text/javascript'>\n";
+        $answer .="$('#answer{$myfname}').bind('keyup blur',function(){\n";
+        $answer .= " if ($.trim($(this).val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",true); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",false); }; $(\"#java{$myfname}\").val($(this).val());$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));\n";
+        $answer .="});\n";
+        $answer .="</script>\n";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         //        if ($maxansw > 0)
