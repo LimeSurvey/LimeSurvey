@@ -496,6 +496,11 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   display: inline-block;
   width: 85%;
 }
+.list-radio .answer li.other label,
+.list-with-comment .answer li.other label {
+  display: inline;
+  width:auto;
+}
 
 .list-radio .answer li input,
 .list-with-comment .answer li input {
@@ -594,6 +599,10 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 .multiple-opt .answer li label, .multiple-opt-comments .answer li .option label {
   display: inline-block;
   width: 85%;
+}
+.multiple-opt .answer li.other label, , .multiple-opt-comments .answer li.other .option label{
+  display: inline;
+  width: auto;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */

@@ -750,7 +750,11 @@ select {
   display: inline-block;
   width: 85%;
 }
-
+.list-radio .survey-question-answer li label,
+.list-with-comment .survey-question-answer li label {
+  display: inline;
+  width: auto;
+}
 .list-radio .survey-question-answer li input,
 .list-with-comment .survey-question-answer li input {
   vertical-align: top !important;
@@ -860,7 +864,10 @@ table.rank td.helptext {
 .multiple-opt-comments .survey-question-answer li .option label {
   width: 85%;
 }
-
+.multiple-opt .survey-question-answer li.other label, .multiple-opt-comments .survey-question-answer li.other .option label {
+  display: inline;
+  width: auto;
+}
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
 .multiple-opt-comments td.answer,.multiple-short-txt td.answer,.numeric-multi td.answer
   {
