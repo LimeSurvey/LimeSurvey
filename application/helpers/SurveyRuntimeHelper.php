@@ -933,6 +933,7 @@ END;
                 }
 
                 $qinfo = LimeExpressionManager::GetQuestionStatus($q->id);
+                $qqinfo = $qinfo['info']['q'];
                 $lastgrouparray = explode("X", $q->fieldname);
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                 $lastanswer = $q->fieldname;
@@ -951,12 +952,12 @@ END;
                 }
 
                 $n_q_display = '';
-                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*') //AJS
+                if ($qinfo['hidden'] && !$q->isEquation())
                 {
                     continue; // skip this one
                 }
 
-                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*')) //AJS
+                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $q->isEquation()))
                 {
                     $n_q_display = ' style="display: none;"';
                 }

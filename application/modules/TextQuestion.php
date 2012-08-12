@@ -28,11 +28,10 @@ abstract class TextQuestion extends QuestionModule
         return false;
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
         return array(
             'q' => $this,
-            'type' => $type,
             'qid' => $this->id,
             'qseq' => $this->questioncount,
             'gseq' => $this->groupcount,
@@ -67,6 +66,16 @@ abstract class TextQuestion extends QuestionModule
             'jsVarName' => 'java' . $this->surveyid . 'X' . $this->gid . 'X' . $this->id,
             'jsVarName_on' => $this->jsVarNameOn(),
             ));
+    }
+
+    public function getAdditionalValParts()
+    {
+        $valParts[] = "\n  if(isValidSum" . $this->id . "){\n";
+        $valParts[] = "    $('#totalvalue_" . $this->id . "').removeClass('error').addClass('good');\n";
+        $valParts[] = "  }\n  else {\n";
+        $valParts[] = "    $('#totalvalue_" . $this->id . "').removeClass('good').addClass('error');\n";
+        $valParts[] = "  }\n";
+        return $valParts;
     }
 }
 ?>

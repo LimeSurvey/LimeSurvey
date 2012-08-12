@@ -85,6 +85,12 @@ abstract class ArrayQuestion extends QuestionModule
         return $this->fieldname;
     }
 
+    public function getMandatoryTip()
+    {
+        $clang=Yii::app()->lang;
+        return $clang->gT('Please complete all parts').'.';
+    }
+
     public function compareField($sgqa, $sq)
     {
         return $sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment');

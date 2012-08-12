@@ -616,6 +616,61 @@ class NumberArrayQuestion extends ArrayQuestion
         return true;
     }
 
+    public function getMandatoryTip()
+    {
+        $clang=Yii::app()->lang;
+        $attributes = $this->getAttributesValues();
+        if ($attributes['multiflexible_checkbox'] == 1)
+        {
+            return $clang->gT('Please check at least one box per row').'.';
+        }
+        else
+        {
+            return $clang->gT('Please complete all parts').'.';
+        }
+    }
+
+
+    public function mandatoryViolation($relevantSQs, $unansweredSQs, $subsqs, $sgqas)
+    {
+        $clang=Yii::app()->lang;
+        $attributes = $this->getAttributesValues();
+        if ($attributes['multiflexible_checkbox'] == 1)
+        {
+            foreach ($subqs as $sq)
+            {
+                if (!isset($_SESSION['survey_' . $this->surveyid]['relevanceStatus'][$sq['rowdivid']]) || $_SESSION['survey_' . $this->surveyid]['relevanceStatus'][$sq['rowdivid']])
+                {
+                    $rowCount=0;
+                    $numUnanswered=0;
+                    foreach ($sgqas as $s)
+                    {
+                        if (strpos($s, $sq['rowdivid']) !== false)
+                        {
+                            ++$rowCount;
+                            if (array_search($s,$unansweredSQs) !== false) {
+                                ++$numUnanswered;
+                            }
+                        }
+                    }
+                    if ($rowCount > 0 && $rowCount == $numUnanswered)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (count($unansweredSQs) > 0)
+            {
+                return true; // TODO - what about 'other'?
+            }
+        }
+        
+        return false;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

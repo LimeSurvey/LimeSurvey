@@ -512,11 +512,10 @@ class ListQuestion extends QuestionModule
         return array_key_exists('other_numbers_only', $attributes) && $attributes['other_numbers_only'] == 1 && preg_match('/other$/',$this->fieldname);
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
         return array(
             'q' => $this,
-            'type' => $type,
             'qid' => $this->id,
             'qseq' => $this->questioncount,
             'gseq' => $this->groupcount,
@@ -625,6 +624,37 @@ class ListQuestion extends QuestionModule
                 return $answer;
             }
         }
+    }
+
+    public function getMandatoryTip()
+    {
+        $clang=Yii::app()->lang;
+        if ($this->other == 'Y')
+        {
+            $attributes = $this->getAttributeValues();
+            if (trim($attributes['other_replace_text']) != '') {
+                $othertext = trim($qattr['other_replace_text']);
+            }
+            else {
+                $othertext = $clang->gT('Other:');
+            }
+            return $clang->gT('Please check at least one item.') . "<br />\n".sprintf($clang->gT("If you choose '%s' you must provide a description."), $othertext);
+        }
+        else
+        {
+            return $clang->gT('Please check at least one item.');
+        }
+    }
+
+    public function getAdditionalValParts()
+    {
+        $othervar = 'answer' . $this->fieldname . 'text';
+        $valParts[] = "\n  if(isValidOtherComment" . $this->id . "){\n";
+        $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
+        $valParts[] = "  }\n  else {\n";
+        $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+        $valParts[] = "  }\n";
+        return $valParts;
     }
 
     public function availableAttributes($attr = false)

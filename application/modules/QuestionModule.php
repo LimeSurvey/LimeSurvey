@@ -328,13 +328,12 @@ abstract class QuestionModule
         return null;
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
         if (!is_null($this->getRowDivID()) || (isset($this->preg) && trim($this->preg) != ''))
         {
             return array(
                 'q' => $this,
-                'type' => $type,
                 'qid' => $this->id,
                 'qseq' => $this->questioncount,
                 'gseq' => $this->groupcount,
@@ -449,6 +448,26 @@ abstract class QuestionModule
     public function isEquation()
     {
         return false;
+    }
+
+    public function getMandatoryTip()
+    {
+        return '';
+    }
+
+    public function getAdditionalValParts()
+    {
+        return array();
+    }
+    
+    public function anyUnanswered($relevantSQs, $unansweredSQs)
+    {
+        return count($unansweredSQs) > 0;
+    }
+
+    public function mandatoryViolation($relevantSQs, $unansweredSQs, $subsqs, $sgqas)
+    {
+        return $this->anyUnanswered($relevantSQs, $unansweredSQs);
     }
 
     abstract public function availableAttributes($attr = false);

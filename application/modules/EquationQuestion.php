@@ -45,6 +45,11 @@ class EquationQuestion extends QuestionModule
         return true;
     }
 
+    public function mandatoryViolation($relevantSQs, $unansweredSQs, $subsqs, $sgqas)
+    {
+        return false;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hidden","numbers_only","page_break","public_statistics","scale_export");

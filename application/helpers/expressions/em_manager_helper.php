@@ -2426,7 +2426,7 @@
                 {
                     continue;   // not an SGQA value
                 }
-                $type = $fielddata['type'];
+                $type = $fielddata['type']; //AJS
                 $q->mandatory = $q->mandatory;
                 $fieldNameParts = explode('X',$q->fieldname);
                 $q->aid = (isset($q->aid) ? $q->aid : '');
@@ -2511,7 +2511,7 @@
                 $jsVarName_on = $q->jsVarNameOn();
                 $jsVarName = $q->jsVarName();
                 
-                $qInfo = $q->generateQuestionInfo($type);
+                $qInfo = $q->generateQuestionInfo();
                 if (!isset($q2subqInfo[$q->id]) && !is_null($qInfo)) {
                     $q2subqInfo[$q->id] = $qInfo;
                 }
@@ -2542,7 +2542,7 @@
                 'qcode'=>$varName,
                 'qseq'=>$q->questioncount,
                 'gseq'=>$q->groupcount,
-                'type'=>$type,
+                'type'=>$type, //AJS
                 'q'=>$q,
                 'sgqa'=>$q->fieldname,
                 'ansList'=>$ansList,
@@ -2563,11 +2563,10 @@
                 'gseq'=>$q->groupcount,
                 'jsResultVar_on'=>$jsVarName_on,
                 'jsResultVar'=>$jsVarName,
-                'type'=>$type,
                 'hidden'=>$hidden,
                 'gid'=>$q->gid,
                 'mandatory'=>$q->mandatory,
-                'eqn'=>(($type == '*') ? $question : ''),
+                'eqn'=>(($q->isEquation()) ? $question : ''),
                 'help'=>isset($q->help) ? $q->help : '',
                 'qtext'=>$q->text,    // $question,
                 'code'=>$varName,
@@ -2577,6 +2576,7 @@
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
                 'aid'=>$q->aid,
                 'sqid'=>$q->sqid,
+                'q'=>$q
                 );
 
                 $this->knownVars[$q->fieldname] = $varInfo_Code;
@@ -2595,17 +2595,11 @@
                 . "','sgqa':'" . $q->fieldname
                 . "','qid':" . $q->id
                 . ",'gid':" . $q->gid
-                //                . ",'mandatory':'" . $q->mandatory
-                //                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
-                . ",'type':'" . $type
-                //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
-                //                . "','readWrite':'" . $readWrite
-                //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
+                . ",'type':'" . $type //AJS Javascript!
                 . "','default':'" . (is_null($q->default) ? '' : $q->default)
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $q->groupcount
-                //                . ",'qseq':" . $q->questioncount
                 .$ansList;
 
                 if ($type == 'M' || $type == 'P')
@@ -2783,7 +2777,7 @@
                     $qid,
                     $gseq,
                     $rel['jsResultVar'],
-                    $rel['type'],
+                    $rel['q'],
                     $rel['hidden']
                     );
                 $_SESSION[$this->sessid]['relevanceStatus'][$qid] = $result;
@@ -2873,7 +2867,7 @@
         * @param <type> $hidden - whether question should always be hidden
         * @return <type>
         */
-        private function _ProcessRelevance($eqn,$questionNum=NULL,$gseq=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
+        private function _ProcessRelevance($eqn,$questionNum=NULL,$gseq=NULL,$jsResultVar=NULL,$q=NULL,$hidden=0)
         {
             // These will be called in the order that questions are supposed to be asked
             // TODO - cache results and generated JavaScript equations?
@@ -2888,9 +2882,9 @@
                 'relevancejs' => '',
                 'relevanceVars' => '',
                 'jsResultVar'=> $jsResultVar,
-                'type'=>$type,
                 'hidden'=>$hidden,
                 'hasErrors'=>false,
+                'q'=>$q
                 );
                 return true;
             }
@@ -2918,9 +2912,9 @@
                 'relevancejs' => $relevanceJS,
                 'relevanceVars' => $relevanceVars,
                 'jsResultVar' => $jsResultVar,
-                'type'=>$type,
                 'hidden'=>$hidden,
                 'hasErrors'=>$hasErrors,
+                'q'=>$q
                 );
             }
             return $result;
@@ -3766,49 +3760,19 @@
   
                 foreach ($updatedValues as $key=>$value)
                 {
-                    $val = (is_null($value) ? NULL : $value['value']);
-                    if(isset($value['q']))
+                    if (!is_null($value))
                     {
                         $q = $value['q'];
-                        $val = $q->filter($val, 'db');
-                    }
-                    else //AJS
-                    {
-                        $type = (is_null($value) ? NULL : $value['type']);
-
-                        // Clean up the values to cope with database storage requirements
-                        switch($type)
-                        {
-                            case 'D': //DATE
-                                if (trim($val)=='') {
-                                    $val=NULL;  // since some databases can't store blanks in date fields
-                                }
-                                // otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses()
-                                break;
-                        case '|': //File upload
-                            // This block can be removed once we require 5.3 or later
-                            if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-                                $val=addslashes($val);
-                            }
-                            break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if (trim($val)=='') {
-                                    $val=NULL;  // since some databases can't store blanks in numerical inputs
-                                }
-                                break;
-                            default:
-                                break;
-                        }
+                        $value = $q->filter($value['value'], 'db');
                     }
 
-                    if (is_null($val))
+                    if (is_null($value))
                     {
                         $setter[] = dbQuoteID($key) . "=NULL";
                     }
                     else
                     {
-                        $setter[] = dbQuoteID($key) . "=" . dbQuoteAll($val);
+                        $setter[] = dbQuoteID($key) . "=" . dbQuoteAll($value);
                     }
                 }
                 $query .= implode(', ', $setter);
@@ -4417,6 +4381,7 @@
         {
             $LEM =& $this;
             $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
+            $q = $qInfo['q'];
             $qrel=true;   // assume relevant unless discover otherwise
             $prettyPrintRelEqn='';    //  assume no relevance eqn by default
             $qid=$qInfo['qid'];
@@ -4483,12 +4448,7 @@
             else
             {
                 // Check filter status to determine which subquestions are relevant
-                if ($qInfo['type'] == 'X') {
-                    $sgqas = array();   // Boilerplate questions can be ignored
-                }
-                else {
-                    $sgqas = explode('|',$LEM->qid2code[$qid]);
-                }
+                $sgqas = explode('|',$LEM->qid2code[$qid]);
                 foreach ($sgqas as $sgqa)
                 {
                     // for each subq, see if it is part of an array_filter or array_filter_exclude
@@ -4569,7 +4529,7 @@
             $unansweredSQs = array();   // list of sub-questions that weren't answered
             foreach ($relevantSQs as $sgqa)
             {
-                if (($qInfo['type'] != '*') && (!isset($_SESSION[$LEM->sessid][$sgqa]) || ($_SESSION[$LEM->sessid][$sgqa] === '' || is_null($_SESSION[$LEM->sessid][$sgqa]))))
+                if (!$q->isEquation() && (!isset($_SESSION[$LEM->sessid][$sgqa]) || ($_SESSION[$LEM->sessid][$sgqa] === '' || is_null($_SESSION[$LEM->sessid][$sgqa]))))
                 {
                     // then a relevant, visible, mandatory question hasn't been answered
                     // Equations are ignored, since set automatically
@@ -4584,122 +4544,8 @@
             $mandatoryTip = '';
             if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
             {
-                $mandatoryTip = "<strong><br /><span class='errormandatory'>".$LEM->gT('This question is mandatory').'.  ';
-                switch ($qInfo['type'])
-                {
-                    case 'M':
-                    case 'P':
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
-                        // If at least one checkbox is checked, we're OK
-                        if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs)))
-                        {
-                            $qmandViolation = true;
-                        }
-                        if (!($qInfo['type'] == '!' || $qInfo['type'] == 'L'))
-                        {
-                            $mandatoryTip .= $LEM->gT('Please check at least one item.');
-                        }
-                        if ($qInfo['other']=='Y')
-                        {
-                            $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
-                            if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
-                                $othertext = trim($qattr['other_replace_text']);
-                            }
-                            else {
-                                $othertext = $LEM->gT('Other:');
-                            }
-                            $mandatoryTip .= "<br />\n".sprintf($LEM->gT("If you choose '%s' you must provide a description."), $othertext);
-                        }
-                        break;
-                    case 'X':   // Boilerplate can never be mandatory
-                    case '*':   // Equation is auto-computed, so can't violate mandatory rules
-                        break;
-                    case 'A':
-                    case 'B':
-                    case 'C':
-                    case 'Q':
-                    case 'K':
-                    case 'E':
-                    case 'F':
-                    case 'J':
-                    case 'H':
-                    case ';':
-                    case '1':
-                        // In general, if any relevant questions aren't answered, then it violates the mandatory rule
-                        if (count($unansweredSQs) > 0)
-                        {
-                            $qmandViolation = true; // TODO - what about 'other'?
-                        }
-                        $mandatoryTip .= $LEM->gT('Please complete all parts').'.';
-                        break;
-                    case ':':
-                        $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
-                        if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1)
-                        {
-                            // Need to check whether there is at least one checked box per row
-                            foreach ($LEM->q2subqInfo[$qid]['subqs'] as $sq)
-                            {
-                                if (!isset($_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]) || $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']])
-                                {
-                                    $rowCount=0;
-                                    $numUnanswered=0;
-                                    foreach ($sgqas as $s)
-                                    {
-                                        if (strpos($s, $sq['rowdivid']) !== false)
-                                        {
-                                            ++$rowCount;
-                                            if (array_search($s,$unansweredSQs) !== false) {
-                                                ++$numUnanswered;
-                                            }
-                                        }
-                                    }
-                                    if ($rowCount > 0 && $rowCount == $numUnanswered)
-                                    {
-                                        $qmandViolation = true;
-                                    }
-                                }
-                            }
-                            $mandatoryTip .= $LEM->gT('Please check at least one box per row').'.';
-                        }
-                        else
-                        {
-                            if (count($unansweredSQs) > 0)
-                            {
-                                $qmandViolation = true; // TODO - what about 'other'?
-                            }
-                            $mandatoryTip .= $LEM->gT('Please complete all parts').'.';
-                        }
-                        break;
-                    case 'R':
-                        if (count($unansweredSQs) > 0)
-                        {
-                            $qmandViolation = true; // TODO - what about 'other'?
-                        }
-                        $mandatoryTip .= $LEM->gT('Please rank all items').'.';
-                        break;
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        $_count=0;
-                        for ($i=0;$i<count($unansweredSQs);++$i)
-                        {
-                            if (preg_match("/comment$/",$unansweredSQs[$i])) {
-                                continue;
-                            }
-                            ++$_count;
-                        }
-                        if ($_count > 0)
-                        {
-                            $qmandViolation = true;
-                        }
-                        break;
-                    default:
-                        if (count($unansweredSQs) > 0)
-                        {
-                            $qmandViolation = true;
-                        }
-                        break;
-                }
-                $mandatoryTip .= "</span></strong>\n";
+                $qmandViolation = $q->mandatoryViolation($relevantSQs, $unansweredSQs, $LEM->q2subqInfo[$qid]['subqs'], $sgqas);
+                $mandatoryTip = $q->getMandatoryTip() . "</span></strong>\n";
             }
 
             /////////////////////////////////////////////////////////////
@@ -4708,23 +4554,7 @@
 
             if ($qrel && !$qhidden)
             {
-                switch ($qInfo['type'])
-                {
-                    case 'M':
-                    case 'P':
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
-                        // If at least one checkbox is checked, we're OK
-                        if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs)))
-                        {
-                            $anyUnanswered = true;
-                        }
-                        // what about optional vs. mandatory comment and 'other' fields?
-                        break;
-                    default:
-                        $anyUnanswered = (count($unansweredSQs) > 0);
-                        break;
-                }
+                $anyUnanswered = $q->anyUnanswered($relevantSQs, $unansweredSQs);
             }
 
             ///////////////////////////////////////////////
@@ -4794,7 +4624,7 @@
                 $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $gid . '/qid/' . $qid);
                 $debug_qmessage .= '--[Q#' . $qInfo['qseq'] . ']'
                 . "[<a href='$editlink'>"
-                . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
+                . 'QID:'. $qid . '</a>][' . get_class($q) . ']: '
                 . ($qrel ? 'relevant' : " <span style='color:red'>irrelevant</span> ")
                 . ($qhidden ? " <span style='color:red'>always-hidden</span> " : ' ')
                 . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
@@ -4890,25 +4720,25 @@
                     $LEM->updatedValues[$sgqa] = NULL;
                 }
             }
-            else if ($qInfo['type'] == '*')
-                {
-                    // Process relevant equations, even if hidden, and write the result to the database
-                    $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
-                    $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
-                    // Store the result of the Equation in the SESSION
-                    $_SESSION[$LEM->sessid][$sgqa] = $result;
-                    $_update = array(
-                    'q'=> new EquationQuestion,
-                    'value'=>$result,
-                    );
-                    $updatedValues[$sgqa] = $_update;
-                    $LEM->updatedValues[$sgqa] = $_update;
+            else if ($q->isEquation())
+            {
+                // Process relevant equations, even if hidden, and write the result to the database
+                $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
+                $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
+                // Store the result of the Equation in the SESSION
+                $_SESSION[$LEM->sessid][$sgqa] = $result;
+                $_update = array(
+                'q'=> new EquationQuestion,
+                'value'=>$result,
+                );
+                $updatedValues[$sgqa] = $_update;
+                $LEM->updatedValues[$sgqa] = $_update;
 
-                    if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
-                    {
-                        $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
-                        $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
-                    }
+                if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
+                {
+                    $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
+                    $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
+                }
             }
             foreach ($irrelevantSQs as $sq)
             {
@@ -4958,9 +4788,6 @@
             'updatedValues' => $updatedValues,
             'sumEqn' => (isset($sumEqn) ? $sumEqn : ''),
             'sumRemainingEqn' => (isset($sumRemainingEqn) ? $sumRemainingEqn : ''),
-            //            'countEqn' => (isset($countEqn) ? $countEqn : ''),
-            //            'countRemainingEqn' => (isset($countRemainingEqn) ? $countRemainingEqn : ''),
-
             );
 
             $LEM->currentQset[$qid] = $qStatus;
@@ -5245,6 +5072,7 @@
                     if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
                         continue;
                     }
+                    $q = $arg['q'];
                     $gseqList[$arg['gseq']] = $arg['gseq'];    // so keep them in order
                     // First check if there is any tailoring  and construct the tailoring JavaScript if needed
                     $tailorParts = array();
@@ -5335,7 +5163,7 @@
                      * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
-                    $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
+                    $inputSelector = (($q->includeRanks()) ? '' :  ' :input:not(:hidden)');
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
@@ -5507,50 +5335,7 @@
                         $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('good').addClass('error');\n";
                         $valParts[] = "  }\n";
 
-                        // color-code single-entry fields as needed
-                        switch ($arg['type'])
-                        {
-                            case 'N':
-                            case 'S':
-                            case 'T':
-                            case 'U':
-                                $valParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
-                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
-                                $valParts[] = "  }\n  else {\n";
-                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
-                                $valParts[] = "  }\n";
-                                break;
-                            default:
-                                break;
-                        }
-
-                        // color-code mandatory other comment fields
-                        switch ($arg['type'])
-                        {
-                            case '!':
-                            case 'L':
-                            case 'P':
-                            switch ($arg['type'])
-                            {
-                                case '!':
-                                    $othervar = 'othertext' . substr($arg['jsResultVar'],4,-5);
-                                    break;
-                                case 'L':
-                                    $othervar = 'answer' . substr($arg['jsResultVar'],4) . 'text';
-                                    break;
-                                case 'P':
-                                    $othervar = 'answer' . substr($arg['jsResultVar'],4);
-                                    break;
-                            }
-                            $valParts[] = "\n  if(isValidOtherComment" . $arg['qid'] . "){\n";
-                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
-                            $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
-                            $valParts[] = "  }\n";
-                            break;
-                            default:
-                                break;
-                        }
+                        $valParts = array_merge($valParts, $q->getAdditionalValParts());
                     }
 
                     if (count($valParts) > 0)
@@ -5573,17 +5358,15 @@
                         {
                             // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
                             $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                            if ($arg['type'] == 'S')
+                            $qattributes = $q->getAttributeValues();
+                            if (isset($qattributes['location_mapservice']) && $qattributes['location_mapservice'] != 0)
                             {
-                                $relParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
-                                $relParts[] = "  {\n";
-                                $relParts[] = "      resetMap(" . $arg['qid'] . ");\n";
-                                $relParts[] = "  }\n";
+                                $relParts[] = "resetMap(" . $arg['qid'] . ");\n";
                             }
                         }
                     }
                     // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
-                    if ($arg['type'] == '*')
+                    if ($q->isEquation())
                     {
                         $relParts[] = "  // Write value from the question into the answer field\n";
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
@@ -5833,7 +5616,7 @@
                 if (count($neededCanonicalAttr) > 0)
                 {
                     $jsParts[] = "var LEMvarNameAttr = {\n";
-                    $jsParts[] = implode(",\n",$neededCanonicalAttr);
+                    $jsParts[] = implode(",\n",$neededCanonicalAttr); //AJS This outputs type to javascript!
                     $jsParts[] = "};\n";
                 }
             }
@@ -6347,14 +6130,14 @@ EOD;
             }
 
             $query = "select distinct c.*"
-            .", q.sid, q.type, q.tid, t.class" //AJS
+            .", q.sid, q.tid, t.class"
             ." from {{conditions}} as c"
             .", {{questions}} as q"
             ." join {{question_types}} as t on (q.tid = t.tid)"
             ." where " . $where
             ." c.cqid=q.qid"
             ." union"
-            ." select c.*, q.sid, '' as type, 0 as tid, '' as class" //AJS
+            ." select c.*, q.sid, 0 as tid, '' as class"
             ." from {{conditions}} as c"
             .", {{questions}} as q"
             ." where ". $where
@@ -6598,6 +6381,7 @@ EOD;
                         }
                     }
                     $type = $qinfo['info']['type'];
+                    $q = $qinfo['q'];
                     if ($relevant && $grelevant && $sqrelevant)
                     {
                         if ($qinfo['info']['hidden'] && !isset($_POST[$sq]))
@@ -6673,7 +6457,7 @@ EOD;
                         }
                         $_SESSION[$LEM->sessid][$sq] = $value;
                         $_update = array (
-                        'type'=>$type, //AJS
+                        'q'=>$q,
                         'value'=>$value,
                         );
                         $updatedValues[$sq] = $_update;
@@ -6683,7 +6467,7 @@ EOD;
                         // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
                         unset($_SESSION[$LEM->sessid][$sq]);
                         $_update = array (
-                        'type'=>$type, //AJS
+                        'q'=>$q,
                         'value'=>NULL,
                         );
                         $updatedValues[$sq] = $_update;

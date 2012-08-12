@@ -438,6 +438,12 @@ class RankingQuestion extends QuestionModule
         }
     }
 
+    public function getMandatoryTip()
+    {
+        $clang=Yii::app()->lang;
+        return $clang->gT('Please rank all items').'.';
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");

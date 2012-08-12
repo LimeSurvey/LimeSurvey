@@ -219,6 +219,11 @@ class CommentListQuestion extends ListQuestion
         }
     }
 
+    public function getAdditionalValParts()
+    {
+        return array();
+    }
+
     public function getFieldSubHeading($survey, $export, $code)
     {
         if ($this->aid == 'comment')
@@ -240,9 +245,9 @@ class CommentListQuestion extends ListQuestion
         }
     }
 
-    public function generateQuestionInfo($type)
+    public function generateQuestionInfo()
     {
-        return QuestionModule::generateQuestionInfo($type);
+        return QuestionModule::generateQuestionInfo();
     }
 
     public function generateSQInfo($ansArray)
@@ -316,6 +321,17 @@ class CommentListQuestion extends ListQuestion
                 return $answer;
             }
         }
+    }
+
+    public function mandatoryViolation($relevantSQs, $unansweredSQs, $subsqs, $sgqas)
+    {
+        foreach ($unansweredSQs as $unansweredSQ)
+        {
+            if (!preg_match("/comment$/",$unansweredSQ)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function availableAttributes($attr = false)

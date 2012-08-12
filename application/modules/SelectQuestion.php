@@ -273,6 +273,17 @@ class SelectQuestion extends ListQuestion
         return false;
     }
 
+    public function getAdditionalValParts()
+    {
+        $othervar = 'othertext' . substr($this->fieldname,0,-5);
+        $valParts[] = "\n  if(isValidOtherComment" . $this->id . "){\n";
+        $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
+        $valParts[] = "  }\n  else {\n";
+        $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+        $valParts[] = "  }\n";
+        return $valParts;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","category_separator","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_replace_text","page_break","public_statistics","random_order","parent_order","dropdown_size","dropdown_prefix","scale_export","random_group","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style");
