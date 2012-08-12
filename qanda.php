@@ -2325,7 +2325,7 @@ function do_multiplechoice($ia)
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","other");
 
         if($wrapper['item-start'] == "\t<li>\n")
         {
@@ -2356,7 +2356,13 @@ function do_multiplechoice($ia)
             }
             $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
-        $answer .= " onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));' />";
+#        $answer .= " onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));' />";
+        $answer .=" />";
+        $answer .="<script type='text/javascript'>\n";
+        $answer .="$('#answer{$myfname}').bind('keyup blur',function(){\n";
+        $answer .= " if ($.trim($(this).val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",true); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",false); }; $(\"#java{$myfname}\").val($(this).val());$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));\n";
+        $answer .="});\n";
+        $answer .="</script>\n";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         if (isset($_SESSION[$myfname]))

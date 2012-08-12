@@ -370,11 +370,12 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 .answers-wrapper textarea.empty, .answers-wrapper input[type=text].empty{
 	border:1px solid #999;color:#444;background-color:#FFF;
 }
-.answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]{
-  background-color:#FFF;border-color:#EEE;
-}
-.answers-wrapper textarea.empty[disabled], .answers-wrapper input[type=text].empty[disabled]{
-	border:1px solid #EEE;color:#444;background-color:#FFF;
+  .answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]
+, .answers-wrapper input.text.good[disabled], .answers-wrapper input.good[type=text][disabled]
+, .answers-wrapper input.text.error[disabled], .answers-wrapper input.error[type=text][disabled]
+, .answers-wrapper textarea.empty[disabled], .answers-wrapper input[type=text].empty[disabled]
+{
+  background-color:#FFF;border-color:#EEE;color:#EEE;
 }
 
 .answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
@@ -383,7 +384,9 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
   -webkit-box-shadow: 1px 1px 3px #555;
   box-shadow: 1px 1px 3px #555;
 }
-
+.answers-wrapper input.checkbox[disabled],.answers-wrapper input.radio[disabled]{
+  opacity:0.3;
+}
 /* specific questions color and background*/
 table.question{border-color:#D5DBE7;}
 table.question tbody{border-color:#D5DBE7;}
@@ -896,6 +899,7 @@ padding-left:30px;
 {
 margin-left:-30px;vertical-align: middle;
 }
+.multiple-opt .answers-wrapper ul li.other input.checkbox{visibility: hidden;}
 
 @media screen and (max-width: 640px) {
 	.multiple-opt .answers-wrapper ul li
