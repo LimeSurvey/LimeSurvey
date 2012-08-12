@@ -31,7 +31,7 @@ class labels extends Survey_Common_Action
      * @param string $sa
      * @return void
      */
-    public function run($sa)
+    public function run($sa=null)
     {
         if ($sa == 'newlabelset' || $sa == 'editlabelset')
             $this->route('index', array('sa', 'lid'));
