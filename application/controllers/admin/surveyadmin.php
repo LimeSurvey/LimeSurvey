@@ -292,6 +292,7 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = sanitize_int($iSurveyID);
 
         $postsid = Yii::app()->request->getPost('sid', $iSurveyID);
+        $postsid = sanitize_int($postsid);
         $clang = $this->getController()->lang;
         $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
@@ -327,12 +328,12 @@ class SurveyAdmin extends Survey_Common_Action
 
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
             $result = Saved_control::model()->deleteSomeRecords(array('sid' => $postsid)); //Yii::app()->db->createCommand($query)->query();
-            $oldtable = "{{survey_{$postsid}}}";
-            $newtable = "{{old_survey_{$postsid}_{$date}}}";
-
+            $sOldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$postsid}";
+            $sNewSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$postsid}_{$date}";
+            $aData['sNewSurveyTableName']=$sNewSurveyTableName;
             //Update the auto_increment value from the table before renaming
             $new_autonumber_start = 0;
-            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($oldtable)." ORDER BY id desc";
+            $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($sOldSurveyTableName)." ORDER BY id desc";
             $result = Yii::app()->db->createCommand($query)->limit(1)->query();
             if ($result->getRowCount() > 0)
             {
@@ -360,12 +361,12 @@ class SurveyAdmin extends Survey_Common_Action
             $survey->save();
             if (Yii::app()->db->getDrivername() == 'postgre')
             {
-                $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldtable . '_id_seq', $newtable . '_id_seq');
-                $setsequence = "ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$newtable}_id_seq'::regclass);";
+                $deactivateresult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName . '_id_seq', $sNewSurveyTableName . '_id_seq');
+                $setsequence = "ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$sNewSurveyTableName}_id_seq'::regclass);";
                 $deactivateresult = Yii::app()->db->createCommand($setsequence)->execute();
             }
 
-            $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldtable, $newtable);
+            $deactivateresult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
 
             $insertdata = array('active' => 'N');
             $survey->active = 'N';
@@ -374,15 +375,15 @@ class SurveyAdmin extends Survey_Common_Action
             $prow = Survey::model()->find('sid = :sid', array(':sid' => $postsid));
             if ($prow->savetimings == "Y")
             {
-                $oldtable = "{{survey_{$postsid}_timings}}";
-                $newtable = "{{old_survey_{$postsid}_timings_{$date}}}";
+                $sOldTimingsTableName = Yii::app()->db->tablePrefix."survey_{$postsid}_timings";
+                $sNewTimingsTableName = Yii::app()->db->tablePrefix."old_survey_{$postsid}_timings_{$date}";
 
-                $deactivateresult2 = Yii::app()->db->createCommand()->renameTable($oldtable, $newtable);
+                $deactivateresult2 = Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
                 $deactivateresult = ($deactivateresult && $deactivateresult2);
+                $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
             }
 
             $aData['surveyid'] = $iSurveyID;
-            $aData['newtable'] = $newtable;
         }
 
         $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
