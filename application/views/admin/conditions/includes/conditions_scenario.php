@@ -1,8 +1,8 @@
 <tr>
     <?php echo $initialCheckbox; ?>
     <td><?php echo $scenariotext; ?>&nbsp;
-        <form action='<?php echo $this->createUrl("/admin/conditions/updatescenario/$surveyid/$gid/$qid/"); ?>' method='post' id='editscenario<?php echo $scenarionr['scenario']; ?>' style='display: none'>
-            <label><?php $clang->eT("New scenario number"); ?>":&nbsp;
+        <form action='<?php echo $this->createUrl("/admin/conditions/index/subaction/updatescenario/surveyid/$surveyid/gid/$gid/qid/$qid/"); ?>' method='post' id='editscenario<?php echo $scenarionr['scenario']; ?>' style='display: none'>
+            <label><?php $clang->eT("New scenario number:"); ?>&nbsp;
                 <input type='text' name='newscenarionum' size='3'/></label>
             <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario']; ?>'/>
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
@@ -15,7 +15,7 @@
     </td>
     <td>
         <form id='deletescenario<?php echo $scenarionr['scenario']; ?>' action='<?php echo $this->createUrl("/admin/conditions/index/subaction/deletescenario/surveyid/$surveyid/gid/$gid/qid/$qid/"); ?>' method='post' name='deletescenario<?php echo $scenarionr['scenario']; ?>' style='margin-bottom:0;'>
-            <?php if(isset($additional_conetent)) echo $additional_content; ?>
+            <?php if(isset($additional_content)) echo $additional_content; ?>
             <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario'];?>' />
             <input type='hidden' name='qid' value='<?php echo $qid;?>' />
             <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />

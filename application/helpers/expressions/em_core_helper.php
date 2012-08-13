@@ -1842,6 +1842,7 @@ class ExpressionManager {
         }
         $this->prettyPrintSource = $prettyPrint;    // ensure that if doing recursive substition, can get original source to pretty print
         $this->RDP_errs = $errors;
+        $result = str_replace(array('\{', '\}',), array('{', '}'), $result);
         return $result;
     }
 
@@ -1856,7 +1857,6 @@ class ExpressionManager {
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $stringParts = $this->asSplitStringOnExpressions($src);
-
         $resolvedParts = array();
         $prettyPrintParts = array();
         $allErrors=array();
@@ -2142,7 +2142,10 @@ class ExpressionManager {
      */
     public function asSplitStringOnExpressions($src)
     {
+         
         $parts = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+        
+        
         $count = count($parts);
         $tokens = array();
         $inSQString=false;

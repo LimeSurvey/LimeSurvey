@@ -14,7 +14,7 @@ class DateQuestion extends QuestionModule
         $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
         $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
 
-        if (trim($aQuestionAttributes['dropdown_dates'])!=0) {
+        if (trim($aQuestionAttributes['dropdown_dates'])==1) {
             if (!empty($_SESSION['survey_'.$this->surveyid][$this->fieldname]))
             {
                 $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION['survey_'.$this->surveyid][$this->fieldname])->getTimeStamp());
@@ -26,10 +26,12 @@ class DateQuestion extends QuestionModule
             } else {
                 $currentdate='';
                 $currentmonth='';
-                $currentyear='';
+                $currentyear='';            
+                $currenthour = '';
+                $currentminute = '';
             }
 
-            $dateorder = preg_split('/[-\.\/ ]/', $dateformatdetails['phpdate']);
+            $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'],-1,PREG_SPLIT_DELIM_CAPTURE);
             $answer='<p class="question answer-item dropdown-item date-item">';
             foreach($dateorder as $datepart)
             {
@@ -37,7 +39,7 @@ class DateQuestion extends QuestionModule
                 {
                     // Show day select box
                     case 'j':
-                    case 'd':   $answer .= ' <label for="day'.$this->fieldname.'" class="hide">'.$clang->gT('Day').'</label><select id="day'.$this->fieldname.'" name="day'.$this->fieldname.'" class="day">
+                    case 'd':   $answer .= '<label for="day'.$this->fieldname.'" class="hide">'.$clang->gT('Day').'</label><select id="day'.$this->fieldname.'" name="day'.$this->fieldname.'" class="day">
                         <option value="">'.$clang->gT('Day')."</option>\n";
                         for ($i=1; $i<=31; $i++) {
                             if ($i == $currentdate)
@@ -48,13 +50,13 @@ class DateQuestion extends QuestionModule
                             {
                                 $i_date_selected = '';
                             }
-                            $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
+                            $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
                         }
                         $answer .='</select>';
                         break;
                         // Show month select box
                     case 'n':
-                    case 'm':   $answer .= ' <label for="month'.$this->fieldname.'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$this->fieldname.'" name="month'.$this->fieldname.'" class="month">
+                    case 'm':   $answer .= '<label for="month'.$this->fieldname.'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$this->fieldname.'" name="month'.$this->fieldname.'" class="month">
                         <option value="">'.$clang->gT('Month')."</option>\n";
                         $montharray=array(
                         $clang->gT('Jan'),
@@ -79,12 +81,12 @@ class DateQuestion extends QuestionModule
                                 $i_date_selected = '';
                             }
 
-                            $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
+                            $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
                         }
-                        $answer .= '    </select>';
+                        $answer .= '</select>';
                         break;
                         // Show year select box
-                    case 'Y':   $answer .= ' <label for="year'.$this->fieldname.'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$this->fieldname.'" name="year'.$this->fieldname.'" class="year">
+                    case 'Y':   $answer .= '<label for="year'.$this->fieldname.'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$this->fieldname.'" name="year'.$this->fieldname.'" class="year">
                         <option value="">'.$clang->gT('Year').'</option>';
 
                         /*
@@ -146,6 +148,59 @@ class DateQuestion extends QuestionModule
                         $answer .= '</select>';
 
                         break;
+                    case 'H':
+                    case 'h':
+                    case 'g':
+                    case 'G':
+                        $answer .= '<label for="hour'.$ia[1].'" class="hide">'.$clang->gT('Hour').'</label><select id="hour'.$ia[1].'" name="hour'.$ia[1].'" class="hour"><option value="">'.$clang->gT('Hour').'</option>';
+                        for ($i=0; $i<24; $i++) {
+                            if ($i === $currenthour)
+                            {
+                                $i_date_selected = SELECTED;
+                            }
+                            else
+                            {
+                                $i_date_selected = '';
+                            }
+                            if ($datepart=='H')
+                            {
+                                $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>';
+                            }
+                            else
+                            {
+                                $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
+
+                            }
+                        }
+                        $answer .= '</select>';
+
+                        break;
+                    case 'i':   $answer .= '<label for="minute'.$ia[1].'" class="hide">'.$clang->gT('Minute').'</label><select id="minute'.$ia[1].'" name="minute'.$ia[1].'" class="minute">
+                        <option value="">'.$clang->gT('Minute').'</option>';
+
+                        for ($i=0; $i<60; $i+=$aQuestionAttributes['dropdown_dates_minute_step']) {
+                            if ($i === $currentminute)
+                            {
+                                $i_date_selected = SELECTED;
+                            }
+                            else
+                            {
+                                $i_date_selected = '';
+                            }
+                            if ($datepart=='i')
+                            {
+                                $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>';
+                            }
+                            else
+                            {
+                                $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
+
+                            }
+                        }
+                        $answer .= '</select>';
+
+                        break;
+                    default:  $answer .= $datepart;
                 }
             }
 
@@ -243,7 +298,7 @@ class DateQuestion extends QuestionModule
         $clang=Yii::app()->lang;
         $aQuestionAttributes=$this->getAttributeValues();
         
-        $includes = array();
+        $includes = array(Yii::app()->getConfig("generalscripts").'date.js' => 'js');
         if (trim($aQuestionAttributes['dropdown_dates'])==0) {
             $includes[Yii::app()->getConfig("generalscripts").'jquery/lime-calendar.js'] = 'js';
             if ($clang->langcode !== 'en')

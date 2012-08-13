@@ -38,8 +38,8 @@ class surveypermission extends Survey_Common_Action {
         {
             $aBaseSurveyPermissions=Survey_permissions::model()->getBasePermissions();
 
-            $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/jquery.tablesorter.min.js');
-            $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/surveysecurity.js');
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'surveysecurity.js');
 
             $result2 = Survey_permissions::model()->getUserDetails($surveyid);
 
@@ -374,8 +374,8 @@ class surveypermission extends Survey_Common_Action {
             {
                 //$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
                 //$js_admin_includes[]='scripts/surveysecurity.js';
-                $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/jquery.tablesorter.min.js');
-                $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/surveysecurity.js');
+                $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') .'jquery/jquery.tablesorter.min.js');
+                $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'surveysecurity.js');
                 if ($action == "setsurveysecurity")
                 {
                     $query = "select users_name from {{users}} where uid=:uid";

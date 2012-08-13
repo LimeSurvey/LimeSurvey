@@ -257,11 +257,11 @@ class question extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.dd.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/admin/answers.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.blockUI.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.selectboxes.min.js');
-        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'answers.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -314,15 +314,17 @@ class question extends Survey_Common_Action
             $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
             $qresult = Answers::model()->count($ans);
 
-            if ((int)$qresult=0)
-                Answers::model()->insert(array(
-                    'qid' => $qid,
-                    'code' => 'A1',
-                    'answer' => $clang->gT('Some example answer option'),
-                    'language' => $baselang,
-                    'sortorder' => 0,
-                    'scale_id' => $i,
-                ));
+            if ((int)$qresult==0)
+            {
+                $oAnswer= new Answers;
+                $oAnswer->qid = $qid;
+                $oAnswer->code = 'A1';
+                $oAnswer->answer = $clang->gT('Some example answer option');
+                $oAnswer->language = $baselang;
+                $oAnswer->sortorder = 0;
+                $oAnswer->scale_id = $i;
+                $oAnswer->save();
+        }
         }
 
 
@@ -337,21 +339,24 @@ class question extends Survey_Common_Action
 
                 // Means that no record for the language exists in the answers table
                 if (empty($iAnswerCount))
+                {
                     foreach (Answers::model()->findAllByAttributes(array(
                                 'qid' => $qid,
                                 'scale_id' => $i,
                                 'language' => $baselang
                             )) as $answer)
-                        Answers::model()->insert(array(
-                            'qid' => $answer->qid,
-                            'code' => $answer->code,
-                            'answer' => $answer->answer,
-                            'language' => $language,
-                            'sortorder' => $answer->sortorder,
-                            'scale_id' => $i,
-                            'assessment_value' => $answer->assessment_value,
-                        ));
+
+                    $oAnswer= new Answers;
+                    $oAnswer->qid = $answer->qid;
+                    $oAnswer->code = $answer->code;
+                    $oAnswer->answer = $answer->answer;
+                    $oAnswer->language = $language;
+                    $oAnswer->sortorder = $answer->sortorder;
+                    $oAnswer->scale_id = $i;
+                    $oAnswer->assessment_value = $answer->assessment_value;
+                    $oAnswer->save();
             }
+        }
         }
 
         // Makes an array with ALL the languages supported by the survey -> $anslangs
@@ -881,7 +886,7 @@ class question extends Survey_Common_Action
                 Defaultvalues::model()->deleteAllByAttributes(array('qid' => $qid));
                 Quota_members::model()->deleteAllByAttributes(array('qid' => $qid));
 
-                Questions::updateSortOrder($gid, $surveyid);
+                Questions::updateQuestionOrder($gid, $surveyid);
 
                 $qid = "";
                 $postqid = "";
@@ -1238,8 +1243,8 @@ EOD;
      */
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
-        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

@@ -33,7 +33,7 @@ class statistics extends Survey_Common_Action {
 	/**
 	 * Constructor
 	 */
-	public function run($surveyid, $subaction = null)
+	public function run($surveyid = 0, $subaction = null)
 	{
 		$surveyid = sanitize_int($surveyid);
 		//TODO: Convert question types to views
@@ -451,13 +451,14 @@ class statistics extends Survey_Common_Action {
 		// ----------------------------------- END FILTER FORM ---------------------------------------
 
 		Yii::app()->loadHelper('admin/statistics');
+		$showtextinline=isset($_POST['showtextinline']) ? 1 : 0;
+		$aData['showtextinline'] = $showtextinline;
+		
 		//Show Summary results
 		if (isset($summary) && $summary)
 		{
 		    $usegraph=isset($_POST['usegraph']) ? 1 : 0;
             $aData['usegraph'] = $usegraph;
-            $showtextinline=isset($_POST['showtextinline']) ? 1 : 0;
-            $aData['showtextinline'] = $showtextinline;
 		    $outputType = $_POST['outputtype'];
 
             $selects=buildSelects($summary, $surveyid, $statlang);

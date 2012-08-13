@@ -121,7 +121,7 @@ $(document).ready(function() {
         rowNum: 25,
         editable:true,
         scrollOffset:0,
-        autowidth: true,
+        autowidth: autowidth,
         sortable : true,
         sortname: 'firstname',
         sortorder: 'asc',

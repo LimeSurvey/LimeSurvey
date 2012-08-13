@@ -1,13 +1,23 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/*
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*/
 
-/************************************************************
- * TCPDF - CodeIgniter Integration
- * Configuration file
- * ----------------------------------------------------------
- * @author Jonathon Hill http://jonathonhill.net
- * @package tcpdf_ci
- * @version 1.0
- ***********************************************************/
+
+/**
+ * TCPDF configuration file
+ *
+ * @package configuration
+ */
 
 
 /***************************************************************************
@@ -24,7 +34,7 @@
 	 * ADD TRAILING SLASH!
 	 ***********************************************************/
 
-	$tcpdf['base_directory'] = APPPATH.'third_party/tcpdf/';
+	$tcpdf['base_directory'] = APPPATH.'third_party'.DIRECTORY_SEPARATOR.'tcpdf'.DIRECTORY_SEPARATOR;
 
 
 	/************************************************************
@@ -50,7 +60,7 @@
 	 * ADD TRAILING SLASH!
 	 ***********************************************************/
 
-	$tcpdf['fonts_directory'] = $tcpdf['base_directory'].'fonts/';
+	$tcpdf['fonts_directory'] = $tcpdf['base_directory'].'fonts'.DIRECTORY_SEPARATOR;
 
 
 	/************************************************************
@@ -63,7 +73,7 @@
 	 ***********************************************************/
 
 	$tcpdf['enable_disk_cache'] = FALSE;
-	$tcpdf['cache_directory'] = $tcpdf['base_directory'].'cache/';
+	$tcpdf['cache_directory'] = $tcpdf['base_directory'].'cache'.DIRECTORY_SEPARATOR;
 
 
 	/************************************************************
@@ -75,7 +85,6 @@
 	 * ADD TRAILING SLASH!
 	 ***********************************************************/
 
-	//$tcpdf['image_directory'] = Yii::app()->getConfig('imagedir').DIRECTORY_SEPARATOR;
     $tcpdf['image_directory'] = Yii::app()->getConfig('rootdir').DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.Yii::app()->getConfig('admintheme').DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR;
 
 	/************************************************************
@@ -94,7 +103,7 @@
 	 * Directory and filename of the language settings file
 	 ***********************************************************/
 
-	$tcpdf['language_file'] = $tcpdf['base_directory'].'config/lang/eng.php';
+	$tcpdf['language_file'] = $tcpdf['base_directory'].'config'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'eng.php';
 
 
 

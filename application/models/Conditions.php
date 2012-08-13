@@ -63,11 +63,13 @@
         public function relations()
         {
             return array(
-            'question' => array(self::HAS_ONE, 'Questions', '',
-            'on' => 't.cqid = question.qid',
+            'questions' => array(self::HAS_ONE, 'Questions', '',
+            'on' => 't.cqid = questions.qid',
             ),
             );
         }
+
+
         public function deleteRecords($condition=FALSE)
         {
             $criteria = new CDbCriteria;
@@ -83,12 +85,14 @@
                 }
                 else
                 {
-                    $criteria->where = $condition;
+                    $criteria->addCondition($condition);
                 }
             }
 
             return $this->deleteAll($criteria);
         }
+
+
 
         public function insertRecords($data, $update=FALSE, $condition=FALSE)
         {

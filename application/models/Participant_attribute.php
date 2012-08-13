@@ -52,6 +52,15 @@ class Participant_attribute extends CActiveRecord
         return array('participant_id', 'attribute_id');
     }
 
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeNames', 'attribute_id')
+        );
+    }
+
     function getAttributeInfo($participantid)
     {
         return self::model()->findAllByAttributes(array('participant_id' => $participantid));

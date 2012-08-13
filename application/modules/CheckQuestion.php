@@ -183,7 +183,8 @@ class CheckQuestion extends QuestionModule
             }
             $answer .= $startitem;
             $answer .= $hiddenfield.'
-            <input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox" style="display:none"';// othercbox can be not display, because only input text goes to database
+            <input class="checkbox other-checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
+            // othercbox can be not display, because only input text goes to database
 
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]) && trim($_SESSION['survey_'.$this->surveyid][$myfname])!='')
             {
@@ -204,6 +205,12 @@ class CheckQuestion extends QuestionModule
                 $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
             }
             $answer .= "\" onkeyup='if ($.trim(this.value)!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; $(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));'/>";
+            $answer .="\" />";
+            $answer .="<script type='text/javascript'>\n";
+            $answer .="$('#answer{$myfname}').bind('keyup blur',function(){\n";
+            $answer .= " if ($.trim($(this).val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",true); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",false); }; $(\"#java{$myfname}\").val($(this).val());$oth_checkconditionFunction(this.value, this.name, this.type); LEMflagMandOther(\"$myfname\",\$(\"#answer{$myfname}cbox\").attr(\"checked\"));\n";
+            $answer .="});\n";
+            $answer .="</script>\n";
             $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))

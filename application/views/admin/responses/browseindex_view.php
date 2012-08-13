@@ -1,5 +1,5 @@
-<div class='header ui-widget-header'><?php $clang->eT("Response summary"); ?></div>
 <table class='statisticssummary'>
+  <caption class="header ui-widget-header"><?php $clang->eT("Response summary"); ?></caption>
     <tfoot><tr><th><?php $clang->eT("Total responses:"); ?></th><td><?php echo $num_total_answers; ?></td></tr></tfoot>
     <tbody>
         <tr><th><?php $clang->eT("Full responses:"); ?></th><td><?php echo $num_completed_answers; ?></td></tr>
@@ -8,7 +8,7 @@
 </table>
 <?php if($with_token){ ?>
 <table class='statisticssummary'>
-  <caption class="ui-widget-header"><?php $clang->eT("Token summary"); ?></caption>
+  <caption class="header ui-widget-header"><?php $clang->eT("Token summary"); ?></caption>
     <tfoot><tr><th><?php $clang->eT("Total records in this token table"); ?></th><td><?php echo $tokeninfo['tkcount']; ?></td></tr></tfoot>
     <tbody>
         <tr><th><?php $clang->eT("Total invitations sent"); ?></th><td><?php echo $tokeninfo['tksent']; ?></td></tr>

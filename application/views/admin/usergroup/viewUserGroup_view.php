@@ -45,7 +45,7 @@ if(isset($groupfound))
                 if($currentuser["displayactions"])
                 { ?>
                     <form method='post' action='<?php echo $this->createUrl("admin/usergroups/user/ugid/{$usergroupid}/action/remove"); ?>'>
-                    <input type='image' src='<?php echo Yii::app()->getConfig('imageurl')?>/token_delete.png' alt='<?php $clang->eT("Delete this user from group");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
+                    <input type='image' src='<?php echo Yii::app()->getConfig('adminimageurl')?>/token_delete.png' alt='<?php $clang->eT("Delete this user from group");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
                     <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
                     </form>
                     <?php

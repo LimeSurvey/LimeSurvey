@@ -1335,10 +1335,11 @@ function fixSortOrderAnswers($qid,$surveyid=null) //Function rewrites the sortor
 
 /**
 * This function rewrites the sortorder for questions inside the named group
-*
+* REMOVED the 2012-08-08 : replaced by Questions::model()->updateQuestionOrder 
 * @param integer $groupid the group id
 * @param integer $surveyid the survey id
 */
+/**
 function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sortorder for questions
 {
     $gid = sanitize_int($groupid);
@@ -1354,7 +1355,7 @@ function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sort
         $p++;
     }
 }
-
+*/
 
 function shiftOrderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
 {
@@ -1770,7 +1771,7 @@ function validateTemplateDir($sTemplateName)
 	$aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
 	if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
 		$sLanguage = $oSurvey->language;
-		
+
 	switch ($flt['type'])
 		    {
 		        case "K": // Multiple Numerical
@@ -1873,7 +1874,7 @@ function validateTemplateDir($sTemplateName)
 
 		} //end switch
  }
- 
+
 return $allfields;
 
 }
@@ -3214,6 +3215,7 @@ function questionAttributes()
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     "inputtype"=>"integer",
+    'default'=>1,
     "help"=>$clang->gT("Minute step interval when using select boxes"),
     "caption"=>$clang->gT("Minute step interval"));
 
@@ -4541,7 +4543,7 @@ function useFirebug()
 function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 {
     Yii::import('application.libraries.Date_Time_Converter', true);
-    $date = new Date_Time_Converter(array($value, $fromdateformat));
+    $date = new Date_Time_Converter($value, $fromdateformat);
     return $date->convert($todateformat);
 }
 
@@ -6213,26 +6215,26 @@ function getHeader($meta = false)
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
 
+    $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+    . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
+    if (getLanguageRTL($languagecode))
+    {
+        $header.=" dir=\"rtl\" ";
+    }
+    $header.= ">\n\t<head>\n";
+
+    if ($meta)
+        $header .= $meta;
+
     if ( !$embedded )
     {
-        $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
-        if (getLanguageRTL($languagecode))
-        {
-            $header.=" dir=\"rtl\" ";
-        }
-        $header.= ">\n\t<head>\n";
-
-        if ($meta)
-            $header .= $meta;
-
         return $header;
     }
 
     global $embedded_headerfunc;
 
     if ( function_exists( $embedded_headerfunc ) )
-        return $embedded_headerfunc();
+        return $embedded_headerfunc($header);
 }
 
 
@@ -6251,8 +6253,8 @@ function getPrintableHeader()
     global $rooturl,$homeurl;
     $headelements = '
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
+    <script type="text/javascript" src="'.Yii::app()->getConfig('generalscripts').'jquery/jquery.js"></script>
+    <script type="text/javascript" src="'.Yii::app()->getConfig('adminscripts').'printablesurvey.js"></script>
     ';
     return $headelements;
 }

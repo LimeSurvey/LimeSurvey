@@ -31,7 +31,7 @@
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
                         width	: '98%',
-                        customConfig : "<?php echo Yii::app()->getConfig('sCKEditorURL') . '/limesurvey-config.js'; ?>",
+                        customConfig : "<?php echo Yii::app()->getConfig('adminscripts') . '/ckeditor-config.js'; ?>",
                         toolbarStartupExpanded : true,
                         ToolbarCanCollapse : false,
                         toolbar : '<?php echo $toolbarname; ?>',

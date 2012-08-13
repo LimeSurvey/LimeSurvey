@@ -147,15 +147,13 @@
 }
 
 .ui-state-active,.ui-widget-content .ui-state-active {
-  /* background-color: #797979; */
-  background-color: #DBEAF9;
+  background-color: #EFFBDB;
   font-weight: bold;
   color: #4e8632;
   outline: none;
 }
 
 .ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
-  color: #fff;
   outline: none;
   text-decoration: none;
 }

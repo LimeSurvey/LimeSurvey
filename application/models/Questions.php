@@ -93,7 +93,7 @@
 
 
         /**
-        * Fixes sort order for questions in a group
+        * Rewrites sort order for questions in a group
         *
         * @static
         * @access public
@@ -112,7 +112,15 @@
                 $p++;
             }
         }
-
+        /**
+        * Fixe sort order for questions in a group
+        *
+        * @static
+        * @access public
+        * @param int $gid
+        * @param int $surveyid
+        * @return void
+        */
         function updateQuestionOrder($gid,$language,$position=0)
         {
             $data=Yii::app()->db->createCommand()->select('qid')
@@ -234,19 +242,20 @@
         function insertRecords($data)
         {
             $questions = new self;
-            foreach ($data as $k => $v)
+            foreach ($data as $k => $v){
                 $questions->$k = $v;
+                }
 //            if  (!$questions->save()) return false;
 //            else return $questions->qid;
             try
             {
-            	$questions->save();
-            	return $questions->qid;
+                $questions->save();
+                return $questions->qid;
             }
             catch(Exception $e)
             {
-            	return false;
-        		}
+                return false;
+            }
         }
 
         public static function deleteAllById($questionsIds)

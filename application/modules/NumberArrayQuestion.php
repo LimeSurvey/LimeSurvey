@@ -608,7 +608,7 @@ class NumberArrayQuestion extends ArrayQuestion
 
     public function compareField($sgqa, $sq)
     {
-        return preg_match('/^' . $sq['rowdivid'] . '/', $sgqa);
+        return preg_match('/^' . $sq['rowdivid'] . '_/', $sgqa);
     }
 
     public function includeRelevanceStatus()

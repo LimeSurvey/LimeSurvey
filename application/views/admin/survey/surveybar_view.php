@@ -118,6 +118,17 @@
                                 <a href="#" onclick="alert('<?php $clang->eT("Currently there are no conditions configured for this survey.", "js"); ?>');" >
                                 <img src='<?php echo $sImageURL;?>resetsurveylogic_disabled_30.png' alt=''/> <?php $clang->eT("Reset conditions");?></a>
                                 <?php } ?>
+                                </li><li>
+                                <a href="#">
+                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php $clang->eT("Regenerate question codes");?></a>
+                                <ul>
+                                <li>
+                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
+                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php $clang->eT("Straight");?></a></li>
+                                <li>
+                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
+                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php $clang->eT("By question group");?></a></li>
+                                </ul>
                         </li>
                         <?php } ?>
                 </ul></li>

@@ -865,6 +865,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 $nresult = Yii::app()->db->createCommand($nquery)->query(); */
                     }
 
+<<<<<<< HEAD
                     //loop through results
                     foreach ($nresult->readAll() as $nrow)
                     {
@@ -875,6 +876,17 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                         $qiqid=$nrow[3];
                         $qlid=$nrow[4];
                     }
+=======
+            //loop through results
+            foreach ($nresult as $nrow)
+            {
+                $qtitle=flattenText($nrow->title); //clean up title
+                $qtype=$nrow->type;
+                $qquestion=flattenText($nrow->question);
+                $qiqid=$nrow->qid;
+                $qlid=$nrow->parent_qid;
+            }
+>>>>>>> 0fe5779eabe16053b7d1c3ff2feb60b9fdceb5e0
 
                     //Get answer texts for multiple numerical
                     if(substr($rt, 0, 1) == "K")
@@ -3253,6 +3265,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             $workbook = new Xlswriter();
 
         $workbook->setVersion(8);
+        // Inform the module that our data will arrive as UTF-8.
+        // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+        $workbook->setTempDir($tempdir);
+
         // Inform the module that our data will arrive as UTF-8.
         // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
         if (!empty($tempdir)) {

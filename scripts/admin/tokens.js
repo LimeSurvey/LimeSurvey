@@ -1,5 +1,12 @@
 // $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz
 var idexternal=parseInt(3);
+
+function checkbounces() {
+    $("#dialog-modal").dialog('open');
+    $('#dialog-modal').html('<p><img style="margin-top:42px" src="../images/ajax-loader.gif" width="200" height="25" /></p>');
+    $('#dialog-modal').load(sBounceProcessingURL);
+}
+
 function addcondition()
 {
     id=2;
@@ -20,20 +27,8 @@ function addcondition()
 }
 $(document).ready(function() {
 
-    $("#bounceprocessing").change(turnoff);
     turnoff();
-    $('img#bounceprocessing').bind('click',function(){
-        $("#dialog-modal").dialog({
-            title: "Summary",
-            modal: true,
-            autoOpen: false,
-            height: 200,
-            width: 400,
-            show: 'blind',
-            hide: 'blind'
-	    });
- 	    checkbounces(surveyid);
-    });
+
     $("#filterduplicatetoken").change(function(){
         if ($("#filterduplicatetoken").attr('checked')==true) {
             $("#lifilterduplicatefields").slideDown();
@@ -57,20 +52,20 @@ $(document).ready(function() {
 
     // Code for AJAX download
     jQuery.download = function(url, data, method){
-	    //url and data options required
-	    if( url && data ){
-		    //data can be string of parameters or array/object
-		    data = typeof data == 'string' ? data : jQuery.param(data);
-		    //split params into form inputs
-		    var inputs = '';
-		    jQuery.each(data.split('&'), function(){
-			    var pair = this.split('=');
-			    inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />';
-		    });
-		    //send request
-		    jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
-		    .appendTo('body').submit().remove();
-	    };
+        //url and data options required
+        if( url && data ){
+            //data can be string of parameters or array/object
+            data = typeof data == 'string' ? data : jQuery.param(data);
+            //split params into form inputs
+            var inputs = '';
+            jQuery.each(data.split('&'), function(){
+                var pair = this.split('=');
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />';
+            });
+            //send request
+            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+        };
     };
     // Code for AJAX download
     var id=1;
@@ -131,8 +126,8 @@ $(document).ready(function() {
         loadComplete: function()
         {
             /* Sneaky way of adding custom icons to jqGrid pager buttons */
-            $("#pager").find(".ui-participant-link")
-                .css({"background-image":"url("+imageurl+"cpdb_12.png)", "background-position":"0", "color":"black"});
+            $("#pager").find(".ui-participant-link").css({"background-image":"url("+imageurl+"cpdb_12.png)", "background-position":"0", "color":"black"});
+            $("#pager").find(".ui-bounceprocessing").css({"background-image":"url("+imageurl+"bounce_12.png)", "background-position":"0", "color":"black"});
             window.editing = false;
             jQuery(".token_edit").unbind('click').bind('click', function(e)
             {
@@ -164,15 +159,15 @@ $(document).ready(function() {
                 });
 
                 jQuery('<input type="image" class="drop_editing" src="' + jQuery(this).parent().find('input:eq(1)').attr('src') + '" />')
-                    .appendTo(jQuery(this).parent())
-                    .click(func);
+                .appendTo(jQuery(this).parent())
+                .click(func);
                 jQuery('<input type="image" class="save" src="' + imageurl + '/ok.png" width="16" />')
-                    .appendTo(jQuery(this).parent())
-                    .click(function()
-                    {
-                         jQuery('#displaytokens').saveRow(row.attr('id'));
-                         func();
-                    });
+                .appendTo(jQuery(this).parent())
+                .click(function()
+                {
+                    jQuery('#displaytokens').saveRow(row.attr('id'));
+                    func();
+                });
             });
         },
         ondblClickRow: function(id)
@@ -205,10 +200,10 @@ $(document).ready(function() {
         },
         beforeSubmit : function(postdata, formid) {
             $.post(delUrl, {
-                    tid : postdata
-                    },
-                    function(data) {}
-                    );
+                tid : postdata
+            },
+            function(data) {}
+            );
             success = "dummy";
             message = "dummy";
             return[success,message];
@@ -235,24 +230,24 @@ $(document).ready(function() {
                 var dialog_buttons={};
                 if($('#field_1').val() == '') {
                     dialog_buttons[okBtn]=function(){
-		                $( this ).dialog( "close" );
+                        $( this ).dialog( "close" );
                     };
                     /* End of building array for button functions */
                     $('#fieldnotselected').dialog({
-			            modal: true,
+                        modal: true,
                         title: error,
- 			            buttons: dialog_buttons
+                        buttons: dialog_buttons
                     });
                 }
                 else if($('#condition_1').val()=="") {
                     dialog_buttons[okBtn]=function(){
-		                $( this ).dialog( "close" );
+                        $( this ).dialog( "close" );
                     };
                     /* End of building array for button functions */
                     $('#conditionnotselected').dialog({
-			            modal: true,
+                        modal: true,
                         title: error,
- 			            buttons: dialog_buttons
+                        buttons: dialog_buttons
                     });
                 } else {
                     if(id == 1) {
@@ -275,7 +270,7 @@ $(document).ready(function() {
                                 var dialog_buttons={};
                                 dialog_buttons[okBtn]=function(){
                                     $( this ).dialog( "close" );
-                                    };
+                                };
                                 $("<p>"+noSearchResultsTxt+"</p>").dialog({
                                     modal: true,
                                     buttons: dialog_buttons,
@@ -287,9 +282,9 @@ $(document).ready(function() {
                     $(this).dialog("close");
                 }
             };
-			dialog_buttons[cancelBtn]=function(){
+            dialog_buttons[cancelBtn]=function(){
                 $(this).dialog("close");
-			};
+            };
             dialog_buttons[resetBtn]=function(){
                 jQuery("#displaytokens").jqGrid('setGridParam',{
                     url:jsonUrl,
@@ -309,14 +304,14 @@ $(document).ready(function() {
                 });
                 $("#displaytokens").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
             };
-			/* End of building array for button functions */
-	        $("#search").dialog({
+            /* End of building array for button functions */
+            $("#search").dialog({
                 height: 300,
-				width: 750,
-				modal: true,
+                width: 750,
+                modal: true,
                 title : 'Full Search',
-	            buttons: dialog_buttons
-	        });
+                buttons: dialog_buttons
+            });
         }
     });
     $("#displaytokens").navButtonAdd('#pager',{
@@ -341,6 +336,23 @@ $(document).ready(function() {
         buttonicon:'ui-participant-link',
         onClickButton:function(){
             window.open(participantlinkUrl, "_top");
+        }
+    });
+    $("#displaytokens").navButtonAdd('#pager', {
+        caption:"",
+        title:sBounceProcessing,
+        buttonicon:'ui-bounceprocessing',
+        onClickButton:function(){
+            $("#dialog-modal").dialog({
+                title: "Summary",
+                modal: true,
+                autoOpen: false,
+                height: 200,
+                width: 400,
+                show: 'blind',
+                hide: 'blind'
+            });
+            checkbounces();
         }
     });
     $.extend(jQuery.jgrid.edit,{

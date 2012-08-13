@@ -49,13 +49,17 @@
         <div class='successheader'><?php $clang->eT("Survey Has Been Deactivated"); ?>
         </div>
         <p>
-        <?php echo $clang->gT("The responses table has been renamed to: ")." ".$newtable; ?>
-        <?php $clang->eT("The responses to this survey are no longer available using LimeSurvey."); ?>
-        <p><?php $clang->eT("You should note the name of this table in case you need to access this information later."); ?></p>
+        <?php $clang->eT("The responses to this survey are no longer available using LimeSurvey."); ?></p>
+        <p>
+        <?php echo $clang->gT("The responses table has been renamed to: ")." ".$sNewSurveyTableName; ?><br>
         <?php if (isset($toldtable) && $toldtable)
             {
-                echo $clang->gT("The tokens table associated with this survey has been renamed to: ")." $tnewtable";
+                echo $clang->gT("The tokens table associated with this survey has been renamed to: ")." $tnewtable<br>";
         } ?>
+
+        <?php if (isset($sNewTimingsTableName)) echo $clang->gT("The response timings table has been renamed to: ")." ".$sNewTimingsTableName; ?><br>
+        </p>
+        <?php $clang->eT("You should note the name(s) of the table(s) in case you need to access this information later."); ?><br>
         <p><?php $clang->eT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"); ?></p>
     </div><br/>&nbsp;
     <?php } ?>

@@ -1318,6 +1318,7 @@ class export extends Survey_Common_Action {
         // actually generate an Excel workbook
         $workbook = new xlswriter;
         $workbook->setVersion(8);
+        $workbook->setTempDir(Yii::app()->getConfig("tempdir"));
         $workbook->send($fn);
 
         $sheet =& $workbook->addWorksheet(); // do not translate/change this - the library does not support any special chars in sheet name
