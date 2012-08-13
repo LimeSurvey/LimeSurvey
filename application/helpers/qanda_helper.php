@@ -2170,6 +2170,7 @@ function do_ranking($ia)
         $answer.="<div id=\"htmlblock-{$ia['0']}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
     }
     $answer .="</div>";
+    header_includes("jquery/jquery.actual/jquery.actual.min.js"); // For jquery 1.5, can be removed with jquery 1.7, then had to rework on ranking.js
     header_includes("ranking.js");
     header_includes("ranking.css","css");
 

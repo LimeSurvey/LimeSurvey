@@ -137,7 +137,7 @@ function fixChoiceHeight(qID){
   maxHeight=0;
   $('.connectedSortable'+qID+' li').each(function(){
     if ($(this).height()>maxHeight){
-      maxHeight=$(this).height();
+      maxHeight=$(this).actual('height');
     }
   });
   $('.connectedSortable'+qID+' li').height(maxHeight);
@@ -146,7 +146,7 @@ function fixChoiceHeight(qID){
 function fixListHeight(qID){
   totalHeight=0;
   $('.connectedSortable'+qID+' li').each(function(){
-    totalHeight=totalHeight+$(this).outerHeight(true);
+    totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
   });
   $('.connectedSortable'+qID).height(totalHeight);
 }
