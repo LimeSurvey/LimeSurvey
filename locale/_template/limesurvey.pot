@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-12 22:05:45+00:00\n"
+"POT-Creation-Date: 2012-08-13 11:06:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -357,7 +357,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1707
 #: application/controllers/admin/conditionsaction.php:2067
 #: application/controllers/admin/conditionsaction.php:2070
-#: application/controllers/admin/responses.php:651
+#: application/controllers/admin/responses.php:654
 #: application/views/admin/export/statistics_view.php:1336
 #: application/views/admin/export/statistics_view.php:1339
 #: application/views/admin/survey/Question/questionbar_view.php:12
@@ -1672,7 +1672,7 @@ msgid "%s old response(s) and according timings were successfully imported."
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:515
-#: application/controllers/admin/dataentry.php:1497
+#: application/controllers/admin/dataentry.php:1498
 #: application/controllers/admin/dataentry.php:1625
 #: application/controllers/admin/dataentry.php:2613
 #: application/views/admin/dataentry/caption_view.php:1
@@ -1780,7 +1780,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1590
 #: application/controllers/admin/responses.php:68
 #: application/controllers/admin/responses.php:77
-#: application/controllers/admin/responses.php:940
+#: application/controllers/admin/responses.php:928
 #: application/views/admin/dataentry/delete.php:5
 #: application/views/admin/dataentry/vvimport_upload.php:22
 #: application/views/admin/responses/browseallfiltered_view.php:3
@@ -2644,7 +2644,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:130
 #: application/controllers/admin/responses.php:465
-#: application/helpers/common_helper.php:5448
+#: application/helpers/common_helper.php:5447
 #: application/helpers/replacements_helper.php:627
 #: application/views/admin/export/exportresults_view.php:119
 #: application/views/admin/participants/displayParticipants_view.php:65
@@ -2660,7 +2660,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:131
 #: application/controllers/admin/responses.php:466
-#: application/helpers/common_helper.php:5449
+#: application/helpers/common_helper.php:5448
 #: application/helpers/replacements_helper.php:634
 #: application/views/admin/export/exportresults_view.php:120
 #: application/views/admin/participants/displayParticipants_view.php:66
@@ -2704,12 +2704,12 @@ msgid_plural "%s responses were successfully deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/responses.php:647
+#: application/controllers/admin/responses.php:650
 #: application/helpers/common_helper.php:2951
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/admin/responses.php:649
+#: application/controllers/admin/responses.php:652
 #: application/views/admin/assessments_view.php:65
 msgid "Group"
 msgstr ""
@@ -3031,29 +3031,29 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2315
 #: application/controllers/admin/tokens.php:2350
 #: application/controllers/admin/useraction.php:720
-#: application/helpers/common_helper.php:6362
-#: application/helpers/common_helper.php:6367
-#: application/helpers/common_helper.php:6372
-#: application/helpers/common_helper.php:6377
-#: application/helpers/common_helper.php:6382
-#: application/helpers/common_helper.php:6387
-#: application/helpers/common_helper.php:6392
-#: application/helpers/common_helper.php:6397
-#: application/helpers/common_helper.php:6402
-#: application/helpers/common_helper.php:6408
-#: application/helpers/common_helper.php:6414
-#: application/helpers/common_helper.php:6419
-#: application/helpers/common_helper.php:6424
-#: application/helpers/common_helper.php:6429
-#: application/helpers/common_helper.php:6434
-#: application/helpers/common_helper.php:6439
-#: application/helpers/common_helper.php:6445
-#: application/helpers/common_helper.php:6450
-#: application/helpers/common_helper.php:6459
-#: application/helpers/common_helper.php:6464
-#: application/helpers/common_helper.php:6471
-#: application/helpers/common_helper.php:6475
-#: application/helpers/common_helper.php:6479
+#: application/helpers/common_helper.php:6361
+#: application/helpers/common_helper.php:6366
+#: application/helpers/common_helper.php:6371
+#: application/helpers/common_helper.php:6376
+#: application/helpers/common_helper.php:6381
+#: application/helpers/common_helper.php:6386
+#: application/helpers/common_helper.php:6391
+#: application/helpers/common_helper.php:6396
+#: application/helpers/common_helper.php:6401
+#: application/helpers/common_helper.php:6407
+#: application/helpers/common_helper.php:6413
+#: application/helpers/common_helper.php:6418
+#: application/helpers/common_helper.php:6423
+#: application/helpers/common_helper.php:6428
+#: application/helpers/common_helper.php:6433
+#: application/helpers/common_helper.php:6438
+#: application/helpers/common_helper.php:6444
+#: application/helpers/common_helper.php:6449
+#: application/helpers/common_helper.php:6458
+#: application/helpers/common_helper.php:6463
+#: application/helpers/common_helper.php:6470
+#: application/helpers/common_helper.php:6474
+#: application/helpers/common_helper.php:6478
 #: application/helpers/frontend_helper.php:1448
 #: application/helpers/frontend_helper.php:1525
 #: application/helpers/frontend_helper.php:1697
@@ -3667,10 +3667,10 @@ msgstr ""
 #: application/helpers/common_helper.php:621
 #: application/helpers/common_helper.php:1274
 #: application/helpers/common_helper.php:1344
-#: application/helpers/common_helper.php:7104
-#: application/helpers/common_helper.php:7141
-#: application/helpers/common_helper.php:7537
-#: application/helpers/common_helper.php:7580
+#: application/helpers/common_helper.php:7103
+#: application/helpers/common_helper.php:7140
+#: application/helpers/common_helper.php:7536
+#: application/helpers/common_helper.php:7579
 #: application/helpers/qanda_helper.php:1351
 #: application/helpers/qanda_helper.php:1532
 #: application/helpers/qanda_helper.php:2143
@@ -3696,7 +3696,7 @@ msgstr ""
 #: application/views/admin/survey/editLocalSettings_view.php:5
 #: application/views/admin/survey/editLocalSettings_view.php:9
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:21
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:23
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:25
 #: application/views/admin/survey/surveySummary_view.php:26
 #: application/views/admin/usergroup/addUserGroup_view.php:11
 #: application/views/admin/usergroup/editUserGroup_view.php:6
@@ -3711,8 +3711,8 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:8070
 #: application/views/admin/survey/editLocalSettings_view.php:17
 #: application/views/admin/survey/editLocalSettings_view.php:21
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:29
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:31
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:33
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:37
 #: application/views/admin/survey/surveySummary_view.php:51
 msgid "End message:"
 msgstr ""
@@ -4062,8 +4062,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1275
 #: application/helpers/common_helper.php:1345
 #: application/helpers/common_helper.php:4023
-#: application/helpers/common_helper.php:7538
-#: application/helpers/common_helper.php:7581
+#: application/helpers/common_helper.php:7537
+#: application/helpers/common_helper.php:7580
 #: application/views/admin/token/bounce.php:14
 #: application/views/admin/token/bounce.php:57
 msgid "None"
@@ -6179,7 +6179,7 @@ msgstr ""
 msgid "SMTP debug output:"
 msgstr ""
 
-#: application/helpers/common_helper.php:5450
+#: application/helpers/common_helper.php:5449
 #: application/helpers/replacements_helper.php:641
 #: application/views/admin/export/exportresults_view.php:121
 #: application/views/admin/saved/savedlist_view.php:10
@@ -6188,132 +6188,132 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:5451
+#: application/helpers/common_helper.php:5450
 msgid "Token code"
 msgstr ""
 
-#: application/helpers/common_helper.php:5452
+#: application/helpers/common_helper.php:5451
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:5453
+#: application/helpers/common_helper.php:5452
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:5454
+#: application/helpers/common_helper.php:5453
 msgid "Last Reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:5455
+#: application/helpers/common_helper.php:5454
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:5456
+#: application/helpers/common_helper.php:5455
 #: application/views/admin/token/browse.php:77
 #: application/views/admin/token/browse.php:143
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:5475
+#: application/helpers/common_helper.php:5474
 msgid "Attribute %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:6356
+#: application/helpers/common_helper.php:6355
 msgid "Access denied!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6361
+#: application/helpers/common_helper.php:6360
 msgid "You are not allowed dump the database!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6366
+#: application/helpers/common_helper.php:6365
 msgid "You are not allowed export a label set!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6371
+#: application/helpers/common_helper.php:6370
 msgid "You are not allowed to change user data!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6376
+#: application/helpers/common_helper.php:6375
 msgid "You are not allowed to create new surveys!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6381
+#: application/helpers/common_helper.php:6380
 msgid "You are not allowed to delete this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6386
+#: application/helpers/common_helper.php:6385
 msgid "You are not allowed to add new questions for this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6391
+#: application/helpers/common_helper.php:6390
 msgid "You are not allowed to activate this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6396
+#: application/helpers/common_helper.php:6395
 msgid "You are not allowed to stop this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6401
+#: application/helpers/common_helper.php:6400
 msgid "You are not allowed to add a group to this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6407
+#: application/helpers/common_helper.php:6406
 msgid "You are not allowed to order groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6413
+#: application/helpers/common_helper.php:6412
 msgid "You are not allowed to edit this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6418
+#: application/helpers/common_helper.php:6417
 msgid "You are not allowed to edit groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6423
+#: application/helpers/common_helper.php:6422
 msgid "You are not allowed to browse responses!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6428
+#: application/helpers/common_helper.php:6427
 msgid "You are not allowed to set assessment rules!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6433
+#: application/helpers/common_helper.php:6432
 msgid "You are not allowed to delete this group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6438
+#: application/helpers/common_helper.php:6437
 msgid "You are not allowed to import a survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6444
+#: application/helpers/common_helper.php:6443
 msgid "You are not allowed to import a group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6449
+#: application/helpers/common_helper.php:6448
 msgid "You are not allowed to to import a question!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6458
-#: application/helpers/common_helper.php:6463
+#: application/helpers/common_helper.php:6457
+#: application/helpers/common_helper.php:6462
 msgid "Security alert"
 msgstr ""
 
-#: application/helpers/common_helper.php:6458
-#: application/helpers/common_helper.php:6463
+#: application/helpers/common_helper.php:6457
+#: application/helpers/common_helper.php:6462
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
-#: application/helpers/common_helper.php:6458
-#: application/helpers/common_helper.php:6463
+#: application/helpers/common_helper.php:6457
+#: application/helpers/common_helper.php:6462
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
-#: application/helpers/common_helper.php:6468
+#: application/helpers/common_helper.php:6467
 msgid "You are not allowed to perform this operation!"
 msgstr ""
 
-#: application/helpers/common_helper.php:7215
+#: application/helpers/common_helper.php:7214
 msgid "SQL command failed: %s"
 msgstr ""
 
@@ -7966,7 +7966,7 @@ msgstr ""
 #: application/views/admin/assessments_view.php:9
 #: application/views/admin/participants/attributeControl_view.php:4
 #: application/views/admin/participants/displayParticipants_view.php:96
-#: application/views/admin/responses/browseallheader_view.php:78
+#: application/views/admin/responses/browseallheader_view.php:77
 #: application/views/admin/responses/browsetimeheader_view.php:55
 #: application/views/admin/saved/savedlist_view.php:6
 #: application/views/admin/survey/Question/answerOptions_view.php:77
@@ -10800,12 +10800,12 @@ msgstr ""
 msgid "Display:"
 msgstr ""
 
-#: application/views/admin/responses/browseallheader_view.php:110
+#: application/views/admin/responses/browseallheader_view.php:109
 #: application/views/admin/responses/browsetimeheader_view.php:87
 msgid "Delete marked responses"
 msgstr ""
 
-#: application/views/admin/responses/browseallheader_view.php:113
+#: application/views/admin/responses/browseallheader_view.php:112
 msgid "Download marked files"
 msgstr ""
 
@@ -11952,28 +11952,28 @@ msgid "Survey title"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:11
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:25
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:27
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:30
 msgid "Welcome message:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:23
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:34
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:40
 msgid "End URL:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:26
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:36
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:42
 msgid "URL description:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:29
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:38
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:44
 msgid "Date format:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:41
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:47
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:53
 msgid "Decimal mark:"
 msgstr ""
 
@@ -12148,7 +12148,7 @@ msgid "Additional Languages"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:48
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:58
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:64
 #: application/views/admin/survey/surveySummary_view.php:62
 msgid "Administrator:"
 msgstr ""
@@ -12162,7 +12162,7 @@ msgid "Bounce email:"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:54
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:64
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:70
 #: application/views/admin/survey/surveySummary_view.php:71
 msgid "Fax to:"
 msgstr ""
@@ -12175,11 +12175,11 @@ msgstr ""
 msgid "*This setting cannot be changed later!"
 msgstr ""
 
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:60
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:66
 msgid "Admin Email:"
 msgstr ""
 
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:62
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:68
 msgid "Bounce Email:"
 msgstr ""
 
