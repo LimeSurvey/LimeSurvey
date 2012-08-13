@@ -485,6 +485,16 @@ abstract class QuestionModule
         return 1;
     }
 
+    public function getShownJS()
+    {
+        return 'return value;';
+    }
+
+    public function getValueJS()
+    {
+        return 'return value;';
+    }
+
     public function availableOptions()
     {
         return array('other' => false, 'valid' => false, 'mandatory' => true);

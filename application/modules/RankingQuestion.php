@@ -444,6 +444,23 @@ class RankingQuestion extends QuestionModule
         return $clang->gT('Please rank all items').'.';
     }
 
+    public function getShownJS()
+    {
+        return 'which_ans = "0~" + value;'
+                . 'if (typeof attr.answers[which_ans] === "undefined") return value;'
+                . 'answerParts = attr.answers[which_ans].split("|");'
+                . 'answerParts.shift();'
+                . 'return answerParts.join("|");';
+    }
+
+    public function getValueJS()
+    {
+        return 'which_ans = "0~" + value;'
+                . 'if (typeof attr.answers[which_ans] === "undefined") return "";'
+                . 'answerParts = attr.answers[which_ans].split("|");'
+                . 'return answerParts[0];';
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");

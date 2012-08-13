@@ -743,6 +743,25 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return true;
     }
 
+    public function getShownJS()
+    {
+        return 'prefix = (attr.jsName.match(/#1$/)) ? "1" : "0";'
+                . 'which_ans = prefix + "~" + value;'
+                . 'if (typeof attr.answers[which_ans] === "undefined") return "";'
+                . 'answerParts = attr.answers[which_ans].split("|");'
+                . 'answerParts.shift();'
+                . 'return answerParts.join("|");';
+    }
+
+    public function getValueJS()
+    {
+        return 'prefix = (attr.jsName.match(/#1$/)) ? "1" : "0";'
+                . 'which_ans = prefix + "~" + value;'
+                . 'if (typeof attr.answers[which_ans] === "undefined") return "";'
+                . 'answerParts = attr.answers[which_ans].split("|");'
+                . 'return answerParts[0];';
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

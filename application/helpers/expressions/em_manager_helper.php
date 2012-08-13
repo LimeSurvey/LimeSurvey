@@ -2426,7 +2426,6 @@
                 {
                     continue;   // not an SGQA value
                 }
-                $type = $fielddata['type']; //AJS
                 $q->mandatory = $q->mandatory;
                 $fieldNameParts = explode('X',$q->fieldname);
                 $q->aid = (isset($q->aid) ? $q->aid : '');
@@ -2594,8 +2593,9 @@
                 . "','sgqa':'" . $q->fieldname
                 . "','qid':" . $q->id
                 . ",'gid':" . $q->gid
-                . ",'type':'" . $type //AJS Javascript!
-                . "','default':'" . (is_null($q->default) ? '' : $q->default)
+                . ",'shownscript': function(value, attr, varName) {" . $q->getShownJS()
+                . "},'valuescript': function(value, attr, varName) {" . $q->getValueJS()
+                . "},'default':'" . (is_null($q->default) ? '' : $q->default)
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $q->groupcount
@@ -5608,7 +5608,7 @@
                 if (count($neededCanonicalAttr) > 0)
                 {
                     $jsParts[] = "var LEMvarNameAttr = {\n";
-                    $jsParts[] = implode(",\n",$neededCanonicalAttr); //AJS This outputs type to javascript!
+                    $jsParts[] = implode(",\n",$neededCanonicalAttr);
                     $jsParts[] = "};\n";
                 }
             }

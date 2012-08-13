@@ -300,7 +300,7 @@ class DateQuestion extends QuestionModule
         
         $includes = array(Yii::app()->getConfig("generalscripts").'date.js' => 'js');
         if (trim($aQuestionAttributes['dropdown_dates'])==0) {
-            $includes[Yii::app()->getConfig("generalscripts").'jquery/lime-calendar.js'] = 'js';
+            $includes[Yii::app()->getConfig("generalscripts").'date.js'] = 'js';
             if ($clang->langcode !== 'en')
             {
                 $includes[Yii::app()->getConfig("generalscripts").'jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js'] = 'js';

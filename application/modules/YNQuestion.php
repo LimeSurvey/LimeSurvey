@@ -158,6 +158,11 @@ class YNQuestion extends QuestionModule
         }
     }
 
+    public function getShownJS()
+    {
+        return 'return (typeof attr.answers[value] === "undefined") ? "" : attr.answers[value];';
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

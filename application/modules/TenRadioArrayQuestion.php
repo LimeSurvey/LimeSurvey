@@ -184,6 +184,16 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         return $attr?in_array($attr,$attrs):$attrs;
     }
 
+    public function getShownJS()
+    {
+        return 'return value;';
+    }
+
+    public function getValueJS()
+    {
+        return 'return value;';
+    }
+
     public function availableOptions()
     {
         return array('other' => false, 'valid' => false, 'mandatory' => true);

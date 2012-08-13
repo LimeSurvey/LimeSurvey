@@ -267,10 +267,10 @@ class FileQuestion extends QuestionModule
             case 'dataentryinsert':
             if (!strpos($this->fieldname, "_filecount"))
             {
-                $this->dataentry = json_decode(stripslashes($value));
+                $dataentry = json_decode(stripslashes($value));
                 $filecount = 0;
 
-                for ($i = 0; $filecount < count($this->dataentry); $i++)
+                for ($i = 0; $filecount < count($dataentry); $i++)
                 {
                     if ($_FILES[$q->fieldname."_file_".$i]['error'] != 4)
                     {
@@ -280,20 +280,20 @@ class FileQuestion extends QuestionModule
 
                         if (move_uploaded_file($_FILES[$this->fieldname."_file_".$i]['tmp_name'], $target))
                         {
-                            $this->dataentry[$filecount]->filename = basename($target);
-                            $this->dataentry[$filecount]->name = $name;
-                            $this->dataentry[$filecount]->size = $size;
+                            $dataentry[$filecount]->filename = basename($target);
+                            $dataentry[$filecount]->name = $name;
+                            $dataentry[$filecount]->size = $size;
                             $pathinfo = pathinfo($_FILES[$q->fieldname."_file_".$i]['name']);
                             $phparray[$filecount]->ext = $pathinfo['extension'];
                             $filecount++;
                         }
                     }
                 }
-                return ls_json_encode($this->dataentry);
+                return ls_json_encode($dataentry);
             }
             else
             {
-                return count($this->dataentry);
+                return count(json_decode(stripslashes($value)));
             }
         }
     }

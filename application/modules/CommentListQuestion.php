@@ -339,6 +339,25 @@ class CommentListQuestion extends ListQuestion
         return array('other' => false, 'valid' => false, 'mandatory' => true);
     }
 
+    public function getShownJS()
+    {
+        return 'if (varName.match(/comment$/)) return value;'
+                . 'which_ans = "0~" + value;'
+                . 'if (typeof attr.answers[which_ans] === "undefined") return value;'
+                . 'answerParts = attr.answers[which_ans].split("|");'
+                . 'answerParts.shift();'
+                . 'return answerParts.join("|");';
+    }
+
+    public function getValueJS()
+    {
+        return 'if (varName.match(/comment$/)) return value;'
+                . 'which_ans = "0~" + value;'
+                . 'if (typeof attr.answers[which_ans] === "undefined") return "";'
+                . 'answerParts = attr.answers[which_ans].split("|");'
+                . 'return answerParts[0];';
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

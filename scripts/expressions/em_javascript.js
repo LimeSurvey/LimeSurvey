@@ -364,87 +364,9 @@ function LEMval(alias)
         }
         case 'shown': {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
-            switch(attr.type) //AJS
-            {
-                case 'G': //GENDER drop-down list
-                case 'Y': //YES/NO radio-buttons
-                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    shown = (typeof attr.answers[value] === 'undefined') ? '' : attr.answers[value];
-                    break;
-                case '!': //List - dropdown
-                case 'L': //LIST drop-down/radio-button list
-                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                case 'H': //ARRAY (Flexible) - Column Format
-                case 'F': //ARRAY (Flexible) - Row Format
-                case 'R': //RANKING STYLE
-                    if (attr.type == 'O' && varName.match(/comment$/)) {
-                        answer = value;
-                    }
-                    else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
-                        answer = value;
-                    }
-                    else {
-                        which_ans = '0~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
-                            answer = value;
-                        }
-                        else {
-                            answerParts = attr.answers[which_ans].split('|');
-                            answerParts.shift();    // remove the first element
-                            answer = answerParts.join('|');
-                        }
-                    }
-                    shown = answer;
-                    break;
-                case '1': //Array (Flexible Labels) dual scale  // need scale
-                    prefix = (attr.jsName.match(/#1$/)) ? '1' : '0';
-                    which_ans = prefix + '~' + value;
-                    if (typeof attr.answers[which_ans] === 'undefined') {
-                        answer = '';
-                    }
-                    else {
-                        answerParts = attr.answers[which_ans].split('|');
-                        answerParts.shift();    // remove the first element
-                        answer = answerParts.join('|');
-                    }
-                    shown = answer;
-                    break;
-                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                case ':': //ARRAY (Multi Flexi) 1 to 10
-                case '5': //5 POINT CHOICE radio-buttons
-                case 'N': //NUMERICAL QUESTION TYPE
-                case 'K': //MULTIPLE NUMERICAL QUESTION
-                case 'Q': //MULTIPLE SHORT TEXT
-                case ';': //ARRAY (Multi Flexi) Text
-                case 'S': //SHORT FREE TEXT
-                case 'T': //LONG FREE TEXT
-                case 'U': //HUGE FREE TEXT
-                case 'D': //DATE
-                case '*': //Equation
-                case 'I': //Language Question
-                case '|': //File Upload
-                case 'X': //BOILERPLATE QUESTION
-                    shown = value; // what about "no answer"?
-                    break;
-                case 'M': //Multiple choice checkbox
-                case 'P': //Multiple choice with comments checkbox + text
-                    if (typeof attr.question === 'undefined' || value == '') {
-                        shown = '';
-                    }
-                    else {
-                        if (attr.type == 'P' && varName.match(/comment$/)) {
-                            shown = value;
-                        }
-                        else {
-                            shown = htmlspecialchars_decode(attr.question);
-                        }
-                    }
-                    break;
-            }
-        }
+            shown = attr.shownscript(value, attr, varName);
             return htmlspecialchars_decode(shown);
+        }
         case 'gid':
             return attr.gid;
         case 'grelevance':
@@ -480,43 +402,7 @@ function LEMval(alias)
             if (suffix == 'value' || suffix == 'valueNAOK') {
                 // if in assessment mode, this returns the assessment value
                 // in non-assessment mode, this is identical to .code
-                switch (attr.type) //AJS
-                {
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case 'H': //ARRAY (Flexible) - Column Format
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'R': //RANKING STYLE
-                        if (attr.type == 'O' && varName.match(/comment$/)) {
-//                            value = value;
-                        }
-                        else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
-//                            value = value;
-                        }
-                        else {
-                            which_ans = '0~' + value;
-                            if (typeof attr.answers[which_ans] === 'undefined') {
-                                value = '';
-                            }
-                            else {
-                                answerParts = attr.answers[which_ans].split('|');
-                                value = answerParts[0];
-                            }
-                        }
-                        break;
-                    case '1': //Array (Flexible Labels) dual scale  // need scale
-                        prefix = (attr.jsName.match(/#1$/)) ? '1' : '0';
-                        which_ans = prefix + '~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
-                            value = '';
-                        }
-                        else {
-                            answerParts = attr.answers[which_ans].split('|');
-                            value = answerParts[0];
-                        }
-                        break;
-                }
+                value = attr.valuescript(value, attr, varName);
             }
 
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
