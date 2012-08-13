@@ -1479,8 +1479,9 @@ class dataentry extends Survey_Common_Action
     */
     public function update()
     {
+        $aData=array();
         $subaction = Yii::app()->request->getPost('subaction');
-        $surveyid = $_REQUEST['surveyid'];
+        if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
         $surveyid = sanitize_int($surveyid);
         $id = Yii::app()->request->getPost('id');
@@ -1537,9 +1538,8 @@ class dataentry extends Survey_Common_Action
                         $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
-                        $items = array($thisvalue,$dateformatdetails['phpdate']);
                         $this->getController()->loadLibrary('Date_Time_Converter');
-                        $datetimeobj = new date_time_converter($items) ;
+                        $datetimeobj = new date_time_converter($thisvalue,$dateformatdetails['phpdate']) ;
                         //need to check if library get initialized with new value of constructor or not.
 
                         //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);

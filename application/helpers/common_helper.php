@@ -1585,7 +1585,7 @@ function fixSortOrderAnswers($qid,$surveyid=null) //Function rewrites the sortor
 
 /**
 * This function rewrites the sortorder for questions inside the named group
-* REMOVED the 2012-08-08 : replaced by Questions::model()->updateQuestionOrder 
+* REMOVED the 2012-08-08 : replaced by Questions::model()->updateQuestionOrder
 * @param integer $groupid the group id
 * @param integer $surveyid the survey id
 */
@@ -4977,7 +4977,6 @@ function CSVUnquote($field)
 
 function incompleteAnsFilterState()
 {
-    global $filterout_incomplete_answers;
     $letsfilter='';
     $letsfilter = returnGlobal('completionstate'); //read get/post completionstate
 
@@ -4989,7 +4988,7 @@ function incompleteAnsFilterState()
     }
     elseif (empty(Yii::app()->session['incompleteanswers']))
     { // sets default variable value from config file
-        Yii::app()->session['incompleteanswers'] = $filterout_incomplete_answers;
+        Yii::app()->session['incompleteanswers'] = Yii::app()->getConfig('filterout_incomplete_answers');
     }
 
     if  (Yii::app()->session['incompleteanswers']=='complete' || Yii::app()->session['incompleteanswers']=='all' || Yii::app()->session['incompleteanswers']=='incomplete') {
