@@ -694,7 +694,7 @@ class question extends Survey_Common_Action
                             'question_order' => $esrow['question_order'],
                             'other' => $esrow['other'],
                             'mandatory' => $esrow['mandatory'],
-                            'type' => $esrow['type'],
+                            'type' => $esrow['type'], //AJS
                             'title' => $esrow['title'],
                             'preg' => $esrow['preg'],
                             'question' => $esrow['question'],
@@ -714,7 +714,7 @@ class question extends Survey_Common_Action
                             'qid' => $qid,
                             'sid' => $surveyid,
                             'gid' => $gid,
-                            'type' => $basesettings['type'],
+                            'type' => $basesettings['type'], //AJS
                             'title' => $basesettings['title'],
                             'question' => $basesettings['question'],
                             'preg' => $basesettings['preg'],
@@ -742,14 +742,19 @@ class question extends Survey_Common_Action
 
             $types = Question_types::model()->with('question_type_groups')->findAll(array('order' => 'question_type_groups.order, t.order'));
             $qDescToCode = 'qDescToCode = {';
+            $qScreenshots = 'qScreenshots = {';
+            $selections = array();
             foreach ($types as $type)
             {
                 $q = createQuestion($type['class']);
                 $props = $q->questionProperties();
+                $screenshots = $q->screenshotCount();
                 $qDescToCode .= " '{$props['description']}' : '{$type['class']}', \n";
                 $typegroups[$type->question_type_groups['name']][] = $type;
+                $qScreenshots .= " '{$type['class']}' : '{$screenshots}', \n";
+                $selections[$type['class']] = $q->availableOptions();
             }
-            $aData['qTypeOutput'] = "$qDescToCode 'null':'null' };";
+            $aData['qTypeOutput'] = "$qDescToCode 'null':'null' };$qScreenshots 'null':'null' };";
             $aData['qTypeGroups'] = $typegroups;
 
             if (!$adding)
@@ -766,7 +771,7 @@ class question extends Survey_Common_Action
                 $eqrow['title'] = '';
                 $eqrow['question'] = '';
                 $eqrow['help'] = '';
-                $eqrow['tid'] = 25; //AJS - WHY IS THIS HARDCODED?
+                $eqrow['class'] = 'LongText'; //AJS - WHY IS THIS HARDCODED?
                 $eqrow['lid'] = 0;
                 $eqrow['lid1'] = 0;
                 $eqrow['gid'] = $gid;
@@ -821,7 +826,7 @@ class question extends Survey_Common_Action
             }
 
             $aViewUrls['editQuestion_view'][] = $aData;
-            $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
+            $aViewUrls['questionJavascript_view'][] = array('class' => $eqrow['class'], 'selections' => $selections);
         }
         else
             include('accessDenied.php');
@@ -912,7 +917,7 @@ class question extends Survey_Common_Action
      */
     public function ajaxquestionattributes()
     {
-        $q = objectizeQuestion($_POST['question_type'], array('surveyid' => (int) $_POST['sid'], 'id' => (int) $_POST['qid'])); //AJS
+        $q = createQuestion($_POST['class'], array('surveyid' => (int) $_POST['sid'], 'id' => (int) $_POST['qid']));
 
         $aLanguages = array_merge(array(Survey::model()->findByPk($q->surveyid)->language), Survey::model()->findByPk($q->surveyid)->additionalLanguages);
         $thissurvey = getSurveyInfo($q->surveyid);

@@ -1112,7 +1112,7 @@ class conditionsaction extends Survey_Common_Action {
             {
                 $javascriptpre .= "QFieldnames[$jn]='$cqn[3]';\n"
                 ."Qcqids[$jn]='$cqn[1]';\n"
-                ."Qtypes[$jn]='$cqn[2]';\n";
+                ."Qtypes[$jn]='$cqn[2]';\n"; //AJS
                 $jn++;
             }
         }

@@ -184,6 +184,11 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         return $attr?in_array($attr,$attrs):$attrs;
     }
 
+    public function availableOptions()
+    {
+        return array('other' => false, 'valid' => false, 'mandatory' => true);
+    }
+
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;

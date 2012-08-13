@@ -483,6 +483,12 @@ EOD;
         return '_' . substr($this->aid,0,strpos($this->aid,'_'));
     }
 
+    public function getExportVarName()
+    {
+        $sgqa_len = strlen($this->surveyid . 'X'. $this->gid . 'X' . $this->id);
+        return $this->title . '_' . substr($this->getRowDivID(),$sgqa_len);
+    }
+
     public function getQuestion()
     {
         return $this->sq1 . '[' . $this->sq2 . ']';
@@ -491,6 +497,11 @@ EOD;
     public function getRowDivID()
     {
         return substr($this->fieldname,0,strpos($this->fieldname,'_'));
+    }
+
+    public function getExportRowDivID()
+    {
+        return $this->getRowDivID();
     }
 
     public function getPregSQ($sgqaNaming, $sq)
@@ -527,6 +538,11 @@ EOD;
     public function includeRelevanceStatus()
     {
         return true;
+    }
+
+    public function availableOptions()
+    {
+        return array('other' => false, 'valid' => true, 'mandatory' => true);
     }
 
     public function availableAttributes($attr = false)

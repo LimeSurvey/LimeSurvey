@@ -2599,13 +2599,9 @@
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $q->groupcount
-                .$ansList;
-
-                if ($type == 'M' || $type == 'P')
-                {
-                    $this->varNameAttr[$jsVarName] .= ",'question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES) . "'";
-                }
-                $this->varNameAttr[$jsVarName] .= "}";
+                . ",'question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES) . "'"
+                . $ansList
+                . "}";
             }
             $this->q2subqInfo = $q2subqInfo;
 
@@ -2649,7 +2645,6 @@
 
                 $blankVal = array(
                 'code'=>'',
-                'type'=>'',
                 'jsName_on'=>'',
                 'jsName'=>'',
                 'readWrite'=>'N',
@@ -2677,7 +2672,6 @@
             'qcode'=>'this',
             'qseq'=>'',
             'gseq'=>'',
-            'type'=>'',
             'sgqa'=>'',
             'rowdivid'=>'',
             'ansList'=>'',
@@ -2980,7 +2974,6 @@
                 'relevancejs' => $relevanceJS,
                 'relevanceVars' => $relevanceVars,
                 'rowdivid' => $rowdivid,
-                'type'=>$type,
                 'q' => $q,
                 'sgqa'=>$sgqa,
                 'hasErrors'=>$hasErrors,
@@ -4727,7 +4720,7 @@
                 // Store the result of the Equation in the SESSION
                 $_SESSION[$LEM->sessid][$sgqa] = $result;
                 $_update = array(
-                'q'=> new EquationQuestion,
+                'q'=>new EquationQuestion,
                 'value'=>$result,
                 );
                 $updatedValues[$sgqa] = $_update;
@@ -5740,19 +5733,19 @@
         static function UnitTestProcessStringContainingExpressions()
         {
             $vars = array(
-            'name' => array('sgqa'=>'name', 'code'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'type'=>'X', 'question'=>'What is your first/given name?', 'qseq'=>10, 'gseq'=>1),
-            'surname' => array('sgqa'=>'surname', 'code'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'What is your last/surname?', 'qseq'=>20, 'gseq'=>1),
-            'age' => array('sgqa'=>'age', 'code'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How old are you?', 'qseq'=>30, 'gseq'=>2),
-            'numKids' => array('sgqa'=>'numKids', 'code'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','qseq'=>40, 'gseq'=>2),
-            'numPets' => array('sgqa'=>'numPets', 'code'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'type'=>'X','question'=>'How many pets do you have?', 'qseq'=>50, 'gseq'=>2),
-            'gender' => array('sgqa'=>'gender', 'code'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'qseq'=>110, 'gseq'=>2),
-            'notSetYet' => array('sgqa'=>'notSetYet', 'code'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'qseq'=>200, 'gseq'=>3),
+            'name' => array('sgqa'=>'name', 'code'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'q'=>new EquationQuestion, 'question'=>'What is your first/given name?', 'qseq'=>10, 'gseq'=>1),
+            'surname' => array('sgqa'=>'surname', 'code'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'q'=>new EquationQuestion, 'question'=>'What is your last/surname?', 'qseq'=>20, 'gseq'=>1),
+            'age' => array('sgqa'=>'age', 'code'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'q'=>new EquationQuestion, 'question'=>'How old are you?', 'qseq'=>30, 'gseq'=>2),
+            'numKids' => array('sgqa'=>'numKids', 'code'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'q'=>new EquationQuestion, 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','qseq'=>40, 'gseq'=>2),
+            'numPets' => array('sgqa'=>'numPets', 'code'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'q'=>new EquationQuestion,'question'=>'How many pets do you have?', 'qseq'=>50, 'gseq'=>2),
+            'gender' => array('sgqa'=>'gender', 'code'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'q'=>new EquationQuestion, 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'qseq'=>110, 'gseq'=>2),
+            'notSetYet' => array('sgqa'=>'notSetYet', 'code'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'q'=>new EquationQuestion, 'shown'=>'Unknown','question'=>'Who will win the next election?', 'qseq'=>200, 'gseq'=>3),
             // Constants
-            '61764X1X1' => array('sgqa'=>'61764X1X1', 'code'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>70, 'gseq'=>2),
-            '61764X1X2' => array('sgqa'=>'61764X1X2', 'code'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>80, 'gseq'=>2),
-            '61764X1X3' => array('sgqa'=>'61764X1X3', 'code'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>15, 'gseq'=>1),
-            '61764X1X4' => array('sgqa'=>'61764X1X4', 'code'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>100, 'gseq'=>2),
-            'TOKEN:ATTRIBUTE_1' => array('code'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X'),
+            '61764X1X1' => array('sgqa'=>'61764X1X1', 'code'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'q'=>new EquationQuestion, 'qseq'=>70, 'gseq'=>2),
+            '61764X1X2' => array('sgqa'=>'61764X1X2', 'code'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'q'=>new EquationQuestion, 'qseq'=>80, 'gseq'=>2),
+            '61764X1X3' => array('sgqa'=>'61764X1X3', 'code'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'q'=>new EquationQuestion, 'qseq'=>15, 'gseq'=>1),
+            '61764X1X4' => array('sgqa'=>'61764X1X4', 'code'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'q'=>new EquationQuestion, 'qseq'=>100, 'gseq'=>2),
+            'TOKEN:ATTRIBUTE_1' => array('code'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'q'=>new EquationQuestion),
             );
 
             $tests = <<<EOD
@@ -6533,7 +6526,6 @@ EOD;
                 case 'readWrite':
                 case 'relevance':
                 case 'rowdivid':
-                case 'type':
                 case 'qcode':
                 case 'gseq':
                 case 'qseq':
@@ -6987,40 +6979,15 @@ EOD;
                     if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName) {
                         continue;   // so don't show the main question as a sub-question too
                     }
-                    $rowdivid=$sgqa;
-                    $varName=$LEM->knownVars[$sgqa]['qcode'];
-                    switch  ($qStatus['info']['type'])
+                    
+                    $rowdivid=$q->getExportRowDivID();
+                    $varName=$q->getExportVarName();
+                    if (isset($sawThis[$q->id . '~' . $rowdivid]) || is_null($rowdivid))
                     {
-                        case '1':
-                            if (preg_match('/#1$/',$sgqa)) {
-                                $rowdivid = NULL;   // so that doesn't show same message for second scale
-                            }
-                            else {
-                                $rowdivid = substr($sgqa,0,-2); // strip suffix
-                                $varName = substr($LEM->knownVars[$sgqa]['qcode'],0,-2);
-                            }
-                            break;
-                        case 'P':
-                            if (preg_match('/comment$/',$sgqa)) {
-                                $rowdivid = NULL;
-                            }
-                            break;
-                        case ':':
-                        case ';':
-                            $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
-                            if (isset($sawThis[$qid . '~' . $_rowdivid])) {
-                                $rowdivid = NULL;   // so don't show again
-                            }
-                            else {
-                                $sawThis[$qid . '~' . $_rowdivid] = true;
-                                $rowdivid = $_rowdivid;
-                                $sgqa_len = strlen($sid . 'X'. $gid . 'X' . $qid);
-                                $varName = $rootVarName . '_' . substr($_rowdivid,$sgqa_len);
-                            }
-                    }
-                    if (is_null($rowdivid)) {
                         continue;
                     }
+                    $sawThis[$qid . '~' . $rowdivid] = true;
+                        
                     ++$i;
                     $subQeqn = '&nbsp;';
                     if (isset($LEM->subQrelInfo[$qid][$rowdivid]))
@@ -7079,7 +7046,7 @@ EOD;
 
                         $subQeqn = '';
                         $rowdivid = $sgqas[0] . $ansInfo[1];
-                        if ($qStatus['info']['type'] == 'R')
+                        if ($q->includeRanks())
                         {
                             $rowdivid = $LEM->sid . 'X' . $gid . 'X' . $qid . $ansInfo[1];
                         }
@@ -7374,6 +7341,7 @@ EOD;
                     $gseq = $qStatus['info']['gseq'];
                     $gid = $qStatus['info']['gid'];
                     $qid = $qStatus['info']['qid'];
+                    $q = $qStatus['info']['q'];
 
                     //////
                     // SHOW GROUP-LEVEL INFO
@@ -7463,7 +7431,7 @@ EOD;
 
                     $row['class'] = 'Q';
                     $qclass = substr(get_class($q),0,-8);
-                    $row['type/scale'] = $class;
+                    $row['type/scale'] = $qclass;
                     $row['name'] = $rootVarName;
                     $row['relevance'] = $relevanceEqn;
                     $row['text'] = $qtext;
@@ -7486,42 +7454,13 @@ EOD;
                         if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName) {
                             continue;   // so don't show the main question as a sub-question too
                         }
-                        $rowdivid=$sgqa;
-                        $varName=$LEM->knownVars[$sgqa]['qcode'];
-
-                        switch  ($qStatus['info']['type'])
+                        $rowdivid=$q->getExportRowDivID();
+                        $varName=$q->getExportVarName();
+                        if (isset($sawThis[$q->id . '~' . $rowdivid]) || is_null($rowdivid))
                         {
-                            case '1':
-                                if (preg_match('/#1$/',$sgqa)) {
-                                    $rowdivid = NULL;   // so that doesn't show same message for second scale
-                                }
-                                else {
-                                    $rowdivid = substr($sgqa,0,-2); // strip suffix
-                                    $varName = substr($LEM->knownVars[$sgqa]['qcode'],0,-2);
-                                }
-                                break;
-                            case 'P':
-                                if (preg_match('/comment$/',$sgqa)) {
-                                    $rowdivid = NULL;
-                                }
-                                break;
-                            case ':':
-                            case ';':
-                                $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
-                                if (isset($sawThis[$qid . '~' . $_rowdivid])) {
-                                    $rowdivid = NULL;   // so don't show again
-                                }
-                                else {
-                                    $sawThis[$qid . '~' . $_rowdivid] = true;
-                                    $rowdivid = $_rowdivid;
-                                    $sgqa_len = strlen($sid . 'X'. $gid . 'X' . $qid);
-                                    $varName = $rootVarName . '_' . substr($_rowdivid,$sgqa_len);
-                                }
-                                break;
-                        }
-                        if (is_null($rowdivid)) {
                             continue;
                         }
+                        $sawThis[$qid . '~' . $rowdivid] = true;
 
                         $sgqaInfo = $LEM->knownVars[$sgqa];
                         $subqText = $sgqaInfo['subqtext'];

@@ -217,7 +217,7 @@ $(document).ready(function(){
         });
     }
     $("#question_type.none").change(function(event){
-        var selected_value = $("#question_type").val();
+        var selected_value = qDescToCode[''+$("#question_type option:selected").text()];
         OtherSelection(selected_value);
     });
 
@@ -264,14 +264,13 @@ var aToolTipData = {
 };
 
 var qDescToCode;
-var qCodeToInfo;
+var qScreenshots;
 
-function getToolTip(type){
-    var code = qDescToCode[''+type];
-    var multiple = 0;
-    if (code=='ShortText') multiple = 2; //AJS
+function getToolTip(desc){
+    var code = qDescToCode[''+desc];
+    var multiple = qScreenshots[''+code];
 
-    if (multiple > 0){
+    if (multiple > 1){
         returnval = '';
         for(i=1;i<=multiple;i++){
             returnval = returnval + "<img src='" + imgurl + "/screenshots/"+code+i+".png' /><br /><br />";
@@ -288,9 +287,9 @@ function updatequestionattributes()
     $('.loader').show();
     $('#advancedquestionsettings').html('');
     var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
-    if (selected_value==undefined) selected_value = $("#question_type").val();
+    if (selected_value==undefined) selected_value = qDescToCode[''+$("#question_type option:selected").text()];
     $('#advancedquestionsettings').load(attr_url,{qid:$('#qid').val(),
-        question_type:selected_value,
+        class:selected_value,
         sid:$('#sid').val()
     }, function(){
         // Loads the tooltips for the toolbars

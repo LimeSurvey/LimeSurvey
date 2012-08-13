@@ -351,7 +351,7 @@ class Survey_Common_Action extends CAction
 
         foreach ($qrresult as $qrrow)
         {
-            $q = createQuestion($qrrow->question_types['class'], array('surveyid'=>$iSurveyId, 'id'=>$qid));
+            $q = createQuestion($qrrow->question_types['class'], array('surveyid'=>$iSurveyID, 'id'=>$qid));
             $qrrow = $qrrow->attributes;
             if (hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
             {

@@ -138,8 +138,9 @@
                         <?php }
                         else
                         {
-                            echo "{$createQuestion($eqrow['class'])->questionProperties('description')} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
-                        <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
+                            $description = createQuestion($eqrow['class'])->questionProperties('description');
+                            echo "{$description} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
+                        <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['tid']; ?>' />
                         <?php } ?>
 
                 </li>

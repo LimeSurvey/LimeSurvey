@@ -548,17 +548,17 @@ class database extends Survey_Common_Action
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
             $cqr=Questions::model()->findByAttributes(array('qid'=>$qid));
-            $oldtype=$cqr['type'];
+            $oldtid=$cqr['tid'];
             $oldgid=$cqr['gid'];
 
             // Remove invalid question attributes on saving
-            $q = objectizeQuestion(Yii::app()->request->getPost('type')); //AJS
+            $q = tidToQuestion(Yii::app()->request->getPost('type'));
             $qattributes=linkedAttributes($q);
 
             $criteria = new CDbCriteria;
             $criteria->compare('qid',$qid);
-            $validAttributes=$qattributes;
-            foreach ($validAttributes as  $validAttribute)
+
+            foreach ($qattributes as  $validAttribute)
             {
                 $criteria->compare('attribute', '<>'.$validAttribute['name']);
             }
@@ -566,11 +566,8 @@ class database extends Survey_Common_Action
 
             $aLanguages=array_merge(array(Survey::model()->findByPk($surveyid)->language),Survey::model()->findByPk($surveyid)->additionalLanguages);
 
-
             //now save all valid attributes
-            $validAttributes=$qattributes[Yii::app()->request->getPost('type')];
-
-            foreach ($validAttributes as $validAttribute)
+            foreach ($qattributes as $validAttribute)
             {
                 if ($validAttribute['i18n'])
                 {
@@ -633,34 +630,32 @@ class database extends Survey_Common_Action
             }
 
             // These are the questions types that have no answers and therefore we delete the answer in that case
-            $q = objectizeQuestion(Yii::app()->request->getPost('type')); //AJS
             $qproperties=$q->questionProperties();
             $iAnswerScales = $qproperties['answerscales'];
             $iSubquestionScales = $qproperties['subquestions'];
 
+            $options = $q->availableOptions();
             // These are the questions types that have the other option therefore we set everything else to 'No Other'
-            if ((Yii::app()->request->getPost('type')!= "L") && (Yii::app()->request->getPost('type')!= "!") && (Yii::app()->request->getPost('type')!= "P") && (Yii::app()->request->getPost('type')!="M"))
+            if (!$options['other'])
             {
                 $_POST['other']='N';
             }
 
             // These are the questions types that have no validation - so zap it accordingly
 
-            if (Yii::app()->request->getPost('type')== "!" || Yii::app()->request->getPost('type')== "L" || Yii::app()->request->getPost('type')== "M" || Yii::app()->request->getPost('type')== "P" ||
-            Yii::app()->request->getPost('type')== "F" || Yii::app()->request->getPost('type')== "H" ||
-            Yii::app()->request->getPost('type')== "X" || Yii::app()->request->getPost('type')== "")
+            if (!$options['valid'])
             {
                 $_POST['preg']='';
             }
 
             // These are the questions types that have no mandatory property - so zap it accordingly
-            if (Yii::app()->request->getPost('type')== "X" || Yii::app()->request->getPost('type')== "|")
+            if (!$options['mandatory'])
             {
                 $_POST['mandatory']='N';
             }
 
 
-            if ($oldtype != Yii::app()->request->getPost('type'))
+            if ($oldtid != Yii::app()->request->getPost('type'))
             {
                 // TMSW Conditions->Relevance:  Do similar check via EM, but do allow such a change since will be easier to modify relevance
                 //Make sure there are no conditions based on this question, since we are changing the type
@@ -712,9 +707,10 @@ class database extends Survey_Common_Action
 
                         if (isset($qlang) && $qlang != "")
                         { // ToDo: Sanitize the POST variables !
-
+                            $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJS
                             $udata = array(
-                            'type' => Yii::app()->request->getPost('type'),
+                            'tid' => Yii::app()->request->getPost('type'),
+                            'type' => $type['legacy'],
                             'title' => Yii::app()->request->getPost('title'),
                             'question' => Yii::app()->request->getPost('question_'.$qlang),
                             'preg' => Yii::app()->request->getPost('preg'),
@@ -771,9 +767,10 @@ class database extends Survey_Common_Action
                         // then change the cfieldname accordingly
                         fixMovedQuestionConditions($qid, $oldgid, $gid);
                     }
-                    if ($oldtype != Yii::app()->request->getPost('type'))
+                    if ($oldtid != Yii::app()->request->getPost('type'))
                     {
-                        Questions::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':qid'=>$qid));
+                        $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJS
+                        Questions::model()->updateAll(array('tid'=>Yii::app()->request->getPost('type'), 'type'=>$type['legacy']), 'parent_qid=:qid', array(':qid'=>$qid));
                     }
 
                     Answers::model()->deleteAllByAttributes(array('qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iAnswerScales));

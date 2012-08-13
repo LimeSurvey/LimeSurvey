@@ -318,6 +318,11 @@ abstract class QuestionModule
         return $this->title . ($this->aid != '' ? '_' . $this->aid : '');
     }
 
+    public function getExportVarName()
+    {
+        return $this->getVarName();
+    }
+
     public function getQuestion()
     {
         return $this->text;
@@ -326,6 +331,11 @@ abstract class QuestionModule
     public function getRowDivID()
     {
         return null;
+    }
+
+    public function getExportRowDivID()
+    {
+        return $this->fieldname;
     }
 
     public function generateQuestionInfo()
@@ -468,6 +478,16 @@ abstract class QuestionModule
     public function mandatoryViolation($relevantSQs, $unansweredSQs, $subsqs, $sgqas)
     {
         return $this->anyUnanswered($relevantSQs, $unansweredSQs);
+    }
+
+    public function screenshotCount()
+    {
+        return 1;
+    }
+
+    public function availableOptions()
+    {
+        return array('other' => false, 'valid' => false, 'mandatory' => true);
     }
 
     abstract public function availableAttributes($attr = false);

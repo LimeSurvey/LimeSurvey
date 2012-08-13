@@ -323,8 +323,8 @@ function LEMval(alias)
         suffix = 'shown';
         varName = varName.substr(10);
     }
-    else if (str.match(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value)$/)) {
-        varName = str.replace(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value)$/,'')
+    else if (str.match(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|valueNAOK|value)$/)) {
+        varName = str.replace(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|valueNAOK|value)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
 
@@ -364,7 +364,7 @@ function LEMval(alias)
         }
         case 'shown': {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
-            switch(attr.type)
+            switch(attr.type) //AJS
             {
                 case 'G': //GENDER drop-down list
                 case 'Y': //YES/NO radio-buttons
@@ -461,8 +461,6 @@ function LEMval(alias)
             return htmlspecialchars_decode(attr.relevance);
         case 'sgqa':
             return attr.sgqa;
-        case 'type':
-            return attr.type;
         case 'gseq':
             return attr.gseq;
         case 'qseq':
@@ -482,7 +480,8 @@ function LEMval(alias)
             if (suffix == 'value' || suffix == 'valueNAOK') {
                 // if in assessment mode, this returns the assessment value
                 // in non-assessment mode, this is identical to .code
-                switch (attr.type) {
+                switch (attr.type) //AJS
+                {
                     case '!': //List - dropdown
                     case 'L': //LIST drop-down/radio-button list
                     case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea

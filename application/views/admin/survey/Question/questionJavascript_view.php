@@ -1,78 +1,44 @@
 <script type='text/javascript'>
-        if (navigator.userAgent.indexOf("Gecko") != -1)
-        window.addEventListener("load", init_gecko_select_hack, false);
+    if (navigator.userAgent.indexOf("Gecko") != -1)
+    window.addEventListener("load", init_gecko_select_hack, false);
 
-         var qtypes = new Array();
-         var qnames = new Array();
-         var qhelp = new Array();
-         var qcaption = new Array();
+     var qtypes = new Array();
+     var qnames = new Array();
+     var qhelp = new Array();
+     var qcaption = new Array();
 
 
-        function OtherSelection(QuestionType)
+    function OtherSelection(Class)
+    {
+    if (Class==undefined || Class=='') Class = qDescToCode[''+$("#question_type option:selected").text()];
+        switch (Class)
         {
-        if (QuestionType == '') { QuestionType=document.getElementById('question_type').value;}
-        if (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')
+<?php
+for ($i = 0; $i < 8; $i++)
+{
+    $exists = false;
+    foreach ($selections as $key => $value)
+    {
+        if ($value['other'] == ($i/1)%2 && 
+            $value['valid'] == ($i/2)%2 && 
+            $value['mandatory'] == ($i/4)%2)
         {
-            document.getElementById('OtherSelection').style.display = '';
-            document.getElementById('Validation').style.display = 'none';
-            document.getElementById('MandatorySelection').style.display='';
+            $exists = true;
+            echo "case '{$key}':\n";
         }
-        else if (QuestionType == 'W' || QuestionType == 'Z')
-        {
-            document.getElementById('OtherSelection').style.display = '';
-            document.getElementById('Validation').style.display = 'none';
-            document.getElementById('MandatorySelection').style.display='';
+    }
+    if ($exists)
+    {
+?>
+            document.getElementById('OtherSelection').style.display = '<?php echo ($i/1)%2?'':'none';?>';
+            document.getElementById('Validation').style.display = '<?php echo ($i/2)%2?'':'none';?>';
+            document.getElementById('MandatorySelection').style.display='<?php echo ($i/4)%2?'':'none';?>';
+            break;
+<?php
+    }
+}
+?>
         }
-        else if (QuestionType == '|')
-        {
-            document.getElementById('OtherSelection').style.display = 'none';
-            document.getElementById('Validation').style.display = 'none';
-            document.getElementById('MandatorySelection').style.display='none';
-        }
-        else if (QuestionType == 'F' || QuestionType == 'H')
-        {
-            document.getElementById('OtherSelection').style.display = 'none';
-            document.getElementById('Validation').style.display = 'none';
-            document.getElementById('MandatorySelection').style.display='';
-        }
-        else if (QuestionType == ':' || QuestionType == ';')
-        {
-            document.getElementById('OtherSelection').style.display = 'none';
-            document.getElementById('Validation').style.display = '';
-            document.getElementById('MandatorySelection').style.display='';
-        }
-        else if (QuestionType == '1')
-        {
-            document.getElementById('OtherSelection').style.display = 'none';
-            document.getElementById('Validation').style.display = 'none';
-            document.getElementById('MandatorySelection').style.display='';
-        }
-        else if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='' || QuestionType=='K')
-        {
-            document.getElementById('Validation').style.display = '';
-            document.getElementById('OtherSelection').style.display ='none';
-            if (document.getElementById('ON'))  { document.getElementById('ON').checked = true;}
-            document.getElementById('MandatorySelection').style.display='';
-        }
-        else if (QuestionType == 'X')
-        {
-            document.getElementById('Validation').style.display = 'none';
-            document.getElementById('OtherSelection').style.display ='none';
-            document.getElementById('MandatorySelection').style.display='none';
-        }
-        else if (QuestionType == 'Q')
-        {
-            document.getElementById('Validation').style.display = '';
-            document.getElementById('OtherSelection').style.display ='none';
-            document.getElementById('MandatorySelection').style.display='';
-        }
-        else
-        {
-            document.getElementById('OtherSelection').style.display = 'none';
-            if (document.getElementById('ON'))  { document.getElementById('ON').checked = true;}
-            document.getElementById('Validation').style.display = 'none';
-            document.getElementById('MandatorySelection').style.display='';
-        }
-        }
-        OtherSelection('<?php echo $type; ?>');
+    }
+    OtherSelection('<?php echo $class; ?>');
 </script>

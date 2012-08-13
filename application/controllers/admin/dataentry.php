@@ -1305,7 +1305,7 @@ class dataentry extends Survey_Common_Action
                         $cdata['hh'] = $hh;
                         //$aDataentryoutput .= "\t<img src='$imageurl/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
                     }
-                    switch($deqrow['type'])
+                    switch($deqrow['type']) //AJS
                     {
                         case "Q": //MULTIPLE SHORT TEXT
                         case "K":

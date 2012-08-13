@@ -4224,9 +4224,9 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
         if ($q->id!=null)
         {
             $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$q->gid].'X'.$aQIDReplacements[$q->id].$q->aid;
-            if ($pos=strrpos($sFieldname, 'X'.$q->id.'#'))
+            if (isset($q->scale))
             {
-                $aFieldMappings[$sFieldname].= substr($sFieldname,$pos+strlen($q->id)+1); //AJS
+                $aFieldMappings[$sFieldname].= '#' . $q->scale;
             }
             // now also add a shortened field mapping which is needed for certain kind of condition mappings
             $aFieldMappings[$q->surveyid.'X'.$q->gid.'X'.$q->id]=$iOldSID.'X'.$aGIDReplacements[$q->gid].'X'.$aQIDReplacements[$q->id];
@@ -4949,7 +4949,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             if ($oldqid !== $q->id)
             {
                 $oldqid = $q->id;
-                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) //AJS
+                if (isset($q->sq) || isset($q->sq1) || isset($q->sq2))
                 {
                     $aResultTable['qid_'.$q->surveyid.'X'.$q->gid.'X'.$q->id]=array($q->text,'','');
                 }

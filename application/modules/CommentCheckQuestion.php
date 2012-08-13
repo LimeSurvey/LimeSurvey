@@ -271,6 +271,18 @@ class CommentCheckQuestion extends CheckQuestion
         }
     }
 
+    public function getExportRowDivID()
+    {
+        if (preg_match('/comment$/',$this->fieldname))
+        {
+            return NULL;
+        }
+        else
+        {
+            return $this->fieldname;
+        }
+    }
+
     public function getAnswerCountSQ($sgqaNaming, $sq, $min = true)
     {
         if (!preg_match('/comment$/',$sq['varName'])) {

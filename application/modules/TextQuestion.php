@@ -77,5 +77,10 @@ abstract class TextQuestion extends QuestionModule
         $valParts[] = "  }\n";
         return $valParts;
     }
+
+    public function availableOptions()
+    {
+        return array('other' => false, 'valid' => true, 'mandatory' => true);
+    }
 }
 ?>

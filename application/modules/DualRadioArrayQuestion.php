@@ -695,6 +695,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $this->title . '_' . $this->aid . '_' . $this->scale;
     }
 
+    public function getExportVarName()
+    {
+        return $this->title . '_' . $this->aid;
+    }
+
     public function getQuestion()
     {
         return $this->sq . '[' . $this->scalename . ']';
@@ -703,6 +708,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
     public function getRowDivID()
     {
         return substr($this->fieldname,0,-2);
+    }
+
+    public function getExportRowDivID()
+    {
+        return substr($this->fieldname, 0, -2);
     }
 
     public function getAnswerCountSQ($sgqaNaming, $sq, $min = true)

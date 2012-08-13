@@ -334,6 +334,11 @@ class CommentListQuestion extends ListQuestion
         return false;
     }
 
+    public function availableOptions()
+    {
+        return array('other' => false, 'valid' => false, 'mandatory' => true);
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
