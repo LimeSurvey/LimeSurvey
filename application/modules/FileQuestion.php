@@ -263,6 +263,7 @@ class FileQuestion extends QuestionModule
             }
             case 'db':
             return $value;
+            case 'post':
             case 'dataentryinsert':
             if (!strpos($this->fieldname, "_filecount"))
             {

@@ -1247,7 +1247,6 @@ class dataentry extends Survey_Common_Action
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
-                    //                    LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$deqrow['qid'],NULL,$deqrow['type'],$hidden);
 
                     // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
 

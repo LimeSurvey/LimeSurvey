@@ -296,7 +296,7 @@ class CommentCheckQuestion extends CheckQuestion
 
     public function getAdditionalValParts()
     {
-        $othervar = 'amswer' . $this->fieldname;
+        $othervar = 'answer' . $this->fieldname;
         $valParts[] = "\n  if(isValidOtherComment" . $this->id . "){\n";
         $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
         $valParts[] = "  }\n  else {\n";

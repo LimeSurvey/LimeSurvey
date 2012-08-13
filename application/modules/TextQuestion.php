@@ -70,10 +70,10 @@ abstract class TextQuestion extends QuestionModule
 
     public function getAdditionalValParts()
     {
-        $valParts[] = "\n  if(isValidSum" . $this->id . "){\n";
-        $valParts[] = "    $('#totalvalue_" . $this->id . "').removeClass('error').addClass('good');\n";
+        $valParts[] = "\n  if(isValidOther" . $this->id . "){\n";
+        $valParts[] = "    $('#question" . $this->id . " :input').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
         $valParts[] = "  }\n  else {\n";
-        $valParts[] = "    $('#totalvalue_" . $this->id . "').removeClass('good').addClass('error');\n";
+        $valParts[] = "    $('#question" . $this->id . " :input').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
         $valParts[] = "  }\n";
         return $valParts;
     }

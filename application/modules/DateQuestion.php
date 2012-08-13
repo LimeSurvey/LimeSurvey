@@ -264,6 +264,7 @@ class DateQuestion extends QuestionModule
         switch ($type)
         {
             case 'get':
+            case 'post':
             global $thissurvey;
             $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
             $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);

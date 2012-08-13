@@ -2542,7 +2542,6 @@
                 'qcode'=>$varName,
                 'qseq'=>$q->questioncount,
                 'gseq'=>$q->groupcount,
-                'type'=>$type, //AJS
                 'q'=>$q,
                 'sgqa'=>$q->fieldname,
                 'ansList'=>$ansList,
@@ -2852,10 +2851,10 @@
         * @param <type> $hidden - whether question should always be hidden
         * @return <type>
         */
-        static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
+        static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$q=NULL,$hidden=0)
         {
             $LEM =& LimeExpressionManager::singleton();
-            return $LEM->_ProcessRelevance($eqn,$questionNum,NULL,$jsResultVar,$type,$hidden);
+            return $LEM->_ProcessRelevance($eqn,$questionNum,NULL,$jsResultVar,$q,$hidden);
         }
 
         /**
@@ -5902,7 +5901,7 @@ EOT;
             {
                 $args = explode("~",$test);
                 $q = (($args[1]=='expr') ? new EquationQuestion : ($args[1]=='message') ? new DisplayQuestion : newShortTextQuestion);
-                $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>$type, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
+                $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'q'=>$q, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
                 $varSeq[] = $args[0];
                 $testArgs[] = $args;
                 $LEM->questionId2questionSeq[$i] = $i;
@@ -6362,6 +6361,7 @@ EOD;
             foreach ($LEM->currentQset as $qinfo)
             {
                 $relevant=false;
+                $q = $qinfo['info']['q'];
                 $qid = $qinfo['info']['qid'];
                 $gseq = $qinfo['info']['gseq'];
                 $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
@@ -6380,8 +6380,6 @@ EOD;
                             $_SESSION[$LEM->sessid]['relevanceStatus'][$rowdivid] = $sqrelevant;
                         }
                     }
-                    $type = $qinfo['info']['type'];
-                    $q = $qinfo['q'];
                     if ($relevant && $grelevant && $sqrelevant)
                     {
                         if ($qinfo['info']['hidden'] && !isset($_POST[$sq]))
@@ -6397,69 +6395,9 @@ EOD;
                             // convert from comma back to decimal
                             $value = implode('.',explode(',',$value));
                         }
-                        switch($type)
-                        {
-                            case 'D': //DATE
-                                if (trim($value)=="")
-                                {
-                                    $value = "";
-                                }
-                                else
-                                {
-                                    $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                                    $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                                    $value=$datetimeobj->convert("Y-m-d");
-                                }
-                                break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if (trim($value)=="") {
-                                    $value = "";
-                                }
-                                else {
-                                    $value = sanitize_float($value);
-                                }
-                                break;
-                            case '|': //File Upload
-                                if (!preg_match('/_filecount$/', $sq))
-                                {
-                                    $json = $value;
-                                    $phparray = json_decode(stripslashes($json));
-
-                                    // if the files have not been saved already,
-                                    // move the files from tmp to the files folder
-
-                                    $tmp = $LEM->surveyOptions['tempdir'] . '/upload/';
-                                    if (!is_null($phparray) && count($phparray) > 0)
-                                    {
-                                        // Move the (unmoved, temp) files from temp to files directory.
-                                        // Check all possible file uploads
-                                        for ($i = 0; $i < count($phparray); $i++)
-                                        {
-                                            if (file_exists($tmp . $phparray[$i]->filename))
-                                            {
-                                                $sDestinationFileName = 'fu_' . randomChars(15);
-                                                if (!is_dir($LEM->surveyOptions['target']))
-                                                {
-                                                    mkdir($LEM->surveyOptions['target'], 0777, true);
-                                                }
-                                                if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
-                                                {
-                                                    echo "Error moving file to target destination";
-                                                }
-                                                $phparray[$i]->filename = $sDestinationFileName;
-                                            }
-                                        }
-                                        $value = ls_json_encode($phparray);  // so that EM doesn't try to parse it.
-                                    }
-                                }
-                                break;
-                        }
+                        $value = $q->filter($value, 'post');
                         $_SESSION[$LEM->sessid][$sq] = $value;
-                        $_update = array (
-                        'q'=>$q,
-                        'value'=>$value,
-                        );
+                        $_update = array ('q'=>$q, 'value'=>$value);
                         $updatedValues[$sq] = $_update;
                         $LEM->updatedValues[$sq] = $_update;
                     }
@@ -6764,8 +6702,6 @@ EOD;
                 $moveResult = LimeExpressionManager::NavigateForwards();
             }
 
-            $qtypes=getQuestionTypeList();
-
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                 return array(
                 'errors'=>1,
@@ -6812,11 +6748,12 @@ EOD;
             $out .= "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
 
             $_gseq=-1;
-            foreach ($LEM->currentQset as $q) {
-                $gseq = $q['info']['gseq'];
-                $gid = $q['info']['gid'];
-                $qid = $q['info']['qid'];
-                $qseq = $q['info']['qseq'];
+            foreach ($LEM->currentQset as $qStatus) {
+                $gseq = $qStatus['info']['gseq'];
+                $gid = $qStatus['info']['gid'];
+                $qid = $qStatus['info']['qid'];
+                $qseq = $qStatus['info']['qseq'];
+                $q = $qStatus['info']['q'];
 
                 $errorCount=0;
 
@@ -6849,14 +6786,12 @@ EOD;
                 //////
                 // SHOW QUESTION-LEVEL INFO
                 //////
-                $mandatory = (($q['info']['mandatory']=='Y') ? "<span class='mandatory'>*</span>" : '');
-                $type = $q['info']['type'];
-                $typedesc = $qtypes[$type]['description'];
+                $mandatory = (($qStatus['info']['mandatory']=='Y') ? "<span class='mandatory'>*</span>" : '');
 
-                $sgqas = explode('|',$q['sgqa']);
-                if (count($sgqas) == 1 && !is_null($q['info']['default']))
+                $sgqas = explode('|',$qStatus['sgqa']);
+                if (count($sgqas) == 1 && !is_null($qStatus['info']['default']))
                 {
-                    $LEM->ProcessString($q['info']['default'], $qid,NULL,false,1,1,false,false);
+                    $LEM->ProcessString($qStatus['info']['default'], $qid,NULL,false,1,1,false,false);
                     $_default = $LEM->GetLastPrettyPrintExpression();
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
@@ -6868,9 +6803,9 @@ EOD;
                     $default = '';
                 }
 
-                $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
-                $help = (($q['info']['help'] != '') ? '<hr/>[' . $LEM->gT("Help:") . ' ' . $q['info']['help'] . ']': '');
-                $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr/>(' . $LEM->gT("Tip:") . ' ' . $q['prettyValidTip'] . ')');
+                $qtext = (($qStatus['info']['qtext'] != '') ? $qStatus['info']['qtext'] : '&nbsp');
+                $help = (($qStatus['info']['help'] != '') ? '<hr/>[' . $LEM->gT("Help:") . ' ' . $qStatus['info']['help'] . ']': '');
+                $prettyValidTip = (($qStatus['prettyValidTip'] == '') ? '' : '<hr/>(' . $LEM->gT("Tip:") . ' ' . $qStatus['prettyValidTip'] . ')');
 
                 //////
                 // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
@@ -6959,7 +6894,7 @@ EOD;
                 // SHOW RELEVANCE
                 //////
                 // Must parse Relevance this way, otherwise if try to first split expressions, regex equations won't work
-                $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
+                $relevanceEqn = (($qStatus['info']['relevance'] == '') ? 1 : $qStatus['info']['relevance']);
                 if (!isset($LEM->ParseResultCache[$relevanceEqn]))
                 {
                     $result = $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $qseq);
@@ -6981,8 +6916,8 @@ EOD;
                 //////
                 // Must parse Validation this way so that regex (preg) works
                 $prettyValidEqn = '';
-                if ($q['prettyValidEqn'] != '') {
-                    $validationEqn = $q['validEqn'];
+                if ($qStatus['prettyValidEqn'] != '') {
+                    $validationEqn = $qStatus['validEqn'];
                     if (!isset($LEM->ParseResultCache[$validationEqn]))
                     {
                         $result = $LEM->em->ProcessBooleanExpression($validationEqn, $gseq, $qseq);
@@ -7003,7 +6938,7 @@ EOD;
                 //////
                 // TEST VALIDITY OF ROOT VARIABLE NAME AND WHETHER HAS BEEN USED
                 //////
-                $rootVarName = $q['info']['rootVarName'];
+                $rootVarName = $qStatus['info']['rootVarName'];
                 $varNameErrorMsg = '';
                 $varNameError = NULL;
                 if (isset($varNamesUsed[$rootVarName]))
@@ -7053,7 +6988,7 @@ EOD;
                     }
                     $rowdivid=$sgqa;
                     $varName=$LEM->knownVars[$sgqa]['qcode'];
-                    switch  ($q['info']['type'])
+                    switch  ($qStatus['info']['type'])
                     {
                         case '1':
                             if (preg_match('/#1$/',$sgqa)) {
@@ -7143,7 +7078,7 @@ EOD;
 
                         $subQeqn = '';
                         $rowdivid = $sgqas[0] . $ansInfo[1];
-                        if ($q['info']['type'] == 'R')
+                        if ($qStatus['info']['type'] == 'R')
                         {
                             $rowdivid = $LEM->sid . 'X' . $gid . 'X' . $qid . $ansInfo[1];
                         }
@@ -7176,7 +7111,7 @@ EOD;
                 $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->ngT("This question has at least %s error.","This question has at least %s errors.",$errorCount), $errorCount) . "'" : '';
 
                 $questionRow = "<tr class='LEMquestion'>"
-                . "<td $errclass>Q-" . $q['info']['qseq'] . "</td>"
+                . "<td $errclass>Q-" . $qStatus['info']['qseq'] . "</td>"
                 . "<td><b>" . $mandatory;
 
                 if ($varNameErrorMsg == '')
@@ -7191,7 +7126,9 @@ EOD;
                     . $rootVarName . "</span>";
                 }
                 $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
-                $questionRow .= "</b><br/>[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type]</td>"
+                $description = $q->questionProperties('description');
+                $class = substr(get_class($q),0,-8);
+                $questionRow .= "</b><br/>[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$description [$class]</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
@@ -7432,10 +7369,10 @@ EOD;
                 }
 
                 $_gseq=-1;
-                foreach ($LEM->currentQset as $q) {
-                    $gseq = $q['info']['gseq'];
-                    $gid = $q['info']['gid'];
-                    $qid = $q['info']['qid'];
+                foreach ($LEM->currentQset as $qStatus) {
+                    $gseq = $qStatus['info']['gseq'];
+                    $gid = $qStatus['info']['gid'];
+                    $qid = $qStatus['info']['qid'];
 
                     //////
                     // SHOW GROUP-LEVEL INFO
@@ -7464,21 +7401,20 @@ EOD;
                     //////
                     $row = array();
 
-                    $mandatory = (($q['info']['mandatory']=='Y') ? 'Y' : '');
-                    $type = $q['info']['type'];
+                    $mandatory = (($qStatus['info']['mandatory']=='Y') ? 'Y' : '');
 
-                    $sgqas = explode('|',$q['sgqa']);
-                    if (count($sgqas) == 1 && !is_null($q['info']['default']))
+                    $sgqas = explode('|',$qStatus['sgqa']);
+                    if (count($sgqas) == 1 && !is_null($qStatus['info']['default']))
                     {
-                        $default = $q['info']['default'];
+                        $default = $qStatus['info']['default'];
                     }
                     else
                     {
                         $default = '';
                     }
 
-                    $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '');
-                    $help = (($q['info']['help'] != '') ? $q['info']['help']: '');
+                    $qtext = (($qStatus['info']['qtext'] != '') ? $qStatus['info']['qtext'] : '');
+                    $help = (($qStatus['info']['help'] != '') ? $qStatus['info']['help']: '');
 
                     //////
                     // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
@@ -7510,14 +7446,14 @@ EOD;
                     }
 
                     // if relevance equation is using SGQA coding, convert to qcoding
-                    $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
-                    $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $q['info']['qseq']);    // $qseq
+                    $relevanceEqn = (($qStatus['info']['relevance'] == '') ? 1 : $qStatus['info']['relevance']);
+                    $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $qStatus['info']['qseq']);    // $qseq
                     $relevanceEqn = trim(strip_tags($LEM->em->GetPrettyPrintString()));
-                    $rootVarName = $q['info']['rootVarName'];
+                    $rootVarName = $qStatus['info']['rootVarName'];
                     $preg = '';
-                    if (isset($LEM->q2subqInfo[$q['info']['qid']]['preg']))
+                    if (isset($LEM->q2subqInfo[$qStatus['info']['qid']]['preg']))
                     {
-                        $preg = $LEM->q2subqInfo[$q['info']['qid']]['preg'];
+                        $preg = $LEM->q2subqInfo[$qStatus['info']['qid']]['preg'];
                         if (is_null($preg))
                         {
                             $preg = '';
@@ -7525,7 +7461,8 @@ EOD;
                     }
 
                     $row['class'] = 'Q';
-                    $row['type/scale'] = $type;
+                    $qclass = substr(get_class($q),0,-8);
+                    $row['type/scale'] = $class;
                     $row['name'] = $rootVarName;
                     $row['relevance'] = $relevanceEqn;
                     $row['text'] = $qtext;
@@ -7533,9 +7470,9 @@ EOD;
                     $row['language'] = $lang;
                     $row['validation'] = $preg;
                     $row['mandatory'] = $mandatory;
-                    $row['other'] = $q['info']['other'];
+                    $row['other'] = $qStatus['info']['other'];
                     $row['default'] = $default;
-                    $row['same_default'] = 1;   // TODO - need this: $q['info']['same_default'];
+                    $row['same_default'] = 1;   // TODO - need this: $qStatus['info']['same_default'];
 
                     $rows[] = $row;
 
@@ -7551,7 +7488,7 @@ EOD;
                         $rowdivid=$sgqa;
                         $varName=$LEM->knownVars[$sgqa]['qcode'];
 
-                        switch  ($q['info']['type'])
+                        switch  ($qStatus['info']['type'])
                         {
                             case '1':
                                 if (preg_match('/#1$/',$sgqa)) {
@@ -7625,7 +7562,7 @@ EOD;
                             }
 
                             $row = array();
-                            if ($type == ':' || $type == ';')
+                            if ($q->questionProperties('subquestions') == 2)
                             {
                                 $row['class'] = 'SQ';
                             }

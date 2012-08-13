@@ -173,6 +173,16 @@ class NumericalQuestion extends QuestionModule
         }
     }
 
+    public function getAdditionalValParts()
+    {
+        $valParts[] = "\n  if(isValidOther" . $this->id . "){\n";
+        $valParts[] = "    $('#question" . $this->id . " :input').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
+        $valParts[] = "  }\n  else {\n";
+        $valParts[] = "    $('#question" . $this->id . " :input').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+        $valParts[] = "  }\n";
+        return $valParts;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_num_value_n","maximum_chars","min_num_value_n","num_value_int_only","page_break","prefix","public_statistics","suffix","text_input_width","random_group");
