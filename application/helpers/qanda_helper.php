@@ -2162,7 +2162,7 @@ function do_ranking($ia)
     $answer .="</ul>"
         . "<div style='display:none' id='ranking-{$ia[0]}-maxans'>{".$max_answers."}</div>"
         . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
-        . "<div style='display:none' id='ranking-{$ia[0]}-name'>javatb".$myfname."</div>"
+        . "<div style='display:none' id='ranking-{$ia[0]}-name'>javatbd".$ia[1]."</div>"
         . "</div>";
     // The list with HTML answres
     $answer .="<div style=\"display:none\">";
