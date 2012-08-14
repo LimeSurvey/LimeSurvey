@@ -396,7 +396,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function storeAttributeValues($data)
     {
-    	foreach ($data as $record) {
+        foreach ($data as $record) {
     		Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$record);
     	}
     }
