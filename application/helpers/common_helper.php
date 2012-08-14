@@ -3218,7 +3218,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Repeat headers'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;MPLKQ",
+    "types"=>"1ABCEF:;MPLKQR",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3226,7 +3226,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
-    "types"=>"1ABCEF:;MPLKQ",
+    "types"=>"1ABCEF:;MPLKQR",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3234,7 +3234,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter exclusion'));
 
     $qattributes["array_filter_style"]=array(
-    "types"=>"1ABCEF:;MPLKQ",
+    "types"=>"1ABCEF:;MPLKQR",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
