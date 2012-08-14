@@ -1829,6 +1829,7 @@ class ExpressionManager {
             $errors = array_merge($errors, $this->RDP_errs);
         }
         $this->prettyPrintSource = $prettyPrint;    // ensure that if doing recursive substition, can get original source to pretty print
+        $result = str_replace(array('\{', '\}',), array('{', '}'), $result);
         $this->RDP_errs = $errors;
         return $result;
     }
@@ -2414,6 +2415,8 @@ What about a {space before the closing brace }?
 What about an { expression nested {within a string} that has white space after the opening brace}?
 This {expression has {a nested curly brace { plus ones with whitespace around them} - they should be properly captured} into an expression  with sub-expressions.
 This {is a string {since it does not close } all of its curly} braces.
+This uses \{escaped curly braces\} which should generate output showing curly braces without the escapes
+This uses a double curly brace syntax, like that used for \{\{placeholders\}\} and Yii \{\{tables\}\}
 Can {expressions contain 'single' or "double" quoted strings}?
 Can an expression contain a perl regular expression like this {'/^\d{3}-\d{2}-\d{4}$/'}?
 [img src="images/mine_{Q1}.png"/]
