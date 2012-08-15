@@ -104,6 +104,7 @@ class NumericalQuestion extends QuestionModule
         switch ($type)
         {
             case 'get':
+            case 'post':
             return sanitize_float($value);
             case 'db':
             case 'dataentry':
