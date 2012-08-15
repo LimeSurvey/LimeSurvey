@@ -1879,10 +1879,6 @@ return $allfields;
 
 }
 
-
-
-
-
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
@@ -1892,19 +1888,6 @@ return $allfields;
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @return array
 */
-function array2Object($array) //AJS
-{
-    $object = new stdClass;
-    $object->fieldname=$array['fieldname'];
-    $object->surveyid=$array['sid'];
-    $object->gid=$array['gid'];
-    $object->id=$array['qid'];
-    $object->aid=$array['aid'];
-    $object->title=$array['title'];
-    $object->text=$array['question'];
-    $object->groupname=$array['group_name'];
-    return $object; 
-}
 
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage) {
     $sLanguage = sanitize_languagecode($sLanguage);
@@ -1916,110 +1899,116 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
-    $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
-    if ($style == "full")
-    {
-        $fieldmap["id"]['title']="";
-        $fieldmap["id"]['question']=$clang->gT("Response ID");
-        $fieldmap["id"]['group_name']="";
-        $fieldmap["id"]['q']=array2Object($fieldmap["id"]);
-    }
+    $q = new StdClass;
+    $q->fieldname="id";
+    $q->surveyid=$surveyid;
+    $q->gid="";
+    $q->id="";
+    $q->aid="";
+    $q->title="";
+    $q->text=$clang->gT("Response ID");
+    $q->group_name="";
+    $fieldmap["id"]['q'] = $q;
 
-    $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
-    if ($style == "full")
-    {
-        $fieldmap["submitdate"]['title']="";
-        $fieldmap["submitdate"]['question']=$clang->gT("Date submitted");
-        $fieldmap["submitdate"]['group_name']="";
-        $fieldmap["submitdate"]['q']=array2Object($fieldmap["submitdate"]);
-    }
+    $q = new StdClass;
+    $q->fieldname="submitdate";
+    $q->surveyid=$surveyid;
+    $q->gid="";
+    $q->id="";
+    $q->aid="";
+    $q->title="";
+    $q->text=$clang->gT("Date submitted");
+    $q->group_name="";
+    $fieldmap["submitdate"]['q'] = $q;
 
-    $fieldmap["lastpage"]=array("fieldname"=>"lastpage", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
-    if ($style == "full")
-    {
-        $fieldmap["lastpage"]['title']="";
-        $fieldmap["lastpage"]['question']=$clang->gT("Last page");
-        $fieldmap["lastpage"]['group_name']="";
-        $fieldmap["lastpage"]['q']=array2Object($fieldmap["lastpage"]);
-    }
-
-    $fieldmap["startlanguage"]=array("fieldname"=>"startlanguage", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
-    if ($style == "full")
-    {
-        $fieldmap["startlanguage"]['title']="";
-        $fieldmap["startlanguage"]['question']=$clang->gT("Start language");
-        $fieldmap["startlanguage"]['group_name']="";
-        $fieldmap["startlanguage"]['q']=array2Object($fieldmap["startlanguage"]);
-    }
+    $q = new StdClass;
+    $q->fieldname="lastpage";
+    $q->surveyid=$surveyid;
+    $q->gid="";
+    $q->id="";
+    $q->aid="";
+    $q->title="";
+    $q->text=$clang->gT("Last page");
+    $q->group_name="";
+    $fieldmap["lastpage"]['q'] = $q;
+    
+    $q = new StdClass;
+    $q->fieldname="startlanguage";
+    $q->surveyid=$surveyid;
+    $q->gid="";
+    $q->id="";
+    $q->aid="";
+    $q->title="";
+    $q->text=$clang->gT("Start language");
+    $q->group_name="";
+    $fieldmap["startlanguage"]['q'] = $q;
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
 
     if ($prow['anonymized'] == "N")
     {
-        $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
-        if ($style == "full")
-        {
-            $fieldmap["token"]['title']="";
-            $fieldmap["token"]['question']=$clang->gT("Token");
-            $fieldmap["token"]['group_name']="";
-        }
-        $fieldmap["token"]['q']=array2Object($fieldmap["token"]);
+        $q = new StdClass;
+        $q->fieldname="token";
+        $q->surveyid=$surveyid;
+        $q->gid="";
+        $q->id="";
+        $q->aid="";
+        $q->title="";
+        $q->text=$clang->gT("Token");
+        $q->group_name="";
+        $fieldmap["token"]['q'] = $q;
     }
     if ($prow['datestamp'] == "Y")
     {
-        $fieldmap["startdate"]=array("fieldname"=>"startdate",
-        'sid'=>$surveyid,
-        "gid"=>"",
-        "qid"=>"",
-        "aid"=>""); //AJS
-        if ($style == "full")
-        {
-            $fieldmap["startdate"]['title']="";
-            $fieldmap["startdate"]['question']=$clang->gT("Date started");
-            $fieldmap["startdate"]['group_name']="";
-        }
-        $fieldmap["startdate"]['q']=array2Object($fieldmap["startdate"]);
+        $q = new StdClass;
+        $q->fieldname="startdate";
+        $q->surveyid=$surveyid;
+        $q->gid="";
+        $q->id="";
+        $q->aid="";
+        $q->title="";
+        $q->text=$clang->gT("Date started");
+        $q->group_name="";
+        $fieldmap["startdate"]['q'] = $q;
 
-        $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
-        'sid'=>$surveyid,
-        "gid"=>"",
-        "qid"=>"",
-        "aid"=>""); //AJS
-        if ($style == "full")
-        {
-            $fieldmap["datestamp"]['title']="";
-            $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
-            $fieldmap["datestamp"]['group_name']="";
-        }
-        $fieldmap["datestamp"]['q']=array2Object($fieldmap["datestamp"]);
+        $q = new StdClass;
+        $q->fieldname="datestamp";
+        $q->surveyid=$surveyid;
+        $q->gid="";
+        $q->id="";
+        $q->aid="";
+        $q->title="";
+        $q->text=$clang->gT("Date last action");
+        $q->group_name="";
+        $fieldmap["datestamp"]['q'] = $q;
     }
     if ($prow['ipaddr'] == "Y")
     {
-        $fieldmap["ipaddr"]=array("fieldname"=>"ipaddr",
-        'sid'=>$surveyid,
-        "gid"=>"",
-        "qid"=>"",
-        "aid"=>""); //AJS
-        if ($style == "full")
-        {
-            $fieldmap["ipaddr"]['title']="";
-            $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
-            $fieldmap["ipaddr"]['group_name']="";
-        }
-        $fieldmap["ipaddr"]['q']=array2Object($fieldmap["ipaddr"]);
+        $q = new StdClass;
+        $q->fieldname="ipaddr";
+        $q->surveyid=$surveyid;
+        $q->gid="";
+        $q->id="";
+        $q->aid="";
+        $q->title="";
+        $q->text=$clang->gT("IP address");
+        $q->group_name="";
+        $fieldmap["ipaddr"]['q'] = $q;
     }
     // Add 'refurl' to fieldmap.
     if ($prow['refurl'] == "Y")
     {
-        $fieldmap["refurl"]=array("fieldname"=>"refurl", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
-        if ($style == "full")
-        {
-            $fieldmap["refurl"]['title']="";
-            $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
-            $fieldmap["refurl"]['group_name']="";
-        }
-        $fieldmap["refurl"]['q']=array2Object($fieldmap["refurl"]);
+        $q = new StdClass;
+        $q->fieldname="refurl";
+        $q->surveyid=$surveyid;
+        $q->gid="";
+        $q->id="";
+        $q->aid="";
+        $q->title="";
+        $q->text=$clang->gT("Referrer URL");
+        $q->group_name="";
+        $fieldmap["refurl"]['q'] = $q;
     }
 
     // Collect all default values once so don't need separate query for each question with defaults
