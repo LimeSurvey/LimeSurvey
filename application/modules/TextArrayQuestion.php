@@ -403,26 +403,9 @@ EOD;
             foreach($answerset as $answer)
             {
                 $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}_{$answer['title']}";
-                $field['fieldname']= $fieldname;
-                $field['sid']=$this->surveyid;
-                $field['gid']=$this->gid;
-                $field['qid']=$this->id;
-                $field['aid']=$abrow['title']."_".$answer['title'];
-                $field['sqid']=$abrow['qid'];
-                $field['title']=$this->title;
-                $field['question']=$this->text;
-                $field['subquestion1']=$abrow['question'];
-                $field['subquestion2']=$answer['question'];
-                $field['group_name']=$this->groupname;
-                $field['mandatory']=$this->mandatory;
-                $field['hasconditions']=$this->conditionsexist;
-                $field['usedinconditions']=$this->usedinconditions;
-                $field['questionSeq']=$this->questioncount;
-                $field['groupSeq']=$this->groupcount;
-                $field['preg']=$this->haspreg;
                 $q = clone $this;
                 $q->fieldname = $fieldname;
-                $q->aid = $field['aid'];
+                $q->aid = $abrow['title']."_".$answer['title'];
                 $q->sq1=$abrow['question'];
                 $q->sq2=$answer['question'];
                 $q->sqid=$abrow['qid'];

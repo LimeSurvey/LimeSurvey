@@ -346,22 +346,17 @@ class ListQuestion extends QuestionModule
         $map = parent::createFieldmap();
         if($this->isother=='Y')
         {
-            $other = $map[$this->fieldname];
-            $other['fieldname'].='other';
-            $other['aid']='other';
-            $other['subquestion']=$clang->gT("Other");
             $q = clone $this;
             if (isset($this->defaults) && isset($this->defaults['other'])) $q->default=$other['defaultvalue']=$this->defaults['other'];
             else
             {
-                unset($other['defaultvalue']);
                 unset($q->default);
             }
             $q->fieldname .= 'other';
             $q->aid = 'other';
             $q->sq=$clang->gT("Other");
             $other['q']=$q;
-            $map[$other['fieldname']]=$other;
+            $map[$q->fieldname]=$other;
         }
         return $map;
     }

@@ -152,21 +152,8 @@ abstract class QuestionModule
 
     public function createFieldmap()
     {
-        $map['fieldname']=$this->fieldname;
-        $map['sid']=$this->surveyid;
-        $map['gid']=$this->gid;
-        $map['qid']=$this->id;
-        $map['aid']=$this->aid;
-        $map['title']=$this->title;
-        $map['question']=$this->text;
-        $map['group_name']=$this->groupname;
-        $map['mandatory']=$this->mandatory;
-        $map['hasconditions']=$this->conditionsexist;
-        $map['usedinconditions']=$this->usedinconditions;
-        $map['questionSeq']=$this->questioncount;
-        $map['groupSeq']=$this->groupcount;
         $q = clone $this;
-        if(isset($this->defaults) && isset($this->defaults[0])) $q->default=$map['defaultvalue']=$this->defaults[0];
+        if(isset($this->defaults) && isset($this->defaults[0])) $q->default=$this->defaults[0];
         $map['q']=$q;
         return array($this->fieldname=>$map);
     }

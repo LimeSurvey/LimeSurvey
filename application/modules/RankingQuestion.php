@@ -298,23 +298,9 @@ class RankingQuestion extends QuestionModule
         for ($i=1; $i<=count($data); $i++)
         {
             $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}$i";
-            $field['fieldname']=$fieldname;
-            $field['sid']=$this->surveyid;
-            $field['gid']=$this->gid;
-            $field['qid']=$this->id;
-            $field['aid']=$i;
-            $field['title']=$this->title;
-            $field['question']=$this->text;
-            $field['subquestion']=sprintf($clang->gT('Rank %s'),$i);
-            $field['group_name']=$this->groupname;
-            $field['mandatory']=$this->mandatory;
-            $field['hasconditions']=$this->conditionsexist;
-            $field['usedinconditions']=$this->usedinconditions;
-            $field['questionSeq']=$this->questioncount;
-            $field['groupSeq']=$this->groupcount;
             $q = clone $this;
             $q->fieldname = $fieldname;
-            $q->aid = $field['aid'];
+            $q->aid = $i;
             $q->sq=sprintf($clang->gT('Rank %s'),$i);
             $field['q']=$q;
             $map[$fieldname]=$field;

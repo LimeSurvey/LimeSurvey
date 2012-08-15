@@ -1916,7 +1916,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
-    $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>""); //AJS
+    $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
     if ($style == "full")
     {
         $fieldmap["id"]['title']="";
@@ -1925,7 +1925,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["id"]['q']=array2Object($fieldmap["id"]);
     }
 
-    $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
+    $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
     if ($style == "full")
     {
         $fieldmap["submitdate"]['title']="";
@@ -1934,7 +1934,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["submitdate"]['q']=array2Object($fieldmap["submitdate"]);
     }
 
-    $fieldmap["lastpage"]=array("fieldname"=>"lastpage", 'sid'=>$surveyid, 'type'=>"lastpage", "gid"=>"", "qid"=>"", "aid"=>""); //AJS
+    $fieldmap["lastpage"]=array("fieldname"=>"lastpage", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
     if ($style == "full")
     {
         $fieldmap["lastpage"]['title']="";
@@ -1943,7 +1943,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["lastpage"]['q']=array2Object($fieldmap["lastpage"]);
     }
 
-    $fieldmap["startlanguage"]=array("fieldname"=>"startlanguage", 'sid'=>$surveyid, 'type'=>"startlanguage", "gid"=>"", "qid"=>"", "aid"=>""); //AJS
+    $fieldmap["startlanguage"]=array("fieldname"=>"startlanguage", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
     if ($style == "full")
     {
         $fieldmap["startlanguage"]['title']="";
@@ -1957,7 +1957,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     if ($prow['anonymized'] == "N")
     {
-        $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>""); //AJS
+        $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
         if ($style == "full")
         {
             $fieldmap["token"]['title']="";
@@ -1969,7 +1969,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if ($prow['datestamp'] == "Y")
     {
         $fieldmap["startdate"]=array("fieldname"=>"startdate",
-        'type'=>"startdate",
         'sid'=>$surveyid,
         "gid"=>"",
         "qid"=>"",
@@ -1983,7 +1982,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startdate"]['q']=array2Object($fieldmap["startdate"]);
 
         $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
-        'type'=>"datestamp",
         'sid'=>$surveyid,
         "gid"=>"",
         "qid"=>"",
@@ -1999,7 +1997,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if ($prow['ipaddr'] == "Y")
     {
         $fieldmap["ipaddr"]=array("fieldname"=>"ipaddr",
-        'type'=>"ipaddress",
         'sid'=>$surveyid,
         "gid"=>"",
         "qid"=>"",
@@ -2015,7 +2012,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     // Add 'refurl' to fieldmap.
     if ($prow['refurl'] == "Y")
     {
-        $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
+        $fieldmap["refurl"]=array("fieldname"=>"refurl", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>""); //AJS
         if ($style == "full")
         {
             $fieldmap["refurl"]['title']="";
@@ -2093,18 +2090,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $pq->isother = $arow['other'];
         $pq->groupname = $arow->groups['group_name'];
         $pq->groupcount = $groupSeq;
-        $add = $pq->createFieldmap($arow['type']); //AJS
+        $add = $pq->createFieldmap();
 
         if (count($add))
         {
             $tmp=array_values($add);
-            $fieldname = $tmp[count($add)-1]['fieldname'];
-            $q = $add[$fieldname]['q'];
-            $add[$fieldname]['relevance']=$arow['relevance'];
-            $add[$fieldname]['grelevance']=$arow->groups['grelevance'];
-            $add[$fieldname]['preg']=$arow['preg'];
-            $add[$fieldname]['other']=$arow['other'];
-            $add[$fieldname]['help']=$arow['help'];
+            $q = $tmp[count($add)-1]['q'];
             $q->relevance=$arow['relevance'];
             $q->grelevance=$arow->groups['grelevance'];
             $q->preg=$arow['preg'];
@@ -2135,37 +2126,30 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     if (isset($q->text))
                     {
                         $mq->text = $q->text;
-                        $mf['question'] = $q->text;
                     }
                     if (isset($q->sq))
                     {
                         $mq->sq = $q->sq;
-                        $mf['subquestion'] = $q->sq;
                     }
                     if (isset($q->sq1))
                     {
                         $mq->sq1 = $q->sq1;
-                        $mf['subquestion'] = $q->sq1;
                     }
                      if (isset($q->sq2))
                     {
                         $mq->sq2 = $q->sq2;
-                        $mf['subquestion2'] = $q->sq2;
                     }
                     if (isset($q->groupname))
                     {
                         $mq->groupname = $q->groupname;
-                        $mf['group_name'] = $q->groupname;
                     }
                     if (isset($q->default))
                     {
                         $mq->default = $q->default;
-                        $mf['defaultvalue'] = $q->default;
                     }
                     if (isset($q->help))
                     {
                         $mq->help = $q->help;
-                        $mf['help'] = $q->help;
                     }
                 }
                 $mfieldmap[$fieldname] = $mf;

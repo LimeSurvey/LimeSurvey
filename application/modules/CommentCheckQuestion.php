@@ -213,23 +213,16 @@ class CommentCheckQuestion extends CheckQuestion
         $tmp = parent::createFieldmap();
         foreach($tmp as $field)
         {
-            $comment = $field;
-            $comment['fieldname'].='comment';
-            $comment['subquestion']=$comment['aid']=='other'?$clang->gT("Other comment"):$clang->gT("Comment");
-            $comment['aid'].='comment';
-            unset($comment['defaultvalue']);
-            unset($comment['sqid']);
-            unset($comment['preg']);
             $q = clone $field['q'];
             $q->fieldname .= 'comment';
-            $q->aid = $comment['aid'];
-            $q->sq=$comment['aid']=='other'?$clang->gT("Other comment"):$clang->gT("Comment");
+            $q->sq=$q->aid=='other'?$clang->gT("Other comment"):$clang->gT("Comment");
+            $q->aid.='comment';
             unset($q->default);
             unset($q->sqid);
             unset($q->preg);
             $comment['q']=$q;
-            $map[$field['fieldname']]=$field;
-            $map[$comment['fieldname']]=$comment;
+            $map[$field['q']->fieldname]=$field;
+            $map[$q->fieldname]=$comment;
         }
         return $map;
     }

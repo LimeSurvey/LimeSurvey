@@ -24,26 +24,10 @@ abstract class ArrayQuestion extends QuestionModule
         foreach ($abrows as $abrow)
         {
             $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}";
-            $field['fieldname']=$fieldname;
-            $field['sid']=$this->surveyid;
-            $field['gid']=$this->gid;
-            $field['qid']=$this->id;
-            $field['aid']=$abrow['title'];
-            $field['sqid']=$abrow['qid'];
-            $field['title']=$this->title;
-            $field['question']=$this->text;
-            $field['subquestion']=$abrow['question'];
-            $field['group_name']=$this->groupname;
-            $field['mandatory']=$this->mandatory;
-            $field['hasconditions']=$this->conditionsexist;
-            $field['usedinconditions']=$this->usedinconditions;
-            $field['questionSeq']=$this->questioncount;
-            $field['groupSeq']=$this->groupcount;
-            $field['preg']=$this->haspreg;
             $q = clone $this;
-            if(isset($this->defaults) && isset($this->defaults[$abrow['qid']])) $q->default=$field['defaultvalue']=$this->defaults[$abrow['qid']];
+            if(isset($this->defaults) && isset($this->defaults[$abrow['qid']])) $q->default=$this->defaults[$abrow['qid']];
             $q->fieldname = $fieldname;
-            $q->aid=$field['aid'];
+            $q->aid=$abrow['title'];
             $q->question=$abrow['question'];
             $q->sq=$abrow['question'];
             $q->sqid=$abrow['qid'];
