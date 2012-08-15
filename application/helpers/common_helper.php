@@ -2054,7 +2054,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     {
         $cond.=" AND {{questions}}.qid=$questionid";
     }
-    $aresult = Questions::model()->with('groups')->with('question_types')->findAll(array('condition'=>$cond, 'order'=>'groups.group_order, question_order'));
+    $aresult = Questions::model()->with('groups')->with('question_types')->findAll(array('condition'=>$cond, 'order'=>'groups.group_order, question_order', 'index' => 'qid'));
     $questionSeq=-1; // this is incremental question sequence across all groups
     $groupSeq=-1;
     $_groupOrder=-1;
@@ -2079,7 +2079,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
         $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-        $pq = createQuestion($arow->question_types['class'], array('surveyid'=>$surveyid,
+        $class = empty($arow->question_types['class']) ? $aresult[$arow->parent_qid]->question_types['class'] : $arow->question_types['class'];
+        $pq = createQuestion($class, array('surveyid'=>$surveyid,
             'id'=>$arow['qid'], 'fieldname'=>$fieldname,
             'title'=>$arow['title'], 'text'=>$arow['question'],
             'gid'=>$arow['gid'], 'mandatory'=>$arow['mandatory'],

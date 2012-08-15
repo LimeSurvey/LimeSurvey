@@ -102,7 +102,7 @@ function checkQuestions($postsid, $iSurveyID)
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 
     $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$iSurveyID} and parent_qid=0";
-    $chkresult = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $surveyid, 'parent_qid' => 0));
+    $chkresult = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0));
     
     foreach ($chkresult as $chkrow)
     {
@@ -203,7 +203,7 @@ function checkQuestions($postsid, $iSurveyID)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
     if (isset($fieldmap))
     {
         foreach($fieldmap as $fielddata)
@@ -252,7 +252,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     $prow = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($surveyid)); //AJS
+    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS
 
     $createsurvey = array();
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
@@ -294,7 +294,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 $createsurvey[$q->fieldname] = $q->getDBField();
         }
 
-        if ($q->fileUpload()) $createsurveydirectory = true;
+        if (is_a($q, 'QuestionModule') && $q->fileUpload()) $createsurveydirectory = true;
         
         if ($simulate){
             $tempTrim = trim($createsurvey);
@@ -356,7 +356,7 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     if ($prow->savetimings == "Y")
         {
-            $timingsfieldmap = createFieldMap($iSurveyID,"short",false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+            $timingsfieldmap = createFieldMap($iSurveyID,"short",false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
 
             $column['id'] = $createsurvey['id'];
             $column['interviewtime'] = 'FLOAT';
