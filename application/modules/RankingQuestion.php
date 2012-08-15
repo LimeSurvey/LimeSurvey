@@ -67,6 +67,7 @@ class RankingQuestion extends QuestionModule
         $answer .="</ul>"
             . "<div style='display:none' id='ranking-{$this->id}-maxans'>{".$max_answers."}</div>"
             . "<div style='display:none' id='ranking-{$this->id}-minans'>{".$min_answers."}</div>"
+            . "<div style='display:none' id='ranking-{$ia[0]}-name'>javatb".$this->fieldname."</div>"
             . "</div>";
         // The list with HTML answres
         $answer .="<div style=\"display:none\">";
@@ -288,7 +289,7 @@ class RankingQuestion extends QuestionModule
     public function getHeaderIncludes()
     {
         
-        return array('ranking.js' => 'js', 'ranking.css' => 'css');
+        return array('ranking.js' => 'js', 'jquery/jquery.actual/jquery.actual.min.js' => 'js', 'ranking.css' => 'css');
     }
 
     public function createFieldmap()
@@ -447,7 +448,7 @@ class RankingQuestion extends QuestionModule
 
     public function availableAttributes($attr = false)
     {
-        $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");
+        $attrs=array("array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");
         return $attr?in_array($attr,$attrs):$attrs;
     }
 

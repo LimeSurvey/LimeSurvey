@@ -272,6 +272,7 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
     {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['questions'] = array();
     }
+
     /* End */
 
     if(isset($thissurvey['timercount']))
@@ -400,6 +401,14 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
                 action = 3;";
             }
         }
+
+        /* If this is a preview, don't allow the page to submit/reload */
+        $thisaction=returnglobal('action');
+        if($thisaction == "previewquestion" || $thisaction == "previewgroup") {
+        $output .="
+            action = 3;";
+        }
+
         $output .="
         var timerdisplay='LS_question'+questionid+'_Timer';
         var warningtimedisplay='LS_question'+questionid+'_Warning';

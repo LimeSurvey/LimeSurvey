@@ -1,9 +1,11 @@
 function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
 // TODO : advanced setting in attributes
-if (typeof showpopups === 'undefined'){showpopups=true;}
-if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
-if (typeof samelistheight === 'undefined'){samelistheight=true;}
-      maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
+  if (typeof showpopups === 'undefined'){showpopups=true;}
+  if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
+  if (typeof samelistheight === 'undefined'){samelistheight=true;}
+  maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
+  rankingname= $("#ranking-"+qID+"-name").text();
+  rankingnamewidth=rankingname.length;
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
   // Hide the default answers list
@@ -39,7 +41,7 @@ if (typeof samelistheight === 'undefined'){samelistheight=true;}
     if($(this).val()!=''){
       ranked.push($(this).val());
       htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
-      var liCode = '<li class="ui-state-default choice" id="choice_'+$(this).val()+'">' + htmloption + '</li>'
+      var liCode = '<li class="ui-state-default choice" id="'+rankingname+$(this).val()+'">' + htmloption + '</li>'
       $(liCode).appendTo('#sortable-rank-'+qID+'');
     }
   });
@@ -47,7 +49,7 @@ if (typeof samelistheight === 'undefined'){samelistheight=true;}
     var thisvalue=$(this).val();
     if(thisvalue!='' && jQuery.inArray(thisvalue,ranked)<0){
         htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
-        var liCode = '<li class="ui-state-default choice" id="choice_'+$(this).val()+'">' + htmloption + '</li>'
+        var liCode = '<li class="ui-state-default choice" id="'+rankingname+$(this).val()+'">' + htmloption + '</li>'
         $(liCode).appendTo('#sortable-choice-'+qID+'');
     }
   });
@@ -103,8 +105,8 @@ function updateDragDropRank(qID){
   $('#sortable-rank-'+qID+' li').each(function(index) {
     // Get value of ranked item
     var liID = $(this).attr("id");
-    liIDArray = liID.split('_');
-    $('#question'+qID+' .select-item select').eq(index).val(liIDArray[1]);
+    liValue = liID.substr(rankingnamewidth);
+    $('#question'+qID+' .select-item select').eq(index).val(liValue);
   });
   $('#question'+qID+' .select-item select').each(function(){
     checkconditions($(this).val(),$(this).attr("name"),'select-one','onchange');
@@ -124,7 +126,7 @@ function sortableAlert (qID,showpopups)
 function loadDragDropRank(qID){
   $('#question'+qID+' .select-item select').each(function(){
     if($(this).val()!=''){
-        $('#sortable-choice-'+qID+' li#choice_'+$(this).val()).appendTo('#sortable-rank-'+qID);
+        $('#sortable-choice-'+qID+' li#'+rankingname+$(this).val()).appendTo('#sortable-rank-'+qID);
     }
   });
   $('#sortable-rank-'+qID+' li').removeClass("error");
@@ -137,7 +139,7 @@ function fixChoiceHeight(qID){
   maxHeight=0;
   $('.connectedSortable'+qID+' li').each(function(){
     if ($(this).height()>maxHeight){
-      maxHeight=$(this).height();
+      maxHeight=$(this).actual('height');
     }
   });
   $('.connectedSortable'+qID+' li').height(maxHeight);
@@ -146,7 +148,7 @@ function fixChoiceHeight(qID){
 function fixListHeight(qID){
   totalHeight=0;
   $('.connectedSortable'+qID+' li').each(function(){
-    totalHeight=totalHeight+$(this).outerHeight(true);
+    totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
   });
   $('.connectedSortable'+qID).height(totalHeight);
 }

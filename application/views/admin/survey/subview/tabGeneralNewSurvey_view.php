@@ -19,15 +19,21 @@
         <input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' required="required" autofocus="autofocus" /> <span class='annotation'><?php $clang->eT("Required"); ?> </span>
         </li>
         <li><label for='description'><?php $clang->eT("Description:"); ?> </label>
+        <div class='htmleditor'>
         <textarea cols='80' rows='10' id='description' name='description'></textarea>
+        </div>
         <?php echo getEditor("survey-desc", "description", "[" . $clang->gT("Description:", "js") . "]", '', '', '', $action); ?>
         </li>
         <li><label for='welcome'><?php $clang->eT("Welcome message:"); ?> </label>
+        <div class='htmleditor'>
         <textarea cols='80' rows='10' id='welcome' name='welcome'></textarea>
         <?php echo getEditor("survey-welc", "welcome", "[" . $clang->gT("Welcome message:", "js") . "]", '', '', '', $action) ?>
+        </div>
         </li>
         <li><label for='endtext'><?php $clang->eT("End message:") ;?> </label>
+        <div class='htmleditor'>
         <textarea cols='80' id='endtext' rows='10' name='endtext'></textarea>
+        </div>
         <?php echo getEditor("survey-endtext", "endtext", "[" . $clang->gT("End message:", "js") . "]", '', '', '', $action) ?>
         </li>
 

@@ -260,19 +260,19 @@ class conditionsaction extends Survey_Common_Action {
                 // so we only need to db_quote _POST variables
                 if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
                 {
-                    $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('ConditionConst'));
+                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
                 }
                 elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
                 {
-                    $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('prevQuestionSGQA'));
+                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
                 }
                 elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
                 {
-                    $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('tokenAttr'));
+                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
                 }
                 elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
                 {
-                    $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('ConditionRegexp'));
+                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
                 }
 
                 if (isset($posted_condition_value))
@@ -330,19 +330,19 @@ class conditionsaction extends Survey_Common_Action {
                 // so we only need to db_quote _POST variables
                 if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
                 {
-                    $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('ConditionConst'));
+                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
                 }
                 elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
                 {
-                    $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('prevQuestionSGQA'));
+                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
                 }
                 elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
                 {
-                    $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('tokenAttr'));
+                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
                 }
                 elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
                 {
-                    $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('ConditionRegexp'));
+                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
                 }
 
                 if (isset($posted_condition_value))

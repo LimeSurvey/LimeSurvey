@@ -746,9 +746,8 @@ class dataentry extends Survey_Common_Action
     */
     public function update()
     {
-        $subaction = Yii::app()->request->getPost('subaction');
-        $surveyid = $_REQUEST['surveyid'];
-        if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
+        $aData=array();        $subaction = Yii::app()->request->getPost('subaction');
+        if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];        if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
         $surveyid = sanitize_int($surveyid);
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');

@@ -181,9 +181,9 @@ class responses extends Survey_Common_Action
         {
             $oCriteria = Survey_dynamic::model($iSurveyId)->addTokenCriteria($oCriteria);
         }
-        if (incompleteAnsFilterState() == 'inc')
+        if (incompleteAnsFilterState() == 'incomplete')
             $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
-        elseif (incompleteAnsFilterState() == 'filter')
+        elseif (incompleteAnsFilterState() == 'complete')
             $oCriteria->addCondition('submitdate >= ' . mktime(0, 0, 0, 1, 1, 1980));
         if ($iId < 1)
         {
@@ -518,11 +518,11 @@ class responses extends Survey_Common_Action
                 $oCriteria = Survey_dynamic::model($iSurveyId)->addTokenCriteria($oCriteria);
             }
 
-            if (incompleteAnsFilterState() == "inc")
+            if (incompleteAnsFilterState() == "incomplete")
             {
                 $oCriteria->addCondition("`submitdate` IS NULL");
             }
-            elseif (incompleteAnsFilterState() == "filter")
+            elseif (incompleteAnsFilterState() == "complete")
             {
                 $oCriteria->addCondition("`submitdate` IS NOT NULL");
             }
@@ -569,6 +569,8 @@ class responses extends Survey_Common_Action
             }
 
             $aData['dtcount2'] = $dtcount2;
+            $aData['sCompletionStateValue']=incompleteAnsFilterState();
+
             $aData['start'] = $start;
             $aData['limit'] = $limit;
             $aData['last'] = $last;
@@ -599,6 +601,7 @@ class responses extends Survey_Common_Action
             $aViewUrls[] = 'browseallfooter_view';
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
+
     public function time($iSurveyId)
     {
         $aData = $this->_getData(array('iSurveyId' => $iSurveyId));
@@ -708,22 +711,7 @@ class responses extends Survey_Common_Action
             $end = 0;
         }
 
-        $selectshow = '';
-        $selectinc = '';
-        $selecthide = '';
-
-        if (incompleteAnsFilterState() == "inc")
-        {
-            $selectinc = " selected='selected'";
-        }
-        elseif (incompleteAnsFilterState() == "filter")
-        {
-            $selecthide = " selected='selected'";
-        }
-        else
-        {
-            $selectshow = " selected='selected'";
-        }
+        $aData['sCompletionStateValue']=incompleteAnsFilterState();
         $aData['start'] = $start;
         $aData['limit'] = $limit;
         $aData['last'] = $last;

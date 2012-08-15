@@ -3914,7 +3914,6 @@ function CSVUnquote($field)
 
 function incompleteAnsFilterState()
 {
-    global $filterout_incomplete_answers;
     $letsfilter='';
     $letsfilter = returnGlobal('completionstate'); //read get/post completionstate
 
@@ -3926,7 +3925,7 @@ function incompleteAnsFilterState()
     }
     elseif (empty(Yii::app()->session['incompleteanswers']))
     { // sets default variable value from config file
-        Yii::app()->session['incompleteanswers'] = $filterout_incomplete_answers;
+        Yii::app()->session['incompleteanswers'] = Yii::app()->getConfig('filterout_incomplete_answers');
     }
 
     if  (Yii::app()->session['incompleteanswers']=='complete' || Yii::app()->session['incompleteanswers']=='all' || Yii::app()->session['incompleteanswers']=='incomplete') {

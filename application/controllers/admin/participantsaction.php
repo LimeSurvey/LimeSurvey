@@ -1322,13 +1322,14 @@ class participantsaction extends Survey_Common_Action
 
             ParticipantAttributeNames::model()->saveAttributeLanguages($langdata);
         }
-        if (Yii::app()->request->getPost('attribute_value_name_1'))
+        /* Create new attribute value */
+        if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0")
         {
             $i = 1;
             do
             {
                 $attvaluename = 'attribute_value_name_' . $i;
-                if (!empty($_POST[$attvaluename]))
+                if ($_POST[$attvaluename] != "")
                 {
                     $aDatavalues[$i] = array(
                         'attribute_id' => $iAttributeId,
@@ -1336,10 +1337,11 @@ class participantsaction extends Survey_Common_Action
                     );
                 }
                 $i++;
-            } while (isset($_POST[$attvaluename]));
+            } while ($_POST[$attvaluename] != "");
             ParticipantAttributeNames::model()->storeAttributeValues($aDatavalues);
         }
-        if (Yii::app()->request->getPost('editbox'))
+        /* Save updated attribute values */
+        if (Yii::app()->request->getPost('editbox') || Yii::app()->request->getPost('editbox')=="0")
         {
             $editattvalue = array(
                 'attribute_id' => $iAttributeId,
@@ -1367,7 +1369,7 @@ class participantsaction extends Survey_Common_Action
      */
     function editAttributevalue()
     {
-        if (Yii::app()->request->getPost('oper') == "edit" && Yii::app()->request->getPost('attvalue'))
+        if (Yii::app()->request->getPost('oper') == "edit" && (Yii::app()->request->getPost('attvalue') || Yii::app()->request->getPost('attvalue')=="0"))
         {
             $iAttributeId = explode("_", Yii::app()->request->getPost('id'));
             $aData = array('participant_id' => Yii::app()->request->getPost('participant_id'), 'attribute_id' => $iAttributeId[1], 'value' => Yii::app()->request->getPost('attvalue'));
