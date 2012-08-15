@@ -433,7 +433,7 @@ class SurveyObj
     */
     public function getQuestionCode($fieldName)
     {
-        $q = $this->fieldMap[$fieldName]['q'];
+        $q = $this->fieldMap[$fieldName];
         if (isset($q->title))
         {
             return $q->title;
@@ -490,7 +490,7 @@ class SurveyObj
     */
     public function getQuestionArray($fieldName)
     {
-        $q = $this->fieldMap[$fieldName]['q'];
+        $q = $this->fieldMap[$fieldName];
         foreach ($this->questions as $question)
         {
             if ($question['qid'] == $q->id)
@@ -831,7 +831,7 @@ abstract class Writer implements IWriter
 
                 //Survey question field, $column value is a field name from the getFieldMap function.
 
-                $q = $survey->fieldMap[$column]['q'];
+                $q = $survey->fieldMap[$column];
                 switch ($oOptions->headingFormat)
                 {
                     case 'abbreviated':
@@ -870,7 +870,7 @@ abstract class Writer implements IWriter
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];
-                $q = $survey->fieldMap[$column]['q'];
+                $q = $survey->fieldMap[$column];
 
                 if (!is_a($q, 'QuestionModule'))
                 {

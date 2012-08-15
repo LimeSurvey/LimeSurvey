@@ -92,10 +92,9 @@
                 } ?>
                 <br /><select name='colselect[]' multiple size='20'>
                     <?php $i=1;
-                        foreach($excesscols as $sFieldName=>$aData)
+                        foreach($excesscols as $q)
                         {
-                            $q = $aData['q'];
-                            echo "<option value='{$sFieldName}'";
+                            echo "<option value='{$q->fieldname}'";
                             if (isset($_POST['summary']))
                             {
                                 if (in_array($ec, $_POST['summary']))
@@ -107,7 +106,7 @@
                             {
                                 echo " selected";
                             }
-                            echo ">{$i}: {$sFieldName} - ".ellipsize(FlattenText($q->text,false,true),40,0.9)."</option>\n";
+                            echo ">{$i}: {$q->fieldname} - ".ellipsize(FlattenText($q->text,false,true),40,0.9)."</option>\n";
                             $i++;
                     } ?>
                 </select>

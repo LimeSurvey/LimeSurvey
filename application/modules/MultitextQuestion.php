@@ -217,8 +217,7 @@ class MultitextQuestion extends QuestionModule
             $q->sq=$abrow['question'];
             $q->sqid=$abrow['qid'];
             $q->preg=$this->haspreg;
-            $field['q']=$q;
-            $map[$fieldname]=$field;
+            $map[$fieldname]=$q;
         }
         return $map;
     }

@@ -189,15 +189,12 @@ class CommentListQuestion extends ListQuestion
     {
         $clang = Yii::app()->lang;
         $map = QuestionModule::createFieldmap();
-        $comment = $map[$this->fieldname];
-        unset($comment['defaultvalue']);
-        $q = clone $comment['q'];
+        $q = clone $map[$this->fieldname];
         unset($q->default);
         $q->fieldname .= 'comment';
         $q->aid='comment';
         $q->sq=$clang->gT("Comment");
-        $comment['q']=$q;
-        $map[$q->fieldname]=$comment;
+        $map[$q->fieldname]=$q;
         return $map;
     }
 

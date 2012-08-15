@@ -1462,9 +1462,8 @@ function getQuestion($fieldcode)
 {
     list($sid, $gid, $qid) = explode('X', $fieldcode);
     $fields=createFieldMap($sid,'full',false,false,getBaseLanguageFromSurveyID($sid)); //AJS#
-    foreach($fields as $field)
+    foreach($fields as $q)
     {
-        $q=$field['q'];
         if($q->id==$qid && $q->surveyid==$sid && $q->gid==$gid) return $q;
     }
     return false;
@@ -1494,11 +1493,10 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
     }
     $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage); //AJS#
     if (isset($fieldmap[$sFieldCode]))
-        $fields = $fieldmap[$sFieldCode];
+        $q = $fieldmap[$sFieldCode];
     else
         return false;
 
-    $q = $fields['q'];
     return $q->getExtendedAnswer($sValue, $oLanguage);
 }
 
@@ -1908,7 +1906,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $q->title="";
     $q->text=$clang->gT("Response ID");
     $q->group_name="";
-    $fieldmap["id"]['q'] = $q;
+    $fieldmap["id"] = $q;
 
     $q = new StdClass;
     $q->fieldname="submitdate";
@@ -1919,7 +1917,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $q->title="";
     $q->text=$clang->gT("Date submitted");
     $q->group_name="";
-    $fieldmap["submitdate"]['q'] = $q;
+    $fieldmap["submitdate"] = $q;
 
     $q = new StdClass;
     $q->fieldname="lastpage";
@@ -1930,7 +1928,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $q->title="";
     $q->text=$clang->gT("Last page");
     $q->group_name="";
-    $fieldmap["lastpage"]['q'] = $q;
+    $fieldmap["lastpage"] = $q;
     
     $q = new StdClass;
     $q->fieldname="startlanguage";
@@ -1941,7 +1939,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $q->title="";
     $q->text=$clang->gT("Start language");
     $q->group_name="";
-    $fieldmap["startlanguage"]['q'] = $q;
+    $fieldmap["startlanguage"] = $q;
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
@@ -1957,7 +1955,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $q->title="";
         $q->text=$clang->gT("Token");
         $q->group_name="";
-        $fieldmap["token"]['q'] = $q;
+        $fieldmap["token"] = $q;
     }
     if ($prow['datestamp'] == "Y")
     {
@@ -1970,7 +1968,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $q->title="";
         $q->text=$clang->gT("Date started");
         $q->group_name="";
-        $fieldmap["startdate"]['q'] = $q;
+        $fieldmap["startdate"] = $q;
 
         $q = new StdClass;
         $q->fieldname="datestamp";
@@ -1981,7 +1979,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $q->title="";
         $q->text=$clang->gT("Date last action");
         $q->group_name="";
-        $fieldmap["datestamp"]['q'] = $q;
+        $fieldmap["datestamp"] = $q;
     }
     if ($prow['ipaddr'] == "Y")
     {
@@ -1994,7 +1992,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $q->title="";
         $q->text=$clang->gT("IP address");
         $q->group_name="";
-        $fieldmap["ipaddr"]['q'] = $q;
+        $fieldmap["ipaddr"] = $q;
     }
     // Add 'refurl' to fieldmap.
     if ($prow['refurl'] == "Y")
@@ -2008,7 +2006,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $q->title="";
         $q->text=$clang->gT("Referrer URL");
         $q->group_name="";
-        $fieldmap["refurl"]['q'] = $q;
+        $fieldmap["refurl"] = $q;
     }
 
     // Collect all default values once so don't need separate query for each question with defaults
@@ -2084,7 +2082,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if (count($add))
         {
             $tmp=array_values($add);
-            $q = $tmp[count($add)-1]['q'];
+            $q = $tmp[count($add)-1];
             $q->relevance=$arow['relevance'];
             $q->grelevance=$arow->groups['grelevance'];
             $q->preg=$arow['preg'];
@@ -2106,12 +2104,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $masterFieldmap = Yii::app()->session['fieldmap-' . $surveyid . '-randMaster'];
             $mfieldmap = Yii::app()->session[$masterFieldmap];
 
-            foreach ($mfieldmap as $fieldname => $mf) //AJS
+            foreach ($mfieldmap as $fieldname => $mq)
             {
-                $mq = $mf['q'];
                 if (isset($fieldmap[$fieldname]))
                 {
-                    $q = $fieldmap[$fieldname]['q'];
+                    $q = $fieldmap[$fieldname];
                     if (isset($q->text))
                     {
                         $mq->text = $q->text;
@@ -2141,7 +2138,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $mq->help = $q->help;
                     }
                 }
-                $mfieldmap[$fieldname] = $mf;
             }
             $fieldmap = $mfieldmap;
         }
@@ -2158,8 +2154,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 function hasFileUploadQuestion($surveyid) {
     $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
-    foreach ($fieldmap as $field) {
-        $q=$field['q'];
+    foreach ($fieldmap as $q) {
         if (substr(get_class($q),-8)=="Question" && $q->fileUpload()) return true;
     }
 }
@@ -3588,9 +3583,8 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
 
     $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
-    foreach ($fieldmap as $qrow) // Cycle through questions to see if any have list_filter attributes
+    foreach ($fieldmap as $q) // Cycle through questions to see if any have list_filter attributes
     {
-        $q = $qrow['q'];
         if (isset($q->gid) && !empty($q->gid) && (!$gid || $q->gid == $gid))
         {
             $qidtotitle[$qrow->id]=$qrow->title;
@@ -3598,9 +3592,8 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
             if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
             {
                 $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-                foreach ($fieldmap as $avalue) // Cycle through all the other questions in this group until we find the source question for this array_filter
+                foreach ($fieldmap as $qq) // Cycle through all the other questions in this group until we find the source question for this array_filter
                 {
-                    $qq = $avalue['q'];
                     if (isset($qq->gid) && !empty($qq->gid) && (!$gid || $qq->gid == $gid) && $qq->title == $val)
                     {
                         /* This question ($avalue) is the question that provides the source information we use
@@ -4192,15 +4185,14 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
     $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,getBaseLanguageFromSurveyID($iNewSID)); //AJS#
 
     $aFieldMappings=array();
-    foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
+    foreach ($aFieldMap as $q)
     {
-        $q = $aFieldinfo['q'];
         if ($q->id!=null)
         {
-            $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$q->gid].'X'.$aQIDReplacements[$q->id].$q->aid;
+            $aFieldMappings[$q->fieldname]=$iOldSID.'X'.$aGIDReplacements[$q->gid].'X'.$aQIDReplacements[$q->id].$q->aid;
             if (isset($q->scale))
             {
-                $aFieldMappings[$sFieldname].= '#' . $q->scale;
+                $aFieldMappings[$q->fieldname].= '#' . $q->scale;
             }
             // now also add a shortened field mapping which is needed for certain kind of condition mappings
             $aFieldMappings[$q->surveyid.'X'.$q->gid.'X'.$q->id]=$iOldSID.'X'.$aGIDReplacements[$q->gid].'X'.$aQIDReplacements[$q->id];
@@ -4885,21 +4877,19 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     // Create array of non-null values - those are the relevant ones
     $aRelevantFields = array();
 
-    foreach ($aFieldMap as $fname)
+    foreach ($aFieldMap as $q)
     {
-        $q = $fname['q'];
         if (!is_null($idrow[$q->fieldname]))
         {
-            $aRelevantFields[$q->fieldname]=$fname;
+            $aRelevantFields[$q->fieldname]=$q;
         }
     }
 
     $aResultTable=array();
     $oldgid = 0;
     $oldqid = 0;
-    foreach ($aRelevantFields as $fname)
+    foreach ($aRelevantFields as $q)
     {
-        $q = $fname['q'];
         if (!empty($q->id))
         {
             $attributes = getQuestionAttributeValues($q->id);

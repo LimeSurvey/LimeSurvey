@@ -533,9 +533,8 @@ class index extends CAction {
                 if($result->count()>0){
                     // find out if there are any fuqt questions - checked
                     $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang); //AJS#
-                    foreach ($fieldmap as $field)
+                    foreach ($fieldmap as $q)
                     {
-                        $q = $field['q'];
                         if ($q->fileUpload() && !strpos($q->fieldname, "_filecount"))
                         {
                             if (!isset($questions)) { $questions = array(); }

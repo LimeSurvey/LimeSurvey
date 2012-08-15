@@ -347,7 +347,7 @@ class ListQuestion extends QuestionModule
         if($this->isother=='Y')
         {
             $q = clone $this;
-            if (isset($this->defaults) && isset($this->defaults['other'])) $q->default=$other['defaultvalue']=$this->defaults['other'];
+            if (isset($this->defaults) && isset($this->defaults['other'])) $q->default=$this->defaults['other'];
             else
             {
                 unset($q->default);
@@ -355,8 +355,7 @@ class ListQuestion extends QuestionModule
             $q->fieldname .= 'other';
             $q->aid = 'other';
             $q->sq=$clang->gT("Other");
-            $other['q']=$q;
-            $map[$q->fieldname]=$other;
+            $map[$q->fieldname]=$q;
         }
         return $map;
     }

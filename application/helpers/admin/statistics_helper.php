@@ -278,9 +278,8 @@ function buildSelects($allfields, $surveyid, $language) {
     $aQuestionMap=array();
 
     $fieldmap=createFieldMap($surveyid, "full", false, false, $language); //AJS#
-    foreach ($fieldmap as $field)
+    foreach ($fieldmap as $q)
     {
-        $q = $field['q'];
         if(isset($q->id) && $q->id!='')
             $aQuestionMap[]=$q->surveyid.'X'.$q->gid.'X'.$q->id;
     }
@@ -571,7 +570,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
             {
                 //search for key
                 $fld = substr($rt, 1, strlen($rt));
-                $q=$fieldmap[$fld]['q'];
+                $q=$fieldmap[$fld];
 
                 list($qanswer, $qlid)=isset($q->aid) ? explode("_", $q->aid) : array("", "");
 
@@ -1376,7 +1375,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
             else
             {
                 //search for key
-                $q=$fieldmap[$rt]['q'];
+                $q=$fieldmap[$rt];
                 //get SGQA IDs
                 $qsid=$q->surveyid;
                 $qqid=$q->id;

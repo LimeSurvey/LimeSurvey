@@ -211,18 +211,17 @@ class CommentCheckQuestion extends CheckQuestion
         $clang = Yii::app()->lang;
         $map = array();
         $tmp = parent::createFieldmap();
-        foreach($tmp as $field)
+        foreach($tmp as $q)
         {
-            $q = clone $field['q'];
-            $q->fieldname .= 'comment';
-            $q->sq=$q->aid=='other'?$clang->gT("Other comment"):$clang->gT("Comment");
-            $q->aid.='comment';
-            unset($q->default);
-            unset($q->sqid);
-            unset($q->preg);
-            $comment['q']=$q;
-            $map[$field['q']->fieldname]=$field;
-            $map[$q->fieldname]=$comment;
+            $q2 = clone $q;
+            $q2->fieldname .= 'comment';
+            $q2->sq=$q->aid=='other'?$clang->gT("Other comment"):$clang->gT("Comment");
+            $q2->aid.='comment';
+            unset($q2->default);
+            unset($q2->sqid);
+            unset($q2->preg);
+            $map[$q->fieldname]=$q;
+            $map[$q2->fieldname]=$q2;
         }
         return $map;
     }

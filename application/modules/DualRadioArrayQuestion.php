@@ -605,41 +605,19 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         foreach ($abrows as $abrow)
         {
             $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}#0";
-            $field['fieldname']=$fieldname;
-            $field['sid']=$this->surveyid;
-            $field['gid']=$this->gid;
-            $field['qid']=$this->id;
-            $field['aid']=$abrow['title'];
-            $field['scale_id']=0;
-            $field['title']=$this->title;
-            $field['question']=$this->text;
-            $field['subquestion']=$abrow['question'];
-            $field['group_name']=$this->groupname;
-            $field['scale']=$clang->gT('Scale 1');
-            $field['mandatory']=$this->mandatory;
-            $field['hasconditions']=$this->conditionsexist;
-            $field['usedinconditions']=$this->usedinconditions;
-            $field['questionSeq']=$this->questioncount;
-            $field['groupSeq']=$this->groupcount;
             $q = clone $this;
             $q->fieldname = $fieldname;
-            $q->aid = $field['aid'];
+            $q->aid = $abrow['title'];
             $q->scale=0;
             $q->scalename=$clang->gT('Scale 1');
             $q->sq=$abrow['question'];
-            $field['q']=$q;
-            $field2=$field;
             $fieldname2="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}#1";
-            $field2['fieldname']=$fieldname2;
-            $field2['scale_id']=1;
-            $field2['scale']=$clang->gT('Scale 2');
-            $q2 = clone $field['q'];
+            $q2 = clone $q;
             $q2->fieldname = $fieldname2;
             $q2->scale=1;
             $q2->scalename=$clang->gT('Scale 2');
-            $field2['q']=$q2;
-            $map[$fieldname]=$field;
-            $map[$fieldname2]=$field2;
+            $map[$fieldname]=$q;
+            $map[$fieldname2]=$q2;
         }
         return $map;
     }

@@ -77,9 +77,8 @@ class limereplacementfields extends Survey_Common_Action
         $isPreviousPageQuestion = true;
         $questionList = array();
 
-        foreach ($fieldmap as $question)
+        foreach ($fieldmap as $q)
         {
-            $q = $question['q'];
             if (!isset($q->id) || empty($q->id)) {
                 continue;
             }

@@ -355,8 +355,7 @@ class CheckQuestion extends QuestionModule
             $q->sq=$abrow['question'];
             $q->sqid=$abrow['qid'];
             $q->preg=$this->haspreg;
-            $field['q']=$q;
-            $map[$fieldname]=$field;
+            $map[$fieldname]=$q;
         }
         if ($this->isother=='Y')
         {
@@ -370,8 +369,7 @@ class CheckQuestion extends QuestionModule
             $q->aid = 'other';
             $q->sq = $clang->gT("Other");
             $q->other = $this->isother;
-            $other['q']=$q;
-            $map[$other['q']->fieldname]=$other;
+            $map[$q->fieldname]=$q;
         }
 
         return $map;

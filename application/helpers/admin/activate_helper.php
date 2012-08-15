@@ -206,9 +206,8 @@ function checkQuestions($postsid, $iSurveyID)
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
     if (isset($fieldmap))
     {
-        foreach($fieldmap as $fielddata)
+        foreach($fieldmap as $q)
         {
-            $q = $fielddata['q'];
             $fieldlist[]=$q->fieldname;
         }
         $fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
@@ -220,7 +219,7 @@ function checkQuestions($postsid, $iSurveyID)
     {
         foreach ($duplicates as $dup)
         {
-            $q = $fieldmap[$dup]['q'];
+            $q = $fieldmap[$dup];
             $fix = "[<a href='$scriptname?action=activate&amp;sid=$iSurveyID&amp;fixnumbering=".$q->id."'>Click Here to Fix</a>]";
             $failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
         }
@@ -252,12 +251,11 @@ function activateSurvey($iSurveyID, $simulate = false)
     $prow = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS
+    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
 
     $createsurvey = array();
-    foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
+    foreach ($fieldmap as $q) //With each question, create the appropriate field(s)
     {
-        $q = $arow['q'];
         switch($q->fieldname)
         {
             case 'startlanguage':
@@ -360,9 +358,8 @@ function activateSurvey($iSurveyID, $simulate = false)
 
             $column['id'] = $createsurvey['id'];
             $column['interviewtime'] = 'FLOAT';
-            foreach ($timingsfieldmap as $field)
+            foreach ($timingsfieldmap as $q)
             {
-                $q=$field['q'];
                 if (!empty($q->gid)) {
                     // field for time spent on page
                     $column["{$q->surveyid}X{$q->gid}time"]='FLOAT';

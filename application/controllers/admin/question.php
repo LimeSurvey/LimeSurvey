@@ -1055,9 +1055,8 @@ class question extends Survey_Common_Action
 
 
         // Prefill question/answer from defaultvalues
-        foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $field)
+        foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $q)
         {
-            $q = $field['q'];
             if (isset($q->default))
                 $_SESSION['survey_'.$surveyid][$q->fieldname] = $q->default;
         }

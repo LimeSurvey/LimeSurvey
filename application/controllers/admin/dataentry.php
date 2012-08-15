@@ -188,7 +188,7 @@ class dataentry extends Survey_Common_Action
                     $cutname = substr($fieldname, 1, -1);
                     if (array_key_exists($cutname, $fieldmap))
                     {
-                        $q = $fieldmap[$cutname]['q'];
+                        $q = $fieldmap[$cutname];
                         if (is_a($q, 'QuestionModule'))
                             $fielddata[$fieldname] = $q->filter($fielddatum, 'db');
                     }
@@ -523,8 +523,16 @@ class dataentry extends Survey_Common_Action
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
             // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
 
-            $fnames['completed'] = array('fieldname'=>"completed", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
-            $fnames['completed']['q'] = array2Object($fnames['completed']);
+            $q = new StdClass;
+            $q->fieldname="completed";
+            $q->surveyid=$surveyid;
+            $q->gid="";
+            $q->id="";
+            $q->aid="";
+            $q->title="";
+            $q->text=$clang->gT("Completed");
+            $q->group_name="";
+            $fnames['completed'] = $q;
 
             $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage)); //AJS#
 
@@ -571,9 +579,8 @@ class dataentry extends Survey_Common_Action
                 } // while
 
                 $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
-                foreach($fieldmap as $fm)
+                foreach($fieldmap as $q)
                 {
-                    $q = $fm['q'];
                     if (isset($responses[$q->fieldname]))
                     {
                         $results1[$q->fieldname]=$responses[$q->fieldname];
@@ -607,11 +614,10 @@ class dataentry extends Survey_Common_Action
             $output = '';
             foreach ($results as $idrow)
             {
-                $fname = reset($fnames);
+                $q = reset($fnames);
 
                 do
                 {
-                    $q = $fname['q'];
                     if (isset($idrow[$q->fieldname]) )
                     {
                         $answer = $idrow[ $q->fieldname ];
@@ -627,7 +633,6 @@ class dataentry extends Survey_Common_Action
                     $output .= stripJavaScript($q->text);
                     $output .= "</td>\n"
                     ."<td>\n";
-                    //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
 
                     if (is_a($q, 'QuestionModule'))
                     {
@@ -763,9 +768,8 @@ class dataentry extends Survey_Common_Action
             $thissurvey = getSurveyInfo($surveyid);
             $updateqr = "UPDATE $surveytable SET \n";
 
-            foreach ($fieldmap as $irow)
+            foreach ($fieldmap as $q)
             {
-                $q = $irow['q'];
                 if ($q->fieldname=='id') continue;
                 if (isset($_POST[$q->fieldname]))
                 {
@@ -984,12 +988,10 @@ class dataentry extends Survey_Common_Action
                         }
                     }
 
-                    foreach ($fieldmap as $irow)
+                    foreach ($fieldmap as $q)
                     {
-                        $q = $irow['q'];
                         if (isset($_POST[$q->fieldname]))
                         {
-                            $q = $irow['q'];
                             if (is_a($q, 'QuestionModule'))
                                 $data = $q->filter($_POST[$q->fieldname], 'dataentryinsert');
                             else

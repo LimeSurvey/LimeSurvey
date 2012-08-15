@@ -134,9 +134,8 @@ class responses extends Survey_Common_Action
         $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D');
         $fnames[] = array("completed", $clang->gT("Completed"), "0");
 
-        foreach ($fieldmap as $field)
+        foreach ($fieldmap as $q)
         {
-            $q = $field['q'];
             if ($q->fieldname == 'lastpage' || $q->fieldname == 'submitdate')
                 continue;
 
@@ -321,9 +320,8 @@ class responses extends Survey_Common_Action
             $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oBrowseLanguage->langcode); //AJS#
             $fuqtquestions = array();
             // find all fuqt questions
-            foreach ($fieldmap as $field)
+            foreach ($fieldmap as $q)
             {
-                $q = $field['q'];
                 if (is_a($q, 'QuestionModule') && $q->fileUpload() && strpos($q->fieldname, "_filecount") == 0)
                     $fuqtquestions[] = $q->fieldname;
             }
@@ -361,9 +359,8 @@ class responses extends Survey_Common_Action
                 $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oBrowseLanguage->langcode); //AJS#
                 $fuqtquestions = array();
                 // find all fuqt questions
-                foreach ($fieldmap as $field)
+                foreach ($fieldmap as $q)
                 {
-                    $q = $field['q'];
                     if (is_a($q, 'QuestionModule') && $q->fileUpload() && strpos($q->fieldname, "_filecount") == 0)
                         $fuqtquestions[] = $q->fieldname;
                 }
@@ -467,9 +464,8 @@ class responses extends Survey_Common_Action
             $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
             $fields = createFieldMap($iSurveyId, 'full', false, false, $aData['language']); //AJS#
 
-            foreach ($fields as $fielddetails)
+            foreach ($fields as $q)
             {
-                $q = $fielddetails['q'];
                 if ($q->fieldname == 'lastpage' ||
                     $q->fieldname == 'submitdate' ||
                     $q->fieldname == 'token')
@@ -629,9 +625,8 @@ class responses extends Survey_Common_Action
 
         $clang = $aData['clang'];
         $fnames = array('interviewtime' => $clang->gT('Total time'));
-        foreach ($fields as $fielddetails)
+        foreach ($fields as $q)
         {
-            $q = $fielddetails['q'];
             if (!empty($q->gid)) {
                 // field for time spent on page
                 $fieldname="{$q->surveyid}X{$q->gid}time";
@@ -848,9 +843,8 @@ class responses extends Survey_Common_Action
         $filelist = array();
         $fieldmap = createFieldMap($iSurveyId, 'full' ,false, false, Yii::app()->session['browselang']); //AJS#
 
-        foreach ($fieldmap as $field)
+        foreach ($fieldmap as $q)
         {
-            $q = $field['q'];
             if (is_a($q, 'QuestionModule') && $q->fileUpload() && $q->aid !== 'filecount')
             {
                 $filequestion[] = $q->fieldname;

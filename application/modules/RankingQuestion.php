@@ -302,8 +302,7 @@ class RankingQuestion extends QuestionModule
             $q->fieldname = $fieldname;
             $q->aid = $i;
             $q->sq=sprintf($clang->gT('Rank %s'),$i);
-            $field['q']=$q;
-            $map[$fieldname]=$field;
+            $map[$fieldname]=$q;
         }
         return $map;
     }

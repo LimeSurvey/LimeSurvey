@@ -2419,9 +2419,8 @@
             $now = microtime(true);
 
             $q2subqInfo = array();
-            foreach($fieldmap as $fielddata)
+            foreach($fieldmap as $q)
             {
-                $q = $fielddata['q'];
                 if (!isset($q->fieldname) || !preg_match('#^\d+X\d+X\d+#',$q->fieldname))
                 {
                     continue;   // not an SGQA value

@@ -154,8 +154,7 @@ abstract class QuestionModule
     {
         $q = clone $this;
         if(isset($this->defaults) && isset($this->defaults[0])) $q->default=$this->defaults[0];
-        $map['q']=$q;
-        return array($this->fieldname=>$map);
+        return array($q->fieldname=>$q);
     }
 
     public function fileUpload()

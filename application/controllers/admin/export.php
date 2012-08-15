@@ -932,7 +932,7 @@ class export extends Survey_Common_Action {
                 }
                 else
                 {
-                    $q = $fieldmap[$field]['q'];
+                    $q = $fieldmap[$field];
                     $firstline.=preg_replace('/\s+/', ' ', strip_tags($q->text));
                 }
                 $firstline .= $s;

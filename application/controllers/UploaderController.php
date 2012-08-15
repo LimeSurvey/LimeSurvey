@@ -110,7 +110,7 @@ class UploaderController extends AdminController {
 		    $fieldname = $_POST['fieldname'];
             $aFieldMap = createFieldMap($surveyid,'short',false,false,$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
 		    if (!isset($aFieldMap[$fieldname])) die();
-            $q=$aFieldMap[$fieldname]['q'];
+            $q=$aFieldMap[$fieldname];
 		    $aAttributes=$q->getAttributeValues();
 
 		    $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
