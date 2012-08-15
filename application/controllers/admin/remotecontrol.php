@@ -590,22 +590,22 @@ class remotecontrol_handle
 			$sLanguage = $oSurvey->language;
 
 		$oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
-		$aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
+		$aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage); //AJS
 
 		switch ($docType)
 		{
 			case 'pdf':
-				$sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,$graph,$docType,'F',$sLanguage);
+				$sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,$graph,$docType,'F',$sLanguage); //AJS
 				$sResult = file_get_contents($sTempFile);
 				unlink($sTempFile);
 				break;
 			case 'xls':
-				$sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'F',$sLanguage);
+				$sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'F',$sLanguage); //AJS
 				$sResult = file_get_contents($sTempFile);
 				unlink($sTempFile);
 				break;
 			case 'html':
-				$sResult = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'DD',$sLanguage);
+				$sResult = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'DD',$sLanguage); //AJS
 				break;
 		}
 		

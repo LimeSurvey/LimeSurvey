@@ -728,7 +728,7 @@ class conditionsaction extends Survey_Common_Action {
                 { // Multiflexi
 
                     //Get question attribute for $canswers
-                    $qidattributes=getQuestionAttributeValues($rows['qid'], $rows['type']);
+                    $qidattributes=getQuestionAttributeValues($rows['qid']);
                     if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
                         $maxvalue=floatval($qidattributes['multiflexible_max']);
                     } else {

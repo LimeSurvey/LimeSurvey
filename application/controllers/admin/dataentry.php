@@ -1245,7 +1245,7 @@ class dataentry extends Survey_Common_Action
                 $bgc = 'odd';
                 foreach ($deqrows as $deqrow)
                 {
-                    $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
+                    $qidattributes = getQuestionAttributeValues($deqrow['qid']);
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
@@ -1256,7 +1256,6 @@ class dataentry extends Survey_Common_Action
                     $relevance = trim($qinfo['info']['relevance']);
                     $explanation = trim($qinfo['relEqn']);
                     $validation = trim($qinfo['prettyValidTip']);
-                    $qidattributes=getQuestionAttributeValues($deqrow['qid']);
                     $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
@@ -1334,7 +1333,6 @@ class dataentry extends Survey_Common_Action
 
                         case "L": //LIST drop-down/radio-button list
                         case "!":
-                            //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
                             if ($deqrow['type']=='!' && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -1510,7 +1508,6 @@ class dataentry extends Survey_Common_Action
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)
-                            //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
                             if (trim($qidattributes['display_columns'])!='')
                             {
                                 $dcols=$qidattributes['display_columns'];
@@ -1544,7 +1541,6 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case "|":
-                            //                            $qidattributes = getQuestionAttributeValues($deqrow['qid']);
                             $cdata['qidattributes'] = $qidattributes;
 
                             $maxfiles = $qidattributes['max_num_of_files'];
@@ -1576,7 +1572,6 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case ":": //ARRAY (Multi Flexi)
-                            //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
                             $minvalue=1;
                             $maxvalue=10;
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {

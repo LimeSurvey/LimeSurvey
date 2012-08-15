@@ -475,7 +475,7 @@ class responses extends Survey_Common_Action
                 if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
                 {
                     if (isset($q->sq) && $q->sq != '')
-                        $question .=' (' . $fielddetails['subquestion'] . ')';
+                        $question .=' (' . $q->sq . ')';
                     if (isset($q->sq1) && isset($q->sq2))
                         $question .=' (' . $q->sq1 . ':' . $q->sq2 . ')';
                     if (isset($q->scale))
@@ -484,7 +484,7 @@ class responses extends Survey_Common_Action
                 }
                 else
                 {
-                    if ($fielddetails['aid'] !== 'filecount')
+                    if ($q->aid !== 'filecount')
                     {
                         $qidattributes = $q->getAttributeValues();
 

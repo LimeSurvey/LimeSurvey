@@ -211,7 +211,7 @@ class FileQuestion extends QuestionModule
     public function createFieldmap()
     {
         $clang = Yii::app()->lang;
-        $qidattributes= getQuestionAttributeValues($this->id);
+        $qidattributes=$this->getAttributeValues();
         $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}";
         $fieldname2="{$this->surveyid}X{$this->gid}X{$this->id}_filecount";
         $q = clone $this;

@@ -2971,7 +2971,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                 //-------------------------- PCHART OUTPUT ----------------------------
                 list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
                 $qsid = $surveyid;
-                $aattr = getQuestionAttributeValues($qqid, substr($rt, 0, 1));
+                $aattr = getQuestionAttributeValues($qqid);
 
                 //PCHART has to be enabled and we need some data
                 if ($usegraph == 1) {
@@ -3026,7 +3026,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                             case 'html':
                                 $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
 
-                                $aattr = getQuestionAttributeValues($qqid, $firstletter);
+                                $aattr = getQuestionAttributeValues($qqid);
                                 if ($bShowMap) {
                                     $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
@@ -3082,7 +3082,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 * @param mixed $browse  Show browse buttons
 * @return buffer
 */
-function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true)
+function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true) //AJS
 {
     global $pdfdefaultfont, $pdffontsize;
 

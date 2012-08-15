@@ -1759,7 +1759,7 @@ function validateTemplateDir($sTemplateName)
  * @param string $sLanguage
  * @return array The summary
  */
- function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage) {
+ function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage) { //AJS
 
  foreach ($aFilters as $flt)
  {
@@ -1770,7 +1770,7 @@ function validateTemplateDir($sTemplateName)
 	if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
 		$sLanguage = $oSurvey->language;
 
-	switch ($flt['type'])
+	switch ($flt['type']) //AJS
 		    {
 		        case "K": // Multiple Numerical
 		        case "Q": // Multiple Short Text
@@ -4928,17 +4928,17 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         else
         {
             $answer=getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$oLanguage);
-            $aResultTable[$fname['fieldname']]=array($question,'',$answer);
+            $aResultTable[$q->fieldname]=array($question,'',$answer);
             continue;
         }
-        if (isset($fname['subquestion']))
-            $subquestion = "{$fname['subquestion']}";
+        if (isset($q->sq))
+            $subquestion = "{$q->sq}";
 
-        if (isset($fname['subquestion1']))
-            $subquestion = "{$fname['subquestion1']}";
+        if (isset($q->sq1))
+            $subquestion = "{$q->sq1}";
 
-        if (isset($fname['subquestion2']))
-            $subquestion .= "[{$fname['subquestion2']}]";
+        if (isset($q->sq2))
+            $subquestion .= "[{$q->sq2}]";
 
         $answer = getExtendedAnswer($iSurveyID,$q->fieldname, $idrow[$q->fieldname],$oLanguage);
         $aResultTable[$q->fieldname]=array('',$subquestion,$answer);
@@ -5500,7 +5500,6 @@ function fixLanguageConsistency($sid, $availlangs='')
                     'sid' => $question['sid'],
                     'gid' => $question['gid'],
                     'tid' => $question['tid'],
-                    'type' => $question['type'], //AJS
                     'title' => $question['title'],
                     'question' => $question['question'],
                     'preg' => $question['preg'],

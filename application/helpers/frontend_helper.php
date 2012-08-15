@@ -745,7 +745,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                 $q = $fieldmap[$field];
                 if ($q->fileUpload() && !strrpos($q->fieldname, "_filecount"))
                 {
-                    $validation= getQuestionAttributeValues($q);
+                    $validation= $q->getAttributeValues();
 
                     $filecount = 0;
 

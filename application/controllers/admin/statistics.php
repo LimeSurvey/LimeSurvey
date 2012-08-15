@@ -466,14 +466,14 @@ class statistics extends Survey_Common_Action {
 
 		    switch($outputType){
 		        case 'html':
-		            $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+		            $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
 		            break;
 		        case 'pdf':
-		            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
+		            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang); //AJS
 		            exit;
 		            break;
 		        case 'xls':
-		            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+		            generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
 		            exit;
 		            break;
 		        default:
@@ -529,7 +529,7 @@ class statistics extends Survey_Common_Action {
 	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
 	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
 	        $qtype = substr($_POST['id'], 0, 1);
-            $aattr = getQuestionAttributeValues($qqid, substr($_POST['id'], 0, 1));
+            $aattr = getQuestionAttributeValues($qqid);
             $field = substr($_POST['id'], 1);
 
 	        switch ($_POST['cmd']) {
