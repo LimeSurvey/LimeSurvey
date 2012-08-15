@@ -153,7 +153,7 @@ else
     var shareUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/shareParticipants"); ?>";
     var surveyUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/addToToken"); ?>";
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/setSession"); ?>";
-    var ajaxUrl = "<?php echo Yii::app()->getController()->createUrl("images/ajax-loader.gif"); ?>";
+    var ajaxUrl = "<?php echo Yii::app()->getConfig('adminimageurl') . "/ajax-loader.gif" ?>";
     var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/displayParticipants"); ?>";
     var colNames = '["participant_id","can_edit","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email") ?>","<?php $clang->eT("Blacklisted") ?>","<?php $clang->eT("Surveys") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Owner name") ?>"<?php echo $columnNames; ?>]';
     var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';

@@ -107,7 +107,7 @@
    	</p>
     <?php
     $ajaxloader = array(
-        'src' => Yii::app()->baseUrl . '/images/ajax-loader.gif',
+        'src' => Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif',
         'alt' => 'Ajax loader',
         'title' => 'Ajax loader'
     );
