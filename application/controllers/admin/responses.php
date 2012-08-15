@@ -121,7 +121,7 @@ class responses extends Survey_Common_Action
         $aViewUrls = array();
 
         $fncount = 0;
-        $fieldmap = createFieldMap($iSurveyId, 'full', false, false, $aData['language']); //AJS#
+        $fieldmap = createFieldMap($iSurveyId, false, false, $aData['language']);
 
         //add token to top of list if survey is not private
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId))
@@ -317,7 +317,7 @@ class responses extends Survey_Common_Action
             $iResponseID = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
             // delete the files as well if its a fuqt
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oBrowseLanguage->langcode); //AJS#
+            $fieldmap = createFieldMap($iSurveyId,false,false,$oBrowseLanguage->langcode);
             $fuqtquestions = array();
             // find all fuqt questions
             foreach ($fieldmap as $q)
@@ -356,7 +356,7 @@ class responses extends Survey_Common_Action
             // Delete the marked responses - checked
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
             {
-                $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oBrowseLanguage->langcode); //AJS#
+                $fieldmap = createFieldMap($iSurveyId,false,false,$oBrowseLanguage->langcode);
                 $fuqtquestions = array();
                 // find all fuqt questions
                 foreach ($fieldmap as $q)
@@ -462,7 +462,7 @@ class responses extends Survey_Common_Action
             }
 
             $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
-            $fields = createFieldMap($iSurveyId, 'full', false, false, $aData['language']); //AJS#
+            $fields = createFieldMap($iSurveyId, false, false, $aData['language']);
 
             foreach ($fields as $q)
             {
@@ -621,7 +621,7 @@ class responses extends Survey_Common_Action
             }
         }
 
-        $fields = createFieldMap($iSurveyId, 'full',true,false,$aData['language']); //AJS#
+        $fields = createFieldMap($iSurveyId, true,false,$aData['language']);
 
         $clang = $aData['clang'];
         $fnames = array('interviewtime' => $clang->gT('Total time'));
@@ -841,7 +841,7 @@ class responses extends Survey_Common_Action
         $tmpdir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/";
 
         $filelist = array();
-        $fieldmap = createFieldMap($iSurveyId, 'full' ,false, false, Yii::app()->session['browselang']); //AJS#
+        $fieldmap = createFieldMap($iSurveyId, false, false, Yii::app()->session['browselang']);
 
         foreach ($fieldmap as $q)
         {

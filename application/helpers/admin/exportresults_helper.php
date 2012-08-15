@@ -253,7 +253,7 @@ class SurveyDao
         $lang = Survey::model()->findByPk($intId)->language;
         $clang = new limesurvey_lang($lang);
 
-        $survey->fieldMap = createFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId)); //AJS#
+        $survey->fieldMap = createFieldMap($intId,false,false,getBaseLanguageFromSurveyID($intId));
 
         if (empty($intId))
         {

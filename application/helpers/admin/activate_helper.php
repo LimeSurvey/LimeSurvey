@@ -203,7 +203,7 @@ function checkQuestions($postsid, $iSurveyID)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
+    $fieldmap = createFieldMap($iSurveyID,false,false,getBaseLanguageFromSurveyID($iSurveyID));
     if (isset($fieldmap))
     {
         foreach($fieldmap as $q)
@@ -251,7 +251,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     $prow = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
+    $fieldmap = createFieldMap($iSurveyID,true,false,getBaseLanguageFromSurveyID($iSurveyID));
 
     $createsurvey = array();
     foreach ($fieldmap as $q) //With each question, create the appropriate field(s)
@@ -354,7 +354,7 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     if ($prow->savetimings == "Y")
         {
-            $timingsfieldmap = createFieldMap($iSurveyID,"short",false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
+            $timingsfieldmap = createFieldMap($iSurveyID,false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
             $column['id'] = $createsurvey['id'];
             $column['interviewtime'] = 'FLOAT';

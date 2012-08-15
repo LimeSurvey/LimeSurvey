@@ -734,7 +734,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 
     if (!isset($backok) || $backok != "Y")
     {
-        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
+        $fieldmap = createFieldMap($surveyid,false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
@@ -1680,7 +1680,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
     }
-    $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
+    $fieldmap=createFieldMap($surveyid,false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
 
     // Randomization groups for groups
@@ -1797,7 +1797,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 {
                     // Get the swapped question
                     $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
-                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$q->id]],$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
+                    $qfieldmap = createFieldMap($surveyid,true,$newQuestOrder[$gkey][$oldQuestFlip[$q->id]],$_SESSION['survey_'.$surveyid]['s_lang']);
                     unset($qfieldmap['id']);
                     unset($qfieldmap['submitdate']);
                     unset($qfieldmap['lastpage']);
@@ -2094,7 +2094,7 @@ function doAssessment($surveyid, $returndataonly=false)
                     "message"=>$row['message']);
                 }
             }
-            $fieldmap=createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
+            $fieldmap=createFieldMap($surveyid,false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
             $total=0;
             $groups=array();
             foreach($fieldmap as $q)

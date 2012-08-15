@@ -1461,7 +1461,7 @@ function sendCacheHeaders()
 function getQuestion($fieldcode)
 {
     list($sid, $gid, $qid) = explode('X', $fieldcode);
-    $fields=createFieldMap($sid,'full',false,false,getBaseLanguageFromSurveyID($sid)); //AJS#
+    $fields=createFieldMap($sid,false,false,getBaseLanguageFromSurveyID($sid));
     foreach($fields as $q)
     {
         if($q->id==$qid && $q->surveyid==$sid && $q->gid==$gid) return $q;
@@ -1491,7 +1491,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
         }
         return $sValue;
     }
-    $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage); //AJS#
+    $fieldmap = createFieldMap($iSurveyID,false,false,$sLanguage);
     if (isset($fieldmap[$sFieldCode]))
         $q = $fieldmap[$sFieldCode];
     else
@@ -1887,7 +1887,7 @@ return $allfields;
 * @return array
 */
 
-function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage) {
+function createFieldMap($surveyid, $force_refresh=false, $questionid=false, $sLanguage) {
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
     $clang = new Limesurvey_lang($sLanguage); ;
@@ -2152,7 +2152,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 * @return bool
 */
 function hasFileUploadQuestion($surveyid) {
-    $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+    $fieldmap = createFieldMap($surveyid,false,false,getBaseLanguageFromSurveyID($surveyid));
 
     foreach ($fieldmap as $q) {
         if (substr(get_class($q),-8)=="Question" && $q->fileUpload()) return true;
@@ -3580,7 +3580,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $cascaded=array();
     $sources=array();
     $qidtotitle=array();
-    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+    $fieldmap = createFieldMap($surveyid,false,false,getBaseLanguageFromSurveyID($surveyid));
 
     $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
     foreach ($fieldmap as $q) // Cycle through questions to see if any have list_filter attributes
@@ -4182,7 +4182,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
     else {
         $forceRefresh=false;
     }
-    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,getBaseLanguageFromSurveyID($iNewSID)); //AJS#
+    $aFieldMap = createFieldMap($iNewSID,$forceRefresh,false,getBaseLanguageFromSurveyID($iNewSID));
 
     $aFieldMappings=array();
     foreach ($aFieldMap as $q)
@@ -4868,7 +4868,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 */
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=false)
 {
-    $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode); //AJS#
+    $aFieldMap = createFieldMap($iSurveyID,false,false,$sLanguageCode);
     $oLanguage = new Limesurvey_lang($sLanguageCode);
 
     //Get response data
@@ -6505,12 +6505,12 @@ EOS;
 */
 function fixSubquestions()
 {
-    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, sq.tid as sqtid,q.type,q.tid
+    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.tid as sqtid,q.tid
     from {{questions}} sq JOIN {{questions}} q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type or sq.tid!=q.tid)")->query(); //AJS
+    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.tid!=q.tid)")->query();
     foreach($surveyidresult->readAll() as $sv)
     {
-        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']}, tid={$sv['tid']} where qid={$sv['qid']}")->query(); //AJS
+        Yii::app()->db->createCommand("update {{questions}} set gid={$sv['gid']}, tid={$sv['tid']} where qid={$sv['qid']}")->query();
     }
 
 }

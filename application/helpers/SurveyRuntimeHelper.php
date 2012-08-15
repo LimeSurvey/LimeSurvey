@@ -541,7 +541,7 @@ class SurveyRuntimeHelper {
             doFooter();
             exit;
         }
-        createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']); //AJS#
+        createFieldMap($surveyid,false,false,$_SESSION[$LEMsessid]['s_lang']);
         //GET GROUP DETAILS
 
         if ($surveyMode == 'group' && $previewgrp)

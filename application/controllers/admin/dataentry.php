@@ -172,7 +172,7 @@ class dataentry extends Survey_Common_Action
         $aFieldnames = array_map('dbQuoteID', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
-        $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+        $fieldmap = createFieldMap($surveyid,false,false,getBaseLanguageFromSurveyID($surveyid));
 
         foreach ($aFileContents as $row)
         {
@@ -534,7 +534,7 @@ class dataentry extends Survey_Common_Action
             $q->group_name="";
             $fnames['completed'] = $q;
 
-            $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage)); //AJS#
+            $fnames=array_merge($fnames,createFieldMap($surveyid,false,false,$sDataEntryLanguage));
 
             //SHOW INDIVIDUAL RECORD
 
@@ -578,7 +578,7 @@ class dataentry extends Survey_Common_Action
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
-                $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+                $fieldmap = createFieldMap($surveyid,false,false,getBaseLanguageFromSurveyID($surveyid));
                 foreach($fieldmap as $q)
                 {
                     if (isset($responses[$q->fieldname]))
@@ -763,7 +763,7 @@ class dataentry extends Survey_Common_Action
 
             $aDataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
 
-            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+            $fieldmap = createFieldMap($surveyid,false,false,getBaseLanguageFromSurveyID($surveyid));
 
             $thissurvey = getSurveyInfo($surveyid);
             $updateqr = "UPDATE $surveytable SET \n";
@@ -971,7 +971,7 @@ class dataentry extends Survey_Common_Action
 
                     //BUILD THE SQL TO INSERT RESPONSES
                     $baselang = Survey::model()->findByPk($surveyid)->language;
-                    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid)); //AJS#
+                    $fieldmap = createFieldMap($surveyid,false,false,getBaseLanguageFromSurveyID($surveyid));
                     $insert_data = array();
 
                     $_POST['startlanguage'] = $baselang;

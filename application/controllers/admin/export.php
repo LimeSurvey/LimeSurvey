@@ -188,7 +188,7 @@ class export extends Survey_Common_Action {
         if ( ! $exportstyle )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
+            $aFieldMap = createFieldMap($iSurveyID,false,false,getBaseLanguageFromSurveyID($iSurveyID));
             $iFieldCount = count($aFieldMap);
 
             $selecthide = "";
@@ -914,7 +914,7 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
+            $fieldmap = createFieldMap($iSurveyID,false,false,getBaseLanguageFromSurveyID($iSurveyID));
             $surveytable = "{{survey_$iSurveyID}}";
 
             Survey::model()->findByPk($iSurveyID)->language;

@@ -277,7 +277,7 @@ function buildSelects($allfields, $surveyid, $language) {
     $selects=array();
     $aQuestionMap=array();
 
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language); //AJS#
+    $fieldmap=createFieldMap($surveyid, false, false, $language);
     foreach ($fieldmap as $q)
     {
         if(isset($q->id) && $q->id!='')
@@ -514,7 +514,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
     $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
     $statlang = new Limesurvey_lang($statlangcode);
     $firstletter = substr($rt, 0, 1);
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language); //AJS#
+    $fieldmap=createFieldMap($surveyid, false, false, $language);
     $sDatabaseType = Yii::app()->db->getDriverName();
     $statisticsoutput="";
 

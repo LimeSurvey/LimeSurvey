@@ -532,7 +532,7 @@ class index extends CAction {
                  $result= dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
                 if($result->count()>0){
                     // find out if there are any fuqt questions - checked
-                    $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang); //AJS#
+                    $fieldmap = createFieldMap($surveyid,false,false,$s_lang);
                     foreach ($fieldmap as $q)
                     {
                         if ($q->fileUpload() && !strpos($q->fieldname, "_filecount"))

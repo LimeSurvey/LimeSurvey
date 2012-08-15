@@ -151,7 +151,7 @@ function SPSSGetValues ($field = array()) {
 function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     global $clang, $surveyprivate, $tokensexist, $language;
 
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID)); //AJS#
+    $fieldmap = createFieldMap($iSurveyID,false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
     #See if tokens are being used
     $tokensexist = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID . '}}');

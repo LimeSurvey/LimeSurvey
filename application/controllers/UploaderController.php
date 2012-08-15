@@ -108,7 +108,7 @@ class UploaderController extends AdminController {
 		    $maxfilesize = (int) $_POST['max_filesize'];
 		    $preview = $_POST['preview'];
 		    $fieldname = $_POST['fieldname'];
-            $aFieldMap = createFieldMap($surveyid,'short',false,false,$_SESSION['survey_'.$surveyid]['s_lang']); //AJS#
+            $aFieldMap = createFieldMap($surveyid,false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 		    if (!isset($aFieldMap[$fieldname])) die();
             $q=$aFieldMap[$fieldname];
 		    $aAttributes=$q->getAttributeValues();
