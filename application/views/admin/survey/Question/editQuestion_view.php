@@ -126,7 +126,7 @@
                                 foreach ($members as $type)
                                 {
                                     echo "<option value='{$type['tid']}'";
-                                    if ($eqrow['tid'] == $type['tid'])
+                                    if ($eqrow['class'] == $type['class'])
                                     {
                                         echo " selected='selected'";
                                     }
