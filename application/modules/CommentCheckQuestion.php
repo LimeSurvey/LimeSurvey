@@ -206,11 +206,11 @@ class CommentCheckQuestion extends CheckQuestion
         return $output;
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $clang = Yii::app()->lang;
         $map = array();
-        $tmp = parent::createFieldmap($type);
+        $tmp = parent::createFieldmap();
         foreach($tmp as $field)
         {
             $comment = $field;

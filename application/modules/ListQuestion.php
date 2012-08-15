@@ -340,10 +340,10 @@ class ListQuestion extends QuestionModule
         return '';
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $clang = Yii::app()->lang;
-        $map = parent::createFieldmap($type);
+        $map = parent::createFieldmap();
         if($this->isother=='Y')
         {
             $other = $map[$this->fieldname];

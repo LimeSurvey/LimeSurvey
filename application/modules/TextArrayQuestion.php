@@ -387,7 +387,7 @@ EOD;
         return $output;
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $map = array();
         $abrows = getSubQuestions($this);
@@ -404,7 +404,6 @@ EOD;
             {
                 $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}_{$answer['title']}";
                 $field['fieldname']= $fieldname;
-                $field['type']=$type;
                 $field['sid']=$this->surveyid;
                 $field['gid']=$this->gid;
                 $field['qid']=$this->id;

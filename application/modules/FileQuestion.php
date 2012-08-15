@@ -208,13 +208,12 @@ class FileQuestion extends QuestionModule
         return $qtitle;
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $clang = Yii::app()->lang;
         $qidattributes= getQuestionAttributeValues($this->id);
         $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}";
         $field['fieldname']=$fieldname;
-        $field['type']=$type;
         $field['sid']=$this->surveyid;
         $field['gid']=$this->gid;
         $field['qid']=$this->id;

@@ -597,7 +597,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $answer;
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $clang = Yii::app()->lang;
         $abrows = getSubQuestions($this);
@@ -606,7 +606,6 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         {
             $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}#0";
             $field['fieldname']=$fieldname;
-            $field['type']=$type;
             $field['sid']=$this->surveyid;
             $field['gid']=$this->gid;
             $field['qid']=$this->id;

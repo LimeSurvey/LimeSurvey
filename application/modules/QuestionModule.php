@@ -150,10 +150,9 @@ abstract class QuestionModule
         return false;
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $map['fieldname']=$this->fieldname;
-        $map['type']=$type;
         $map['sid']=$this->surveyid;
         $map['gid']=$this->gid;
         $map['qid']=$this->id;

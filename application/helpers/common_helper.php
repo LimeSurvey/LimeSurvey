@@ -1492,7 +1492,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
         }
         return $sValue;
     }
-    $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage); //AJS
+    $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage); //AJS#
     if (isset($fieldmap[$sFieldCode]))
         $fields = $fieldmap[$sFieldCode];
     else

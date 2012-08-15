@@ -17,7 +17,7 @@ abstract class ArrayQuestion extends QuestionModule
         return $this->children = dbExecuteAssoc($ansquery)->readAll();  //Checked
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $map = array();
         $abrows = getSubQuestions($this);
@@ -25,7 +25,6 @@ abstract class ArrayQuestion extends QuestionModule
         {
             $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}";
             $field['fieldname']=$fieldname;
-            $field['type']=$type;
             $field['sid']=$this->surveyid;
             $field['gid']=$this->gid;
             $field['qid']=$this->id;

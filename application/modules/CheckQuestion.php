@@ -336,7 +336,7 @@ class CheckQuestion extends QuestionModule
         return '';
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $clang = Yii::app()->lang;
         $map = array();
@@ -345,7 +345,6 @@ class CheckQuestion extends QuestionModule
         {
             $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}{$abrow['title']}";
             $field['fieldname']=$fieldname;
-            $field['type']=$type;
             $field['sid']=$this->surveyid;
             $field['gid']=$this->gid;
             $field['qid']=$this->id;
@@ -378,7 +377,7 @@ class CheckQuestion extends QuestionModule
         }
         if ($this->isother=='Y')
         {
-            $other = parent::createFieldmap($type);
+            $other = parent::createFieldmap();
             $other = $other[$this->fieldname];
             $other['fieldname'].='other';
             $other['aid']='other';

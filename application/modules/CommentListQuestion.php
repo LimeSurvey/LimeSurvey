@@ -185,10 +185,10 @@ class CommentListQuestion extends ListQuestion
         return $output;
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $clang = Yii::app()->lang;
-        $map = QuestionModule::createFieldmap($type);
+        $map = QuestionModule::createFieldmap();
         $comment = $map[$this->fieldname];
         $comment['fieldname'].='comment';
         $comment['aid']='comment';

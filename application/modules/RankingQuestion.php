@@ -291,7 +291,7 @@ class RankingQuestion extends QuestionModule
         return array('ranking.js' => 'js', 'ranking.css' => 'css');
     }
 
-    public function createFieldmap($type=null)
+    public function createFieldmap()
     {
         $clang = Yii::app()->lang;
         $data = Answers::model()->findAllByAttributes(array('qid' => $this->id, 'language' => $this->language));
@@ -299,7 +299,6 @@ class RankingQuestion extends QuestionModule
         {
             $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}$i";
             $field['fieldname']=$fieldname;
-            $field['type']=$type;
             $field['sid']=$this->surveyid;
             $field['gid']=$this->gid;
             $field['qid']=$this->id;
