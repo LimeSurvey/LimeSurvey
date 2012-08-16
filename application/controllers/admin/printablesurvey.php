@@ -256,7 +256,7 @@ class printablesurvey extends Survey_Common_Action
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
 
-                    $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                    $qidattributes=getQuestionAttributeValues($deqrow['qid']); //AJS
                     if ($qidattributes['hidden'] == 1 && $deqrow['type'] != '*') //AJS
                     {
                         continue;

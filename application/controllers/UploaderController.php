@@ -278,7 +278,7 @@ class UploaderController extends AdminController {
 		$qid = $param['qid'];
         $minfiles = sanitize_int($param['minfiles']);
         $maxfiles = sanitize_int($param['maxfiles']);
-		$qidattributes=getQuestionAttributeValues($qid);
+		$qidattributes=getQuestionAttributeValues($qid); //AJS
 
 		$body = '
 		        <div id="notice"></div>

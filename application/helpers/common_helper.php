@@ -3665,7 +3665,7 @@ function getArrayFiltersForQuestion($qid)
     $qid=sanitize_int($qid);
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributeValues($qid);
+    $attributes = getQuestionAttributeValues($qid); //AJS
     if (isset($attributes['array_filter']) && Yii::app()->session['questions']) {
         $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
         foreach (Yii::app()->session['questions'] as $q)
@@ -3737,7 +3737,7 @@ function getArrayFilterExcludesForQuestion($qid)
 
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributeValues($qid);
+    $attributes = getQuestionAttributeValues($qid); //AJS
     $excludevals=array();
     if (isset($attributes['array_filter_exclude'])) // We Found a array_filter_exclude attribute
     {
@@ -4891,7 +4891,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     {
         if (!empty($q->id))
         {
-            $attributes = getQuestionAttributeValues($q->id);
+            $attributes = $q->getAttributeValues();
             if (getQuestionAttributeValue($attributes, 'hidden') == 1)
             {
                 continue;

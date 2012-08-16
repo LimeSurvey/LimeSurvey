@@ -229,7 +229,7 @@ CREATE TABLE prefix_questions (
     sid integer DEFAULT 0 NOT NULL,
     gid integer DEFAULT 0 NOT NULL,
     tid integer DEFAULT 0 NOT NULL,
-    "type" character varying(1) DEFAULT 'T' NOT NULL,
+    "type" character varying(1) DEFAULT 'T' NOT NULL, --//AJSL
     title character varying(20) DEFAULT '' NOT NULL,
     question text NOT NULL,
     preg text,
@@ -578,7 +578,7 @@ create index question_attributes_idx2 on prefix_question_attributes (qid);
 create index question_attributes_idx3 on prefix_question_attributes (attribute);
 create index questions_idx2 on prefix_questions (sid);
 create index questions_idx3 on prefix_questions (gid);
-create index questions_idx4 on prefix_questions (type);
+create index questions_idx4 on prefix_questions (tid);
 create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
 create index parent_qid_idx on prefix_questions (parent_qid);

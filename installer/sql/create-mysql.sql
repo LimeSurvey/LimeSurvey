@@ -224,7 +224,7 @@ CREATE TABLE `prefix_questions` (
   `sid` int(11) NOT NULL default '0',
   `gid` int(11) NOT NULL default '0',
   `tid` int(11) NOT NULL default '0',
-  `type` varchar(1) NOT NULL default 'T',
+  `type` varchar(1) NOT NULL default 'T', --//AJSL
   `title` varchar(20) NOT NULL default '',
   `question` text NOT NULL,
   `preg` text,
@@ -578,7 +578,7 @@ create index `question_attributes_idx2` on `prefix_question_attributes` (`qid`);
 create index `question_attributes_idx3` on `prefix_question_attributes` (`attribute`);
 create index `questions_idx2` on `prefix_questions` (`sid`);
 create index `questions_idx3` on `prefix_questions` (`gid`);
-create index `questions_idx4` on `prefix_questions` (`type`);
+create index `questions_idx4` on `prefix_questions` (`tid`);
 create index `quota_idx2` on `prefix_quota` (`sid`);
 create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);

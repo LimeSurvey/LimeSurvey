@@ -716,7 +716,7 @@ class conditionsaction extends Survey_Common_Action {
                 { // Multiflexi
 
                     //Get question attribute for $canswers
-                    $qidattributes=getQuestionAttributeValues($q->id);
+                    $qidattributes=$q->getAttributeValues();
                     if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
                         $maxvalue=floatval($qidattributes['multiflexible_max']);
                     } else {
@@ -800,7 +800,7 @@ class conditionsaction extends Survey_Common_Action {
 
                     foreach ($aresult as $arows)
                     {
-                        $attr = getQuestionAttributeValues($q->id);
+                        $attr = $q->getAttributeValues();
                         $label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
                         $label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
                         $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";

@@ -529,7 +529,7 @@ class statistics extends Survey_Common_Action {
 	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
 	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
 	        $qtype = substr($_POST['id'], 0, 1); //AJS
-            $aattr = getQuestionAttributeValues($qqid);
+            $aattr = getQuestionAttributeValues($qqid); //AJS
             $field = substr($_POST['id'], 1);
 
 	        switch ($_POST['cmd']) {

@@ -1229,9 +1229,8 @@ class dataentry extends Survey_Common_Action
             foreach ($degresult->readAll() as $degrow)
             {
                 LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"),$surveyid);
-
-                $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
-                $deqrows = (array) dbExecuteAssoc($deqquery)->readAll();
+                
+                $result = Questions::model()->with('question_types')->findAllByAttributes(array('gid' => $degrow['gid'], 'language' => $sDataEntryLanguage), array('order' => 'question_order'));
                 $aDataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".flattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
@@ -1242,9 +1241,10 @@ class dataentry extends Survey_Common_Action
                 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
                 usort($deqrows, 'groupOrderThenQuestionOrder');
                 $bgc = 'odd';
-                foreach ($deqrows as $deqrow)
+                foreach ($result as $deqrow)
                 {
-                    $qidattributes = getQuestionAttributeValues($deqrow['qid']);
+                    $q = createQuestion($result->question_types['class'], array('surveyid' => $result['sid'], 'gid' => $result['gid'], 'id' => $result['qid'], 'text' => $result['question'], 'mandatory' => $result['mandatory'], 'title' => $result['title']));
+                    $qidattributes = $q->getAttributeValues();
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?

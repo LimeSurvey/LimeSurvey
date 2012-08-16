@@ -1498,7 +1498,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                         break;
 
                     case ":": //Array (Multiple Flexi) (Numbers)
-                $aQuestionAttributes=getQuestionAttributeValues($qiqid);
+                $aQuestionAttributes=getQuestionAttributeValues($qiqid); //AJS
                 if (trim($aQuestionAttributes['multiflexible_max'])!='') {
                     $maxvalue=$aQuestionAttributes['multiflexible_max'];
                         }
@@ -1607,7 +1607,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 $sSubquestion = flattenText($questionDesc['question']);
 
                         //get question attributes
-                $aQuestionAttributes=getQuestionAttributeValues($qqid);
+                $aQuestionAttributes=getQuestionAttributeValues($qqid); //AJS
 
 
                         //check last character -> label 1
@@ -2958,7 +2958,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                 //-------------------------- PCHART OUTPUT ----------------------------
                 list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
                 $qsid = $surveyid;
-                $aattr = getQuestionAttributeValues($qqid);
+                $aattr = getQuestionAttributeValues($qqid); //AJS
 
                 //PCHART has to be enabled and we need some data
                 if ($usegraph == 1) {
@@ -3013,7 +3013,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                             case 'html':
                                 $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
 
-                                $aattr = getQuestionAttributeValues($qqid);
+                                $aattr = getQuestionAttributeValues($qqid); //AJS
                                 if ($bShowMap) {
                                     $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 

@@ -13,7 +13,7 @@ function populateCanswersSelect(evt) {
 	for (var i=0;i<QFieldnames.length;i++) {
 		if (QFieldnames[i] == fname) {
 			$('#cqid').val(Qcqids[i]);
-			if (Qtypes[i] == 'P' || Qtypes[i] == 'M') //AJS
+			if (QUseCheckboxes[i])
 			{
 				$('#conditiontarget').tabs('enable', 0);
 				$('#conditiontarget').tabs('select', 0);
