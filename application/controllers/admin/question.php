@@ -198,10 +198,18 @@ class question extends Survey_Common_Action
                     foreach ($sqresult as $aSubquestion)
                     {
                         $defaultvalue = Defaultvalues::model()->findByAttributes(array(
+<<<<<<< HEAD
                             'specialtype' => '',
                             'qid' => $qid,
                             'scale_id' => $scale_id,
                             'language' => $language
+=======
+                        'specialtype' => '',
+                        'qid' => $qid,
+						'sqid' => $aSubquestion['qid'],
+                        'scale_id' => $scale_id,
+                        'language' => $language
+>>>>>>> 0c7e1afbf185aa57dba74463edb6cbd7779e6308
                         ));
                         $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
 
