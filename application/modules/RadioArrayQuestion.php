@@ -462,7 +462,7 @@ class RadioArrayQuestion extends ArrayQuestion
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Array"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'class' => 'array-flexible-row','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("Array"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'class' => 'array-flexible-row','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 1,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

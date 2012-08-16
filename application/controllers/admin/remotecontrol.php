@@ -1550,7 +1550,7 @@ class remotecontrol_handle
                 unset($aQuestionData['sid']);                
                 unset($aQuestionData['parent_qid']);
                 unset($aQuestionData['language']);
-                unset($aQuestionData['type']);                
+                unset($aQuestionData['class']);                
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Questions::model()->tableSchema->columnNames);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
@@ -1635,17 +1635,17 @@ class remotecontrol_handle
 					if($sGroupSurveyID != $iSurveyID)
 						return array('status' => 'Error: IMissmatch in surveyid and groupid');	
 					else
-						$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0","language"=>$sLanguage));
+						$aQuestionList = Questions::model()->with('question_types')->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0","language"=>$sLanguage));
 				}
 				else
-					$aQuestionList = Questions::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0", "language"=>$sLanguage));
+					$aQuestionList = Questions::model()->with('question_types')->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0", "language"=>$sLanguage));
 	   
 				if(count($aQuestionList)==0)
 					return array('status' => 'No questions found');
 				
 				foreach ($aQuestionList as $oQuestion)
 				{
-					$aData[]= array('id'=>$oQuestion->primaryKey,'type'=>$oQuestion->attributes['type'], 'question'=>$oQuestion->attributes['question']);
+					$aData[]= array('id'=>$oQuestion->primaryKey,'class'=>$oQuestion->question_types['class', 'question'=>$oQuestion->attributes['question']);
 				}
 				return $aData;					
 			}

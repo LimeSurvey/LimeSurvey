@@ -40,10 +40,10 @@
 
         for ($i; $i < $fncount; $i++)
         {
-            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
+            if (count($fnames[$i]) > 2)
             {
-                $index = $fnames[$i]['index'];
-                $metadata = $fnames[$i]['metadata'];
+                $index = $fnames[$i][3];
+                $metadata = $fnames[$i][2];
                 $phparray = json_decode($dtrow[$fnames[$i][0]], true);
                 if (isset($phparray[$index]))
                 {
@@ -71,7 +71,7 @@
             }
             else
             {
-                if (isset($fnames[$i][4]) && $fnames[$i][4] == 'D' && $fnames[$i][0] != '')
+                if ($fnames[0] == 'submitdate')
                 {
                     if ($dtrow[$fnames[$i][0]] == NULL)
                         $browsedatafield = "N";

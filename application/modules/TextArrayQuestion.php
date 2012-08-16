@@ -535,7 +535,7 @@ EOD;
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Array (Texts)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'class' => 'array-multi-flexi-text','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Array (Texts)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'class' => 'array-multi-flexi-text','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

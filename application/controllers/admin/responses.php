@@ -126,13 +126,13 @@ class responses extends Survey_Common_Action
         //add token to top of list if survey is not private
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId))
         {
-            $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-            $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-            $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-            $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
+            $fnames[] = array("token", "Token");
+            $fnames[] = array("firstname", "First name");
+            $fnames[] = array("lastname", "Last name");
+            $fnames[] = array("email", "Email");
         }
-        $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D');
-        $fnames[] = array("completed", $clang->gT("Completed"), "0");
+        $fnames[] = array("submitdate", $clang->gT("Submission date"));
+        $fnames[] = array("completed", $clang->gT("Completed"));
 
         foreach ($fieldmap as $q)
         {
@@ -159,14 +159,13 @@ class responses extends Survey_Common_Action
                     for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Title)", "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Title)", "title", $i);
 
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (Comment)", "comment", $i);
 
-                        $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File name)", "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File size)", "type" => "|", "metadata" => "size", "index" => $i);
-                        //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                        $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File name)", "name", $i);
+                        $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . " (File size)", "size", $i);
                     }
                 }
                 else
@@ -174,7 +173,6 @@ class responses extends Survey_Common_Action
             }
         }
 
-        $nfncount = count($fnames) - 1;
         //SHOW INDIVIDUAL RECORD
         $oCriteria = new CDbCriteria();
         if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyId}}}"))
@@ -208,14 +206,14 @@ class responses extends Survey_Common_Action
         $aData['next'] = $next;
         $aData['last'] = $last;
 
-        $aViewUrls[] = 'browseidheader_view';
+        $aViewUrls['browseidheader_view'][] =  $aData;
 
         foreach ($iIdresult as $iIdrow)
         {
             $highlight = false;
-            for ($i = 0; $i < $nfncount + 1; $i++)
+            foreach ($fnames as $fn)
             {
-                if ($fnames[$i][0] != 'completed' && is_null($iIdrow[$fnames[$i][0]]))
+                if ($fn[0] != 'completed' && is_null($iIdrow[$fn[0]]))
                 {
                     continue;   // irrelevant, so don't show
                 }
@@ -223,7 +221,7 @@ class responses extends Survey_Common_Action
                 if ($highlight)
                     $inserthighlight = "class='highlight'";
 
-                if ($fnames[$i][0] == 'completed')
+                if ($fn[0] == 'completed')
                 {
                     if ($iIdrow['submitdate'] == NULL || $iIdrow['submitdate'] == "N")
                     {
@@ -236,17 +234,17 @@ class responses extends Survey_Common_Action
                 }
                 else
                 {
-                    if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
+                    if (count($fn) > 2)
                     {
-                        $index = $fnames[$i]['index'];
-                        $metadata = $fnames[$i]['metadata'];
+                        $index = $fn[2];
+                        $metadata = $fn[3];
                         $phparray = json_decode($iIdrow[$fnames[$i][0]], true);
                         if (isset($phparray[$index]))
                         {
                             if ($metadata === "size")
                                 $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                             else if ($metadata === "name")
-                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
+                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fn[0]}/id/{$iId}/surveyid/{$iSurveyId}"));
                             else
                                 $answervalue = rawurldecode($phparray[$index][$metadata]);
                         }
@@ -255,20 +253,19 @@ class responses extends Survey_Common_Action
                     }
                     else
                     {
-                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyId, $fnames[$i][0], $iIdrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
+                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyId, $fn[0], $iIdrow[$fn[0]], $oBrowseLanguage))), ENT_QUOTES);
                     }
                 }
-                $aData['answervalue'] = $answervalue;
-                $aData['inserthighlight'] = $inserthighlight;
-                $aData['fnames'] = $fnames;
-                $aData['i'] = $i;
-                $aViewUrls['browseidrow_view'][] = $aData;
+                $aDataRow['answervalue'] = $answervalue;
+                $aDataRow['inserthighlight'] = $inserthighlight;
+                $aDataRow['fname'] = $fn;
+                $aViewUrls['browseidrow_view'][] = $aDataRow;
             }
         }
 
-        $aViewUrls[] = 'browseidfooter_view';
+        $aViewUrls['browseidfooter_view'][] = $aData;
 
-        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
+        $this->_renderWrappedTemplate('',$aViewUrls);
     }
 
     public function index($iSurveyId)
@@ -417,17 +414,17 @@ class responses extends Survey_Common_Action
             $row = Survey_dynamic::model($iSurveyId)->findByAttributes(array('id' => $iId));
             $phparray = json_decode(reset($row));
 
-            for ($i = 0; $i < count($phparray); $i++)
+            foreach ($phparray as $php)
             {
-                if ($phparray[$i]->name == $downloadindividualfile)
+                if ($php->name == $downloadindividualfile)
                 {
-                    $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $phparray[$i]->filename;
+                    $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $php->filename;
 
                     if (file_exists($file))
                     {
                         header('Content-Description: File Transfer');
                         header('Content-Type: application/octet-stream');
-                        header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]->name) . '"');
+                        header('Content-Disposition: attachment; filename="' . rawurldecode($php->name) . '"');
                         header('Content-Transfer-Encoding: binary');
                         header('Expires: 0');
                         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -491,14 +488,13 @@ class responses extends Survey_Common_Action
                         for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                         {
                             if ($qidattributes['show_title'] == 1)
-                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
+                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(Title)", "title", $i);
 
                             if ($qidattributes['show_comment'] == 1)
-                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+                                $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(Comment)", "comment", $i);
 
-                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
-                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
-                            //$fnames[] = array($q->fieldname, "File ".($i+1)." - ".$q->text."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(File name)", "name", $i);
+                            $fnames[] = array($q->fieldname, "File " . ($i + 1) . " - " . $q->text . "(File size)", "size", $i);
                         }
                     }
                     else

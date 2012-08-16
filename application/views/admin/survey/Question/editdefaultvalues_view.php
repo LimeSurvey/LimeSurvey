@@ -19,16 +19,16 @@
             <div id='df_<?php echo $language ?>'>
                 <ul>
                     <?php
-                        if ($qtproperties[$questionrow['type']]['answerscales'] > 0)
+                        if ($qproperties['answerscales'] > 0)
                         {
-                            for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['answerscales']; $scale_id++)
+                            for ($scale_id = 0; $scale_id < $qproperties['answerscales']; $scale_id++)
                             {
-                                $opts = $langopts[$language][$questionrow['type']][$scale_id];
+                                $opts = $langopts[$language][$scale_id];
                             ?>
                             <li>
                                 <label for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                     <?php
-                                        $qtproperties[$questionrow['type']]['answerscales'] > 1 ? printf($clang->gT('Default answer for scale %s:'), $scale_id) : printf($clang->gT('Default answer value:'), $scale_id) ?>
+                                        $qproperties['answerscales'] > 1 ? printf($clang->gT('Default answer for scale %s:'), $scale_id) : printf($clang->gT('Default answer value:'), $scale_id) ?>
                                 </label>
 
                                 <select name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>' id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
@@ -54,21 +54,19 @@
                                     <label for='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                         <?php $clang->eT("Default value for option 'Other':")?>
                                     </label>
-                                    <input type='text' name='other_<?php echo "{$scale_id}_{$language}" ?>' value='<?php echo $langopts[$language][$questionrow['type']]['Ydefaultvalue'] ?>' id='other_<?php echo "{$scale_id}_{$language}" ?>'>
+                                    <input type='text' name='other_<?php echo "{$scale_id}_{$language}" ?>' value='<?php echo $langopts[$language]['Ydefaultvalue'] ?>' id='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                 </li>
                                 <?php
                                 }
                             }
                         }
-
-                        // If there are subquestions and no answerscales
-                        if ($qtproperties[$questionrow['type']]['answerscales'] == 0 && $qtproperties[$questionrow['type']]['subquestions'] > 0)
+                        else if ($qproperties['answerscales'] == 0 && $qproperties['subquestions'] > 0)
                         {
-                            for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['subquestions']; $scale_id++)
+                            for ($scale_id = 0; $scale_id < $qproperties['subquestions']; $scale_id++)
                             {
-                                $opts = $langopts[$language][$questionrow['type']][$scale_id];
+                                $opts = $langopts[$language][$scale_id];
 
-                                if ($qtproperties[$questionrow['type']]['subquestions'] > 1)
+                                if ($qproperties['subquestions'] > 1)
                                 {
                                 ?>
                                 <div class='header ui-widget-header'>
@@ -79,21 +77,7 @@
                             ?>
                             <ul>
                                 <?php
-                                    switch($questionrow['type'])
-                                    {
-                                        case 'L':
-                                        case 'M':
-                                        case 'O':
-                                        case 'P':
-                                        case '!':
-                                            $inputStyle='enum';
-                                            break;
-                                        case 'K':
-                                        case 'Q':
-                                            $inputStyle='text';
-                                            break;
-                                    }
-                                    if ($inputStyle == 'enum')
+                                    if ($qproperties['enum'] == 1)
                                     {
                                         foreach ($opts['sqresult'] as $aSubquestion)
                                         {
@@ -117,7 +101,7 @@
                                         <?php
                                         }
                                     }
-                                    if ($inputStyle == 'text')
+                                    else
                                     {
                                         foreach ($opts['sqresult'] as $aSubquestion)
                                         {
@@ -127,9 +111,7 @@
                                                 <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                             </label>
                                             <textarea cols='50' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
-                                                id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
-                                                <?php echo $aSubquestion['defaultvalue'] ?>
-                                            </textarea>
+                                                id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'><?php echo $aSubquestion['defaultvalue'] ?></textarea>
                                         </li>
                                         <?php
                                         }
@@ -139,15 +121,8 @@
                             <?php
                             }
                         }
-                        if ($qtproperties[$questionrow['type']]['answerscales']==0 && $qtproperties[$questionrow['type']]['subquestions']==0)
+                        else if ($qproperties['answerscales']==0 && $qproperties['subquestions']==0)
                         {
-                            /*
-                            case 'D':
-                            case 'N':
-                            case 'S':
-                            case 'T':
-                            case 'U':*
-                            */
                         ?>
                         <li>
                             <label for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
@@ -156,7 +131,7 @@
 
                             <textarea cols='50' name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
                                 id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'><?php
-                                echo htmlspecialchars($langopts[$language][$questionrow['type']][0]); ?></textarea>
+                                echo htmlspecialchars($langopts[$language][0]); ?></textarea>
                         </li>
                         <?php
                         }

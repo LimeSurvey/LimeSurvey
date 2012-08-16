@@ -166,7 +166,7 @@ class statistics extends Survey_Common_Action {
 		    //store some column names in $filters array
 		    $filters[]=array($row['qid'],
 		    $row['gid'],
-		    $row['type'],
+		    $row['type'], //AJS
 		    $row['title'],
 		    $row['group_name'],
 		    flattenText($row['question']));
@@ -444,7 +444,7 @@ class statistics extends Survey_Common_Action {
 
 		    //temporary save the type of the previous question
 		    //used to adjust linebreaks
-		    $previousquestiontype = $flt[2];
+		    $previousquestiontype = $flt[2]; //AJS
 
 		}
 
@@ -528,7 +528,7 @@ class statistics extends Survey_Common_Action {
 
 	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
 	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
-	        $qtype = substr($_POST['id'], 0, 1);
+	        $qtype = substr($_POST['id'], 0, 1); //AJS
             $aattr = getQuestionAttributeValues($qqid);
             $field = substr($_POST['id'], 1);
 
@@ -565,7 +565,7 @@ class statistics extends Survey_Common_Action {
                         );
 	                }
 
-                    $bChartType = $qtype != "M" && $qtype != "P" && $aattr["statistics_graphtype"] == "1";
+                    $bChartType = $qtype != "M" && $qtype != "P" && $aattr["statistics_graphtype"] == "1"; //AJS
 
                     $adata = Yii::app()->session['stats'][$_POST['id']];
 	                $aData['chartdata'] = createChart($qqid, $qsid, $bChartType, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
@@ -577,7 +577,7 @@ class statistics extends Survey_Common_Action {
                     Question_attributes::model()->setAttribute($qqid, 'statistics_showgraph', 0);
 	                break;
 	            case 'showbar':
-	                if ($qtype == "M" || $qtype == "P") {
+	                if ($qtype == "M" || $qtype == "P") { //AJS
 	                    $aData['success'] = 0;
 	                    break;
 	                }
@@ -590,7 +590,7 @@ class statistics extends Survey_Common_Action {
 	                break;
 	            case 'showpie':
 
-	                if ($qtype == "M" || $qtype == "P") {
+	                if ($qtype == "M" || $qtype == "P") { //AJS
 	                    $aData['success'] = 0;
 	                    break;
 	                }

@@ -235,7 +235,7 @@ class ShortTextQuestion extends TextQuestion
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Short Free Text"),'group' => $clang->gT("Text questions"),'subquestions' => 0,'class' => 'text-short','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Short Free Text"),'group' => $clang->gT("Text questions"),'subquestions' => 0,'class' => 'text-short','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

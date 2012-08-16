@@ -257,7 +257,7 @@ class printablesurvey extends Survey_Common_Action
                     // START doing questions
 
                     $qidattributes=getQuestionAttributeValues($deqrow['qid']);
-                    if ($qidattributes['hidden'] == 1 && $deqrow['type'] != '*')
+                    if ($qidattributes['hidden'] == 1 && $deqrow['type'] != '*') //AJS
                     {
                         continue;
                     }
@@ -351,7 +351,7 @@ class printablesurvey extends Survey_Common_Action
                         $question['QUESTION_CLASS'] ="max-chars-{$qidattributes['maximum_chars']} ".$question['QUESTION_CLASS'];
                     }
 
-                    switch($deqrow['type'])
+                    switch($deqrow['type']) //AJS
                     {
                         // ==================================================================
                         case "5":    //5 POINT CHOICE

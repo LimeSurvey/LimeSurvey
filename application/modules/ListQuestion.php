@@ -685,7 +685,7 @@ class ListQuestion extends QuestionModule
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("List (Radio)"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'class' => 'list-radio','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("List (Radio)"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'class' => 'list-radio','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1,'enum' => 1);
         return $prop?$props[$prop]:$props;
     }
 }

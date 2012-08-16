@@ -988,7 +988,7 @@ function quexml_export($surveyi, $quexmllan)
         $section->setAttribute("id", $gid);
 
         //boilerplate questions convert to sectionInfo elements
-        $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
+        $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC"; //AJS
         $QR = Yii::app()->db->createCommand($Query)->query();
         foreach($QR->readAll() as $RowQ)
         {
@@ -1007,12 +1007,12 @@ function quexml_export($surveyi, $quexmllan)
 
 
         //foreach question
-        $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
+        $Query = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC"; //AJS
         $QR = Yii::app()->db->createCommand($Query)->query();
         foreach($QR->readAll() as $RowQ)
         {
             $question = $dom->createElement("question");
-            $type = $RowQ['type'];
+            $type = $RowQ['type']; //AJS
             $qid = $RowQ['qid'];
 
             $other = false;
@@ -1050,7 +1050,7 @@ function quexml_export($surveyi, $quexmllan)
             $sgq = $iSurveyID . "X" . $gid . "X" . $qid;
             $response->setAttribute("varName",$sgq);
 
-            switch ($type)
+            switch ($type) //AJS
             {
                 case "X": //BOILERPLATE QUESTION - none should appear
 
@@ -1190,7 +1190,7 @@ function quexml_export($surveyi, $quexmllan)
                     quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => 10, 'lab' => ''));
                     break;
                 case "^": //SLIDER CONTROL - not supported
-                    $response->appendChild(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
+                    $response->appendChild(QueXMLFixedArray(array("NOT SUPPORTED: Slider Control" => 1)));
                     $question->appendChild($response);
                     break;
             } //End Switch
@@ -1311,7 +1311,7 @@ function lsrccsv_export($iSurveyID)
     FROM {{labelsets}}, {{questions}}
     WHERE ({{labelsets}}.lid={{questions}}.lid or {{labelsets}}.lid={{questions}}.lid1)
     AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';')
-    AND sid=$iSurveyID";
+    AND sid=$iSurveyID"; //AJS
     $lsdump = BuildCSVFromQuery($lsquery);
 
     //8: Labels
@@ -1320,7 +1320,7 @@ function lsrccsv_export($iSurveyID)
     WHERE ({{labels}}.lid={{questions}}.lid or {{labels}}.lid={{questions}}.lid1)
     AND type in ('F', 'W', 'H', 'Z', '1', ':', ';')
     AND sid=$iSurveyID
-    GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language";
+    GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language"; //AJS
     $ldump = BuildCSVFromQuery($lquery);
 
     //9: Question attributes

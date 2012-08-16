@@ -362,7 +362,7 @@ class quotas extends Survey_Common_Action
                 $quota_name = $aQuotaDetails['name'];
             }
 
-            $result = Questions::model()->findAllByAttributes(array('type' => array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!'), 'sid' => $iSurveyId, 'language' => $sBaseLang));
+            $result = Questions::model()->findAllByAttributes(array('type' => array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!'), 'sid' => $iSurveyId, 'language' => $sBaseLang)); //AJS
             if (empty($result))
             {
                 $aViewUrls[] = 'newanswererror_view';
@@ -421,9 +421,9 @@ class quotas extends Survey_Common_Action
         $clang = $aData['clang'];
 
         $aQuestion = Questions::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
-        $aQuestionType = $aQuestion['type'];
+        $aQuestionType = $aQuestion['type']; //AJS
 
-        if ($aQuestionType == 'M')
+        if ($aQuestionType == 'M') //AJS
         {
             $aResults = Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
             $aAnswerList = array();
@@ -445,7 +445,7 @@ class quotas extends Survey_Common_Action
             $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $iSurveyId, 'qid' => $iQuestionId, 'quota_id' => $iQuotaId));
         }
 
-        if ($aQuestionType == 'G')
+        if ($aQuestionType == 'G') //AJS
         {
             $aAnswerList = array('M' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
                 'F' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Female"), 'code' => 'F'));
@@ -456,7 +456,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!')
+        if ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!') //AJS
         {
             $aAnsResults = Answers::model()->findAllByAttributes(array('qid' => $iQuestionId));
 
@@ -470,7 +470,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($aQuestionType == 'A')
+        if ($aQuestionType == 'A') //AJS
         {
             $aAnsResults = Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
@@ -491,7 +491,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($aQuestionType == 'B')
+        if ($aQuestionType == 'B') //AJS
         {
             $aAnsResults = Answers::model()->findAllByAttributes(array('qid' => $iQuestionId));
 
@@ -512,7 +512,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($aQuestionType == 'Y')
+        if ($aQuestionType == 'Y') //AJS
         {
             $aAnswerList = array('Y' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
                 'N' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("No"), 'code' => 'N'));
@@ -523,7 +523,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($aQuestionType == 'I')
+        if ($aQuestionType == 'I') //AJS
         {
             $slangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             array_unshift($slangs, $sBaseLang);

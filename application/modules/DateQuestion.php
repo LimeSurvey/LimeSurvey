@@ -368,7 +368,7 @@ class DateQuestion extends QuestionModule
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Date/Time"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'date','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Date/Time"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'date','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

@@ -381,6 +381,7 @@ class Survey_Common_Action extends CAction
             $aData['gid'] = $gid;
             $aData['clang'] = $clang;
             $aData['qrrow'] = $qrrow;
+            $aData['q'] = $q;
             $aData['baselang'] = $baselang;
             $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($q, $baselang);
             $DisplayArray = array();

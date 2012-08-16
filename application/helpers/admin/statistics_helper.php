@@ -26,7 +26,7 @@
 *  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
 *  @return                Name
 */
-function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache)
+function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache) //AJS
 {
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
        the "T" gets passed to this function from the statistics.js file in the first place! */
@@ -96,7 +96,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $setcentrey=0.5;
         }
 
-        if (!$type) // Bar chart
+        if (!$type) // Bar chart //AJS
         {
             $DataSet = new pData;
             $counter=0;
@@ -163,7 +163,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $i = 0;
             while (isset ($gdata[$i]))
             {
-                if ($gdata[$i] == 0 || ($type == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
+                if ($gdata[$i] == 0 || ($type == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments"))) //AJS
                 {
                     array_splice ($gdata, $i, 1);
                     array_splice ($lbl, $i, 1);
@@ -510,7 +510,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
     $alist=array();
     $qtitle="";
     $qquestion="";
-    $qtype="";
+    $qtype=""; //AJS
     $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
     $statlang = new Limesurvey_lang($statlangcode);
     $firstletter = substr($rt, 0, 1);
@@ -541,7 +541,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 //select details for this question
         $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
         $qtitle=$nresult->title;
-        $qtype=$nresult->type;
+        $qtype=$nresult->type; //AJS
         $qquestion=flattenText($nresult->question);
         $qlid=$nresult->parent_qid;
         $qother=$nresult->other;
@@ -577,7 +577,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 //get question data
         $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
         $qtitle=$nresult->title;
-        $qtype=$nresult->type;
+        $qtype=$nresult->type; //AJS
         $qquestion=flattenText($nresult->question);
         $qlid=$nresult->parent_qid;
 
@@ -614,7 +614,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
         //get question data
         $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
         $qtitle=$nresult->title;
-        $qtype=$nresult->type;
+        $qtype=$nresult->type; //AJS
         $qquestion=flattenText($nresult->question);
 
                 //more substrings
@@ -648,7 +648,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-")-($lengthofnumeral+1)), 3);
 
                 //get question data
-                $nquery = "SELECT title, type, question FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                $nquery = "SELECT title, type, question FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'"; //AJS
                 $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //loop through question data
@@ -656,7 +656,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 {
                     $nrow=array_values($nrow);
                     $qtitle=flattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
-                    $qtype=$nrow[1];
+                    $qtype=$nrow[1]; //AJS
                     $qquestion=flattenText($nrow[2]). "[".$statlang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
                 }
 
@@ -683,7 +683,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                     //select details for this question
         $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
         $qtitle=$nresult->title;
-        $qtype=$nresult->type;
+        $qtype=$nresult->type; //AJS
         $qquestion=flattenText($nresult->question);
         $qlid=$nresult->parent_qid;
         $qother=$nresult->other;
@@ -809,7 +809,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
                 //N = numerical input
                 //K = multiple numerical input
-                elseif ($firstletter == "N" || $firstletter == "K") //NUMERICAL TYPE
+                elseif ($firstletter == "N" || $firstletter == "K") //NUMERICAL TYPE //AJS
                 {
                     //Zero handling
                     if (!isset($excludezeros)) //If this hasn't been set, set it to on as default:
@@ -864,28 +864,15 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 $nresult = Yii::app()->db->createCommand($nquery)->query(); */
                     }
 
-<<<<<<< HEAD
-                    //loop through results
-                    foreach ($nresult->readAll() as $nrow)
-                    {
-                        $nrow=array_values($nrow);
-                        $qtitle=flattenText($nrow[0]); //clean up title
-                        $qtype=$nrow[1];
-                        $qquestion=flattenText($nrow[2]);
-                        $qiqid=$nrow[3];
-                        $qlid=$nrow[4];
-                    }
-=======
             //loop through results
             foreach ($nresult as $nrow)
             {
                 $qtitle=flattenText($nrow->title); //clean up title
-                $qtype=$nrow->type;
+                $qtype=$nrow->type; //AJS
                 $qquestion=flattenText($nrow->question);
                 $qiqid=$nrow->qid;
                 $qlid=$nrow->parent_qid;
             }
->>>>>>> 0fe5779eabe16053b7d1c3ff2feb60b9fdceb5e0
 
                     //Get answer texts for multiple numerical
                     if(substr($rt, 0, 1) == "K")
@@ -1380,23 +1367,23 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 $qsid=$q->surveyid;
                 $qqid=$q->id;
                 $qanswer=$q->aid;
-                $qtype=$fielddata['type'];
+                $qtype=$fielddata['type']; //AJS I BROKE THIS
                 //get question data
-                $nquery = "SELECT title, type, question, qid, parent_qid, other FROM {{questions}} WHERE qid='{$q->id}' AND parent_qid=0 and language='{$language}'";
+                $nquery = "SELECT title, type, question, qid, parent_qid, other FROM {{questions}} WHERE qid='{$q->id}' AND parent_qid=0 and language='{$language}'"; //AJS
                 $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //loop though question data
                 foreach ($nresult->readAll() as $nrow)
                 {
                     $qtitle=flattenText($nrow['title']);
-                    $qtype=$nrow['type'];
+                    $qtype=$nrow['type']; //AJS
                     $qquestion=flattenText($nrow['question']);
                     $qiqid=$nrow['qid'];
                     $qother=$nrow['other'];
                 }
 
                 //check question types
-                switch($qtype)
+                switch($qtype) //AJS
                 {
                     //Array of 5 point choices (several items to rank!)
                     case "A":
@@ -1698,12 +1685,12 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                         }
 
                         //handling for "other" field for list radio or list drowpdown
-                        if ((($qtype == "L" || $qtype == "!") && $qother == "Y"))
+                        if ((($qtype == "L" || $qtype == "!") && $qother == "Y")) //AJS
                         {
                             //add "other"
                             $alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$q->fieldname.'other');
                         }
-                        if ( $qtype == "O")
+                        if ( $qtype == "O") //AJS
                         {
                             //add "comment"
                             $alist[]=array($statlang->gT("Comments"),$statlang->gT("Comments"),$q->fieldname.'comment');
@@ -1717,7 +1704,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
     }
 
-    return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput);
+    return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput); //AJS
 }
 
 /**
@@ -1816,7 +1803,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                         //handling for "other" option
                         if ($al[0] == $statlang->gT("Other"))
                         {
-                if($outputs['qtype']=='!' || $outputs['qtype']=='L')
+                if($outputs['qtype']=='!' || $outputs['qtype']=='L') //AJS
                             {
                                 // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                                 // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
@@ -1838,7 +1825,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                         * S = short free text
                         * Q = multiple short text
                         */
-            elseif ($outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "S" || $outputs['qtype'] == "Q" || $outputs['qtype'] == ";")
+            elseif ($outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "S" || $outputs['qtype'] == "Q" || $outputs['qtype'] == ";") //AJS
                         {
                             $sDatabaseType = Yii::app()->db->getDriverName();
 
@@ -1855,7 +1842,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
                             }
                         }
-            elseif ($outputs['qtype'] == "O")
+            elseif ($outputs['qtype'] == "O") //AJS
                         {
                             $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
                             $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
@@ -1948,11 +1935,11 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 
                         //"other" handling
                         //"Answers" means that we show an option to list answer to "other" text field
-            elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($outputs['qtype'] === "O" && $al[0] === $statlang->gT("Comments")) || $outputs['qtype'] === "P")
+            elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($outputs['qtype'] === "O" && $al[0] === $statlang->gT("Comments")) || $outputs['qtype'] === "P") //AJS
                         {
-                if ($outputs['qtype'] == "P") $ColumnName_RM = $al[2]."comment";
+                if ($outputs['qtype'] == "P") $ColumnName_RM = $al[2]."comment"; //AJS
                             else  $ColumnName_RM = $al[2];
-                if ($outputs['qtype']=='O') {
+                if ($outputs['qtype']=='O') { //AJS
                                 $TotalCompleted -=$row[0];
                             }
                             $fname="$al[1]";
@@ -1968,7 +1955,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                         * S = short free text
                         * Q = multiple short text
                         */
-            elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
+            elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q") //AJS
                         {
                             $headPDF = array();
                             $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
@@ -1999,7 +1986,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                         {
                             if(!isset($showheadline) || $showheadline != false)
                             {
-                    if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
+                    if($outputs['qtype'] == "5" || $outputs['qtype'] == "A") //AJS
                                 {
                                     switch($outputType)
                                     {
@@ -2084,7 +2071,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                             $fname="$al[1] ($al[0])";
 
                             //these question types get special treatment by Yii::app()->getConfig('showaggregateddata')
-                if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
+                if($outputs['qtype'] == "5" || $outputs['qtype'] == "A") //AJS
                             {
                                 //put non-edited data in here because $row will be edited later
                                 $grawdata[]=$row[0];
@@ -2241,7 +2228,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                 //no filtering of incomplete answers and NO multiple option questions
     //if ((incompleteAnsFilterState() != "filter") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
                 //error_log("TIBO ".print_r($showaggregated_indice_table,true));
-    if (($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
+    if (($outputs['qtype'] != "M") and ($outputs['qtype'] != "P")) //AJS
                 {
                     //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
         //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == "on") && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
@@ -2397,11 +2384,11 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 $gdata[$i] = 0;
 
                                 //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
-                    if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A"))
+                    if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) //AJS
                                 {
                                     $statisticsoutput .= "\t\t</td>";
                                 }
-                    elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
+                    elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q") //AJS
                                 {
                         $statisticsoutput .= "</td>\n\t";
                                 }
@@ -2420,7 +2407,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                     else
                     {
                         //check if data should be aggregated
-            if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A"))
+            if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A")) //AJS
                         {
                             //mark that we have done soemthing special here
                             $aggregated = true;
@@ -2834,7 +2821,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                     //it's only useful to calculate standard deviation and arithmetic means for question types
                     //5 = 5 Point Scale
                     //A = Array (5 Point Choice)
-        if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
+        if($outputs['qtype'] == "5" || $outputs['qtype'] == "A") //AJS
                     {
                         $stddev = 0;
                         $am = 0;
@@ -2976,7 +2963,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                 //PCHART has to be enabled and we need some data
                 if ($usegraph == 1) {
                     $bShowGraph = $aattr["statistics_showgraph"] == "1";
-        $bAllowPieChart = ($outputs['qtype'] != "M" && $outputs['qtype'] != "P");
+        $bAllowPieChart = ($outputs['qtype'] != "M" && $outputs['qtype'] != "P"); //AJS
                     $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
                     $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
         $bShowPieChart = ($bAllowPieChart && (isset($aattr["statistics_graphtype"]) && $aattr["statistics_graphtype"] == "1"));
@@ -3140,7 +3127,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     {
         $summarySql=" SELECT gid, parent_qid, qid, type "
         ." FROM {{questions}} WHERE parent_qid=0"
-        ." AND sid=$surveyid ";
+        ." AND sid=$surveyid "; //AJS
 
         $summaryRs = Yii::app()->db->createCommand($summarySql)->query()->readAll();
 
@@ -3149,19 +3136,19 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             $myField = $surveyid."X".$field['gid']."X".$field['qid'];
 
             // Multiple choice get special treatment
-            if ($field['type'] == "M") {$myField = "M$myField";}
-            if ($field['type'] == "P") {$myField = "P$myField";}
+            if ($field['type'] == "M") {$myField = "M$myField";} //AJS
+            if ($field['type'] == "P") {$myField = "P$myField";} //AJS
             //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-            if ($field['type'] == "N") {$myField = "N$myField";}
+            if ($field['type'] == "N") {$myField = "N$myField";} //AJS
 
-            if ($field['type'] == "|") {$myField = "|$myField";}
+            if ($field['type'] == "|") {$myField = "|$myField";} //AJS
 
-            if ($field['type'] == "Q") {$myField = "Q$myField";}
+            if ($field['type'] == "Q") {$myField = "Q$myField";} //AJS
             // textfields get special treatment
-            if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U"){$myField = "T$myField";}
+            if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U"){$myField = "T$myField";} //AJS
             //statistics for Date questions are not implemented yet.
-            if ($field['type'] == "D") {$myField = "D$myField";}
-            if ($field['type'] == "F" || $field['type'] == "H")
+            if ($field['type'] == "D") {$myField = "D$myField";} //AJS
+            if ($field['type'] == "F" || $field['type'] == "H") //AJS
             {
                 //Get answers. We always use the answer code because the label might be too long elsewise
                 $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";

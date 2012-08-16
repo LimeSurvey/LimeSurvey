@@ -197,7 +197,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Array (10 Point Choice)"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'class' => 'array-10-pt','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Array (10 Point Choice)"),'group' => $clang->gT('Arrays'),'subquestions' => 1,'class' => 'array-10-pt','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

@@ -362,7 +362,7 @@ class CommentListQuestion extends ListQuestion
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("List with comment"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'class' => 'list-with-comment','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1);
+        $props=array('description' => $clang->gT("List with comment"),'group' => $clang->gT("Single choice questions"),'subquestions' => 0,'class' => 'list-with-comment','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 1,'enum' => 1);
         return $prop?$props[$prop]:$props;
     }
 }

@@ -357,7 +357,7 @@ class FileQuestion extends QuestionModule
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("File upload"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'generic_question','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("File upload"),'group' => $clang->gT("Mask questions"),'subquestions' => 0,'class' => 'generic_question','hasdefaultvalues' => 0,'assessable' => 0,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

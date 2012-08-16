@@ -524,19 +524,17 @@ class conditionsaction extends Survey_Common_Action {
         $questiongroupname = $qresult->groups->group_name;
         $questiontitle = $qresult['title'];
         $questiontext = $qresult['question'];
-        $questiontype = $qresult['type'];
 
         // 2: Get all other questions that occur before this question that are pre-determined answer types
 
         // To avoid natural sort order issues,
         // first get all questions in natural sort order
         // , and find out which number in that order this question is
-        $qresult = Questions::model()->with(array(
-        'groups' => array(
+        $qresult = Questions::model()->with(
+        array('groups' => array(
         'condition' => 'groups.language = :lang',
         'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
-        ),
-        ))->findAllByAttributes(array('parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
+        )))->findAllByAttributes(array('parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
         $qrows = array();
         foreach ($qresult as $k => $v)
             $qrows[$k] = array_merge($v->attributes, $v->groups->attributes);
@@ -583,28 +581,18 @@ class conditionsaction extends Survey_Common_Action {
             foreach ($questionlist as $ql)
             {
 
-                $result = Questions::model()->with(array(
-                'groups' => array(
+                $result = Questions::model()->with('question_types')->with(
+                array('groups' => array(
                 'condition' => 'groups.language = :lang',
                 'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
-                ),
-                ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
+                )))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
 
                 $thiscount = count($result);
 
                 // And store again these questions in this array...
                 foreach ($result as $myrows)
                 {                   //key => value
-                    $theserows[] = array(
-                    "qid"		=>	$myrows['qid'],
-                    "sid"		=>	$myrows['sid'],
-                    "gid"		=>	$myrows['gid'],
-                    "question"	=>	$myrows['question'],
-                    "type"		=>	$myrows['type'],
-                    "mandatory"	=>	$myrows['mandatory'],
-                    "other"		=>	$myrows['other'],
-                    "title"		=>	$myrows['title']
-                    );
+                    $theserows[] = createQuestion($myrows->question_types['class'], array('surveyid' => $myrows['sid'], 'gid' => $myrows['gid'], 'id' => $myrows['qid'], 'text' => $myrows['question'], 'mandatory' => $myrows['mandatory'], 'title' => $myrows['title'], 'type' => $myrows['type'])); //AJS
                 }
             }
         }
@@ -629,7 +617,7 @@ class conditionsaction extends Survey_Common_Action {
                     "sid"		=>	$myrows['sid'],
                     "gid"		=>	$myrows['gid'],
                     "question"	=>	$myrows['question'],
-                    "type"		=>	$myrows['type'],
+                    "type"		=>	$myrows['type'], //AJS
                     "mandatory"	=>	$myrows['mandatory'],
                     "other"		=>	$myrows['other'],
                     "title"		=>	$myrows['title']
@@ -655,80 +643,80 @@ class conditionsaction extends Survey_Common_Action {
         {
             $X = "X";
 
-            foreach($theserows as $rows)
+            foreach($theserows as $q)
             {
-                $shortquestion=$rows['title'].": ".strip_tags($rows['question']);
+                $shortquestion=$q->title.": ".strip_tags($q->text);
 
-                if ($rows['type'] == "A" ||
-                $rows['type'] == "B" ||
-                $rows['type'] == "C" ||
-                $rows['type'] == "E" ||
-                $rows['type'] == "F" ||
-                $rows['type'] == "H"
+                if ($q->type == "A" ||
+                $q->type == "B" ||
+                $q->type == "C" ||
+                $q->type == "E" ||
+                $q->type == "F" ||
+                $q->type == "H" //AJS
                 )
                 {
-                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order ASC'));
+                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid'=>$q->id, 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order ASC'));
 
                     foreach ($aresult as $arows)
                     {
                         $shortanswer = "{$arows['title']}: [" . flattenText($arows['question']) . "]";
-                        $shortquestion = $rows['title'].":$shortanswer ".flattenText($rows['question']);
-                        $cquestions[] = array( $shortquestion, $rows['qid'], $rows['type'],
-                        $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']
+                        $shortquestion = $q->title.":$shortanswer ".flattenText($q->text);
+                        $cquestions[] = array( $shortquestion, $q->id, $q,
+                        $q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']
                         );
 
-                        switch ($rows['type'])
+                        switch ($q->type) //AJS
                         {
                             case "A": //Array 5 buttons
                                 for ($i=1; $i<=5; $i++)
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
+                                    $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], $i, $i);
                                 }
                                 break;
                             case "B": //Array 10 buttons
                                 for ($i=1; $i<=10; $i++)
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
+                                    $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], $i, $i);
                                 }
                                 break;
                             case "C": //Array Y/N/NA
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "Y", $clang->gT("Yes"));
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "U", $clang->gT("Uncertain"));
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "N", $clang->gT("No"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], "Y", $clang->gT("Yes"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], "U", $clang->gT("Uncertain"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], "N", $clang->gT("No"));
                                 break;
                             case "E": //Array >/=/<
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "I", $clang->gT("Increase"));
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "S", $clang->gT("Same"));
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "D", $clang->gT("Decrease"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], "I", $clang->gT("Increase"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], "S", $clang->gT("Same"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], "D", $clang->gT("Decrease"));
                                 break;
                             case "F": //Array Flexible Row
                             case "H": //Array Flexible Column
 
                                 $fresult = Answers::model()->findAllByAttributes(array(
-                                'qid' => $rows['qid'],
+                                'qid' => $q->id,
                                 "language" => Survey::model()->findByPk($iSurveyID)->language,
                                 'scale_id' => 0,
                                 ), array('order' => 'sortorder, code'));
 
                                 foreach ($fresult as $frow)
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']);
+                                    $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], $frow['code'], $frow['answer']);
                                 }
                                 break;
                         }
                         // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y')
+                        if ($q->mandatory != 'Y')
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", $clang->gT("No answer"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], "", $clang->gT("No answer"));
                         }
 
                     } //while
                 }
-                elseif ($rows['type'] == ":" || $rows['type'] == ";")
+                elseif ($q->type == ":" || $q->type == ";") //AJS
                 { // Multiflexi
 
                     //Get question attribute for $canswers
-                    $qidattributes=getQuestionAttributeValues($rows['qid']);
+                    $qidattributes=getQuestionAttributeValues($q->id);
                     if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
                         $maxvalue=floatval($qidattributes['multiflexible_max']);
                     } else {
@@ -764,7 +752,7 @@ class conditionsaction extends Survey_Common_Action {
                     $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
                     $y_axis_db = Yii::app()->db->createCommand($fquery)
                         ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
-                        ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
+                        ->bindParam(":qid", $q->id, PDO::PARAM_INT)
                         ->query();
 
                     // Get the X-Axis
@@ -780,7 +768,7 @@ class conditionsaction extends Survey_Common_Action {
 
                     $x_axis_db=Yii::app()->db->createCommand($aquery)
                         ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
-                        ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
+                        ->bindParam(":qid", $q->id, PDO::PARAM_INT)
                         ->query() or safeDie ("Couldn't get answers to Array questions<br />$aquery<br />");
 
                     foreach ($x_axis_db->readAll() as $frow)
@@ -792,89 +780,89 @@ class conditionsaction extends Survey_Common_Action {
                     {
                         foreach($x_axis as $key=>$val)
                         {
-                            $shortquestion=$rows['title'].":{$yrow['title']}:$key: [".strip_tags($yrow['question']). "][" .strip_tags($val). "] " . flattenText($rows['question']);
-                            $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key);
+                            $shortquestion=$q->title.":{$yrow['title']}:$key: [".strip_tags($yrow['question']). "][" .strip_tags($val). "] " . flattenText($q->text);
+                            $cquestions[]=array($shortquestion, $q->id, $q, $q->surveyid.$X.$q->gid.$X.$q->id.$yrow['title']."_".$key);
 
-                            if ($rows['type'] == ":")
+                            if ($q->type == ":") //AJS
                             {
                                 for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key, $ii, $ii);
+                                    $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$yrow['title']."_".$key, $ii, $ii);
                                 }
                             }
                         }
                     }
                     unset($x_axis);
                 } //if A,B,C,E,F,H
-                elseif ($rows['type'] == "1") //Multi Scale
+                elseif ($q->type == "1") //Multi Scale //AJS
                 {
-                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order desc'));
+                    $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $q->id, 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'question_order desc'));
 
                     foreach ($aresult as $arows)
                     {
-                        $attr = getQuestionAttributeValues($rows['qid']);
+                        $attr = getQuestionAttributeValues($q->id);
                         $label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
                         $label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
                         $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";
-                        $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
-                        $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");
+                        $shortquestion = $q->title.":$shortanswer ".strip_tags($q->text);
+                        $cquestions[] = array($shortquestion, $q->id, $q, $q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']."#0");
 
                         $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label2]";
-                        $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
-                        $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
+                        $shortquestion = $q->title.":$shortanswer ".strip_tags($q->text);
+                        $cquestions[] = array($shortquestion, $q->id, $q, $q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']."#1");
 
                         // first label
-                        $lresult = Answers::model()->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'sortorder, answer'));
+                        $lresult = Answers::model()->findAllByAttributes(array('qid' => $q->id, 'scale_id' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language), array('order' => 'sortorder, answer'));
                         foreach ($lresult as $lrows)
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
                         }
 
                         // second label
                         $lresult = Answers::model()->findAllByAttributes(array(
-                        'qid' => $rows['qid'],
+                        'qid' => $q->id,
                         'scale_id' => 1,
                         'language' => Survey::model()->findByPk($iSurveyID)->language,
                         ), array('order' => 'sortorder, answer'));
 
                         foreach ($lresult as $lrows)
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}");
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}");
                         }
 
                         // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y')
+                        if ($q->mandatory != 'Y')
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "", $clang->gT("No answer"));
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "", $clang->gT("No answer"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']."#0", "", $clang->gT("No answer"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']."#1", "", $clang->gT("No answer"));
                         }
                     } //while
                 }
-                elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
+                elseif ($q->type == "K" ||$q->type == "Q") //Multi shorttext/numerical //AJS
                 {
                     $aresult = Questions::model()->findAllByAttributes(array(
-                    "parent_qid" => $rows['qid'],
+                    "parent_qid" => $q->id,
                     "language" =>Survey::model()->findByPk($iSurveyID)->language,
                     ), array('order' => 'question_order desc'));
 
                     foreach ($aresult as $arows)
                     {
                         $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
-                        $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-                        $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
+                        $shortquestion=$q->title.":$shortanswer ".strip_tags($q->text);
+                        $cquestions[]=array($shortquestion, $q->id, $q, $q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']);
 
                         // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y')
+                        if ($q->mandatory != 'Y')
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", $clang->gT("No answer"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], "", $clang->gT("No answer"));
                         }
 
                     } //while
                 }
-                elseif ($rows['type'] == "R") //Answer Ranking
+                elseif ($q->type == "R") //Answer Ranking //AJS
                 {
                     $aresult = Answers::model()->findAllByAttributes(array(
-                    "qid" => $rows['qid'],
+                    "qid" => $q->id,
                     "scale_id" => 0,
                     "language" => Survey::model()->findByPk($iSurveyID)->language,
                     ), array('order' => 'sortorder, answer'));
@@ -887,95 +875,95 @@ class conditionsaction extends Survey_Common_Action {
                     }
                     for ($i=1; $i<=$acount; $i++)
                     {
-                        $cquestions[]=array("{$rows['title']}: [RANK $i] ".strip_tags($rows['question']), $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i);
+                        $cquestions[]=array("{$q->title}: [RANK $i] ".strip_tags($q->text), $q->id, $q, $q->surveyid.$X.$q->gid.$X.$q->id.$i);
                         foreach ($quicky as $qck)
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$i, $qck[0], $qck[1]);
                         }
                         // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y')
+                        if ($q->mandatory != 'Y')
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", $clang->gT("No answer"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id.$i, " ", $clang->gT("No answer"));
                         }
                     }
                     unset($quicky);
                 } // End if type R
-                elseif($rows['type'] == "M" || $rows['type'] == "P")
+                elseif($q->type == "M" || $q->type == "P") //AJS
                 {
                     $shortanswer = " [".$clang->gT("Group of checkboxes")."]";
-                    $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
-                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+                    $shortquestion = $q->title.":$shortanswer ".strip_tags($q->text);
+                    $cquestions[] = array($shortquestion, $q->id, $q, $q->surveyid.$X.$q->gid.$X.$q->id);
 
                     $aresult = Questions::model()->findAllByAttributes(array(
-                    "parent_qid" => $rows['qid'],
+                    "parent_qid" => $q->id,
                     "language" => Survey::model()->findByPk($iSurveyID)->language,
                     ), array('order' => 'question_order desc'));
 
                     foreach ($aresult as $arows)
                     {
                         $theanswer = addcslashes($arows['question'], "'");
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
+                        $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, $arows['title'], $theanswer);
 
                         $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
                         $shortanswer .= "[".$clang->gT("Single checkbox")."]";
-                        $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-                        $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
-                        $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', $clang->gT("checked"));
-                        $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', $clang->gT("not checked"));
+                        $shortquestion=$q->title.":$shortanswer ".strip_tags($q->text);
+                        $cquestions[]=array($shortquestion, $q->id, $q, "+".$q->surveyid.$X.$q->gid.$X.$q->id.$arows['title']);
+                        $canswers[]=array("+".$q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], 'Y', $clang->gT("checked"));
+                        $canswers[]=array("+".$q->surveyid.$X.$q->gid.$X.$q->id.$arows['title'], '', $clang->gT("not checked"));
                     }
                 }
-                elseif($rows['type'] == "X") //Boilerplate question
+                elseif($q->type == "X") //Boilerplate question //AJS
                 {
                     //Just ignore this questiontype
                 }
                 else
                 {
-                    $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
-                    switch ($rows['type'])
+                    $cquestions[]=array($shortquestion, $q->id, $q, $q->surveyid.$X.$q->gid.$X.$q->id);
+                    switch ($q->type) //AJS
                     {
                         case "Y": // Y/N/NA
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", $clang->gT("Yes"));
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", $clang->gT("No"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, "Y", $clang->gT("Yes"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, "N", $clang->gT("No"));
                             // Only Show No-Answer if question is not mandatory
-                            if ($rows['mandatory'] != 'Y')
+                            if ($q->mandatory != 'Y')
                             {
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, " ", $clang->gT("No answer"));
                             }
                             break;
                         case "G": //Gender
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", $clang->gT("Female"));
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", $clang->gT("Male"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, "F", $clang->gT("Female"));
+                            $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, "M", $clang->gT("Male"));
                             // Only Show No-Answer if question is not mandatory
-                            if ($rows['mandatory'] != 'Y')
+                            if ($q->mandatory != 'Y')
                             {
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, " ", $clang->gT("No answer"));
                             }
                             break;
                         case "5": // 5 choice
                             for ($i=1; $i<=5; $i++)
                             {
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, $i, $i);
                             }
                             // Only Show No-Answer if question is not mandatory
-                            if ($rows['mandatory'] != 'Y')
+                            if ($q->mandatory != 'Y')
                             {
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, " ", $clang->gT("No answer"));
                             }
                             break;
 
                         case "N": // Simple Numerical questions
 
                             // Only Show No-Answer if question is not mandatory
-                            if ($rows['mandatory'] != 'Y')
+                            if ($q->mandatory != 'Y')
                             {
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, " ", $clang->gT("No answer"));
                             }
                             break;
 
                         default:
 
                             $aresult = Answers::model()->findAllByAttributes(array(
-                            'qid' => $rows['qid'],
+                            'qid' => $q->id,
                             'scale_id' => 0,
                             'language' => Survey::model()->findByPk($iSurveyID)->language,
                             ), array('order' => 'sortorder, answer'));
@@ -983,34 +971,34 @@ class conditionsaction extends Survey_Common_Action {
                             foreach ($aresult as $arows)
                             {
                                 $theanswer = addcslashes($arows['answer'], "'");
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
+                                $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, $arows['code'], $theanswer);
                             }
-                            if ($rows['type'] == "D")
+                            if ($q->type == "D") //AJS
                             {
                                 // Only Show No-Answer if question is not mandatory
-                                if ($rows['mandatory'] != 'Y')
+                                if ($q->mandatory != 'Y')
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+                                    $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, " ", $clang->gT("No answer"));
                                 }
                             }
-                            elseif ($rows['type'] != "M" &&
-                            $rows['type'] != "P" &&
-                            $rows['type'] != "J" &&
-                            $rows['type'] != "I" )
+                            elseif ($q->type != "M" &&
+                            $q->type != "P" &&
+                            $q->type != "J" &&
+                            $q->type != "I" ) //AJS
                             {
                                 // For dropdown questions
                                 // optinnaly add the 'Other' answer
-                                if ( (	$rows['type'] == "L" ||
-                                $rows['type'] == "!") &&
-                                $rows['other'] == "Y" )
+                                if ( (	$q->type == "L" ||
+                                $q->type == "!") && //AJS
+                                $q->other == "Y" )
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", $clang->gT("Other"));
+                                    $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, "-oth-", $clang->gT("Other"));
                                 }
 
                                 // Only Show No-Answer if question is not mandatory
-                                if ($rows['mandatory'] != 'Y')
+                                if ($q->mandatory != 'Y')
                                 {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+                                    $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, " ", $clang->gT("No answer"));
                                 }
                             }
                             break;
@@ -1022,9 +1010,9 @@ class conditionsaction extends Survey_Common_Action {
 
 
         $questionNavOptions = CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>$clang->gT("Before","js")));
-        foreach ($theserows as $row)
+        foreach ($theserows as $q)
         {
-            $question=$row['question'];
+            $question=$q->text;
             $question=strip_tags($question);
             if (strlen($question)<35)
             {
@@ -1037,7 +1025,7 @@ class conditionsaction extends Survey_Common_Action {
             }
 
             $questionNavOptions .= CHtml::tag('option', array(
-            'value' => $this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
+            'value' => $this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$q->gid}/qid/{$q->id}")),
             $questionselecter
             );
         }
@@ -1090,7 +1078,7 @@ class conditionsaction extends Survey_Common_Action {
         . "\tvar Answers = new Array();\n"
         . "\tvar QFieldnames = new Array();\n"
         . "\tvar Qcqids = new Array();\n"
-        . "\tvar Qtypes = new Array();\n";
+        . "\tvar QUseCheckboxes = new Array();\n";
 
         $jn = 0;
         if ( isset($canswers) )
@@ -1111,8 +1099,16 @@ class conditionsaction extends Survey_Common_Action {
             foreach ($cquestions as $cqn)
             {
                 $javascriptpre .= "QFieldnames[$jn]='$cqn[3]';\n"
-                ."Qcqids[$jn]='$cqn[1]';\n"
-                ."Qtypes[$jn]='$cqn[2]';\n"; //AJS
+                ."Qcqids[$jn]='$cqn[1]';\n";
+                $q = $cqn[2];
+                if ($q->useCheckboxes())
+                {
+                    $javascriptpre .= "QUseCheckboxes[$jn]=true;\n";
+                }
+                else
+                {
+                    $javascriptpre .= "QUseCheckboxes[$jn]=false;\n";
+                }
                 $jn++;
             }
         }
@@ -1248,7 +1244,7 @@ class conditionsaction extends Survey_Common_Action {
 
                     $query = "SELECT c.cid, c.scenario, c.cqid, c.cfieldname, c.method, c.value, q.type
                     FROM {{conditions}} c, {{questions}} q, {{groups}} g
-                    WHERE c.cqid=q.qid "
+                    WHERE c.cqid=q.qid " //AJS
                     ."AND q.gid=g.gid "
                     ."AND q.parent_qid=0 "
                     ."AND q.language=:lang "
@@ -1271,7 +1267,7 @@ class conditionsaction extends Survey_Common_Action {
                     ."{{conditions}}.cfieldname, "
                     ."{{conditions}}.method, "
                     ."{{conditions}}.value, "
-                    ."'' AS type "
+                    ."'' AS type " //AJS
                     ."FROM {{conditions}} "
                     ."WHERE "
                     ." {{conditions}}.qid=:qid "
@@ -1853,7 +1849,8 @@ class conditionsaction extends Survey_Common_Action {
             ."\t\t<select name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>\n";
             foreach ($cquestions as $cqn)
             { // building the @SGQA@ placeholders options
-                if ($cqn[2] != 'M' && $cqn[2] != 'P')
+                $q = $cqn[2];
+                if ($q->useCheckboxes())
                 { // Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers
                     $aViewUrls['output'] .= "\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
                     if (isset($p_prevquestionsgqa) && $p_prevquestionsgqa == "@".$cqn[3]."@")

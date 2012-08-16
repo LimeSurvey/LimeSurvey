@@ -498,7 +498,7 @@ class MultinumericalQuestion extends QuestionModule
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Multiple Numerical Input"),'group' => $clang->gT("Mask questions"),'class' => 'numeric-multi','hasdefaultvalues' => 1,'subquestions' => 1,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Multiple Numerical Input"),'group' => $clang->gT("Mask questions"),'class' => 'numeric-multi','hasdefaultvalues' => 1,'subquestions' => 1,'assessable' => 1,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

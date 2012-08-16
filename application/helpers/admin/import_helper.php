@@ -276,7 +276,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
 
     //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
     $results['labelsets']=0;
-    $qtypes = getQuestionTypeList();
+    $qtypes = getQuestionTypeList(); //AJS
     $results['labels']=0;
     $results['labelsets']=0;
     $results['answers']=0;
@@ -450,7 +450,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                 $qacfieldcontents=convertCSVRowToArray($qa,',','"');
                 $questionrowdata=array_combine($questionfieldnames,$qacfieldcontents);
                 $questionrowdata=array_map('convertCSVReturnToReturn', $questionrowdata);
-                $questionrowdata["type"]=strtoupper($questionrowdata["type"]);
+                $questionrowdata["type"]=strtoupper($questionrowdata["type"]); //AJS
 
                 // Skip not supported languages
                 if (!in_array($questionrowdata['language'],$aLanguagesSupported))
@@ -487,13 +487,13 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                 }
                 unset($questionrowdata['lid']);
                 unset($questionrowdata['lid1']);
-                if ($questionrowdata['type']=='W')
+                if ($questionrowdata['type']=='W') //AJS
                 {
-                    $questionrowdata['type']='!';
+                    $questionrowdata['type']='!'; //AJS
                 }
-                elseif ($questionrowdata['type']=='Z')
+                elseif ($questionrowdata['type']=='Z') //AJS
                 {
-                    $questionrowdata['type']='L';
+                    $questionrowdata['type']='L'; //AJS
                 }
 
                 if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;}
@@ -523,7 +523,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                 $aSQIDReplacements=array();
 
                 // Now we will fix up old label sets where they are used as answers
-                if ((isset($oldlid1) || isset($oldlid2)) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
+                if ((isset($oldlid1) || isset($oldlid2)) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1)) //AJS
                 {
                     $query="select * from {{labels}} where lid={$aLIDReplacements[$oldlid1]} and language='{$questionrowdata['language']}'";
                     $oldlabelsresult=Yii::app()->db->createCommand($query)->query();
@@ -532,7 +532,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                         if (in_array($labelrow['language'],$aLanguagesSupported))
                         {
 
-                            if ($qtypes[$questionrowdata['type']]['subquestions']<2)
+                            if ($qtypes[$questionrowdata['type']]['subquestions']<2) //AJS
                             {
                                 $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value)
                                 VALUES ({$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."','".$labelrow['assessment_value']."')";
@@ -551,7 +551,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                                 }
 
                                 $qinsert = "insert INTO {{questions}} ($fieldname parent_qid,title,question,question_order,language,scale_id,type, sid, gid)
-                                VALUES ($data{$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."',1,'{$questionrowdata['type']}',{$questionrowdata['sid']},{$questionrowdata['gid']})";
+                                VALUES ($data{$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."',1,'{$questionrowdata['type']}',{$questionrowdata['sid']},{$questionrowdata['gid']})"; //AJS
                                 $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                                 if ($fieldname=='')
                                 {
@@ -560,7 +560,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                             }
                         }
                     }
-                    if (isset($oldlid2) && $qtypes[$questionrowdata['type']]['answerscales']>1)
+                    if (isset($oldlid2) && $qtypes[$questionrowdata['type']]['answerscales']>1) //AJS
                     {
                         $query="select * from {{labels}} where lid={$aLIDReplacements[$oldlid2]} and language='{$questionrowdata['language']}'";
                         $oldlabelsresult=Yii::app()->db->createCommand($query)->query();
@@ -602,12 +602,12 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     $answerrowdata["assessment_value"]=(int)$answerrowdata["code"];
                 }
                 // Convert default values for single select questions
-                $query = 'select type,gid from {{questions}} where qid='.$answerrowdata["qid"];
+                $query = 'select type,gid from {{questions}} where qid='.$answerrowdata["qid"]; //AJS
                 $res = Yii::app()->db->createCommand($query)->query();
                 $questiontemp = $res->read();
-                $oldquestion['newtype']=$questiontemp['type'];
+                $oldquestion['newtype']=$questiontemp['type']; //AJS
                 $oldquestion['gid']=$questiontemp['gid'];
-                if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!'))
+                if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!')) //AJS
                 {
                     $insertdata=array();
                     $insertdata['qid']=$newqid;
@@ -620,7 +620,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                 // Everything set - now insert it
                 $answerrowdata = array_map('convertCSVReturnToReturn', $answerrowdata);
 
-                if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion
+                if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion //AJS
                 {
                     $questionrowdata=array();
                     if (isset($aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']])){
@@ -633,7 +633,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
                     $questionrowdata['question']=$answerrowdata['answer'];
                     $questionrowdata['question_order']=$answerrowdata['sortorder'];
                     $questionrowdata['language']=$answerrowdata['language'];
-                    $questionrowdata['type']=$oldquestion['newtype'];
+                    $questionrowdata['type']=$oldquestion['newtype']; //AJS
 
                     $qres = Yii::app()->db->createCommand()->insert('{{questions}}', $questionrowdata);
                     if (!isset($questionrowdata['qid']))
@@ -643,7 +643,7 @@ function CSVImportGroup($sFullFilepath, $iNewSID)
 
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
-                    if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P'))
+                    if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P')) //AJS
                     {
                         $insertdata=array();
                         $insertdata['qid']=$newqid;
@@ -1452,20 +1452,20 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
             {
                 $oldquestion['lid2']=(int)$questionrowdata['lid1'];
             }
-            $oldquestion['oldtype']=$questionrowdata['type'];
+            $oldquestion['oldtype']=$questionrowdata['type']; //AJS
 
             // Unset label set IDs and convert question types
             unset($questionrowdata['lid']);
             unset($questionrowdata['lid1']);
-            if ($questionrowdata['type']=='W')
+            if ($questionrowdata['type']=='W') //AJS
             {
-                $questionrowdata['type']='!';
+                $questionrowdata['type']='!'; //AJS
             }
-            elseif ($questionrowdata['type']=='Z')
+            elseif ($questionrowdata['type']=='Z') //AJS
             {
-                $questionrowdata['type']='L';
+                $questionrowdata['type']='L'; //AJS
             }
-            $oldquestion['newtype']=$questionrowdata['type'];
+            $oldquestion['newtype']=$questionrowdata['type']; //AJS
 
             $questionrowdata=array_map('convertCSVReturnToReturn', $questionrowdata);
 
@@ -1485,13 +1485,13 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                 $newqid=Yii::app()->db->getLastInsertID();
             }
         }
-        $qtypes = getQuestionTypeList();
+        $qtypes = getQuestionTypeList(); //AJS
         $results['answers']=0;
         $results['subquestions']=0;
 
 
         // Now we will fix up old label sets where they are used as answers
-        if ((isset($oldquestion['lid1']) || isset($oldquestion['lid2'])) && ($qtypes[$oldquestion['newtype']]['answerscales']>0 || $qtypes[$oldquestion['newtype']]['subquestions']>1))
+        if ((isset($oldquestion['lid1']) || isset($oldquestion['lid2'])) && ($qtypes[$oldquestion['newtype']]['answerscales']>0 || $qtypes[$oldquestion['newtype']]['subquestions']>1)) //AJS
         {
             $query="select * from {{labels}} where lid={$aLIDReplacements[$oldquestion['lid1']]} ";
             $oldlabelsresult=Yii::app()->db->createCommand($query)->query();
@@ -1500,7 +1500,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                 if (in_array($labelrow['language'],$aLanguagesSupported)){
                     if ($xssfilter)
                         XSSFilterArray($labelrow);
-                    if ($qtypes[$oldquestion['newtype']]['subquestions']<2)
+                    if ($qtypes[$oldquestion['newtype']]['subquestions']<2) //AJS
                     {
                         $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value,scale_id)
                         VALUES ($newqid,'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."','".$labelrow['assessment_value']."',0)";
@@ -1519,7 +1519,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                         }
 
                         $qinsert = "insert INTO {{questions}} ($fieldname sid,gid,parent_qid,title,question,question_order,language,scale_id,type)
-                        VALUES ($data $iNewSID,$newgid,$newqid,'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."',1,'".$oldquestion['newtype']."')";
+                        VALUES ($data $iNewSID,$newgid,$newqid,'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."',1,'".$oldquestion['newtype']."')"; //AJS
                         $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ("Error: Failed to insert subquestion <br />\n$qinsert<br />\n");
                         if ($fieldname=='')
                         {
@@ -1530,7 +1530,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                 }
             }
 
-            if (isset($oldquestion['lid2']) && $qtypes[$oldquestion['newtype']]['answerscales']>1)
+            if (isset($oldquestion['lid2']) && $qtypes[$oldquestion['newtype']]['answerscales']>1) //AJS
             {
                 $query="select * from {{labels}} where lid={$aLIDReplacements[$oldquestion['lid2']]}";
                 $oldlabelsresult=Yii::app()->db->createCommand($query)->query();
@@ -1572,7 +1572,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                 }
 
                 // Convert default values for single select questions
-                if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!'))
+                if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!')) //AJS
                 {
                     $insertdata=array();
                     $insertdata['qid']=$newqid;
@@ -1590,7 +1590,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                 // Everything set - now insert it
                 $answerrowdata = array_map('convertCSVReturnToReturn', $answerrowdata);
 
-                if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion
+                if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion //AJS
                 {
                     $questionrowdata=array();
                     if (isset($aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']])){
@@ -1603,7 +1603,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                     $questionrowdata['question']=$answerrowdata['answer'];
                     $questionrowdata['question_order']=$answerrowdata['sortorder'];
                     $questionrowdata['language']=$answerrowdata['language'];
-                    $questionrowdata['type']=$oldquestion['newtype'];
+                    $questionrowdata['type']=$oldquestion['newtype']; //AJS
                     if ($xssfilter)
                         XSSFilterArray($questionrowdata);
                     $question = new Questions;
@@ -1616,7 +1616,7 @@ function CSVImportQuestion($sFullFilepath, $iNewSID, $newgid)
                     }
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
-                    if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P'))
+                    if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P')) //AJS
                     {
                         $insertdata=array();
                         $insertdata['qid']=$newqid;
@@ -2704,7 +2704,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $importresults['deniedcountls'] =0;
 
 
-    $qtypes = getQuestionTypeList();
+    $qtypes = getQuestionTypeList(); //AJS
     $results['labels']=0;
     $results['labelsets']=0;
     $results['answers']=0;
@@ -2876,7 +2876,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $qacfieldcontents=convertCSVRowToArray($qa,',','"');
             $questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
             $questionrowdata=array_map('convertCSVReturnToReturn', $questionrowdata);
-            $questionrowdata["type"]=strtoupper($questionrowdata["type"]);
+            $questionrowdata["type"]=strtoupper($questionrowdata["type"]); //AJS
 
             // Skip not supported languages
             if (!in_array($questionrowdata['language'],$aLanguagesSupported))
@@ -2908,13 +2908,13 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             }
             unset($questionrowdata['lid']);
             unset($questionrowdata['lid1']);
-            if ($questionrowdata['type']=='W')
+            if ($questionrowdata['type']=='W') //AJS
             {
-                $questionrowdata['type']='!';
+                $questionrowdata['type']='!'; //AJS
             }
-            elseif ($questionrowdata['type']=='Z')
+            elseif ($questionrowdata['type']=='Z') //AJS
             {
-                $questionrowdata['type']='L';
+                $questionrowdata['type']='L'; //AJS
                 $aIgnoredAnswers[]=$oldqid;
             }
 
@@ -2946,7 +2946,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             }
 
             // Now we will fix up old label sets where they are used as answers
-            if (((isset($oldlid1) && isset($aLIDReplacements[$oldlid1])) || (isset($oldlid2) && isset($aLIDReplacements[$oldlid2]))) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
+            if (((isset($oldlid1) && isset($aLIDReplacements[$oldlid1])) || (isset($oldlid2) && isset($aLIDReplacements[$oldlid2]))) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1)) //AJS
             {
 
                 $query="select * from {{labels}} where lid={$aLIDReplacements[$oldlid1]} and language='{$questionrowdata['language']}'";
@@ -2956,7 +2956,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                     if (in_array($labelrow['language'],$aLanguagesSupported))
                     {
 
-                        if ($qtypes[$questionrowdata['type']]['subquestions']<2)
+                        if ($qtypes[$questionrowdata['type']]['subquestions']<2) //AJS
                         {
                             $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value)
                             VALUES ({$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."','".$labelrow['assessment_value']."')";
@@ -2974,7 +2974,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                             }
 
                             $qinsert = "insert INTO {{questions}} ($fieldname parent_qid,title,question,question_order,language,scale_id,type, sid, gid)
-                            VALUES ($data{$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."',1,'{$questionrowdata['type']}',{$questionrowdata['sid']},{$questionrowdata['gid']})";
+                            VALUES ($data{$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."',1,'{$questionrowdata['type']}',{$questionrowdata['sid']},{$questionrowdata['gid']})"; //AJS
                             $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                             if ($fieldname=='')
                             {
@@ -2983,7 +2983,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                         }
                     }
                 }
-                if (isset($oldlid2) && $qtypes[$questionrowdata['type']]['answerscales']>1)
+                if (isset($oldlid2) && $qtypes[$questionrowdata['type']]['answerscales']>1) //AJS
                 {
 
                     $query="select * from {{labels}} where lid={$aLIDReplacements[$oldlid2]} and language='{$questionrowdata['language']}'";
@@ -3035,14 +3035,14 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 $answerrowdata["assessment_value"]=(int)$answerrowdata["code"];
             }
             // Convert default values for single select questions
-            $query1 = 'select type,gid from {{questions}} where qid='.$answerrowdata["qid"];
+            $query1 = 'select type,gid from {{questions}} where qid='.$answerrowdata["qid"]; //AJS
 
             $resultquery1 = Yii::app()->db->createCommand($query1)->query();
             $questiontemp=$resultquery1->read();
 
-            $oldquestion['newtype']=$questiontemp['type'];
+            $oldquestion['newtype']=$questiontemp['type']; //AJS
             $oldquestion['gid']=$questiontemp['gid'];
-            if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!'))
+            if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!')) //AJS
             {
                 $insertdata=array();
                 $insertdata['qid']=$newqid;
@@ -3058,7 +3058,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             // Everything set - now insert it
             $answerrowdata = array_map('convertCSVReturnToReturn', $answerrowdata);
 
-            if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion
+            if ($qtypes[$oldquestion['newtype']]['subquestions']>0) //hmmm.. this is really a subquestion //AJS
             {
                 $questionrowdata=array();
                 if (isset($aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']])){
@@ -3071,7 +3071,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 $questionrowdata['question']=$answerrowdata['answer'];
                 $questionrowdata['question_order']=$answerrowdata['sortorder'];
                 $questionrowdata['language']=$answerrowdata['language'];
-                $questionrowdata['type']=$oldquestion['newtype'];
+                $questionrowdata['type']=$oldquestion['newtype']; //AJS
 
 
 
@@ -3092,7 +3092,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
                 $results['subquestions']++;
                 // also convert default values subquestions for multiple choice
-                if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P'))
+                if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P')) //AJS
                 {
                     $insertdata=array();
                     $insertdata['qid']=$newqid;
@@ -4291,7 +4291,7 @@ function ExcelImportSurvey($sFullFilepath)
     $gseq=0;    // group_order
     $qid=0;
     $qseq=0;    // question_order
-    $qtype='T';
+    $qtype='T'; //AJS
     $aseq=0;    // answer sortorder
 
     // set the language for the survey
@@ -4368,10 +4368,10 @@ function ExcelImportSurvey($sFullFilepath)
                 // insert question
                 $insertdata = array();
                 $insertdata['sid'] = $iNewSID;
-                $qtype = (isset($row['type/scale']) ? $row['type/scale'] : 'T');
+                $qtype = (isset($row['type/scale']) ? $row['type/scale'] : 'T'); //AJS
                 $qname = (isset($row['name']) ? $row['name'] : 'Q' . $qseq);
                 $insertdata['gid'] = $gid;
-                $insertdata['type'] = $qtype;
+                $insertdata['type'] = $qtype; //AJS
                 $insertdata['title'] = $qname;
                 $insertdata['question'] = (isset($row['text']) ? $row['text'] : '');
                 $insertdata['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
@@ -4460,11 +4460,11 @@ function ExcelImportSurvey($sFullFilepath)
                 break;
             case 'SQ':
                 $sqname = (isset($row['name']) ? $row['name'] : 'SQ' . $sqseq);
-                if ($qtype == 'O' || $qtype == '|')
+                if ($qtype == 'O' || $qtype == '|') //AJS
                 {
                     ;   // these are fake rows to show naming of comment and filecount fields
                 }
-                else if ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
+                else if ($sqname == 'other' && ($qtype == '!' || $qtype == 'L')) //AJS
                     {
                         // only want to set default value for 'other' in these cases - not a real SQ row
                         // TODO - this isn't working
@@ -4486,7 +4486,7 @@ function ExcelImportSurvey($sFullFilepath)
                     $insertdata['sid'] = $iNewSID;
                     $insertdata['gid'] = $gid;
                     $insertdata['parent_qid'] = $qid;
-                    $insertdata['type'] = $qtype;
+                    $insertdata['type'] = $qtype; //AJS
                     $insertdata['title'] = $sqname;
                     $insertdata['question'] = (isset($row['text']) ? $row['text'] : '');
                     $insertdata['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');

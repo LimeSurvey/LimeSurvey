@@ -677,7 +677,7 @@ class NumberArrayQuestion extends ArrayQuestion
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Array (Numbers)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'class' => 'array-multi-flexi','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Array (Numbers)"),'group' => $clang->gT('Arrays'),'subquestions' => 2,'class' => 'array-multi-flexi','hasdefaultvalues' => 0,'assessable' => 1,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

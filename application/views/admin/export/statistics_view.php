@@ -156,7 +156,7 @@
         <?php
         $currentgroup='';
         foreach ($filters as $key1 => $flt) {
-            if (!isset($previousquestiontype)) {$previousquestiontype="";}
+            if (!isset($previousquestiontype)) {$previousquestiontype="";} //AJS
             if ($flt[1] != $currentgroup) {
                 if ($currentgroup!='') { ?>
                     <!-- Close filter group --></tr>
@@ -202,7 +202,7 @@
                 $previousquestiontype == "Q" ||
                 $previousquestiontype == "R" ||
                 $previousquestiontype == ":" ||
-                $previousquestiontype == ";")) { ?>
+                $previousquestiontype == ";")) { //AJS ?>
             </tr>
             <tr>
             <?php
@@ -1272,7 +1272,7 @@
                 $counter=0;
             }
             $counter++;
-            $previousquestiontype = $flt[2];
+            $previousquestiontype = $flt[2]; //AJS
 
         ?>
         <?php

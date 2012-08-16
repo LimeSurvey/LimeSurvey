@@ -120,26 +120,26 @@ class question extends Survey_Common_Action
         $baselang = Survey::model()->findByPk($surveyid)->language;
         array_unshift($questlangs, $baselang);
 
-        $questionrow = Questions::model()->with('question_types')->findByAttributes(array(
+        $result = Questions::model()->with('question_types')->findByAttributes(array(
             'qid' => $qid,
             'gid' => $gid,
             'language' => $baselang
-        ))->attributes;
-        $q = createQuestion($questionrow->question_types['class']);
+        ));
+        $questionrow=$result->attributes;
+        $q = createQuestion($result->question_types['class']);
         $qproperties=$q->questionProperties();
 
         $langopts = array();
         foreach ($questlangs as $language)
         {
             $langopts[$language] = array();
-            $langopts[$language][$questionrow['type']] = array();
 
             // If there are answerscales
             if ($qproperties['answerscales'] > 0)
             {
                 for ($scale_id = 0; $scale_id < $qproperties['answerscales']; $scale_id++)
                 {
-                    $langopts[$language][$questionrow['type']][$scale_id] = array();
+                    $langopts[$language][$scale_id] = array();
 
                     $defaultvalue = Defaultvalues::model()->findByAttributes(array(
                         'specialtype' => '',
@@ -150,13 +150,13 @@ class question extends Survey_Common_Action
 
                     $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
 
-                    $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
+                    $langopts[$language][$scale_id]['defaultvalue'] = $defaultvalue;
 
                     $answerresult = Answers::model()->findAllByAttributes(array(
                         'qid' => $qid,
                         'language' => $language
                     ), array('order' => 'sortorder'));
-                    $langopts[$language][$questionrow['type']][$scale_id]['answers'] = $answerresult;
+                    $langopts[$language][$scale_id]['answers'] = $answerresult;
 
                     if ($questionrow['other'] == 'Y')
                     {
@@ -168,7 +168,7 @@ class question extends Survey_Common_Action
                         ));
 
                         $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
-                        $langopts[$language][$questionrow['type']]['Ydefaultvalue'] = $defaultvalue;
+                        $langopts[$language]['Ydefaultvalue'] = $defaultvalue;
                     }
                 }
             }
@@ -179,7 +179,7 @@ class question extends Survey_Common_Action
             {
                 for ($scale_id = 0; $scale_id < $qproperties['subquestions']; $scale_id++)
                 {
-                    $langopts[$language][$questionrow['type']][$scale_id] = array();
+                    $langopts[$language][$scale_id] = array();
 
                     $sqresult = Questions::model()->findAllByAttributes(array(
                         'sid' => $surveyid,
@@ -189,10 +189,10 @@ class question extends Survey_Common_Action
                         'scale_id' => 0
                     ), array('order' => 'question_order'));
 
-                    $langopts[$language][$questionrow['type']][$scale_id]['sqresult'] = array();
+                    $langopts[$language][$scale_id]['sqresult'] = array();
 
                     $options = array();
-                    if ($questionrow['type'] == 'M' || $questionrow['type'] == 'P')
+                    if ($q->useCheckboxes())
                         $options = array('' => $clang->gT('<No default value>'), 'Y' => $clang->gT('Checked'));
 
                     foreach ($sqresult as $aSubquestion)
@@ -209,12 +209,12 @@ class question extends Survey_Common_Action
                         $aSubquestion['defaultvalue'] = $defaultvalue;
                         $aSubquestion['options'] = $options;
 
-                        $langopts[$language][$questionrow['type']][$scale_id]['sqresult'][] = $aSubquestion;
+                        $langopts[$language][$scale_id]['sqresult'][] = $aSubquestion;
                     }
                 }
             }
-            if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
-            $qtproperties[$questionrow['type']]['subquestions'] == 0)
+            if ($qproperties['answerscales'] == 0 &&
+            $qproperties['subquestions'] == 0)
             {
                 $defaultvalue = Defaultvalues::model()->findByAttributes(array(
                 'specialtype' => '',
@@ -222,7 +222,7 @@ class question extends Survey_Common_Action
                 'scale_id' => 0,
                 'language' => $language
                 ));
-                $langopts[$language][$questionrow['type']][0] = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
+                $langopts[$language][0] = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
             }
 
         }
@@ -234,7 +234,7 @@ class question extends Survey_Common_Action
             'questionrow' => $questionrow,
             'questlangs' => $questlangs,
             'gid' => $gid,
-            'qtproperties' => $qtproperties,
+            'qproperties' => $qproperties,
             'baselang' => $baselang,
         );
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
@@ -694,7 +694,8 @@ class question extends Survey_Common_Action
                             'question_order' => $esrow['question_order'],
                             'other' => $esrow['other'],
                             'mandatory' => $esrow['mandatory'],
-                            'type' => $esrow['type'], //AJS
+                            'tid' => $esrow['tid'],
+                            'type' => $esrow['type'], //AJSL
                             'title' => $esrow['title'],
                             'preg' => $esrow['preg'],
                             'question' => $esrow['question'],
@@ -714,7 +715,8 @@ class question extends Survey_Common_Action
                             'qid' => $qid,
                             'sid' => $surveyid,
                             'gid' => $gid,
-                            'type' => $basesettings['type'], //AJS
+                            'tid' => $basesettings['tid'],
+                            'type' => $basesettings['type'], //AJSL
                             'title' => $basesettings['title'],
                             'question' => $basesettings['question'],
                             'preg' => $basesettings['preg'],

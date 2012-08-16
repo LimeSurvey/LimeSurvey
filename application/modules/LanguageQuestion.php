@@ -95,7 +95,7 @@ class LanguageQuestion extends QuestionModule
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Language Switch"),'group' => $clang->gT("Mask questions"),'class' => 'language','hasdefaultvalues' => 0,'subquestions' => 0,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Language Switch"),'group' => $clang->gT("Mask questions"),'class' => 'language','hasdefaultvalues' => 0,'subquestions' => 0,'assessable' => 0,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

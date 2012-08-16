@@ -217,7 +217,7 @@ class Statistics_userController extends LSYii_Controller {
 		    //store some column names in $filters array
 		    $filters[]=array($row['qid'],
 		    $row['gid'],
-		    $row['type'],
+		    $row['type'], //AJS
 		    $row['title'],
 		    $row['group_name'],
 		    flattenText($row['question']));

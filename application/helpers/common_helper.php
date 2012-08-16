@@ -42,10 +42,10 @@ function comparePermission($aPermissionA,$aPermissionB)
 * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
 * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
 */
-function getQuestionTypeList($type = false, $legacy = true) //AJS
+function getQuestionTypeList($type = false, $legacy = true) //AJSL
 {
     $clang = Yii::app()->lang;
-    if ($type && $legacy) //AJS
+    if ($type && $legacy) //AJSL
     {
         $result = Question_types::model()->findByAttribute(array('legacy' => $type));
         return  createQuestion($result['class']);
@@ -55,7 +55,7 @@ function getQuestionTypeList($type = false, $legacy = true) //AJS
     } 
     
     $types = Question_types::model()->findAll();
-    if ($legacy) //AJS
+    if ($legacy) //AJSL
     {
         foreach($types as $type)
         {
@@ -1781,7 +1781,7 @@ function validateTemplateDir($sTemplateName)
 		            //go through all the (multiple) answers
 		            foreach($result as $row)
 		            {
-		                $myfield2=$flt['type'].$myfield.reset($row);
+		                $myfield2=$flt['type'].$myfield.reset($row); //AJS
 		                $allfields[] = $myfield2;
 		            }
 		            break;
@@ -1863,7 +1863,7 @@ function validateTemplateDir($sTemplateName)
 		        case "M":  //M - Multiple choice
 		        case "N":  //N - Numerical input
 		        case "D":  //D - Date
-		            $myfield2 = $flt['type'].$myfield;
+		            $myfield2 = $flt['type'].$myfield; //AJS
 		                    $allfields[]=$myfield2;
 		            break;
 		        default:   //Default settings
@@ -6631,70 +6631,6 @@ function getBrowserLanguage()
     }
     return $sLanguage;
 }
-function type2Name($type) //AJS
-{
-    switch ($type)
-    {
-        case '1':
-            return "DualRadioArray";
-        case '5':
-            return "FiveList";
-        case 'A':
-            return "FiveRadioArray";
-        case 'B':
-            return "TenRadioArray";
-        case 'C':
-            return "YNRadioArray";
-        case 'D':
-            return "Date";
-        case 'E':
-            return "IDRadioArray";
-        case 'F':
-            return "RadioArray";
-        case 'G':
-            return "Gender";
-        case 'H':
-            return "ColumnRadioArray";
-        case 'I':
-            return "Language";
-        case 'K':
-            return "Multinumerical";
-        case 'L':
-            return "List";
-        case 'M':
-            return "Check";
-        case 'N':
-            return "Numerical";
-        case 'O':
-            return "CommentList";
-        case 'P':
-            return "CommentCheck";
-        case 'Q':
-            return "Multitext";
-        case 'R':
-            return "Ranking";
-        case 'S':
-            return "ShortText";
-        case 'T':
-            return "LongText";
-        case 'U':
-            return "HugeText";
-        case 'X':
-            return "Display";
-        case 'Y':
-            return "YN";
-        case '!':
-            return "Select";
-        case ':':
-            return "NumberArray";
-        case ';':
-            return "TextArray";
-        case '|':
-            return "File";
-        case '*':
-            return "Equation";
-    }
-}
 
 function tidToQuestion($tid, $data=array())
 {
@@ -6707,11 +6643,6 @@ function createQuestion($name, $data=array())
     $class = $name.'Question';
     Yii::import('application.modules.*');
     return new $class($data);
-}
-
-function objectizeQuestion($type, $data=array()) //AJS
-{
-    return createQuestion(type2Name($type), $data);
 }
 
 /**

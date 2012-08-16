@@ -93,7 +93,7 @@ class HugeTextQuestion extends TextQuestion
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Huge Free Text"),'group' => $clang->gT("Text questions"),'subquestions' => 0,'class' => 'text-huge','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Huge Free Text"),'group' => $clang->gT("Text questions"),'subquestions' => 0,'class' => 'text-huge','hasdefaultvalues' => 1,'assessable' => 0,'answerscales' => 0,'enum' => 0);
         return $prop?$props[$prop]:$props;
     }
 }

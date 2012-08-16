@@ -445,6 +445,16 @@ abstract class QuestionModule
         return false;
     }
 
+    public function displayOnly()
+    {
+        return false;
+    }
+
+    public function useCheckboxes()
+    {
+        return false;
+    }
+
     public function getMandatoryTip()
     {
         return '';

@@ -325,7 +325,7 @@ class CommentCheckQuestion extends CheckQuestion
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Multiple choice with comments"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'class' => 'multiple-opt-comments','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Multiple choice with comments"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'class' => 'multiple-opt-comments','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0,'enum' => 1);
         return $prop?$props[$prop]:$props;
     }
 }

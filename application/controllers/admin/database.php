@@ -86,13 +86,13 @@ class database extends Survey_Common_Action
                     }
                 }
             }
-            if ($qproperties['subquestions']>0)
+            else if ($qproperties['subquestions']>0)
             {
 
                 foreach ($questlangs as $language)
                 {
 
-                    $sqresult = Questions::model()->findByAttributes(array('sid'=>$surveyid, 'gid'=>$gid, 'parent_qid'=>$qid, 'language'=>$language, 'scale_id'=>0));
+                    $sqresult = Questions::model()->findAllByAttributes(array('sid'=>$surveyid, 'gid'=>$gid, 'parent_qid'=>$qid, 'language'=>$language, 'scale_id'=>0));
 
                     for ($scale_id=0;$scale_id<$qproperties['subquestions'];$scale_id++)
                     {
@@ -107,7 +107,7 @@ class database extends Survey_Common_Action
                     }
                 }
             }
-            if ($qproperties['answerscales']==0 && $qproperties['subquestions']==0)
+            else if ($qproperties['answerscales']==0 && $qproperties['subquestions']==0)
             {
                 foreach ($questlangs as $language)
                 {
@@ -401,12 +401,12 @@ class database extends Survey_Common_Action
                     $_POST['help_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$baselang));
                 }
 
-                $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJS
+                $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJSL
                 $data = array(
                 'sid' => $surveyid,
                 'gid' => $gid,
                 'tid' => Yii::app()->request->getPost('type'),
-                'type' => $type['legacy'], //AJS
+                'type' => $type['legacy'], //AJSL
                 'title' => Yii::app()->request->getPost('title'),
                 'question' => Yii::app()->request->getPost('question_'.$baselang),
                 'preg' => Yii::app()->request->getPost('preg'),
@@ -431,7 +431,7 @@ class database extends Survey_Common_Action
                             'sid' => $surveyid,
                             'gid' => $gid,
                             'tid' => Yii::app()->request->getPost('type'),
-                            'type' => $type['legacy'], //AJS
+                            'type' => $type['legacy'], //AJSL
                             'title' => Yii::app()->request->getPost('title'),
                             'question' => Yii::app()->request->getPost('question_'.$alang),
                             'preg' => Yii::app()->request->getPost('preg'),
@@ -707,10 +707,10 @@ class database extends Survey_Common_Action
 
                         if (isset($qlang) && $qlang != "")
                         { // ToDo: Sanitize the POST variables !
-                            $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJS
+                            $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJSL
                             $udata = array(
                             'tid' => Yii::app()->request->getPost('type'),
-                            'type' => $type['legacy'],
+                            'type' => $type['legacy'], //AJSL
                             'title' => Yii::app()->request->getPost('title'),
                             'question' => Yii::app()->request->getPost('question_'.$qlang),
                             'preg' => Yii::app()->request->getPost('preg'),
@@ -769,8 +769,8 @@ class database extends Survey_Common_Action
                     }
                     if ($oldtid != Yii::app()->request->getPost('type'))
                     {
-                        $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJS
-                        Questions::model()->updateAll(array('tid'=>Yii::app()->request->getPost('type'), 'type'=>$type['legacy']), 'parent_qid=:qid', array(':qid'=>$qid));
+                        $type = Question_types::model()->findByPk(Yii::app()->request->getPost('type')); //AJSL
+                        Questions::model()->updateAll(array('tid'=>Yii::app()->request->getPost('type'), 'type'=>$type['legacy']), 'parent_qid=:qid', array(':qid'=>$qid)); //AJSL
                     }
 
                     Answers::model()->deleteAllByAttributes(array('qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iAnswerScales));

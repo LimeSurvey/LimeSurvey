@@ -22,7 +22,7 @@
         { ?>
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/help.gif' alt='<?php echo $blang->gT("Help about this question"); ?>' align='right' onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" />
         <?php }
-        switch($deqrow['type'])
+        switch($deqrow['type']) //AJS
         {
             case "5": //5 POINT CHOICE radio-buttons ?>
             <select name='<?php echo $fieldname; ?>'>

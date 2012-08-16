@@ -1332,7 +1332,7 @@ class dataentry extends Survey_Common_Action
 
                         case "L": //LIST drop-down/radio-button list
                         case "!":
-                            if ($deqrow['type']=='!' && trim($qidattributes['category_separator'])!='')
+                            if (array_key_exists('category_separator', $qidattributes) && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
                             }
@@ -1566,7 +1566,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=dbExecuteAssoc($meaquery) or safeDie ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
+                            $mearesult=dbExecuteAssoc($meaquery) or safeDie ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
@@ -1627,7 +1627,7 @@ class dataentry extends Survey_Common_Action
                         case "F": //ARRAY (Flexible Labels)
                         case "H":
                             $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=dbExecuteAssoc($meaquery) or safeDie ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
+                            $mearesult=dbExecuteAssoc($meaquery) or safeDie ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
 
                             $cdata['mearesult'] = $mearesult->readAll();
 

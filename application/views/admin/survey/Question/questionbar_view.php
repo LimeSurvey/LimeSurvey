@@ -154,7 +154,7 @@ if (isset($tmp_survlangs)) { ?>
 <table  id='questiondetails' <?php echo $qshowstyle; ?>><tr><td><strong>
             <?php $clang->eT("Code:"); ?></strong></td>
         <td><?php echo $qrrow['title']; ?>
-            <?php if ($qrrow['type'] != "X")
+            <?php if (!$q->displayOnly())
                 {
                     if ($qrrow['mandatory'] == "Y") { ?>
                     : (<i><?php $clang->eT("Mandatory Question"); ?></i>)
@@ -205,7 +205,7 @@ if (isset($tmp_survlangs)) { ?>
                         <img src='<?php echo $sImageURL; ?><?php if ($qproperties['subquestions']==1){?>subquestions_20<?php } else {?>subquestions2d_20<?php } ?>.png' title='<?php $clang->eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
         <?php }
 
-        if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
+        if ($q->useCheckboxes())
         { ?>
         <tr>
             <td><strong>
@@ -220,7 +220,7 @@ if (isset($tmp_survlangs)) { ?>
                     <?php } ?>
             </td></tr>
         <?php }
-        if (isset($qrrow['mandatory']) and ($qrrow['type'] != "X") and ($qrrow['type'] != "|"))
+        if (isset($qrrow['mandatory']) and (!$q->displayOnly()) and (!$q->fileUpload()))
         { ?>
         <tr>
             <td><strong>

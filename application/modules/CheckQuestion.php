@@ -593,6 +593,11 @@ class CheckQuestion extends QuestionModule
         }
     }
 
+    public function useCheckboxes()
+    {
+        return true;
+    }
+
     public function getMandatoryTip()
     {
         if ($this->other == 'Y')
@@ -638,7 +643,7 @@ class CheckQuestion extends QuestionModule
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;
-        $props=array('description' => $clang->gT("Multiple choice"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'class' => 'multiple-opt','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0);
+        $props=array('description' => $clang->gT("Multiple choice"),'group' => $clang->gT("Multiple choice questions"),'subquestions' => 1,'class' => 'multiple-opt','hasdefaultvalues' => 1,'assessable' => 1,'answerscales' => 0,'enum' => 1);
         return $prop?$props[$prop]:$props;
     }
 }
