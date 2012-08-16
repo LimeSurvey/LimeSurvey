@@ -1365,9 +1365,6 @@
     * it loads any answer defaults from command line or from the table defaultvalues
     * It is called from the related format script (group.php, question.php, survey.php)
     * if the survey has just started.
-    *
-    * @returns  $totalquestions Total number of questions in the survey
-    *
     */
     function buildsurveysession($surveyid,$previewGroup=false)
     {
@@ -1375,7 +1372,6 @@
         global $tokensexist;
         //global $surveyid;
         global $register_errormsg;
-        global $totalBoilerplatequestions, $totalquestions;
         global $templang, $move, $rooturl;
 
         $clang = Yii::app()->lang;
@@ -1389,7 +1385,6 @@
         $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($_SESSION['survey_'.$surveyid]['templatename']).DIRECTORY_SEPARATOR;
         $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
-        $totalBoilerplatequestions = 0;
         $loadsecurity = returnGlobal('loadsecurity');
 
         // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
@@ -1769,6 +1764,17 @@
 
     $totalquestions = $result->count();
 
+
+    // Fix totalquestions by substracting Test Display questions
+    $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
+    ." FROM {{questions}}"
+    ." WHERE type in ('X','*')\n"
+    ." AND sid={$surveyid}"
+    ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
+    ." AND parent_qid=0")->read();
+
+    $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
+	
     //2. SESSION VARIABLE: totalsteps
     //The number of "pages" that will be presented in this survey
     //The number of pages to be presented will differ depending on the survey format
@@ -1788,7 +1794,7 @@
     }
 
 
-    if ($totalquestions == "0")	//break out and crash if there are no questions!
+    if ($totalquestions == 0)	//break out and crash if there are no questions!
     {
         sendCacheHeaders();
         doHeader();
@@ -2144,20 +2150,6 @@
             }
         }
     }
-
-    // Fix totalquestions by substracting Test Display questions
-    $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
-    ." FROM {{questions}}"
-    ." WHERE type in ('X','*')\n"
-    ." AND sid={$surveyid}"
-    ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
-    ." AND parent_qid=0")->read();
-    $sNoOfTextDisplayQuestions=(int) reset($iNumberofQuestions);
-
-    $_SESSION['survey_'.$surveyid]['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
-
-    return $totalquestions-$sNoOfTextDisplayQuestions;
-
 }
 
 function surveymover()
@@ -2736,7 +2728,8 @@ function GetReferringUrl()
 * Shows the welcome page, used in group by group and question by question mode
 */
 function display_first_page() {
-    global $token, $surveyid, $thissurvey, $navigator, $totalquestions;
+    global $token, $surveyid, $thissurvey, $navigator;
+	$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
     $clang = Yii::app()->lang;
 
