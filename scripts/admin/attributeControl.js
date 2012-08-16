@@ -30,32 +30,47 @@ $(document).ready(function() {
     });
 
     jQuery.extend($.fn.fmatter , {
-        rowactions : function(rid,gid,act) {
+        rowactions : function(rid,gid,act, pos) {
+            var delOptions = {
+                caption: deleteCaption,
+                msg: deleteMsg,
+                reloadAfterSubmit: true,
+                width: 400
+            };
             switch(act)
             {
                 case 'edit' :
                     window.open(attributeEditUrl + '/' + rid, '_top');
                     break;
                 case 'del':
-                    $('#'+gid).jqGrid('delGridRow', rid);
+                    $('#'+gid).jqGrid('delGridRow', rid, delOptions);
                     break;
             }
         }
     });
 
-    jQuery('#attributeControl').jqGrid('navGrid',
-                                       '#pager',
-                                       {add:true, del:true, edit:true},
-                                       {closeAfterAdd: true
-                                       }, //Add options
-                                       {    width:400,
-                                            reloadAfterSubmit: true,
-                                            afterSubmit: function (response) {
-                                                return [true, '', response.responseText];
-                                            }
-                                       }, //Del options
-                                       {}, //Edit options
-                                       {multipleSearch:true, width:600},
+    jQuery('#attributeControl').jqGrid('navGrid', '#pager',
+                                       { add:true,
+                                         edit:false,
+                                         del:true},
+                                       {}, //Default settings for edit
+                                       { addCaption: addCaption,
+                                         closeAfterAdd: true,
+                                         width: 400,
+                                         afterSubmit: function () {
+                                             $(this).jqGrid('setGridParam', {datatype: 'json'});
+                                             return [true,'',false]; //no error and no new rowid
+                                         },
+                                           }, //default settings for add
+                                       {    reloadAfterSubmit: true,
+                                            caption: deleteCaption,
+                                            msg: deleteMsg,
+                                            width: 500
+                                           }, //Default settings for delete
+                                       { multipleSearch:true,
+                                         width:600,
+                                         closeAfterSearch: true,
+                                         closeAfterReset: true}, //Default settings for search
                                        {closeAfterAdd:true}
                                       );
 
