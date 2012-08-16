@@ -1216,9 +1216,6 @@ function submitfailed($errormsg='')
 * it loads any answer defaults from command line or from the table defaultvalues
 * It is called from the related format script (group.php, question.php, survey.php)
 * if the survey has just started.
-*
-* @returns  $totalquestions Total number of questions in the survey
-*
 */
 function buildsurveysession($surveyid,$previewGroup=false)
 {
@@ -1226,7 +1223,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
         global $tokensexist;
     //global $surveyid;
     global $register_errormsg;
-    global $totalBoilerplatequestions, $totalquestions;
     global $templang, $move, $rooturl;
 
     $clang = Yii::app()->lang;
@@ -1240,7 +1236,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
         $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($_SESSION['survey_'.$surveyid]['templatename']).DIRECTORY_SEPARATOR;
         $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
-    $totalBoilerplatequestions = 0;
     $loadsecurity = returnGlobal('loadsecurity');
 
     // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
@@ -1599,26 +1594,16 @@ function buildsurveysession($surveyid,$previewGroup=false)
 
     UpdateSessionGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-
-    // TMSW Conditions->Relevance:  Duplicates refactoring of createFieldMap?  Conditions tables not needed here.
-
-    // Optimized Query
-    // Change query to use sub-select to see if conditions exist.
-    $query = "SELECT {{questions}}.*, {{groups}}.*,\n"
-    ." (SELECT count(1) FROM {{conditions}}\n"
-    ." WHERE {{questions}}.qid = {{conditions}}.qid) AS hasconditions,\n"
-    ." (SELECT count(1) FROM {{conditions}}\n"
-    ." WHERE {{questions}}.qid = {{conditions}}.cqid) AS usedinconditions\n"
-    ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
-    ." WHERE {{questions}}.sid=".$surveyid."\n"
-    ." AND {{groups}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
-    ." AND {{questions}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
-    ." AND {{questions}}.parent_qid=0\n"
-    ." ORDER BY {{groups}}.group_order,{{questions}}.question_order";
-
-    $result = dbExecuteAssoc($query);    //Checked
-
-    $totalquestions = $result->count();
+	$unique = array();
+	$display = array();
+	$fieldmap = createFieldMap($surveyid, false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
+	foreach ($fieldmap as $q)
+	{
+		if ((int) $q->id > 0 && ($q->displayOnly() || $q->isEquation())) $display[$q->id] = true;
+		if ((int) $q->id > 0) $unique[$q->id] = true;
+	}
+	$totalquestions = count($unique);
+	$_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - count($display);
 
     //2. SESSION VARIABLE: totalsteps
     //The number of "pages" that will be presented in this survey
@@ -1639,7 +1624,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
 
 
-    if ($totalquestions == "0")	//break out and crash if there are no questions!
+    if ($totalquestions == 0)	//break out and crash if there are no questions!
     {
         sendCacheHeaders();
         doHeader();
@@ -1960,20 +1945,6 @@ function buildsurveysession($surveyid,$previewGroup=false)
             }
         }
     }
-
-    // Fix totalquestions by substracting Test Display questions
-    $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
-    ." FROM {{questions}}"
-    ." WHERE tid in (15,22)\n" //AJS Not sure how to do this.
-    ." AND sid={$surveyid}"
-    ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
-    ." AND parent_qid=0")->read();
-    $sNoOfTextDisplayQuestions=(int) reset($iNumberofQuestions);
-
-    $_SESSION['survey_'.$surveyid]['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
-
-    return $totalquestions-$sNoOfTextDisplayQuestions;
-
 }
 
 function surveymover()
@@ -2491,7 +2462,8 @@ function GetReferringUrl()
 * Shows the welcome page, used in group by group and question by question mode
 */
 function display_first_page() {
-    global $token, $surveyid, $thissurvey, $navigator, $totalquestions;
+    global $token, $surveyid, $thissurvey, $navigator;
+	$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
     $clang = Yii::app()->lang;
 

@@ -112,6 +112,7 @@ class Save {
         global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
 
         //Check that the required fields have been completed.
+		$clang = Yii::app()->lang;
         $errormsg="";
         if (!isset($_POST['savename']) || !$_POST['savename']) {$errormsg.=$clang->gT("You must supply a name for this saved session.")."<br />\n";}
         if (!isset($_POST['savepass']) || !$_POST['savepass']) {$errormsg.=$clang->gT("You must supply a password for this saved session.")."<br />\n";}
