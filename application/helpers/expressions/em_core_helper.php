@@ -2542,7 +2542,7 @@ EOD;
 // also include SGQA values and read-only variable attributes
 '12X34X56' => array('sgqa'=>'12X34X56', 'code'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
 '12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'code'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>14,'gseq'=>2,'qseq'=>14),
+'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'question'=>'(question for q5pointChoice)', 'qid'=>14,'gseq'=>2,'qseq'=>14),
 'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'code'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','shown'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
 '12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
 'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
@@ -2924,7 +2924,6 @@ NAN~0 / empty
 1~empty < 16
 1~zero == empty
 3~q5pointChoice.code
-5~q5pointChoice.type
 (question for q5pointChoice)~q5pointChoice.question
 1~q5pointChoice.relevance
 4~q5pointChoice.NAOK + 1
