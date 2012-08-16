@@ -30,6 +30,7 @@ return array(
 		'application.core.*',
 		'application.models.*',
 		'application.controllers.*',
+        'application.modules.*',
 	),
 
 	'components' => array(
