@@ -969,8 +969,8 @@ class database extends Survey_Common_Action
                 unset($aURLParam['act']);
                 unset($aURLParam['title']);
                 unset($aURLParam['id']);
-                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']='NULL';
-                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']='NULL';
+                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
+                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
                 $aURLParam['sid']=$surveyid;
 
                 $param = new Survey_url_parameters;
