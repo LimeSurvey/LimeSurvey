@@ -172,9 +172,21 @@ class SurveyAdmin extends Survey_Common_Action
         $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
         $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
 
-        $oResult = Questions::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR {{questions}}.type = 'S')"); //AJS
-
-        $aData['questions'] = $oResult;
+        $oResult = Questions::model()->with('groups')->with('question_types')->with('parents')->findAllByAttributes(array('sid' => $iSurveyID, 'language' => $esrow['language']), array('index' => 'qid', 'order' => 'group_order, t.question_order'));
+        foreach ($oResult as $result)
+        {
+            $q = createQuestion(empty($result->question_types['class']) ? $oResult[$result['parent_qid']]->question_types['class'] : $result->question_types['class'] );
+			if ($q->questionProperties('subquestions') && $result['parent_qid'])
+			{
+				$questions[] = array('qid' => $result['parent_qid'], 'sqid' => $result['qid'], 'title' => $result->parents['title'], 'question' => $result->parents['question'], 'sqquestion' => $result['question']);
+			}
+			else if ($q->questionProperties('hasdefaultvalues') && !$q->questionProperties('subquestions'))
+			{
+				$questions[] = array('qid' => $result['qid'], 'title' => $result['title'], 'question' => $result['question']);
+			}
+        }
+        
+        $aData['questions'] = $questions;
         $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
         $aData['data'] = $aData;
 
@@ -1376,18 +1388,18 @@ class SurveyAdmin extends Survey_Common_Action
         Yii::app()->loadHelper('database');
         $oResult = dbExecuteAssoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
         left join {{questions}} q on q.qid=up.targetqid
-        left join {{questions}} sq on q.qid=up.targetqid
+        left join {{questions}} sq on sq.qid=up.targetsqid
         where up.sid={$iSurveyID}");
         $i = 0;
 
         foreach ($oResult->readAll() as $oRow)
         {
             $aData->rows[$i]['id'] = $oRow['id'];
-            $oRow['title'] = $oRow['title'] . ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
+            $oRow['title'] .= ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
 
             if ($oRow['sqquestion'] != '')
             {
-                echo (' - ' . ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
+                $oRow['title'] .= (' - ' . ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
             }
             unset($oRow['sqquestion']);
             unset($oRow['sqtitle']);

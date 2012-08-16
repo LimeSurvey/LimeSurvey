@@ -214,25 +214,6 @@
             ->query();
         }
 
-        function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
-        {
-            $command = Yii::app()->db->createCommand()
-            ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, ' . '{{groups}}.*')
-            ->from($this->tableName())
-            ->leftJoin('{{questions}} q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
-            ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
-            $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
-            if ($sCondition != FALSE)
-            {
-                $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
-                ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
-                ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
-            }
-            $command->order("{{groups}}.group_order asc, {{questions}}.question_order asc");
-
-            return $command->query()->readAll();
-        }
-
         /**
         * Insert an array into the questions table
         * Returns false if insertion fails, otherwise the new QID

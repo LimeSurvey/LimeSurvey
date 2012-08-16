@@ -35,14 +35,10 @@ class database extends Survey_Common_Action
 
         $action=Yii::app()->request->getPost('action');
         $clang = $this->getController()->lang;
-        $postsid=returnGlobal('sid');
-        $postgid=returnGlobal('gid');
-        $postqid=returnGlobal('qid');
-        $postqaid=returnGlobal('qaid');
         $databaseoutput = '';
-        $surveyid = returnGlobal('sid');
-        $gid = returnGlobal('gid');
-        $qid = returnGlobal('qid');
+        $surveyid = Yii::app()->request->getPost('sid');
+        $gid = Yii::app()->request->getPost('gid');
+        $qid = Yii::app()->request->getPost('qid');
         // if $action is not passed, check post data.
 
         if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
@@ -113,7 +109,7 @@ class database extends Survey_Common_Action
                 {
                     if (Yii::app()->request->getPost('defaultanswerscale_0_'.$language.'_0'))
                     {
-                        $this->_updateDefaultValues($postqid,0,0,'',$language,Yii::app()->request->getPost('defaultanswerscale_0_'.$language.'_0'),true);
+                        $this->_updateDefaultValues($qid,0,0,'',$language,Yii::app()->request->getPost('defaultanswerscale_0_'.$language.'_0'),true);
                     }
                 }
             }
@@ -144,13 +140,6 @@ class database extends Survey_Common_Action
             $q = createQuestion($resrow->question_types['class']);
             $qproperties=$q->questionProperties();
             $scalecount=$qproperties['answerscales'];
-
-            $count=0;
-            $invalidCode = 0;
-            $duplicateCode = 0;
-
-            //require_once("../classes/inputfilter/class.inputfilter_clean.php");
-            //$myFilter = new InputFilter('','',1,1,1);
 
             //First delete all answers
             Answers::model()->deleteAllByAttributes(array('qid'=>$qid));
@@ -210,9 +199,6 @@ class database extends Survey_Common_Action
 
             LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 
-            if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
-            if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
-
             Yii::app()->session['flashmessage']= $clang->gT("Answer options were successfully saved.");
 
             if ($databaseoutput != '')
@@ -239,8 +225,7 @@ class database extends Survey_Common_Action
 
             $resrow = Questions::model()->with('question_types')->findByAttributes(array('qid'=>$qid));
             $q = createQuestion($resrow->question_types['class']);
-            $qproperties=$q->questionProperties();
-            $scalecount=$qproperties['answerscales'];
+            $scalecount=$q->questionProperties('subquestions');
 
             $clang = $this->getController()->lang;
             // First delete any deleted ids
@@ -281,28 +266,7 @@ class database extends Survey_Common_Action
                     $oldcodes[$postkey[2]][]=$postvalue;
                 }
             }
-            $count=0;
-            $invalidCode = 0;
-            $duplicateCode = 0;
-            $dupanswers = array();
-            /*
-            for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
-            {
 
-            // Find duplicate codes and add these to dupanswers array
-            $foundCat=array_count_values($codes);
-            foreach($foundCat as $key=>$value){
-            if($value>=2){
-            $dupanswers[]=$key;
-            }
-            }
-            }
-            */
-            //require_once("../classes/inputfilter/class.inputfilter_clean.php");
-            //$myFilter = new InputFilter('','',1,1,1);
-
-
-            //$insertqids=array(); //?
             $insertqid =array();
             for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
             {
@@ -326,7 +290,7 @@ class database extends Survey_Common_Action
                         {
                             if (!isset($insertqid[$scale_id][$position]))
                             {
-                                $insertqid[$position]=Questions::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
+                                $insertqid[$scale_id][$position]=Questions::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
                             }
                             else
                             {
@@ -474,7 +438,7 @@ class database extends Survey_Common_Action
                                     $oldqid = $qr1['qid'];
                                     unset($qr1['qid']);
                                 }
-                                $qr1['gid'] = $postgid;
+                                $qr1['gid'] = $gid;
                                 $iInsertID = Questions::model()->insertRecords($qr1);
                                 if (!isset($qr1['qid']))
                                 {
@@ -779,39 +743,6 @@ class database extends Survey_Common_Action
                     Questions::model()->deleteAllByAttributes(array('parent_qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
 
                     Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully saved.");
-                    //                    }
-                    //                    else
-                    //                    {
-                    //
-                    //                        // There are conditions constraints: alert the user
-                    //                        $errormsg="";
-                    //                        if (!is_null($array_result['notAbove']))
-                    //                        {
-                    //                            $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
-                    //                            . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
-                    //                            . $clang->gT("See conditions:")."\\n";
-                    //
-                    //                            foreach ($array_result['notAbove'] as $notAboveCond)
-                    //                            {
-                    //                                $errormsg.="- cid:". $notAboveCond[3]."\\n";
-                    //                            }
-                    //
-                    //                        }
-                    //                        if (!is_null($array_result['notBelow']))
-                    //                        {
-                    //                            $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
-                    //                            . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
-                    //                            . $clang->gT("See conditions:")."\\n";
-                    //
-                    //                            foreach ($array_result['notBelow'] as $notBelowCond)
-                    //                            {
-                    //                                $errormsg.="- cid:". $notBelowCond[3]."\\n";
-                    //                            }
-                    //                        }
-                    //
-                    //                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-                    //                        $gid= $oldgid; // group move impossible ==> keep display on oldgid
-                    //                    }
                 }
                 else
                 {
@@ -895,7 +826,7 @@ class database extends Survey_Common_Action
                     'surveyls_numberformat' => Yii::app()->request->getPost('numberformat_'.$langname)
                     );
 
-                    Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$postsid, 'surveyls_language'=>$langname), $data);
+                    Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$surveyid, 'surveyls_language'=>$langname), $data);
                 }
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
