@@ -199,6 +199,7 @@ class question extends Survey_Common_Action
                         $defaultvalue = Defaultvalues::model()->findByAttributes(array(
                         'specialtype' => '',
                         'qid' => $qid,
+						'sqid' => $aSubquestion['qid'],
                         'scale_id' => $scale_id,
                         'language' => $language
                         ));

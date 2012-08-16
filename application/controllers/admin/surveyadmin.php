@@ -1377,18 +1377,18 @@ class SurveyAdmin extends Survey_Common_Action
         Yii::app()->loadHelper('database');
         $oResult = dbExecuteAssoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
         left join {{questions}} q on q.qid=up.targetqid
-        left join {{questions}} sq on q.qid=up.targetqid
+        left join {{questions}} sq on sq.qid=up.targetsqid
         where up.sid={$iSurveyID}");
         $i = 0;
 
         foreach ($oResult->readAll() as $oRow)
         {
             $aData->rows[$i]['id'] = $oRow['id'];
-            $oRow['title'] = $oRow['title'] . ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
+            $oRow['title'] .= ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
 
             if ($oRow['sqquestion'] != '')
             {
-                echo (' - ' . ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
+                $oRow['title'] .= (' - ' . ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
             }
             unset($oRow['sqquestion']);
             unset($oRow['sqtitle']);

@@ -93,7 +93,7 @@ class database extends Survey_Common_Action
                 foreach ($questlangs as $language)
                 {
 
-                    $sqresult = Questions::model()->findByAttributes(array('sid'=>$surveyid, 'gid'=>$gid, 'parent_qid'=>$qid, 'language'=>$language, 'scale_id'=>0));
+                    $sqresult = Questions::model()->findAllByAttributes(array('sid'=>$surveyid, 'gid'=>$gid, 'parent_qid'=>$qid, 'language'=>$language, 'scale_id'=>0));
 
                     for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
                     {
@@ -327,7 +327,7 @@ class database extends Survey_Common_Action
                         {
                             if (!isset($insertqid[$scale_id][$position]))
                             {
-                                $insertqid[$position]=Questions::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
+                                $insertqid[$scale_id][$position]=Questions::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
                             }
                             else
                             {
