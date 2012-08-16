@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-14 22:05:45+00:00\n"
+"POT-Creation-Date: 2012-08-16 08:12:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -468,7 +468,7 @@ msgid "Unknown error"
 msgstr ""
 
 #: application/controllers/UploaderController.php:263
-#: application/helpers/qanda_helper.php:2856
+#: application/helpers/qanda_helper.php:2865
 #: application/views/admin/assessments_view.php:13
 #: application/views/admin/labels/labelview_view.php:40
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:16
@@ -481,7 +481,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:264
 #: application/helpers/common_helper.php:2579
 #: application/helpers/common_helper.php:2792
-#: application/helpers/qanda_helper.php:2857
+#: application/helpers/qanda_helper.php:2866
 #: application/views/admin/dataentry/content_view.php:139
 msgid "Comment"
 msgstr ""
@@ -889,9 +889,9 @@ msgstr ""
 #: application/helpers/export_helper.php:1296
 #: application/helpers/expressions/em_manager_helper.php:2837
 #: application/helpers/expressions/em_manager_helper.php:2841
-#: application/helpers/qanda_helper.php:4145
-#: application/helpers/qanda_helper.php:4572
-#: application/helpers/qanda_helper.php:4610
+#: application/helpers/qanda_helper.php:4154
+#: application/helpers/qanda_helper.php:4581
+#: application/helpers/qanda_helper.php:4619
 #: application/views/admin/dataentry/content_view.php:527
 #: application/views/admin/dataentry/content_view.php:580
 #: application/views/admin/dataentry/import.php:23
@@ -1033,8 +1033,8 @@ msgstr ""
 #: application/helpers/export_helper.php:259
 #: application/helpers/export_helper.php:1296
 #: application/helpers/expressions/em_manager_helper.php:2843
-#: application/helpers/qanda_helper.php:4573
-#: application/helpers/qanda_helper.php:4618
+#: application/helpers/qanda_helper.php:4582
+#: application/helpers/qanda_helper.php:4627
 #: application/views/admin/dataentry/content_view.php:581
 #: application/views/admin/export/statistics_view.php:720
 msgid "Uncertain"
@@ -1099,9 +1099,9 @@ msgstr ""
 #: application/helpers/export_helper.php:1296
 #: application/helpers/expressions/em_manager_helper.php:2838
 #: application/helpers/expressions/em_manager_helper.php:2842
-#: application/helpers/qanda_helper.php:4154
-#: application/helpers/qanda_helper.php:4574
-#: application/helpers/qanda_helper.php:4628
+#: application/helpers/qanda_helper.php:4163
+#: application/helpers/qanda_helper.php:4583
+#: application/helpers/qanda_helper.php:4637
 #: application/views/admin/dataentry/content_view.php:528
 #: application/views/admin/dataentry/content_view.php:582
 #: application/views/admin/dataentry/import.php:24
@@ -1162,8 +1162,8 @@ msgstr ""
 #: application/helpers/export_helper.php:262
 #: application/helpers/export_helper.php:1301
 #: application/helpers/expressions/em_manager_helper.php:2846
-#: application/helpers/qanda_helper.php:4729
-#: application/helpers/qanda_helper.php:4771
+#: application/helpers/qanda_helper.php:4738
+#: application/helpers/qanda_helper.php:4780
 #: application/views/admin/dataentry/content_view.php:598
 #: application/views/admin/export/statistics_view.php:770
 msgid "Increase"
@@ -1178,8 +1178,8 @@ msgstr ""
 #: application/helpers/export_helper.php:263
 #: application/helpers/export_helper.php:1301
 #: application/helpers/expressions/em_manager_helper.php:2847
-#: application/helpers/qanda_helper.php:4730
-#: application/helpers/qanda_helper.php:4782
+#: application/helpers/qanda_helper.php:4739
+#: application/helpers/qanda_helper.php:4791
 #: application/views/admin/dataentry/content_view.php:599
 #: application/views/admin/export/statistics_view.php:775
 msgid "Same"
@@ -1194,8 +1194,8 @@ msgstr ""
 #: application/helpers/export_helper.php:264
 #: application/helpers/export_helper.php:1301
 #: application/helpers/expressions/em_manager_helper.php:2848
-#: application/helpers/qanda_helper.php:4731
-#: application/helpers/qanda_helper.php:4794
+#: application/helpers/qanda_helper.php:4740
+#: application/helpers/qanda_helper.php:4803
 #: application/views/admin/dataentry/content_view.php:600
 #: application/views/admin/export/statistics_view.php:780
 msgid "Decrease"
@@ -1225,30 +1225,30 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:2642
 #: application/helpers/common_helper.php:1828
 #: application/helpers/common_helper.php:1836
-#: application/helpers/qanda_helper.php:966
-#: application/helpers/qanda_helper.php:1556
-#: application/helpers/qanda_helper.php:1863
-#: application/helpers/qanda_helper.php:1996
-#: application/helpers/qanda_helper.php:2059
-#: application/helpers/qanda_helper.php:4165
-#: application/helpers/qanda_helper.php:4209
-#: application/helpers/qanda_helper.php:4301
-#: application/helpers/qanda_helper.php:4363
-#: application/helpers/qanda_helper.php:4454
-#: application/helpers/qanda_helper.php:4499
-#: application/helpers/qanda_helper.php:4577
-#: application/helpers/qanda_helper.php:4648
-#: application/helpers/qanda_helper.php:4734
-#: application/helpers/qanda_helper.php:4812
-#: application/helpers/qanda_helper.php:4917
-#: application/helpers/qanda_helper.php:5000
-#: application/helpers/qanda_helper.php:5132
-#: application/helpers/qanda_helper.php:5924
-#: application/helpers/qanda_helper.php:5925
-#: application/helpers/qanda_helper.php:6218
-#: application/helpers/qanda_helper.php:6379
-#: application/helpers/qanda_helper.php:6580
-#: application/helpers/qanda_helper.php:6634
+#: application/helpers/qanda_helper.php:975
+#: application/helpers/qanda_helper.php:1565
+#: application/helpers/qanda_helper.php:1872
+#: application/helpers/qanda_helper.php:2005
+#: application/helpers/qanda_helper.php:2068
+#: application/helpers/qanda_helper.php:4174
+#: application/helpers/qanda_helper.php:4218
+#: application/helpers/qanda_helper.php:4310
+#: application/helpers/qanda_helper.php:4372
+#: application/helpers/qanda_helper.php:4463
+#: application/helpers/qanda_helper.php:4508
+#: application/helpers/qanda_helper.php:4586
+#: application/helpers/qanda_helper.php:4657
+#: application/helpers/qanda_helper.php:4743
+#: application/helpers/qanda_helper.php:4821
+#: application/helpers/qanda_helper.php:4926
+#: application/helpers/qanda_helper.php:5009
+#: application/helpers/qanda_helper.php:5141
+#: application/helpers/qanda_helper.php:5933
+#: application/helpers/qanda_helper.php:5934
+#: application/helpers/qanda_helper.php:6227
+#: application/helpers/qanda_helper.php:6388
+#: application/helpers/qanda_helper.php:6589
+#: application/helpers/qanda_helper.php:6643
 #: application/views/admin/dataentry/content_view.php:29
 msgid "No answer"
 msgstr ""
@@ -1279,7 +1279,7 @@ msgstr ""
 #: application/helpers/export_helper.php:249
 #: application/helpers/export_helper.php:1281
 #: application/helpers/expressions/em_manager_helper.php:2834
-#: application/helpers/qanda_helper.php:4191
+#: application/helpers/qanda_helper.php:4200
 #: application/views/admin/dataentry/content_view.php:54
 #: application/views/admin/export/statistics_view.php:531
 msgid "Female"
@@ -1295,7 +1295,7 @@ msgstr ""
 #: application/helpers/export_helper.php:250
 #: application/helpers/export_helper.php:1281
 #: application/helpers/expressions/em_manager_helper.php:2833
-#: application/helpers/qanda_helper.php:4199
+#: application/helpers/qanda_helper.php:4208
 #: application/views/admin/dataentry/content_view.php:55
 #: application/views/admin/export/statistics_view.php:537
 msgid "Male"
@@ -1327,9 +1327,9 @@ msgstr ""
 #: application/helpers/export_helper.php:883
 #: application/helpers/export_helper.php:979
 #: application/helpers/export_helper.php:994
-#: application/helpers/qanda_helper.php:1829
-#: application/helpers/qanda_helper.php:2409
-#: application/helpers/qanda_helper.php:2746
+#: application/helpers/qanda_helper.php:1838
+#: application/helpers/qanda_helper.php:2418
+#: application/helpers/qanda_helper.php:2755
 #: application/views/admin/dataentry/content_view.php:103
 #: application/views/admin/dataentry/content_view.php:108
 #: application/views/admin/dataentry/content_view.php:123
@@ -1486,13 +1486,13 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:2153
 #: application/helpers/admin/statistics_helper.php:2161
 #: application/helpers/admin/statistics_helper.php:2166
-#: application/helpers/qanda_helper.php:1276
-#: application/helpers/qanda_helper.php:3744
-#: application/helpers/qanda_helper.php:3845
-#: application/helpers/qanda_helper.php:3937
-#: application/helpers/qanda_helper.php:4038
-#: application/helpers/qanda_helper.php:4039
-#: application/helpers/qanda_helper.php:4113
+#: application/helpers/qanda_helper.php:1285
+#: application/helpers/qanda_helper.php:3753
+#: application/helpers/qanda_helper.php:3854
+#: application/helpers/qanda_helper.php:3946
+#: application/helpers/qanda_helper.php:4047
+#: application/helpers/qanda_helper.php:4048
+#: application/helpers/qanda_helper.php:4122
 msgid "Answer"
 msgstr ""
 
@@ -1687,8 +1687,8 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:844
 #: application/controllers/admin/dataentry.php:1067
 #: application/controllers/admin/dataentry.php:1184
-#: application/helpers/qanda_helper.php:1570
-#: application/helpers/qanda_helper.php:5112
+#: application/helpers/qanda_helper.php:1579
+#: application/helpers/qanda_helper.php:5121
 #: application/views/admin/dataentry/content_view.php:53
 #: application/views/admin/dataentry/content_view.php:118
 #: application/views/admin/dataentry/content_view.php:136
@@ -1709,13 +1709,13 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:1000
 #: application/helpers/common_helper.php:4050
-#: application/helpers/qanda_helper.php:2184
+#: application/helpers/qanda_helper.php:2193
 msgid "Your Choices"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1005
 #: application/helpers/common_helper.php:4060
-#: application/helpers/qanda_helper.php:2192
+#: application/helpers/qanda_helper.php:2201
 msgid "Your Ranking"
 msgstr ""
 
@@ -2332,20 +2332,20 @@ msgid "Assessment group score"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:287
-#: application/views/admin/participants/attributeControl_view.php:5
-#: application/views/admin/participants/attributeControl_view.php:6
+#: application/views/admin/participants/attributeControl_view.php:9
+#: application/views/admin/participants/attributeControl_view.php:10
 msgid "Drop-down list"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:288
-#: application/views/admin/participants/attributeControl_view.php:5
-#: application/views/admin/participants/attributeControl_view.php:6
+#: application/views/admin/participants/attributeControl_view.php:9
+#: application/views/admin/participants/attributeControl_view.php:10
 msgid "Date"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:289
-#: application/views/admin/participants/attributeControl_view.php:5
-#: application/views/admin/participants/attributeControl_view.php:6
+#: application/views/admin/participants/attributeControl_view.php:9
+#: application/views/admin/participants/attributeControl_view.php:10
 msgid "Text box"
 msgstr ""
 
@@ -2463,10 +2463,10 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:827
 #: application/controllers/admin/printablesurvey.php:829
-#: application/helpers/qanda_helper.php:2728
-#: application/helpers/qanda_helper.php:2729
-#: application/helpers/qanda_helper.php:2760
-#: application/helpers/qanda_helper.php:2763
+#: application/helpers/qanda_helper.php:2737
+#: application/helpers/qanda_helper.php:2738
+#: application/helpers/qanda_helper.php:2769
+#: application/helpers/qanda_helper.php:2772
 msgid "Make a comment on your choice here:"
 msgstr ""
 
@@ -2491,10 +2491,10 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:934
 #: application/helpers/expressions/em_manager_helper.php:2966
 #: application/helpers/expressions/em_manager_helper.php:5511
-#: application/helpers/qanda_helper.php:1389
-#: application/helpers/qanda_helper.php:1715
-#: application/helpers/qanda_helper.php:2252
-#: application/helpers/qanda_helper.php:2620
+#: application/helpers/qanda_helper.php:1398
+#: application/helpers/qanda_helper.php:1724
+#: application/helpers/qanda_helper.php:2261
+#: application/helpers/qanda_helper.php:2629
 msgid "Other:"
 msgstr ""
 
@@ -3671,11 +3671,11 @@ msgstr ""
 #: application/helpers/common_helper.php:7140
 #: application/helpers/common_helper.php:7536
 #: application/helpers/common_helper.php:7579
-#: application/helpers/qanda_helper.php:1351
-#: application/helpers/qanda_helper.php:1532
-#: application/helpers/qanda_helper.php:2143
-#: application/helpers/qanda_helper.php:6560
-#: application/helpers/qanda_helper.php:6614
+#: application/helpers/qanda_helper.php:1360
+#: application/helpers/qanda_helper.php:1541
+#: application/helpers/qanda_helper.php:2152
+#: application/helpers/qanda_helper.php:6569
+#: application/helpers/qanda_helper.php:6623
 #: application/views/admin/dataentry/content_view.php:84
 #: application/views/admin/dataentry/content_view.php:94
 #: application/views/admin/labels/labelsetsbar_view.php:22
@@ -7113,7 +7113,7 @@ msgstr ""
 
 #: application/helpers/qanda_helper.php:200
 #: application/helpers/qanda_helper.php:201
-#: application/helpers/qanda_helper.php:1349
+#: application/helpers/qanda_helper.php:1358
 msgid "Choose your language"
 msgstr ""
 
@@ -7125,196 +7125,196 @@ msgstr ""
 msgid "One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:577
+#: application/helpers/qanda_helper.php:578
 msgid "Your time to answer this question has expired"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:580
+#: application/helpers/qanda_helper.php:581
 msgid "Time remaining"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:581
-#: application/helpers/qanda_helper.php:584
+#: application/helpers/qanda_helper.php:582
+#: application/helpers/qanda_helper.php:585
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:734
-#: application/helpers/qanda_helper.php:752
-#: application/helpers/qanda_helper.php:783
+#: application/helpers/qanda_helper.php:743
+#: application/helpers/qanda_helper.php:761
+#: application/helpers/qanda_helper.php:792
 msgid "hours"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:735
-#: application/helpers/qanda_helper.php:753
-#: application/helpers/qanda_helper.php:784
+#: application/helpers/qanda_helper.php:744
+#: application/helpers/qanda_helper.php:762
+#: application/helpers/qanda_helper.php:793
 msgid "mins"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:736
-#: application/helpers/qanda_helper.php:754
-#: application/helpers/qanda_helper.php:785
-#: application/helpers/qanda_helper.php:786
+#: application/helpers/qanda_helper.php:745
+#: application/helpers/qanda_helper.php:763
+#: application/helpers/qanda_helper.php:794
+#: application/helpers/qanda_helper.php:795
 msgid "seconds"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1111
-#: application/helpers/qanda_helper.php:1112
+#: application/helpers/qanda_helper.php:1120
+#: application/helpers/qanda_helper.php:1121
 msgid "Day"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1128
-#: application/helpers/qanda_helper.php:1129
+#: application/helpers/qanda_helper.php:1137
+#: application/helpers/qanda_helper.php:1138
 msgid "Month"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1131
+#: application/helpers/qanda_helper.php:1140
 msgid "Jan"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1132
+#: application/helpers/qanda_helper.php:1141
 msgid "Feb"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1133
+#: application/helpers/qanda_helper.php:1142
 msgid "Mar"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1134
+#: application/helpers/qanda_helper.php:1143
 msgid "Apr"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1135
+#: application/helpers/qanda_helper.php:1144
 msgid "May"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1136
+#: application/helpers/qanda_helper.php:1145
 msgid "Jun"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1137
+#: application/helpers/qanda_helper.php:1146
 msgid "Jul"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1138
+#: application/helpers/qanda_helper.php:1147
 msgid "Aug"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1139
+#: application/helpers/qanda_helper.php:1148
 msgid "Sep"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1140
+#: application/helpers/qanda_helper.php:1149
 msgid "Oct"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1141
+#: application/helpers/qanda_helper.php:1150
 msgid "Nov"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1142
+#: application/helpers/qanda_helper.php:1151
 msgid "Dec"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1158
-#: application/helpers/qanda_helper.php:1159
+#: application/helpers/qanda_helper.php:1167
+#: application/helpers/qanda_helper.php:1168
 msgid "Year"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1224
+#: application/helpers/qanda_helper.php:1233
 msgid "Hour"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1247
-#: application/helpers/qanda_helper.php:1248
+#: application/helpers/qanda_helper.php:1256
+#: application/helpers/qanda_helper.php:1257
 msgid "Minute"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1322
+#: application/helpers/qanda_helper.php:1331
 msgid "Date picker"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1323
-#: application/helpers/qanda_helper.php:1330
+#: application/helpers/qanda_helper.php:1332
+#: application/helpers/qanda_helper.php:1339
 #: application/views/admin/token/dummytokenform.php:38
 #: application/views/admin/token/tokenform.php:148
 msgid "Format: %s"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1610
+#: application/helpers/qanda_helper.php:1619
 msgid "Other answer"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1963
+#: application/helpers/qanda_helper.php:1972
 msgid "Please enter your comment here"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2135
+#: application/helpers/qanda_helper.php:2144
 msgid "First choice"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2137
+#: application/helpers/qanda_helper.php:2146
 msgid "Next choice"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2842
+#: application/helpers/qanda_helper.php:2851
 msgid "Upload files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2854
+#: application/helpers/qanda_helper.php:2863
 msgid "Upload your files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2855
+#: application/helpers/qanda_helper.php:2864
 msgid "Return to survey"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2858
+#: application/helpers/qanda_helper.php:2867
 msgid "File name"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3034
-#: application/helpers/qanda_helper.php:3353
-#: application/helpers/qanda_helper.php:4584
-#: application/helpers/qanda_helper.php:6431
+#: application/helpers/qanda_helper.php:3043
+#: application/helpers/qanda_helper.php:3362
+#: application/helpers/qanda_helper.php:4593
+#: application/helpers/qanda_helper.php:6440
 msgid "Error: This question has no answers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3496
+#: application/helpers/qanda_helper.php:3505
 msgid "Only numbers may be entered in these fields"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3535
+#: application/helpers/qanda_helper.php:3544
 msgid "Remaining: "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3543
+#: application/helpers/qanda_helper.php:3552
 msgid "Total: "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3745
-#: application/helpers/qanda_helper.php:3750
+#: application/helpers/qanda_helper.php:3754
+#: application/helpers/qanda_helper.php:3759
 #: application/views/admin/dataentry/content_view.php:408
 msgid "Only numbers may be entered in this field."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3929
-#: application/helpers/qanda_helper.php:3930
+#: application/helpers/qanda_helper.php:3938
+#: application/helpers/qanda_helper.php:3939
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5156
-#: application/helpers/qanda_helper.php:5535
-#: application/helpers/qanda_helper.php:5891
-#: application/helpers/qanda_helper.php:6039
-#: application/helpers/qanda_helper.php:6660
+#: application/helpers/qanda_helper.php:5165
+#: application/helpers/qanda_helper.php:5544
+#: application/helpers/qanda_helper.php:5900
+#: application/helpers/qanda_helper.php:6048
+#: application/helpers/qanda_helper.php:6669
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5808
+#: application/helpers/qanda_helper.php:5817
 msgid "..."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:6033
+#: application/helpers/qanda_helper.php:6042
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
@@ -7964,7 +7964,7 @@ msgid "ID"
 msgstr ""
 
 #: application/views/admin/assessments_view.php:9
-#: application/views/admin/participants/attributeControl_view.php:4
+#: application/views/admin/participants/attributeControl_view.php:8
 #: application/views/admin/participants/displayParticipants_view.php:96
 #: application/views/admin/responses/browseallheader_view.php:77
 #: application/views/admin/responses/browsetimeheader_view.php:55
@@ -9877,21 +9877,33 @@ msgstr ""
 msgid "Group by Group"
 msgstr ""
 
+#: application/views/admin/participants/attributeControl_view.php:2
+msgid "Delete attribute"
+msgstr ""
+
+#: application/views/admin/participants/attributeControl_view.php:3
+msgid "Delete selected attribute(s) and it's associated data?"
+msgstr ""
+
 #: application/views/admin/participants/attributeControl_view.php:4
+msgid "Add attribute"
+msgstr ""
+
+#: application/views/admin/participants/attributeControl_view.php:8
 #: application/views/admin/participants/displayParticipants_view.php:99
 msgid "Attribute name"
 msgstr ""
 
-#: application/views/admin/participants/attributeControl_view.php:4
+#: application/views/admin/participants/attributeControl_view.php:8
 #: application/views/admin/participants/displayParticipants_view.php:98
 msgid "Attribute type"
 msgstr ""
 
-#: application/views/admin/participants/attributeControl_view.php:4
+#: application/views/admin/participants/attributeControl_view.php:8
 msgid "Visible in participants panel"
 msgstr ""
 
-#: application/views/admin/participants/attributeControl_view.php:21
+#: application/views/admin/participants/attributeControl_view.php:25
 #: application/views/admin/participants/participantsPanel_view.php:55
 #: application/views/admin/participants/participantsPanel_view.php:56
 msgid "Attribute management"
