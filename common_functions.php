@@ -484,7 +484,7 @@ function db_select_tables_like($table)
         case 'mssql_n' :
         case 'mssqlnative':
         case 'odbc_mssql' :
-            return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
+            return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table' ESCAPE '\'";
         case 'postgres' :
             $table=str_replace('\\','\\\\',$table);
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
@@ -2992,14 +2992,14 @@ function getSavedCount($surveyid)
 function GetBaseLanguageFromSurveyID($surveyid)
 {
     static $cache = array();
-    global $connect;
+    global $connect,$defaultlang;
     $surveyid=(int)($surveyid);
     if (!isset($cache[$surveyid])) {
         $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
         $surveylanguage = $connect->GetOne($query); //Checked
         if (is_null($surveylanguage))
         {
-            $surveylanguage='en';
+            $surveylanguage=$defaultlang;
         }
         $cache[$surveyid] = $surveylanguage;
     } else {
@@ -3044,22 +3044,24 @@ function SetSurveyLanguage($surveyid, $language)
     if (isset($surveyid) && $surveyid>0)
     {
         // see if language actually is present in survey
-        $query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-        $result = db_execute_assoc($query); //Checked
-        while ($result && ($row=$result->FetchRow())) {
-            $additional_languages = $row['additional_languages'];
-            $default_language = $row['language'];
-        }
-
-        if (!isset($language) || ($language=='') || (isset($additional_languages) && strpos($additional_languages, $language) === false)
-        or (isset($default_language) && $default_language == $language)
-        ) {
-            // Language not supported, or default language for survey, fall back to survey's default language
+#        $query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+#        $result = db_execute_assoc($query); //Checked
+#        while ($result && ($row=$result->FetchRow())) {
+#            $additional_languages = $row['additional_languages'];
+#            $default_language = $row['language'];
+#        }
+        $default_language=GetBaseLanguageFromSurveyID($surveyid);
+        $additional_languages=GetAdditionalLanguagesFromSurveyID($surveyid);
+        if  ( !isset($language) || ($language=='')
+        || !( in_array($language,$additional_languages) || $language==$default_language)
+        )
+        {
+            // Language not supported, fall back to survey's default language
             $_SESSION['s_lang'] = $default_language;
-            //echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
-        } else {
+        }
+        else
+        {
             $_SESSION['s_lang'] = $language;
-            //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
         }
         $clang = new limesurvey_lang($_SESSION['s_lang']);
     }
@@ -4270,33 +4272,34 @@ function getHeader($meta = false)
     }
 
 
+
+    $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+    . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
+    if (getLanguageRTL($surveylanguage))
+    {
+        $header.=" dir=\"rtl\" ";
+    }
+    $header.= ">\n\t<head>\n"
+    . $css_header
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.ui.touch-punch.min.js\"></script>\n"
+    . "<link href=\"".$rooturl."/scripts/jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
+    . "<link href=\"".$rooturl."/scripts/jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
+    . $js_header;
+
+    if ($meta)
+        $header .= $meta;
+
     if ( !$embedded )
     {
-        $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
-        if (getLanguageRTL($surveylanguage))
-        {
-            $header.=" dir=\"rtl\" ";
-        }
-        $header.= ">\n\t<head>\n"
-        . $css_header
-        . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
-        . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui.js\"></script>\n"
-        . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.ui.touch-punch.min.js\"></script>\n"
-        . "<link href=\"".$rooturl."/scripts/jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
-        . "<link href=\"".$rooturl."/scripts/jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
-        . $js_header;
-
-        if ($meta)
-            $header .= $meta;
-
         return $header;
     }
     else
     {
         global $embedded_headerfunc;
         if ( function_exists( $embedded_headerfunc ) )
-            return $embedded_headerfunc();
+            return $embedded_headerfunc($header);
     }
 }
 

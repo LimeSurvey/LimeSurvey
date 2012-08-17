@@ -78,6 +78,35 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120808) to 1.92+ (build 120815) August 15, 2012
+-Fixed issue #6319: Preview group can throw error (Denis Chenu)
+-Fixed issue #6442 : Adding labels fails without numbers in last Code field in Label Set editor (Denis Chenu)
+-Fixed issue #6452: File Upload not working with embedded_layout use (Carsten Schmitz)
+-Fixed issue #6465: Assessment typo (Carsten Schmitz)
+-Fixed issue #6467 : checkbox for 'other' missing for multiple choice (Denis Chenu)
+-Fixed issue #6470 : Bad emplacement of Other text input box for large screen in Multiple option (Denis Chenu)
+-Fixed issue #6476: Error in data entry when using multiple choice with comment questions and MSSQL (Carsten Schmitz)
+-Fixed issue: Multiple option with checkbox : Other can be checked at submit with empty value (Denis Chenu)
+-Fixed issue: Remove escape character (\) from any field evaluated by EM. (Thomas White)
+#Updated translation: French (France) by BenoitBouvarel, DenisChenu
+#Updated translation: German by debianese
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Malay by ayahanda
+#Updated translation: Polish by elisa
+
+
+Changes from 1.92+ (build 120801) to 1.92+ (build 120808) August 8, 2012
+-Fixed issue #6424: Lastpage field not being added in MSSQL when upgrading from 1.85 or older (Carsten Schmitz)
+-Fixed issue #6439: Question type Array (numbers) does not work with numbers >10 as labels (Thomas White)
+#Updated translation: Czech by slansky
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Malay by ayahanda
+#Updated translation: Polish by elisa
+#Updated translation: Turkish by kayazeren
+
 Changes from 1.92+ (build 120725) to 1.92+ (build 120801) August 1, 2012
 -Fixed issue #6066: File upload fails if single oder double quotes are used (Carsten Schmitz)
 -Fixed issue #6287: Unable to export QueXML with Postgresql 9.1 (Adam Zammit)

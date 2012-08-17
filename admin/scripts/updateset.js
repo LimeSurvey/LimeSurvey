@@ -166,7 +166,7 @@ function add_label(event)
     {
         next_code='L001';
     }
-    while ($(this).parent().parent().parent().find('input[value="'+next_code+'"]').length>0)
+    while ($(this).parent().parent().parent().find('input[value="'+next_code+'"]').length>0  && next_code!=$(this).parent().parent().find('.codeval').val())
     {
         next_code=getNextCode(next_code);
     }

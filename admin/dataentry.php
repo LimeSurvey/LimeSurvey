@@ -2314,7 +2314,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         break;
                     case "P": //Multiple choice with comments checkbox + text
                         $dataentryoutput .= "<table border='0'>\n";
-                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
+                        $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                         $mearesult = db_execute_assoc($meaquery);
                         while ($mearow = $mearesult->FetchRow())
                         {

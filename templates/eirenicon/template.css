@@ -612,6 +612,11 @@ table.clearall-result td {
   display: inline-block;
   width: 85%;
 }
+.list-radio .question-answer li.other label,
+.list-with-comment .question-answer li.other label {
+  display: inline;
+  width: auto;
+}
 
 .list-radio .question-answer li input,
 .list-with-comment .question-answer li input {
@@ -723,7 +728,10 @@ table.rank td.helptext {
   display: inline-block;
   width: 90%;
 }
-
+.multiple-opt .question-answer li.other label, .multiple-opt-comments .question-answer li.other .option label {
+  display: inline;
+  width: auto;
+}
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
 .multiple-opt-comments td.answer,.multiple-short-txt td.answer,.numeric-multi td.answer
   {

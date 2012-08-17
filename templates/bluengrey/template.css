@@ -623,7 +623,11 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
   display: inline-block;
   width: 85%;
 }
-
+.list-radio .answers li.other label,
+.list-with-comment .answers li.other label {
+  display: inline;
+  width:auto;
+}
 .list-radio .answers li input ,
 .list-with-comment .answers li input{
   vertical-align: top !important;
@@ -743,6 +747,10 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 .multiple-opt .answers li label, .multiple-opt-comments .answers li .option label {
   display: inline-block;
   width: 85%;
+}
+.multiple-opt .answers li.other label, .multiple-opt-comments .answers li.other .option label {
+  display: inline;
+  width: auto;
 }
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
