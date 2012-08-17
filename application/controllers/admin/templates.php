@@ -923,7 +923,6 @@ class templates extends Survey_Common_Action
                 'man_class' => '',
                 'input_error_class' => '',
                 'number' => '1',
-                'type' => 'L' //AJS
                 );
                 $aData['question'] = $question;
 
@@ -947,7 +946,6 @@ class templates extends Survey_Common_Action
                 'man_class' => 'mandatory',
                 'input_error_class' => '',
                 'number' => '2',
-                'type' => 'T' //AJS
                 );
                 $aData['question'] = $question;
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
