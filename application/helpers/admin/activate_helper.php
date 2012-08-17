@@ -101,104 +101,58 @@ function checkQuestions($postsid, $iSurveyID)
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 
-    $chkresult = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0));
+    $chkresult = Questions::model()->with('question_types')->with('groups')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group_order, question_order'));
     
     foreach ($chkresult as $chkrow)
     {
+		if ($chkrow['tid'] == 0)
+		{
+			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'tid' set."), $chkrow['gid']);
+			continue;
+		}
+	
         $q = createQuestion($chkrow->question_types['class']);
         $qproperties=$q->questionProperties();
-        if ($qproperties['subquestions']>0)
+        if ($qproperties['subquestions'] > 0)
         {
-            $chaquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$chkrow['qid']} ORDER BY question_order";
-            $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
-            $chacount=count($charesult);
+		    $charesult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => $chkrow['qid']));
+            $chacount = count($charesult);
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no subquestions."), $chkrow['gid']);
+                $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no subquestions."), $chkrow['gid']);
             }
         }
-        if ($qproperties['answerscales']>0)
+
+        if ($qproperties['answerscales'] > 0)
         {
-            $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
-            $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
-            $chacount=count($charesult);
+            $charesult = Answers::model()->findAllByAttributes(array('qid' => $chkrow['qid'], 'scale_id' => 0));
+            $chacount = count($charesult);
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no answers."), $chkrow['gid']);
+                $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no answers."), $chkrow['gid']);
             }
         }
-    }
 
-    //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
-    $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$iSurveyID} AND type = ''"; //AJS
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
-    foreach ($chkresult as $chkrow)
-    {
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'type' set."), $chkrow['gid']);
-    }
-
-
-
-
-    //Check that certain array question types have answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0"; //AJS
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
-    foreach($chkresult as $chkrow){
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires answers, but none are set."), $chkrow['gid']);
-    } // while
-
-    //CHECK THAT DUAL Array has answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0"; //AJS
-    $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
-    foreach ($chkresult as $chkrow){
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second answer set but none is set."), $chkrow['gid']);
-    } // while
-
-    //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('S', 'D', 'T', 'Q')"; //AJS
-    $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
-    $qrows = array(); //Create an empty array in case FetchRow does not return any rows
-    foreach ($qorderresult as $qrow) {$qrows[] = $qrow;} // Get table output into array
-    usort($qrows, 'groupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    $c=0;
-    foreach ($qrows as $qr)
-    {
-        $qidorder[]=array($c, $qrow['qid']);
-        $c++;
-    }
-
-    $qordercount="";
-    //1: Get each condition's question id
-    $conquery= "SELECT {{conditions}}.qid, cqid, {{questions}}.question, "
-    . "{{questions}}.gid "
-    . "FROM {{conditions}}, {{questions}}, {{groups}} "
-    . "WHERE {{conditions}}.qid={{questions}}.qid "
-    . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
-    $conresult=Yii::app()->db->createCommand($conquery)->query()->readAll();
-    //2: Check each conditions cqid that it occurs later than the cqid
-    foreach ($conresult as $conrow)
-    {
-        $cqidfound=0;
-        $qidfound=0;
-        $b=0;
-        while ($b<$qordercount)
+        if ($qproperties['answerscales']>1)
         {
-            if ($conrow['cqid'] == $qidorder[$b][1])
+            $charesult = Answers::model()->findAllByAttributes(array('qid' => $chkrow['qid'], 'scale_id' => 1));
+            $chacount = count($charesult);
+            if ($chacount == 0)
             {
-                $cqidfound = 1;
-                $b=$qordercount;
+                $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no answers."), $chkrow['gid']);
             }
-            if ($conrow['qid'] == $qidorder[$b][1])
-            {
-                $qidfound = 1;
-                $b=$qordercount;
-            }
-            if ($qidfound == 1)
-            {
-                $failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".$clang->gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
-            }
-            $b++;
         }
+
+		$conresult = Conditions::model()->with('questions')->with('groups')->findAllByAttributes(array('qid' => $chkrow['qid']));
+		foreach ($conresult as $conrow)
+		{
+			if ($conrow->groups['group_order'] > $chkrow->groups['group_order'] ||
+				($conrow->groups['group_order'] == $chkrow->groups['group_order'] &&
+				$conrow->questions['question_order'] >= $chkrow['question_order']))
+			{
+				$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has a condition set, however the condition is based on a question that appears after it."), $chkrow['gid']);
+			}
+		}
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE

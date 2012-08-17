@@ -989,7 +989,7 @@ class conditionsaction extends Survey_Common_Action {
                                 // For dropdown questions
                                 // optinnaly add the 'Other' answer
                                 if ( (	$q->type == "L" ||
-                                $q->type == "!") && //AJS
+                                $q->type == "!") && isset($q->other) &&
                                 $q->other == "Y" )
                                 {
                                     $canswers[]=array($q->surveyid.$X.$q->gid.$X.$q->id, "-oth-", $clang->gT("Other"));

@@ -66,6 +66,9 @@
             'questions' => array(self::HAS_ONE, 'Questions', '',
             'on' => 't.cqid = questions.qid',
             ),
+            'groups' => array(self::HAS_ONE, 'Groups', '', 'through' => 'questions',
+                'on' => 'questions.gid = groups.gid'
+            ),
             );
         }
 
