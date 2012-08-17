@@ -735,7 +735,7 @@ class database extends Survey_Common_Action
                                     // Moving question to a 'upper' group
                                     // insert question at the end of the destination group
                                     // this prevent breaking conditions if the target qid is in the dest group
-                                    $insertorder = getMaxQuestionOrder($gid) + 1;
+                                    $insertorder = getMaxQuestionOrder($gid,$surveyid) + 1;
                                     $udata = array_merge($udata,array('question_order' => $insertorder));
                                 }
                                 else

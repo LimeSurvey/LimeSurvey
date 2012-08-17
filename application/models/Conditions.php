@@ -93,7 +93,34 @@
         }
 
 
+        /**
+        * Updates the group ID for all conditions
+        * 
+        * @param integer $iSurveyID
+        * @param integer $iQuestionID
+        * @param integer $iOldGroupID
+        * @param integer $iNewGroupID
+        */
+        public function updateCFieldName($iSurveyID, $iQuestionID, $iOldGroupID, $iNewGroupID)
+        {
+            $oResults=$this->findAllByAttributes(array('cqid'=>$iQuestionID));
+            foreach ($oResults as $oRow)
+            {
 
+                $cfnregs='';
+                if (preg_match('/'.$surveyid."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0)
+                {
+                    $newcfn=$surveyid."X".$iNewGroupID."X".$iQuestionID.$cfnregs[1];
+                    $c2query="UPDATE ".db_table_name('conditions')
+                    ." SET cfieldname='{$newcfn}' WHERE cid={$oRow->cid}";
+
+                    Yii::app()->db->createCommand($c2query)->query();
+                }
+            }
+        }
+
+        
+        
         public function insertRecords($data, $update=FALSE, $condition=FALSE)
         {
             $record = new self;
@@ -123,6 +150,7 @@
             else
                 return $record->save();
         }
+        
         function getScenarios($qid)
         {
 
@@ -130,6 +158,7 @@
 
             return Yii::app()->db->createCommand($scenarioquery)->query();
         }
+        
         function getSomeConditions($fields, $condition, $order, $group){
             $record = Yii::app()->db->createCommand()
             ->select($fields)
@@ -147,6 +176,7 @@
 
             return $record->query();
         }
+        
         function getConditionsQuestions($distinctrow,$deqrow,$scenariorow,$surveyprintlang)
         {
             $conquery="SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname"
