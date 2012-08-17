@@ -37,7 +37,8 @@ class UploaderController extends AdminController {
 		    readfile($sFileDir.$sFileName);
 		    exit();
 		}
-		elseif (isset($param['delete'])) {
+		elseif (isset($param['delete']))
+		{
 		    $sFieldname = $param['fieldname'];
 		    $sFilename = sanitize_filename($param['filename']);
 		    $sOriginalFileName=sanitize_filename($param['name']);
@@ -88,15 +89,21 @@ class UploaderController extends AdminController {
 		    //This next line ensures that the $surveyid value is never anything but a number.
 		    $surveyid=sanitize_int($surveyid);
 		}
-            if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
-            {
-                $sLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-            }
-            else
-            {
-                $sLanguage='';
-            }
-             $clang = SetSurveyLanguage( $surveyid, $sLanguage);
+
+		if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+		{
+			$sLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
+		}
+		else
+		{
+			$sLanguage='';
+		}
+		$clang = SetSurveyLanguage( $surveyid, $sLanguage);
+		$aFieldMap = createFieldMap($surveyid,false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+		if (!isset($aFieldMap[$param['fieldname']])) die();
+		$q = $aFieldMap[$param['fieldname']];
+		$aAttributes = $q->getAttributeValues();
+
 		if(isset($param['mode']) && $param['mode'] == "upload")
 		{
 			$clang = Yii::app()->lang;
@@ -108,10 +115,6 @@ class UploaderController extends AdminController {
 		    $maxfilesize = (int) $_POST['max_filesize'];
 		    $preview = $_POST['preview'];
 		    $fieldname = $_POST['fieldname'];
-            $aFieldMap = createFieldMap($surveyid,false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
-		    if (!isset($aFieldMap[$fieldname])) die();
-            $q=$aFieldMap[$fieldname];
-		    $aAttributes=$q->getAttributeValues();
 
 		    $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
 		    $valid_extensions_array = array_map('trim',$valid_extensions_array);
@@ -275,21 +278,19 @@ class UploaderController extends AdminController {
 		    </script>\n";
 
 		$fn = $param['fieldname'];
-		$qid = $param['qid'];
         $minfiles = sanitize_int($param['minfiles']);
         $maxfiles = sanitize_int($param['maxfiles']);
-		$qidattributes=getQuestionAttributeValues($qid); //AJS
 
 		$body = '
 		        <div id="notice"></div>
 		        <input type="hidden" id="ia"                value="'.$fn.'" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
                 <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$maxfiles.'" />
-		        <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$qidattributes['max_filesize'].'" />
-		        <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$qidattributes['allowed_filetypes'].'" />
+		        <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$aAttributes['max_filesize'].'" />
+		        <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$aAttributes['allowed_filetypes'].'" />
 		        <input type="hidden" id="preview"                   value="'.Yii::app()->session['preview'].'" />
-		        <input type="hidden" id="'.$fn.'_show_comment"      value="'.$qidattributes['show_comment'].'" />
-		        <input type="hidden" id="'.$fn.'_show_title"        value="'.$qidattributes['show_title'].'" />
+		        <input type="hidden" id="'.$fn.'_show_comment"      value="'.$aAttributes['show_comment'].'" />
+		        <input type="hidden" id="'.$fn.'_show_title"        value="'.$aAttributes['show_title'].'" />
 		        <input type="hidden" id="'.$fn.'_licount"           value="0" />
 		        <input type="hidden" id="'.$fn.'_filecount"         value="0" />
 
@@ -298,7 +299,7 @@ class UploaderController extends AdminController {
 		            <button id="button1" class="upload-button" type="button" >'.$clang->gT("Select file").'</button>
 		        </div>
 
-		        <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each.",'js'),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
+		        <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each.",'js'),$aAttributes['allowed_filetypes'],$aAttributes['max_filesize']).'</p>
 		        <div class="uploadstatus" id="uploadstatus"></div>
 
 		        <!-- The list of uploaded files -->
