@@ -4275,15 +4275,11 @@ function ExcelImportSurvey($sFullFilepath)
     }
 
     // Create the survey entry
-    $iNewSID=GetNewSurveyID($iOldSID);
     $surveyinfo['startdate']=NULL;
-    $surveyinfo['sid']=$iNewSID;
     $surveyinfo['active']='N';
-    $surveyinfo['owner_id']=$_SESSION['loginID'];
-    $surveyinfo['datecreated']=new CDbExpression('NOW()');
-
     switchMSSQLIdentityInsert('surveys',true);
     $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) or safeDie($clang->gT("Error").": Failed to insert survey<br />");
+    $surveyinfo['sid']=$iNewSID;
     $results['surveys']++;
     switchMSSQLIdentityInsert('surveys',false);
     $results['newsid']=$iNewSID;
