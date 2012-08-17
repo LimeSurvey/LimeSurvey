@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-16 22:05:45+00:00\n"
+"POT-Creation-Date: 2012-08-17 22:05:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -59,11 +59,11 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:4066
 #: application/helpers/admin/import_helper.php:4127
 #: application/helpers/admin/import_helper.php:4182
-#: application/helpers/admin/import_helper.php:4286
-#: application/helpers/admin/import_helper.php:4356
-#: application/helpers/admin/import_helper.php:4401
-#: application/helpers/admin/import_helper.php:4514
-#: application/helpers/admin/import_helper.php:4550
+#: application/helpers/admin/import_helper.php:4281
+#: application/helpers/admin/import_helper.php:4352
+#: application/helpers/admin/import_helper.php:4397
+#: application/helpers/admin/import_helper.php:4510
+#: application/helpers/admin/import_helper.php:4546
 #: application/views/admin/dataentry/active_html_view.php:93
 #: application/views/admin/dataentry/warning_header.php:1
 #: application/views/admin/error_view.php:3
@@ -4338,7 +4338,7 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:2619
 #: application/helpers/admin/import_helper.php:2662
 #: application/helpers/admin/import_helper.php:2689
-#: application/helpers/admin/import_helper.php:4314
+#: application/helpers/admin/import_helper.php:4310
 msgid "Import of this survey file failed"
 msgstr ""
 
@@ -4376,16 +4376,16 @@ msgstr ""
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4401
+#: application/helpers/admin/import_helper.php:4397
 msgid "Could not insert question"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4401
-#: application/helpers/admin/import_helper.php:4550
+#: application/helpers/admin/import_helper.php:4397
+#: application/helpers/admin/import_helper.php:4546
 msgid "Excel row number "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4550
+#: application/helpers/admin/import_helper.php:4546
 msgid "Could not insert answer"
 msgstr ""
 
