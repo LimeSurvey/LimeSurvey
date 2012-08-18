@@ -251,7 +251,7 @@
             <?php }
             else
             {
-                while ($mearow = $mearesult->FetchRow())
+                foreach ($mearesult as $mearow)
                 { ?>
                 <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['code']; ?>' id='answer<?php echo $fieldname.$mearow['code']; ?>' value='Y'
                     <?php if ($mearow['default_value'] == "Y") {  ?>checked<?php } ?>

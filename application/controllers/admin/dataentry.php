@@ -12,39 +12,6 @@
 *
 *	$Id$
 */
-/*
-* We need this later:
-*  1 - Array (Flexible Labels) Dual Scale
-5 - 5 Point Choice
-A - Array (5 Point Choice)
-B - Array (10 Point Choice)
-C - Array (Yes/No/Uncertain)
-D - Date
-E - Array (Increase, Same, Decrease)
-F - Array (Flexible Labels)
-G - Gender
-H - Array (Flexible Labels) by Column
-I - Language Switch
-K - Multiple Numerical Input
-L - List (Radio)
-M - Multiple choice
-N - Numerical Input
-O - List With Comment
-P - Multiple choice with comments
-Q - Multiple Short Text
-R - Ranking
-S - Short Free Text
-T - Long Free Text
-U - Huge Free Text
-X - Boilerplate Question
-Y - Yes/No
-! - List (Dropdown)
-: - Array (Flexible Labels) multiple drop down
-; - Array (Flexible Labels) multiple texts
-| - File Upload Question
-
-
-*/
 
 /**
 * dataentry
@@ -1230,7 +1197,7 @@ class dataentry extends Survey_Common_Action
             {
                 LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"),$surveyid);
                 
-                $result = Questions::model()->with('question_types')->findAllByAttributes(array('gid' => $degrow['gid'], 'language' => $sDataEntryLanguage), array('order' => 'question_order'));
+                $results = Questions::model()->with('question_types')->findAllByAttributes(array('gid' => $degrow['gid'], 'language' => $sDataEntryLanguage), array('order' => 'question_order'));
                 $aDataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".flattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
@@ -1239,11 +1206,10 @@ class dataentry extends Survey_Common_Action
                 $aDataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 
                 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-                usort($deqrows, 'groupOrderThenQuestionOrder');
                 $bgc = 'odd';
-                foreach ($result as $deqrow)
+                foreach ($results as $deqrow)
                 {
-                    $q = createQuestion($result->question_types['class'], array('surveyid' => $result['sid'], 'gid' => $result['gid'], 'id' => $result['qid'], 'text' => $result['question'], 'mandatory' => $result['mandatory'], 'title' => $result['title']));
+                    $q = createQuestion($deqrow->question_types['class'], array('surveyid' => $deqrow['sid'], 'gid' => $deqrow['gid'], 'id' => $deqrow['qid'], 'text' => $deqrow['question'], 'mandatory' => $deqrow['mandatory'], 'title' => $deqrow['title']));
                     $qidattributes = $q->getAttributeValues();
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
