@@ -222,14 +222,14 @@ CREATE TABLE prefix_question_attributes (
 
 --
 -- Table structure for table questions
---
+--//AJSL
 CREATE TABLE prefix_questions (
     qid serial NOT NULL,
     parent_qid integer DEFAULT 0 NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
     gid integer DEFAULT 0 NOT NULL,
     tid integer DEFAULT 0 NOT NULL,
-    "type" character varying(1) DEFAULT 'T' NOT NULL, --//AJSL
+    "type" character varying(1) DEFAULT 'T' NOT NULL,
     title character varying(20) DEFAULT '' NOT NULL,
     question text NOT NULL,
     preg text,

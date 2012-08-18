@@ -215,14 +215,14 @@ CREATE TABLE [prefix_question_attributes] (
 
 --
 -- Table structure for table questions
---
+--//AJSL
 CREATE TABLE [prefix_questions] (
   [qid] int NOT NULL IDENTITY (1,1),
   [parent_qid] int NOT NULL default '0',
   [sid] int NOT NULL default '0',
   [gid] int NOT NULL default '0',
   [tid] int NOT NULL default '0',
-  [type] varchar(1) NOT NULL default 'T', --//AJSL
+  [type] varchar(1) NOT NULL default 'T',
   [title] varchar(20) NOT NULL default '',
   [question] varchar(max) NOT NULL,
   [preg] varchar(max),
