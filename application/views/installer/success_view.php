@@ -29,7 +29,7 @@
  <tbody>
   <tr>
    <td align="left" style="width: 227px;"></td>
-   <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="Administration" onclick="javascript: window.open('<?php echo $this->createUrl("/admin"); ?>', '_top')" />
+   <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="<?php $clang->eT("Administration"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("/admin"); ?>', '_top')" />
     <div id="next" style="font-size:11px;"></div>
    </td>
   </tr>

@@ -1605,6 +1605,17 @@ function buildsurveysession($surveyid,$previewGroup=false)
 	$totalquestions = count($unique);
 	$_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - count($display);
 
+
+    // Fix totalquestions by substracting Test Display questions
+    $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
+    ." FROM {{questions}}"
+    ." WHERE type in ('X','*')\n"
+    ." AND sid={$surveyid}"
+    ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
+    ." AND parent_qid=0")->read();
+
+    $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
+	
     //2. SESSION VARIABLE: totalsteps
     //The number of "pages" that will be presented in this survey
     //The number of pages to be presented will differ depending on the survey format

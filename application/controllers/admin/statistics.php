@@ -453,7 +453,7 @@ class statistics extends Survey_Common_Action {
 		Yii::app()->loadHelper('admin/statistics');
 		$showtextinline=isset($_POST['showtextinline']) ? 1 : 0;
 		$aData['showtextinline'] = $showtextinline;
-		
+
 		//Show Summary results
 		if (isset($summary) && $summary)
 		{
@@ -497,6 +497,7 @@ class statistics extends Survey_Common_Action {
     function listcolumn($surveyid, $column, $sql, $sortby="", $sortmethod="", $sorttype="")
     {
         $search['condition']=$column." != ''";
+        if($sql != "") {$search['condition'].= " AND ($sql)";}
         if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
         if($sortby != "") $search['order']=$sortby.' '.$sortmethod;
         $results=Survey_dynamic::model($surveyid)->findAll($search);
