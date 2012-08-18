@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-17 22:05:44+00:00\n"
+"POT-Creation-Date: 2012-08-18 22:05:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -106,6 +106,8 @@ msgstr ""
 #: application/views/admin/authentication/forgotpassword.php:15
 #: application/views/admin/dataentry/active_html_view.php:95
 #: application/views/admin/error_view.php:5
+#: application/views/admin/participants/participantsPanel_view.php:14
+#: application/views/admin/participants/participantsPanel_view.php:15
 #: application/views/admin/survey/copySurvey_view.php:8
 #: application/views/admin/survey/deleteSurvey_view.php:11
 #: application/views/admin/survey/importSurvey_view.php:7
@@ -10072,6 +10074,8 @@ msgid "Blacklist settings"
 msgstr ""
 
 #: application/views/admin/participants/blacklist_view.php:13
+#: application/views/admin/participants/participantsPanel_view.php:43
+#: application/views/admin/participants/participantsPanel_view.php:44
 msgid "Blacklist control"
 msgstr ""
 
@@ -10437,6 +10441,38 @@ msgstr ""
 msgid "Participant panel"
 msgstr ""
 
+#: application/views/admin/participants/participantsPanel_view.php:19
+#: application/views/admin/participants/participantsPanel_view.php:20
+msgid "Information"
+msgstr ""
+
+#: application/views/admin/participants/participantsPanel_view.php:24
+#: application/views/admin/participants/participantsPanel_view.php:25
+msgid "Import from CSV"
+msgstr ""
+
+#: application/views/admin/participants/participantsPanel_view.php:30
+#: application/views/admin/participants/participantsPanel_view.php:31
+msgid "Export all"
+msgstr ""
+
+#: application/views/admin/participants/participantsPanel_view.php:38
+#: application/views/admin/participants/participantsPanel_view.php:39
+msgid "Display participants"
+msgstr ""
+
+#: application/views/admin/participants/participantsPanel_view.php:49
+#: application/views/admin/participants/participantsPanel_view.php:50
+#: application/views/admin/participants/userControl_view.php:5
+msgid "Global participant settings"
+msgstr ""
+
+#: application/views/admin/participants/participantsPanel_view.php:63
+#: application/views/admin/participants/participantsPanel_view.php:64
+#: application/views/admin/participants/sharePanel_view.php:18
+msgid "Share panel"
+msgstr ""
+
 #: application/views/admin/participants/participantsPanel_view.php:105
 msgid "There are no participants to be exported"
 msgstr ""
@@ -10460,10 +10496,6 @@ msgstr ""
 
 #: application/views/admin/participants/sharePanel_view.php:14
 msgid "Can edit?"
-msgstr ""
-
-#: application/views/admin/participants/sharePanel_view.php:18
-msgid "Share panel"
 msgstr ""
 
 #: application/views/admin/participants/summary_view.php:2
@@ -10552,10 +10584,6 @@ msgstr ""
 
 #: application/views/admin/participants/uploadSummary_view.php:70
 msgid "%s records have incomplete or wrong attribute values"
-msgstr ""
-
-#: application/views/admin/participants/userControl_view.php:5
-msgid "Global participant settings"
 msgstr ""
 
 #: application/views/admin/participants/userControl_view.php:13
@@ -11004,6 +11032,7 @@ msgid "Delete entry"
 msgstr ""
 
 #: application/views/admin/super/adminmenu.php:4
+#: application/views/installer/success_view.php:32
 msgid "Administration"
 msgstr ""
 
