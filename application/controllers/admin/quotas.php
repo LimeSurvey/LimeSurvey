@@ -362,7 +362,7 @@ class quotas extends Survey_Common_Action
                 $quota_name = $aQuotaDetails['name'];
             }
 
-            $result = Questions::model()->findAllByAttributes(array('type' => array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!'), 'sid' => $iSurveyId, 'language' => $sBaseLang)); //AJS
+            $result = Questions::model()->findAllByAttributes(array('type' => array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!'), 'sid' => $iSurveyId, 'language' => $sBaseLang, 'parent_qid' => 0)); //AJS
             if (empty($result))
             {
                 $aViewUrls[] = 'newanswererror_view';
