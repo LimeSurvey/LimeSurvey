@@ -1771,7 +1771,7 @@ tr.LEMsubq td {
 
 /* some classes to highlight certain elements */
 .error {
-    background-color: #000;
+    background-color: #FFBABA;
 }
 .ok {
     background-color: #00ff00

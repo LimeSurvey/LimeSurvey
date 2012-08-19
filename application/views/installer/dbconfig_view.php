@@ -36,7 +36,7 @@
                             <b><?php echo CHtml::activeLabelEx($model, 'dblocation', array('label' => $clang->gT("Database location"))); ?></b><br />
                             <div class="description-field"><?php $clang->eT('Set this to the IP/net location of your database server. In most cases "localhost" will work.'); ?> </div>
                         </td>
-                        <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model, 'dblocation', array('value' => 'localhost', 'required' => 'required')) ?></td>
+                        <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model, 'dblocation', array('required' => 'required')) ?></td>
                     </tr>
                     <tr>
                         <td style="width: 428px;">
