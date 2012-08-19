@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-18 22:05:47+00:00\n"
+"POT-Creation-Date: 2012-08-19 22:05:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -60,10 +60,11 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:4127
 #: application/helpers/admin/import_helper.php:4182
 #: application/helpers/admin/import_helper.php:4281
-#: application/helpers/admin/import_helper.php:4352
-#: application/helpers/admin/import_helper.php:4397
-#: application/helpers/admin/import_helper.php:4510
-#: application/helpers/admin/import_helper.php:4546
+#: application/helpers/admin/import_helper.php:4312
+#: application/helpers/admin/import_helper.php:4357
+#: application/helpers/admin/import_helper.php:4405
+#: application/helpers/admin/import_helper.php:4528
+#: application/helpers/admin/import_helper.php:4568
 #: application/views/admin/dataentry/active_html_view.php:93
 #: application/views/admin/dataentry/warning_header.php:1
 #: application/views/admin/error_view.php:3
@@ -241,7 +242,7 @@ msgid "Please continue with populating the database."
 msgstr ""
 
 #: application/controllers/InstallerController.php:554
-#: application/controllers/InstallerController.php:1167
+#: application/controllers/InstallerController.php:1168
 msgid "Try again! Connection with database failed. Reason: "
 msgstr ""
 
@@ -280,11 +281,11 @@ msgstr ""
 msgid "Passwords don't match."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1037
+#: application/controllers/InstallerController.php:1038
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1038
+#: application/controllers/InstallerController.php:1039
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
@@ -982,6 +983,10 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:160
 #: application/controllers/admin/tokens.php:1470
 #: application/controllers/admin/useraction.php:157
+#: application/helpers/admin/import_helper.php:4446
+#: application/helpers/admin/import_helper.php:4464
+#: application/helpers/admin/import_helper.php:4490
+#: application/helpers/admin/import_helper.php:4550
 #: application/views/admin/dataentry/import.php:31
 #: application/views/admin/survey/Question/questionbar_view.php:195
 #: application/views/admin/survey/Question/questionbar_view.php:204
@@ -4340,7 +4345,6 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:2619
 #: application/helpers/admin/import_helper.php:2662
 #: application/helpers/admin/import_helper.php:2689
-#: application/helpers/admin/import_helper.php:4310
 msgid "Import of this survey file failed"
 msgstr ""
 
@@ -4378,16 +4382,44 @@ msgstr ""
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4397
-msgid "Could not insert question"
+#: application/helpers/admin/import_helper.php:4312
+msgid "Failed to insert survey language"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4397
-#: application/helpers/admin/import_helper.php:4546
+#: application/helpers/admin/import_helper.php:4357
+msgid "Failed to insert group"
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4357
+#: application/helpers/admin/import_helper.php:4405
+#: application/helpers/admin/import_helper.php:4446
+#: application/helpers/admin/import_helper.php:4464
+#: application/helpers/admin/import_helper.php:4490
+#: application/helpers/admin/import_helper.php:4528
+#: application/helpers/admin/import_helper.php:4550
+#: application/helpers/admin/import_helper.php:4568
 msgid "Excel row number "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4546
+#: application/helpers/admin/import_helper.php:4405
+msgid "Could not insert question"
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4446
+msgid "Failed to insert question attribute"
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4464
+#: application/helpers/admin/import_helper.php:4490
+#: application/helpers/admin/import_helper.php:4550
+msgid "Failed to insert default value"
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4528
+msgid "Could not insert sub question"
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:4568
 msgid "Could not insert answer"
 msgstr ""
 
