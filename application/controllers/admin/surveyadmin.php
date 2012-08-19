@@ -636,7 +636,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
 
                 //Set Access
-                if (Yii::app()->db->schema->getTable('{{tokens_' . $rows['sid'] . '}}'))
+                if (tableExists('tokens_' . $rows['sid'] ))
                 {
                     $aSurveyEntry[] = $clang->gT("Closed");
                 }

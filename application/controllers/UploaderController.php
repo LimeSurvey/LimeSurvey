@@ -28,7 +28,7 @@ class UploaderController extends AdminController {
 		    $sFileName=$param['filegetcontents'];
 		    if (substr($sFileName,0,6)=='futmp_')
 		    {
-		        $sFileDir = $tempdir.'/uploads/';
+		        $sFileDir = $tempdir.'/upload/';
 		    }
 		    elseif(substr($sFileName,0,3)=='fu_'){
 		        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
@@ -43,7 +43,7 @@ class UploaderController extends AdminController {
 		    $sOriginalFileName=sanitize_filename($param['name']);
 		    if (substr($sFilename,0,6)=='futmp_')
 		    {
-		        $sFileDir = $tempdir.'/uploads/';
+		        $sFileDir = $tempdir.'/upload/';
 		    }
 		    elseif(substr($sFilename,0,3)=='fu_'){
 		        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
@@ -102,7 +102,7 @@ class UploaderController extends AdminController {
 		{
 			$clang = Yii::app()->lang;
 
-		    $sTempUploadDir = $tempdir.'/uploads/';
+		    $sTempUploadDir = $tempdir.'/upload/';
 		    $filename = $_FILES['uploadfile']['name'];
 		    $size = 0.001 * $_FILES['uploadfile']['size'];
 		    $valid_extensions = strtolower($_POST['valid_extensions']);

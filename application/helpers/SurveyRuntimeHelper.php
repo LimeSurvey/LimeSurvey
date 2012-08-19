@@ -61,8 +61,8 @@ class SurveyRuntimeHelper {
         'savetimings' => ($thissurvey['savetimings'] == "Y"),
         'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
         'startlanguage'=>(isset($clang->langcode) ? $clang->langcode : $thissurvey['language']),
-        'target' => (isset($uploaddir) ? "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
-        'tempdir' => (isset($tempdir) ? $tempdir : '/temp/'),
+        'target' => Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
+        'tempdir' => Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
         'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
         'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );

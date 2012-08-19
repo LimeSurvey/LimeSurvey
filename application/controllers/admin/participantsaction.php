@@ -1379,7 +1379,7 @@ class participantsaction extends Survey_Common_Action
 
     function attributeMapCSV()
     {
-        $config['upload_path'] = './tmp/uploads';
+        $config['upload_path'] = './tmp/upload';
         $config['allowed_types'] = 'text/x-csv|text/plain|application/octet-stream|csv';
         $config['max_size'] = '1000';
 

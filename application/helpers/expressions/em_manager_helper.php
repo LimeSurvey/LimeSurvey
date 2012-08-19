@@ -7558,7 +7558,7 @@ EOD;
                                     // if the files have not been saved already,
                                     // move the files from tmp to the files folder
 
-                                    $tmp = $LEM->surveyOptions['tempdir'] . '/upload/';
+                                    $tmp = $LEM->surveyOptions['tempdir'] . 'upload'. DIRECTORY_SEPARATOR;
                                     if (!is_null($phparray) && count($phparray) > 0)
                                     {
                                         // Move the (unmoved, temp) files from temp to files directory.

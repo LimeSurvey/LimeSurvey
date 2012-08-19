@@ -1880,7 +1880,7 @@ class PclZip
 
         // ----- For each file in the list check the attributes
         foreach ($p_file_list as $v_key => $v_value) {
-
+                                              
             // ----- Check if the option is supported
             if (!isset($v_requested_options[$v_key])) {
                 // ----- Error log
