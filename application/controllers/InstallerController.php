@@ -970,6 +970,7 @@ class InstallerController extends CController {
             ."\t\t"   . "'application.core.*',"                     . "\n"
             ."\t\t"   . "'application.models.*',"                   . "\n"
             ."\t\t"   . "'application.controllers.*',"              . "\n"
+            ."\t\t"   . "'application.modules.*',"                  . "\n"
             ."\t"     . "),"                                        . "\n"
             ."\t"     . ""                                          . "\n"
 
