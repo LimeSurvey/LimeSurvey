@@ -29,52 +29,6 @@ function comparePermission($aPermissionA,$aPermissionB)
 }
 
 /**
-* getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
-*    question type
-*
-*
-* @return returns a straight "array" of question types
-*
-* Explanation of questiontype array:
-*
-* description : Question description
-* subquestions : 0= Does not support subquestions x=Number of subquestion scales
-* answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-* assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-*/
-function getQuestionTypeList($type = false, $legacy = true) //AJSL
-{
-    $clang = Yii::app()->lang;
-    if ($type && $legacy) //AJSL
-    {
-        $result = Question_types::model()->findByAttribute(array('legacy' => $type));
-        return  createQuestion($result['class']);
-    } else if ($type) {
-        $result = Question_types::model()->findByAttribute(array('tid' => $type));
-        return  createQuestion($result['class']);
-    } 
-    
-    $types = Question_types::model()->findAll();
-    if ($legacy) //AJSL
-    {
-        foreach($types as $type)
-        {
-            $q = createQuestion($type['class']);
-            $qtypes[$type['legacy']] = $q->questionProperties();
-        }
-    } else {
-        foreach($types as $type)
-        {
-            $q = createQuestion($type['class']);
-            $qtypes[$type['tid']] = $q->questionProperties();
-        }
-    }
-
-    asort($qtypes);
-    return $qtypes;
-}
-
-/**
 * isStandardTemplate returns true if a template is a standard template
 * This function does not check if a template actually exists
 *
@@ -2238,20 +2192,13 @@ function buildLabelSetCheckSumArray()
 * @param $iQID The question ID
 * @return array$bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
 */
-function getQuestionAttributeValues($q)
+function getQuestionAttributeValues($qid) //AJSL
 {
     static $cache;
-    if (is_object($q))
-    {
-        if (isset($cache[$q->id])) return $cache[$q->id];
-    }
-    else //AJS
-    {
-        $qid = sanitize_int($q);
-        if (isset($cache[$qid])) return $cache[$qid];
-        $row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid)); 
-        $q = createQuestion($row->question_types['class'], array('id'=>$qid));
-    }
+	$qid = sanitize_int($qid);
+	if (isset($cache[$qid])) return $cache[$qid];
+	$row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid)); 
+	$q = createQuestion($row->question_types['class'], array('id'=>$qid));
 
     return $cache[$q->id] = $q->getAttributeValues();
 }
@@ -3654,18 +3601,18 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 
 /**
-* getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
+* getArrayFiltersForQuestion($q) finds out if a question has an array_filter attribute and what codes where selected on target question
 * @return returns an array of codes that were selected else returns false
 */
-function getArrayFiltersForQuestion($qid)
+function getArrayFiltersForQuestion($q)
 {
     static $cache = array();
 
     // TODO: Check list_filter values to make sure questions are previous?
-    $qid=sanitize_int($qid);
+    $qid=sanitize_int($qid->id);
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributeValues($qid); //AJS
+    $attributes = $q->getAttributeValues();
     if (isset($attributes['array_filter']) && Yii::app()->session['questions']) {
         $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
         foreach (Yii::app()->session['questions'] as $q)
@@ -3722,7 +3669,7 @@ function getGroupsByQuestion($surveyid) {
 
 
 /**
-* getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
+* getArrayFilterExcludesForQuestion($q) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
 * @return returns an array of codes that were selected else returns false
 */
 function getArrayFilterExcludesForQuestion($qid)
@@ -3733,11 +3680,11 @@ function getArrayFilterExcludesForQuestion($qid)
     // TODO: Check list_filter values to make sure questions are previous?
     //	$surveyid = Yii::app()->getConfig('sid');
     $surveyid=returnGlobal('sid');
-    $qid=sanitize_int($qid);
+    $qid=sanitize_int($q->id);
 
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributeValues($qid); //AJS
+    $attributes = $q->getAttributeValues();
     $excludevals=array();
     if (isset($attributes['array_filter_exclude'])) // We Found a array_filter_exclude attribute
     {

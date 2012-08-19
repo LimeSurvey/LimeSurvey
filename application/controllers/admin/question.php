@@ -774,7 +774,7 @@ class question extends Survey_Common_Action
                 $eqrow['title'] = '';
                 $eqrow['question'] = '';
                 $eqrow['help'] = '';
-                $eqrow['class'] = 'LongText'; //AJS - WHY IS THIS HARDCODED?
+                $eqrow['class'] = 'LongText'; //AJSL - WHY IS THIS HARDCODED?
                 $eqrow['lid'] = 0;
                 $eqrow['lid1'] = 0;
                 $eqrow['gid'] = $gid;

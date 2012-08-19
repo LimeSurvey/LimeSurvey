@@ -81,7 +81,7 @@ class HugeTextQuestion extends TextQuestion
 
     public function getDBField()
     {
-        return 'test';
+        return 'text';
     }
 
     public function availableAttributes($attr = false)

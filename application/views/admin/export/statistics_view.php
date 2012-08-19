@@ -824,7 +824,7 @@
 
                     $counter2=0;
                     //Get qidattributes for this question
-                    $qidattributes=getQuestionAttributeValues($flt[0]);
+                    $qidattributes=getQuestionAttributeValues($flt[0]); //AJS
                     if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                         $maxvalue=$qidattributes['multiflexible_max'];
                         $minvalue=1;

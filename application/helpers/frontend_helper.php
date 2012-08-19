@@ -519,7 +519,7 @@ function checkconfield($value)
         }
         if (isset($value_qa['array_filter_exclude']))
         {
-            $arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($value_question->id);
+            $arrayfilterXcludes_selected_codes = getArrayFilterExcludesForQuestion($value_question);
             if ( $arrayfilterXcludes_selected_codes !== false &&
             in_array($value_code,$arrayfilterXcludes_selected_codes))
             {
@@ -528,7 +528,7 @@ function checkconfield($value)
         }
         elseif (isset($value_qa['array_filter']))
         {
-            $arrayfilter_selected_codes = getArrayFiltersForQuestion($value_question->id);
+            $arrayfilter_selected_codes = getArrayFiltersForQuestion($value_question);
             if ( $arrayfilter_selected_codes !== false &&
             !in_array($value_code,$arrayfilter_selected_codes))
             {
