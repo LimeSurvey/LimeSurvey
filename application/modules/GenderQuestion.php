@@ -143,6 +143,21 @@ class GenderQuestion extends QuestionModule
         return 'return (typeof attr.answers[value] === "undefined") ? "" : attr.answers[value];';
     }
 
+    public function getQuotaAnswers($iQuotaId)
+    {
+        $clang = Yii::app()->lang;
+		$aAnswerList = array('M' => array('Title' => $this->id, 'Display' => $clang->gT("Male"), 'code' => 'M'),
+			'F' => array('Title' => $this->title, 'Display' => $clang->gT("Female"), 'code' => 'F'));
+
+		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+		foreach ($aResults as $aQuotaList)
+		{
+			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+		}
+	
+		return $aAnswerList;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

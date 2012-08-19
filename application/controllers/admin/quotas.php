@@ -94,15 +94,15 @@ class quotas extends Survey_Common_Action
         $criteria->condition = 'sid=:survey AND quotals_language=:lang';
         $criteria->params = array(':survey' => $iSurveyId, ':lang' => $aData['sBaseLang']);
         $criteria->order = 'name';
-        $aResult = Quota::model()->findAll($criteria);
+		$aResults = Quota::model()->findAll($criteria);
 
         //if there are quotas let's proceed
-        if (count($aResult) > 0)
+        if (count($aResults) > 0)
         {
             $aViewUrls['output'] = '';
             //loop through all quotas
-            foreach ($aResult as $aQuotaListing)
-            {
+            foreach ($aResults as $aQuotaListing)
+            {	
                 $totalquotas += $aQuotaListing['qlimit'];
                 $completed = getQuotaCompletedCount($iSurveyId, $aQuotaListing['id']);
                 $highlight = ($completed >= $aQuotaListing['qlimit']) ? '' : "style='color: orange'"; //Incomplete quotas displayed in red
@@ -122,13 +122,15 @@ class quotas extends Survey_Common_Action
                 $aViewUrls['output'] .= $this->getController()->render("/admin/quotas/viewquotasrow_view", $aData, true);
 
                 //check how many sub-elements exist for a certain quota
-                $aResults2 = Quota_members::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
+                $aResults2 = Quota_members::model()->with('question_types')->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
+
 
                 //loop through all sub-parts
                 foreach ($aResults2 as $aQuotaQuestions)
                 {
-                    $aQuestionAnswers = self::getQuotaAnswers($aQuotaQuestions['qid'], $iSurveyId, $aQuotaListing['id']);
-                    $aData['question_answers'] = $aQuestionAnswers;
+					$q = createQuestion($aQuotaQuestions->question_types['class'], array('id' => $aQuotaQuestions['qid'], 'surveyid' => $aQuotaQuestions['sid'], 'title' => $aQuotaQuestions->questions['title']));
+		
+   		     		$aData['question_answers'] = $q->getQuotaAnswers(Yii::app()->request->getPost('quota_id'));
                     $aData['quota_questions'] = $aQuotaQuestions;
                     $aViewUrls['output'] .= $this->getController()->render('/admin/quotas/viewquotasrowsub_view', $aData, true);
                 }
@@ -362,14 +364,21 @@ class quotas extends Survey_Common_Action
                 $quota_name = $aQuotaDetails['name'];
             }
 
-            $result = Questions::model()->findAllByAttributes(array('type' => array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!'), 'sid' => $iSurveyId, 'language' => $sBaseLang, 'parent_qid' => 0)); //AJS
-            if (empty($result))
+			$quotas = array();
+            $results = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyId, 'language' => $sBaseLang, 'parent_qid' => 0)); //AJS
+			foreach ($results as $result)
+			{
+				if (method_exists($result->question_types['class'] . 'Question', 'getQuotaAnswers'))
+					$quotas[] = $result;
+			}
+
+            if (empty($quotas))
             {
                 $aViewUrls[] = 'newanswererror_view';
             }
             else
             {
-                $aData['newanswer_result'] = $result;
+                $aData['newanswer_result'] = $quotas;
                 $aData['quota_name'] = $quota_name;
                 $aViewUrls[] = 'newanswer_view';
             }
@@ -377,22 +386,21 @@ class quotas extends Survey_Common_Action
 
         if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
-            $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_qid'));
-            $sQuotaName = $aResults['name'];
+            $aQuestion = Questions::model()->with('question_types')->findByAttributes(array('qid' => Yii::app()->request->getPost('quota_qid')));
+            $q = createQuestion($aQuestion->question_types['class'], array('id' => $aQuestion['qid'], 'surveyid' => $aQuestion['sid'], 'title' => $aQuestion['title']));
+            $aQuestionAnswers = $q->getQuotaAnswers(Yii::app()->request->getPost('quota_id'));
 
-            $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));
             $x = 0;
-
             foreach ($aQuestionAnswers as $aQACheck)
             {
                 if (isset($aQACheck['rowexists']))
                     $x++;
             }
 
-            reset($aQuestionAnswers);
+            $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
             $aData['question_answers'] = $aQuestionAnswers;
             $aData['x'] = $x;
-            $aData['quota_name'] = $sQuotaName;
+            $aData['quota_name'] = $aResults['name'];
             $aViewUrls[] = 'newanswertwo_view';
         }
 
@@ -411,143 +419,6 @@ class quotas extends Survey_Common_Action
         $aData['baselang'] = $aData['sBaseLang'];
 
         $this->_renderWrappedTemplate('quotas', 'newquota_view', $aData);
-    }
-
-    function getQuotaAnswers($iQuestionId, $iSurveyId, $iQuotaId)
-    {
-        $iSurveyId = sanitize_int($iSurveyId);
-        $aData = $this->_getData($iSurveyId);
-        $sBaseLang = $aData['sBaseLang'];
-        $clang = $aData['clang'];
-
-        $aQuestion = Questions::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
-        $aQuestionType = $aQuestion['type']; //AJS
-
-        if ($aQuestionType == 'M') //AJS
-        {
-            $aResults = Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
-            $aAnswerList = array();
-
-            foreach($aResults as $aDbAnsList)
-            {
-                $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
-                $aAnswerList[$aDbAnsList['title']] = $tmparrayans;
-            }
-
-            $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $iSurveyId, 'qid' => $iQuestionId, 'quota_id' => $iQuotaId));
-            foreach($aResults as $aQuotaList)
-            {
-                $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-            }
-        }
-        else
-        {
-            $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $iSurveyId, 'qid' => $iQuestionId, 'quota_id' => $iQuotaId));
-        }
-
-        if ($aQuestionType == 'G') //AJS
-        {
-            $aAnswerList = array('M' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
-                'F' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Female"), 'code' => 'F'));
-
-            foreach ($aResults as $aQuotaList)
-            {
-                $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-            }
-        }
-
-        if ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!') //AJS
-        {
-            $aAnsResults = Answers::model()->findAllByAttributes(array('qid' => $iQuestionId));
-
-            $aAnswerList = array();
-
-            foreach ($aAnsResults as $aDbAnsList)
-            {
-                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'],
-                    'Display' => substr($aDbAnsList['answer'], 0, 40),
-                    'code' => $aDbAnsList['code']);
-            }
-        }
-
-        if ($aQuestionType == 'A') //AJS
-        {
-            $aAnsResults = Questions::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
-
-            $aAnswerList = array();
-
-            foreach ($aAnsResults as $aDbAnsList)
-            {
-                for ($x = 1; $x < 6; $x++)
-                {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['title']);
-                    $aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
-                }
-            }
-
-            foreach ($aResults as $aQuotaList)
-            {
-                $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-            }
-        }
-
-        if ($aQuestionType == 'B') //AJS
-        {
-            $aAnsResults = Answers::model()->findAllByAttributes(array('qid' => $iQuestionId));
-
-            $aAnswerList = array();
-
-            foreach ($aAnsResults as $aDbAnsList)
-            {
-                for ($x = 1; $x < 11; $x++)
-                {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['code']);
-                    $aAnswerList[$aDbAnsList['code'] . "-" . $x] = $tmparrayans;
-                }
-            }
-
-            foreach ($aResults as $aQuotaList)
-            {
-                $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-            }
-        }
-
-        if ($aQuestionType == 'Y') //AJS
-        {
-            $aAnswerList = array('Y' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
-                'N' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("No"), 'code' => 'N'));
-
-            foreach ($aResults as $aQuotaList)
-            {
-                $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-            }
-        }
-
-        if ($aQuestionType == 'I') //AJS
-        {
-            $slangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-            array_unshift($slangs, $sBaseLang);
-
-            while (list($key, $value) = each($slangs))
-            {
-                $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value);
-                $aAnswerList[$value] = $tmparrayans;
-            }
-
-            foreach ($aResults as $aQuotaList)
-            {
-                $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-            }
-        }
-
-        if (empty($aAnswerList))
-        {
-            return array();
-        }
-        else
-        {
-            return $aAnswerList;
-        }
     }
 
     /**

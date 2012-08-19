@@ -31,7 +31,7 @@
                     <td>&nbsp;</td>
                     <td>
                         <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Next");?>" />
-                        <input type="hidden" name="sid" value="'.$iSurveyId.'" />
+                        <input type="hidden" name="sid" value="<?php echo $iSurveyId; ?>" />
                         <input type="hidden" name="action" value="quotas" />
                         <input type="hidden" name="subaction" value="new_answer_two" />
                         <input type="hidden" name="quota_id" value="<?php echo sanitize_int($_POST['quota_id']);?>" />

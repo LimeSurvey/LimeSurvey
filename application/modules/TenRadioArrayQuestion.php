@@ -188,6 +188,29 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         return 'return value;';
     }
 
+    public function getQuotaAnswers($iQuotaId)
+    {
+		$aAnswerList = array();
+        
+		$aAnsResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
+		foreach ($aAnsResults as $aDbAnsList)
+		{
+			for ($x = 1; $x < 11; $x++)
+			{
+				$tmparrayans = array('Title' => $this->title, 'Display' => substr($aDbAnsList['question'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['title']);
+				$aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
+			}
+		}
+
+		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+		foreach ($aResults as $aQuotaList)
+		{
+			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+		}
+		
+		return $aAnswerList;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","random_group");

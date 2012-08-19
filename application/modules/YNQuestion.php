@@ -163,6 +163,21 @@ class YNQuestion extends QuestionModule
         return 'return (typeof attr.answers[value] === "undefined") ? "" : attr.answers[value];';
     }
 
+    public function getQuotaAnswers($iQuotaId)
+    {
+        $clang = Yii::app()->lang;
+		$aAnswerList = array('Y' => array('Title' => $this->title, 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
+			'N' => array('Title' => $this->title, 'Display' => $clang->gT("No"), 'code' => 'N'));
+
+		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+		foreach ($aResults as $aQuotaList)
+		{
+			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+		}
+		
+		return $aAnswerList;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

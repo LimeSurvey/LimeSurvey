@@ -618,6 +618,26 @@ class CheckQuestion extends QuestionModule
         }
     }
 
+    public function getQuotaAnswers($iQuotaId)
+    {
+		$aAnswerList = array();
+
+		$aResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
+		foreach($aResults as $aDbAnsList)
+		{
+			$tmparrayans = array('Title' => $this->title, 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
+			$aAnswerList[$aDbAnsList['title']] = $tmparrayans;
+		}
+
+		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+		foreach($aResults as $aQuotaList)
+		{
+			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+		}
+		
+		return $aAnswerList;
+    }
+
     public function anyUnanswered($relevantSQs, $unansweredSQs)
     {
         return count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs));

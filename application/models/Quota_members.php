@@ -51,6 +51,22 @@ class Quota_members extends CActiveRecord
 		return 'id';
 	}
 
+	/**
+	 * Returns the relations
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function relations()
+	{
+		return array(
+			'quota' => array(self::HAS_ONE, 'Quota', array('t.quota_id' => 'quota.id')),
+            'questions' => array(self::HAS_ONE, 'Questions', array('qid' => 'qid')),
+            'question_types' => array(self::HAS_ONE, 'Question_types', array('tid' => 'tid'), 'through' => 'questions',
+            ),
+		);
+	}
+
 	function insertRecords($data)
     {
         $members = new self;

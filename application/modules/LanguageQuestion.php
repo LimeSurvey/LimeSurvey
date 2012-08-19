@@ -86,6 +86,24 @@ class LanguageQuestion extends QuestionModule
         return 'java'.$this->fieldname;
     }
 
+    public function getQuotaAnswers($iQuotaId)
+    {
+		$sBaseLang = Survey::model()->findByPk($this->surveyid)->language;
+		$slangs = Survey::model()->findByPk($this->surveyid)->additionalLanguages;
+		array_unshift($slangs, $sBaseLang);
+
+		while (list($key, $value) = each($slangs))
+		{
+			$aAnswerList[$value] = array('Title' => $this->title, 'Display' => getLanguageNameFromCode($value, false), $value);
+		}
+		
+		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+		foreach ($aResults as $aQuotaList)
+		{
+			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+		}
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","random_group");
