@@ -1016,7 +1016,7 @@ class database extends Survey_Common_Action
             'showprogress'=> Yii::app()->request->getPost('showprogress'),
             'listpublic'=> Yii::app()->request->getPost('public'),
             'htmlemail'=> Yii::app()->request->getPost('htmlemail'),
-            'sendconfirmation'=> 'N',
+            'sendconfirmation'=>  Yii::app()->request->getPost('sendconfirmation'),
             'tokenanswerspersistence'=> Yii::app()->request->getPost('tokenanswerspersistence'),
             'alloweditaftercompletion'=> Yii::app()->request->getPost('alloweditaftercompletion'),
             'usecaptcha'=> Yii::app()->request->getPost('usecaptcha'),
