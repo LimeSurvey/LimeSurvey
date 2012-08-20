@@ -209,10 +209,9 @@ class FiveRadioArrayQuestion extends RadioArrayQuestion
 
     public function getQuotaAnswers($iQuotaId)
     {
-		$aAnsResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
-
 		$aAnswerList = array();
 
+		$aAnsResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
 		foreach ($aAnsResults as $aDbAnsList)
 		{
 			for ($x = 1; $x < 6; $x++)
@@ -229,6 +228,31 @@ class FiveRadioArrayQuestion extends RadioArrayQuestion
 		}
 		
 		return $aAnswerList;
+    }
+
+    public function getDataEntryView($language)
+    {
+        $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order";
+        $mearesult = dbExecuteAssoc($meaquery)->readAll();
+        $output = "<table>";
+        foreach ($mearesult as $mearow)
+        {
+            $output .= "<tr>";
+            $output .= "<td align='right'>{$mearow['question']}</td>";
+            $output .= "<td>";
+            $output .= "<select name='{$this->fieldname}{$mearow['title']}'>";
+            $output .= "<option value=''>{$language->gT("Please choose")}..</option>";
+            for ($i=1; $i<=5; $i++)
+            {
+                $output .= "<option value='{$i}'>{$i}</option>";
+            }
+            $output .= "</select>";
+            $output .= "</td>";
+            $output .= "</tr>";
+        }
+        $output .= "</table>";
+        
+        return $output;
     }
 
     public function availableAttributes($attr = false)

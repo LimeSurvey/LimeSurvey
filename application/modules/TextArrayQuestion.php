@@ -526,6 +526,52 @@ EOD;
         return array('other' => false, 'valid' => true, 'mandatory' => true);
     }
 
+    public function getDataEntryView($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        $lquery = "SELECT * FROM {{questions}} WHERE scale_id=1 and parent_qid={$this->id} and language='{$language->getlangcode()}' ORDER BY question_order";
+        $lresult=dbExecuteAssoc($lquery)->readAll() or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
+
+        $meaquery = "SELECT * FROM {{questions}} WHERE scale_id=0 and parent_qid={$this->id} and language='{$language->getlangcode()}' ORDER BY question_order";
+        $mearesult=dbExecuteAssoc($meaquery)->readAll() or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
+
+        $output = "<table>";
+        $output .= "<tr><td></td>";
+        $labelcodes = array();
+        foreach($lresult as $data)
+        {
+            $output .= "<th>{$data['question']}</th>";
+            $labelcodes[]=$data['title'];
+        }
+
+        $output .= "</tr>";
+        $i=0;
+        foreach ($mearesult as $mearow)
+        {
+            if (strpos($mearow['question'],'|'))
+            {
+                $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+            }
+            else
+            {
+                $answerleft=$mearow['question'];
+            }
+
+            $output .= "<tr>";
+            $output .= "<td align='right'>{$answerleft}</td>";
+            foreach($labelcodes as $ld)
+            {
+                $output .= "<td>";
+                $output .= "<input type='text' name='{$this->fieldname}{$mearow['title']}_{$ld}' size=4 />";
+                $output .= "</td>";
+            }
+            $output .= "</tr>";
+            $i++;
+        }
+        $output .= "</table>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","show_totals","show_grand_total","page_break","random_order","parent_order","text_input_width","random_group");

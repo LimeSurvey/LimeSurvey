@@ -365,7 +365,7 @@ class quotas extends Survey_Common_Action
             }
 
 			$quotas = array();
-            $results = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyId, 'language' => $sBaseLang, 'parent_qid' => 0)); //AJS
+            $results = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyId, 'language' => $sBaseLang, 'parent_qid' => 0));
 			foreach ($results as $result)
 			{
 				if (method_exists($result->question_types['class'] . 'Question', 'getQuotaAnswers'))

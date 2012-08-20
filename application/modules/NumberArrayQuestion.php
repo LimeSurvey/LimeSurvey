@@ -668,6 +668,89 @@ class NumberArrayQuestion extends ArrayQuestion
         return array('other' => false, 'valid' => true, 'mandatory' => true);
     }
 
+    public function getDataEntryView($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        $minvalue=1;
+        $maxvalue=10;
+        if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {
+            $maxvalue=$qidattributes['multiflexible_max'];
+            $minvalue=1;
+        }
+        if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) =='') {
+            $minvalue=$qidattributes['multiflexible_min'];
+            $maxvalue=$qidattributes['multiflexible_min'] + 10;
+        }
+        if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !='') {
+            if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
+                $minvalue=$qidattributes['multiflexible_min'];
+                $maxvalue=$qidattributes['multiflexible_max'];
+            }
+        }
+
+        if (trim($qidattributes['multiflexible_step'])!='') {
+            $stepvalue=$qidattributes['multiflexible_step'];
+        } else {
+            $stepvalue=1;
+        }
+        if ($qidattributes['multiflexible_checkbox']!=0)
+        {
+            $minvalue=0;
+            $maxvalue=1;
+            $stepvalue=1;
+        }
+
+        $lquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$this->id} and scale_id=1 and language='{$language->getlangcode()}' ORDER BY question_order";
+        $lresult=dbExecuteAssoc($lquery)->readAll() or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
+
+        $meaquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$this->id} and scale_id=0 and language='{$language->getlangcode()}' ORDER BY question_order";
+        $mearesult=dbExecuteAssoc($meaquery)->readAll() or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
+        $output = "<table>";
+        $output .= "<tr><td></td>";
+        foreach($lresult  as $data)
+        {
+            $output .= "<th>{$data['question']}</th>";
+            $labelcodes[]=$data['title'];
+        }
+
+        $output .= "</tr>";
+        $i=0;
+        foreach ($mearesult as $mearow)
+        {
+            if (strpos($mearow['question'],'|'))
+            {
+                $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+            }
+            else
+            {
+                $answerleft=$mearow['question'];
+            }
+
+            $output .= "<tr>";
+            $output .= "<td align='right'>{$answerleft}</td>";
+            foreach($labelcodes as $ld)
+            {
+                $output .= "<td>";
+                if ($qidattributes['input_boxes']!=0) {
+                    $output .= "<input type='text' name='{$this->fieldname}{$mearow['title']}_{$ld}' size=4 />";
+                } else {
+                    $output .= "<select name='{$this->fieldname}{$mearow['title']}_{$ld}'>";
+                    $output .= "<option value=''>...</option>";
+                    for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
+                    {
+                        $output .= "<option value='{$ii}'>{$ii}</option>";
+                    }
+                    $output .= "</select>";
+                }
+                $output .= "</td>";
+            }
+            $output .= "</tr>";
+            $i++;
+        }
+        $output .= "</table>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

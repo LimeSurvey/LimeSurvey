@@ -167,6 +167,18 @@ class FiveListQuestion extends QuestionModule
         return 'java'.$this->fieldname;
     }
 
+    public function getDataEntryView($language)
+    {
+        $output = "<select name='{$this->fieldname}'>";
+        $output .= "<option value=''>{$language->gT("No answer")}</option>";
+        for ($x=1; $x<=5; $x++)
+        {
+            $output .= "<option value='{$x}'>{$x}</option>";
+        }
+        $output .= "</select>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","slider_rating","random_group");

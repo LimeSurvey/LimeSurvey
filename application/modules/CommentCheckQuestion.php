@@ -316,6 +316,40 @@ class CommentCheckQuestion extends CheckQuestion
                 . 'return htmlspecialchars_decode(attr.question);';
     }
 
+    public function getDataEntryView($language)
+    {
+        $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order, question";
+        $mearesult = dbExecuteAssoc($meaquery);
+    
+        $output = "<table border='0'>";
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output .= "<tr>";
+            $output .= "<td>";
+            $output .= "<input type='checkbox' class='checkboxbtn' name='{$this->fieldname}{$mearow['title']}' value='Y'";
+            $output .= "/>{$mearow['question']}";
+            $output .= "</td>";
+
+            $output .= "<td>";
+            $output .= "<input type='text' name='{$this->fieldname}{$mearow['title']}comment' size='50' />";
+            $output .= "</td>";
+            $output .= "</tr>";
+        }
+        if ($this->other == "Y")
+        {
+            $output .= "<tr>";
+            $output .= "<td  align='left'><label>{$language->gT("Other")}:</label>";
+            $output .= "<input type='text' name='{$this->fieldname}other' size='10'/>";
+            $output .= "</td>";
+            $output .= "<td align='left'>";
+            $output .= "<input type='text' name='{$this->fieldname}othercomment' size='50'/>";
+            $output .= "</td>";
+            $output .= "</tr>";
+        }
+        $output .= "</table>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","em_validation_q","em_validation_q_tip","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

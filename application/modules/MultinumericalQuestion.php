@@ -474,6 +474,25 @@ class MultinumericalQuestion extends QuestionModule
         }
     }
 
+    public function getDataEntryView($language)
+    {
+        $deaquery = "SELECT question,title FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order";
+        $dearesult = dbExecuteAssoc($deaquery);
+        $dearesult = $dearesult->readAll();
+
+        $output = "<table>";
+        foreach ($dearesult as $dearow)
+        {
+            $output .= "<tr><td align='right'>";
+            $output .= "{$dearow['question']}";
+            $output .= "</td>";
+            $output .= "<td><input type='text' name='{$this->fieldname}{$dearow['title']}' /></td>";
+            $output .= "</tr>";
+        }
+        $output .= "</table>";
+        return $output;
+    }
+
     public function compareField($sgqa, $sq)
     {
         return $sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment');

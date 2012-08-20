@@ -353,6 +353,27 @@ class CommentListQuestion extends ListQuestion
                 . 'return answerParts[0];';
     }
 
+    public function getDataEntryView($language)
+    {
+        $deaquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY sortorder, answer";
+        $dearesult = dbExecuteAssoc($deaquery);
+        $datatemp='';
+    
+        $qidattributes = $this->getAttributeValues();
+        foreach ($dearesult->readAll() as $dearow)
+        {
+            $datatemp .= "<option value='{$dearow['code']}'";
+            $datatemp .= ">{$dearow['answer']}</option>\n";
+        }
+
+        $output = "<select name='{$this->fieldname}'>";
+        $output .= "<option selected='selected' value=''>{$language->gT("Please choose")}..</option>{$datatemp}";
+        $output .= "</select>";
+        $output .= "<br />{$language->gT("Comment")}:<br />";
+        $output .= "<textarea cols='40' rows='5' name='{$this->fieldname}comment'></textarea>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

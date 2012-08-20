@@ -158,6 +158,16 @@ class GenderQuestion extends QuestionModule
 		return $aAnswerList;
     }
 
+    public function getDataEntryView($language)
+    {
+        $output = "<select name='{$this->fieldname}'>";
+        $output .= "<option selected='selected' value=''>{$language->gT("Please choose")}..</option>";
+        $output .= "<option value='F'>{$language->gT("Female")}</option>";
+        $output .= "<option value='M'>{$language->gT("Male")}</option>";
+        $output .= "</select>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

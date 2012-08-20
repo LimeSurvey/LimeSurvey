@@ -299,6 +299,25 @@ class MultitextQuestion extends QuestionModule
         return array('other' => false, 'valid' => true, 'mandatory' => true);
     }
 
+    public function getDataEntryView($language)
+    {
+        $deaquery = "SELECT question,title FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order";
+        $dearesult = dbExecuteAssoc($deaquery);
+        $dearesult = $dearesult->readAll();
+
+        $output = "<table>";
+        foreach ($dearesult as $dearow)
+        {
+        $output .= "<tr><td align='right'>";
+        $output .= "{$dearow['question']}";
+        $output .= "</td>";
+        $output .= "<td><input type='text' name='{$this->fieldname}{$dearow['title']}' /></td>";
+        $output .= "</tr>";
+        }
+        $output .= "</table>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");

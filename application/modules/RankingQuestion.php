@@ -446,6 +446,160 @@ class RankingQuestion extends QuestionModule
                 . 'return answerParts[0];';
     }
 
+    public function getDataEntryView($language)
+    {
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY sortorder, answer";
+        $ansresult = dbExecuteAssoc($ansquery);
+        $anscount = $ansresult->getRowCount();
+
+        foreach ($ansresult->readAll() as $ansrow)
+        {
+            $answers[] = array($ansrow['code'], $ansrow['answer']);
+        }
+        for ($i=1; $i<=$anscount; $i++)
+        {
+            if (isset($fname))
+            {
+                $myfname=$fname.$i;
+            }
+            if (isset($myfname) && Yii::app()->session[$myfname])
+            {
+                $existing++;
+            }
+        }
+        for ($i=1; $i<=$anscount; $i++)
+        {
+            if (isset($fname))
+            {
+                $myfname = $fname.$i;
+            }
+            if (isset($myfname) && Yii::app()->session[$myfname])
+            {
+                foreach ($answers as $ans)
+                {
+                    if ($ans[0] == Yii::app()->session[$myfname])
+                    {
+                        $thiscode=$ans[0];
+                        $thistext=$ans[1];
+                    }
+                }
+            }
+            if (!isset($ranklist)) {$ranklist="";}
+            $ranklist .= "&nbsp;<font color='#000080'>{$i}:&nbsp;<input class='ranklist' type='text' name='RANK{$i}' id='RANK_{$this->id}{$i}'";
+            if (isset($myfname) && Yii::app()->session[$myfname])
+            {
+                $ranklist .= " value='";
+                $ranklist .= $thistext;
+                $ranklist .= "'";
+            }
+            $ranklist .= " onFocus=\"this.blur()\"  />\n";
+            $ranklist .= "<input type='hidden' id='d{$this->fieldname}{$i}' name='{$this->fieldname}{$i}' value='";
+            $chosen[]=""; //create array
+            if (isset($myfname) && Yii::app()->session[$myfname])
+            {
+                $ranklist .= $thiscode;
+                $chosen[]=array($thiscode, $thistext);
+            }
+            $ranklist .= "' /></font>\n";
+            $ranklist .= "<img src='".Yii::app()->getConfig('imageurl')."/cut.gif' alt='".$language->gT("Remove this item")."' title='".$language->gT("Remove this item")."' ";
+            if (!isset($existing) || $i != $existing)
+            {
+                $ranklist .= "style='display:none'";
+            }
+            $ranklist .= " id='cut_{$this->id}{$i}' onclick=\"deletethis_{$this->id}(document.addsurvey.RANK_{$this->id}{$i}.value, document.addsurvey.d{$this->fieldname}{$i}.value, document.addsurvey.RANK_{$this->id}{$i}.id, this.id)\" /><br />\n\n";
+        }
+        $choicelist = "<select size='{$anscount}' class='choicelist' name='CHOICES' id='CHOICES_{$this->id}' onclick=\"rankthis_{$this->id}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
+        foreach ($answers as $ans)
+        {
+
+            if (!in_array($ans, $chosen))
+            {
+                $choicelist .= "\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
+            }
+        }
+        $choicelist .= "</select>\n";
+        $output = <<<OUTPUT
+        <script type='text/javascript'>
+            <!--
+            function rankthis_{$this->id}(\$code, \$value)
+            {
+                \$index=document.addsurvey.CHOICES_{$this->id}.selectedIndex;
+                for (i=1; i<={$anscount}; i++)
+                {
+                    \$b=i;
+                    \$b += '';
+                    \$inputname="RANK_{$this->id}"+\$b;
+                    \$hiddenname="d{$this->fieldname}"+\$b;
+                    \$cutname="cut_{$this->id}"+i;
+                    document.getElementById(\$cutname).style.display='none';
+                    if (!document.getElementById(\$inputname).value)
+                        {
+                        document.getElementById(\$inputname).value=\$value;
+                        document.getElementById(\$hiddenname).value=\$code;
+                        document.getElementById(\$cutname).style.display='';
+                        for (var b=document.getElementById('CHOICES_{$this->id}').options.length-1; b>=0; b--)
+                            {
+                            if (document.getElementById('CHOICES_{$this->id}').options[b].value == \$code)
+                                {
+                                document.getElementById('CHOICES_{$this->id}').options[b] = null;
+                            }
+                        }
+                        i=$anscount;
+                    }
+                }
+                if (document.getElementById('CHOICES_{$this->id}').options.length == 0)
+                    {
+                    document.getElementById('CHOICES_{$this->id}').disabled=true;
+                }
+                document.addsurvey.CHOICES_{$this->id}.selectedIndex=-1;
+            }
+            function deletethis_{$this->id}(\$text, \$value, \$name, \$thisname)
+            {
+                var qid='{$this->id}';
+                var lngth=qid.length+4;
+                var cutindex=\$thisname.substring(lngth, \$thisname.length);
+                cutindex=parseFloat(cutindex);
+                document.getElementById(\$name).value='';
+                document.getElementById(\$thisname).style.display='none';
+                if (cutindex > 1)
+                    {
+                    \$cut1name="cut_{$this->id}"+(cutindex-1);
+                    \$cut2name="d{$this->fieldname}"+(cutindex);
+                    document.getElementById(\$cut1name).style.display='';
+                    document.getElementById(\$cut2name).value='';
+                }
+                else
+                    {
+                    \$cut2name="d{$this->fieldname}"+(cutindex);
+                    document.getElementById(\$cut2name).value='';
+                }
+                var i=document.getElementById('CHOICES_{$this->id}').options.length;
+                document.getElementById('CHOICES_{$this->id}').options[i] = new Option(\$text, \$value);
+                if (document.getElementById('CHOICES_{$this->id}').options.length > 0)
+                    {
+                    document.getElementById('CHOICES_{$this->id}').disabled=false;
+                }
+            }
+            //-->
+        </script>
+        <table>
+            <tr>
+                <td align='left' valign='top' width='200'>
+                    <strong>{$language->gT("Your choices")}:</strong><br />
+                    {$choicelist}
+                </td>
+                <td align='left'>
+                    <strong>{$language->gT("Your ranking")}:</strong><br />
+                    {$ranklist}
+                </td>
+            </tr>
+        </table>
+        <input type='hidden' name='multi' value='{$anscount}' />
+        <input type='hidden' name='lastfield' value='' />
+OUTPUT;
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");

@@ -654,6 +654,63 @@ class CheckQuestion extends QuestionModule
                 . 'return htmlspecialchars_decode(attr.question);';
     }
 
+    public function getDataEntryView($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        if (trim($qidattributes['display_columns'])!='')
+        {
+            $dcols=$qidattributes['display_columns'];
+        }
+        else
+        {
+            $dcols=0;
+        }
+        $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order";
+        $mearesult = dbExecuteAssoc($meaquery);
+        $meacount = $mearesult->getRowCount();
+
+        $output = '';
+        if ($this->other == "Y") $meacount++;
+        if ($dcols > 0 && $meacount >= $dcols)
+        {
+            $width=sprintf("%0d", 100/$dcols);
+            $maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+            $divider=" </td> <td valign='top' width='{$width}%' nowrap='nowrap'>";
+            $upto=0;
+            $output .= "<table class='question'><tr> <td valign='top' width='{$width}%' nowrap='nowrap'>";
+            foreach ($mearesult as $mearow)
+            {
+                if ($upto == $maxrows)
+                {
+                    echo $divider;
+                    $upto=0;
+                }
+                $output .= "<input type='checkbox' class='checkboxbtn' name='{$this->fieldname}{$mearow['title']}' id='answer{$this->fieldname}{$mearow['title']}' value='Y' />";
+                $output .= "<label for='answer{$this->fieldname}{$mearow['title']}'>{$mearow['question']}</label><br />";
+                $upto++;
+            }
+            if ($this->other == "Y")
+            {
+                $output .= $language->gT("Other") . "<input type='text' name='{$this->fieldname}other' />";
+            }
+            $output .= "</td></tr></table>";
+        }
+        else
+        {
+            foreach ($mearesult as $mearow)
+            {
+                $output .= "<input type='checkbox' class='checkboxbtn' name='{$this->fieldname}{$mearow['code']}' id='answer{$this->fieldname}{$mearow['code']}' value='Y'";
+                if ($mearow['default_value'] == "Y") $output .= "checked";
+                $output .= "/><label for='{$this->fieldname}{$mearow['code']}'>{$mearow['answer']}</label><br />";
+            }
+            if ($this->other == "Y")
+            {
+                $output .= $language->gT("Other") . "<input type='text' name='{$this->fieldname}other' />";
+            }
+        }
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","assessment_value","display_columns","em_validation_q","em_validation_q_tip","exclude_all_others","exclude_all_others_auto","statistics_showgraph","hide_tip","hidden","max_answers","min_answers","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

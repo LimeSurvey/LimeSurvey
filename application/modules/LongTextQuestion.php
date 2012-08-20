@@ -88,6 +88,36 @@ class LongTextQuestion extends TextQuestion
         return 'text';
     }
 
+    public function getDataEntryView($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        if (trim($qidattributes['display_rows'])!='')
+        {
+            $drows=$qidattributes['display_rows'];
+        } else {
+            $drows = 5;
+        }
+
+        if (trim($qidattributes['text_input_width']) != '') {
+            $tiwidth = $qidattributes['text_input_width'];
+        } else {
+            $tiwidth = 40;
+        }
+
+        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$language->getlangcode()]) != '') {
+            $prefix = $qidattributes['prefix'][$language->getlangcode()];
+        } else {
+            $prefix = '';
+        }
+
+        if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'][$language->getlangcode()]) != '') {
+            $suffix = $qidattributes['suffix'][$language->getlangcode()];
+        } else {
+            $suffix = '';
+        }
+        return $prefix . "<textarea name='{$this->fieldname}' cols='{$tiwidth}' rows='{$drows}'></textarea>" . $suffix;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","maximum_chars","page_break","text_input_width","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style","random_group");

@@ -226,6 +226,62 @@ class ShortTextQuestion extends TextQuestion
         return 2;
     }
 
+    public function getDataEntryView($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$language->getlangcode()]) != '') {
+            $prefix = $qidattributes['prefix'][$language->getlangcode()];
+        } else {
+            $prefix = '';
+        }
+
+        if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'][$language->getlangcode()]) != '') {
+            $suffix = $qidattributes['suffix'][$language->getlangcode()];
+        } else {
+            $suffix = '';
+        }
+
+        if (intval(trim($qidattributes['maximum_chars'])) > 0 && intval(trim($qidattributes['maximum_chars'])) < 20) { // Limt to 20 chars for numeric
+            $maximum_chars = intval(trim($qidattributes['maximum_chars']));
+            $maxlength = "maxlength='{$maximum_chars}' ";
+        } else {
+            $maxlength = "maxlength='20' ";
+        }
+
+        if (trim($qidattributes['text_input_width']) != '') {
+            $tiwidth = $qidattributes['text_input_width'];
+        } else {
+            $tiwidth = 50;
+        }
+
+        if ($qidattributes['numbers_only']==1)
+        {
+            $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+            $sSeperator = $sSeperator['seperator'];
+            $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+        }
+        else
+        {
+            $numbersonly = '';
+        }
+
+        if (trim($qidattributes['display_rows'])!='')
+        {
+            //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
+            $drows=$qidattributes['display_rows'];
+
+            //if a textarea should be displayed we make it equal width to the long text question
+            //this looks nicer and more continuous
+            if($tiwidth == 50)
+            {
+                $tiwidth=40;
+            }
+            return $prefix . "<textarea name='{$this->fieldname}' cols='{$tiwidth}' rows='{$drows}' {$numbersonly}></textarea>" . $suffix;
+        } else {
+            return $prefix . "<input type='text' name='{$this->fieldname}' size='{$tiwidth}' {$maxlength} {$numbersonly} />" . $suffix;
+        }
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","location_city","location_state","location_postal","location_country","statistics_showmap","statistics_showgraph","statistics_graphtype","location_mapservice","location_mapwidth","location_mapheight","location_nodefaultfromip","location_defaultcoordinates","location_mapzoom","hide_tip","hidden","maximum_chars","numbers_only","page_break","prefix","suffix","text_input_width","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style","random_group");

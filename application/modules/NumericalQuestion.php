@@ -189,6 +189,47 @@ class NumericalQuestion extends QuestionModule
         return array('other' => false, 'valid' => true, 'mandatory' => true);
     }
 
+    public function getDataEntryView($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$language->getlangcode()]) != '') {
+            $prefix = $qidattributes['prefix'][$language->getlangcode()];
+        } else {
+            $prefix = '';
+        }
+
+        if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'][$language->getlangcode()]) != '') {
+            $suffix = $qidattributes['suffix'][$language->getlangcode()];
+        } else {
+            $suffix = '';
+        }
+
+        if (intval(trim($qidattributes['maximum_chars'])) > 0 && intval(trim($qidattributes['maximum_chars'])) < 20) { // Limt to 20 chars for numeric
+            $maximum_chars = intval(trim($qidattributes['maximum_chars']));
+            $maxlength = "maxlength='{$maximum_chars}' ";
+        } else {
+            $maxlength = "maxlength='20' ";
+        }
+
+        if (trim($qidattributes['text_input_width']) != '') {
+            $tiwidth = $qidattributes['text_input_width'];
+        } else {
+            $tiwidth = 10;
+        }
+
+        if (trim($qidattributes['num_value_int_only']) == 1) {
+            $acomma = "";
+        } else {
+            $thissurvey = getSurveyInfo($this->surveyid);
+            $acomma = getRadixPointData($thissurvey['surveyls_numberformat']);
+            $acomma = $acomma['seperator'];
+        }
+        $title = $language->gT('Only numbers may be entered in this field.');
+
+        return $prefix . "<input type='text' name='{$this->fieldname}' size='{$tiwidth}' title='{$title}' {$maxlength} onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" />" . $suffix;
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_num_value_n","maximum_chars","min_num_value_n","num_value_int_only","page_break","prefix","public_statistics","suffix","text_input_width","random_group");

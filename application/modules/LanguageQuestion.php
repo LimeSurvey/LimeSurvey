@@ -104,6 +104,22 @@ class LanguageQuestion extends QuestionModule
 		}
     }
 
+    public function getDataEntryView($language)
+    {
+        $slangs = Survey::model()->findByPk($this->surveyid)->additionalLanguages;
+        $sbaselang = Survey::model()->findByPk($this->surveyid)->language;
+        array_unshift($slangs,$sbaselang);
+
+        $output = "<select name='{$this->fieldname}'>";
+        $output .= "<option value='' selected='selected'>{$language->gT("Please choose")}..</option>";
+        foreach ($slangs as $lang)
+        {
+            $output .= "<option value='{$lang}'>" . getLanguageNameFromCode($lang,false) . "</option>";
+        }
+        $output .= "</select>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","random_group");

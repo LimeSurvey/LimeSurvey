@@ -359,6 +359,23 @@ class DateQuestion extends QuestionModule
         return 'datetime';
     }
 
+    public function getDataEntryView($language)
+    {
+        $dateformatdetails = getDateFormatDataForQID($this->getAttributeValues(), getSurveyInfo($this->surveyid));
+        if(canShowDatePicker($dateformatdetails))
+        {
+            $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
+            $goodchars = "0123456789".$goodchars[0];
+            $output = "<input type='text' class='popupdate' size='12' name='{$this->fieldname}' onkeypress=\"return goodchars(event,'{$goodchars}')\"/>";
+            $output .= "<input type='hidden' name='dateformat{$this->fieldname}' id='dateformat{$this->fieldname}' value='{$dateformatdetails['jsdate']}'  />";
+        }
+        else
+        {
+            $output = "<input type='text' name='{$this->fieldname}'/>";
+        }
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");

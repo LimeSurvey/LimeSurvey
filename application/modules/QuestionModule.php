@@ -490,6 +490,11 @@ abstract class QuestionModule
         return 'return value;';
     }
 
+    public function getDataEntryView($language)
+    {
+        return '';
+    }
+
     public function availableOptions()
     {
         return array('other' => false, 'valid' => false, 'mandatory' => true);

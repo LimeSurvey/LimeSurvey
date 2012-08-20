@@ -690,6 +690,77 @@ class ListQuestion extends QuestionModule
 		}
     }
 
+    public function getDataEntryView($language)
+    {
+        $deaquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY sortorder, answer";
+        $dearesult = dbExecuteAssoc($deaquery);
+        $datatemp='';
+    
+        $qidattributes = $this->getAttributeValues();
+        if (array_key_exists('category_separator', $qidattributes) && trim($qidattributes['category_separator'])!='')
+        {
+            $optCategorySeparator = $qidattributes['category_separator'];
+
+            $defaultopts = array();
+            $optgroups = array();
+
+            foreach ($dearesult->readAll() as $dearow)
+            {
+                list ($categorytext, $answertext) = explode($optCategorySeparator,$dearow['answer']);
+                if ($categorytext == '')
+                {
+                    $defaultopts[] = array ( 'code' => $dearow['code'], 'answer' => $answertext, 'default_value' => $dearow['assessment_value']);
+                }
+                else
+                {
+                    $optgroups[$categorytext][] = array ( 'code' => $dearow['code'], 'answer' => $answertext, 'default_value' => $dearow['assessment_value']);
+                }
+            }
+            foreach ($optgroups as $categoryname => $optionlistarray)
+            {
+                $datatemp .= "<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
+                foreach ($optionlistarray as $optionarray)
+                {
+                    $datatemp .= "\t<option value='{$optionarray['code']}'";
+                    $datatemp .= ">{$optionarray['answer']}</option>\n";
+                }
+                $datatemp .= "</optgroup>\n";
+            }
+            foreach ($defaultopts as $optionarray)
+            {
+                $datatemp .= "\t<option value='{$optionarray['code']}'";
+                $datatemp .= ">{$optionarray['answer']}</option>\n";
+            }
+        }
+        else
+        {
+            foreach ($dearesult->readAll() as $dearow)
+            {
+                $datatemp .= "<option value='{$dearow['code']}'";
+                $datatemp .= ">{$dearow['answer']}</option>\n";
+            }
+        }
+
+        $oquery="SELECT other FROM {{questions}} WHERE qid={$this->id} AND language='{$language->getlangcode()}'";
+        $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />");
+        foreach($oresult->readAll() as $orow)
+        {
+            $fother=$orow['other'];
+        }
+        $output = "<select name='{$this->fieldname}'>";
+        $output .= "<option selected='selected' value=''>{$language->gT("Please choose")}..</option>{$datatemp}";
+        if ($fother == "Y")
+        {
+            $output .= "<option value='-oth-'>{$language->gT("Other")}</option>";
+        }
+        $output .= "</select>";
+        if ($fother == "Y")
+        {
+            $output .= "{$language->gT('Other')}:<input type='text' name='{$this->fieldname}other' value='' />";
+        }
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","array_filter","array_filter_exclude","array_filter_style","display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style");

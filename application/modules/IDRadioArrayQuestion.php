@@ -276,6 +276,30 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
         return 'return value;';
     }
 
+    public function getDataEntryView($language)
+    {
+        $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order";
+        $mearesult = dbExecuteAssoc($meaquery)->readAll();
+        $output = "<table>";
+        foreach ($mearesult as $mearow)
+        {
+            $output .= "<tr>";
+            $output .= "<td align='right'>{$mearow['question']}</td>";
+            $output .= "<td>";
+            $output .= "<select name='{$this->fieldname}{$mearow['title']}'>";
+            $output .= "<option value=''>{$language->gT("Please choose")}..</option>";
+            $output .= "<option value='I'>{$language->gT("Increase")}..</option>";
+            $output .= "<option value='S'>{$language->gT("Same")}..</option>";
+            $output .= "<option value='D'>{$language->gT("Decrease")}..</option>";
+            $output .= "</select>";
+            $output .= "</td>";
+            $output .= "</tr>";
+        }
+        $output .= "</table>";
+        
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

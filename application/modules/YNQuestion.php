@@ -178,6 +178,16 @@ class YNQuestion extends QuestionModule
 		return $aAnswerList;
     }
 
+    public function getDataEntryView($language)
+    {
+        $output = "<select name='{$this->fieldname}'>";
+        $output .= "<option value=''>{$language->gT("Please choose")}..</option>";
+        $output .= "<option value='Y'>{$language->gT("Yes")}..</option>";
+        $output .= "<option value='N'>{$language->gT("No")}..</option>";
+        $output .= "</select>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

@@ -739,6 +739,52 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 . 'return answerParts[0];';
     }
 
+    public function getDataEntryView($language)
+    {
+        $clang = Yii::app()->lang;
+        $deaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order";
+        $dearesult = dbExecuteAssoc($deaquery)->readAll();
+
+        $oquery="SELECT other FROM {{questions}} WHERE qid={$this->id} AND language='{$language->getlangcode()}'";
+        $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery);
+        foreach($oresult->readAll() as $orow)
+        {
+            $fother=$orow['other'];
+        }
+        $output = "<table><tr><td></td><th>".sprintf($clang->gT('Label %s'),'1')."</th><th>".sprintf($clang->gT('Label %s'),'2')."</th></tr>";
+        foreach ($dearesult as $dearow)
+        {
+            // first scale
+            $delquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language->getlangcode()}' and scale_id=0 ORDER BY sortorder, code";
+            $delresult = dbExecuteAssoc($delquery);
+            $output .= "<tr><td>{$dearow['question']}</td><td>";
+            $output .= "<select name='{$this->fieldname}{$dearow['title']}#0'>";
+            $output .= "<option selected='selected' value=''>{$clang->gT("Please choose...")}</option>";
+            foreach ($delresult as $delrow)
+            {
+                $output .= "<option value='{$delrow['code']}'>{$delrow['answer']}</option>";
+            }
+            $output .= "</select></td>";
+            $delquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language->getlangcode()}' and scale_id=1 ORDER BY sortorder, code";
+            $delresult = dbExecuteAssoc($delquery);
+            $output .= "<td>";
+            $output .= "<select name='{$this->fieldname}{$dearow['title']}#1'>";
+            $output .= "<option selected='selected' value=''>{$clang->gT("Please choose...")}</option>";
+            foreach ($delresult as $delrow)
+            {
+                $output .= "<option value='{$delrow['code']}'>{$delrow['answer']}</option>";
+            }
+            $output .= "</select></td></tr>";
+        }
+        if ($fother == "Y")
+        {
+            $output .= "<option value='-oth-'>{$clang->gT("Other")}</option>";
+            $output .= "{$clang->gT("Other")}:<input type='text' name='{$this->fieldname}other' value='' />";
+        }
+        $output .= "</tr></table>";
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

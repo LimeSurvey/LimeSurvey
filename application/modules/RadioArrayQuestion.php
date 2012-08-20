@@ -329,7 +329,7 @@ class RadioArrayQuestion extends ArrayQuestion
             $output .="</td>\n";
             $scale_id=0;
             if (isset($q->scale)) $scale_id=$q->scale;
-            $fquery = "SELECT * FROM {{answers}} WHERE qid='{$q->id}' and scale_id={$scale_id} and language='$sDataEntryLanguage' order by sortorder, answer";
+            $fquery = "SELECT * FROM {{answers}} WHERE qid='{$q->id}' and scale_id={$scale_id} and language='$language->getlangcode()' order by sortorder, answer";
             $fresult = dbExecuteAssoc($fquery);
             $output .= "<td>\n";
             foreach ($fresult->readAll() as $frow)
@@ -451,6 +451,49 @@ class RadioArrayQuestion extends ArrayQuestion
                 . 'if (typeof attr.answers[which_ans] === "undefined") return "";'
                 . 'answerParts = attr.answers[which_ans].split("|");'
                 . 'return answerParts[0];';
+    }
+
+    public function getDataEntryView($language)
+    {
+        $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order";
+        $mearesult = dbExecuteAssoc($meaquery)->readAll() or safeDie ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
+
+        $fquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY sortorder, code";
+        $fresult = dbExecuteAssoc($fquery)->readAll();
+
+        $output = "<table>";
+        foreach ( $mearesult as $mearow)
+        {
+
+            if (strpos($mearow['question'],'|'))
+            {
+                $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+                $answerright=substr($mearow['question'],strpos($mearow['question'],'|')+1);
+            }
+            else
+            {
+                $answerleft=$mearow['question'];
+                $answerright='';
+            }
+
+            $output .= "<tr>";
+            $output .= "<td align='right'>{$answerleft}</td>";
+            $output .= "<td>";
+            $output .= "<select name={$this->fieldname}{$mearow['title']}'>";
+            $output .= "<option value=''>{$language->gT("Please choose")}..</option>";
+
+            foreach ($fresult as $frow)
+            {
+                $output .= "<option value='{$frow['code']}'>{$frow['answer']}</option>";
+            }
+            $output .= "</select>";
+            $output .= "</td>";
+            $output .= "<td align='left'>{$answerright}</td>";
+            $output .= "</tr>";
+        }
+        $output .= "</table>";
+        
+        return $output;
     }
 
     public function availableAttributes($attr = false)

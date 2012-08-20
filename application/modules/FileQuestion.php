@@ -348,6 +348,71 @@ class FileQuestion extends QuestionModule
         return array('other' => false, 'valid' => false, 'mandatory' => false);
     }
 
+    public function getDataEntryView($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        $title = $qidattributes['show_title'] ? "'+$('#{$this->fieldname}_title_'+i).val()+'" : '';
+        $comment = $qidattributes['show_comment'] ? "'+$('#{$this->fieldname}_comment_'+i).val()+'" : '';
+        $output = <<<OUTPUT
+        <script type='text/javascript'>
+
+            function updateJSON{$this->fieldname}() {
+
+                var jsonstr = '[';
+                var i;
+                var filecount = 0;
+
+                for (i = 0; i < {$qidattributes['max_num_of_files']}; i++)
+                {
+                    if ($('#{$this->fieldname}_file_'+i).val() != '')
+                    {
+                        jsonstr += '{ \"title\":\"{$title}\",';";
+                        jsonstr += '\"comment\":\"{$comment}\",';";
+                        jsonstr += '"name":"'+$('#{$this->fieldname}_file_'+i).val()+'"}';
+
+                        jsonstr += ',';
+                        filecount++;
+                    }
+                }
+
+                if (jsonstr.charAt(jsonstr.length - 1) == ',')
+                    jsonstr = jsonstr.substring(0, jsonstr.length - 1);
+
+                jsonstr += ']';
+                $('#{$this->fieldname}').val(jsonstr);
+                $('#{$this->fieldname}_filecount').val(filecount);
+            }
+        </script>
+
+        <table border='0'>
+OUTPUT;
+        if ($qidattributes['show_title'] && $qidattributes['show_title']) {
+            $output .= "<tr><th>Title</th><th>Comment</th>";
+        } else if ($qidattributes['show_title']) {
+            $output .= "<tr><th>Title</th>";
+        } else if ($qidattributes['show_comment']) {
+            $output .= "<tr><th>Comment</th>";
+        }
+
+        $output .= "<th>Select file</th></tr>";
+        for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+        {
+            $output .= "<tr>";
+            if ($qidattributes['show_title'])
+                $output .= "<td align='center'><input type='text' id='{$this->fieldname}_title_{$i}' maxlength='100' onChange='updateJSON{$this->fieldname}()' /></td>";
+
+            if ($qidattributes['show_comment'])
+                $output .= "<td align='center'><input type='text' id='{$this->fieldname}_comment_{$i}' maxlength='100' onChange='updateJSON{$this->fieldname}()' /></td>";
+
+            $output .= "<td align='center'><input type='file' name='{$this->fieldname}_file_{$i}' id='{$this->fieldname}_file_{$i}' onChange='updateJSON{$this->fieldname}()' /></td></tr>";
+        }
+        $output .= "<tr><td align='center'><input type='hidden' name='{$this->fieldname}' id='{$this->fieldname}' value='' /></td></tr>";
+        $output .= "<tr><td align='center'><input type='hidden' name='{$this->fieldname}_filecount' id='{$this->fieldname}_filecount' value='' /></td></tr>";
+        $output .= "</table>";
+        
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","show_title","show_comment","max_filesize","max_num_of_files","min_num_of_files","allowed_filetypes","random_group");
