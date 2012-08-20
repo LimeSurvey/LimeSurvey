@@ -744,8 +744,11 @@ class tokens extends Survey_Common_Action
 
             // add attributes
             $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+            $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
+            $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
             foreach ($attrfieldnames as $attr_name => $desc)
             {
+                if(!in_array($attr_name,$aTokenFieldNames)) continue;
                 $value = Yii::app()->getRequest()->getPost($attr_name);
                 if ($desc['mandatory'] == 'Y' && trim($value) == '')
                     $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
@@ -2269,6 +2272,17 @@ class tokens extends Survey_Common_Action
         }
 
         $thissurvey = getSurveyInfo($iSurveyId);
+        $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
+        $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
+        $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
+        foreach ($aAdditionalAttributeFields as $sField=>$aData)
+        {
+            if (in_array($sField,$aTokenFieldNames))
+            {
+                $aData['attrfieldnames'][$sField]=$aData;
+            }
+        }
+        
         $aData['thissurvey'] = $thissurvey;
         $aData['surveyid'] = $iSurveyId;
         $aData['subaction'] = $subaction;
