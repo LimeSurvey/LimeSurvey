@@ -1229,7 +1229,7 @@ class export extends Survey_Common_Action {
         {
             if ( $bSendToBrowser )
             {
-                $fn = "survey_archive_{$iSurveyID}.zip";
+                $fn = "survey_archive_{$iSurveyID}.lsa";
 
                 //Send the file for download!
                 $this->_addHeaders($fn, "application/force-download", 0);

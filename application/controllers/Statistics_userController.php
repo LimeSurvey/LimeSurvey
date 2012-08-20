@@ -35,7 +35,7 @@ class Statistics_userController extends LSYii_Controller {
 	    return call_user_func_array(array($this, "action"), $params);
 	}
 
-	function actionAction($surveyid,$postlang)
+	function actionAction($iSurveyID,$language)
 	{
 		$surveyid=(int)$surveyid;
         //$postlang = returnglobal('lang');

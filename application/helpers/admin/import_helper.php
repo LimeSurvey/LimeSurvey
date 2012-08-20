@@ -3333,7 +3333,7 @@ function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyNam
     {
         return ExcelImportSurvey($sFullFilepath);
     }
-    elseif (isset($sExtension) && strtolower($sExtension) == 'zip')  // Import a survey archive
+    elseif (isset($sExtension) && strtolower($sExtension) == 'lsa')  // Import a survey archive
     {
         Yii::import("application.libraries.admin.pclzip.pclzip", true);
         $pclzip = new PclZip(array('p_zipname' => $sFullFilepath));
@@ -4040,15 +4040,13 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
         $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyID}}",true);
         $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate=array_diff($aXLMFieldNames, $aTokenFieldNames);
+        Yii::app()->loadHelper('update/updatedb');
+
         foreach ($aFieldsToCreate as $sField)
         {
             if (strpos($sField,'attribute')!==false)
             {
-                $CI->dbforge->add_column('tokens_'.$iSurveyID,array(
-                $sField => array(
-                'type' => 'VARCHAR',
-                'constraint' => '255')
-                ));
+                addColumn('{{tokens_'.$iSurveyID.'}}',$sField, 'string');
             }
         }
     }
@@ -4140,10 +4138,10 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 
 function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 {
-    $CI =& get_instance();
 
-    $CI->load->helper('database');
+    Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
+
     $xml = simplexml_load_file($sFullFilepath);
 
     if ($xml->LimeSurveyDocType!='Timings')
@@ -4179,7 +4177,7 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
             $insertdata[$key]=(string)$value;
         }
 
-        $result = $CI->timings_dynamic_model->insertRecords($iSurveyID,$insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $result = Survey_timings::model($iSurveyID)->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
 
         $results['responses']++;
     }

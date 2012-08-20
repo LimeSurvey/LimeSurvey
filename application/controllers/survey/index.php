@@ -202,7 +202,7 @@ class index extends CAction {
                         $link .= "/lang-".sanitize_languagecode($param['lang']);
                     }
                     $link .= "' $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
+                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."/language/".$sDisplayLanguage."'>(".$clang->gT('View statistics').")</a>";
                     $link .= "</li>\n";
                     $list[]=$link;
                 }

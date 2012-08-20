@@ -2788,6 +2788,7 @@
 
         private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
         {
+            $_SESSION['LEMforceRefresh']=true;
             if (isset($_SESSION['LEMforceRefresh'])) {
                 unset($_SESSION['LEMforceRefresh']);
                 $forceRefresh=true;
