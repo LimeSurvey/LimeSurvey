@@ -134,7 +134,7 @@ class UserAction extends Survey_Common_Action
                     }
                 }
 
-                $body .= "<a href='" . $this->getController()->createUrl("/admin") . "'>" . $clang->gT("Click here to log in.") . "</a><br /><br />\n";
+                $body .= "<a href='" . $this->getController()->createAbsoluteUrl("/admin") . "'>" . $clang->gT("Click here to log in.") . "</a><br /><br />\n";
                 $body .= sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail")) . "<br />\n";
 
                 $subject = sprintf($clang->gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
