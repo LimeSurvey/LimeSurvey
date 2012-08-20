@@ -2232,7 +2232,7 @@ class tokens extends Survey_Common_Action
             $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyId));
             foreach ($fieldvalue as $k => $v)
                 $survey->$k = $v;
-            $survey->save();
+            $test=$survey->save();
 
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Bounce settings"),
@@ -2242,6 +2242,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokenbounce.js");
             $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
         }
     }
