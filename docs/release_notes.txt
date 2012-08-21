@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.00 Release Candidate 8! 
+Welcome to LimeSurvey v2.00 Release Candidate 9! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -75,6 +75,74 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+
+
+Changes from 2.0RC6 to 2.0RC7 (build 120803) Aug 3, 2012
+-Fixed issue #4646: Reset conditions not working (Carsten Schmitz)
+-Fixed issue #6319: Previewgroup can throw error (Denis Chenu)
+-Fixed issue #6347: display of question text different in 1.92+ and 2.0 when view question in admin mode (Carsten Schmitz)
+-Fixed issue #6380: Error while exporting survey results to Excel (Carsten Schmitz)
+-Fixed issue #6404: No bounce check button (Carsten Schmitz)
+-Fixed issue #6412: "SAVE" button visible when importing (Carsten Schmitz)
+-Fixed issue #6420: Timer causes redirection even when perviewing a survey (jcleeland)
+-Fixed issue #6424: Lastpage field not being added in MSSQL when upgrading from 1.85 or older (Carsten Schmitz)
+-Fixed issue #6425: Misalignment for date filter at statistics (Carsten Schmitz)
+-Fixed issue #6427: 'Select tokens IDs' line showing up even when no tokens were selected for sending reminders (Carsten Schmitz)
+-Fixed issue #6428: Unable to set time in dropdown mode for date question type (Carsten Schmitz)
+-Fixed issue #6429: Admin language should not determine the list of available attributes. Attributes now displayed in admin language first, then in the first found language if there is no admin language translation available (jcleeland)
+-Fixed issue #6430: Central Participant Database: List of participants does not scale well with the number of attributes (jcleeland)
+-Fixed issue #6433: Wrong date/time is showing in survey summary (Carsten Schmitz)
+-Fixed issue #6434: Regenerate question codes doesn't work (Carsten Schmitz)
+-Fixed issue #6438: Statistics doesn't work with numerical question types (Carsten Schmitz)
+-Fixed issue #6439: Question type Array (numbers) does not work with numbers >10 as labels (Thomas White)
+-Fixed issue #6440: Adding a question allways put at end of group (Denis Chenu)
+-Fixed issue #6442: Adding labels fails without numbers in last Code field in Label Set editor (Denis Chenu)
+-Fixed issue #6444: Fix English sentence on the install directions (Carsten Schmitz)
+-Fixed issue #6445: No existing answer option imput field to start with when editing answer options (Carsten Schmitz)
+-Fixed issue #6448: Error when saving global settings on MSSQL (Carsten Schmitz)
+-Fixed issue #6449: Faulty GUI after question group import (Carsten Schmitz)
+-Fixed issue #6451: Missing array filter edit boxes in Ranking Question (Thomas White)
+-Fixed issue #6452: File Upload not working with embedded_layout use (Carsten Schmitz)
+-Fixed issue #6453: The generic image url was used instead of the adminimage url. The generic one does not take styles into account, the admin-one does. (Sam Mousa)
+-Fixed issue #6456: Fixed the issue, editing now works. (Sam Mousa)
+-Fixed issue #6459: Declaration of statistics::run() should be compatible with Survey_Common_Action::run() (Sam Mousa)
+-Fixed issue #6460: Unable to change scenario number and to delete a scenario (Carsten Schmitz)
+-Fixed issue #6463: Unable to add answers (Denis Chenu)
+-Fixed issue #6465: Assessment typo (Carsten Schmitz)
+-Fixed issue #6466: Wrong table name is displayed on deactivation (Carsten Schmitz)
+-Fixed issue #6467: Checkbox for 'other' missing for multiple choice (Denis Chenu)
+-Fixed issue #6468: Can't set participant attribute value to 0 (zero) on drop down (jcleeland)
+-Fixed issue #6471: Unable to save label in label editor with XSS protection (Carsten Schmitz)
+-Fixed issue #6472: Rank question overlaps if hidden by condition (Denis Chenu)
+-Fixed issue #6473: When condition is corrected single quotes are added (Carsten Schmitz)
+-Fixed issue #6474: When viewing answers, "View completed responses only" does not work (Carsten Schmitz)
+-Fixed issue #6491: Modal dialogs in attribute control do not close after use or reload grid (jcleeland)
+-Fixed issue: Adding labels look only the first code for number (Denis Chenu)
+-Fixed issue: Bad place for HTML editor when creating new survey with HTML editor (Denis Chenu)
+-Fixed issue: Delete a question rewrites question order by qid (Denis Chenu)
+-Fixed issue: fix javascripts path using adminscript and generalscript in config setting (Yong Zhang)
+-Fixed issue: Invalid images and script file paths (Yong Zhang)
+-Fixed issue: Invalid images paths (Yong Zhang)
+-Fixed issue: Multiple option with checkbox : Other can be checked at submit with empty value (Denis Chenu)
+-Fixed issue: PHP Error in statistic_view.php (Rahmat Awaludin)
+-Fixed issue: save button doesn't show in URL Parameters dialog (Aaron Schmitz)
+-Fixed issue: Tokens not listed if related responses record is missing (Carsten Schmitz)
+-Fixed issue: URL parameters for non-subquestions don't save properly (Aaron Schmitz)
+-Fixed issue: PHP Script error in PrintanswersController.php (Rahmat Awaludin)
+#Updated translation: Chinese (Hong Kong) (Traditional) by cmj
+#Updated translation: Chinese (Taiwan) (Traditional) by pochuenw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by MrP
+#Updated translation: Estonian by LimAlf
+#Updated translation: French (France) by BenoitBouvarel, ulysse68
+#Updated translation: German by c_schmitz, debianese
+#Updated translation: German (Informal) by groetzner, c_schmitz
+#Updated translation: Italian by flocs, gifino, lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by peterhol, pmonstad,
+#Updated translation: Persian by moohebat
+#Updated translation: Russian by gdemin
+#Updated translation: Turkish by kayazeren
 
 
 Changes from 2.0RC6 to 2.0RC7 (build 120803) Aug 3, 2012

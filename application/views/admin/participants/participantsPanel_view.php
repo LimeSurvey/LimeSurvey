@@ -11,43 +11,43 @@
     </div>
     <?php
     $home = array('src' => $sImageURL.'home.png',
-        'alt' => 'Home Page',
-        'title' => 'Home Page',
+        'alt' => $clang->gT("Main Admin Screen"), 
+        'title' => $clang->gT("Main Admin Screen"),  
         'style' => 'margin-left:2px');
 
     $information = array('src' => $sImageURL.'summary.png',
-        'alt' => 'Information',
-        'title' => 'Information',
+        'alt' => $clang->gT("Information"),  
+        'title' => $clang->gT("Information"), 
         'style' => 'margin-left:2px');
 
     $import = array('src' => $sImageURL.'importcsv.png',
-        'alt' => 'Import from CSV',
-        'title' => 'Import from CSV',
+        'alt' => $clang->gT("Import from CSV"), 
+        'title' => $clang->gT("Import from CSV"), 
         'style' => 'margin-left:0px',
         'style' => 'margin-right:1px');
 
     $export = array('src' => $sImageURL.'exportcsv.png',
-        'alt' => 'Export all',
-        'title' => 'Export all',
+        'alt' => $clang->gT("Export all"), 
+        'title' => $clang->gT("Export all"),
         'name' => 'export',
         'id' => 'export',
         'style' => 'margin-left:0px',
         'style' => 'margin-right:1px');
 
     $display = array('src' => $sImageURL.'document.png',
-        'alt' => 'Display participants',
-        'title' => 'Display participants',
+        'alt' => $clang->gT("Display participants"),
+        'title' => $clang->gT("Display participants"),
         'style' => 'margin-left:5px');
 
     $blacklist = array('src' => $sImageURL.'trafficred.png',
-        'alt' => 'Blacklist control',
-        'title' => 'Blacklist control',
+        'alt' => $clang->gT("Blacklist control"),
+        'title' => $clang->gT("Blacklist control"),
         'style' => 'margin-left:1px',
         'style' => 'margin-right:1px');
 
     $globalsettings = array('src' => $sImageURL.'global.png',
-        'alt' => 'Global participant settings',
-        'title' => 'Global participant settings',
+        'alt' => $clang->gT("Global participant settings"),
+        'title' => $clang->gT("Global participant settings"),
         'style' => 'margin-left:5px',
         'style' => 'margin-right:1px');
 
@@ -60,8 +60,8 @@
         'style' => 'margin-right:1px');
 
     $sharepanel = array('src' => $sImageURL.'share.png',
-        'alt' => 'Share panel',
-        'title' => 'Share panel',
+        'alt' => $clang->gT("Share panel"), 
+        'title' => $clang->gT("Share panel"),
         'height' => 35,
         'width' => 35,
         'style' => 'margin-left:5px');

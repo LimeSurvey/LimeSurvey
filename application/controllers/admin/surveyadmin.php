@@ -636,7 +636,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
 
                 //Set Access
-                if (Yii::app()->db->schema->getTable('{{tokens_' . $rows['sid'] . '}}'))
+                if (tableExists('tokens_' . $rows['sid'] ))
                 {
                     $aSurveyEntry[] = $clang->gT("Closed");
                 }
@@ -884,7 +884,7 @@ class SurveyAdmin extends Survey_Common_Action
                     }
                 }
 
-                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'xls' && strtolower($sExtension) != 'zip'))
+                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'xls' && strtolower($sExtension) != 'lsa'))
                 {
                     $aData['sErrorMessage'] = $clang->gT("Import failed. You specified an invalid file type.");
                     $aData['bFailed'] = true;
@@ -1377,18 +1377,18 @@ class SurveyAdmin extends Survey_Common_Action
         Yii::app()->loadHelper('database');
         $oResult = dbExecuteAssoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
         left join {{questions}} q on q.qid=up.targetqid
-        left join {{questions}} sq on q.qid=up.targetqid
+        left join {{questions}} sq on sq.qid=up.targetsqid
         where up.sid={$iSurveyID}");
         $i = 0;
 
         foreach ($oResult->readAll() as $oRow)
         {
             $aData->rows[$i]['id'] = $oRow['id'];
-            $oRow['title'] = $oRow['title'] . ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
+            $oRow['title'] .= ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
 
             if ($oRow['sqquestion'] != '')
             {
-                echo (' - ' . ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
+                $oRow['title'] .= (' - ' . ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
             }
             unset($oRow['sqquestion']);
             unset($oRow['sqtitle']);

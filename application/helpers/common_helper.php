@@ -5542,7 +5542,7 @@ function cleanTempDirectory()
             @unlink($dir.$file);
         }
     }
-    $dir=  Yii::app()->getConfig('tempdir').'/uploads/';
+    $dir=  Yii::app()->getConfig('tempdir').'/upload/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {

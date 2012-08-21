@@ -61,8 +61,8 @@ class SurveyRuntimeHelper {
         'savetimings' => ($thissurvey['savetimings'] == "Y"),
         'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
         'startlanguage'=>(isset($clang->langcode) ? $clang->langcode : $thissurvey['language']),
-        'target' => (isset($uploaddir) ? "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
-        'tempdir' => (isset($tempdir) ? $tempdir : '/temp/'),
+        'target' => Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
+        'tempdir' => Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
         'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
         'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
@@ -93,7 +93,7 @@ class SurveyRuntimeHelper {
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION[$LEMsessid]['step']))  //  || !$_SESSION[$LEMsessid]['step']) - don't do this for step0, else rebuild the session
             {
-                $totalquestions = buildsurveysession($surveyid);
+                buildsurveysession($surveyid);
                 $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false, $LEMdebugLevel);
@@ -110,6 +110,8 @@ class SurveyRuntimeHelper {
                     }
             }
 
+			$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+			
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
             {
                 $_SESSION[$LEMsessid]['totalsteps'] = 0;

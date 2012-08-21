@@ -199,6 +199,7 @@ class question extends Survey_Common_Action
                         $defaultvalue = Defaultvalues::model()->findByAttributes(array(
                         'specialtype' => '',
                         'qid' => $qid,
+						'sqid' => $aSubquestion['qid'],
                         'scale_id' => $scale_id,
                         'language' => $language
                         ));
@@ -1085,6 +1086,7 @@ class question extends Survey_Common_Action
         $radix = $radix['seperator'];
         $surveyOptions = array(
         'radix'=>$radix,
+        'tempdir'=>Yii::app()->getConfig('tempdir')
         );
         LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
         $qseq = LimeExpressionManager::GetQuestionSeq($qid);

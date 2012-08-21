@@ -29,7 +29,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 {
     /*
     global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode,$register_errormsg;
-    global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
+    global $s_lang,$errormsg,$saved_id, $relativeurl, $languagechanger,$captchapath,$loadname;
     */
     /*
     $allowedvars = array('surveylist', 'sitename', 'clienttoken', 'rooturl', 'thissurvey', 'imageurl', 'defaulttemplate',
@@ -37,7 +37,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'showgroupinfo', 'showqnumcode', 'questioncode', 'answer', 'navigator', 'help', 'totalquestions',
     'surveyformat', 'completed', 'register_errormsg', 'notanswered', 'privacy', 'surveyid', 'publicurl',
     'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
-    'totalBoilerplatequestions', 'relativeurl', 'languagechanger', 'printoutput', 'captchapath', 'loadname');
+    'relativeurl', 'languagechanger', 'printoutput', 'captchapath', 'loadname');
     */
     $allowedvars = array(
     'answer',
@@ -94,7 +94,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
-    if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if (!isset($captchapath)) { $captchapath = ''; }
@@ -328,7 +327,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     if(!isset($totalquestions)) $totalquestions = 0;
-    $_totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
+    $_totalquestionsAsked = $totalquestions;
     if (
     $showxquestions == 'show' ||
     ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) ||

@@ -150,10 +150,9 @@
 
         <?php
             // now the attribute fieds
-            $attrfieldnames = $thissurvey['attributedescriptions'];
             foreach ($attrfieldnames as $attr_name => $attr_description)
             {
-            ?>
+                            ?>
             <li>
                 <label for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
                 <input type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php

@@ -32,7 +32,7 @@
 
         <?php
             if ($defaultvalues) { ?>
-            <li><?php printf($clang->gT("There are %s orphaned default value entries which can be deleted."),$dv); ?> </li>
+            <li><?php printf($clang->gT("There are %s orphaned default value entries which can be deleted."),$defaultvalues); ?> </li>
             <?php }
             else
             { ?>

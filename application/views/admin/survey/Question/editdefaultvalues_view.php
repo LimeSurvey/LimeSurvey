@@ -127,9 +127,7 @@
                                                 <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                             </label>
                                             <textarea cols='50' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
-                                                id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
-                                                <?php echo $aSubquestion['defaultvalue'] ?>
-                                            </textarea>
+                                                id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'><?php echo $aSubquestion['defaultvalue'] ?></textarea>
                                         </li>
                                         <?php
                                         }

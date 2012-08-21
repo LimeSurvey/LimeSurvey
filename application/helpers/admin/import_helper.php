@@ -3333,7 +3333,7 @@ function importSurveyFile($sFullFilepath, $bTranslateLinksFields, $sNewSurveyNam
     {
         return ExcelImportSurvey($sFullFilepath);
     }
-    elseif (isset($sExtension) && strtolower($sExtension) == 'zip')  // Import a survey archive
+    elseif (isset($sExtension) && strtolower($sExtension) == 'lsa')  // Import a survey archive
     {
         Yii::import("application.libraries.admin.pclzip.pclzip", true);
         $pclzip = new PclZip(array('p_zipname' => $sFullFilepath));
@@ -4040,15 +4040,13 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
         $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyID}}",true);
         $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate=array_diff($aXLMFieldNames, $aTokenFieldNames);
+        Yii::app()->loadHelper('update/updatedb');
+
         foreach ($aFieldsToCreate as $sField)
         {
             if (strpos($sField,'attribute')!==false)
             {
-                $CI->dbforge->add_column('tokens_'.$iSurveyID,array(
-                $sField => array(
-                'type' => 'VARCHAR',
-                'constraint' => '255')
-                ));
+                addColumn('{{tokens_'.$iSurveyID.'}}',$sField, 'string');
             }
         }
     }
@@ -4140,10 +4138,10 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 
 function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 {
-    $CI =& get_instance();
 
-    $CI->load->helper('database');
+    Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
+
     $xml = simplexml_load_file($sFullFilepath);
 
     if ($xml->LimeSurveyDocType!='Timings')
@@ -4179,7 +4177,7 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
             $insertdata[$key]=(string)$value;
         }
 
-        $result = $CI->timings_dynamic_model->insertRecords($iSurveyID,$insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+        $result = Survey_timings::model($iSurveyID)->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
 
         $results['responses']++;
     }
@@ -4275,15 +4273,11 @@ function ExcelImportSurvey($sFullFilepath)
     }
 
     // Create the survey entry
-    $iNewSID=GetNewSurveyID($iOldSID);
     $surveyinfo['startdate']=NULL;
-    $surveyinfo['sid']=$iNewSID;
     $surveyinfo['active']='N';
-    $surveyinfo['owner_id']=$_SESSION['loginID'];
-    $surveyinfo['datecreated']=new CDbExpression('NOW()');
-
     switchMSSQLIdentityInsert('surveys',true);
     $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) or safeDie($clang->gT("Error").": Failed to insert survey<br />");
+    $surveyinfo['sid']=$iNewSID;
     $results['surveys']++;
     switchMSSQLIdentityInsert('surveys',false);
     $results['newsid']=$iNewSID;
@@ -4311,7 +4305,11 @@ function ExcelImportSurvey($sFullFilepath)
         }
 
 
-        $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
+        $result = Surveys_languagesettings::model()->insertNewSurvey($insertdata);//
+        if(!$result){
+            $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Failed to insert survey language");
+            break;
+        }
         $results['languages']++;
     }
 
@@ -4340,7 +4338,7 @@ function ExcelImportSurvey($sFullFilepath)
                 $insertdata['grelevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['description'] = (isset($row['text']) ? $row['text'] : '');
                 $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-
+                // For multi numeric survey : same title
                 if (isset($ginfo[$gname]))
                 {
                     $gseq = $ginfo[$gname]['group_order'];
@@ -4352,9 +4350,11 @@ function ExcelImportSurvey($sFullFilepath)
                 {
                     $insertdata['group_order'] = $gseq;
                 }
-
-                $newgid = Groups::model()->insertRecords($insertdata) or safeDie($clang->gT('Error').": Failed to insert group<br />\<br />\n");
-
+                $newgid = Groups::model()->insertRecords($insertdata);
+                if(!$newgid){
+                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Failed to insert group").". ".$clang->gT("Excel row number ").$rownumber." (".$gname.")";
+                    break;
+                }
                 if (!isset($ginfo[$gname]))
                 {
                     $results['groups']++;
@@ -4362,9 +4362,9 @@ function ExcelImportSurvey($sFullFilepath)
                     $ginfo[$gname]['gid'] = $gid;
                     $ginfo[$gname]['group_order'] = $gseq++;
                 }
-
                 $qseq=0;    // reset the question_order
                 break;
+
             case 'Q':
                 // insert question
                 $insertdata = array();
@@ -4384,10 +4384,12 @@ function ExcelImportSurvey($sFullFilepath)
                 $insertdata['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
                 $insertdata['parent_qid'] = 0;
 
-                if (isset($qinfo[$qname]))
+                // For multi numeric survey : same name, add the gid to have same name on different gid. Bad for EM.
+                $fullqname="G{$gid}_".$qname;
+                if (isset($qinfo[$fullqname]))
                 {
-                    $qseq = $qinfo[$qname]['question_order'];
-                    $qid = $qinfo[$qname]['qid'];
+                    $qseq = $qinfo[$fullqname]['question_order'];
+                    $qid = $qinfo[$fullqname]['qid'];
                     $insertdata['qid']  = $qid;
                     $insertdata['question_order'] = $qseq;
                 }
@@ -4395,24 +4397,22 @@ function ExcelImportSurvey($sFullFilepath)
                 {
                     $insertdata['question_order'] = $qseq;
                 }
-
-                $result = Questions::model()->insertRecords($insertdata); //or safeDie ($clang->gT("Error").": Failed to insert question<br />");
+                // Insert question and keep the qid for multi language survey
+                $result = Questions::model()->insertRecords($insertdata); 
                 if(!$result){
                     $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
                     break;
                 }
-
                 $newqid = $result;
-                if (!isset($qinfo[$qname]))
+                if (!isset($qinfo[$fullqname]))
                 {
                     $results['questions']++;
                     $qid=$newqid; // save this for later
-                    $qinfo[$qname]['qid'] = $qid;
-                    $qinfo[$qname]['question_order'] = $qseq++;
+                    $qinfo[$fullqname]['qid'] = $qid;
+                    $qinfo[$fullqname]['question_order'] = $qseq++;
                 }
-
                 $aseq=0;    //reset the answer sortorder
-
+                $sqseq = 0;    //reset the sub question sortorder
                 // insert question attributes
                 foreach ($row as $key=>$val)
                 {
@@ -4439,7 +4439,11 @@ function ExcelImportSurvey($sFullFilepath)
                                 $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                                 $insertdata['attribute'] = $key;
                                 $insertdata['value'] = $val;
-                                $result=Question_attributes::model()->insertRecords($insertdata);
+                                $result=Question_attributes::model()->insertRecords($insertdata);//
+                                if(!$result){
+                                    $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert question attribute").". ".$clang->gT("Excel row number ").$rownumber." ({$key})";
+                                    break;
+                                }
                                 $results['question_attributes']++;
                             }
                             break;
@@ -4453,19 +4457,22 @@ function ExcelImportSurvey($sFullFilepath)
                     $insertdata['qid'] = $qid;
                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                     $insertdata['defaultvalue'] = $row['default'];
-                    $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
+                    $result = Defaultvalues::model()->insertRecords($insertdata);
+                    if(!$result){
+                        $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Excel row number ").$rownumber;
+                        break;
+                    }
                     $results['defaultvalues']++;
                 }
-
-                $sqseq = 0;
                 break;
+
             case 'SQ':
                 $sqname = (isset($row['name']) ? $row['name'] : 'SQ' . $sqseq);
                 if ($qtype == 'O' || $qtype == '|')
                 {
                     ;   // these are fake rows to show naming of comment and filecount fields
                 }
-                else if ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
+                elseif ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
                     {
                         // only want to set default value for 'other' in these cases - not a real SQ row
                         // TODO - this isn't working
@@ -4476,7 +4483,11 @@ function ExcelImportSurvey($sFullFilepath)
                             $insertdata['specialtype'] = 'other';
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                             $insertdata['defaultvalue'] = $row['default'];
-                            $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
+                            $result = Defaultvalues::model()->insertRecords($insertdata);
+                            if(!$result){
+                                $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Excel row number ").$rownumber;
+                                break;
+                            }
                             $results['defaultvalues']++;
                         }
                 }
@@ -4496,23 +4507,25 @@ function ExcelImportSurvey($sFullFilepath)
                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                     $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
                     $insertdata['scale_id'] = $scale_id;
-
-                    $fullsqname = $qid . '_' . $sqname;
-
+                    // For multi nueric language, qid is needed, why not gid. name is not unique.
+                    $fullsqname = "G{$gid}Q{$qid}_{$sqname}";
                     if (isset($sqinfo[$fullsqname]))
                     {
                         $qseq = $sqinfo[$fullsqname]['question_order'];
                         $sqid = $sqinfo[$fullsqname]['sqid'];
                         $insertdata['question_order'] = $qseq;
-                        //                            $insertdata['qid'] = $sqid; // this was causing key duplications - removing it seems to have fixed that
+                        $insertdata['qid'] = $sqid; 
                     }
                     else
                     {
                         $insertdata['question_order'] = $qseq;
                     }
-
-                    $newsqid = Questions::model()->insertRecords($insertdata) or safeDie ($clang->gT("Error").": Failed to insert question<br />");
-
+                    // Insert sub question and keep the sqid for multi language survey
+                    $newsqid = Questions::model()->insertRecords($insertdata);
+                    if(!$newsqid){
+                        $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert sub question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
+                        break;
+                    }
                     if (!isset($sqinfo[$fullsqname]))
                     {
                         $sqinfo[$fullsqname]['question_order'] = $qseq++;
@@ -4530,7 +4543,11 @@ function ExcelImportSurvey($sFullFilepath)
                         $insertdata['scale_id'] = $scale_id;
                         $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                         $insertdata['defaultvalue'] = $row['default'];
-                        $result = Defaultvalues::model()->insertRecords($insertdata) or safeDie ("Error: Failed to insert defaultvalue <br />");
+                        $result = Defaultvalues::model()->insertRecords($insertdata);
+                        if(!$result){
+                            $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Excel row number ").$rownumber;
+                            break;
+                        }
                         $results['defaultvalues']++;
                     }
                 }
@@ -4544,7 +4561,6 @@ function ExcelImportSurvey($sFullFilepath)
                 $insertdata['language']= (isset($row['language']) ? $row['language'] : $baselang);
                 $insertdata['assessment_value'] = (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['sortorder'] = ++$aseq;
-
                 $result = Answers::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
                 if(!$result){
                     $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert answer").". ".$clang->gT("Excel row number ").$rownumber;

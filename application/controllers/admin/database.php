@@ -93,7 +93,7 @@ class database extends Survey_Common_Action
                 foreach ($questlangs as $language)
                 {
 
-                    $sqresult = Questions::model()->findByAttributes(array('sid'=>$surveyid, 'gid'=>$gid, 'parent_qid'=>$qid, 'language'=>$language, 'scale_id'=>0));
+                    $sqresult = Questions::model()->findAllByAttributes(array('sid'=>$surveyid, 'gid'=>$gid, 'parent_qid'=>$qid, 'language'=>$language, 'scale_id'=>0));
 
                     for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
                     {
@@ -327,7 +327,7 @@ class database extends Survey_Common_Action
                         {
                             if (!isset($insertqid[$scale_id][$position]))
                             {
-                                $insertqid[$position]=Questions::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
+                                $insertqid[$scale_id][$position]=Questions::model()->insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
                             }
                             else
                             {
@@ -735,7 +735,7 @@ class database extends Survey_Common_Action
                                     // Moving question to a 'upper' group
                                     // insert question at the end of the destination group
                                     // this prevent breaking conditions if the target qid is in the dest group
-                                    $insertorder = getMaxQuestionOrder($gid) + 1;
+                                    $insertorder = getMaxQuestionOrder($gid,$surveyid) + 1;
                                     $udata = array_merge($udata,array('question_order' => $insertorder));
                                 }
                                 else
@@ -972,8 +972,8 @@ class database extends Survey_Common_Action
                 unset($aURLParam['act']);
                 unset($aURLParam['title']);
                 unset($aURLParam['id']);
-                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']='NULL';
-                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']='NULL';
+                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
+                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
                 $aURLParam['sid']=$surveyid;
 
                 $param = new Survey_url_parameters;
@@ -1016,7 +1016,7 @@ class database extends Survey_Common_Action
             'showprogress'=> Yii::app()->request->getPost('showprogress'),
             'listpublic'=> Yii::app()->request->getPost('public'),
             'htmlemail'=> Yii::app()->request->getPost('htmlemail'),
-            'sendconfirmation'=> 'N',
+            'sendconfirmation'=>  Yii::app()->request->getPost('sendconfirmation'),
             'tokenanswerspersistence'=> Yii::app()->request->getPost('tokenanswerspersistence'),
             'alloweditaftercompletion'=> Yii::app()->request->getPost('alloweditaftercompletion'),
             'usecaptcha'=> Yii::app()->request->getPost('usecaptcha'),

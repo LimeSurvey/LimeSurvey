@@ -2866,8 +2866,8 @@ function do_file_upload($ia)
              headComment: '" . $clang->gT('Comment','js') . "',
              headFileName: '" . $clang->gT('File name','js') . "'
             };
+        var imageurl =  '".Yii::app()->getConfig('imageurl')."';
     </script>\n";
-
     header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
 
     // Modal dialog

@@ -20,7 +20,7 @@ class index extends CAction {
 
     function action()
     {
-        global $surveyid, $totalquestions;
+        global $surveyid;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
         $clang = Yii::app()->lang;
@@ -145,6 +145,7 @@ class index extends CAction {
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {
+ 		    LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
             $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
             UpdateSessionGroupList($surveyid, $sTempLanguage);  // to refresh the language strings in the group list session variable
             UpdateFieldArray();        // to refresh question titles and question text
@@ -201,7 +202,7 @@ class index extends CAction {
                         $link .= "/lang-".sanitize_languagecode($param['lang']);
                     }
                     $link .= "' $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
+                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."/language/".$sDisplayLanguage."'>(".$clang->gT('View statistics').")</a>";
                     $link .= "</li>\n";
                     $list[]=$link;
                 }
@@ -316,7 +317,6 @@ class index extends CAction {
         }
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
-        $totalBoilerplatequestions =0;
         $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
         //SEE IF SURVEY USES TOKENS

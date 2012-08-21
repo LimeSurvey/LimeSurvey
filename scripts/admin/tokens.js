@@ -25,9 +25,9 @@ function addcondition()
     $('#searchtable > tbody > tr').eq(idexternal).after(html2);
     idexternal++;
 }
-$(document).ready(function() {
 
-    turnoff();
+
+$(document).ready(function() {
 
     $("#filterduplicatetoken").change(function(){
         if ($("#filterduplicatetoken").attr('checked')==true) {
@@ -37,18 +37,6 @@ $(document).ready(function() {
         }
     })
 
-
-    function turnoff(ui,evt) {
-        bounce_disabled=($("#bounceprocessing").val()=='N' || $("#bounceprocessing").val()=='G');
-        if (bounce_disabled==true) {bounce_disabled='disabled';}
-        else {bounce_disabled='';}
-        $("#bounceaccounttype").attr('disabled',bounce_disabled);
-        $("#bounceaccounthost").attr('disabled',bounce_disabled);
-        $("#bounceaccountuser").attr('disabled',bounce_disabled);
-        $("#bounceaccountpass").attr('disabled',bounce_disabled);
-        $("#bounceencryption").attr('disabled',bounce_disabled);
-        $("#bounceaccountencryption").attr('disabled',bounce_disabled);
-    }
 
     // Code for AJAX download
     jQuery.download = function(url, data, method){

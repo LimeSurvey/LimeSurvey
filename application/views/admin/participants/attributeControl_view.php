@@ -1,4 +1,8 @@
 <script type="text/javascript">
+    var deleteCaption = "<?php $clang->eT("Delete attribute") ?>";
+    var deleteMsg = "<?php $clang->eT("Delete selected attribute(s) and it's associated data?") ?>";
+    var addCaption = "<?php $clang->eT("Add attribute") ?>";
+
     var attributeInfoUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getAttributeInfo_json"); ?>";
     var editAttributeUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editAttributeInfo"); ?>";
     var attributeControlCols = '["<?php $clang->eT('Actions'); ?>", "<?php $clang->eT('Attribute name'); ?>", "<?php $clang->eT('Attribute type'); ?>", "<?php $clang->eT('Visible in participants panel'); ?>"]';
