@@ -475,7 +475,7 @@ class SurveyRuntimeHelper {
                     // Link to Public statistics  **********
                     if ($thissurvey['publicstatistics'] == 'Y')
                     {
-                        $url = Yii::app()->getController()->createUrl("statistics_user/sid/{$surveyid}/lang/".$_SESSION[$LEMsessid]['s_lang']);
+                        $url = Yii::app()->getController()->createUrl("statistics_user/action/surveyid/{$surveyid}/language/".$_SESSION[$LEMsessid]['s_lang']);
                         $completed .= "<br /><br />"
                         . "<a class='publicstatisticslink' href='$url' target='_blank'>"
                         . $clang->gT("View the statistics for this survey.")

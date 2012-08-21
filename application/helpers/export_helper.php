@@ -54,8 +54,10 @@ function isNumericExtended($value)  {
 * @param mixed $iSurveyID The survey ID
 * @param mixed $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
 * @param mixed $na Value for N/A data
+* @param sep Quote separator. Use '\'' for SPSS, '"' for R
+* @param logical $header If TRUE, adds SQGA code as column headings (used by export to R) 
 */
-function SPSSExportData ($iSurveyID, $iLength, $na = '') {
+function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE) {
 
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID);
@@ -68,6 +70,19 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
 
     //This shouldn't occur, but just to be safe:
     if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
+    
+    // Add column headers (used by R export)
+    if($header==TRUE)
+    {
+        $i = 1;
+        foreach ($fields as $field) {
+            echo $q.strtoupper($field['sql_name']).$q;
+            if ($i<$num_fields && !$field['hide']) echo ',';
+            $i++;
+        }
+        echo("\n");
+    }
+
 
     foreach ($result as $row) {
         $row = array_change_key_case($row,CASE_UPPER);
@@ -84,7 +99,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
                     list( $year, $month, $day, $hour, $minute, $second ) = preg_split( '([^0-9])', $row[$fieldno] );
                     if ($year != '' && (int)$year >= 1970)
                     {
-                        echo "'".date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) )."'";
+                        echo $q.date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) ).$q;
                     } else
                     {
                         echo ($na);
@@ -97,9 +112,9 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
                 {
                     if ($row[$fieldno] == 'Y')    // Yes/No Question Type
                     {
-                        echo( "'1'");
+                        echo( $q. 1 .$q);
                     } else if ($row[$fieldno] == 'N'){
-                            echo( "'2'");
+                            echo( $q. 2 .$q);
                         } else {
                             echo($na);
                     }
@@ -107,9 +122,9 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
                     {
                         if ($row[$fieldno] == 'F')
                         {
-                            echo( "'1'");
+                            echo( $q. 1 .$q);
                         } else if ($row[$fieldno] == 'M'){
-                                echo( "'2'");
+                                echo( $q. 2 .$q);
                             } else {
                                 echo($na);
                         }
@@ -117,11 +132,11 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
                         {
                             if ($row[$fieldno] == 'Y')
                             {
-                                echo( "'1'");
+                                echo( $q. 1 .$q);
                             } else if ($row[$fieldno] == 'N'){
-                                    echo( "'2'");
+                                    echo( $q. 2 .$q);
                                 } else if ($row[$fieldno] == 'U'){
-                                        echo( "'3'");
+                                        echo( $q. 3 .$q);
                                     } else {
                                         echo($na);
                             }
@@ -129,11 +144,11 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
                             {
                                 if ($row[$fieldno] == 'I')
                                 {
-                                    echo( "'1'");
+                                    echo( $q. 1 .$q);
                                 } else if ($row[$fieldno] == 'S'){
-                                        echo( "'2'");
+                                        echo( $q. 2 .$q);
                                     } else if ($row[$fieldno] == 'D'){
-                                            echo( "'3'");
+                                            echo( $q. 3 .$q);
                                         } else {
                                             echo($na);
                                 }
@@ -141,22 +156,23 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
                             {
                                 if ($row[$fieldno] == 'Y')
                                 {
-                                    echo("'1'");
+                                    echo($q. 1 .$q);
                                 } else
                                 {
-                                    echo("'0'");
+                                    echo($q. 0 .$q);
                                 }
                             } elseif (!$field['hide']) {
                                 $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
                                 if (trim($strTmp) != ''){
-                                    $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+                                    if($q=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+                                    if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
                                     /*
                                     * Temp quick fix for replacing decimal dots with comma's
                                     if (isNumericExtended($strTemp)) {
                                     $strTemp = str_replace('.',',',$strTemp);
                                     }
                                     */
-                                    echo "'$strTemp'";
+                                    echo $q. $strTemp .$q ;
                                 }
                                 else
                                 {

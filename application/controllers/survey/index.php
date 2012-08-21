@@ -247,7 +247,6 @@ class index extends CAction {
                     $link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'sendreq(".$rows['sid'].");' ";
                     //$link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'convertGETtoPOST(".$this->getController()->createUrl('survey/send/')."?sid={$rows['sid']}&amp;)sendreq(".$rows['sid'].",".$rows['startdate'].",".$rows['expires'].");' ";
                     $link .= " $langtag class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                    //if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
                     $link .= "</li><div id='regform'></div>\n";
                     $list[]=$link;
                 }
