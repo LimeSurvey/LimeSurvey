@@ -179,14 +179,14 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
             if (pos)
                 {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td class="upload image"><img src="/uploader/index/sid/'+surveyid+'/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
+                    display += '<tr><td class="upload image"><img src="' + uploadurl + '/sid/'+surveyid+'/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
                 else
                     display += '<tr><td class="upload placeholder"><img src="'+imageurl+'/placeholder.png" height=100px /></td>';
             }
             else
                 {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td class="upload image"><img src="/uploader/index/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
+                    display += '<tr><td class="upload image"><img src="' + uploadurl + 'filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
                 else
                     display += '<tr><td class="upload placeholder"><img src="'+imageurl+'/placeholder.png" height=100px /></td>';
             }

@@ -2867,6 +2867,7 @@ function do_file_upload($ia)
              headFileName: '" . $clang->gT('File name','js') . "'
             };
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
+        var uploadurl =  '".$scriptloc."';
     </script>\n";
     header_includes(Yii::app()->getConfig('generalscripts')."modaldialog.js");
 

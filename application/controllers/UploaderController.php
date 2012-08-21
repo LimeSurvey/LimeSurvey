@@ -33,7 +33,7 @@ class UploaderController extends AdminController {
 		    elseif(substr($sFileName,0,3)=='fu_'){
 		        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
 		    }
-            header('Content-Type: '.mime_content_type($sFileDir.$sFileName));
+            header('Content-Type: '. CFileHelper::getMimeType($sFileDir.$sFileName));
 		    readfile($sFileDir.$sFileName);
 		    exit();
 		}
@@ -103,6 +103,11 @@ class UploaderController extends AdminController {
 			$clang = Yii::app()->lang;
 
 		    $sTempUploadDir = $tempdir.'/upload/';
+            // Check if exists and is writable
+            if (!file_exists($sTempUploadDir)) {
+                // Try to create
+                mkdir($sTempUploadDir);
+            }
 		    $filename = $_FILES['uploadfile']['name'];
 		    $size = 0.001 * $_FILES['uploadfile']['size'];
 		    $valid_extensions = strtolower($_POST['valid_extensions']);
