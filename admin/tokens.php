@@ -424,7 +424,7 @@
 
             $tokenoutput .= "\t<div class='menubar'>"
             ."<div class='menubar-title ui-widget-header'>"
-            ."<strong>".$clang->gT("Token control")." </strong> ".htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
+            ."<strong>".$clang->gT("Token control")." </strong> ".FlattenText($thissurvey['surveyls_title'])."</div>\n";
             $surveyprivate = $thissurvey['anonymized'];
         }
     }
