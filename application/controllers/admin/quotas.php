@@ -332,13 +332,22 @@ class quotas extends Survey_Common_Action
         $aData['quotainfo'] = $aQuotaInfo;
 
         $aViewUrls[] = 'editquota_view';
+        
 
-        foreach ($aLangs as $sLang)
+        $first=true;
+        foreach ($aLangs as $sLanguage)
         {
-            $aData['langquotainfo'] = Quota_languagesettings::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLang));
-            $aData['lang'] = $sLang;
+            $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+            if ($first)
+            {
+                $aTabTitles[$sLanguage].= ' (' . $clang->gT("Base language") . ')';
+                $first = false;
+            }
+            $aData['langquotainfo'] = Quota_languagesettings::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLanguage));
+            $aData['lang'] = $sLanguage;
             $aViewUrls['editquotalang_view'][] = $aData;
         }
+        $aData['aTabTitles']=$aTabTitles;
 
         $aViewUrls[] = 'editquotafooter_view';
 
