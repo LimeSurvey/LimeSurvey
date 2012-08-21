@@ -246,7 +246,8 @@ class responses extends Survey_Common_Action
                     {
                         $index = $fnames[$i]['index'];
                         $metadata = $fnames[$i]['metadata'];
-                        $phparray = json_decode($iIdrow[$fnames[$i][0]], true);
+                        $phparray = json_decode_ls($iIdrow[$fnames[$i][0]]);
+
                         if (isset($phparray[$index]))
                         {
                             if ($metadata === "size")
@@ -341,7 +342,7 @@ class responses extends Survey_Common_Action
                 {
                     foreach ($fuqtquestions as $fieldname)
                     {
-                        $phparray = json_decode($json[$fieldname]);
+                        $phparray = json_decode_ls($json[$fieldname]);
                         foreach ($phparray as $metadata)
                         {
                             $path = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
@@ -384,7 +385,7 @@ class responses extends Survey_Common_Action
                         {
                             foreach ($fuqtquestions as $fieldname)
                             {
-                                $phparray = json_decode($json[$fieldname]);
+                                $phparray = json_decode_ls($json[$fieldname]);
                                 foreach ($phparray as $metadata)
                                 {
                                     $path = $this->getController()->getConfig('uploaddir') . "/surveys/{$iSurveyID}/files/";
@@ -421,7 +422,7 @@ class responses extends Survey_Common_Action
             $fieldname = Yii::app()->request->getPost('fieldname');
 
             $row = Survey_dynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
-            $phparray = json_decode(reset($row));
+            $phparray = json_decode_ls(reset($row));
 
             for ($i = 0; $i < count($phparray); $i++)
             {
@@ -864,7 +865,7 @@ class responses extends Survey_Common_Action
             {
                 foreach ($metadata as $aData)
                 {
-                    $phparray = json_decode($aData, true);
+                    $phparray = json_decode_ls($aData);
                     if (is_array($phparray))
                     {
                         foreach ($phparray as $file)

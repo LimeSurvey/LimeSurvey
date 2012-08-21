@@ -7634,6 +7634,24 @@ function ls_json_encode($content)
 }
 
 /**
+ * Decode a json string, sometimes needs stripslashes
+ *
+ * @param type $jsonString
+ * @return type
+ */
+function json_decode_ls($jsonString)
+{
+   $decoded = json_decode($jsonString, true);
+
+   if (json_last_error() === JSON_ERROR_SYNTAX) {
+       // probably we need stipslahes
+       $decoded = json_decode(stripslashes($jsonString), true);
+   }
+
+   return $decoded;
+}
+
+/**
 * Swaps two positions in an array
 *
 * @param mixed $key1
