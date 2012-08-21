@@ -165,7 +165,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
                                 $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
                                 if (trim($strTmp) != ''){
                                     if($q=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-                                    if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('---',' ',' '),trim($strTmp));
+                                    if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
                                     /*
                                     * Temp quick fix for replacing decimal dots with comma's
                                     if (isNumericExtended($strTemp)) {
