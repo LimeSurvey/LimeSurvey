@@ -1833,7 +1833,7 @@ class ExpressionManager {
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
             // TODO - Since want to use <span> for dynamic substitution, what if there are recursive substititons?
-            $result = $this->sProcessStringContainingExpressionsHelper(htmlspecialchars_decode($result,ENT_QUOTES),$questionNum, $staticReplacement);
+            $result = $this->sProcessStringContainingExpressionsHelper($result ,$questionNum, $staticReplacement);
             if ($i == $whichPrettyPrintIteration)
             {
                 $prettyPrint = $this->prettyPrintSource;
