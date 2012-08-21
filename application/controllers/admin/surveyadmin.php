@@ -667,7 +667,7 @@ class SurveyAdmin extends Survey_Common_Action
 
 
                     $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']);
-                    if (Yii::app()->db->schema->getTable("{{tokens_" . $rows['sid'] . "}}"))
+                    if (tableExists('tokens_' . $rows['sid'] ))
                     {
                         $tokens = Tokens_dynamic::model($rows['sid'])->count();
                         $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
