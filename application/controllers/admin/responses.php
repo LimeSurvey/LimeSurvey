@@ -35,7 +35,7 @@ class responses extends Survey_Common_Action
     {
         if (is_numeric($params))
         {
-            $iSurveyID = $params;
+            $iSurveyId = $params;
         }
         elseif (is_array($params))
         {
@@ -43,7 +43,7 @@ class responses extends Survey_Common_Action
         }
         $aData = array();
         // Set the variables in an array
-        $aData['surveyid'] = $aData['iSurveyId'] = (int) $iSurveyID;
+        $aData['surveyid'] = $aData['iSurveyId'] = (int) $iSurveyId;
         if (!empty($iId))
         {
             $aData['iId'] = (int) $iId;
@@ -56,7 +56,7 @@ class responses extends Survey_Common_Action
         $oCriteria->select = 'sid, active';
         $oCriteria->join = 'INNER JOIN {{surveys_languagesettings}} as b on (b.surveyls_survey_id=sid and b.surveyls_language=language)';
         $oCriteria->condition = 'sid=:survey';
-        $oCriteria->params = array('survey' => $iSurveyID);
+        $oCriteria->params = array('survey' => $iSurveyId);
         $actresult = Survey::model()->findAll($oCriteria);
 
         if (count($actresult) > 0)
@@ -81,7 +81,7 @@ class responses extends Survey_Common_Action
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 
-        $aData['surveyinfo'] = getSurveyInfo($iSurveyID);
+        $aData['surveyinfo'] = getSurveyInfo($iSurveyId);
 
         if (isset($browselang) && $browselang != '')
         {
@@ -91,19 +91,19 @@ class responses extends Survey_Common_Action
         elseif (isset(Yii::app()->session['browselang']))
         {
             $aData['language'] = Yii::app()->session['browselang'];
-            $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $aData['languagelist'][] = Survey::model()->findByPk($iSurveyID)->language;
+            $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+            $aData['languagelist'][] = Survey::model()->findByPk($iSurveyId)->language;
             if (!in_array($aData['language'], $languagelist))
             {
-                $aData['language'] = Survey::model()->findByPk($iSurveyID)->language;
+                $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
             }
         }
         else
         {
-            $aData['language'] = Survey::model()->findByPk($iSurveyID)->language;
+            $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
         }
 
-        $aData['qulanguage'] = Survey::model()->findByPk($iSurveyID)->language;
+        $aData['qulanguage'] = Survey::model()->findByPk($iSurveyId)->language;
 
         $aData['surveyoptions'] = '';
         $aData['browseoutput']  = '';
