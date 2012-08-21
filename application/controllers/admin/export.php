@@ -624,11 +624,11 @@ class export extends Survey_Common_Action {
 
         //$typeMap = $this->_getTypeMap();
 
-        $length_vallabel = '120'; // Set the max text length of Value Labels
+//        $length_vallabel = '120'; // Set the max text length of Value Labels
         $iLength = '25500'; // Set the max text length of Text Data
         $length_varlabel = '25500'; // Set the max text length of Variable Labels
         $headerComment = '';
-        $tempFile = '';
+//        $tempFile = '';
 
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
         $filterstate = incompleteAnsFilterState();
@@ -679,7 +679,7 @@ class export extends Survey_Common_Action {
             header("Pragma: public");
 
             $na = "";	//change to empty string instead of two double quotes to fix warnings on NA
-            SPSSExportData($iSurveyID, $iLength);
+            SPSSExportData($iSurveyID, $iLength, $na='', $q='"', $header=TRUE);
 
             exit;
         }
@@ -692,11 +692,9 @@ class export extends Survey_Common_Action {
             header("Pragma: public");
 
             echo $headerComment;
-            echo "data <- read.table(\"survey_" . $iSurveyID
-            ."_R_data_file.csv\", sep=\",\", quote = \"'\", "
-            ."na.strings=c(\"\",\"\\\"\\\"\"), "
-            ."stringsAsFactors=FALSE)\n\n";
 
+            echo ('data <- read.csv("survey_' . $iSurveyID .'_R_data_file.csv", na.strings=c(",", "\"\""), stringsAsFactors=FALSE)');
+            echo ("\n\n");
 
             // Build array that has to be returned
             $fields = SPSSFieldMap($iSurveyID,"V");
