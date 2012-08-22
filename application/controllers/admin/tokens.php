@@ -1249,14 +1249,7 @@ class tokens extends Survey_Common_Action
         $aTokenIds = $this->_getTokenIds($aTokenIds, $iSurveyId);
         $aTokenFields = getTokenFieldsAndNames($iSurveyId, true);
         $iAttributes = 0;
-        if (getEmailFormat($iSurveyId) == 'html')
-        {
-            $bHtml = true;
-        }
-        else
-        {
-            $bHtml = false;
-        }
+        $bHtml = (getEmailFormat($iSurveyId) == 'html');
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
 
@@ -1380,7 +1373,7 @@ class tokens extends Survey_Common_Action
                     foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {
                         $url = $fieldsarray["{{$key}URL}"];
-                        $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
+                        if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
                         if ($key == 'SURVEY')
                         {
                             $barebone_link = $url;
