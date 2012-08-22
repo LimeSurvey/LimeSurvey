@@ -4440,8 +4440,15 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
     $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
     $defaultlang = Yii::app()->getConfig("defaultlang");
-    $emailcharset = Yii::app()->getConfig("charset");
+    $emailcharset = Yii::app()->getConfig("emailcharset");
 
+    if ($emailcharset!='utf-8')
+    {
+        $body=mb_convert_encoding($body,$emailcharset,'utf-8');
+        $subject=mb_convert_encoding($subject,$emailcharset,'utf-8');
+        $sitename=mb_convert_encoding($sitename,$emailcharset,'utf-8');
+    }
+    
     if (!is_array($to)){
         $to=array($to);
     }
@@ -4557,7 +4564,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     if ($ishtml) {
         $mail->IsHTML(true);
         $mail->Body = $body;
-        $mail->AltBody = strip_tags(breakToNewline(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
+        $mail->AltBody = strip_tags(breakToNewline(html_entity_decode($body,ENT_QUOTES,$emailcharset)));
     } else
     {
         $mail->IsHTML(false);
