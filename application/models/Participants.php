@@ -245,7 +245,6 @@ class Participants extends CActiveRecord
     	/* This function deletes the participant from the participants table,
     	   the participant from any tokens table they're in (using the survey_links table to find them)
     	   and then all the participants attributes. */
-
         $rowid = explode(",", $rows);
         foreach ($rowid as $row)
         {
@@ -253,15 +252,19 @@ class Participants extends CActiveRecord
 
 			foreach ($tokens as $key => $value)
             {
-                if (Yii::app()->db->schema->getTable('tokens_' . intval($value['survey_id'])))
+                $tokentable='{{tokens_'.intval($value['survey_id']).'}}';
+
+                if (Yii::app()->db->schema->getTable($tokentable))
                 {
-                    Yii::app()->db->createCommand()->delete(Tokens::model()->tableName(), array('in', 'participant_id', $row));
+                    Yii::app()->db->createCommand()
+                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = "' . $row . '"'); // Deletes matching token table entries
+                    //Yii::app()->db->createCommand()->delete(Tokens::model()->tableName(), array('in', 'participant_id', $row));
 				}
             }
-
         	Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
         	Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
         	Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
+
         }
     }
 
@@ -275,24 +278,43 @@ class Participants extends CActiveRecord
 		foreach ($rowid as $row)
 		{
 			//ORIGINAL LINE: $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = "' . $row . '"')->queryAll();
-			$tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :row')->bindParam(":row", $row, PDO::PARAM_INT)->queryAll();
+			$tokens = Yii::app()->db->createCommand()
+                                    ->select('*')
+                                    ->from('{{survey_links}}')
+                                    ->where('participant_id = :row')
+                                    ->bindParam(":row", $row, PDO::PARAM_INT)
+                                    ->queryAll();
 
 			foreach ($tokens as $key => $value)
 			{
-				if (Yii::app()->db->schema->getTable('tokens_' . Yii::app()->db->quoteValue($value['survey_id'])))
+                $tokentable='{{tokens_'.intval($value['survey_id']).'}}';
+				if (Yii::app()->db->schema->getTable($tokentable))
 				{
-					$tokenid = Yii::app()->db->createCommand()->select('token')->from('{{tokens_' . intval($value['survey_id']) . '}}')->where('participant_id = "' . $value['participant_id'] . '"')->queryAll();
+					$tokenid = Yii::app()->db->createCommand()
+                                             ->select('token')
+                                             ->from('{{tokens_' . intval($value['survey_id']) . '}}')
+                                             ->where('participant_id = "' . $value['participant_id'] . '"')
+                                             ->queryAll();
 					$token = $tokenid[0];
-					if (Yii::app()->db->schema->getTable('survey_' . intval($value['survey_id'])))
+                    $surveytable='{{survey_'.intval($value['survey_id']).'}}';
+					if ($datas=Yii::app()->db->schema->getTable($surveytable))
 					{
-						if (!empty($token['token']))
+						if (!empty($token['token']) && isset($datas->columns['token'])) //Make sure we have a token value, and that tokens are used to link to the survey
 						{
-							$gettoken = Yii::app()->db->createCommand()->select('*')->from('{{survey_' . intval($value['survey_id']) . '}}')->where('token = :token')->bindParam(":token", $token['token'], PDO::PARAM_STR)->queryAll();
+							$gettoken = Yii::app()->db->createCommand()
+                                                      ->select('*')
+                                                      ->from('{{survey_' . intval($value['survey_id']) . '}}')
+                                                      ->where('token = :token')
+                                                      ->bindParam(":token", $token['token'], PDO::PARAM_STR)
+                                                      ->queryAll();
 							$gettoken = $gettoken[0];
-							Yii::app()->db->createCommand()->delete('{{survey_' . intval($value['survey_id']) . '}}', 'token = :token')->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
+							Yii::app()->db->createCommand()
+                                          ->delete('{{survey_' . intval($value['survey_id']) . '}}', 'token = :token')
+                                          ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
 						}
 					}
-					Yii::app()->db->createCommand()->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = "' . $value['participant_id'] . '"'); // Deletes matching token table entries
+					Yii::app()->db->createCommand()
+                                  ->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = "' . $value['participant_id'] . '"'); // Deletes matching token table entries
 				}
 			}
 			Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));

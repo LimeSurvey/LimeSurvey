@@ -359,8 +359,8 @@ class participantsaction extends Survey_Common_Action
     {
         $selectoption = Yii::app()->request->getPost('selectedoption');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
-		//echo $selectoption." -- ".$iParticipantId."<br />";
-    	//die();
+
+        //echo $selectoption." -- ".$iParticipantId."<br />"; die();
 
         // Deletes from participants only
         if ($selectoption == 'po')
@@ -373,7 +373,7 @@ class participantsaction extends Survey_Common_Action
             Participants::model()->deleteParticipantToken($iParticipantId);
         }
         // Deletes from central , token and assosiated responses as well
-        else
+        elseif ($selectoption == 'ptta')
         {
             Participants::model()->deleteParticipantTokenAnswer($iParticipantId);
         }
