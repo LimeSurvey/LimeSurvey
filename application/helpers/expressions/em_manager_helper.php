@@ -4436,7 +4436,7 @@
                 // All sub-questions are irrelevant
                 $irrelevantSQs = explode('|', $LEM->qid2code[$qid]);
             }
-            else
+			elseif (!$q->displayOnly())
             {
                 // Check filter status to determine which subquestions are relevant
                 $sgqas = explode('|',$LEM->qid2code[$qid]);
@@ -4449,30 +4449,30 @@
                         continue;
                     }
                     $foundSQrelevance=false;
-                    foreach ($LEM->subQrelInfo[$qid] as $sq)
+                    foreach ($LEM->subQrelInfo[$qid] as $subq)
                     {
-                        $q = $sq['q'];
-                        if ($q->compareField($sgqa, $sq)) {
+                        $sq = $subq['q'];
+                        if ($sq->compareField($sgqa, $subq)) {
                             $foundSQrelevance=true;
-                            if (isset($LEM->ParseResultCache[$sq['eqn']]))
+                            if (isset($LEM->ParseResultCache[$subq['eqn']]))
                             {
-                                $sqrel = $LEM->ParseResultCache[$sq['eqn']]['result'];
+                                $sqrel = $LEM->ParseResultCache[$subq['eqn']]['result'];
                                 if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                 {
-                                    $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyprint'];
+                                    $prettyPrintSQRelEqns[$subq['rowdivid']] = $LEM->ParseResultCache[$subq['eqn']]['prettyprint'];
                                 }
                             }
                             else
                             {
-                                $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                $stringToParse = htmlspecialchars_decode($subq['eqn'],ENT_QUOTES);  // TODO is this needed?
                                 $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                 $hasErrors = $LEM->em->HasErrors();
                                 if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                 {
                                     $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
-                                    $prettyPrintSQRelEqns[$sq['rowdivid']] = $prettyPrintSQRelEqn;
+                                    $prettyPrintSQRelEqns[$subq['rowdivid']] = $prettyPrintSQRelEqn;
                                 }
-                                $LEM->ParseResultCache[$sq['eqn']] = array(
+                                $LEM->ParseResultCache[$subq['eqn']] = array(
                                 'result'=>$sqrel,
                                 'prettyprint'=>$prettyPrintSQRelEqn,
                                 'hasErrors'=>$hasErrors,
@@ -4481,17 +4481,17 @@
                             if ($sqrel)
                             {
                                 $relevantSQs[] = $sgqa;
-                                if ($q->includeRelevanceStatus())
+                                if ($sq->includeRelevanceStatus())
                                 {
-                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=true;
+                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$subq['rowdivid']]=true;
                                 }
                             }
                             else
                             {
                                 $irrelevantSQs[] = $sgqa;
-                                if ($q->includeRelevanceStatus())
+                                if ($sq->includeRelevanceStatus())
                                 {
-                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
+                                    $_SESSION[$LEM->sessid]['relevanceStatus'][$subq['rowdivid']]=false;
                                 }
                             }
                         }
@@ -5893,7 +5893,7 @@ EOT;
             foreach(explode("\n",$tests) as $test)
             {
                 $args = explode("~",$test);
-                $q = (($args[1]=='expr') ? new EquationQuestion : ($args[1]=='message') ? new DisplayQuestion : newShortTextQuestion);
+                $q = (($args[1]=='expr') ? new EquationQuestion : ($args[1]=='message') ? new DisplayQuestion : new ShortTextQuestion);
                 $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'q'=>$q, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
                 $varSeq[] = $args[0];
                 $testArgs[] = $args;
@@ -6539,7 +6539,8 @@ EOD;
                     else
                     {
                         $q = $var['q'];
-                        return $q->getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $var['ansArray']);
+						$ansArray = isset($var['ansArray']) ? $var['ansArray'] : null;
+                        return $q->getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $ansArray);
                     }
                 case 'relevanceStatus':
                     $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;

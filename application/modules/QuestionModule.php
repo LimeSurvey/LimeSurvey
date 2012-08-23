@@ -49,7 +49,7 @@ abstract class QuestionModule
     public function getAttributeValues()
     {
         if ($this->attributes) return $this->attributes;
-        if (!$this->id) return false;
+        if (!isset($this->id) || !$this->id) return false;
         $row = Questions::model()->findByAttributes(array('qid' => $this->id)); //, 'parent_qid' => 0), array('group' => 'type')
         if (empty($row))
         {
