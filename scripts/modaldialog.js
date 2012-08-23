@@ -179,22 +179,22 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
             if (pos)
                 {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td class="upload image"><img src="/uploader/index/sid/'+surveyid+'/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
+                    display += '<tr><td class="upload image"><img src="' + uploadurl + '/sid/'+surveyid+'/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
                 else
-                    display += '<tr><td class="upload placeholder"><img src="/images/placeholder.png" height=100px /></td>';
+                    display += '<tr><td class="upload placeholder"><img src="'+imageurl+'/placeholder.png" height=100px /></td>';
             }
             else
                 {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td class="upload image"><img src="/uploader/index/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
+                    display += '<tr><td class="upload image"><img src="' + uploadurl + 'filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
                 else
-                    display += '<tr><td class="upload placeholder"><img src="/images/placeholder.png" height=100px /></td>';
+                    display += '<tr><td class="upload placeholder"><img src="'+imageurl+'/placeholder.png" height=100px /></td>';
             }
             if (show_title != 0)
                 display += '<td class="upload title">'+jsonobj[i].title+'</td>';
             if (show_comment != 0)
                 display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="images/edit.png" onclick="$(\'#upload_'+fieldname+'\').click()" style="cursor:pointer"></td></tr>';
+            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="'+imageurl+'/edit.png" onclick="$(\'#upload_'+fieldname+'\').click()" style="cursor:pointer"></td></tr>';
         }
         display += '</tbody></table>';
 

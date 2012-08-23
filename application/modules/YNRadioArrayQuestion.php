@@ -194,15 +194,15 @@ class YNRadioArrayQuestion extends RadioArrayQuestion
         }
     }
 
-    public function getSPSSData($data, $iLength, $na)
+    public function getSPSSData($data, $iLength, $na, $qs)
     {
         if ($data == 'Y')
         {
-            return "'1'";
+            return $sq . "'1'" . $sq;
         } else if ($data == 'N'){
-            return "'2'";
+            return $sq . "'2'" . $sq;
         } else if ($data == 'U'){
-            return "'3'";
+            return $sq . "'3'" . $sq;
         } else {
             return $na;
         }

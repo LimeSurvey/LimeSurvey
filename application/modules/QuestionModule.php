@@ -250,12 +250,12 @@ abstract class QuestionModule
         return array();
     }
 
-    public function getSPSSData($data, $iLength, $na)
+    public function getSPSSData($data, $iLength, $na, $qs)
     {
         $strTmp=mb_substr(stripTagsFull($data), 0, $iLength);
         if (trim($strTmp) != ''){
             $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-            return "'$strTemp'";
+            return $sq . "'$strTemp'" . $sq;
         }
         else
         {

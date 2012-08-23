@@ -95,7 +95,7 @@ class GenderQuestion extends QuestionModule
         return $answers;
     }
 
-    public function getSPSSData($data, $iLength, $na)
+    public function getSPSSData($data, $iLength, $na, $qs)
     {
         if ($data == 'F')
         {

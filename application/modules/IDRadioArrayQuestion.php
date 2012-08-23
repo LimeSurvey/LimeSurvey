@@ -221,15 +221,15 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
         return $answers;
     }
 
-    public function getSPSSData($data, $iLength, $na)
+    public function getSPSSData($data, $iLength, $na, $qs)
     {
         if ($data == 'I')
         {
-            return "'1'";
+            return $sq . "'1'" . $sq;
         } else if ($data == 'S'){
-            return "'2'";
+            return $sq . "'2'" . $sq;
         } else if ($data == 'D'){
-            return "'3'";
+            return $sq . "'3'" . $sq;
         } else {
             return $na;
         }

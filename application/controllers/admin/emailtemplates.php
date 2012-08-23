@@ -56,11 +56,19 @@ class emailtemplates extends Survey_Common_Action {
         $aData['attrib'] = array();
         $aData['bplangs'] = array();
         $aData['defaulttexts'] = array();
+        if ($ishtml)
+        {
+            $sEscapeMode='html';
+        }
+        else
+        {
+            $sEscapeMode='unescaped';
+        }
         foreach ($grplangs as $key => $grouplang)
         {
             $aData['bplangs'][$key] = new limesurvey_lang($grouplang);
             $aData['attrib'][$key] = Surveys_languagesettings::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
-            $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key]);
+            $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key],$sEscapeMode);
         }
 
         $aData['surveyid'] = $iSurveyId;

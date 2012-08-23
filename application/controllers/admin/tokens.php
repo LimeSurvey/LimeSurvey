@@ -744,8 +744,11 @@ class tokens extends Survey_Common_Action
 
             // add attributes
             $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+            $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
+            $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
             foreach ($attrfieldnames as $attr_name => $desc)
             {
+                if(!in_array($attr_name,$aTokenFieldNames)) continue;
                 $value = Yii::app()->getRequest()->getPost($attr_name);
                 if ($desc['mandatory'] == 'Y' && trim($value) == '')
                     $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
@@ -1246,14 +1249,7 @@ class tokens extends Survey_Common_Action
         $aTokenIds = $this->_getTokenIds($aTokenIds, $iSurveyId);
         $aTokenFields = getTokenFieldsAndNames($iSurveyId, true);
         $iAttributes = 0;
-        if (getEmailFormat($iSurveyId) == 'html')
-        {
-            $bHtml = true;
-        }
-        else
-        {
-            $bHtml = false;
-        }
+        $bHtml = (getEmailFormat($iSurveyId) == 'html');
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
 
@@ -1377,7 +1373,7 @@ class tokens extends Survey_Common_Action
                     foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {
                         $url = $fieldsarray["{{$key}URL}"];
-                        $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
+                        if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
                         if ($key == 'SURVEY')
                         {
                             $barebone_link = $url;
@@ -2232,7 +2228,7 @@ class tokens extends Survey_Common_Action
             $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyId));
             foreach ($fieldvalue as $k => $v)
                 $survey->$k = $v;
-            $survey->save();
+            $test=$survey->save();
 
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Bounce settings"),
@@ -2242,6 +2238,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "tokenbounce.js");
             $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
         }
     }
@@ -2268,6 +2265,17 @@ class tokens extends Survey_Common_Action
         }
 
         $thissurvey = getSurveyInfo($iSurveyId);
+        $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
+        $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
+        $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
+        foreach ($aAdditionalAttributeFields as $sField=>$aData)
+        {
+            if (in_array($sField,$aTokenFieldNames))
+            {
+                $aData['attrfieldnames'][$sField]=$aData;
+            }
+        }
+        
         $aData['thissurvey'] = $thissurvey;
         $aData['surveyid'] = $iSurveyId;
         $aData['subaction'] = $subaction;

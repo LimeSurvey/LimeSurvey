@@ -6377,7 +6377,7 @@ EOD;
                     {
                         if ($qinfo['info']['hidden'] && !isset($_POST[$sq]))
                         {
-                            $value = (isset($_SESSION['survey_'.$LEM->sessid][$sq]) ? $_SESSION['survey_'.$LEM->sessid][$sq] : '');    // if always hidden, use the default value, if any
+                            $value = (isset($_SESSION[$LEM->sessid][$sq]) ? $_SESSION[$LEM->sessid][$sq] : '');    // if always hidden, use the default value, if any
                         }
                         else
                         {

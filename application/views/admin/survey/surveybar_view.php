@@ -147,12 +147,12 @@
                             <?php if($respstatsread && $surveyexport) {
                                     if ($activated){?>
                                     <li><a href='<?php echo $this->createUrl("admin/export/survey/action/exportarchive/surveyid/$surveyid");?>' >
-                                        <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php $clang->eT("Survey archive (.zip)");?></a></li>
+                                        <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php $clang->eT("Survey archive (.lsa)");?></a></li>
                                     <?php }
                                     else
                                     {?>
                                     <li><a href="#" onclick="alert('<?php $clang->eT("You can only archive active surveys.", "js");?>');" >
-                                        <img src='<?php echo $sImageURL;?>export_disabled_30.png' alt='' /> <?php $clang->eT("Survey archive (.zip)");?></a></li><?php
+                                        <img src='<?php echo $sImageURL;?>export_disabled_30.png' alt='' /> <?php $clang->eT("Survey archive (.lsa)");?></a></li><?php
                                     }
                             }?>
                             <?php if($surveyexport) { ?>

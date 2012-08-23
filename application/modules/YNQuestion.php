@@ -115,13 +115,13 @@ class YNQuestion extends QuestionModule
         return $answers;
     }
 
-    public function getSPSSData($data, $iLength, $na)
+    public function getSPSSData($data, $iLength, $na, $qs)
     {
         if ($data == 'Y')
         {
-            return "'1'";
+            return $sq . "'1'" . $sq;
         } else if ($data == 'N'){
-            return "'2'";
+            return $sq . "'2'" . $sq;
         } else {
             return $na;
         }

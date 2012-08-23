@@ -3334,8 +3334,15 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
     $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
     $defaultlang = Yii::app()->getConfig("defaultlang");
-    $emailcharset = Yii::app()->getConfig("charset");
+    $emailcharset = Yii::app()->getConfig("emailcharset");
 
+    if ($emailcharset!='utf-8')
+    {
+        $body=mb_convert_encoding($body,$emailcharset,'utf-8');
+        $subject=mb_convert_encoding($subject,$emailcharset,'utf-8');
+        $sitename=mb_convert_encoding($sitename,$emailcharset,'utf-8');
+    }
+    
     if (!is_array($to)){
         $to=array($to);
     }
@@ -3451,7 +3458,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     if ($ishtml) {
         $mail->IsHTML(true);
         $mail->Body = $body;
-        $mail->AltBody = strip_tags(breakToNewline(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
+        $mail->AltBody = strip_tags(breakToNewline(html_entity_decode($body,ENT_QUOTES,$emailcharset)));
     } else
     {
         $mail->IsHTML(false);
@@ -4426,7 +4433,7 @@ function cleanTempDirectory()
             @unlink($dir.$file);
         }
     }
-    $dir=  Yii::app()->getConfig('tempdir').'/uploads/';
+    $dir=  Yii::app()->getConfig('tempdir').'/upload/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
@@ -6468,6 +6475,24 @@ function ls_json_encode($content)
     $ans = json_encode($content);
     $ans = str_replace(array('{','}'),array('{ ',' }'), $ans);
     return $ans;
+}
+
+/**
+ * Decode a json string, sometimes needs stripslashes
+ *
+ * @param type $jsonString
+ * @return type
+ */
+function json_decode_ls($jsonString)
+{
+   $decoded = json_decode($jsonString, true);
+
+   if (json_last_error() === JSON_ERROR_SYNTAX) {
+       // probably we need stipslahes
+       $decoded = json_decode(stripslashes($jsonString), true);
+   }
+
+   return $decoded;
 }
 
 /**

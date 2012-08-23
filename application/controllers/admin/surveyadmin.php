@@ -646,7 +646,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
 
                 //Set Access
-                if (Yii::app()->db->schema->getTable('{{tokens_' . $rows['sid'] . '}}'))
+                if (tableExists('tokens_' . $rows['sid'] ))
                 {
                     $aSurveyEntry[] = $clang->gT("Closed");
                 }
@@ -677,7 +677,7 @@ class SurveyAdmin extends Survey_Common_Action
 
 
                     $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']);
-                    if (Yii::app()->db->schema->getTable("{{tokens_" . $rows['sid'] . "}}"))
+                    if (tableExists('tokens_' . $rows['sid'] ))
                     {
                         $tokens = Tokens_dynamic::model($rows['sid'])->count();
                         $tokenscompleted = Tokens_dynamic::model($rows['sid'])->count(array(
@@ -894,7 +894,7 @@ class SurveyAdmin extends Survey_Common_Action
                     }
                 }
 
-                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'xls' && strtolower($sExtension) != 'zip'))
+                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'xls' && strtolower($sExtension) != 'lsa'))
                 {
                     $aData['sErrorMessage'] = $clang->gT("Import failed. You specified an invalid file type.");
                     $aData['bFailed'] = true;

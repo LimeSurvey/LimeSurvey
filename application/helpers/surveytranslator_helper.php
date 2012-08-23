@@ -469,6 +469,13 @@
         $supportedLanguages['es-MX']['dateformat'] = 5;
         $supportedLanguages['es-MX']['radixpoint'] = 0;
 
+        // Swahili
+        $supportedLanguages['swh']['description'] = $clang->gT('Swahili');
+        $supportedLanguages['swh']['nativedescription'] = 'Kiswahili';
+        $supportedLanguages['swh']['rtl'] = false;
+        $supportedLanguages['swh']['dateformat'] = 1;
+        $supportedLanguages['swh']['radixpoint'] = 1;
+
         // Swedish
         $supportedLanguages['sv']['description'] = $clang->gT('Swedish');
         $supportedLanguages['sv']['nativedescription'] = 'Svenska';

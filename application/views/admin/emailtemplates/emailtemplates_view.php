@@ -81,7 +81,8 @@
                             <li><label for='email_invite_<?php echo $grouplang; ?>'><?php $clang->eT("Invitation email:"); ?></label>
                                 <textarea cols='80' rows='20' name='email_invite_<?php echo $esrow->surveyls_language; ?>' id='email_invite_<?php echo $grouplang; ?>'><?php echo htmlspecialchars($esrow->surveyls_email_invite); ?></textarea>
                                 <?php echo getEditor("email-inv","email_invite_$grouplang", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','','editemailtemplates'); ?>
-                                <input type='hidden' name='email_invite_default_<?php echo $esrow->surveyls_language; ?>' id='email_invite_default_<?php echo $grouplang; ?>' value='<?php echo htmlspecialchars(conditionalNewlineToBreak($aDefaultTexts['invitation'],$ishtml),ENT_QUOTES); ?>' />
+                                <input type='hidden' name='email_invite_default_<?php echo $esrow->surveyls_language; ?>' id='email_invite_default_<?php echo $grouplang; ?>' value='<?php 
+                                echo htmlspecialchars(conditionalNewlineToBreak($aDefaultTexts['invitation'],$ishtml),ENT_QUOTES); ?>' />
                                 <input type='button' value='<?php $clang->eT("Use default"); ?>' onclick='javascript: fillin("email_invite_<?php echo $grouplang; ?>","email_invite_default_<?php echo $grouplang; ?>")' />
                             </li>
                         </ul>

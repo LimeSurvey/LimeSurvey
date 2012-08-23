@@ -54,8 +54,10 @@ function isNumericExtended($value)  {
 * @param mixed $iSurveyID The survey ID
 * @param mixed $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
 * @param mixed $na Value for N/A data
+* @param sep Quote separator. Use '\'' for SPSS, '"' for R
+* @param logical $header If TRUE, adds SQGA code as column headings (used by export to R) 
 */
-function SPSSExportData ($iSurveyID, $iLength, $na = '') {
+function SPSSExportData ($iSurveyID, $iLength, $na = '', $qs='\'', $header=FALSE) {
 
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID);
@@ -69,13 +71,26 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
     //This shouldn't occur, but just to be safe:
     if (count($fields)!=$num_fields) safeDie("Database inconsistency error");
 
+    // Add column headers (used by R export)
+    if($header==TRUE)
+    {
+        $i = 1;
+        foreach ($fields as $field) {
+            echo $qs.strtoupper($field['sql_name']).$qs;
+            if ($i<$num_fields && !$field['hide']) echo ',';
+            $i++;
+        }
+        echo("\n");
+    }
+
+
     foreach ($result as $row) {
         $row = array_change_key_case($row,CASE_UPPER);
         //$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
         $i = 1;
         foreach ($fields as $field)
         {
-            $q = $field['question'];
+            $qs = $field['question'];
             $fieldno = strtoupper($q->fieldname);
             if ($field['SPSStype']=='DATETIME23.2'){
                 #convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
@@ -84,7 +99,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
                     list( $year, $month, $day, $hour, $minute, $second ) = preg_split( '([^0-9])', $row[$fieldno] );
                     if ($year != '' && (int)$year >= 1970)
                     {
-                        echo "'".date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) )."'";
+                        echo $qs.date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) ).$qs;
                     } else
                     {
                         echo ($na);
@@ -96,8 +111,9 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '') {
             } elseif (!is_a($q, 'QuestionModule')) {
                 $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
                 if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-                    echo "'$strTemp'";
+                                    if($qs=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+                                    if($qs=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
+                                    echo $qs. $strTemp .$qs ;
                 }
                 else
                 {

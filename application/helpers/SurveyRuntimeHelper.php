@@ -61,8 +61,8 @@ class SurveyRuntimeHelper {
         'savetimings' => ($thissurvey['savetimings'] == "Y"),
         'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
         'startlanguage'=>(isset($clang->langcode) ? $clang->langcode : $thissurvey['language']),
-        'target' => (isset($uploaddir) ? "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
-        'tempdir' => (isset($tempdir) ? $tempdir : '/temp/'),
+        'target' => Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
+        'tempdir' => Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
         'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
         'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
@@ -475,7 +475,7 @@ class SurveyRuntimeHelper {
                     // Link to Public statistics  **********
                     if ($thissurvey['publicstatistics'] == 'Y')
                     {
-                        $url = Yii::app()->getController()->createUrl("statistics_user/index/sid/{$surveyid}/lang/".$_SESSION[$LEMsessid]['s_lang']);
+                        $url = Yii::app()->getController()->createUrl("statistics_user/action/surveyid/{$surveyid}/language/".$_SESSION[$LEMsessid]['s_lang']);
                         $completed .= "<br /><br />"
                         . "<a class='publicstatisticslink' href='$url' target='_blank'>"
                         . $clang->gT("View the statistics for this survey.")

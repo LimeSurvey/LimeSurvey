@@ -82,13 +82,12 @@ class Tokens_dynamic extends LSActiveRecord
 		array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
 		array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 	
 		array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
-        array('sent', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
-        array('completed', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
         array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
         array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),             			 
 		);  
 	}	
-	
+
+    
     /**
      * Returns summary information of this token table
      *

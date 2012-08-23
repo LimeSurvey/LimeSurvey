@@ -46,6 +46,6 @@ $config['emailsmtpdebug']     = 0;                // Settings this to 1 activate
 
 $config['maxemails']          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
-$config['charset']       = "utf-8";
+$config['emailcharset']       = "utf-8";
 
 return $config;  // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'

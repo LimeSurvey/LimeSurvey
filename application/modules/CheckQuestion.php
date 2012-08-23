@@ -519,15 +519,15 @@ class CheckQuestion extends QuestionModule
         return $answers;
     }
 
-    public function getSPSSData($data, $iLength, $na)
+    public function getSPSSData($data, $iLength, $na, $qs)
     {
         if ($this->aid == 'other' || strpos($this->aid,'comment') !== false)
         {
             return parent::getSPSSData($data, $iLength, $na);
         } else if ($data == 'Y'){
-            return "'1'";
+            return $sq . "'1'" . $sq;
         } else {
-            return "'0'";
+            return $sq . "'0'" . $sq;
         }
     }
 

@@ -35,9 +35,9 @@ class Statistics_userController extends LSYii_Controller {
 	    return call_user_func_array(array($this, "action"), $params);
 	}
 
-	function actionAction($surveyid,$postlang)
+	function actionAction($surveyid,$language)
 	{
-		$surveyid=(int)$surveyid;
+		$iSurveyID=(int)$surveyid;
         //$postlang = returnglobal('lang');
 		Yii::import('application.libraries.admin.progressbar',true);
 		Yii::app()->loadHelper("admin/statistics");
@@ -65,31 +65,31 @@ class Statistics_userController extends LSYii_Controller {
 		 * 	 not completed answers will be filtered.
 		 */
 
-		if(!isset($surveyid))
+		if(!isset($iSurveyID))
 		{
-			$surveyid=returnGlobal('sid');
+			$iSurveyID=returnGlobal('sid');
 		}
 		else
 		{
-			$surveyid = (int) $surveyid;
+			$iSurveyID = (int) $iSurveyID;
 		}
-		if (!$surveyid)
+		if (!$iSurveyID)
 		{
-		    //This next line ensures that the $surveyid value is never anything but a number.
+		    //This next line ensures that the $iSurveyID value is never anything but a number.
 		    safeDie('You have to provide a valid survey ID.');
 		}
 
 
-		if ($surveyid)
+		if ($iSurveyID)
 		{
-		    $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $surveyid, ':active' => 'Y'));      //Checked
+		    $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $iSurveyID, ':active' => 'Y'));      //Checked
 		    if (count($actresult) == 0)
 		    {
 			    safeDie('You have to provide a valid survey ID.');
 			}
 		    else
 		    {
-		        $surveyinfo = getSurveyInfo($surveyid);
+		        $surveyinfo = getSurveyInfo($iSurveyID);
 		        // CHANGE JSW_NZ - let's get the survey title for display
 		        $thisSurveyTitle = $surveyinfo["name"];
 		        // CHANGE JSW_NZ - let's get css from individual template.css - so define path
@@ -145,7 +145,7 @@ class Statistics_userController extends LSYii_Controller {
 		if (isset($postlang) && $postlang != null )
             $language = $postlang;
         else
-            $language = Survey::model()->findByPk($surveyid)->language;
+            $language = Survey::model()->findByPk($iSurveyID)->language;
 
 
 
@@ -165,7 +165,7 @@ class Statistics_userController extends LSYii_Controller {
 		}
 
 		//set survey language for translations
-		$clang = SetSurveyLanguage($surveyid, $language);
+		$clang = SetSurveyLanguage($iSurveyID, $language);
 
 
 		//Create header (fixes bug #3097)
@@ -202,7 +202,7 @@ class Statistics_userController extends LSYii_Controller {
         }
 
 		//execute query
-		$result = Yii::app()->db->createCommand($query)->bindParam(":lang", $language, PDO::PARAM_STR)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->queryAll();
+		$result = Yii::app()->db->createCommand($query)->bindParam(":lang", $language, PDO::PARAM_STR)->bindParam(":surveyid", $iSurveyID, PDO::PARAM_INT)->queryAll();
 
 		//store all the data in $rows
 		$rows = $result;
@@ -227,13 +227,13 @@ class Statistics_userController extends LSYii_Controller {
 		$totalrecords = 0;
 
 		//count number of answers
-		$query = "SELECT count(*) FROM {{survey_".intval($surveyid)."}}";
+		$query = "SELECT count(*) FROM {{survey_".intval($iSurveyID)."}}";
 
 		//if incompleted answers should be filtert submitdate has to be not null
 		//this setting is taken from config-defaults.php
 		if (Yii::app()->getConfig("filterout_incomplete_answers") == true)
 		{
-		    $query .= " WHERE {{survey_".intval($surveyid)."}}.submitdate is not null";
+		    $query .= " WHERE {{survey_".intval($iSurveyID)."}}.submitdate is not null";
 		}
 		$result = Yii::app()->db->createCommand($query)->queryAll();
 
@@ -268,7 +268,7 @@ class Statistics_userController extends LSYii_Controller {
 		foreach ($filters as $flt)
 		{
 		    //SGQ identifier
-		    $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
+		    $myfield = "{$iSurveyID}X{$flt[1]}X{$flt[0]}";
 
 		    //let's switch through the question type for each question
 		    switch ($flt[2])
@@ -392,7 +392,7 @@ class Statistics_userController extends LSYii_Controller {
 		$prb->frame['top'] = 	80;	// Frame position from top
 		$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
 		$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
-		$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
+		$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$iSurveyID);	// add Button as Label 'btn1' and action '?restart=1'
 
 		//progress bar starts with 35%
 		$process_status = 35;
@@ -440,7 +440,7 @@ class Statistics_userController extends LSYii_Controller {
 
 		    }	// end foreach -> loop through all questions
 
-		    $statisticsoutput .= generate_statistics($surveyid, $summary, $summary, $publicgraphs, 'html',null,$language,false);
+		    $statisticsoutput .= generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html',null,$language,false);
 
 		}	//end if -> show summary results
 

@@ -44,7 +44,7 @@
             {
                 $index = $fnames[$i][3];
                 $metadata = $fnames[$i][2];
-                $phparray = json_decode($dtrow[$fnames[$i][0]], true);
+                $phparray = json_decode_ls($dtrow[$fnames[$i][0]], true);
                 if (isset($phparray[$index]))
                 {
                     if ($metadata === "size")
