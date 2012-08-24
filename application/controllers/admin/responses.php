@@ -238,7 +238,7 @@ class responses extends Survey_Common_Action
                     {
                         $index = $fn[2];
                         $metadata = $fn[3];
-                        $phparray = json_decode_ls($iIdrow[$fnames[$i][0]]);
+                        $phparray = json_decode_ls($iIdrow[$fn[0]]);
 
                         if (isset($phparray[$index]))
                         {

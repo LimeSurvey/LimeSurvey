@@ -318,7 +318,7 @@ class RankingQuestion extends QuestionModule
         if($result->count())
         {
             $result =array_values($result->readAll());
-            return $result[count($result)-1]." [$value]";
+            return $result[count($result)-1]['answer']." [$value]";
         }
         return $value;
     }
