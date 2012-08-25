@@ -155,7 +155,8 @@ class ParticipantAttributeNames extends CActiveRecord
             $findCriteria=new CDbCriteria();
             $findCriteria->addCondition('participant_id = :participant_id');
             $findCriteria->params = array(':participant_id'=>$participant_id);
-            $records=ParticipantAttributeNames::model()->with('participant_attribute_names_lang', 'participant_attribute')->findAll($findCriteria);
+            $records=ParticipantAttributeNames::model()->with('participant_attribute_names_lang', 'participant_attribute')
+                                                       ->findAll($findCriteria);
             foreach($records as $row) { //Iterate through each attribute
                 $thisname="";
                 $thislang="";
