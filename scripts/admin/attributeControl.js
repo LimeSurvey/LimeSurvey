@@ -72,7 +72,6 @@ $(document).ready(function() {
                                                 var dialog = $form.closest('div.ui-jqdialog'),
                                                 selRowId = jQuery("#attributeControl").jqGrid('getGridParam', 'selrow'),
                                                 selRowCoordinates = $('#'+selRowId).offset();
-                                                alert(selRowCoordinates.top);
                                                 selRowCoordinates.top=selRowCoordinates.top+25;
                                                 selRowCoordinates.left=50;
                                                 if(selRowCoordinates.top+325 > jQuery(window).height()) {
