@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-08-25 22:05:48+00:00\n"
+"POT-Creation-Date: 2012-08-27 22:05:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2370,31 +2370,31 @@ msgstr ""
 msgid "%s participant(s) are to be copied "
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1787
+#: application/controllers/admin/participantsaction.php:1790
 msgid "%s participants have been shared"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1807
+#: application/controllers/admin/participantsaction.php:1810
 msgid "%s participants have been copied to the central participants table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1810
-#: application/controllers/admin/participantsaction.php:1834
-#: application/controllers/admin/participantsaction.php:1864
+#: application/controllers/admin/participantsaction.php:1813
+#: application/controllers/admin/participantsaction.php:1837
+#: application/controllers/admin/participantsaction.php:1867
 msgid "%s entries were not copied because they already existed"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1814
+#: application/controllers/admin/participantsaction.php:1817
 msgid "Attribute values for existing participants have been updated from the token records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1831
-#: application/controllers/admin/participantsaction.php:1861
+#: application/controllers/admin/participantsaction.php:1834
+#: application/controllers/admin/participantsaction.php:1864
 msgid "%s participants have been copied to the survey token table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1838
-#: application/controllers/admin/participantsaction.php:1868
+#: application/controllers/admin/participantsaction.php:1841
+#: application/controllers/admin/participantsaction.php:1871
 msgid "Attribute values for existing participants have been updated from the participants records"
 msgstr ""
 
