@@ -1085,7 +1085,7 @@
                             $last_rowdivid = $sq['rowdivid'];
                             $af_names = array();
                             $afe_names = array();
-                            if ($q->availableAttributes('array_filter') && $q->availableAttributes('array_filter_exclude'))
+                            if ($q->availableAttributes('array_filter') || $q->availableAttributes('array_filter_exclude'))
                             {
                                 if ($this->sgqaNaming)
                                 {
