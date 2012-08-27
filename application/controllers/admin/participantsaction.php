@@ -1437,7 +1437,7 @@ class participantsaction extends Survey_Common_Action
             foreach ($firstline as $key => $value)
             {
                 $testvalue = preg_replace('/[^(\x20-\x7F)]*/','', $value); //Remove invalid characters from string
-                if (!in_array($testvalue, $regularfields))
+                if (!in_array(strtolower($testvalue), $regularfields))
                 {
                     array_push($selectedcsvfields, $value);
                 }
@@ -1560,9 +1560,11 @@ class participantsaction extends Survey_Common_Action
                 {
                     $firstline[$index] = preg_replace("/(.*) <[^,]*>$/", "$1", $fieldname);
                     $fieldname = $firstline[$index];
-                    if (!in_array($fieldname, $allowedfieldnames))
+                    if (!in_array(strtolower($fieldname), $allowedfieldnames))
                     {
                         $ignoredcolumns[] = $fieldname;
+                    } else {
+                        $firstline[$index] = strtolower($fieldname);
                     }
                 }
                 if ((!in_array('firstname', $firstline) && !in_array('lastname', $firstline) && !in_array('email', $firstline)) && !in_array('participant_id', $firstline))
@@ -1580,6 +1582,7 @@ class participantsaction extends Survey_Common_Action
                     continue;
                 }
                 $writearray = array_combine($firstline, $line);
+
                 //kick out ignored columns
                 foreach ($ignoredcolumns as $column)
                 {
