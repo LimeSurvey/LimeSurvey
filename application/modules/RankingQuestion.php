@@ -309,6 +309,11 @@ class RankingQuestion extends QuestionModule
         return $map;
     }
 
+    public function getCsuffix()
+    {
+        return $this->aid;
+    }
+
     public function getExtendedAnswer($value, $language)
     {
         if ($value == "-oth-")

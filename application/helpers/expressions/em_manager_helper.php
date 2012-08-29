@@ -1087,52 +1087,30 @@
                             $afe_names = array();
                             if ($q->availableAttributes('array_filter') || $q->availableAttributes('array_filter_exclude'))
                             {
-                                if ($this->sgqaNaming)
-                                {
-                                    foreach ($cascadedAF as $_caf)
-                                    {
-                                        $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                        $fqid = explode('X',$sgq);
-                                        if (!isset($fqid[2]))
-                                        {
-                                            continue;
-                                        }
-                                        $qq = $this->q2subqInfo[$fqid[2]]['q'];
-                                        $af_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], $this->qans[$fqid[2]], $sq['sqsuffix'], true);
-                                        if (!is_null($af_name)) $af_names[] = $af_name;
-                                    }
-                                    foreach ($cascadedAFE as $_cafe)
-                                    {
-                                        $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                        $fqid = explode('X',$sgq);
-                                        if (!isset($fqid[2]))
-                                        {
-                                            continue;
-                                        }
-                                        $qq = $this->q2subqInfo[$fqid[2]]['q'];
-                                        $afe_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], $this->qans[$fqid[2]], $sq['sqsuffix'], false);
-                                        if (!is_null($afe_name)) $afe_names[] = $afe_name;
-                                    }
-                                }
-                                else
-                                {
-                                    foreach ($cascadedAF as $_caf)
-                                    {
-                                        $sgq = $_caf . $sq['sqsuffix'];
-                                        if (isset($this->knownVars[$sgq]))
-                                        {
-                                            $af_names[] = $sgq . '.NAOK';
-                                        }
-                                    }
-                                    foreach ($cascadedAFE as $_cafe)
-                                    {
-                                        $sgq = $_cafe . $sq['sqsuffix'];
-                                        if (isset($this->knownVars[$sgq]))
-                                        {
-                                            $afe_names[] = $sgq . '.NAOK';
-                                        }
-                                    }
-                                }
+								foreach ($cascadedAF as $_caf)
+								{
+									$sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
+									$fqid = explode('X',$sgq);
+									if (!isset($fqid[2]))
+									{
+										continue;
+									}
+									$qq = $this->q2subqInfo[$fqid[2]]['q'];
+									$af_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], $this->qans[$fqid[2]], $sq['sqsuffix'], true);
+									if (!is_null($af_name)) $af_names[] = $af_name;
+								}
+								foreach ($cascadedAFE as $_cafe)
+								{
+									$sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
+									$fqid = explode('X',$sgq);
+									if (!isset($fqid[2]))
+									{
+										continue;
+									}
+									$qq = $this->q2subqInfo[$fqid[2]]['q'];
+									$afe_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], $this->qans[$fqid[2]], $sq['sqsuffix'], false);
+									if (!is_null($afe_name)) $afe_names[] = $afe_name;
+								}
                             }
                             $af_names = array_unique($af_names);
                             $afe_names= array_unique($afe_names);
