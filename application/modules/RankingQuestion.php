@@ -376,7 +376,7 @@ class RankingQuestion extends QuestionModule
     public function getArrayFilterNames($sgq, $subqs, $qans, $sqsuffix, $equal = true)
     {
         $rankables = array();
-        foreach ($qans[$fqid] as $k=>$v)
+        foreach ($qans as $k=>$v)
         {
             $rankable = explode('~',$k);
             $rankables[] = '_' . $rankable[1];

@@ -1098,7 +1098,7 @@
                                             continue;
                                         }
                                         $qq = $this->q2subqInfo[$fqid[2]]['q'];
-                                        $af_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], true);
+                                        $af_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], $this->qans[$fqid[2]], $sq['sqsuffix'], true);
                                         if (!is_null($af_name)) $af_names[] = $af_name;
                                     }
                                     foreach ($cascadedAFE as $_cafe)
@@ -1110,7 +1110,7 @@
                                             continue;
                                         }
                                         $qq = $this->q2subqInfo[$fqid[2]]['q'];
-                                        $afe_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], $this->qans, $sq['sqsuffix'], false);
+                                        $afe_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], $this->qans[$fqid[2]], $sq['sqsuffix'], false);
                                         if (!is_null($afe_name)) $afe_names[] = $afe_name;
                                     }
                                 }
