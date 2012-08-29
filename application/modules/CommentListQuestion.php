@@ -374,6 +374,47 @@ class CommentListQuestion extends ListQuestion
         return $output;
     }
 
+    public function getPrintAnswers($language)
+    {
+        $dearesult=Answers::model()->getAllRecords(" qid='{$this->id}' AND language='{$language->getlangcode()}' ", array('sortorder','answer'));
+
+        $output = "\t<ul>\n";
+        foreach ($dearesult->readAll() as $dearow)
+        {
+            $output .= "\t\t<li>\n\t\t\t".printablesurvey::input_type_image('radio',$dearow['answer']);
+            $output .= "\n\t\t\t".$dearow['answer'];
+            $output .= (Yii::app()->getConfig('showsgqacode') ? " (".$dearow['code'].")" : '') ."\n\t\t</li>\n";
+        }
+        $output .= "\t</ul>\n";
+
+        $output .= "\t<p class=\"comment\">\n\t\t".$language->gT("Make a comment on your choice here:")."\n";
+
+        $output .= "\t\t".printablesurvey::input_type_image('textarea',$language->gT("Make a comment on your choice here:"),50,8);
+        $output .= (Yii::app()->getConfig('showsgqacode') ? " (".$this->surveyid."X".$this->gid."X".$this->id."comment)" : '') . "\n\t</p>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $dearesult=Answers::model()->getAllRecords(" qid='{$this->id}' AND language='{$language->getlangcode()}' ", array('sortorder','answer'));
+
+        $output = array();
+
+        foreach ($dearesult->readAll() as $dearow)
+        {
+            $output[] = " o ".$dearow['answer'];
+        }
+
+        $output[] = $language->gT("Make a comment on your choice here:");
+
+        for($i=0;$i<9;$i++)
+        {
+            $output[] = "____________________";
+        }
+
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

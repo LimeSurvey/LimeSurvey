@@ -415,6 +415,11 @@ OUTPUT;
         return $output;
     }
 
+    public function getTypeHelp($language)
+    {
+        return $language->gT("Kindly attach the aforementioned documents along with the survey");
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","show_title","show_comment","max_filesize","max_num_of_files","min_num_of_files","allowed_filetypes","random_group");

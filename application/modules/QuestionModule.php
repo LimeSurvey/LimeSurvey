@@ -500,6 +500,21 @@ abstract class QuestionModule
         return array('other' => false, 'valid' => false, 'mandatory' => true);
     }
 
+    public function getTypeHelp($language)
+    {
+        return '';
+    }
+
+    public function getPrintAnswers($language)
+    {
+        return '';
+    }
+
+    public function getPrintPDF($language)
+    {
+        return '';
+    }
+
     abstract public function availableAttributes($attr = false);
     abstract public function questionProperties($prop = false);
 }

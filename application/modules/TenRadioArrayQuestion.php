@@ -190,25 +190,25 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
 
     public function getQuotaAnswers($iQuotaId)
     {
-		$aAnswerList = array();
+        $aAnswerList = array();
         
-		$aAnsResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
-		foreach ($aAnsResults as $aDbAnsList)
-		{
-			for ($x = 1; $x < 11; $x++)
-			{
-				$tmparrayans = array('Title' => $this->title, 'Display' => substr($aDbAnsList['question'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['title']);
-				$aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
-			}
-		}
+        $aAnsResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
+        foreach ($aAnsResults as $aDbAnsList)
+        {
+            for ($x = 1; $x < 11; $x++)
+            {
+                $tmparrayans = array('Title' => $this->title, 'Display' => substr($aDbAnsList['question'], 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['title']);
+                $aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
+            }
+        }
 
-		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
-		foreach ($aResults as $aQuotaList)
-		{
-			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-		}
-		
-		return $aAnswerList;
+        $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+        foreach ($aResults as $aQuotaList)
+        {
+            $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+        }
+
+        return $aAnswerList;
     }
 
     public function getDataEntryView($language)
@@ -234,6 +234,86 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
         $output .= "</table>";
         
         return $output;
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $fieldname = $this->surveyid . 'X' . $this->gid . 'X' . $this->id;
+        $condition = "parent_qid = '{$this->id}'  AND language= '{$language->getlangcode()}'";
+        $mearesult= Questions::model()->getAllRecords( $condition, array('question_order'));
+
+        $output = "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
+        for ($i=1; $i<=10; $i++)
+        {
+            $output .= "\t\t\t<th>$i".(Yii::app()->getConfig('showsgqacode') ? " ($i)" : '')."</th>\n";
+        }
+        $output .= "\t</thead>\n\n\t<tbody>\n";
+
+        $j=0;
+        $rowclass = 'array1';
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output .= "\t\t<tr class=\"$rowclass\">\n";
+            $rowclass = alternation($rowclass,'row');
+
+            //semantic differential question type?
+            if (strpos($mearow['question'],'|'))
+            {
+                $answertext = substr($mearow['question'],0, strpos($mearow['question'],'|')).(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].")" : '')." ";
+            }
+            else
+            {
+                $answertext=$mearow['question'].(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].")" : '');
+            }
+            $output .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
+
+            for ($i=1; $i<=10; $i++)
+            {
+                $output .= "\t\t\t<td>".printablesurvey::input_type_image('radio',$i)."</td>\n";
+            }
+
+            $answertext .= $mearow['question'];
+
+            //semantic differential question type?
+            if (strpos($mearow['question'],'|'))
+            {
+                $answertext2 = substr($mearow['question'],strpos($mearow['question'],'|')+1);
+                $output .= "\t\t\t<th class=\"answertextright\">$answertext2</td>\n";
+            }
+            $output .= "\t\t</tr>\n";
+            $j++;
+        }
+        $output .= "\t</tbody>\n</table>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $condition = "parent_qid = '{$this->id}'  AND language= '{$language->getlangcode()}'";
+        $mearesult= Questions::model()->getAllRecords( $condition, array('question_order'));
+
+        $pdfoutput = array();
+        $j=0;
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            //semantic differential question type?
+            if (strpos($mearow['question'],'|'))
+            {
+                $answertext = substr($mearow['question'],0, strpos($mearow['question'],'|')).(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].")" : '')." ";
+            }
+            else
+            {
+                $answertext=$mearow['question'].(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].")" : '');
+            }
+
+            $pdfoutput[$j][0]=$answertext;
+            for ($i=1; $i<=10; $i++)
+            {
+                $pdfoutput[$j][$i]=" o ".$i;
+            }
+            $j++;
+        }
+        return $pdfoutput;
     }
 
     public function availableAttributes($attr = false)

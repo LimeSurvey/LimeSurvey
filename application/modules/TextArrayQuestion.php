@@ -572,6 +572,95 @@ EOD;
         return $output;
     }
 
+    public function getPrintAnswers($language)
+    {
+        $fieldname = $this->surveyid . 'X' . $this->gid . 'X' . $this->id;
+        $mearesult=Questions::model()->getAllRecords(" parent_qid='{$this->id}' and scale_id=0 AND language='{$language->getlangcode()}' ", array('question_order'));
+
+        $output = "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
+        $fresult=Questions::model()->getAllRecords(" parent_qid='{$this->id}' and scale_id=1 AND language='{$language->getlangcode()}' ", array('question_order'));
+
+        $fcount = $fresult->getRowCount();
+        $i=0;
+
+        //array to temporary store X axis question codes
+        $xaxisarray = array();
+        $result = $fresult->readAll();
+        foreach ($result as $frow)
+
+        {
+            $output .= "\t\t\t<th>{$frow['question']}</th>\n";
+            $i++;
+
+            //add current question code
+            $xaxisarray[$i] = $frow['title'];
+        }
+        $output .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
+        $rowclass = 'array1';
+
+        $result = $mearesult->readAll();
+        foreach ($result as $frow)
+        {
+            $output .= "\t<tr class=\"$rowclass\">\n";
+            $rowclass = alternation($rowclass,'row');
+
+            $answertext=$frow['question'];
+            if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+            $output .= "\t\t\t\t\t<th class=\"answertext\">$answertext</th>\n";
+            for ($i=1; $i<=$fcount; $i++)
+            {
+                $output .= "\t\t\t<td>\n";
+                $output .= "\t\t\t\t".printablesurvey::input_type_image('text','',23);
+                $output .= (Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$frow['title']."_".$xaxisarray[$i].") " : '')."\n";
+                $output .= "\t\t\t</td>\n";
+            }
+            $answertext=$frow['question'];
+            if (strpos($answertext,'|'))
+            {
+                $answertext=substr($answertext,strpos($answertext,'|')+1);
+                $output .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
+            }
+            $output .= "\t\t</tr>\n";
+        }
+        $output .= "\t</tbody>\n</table>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $mearesult=Questions::model()->getAllRecords(" parent_qid='{$this->id}' and scale_id=0 AND language='{$language->getlangcode()}' ", array('question_order'));
+
+        $fresult=Questions::model()->getAllRecords(" parent_qid='{$this->id}' and scale_id=1 AND language='{$language->getlangcode()}' ", array('question_order'));
+        $fcount = $fresult->getRowCount();
+
+        $i=0;
+        $pdfoutput = array();
+        $pdfoutput[0][0]=' ';
+
+        $result = $fresult->readAll();
+        foreach ($result as $frow)
+        {
+            $i++;
+            $pdfoutput[0][$i]=$frow['question'];
+        }
+        $a=1; //Counter for pdfoutput
+
+        $result = $mearesult->readAll();
+        foreach ($result as $frow)
+        {
+            $answertext=$frow['question'];
+            if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+            $pdfoutput[$a][0]=$answertext;
+            for ($i=1; $i<=$fcount; $i++)
+            {
+                $pdfoutput[$a][$i]="_____________";
+            }
+            $a++;
+        }
+
+        return $pdfoutput;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","show_totals","show_grand_total","page_break","random_order","parent_order","text_input_width","random_group");

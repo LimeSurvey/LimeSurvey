@@ -376,6 +376,21 @@ class DateQuestion extends QuestionModule
         return $output;
     }
 
+    public function getTypeHelp($language)
+    {
+        return $language->gT('Please enter a date:');
+    }
+
+    public function getPrintAnswers($language)
+    {
+        return "\t".printablesurvey::input_type_image('text',$this->getTypeHelp($language),30,1);
+    }
+
+    public function getPrintPDF($language)
+    {
+        return "___________";
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");

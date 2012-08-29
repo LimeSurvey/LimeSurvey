@@ -335,7 +335,7 @@ class CommentCheckQuestion extends CheckQuestion
             $output .= "</td>";
             $output .= "</tr>";
         }
-        if ($this->other == "Y")
+        if ($this->isother == "Y")
         {
             $output .= "<tr>";
             $output .= "<td  align='left'><label>{$language->gT("Other")}:</label>";
@@ -347,6 +347,55 @@ class CommentCheckQuestion extends CheckQuestion
             $output .= "</tr>";
         }
         $output .= "</table>";
+        return $output;
+    }
+
+    public function getTypeHelp($language)
+    {
+        return $language->gT('Please choose all that apply and provide a comment:');
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $mearesult=Questions::model()->getAllRecords("parent_qid='{$this->id}'  AND language='{$language->getlangcode()}'", array('question_order'));
+        $fieldname = $this->surveyid . 'X' . $this->gid . 'X' . $this->id;
+        $output = '';
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output .= "\t<li><span>\n\t\t".printablesurvey::input_type_image('checkbox',$mearow['question']).$mearow['question'];
+            $output .= Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].") " : '';
+            $output .= "</span>\n\t\t" . printablesurvey::input_type_image('text','comment box',60);
+            $output .= (Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title']."comment) " : '')."\n\t</li>\n";
+        }
+        if ($this->isother == "Y")
+        {
+            $output .= "\t<li class=\"other\">\n\t\t<div class=\"other-replacetext\">".$language->gT('Other:');
+            $output .= printablesurvey::input_type_image('other','',1)."</div>".printablesurvey::input_type_image('othercomment','comment box',50);
+            $output .= (Yii::app()->getConfig('showsgqacode') ? " (".$fieldname."other) " : '')."\n\t</li>\n";
+        }
+
+        $output = "\n<ul>\n" . $output . "</ul>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $mearesult=Questions::model()->getAllRecords("parent_qid='{$this->id}'  AND language='{$language->getlangcode()}'", array('question_order'));
+
+        $output=array();
+        $j=0;
+        $longest_string = 0;
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output[$j]=array(" o ".$mearow['title']," __________");
+            $j++;
+        }
+        if ($this->isother == "Y")
+        {
+            $output[$j]=array(" o "."Other"," __________");
+            $output[$j+1]=array(" o "."OtherComment"," __________");
+        }
+
         return $output;
     }
 

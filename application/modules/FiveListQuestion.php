@@ -167,6 +167,11 @@ class FiveListQuestion extends QuestionModule
         return 'java'.$this->fieldname;
     }
 
+    public function getTypeHelp($language)
+    {
+        return $language->gT('Please choose *only one* of the following:');
+    }
+
     public function getDataEntryView($language)
     {
         $output = "<select name='{$this->fieldname}'>";
@@ -176,6 +181,27 @@ class FiveListQuestion extends QuestionModule
             $output .= "<option value='{$x}'>{$x}</option>";
         }
         $output .= "</select>";
+        return $output;
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $output = "\n\t<ul>\n";
+        for ($i=1; $i<=5; $i++)
+        {
+            $output .="\t\t<li>\n\t\t\t".printablesurvey::input_type_image('radio',$i)."\n\t\t\t$i " . (Yii::app()->getConfig('showsgqacode') ? "({$i})" : '') . "\n\t\t</li>\n";
+        }
+        $output .="\t</ul>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $output = '';
+        for ($i=1; $i<=5; $i++)
+        {
+            $output .= ' o '.$i.' ';
+        }
         return $output;
     }
 

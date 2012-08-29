@@ -467,7 +467,7 @@ class ListQuestion extends QuestionModule
     public function getAnswerArray($em)
     {
         $ansArray = (isset($em->qans[$this->id]) ? $em->qans[$this->id] : NULL);
-        if (isset($this->other) && $this->other == 'Y')
+        if (isset($this->isother) && $this->isother == 'Y')
         {
             if (preg_match('/other$/',$this->fieldname))
             {
@@ -624,7 +624,7 @@ class ListQuestion extends QuestionModule
     public function getMandatoryTip()
     {
         $clang=Yii::app()->lang;
-        if ($this->other == 'Y')
+        if ($this->isother == 'Y')
         {
             $attributes = $this->getAttributeValues();
             if (trim($attributes['other_replace_text']) != '') {
@@ -678,16 +678,16 @@ class ListQuestion extends QuestionModule
 
     public function getQuotaAnswers($iQuotaId)
     {
-		$aAnsResults = Answers::model()->findAllByAttributes(array('qid' => $this->id));
+        $aAnsResults = Answers::model()->findAllByAttributes(array('qid' => $this->id));
 
-		$aAnswerList = array();
+        $aAnswerList = array();
 
-		foreach ($aAnsResults as $aDbAnsList)
-		{
-			$aAnswerList[$aDbAnsList['code']] = array('Title' => $this->title,
-				'Display' => substr($aDbAnsList['answer'], 0, 40),
-				'code' => $aDbAnsList['code']);
-		}
+        foreach ($aAnsResults as $aDbAnsList)
+        {
+            $aAnswerList[$aDbAnsList['code']] = array('Title' => $this->title,
+                'Display' => substr($aDbAnsList['answer'], 0, 40),
+                'code' => $aDbAnsList['code']);
+        }
     }
 
     public function getDataEntryView($language)
@@ -757,6 +757,108 @@ class ListQuestion extends QuestionModule
         if ($fother == "Y")
         {
             $output .= "{$language->gT('Other')}:<input type='text' name='{$this->fieldname}other' value='' />";
+        }
+        return $output;
+    }
+
+    public function getTypeHelp($language)
+    {
+        return $language->gT('Please choose *only one* of the following:');
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns'])!='')
+        {
+            $dcols=$qidattributes['display_columns'];
+        }
+        else
+        {
+            $dcols=0;
+        }
+        if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='') {
+            $optCategorySeparator = $qidattributes['category_separator'];
+        }
+
+        $dearesult=Answers::model()->getAllRecords(" qid='{$this->id}' AND language='{$language->getlangcode()}' ", array('sortorder','answer'));
+
+        $deacount=$dearesult->getRowCount();
+        if ($this->isother == "Y") {$deacount++;}
+
+        $wrapper = setupColumns(0, $deacount);
+
+        $output = $wrapper['whole-start'];
+
+        $rowcounter = 0;
+        $colcounter = 1;
+
+        foreach ($dearesult->readAll() as $dearow)
+        {
+            if (isset($optCategorySeparator))
+            {
+                list ($category, $answer) = explode($optCategorySeparator,$dearow['answer']);
+                if ($category != '')
+                {
+                    $dearow['answer'] = "($category) $answer ".self::_addsgqacode("(".$dearow['code'].")");
+                }
+                else
+                {
+                    $dearow['answer'] = $answer.self::_addsgqacode(" (".$dearow['code'].")");
+                }
+                $output .= "\t".$wrapper['item-start']."\t\t".printablesurvey::input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];
+            }
+            else
+            {
+                $output .= "\t".$wrapper['item-start']."\t\t".printablesurvey::input_type_image('radio' , $dearow['answer'])."\n\t\t\t";
+                $output .= $dearow['answer'].(Yii::app()->getConfig('showsgqacode') ? " (".$dearow['code'].")" : '')."\n".$wrapper['item-end'];
+            }
+
+            ++$rowcounter;
+            if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+            {
+                if($colcounter == $wrapper['cols'] - 1)
+                {
+                    $output .= $wrapper['col-devide-last'];
+                }
+                else
+                {
+                    $output  .= $wrapper['col-devide'];
+                }
+                $rowcounter = 0;
+                ++$colcounter;
+            }
+        }
+        if ($this->isother == 'Y')
+        {
+            if(trim($qidattributes["other_replace_text"][$language->getlangcode()])=='')
+                $qidattributes["other_replace_text"][$language->getlangcode()]="Other";
+            $output .= $wrapper['item-start-other'];
+            $output .= printablesurvey::input_type_image('radio',$language->gT($qidattributes["other_replace_text"][$language->getlangcode()]));
+            $output .= ' '.$language->gT($qidattributes["other_replace_text"][$language->getlangcode()]);
+            $output .= (Yii::app()->getConfig('showsgqacode') ? " (-oth-)" : '') ."\n\t\t\t";
+            $output .= printablesurvey::input_type_image('other');
+            $output .= Yii::app()->getConfig('showsgqacode') ? " (".$this->surveyid."X".$this->gid."X".$this->id."other)" : '';
+            $output .= "\n".$wrapper['item-end'];
+        }
+        return $output . $wrapper['whole-end'];
+    }
+
+    public function getPrintPDF($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+
+        $dearesult=Answers::model()->getAllRecords(" qid='{$this->id}' AND language='{$language->getlangcode()}' ", array('sortorder','answer'));
+
+        $output = array();
+
+        foreach ($dearesult->readAll() as $dearow)
+        {
+            $output[] = " o ".$dearow['answer'];
+        }
+        if ($this->isother == 'Y')
+        {
+            $output[] = " o ".$language->gT($qidattributes["other_replace_text"][$language->getlangcode()]).": ________";
         }
         return $output;
     }

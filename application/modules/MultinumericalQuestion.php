@@ -508,6 +508,43 @@ class MultinumericalQuestion extends QuestionModule
         return array('other' => false, 'valid' => true, 'mandatory' => true);
     }
 
+    public function getTypeHelp($language)
+    {
+        return $language->gT("Please write your answer(s) here:");
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        $mearesult=Questions::model()->getAllRecords("parent_qid='{$this->id}' AND language='{$language->getlangcode()}'", array('question_order'));
+        $output = '';
+
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout']==1)
+            {
+              $mearow['question']=explode(':',$mearow['question']);
+              $mearow['question']=$mearow['question'][0];
+            }
+            $output .=  "\t<li>\n\t\t<span>".$mearow['question']."</span>\n\t\t".printablesurvey::input_type_image('text',$mearow['question'],16);
+            $output .= (Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].") " : '')."\n\t</li>\n";
+        }
+        $output =  "\n<ul>\n".$output."</ul>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $mearesult=Questions::model()->getAllRecords("parent_qid='{$this->id}' AND language='{$language->getlangcode()}'", array('question_order'));
+
+        $output = array();
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output = $mearow['question'].": ____________________";
+        }
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group","value_range_allows_missing");

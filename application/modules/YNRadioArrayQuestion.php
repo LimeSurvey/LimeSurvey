@@ -281,6 +281,58 @@ class YNRadioArrayQuestion extends RadioArrayQuestion
         return $output;
     }
 
+    public function getPrintAnswers($language)
+    {
+        $fieldname = $this->surveyid . 'X' . $this->gid . 'X' . $this->id;
+        $condition = "parent_qid = '{$this->id}'  AND language= '{$language->getlangcode()}'";
+        $mearesult= Questions::model()->getAllRecords( $condition, array('question_order'));
+
+        $output = '
+        <table>
+            <thead>
+                <tr>
+                    <td>&nbsp;</td>
+                    <th>'.$language->gT("Yes").(Yii::app()->getConfig('showsgqacode') ? " (Y)" : '').'</th>
+                    <th>'.$language->gT("Uncertain").(Yii::app()->getConfig('showsgqacode') ? " (U)" : '').'</th>
+                    <th>'.$language->gT("No").(Yii::app()->getConfig('showsgqacode') ? " (N)": '').'</th>
+                </tr>
+            </thead>
+            <tbody>
+        ';
+
+        $j=0;
+        $rowclass = 'array1';
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output .= "\t\t<tr class=\"$rowclass\">\n";
+
+            $output .= "\t\t\t<th class=\"answertext\">{$mearow['question']}".(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].")" : '')."</th>\n";
+            $output .= "\t\t\t<td>".printablesurvey::input_type_image('radio',$language->gT("Yes"))."</td>\n";
+            $output .= "\t\t\t<td>".printablesurvey::input_type_image('radio',$language->gT("Uncertain"))."</td>\n";
+            $output .= "\t\t\t<td>".printablesurvey::input_type_image('radio',$language->gT("No"))."</td>\n";
+            $output .= "\t\t</tr>\n";
+            $j++;
+            $rowclass = alternation($rowclass,'row');
+        }
+        $output .= "\t</tbody>\n</table>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $condition = "parent_qid = '{$this->id}'  AND language= '{$language->getlangcode()}'";
+        $mearesult= Questions::model()->getAllRecords( $condition, array('question_order'));
+
+        $pdfoutput = array();
+        $j=0;
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $pdfoutput[$j]=array($mearow['question']," o ".$language->gT("Yes")," o ".$language->gT("Uncertain")," o ".$language->gT("No"));
+            $j++;
+        }
+        return $pdfoutput;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

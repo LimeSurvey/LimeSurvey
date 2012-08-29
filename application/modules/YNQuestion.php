@@ -166,16 +166,16 @@ class YNQuestion extends QuestionModule
     public function getQuotaAnswers($iQuotaId)
     {
         $clang = Yii::app()->lang;
-		$aAnswerList = array('Y' => array('Title' => $this->title, 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
-			'N' => array('Title' => $this->title, 'Display' => $clang->gT("No"), 'code' => 'N'));
+        $aAnswerList = array('Y' => array('Title' => $this->title, 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
+            'N' => array('Title' => $this->title, 'Display' => $clang->gT("No"), 'code' => 'N'));
 
-		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
-		foreach ($aResults as $aQuotaList)
-		{
-			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-		}
-		
-		return $aAnswerList;
+        $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+        foreach ($aResults as $aQuotaList)
+        {
+            $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+        }
+
+        return $aAnswerList;
     }
 
     public function getDataEntryView($language)
@@ -186,6 +186,25 @@ class YNQuestion extends QuestionModule
         $output .= "<option value='N'>{$language->gT("No")}..</option>";
         $output .= "</select>";
         return $output;
+    }
+
+    public function getTypeHelp($language)
+    {
+        return $language->gT("Please choose *only one* of the following:");
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $output = "\n<ul>\n\t<li>\n\t\t".printablesurvey::input_type_image('radio',$language->gT('Yes'))."\n\t\t".$language->gT('Yes');
+        $output .= (Yii::app()->getConfig('showsgqacode') ? " (Y)" : '')."\n\t</li>\n";
+        $output .= "\n\t<li>\n\t\t".printablesurvey::input_type_image('radio',$language->gT('No'))."\n\t\t".$language->gT('No');
+        $output .= (Yii::app()->getConfig('showsgqacode') ? " (N)" : '')."\n\t</li>\n</ul>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        return "____________________";
     }
 
     public function availableAttributes($attr = false)

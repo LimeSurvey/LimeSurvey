@@ -146,16 +146,16 @@ class GenderQuestion extends QuestionModule
     public function getQuotaAnswers($iQuotaId)
     {
         $clang = Yii::app()->lang;
-		$aAnswerList = array('M' => array('Title' => $this->id, 'Display' => $clang->gT("Male"), 'code' => 'M'),
-			'F' => array('Title' => $this->title, 'Display' => $clang->gT("Female"), 'code' => 'F'));
+        $aAnswerList = array('M' => array('Title' => $this->id, 'Display' => $clang->gT("Male"), 'code' => 'M'),
+            'F' => array('Title' => $this->title, 'Display' => $clang->gT("Female"), 'code' => 'F'));
 
-		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
-		foreach ($aResults as $aQuotaList)
-		{
-			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-		}
-	
-		return $aAnswerList;
+        $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+        foreach ($aResults as $aQuotaList)
+        {
+            $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+        }
+
+        return $aAnswerList;
     }
 
     public function getDataEntryView($language)
@@ -166,6 +166,25 @@ class GenderQuestion extends QuestionModule
         $output .= "<option value='M'>{$language->gT("Male")}</option>";
         $output .= "</select>";
         return $output;
+    }
+
+    public function getTypeHelp($language)
+    {
+        return $language->gT('Please choose *only one* of the following:');
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $output = "\n\t<ul>\n";
+        $output .= "\t\t<li>\n\t\t\t".printablesurvey::input_type_image('radio',$language->gT("Female"))."\n\t\t\t".$language->gT("Female")." ".(Yii::app()->getConfig('showsgqacode') ? '(F)' : '')."\n\t\t</li>\n";
+        $output .= "\t\t<li>\n\t\t\t".printablesurvey::input_type_image('radio',$language->gT("Male"))."\n\t\t\t".$language->gT("Male")." ".(Yii::app()->getConfig('showsgqacode') ? '(M)' : '')."\n\t\t</li>\n";
+        $output .= "\t</ul>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        return " o ".$language->gT("Female")." | o ".$language->gT("Male");
     }
 
     public function availableAttributes($attr = false)

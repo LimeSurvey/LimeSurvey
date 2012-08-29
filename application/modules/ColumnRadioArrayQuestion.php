@@ -151,6 +151,71 @@ class ColumnRadioArrayQuestion extends RadioArrayQuestion
         return false;
     }
 
+    public function getPrintAnswers($language)
+    {
+        $fieldname = $this->surveyid . 'X' . $this->gid . 'X' . $this->id;
+
+        $condition = "parent_qid= '{$this->id}'  AND language= '{$language->getlangcode()}'";
+        $fresult= Questions::model()->getAllRecords( $condition, array('question_order', 'title'));
+        $output = "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
+
+        $mearesult=Answers::model()->getAllRecords(" qid='{$this->id}' AND scale_id=0 AND language='{$language->getlangcode()}' ", array('sortorder','code'));
+        $fcount = $fresult->getRowCount();
+        foreach ($fresult->readAll() as $frow)
+        {
+            $output .= "\t\t\t<th>{$frow['question']}".(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$frow['title'].")" : '')."</th>\n";
+        }
+        $output .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
+        $rowclass = 'array1';
+
+
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output .= "\t\t<tr class=\"$rowclass\">\n";
+            $rowclass = alternation($rowclass,'row');
+            $output .= "\t\t\t<th class=\"answertext\">{$mearow['answer']}".(Yii::app()->getConfig('showsgqacode') ? " (".$mearow['code'].")" : '')."</th>\n";
+            for ($i=1; $i<=$fcount; $i++)
+            {
+                $output .= "\t\t\t<td>".printablesurvey::input_type_image('radio')."</td>\n";
+            }
+            $output .= "\t\t</tr>\n";
+        }
+        $output .= "\t</tbody>\n</table>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $condition = "parent_qid= '{$this->id}'  AND language= '{$language->getlangcode()}'";
+        $fresult= Questions::model()->getAllRecords( $condition, array('question_order', 'title'));
+        $output = "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
+
+        $mearesult=Answers::model()->getAllRecords(" qid='{$this->id}' AND scale_id=0 AND language='{$language->getlangcode()}' ", array('sortorder','code'));
+        $fcount = $fresult->getRowCount();
+
+        $i=0;
+        $pdfoutput = array();
+        $pdfoutput[0][0]='';
+        foreach ($fresult->readAll() as $frow)
+        {
+            $i++;
+            $pdfoutput[0][$i]=$frow['question'];
+        }
+
+        $a=1;
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $pdfoutput[$a][0]=$mearow['answer'];
+            for ($i=1; $i<=$fcount; $i++)
+            {
+                $pdfoutput[$a][$i]="o";
+            }
+            $a++;
+        }
+
+        return $pdfoutput;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","random_order","parent_order","scale_export","random_group");

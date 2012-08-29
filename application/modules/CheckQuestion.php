@@ -600,7 +600,7 @@ class CheckQuestion extends QuestionModule
 
     public function getMandatoryTip()
     {
-        if ($this->other == 'Y')
+        if ($this->isother == 'Y')
         {
             $clang=Yii::app()->lang;
             $attributes = $this->getAttributeValues();
@@ -620,22 +620,22 @@ class CheckQuestion extends QuestionModule
 
     public function getQuotaAnswers($iQuotaId)
     {
-		$aAnswerList = array();
+        $aAnswerList = array();
 
-		$aResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
-		foreach($aResults as $aDbAnsList)
-		{
-			$tmparrayans = array('Title' => $this->title, 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
-			$aAnswerList[$aDbAnsList['title']] = $tmparrayans;
-		}
+        $aResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
+        foreach($aResults as $aDbAnsList)
+        {
+            $tmparrayans = array('Title' => $this->title, 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
+            $aAnswerList[$aDbAnsList['title']] = $tmparrayans;
+        }
 
-		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
-		foreach($aResults as $aQuotaList)
-		{
-			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-		}
-		
-		return $aAnswerList;
+        $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+        foreach($aResults as $aQuotaList)
+        {
+            $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+        }
+
+        return $aAnswerList;
     }
 
     public function anyUnanswered($relevantSQs, $unansweredSQs)
@@ -670,7 +670,7 @@ class CheckQuestion extends QuestionModule
         $meacount = $mearesult->getRowCount();
 
         $output = '';
-        if ($this->other == "Y") $meacount++;
+        if ($this->isother == "Y") $meacount++;
         if ($dcols > 0 && $meacount >= $dcols)
         {
             $width=sprintf("%0d", 100/$dcols);
@@ -689,7 +689,7 @@ class CheckQuestion extends QuestionModule
                 $output .= "<label for='answer{$this->fieldname}{$mearow['title']}'>{$mearow['question']}</label><br />";
                 $upto++;
             }
-            if ($this->other == "Y")
+            if ($this->isother == "Y")
             {
                 $output .= $language->gT("Other") . "<input type='text' name='{$this->fieldname}other' />";
             }
@@ -703,10 +703,95 @@ class CheckQuestion extends QuestionModule
                 if ($mearow['default_value'] == "Y") $output .= "checked";
                 $output .= "/><label for='{$this->fieldname}{$mearow['code']}'>{$mearow['answer']}</label><br />";
             }
-            if ($this->other == "Y")
+            if ($this->isother == "Y")
             {
                 $output .= $language->gT("Other") . "<input type='text' name='{$this->fieldname}other' />";
             }
+        }
+        return $output;
+    }
+
+    public function getTypeHelp($language)
+    {
+        return $language->gT('Please choose *all* that apply:');
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        if (trim($qidattributes['display_columns'])!='')
+        {
+            $dcols=$qidattributes['display_columns'];
+        }
+        else
+        {
+            $dcols=0;
+        }
+
+        $mearesult=Questions::model()->getAllRecords(" parent_qid='{$this->id}' AND language='{$language->getlangcode()}' ", array('question_order'));
+        $meacount = $mearesult->getRowCount();
+        if ($this->isother == 'Y') {$meacount++;}
+
+        $wrapper = setupColumns($dcols, $meacount);
+        $output = $wrapper['whole-start'];
+
+        $rowcounter = 0;
+        $colcounter = 1;
+
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output .= $wrapper['item-start'].printablesurvey::input_type_image('checkbox',$mearow['question'])."\n\t\t";
+            $output .= $mearow['question']. (Yii::app()->getConfig('showsgqacode') ? " (".$this->surveyid .'X' . $this->gid . 'X' . $this->id .$mearow['title'].") " : '') . $wrapper['item-end'];
+
+            ++$rowcounter;
+            if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+            {
+                if($colcounter == $wrapper['cols'] - 1)
+                {
+                    $output .= $wrapper['col-devide-last'];
+                }
+                else
+                {
+                    $output.= $wrapper['col-devide'];
+                }
+                $rowcounter = 0;
+                ++$colcounter;
+            }
+        }
+        if ($this->isother == 'Y')
+        {
+            if (trim($qidattributes['other_replace_text'][$language->getlangcode()])=='')
+            {
+                $qidattributes["other_replace_text"][$language->getlangcode()]="Other";
+            }
+            if(!isset($mearow['answer'])) $mearow['answer']="";
+            $output.= $wrapper['item-start-other'].printablesurvey::input_type_image('checkbox',$mearow['answer']);
+            $output .= $language->gT($qidattributes["other_replace_text"][$language->getlangcode()]).":\n\t\t";
+            $output .= printablesurvey::input_type_image('other'). (Yii::app()->getConfig('showsgqacode') ? " (".$fieldname."other) ": '').$wrapper['item-end'];
+        }
+        $output .= $wrapper['whole-end'];
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        $output = array();
+
+        $mearesult=Questions::model()->getAllRecords(" parent_qid='{$this->id}' AND language='{$language->getlangcode()}' ", array('question_order'));
+
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output[] = " o ".$mearow['question'];
+
+        }
+        if ($this->isother)
+        {
+            if (trim($qidattributes['other_replace_text'][$language->getlangcode()])=='')
+            {
+                $qidattributes["other_replace_text"][$language->getlangcode()]="Other";
+            }
+            $output[] = " o ".$language->gT($qidattributes["other_replace_text"][$language->getlangcode()]).": ________";
         }
         return $output;
     }

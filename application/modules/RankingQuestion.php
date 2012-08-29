@@ -296,6 +296,7 @@ class RankingQuestion extends QuestionModule
     {
         $clang = Yii::app()->lang;
         $data = Answers::model()->findAllByAttributes(array('qid' => $this->id, 'language' => $this->language));
+        $map = array();
         for ($i=1; $i<=count($data); $i++)
         {
             $fieldname="{$this->surveyid}X{$this->gid}X{$this->id}$i";
@@ -597,6 +598,42 @@ class RankingQuestion extends QuestionModule
         <input type='hidden' name='multi' value='{$anscount}' />
         <input type='hidden' name='lastfield' value='' />
 OUTPUT;
+        return $output;
+    }
+
+    public function getTypeHelp($language)
+    {
+        $reacount = Answers::model()->getAllRecords(" qid='{$this->id}' AND language='{$language->getlangcode()}'", array('sortorder', 'answer'))->count();
+        return $language->gT("Please number each box in order of preference from 1 to")." $reacount";
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $dearesult=Answers::model()->getAllRecords(" qid='{$this->id}' AND language='{$language->getlangcode()}' ", array('sortorder','answer'));
+
+        $output = "\t<ul>\n";
+        foreach ($dearesult->readAll() as $dearow)
+        {
+            $output .= "\t\t<li>\n\t\t\t".printablesurvey::input_type_image('rank','',4,1);
+            $output .= "\n\t&nbsp;".$dearow['answer'];
+            $output .= Yii::app()->getConfig('showsgqacode') ? " (".$this->surveyid."X".$this->gid."X".$this->id.$dearow['code'].")" : '';
+            $output .= "\n\t</li>\n";
+        }
+        $output .= "\t</ul>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $dearesult=Answers::model()->getAllRecords(" qid='{$this->id}' AND language='{$language->getlangcode()}' ", array('sortorder','answer'));
+
+        $output = array();
+
+        foreach ($dearesult->readAll() as $dearow)
+        {
+            $output[] = "__ ".$dearow['answer'];
+        }
+
         return $output;
     }
 

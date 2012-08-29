@@ -82,5 +82,10 @@ abstract class TextQuestion extends QuestionModule
     {
         return array('other' => false, 'valid' => true, 'mandatory' => true);
     }
+
+    public function getTypeHelp($language)
+    {
+        return $language->gT("Please write your answer here:");
+    }
 }
 ?>

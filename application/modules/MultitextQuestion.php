@@ -318,6 +318,43 @@ class MultitextQuestion extends QuestionModule
         return $output;
     }
 
+    public function getTypeHelp($language)
+    {
+        return $language->gT("Please write your answer(s) here:");
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        $mearesult=Questions::model()->getAllRecords("parent_qid='{$this->id}' AND language='{$language->getlangcode()}'", array('question_order'));
+        $output = '';
+
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout']==1)
+            {
+              $mearow['question']=explode(':',$mearow['question']);
+              $mearow['question']=$mearow['question'][0];
+            }
+            $output .=  "\t<li>\n\t\t<span>".$mearow['question']."</span>\n\t\t".printablesurvey::input_type_image('text',$mearow['question'],60);
+            $output .= (Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].") " : '')."\n\t</li>\n";
+        }
+        $output =  "\n<ul>\n".$output."</ul>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $mearesult=Questions::model()->getAllRecords("parent_qid='{$this->id}' AND language='{$language->getlangcode()}'", array('question_order'));
+
+        $output = array();
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output = $mearow['question'].": ____________________";
+        }
+        return $output;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");

@@ -1214,10 +1214,10 @@ class dataentry extends Survey_Common_Action
                     // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
-                    $qidattributes = $q->getAttributeValues();
+					$q = $qinfo['info']['q'];
+                    $qidattributes = is_a($q, 'QuestionModule') ? $q->getAttributeValues() : array();
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
-                    $q = $qinfo['info']['q'];
                     $relevance = trim($qinfo['info']['relevance']);
                     $explanation = trim($qinfo['relEqn']);
                     $validation = trim($qinfo['prettyValidTip']);

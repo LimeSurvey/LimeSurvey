@@ -496,6 +496,134 @@ class RadioArrayQuestion extends ArrayQuestion
         return $output;
     }
 
+    public function getTypeHelp($language)
+    {
+        return $language->gT("Please choose the appropriate response for each item:");
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $fieldname = $this->surveyid . 'X' . $this->gid . 'X' . $this->id;
+        $qidattributes = $this->getAttributeValues();
+        $mearesult=Questions::model()->getAllRecords(" parent_qid='{$this->id}'  AND language='{$language->getlangcode()}' ", array('question_order'));
+
+        $fresult=Answers::model()->getAllRecords(" scale_id=0 AND qid='{$this->id}'  AND language='{$language->getlangcode()}'", array('sortorder','code'));
+
+        $fcount = $fresult->getRowCount();
+        $i=1;
+        $column_headings = array();
+        foreach ($fresult->readAll() as $frow)
+        {
+            $column_headings[] = $frow['answer'].(Yii::app()->getConfig('showsgqacode') ? " (".$frow['code'].")": '');
+        }
+        if (trim($qidattributes['answer_width'])!='')
+        {
+            $iAnswerWidth=100-$qidattributes['answer_width'];
+        }
+        else
+        {
+            $iAnswerWidth=80;
+        }
+        if (count($column_headings)>0)
+        {
+            $col_width = round($iAnswerWidth / count($column_headings));
+
+        }
+        else
+        {
+            $heading='';
+        }
+        $output = "\n<table>\n\t<thead>\n\t\t<tr>\n";
+        $output .= "\t\t\t<td>&nbsp;</td>\n";
+        foreach($column_headings as $heading)
+        {
+            $output .= "\t\t\t<th style=\"width:$col_width%;\">$heading</th>\n";
+        }
+        $i++;
+        $output .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
+        $counter = 1;
+        $rowclass = 'array1';
+
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output .= "\t\t<tr class=\"$rowclass\">\n";
+            $rowclass = alternation($rowclass,'row');
+
+            //semantic differential question type?
+            if (strpos($mearow['question'],'|'))
+            {
+                $answertext = substr($mearow['question'],0, strpos($mearow['question'],'|')).(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].")" : '')." ";
+            }
+            else
+            {
+                $answertext=$mearow['question'].(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title'].")" : '');
+            }
+
+            if (trim($answertext)=='') $answertext='&nbsp;';
+
+            if (trim($qidattributes['answer_width'])!='')
+            {
+                $sInsertStyle=' style="width:'.$qidattributes['answer_width'].'%" ';
+            }
+            else
+            {
+                $sInsertStyle='';
+            }
+            $output .= "\t\t\t<th $sInsertStyle class=\"answertext\">$answertext</th>\n";
+
+            for ($i=1; $i<=$fcount; $i++)
+            {
+                $output .= "\t\t\t<td>".printablesurvey::input_type_image('radio')."</td>\n";
+
+            }
+            $counter++;
+
+            //semantic differential question type?
+            if (strpos($mearow['question'],'|'))
+            {
+                $answertext2=substr($mearow['question'],strpos($mearow['question'],'|')+1);
+                $output .= "\t\t\t<th class=\"answertextright\">$answertext2</th>\n";
+            }
+            $output .= "\t\t</tr>\n";
+        }
+        $output .= "\t</tbody>\n</table>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $fieldname = $this->surveyid . 'X' . $this->gid . 'X' . $this->id;
+        $mearesult=Questions::model()->getAllRecords(" parent_qid='{$this->id}'  AND language='{$language->getlangcode()}' ", array('question_order'));
+
+        $fresult=Answers::model()->getAllRecords(" scale_id=0 AND qid='{$this->id}'  AND language='{$language->getlangcode()}'", array('sortorder','code'));
+        $fcount = $fresult->getRowCount();
+
+        $i=1;
+        $pdfoutput = array();
+        $pdfoutput[0][0]='';
+        $heading='';
+        foreach ($fresult->readAll() as $frow)
+        {
+            $heading = $frow['answer'].(Yii::app()->getConfig('showsgqacode') ? " (".$frow['code'].")" : '');
+        }
+
+        $pdfoutput[0][$i] = $heading;
+        $i++;
+        $counter = 1;
+
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $pdfoutput[$counter][0]=$mearow['question'];
+            for ($i=1; $i<=$fcount; $i++)
+            {
+                $pdfoutput[$counter][$i] = "o";
+
+            }
+            $counter++;
+        }
+        return $pdfoutput;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

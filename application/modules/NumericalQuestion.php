@@ -230,6 +230,30 @@ class NumericalQuestion extends QuestionModule
         return $output;
     }
 
+    public function getTypeHelp($language)
+    {
+        return $language->gT("Please write your answer here:");
+    }
+
+    public function getPrintAnswers($language)
+    {
+        $qidattributes = $this->getAttributeValues();
+        $prefix="";
+        $suffix="";
+        if($qidattributes['prefix'][$language->getlangcode()] != "") {
+            $prefix=$qidattributes['prefix'][$language->getlangcode()];
+        }
+        if($qidattributes['suffix'][$language->getlangcode()] != "") {
+            $suffix=$qidattributes['suffix'][$language->getlangcode()];
+        }
+        return "<ul>\n\t<li>\n\t\t<span>{$prefix}</span>\n\t\t".printablesurvey::input_type_image('text',$this->getTypeHelp($language),20)."\n\t\t<span>{$suffix}</span>\n\t\t</li>\n\t</ul>";
+    }
+
+    public function getPrintPDF($language)
+    {
+        return "____________________";
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_num_value_n","maximum_chars","min_num_value_n","num_value_int_only","page_break","prefix","public_statistics","suffix","text_input_width","random_group");

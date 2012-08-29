@@ -785,6 +785,129 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $output;
     }
 
+    public function getPrintAnswers($language)
+    {
+        $fieldname = $this->surveyid . 'X' . $this->gid . 'X' . $this->id;
+        $qidattributes = $this->getAttributeValues();
+        $leftheader= $qidattributes['dualscale_headerA'][$language->getlangcode()];
+        $rightheader= $qidattributes['dualscale_headerB'][$language->getlangcode()];
+
+        $mearesult=Questions::model()->getAllRecords(" parent_qid={$this->id}  AND language='{$language->getlangcode()}' ", array('question_order'));
+
+        $output = "\n<table>\n\t<thead>\n";
+
+
+        $condition = "qid= '{$this->id}'  AND language= '{$language->getlangcode()}' AND scale_id=0";
+        $fresult= Answers::model()->getAllRecords( $condition, array('sortorder', 'code'));
+
+        $fcount = $fresult->getRowCount();
+        $l1=0;
+        $printablesurveyoutput2 = "\t\t\t<td>&nbsp;</td>\n";
+        $myheader2 = '';
+        foreach ($fresult->readAll() as $frow)
+        {
+            $printablesurveyoutput2 .="\t\t\t<th>{$frow['answer']}".(Yii::app()->getConfig('showsgqacode') ? " (".$frow['code'].")" : '')."</th>\n";
+            $myheader2 .= "<td></td>";
+            $l1++;
+        }
+        // second scale
+        $printablesurveyoutput2 .="\t\t\t<td>&nbsp;</td>\n";
+        $fresult1=Answers::model()->getAllRecords(" qid='{$this->id}'  AND language='{$language->getlangcode()}' AND scale_id=1 ", array('sortorder','code'));
+        $fcount1 = $fresult1->getRowCount();
+        $l2=0;
+
+        //array to temporary store second scale question codes
+        $scale2array = array();
+        foreach ($fresult1->readAll() as $frow1)
+        {
+            $printablesurveyoutput2 .="\t\t\t<th>{$frow1['answer']}".(Yii::app()->getConfig('showsgqacode') ? " (".$frow1['code'].")" : '')."</th>\n";
+
+            //add current question code
+            $scale2array[$l2] = $frow1['code'];
+
+            $l2++;
+        }
+        // build header if needed
+        if ($leftheader != '' || $rightheader !='')
+        {
+            $myheader = "\t\t\t<td>&nbsp;</td>";
+            $myheader .= "\t\t\t<th colspan=\"".$l1."\">$leftheader</th>\n";
+
+            if ($rightheader !='')
+            {
+                // $myheader .= "\t\t\t\t\t" .$myheader2;
+                $myheader .= "\t\t\t<td>&nbsp;</td>";
+                $myheader .= "\t\t\t<th colspan=\"".$l2."\">$rightheader</td>\n";
+            }
+
+            $myheader .= "\t\t\t\t</tr>\n";
+        }
+        else
+        {
+            $myheader = '';
+        }
+        $output .= $myheader . "\t\t</tr>\n\n\t\t<tr>\n";
+        $output .= $printablesurveyoutput2;
+        $output .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
+
+        $rowclass = 'array1';
+
+        //counter for each subquestion
+        $sqcounter = 0;
+        foreach ($mearesult->readAll() as $mearow)
+        {
+            $output .= "\t\t<tr class=\"$rowclass\">\n";
+            $rowclass = alternation($rowclass,'row');
+            $answertext=$mearow['question'].(Yii::app()->getConfig('showsgqacode') ? " (".$fieldname.$mearow['title']."#0) / (".$fieldname.$mearow['title']."#1)" : '');
+            if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+            $output .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
+            for ($i=1; $i<=$fcount; $i++)
+            {
+                $output .= "\t\t\t<td>".printablesurvey::input_type_image('radio')."</td>\n";
+            }
+            $output .= "\t\t\t<td>&nbsp;</td>\n";
+            for ($i=1; $i<=$fcount1; $i++)
+            {
+                $output .= "\t\t\t<td>".printablesurvey::input_type_image('radio')."</td>\n";
+            }
+
+            $answertext=$mearow['question'];
+            if (strpos($answertext,'|'))
+            {
+                $answertext=substr($answertext,strpos($answertext,'|')+1);
+                $output .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
+            }
+            $output .= "\t\t</tr>\n";
+
+            //increase subquestion counter
+            $sqcounter++;
+        }
+        $output .= "\t</tbody>\n</table>\n";
+        return $output;
+    }
+
+    public function getPrintPDF($language)
+    {
+        $condition = "qid= '{$this->id}'  AND language= '{$language->getlangcode()}' AND scale_id=0";
+        $fresult= Answers::model()->getAllRecords( $condition, array('sortorder', 'code'));
+
+        $pdfoutput = array();
+        $pdfoutput[0][0]='';
+        foreach ($fresult->readAll() as $frow)
+        {
+            $pdfoutput[0][]=$frow['answer'];
+        }
+        // second scale
+        $fresult1=Answers::model()->getAllRecords(" qid='{$this->id}'  AND language='{$language->getlangcode()}' AND scale_id=1 ", array('sortorder','code'));
+
+        foreach ($fresult1->readAll() as $frow1)
+        {
+            $pdfoutput[1][]=$frow['answer'];
+        }
+
+        return $pdfoutput;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");
