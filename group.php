@@ -76,7 +76,7 @@ if ($previewgrp)
 else
 {
     //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
-    if (!isset($_SESSION['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
+    if (!isset($_SESSION['step']))  //  || !$_SESSION['step']) - don't do this for step 0, else rebuild the session
     {
         $totalquestions = buildsurveysession();
         LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);

@@ -78,6 +78,16 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.92+ (build 120815) to 1.92+ (build 120822) August 22, 2012
+-Fixed issue #6423: Potential XSS in 'Resume survey' load form (Carsten Schmitz)
+#Updated translation: Chinese (Simplified) by jun9
+#Updated translation: French (France) by BenoitBouvarel
+#Updated translation: Italian by lfanfoni
+#Updated translation: Korean by gregshin
+#Updated translation: Spanish (Chile) by jergas
+#Updated translation: Thai
+
+
 Changes from 1.92+ (build 120808) to 1.92+ (build 120815) August 15, 2012
 -Fixed issue #6319: Preview group can throw error (Denis Chenu)
 -Fixed issue #6442 : Adding labels fails without numbers in last Code field in Label Set editor (Denis Chenu)
