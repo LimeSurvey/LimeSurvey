@@ -1976,6 +1976,117 @@ class remotecontrol_handle
             return array('status' => 'No permission');
     }
 
+  /**
+     * RPC Routine to invite participants in a survey 
+     * Returns array of results of sending
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID ID of the survey that participants belong
+     * @return array Result of the action
+     */
+	public function invite_participants($sSessionKey, $iSurveyID ) 
+	{	
+		Yii::app()->loadHelper('admin/token');
+		if (!$this->_checkSessionKey($sSessionKey)) 
+			return array('status' => 'Invalid session key');
+
+		$oSurvey = Survey::model()->findByPk($iSurveyID);		   
+		if (!isset($oSurvey))
+			return array('status' => 'Error: Invalid survey ID');
+			
+		if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+		{	
+			
+			if(!tableExists("{{tokens_$iSurveyID}}"))
+				return array('status' => 'Error: No token table');
+			
+			$iMaxEmails = (int)Yii::app()->getConfig("maxemails");
+			$SQLemailstatuscondition = " AND emailstatus = 'OK'";		
+			
+			$oTokens = Tokens_dynamic::model($iSurveyID);
+			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, true, $SQLemailstatuscondition);
+			$aAllTokens = $oTokens->findUninvited(false, 0, true, $SQLemailstatuscondition);
+			if (empty($aResultTokens))
+				return array('status' => 'Error: No candidate tokens');
+				
+			$aResult = emailTokens($iSurveyID,$aResultTokens,'invite');				
+			$iLeft = count($aAllTokens) - count($aResultTokens);
+			$aResult['status'] =$iLeft. " left to send";
+
+			return $aResult;
+		}
+		else
+			return array('status' => 'No permission'); 			
+	}
+
+
+  /**
+     * RPC Routine to send reminder for participants in a survey 
+     * Returns array of results of sending
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID ID of the survey that participants belong
+     * @param int $iMinDaysBetween Optional parameter days from last reminder
+     * @param int $iMaxReminders Optional parameter Maximum reminders count
+     * @return array Result of the action
+     */
+	public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null ) 
+	{
+		Yii::app()->loadHelper('admin/token');
+		if (!$this->_checkSessionKey($sSessionKey)) 
+			return array('status' => 'Invalid session key');
+
+		$oSurvey = Survey::model()->findByPk($iSurveyID);		   
+		if (!isset($oSurvey))
+			return array('status' => 'Error: Invalid survey ID');	
+
+		if (hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+		{	
+			$timeadjust = Yii::app()->getConfig("timeadjust");
+			
+			if(!tableExists("{{tokens_$iSurveyID}}"))
+				return array('status' => 'Error: No token table');
+			
+			if (getEmailFormat($iSurveyID) == 'html')
+				$bHtml = true;
+			else
+				$bHtml = false;
+			
+			$SQLemailstatuscondition = " AND emailstatus = 'OK'";	
+			$SQLremindercountcondition = '';
+            $SQLreminderdelaycondition = '';	
+			$attributes = getTokenFieldsAndNames($iSurveyID);	
+			$iMaxEmails = (int)Yii::app()->getConfig("maxemails");
+			
+			if(!is_null($iMinDaysBetween))
+			{
+				$compareddate = dateShift(date("Y-m-d H:i:s", time() - 86400 * $iMinDaysBetween), "Y-m-d H:i", $timeadjust);
+                $SQLreminderdelaycondition = " AND ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";	
+			}
+
+			if(!is_null($iMaxReminders))
+				$SQLremindercountcondition = " AND remindercount < " . $iMaxReminders;
+
+			$oTokens = Tokens_dynamic::model($iSurveyID);
+			$aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+			$aAllTokens = $oTokens->findUninvited(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+			
+			if (empty($aResultTokens))
+				return array('status' => 'Error: No candidate tokens');				
+
+			$aResult = emailTokens($iSurveyID, $aResultTokens, 'remind');
+
+			$iLeft = count($aAllTokens) - count($aResultTokens);
+			$aResult['status'] =$iLeft. " left to send";
+			return $aResult;
+		}
+		else
+			return array('status' => 'No permission'); 
+
+	}
+	
 
 	/* Response specific functions */
 

@@ -153,9 +153,9 @@ public function checkColumns() {
         if ($SQLremindercountcondition) {$emquery .= " $SQLremindercountcondition";}
         if ($SQLreminderdelaycondition) {$emquery .= " $SQLreminderdelaycondition";}
         if ($aTokenIds) {$emquery .= " AND tid IN ('".implode("', '", $aTokenIds)."')";}
-        if ($iMaxEmails) {$emquery .= " LIMIT $iMaxEmails"; }
         $emquery .= " ORDER BY tid";
-
+        if ($iMaxEmails) {$emquery .= " LIMIT $iMaxEmails"; }
+        
         return Yii::app()->db->createCommand($emquery)->queryAll();
     }
 
