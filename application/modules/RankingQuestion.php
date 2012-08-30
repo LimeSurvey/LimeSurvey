@@ -67,7 +67,7 @@ class RankingQuestion extends QuestionModule
         $answer .="</ul>"
             . "<div style='display:none' id='ranking-{$this->id}-maxans'>{".$max_answers."}</div>"
             . "<div style='display:none' id='ranking-{$this->id}-minans'>{".$min_answers."}</div>"
-            . "<div style='display:none' id='ranking-{$this->fieldname}-name'>javatb".$this->fieldname."</div>"
+            . "<div style='display:none' id='ranking-{$this->id}-name'>javatbd".$this->fieldname."</div>"
             . "</div>";
         // The list with HTML answres
         $answer .="<div style=\"display:none\">";
