@@ -515,6 +515,25 @@ abstract class QuestionModule
         return '';
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+
+        // Only Show No-Answer if question is not mandatory
+        if ($this->mandatory != 'Y')
+        {
+            return array(array($this->surveyid.'X'.$this->gid.'X'.$this->id, " ", $clang->gT("No answer")));
+        }
+
+        return array();
+    }
+
+    public function getConditionQuestions()
+    {
+        $shortquestion=$this->title.": ".strip_tags($this->text);
+        return array(array($shortquestion, $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id));
+    }
+
     abstract public function availableAttributes($attr = false);
     abstract public function questionProperties($prop = false);
 }

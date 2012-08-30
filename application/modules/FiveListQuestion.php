@@ -205,6 +205,24 @@ class FiveListQuestion extends QuestionModule
         return $output;
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        for ($i=1; $i<=5; $i++)
+        {
+            $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, $i, $i);
+        }
+        // Only Show No-Answer if question is not mandatory
+        if ($this->mandatory != 'Y')
+        {
+            $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, " ", $clang->gT("No answer"));
+        }
+
+        return $canswers;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","slider_rating","random_group");

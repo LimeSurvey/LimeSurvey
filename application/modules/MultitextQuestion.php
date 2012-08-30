@@ -355,6 +355,42 @@ class MultitextQuestion extends QuestionModule
         return $output;
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id, 'language' => Survey::model()->findByPk($this->surveyid)->language), array('order' => 'question_order desc'));
+
+        foreach ($aresult as $arows)
+        {
+            // Only Show No-Answer if question is not mandatory
+            if ($this->mandatory != 'Y')
+            {
+                $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title'], "", $clang->gT("No answer"));
+            }
+        } //while
+                
+        return $canswers;
+    }
+
+    public function getConditionQuestions()
+    {
+        $clang = Yii::app()->lang;
+        $cquestions = array();
+
+        $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id, 'language' => Survey::model()->findByPk($this->surveyid)->language), array('order' => 'question_order desc'));
+
+        foreach ($aresult as $arows)
+        {
+            $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
+            $shortquestion=$this->title.":$shortanswer ".strip_tags($this->text);
+            $cquestions[]=array($shortquestion, $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']);
+        } //while
+
+        return $cquestions;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");

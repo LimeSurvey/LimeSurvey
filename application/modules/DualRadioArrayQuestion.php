@@ -908,6 +908,68 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $pdfoutput;
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id, 'language' => Survey::model()->findByPk($this->surveyid)->language), array('order' => 'question_order desc'));
+
+        foreach ($aresult as $arows)
+        {
+            // first label
+            $lresult = Answers::model()->findAllByAttributes(array('qid' => $this->id, 'scale_id' => 0, 'language' => Survey::model()->findByPk($this->surveyid)->language), array('order' => 'sortorder, answer'));
+            foreach ($lresult as $lrows)
+            {
+                $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
+            }
+
+            // second label
+            $lresult = Answers::model()->findAllByAttributes(array(
+            'qid' => $this->id,
+            'scale_id' => 1,
+            'language' => Survey::model()->findByPk($this->surveyid)->language,
+            ), array('order' => 'sortorder, answer'));
+
+            foreach ($lresult as $lrows)
+            {
+                $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}");
+            }
+
+            // Only Show No-Answer if question is not mandatory
+            if ($this->mandatory != 'Y')
+            {
+                $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']."#0", "", $clang->gT("No answer"));
+                $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']."#1", "", $clang->gT("No answer"));
+            }
+        } //while
+                
+        return $canswers;
+    }
+
+    public function getConditionQuestions()
+    {
+        $cquestions = array();
+
+        $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id, 'language' => Survey::model()->findByPk($this->surveyid)->language), array('order' => 'question_order desc'));
+
+        foreach ($aresult as $arows)
+        {
+            $attr = $this->getAttributeValues();
+            $label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
+            $label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
+            $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";
+            $shortquestion = $this->title.":$shortanswer ".strip_tags($this->text);
+            $cquestions[] = array($shortquestion, $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']."#0");
+
+            $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label2]";
+            $shortquestion = $this->title.":$shortanswer ".strip_tags($this->text);
+            $cquestions[] = array($shortquestion, $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']."#1");
+        } //while
+
+        return $cquestions;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","dropdown_prepostfix","dropdown_separators","dualscale_headerA","dualscale_headerB","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","parent_order","use_dropdown","scale_export","random_group");

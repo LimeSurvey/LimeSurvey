@@ -207,6 +207,28 @@ class YNQuestion extends QuestionModule
         return "____________________";
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, "Y", $clang->gT("Yes"));
+        $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, "N", $clang->gT("No"));
+        // Only Show No-Answer if question is not mandatory
+        if ($this->mandatory != 'Y')
+        {
+            $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, " ", $clang->gT("No answer"));
+        }
+
+        return $canswers;
+    }
+
+    public function getConditionQuestions()
+    {
+        $shortquestion=$this->title.": ".strip_tags($this->text);
+        return array(array($shortquestion, $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id));
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

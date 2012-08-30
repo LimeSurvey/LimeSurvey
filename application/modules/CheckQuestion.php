@@ -593,11 +593,6 @@ class CheckQuestion extends QuestionModule
         }
     }
 
-    public function useCheckboxes()
-    {
-        return true;
-    }
-
     public function getMandatoryTip()
     {
         if ($this->isother == 'Y')
@@ -794,6 +789,53 @@ class CheckQuestion extends QuestionModule
             $output[] = " o ".$language->gT($qidattributes["other_replace_text"][$language->getlangcode()]).": ________";
         }
         return $output;
+    }
+
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        $aresult = Questions::model()->findAllByAttributes(array(
+        "parent_qid" => $this->id,
+        "language" => Survey::model()->findByPk($this->surveyid)->language,
+        ), array('order' => 'question_order desc'));
+
+        foreach ($aresult as $arows)
+        {
+            $theanswer = addcslashes($arows['question'], "'");
+            $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, $arows['title'], $theanswer);
+
+            $canswers[]=array("+".$this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title'], 'Y', $clang->gT("checked"));
+            $canswers[]=array("+".$this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title'], '', $clang->gT("not checked"));
+        }
+                
+        return $canswers;
+    }
+
+    public function getConditionQuestions()
+    {
+        $clang = Yii::app()->lang;
+        $cquestions = array();
+
+        $shortanswer = " [".$clang->gT("Group of checkboxes")."]";
+        $shortquestion = $this->title.":$shortanswer ".strip_tags($this->text);
+        $cquestions[] = array($shortquestion, $this->id, true, $this->surveyid.'X'.$this->gid.'X'.$this->id);
+
+        $aresult = Questions::model()->findAllByAttributes(array(
+        "parent_qid" => $this->id,
+        "language" => Survey::model()->findByPk($this->surveyid)->language,
+        ), array('order' => 'question_order desc'));
+
+        foreach ($aresult as $arows)
+        {
+            $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
+            $shortanswer .= "[".$clang->gT("Single checkbox")."]";
+            $shortquestion=$this->title.":$shortanswer ".strip_tags($this->text);
+            $cquestions[]=array($shortquestion, $this->id, true, "+".$this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']);
+        }
+
+        return $cquestions;
     }
 
     public function availableAttributes($attr = false)

@@ -88,20 +88,20 @@ class LanguageQuestion extends QuestionModule
 
     public function getQuotaAnswers($iQuotaId)
     {
-		$sBaseLang = Survey::model()->findByPk($this->surveyid)->language;
-		$slangs = Survey::model()->findByPk($this->surveyid)->additionalLanguages;
-		array_unshift($slangs, $sBaseLang);
+        $sBaseLang = Survey::model()->findByPk($this->surveyid)->language;
+        $slangs = Survey::model()->findByPk($this->surveyid)->additionalLanguages;
+        array_unshift($slangs, $sBaseLang);
 
-		while (list($key, $value) = each($slangs))
-		{
-			$aAnswerList[$value] = array('Title' => $this->title, 'Display' => getLanguageNameFromCode($value, false), $value);
-		}
-		
-		$aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
-		foreach ($aResults as $aQuotaList)
-		{
-			$aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
-		}
+        while (list($key, $value) = each($slangs))
+        {
+            $aAnswerList[$value] = array('Title' => $this->title, 'Display' => getLanguageNameFromCode($value, false), $value);
+        }
+        
+        $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
+        foreach ($aResults as $aQuotaList)
+        {
+            $aAnswerList[$aQuotaList['code']]['rowexists'] = '1';
+        }
     }
 
     public function getDataEntryView($language)
@@ -118,6 +118,11 @@ class LanguageQuestion extends QuestionModule
         }
         $output .= "</select>";
         return $output;
+    }
+
+    public function getConditionAnswers()
+    {
+        return array();
     }
 
     public function availableAttributes($attr = false)

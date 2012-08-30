@@ -41,6 +41,16 @@ class DisplayQuestion extends QuestionModule
         return array('other' => false, 'valid' => false, 'mandatory' => false);
     }
 
+    public function getConditionQuestions()
+    {
+        return array();
+    }
+
+    public function getConditionAnswers()
+    {
+        return array();
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style","random_group");

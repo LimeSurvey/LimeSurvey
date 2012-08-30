@@ -545,6 +545,42 @@ class MultinumericalQuestion extends QuestionModule
         return $output;
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id, 'language' => Survey::model()->findByPk($this->surveyid)->language), array('order' => 'question_order desc'));
+
+        foreach ($aresult as $arows)
+        {
+            // Only Show No-Answer if question is not mandatory
+            if ($this->mandatory != 'Y')
+            {
+                $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title'], "", $clang->gT("No answer"));
+            }
+        } //while
+                
+        return $canswers;
+    }
+
+    public function getConditionQuestions()
+    {
+        $clang = Yii::app()->lang;
+        $cquestions = array();
+
+        $aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id, 'language' => Survey::model()->findByPk($this->surveyid)->language), array('order' => 'question_order desc'));
+
+        foreach ($aresult as $arows)
+        {
+            $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
+            $shortquestion=$this->title.":$shortanswer ".strip_tags($this->text);
+            $cquestions[]=array($shortquestion, $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']);
+        } //while
+
+        return $cquestions;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group","value_range_allows_missing");

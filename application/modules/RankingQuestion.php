@@ -642,6 +642,58 @@ OUTPUT;
         return $output;
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        $aresult = Answers::model()->findAllByAttributes(array(
+        "qid" => $this->id,
+        "scale_id" => 0,
+        "language" => Survey::model()->findByPk($this->surveyid)->language,
+        ), array('order' => 'sortorder, answer'));
+
+        $acount = count($aresult);
+        foreach ($aresult as $arow)
+        {
+            $theanswer = addcslashes($arow['answer'], "'");
+            $quicky[]=array($arow['code'], $theanswer);
+        }
+        for ($i=1; $i<=$acount; $i++)
+        {
+            foreach ($quicky as $qck)
+            {
+                $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$i, $qck[0], $qck[1]);
+            }
+            // Only Show No-Answer if question is not mandatory
+            if ($this->mandatory != 'Y')
+            {
+                $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$i, " ", $clang->gT("No answer"));
+            }
+        }
+        
+        return $canswers;
+    }
+
+    public function getConditionQuestions()
+    {
+        $cquestions = array();
+
+        $aresult = Answers::model()->findAllByAttributes(array(
+        "qid" => $this->id,
+        "scale_id" => 0,
+        "language" => Survey::model()->findByPk($this->surveyid)->language,
+        ), array('order' => 'sortorder, answer'));
+
+        $acount = count($aresult);
+        for ($i=1; $i<=$acount; $i++)
+        {
+            $cquestions[]=array("{$this->title}: [RANK $i] ".strip_tags($this->text), $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id.$i);
+        }
+
+        return $cquestions;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");

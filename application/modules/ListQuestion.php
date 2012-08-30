@@ -863,6 +863,37 @@ class ListQuestion extends QuestionModule
         return $output;
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        $aresult = Answers::model()->findAllByAttributes(array(
+        'qid' => $this->id,
+        'scale_id' => 0,
+        'language' => Survey::model()->findByPk($this->surveyid)->language,
+        ), array('order' => 'sortorder, answer'));
+
+        foreach ($aresult as $arows)
+        {
+            $theanswer = addcslashes($arows['answer'], "'");
+            $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, $arows['code'], $theanswer);
+        }
+
+        if (isset($this->isother) && $this->isother == "Y" )
+        {
+            $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, "-oth-", $clang->gT("Other"));
+        }
+
+        // Only Show No-Answer if question is not mandatory
+        if ($this->mandatory != 'Y')
+        {
+            $canswers[] = array($this->surveyid.'X'.$this->gid.'X'.$this->id, " ", $clang->gT("No answer"));
+        }
+
+        return $canswers;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("alphasort","array_filter","array_filter_exclude","array_filter_style","display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","other_comment_mandatory","other_numbers_only","other_replace_text","page_break","public_statistics","random_order","parent_order","scale_export","random_group","time_limit","time_limit_action","time_limit_disable_next","time_limit_disable_prev","time_limit_countdown_message","time_limit_timer_style","time_limit_message_delay","time_limit_message","time_limit_message_style","time_limit_warning","time_limit_warning_display_time","time_limit_warning_message","time_limit_warning_style","time_limit_warning_2","time_limit_warning_2_display_time","time_limit_warning_2_message","time_limit_warning_2_style");

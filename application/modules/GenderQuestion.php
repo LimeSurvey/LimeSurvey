@@ -187,6 +187,22 @@ class GenderQuestion extends QuestionModule
         return " o ".$language->gT("Female")." | o ".$language->gT("Male");
     }
 
+    public function getConditionAnswers()
+    {
+        $clang = Yii::app()->lang;
+        $canswers = array();
+
+        $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, "F", $clang->gT("Female"));
+        $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, "M", $clang->gT("Male"));
+        // Only Show No-Answer if question is not mandatory
+        if ($this->mandatory != 'Y')
+        {
+            $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id, " ", $clang->gT("No answer"));
+        }
+
+        return $canswers;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

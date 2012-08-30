@@ -894,6 +894,100 @@ class NumberArrayQuestion extends ArrayQuestion
         return $pdfoutput;
     }
 
+    public function getConditionAnswers()
+    {
+        $canswers = array();
+
+        $qidattributes=$this->getAttributeValues();
+        if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
+            $maxvalue=floatval($qidattributes['multiflexible_max']);
+        } else {
+            $maxvalue=10;
+        }
+        if (isset($qidattributes['multiflexible_min']) && trim($qidattributes['multiflexible_min'])!='') {
+            $minvalue=floatval($qidattributes['multiflexible_min']);
+        } else {
+            $minvalue=1;
+        }
+        if (isset($qidattributes['multiflexible_step']) && trim($qidattributes['multiflexible_step'])!='') {
+            $stepvalue=floatval($qidattributes['multiflexible_step']);
+            if ($stepvalue==0) $stepvalue=1;
+        } else {
+            $stepvalue=1;
+        }
+
+        if (isset($qidattributes['multiflexible_checkbox']) && $qidattributes['multiflexible_checkbox']!=0) {
+            $minvalue=0;
+            $maxvalue=1;
+            $stepvalue=1;
+        }
+
+        // Get the Y-Axis
+        $sLanguage=Survey::model()->findByPk($this->surveyid)->language;
+        $y_axis_db = Questions::model()->findAllByAttributes(
+            array('sid' => $this->surveyid, 'parent_qid' => $this->id, 'language' => $sLanguage, 'scale_id' => 0),
+            array('order' => 'question_order')
+        );
+
+        // Get the X-Axis
+        $x_axis_db = Questions::model()->findAllByAttributes(
+            array('sid' => $this->surveyid, 'parent_qid' => $this->id, 'language' => $sLanguage, 'scale_id' => 1),
+            array('order' => 'question_order')
+        );
+
+        foreach ($x_axis_db as $frow)
+        {
+            $x_axis[$frow['title']]=$frow['question'];
+        }
+
+        foreach ($y_axis_db as $yrow)
+        {
+            foreach($x_axis as $key=>$val)
+            {
+
+                for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
+                {
+                    $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$yrow['title']."_".$key, $ii, $ii);
+                }
+            }
+        }
+                
+        return $canswers;
+    }
+
+    public function getConditionQuestions()
+    {
+        $cquestions = array();
+
+        // Get the Y-Axis
+        $sLanguage=Survey::model()->findByPk($this->surveyid)->language;
+        $y_axis_db = Questions::model()->findAllByAttributes(
+            array('sid' => $this->surveyid, 'parent_qid' => $this->id, 'language' => $sLanguage, 'scale_id' => 0),
+            array('order' => 'question_order')
+        );
+
+        // Get the X-Axis
+        $x_axis_db = Questions::model()->findAllByAttributes(
+            array('sid' => $this->surveyid, 'parent_qid' => $this->id, 'language' => $sLanguage, 'scale_id' => 1),
+            array('order' => 'question_order')
+        );
+
+        foreach ($x_axis_db as $frow)
+        {
+            $x_axis[$frow['title']]=$frow['question'];
+        }
+
+        foreach ($y_axis_db as $yrow)
+        {
+            foreach($x_axis as $key=>$val)
+            {
+                $shortquestion=$this->title.":{$yrow['title']}:$key: [".strip_tags($yrow['question']). "][" .strip_tags($val). "] " . flattenText($this->text);
+                $cquestions[]=array($shortquestion, $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id.$yrow['title']."_".$key);
+            }
+        }
+        return $cquestions;
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("answer_width","repeat_headings","array_filter","array_filter_exclude","array_filter_style","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","multiflexible_max","multiflexible_min","multiflexible_step","multiflexible_checkbox","reverse","input_boxes","page_break","public_statistics","random_order","parent_order","scale_export","random_group");
