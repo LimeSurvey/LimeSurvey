@@ -546,7 +546,7 @@ class NumberArrayQuestion extends ArrayQuestion
         $fsqs = array();
         foreach ($subqs as $fsq)
         {
-            $attributes = $this->getAttributesValues();
+            $attributes = $this->getAttributeValues();
             if ($attributes['multiflexible_checkbox']=='1')
             {
                 if ($fsq['sqsuffix'] == $sqsuffix)
@@ -611,7 +611,7 @@ class NumberArrayQuestion extends ArrayQuestion
     public function getMandatoryTip()
     {
         $clang=Yii::app()->lang;
-        $attributes = $this->getAttributesValues();
+        $attributes = $this->getAttributeValues();
         if ($attributes['multiflexible_checkbox'] == 1)
         {
             return $clang->gT('Please check at least one box per row').'.';
@@ -626,7 +626,7 @@ class NumberArrayQuestion extends ArrayQuestion
     public function mandatoryViolation($relevantSQs, $unansweredSQs, $subsqs, $sgqas)
     {
         $clang=Yii::app()->lang;
-        $attributes = $this->getAttributesValues();
+        $attributes = $this->getAttributeValues();
         if ($attributes['multiflexible_checkbox'] == 1)
         {
             foreach ($subqs as $sq)
