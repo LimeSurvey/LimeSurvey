@@ -232,7 +232,7 @@ class remotecontrol_handle
 	 * @param string $sSurveyTitle Title of the new Survey
 	 * @param string $sSurveyLanguage	Default language of the Survey 
 	 * @param string $sformat Question appearance format
-     * @return string
+     * @return array|string|int 
      */
 	public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
 	{
@@ -279,7 +279,7 @@ class remotecontrol_handle
 					$langsettings->insertNewSurvey($aInsertData);
 					Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
-					return 	$iNewSurveyid;	
+					return (int)$iNewSurveyid;	
 				}
 				catch(Exception $e)
 				{
@@ -326,7 +326,7 @@ class remotecontrol_handle
     * @param string $sImportDataType  lss,csv,xls or zip
     * @param string $sNewSurveyName The optional new name of the survey
     * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
-    * @return integer iSurveyID  - ID of the new survey
+    * @return array|integer iSurveyID  - ID of the new survey
     */
     public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName=NULL, $DestSurveyID=NULL)
     {
@@ -344,7 +344,7 @@ class remotecontrol_handle
                 if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
                 else
                 {
-                    return $aImportResults['newsid'];
+                    return (int)$aImportResults['newsid'];
                 }
             }
             else
@@ -415,6 +415,8 @@ class remotecontrol_handle
             if (hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
             {
                 // Remove fields that may not be modified
+                unset($aSurveyData['sid']);
+                unset($aSurveyData['owner_id']);
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
@@ -525,7 +527,6 @@ class remotecontrol_handle
 
 
 
-
     /**
     * RPC Routine that launches a newly created survey.
     *
@@ -568,7 +569,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey
      * @param string $docType Type of documents the exported statistics should be
-     * $param string $sLanguage Optional language of the survey to use
+     * @param string $sLanguage Optional language of the survey to use
      * @param string $graph Create graph option
      * @return string Base64 encoded string with the statistics file
      */
@@ -702,7 +703,7 @@ class remotecontrol_handle
 			return array('status' => 'Invalid session key');	        
     } 
     
-	/*Survey language specific  functions */
+	/*Survey language specific functions */
 
     /**
     * RPC Routine to add a survey language.
@@ -959,7 +960,7 @@ class remotecontrol_handle
      * @param int $iSurveyID Dd of the Survey to add the group
 	 * @param string $sGroupTitle Name of the group
 	 * @param string $sGroupDescription	 Optional description of the group
-     * @return string The id of the new group
+     * @return array|int The id of the new group - Or status
      */
   	public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
 	{   
@@ -981,7 +982,7 @@ class remotecontrol_handle
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
                 $oGroup->language =  Survey::model()->findByPk($iSurveyID)->language;
 				if($oGroup->save())
-					return $oGroup->gid;
+					return (int)$oGroup->gid;
 				else
 					return array('status' => 'Creation Failed');
 			}
@@ -1000,7 +1001,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the survey that the group belongs
      * @param int $iGroupID Id of the group to delete
-     * @return int The id of the deleted group
+     * @return array|int The id of the deleted group or status
      */
 	public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
 	{
@@ -1030,7 +1031,7 @@ class remotecontrol_handle
 				if ($iGroupsDeleted === 1)
 				{
 					fixSortOrderGroups($iSurveyID);
-					return $iGroupID;
+					return (int)$iGroupID;
 				}
 				else
 					return array('status' => 'Group deletion failed');
@@ -1052,7 +1053,7 @@ class remotecontrol_handle
     * @param string $sImportDataType  lsg,csv
     * @param string $sNewGroupName  Optional new name for the group
     * @param string $sNewGroupDescription  Optional new description for the group
-    * @return integer iGroupID  - ID of the new group
+    * @return array|integer iGroupID  - ID of the new group or status
     */
     public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName=NULL, $sNewGroupDescription=NULL)
     {
@@ -1113,7 +1114,7 @@ class remotecontrol_handle
 					{
 						// no need to throw exception
 					}
-                    return $aImportResults['newgid'];
+                    return (int)$aImportResults['newgid'];
                 }                
             }
             else
@@ -1281,7 +1282,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int iQuestionID Id of the question to delete 
-     * @return string Id of the deleted Question
+     * @return array|int Id of the deleted Question or status
      */
 	public function delete_question($sSessionKey, $iQuestionID)
 	{
@@ -1322,7 +1323,7 @@ class remotecontrol_handle
 					Quota_members::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
 					Questions::updateSortOrder($iGroupID, $iSurveyID);
 				
-                return $iQuestionID;
+                return (int)$iQuestionID;
 				}
 				catch(Exception $e)
                 {
@@ -1351,7 +1352,7 @@ class remotecontrol_handle
     * @param string $sNewQuestionTitle  Optional new title for the question
     * @param string $sNewqQuestion An optional new question
     * @param string $sNewQuestionHelp An optional new question help text
-    * @return integer iQuestionID  - ID of the new question
+    * @return array|integer iQuestionID  - ID of the new question - Or status
     */
     public function import_question($sSessionKey, $iSurveyID,$iGroupID, $sImportData, $sImportDataType, $sMandatory='N', $sNewQuestionTitle=NULL, $sNewqQuestion=NULL, $sNewQuestionHelp=NULL)
     {
@@ -1359,9 +1360,7 @@ class remotecontrol_handle
         { 
 			$oSurvey = Survey::model()->findByPk($iSurveyID);
 			if (!isset($oSurvey))
-				return array('status' => 'Error: Invalid survey ID');
-				
-
+				return array('status' => 'Error: Invalid survey ID');				
 				
             if (hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
@@ -1429,7 +1428,7 @@ class remotecontrol_handle
 					{
 						// no need to throw exception
 					}
-                    return $aImportResults['newqid'];
+                    return (int)$aImportResults['newqid'];
                 }                           
             }
             else
@@ -2160,7 +2159,7 @@ class remotecontrol_handle
     * @param integer $iFromResponseID Optional
     * @param integer $iToResponseID Optional
     * @param array $aFields Optional Selected fields
-    * @return array On success: Requested file as base 64-encoded string. On failure array with error information
+    * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
     **/
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
     {
