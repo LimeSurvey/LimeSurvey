@@ -55,8 +55,8 @@ class FileQuestion extends QuestionModule
                  headComment: '" . $clang->gT('Comment','js') . "',
                  headFileName: '" . $clang->gT('File name','js') . "'
                 };
-			var imageurl =  '".Yii::app()->getConfig('imageurl')."';
-			var uploadurl =  '".$scriptloc."';
+            var imageurl =  '".Yii::app()->getConfig('imageurl')."';
+            var uploadurl =  '".$scriptloc."';
         </script>\n";
 
         // Modal dialog

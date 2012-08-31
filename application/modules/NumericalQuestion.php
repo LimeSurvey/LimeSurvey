@@ -254,6 +254,15 @@ class NumericalQuestion extends QuestionModule
         return "____________________";
     }
 
+    public function QueXMLAppendAnswers(&$question)
+    {
+        global $dom;
+        $response = $dom->createElement("response");
+        $response->setAttribute("varName", $this->surveyid . 'X' . $this->gid . 'X' . $this->id);
+        $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+        $question->appendChild($response);
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_num_value_n","maximum_chars","min_num_value_n","num_value_int_only","page_break","prefix","public_statistics","suffix","text_input_width","random_group");

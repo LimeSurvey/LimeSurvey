@@ -391,6 +391,15 @@ class DateQuestion extends QuestionModule
         return "___________";
     }
 
+    public function QueXMLAppendAnswers(&$question)
+    {
+        global $dom;
+        $response = $dom->createElement("response");
+        $response->setAttribute("varName", $this->surveyid . 'X' . $this->gid . 'X' . $this->id);
+        $response->appendChild(QueXMLCreateFree("date","8",""));
+        $question->appendChild($response);
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("dropdown_dates","dropdown_dates_year_min","dropdown_dates_year_max","statistics_showgraph","statistics_graphtype","hide_tip","hidden","reverse","page_break","date_format","dropdown_dates_minute_step","dropdown_dates_month_style","random_group");

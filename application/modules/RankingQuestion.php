@@ -694,6 +694,19 @@ OUTPUT;
         return $cquestions;
     }
 
+    public function QueXMLAppendAnswers(&$question)
+    {
+        global $dom, $quexmllang;
+        $response = $dom->createElement("response");
+        $response->setAttribute("varName", $this->surveyid . 'X' . $this->gid . 'X' . $this->id);
+        quexml_create_subQuestions($question,$this->id,$this->surveyid . 'X' . $this->gid . 'X' . $this->id,true);
+        $Query = "SELECT COUNT(*) as sc FROM {{answers}} WHERE qid = {$this->id} AND language='{$quexmllang}' ";
+        $QRE = Yii::app()->db->createCommand($Query)->query();
+        $QROW = $QRE->read();
+        $response->appendChild(QueXMLCreateFree("integer",strlen($QROW['sc']),""));
+        $question->appendChild($response);
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","min_answers","page_break","public_statistics","random_order","showpopups","samechoiceheight","samelistheight", "parent_order","rank_title","choice_title","random_group");

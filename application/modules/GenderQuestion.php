@@ -203,6 +203,16 @@ class GenderQuestion extends QuestionModule
         return $canswers;
     }
 
+    public function QueXMLAppendAnswers(&$question)
+    {
+        global $dom, $quexmllang;
+        $qlang = new limesurvey_lang($quexmllang);
+        $response = $dom->createElement("response");
+        $response->setAttribute("varName", $this->surveyid . 'X' . $this->gid . 'X' . $this->id);
+        $response->appendChild(QueXMLFixedArray(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
+        $question->appendChild($response);
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("display_columns","statistics_showgraph","statistics_graphtype","hide_tip","hidden","page_break","public_statistics","scale_export","random_group");

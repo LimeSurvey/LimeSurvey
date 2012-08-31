@@ -391,6 +391,16 @@ class MultitextQuestion extends QuestionModule
         return $cquestions;
     }
 
+    public function QueXMLAppendAnswers(&$question)
+    {
+        global $dom;
+        $response = $dom->createElement("response");
+        $response->setAttribute("varName", $this->surveyid . 'X' . $this->gid . 'X' . $this->id);
+        quexml_create_subQuestions($question,$this->id,$this->surveyid.'X'.$this->gid.'X'.$this->id);
+        $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($this->id,"maximum_chars","10"),""));
+        $question->appendChild($response);
+    }
+
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","display_rows","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","maximum_chars","min_answers","numbers_only","page_break","prefix","random_order","parent_order","suffix","text_input_width","random_group");

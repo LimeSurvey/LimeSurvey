@@ -235,6 +235,16 @@ class YNQuestion extends QuestionModule
         return $attr?in_array($attr,$attrs):$attrs;
     }
 
+    public function QueXMLAppendAnswers(&$question)
+    {
+        global $dom, $quexmllang;
+        $qlang = new limesurvey_lang($quexmllang);
+        $response = $dom->createElement("response");
+        $response->setAttribute("varName", $this->surveyid . 'X' . $this->gid . 'X' . $this->id);
+        $response->appendChild(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
+        $question->appendChild($response);
+    }
+
     public function questionProperties($prop = false)
     {
         $clang=Yii::app()->lang;

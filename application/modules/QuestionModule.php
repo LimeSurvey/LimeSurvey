@@ -534,6 +534,10 @@ abstract class QuestionModule
         return array(array($shortquestion, $this->id, false, $this->surveyid.'X'.$this->gid.'X'.$this->id));
     }
 
+    public function QueXMLAppendAnswers(&$question)
+    {
+    }
+
     abstract public function availableAttributes($attr = false);
     abstract public function questionProperties($prop = false);
 }
