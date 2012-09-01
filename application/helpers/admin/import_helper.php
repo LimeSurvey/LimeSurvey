@@ -853,6 +853,18 @@ function XMLImportGroup($sFullFilepath, $iNewSID)
         {
             $insertdata['gid']=$aGIDReplacements[$oldgid];
         }
+
+        if (isset($insertdata['type']))
+        {
+            $insertdata['tid'] = Question_types::model()->findByAttribute(array('legacy' => $insertdata['type']))->getAttribute('tid');
+            //unset($insertdata['type']); //AJSL
+        }
+        else
+        {
+            $insertdata['tid'] = Question_types::model()->findByAttribute(array('class' => $insertdata['class']))->getAttribute('tid');
+            unset($insertdata['class']);
+        }
+
         $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
         $results['groups']++;
 

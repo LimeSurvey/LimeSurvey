@@ -259,7 +259,7 @@ class NumericalQuestion extends QuestionModule
         global $dom;
         $response = $dom->createElement("response");
         $response->setAttribute("varName", $this->surveyid . 'X' . $this->gid . 'X' . $this->id);
-        $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+        $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($this->id,"maximum_chars","10"),""));
         $question->appendChild($response);
     }
 

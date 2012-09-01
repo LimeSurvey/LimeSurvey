@@ -465,17 +465,17 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 
     //Questions
     $qquery = "SELECT *
-    FROM {{questions}}
+    FROM {{questions}} q JOIN {{question_types}} qt ON q.tid = qt.tid
     WHERE sid=$iSurveyID and parent_qid=0
     ORDER BY qid";
-    buildXMLFromQuery($xmlwriter,$qquery);
+    buildXMLFromQuery($xmlwriter,$qquery,'',array('order', 'group', 'name', 'legacy', 'system'));
 
     //Subquestions
     $qquery = "SELECT *
-    FROM {{questions}}
+    FROM {{questions}} q JOIN {{question_types}} qt ON q.tid = qt.tid
     WHERE sid=$iSurveyID and parent_qid>0
     ORDER BY qid";
-    buildXMLFromQuery($xmlwriter,$qquery,'subquestions');
+    buildXMLFromQuery($xmlwriter,$qquery,'subquestions',array('order', 'group', 'name', 'legacy', 'system'));
 
     //Question attributes
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
@@ -1168,17 +1168,17 @@ function lsrccsv_export($iSurveyID)
     $lsquery = "SELECT DISTINCT {{labelsets}}.lid, label_name, {{labelsets}}.languages
     FROM {{labelsets}}, {{questions}}
     WHERE ({{labelsets}}.lid={{questions}}.lid or {{labelsets}}.lid={{questions}}.lid1)
-    AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';')
-    AND sid=$iSurveyID"; //AJS
+    AND type IN ('F', 'H', '1', ':', ';')
+    AND sid=$iSurveyID"; //AJSL
     $lsdump = BuildCSVFromQuery($lsquery);
 
     //8: Labels
     $lquery = "SELECT {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language
     FROM {{labels}}, {{questions}}
     WHERE ({{labels}}.lid={{questions}}.lid or {{labels}}.lid={{questions}}.lid1)
-    AND type in ('F', 'W', 'H', 'Z', '1', ':', ';')
+    AND type in ('F', 'H', '1', ':', ';')
     AND sid=$iSurveyID
-    GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language"; //AJS
+    GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language"; //AJSL
     $ldump = BuildCSVFromQuery($lquery);
 
     //9: Question attributes
@@ -1289,15 +1289,15 @@ function groupGetXMLStructure($xml,$gid)
 
     // Questions table
     $qquery = "SELECT *
-    FROM {{questions}}
+    FROM {{questions}} q JOIN {{question_types}} qt ON q.tid = qt.tid
     WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
-    buildXMLFromQuery($xml,$qquery);
+    buildXMLFromQuery($xml,$qquery,'',array('order', 'group', 'name', 'legacy', 'system'));
 
     // Questions table - Subquestions
     $qquery = "SELECT *
-    FROM {{questions}}
+    FROM {{questions}} q JOIN {{question_types}} qt ON q.tid = qt.tid
     WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
-    buildXMLFromQuery($xml,$qquery,'subquestions');
+    buildXMLFromQuery($xml,$qquery,'subquestions',array('order', 'group', 'name', 'legacy', 'system'));
 
     //Answers
     $aquery = "SELECT DISTINCT {{answers}}.*
@@ -1385,15 +1385,15 @@ function questionGetXMLStructure($xml,$gid,$qid)
 {
     // Questions table
     $qquery = "SELECT *
-    FROM {{questions}}
+    FROM {{questions}} q JOIN {{question_types}} qt ON q.tid = qt.tid
     WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
-    buildXMLFromQuery($xml,$qquery);
+    buildXMLFromQuery($xml,$qquery,'',array('order', 'group', 'name', 'legacy', 'system'));
 
     // Questions table - Subquestions
     $qquery = "SELECT *
-    FROM {{questions}}
+    FROM {{questions}} q JOIN {{question_types}} qt ON q.tid = qt.tid
     WHERE parent_qid=$qid order by language, scale_id, question_order";
-    buildXMLFromQuery($xml,$qquery,'subquestions');
+    buildXMLFromQuery($xml,$qquery,'subquestions',array('order', 'group', 'name', 'legacy', 'system'));
 
 
     // Answers table
