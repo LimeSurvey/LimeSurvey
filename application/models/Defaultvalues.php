@@ -10,68 +10,68 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *	$Id$
-   *	Files Purpose: lots of common functions
+   *    $Id$
+   *    Files Purpose: lots of common functions
 */
 
 class Defaultvalues extends CActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{defaultvalues}}';
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{defaultvalues}}';
+    }
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function primaryKey()
-	{
-		return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
-	}
+    /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return array
+     */
+    public function primaryKey()
+    {
+        return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
+    }
 
-	/**
-	 * Relations with questions
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
-	{
-		return array(
-			'question' => array(self::HAS_ONE, 'Questions', '',
-						'on' => 't.qid = question.qid',
-			),
-		);
-	}
+    /**
+     * Relations with questions
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array(
+            'question' => array(self::HAS_ONE, 'Questions', '',
+                        'on' => 't.qid = question.qid',
+            ),
+        );
+    }
 
-	function insertRecords($data)
+    function insertRecords($data)
     {
         $values = new self;
-		foreach ($data as $k => $v)
-			$values->$k = $v;
-		return $values->save();
+        foreach ($data as $k => $v)
+            $values->$k = $v;
+        return $values->save();
     }
 }
 ?>

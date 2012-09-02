@@ -281,7 +281,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
             <br />
         </div>
         <div class='popupgroup'>
-		  <h4>
+        <h4>
             <?php $clang->eT("Survey"); ?>
           </h4>
           <p>

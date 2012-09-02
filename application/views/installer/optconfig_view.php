@@ -15,7 +15,7 @@
 <hr />
 <?php echo $confirmation; ?>
 <div style="color:red; font-size:12px;">
-	<?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
+    <?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
 </div>
 <br />
 <?php $clang->eT("You can leave these settings blank and change them later"); ?>
@@ -68,7 +68,7 @@
 <?php
 foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
 {
-	$languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
+    $languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
 }
 echo CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'encode' => false, 'options'=>array('en' => array('selected' => true))));
 ?>

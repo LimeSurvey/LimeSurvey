@@ -22,12 +22,12 @@ echo "<span class='successtitle'>".$clang->gT('File backup created:').' '.htmlsp
 
 if ($databasetype=='mysql' || $databasetype=='mysqli')
 {
-	$clang->eT('Creating database backup... ').'<br />';
-	echo "<span class='successtitle'>".$clang->gT('DB backup created:')." ".htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql').'</span><br /><br />';
+    $clang->eT('Creating database backup... ').'<br />';
+    echo "<span class='successtitle'>".$clang->gT('DB backup created:')." ".htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql').'</span><br /><br />';
 }
 else
 {
-	echo "<span class='warningtitle'>".$clang->gT('No DB backup created:').'<br />'.$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!').'</span><br /><br />';
+    echo "<span class='warningtitle'>".$clang->gT('No DB backup created:').'<br />'.$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!').'</span><br /><br />';
 }
 
 $clang->eT('Please check any problems above and then proceed to the final step.');

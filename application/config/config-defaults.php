@@ -102,9 +102,9 @@ $config['enableLdap'] = false;
 // $filterout_incomplete_answers
 //  * default behaviour of LimeS regarding answer records with no submitdate
 //  * can be overwritten by module parameters choose one of the following://
-//		* filter: 		Show only complete answers
-//		* show: 		Show both complete and incomplete answers
-//		* incomplete: 	Show only incomplete answers
+//      * filter:       Show only complete answers
+//      * show:         Show both complete and incomplete answers
+//      * incomplete:   Show only incomplete answers
 
 $config['filterout_incomplete_answers'] = 'show';
 //
@@ -182,18 +182,18 @@ $config['useWebserverAuth'] = false;
 // 'hook_get_autouserprofile' function).
 //
 //$WebserverAuth_autouserprofile = Array(
-//					'full_name' => 'autouser',
-//					'email' => $siteadminemail,
-//					'lang' => 'en',
-//					'htmleditormode' => $defaulthtmleditormode,
-//					'templatelist' => 'default,basic',
-//					'create_survey' => 1,
-//					'create_user' => 0,
-//					'delete_user' => 0,
-//					'superadmin' => 0,
-//					'configurator' =>0,
-//					'manage_template' => 0,
-//					'manage_label' => 0);
+//                  'full_name' => 'autouser',
+//                  'email' => $siteadminemail,
+//                  'lang' => 'en',
+//                  'htmleditormode' => $defaulthtmleditormode,
+//                  'templatelist' => 'default,basic',
+//                  'create_survey' => 1,
+//                  'create_user' => 0,
+//                  'delete_user' => 0,
+//                  'superadmin' => 0,
+//                  'configurator' =>0,
+//                  'manage_template' => 0,
+//                  'manage_label' => 0);
 //
 //
 // The optionnal 'hook_get_autouserprofile' function
@@ -208,19 +208,19 @@ $config['useWebserverAuth'] = false;
 // below:
 //function hook_get_autouserprofile($user_name)
 //{
-//	return Array(
-//			'full_name' => '$user_name',
-//			'email' => "$user_name@localdomain.org",
-//			'lang' => 'en',
-//			'htmleditormode' => 'inline',
-//			'templatelist' => 'default,basic,MyOrgTemplate',
-//			'create_survey' => 1,
-//			'create_user' => 0,
-//			'delete_user' => 0,
-//			'superadmin' => 0,
-//			'configurator' =>0,
-//			'manage_template' => 0,
-//			'manage_label' => 0);
+//  return Array(
+//          'full_name' => '$user_name',
+//          'email' => "$user_name@localdomain.org",
+//          'lang' => 'en',
+//          'htmleditormode' => 'inline',
+//          'templatelist' => 'default,basic,MyOrgTemplate',
+//          'create_survey' => 1,
+//          'create_user' => 0,
+//          'delete_user' => 0,
+//          'superadmin' => 0,
+//          'configurator' =>0,
+//          'manage_template' => 0,
+//          'manage_label' => 0);
 //}
 
 
@@ -382,9 +382,9 @@ $config['updatecheckperiod']=7;
 /**
 * @var $showxquestions string allows you to control whether or not
 * {THEREAREXQUESTIONS} is displayed (if it is included in a template)
-*	hide = always hide {THEREAREXQUESTIONS}
-*	show = always show {THEREAREXQUESTIONS}
-*	choose = allow survey admins to choose
+*   hide = always hide {THEREAREXQUESTIONS}
+*   show = always show {THEREAREXQUESTIONS}
+*   choose = allow survey admins to choose
 */
 $config['showxquestions'] = 'choose';
 
@@ -393,11 +393,11 @@ $config['showxquestions'] = 'choose';
 * @var $showgroupinfo string allows you to control whether or not
 * {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
 * included in a template)
-*	none = always hide both title and description
-*	name = always {GROUPNAME} only
-*	description = always show {GROUPDESCRIPTION} only
-*	both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
-*	choose = allow survey admins to choose
+*   none = always hide both title and description
+*   name = always {GROUPNAME} only
+*   description = always show {GROUPDESCRIPTION} only
+*   both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
+*   choose = allow survey admins to choose
 */
 $config['showgroupinfo'] = 'choose';
 
@@ -406,28 +406,28 @@ $config['showgroupinfo'] = 'choose';
 * @var $showqnumcode string allows you to control whether or not
 * {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
 * are included in a template)
-*	none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
-*	code = always show {QUESTION_CODE} only
-*	number = always show {QUESTION_NUMBER} only
-*	both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
-*	choose = allow survey admins to choose
+*   none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
+*   code = always show {QUESTION_CODE} only
+*   number = always show {QUESTION_NUMBER} only
+*   both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
+*   choose = allow survey admins to choose
 */
 $config['showqnumcode'] = 'choose';
 
 
 /**
 * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
-* 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
-*		to fail in SSL is turned off)
-*	'off' =	block SSL/HTTPS (this prevents LimeSurvey from
-*		running through SSL)
-*	'' =	do nothing (default)
+*   'on' =  force SSL/HTTPS to be on (This will cause LimeSurvey
+*       to fail in SSL is turned off)
+*   'off' = block SSL/HTTPS (this prevents LimeSurvey from
+*       running through SSL)
+*   '' =    do nothing (default)
 *
 * DO NOT turn on secure unless you are sure SSL/HTTPS is working and
 * that you have a current, working, valid certificate. If you are
 * unsure whether your server has a valid certificate, just add 's'
 * to the http part of your normal LimeSurvey URL.
-*	e.g. https://your.domain.org/limesurvey/admin/admin.php
+*   e.g. https://your.domain.org/limesurvey/admin/admin.php
 * If LimeSurvey comes up as normal, then everything is fine. If you
 * get a page not found error or permission denied error then
 */

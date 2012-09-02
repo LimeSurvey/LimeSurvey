@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 //Ensure script is not run directly, avoid path disclosure
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
@@ -19,7 +19,7 @@ injectglobalsettings();
 
 function injectglobalsettings()
 {
-	$settings = Settings_global::model()->findAll();
+    $settings = Settings_global::model()->findAll();
 
     //if ($dbvaluearray!==false)
     if (count($settings) > 0)
@@ -44,20 +44,20 @@ function getGlobalSetting($settingname)
 
     if ($dbvalue === false)
     {
-    	$dbvalue = Settings_global::model()->findByPk($settingname);
+        $dbvalue = Settings_global::model()->findByPk($settingname);
 
         if ($dbvalue === null)
         {
             Yii::app()->setRegistry($settingname, null);
-			$dbvalue = '';
+            $dbvalue = '';
         }
         else
         {
             $dbvalue = $dbvalue->getAttribute('stg_value');
         }
 
-		if (Yii::app()->getConfig($settingname) !== false)
-		{
+        if (Yii::app()->getConfig($settingname) !== false)
+        {
             // If the setting was not found in the setting table but exists as a variable (from config.php)
             // get it and save it to the table
             setGlobalSetting($settingname, Yii::app()->getConfig($settingname));
@@ -75,18 +75,18 @@ function setGlobalSetting($settingname, $settingvalue)
         return; //don't save
     }
 
-	if ($record = Settings_global::model()->findByPk($settingname))
-	{
-		$record->stg_value = $settingvalue;
-		$record->save();
-	}
-	else
-	{
-		$record = new Settings_global;
-		$record->stg_name = $settingname;
-		$record->stg_value = $settingvalue;
-		$record->save();
-	}
+    if ($record = Settings_global::model()->findByPk($settingname))
+    {
+        $record->stg_value = $settingvalue;
+        $record->save();
+    }
+    else
+    {
+        $record = new Settings_global;
+        $record->stg_name = $settingname;
+        $record->stg_value = $settingvalue;
+        $record->save();
+    }
 
     Yii::app()->setRegistry($settingname,$settingvalue);
 

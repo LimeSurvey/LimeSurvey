@@ -1,8 +1,8 @@
 <?php
 if (strlen(trim((string)$textfrom)) > 0)
 {
-	// Display translation fields
-	echo $translateFields;
+    // Display translation fields
+    echo $translateFields;
 }
 else
 {

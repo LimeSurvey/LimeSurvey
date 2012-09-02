@@ -249,7 +249,7 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
-    
+
         if (is_null($ansArray))
         {
             return $default;
@@ -296,7 +296,6 @@ class IDRadioArrayQuestion extends RadioArrayQuestion
             $output .= "</tr>";
         }
         $output .= "</table>";
-        
         return $output;
     }
 

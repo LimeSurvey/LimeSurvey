@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 
 /**
@@ -362,8 +362,6 @@ class dataentry extends Survey_Common_Action
                 * - warnmeldung mehrsprachig
                 * - testen
                 */
-                //	if($aDatabasetype=="postgres")
-                //	{
                 $activetable = "{{survey_$surveyid}}";
 
                 //Fields we don't want to import
@@ -641,7 +639,7 @@ class dataentry extends Survey_Common_Action
                         .$idrow[$q->fieldname] . "' />\n";
                     }
 
-                    $output .= "		</td>
+                    $output .= "        </td>
                     </tr>\n";
                 } while ($fname=next($fnames));
             }
@@ -1196,7 +1194,7 @@ class dataentry extends Survey_Common_Action
             foreach ($degresult->readAll() as $degrow)
             {
                 LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"),$surveyid);
-                
+
                 $results = Questions::model()->with('question_types')->findAllByAttributes(array('gid' => $degrow['gid'], 'language' => $sDataEntryLanguage), array('order' => 'question_order'));
                 $aDataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".flattenText($degrow['group_name'],true)."</strong></td>\n"
@@ -1214,7 +1212,7 @@ class dataentry extends Survey_Common_Action
                     // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
-					$q = $qinfo['info']['q'];
+                    $q = $qinfo['info']['q'];
                     $qidattributes = is_a($q, 'QuestionModule') ? $q->getAttributeValues() : array();
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);

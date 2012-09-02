@@ -10,63 +10,63 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *	$Id$
-   *	Files Purpose: lots of common functions
+   *    $Id$
+   *    Files Purpose: lots of common functions
 */
 
 class Question_attributes extends CActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{question_attributes}}';
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{question_attributes}}';
+    }
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'qaid';
-	}
+    /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'qaid';
+    }
 
     function getQuestionAttributes($qid)
     {
-		return Yii::app()->db->createCommand()
-			->select()
-			->from($this->tableName())
-			->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid, PDO::PARAM_STR)
-			->order('qaid asc')
-			->query();
+        return Yii::app()->db->createCommand()
+            ->select()
+            ->from($this->tableName())
+            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid, PDO::PARAM_STR)
+            ->order('qaid asc')
+            ->query();
     }
 
-	public static function insertRecords($data)
+    public static function insertRecords($data)
     {
         $attrib = new self;
-		foreach ($data as $k => $v)
-			$attrib->$k = $v;
-		return $attrib->save();
+        foreach ($data as $k => $v)
+            $attrib->$k = $v;
+        return $attrib->save();
     }
 
     public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)

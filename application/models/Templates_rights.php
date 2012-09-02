@@ -13,23 +13,23 @@ if (!defined('BASEPATH'))
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 	$Id$
+ *  $Id$
  */
 
 class Templates_rights extends CActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
     /**
      * Returns the setting's table name to be used by the model
      *
@@ -53,22 +53,22 @@ class Templates_rights extends CActiveRecord
     }
 
     /**
-	 * Insert records from $data array
-	 *
-	 * @access public
-	 * @param array $data
-	 * @return boolean
-	 */
-	public function insertRecords($data)
+     * Insert records from $data array
+     *
+     * @access public
+     * @param array $data
+     * @return boolean
+     */
+    public function insertRecords($data)
     {
         $record = new self;
-		foreach ($data as $k => $v)
-		{
-			$search = array('`', "'");
-			$k = str_replace($search, '', $k);
-			$v = str_replace($search, '', $v);
-			$record->$k = $v;
-		}
-		return $record->save();
-	}
+        foreach ($data as $k => $v)
+        {
+            $search = array('`', "'");
+            $k = str_replace($search, '', $k);
+            $v = str_replace($search, '', $v);
+            $record->$k = $v;
+        }
+        return $record->save();
+    }
 }

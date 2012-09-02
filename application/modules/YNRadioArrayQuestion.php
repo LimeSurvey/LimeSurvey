@@ -10,7 +10,7 @@ class YNRadioArrayQuestion extends RadioArrayQuestion
         $checkconditionFunction = "checkconditions";
 
         $qquery = "SELECT other FROM {{questions}} WHERE qid=".$this->id." AND language='".$_SESSION['survey_'.$this->surveyid]['s_lang']."'";
-        $qresult = dbExecuteAssoc($qquery);	//Checked
+        $qresult = dbExecuteAssoc($qquery); //Checked
         $qrow = $qresult->readAll();
         $other = isset($qrow['other']) ? $qrow['other'] : '';
         $aQuestionAttributes=$this->getAttributeValues();
@@ -230,7 +230,7 @@ class YNRadioArrayQuestion extends RadioArrayQuestion
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
-    
+
         if (is_null($ansArray))
         {
             return $default;
@@ -277,7 +277,6 @@ class YNRadioArrayQuestion extends RadioArrayQuestion
             $output .= "</tr>";
         }
         $output .= "</table>";
-        
         return $output;
     }
 

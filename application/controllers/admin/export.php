@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 
 /**
@@ -18,8 +18,8 @@
 *
 * This controller performs export actions
 *
-* @package		LimeSurvey
-* @subpackage	Backend
+* @package      LimeSurvey
+* @subpackage   Backend
 */
 class export extends Survey_Common_Action {
 
@@ -339,7 +339,7 @@ class export extends Survey_Common_Action {
         {
             if ( ! Yii::app()->session['spssversion'] )
             {
-                Yii::app()->session['spssversion'] = 2;	//Set default to 2, version 16 or up
+                Yii::app()->session['spssversion'] = 2; //Set default to 2, version 16 or up
             }
 
             $spssver = Yii::app()->session['spssversion'];
@@ -354,14 +354,14 @@ class export extends Survey_Common_Action {
 
         switch ( $spssver )
         {
-            case 1:	//<16
-                $iLength	 = '255'; // Set the max text length of the Value
+            case 1: //<16
+                $iLength = '255'; // Set the max text length of the Value
                 break;
-            case 2:	//>=16
-                $iLength	 = '16384'; // Set the max text length of the Value
+            case 2: //>=16
+                $iLength  = '16384'; // Set the max text length of the Value
                 break;
             default:
-                $iLength	 = '16384'; // Set the max text length of the Value
+                $iLength = '16384'; // Set the max text length of the Value
         }
 
         $headerComment = '*$Rev: 10193 $' . " $filterstate $spssver.\n";
@@ -674,7 +674,7 @@ class export extends Survey_Common_Action {
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
 
-            $na = "";	//change to empty string instead of two double quotes to fix warnings on NA
+            $na = ""; //change to empty string instead of two double quotes to fix warnings on NA
             SPSSExportData($iSurveyID, $iLength, $na='', $q='"', $header=TRUE);
 
             exit;

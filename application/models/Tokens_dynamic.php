@@ -10,84 +10,81 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *	$Id$
-   *	Files Purpose: lots of common functions
+   *    $Id$
+   *    Files Purpose: lots of common functions
 */
 
 class Tokens_dynamic extends LSActiveRecord
-{
-	protected static $sid = 0;
+{    protected static $sid = 0;
 
-	/**
-	 * Sets the survey ID for the next model
-	 *
-	 * @static
-	 * @access public
-	 * @param int $sid
-	 * @return void
-	 */
-	public static function sid($sid)
-	{
-		self::$sid = (int) $sid;
-	}
+    /**
+     * Sets the survey ID for the next model
+     *
+     * @static
+     * @access public
+     * @param int $sid
+     * @return void
+     */
+    public static function sid($sid)
+    {
+        self::$sid = (int) $sid;
+    }
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-	 * @param int $surveyid
-	 * @return Tokens_dynamic
-	 */
-	public static function model($sid = null)
-	{
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
+     * @param int $surveyid
+     * @return Tokens_dynamic
+     */
+    public static function model($sid = null)
+    {
         if (!is_null($sid))
             self::sid($sid);
 
-		return parent::model(__CLASS__);
-	}
+        return parent::model(__CLASS__);
+    }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{tokens_' . self::$sid . '}}';
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{tokens_' . self::$sid . '}}';
+    }
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'tid';
-	}
-	
-	
-	/**
-	* Returns this model's validation rules
-	*
-	*/
-	public function rules()
-	{
-		return array(
-		array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
-		array('remindersent' ,'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
-		array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-		array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 	
-		array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
-        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
-        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),             			 
-		);  
-	}	
+    /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'tid';
+    }
 
-    
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+        array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        array('remindersent' ,'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+        );
+    }
+
     /**
      * Returns summary information of this token table
      *
@@ -155,30 +152,30 @@ public function checkColumns() {
         if ($aTokenIds) {$emquery .= " AND tid IN ('".implode("', '", $aTokenIds)."')";}
         $emquery .= " ORDER BY tid";
         if ($iMaxEmails) {$emquery .= " LIMIT $iMaxEmails"; }
-        
+
         return Yii::app()->db->createCommand($emquery)->queryAll();
     }
 
-	function insertParticipant($data)
-	{
+    function insertParticipant($data)
+    {
             $token = new self;
             foreach ($data as $k => $v)
                 $token->$k = $v;
             try
             {
-            	$token->save();
-            	return $token->tid;
+                $token->save();
+                return $token->tid;
             }
             catch(Exception $e)
             {
-            	return false;
-        	}
-	}
+                return false;
+            }
+    }
 
     function insertToken($iSurveyID, $data)
     {
-		self::sid($iSurveyID);
-		return Yii::app()->db->createCommand()->insert(self::tableName(), $data);
+        self::sid($iSurveyID);
+        return Yii::app()->db->createCommand()->insert(self::tableName(), $data);
     }
     function updateToken($tid,$newtoken)
     {
@@ -207,32 +204,32 @@ public function checkColumns() {
      */
     function createToken($iTokenID)
     {
-		//get token length from survey settings
+        //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>self::$sid));
         $iTokenLength = $tlrow->tokenlength;
-       
-		//get all existing tokens
+
+        //get all existing tokens
         $criteria = $this->getDbCriteria();
         $criteria->select = 'token';
-		$ntresult = $this->findAllAsArray($criteria);   
+        $ntresult = $this->findAllAsArray($criteria);
         foreach ($ntresult as $tkrow)
         {
             $existingtokens[] = $tkrow['token'];
         }
         //create new_token
-		$bIsValidToken = false;
-		while ($bIsValidToken == false)
-		{
-			$newtoken = randomChars($iTokenLength);
-			if (!in_array($newtoken, $existingtokens)) {
-				$existingtokens[] = $newtoken;
-				$bIsValidToken = true;
-			}
-		}
-		//update specific token row
+        $bIsValidToken = false;
+        while ($bIsValidToken == false)
+        {
+            $newtoken = randomChars($iTokenLength);
+            if (!in_array($newtoken, $existingtokens)) {
+                $existingtokens[] = $newtoken;
+                $bIsValidToken = true;
+            }
+        }
+        //update specific token row
         $itresult = $this->updateToken($iTokenID, $newtoken);
-		return $newtoken;
-	}  
+        return $newtoken;
+    }
 
     /**
      * Creates tokens for all token records that have empty token fields and returns the number
@@ -301,19 +298,19 @@ public function checkColumns() {
     }
 
     public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+    {
+        // Warning: Please modify the following code to remove attributes that
+        // should not be searched.
 
-		$criteria=new CDbCriteria;
+        $criteria=new CDbCriteria;
 
-		$criteria->compare('tid',$this->tid,true);
-		$criteria->compare('firstname',$this->firstname,true);
-		$criteria->compare('lastname',$this->lastname,true);
-		$criteria->compare('email',$this->email,true);
+        $criteria->compare('tid',$this->tid,true);
+        $criteria->compare('firstname',$this->firstname,true);
+        $criteria->compare('lastname',$this->lastname,true);
+        $criteria->compare('email',$this->email,true);
         $criteria->compare('emailstatus',$this->emailstatus,true);
         $criteria->compare('token',$this->token,true);
-		$criteria->compare('language',$this->language,true);
+        $criteria->compare('language',$this->language,true);
         $criteria->compare('sent',$this->sent,true);
         $criteria->compare('sentreminder',$this->sentreminder,true);
         $criteria->compare('remindercount',$this->remindercount,true);
@@ -322,15 +319,15 @@ public function checkColumns() {
         $criteria->compare('validfrom',$this->validfrom,true);
         $criteria->compare('validuntil',$this->validuntil,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
 
     function getSearch($condition,$page,$limit)
-	{
-	    $start = $limit*$page - $limit;
-	    if($condition[1]=='equal')
+    {
+        $start = $limit*$page - $limit;
+        if($condition[1]=='equal')
         {
             $command = Yii::app()->db
                                  ->createCommand()
@@ -436,18 +433,18 @@ public function checkColumns() {
             }
             return $data;
         }
-	}
+    }
 
-	function getSearchMultiple($condition,$page,$limit)
-	{
-	   $i=0;
-	   $j=1;
-	   $tobedonelater =array();
-	   $start = $limit*$page - $limit;
-	   $command = new CDbCriteria;
-	   $command->condition = '';
-	   $con= count($condition);
-	   while($i < $con){
+    function getSearchMultiple($condition,$page,$limit)
+    {
+       $i=0;
+       $j=1;
+       $tobedonelater =array();
+       $start = $limit*$page - $limit;
+       $command = new CDbCriteria;
+       $command->condition = '';
+       $con= count($condition);
+       while($i < $con){
            if($i<3){
                 $i+=3;
                 if($condition[1]=='equal')
@@ -481,13 +478,13 @@ public function checkColumns() {
                             ->params = array(':condition_2'=>$condition[2]);
                 }
             }
-	        else if($condition[$i]!='')
-	        {
-	           if($condition[$i+2]=='equal')
-	           {
+            else if($condition[$i]!='')
+            {
+               if($condition[$i+2]=='equal')
+               {
                     if($condition[$i]=='and')
                     {
-						$command->addCondition($condition[$i+1].' = :condition_2')
+                        $command->addCondition($condition[$i+1].' = :condition_2')
                                 ->params = array(':condition_2'=>$condition[$i+3]);
                     }
                     else
@@ -495,9 +492,9 @@ public function checkColumns() {
                         $command->addCondition($condition[$i+1].' = :condition_2', 'OR')
                                 ->params = array(':condition_2'=>$condition[$i+3]);
                     }
-	            }
-	            else if($condition[$i+2]=='contains')
-	            {
+                }
+                else if($condition[$i+2]=='contains')
+                {
                     if($condition[$i]=='and')
                     {
                         $command->addCondition($condition[$i+1].' LIKE :condition_2')
@@ -508,9 +505,9 @@ public function checkColumns() {
                         $command->addCondition($condition[$i+1].' LIKE :condition_2', 'OR')
                                 ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
                     }
-	            }
-	            else if($condition[$i+2]=='notequal')
-	            {
+                }
+                else if($condition[$i+2]=='notequal')
+                {
                     if($condition[$i]=='and')
                     {
                         $command->addCondition($condition[$i+1].' != :condition_2')
@@ -521,9 +518,9 @@ public function checkColumns() {
                         $command->addCondition($condition[$i+1].' != :condition_2', 'OR')
                                 ->params = array(':condition_2'=>$condition[$i+3]);
                     }
-	            }
-	           else if($condition[$i+2]=='notcontains')
-	            {
+                }
+               else if($condition[$i+2]=='notcontains')
+                {
                     if($condition[$i]=='and')
                     {
                         $command->addCondition($condition[$i+1].' NOT LIKE :condition_2')
@@ -534,9 +531,9 @@ public function checkColumns() {
                         $command->addCondition($condition[$i+1].' NOT LIKE :condition_2', 'OR')
                                 ->params = array(':condition_2'=>"%".$condition[$i+3]."%");
                     }
-	            }
-	            else if($condition[$i+2]=='greaterthan')
-	            {
+                }
+                else if($condition[$i+2]=='greaterthan')
+                {
                     if($condition[$i]=='and')
                     {
                         $command->addCondition($condition[$i+1].' > :condition_2')
@@ -547,9 +544,9 @@ public function checkColumns() {
                         $command->addCondition($condition[$i+1].' > :condition_2', 'OR')
                                 ->params = array(':condition_2'=>$condition[$i+3]);
                     }
-	            }
-	            else if($condition[$i+2]=='lessthan')
-	            {
+                }
+                else if($condition[$i+2]=='lessthan')
+                {
                     if($condition[$i]=='and')
                     {
                         $command->addCondition($condition[$i+1].' < :condition_2')
@@ -560,35 +557,35 @@ public function checkColumns() {
                         $command->addCondition($condition[$i+1].' < :condition_2', 'OR')
                                 ->params = array(':condition_2'=>$condition[$i+3]);
                     }
-	            }
-	            $i=$i+4;
-	        }
-	        else{$i=$i+4;}
-	    }
+                }
+                $i=$i+4;
+            }
+            else{$i=$i+4;}
+        }
 
         if($page == 0 && $limit == 0)
-	    {
-	    	$arr = Tokens_dynamic::model()->findAll($command);
-	        $data = array();
-			foreach($arr as $t)
-			{
-    			$data[$t->tid] = $t->attributes;
-			}
-	    }
-	    else
-	    {
-	        $command->limit = $limit;
-	        $command->offset = $start;
-	        $arr = Tokens_dynamic::model()->findAll($command);
-	        $data = array();
-			foreach($arr as $t)
-			{
-    			$data[$t->tid] = $t->attributes;
-			}
-	    }
+        {
+            $arr = Tokens_dynamic::model()->findAll($command);
+            $data = array();
+            foreach($arr as $t)
+            {
+                $data[$t->tid] = $t->attributes;
+            }
+        }
+        else
+        {
+            $command->limit = $limit;
+            $command->offset = $start;
+            $arr = Tokens_dynamic::model()->findAll($command);
+            $data = array();
+            foreach($arr as $t)
+            {
+                $data[$t->tid] = $t->attributes;
+            }
+        }
 
-	    return $data;
-	}
+        return $data;
+    }
     function deleteToken($tokenid)
     {
         $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid=:tokenid";
@@ -597,8 +594,8 @@ public function checkColumns() {
 
     function deleteRecords($iTokenIds)
     {
-    	foreach($iTokenIds as &$currentrow)
-			$currentrow = Yii::app()->db->quoteValue($currentrow);
+        foreach($iTokenIds as &$currentrow)
+            $currentrow = Yii::app()->db->quoteValue($currentrow);
         $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid IN (".implode(", ", $iTokenIds).")";
         return Yii::app()->db->createCommand($dlquery)->query();
     }
@@ -618,5 +615,4 @@ public function checkColumns() {
     {
         return Yii::app()->db->createCommand()->update('{{tokens_'.intval($sid).'}}',array('emailstatus' => $status),'token = :token',array(':token' => $token ));
     }
-}
-?>
+}?>

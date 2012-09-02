@@ -251,7 +251,6 @@ class FiveRadioArrayQuestion extends RadioArrayQuestion
             $output .= "</tr>";
         }
         $output .= "</table>";
-        
         return $output;
     }
 

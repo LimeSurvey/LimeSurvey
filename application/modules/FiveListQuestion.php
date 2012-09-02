@@ -129,7 +129,6 @@ class FiveListQuestion extends QuestionModule
 
     public function getHeaderIncludes()
     {
-        
         $aQuestionAttributes = $this->getAttributeValues();
         if($aQuestionAttributes['slider_rating']==1)
         {

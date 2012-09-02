@@ -410,7 +410,7 @@ class UserAction extends Survey_Common_Action
         }
         // RELIABLY CHECK MY RIGHTS
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || (Yii::app()->session['USER_RIGHT_CREATE_USER'] && $sresultcount > 0 && Yii::app()->session['loginID'] != $postuserid)
-        ) //	if(Yii::app()->session['loginID'] != $postuserid)
+        ) // if(Yii::app()->session['loginID'] != $postuserid)
         {
             $aData['postuserid'] = $postuserid;
             $this->_renderWrappedTemplate('user', 'setuserrights', $aData);

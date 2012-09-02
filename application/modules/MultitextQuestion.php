@@ -83,7 +83,7 @@ class MultitextQuestion extends QuestionModule
 
         if ($anscount==0)
         {
-            $answer_main .= '	<li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
+            $answer_main .= '    <li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
         }
         else
         {
@@ -370,7 +370,7 @@ class MultitextQuestion extends QuestionModule
                 $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title'], "", $clang->gT("No answer"));
             }
         } //while
-                
+
         return $canswers;
     }
 

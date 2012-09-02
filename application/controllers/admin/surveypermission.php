@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 /**
 * surveypermission
@@ -44,12 +44,12 @@ class surveypermission extends Survey_Common_Action {
             $result2 = Survey_permissions::model()->getUserDetails($surveyid);
 
             $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n"
-	            . "<table class='surveysecurity'><thead>"
-	            . "<tr>\n"
-	            . "<th>".$clang->gT("Action")."</th>\n"
-	            . "<th>".$clang->gT("Username")."</th>\n"
-	            . "<th>".$clang->gT("User group")."</th>\n"
-	            . "<th>".$clang->gT("Full name")."</th>\n";
+                . "<table class='surveysecurity'><thead>"
+                . "<tr>\n"
+                . "<th>".$clang->gT("Action")."</th>\n"
+                . "<th>".$clang->gT("Username")."</th>\n"
+                . "<th>".$clang->gT("User group")."</th>\n"
+                . "<th>".$clang->gT("Full name")."</th>\n";
             foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
             {
                 $surveysecurity.="<th><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
@@ -66,7 +66,7 @@ class surveypermission extends Survey_Common_Action {
             $surveysecurity .= "<tbody>\n";
             if(count($result2) > 0)
             {
-                //	output users
+                // output users
                 $row = 0;
 
                 foreach ($result2 as $PermissionRow)
@@ -575,7 +575,7 @@ class surveypermission extends Survey_Common_Action {
                 {
                     foreach ($oResult as $aRow)
                     {
-						Survey_permissions::model()->setPermission($aRow->uid, $surveyid, $aPermissions);
+                        Survey_permissions::model()->setPermission($aRow->uid, $surveyid, $aPermissions);
                     }
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions for all users in this group were successfully updated.")."</div>\n";
                 }

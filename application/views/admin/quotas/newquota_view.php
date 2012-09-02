@@ -52,4 +52,4 @@
         <input type="hidden" name="subaction" value="insertquota" />
     </div>
     <p><input name="submit" type="submit" value="<?php $clang->eT("Add New Quota");?>" />
-	</form>
+    </form>

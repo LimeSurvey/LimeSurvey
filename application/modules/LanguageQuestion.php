@@ -96,7 +96,7 @@ class LanguageQuestion extends QuestionModule
         {
             $aAnswerList[$value] = array('Title' => $this->title, 'Display' => getLanguageNameFromCode($value, false), $value);
         }
-        
+
         $aResults = Quota_members::model()->findAllByAttributes(array('sid' => $this->surveyid, 'qid' => $this->id, 'quota_id' => $iQuotaId));
         foreach ($aResults as $aQuotaList)
         {

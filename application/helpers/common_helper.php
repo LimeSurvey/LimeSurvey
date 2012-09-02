@@ -527,8 +527,8 @@ function convertGETtoPOST($url)
         $arrayParam[] = "'".$paramname."'";
         $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
     }
-    //	$Paramlist = "[" . implode(",",$arrayParam) . "]";
-    //	$Valuelist = "[" . implode(",",$arrayVal) . "]";
+    // $Paramlist = "[" . implode(",",$arrayParam) . "]";
+    // $Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
     $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
     $callscript = "sendPost('$calledscript','".Yii::app()->session['checksessionpost']."',$Paramlist,$Valuelist);";
@@ -1289,7 +1289,7 @@ function fixSortOrderAnswers($qid,$surveyid=null) //Function rewrites the sortor
 
 /**
 * This function rewrites the sortorder for questions inside the named group
-* REMOVED the 2012-08-08 : replaced by Questions::model()->updateQuestionOrder 
+* REMOVED the 2012-08-08 : replaced by Questions::model()->updateQuestionOrder
 * @param integer $groupid the group id
 * @param integer $surveyid the survey id
 */
@@ -1525,7 +1525,7 @@ function validateEmailAddress($email){
     $dot_atom_text_domain    = "(?:$atext_domain+(?:\\x2e$atext_domain+)*)";
 
 
-    $dot_atom    	   = "(?:$cfws?$dot_atom_text$cfws?)";
+    $dot_atom          = "(?:$cfws?$dot_atom_text$cfws?)";
     $dot_atom_domain   = "(?:$cfws?$dot_atom_text_domain$cfws?)";
 
 
@@ -1717,114 +1717,114 @@ function validateTemplateDir($sTemplateName)
 
  foreach ($aFilters as $flt)
  {
-	Yii::app()->loadHelper("surveytranslator");
-	$myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
-	$oSurvey = Survey::model()->findByPk($iSurveyID);
-	$aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
-	if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
-		$sLanguage = $oSurvey->language;
+    Yii::app()->loadHelper("surveytranslator");
+    $myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
+    if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
+        $sLanguage = $oSurvey->language;
 
-	switch ($flt['type']) //AJS
-		    {
-		        case "K": // Multiple Numerical
-		        case "Q": // Multiple Short Text
-		            //get answers
-		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-		            $result =  Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+    switch ($flt['type']) //AJS
+            {
+                case "K": // Multiple Numerical
+                case "Q": // Multiple Short Text
+                    //get answers
+                    $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
+                    $result =  Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
 
-		            //go through all the (multiple) answers
-		            foreach($result as $row)
-		            {
-		                $myfield2=$flt['type'].$myfield.reset($row); //AJS
-		                $allfields[] = $myfield2;
-		            }
-		            break;
-		        case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
-		        case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-		        case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
-		        case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-		        case "F": // FlEXIBLE ARRAY
-		        case "H": // ARRAY (By Column)
-		            //get answers
-		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-					$result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                    //go through all the (multiple) answers
+                    foreach($result as $row)
+                    {
+                        $myfield2=$flt['type'].$myfield.reset($row); //AJS
+                        $allfields[] = $myfield2;
+                    }
+                    break;
+                case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
+                case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
+                case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+                case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
+                case "F": // FlEXIBLE ARRAY
+                case "H": // ARRAY (By Column)
+                    //get answers
+                    $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
+                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
 
-		            //go through all the (multiple) answers
-		            foreach($result as $row)
-		            {
-		                $myfield2 = $myfield.reset($row);
-		                $allfields[]=$myfield2;
-		            }
-		            break;
-		        // all "free text" types (T, U, S)  get the same prefix ("T")
-		        case "T": // Long free text
-		        case "U": // Huge free text
-		        case "S": // Short free text
-		            $myfield="T$myfield";
-		            $allfields[] = $myfield;
-		            break;
-		        case ";":  //ARRAY (Multi Flex) (Text)
-		        case ":":  //ARRAY (Multi Flex) (Numbers)
+                    //go through all the (multiple) answers
+                    foreach($result as $row)
+                    {
+                        $myfield2 = $myfield.reset($row);
+                        $allfields[]=$myfield2;
+                    }
+                    break;
+                // all "free text" types (T, U, S)  get the same prefix ("T")
+                case "T": // Long free text
+                case "U": // Huge free text
+                case "S": // Short free text
+                    $myfield="T$myfield";
+                    $allfields[] = $myfield;
+                    break;
+                case ";":  //ARRAY (Multi Flex) (Text)
+                case ":":  //ARRAY (Multi Flex) (Numbers)
                     $query = "SELECT title, question FROM {{questions}} WHERE parent_qid=:flt_0 AND language=:lang AND scale_id = 0 ORDER BY question_order";
-		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
-		            foreach($result as $row)
-		            {
-		                $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
-		                $fresult = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
-		                foreach($fresult as $frow)
-		                {
-		                    $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
-		                $allfields[]=$myfield2;
-		            }
-		            }
-		            break;
-		        case "R": //RANKING
-		            //get some answers
-		            $query = "SELECT code, answer FROM {{answers}} WHERE qid = :flt_0 AND language = :lang ORDER BY sortorder, answer";
-		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                    foreach($result as $row)
+                    {
+                        $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
+                        $fresult = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                        foreach($fresult as $frow)
+                        {
+                            $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
+                        $allfields[]=$myfield2;
+                    }
+                    }
+                    break;
+                case "R": //RANKING
+                    //get some answers
+                    $query = "SELECT code, answer FROM {{answers}} WHERE qid = :flt_0 AND language = :lang ORDER BY sortorder, answer";
+                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
 
-		            //get number of answers
-		            $count = $result->num_rows();
+                    //get number of answers
+                    $count = $result->num_rows();
 
-		            //loop through all answers. if there are 3 items to rate there will be 3 statistics
-		            for ($i=1; $i<=$count; $i++)
-		            {
-		                $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
-		                $allfields[]=$myfield2;
-		            }
-		            break;
-		        //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-		        case "X":  //This is a boilerplate question and it has no business in this script
-		            break;
-		        case "1": // MULTI SCALE
-		            //get answers
-		            $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang ORDER BY question_order";
-		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                    //loop through all answers. if there are 3 items to rate there will be 3 statistics
+                    for ($i=1; $i<=$count; $i++)
+                    {
+                        $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
+                        $allfields[]=$myfield2;
+                    }
+                    break;
+                //Boilerplate questions are only used to put some text between other questions -> no analysis needed
+                case "X":  //This is a boilerplate question and it has no business in this script
+                    break;
+                case "1": // MULTI SCALE
+                    //get answers
+                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang ORDER BY question_order";
+                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
 
-		            //loop through answers
-		            foreach($result as $row)
-		            {
-		                //----------------- LABEL 1 ---------------------
-		                $myfield2 = $myfield . reset($row[0])."#0";
-		                $allfields[]=$myfield2;
-		                //----------------- LABEL 2 ---------------------
-		                $myfield2 = $myfield . "$row[0]#1";
-		                $allfields[]=$myfield2;
-		            }	//end WHILE -> loop through all answers
-		            break;
+                    //loop through answers
+                    foreach($result as $row)
+                    {
+                        //----------------- LABEL 1 ---------------------
+                        $myfield2 = $myfield . reset($row[0])."#0";
+                        $allfields[]=$myfield2;
+                        //----------------- LABEL 2 ---------------------
+                        $myfield2 = $myfield . "$row[0]#1";
+                        $allfields[]=$myfield2;
+                    } //end WHILE -> loop through all answers
+                    break;
 
-		        case "P":  //P - Multiple choice with comments
-		        case "M":  //M - Multiple choice
-		        case "N":  //N - Numerical input
-		        case "D":  //D - Date
-		            $myfield2 = $flt['type'].$myfield; //AJS
-		                    $allfields[]=$myfield2;
-		            break;
-		        default:   //Default settings
-		            $allfields[] = $myfield;
-		            break;
+                case "P":  //P - Multiple choice with comments
+                case "M":  //M - Multiple choice
+                case "N":  //N - Numerical input
+                case "D":  //D - Date
+                    $myfield2 = $flt['type'].$myfield; //AJS
+                            $allfields[]=$myfield2;
+                    break;
+                default:   //Default settings
+                    $allfields[] = $myfield;
+                    break;
 
-		} //end switch
+        } //end switch
  }
 
 return $allfields;
@@ -1883,7 +1883,7 @@ function createFieldMap($surveyid, $force_refresh=false, $questionid=false, $sLa
     $q->text=$clang->gT("Last page");
     $q->group_name="";
     $fieldmap["lastpage"] = $q;
-    
+
     $q = new StdClass;
     $q->fieldname="startlanguage";
     $q->surveyid=$surveyid;
@@ -2195,10 +2195,10 @@ function buildLabelSetCheckSumArray()
 function getQuestionAttributeValues($qid) //AJSL
 {
     static $cache;
-	$qid = sanitize_int($qid);
-	if (isset($cache[$qid])) return $cache[$qid];
-	$row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid)); 
-	$q = createQuestion($row->question_types['class'], array('id'=>$qid));
+    $qid = sanitize_int($qid);
+    if (isset($cache[$qid])) return $cache[$qid];
+    $row = Questions::model()->with('question_types')->findByAttributes(array('qid' => $qid));
+    $q = createQuestion($row->question_types['class'], array('id'=>$qid));
 
     return $cache[$q->id] = $q->getAttributeValues();
 }
@@ -2691,32 +2691,32 @@ function questionAttributes()
     "caption"=>$clang->gT('Numbers only')
     );
 
-    $qattributes['show_totals'] =	array(
-    'category' =>	$clang->gT('Other'),
-    'sortorder' =>	151,
-    'inputtype'	=> 'singleselect',
-    'options' =>	array(
-    'X' =>	$clang->gT('Off'),
-    'R' =>	$clang->gT('Rows'),
-    'C' =>	$clang->gT('Columns'),
-    'B' =>	$clang->gT('Both rows and columns')
+    $qattributes['show_totals'] = array(
+    'category' => $clang->gT('Other'),
+    'sortorder' => 151,
+    'inputtype' => 'singleselect',
+    'options' => array(
+    'X' => $clang->gT('Off'),
+    'R' => $clang->gT('Rows'),
+    'C' => $clang->gT('Columns'),
+    'B' => $clang->gT('Both rows and columns')
     ),
-    'default' =>	'X',
-    'help' =>	$clang->gT('Show totals for either rows, columns or both rows and columns'),
-    'caption' =>	$clang->gT('Show totals for')
+    'default' => 'X',
+    'help' => $clang->gT('Show totals for either rows, columns or both rows and columns'),
+    'caption' => $clang->gT('Show totals for')
     );
 
-    $qattributes['show_grand_total'] =	array(
-    'category' =>	$clang->gT('Other'),
-    'sortorder' =>	152,
-    'inputtype' =>	'singleselect',
-    'options' =>	array(
-    0 =>	$clang->gT('No'),
-    1 =>	$clang->gT('Yes')
+    $qattributes['show_grand_total'] = array(
+    'category' => $clang->gT('Other'),
+    'sortorder' => 152,
+    'inputtype' => 'singleselect',
+    'options' => array(
+    0 => $clang->gT('No'),
+    1 => $clang->gT('Yes')
     ),
-    'default' =>	0,
-    'help' =>	$clang->gT('Show grand total for either columns or rows'),
-    'caption' =>	$clang->gT('Show grand total')
+    'default' => 0,
+    'help' => $clang->gT('Show grand total for either columns or rows'),
+    'caption' => $clang->gT('Show grand total')
     );
 
     $qattributes["input_boxes"]=array(
@@ -3342,7 +3342,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         $subject=mb_convert_encoding($subject,$emailcharset,'utf-8');
         $sitename=mb_convert_encoding($sitename,$emailcharset,'utf-8');
     }
-    
+
     if (!is_array($to)){
         $to=array($to);
     }
@@ -3454,7 +3454,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         }
     }
     $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
-    if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
+    if (get_magic_quotes_gpc() != "0") {$body = stripcslashes($body);}
     if ($ishtml) {
         $mail->IsHTML(true);
         $mail->Body = $body;
@@ -3685,7 +3685,7 @@ function getArrayFilterExcludesForQuestion($qid)
     static $cache = array();
 
     // TODO: Check list_filter values to make sure questions are previous?
-    //	$surveyid = Yii::app()->getConfig('sid');
+    // $surveyid = Yii::app()->getConfig('sid');
     $surveyid=returnGlobal('sid');
     $qid=sanitize_int($q->id);
 
@@ -4552,9 +4552,9 @@ function updateCheck()
 /**
 * Return the goodchars to be used when filtering input for numbers.
 *
-* @param $lang 	string	language used, for localisation
-* @param $integer	bool	use only integer
-* @param $negative	bool	allow negative values
+* @param $lang      string  language used, for localisation
+* @param $integer   bool    use only integer
+* @param $negative  bool    allow negative values
 */
 function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
     $goodchars = "0123456789";
@@ -4731,7 +4731,7 @@ function SSLRedirect($enforceSSLMode)
 {
     $url = 'http'.$enforceSSLMode.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     if (!headers_sent())
-    {	// If headers not sent yet... then do php redirect
+    { // If headers not sent yet... then do php redirect
         //ob_clean();
         header('Location: '.$url);
         //ob_flush();
@@ -4793,7 +4793,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
             $criteria = new CDbCriteria;
 
             if (!in_array($fieldname, $fields_list)) $fields_list[] = $fieldname;
-            
+
             $criteria->addColumnCondition(array($fieldname => $member), 'OR');
 
             $fields_query[$fieldname] = $criteria;
@@ -6522,11 +6522,11 @@ function arraySwapAssoc($key1, $key2, $array) {
 *
 * This public static function will strip tags from a string, split it at its max_length and ellipsize
 *
-* @param	string		string to ellipsize
-* @param	integer		max length of string
-* @param	mixed		int (1|0) or float, .5, .2, etc for position to split
-* @param	string		ellipsis ; Default '...'
-* @return	string		ellipsized string
+* @param    string      string to ellipsize
+* @param    integer     max length of string
+* @param    mixed       int (1|0) or float, .5, .2, etc for position to split
+* @param    string      ellipsis ; Default '...'
+* @return   string      ellipsized string
 */
 function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
 {
@@ -6619,9 +6619,9 @@ function createQuestion($name, $data=array())
 
 /**
 * This function add string to css or js header for public surevy
-* @param	string		string to ellipsize
-* @param	string		max length of string
-* @return	array		array of string for js or css to be included
+* @param    string      string to ellipsize
+* @param    string      max length of string
+* @return   array       array of string for js or css to be included
 *
 */
 

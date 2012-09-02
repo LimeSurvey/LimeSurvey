@@ -77,7 +77,6 @@ class MultinumericalQuestion extends QuestionModule
                 $decimnumber = strlen($aQuestionAttributes['slider_accuracy']) - strpos($aQuestionAttributes['slider_accuracy'],'.') -1;
                 $slider_divisor = pow(10,$decimnumber);
                 $slider_stepping = $aQuestionAttributes['slider_accuracy'] * $slider_divisor;
-                //	error_log('acc='.$slider_accuracy['value']." div=$slider_divisor stepping=$slider_stepping");
             }
             else
             {
@@ -150,7 +149,7 @@ class MultinumericalQuestion extends QuestionModule
 
         if ($anscount==0)
         {
-            $answer_main .= '	<li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
+            $answer_main .= '    <li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
         }
         else
         {
@@ -285,8 +284,6 @@ class MultinumericalQuestion extends QuestionModule
                     . "\t</li>\n";
                 }
 
-                //			$answer .= "\t</tr>\n";
-
                 $fn++;
             }
             $question_tip = '';
@@ -354,7 +351,6 @@ class MultinumericalQuestion extends QuestionModule
 
     public function getHeaderIncludes()
     {
-        
         $aQuestionAttributes = $this->getAttributeValues();
         if ($aQuestionAttributes['slider_layout']==1)
         {
@@ -560,7 +556,7 @@ class MultinumericalQuestion extends QuestionModule
                 $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title'], "", $clang->gT("No answer"));
             }
         } //while
-                
+
         return $canswers;
     }
 

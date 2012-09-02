@@ -11,12 +11,12 @@ if (!is_writable(APPPATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'
 
 if ($httperror != '')
 {
-	print( $httperror );
+    print( $httperror );
 }
 
 if (!$updater_exists)
 {
-	$clang->eT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
+    $clang->eT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
 }
 
 ?>

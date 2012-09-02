@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 class Index extends Survey_Common_Action
 {
@@ -30,9 +30,9 @@ class Index extends Survey_Common_Action
             $this->_renderWrappedTemplate('super', $aViewUrls);
         }
         elseif (count(getSurveyList(true)) == 0)
-		{
+        {
             $this->_renderWrappedTemplate('super', 'firststeps');
-		}
+        }
         else
         {
             Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/survey/index'));

@@ -2128,7 +2128,6 @@ function CSVImportLabelset($sFullFilepath, $options)
                 {
                     foreach($csarray as $key=>$val)
                     {
-                        //			echo $val."-".$newcs."<br/>";  For debug purposes
                         if ($val == $newcs)
                         {
                             $lsmatch=$key;
@@ -4428,7 +4427,7 @@ function ExcelImportSurvey($sFullFilepath)
                 $insertdata = array();
                 $insertdata['sid'] = $iNewSID;
                 $qname = (isset($row['name']) ? $row['name'] : 'Q' . $qseq);
-                
+
                 // Convert type into question class
                 if (strlen($row['type/scale']) == 1)
                 {
@@ -4468,7 +4467,7 @@ function ExcelImportSurvey($sFullFilepath)
                     $insertdata['question_order'] = $qseq;
                 }
                 // Insert question and keep the qid for multi language survey
-                $result = Questions::model()->insertRecords($insertdata); 
+                $result = Questions::model()->insertRecords($insertdata);
                 if(!$result){
                     $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Excel row number ").$rownumber." (".$qname.")";
                     break;
@@ -4581,7 +4580,7 @@ function ExcelImportSurvey($sFullFilepath)
                         $qseq = $sqinfo[$fullsqname]['question_order'];
                         $sqid = $sqinfo[$fullsqname]['sqid'];
                         $insertdata['question_order'] = $qseq;
-                        $insertdata['qid'] = $sqid; 
+                        $insertdata['qid'] = $sqid;
                     }
                     else
                     {

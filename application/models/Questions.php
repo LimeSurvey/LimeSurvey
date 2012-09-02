@@ -13,8 +13,8 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    * 	$Id$
-    * 	Files Purpose: lots of common functions
+    *   $Id$
+    *   Files Purpose: lots of common functions
     */
 
     class Questions extends CActiveRecord
@@ -76,20 +76,20 @@
             );
         }
 
-		/**
-		* Returns this model's validation rules
-		*
-		*/
-		public function rules()
-		{
-			return array(
-			array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-			array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-			array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-			array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),			
-			array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),			
-			);  
-		}
+        /**
+        * Returns this model's validation rules
+        *
+        */
+        public function rules()
+        {
+            return array(
+            array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            );
+        }
 
 
         /**

@@ -10,25 +10,25 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 	$Id$
- * 	Files Purpose: lots of common functions
+ *  $Id$
+ *  Files Purpose: lots of common functions
  */
 
 class Survey_links extends CActiveRecord
 {
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
     /**
      * Returns the setting's table name to be used by the model

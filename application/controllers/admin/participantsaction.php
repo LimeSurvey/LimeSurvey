@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 /*
  * This is the main controller for Participants Panel
@@ -279,7 +279,7 @@ class participantsaction extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
-    	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+        $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
         $records = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll();
 
@@ -834,13 +834,13 @@ class participantsaction extends Survey_Common_Action
 
     function getParticipantsResults_json()
     {
-    	///admin/participants/getParticipantsResults_json/search/email||contains||com
+        ///admin/participants/getParticipantsResults_json/search/email||contains||com
         //Possible methods: equal,contains,notequal,notcontains,greaterthan,lessthan
         //First entry is field to search, second method, third value, seperated by double pipe "||"
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
         $page=($page) ? $page : 1;
-    	$limit=($limit) ? $limit : 25;
+        $limit=($limit) ? $limit : 25;
 
         $attid = ParticipantAttributeNames::model()->getAttributeVisibleID();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
@@ -1011,35 +1011,35 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
-	/*
-	   * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
-	*/
+    /*
+       * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
+    */
     function getParticipants_json()
     {
-    	function subval_sort($a, $subkey, $order)
-    	{
-    		foreach ($a as $k => $v)
-    		{
-    			$b[$k] = strtolower($v[$subkey]);
-    		}
-    		if ($order == "asc")
-    		{
-    			asort($b, SORT_REGULAR);
-    		}
-    		else
-    		{
-    			arsort($b, SORT_REGULAR);
-    		}
-    		foreach ($b as $key => $val)
-    		{
-    			$c[] = $a[$key];
-    		}
-    		return $c;
-    	}
+        function subval_sort($a, $subkey, $order)
+        {
+            foreach ($a as $k => $v)
+            {
+                $b[$k] = strtolower($v[$subkey]);
+            }
+            if ($order == "asc")
+            {
+                asort($b, SORT_REGULAR);
+            }
+            else
+            {
+                arsort($b, SORT_REGULAR);
+            }
+            foreach ($b as $key => $val)
+            {
+                $c[] = $a[$key];
+            }
+            return $c;
+        }
 
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
-    	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+        $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
 
         $attid = ParticipantAttributeNames::model()->getAttributeVisibleID();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
@@ -1058,8 +1058,8 @@ class participantsaction extends Survey_Common_Action
             $aData->records = Participants::model()->count();
             $aData->total = ceil($aData->records / $limit);
             $i = 0;
-        	$sortablearray=array();
-        	foreach ($records as $key => $row)
+            $sortablearray=array();
+            foreach ($records as $key => $row)
             {
                 $username = User::model()->getName($row['owner_uid']); //for conversion of uid to human readable names
                 $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
@@ -1081,21 +1081,21 @@ class participantsaction extends Survey_Common_Action
             }
 
             $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-        	if(!empty($sortablearray)) {
-        		$sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-        		$i = 0;
-        		$count = count($sortedarray[0]);
-        		foreach ($sortedarray as $key => $value)
-        		{
-        			$aData->rows[$i]['id'] = $value[0];
-        			$aData->rows[$i]['cell'] = array();
-        			for ($j = 0; $j < $count; $j++)
-        			{
-        				array_push($aData->rows[$i]['cell'], $value[$j]);
-        			}
-        			$i++;
-        		}
-        	}
+            if(!empty($sortablearray)) {
+                $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+                $i = 0;
+                $count = count($sortedarray[0]);
+                foreach ($sortedarray as $key => $value)
+                {
+                    $aData->rows[$i]['id'] = $value[0];
+                    $aData->rows[$i]['cell'] = array();
+                    for ($j = 0; $j < $count; $j++)
+                    {
+                        array_push($aData->rows[$i]['cell'], $value[$j]);
+                    }
+                    $i++;
+                }
+            }
         }
         // Only the owned and shared participants will be visible
         else
@@ -1107,7 +1107,7 @@ class participantsaction extends Survey_Common_Action
             $aData->total = ceil($aData->records / $limit);
             $attid = ParticipantAttributeNames::model()->getAttributeVisibleID();
             $i = 0;
-        	$sortablearray=array();
+            $sortablearray=array();
             foreach ($records as $row)
             {
                 $surveycount = Participants::model()->getSurveyCount($row['participant_id']);
@@ -1130,21 +1130,21 @@ class participantsaction extends Survey_Common_Action
             }
 
             $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-        	if(!empty($sortablearray)) {
-        		$sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-	            $i = 0;
-	            $count = count($sortedarray[0]);
-	            foreach ($sortedarray as $key => $value)
-	            {
-	                $aData->rows[$i]['id'] = $value[0];
-	                $aData->rows[$i]['cell'] = array();
-	                for ($j = 0; $j < $count; $j++)
-	                {
-	                    array_push($aData->rows[$i]['cell'], $value[$j]);
-	                }
-	                $i++;
-	            }
-        	}
+            if(!empty($sortablearray)) {
+                $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+                $i = 0;
+                $count = count($sortedarray[0]);
+                foreach ($sortedarray as $key => $value)
+                {
+                    $aData->rows[$i]['id'] = $value[0];
+                    $aData->rows[$i]['cell'] = array();
+                    for ($j = 0; $j < $count; $j++)
+                    {
+                        array_push($aData->rows[$i]['cell'], $value[$j]);
+                    }
+                    $i++;
+                }
+            }
         }
         echo ls_json_encode($aData);
     }
@@ -1495,20 +1495,20 @@ class participantsaction extends Survey_Common_Action
         $uploadcharset = Yii::app()->request->getPost('characterset');
         /* The $newarray contains a list of fields that will be used
            to create new attributes */
-		if (!empty($newarray))
+        if (!empty($newarray))
         {
-			/* Create a new entry in the lime_participant_attribute_names table,
-			   and it's associated lime_participant_attribute_names_lang table
-			   for each NEW attribute being created in this import process */
+            /* Create a new entry in the lime_participant_attribute_names table,
+               and it's associated lime_participant_attribute_names_lang table
+               for each NEW attribute being created in this import process */
             foreach ($newarray as $key => $value)
             {
                 $aData = array('attribute_type' => 'TB', 'attribute_name' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeNames::model()->storeAttributeCSV($aData);
-            	/* Keep a record of the attribute_id for this new attribute
-            	   in the $mappedarray string. For example, if the new attribute
-            	   has attribute_id of 35 and is called "gender",
-            	   $mappedarray['35']='gender' */
-				$mappedarray[$insertid] = $value;
+                /* Keep a record of the attribute_id for this new attribute
+                   in the $mappedarray string. For example, if the new attribute
+                   has attribute_id of 35 and is called "gender",
+                   $mappedarray['35']='gender' */
+                $mappedarray[$insertid] = $value;
             }
         }
         if (!isset($uploadcharset))
@@ -1517,14 +1517,14 @@ class participantsaction extends Survey_Common_Action
         }
         foreach ($tokenlistarray as $buffer) //Iterate through the CSV file line by line
         {
-        	$buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
+            $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
             $firstname = "";
             $lastname = "";
             $email = "";
             $language = "";
-        	if ($recordcount == 0) {
-            	//The first time we iterate through the file we look at the very
-            	//first line, which contains field names, not values to import
+            if ($recordcount == 0) {
+                //The first time we iterate through the file we look at the very
+                //first line, which contains field names, not values to import
                 // Pick apart the first line
                 $buffer = removeBOM($buffer);
                 $attrid = ParticipantAttributeNames::model()->getAttributeID();
@@ -1572,7 +1572,7 @@ class participantsaction extends Survey_Common_Action
                     $recordcount = count($tokenlistarray);
                     break;
                 }
-        	} else {
+            } else {
                 // After looking at the first line, we now import the actual values
                 $line = convertCSVRowToArray($buffer, $separator, '"');
 
@@ -1600,7 +1600,7 @@ class participantsaction extends Survey_Common_Action
                          'email' => $writearray['email'],
                          'owner_uid' => Yii::app()->session['loginID']
                          );
-            	//HACK - converting into SQL instead of doing an array search
+                //HACK - converting into SQL instead of doing an array search
                 if(in_array('participant_id', $firstline)) {
                     $dupreason="participant_id";
                     $aData = "participant_id = '".mysql_real_escape_string($writearray['participant_id'])."'";
@@ -1609,7 +1609,7 @@ class participantsaction extends Survey_Common_Action
                     $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
                 }
                 //End of HACK
-				$aData = Participants::model()->checkforDuplicate($aData, "participant_id");
+                $aData = Participants::model()->checkforDuplicate($aData, "participant_id");
                 if ($aData !== false) {
                     $thisduplicate = 1;
                     $dupcount++;
@@ -1650,10 +1650,10 @@ class participantsaction extends Survey_Common_Action
                         }
                     }
                 }
-            	if (!$dupfound && !$invalidemail) {
-            		//If it isn't a duplicate value or an invalid email, process the entry as a new participant
+                if (!$dupfound && !$invalidemail) {
+                    //If it isn't a duplicate value or an invalid email, process the entry as a new participant
 
-               	    //First, process the known fields
+                    //First, process the known fields
                     if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "") {
                         $uuid = $this->gen_uuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
@@ -1661,10 +1661,10 @@ class participantsaction extends Survey_Common_Action
                     if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == '')) {
                         unset($writearray['emailstatus']);
                     }
-                	if (!isset($writearray['language']) || $writearray['language'] == "") {
-                		$writearray['language'] = "en";
-                	}
-                	if (!isset($writearray['blacklisted']) || $writearray['blacklisted'] == "") {
+                    if (!isset($writearray['language']) || $writearray['language'] == "") {
+                        $writearray['language'] = "en";
+                    }
+                    if (!isset($writearray['blacklisted']) || $writearray['blacklisted'] == "") {
                         $writearray['blacklisted'] = "N";
                     }
                     $writearray['owner_uid'] = Yii::app()->session['loginID'];
@@ -1676,23 +1676,23 @@ class participantsaction extends Survey_Common_Action
                     }
                     $dontimport=false;
                     if (($filterblankemails == "accept" && $writearray['email'] == "") || $writearray['firstname'] == "" || $writearray['lastname'] == "") {
-                    	//The mandatory fields of email, firstname and lastname
-						//must be filled, but one or more are empty
+                        //The mandatory fields of email, firstname and lastname
+                        //must be filled, but one or more are empty
                         $mandatory++;
                         $dontimport=true;
                     } else {
                         foreach ($writearray as $key => $value) {
                             if (!empty($mappedarray)) {
-                            	//The mapped array contains the attributes we are
-                            	//saving in this import
-                            	if (in_array($key, $allowedfieldnames)) {
+                                //The mapped array contains the attributes we are
+                                //saving in this import
+                                if (in_array($key, $allowedfieldnames)) {
                                     foreach ($mappedarray as $attid => $attname) {
                                         if ($attname == $key) {
                                             if (!empty($value)) {
                                                 $aData = array('participant_id' => $writearray['participant_id'],
                                                                'attribute_id' => $attid,
                                                                'value' => $value);
-                                             	ParticipantAttributeNames::model()->saveParticipantAttributeValue($aData);
+                                                ParticipantAttributeNames::model()->saveParticipantAttributeValue($aData);
                                             } else {
                                                 //If the value is empty, don't write the value
                                             }
@@ -1708,7 +1708,7 @@ class participantsaction extends Survey_Common_Action
                         Participants::model()->insertParticipantCSV($writearray);
                         $imported++;
                     }
-            	}
+                }
                 $mincriteria++;
             }
             $recordcount++;

@@ -29,8 +29,8 @@
                 var saveChanges = false;
                 $(document).ready(function(){
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
-                    var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
-                        width	: '98%',
+                    var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height : '350',
+                        width : '98%',
                         customConfig : "<?php echo Yii::app()->getConfig('adminscripts') . '/ckeditor-config.js'; ?>",
                         toolbarStartupExpanded : true,
                         ToolbarCanCollapse : false,

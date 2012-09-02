@@ -282,7 +282,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 {
                     $dualgroup++;
                     $hiddenanswers='';
-                    $answer .= "\t<td class=\"dual_scale_separator information-item\">&nbsp;</td>\n";		// separator
+                    $answer .= "\t<td class=\"dual_scale_separator information-item\">&nbsp;</td>\n"; // separator
                     $hiddenanswers .= "<input type=\"hidden\" name=\"java$myfname1\" id=\"java$myfname1\" value=\"";
                     if (isset($_SESSION['survey_'.$this->surveyid][$myfname1])) {$hiddenanswers .= $_SESSION['survey_'.$this->surveyid][$myfname1];}
                     $hiddenanswers .= "\" />\n";
@@ -442,11 +442,9 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 . "<tr>\n"
                 . "\t<td$colspan_1>&nbsp;</td>\n" // prefix
                 . "\n"
-                //			. "\t<td align='center' width='$columnswidth%'><span class='dsheader'>$leftheader</span></td>\n"
                 . "\t<th>$leftheader</th>\n"
                 . "\n"
                 . "\t<td$colspan_2>&nbsp;</td>\n" // suffix // Inter DD separator // prefix
-                //			. "\t<td align='center' width='$columnswidth%'><span class='dsheader'>$rightheader</span></td>\n"
                 . "\t<th>$rightheader</th>\n"
                 . $suffix_cell."</tr>\n"
                 . "\t</thead>\n\n";
@@ -541,7 +539,6 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                     {
                         $answer .= "\t<td class='ddprefix information-item'>$ddprefix</td>\n";
                     }
-                    //				$answer .= "\t<td align='left' width='$columnswidth%'>\n"
                     $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
                     . "<select name=\"$myfname1\" id=\"answer$myfname1\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup1,$checkconditionFunction);\">\n";
 
@@ -943,7 +940,7 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
                 $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title']."#1", "", $clang->gT("No answer"));
             }
         } //while
-                
+
         return $canswers;
     }
 

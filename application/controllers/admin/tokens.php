@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* 	$Id$
+*   $Id$
 */
 
 /**
@@ -18,8 +18,8 @@
 *
 * This controller performs token actions
 *
-* @package		LimeSurvey
-* @subpackage	Backend
+* @package      LimeSurvey
+* @subpackage   Backend
 */
 class tokens extends Survey_Common_Action
 {
@@ -589,7 +589,6 @@ class tokens extends Survey_Common_Action
             //                $sLang = Yii::app()->request->getPost('language');
             //            }
             Tokens_dynamic::model($iSurveyId);
-            
 
             echo $from . ',' . $until;
             $aData = array(
@@ -2275,7 +2274,7 @@ class tokens extends Survey_Common_Action
                 $aData['attrfieldnames'][$sField]=$aData;
             }
         }
-        
+
         $aData['thissurvey'] = $thissurvey;
         $aData['surveyid'] = $iSurveyId;
         $aData['subaction'] = $subaction;

@@ -1,7 +1,7 @@
 <?php
-	extract($data);
-	Yii::app()->loadHelper('admin/htmleditor');
-	PrepareEditorScript(false, $this);
+    extract($data);
+    Yii::app()->loadHelper('admin/htmleditor');
+    PrepareEditorScript(false, $this);
 ?>
 <script type="text/javascript">
     standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';

@@ -10,7 +10,7 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    *	$Id$
+    *   $Id$
     */
     //include_once("login_check.php");
     //Security Checked: POST/GET/SESSION/DB/returnGlobal

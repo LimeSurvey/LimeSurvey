@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 
 //include_once("login_check.php");
@@ -94,7 +94,7 @@ function deletelabelset($lid)
 function insertlabelset()
 {
     //global $labelsoutput;
-    //	$labelsoutput.= $_POST['languageids'];  For debug purposes
+    // $labelsoutput.= $_POST['languageids'];  For debug purposes
     $clang = Yii::app()->lang;
 
 

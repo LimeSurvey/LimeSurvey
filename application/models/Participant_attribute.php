@@ -10,25 +10,25 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 	$Id: Survey_links.php 11999 2012-01-12 10:26:32Z gautamgupta $
- * 	Files Purpose: lots of common functions
+ *  $Id: Survey_links.php 11999 2012-01-12 10:26:32Z gautamgupta $
+ *  Files Purpose: lots of common functions
  */
 
 class Participant_attribute extends CActiveRecord
 {
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
     /**
      * Returns the setting's table name to be used by the model

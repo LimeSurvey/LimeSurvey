@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 
 /**
@@ -168,16 +168,16 @@ class PrintanswersController extends LSYii_Controller {
             if (substr($sFieldname,0,4) == 'gid_')
             {
 
-        	    if($printableexport)
-        	    {
-        		    $pdf->intopdf(flattenText($fname[0],false,true));
-        		    $pdf->ln(2);
+                if($printableexport)
+                {
+                    $pdf->intopdf(flattenText($fname[0],false,true));
+                    $pdf->ln(2);
                 }
                 else
                 {
                    $printoutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
                 }
-        	}
+            }
             elseif (substr($sFieldname,0,4)=='qid_')
             {
                 if($printableexport == 'pdf')
@@ -203,7 +203,7 @@ class PrintanswersController extends LSYii_Controller {
                    {
                        $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                    }
-	            }
+                }
             }
             else
             {
@@ -228,7 +228,7 @@ class PrintanswersController extends LSYii_Controller {
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
             $sExportFileName = sanitize_filename($surveyname);
-   			$pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
+            $pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
         }
 
         //Display the page with user answers

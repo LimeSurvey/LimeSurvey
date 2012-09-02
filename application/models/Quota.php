@@ -10,67 +10,67 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *	$Id$
-   *	Files Purpose: lots of common functions
+   *    $Id$
+   *    Files Purpose: lots of common functions
 */
 
 class Quota extends CActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{quota}}';
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{quota}}';
+    }
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'id';
-	}
+    /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'id';
+    }
 
-	/**
-	 * Returns the relations
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
-	{
-		return array(
-			'languagesettings' => array(self::HAS_MANY, 'Quota_languagesettings', '',
-				'on' => 't.id = languagesettings.quotals_quota_id'),
-		);
-	}
+    /**
+     * Returns the relations
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array(
+            'languagesettings' => array(self::HAS_MANY, 'Quota_languagesettings', '',
+                'on' => 't.id = languagesettings.quotals_quota_id'),
+        );
+    }
 
-	function insertRecords($data)
+    function insertRecords($data)
     {
         $quota = new self;
-		foreach ($data as $k => $v)
-			$quota->$k = $v;
-		return $quota->save();
+        foreach ($data as $k => $v)
+            $quota->$k = $v;
+        return $quota->save();
     }
 
     function deleteQuota($condition = false, $recursive = true)

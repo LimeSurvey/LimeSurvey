@@ -50,8 +50,6 @@ class RadioArrayQuestion extends ArrayQuestion
                 $labelcode[]=$lrow['code'];
             }
 
-            //		$cellwidth=sprintf('%02d', $cellwidth);
-
             $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid={$this->id} AND question like '%|%' ";
             $ansresult = dbExecuteAssoc($ansquery);  //Checked
             if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
@@ -492,7 +490,6 @@ class RadioArrayQuestion extends ArrayQuestion
             $output .= "</tr>";
         }
         $output .= "</table>";
-        
         return $output;
     }
 

@@ -13,7 +13,7 @@ if (!defined('BASEPATH'))
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* 	$Id$
+*   $Id$
 */
 
 /**

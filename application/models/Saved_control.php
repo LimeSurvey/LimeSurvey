@@ -10,55 +10,55 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 class Saved_control extends CActiveRecord {
-		/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{saved_control}}';
-	}
+        /**
+     * Returns the table's name
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{saved_control}}';
+    }
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'sid';
-	}
+    /**
+     * Returns the table's primary key
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'sid';
+    }
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
+    function getAllRecords($condition=FALSE)
+    {
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
 
-		$data = $this->db->get('saved_control');
+        $data = $this->db->get('saved_control');
 
-		return $data;
-	}
+        return $data;
+    }
 
     public function getCountOfAll($sid)
     {
@@ -77,18 +77,18 @@ class Saved_control extends CActiveRecord {
     */
     public function deleteSomeRecords($condition)
     {
-    	$record = new self;
-    	$criteria = new CDbCriteria;
+        $record = new self;
+        $criteria = new CDbCriteria;
 
-    	if($condition != FALSE)
-    	{
-    		foreach($condition as $column=>$value)
-    		{
-    			$criteria->addCondition("$column='$value'");
-    		}
-    	}
+        if($condition != FALSE)
+        {
+            foreach($condition as $column=>$value)
+            {
+                $criteria->addCondition("$column='$value'");
+            }
+        }
 
-    	return $record->deleteAll($criteria);
+        return $record->deleteAll($criteria);
     }
 
     function insertRecords($data)

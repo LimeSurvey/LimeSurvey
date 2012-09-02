@@ -123,7 +123,7 @@ class emailtemplates extends Survey_Common_Action {
      * @param array $aData Data to be passed on. Optional.
      */
     protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = array(), $aData = array())
-	{
+    {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
 
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';

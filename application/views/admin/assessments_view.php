@@ -8,14 +8,14 @@
 <table class='assessmentlist'><thead>
 <tr><th><?php $clang->eT("ID");?></th><th><?php $clang->eT("Actions");?></th><th><?php $clang->eT("SID");?></th>
 <?php foreach ($headings as $head) {
-	echo "<th>$head</th>\n";
+    echo "<th>$head</th>\n";
 } ?>
 <th><?php $clang->eT("Title");?></th><th><?php $clang->eT("Message");?></th>
 </tr></thead><tbody>
 <?php $flipflop=true;
 foreach($assessments as $assess) {
-	$flipflop=!$flipflop;
-	if ($flipflop==true){echo "<tr class='oddrow'>\n";}
+    $flipflop=!$flipflop;
+    if ($flipflop==true){echo "<tr class='oddrow'>\n";}
 else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['id'];?></td>
 <td>
@@ -36,11 +36,11 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <?php } ?>
 </td><td><?php echo $assess['sid'];?></td>
 <?php if ($assess['scope'] == "T") { ?>
-	<td><?php $clang->eT("Total");?></td>
-	<td>-</td>
+    <td><?php $clang->eT("Total");?></td>
+    <td>-</td>
 <?php } else { ?>
-	<td><?php $clang->eT("Question group");?></td>
-	<td><?php echo $groups[$assess['gid']]." (".$assess['gid'].")";?></td>
+    <td><?php $clang->eT("Question group");?></td>
+    <td><?php echo $groups[$assess['gid']]." (".$assess['gid'].")";?></td>
 <?php } ?>
 
 
@@ -55,9 +55,9 @@ else {echo "<tr class='evenrow'>\n";} ?>
 
 <?php if ((hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")) { ?>
 <br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='<?php echo $this->createUrl("admin/assessments/index/surveyid/$surveyid");?>'>
-	<div class='header ui-widget-header'><?php echo $actiontitle;?></div>
-	<ul class="assessmentscope"><li><label><?php $clang->eT("Scope");?></label>
-	<input type='radio' id='radiototal' name='scope' value='T' <?php
+    <div class='header ui-widget-header'><?php echo $actiontitle;?></div>
+    <ul class="assessmentscope"><li><label><?php $clang->eT("Scope");?></label>
+    <input type='radio' id='radiototal' name='scope' value='T' <?php
     if (!isset($editdata) || $editdata['scope'] == "T") {echo "checked='checked' ";} ?>/>
     <label for='radiototal'><?php $clang->eT("Total");?></label>
     <input type='radio' id='radiogroup' name='scope' value='G' <?php
@@ -67,55 +67,55 @@ else {echo "<tr class='evenrow'>\n";} ?>
         <?php 
         if (isset($groups))
         { ?>
-	        <select name='gid' id='gid'>
-	            <?php
-	            foreach ($groups as $groupId => $groupName) {
-	                echo '<option value="' . $groupId . '"'.($editId == $groupId ? ' selected' : '').'>' . $groupName . '</option>';
-	            }
-	            ?>
-	        </select>
-    	<?php
-		}
-		else
-			echo $clang->eT("No question group found."); 	 
-    	?> 
+            <select name='gid' id='gid'>
+                <?php
+                foreach ($groups as $groupId => $groupName) {
+                    echo '<option value="' . $groupId . '"'.($editId == $groupId ? ' selected' : '').'>' . $groupName . '</option>';
+                }
+                ?>
+            </select>
+        <?php
+        }
+        else
+            echo $clang->eT("No question group found.");
+        ?> 
     </li>
     <li><label for='minimum'><?php $clang->eT("Minimum");?></label><input type='text' id='minimum' name='minimum' class='numbersonly'<?php
     if (isset($editdata)) {echo " value='{$editdata['minimum']}' ";} ?>/></li>
     <li><label for='maximum'><?php $clang->eT("Maximum");?></label><input type='text' id='maximum' name='maximum' class='numbersonly'<?php
     if (isset($editdata)) {echo " value='{$editdata['maximum']}' ";} ?>/></li>
 
-	</ul><div id="languagetabs">
+    </ul><div id="languagetabs">
     <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
     <?php foreach ($assessmentlangs as $assessmentlang)
     {
-	    $position=0;
-	    echo '<li class="ui-state-default ui-corner-top" style="clear: none;"><a href="#tablang'.$assessmentlang.'">'.getLanguageNameFromCode($assessmentlang, false);
-	    if ($assessmentlang==$baselang) {echo ' ('.$clang->gT("Base language").')';}
-	    echo '</a></li>';
+        $position=0;
+        echo '<li class="ui-state-default ui-corner-top" style="clear: none;"><a href="#tablang'.$assessmentlang.'">'.getLanguageNameFromCode($assessmentlang, false);
+        if ($assessmentlang==$baselang) {echo ' ('.$clang->gT("Base language").')';}
+        echo '</a></li>';
     } ?>
     </ul>
     <?php foreach ($assessmentlangs as $assessmentlang)
     {
-	    $heading=''; $message='';
-	    if ($action == "assessmentedit")
-	    {
-	    	$results = Assessment::model()->findAllByAttributes(array('id' => $_POST['id'], 'language' => $assessmentlang));
-		    foreach ($results as $row) {
-		        $editdata=$row->attributes;
-		    }
-		    $heading=htmlspecialchars($editdata['name'],ENT_QUOTES);
-		    $message=htmlspecialchars($editdata['message']);
-	    } ?>
-	    <div id="tablang<?php echo $assessmentlang;?>">
-	    <ul><li><label for='name_<?php echo $assessmentlang;?>'><?php $clang->eT("Heading");?>:</label>
-	    <input type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/></li>
-	    <li><label for='assessmentmessage_<?php echo $assessmentlang;?>'><?php $clang->eT("Message");?>:</label>
-	    <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea>
+        $heading=''; $message='';
+        if ($action == "assessmentedit")
+        {
+            $results = Assessment::model()->findAllByAttributes(array('id' => $_POST['id'], 'language' => $assessmentlang));
+            foreach ($results as $row) {
+                $editdata=$row->attributes;
+            }
+            $heading=htmlspecialchars($editdata['name'],ENT_QUOTES);
+            $message=htmlspecialchars($editdata['message']);
+        } ?>
+        <div id="tablang<?php echo $assessmentlang;?>">
+        <ul><li><label for='name_<?php echo $assessmentlang;?>'><?php $clang->eT("Heading");?>:</label>
+        <input type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/></li>
+        <li><label for='assessmentmessage_<?php echo $assessmentlang;?>'><?php $clang->eT("Message");?>:</label>
+        <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea>
         <?php echo getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
         </li>
         <li style="text-align:center;"><input type='submit' value='<?php $clang->eT("Save");?>'/></li></ul>
-	    </div>
+        </div>
     <?php } ?>
     </div>
     <div>

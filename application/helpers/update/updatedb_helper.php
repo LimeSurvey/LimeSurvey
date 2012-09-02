@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
@@ -1030,9 +1030,46 @@ function db_upgrade_all($oldversion) {
 
 function upgradeSurveys162()
 {
-    $types = array(array(1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),array(2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),array(3, 3, 1, 'List (radio)', 'List', 'L', 'Y'),array(4, 4, 1, 'List with comment', 'CommentList', 'O', 'Y'),array(5, 1, 2, 'Array', 'RadioArray', 'F', 'Y'),array(6, 2, 2, 'Array (10 point choice)', 'TenRadioArray', 'B', 'Y'),array(7, 3, 2, 'Array (5 point choice)', 'FiveRadioArray', 'A', 'Y'),array(8, 4, 2, 'Array (Increase/Same/Decrease)', 'IDRadioArray', 'E', 'Y'),array(9, 5, 2, 'Array (Numbers)', 'NumberArray', ':', 'Y'),array(10, 6, 2, 'Array (Texts)', 'TextArray', ';', 'Y'),array(11, 7, 2, 'Array (Yes/No/Uncertain)', 'YNRadioArray', 'C', 'Y'),array(12, 8, 2, 'Array by column', 'ColumnRadioArray', 'H', 'Y'),array(13, 9, 2, 'Array dual scale', 'DualRadioArray', '1', 'Y'),array(14, 1, 3, 'Date/Time', 'Date', 'D', 'Y'),array(15, 2, 3, 'Equation', 'Equation', '*', 'Y'),array(16, 3, 3, 'File upload', 'File', '|', 'Y'),array(17, 4, 3, 'Gender', 'Gender', 'G', 'Y'),array(18, 5, 3, 'Language switch', 'Language', 'I', 'Y'),array(19, 6, 3, 'Multiple numerical input', 'Multinumerical', 'K', 'Y'),array(20, 7, 3, 'Numerical input', 'Numerical', 'N', 'Y'),array(21, 8, 3, 'Ranking', 'Ranking', 'R', 'Y'),array(22, 9, 3, 'Text display', 'Display', 'X', 'Y'),array(23, 10, 3, 'Yes/No', 'YN', 'Y', 'Y'),array(24, 1, 4, 'Huge free text', 'HugeText', 'U', 'Y'),array(25, 2, 4, 'Long free text', 'LongText', 'T', 'Y'),array(26, 3, 4, 'Multiple short text', 'Multitext', 'Q', 'Y'),array(27, 4, 4, 'Short free text', 'ShortText', 'S', 'Y'),array(28, 1, 5, 'Multiple choice', 'Check', 'M', 'Y'),array(29, 2, 5, 'Multiple choice with comments', 'CommentCheck', 'P', 'Y')); 
-    $groups = array(array(1, 'Single choice questions', 1, 'Y'),array(2, 'Arrays', 2, 'Y'),array(3, 'Mask questions', 3, 'Y'),array(4, 'Text questions', 4, 'Y'),array(5, 'Multiple choice questions', 5, 'Y'));
-    
+    $types = array(
+        array(1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
+        array(2, 2, 1, 'List (dropdown)', 'Select', '!', 'Y'),
+        array(3, 3, 1, 'List (radio)', 'List', 'L', 'Y'),
+        array(4, 4, 1, 'List with comment', 'CommentList', 'O', 'Y'),
+        array(5, 1, 2, 'Array', 'RadioArray', 'F', 'Y'),
+        array(6, 2, 2, 'Array (10 point choice)', 'TenRadioArray', 'B', 'Y'),
+        array(7, 3, 2, 'Array (5 point choice)', 'FiveRadioArray', 'A', 'Y'),
+        array(8, 4, 2, 'Array (Increase/Same/Decrease)', 'IDRadioArray', 'E', 'Y'),
+        array(9, 5, 2, 'Array (Numbers)', 'NumberArray', ':', 'Y'),
+        array(10, 6, 2, 'Array (Texts)', 'TextArray', ';', 'Y'),
+        array(11, 7, 2, 'Array (Yes/No/Uncertain)', 'YNRadioArray', 'C', 'Y'),
+        array(12, 8, 2, 'Array by column', 'ColumnRadioArray', 'H', 'Y'),
+        array(13, 9, 2, 'Array dual scale', 'DualRadioArray', '1', 'Y'),
+        array(14, 1, 3, 'Date/Time', 'Date', 'D', 'Y'),
+        array(15, 2, 3, 'Equation', 'Equation', '*', 'Y'),
+        array(16, 3, 3, 'File upload', 'File', '|', 'Y'),
+        array(17, 4, 3, 'Gender', 'Gender', 'G', 'Y'),
+        array(18, 5, 3, 'Language switch', 'Language', 'I', 'Y'),
+        array(19, 6, 3, 'Multiple numerical input', 'Multinumerical', 'K', 'Y'),
+        array(20, 7, 3, 'Numerical input', 'Numerical', 'N', 'Y'),
+        array(21, 8, 3, 'Ranking', 'Ranking', 'R', 'Y'),
+        array(22, 9, 3, 'Text display', 'Display', 'X', 'Y'),
+        array(23, 10, 3, 'Yes/No', 'YN', 'Y', 'Y'),
+        array(24, 1, 4, 'Huge free text', 'HugeText', 'U', 'Y'),
+        array(25, 2, 4, 'Long free text', 'LongText', 'T', 'Y'),
+        array(26, 3, 4, 'Multiple short text', 'Multitext', 'Q', 'Y'),
+        array(27, 4, 4, 'Short free text', 'ShortText', 'S', 'Y'),
+        array(28, 1, 5, 'Multiple choice', 'Check', 'M', 'Y'),
+        array(29, 2, 5, 'Multiple choice with comments', 'CommentCheck', 'P', 'Y')
+    );
+
+    $groups = array(
+        array(1, 'Single choice questions', 1, 'Y'),
+        array(2, 'Arrays', 2, 'Y'),
+        array(3, 'Mask questions', 3, 'Y'),
+        array(4, 'Text questions', 4, 'Y'),
+        array(5, 'Multiple choice questions', 5, 'Y')
+    );
+
     foreach($types as $type)
     {
         Yii::app()->db->createCommand()->insert('{{question_types}}', array('tid' => $type[0], 'order' => $type[1],'group' => $type[2], 'name' => $type[3], 'class' => $type[4], 'legacy' => $type[5], 'system' => $type[6]));

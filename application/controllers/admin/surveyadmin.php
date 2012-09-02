@@ -13,7 +13,7 @@ if (!defined('BASEPATH'))
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* 	$Id: surveyaction.php 12301 2012-02-02 08:51:43Z c_schmitz $
+*   $Id: surveyaction.php 12301 2012-02-02 08:51:43Z c_schmitz $
 */
 
 /**
@@ -176,16 +176,16 @@ class SurveyAdmin extends Survey_Common_Action
         foreach ($oResult as $result)
         {
             $q = createQuestion(empty($result->question_types['class']) ? $oResult[$result['parent_qid']]->question_types['class'] : $result->question_types['class'] );
-			if ($q->questionProperties('subquestions') && $result['parent_qid'])
-			{
-				$questions[] = array('qid' => $result['parent_qid'], 'sqid' => $result['qid'], 'title' => $result->parents['title'], 'question' => $result->parents['question'], 'sqquestion' => $result['question']);
-			}
-			else if ($q->questionProperties('hasdefaultvalues') && !$q->questionProperties('subquestions'))
-			{
-				$questions[] = array('qid' => $result['qid'], 'title' => $result['title'], 'question' => $result['question']);
-			}
+            if ($q->questionProperties('subquestions') && $result['parent_qid'])
+            {
+                $questions[] = array('qid' => $result['parent_qid'], 'sqid' => $result['qid'], 'title' => $result->parents['title'], 'question' => $result->parents['question'], 'sqquestion' => $result['question']);
+            }
+            else if ($q->questionProperties('hasdefaultvalues') && !$q->questionProperties('subquestions'))
+            {
+                $questions[] = array('qid' => $result['qid'], 'title' => $result['title'], 'question' => $result['question']);
+            }
         }
-        
+
         $aData['questions'] = $questions;
         $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
         $aData['data'] = $aData;
@@ -1438,7 +1438,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (empty($files))
         {
             $generalscripts_path = Yii::app()->getConfig('generalscripts');
-	    $adminscripts_path = Yii::app()->getConfig('adminscripts');
+        $adminscripts_path = Yii::app()->getConfig('adminscripts');
             $styleurl = Yii::app()->getConfig('styleurl');
 
             $js_files = array(

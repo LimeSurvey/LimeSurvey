@@ -9,13 +9,13 @@
 <tbody><tr>
 <?php
 function rsdsl($mur) {
-	foreach ($mur as $mds) {
-		if(is_array($mds)) {
-			return TRUE;
-		}else{
-			return FALSE;
-		}
-	}
+    foreach ($mur as $mds) {
+        if(is_array($mds)) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
 }
 if(rsdsl($mur)) {
 foreach ($mur as $mrw) { ?>
@@ -26,8 +26,8 @@ foreach ($mur as $mrw) { ?>
     <input type='hidden' name='uid' value="<?php echo $mrw['uid'];?>" /></td>
     <td align='center'> <input type='password' name='pass' value="%%unchanged%%" /></td>
 <?php }}else{
-	$mur = array_map('htmlspecialchars', $mur); ?>
-	<td align='center'><strong><?php echo $mur['users_name'];?></strong></td>
+    $mur = array_map('htmlspecialchars', $mur); ?>
+    <td align='center'><strong><?php echo $mur['users_name'];?></strong></td>
     <td align='center'> <input type='email' size='30' name='email' value="<?php echo $mur['email'];?>" /></td>
     <td align='center'> <input type='text' size='30' name='full_name' value="<?php echo $mur['full_name'];?>" />
     <input type='hidden' name='user' value="<?php echo $mur['users_name'];?>" />

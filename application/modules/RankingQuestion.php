@@ -288,7 +288,6 @@ class RankingQuestion extends QuestionModule
 
     public function getHeaderIncludes()
     {
-        
         return array('ranking.js' => 'js', 'jquery/jquery.actual/jquery.actual.min.js' => 'js', 'ranking.css' => 'css');
     }
 
@@ -671,7 +670,7 @@ OUTPUT;
                 $canswers[]=array($this->surveyid.'X'.$this->gid.'X'.$this->id.$i, " ", $clang->gT("No answer"));
             }
         }
-        
+
         return $canswers;
     }
 

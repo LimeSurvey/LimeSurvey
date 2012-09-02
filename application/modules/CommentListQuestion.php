@@ -57,7 +57,7 @@ class CommentListQuestion extends ListQuestion
                 {
                     $check_ans = CHECKED;
                 }
-                $answer .= '		<li class="answer-item radio-item">
+                $answer .= '        <li class="answer-item radio-item">
                 <input type="radio" name="'.$this->fieldname.'" id="answer'.$this->fieldname.$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
                 <label for="answer'.$this->fieldname.$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
                 </li>
@@ -74,7 +74,7 @@ class CommentListQuestion extends ListQuestion
                 {
                     $check_ans = '';
                 }
-                $answer .= '		<li class="answer-item radio-item noanswer-item">
+                $answer .= '        <li class="answer-item radio-item noanswer-item">
                 <input class="radio" type="radio" name="'.$this->fieldname.'" id="answer'.$this->fieldname.'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
                 <label for="answer'.$this->fieldname.'" class="answertext">'.$clang->gT('No answer').'</label>
                 </li>
@@ -88,7 +88,7 @@ class CommentListQuestion extends ListQuestion
             //        $answer .= "\t<td valign='top'>\n"
             //                 . "<textarea class='textarea' name='$this->fieldnamecomment' id='answer$this->fieldnamecomment' rows='$tarows' cols='30'>";
             //    --> END ORIGINAL
-            $answer .= '	</ul>
+            $answer .= '    </ul>
             </div>
 
             <p class="comment answer-item text-item">
@@ -120,7 +120,7 @@ class CommentListQuestion extends ListQuestion
                 {
                     $check_ans = SELECTED;
                 }
-                $answer .= '		<option value="'.$ansrow['code'].'"'.$check_ans.'>'.$ansrow['answer']."</option>\n";
+                $answer .= '        <option value="'.$ansrow['code'].'"'.$check_ans.'>'.$ansrow['answer']."</option>\n";
 
                 if (strlen($ansrow['answer']) > $maxoptionsize)
                 {
@@ -139,7 +139,7 @@ class CommentListQuestion extends ListQuestion
                 }
                 $answer .= '<option class="noanswer-item" value=""'.$check_ans.'>'.$clang->gT('No answer')."</option>\n";
             }
-            $answer .= '	</select>
+            $answer .= '    </select>
             </p>
             ';
             $fname2 = $this->fieldname.'comment';
@@ -358,7 +358,7 @@ class CommentListQuestion extends ListQuestion
         $deaquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY sortorder, answer";
         $dearesult = dbExecuteAssoc($deaquery);
         $datatemp='';
-    
+
         $qidattributes = $this->getAttributeValues();
         foreach ($dearesult->readAll() as $dearow)
         {

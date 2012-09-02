@@ -21,67 +21,67 @@ class Label extends CActiveRecord
      */
     public $maxsortorder;
 
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{labels}}';
-	}
+    /**
+     * Returns the table's name
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{labels}}';
+    }
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'lid';
-	}
+    /**
+     * Returns the table's primary key
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'lid';
+    }
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
+    function getAllRecords($condition=FALSE)
+    {
+        if ($condition != FALSE)
         {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
+            foreach ($condition as $item => $value)
+            {
+                $criteria->addCondition($item.'="'.$value.'"');
+            }
         }
 
-		$data = $this->findAll($criteria);
+        $data = $this->findAll($criteria);
 
         return $data;
-	}
+    }
 
     function getLabelCodeInfo($lid)
     {
-		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from(tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
+        return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from(tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
     }
 
-	function insertRecords($data)
+    function insertRecords($data)
     {
         $lbls = new self;
-		foreach ($data as $k => $v)
-			$lbls->$k = $v;
-		$lbls->save();
+        foreach ($data as $k => $v)
+            $lbls->$k = $v;
+        $lbls->save();
     }
 
 }

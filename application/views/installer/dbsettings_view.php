@@ -2,7 +2,7 @@
 
 <div class="container_6">
 
-	<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+    <?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
     <div class="grid_4 table">
 

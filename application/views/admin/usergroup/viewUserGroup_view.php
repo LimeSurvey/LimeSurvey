@@ -2,16 +2,16 @@
 <?php
 if(isset($headercfg))
 {
-	if ($headercfg["type"] == "success")
-	{ ?>
-		<div class="header successheader"><?php echo $headercfg["message"];?></div>
-		<?php
-	}
-	if ($headercfg["type"] == "warning")
-	{ ?>
-		<div class="header warningheader"><?php echo $headercfg["message"];?></div>
-		<?php
-	}
+    if ($headercfg["type"] == "success")
+    { ?>
+        <div class="header successheader"><?php echo $headercfg["message"];?></div>
+        <?php
+    }
+    if ($headercfg["type"] == "warning")
+    { ?>
+        <div class="header warningheader"><?php echo $headercfg["message"];?></div>
+        <?php
+    }
 }
 ?>
 
@@ -19,8 +19,8 @@ if(isset($headercfg))
 if(isset($groupfound))
 { ?>
 <table width='100%' border='0'>
-	<tr><td align='justify' colspan='2' height='4'>
- 	<font size='2' ><strong><?php $clang->eT("Description: ");?></strong>
+    <tr><td align='justify' colspan='2' height='4'>
+    <font size='2' ><strong><?php $clang->eT("Description: ");?></strong>
     <?php echo $usergroupdescription;?></font></td></tr>
 </table>
 <?php
@@ -71,7 +71,7 @@ if(isset($groupfound))
 <?php
 if (!empty($useradddialog))
 {
-	?>
+    ?>
         <form action='<?php echo $this->createUrl("admin/usergroups/user/ugid/{$ugid}/action/add"); ?>' method='post'>
             <table class='users'>
                 <tbody>
@@ -88,6 +88,6 @@ if (!empty($useradddialog))
                 </tbody>
             </table>
         </form>
-	<?php
+    <?php
 }
 ?>

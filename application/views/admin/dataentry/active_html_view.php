@@ -5,23 +5,23 @@ if ($thissurvey['active'] == "Y")
             { ?>
 
                 <script type='text/javascript'>
-    				  <!--
-    					function saveshow(value)
-    						{
-    						if (document.getElementById(value).checked == true)
-    							{
-    							document.getElementById("closerecord").checked=false;
-    							document.getElementById("closerecord").disabled=true;
-    							document.getElementById("saveoptions").style.display="";
-    							}
-    						else
-    							{
-    							document.getElementById("saveoptions").style.display="none";
-    							 document.getElementById("closerecord").disabled=false;
-    							}
-    						}
-    				  //-->
-    				  </script>
+                      <!--
+                        function saveshow(value)
+                            {
+                            if (document.getElementById(value).checked == true)
+                                {
+                                document.getElementById("closerecord").checked=false;
+                                document.getElementById("closerecord").disabled=true;
+                                document.getElementById("saveoptions").style.display="";
+                                }
+                            else
+                                {
+                                document.getElementById("saveoptions").style.display="none";
+                                 document.getElementById("closerecord").disabled=false;
+                                }
+                            }
+                      //-->
+                      </script>
                 <tr>
                 <td colspan='3' align='center'>
                 <table><tr><td align='left'>
@@ -35,16 +35,16 @@ if ($thissurvey['active'] == "Y")
                     </td></tr></table>
                     <div name='saveoptions' id='saveoptions' style='display: none'>
                     <table align='center' class='outlinetable'>
-    					  <tr><td align='right'><?php $clang->eT("Identifier:"); ?></td>
-    					  <td><input type='text' name='save_identifier' /></td></tr>
-    					  <tr><td align='right'><?php $clang->eT("Password:"); ?></td>
-    					  <td><input type='password' name='save_password' /></td></tr>
-    					  <tr><td align='right'><?php $clang->eT("Confirm Password:"); ?></td>
-    					  <td><input type='password' name='save_confirmpassword' /></td></tr>
-    					  <tr><td align='right'><?php $clang->eT("Email:"); ?></td>
-    					  <td><input type='email' name='save_email' /></td></tr>
-    					  <tr><td align='right'><?php $clang->eT("Start Language:"); ?></td>
-    					  <td>
+                          <tr><td align='right'><?php $clang->eT("Identifier:"); ?></td>
+                          <td><input type='text' name='save_identifier' /></td></tr>
+                          <tr><td align='right'><?php $clang->eT("Password:"); ?></td>
+                          <td><input type='password' name='save_password' /></td></tr>
+                          <tr><td align='right'><?php $clang->eT("Confirm Password:"); ?></td>
+                          <td><input type='password' name='save_confirmpassword' /></td></tr>
+                          <tr><td align='right'><?php $clang->eT("Email:"); ?></td>
+                          <td><input type='email' name='save_email' /></td></tr>
+                          <tr><td align='right'><?php $clang->eT("Start Language:"); ?></td>
+                          <td>
                     <select name='save_language'>
                     <?php foreach ($slangs as $lang)
                     {

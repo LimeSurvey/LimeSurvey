@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 /**
  * Description of ExpressionManager
@@ -1145,7 +1145,7 @@ class ExpressionManager {
         }
         return array_unique($jsNames);
     }
-    
+
     /**
      * Return the list of all of the JavaScript variables used by the most recent expression
      * @return <type>
@@ -2142,10 +2142,8 @@ class ExpressionManager {
      */
     public function asSplitStringOnExpressions($src)
     {
-         
         $parts = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
-        
-        
+
         $count = count($parts);
         $tokens = array();
         $inSQString=false;

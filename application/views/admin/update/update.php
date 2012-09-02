@@ -29,10 +29,10 @@ else
     echo '</ul><h3>'.$clang->gT('Change log').'</h3>';
 
     if($httperror=="") {
-    	echo '<textarea class="updater-changelog" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
+        echo '<textarea class="updater-changelog" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
     }
     else {
-    	print($httperror);
+        print($httperror);
     }
 
     if ($error)

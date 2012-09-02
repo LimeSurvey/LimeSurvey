@@ -11,7 +11,7 @@ if ( !defined('BASEPATH')) exit('No direct script access allowed');
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 function dbExecuteAssoc($sql,$inputarr=false,$silent=false)
 {
@@ -19,7 +19,7 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=false)
     try {
         if($inputarr)
         {
-            $dataset=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query();	//Checked
+            $dataset=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query(); //Checked
         }
         else
         {

@@ -15,67 +15,67 @@
 
 class Labelsets extends CActiveRecord
 {
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{labelsets}}';
-	}
+    /**
+     * Returns the table's name
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{labelsets}}';
+    }
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'lid';
-	}
+    /**
+     * Returns the table's primary key
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'lid';
+    }
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
+    function getAllRecords($condition=FALSE)
+    {
+        if ($condition != FALSE)
         {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
+            foreach ($condition as $item => $value)
+            {
+                $criteria->addCondition($item.'="'.$value.'"');
+            }
         }
 
-		$data = $this->findAll($criteria);
+        $data = $this->findAll($criteria);
 
         return $data;
-	}
+    }
 
     function getLID()
     {
-		return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
+        return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
     }
 
-	function insertRecords($data)
+    function insertRecords($data)
     {
         $lblset = new self;
-		foreach ($data as $k => $v)
-			$lblset->$k = $v;
-		if ($lblset->save())
+        foreach ($data as $k => $v)
+            $lblset->$k = $v;
+        if ($lblset->save())
         {
             return $lblset->lid;
         }

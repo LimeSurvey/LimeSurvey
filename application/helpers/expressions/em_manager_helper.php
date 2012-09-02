@@ -10,7 +10,7 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    *	$Id$
+    *   $Id$
     */
     /**
     * Description of LimeExpressionManager
@@ -635,7 +635,7 @@
          * @var type
          */
         private $updatedValues = array();
-        
+
         /**
         * A private constructor; prevents direct creation of object
         */
@@ -1087,30 +1087,30 @@
                             $afe_names = array();
                             if ($q->availableAttributes('array_filter') || $q->availableAttributes('array_filter_exclude'))
                             {
-								foreach ($cascadedAF as $_caf)
-								{
-									$sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-									$fqid = explode('X',$sgq);
-									if (!isset($fqid[2]))
-									{
-										continue;
-									}
-									$qq = $this->q2subqInfo[$fqid[2]]['q'];
-									$af_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], isset($this->qans[$fqid[2]]) ? $this->qans[$fqid[2]] : null, $sq['sqsuffix'], true);
-									if (!is_null($af_name)) $af_names[] = $af_name;
-								}
-								foreach ($cascadedAFE as $_cafe)
-								{
-									$sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-									$fqid = explode('X',$sgq);
-									if (!isset($fqid[2]))
-									{
-										continue;
-									}
-									$qq = $this->q2subqInfo[$fqid[2]]['q'];
-									$afe_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], isset($this->qans[$fqid[2]]) ? $this->qans[$fqid[2]] : null, $sq['sqsuffix'], false);
-									if (!is_null($afe_name)) $afe_names[] = $afe_name;
-								}
+                                foreach ($cascadedAF as $_caf)
+                                {
+                                    $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
+                                    $fqid = explode('X',$sgq);
+                                    if (!isset($fqid[2]))
+                                    {
+                                        continue;
+                                    }
+                                    $qq = $this->q2subqInfo[$fqid[2]]['q'];
+                                    $af_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], isset($this->qans[$fqid[2]]) ? $this->qans[$fqid[2]] : null, $sq['sqsuffix'], true);
+                                    if (!is_null($af_name)) $af_names[] = $af_name;
+                                }
+                                foreach ($cascadedAFE as $_cafe)
+                                {
+                                    $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
+                                    $fqid = explode('X',$sgq);
+                                    if (!isset($fqid[2]))
+                                    {
+                                        continue;
+                                    }
+                                    $qq = $this->q2subqInfo[$fqid[2]]['q'];
+                                    $afe_name = $qq->getArrayFilterNames($sgq, $this->q2subqInfo[$fqid[2]]['subqs'], isset($this->qans[$fqid[2]]) ? $this->qans[$fqid[2]] : null, $sq['sqsuffix'], false);
+                                    if (!is_null($afe_name)) $afe_names[] = $afe_name;
+                                }
                             }
                             $af_names = array_unique($af_names);
                             $afe_names= array_unique($afe_names);
@@ -1429,7 +1429,7 @@
                                         $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
                                     }
                                 }
-                                if ($q->questionProperties('subquestions')) 
+                                if ($q->questionProperties('subquestions'))
                                 {
                                     $subqValidSelector = $sq['jsVarName_on'];
                                 }
@@ -1487,7 +1487,7 @@
                                     $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK <= (' . $max_num_value_n . '))';
                                 }
 
-                                if ($q->questionProperties('subquestions')) 
+                                if ($q->questionProperties('subquestions'))
                                 {
                                     $subqValidSelector = $sq['jsVarName_on'];
                                 }
@@ -2486,7 +2486,7 @@
                 // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
                 $jsVarName_on = $q->jsVarNameOn();
                 $jsVarName = $q->jsVarName();
-                
+
                 $qInfo = $q->generateQuestionInfo();
                 if (!isset($q2subqInfo[$q->id]) && !is_null($qInfo)) {
                     $q2subqInfo[$q->id] = $qInfo;
@@ -3268,7 +3268,7 @@
                     }
                     $q = $knownVar['q'];
                     $value = $q->filter($value,'get');
-                    
+
                     $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
                     $LEM->updatedValues[$knownVar['sgqa']]=array(
                         'q'=>$q,
@@ -3726,7 +3726,7 @@
                 if ($this->surveyOptions['ipaddr']) {
                     $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll(getIPAddress());
                 }
-  
+
                 foreach ($updatedValues as $key=>$value)
                 {
                     if (!is_null($value))
@@ -4414,7 +4414,7 @@
                 // All sub-questions are irrelevant
                 $irrelevantSQs = explode('|', $LEM->qid2code[$qid]);
             }
-			elseif (!$q->displayOnly())
+            elseif (!$q->displayOnly())
             {
                 // Check filter status to determine which subquestions are relevant
                 $sgqas = explode('|',$LEM->qid2code[$qid]);
@@ -5195,7 +5195,7 @@
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
-                        
+
                         $q = $sq['q'];
                         if ($q->includeList())
                         {
@@ -5944,14 +5944,14 @@ EOT;
     <script type='text/javascript'>
     <!--
     var LEMradix='.';
-	function checkconditions(value, name, type, evt_type)
-	{
+    function checkconditions(value, name, type, evt_type)
+    {
         if (typeof evt_type === 'undefined')
         {
             evt_type = 'onchange';
         }
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
-	}
+    }
     // -->
     </script>
 EOD;
@@ -6517,7 +6517,7 @@ EOD;
                     else
                     {
                         $q = $var['q'];
-						$ansArray = isset($var['ansArray']) ? $var['ansArray'] : null;
+                        $ansArray = isset($var['ansArray']) ? $var['ansArray'] : null;
                         return $q->getVarAttributeValueNAOK($name, $default, $gseq, $qseq, $ansArray);
                     }
                 case 'relevanceStatus':
@@ -6957,7 +6957,7 @@ EOD;
                     if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName) {
                         continue;   // so don't show the main question as a sub-question too
                     }
-                    
+
                     $rowdivid=$q->getExportRowDivID();
                     $varName=$q->getExportVarName();
                     if (isset($sawThis[$q->id . '~' . $rowdivid]) || is_null($rowdivid))
@@ -6965,7 +6965,7 @@ EOD;
                         continue;
                     }
                     $sawThis[$qid . '~' . $rowdivid] = true;
-                        
+
                     ++$i;
                     $subQeqn = '&nbsp;';
                     if (isset($LEM->subQrelInfo[$qid][$rowdivid]))

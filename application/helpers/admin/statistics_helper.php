@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 
 
@@ -153,7 +153,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
                 unset($graph);
             }
-        }	//end if (bar chart)
+        } //end if (bar chart)
 
         //Pie Chart
         else
@@ -228,7 +228,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
                 unset($graph);
             }
-        }	//end else -> pie charts
+        } //end else -> pie charts
     }
 
     return $cachefilename;
@@ -484,7 +484,7 @@ function buildSelects($allfields, $surveyid, $language) {
                     }
                 }
             }
-    }	//end foreach -> loop through filter options to create SQL
+    } //end foreach -> loop through filter options to create SQL
 
     return $selects;
     }
@@ -823,7 +823,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                 }
                 else
                 {
-                	$showem = array();
+                    $showem = array();
                     //create SGQ identifier
                     list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
 
@@ -1295,7 +1295,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                         //clean up
                         unset($showem);
 
-                    }	//end if (enough results?)
+                    } //end if (enough results?)
 
                     //not enough (<1) results for calculation
                     else
@@ -1342,9 +1342,9 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
                     }
 
-                }	//end else -> check last character, greater/less/equals don't need special treatment
+                } //end else -> check last character, greater/less/equals don't need special treatment
 
-            }	//end else-if -> multiple numerical types
+            } //end else-if -> multiple numerical types
 
             //is there some "id", "datestamp" or "D" within the type?
             elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($firstletter == "D"))
@@ -1600,7 +1600,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                         break;
 
 
-                    case "1":	//array (dual scale)
+                    case "1": //array (dual scale)
 
                         $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                         $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
@@ -1671,7 +1671,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 
 
 
-                    default:	//default handling
+                    default: //default handling
 
                         //get answer code and title
                         $qquery = "SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
@@ -1696,7 +1696,7 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
                             $alist[]=array($statlang->gT("Comments"),$statlang->gT("Comments"),$q->fieldname.'comment');
                         }
 
-                }	//end switch question type
+                } //end switch question type
 
                 //moved because it's better to have "no answer" at the end of the list instead of the beginning
                 //put data into array
@@ -1862,7 +1862,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 $query .= " 'Y'";
                             }
                         }
-                    }	//end if -> alist set
+                    } //end if -> alist set
 
                     else
                     {
@@ -1897,9 +1897,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
                             }
                             else
-                                //			    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
                                 $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                                //								    . "OR ".sanitize_int($rt)." = '' "
                                 . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
                                 . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
                         }
@@ -2096,7 +2094,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 //beside the known percentage value a new aggregated value should be shown
                                 //therefore this item is marked in a certain way
 
-                                if($testcounter == 0 )	//add 300 to original value
+                                if($testcounter == 0 ) //add 300 to original value
                                 {
                                     //store the original value!
                                     $tempcount = $row[0];
@@ -2106,7 +2104,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 }
 
                                 //the third value should be shown twice later -> mark it
-                                if($testcounter == 2)	//add 400 to original value
+                                if($testcounter == 2) //add 400 to original value
                                 {
                                     //store the original value!
                                     $tempcount = $row[0];
@@ -2116,7 +2114,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 }
 
                                 //the last value aggregates the data of item 4 + item 5 later
-                                if($testcounter == 4 )	//add 200 to original value
+                                if($testcounter == 4 ) //add 200 to original value
                                 {
                                     //store the original value!
                                     $tempcount = $row[0];
@@ -2125,9 +2123,9 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                     $row[0] += (2*$results);
                                 }
 
-                            }	//end if -> question type = "5"/"A"
+                            } //end if -> question type = "5"/"A"
 
-                        }	//end if -> show aggregated data
+                        } //end if -> show aggregated data
 
                         //handling what's left
                         else
@@ -2221,9 +2219,9 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 
                         }
 
-                    }	//end while -> loop through results
+                    } //end while -> loop through results
 
-                }	//end foreach -> loop through answer data
+                } //end foreach -> loop through answer data
 
                 //no filtering of incomplete answers and NO multiple option questions
     //if ((incompleteAnsFilterState() != "filter") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
@@ -2258,9 +2256,9 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                             //increase counter
                             $i++;
 
-                        }	//end while (data available)
+                        } //end while (data available)
 
-                    }	//end if -> noncompleted checked
+                    } //end if -> noncompleted checked
 
                     //noncompleted is NOT checked
                     else
@@ -2309,9 +2307,9 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                         {
                             $lbl[] = wordwrap(flattenText($statlang->gT("Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
                         }
-                    }	//end else -> noncompleted NOT checked
+                    } //end else -> noncompleted NOT checked
 
-                }	//end if -> no filtering of incomplete answers and no multiple option questions
+                } //end if -> no filtering of incomplete answers and no multiple option questions
 
 
                 //counter
@@ -2748,7 +2746,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                         $statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
                                         $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
 
-                                        $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Number of cases")."</td>";	//German: "Fallzahl"
+                                        $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Number of cases")."</td>"; //German: "Fallzahl"
                                         $statisticsoutput .= "<td align='center' >".$TotalCompleted."</td>";
                                         $statisticsoutput .= "<td align='center' >$casepercentage%</td>";
                                         //there has to be a whitespace within the table cell to display correctly
@@ -2762,7 +2760,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 
                             }
 
-                        }	//end if -> show aggregated data
+                        } //end if -> show aggregated data
 
                         //don't show aggregated data
                         else
@@ -2801,7 +2799,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 
                         }
 
-                    }	//end else -> $gdata[$i] != "N/A"
+                    } //end else -> $gdata[$i] != "N/A"
 
 
 
@@ -2813,7 +2811,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
         //Clear extraline
         unset($extraline);
 
-                }	//end while
+                } //end while
 
                 //only show additional values when this setting is enabled
                 if(Yii::app()->getConfig('showaggregateddata') == 1 )
@@ -2880,12 +2878,12 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 
                             //4 = multiply result with 1 / (number of items (=5))
                             //There are two different formulas to calculate standard derivation
-                            //$stddev = $stddev / array_sum($stddevarray);		//formula source: http://de.wikipedia.org/wiki/Standardabweichung
+                            //$stddev = $stddev / array_sum($stddevarray); //formula source: http://de.wikipedia.org/wiki/Standardabweichung
 
                             //prevent division by zero
                             if((array_sum($stddevarray)-1) != 0 && $stddev != 0)
                             {
-                                $stddev = $stddev / (array_sum($stddevarray)-1);	//formula source: http://de.wikipedia.org/wiki/Empirische_Varianz
+                                $stddev = $stddev / (array_sum($stddevarray)-1); //formula source: http://de.wikipedia.org/wiki/Empirische_Varianz
                             }
                             else
                             {
@@ -2920,7 +2918,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                                 break;
                             case 'html':
                                 //calculate standard deviation
-                                $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Arithmetic mean")."</td>";	//German: "Fallzahl"
+                                $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Arithmetic mean")."</td>"; //German: "Fallzahl"
                                 $statisticsoutput .= "<td>&nbsp;</td><td align='center'> $am</td><td>&nbsp;</td></tr>";
                                 $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Standard deviation")."</td>";    //German: "Fallzahl"
                                 $statisticsoutput .= "<td>&nbsp;</td><td align='center'>$stddev</td><td>&nbsp;</td></tr>";
@@ -2941,12 +2939,6 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
                     $pdf->headTable($headPDF,$tablePDF);
                     //$pdf->tableintopdf($tablePDF);
 
-                    //				if(isset($footPDF))
-                    //				foreach($footPDF as $foot)
-                    //				{
-                    //					$footA = array($foot);
-                    //					$pdf->tablehead($footA);
-                    //				}
                 }
 
                 if ($outputType=='html') {
@@ -3244,9 +3236,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
         if($pdfOutput=='F')
         {
-			$sFileName = $tempdir.'/statistic-survey'.$surveyid.'.xls';
+            $sFileName = $tempdir.'/statistic-survey'.$surveyid.'.xls';
             $workbook = new Xlswriter($sFileName);
-		}
+        }
         else
             $workbook = new Xlswriter();
 
@@ -3400,7 +3392,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             ."\t\t</p>"
             ."\t\t</form>\n";
         }
-    }	//end if (results > 0)
+    } //end if (results > 0)
 
     /* Show Summary results
      * The $summary array contains each fieldname that we want to display statistics for
@@ -3427,19 +3419,19 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf);
                 $statisticsoutput .= $display['statisticsoutput'];
                 $astatdata = array_merge($astatdata, $display['astatdata']);
-            }	//end if -> collect and display results
+            } //end if -> collect and display results
 
 
             //Delete Build Outputs data
             unset($outputs);
             unset($display);
-        }	// end foreach -> loop through all questions
+        } // end foreach -> loop through all questions
 
         //output
         if($outputType=='html')
             $statisticsoutput .= "<br />&nbsp;\n";
 
-    }	//end if -> show summary results
+    } //end if -> show summary results
 
     switch($outputType)
     {
@@ -3471,7 +3463,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             break;
         case 'html':
             $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>\n"
-            ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
+            ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata).";var aStatData=".ls_json_encode($astatdata)."</script>";
             return $statisticsoutput;
 
             break;

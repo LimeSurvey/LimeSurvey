@@ -2,8 +2,8 @@
 <?php
     $data['clang'] = $clang;
     $data['action'] = $action;
-	$yii = Yii::app();
-	$controller = $yii->getController();
+    $yii = Yii::app();
+    $controller = $yii->getController();
     $controller->render('/admin/survey/subview/tab_view',$data);
     $controller->render('/admin/survey/subview/tabGeneralEditSurvey_view',$data);
     $controller->render('/admin/survey/subview/tabPresentation_view',$data);

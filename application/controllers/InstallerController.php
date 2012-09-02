@@ -369,7 +369,6 @@ class InstallerController extends CController {
                         Yii::app()->session['populatedatabase'] = true;
 
                         //$this->connection->database = $model->dbname;
-                        //						//$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
                         $values['adminoutputText'].= sprintf($clang->gT('A database named "%s" already exists.'),$model->dbname)."<br /><br />\n"
                         .$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
@@ -950,13 +949,13 @@ class InstallerController extends CController {
             ."| EXPLANATION OF VARIABLES"."\n"
             ."| -------------------------------------------------------------------"."\n"
             ."|"                                                                    ."\n"
-            ."|	'connectionString' Hostname, database, port and database type for " ."\n"
-            ."|	 the connection. Driver example: mysql. Currently supported:"       ."\n"
-            ."|				 mysql, pgsql, mssql, sqlite, oci"                      ."\n"
-            ."|	'username' The username used to connect to the database"            ."\n"
-            ."|	'password' The password used to connect to the database"            ."\n"
-            ."|	'tablePrefix' You can add an optional prefix, which will be added"  ."\n"
-            ."|				 to the table name when using the Active Record class"  ."\n"
+            ."| 'connectionString' Hostname, database, port and database type for " ."\n"
+            ."|  the connection. Driver example: mysql. Currently supported:"       ."\n"
+            ."|              mysql, pgsql, mssql, sqlite, oci"                      ."\n"
+            ."| 'username' The username used to connect to the database"            ."\n"
+            ."| 'password' The password used to connect to the database"            ."\n"
+            ."| 'tablePrefix' You can add an optional prefix, which will be added"  ."\n"
+            ."|              to the table name when using the Active Record class"  ."\n"
             ."|"                                                                    ."\n"
             ."*/"                                                                   ."\n"
             . "return array("                             . "\n"

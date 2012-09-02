@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 
 /**
@@ -318,7 +318,7 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
     z-index:1002;
     text-align: center;
     overflow: auto;";
-    $time_limit_message_style.="\n		display: none;"; //Important to hide time limit message at start
+    $time_limit_message_style.="\n        display: none;"; //Important to hide time limit message at start
     $time_limit_warning_style=trim($aQuestionAttributes['time_limit_warning_style']) != '' ? $aQuestionAttributes['time_limit_warning_style'] : "position: absolute;
     top: 10px;
     left: 35%;
@@ -330,7 +330,7 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
     z-index:1001;
     text-align: center;
     overflow: auto;";
-    $time_limit_warning_style.="\n		display: none;"; //Important to hide time limit warning at the start
+    $time_limit_warning_style.="\n        display: none;"; //Important to hide time limit warning at the start
     $time_limit_warning_2_style=trim($aQuestionAttributes['time_limit_warning_2_style']) != '' ? $aQuestionAttributes['time_limit_warning_2_style'] : "position: absolute;
     top: 10px;
     left: 35%;
@@ -342,7 +342,7 @@ function return_timer_script($aQuestionAttributes, $q, $disable=null) {
     z-index:1001;
     text-align: center;
     overflow: auto;";
-    $time_limit_warning_2_style.="\n		display: none;"; //Important to hide time limit warning at the start
+    $time_limit_warning_2_style.="\n        display: none;"; //Important to hide time limit warning at the start
     $time_limit_timer_style=trim($aQuestionAttributes['time_limit_timer_style']) != '' ? $aQuestionAttributes['time_limit_timer_style'] : "position: relative;
     width: 150px;
     margin-left: auto;

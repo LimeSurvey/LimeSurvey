@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 
 /**
@@ -18,8 +18,8 @@
  *
  * This controller performs browse actions
  *
- * @package		LimeSurvey
- * @subpackage	Backend
+ * @package     LimeSurvey
+ * @subpackage  Backend
  */
 class responses extends Survey_Common_Action
 {

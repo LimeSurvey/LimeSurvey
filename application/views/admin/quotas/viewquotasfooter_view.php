@@ -15,6 +15,6 @@
 
             <?php } ?>
     </td>
-    	</tr>
-	</tbody>
+        </tr>
+    </tbody>
 </table>

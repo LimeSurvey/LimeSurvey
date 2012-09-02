@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 final class SettingsStorage extends ArrayObject
 {
@@ -18,17 +18,17 @@ final class SettingsStorage extends ArrayObject
 
     public function __construct($params = array())
     {
-    	$defaults = array('array' => array(), 'flags' => parent::ARRAY_AS_PROPS);
+        $defaults = array('array' => array(), 'flags' => parent::ARRAY_AS_PROPS);
 
         foreach ($defaults as $key => $val)
         {
             if (isset($params[$key]) && $params[$key] !== "")
             {
-				$defaults[$key] = $params[$key];
+                $defaults[$key] = $params[$key];
             }
         }
         extract($defaults);
-		
+
         parent::__construct($array, $flags);
     }
 

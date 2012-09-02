@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 list(,$updaterversion)=explode(' ','$Rev: 11155 $');  // this is updated by subversion so don't change this string
 
@@ -19,8 +19,8 @@ list(,$updaterversion)=explode(' ','$Rev: 11155 $');  // this is updated by subv
 *
 * This controller performs updates
 *
-* @package		LimeSurvey
-* @subpackage	Backend
+* @package      LimeSurvey
+* @subpackage   Backend
 */
 class update extends Survey_Common_Action
 {

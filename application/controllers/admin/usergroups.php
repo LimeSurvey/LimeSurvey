@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 
 /**
@@ -235,8 +235,8 @@ class Usergroups extends Survey_Common_Action
                 $db_description = $_POST['description'];
                 if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
                     Yii::app()->session['flashmessage'] = $clang->gT("User group successfully saved!");
-					$aData['ugid'] = $ugid;
-					list($aViewUrls) = $this->index($ugid);
+                    $aData['ugid'] = $ugid;
+                    list($aViewUrls) = $this->index($ugid);
                 }
                 else
                 {
@@ -318,7 +318,7 @@ class Usergroups extends Survey_Common_Action
                         $userloop[$row]["displayactions"] = false;
                         continue;
                     }
-                    //	output users
+                    // output users
                     $userloop[$row]["rowclass"] = $bgcc;
                     if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
                         $userloop[$row]["displayactions"] = true;

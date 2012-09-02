@@ -98,7 +98,7 @@
 
         /**
         * Updates the group ID for all conditions
-        * 
+        *
         * @param integer $iSurveyID
         * @param integer $iQuestionID
         * @param integer $iOldGroupID
@@ -122,8 +122,6 @@
             }
         }
 
-        
-        
         public function insertRecords($data, $update=FALSE, $condition=FALSE)
         {
             $record = new self;
@@ -153,7 +151,7 @@
             else
                 return $record->save();
         }
-        
+
         function getScenarios($qid)
         {
 
@@ -161,7 +159,7 @@
 
             return Yii::app()->db->createCommand($scenarioquery)->query();
         }
-        
+
         function getSomeConditions($fields, $condition, $order, $group){
             $record = Yii::app()->db->createCommand()
             ->select($fields)

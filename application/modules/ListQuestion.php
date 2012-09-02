@@ -95,7 +95,7 @@ class ListQuestion extends QuestionModule
 
             $answer .= $startitem;
             $answer .= "\t$hiddenfield\n";
-            $answer .='		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$this->fieldname.'" id="answer'.$this->fieldname.$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$this->fieldname.'othertext\') != null) document.getElementById(\'answer'.$this->fieldname.'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+            $answer .='     <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$this->fieldname.'" id="answer'.$this->fieldname.$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$this->fieldname.'othertext\') != null) document.getElementById(\'answer'.$this->fieldname.'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
             <label for="answer'.$this->fieldname.$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
             '.$wrapper['item-end'];
 
@@ -165,7 +165,7 @@ class ListQuestion extends QuestionModule
             }
             $answer .= $startitem;
             $answer .= "\t$hiddenfield\n";
-            $answer .= '		<input class="radio" type="radio" value="-oth-" name="'.$this->fieldname.'" id="SOTH'.$this->fieldname.'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+            $answer .= '        <input class="radio" type="radio" value="-oth-" name="'.$this->fieldname.'" id="SOTH'.$this->fieldname.'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
             <label for="SOTH'.$this->fieldname.'" class="answertext">'.$othertext.'</label>
             <label for="answer'.$this->fieldname.'othertext">
             <input type="text" class="text '.$kpclass.'" id="answer'.$this->fieldname.'othertext" name="'.$this->fieldname.'other" title="'.$clang->gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$this->fieldname.'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
@@ -199,7 +199,7 @@ class ListQuestion extends QuestionModule
                 $check_ans = '';
             }
 
-            $answer .= $wrapper['item-start-noanswer'].'		<input class="radio" type="radio" name="'.$this->fieldname.'" id="answer'.$this->fieldname.'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$this->fieldname.'othertext\') != null) document.getElementById(\'answer'.$this->fieldname.'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+            $answer .= $wrapper['item-start-noanswer'].'        <input class="radio" type="radio" name="'.$this->fieldname.'" id="answer'.$this->fieldname.'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$this->fieldname.'othertext\') != null) document.getElementById(\'answer'.$this->fieldname.'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
             <label for="answer'.$this->fieldname.'NANS" class="answertext">'.$clang->gT('No answer').'</label>
             '.$wrapper['item-end'];
             // --> END NEW FEATURE - SAVE
@@ -695,7 +695,7 @@ class ListQuestion extends QuestionModule
         $deaquery = "SELECT * FROM {{answers}} WHERE qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY sortorder, answer";
         $dearesult = dbExecuteAssoc($deaquery);
         $datatemp='';
-    
+
         $qidattributes = $this->getAttributeValues();
         if (array_key_exists('category_separator', $qidattributes) && trim($qidattributes['category_separator'])!='')
         {

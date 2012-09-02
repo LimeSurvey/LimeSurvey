@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 
 /**
@@ -102,20 +102,20 @@ function checkQuestions($postsid, $iSurveyID)
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 
     $chkresult = Questions::model()->with('question_types')->with('groups')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group_order, question_order'));
-    
+
     foreach ($chkresult as $chkrow)
     {
-		if ($chkrow['tid'] == 0)
-		{
-			$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'tid' set."), $chkrow['gid']);
-			continue;
-		}
-	
+        if ($chkrow['tid'] == 0)
+        {
+            $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'tid' set."), $chkrow['gid']);
+            continue;
+        }
+
         $q = createQuestion($chkrow->question_types['class']);
         $qproperties=$q->questionProperties();
         if ($qproperties['subquestions'] > 0)
         {
-		    $charesult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => $chkrow['qid']));
+            $charesult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => $chkrow['qid']));
             $chacount = count($charesult);
             if ($chacount == 0)
             {
@@ -143,16 +143,16 @@ function checkQuestions($postsid, $iSurveyID)
             }
         }
 
-		$conresult = Conditions::model()->with('questions')->with('groups')->findAllByAttributes(array('qid' => $chkrow['qid']));
-		foreach ($conresult as $conrow)
-		{
-			if ($conrow->groups['group_order'] > $chkrow->groups['group_order'] ||
-				($conrow->groups['group_order'] == $chkrow->groups['group_order'] &&
-				$conrow->questions['question_order'] >= $chkrow['question_order']))
-			{
-				$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has a condition set, however the condition is based on a question that appears after it."), $chkrow['gid']);
-			}
-		}
+        $conresult = Conditions::model()->with('questions')->with('groups')->findAllByAttributes(array('qid' => $chkrow['qid']));
+        foreach ($conresult as $conrow)
+        {
+            if ($conrow->groups['group_order'] > $chkrow->groups['group_order'] ||
+                ($conrow->groups['group_order'] == $chkrow->groups['group_order'] &&
+                $conrow->questions['question_order'] >= $chkrow['question_order']))
+            {
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has a condition set, however the condition is based on a question that appears after it."), $chkrow['gid']);
+            }
+        }
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
@@ -246,7 +246,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         }
 
         if (is_a($q, 'QuestionModule') && $q->fileUpload()) $createsurveydirectory = true;
-        
+
         if ($simulate){
             $tempTrim = trim($createsurvey);
             $brackets = strpos($tempTrim,"(");

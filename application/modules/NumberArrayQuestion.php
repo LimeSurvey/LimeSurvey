@@ -302,7 +302,6 @@ class NumberArrayQuestion extends ArrayQuestion
                             $setmyvalue = '';
                         }
                         $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
-                        //					. "<label for=\"answer{$myfname2}\">\n"
                         . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
                         . "\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
                         $answer .= "\t<input type=\"checkbox\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
@@ -314,9 +313,7 @@ class NumberArrayQuestion extends ArrayQuestion
                         . " } else {"
                         . "  aelt.value=0;jelt.value=0;$checkconditionFunction(0,'{$myfname2}',aelt.type);"
                         . " }; return true;\" "
-                        //					. " onchange=\"checkconditions(this.value, this.name, this.type)\" "
                         . " />\n";
-                        //					$answer .= "</label>\n"
                         $answer .= ""
                         . "\t</td>\n";
                         $thiskey++;
@@ -659,7 +656,7 @@ class NumberArrayQuestion extends ArrayQuestion
                 return true; // TODO - what about 'other'?
             }
         }
-        
+
         return false;
     }
 
@@ -951,7 +948,7 @@ class NumberArrayQuestion extends ArrayQuestion
                 }
             }
         }
-                
+
         return $canswers;
     }
 

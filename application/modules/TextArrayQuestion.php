@@ -77,7 +77,7 @@ class TextArrayQuestion extends ArrayQuestion
                     <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled" />
                     </label>
                     </td>';
-                    $col_head = '			<th class="total">Total</th>';
+                    $col_head = '            <th class="total">Total</th>';
                     if($show_grand == true)
                     {
                         $row_head = '
@@ -102,7 +102,7 @@ class TextArrayQuestion extends ArrayQuestion
                     {
                         $row_total = '
                         <td class="total information-item">&nbsp;</td>';
-                        $col_head = '			<th class="total">Grand Total</th>';
+                        $col_head = '            <th class="total">Grand Total</th>';
                         $grand_total = '
                         <td class="total grand">
                         <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
@@ -111,7 +111,7 @@ class TextArrayQuestion extends ArrayQuestion
                     break;
                 case 'B':
                     $totals_class = $show_totals = 'both';
-                    $row_total = '			<td class="total information-item">
+                    $row_total = '            <td class="total information-item">
                     <label>
                     <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled" />
                     </label>
@@ -120,7 +120,7 @@ class TextArrayQuestion extends ArrayQuestion
                     <td  class="total information-item">
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
-                    $col_head = '			<th class="total">Total</th>';
+                    $col_head = '            <th class="total">Total</th>';
                     $row_head = '
                     <th class="answertext">Total</th>';
                     if($show_grand == true)

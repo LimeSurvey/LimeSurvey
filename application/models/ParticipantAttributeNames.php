@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 /**
  * This is the model class for table "{{{{participant_attribute_names}}}}".
@@ -22,14 +22,14 @@
  */
 class ParticipantAttributeNames extends CActiveRecord
 {
-	/**
-	 * Returns the static model of Participant Attribute Names table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Participant Attribute Names table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
+     * @return CActiveRecord
+     */
 
     /**
     * Returns the primary key of this table
@@ -42,82 +42,82 @@ class ParticipantAttributeNames extends CActiveRecord
         return 'attribute_id';
     }
 
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{participant_attribute_names}}';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{participant_attribute_names}}';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('attribute_type, visible', 'required'),
-			array('attribute_type', 'length', 'max'=>4),
-			array('visible', 'length', 'max'=>5),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('attribute_id, attribute_type, visible', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('attribute_type, visible', 'required'),
+            array('attribute_type', 'length', 'max'=>4),
+            array('visible', 'length', 'max'=>5),
+            // The following rule is used by search().
+            // Please remove those attributes that should not be searched.
+            array('attribute_id, attribute_type, visible', 'safe', 'on'=>'search'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
             'participant_attribute_names_lang'=>array(self::HAS_MANY, 'ParticipantAttributeNamesLang', 'attribute_id'),
             'participant_attribute'=>array(self::HAS_ONE, 'Participant_attribute', 'attribute_id')
-		);
-	}
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'attribute_id' => 'Attribute',
-			'attribute_type' => 'Attribute Type',
-			'visible' => 'Visible',
-		);
-	}
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'attribute_id' => 'Attribute',
+            'attribute_type' => 'Attribute Type',
+            'visible' => 'Visible',
+        );
+    }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // Warning: Please modify the following code to remove attributes that
+        // should not be searched.
 
-		$criteria=new CDbCriteria;
+        $criteria=new CDbCriteria;
 
-		$criteria->compare('attribute_id',$this->attribute_id);
-		$criteria->compare('attribute_type',$this->attribute_type,true);
-		$criteria->compare('visible',$this->visible,true);
+        $criteria->compare('attribute_id',$this->attribute_id);
+        $criteria->compare('attribute_type',$this->attribute_type,true);
+        $criteria->compare('visible',$this->visible,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
 
-	function getVisibleAttributes()
+    function getVisibleAttributes()
     {
         return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names}}_lang.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names}}_lang', '{{participant_attribute_names}}_lang.attribute_id = {{participant_attribute_names}}.attribute_id')->where("{{participant_attribute_names}}.visible = 'TRUE' AND {{participant_attribute_names}}_lang.lang = '".Yii::app()->session['adminlang']."'")->queryAll();
     }
@@ -247,10 +247,10 @@ class ParticipantAttributeNames extends CActiveRecord
     function getnotaddedAttributes($attributeid)
     {
         $notin=array();
-    	foreach($attributeid as $row)
-    	{
-    		$notin[] = $row;
-    	}
+        foreach($attributeid as $row)
+        {
+            $notin[] = $row;
+        }
 
         $criteria = new CDbCriteria();
         $criteria->addNotInCondition('t.attribute_id', $attributeid);
@@ -296,18 +296,18 @@ class ParticipantAttributeNames extends CActiveRecord
                                                             ':attribute_id'=>$data['attribute_id'])
                                                       );
         if(count($query) == 0)
-	    {
+        {
             Yii::app()->db->createCommand()
                       ->insert('{{participant_attribute}}',$data);
-	    }
-	    else
-	    {
+        }
+        else
+        {
             Yii::app()->db->createCommand()
                       ->update('{{participant_attribute}}',
                                $data,
                                'participant_id = :participant_id AND attribute_id = :attribute_id',
                                array(':participant_id' => $data['participant_id'], ':attribute_id'=>$data['attribute_id']));
-		}
+        }
 
     }
 
@@ -398,21 +398,21 @@ class ParticipantAttributeNames extends CActiveRecord
     function storeAttributeValues($data)
     {
         foreach ($data as $record) {
-    		Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$record);
-    	}
+            Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$record);
+        }
     }
 
     function storeAttributeCSV($data)
     {
         $insertnames = array('attribute_type' => $data['attribute_type'],
                             'visible' => $data['visible']);
-		Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
+        Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
 
         $insertid = Yii::app()->db->getLastInsertID();
         $insertnameslang = array('attribute_id' => $insertid,
                                  'attribute_name'=>$data['attribute_name'],
                                  'lang' => Yii::app()->session['adminlang']);
-		Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $insertnameslang);
+        Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $insertnameslang);
         return $insertid;
     }
 
@@ -438,13 +438,13 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAttributeID()
     {
-		$query = Yii::app()->db->createCommand()->select('attribute_id')->from('{{participant_attribute_names}}')->order('attribute_id','desc')->queryAll();
+        $query = Yii::app()->db->createCommand()->select('attribute_id')->from('{{participant_attribute_names}}')->order('attribute_id','desc')->queryAll();
         return $query;
     }
 
 
     function saveParticipantAttributeValue($data)
     {
-    	Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
+        Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
     }
 }

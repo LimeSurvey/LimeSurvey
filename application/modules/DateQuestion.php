@@ -26,7 +26,7 @@ class DateQuestion extends QuestionModule
             } else {
                 $currentdate='';
                 $currentmonth='';
-                $currentyear='';            
+                $currentyear='';
                 $currenthour = '';
                 $currentminute = '';
             }
@@ -297,7 +297,7 @@ class DateQuestion extends QuestionModule
     {
         $clang=Yii::app()->lang;
         $aQuestionAttributes=$this->getAttributeValues();
-        
+
         $includes = array(Yii::app()->getConfig("generalscripts").'date.js' => 'js');
         if (trim($aQuestionAttributes['dropdown_dates'])==0) {
             $includes[Yii::app()->getConfig("generalscripts").'date.js'] = 'js';

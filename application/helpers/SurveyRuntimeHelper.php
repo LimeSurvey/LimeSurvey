@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 
 class SurveyRuntimeHelper {
@@ -110,8 +110,8 @@ class SurveyRuntimeHelper {
                     }
             }
 
-			$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
-			
+            $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
             {
                 $_SESSION[$LEMsessid]['totalsteps'] = 0;

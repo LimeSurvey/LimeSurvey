@@ -10,8 +10,8 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    *	$Id$
-    *	Files Purpose: lots of common functions
+    *   $Id$
+    *   Files Purpose: lots of common functions
     */
 
     class Groups extends CActiveRecord
@@ -52,16 +52,16 @@
         }
 
 
-		/**
-		* Returns this model's validation rules
-		*
-		*/
-		public function rules()
-		{
-			return array(
-			array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
-			);  
-		}
+        /**
+        * Returns this model's validation rules
+        *
+        */
+        public function rules()
+        {
+            return array(
+            array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+            );  
+        }
 
         /**
         * Defines the relations for this model

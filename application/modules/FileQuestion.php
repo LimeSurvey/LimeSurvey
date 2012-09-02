@@ -411,7 +411,7 @@ OUTPUT;
         $output .= "<tr><td align='center'><input type='hidden' name='{$this->fieldname}' id='{$this->fieldname}' value='' /></td></tr>";
         $output .= "<tr><td align='center'><input type='hidden' name='{$this->fieldname}_filecount' id='{$this->fieldname}_filecount' value='' /></td></tr>";
         $output .= "</table>";
-        
+
         return $output;
     }
 

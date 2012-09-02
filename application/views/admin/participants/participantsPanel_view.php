@@ -11,23 +11,23 @@
     </div>
     <?php
     $home = array('src' => $sImageURL.'home.png',
-        'alt' => $clang->gT("Main Admin Screen"), 
-        'title' => $clang->gT("Main Admin Screen"),  
+        'alt' => $clang->gT("Main Admin Screen"),
+        'title' => $clang->gT("Main Admin Screen"),
         'style' => 'margin-left:2px');
 
     $information = array('src' => $sImageURL.'summary.png',
-        'alt' => $clang->gT("Information"),  
-        'title' => $clang->gT("Information"), 
+        'alt' => $clang->gT("Information"),
+        'title' => $clang->gT("Information"),
         'style' => 'margin-left:2px');
 
     $import = array('src' => $sImageURL.'importcsv.png',
-        'alt' => $clang->gT("Import from CSV"), 
-        'title' => $clang->gT("Import from CSV"), 
+        'alt' => $clang->gT("Import from CSV"),
+        'title' => $clang->gT("Import from CSV"),
         'style' => 'margin-left:0px',
         'style' => 'margin-right:1px');
 
     $export = array('src' => $sImageURL.'exportcsv.png',
-        'alt' => $clang->gT("Export all"), 
+        'alt' => $clang->gT("Export all"),
         'title' => $clang->gT("Export all"),
         'name' => 'export',
         'id' => 'export',
@@ -60,7 +60,7 @@
         'style' => 'margin-right:1px');
 
     $sharepanel = array('src' => $sImageURL.'share.png',
-        'alt' => $clang->gT("Share panel"), 
+        'alt' => $clang->gT("Share panel"),
         'title' => $clang->gT("Share panel"),
         'height' => 35,
         'width' => 35,

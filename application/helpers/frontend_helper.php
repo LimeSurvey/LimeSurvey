@@ -1594,16 +1594,16 @@ function buildsurveysession($surveyid,$previewGroup=false)
 
     UpdateSessionGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-	$unique = array();
-	$display = array();
-	$fieldmap = createFieldMap($surveyid, false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
-	foreach ($fieldmap as $q)
-	{
-		if ((int) $q->id > 0 && ($q->displayOnly() || $q->isEquation())) $display[$q->id] = true;
-		if ((int) $q->id > 0) $unique[$q->id] = true;
-	}
-	$totalquestions = count($unique);
-	$_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - count($display);
+    $unique = array();
+    $display = array();
+    $fieldmap = createFieldMap($surveyid, false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
+    foreach ($fieldmap as $q)
+    {
+        if ((int) $q->id > 0 && ($q->displayOnly() || $q->isEquation())) $display[$q->id] = true;
+        if ((int) $q->id > 0) $unique[$q->id] = true;
+    }
+    $totalquestions = count($unique);
+    $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - count($display);
 
 
     // Fix totalquestions by substracting Test Display questions
@@ -1615,7 +1615,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     ." AND parent_qid=0")->read();
 
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
-	
+
     //2. SESSION VARIABLE: totalsteps
     //The number of "pages" that will be presented in this survey
     //The number of pages to be presented will differ depending on the survey format
@@ -1635,7 +1635,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
 
 
-    if ($totalquestions == 0)	//break out and crash if there are no questions!
+    if ($totalquestions == 0) //break out and crash if there are no questions!
     {
         sendCacheHeaders();
         doHeader();
@@ -1658,7 +1658,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    //	usort($arows, 'groupOrderThenQuestionOrder');
+    // usort($arows, 'groupOrderThenQuestionOrder');
 
     //3. SESSION VARIABLE - insertarray
     //An array containing information about used to insert the data into the db at the submit stage
@@ -2222,8 +2222,8 @@ function UpdateFieldArray()
 /**
 * check_quota() returns quota information for the current survey
 * @param string $checkaction - action the function must take after completing:
-* 								enforce: Enforce the Quota action
-* 								return: Return the updated quota array from getQuotaAnswers()
+*                               enforce: Enforce the Quota action
+*                               return: Return the updated quota array from getQuotaAnswers()
 * @param string $surveyid - Survey identification number
 * @return array - nested array, Quotas->Members->Fields, includes quota status and which members matched in session.
 */
@@ -2313,7 +2313,7 @@ function check_quota($checkaction,$surveyid)
                         {
                             $counted_matches++;
                         }
-                    } 
+                    }
                 }
                 if($counted_matches == count($quota['members']))
                 {
@@ -2474,7 +2474,7 @@ function GetReferringUrl()
 */
 function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
-	$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+    $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
     $clang = Yii::app()->lang;
 

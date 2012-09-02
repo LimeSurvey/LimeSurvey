@@ -2,7 +2,7 @@
 <div class='wrap2columns'>
     <form id='resultexport' action='<?php echo $this->createUrl("admin/export/exportresults/surveyid/$surveyid");?>' method='post'><div class='left'>
 
-            <?php 	if (isset($_POST['sql'])) {echo" - ".$clang->gT("Filtered from statistics script");}
+            <?php if (isset($_POST['sql'])) {echo" - ".$clang->gT("Filtered from statistics script");}
                 if (returnGlobal('id')<>'') {echo " - ".$clang->gT("Single response");} ?>
 
             <fieldset><legend><?php $clang->eT("General");?></legend>

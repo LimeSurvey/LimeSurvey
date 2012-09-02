@@ -31,5 +31,5 @@
     <div class='messagebox ui-corner-all'><div class='warningheader'><?php echo $clang->gT("Warning").'</div>'.$clang->gT("You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."); ?>
     </div>
 
-	</form>
+    </form>
 <br />

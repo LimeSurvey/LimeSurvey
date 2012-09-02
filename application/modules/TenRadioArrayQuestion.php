@@ -191,7 +191,7 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
     public function getQuotaAnswers($iQuotaId)
     {
         $aAnswerList = array();
-        
+
         $aAnsResults = Questions::model()->findAllByAttributes(array('parent_qid' => $this->id));
         foreach ($aAnsResults as $aDbAnsList)
         {
@@ -232,7 +232,6 @@ class TenRadioArrayQuestion extends RadioArrayQuestion
             $output .= "</tr>";
         }
         $output .= "</table>";
-        
         return $output;
     }
 

@@ -127,7 +127,7 @@ class CheckQuestion extends QuestionModule
             /* Print out the checkbox */
             $answer .= $startitem;
             $answer .= "\t$hiddenfield\n";
-            $answer .= '		<input class="checkbox" type="checkbox" name="'.$this->fieldname.$ansrow['title'].'" id="answer'.$this->fieldname.$ansrow['title'].'" value="Y"';
+            $answer .= '        <input class="checkbox" type="checkbox" name="'.$this->fieldname.$ansrow['title'].'" id="answer'.$this->fieldname.$ansrow['title'].'" value="Y"';
 
             /* If the question has already been ticked, check the checkbox */
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
@@ -147,7 +147,7 @@ class CheckQuestion extends QuestionModule
 
             ++$fn;
             /* Now add the hidden field to contain information about this answer */
-            $answer .= '		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
+            $answer .= '        <input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
             if (isset($_SESSION['survey_'.$this->surveyid][$myfname]))
             {
                 $answer .= $_SESSION['survey_'.$this->surveyid][$myfname];
@@ -809,7 +809,7 @@ class CheckQuestion extends QuestionModule
             $canswers[]=array("+".$this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title'], 'Y', $clang->gT("checked"));
             $canswers[]=array("+".$this->surveyid.'X'.$this->gid.'X'.$this->id.$arows['title'], '', $clang->gT("not checked"));
         }
-                
+
         return $canswers;
     }
 

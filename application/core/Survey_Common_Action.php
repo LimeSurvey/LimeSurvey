@@ -11,7 +11,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*   $Id$
 */
 
 /**
@@ -19,9 +19,9 @@
 *
 * This controller contains common functions for survey related views.
 *
-* @package		LimeSurvey
-* @subpackage	Backend
-* @author		Shitiz Garg
+* @package      LimeSurvey
+* @subpackage   Backend
+* @author       Shitiz Garg
 */
 class Survey_Common_Action extends CAction
 {

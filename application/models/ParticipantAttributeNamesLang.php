@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 /**
  * This is the model class for table "{{{{participant_attribute_names}}}}".
@@ -22,14 +22,14 @@
  */
 class ParticipantAttributeNamesLang extends CActiveRecord
 {
-	/**
-	 * Returns the static model of Participant Attribute Names Lang table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Participant Attribute Names Lang table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
+     * @return CActiveRecord
+     */
 
     /**
     * Returns the primary key of this table
@@ -42,43 +42,43 @@ class ParticipantAttributeNamesLang extends CActiveRecord
         return 'attribute_id';
     }
 
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{participant_attribute_names_lang}}';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{participant_attribute_names_lang}}';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('attribute_id, attribute_name, lang', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            // The following rule is used by search().
+            // Please remove those attributes that should not be searched.
+            array('attribute_id, attribute_name, lang', 'safe', 'on'=>'search'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
             'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeNames', 'attribute_id')
-		);
-	}
+        );
+    }
 
 }

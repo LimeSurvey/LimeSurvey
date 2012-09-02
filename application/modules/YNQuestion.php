@@ -141,7 +141,7 @@ class YNQuestion extends QuestionModule
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
-    
+
         if (is_null($ansArray))
         {
             return $default;

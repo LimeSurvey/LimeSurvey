@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 /*
  * $Id$
@@ -178,7 +178,7 @@ function sanitize_system_string($string, $min='', $max='')
         $string = preg_replace($pattern, '', $string);
         $string = '"'.preg_replace('/\$/', '\\\$', $string).'"'; //make sure this is only interpretted as ONE argument
         $len = strlen($string);
-        if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))	return FALSE;
+        if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) return FALSE;
         return $string;
     }
 }

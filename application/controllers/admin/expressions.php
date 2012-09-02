@@ -10,11 +10,11 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 class Expressions extends Survey_Common_Action {
-	function index()
-	{
+    function index()
+    {
     ?>
 <!DOCTYPE html>
 <html>
@@ -28,9 +28,9 @@ class Expressions extends Survey_Common_Action {
     </head>
     <body <?php $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'))?>>
     <?php
-		if(isset($_GET['sa']))
-			$this->test($_GET['sa']);
-		else $this->getController()->render('/admin/expressions/test_view');
+        if(isset($_GET['sa']))
+            $this->test($_GET['sa']);
+        else $this->getController()->render('/admin/expressions/test_view');
     ?>
     </body>
 </html>

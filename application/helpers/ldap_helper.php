@@ -10,12 +10,12 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 // Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
-/*************** LDAP Functions *************/
-/*					    */
+/*************** LDAP Functions **************/
+/*                                           */
 /*********************************************/
 
 
@@ -111,8 +111,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
 
     // Retrieve the ldap user attribute-list to read
     $userparams = array('firstname_attr','lastname_attr',
-			'email_attr','token_attr', 'language');
-    //			'attr1', 'attr2');
+            'email_attr','token_attr', 'language');
 
     $aTokenAttr=getAttributeFieldNames($surveyid);
     foreach ($aTokenAttr as $thisattrfieldname)
@@ -197,7 +196,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
                     // If a userbase is defined, then get user's RND
                     // and do a user search based on this RDN
                     // Note: User's RDN is supposed to be made
-                    //	 of only ONE attribute by this function
+                    // of only ONE attribute by this function
                     if (isset($ldap_queries[$ldapq]['userbase']) &&
                     $ldap_queries[$ldapq]['userbase'] != '') {
                         // get user's rdn
@@ -233,7 +232,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
                         $user,
                         $userfilter,
                         $userattrs,
-							'base');
+                        'base');
                         $rescount=@ldap_count_entries($ds,$search_users);
 
                         if ($rescount >= 1) {

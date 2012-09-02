@@ -24,12 +24,12 @@
         </strong>
     </div>
 <?php
-	$columncount = 0;
-	if (!empty($selectedcentralattribute))
-		$columncount = $columncount + 2;
-	if (!empty($selectedtokenattribute))
-		$columncount++;
-	$columnstyle = "attrcol_".$columncount;
+    $columncount = 0;
+    if (!empty($selectedcentralattribute))
+        $columncount = $columncount + 2;
+    if (!empty($selectedtokenattribute))
+        $columncount++;
+    $columnstyle = "attrcol_".$columncount;
 ?>
 
     <div id="centralattribute" class="<?php echo $columnstyle ?>">
@@ -100,11 +100,11 @@
         </div>
 
     </div>
-	<p>
-		<input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
+    <p>
+        <input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
         <input type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php $clang->eT('Reset') ?>" />
         <input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue')?>" />
-   	</p>
+    </p>
     <?php
     $ajaxloader = array(
         'src' => Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif',

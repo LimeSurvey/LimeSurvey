@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 
 /**
@@ -18,8 +18,8 @@
  *
  * This controller performs quota actions
  *
- * @package		LimeSurvey
- * @subpackage	Backend
+ * @package     LimeSurvey
+ * @subpackage  Backend
  */
 class quotas extends Survey_Common_Action
 {
@@ -94,7 +94,7 @@ class quotas extends Survey_Common_Action
         $criteria->condition = 'sid=:survey AND quotals_language=:lang';
         $criteria->params = array(':survey' => $iSurveyId, ':lang' => $aData['sBaseLang']);
         $criteria->order = 'name';
-		$aResults = Quota::model()->findAll($criteria);
+        $aResults = Quota::model()->findAll($criteria);
 
         //if there are quotas let's proceed
         if (count($aResults) > 0)
@@ -102,7 +102,7 @@ class quotas extends Survey_Common_Action
             $aViewUrls['output'] = '';
             //loop through all quotas
             foreach ($aResults as $aQuotaListing)
-            {	
+            {
                 $totalquotas += $aQuotaListing['qlimit'];
                 $completed = getQuotaCompletedCount($iSurveyId, $aQuotaListing['id']);
                 $highlight = ($completed >= $aQuotaListing['qlimit']) ? '' : "style='color: orange'"; //Incomplete quotas displayed in red
@@ -128,9 +128,9 @@ class quotas extends Survey_Common_Action
                 //loop through all sub-parts
                 foreach ($aResults2 as $aQuotaQuestions)
                 {
-					$q = createQuestion($aQuotaQuestions->question_types['class'], array('id' => $aQuotaQuestions['qid'], 'surveyid' => $aQuotaQuestions['sid'], 'title' => $aQuotaQuestions->questions['title']));
-		
-   		     		$aData['question_answers'] = $q->getQuotaAnswers(Yii::app()->request->getPost('quota_id'));
+                    $q = createQuestion($aQuotaQuestions->question_types['class'], array('id' => $aQuotaQuestions['qid'], 'surveyid' => $aQuotaQuestions['sid'], 'title' => $aQuotaQuestions->questions['title']));
+
+                    $aData['question_answers'] = $q->getQuotaAnswers(Yii::app()->request->getPost('quota_id'));
                     $aData['quota_questions'] = $aQuotaQuestions;
                     $aViewUrls['output'] .= $this->getController()->render('/admin/quotas/viewquotasrowsub_view', $aData, true);
                 }
@@ -334,7 +334,6 @@ class quotas extends Survey_Common_Action
         $aData['quotainfo'] = $aQuotaInfo;
 
         $aViewUrls[] = 'editquota_view';
-        
 
         $first=true;
         foreach ($aLangs as $sLanguage)
@@ -373,13 +372,13 @@ class quotas extends Survey_Common_Action
                 $quota_name = $aQuotaDetails['name'];
             }
 
-			$quotas = array();
+            $quotas = array();
             $results = Questions::model()->with('question_types')->findAllByAttributes(array('sid' => $iSurveyId, 'language' => $sBaseLang, 'parent_qid' => 0));
-			foreach ($results as $result)
-			{
-				if (method_exists($result->question_types['class'] . 'Question', 'getQuotaAnswers'))
-					$quotas[] = $result;
-			}
+            foreach ($results as $result)
+            {
+                if (method_exists($result->question_types['class'] . 'Question', 'getQuotaAnswers'))
+                    $quotas[] = $result;
+            }
 
             if (empty($quotas))
             {

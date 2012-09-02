@@ -10,41 +10,41 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *  $Id$
  */
 class Load_answers {
 
-	function run($args) {
-		extract($args);
-		$redata = compact(array_keys(get_defined_vars()));
+    function run($args) {
+        extract($args);
+        $redata = compact(array_keys(get_defined_vars()));
         $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
-		sendCacheHeaders();
-		doHeader();
-		echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata);
+        sendCacheHeaders();
+        doHeader();
+        echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata);
 
-		echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
-		."\t<script type='text/javascript'>\n"
-		."function checkconditions(value, name, type, evt_type)\n"
-		."\t{\n"
-		."\t}\n"
-		."\t</script>\n\n";
+        echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
+        ."\t<script type='text/javascript'>\n"
+        ."function checkconditions(value, name, type, evt_type)\n"
+        ."\t{\n"
+        ."\t}\n"
+        ."\t</script>\n\n";
 
-		echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."'>\n";
-		echo templatereplace(file_get_contents($sTemplatePath."load.pstpl"),array(),$redata);
-		//PRESENT OPTIONS SCREEN (Replace with Template Later)
-		//END
-		echo "<input type='hidden' name='sid' value='{$surveyid}' />\n";
-		echo "<input type='hidden' name='loadall' value='reload' />\n";
-		if (isset($clienttoken) && $clienttoken != "")
-		{
-		    echo "<input type='hidden' name='token' value='$clienttoken' />\n";
-		}
-		echo "</form>";
+        echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."'>\n";
+        echo templatereplace(file_get_contents($sTemplatePath."load.pstpl"),array(),$redata);
+        //PRESENT OPTIONS SCREEN (Replace with Template Later)
+        //END
+        echo "<input type='hidden' name='sid' value='{$surveyid}' />\n";
+        echo "<input type='hidden' name='loadall' value='reload' />\n";
+        if (isset($clienttoken) && $clienttoken != "")
+        {
+            echo "<input type='hidden' name='token' value='$clienttoken' />\n";
+        }
+        echo "</form>";
 
-		echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata);
-		doFooter();
-		exit;
+        echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata);
+        doFooter();
+        exit;
 
 
-	}
+    }
 }

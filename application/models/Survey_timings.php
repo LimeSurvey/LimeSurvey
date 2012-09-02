@@ -10,8 +10,8 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 	$Id$
- * 	Files Purpose: lots of common functions
+ *  $Id$
+ *  Files Purpose: lots of common functions
  */
 
 class Survey_timings extends LSActiveRecord
@@ -20,34 +20,34 @@ class Survey_timings extends LSActiveRecord
     protected static $sid = 0;
     public $avg; 
     public $count; 
-	/**
-	 * Returns the static model
-	 *
-	 * @static
-	 * @access public
-	 * @param int $surveyid
-	 * @return CActiveRecord
-	 */
-	public static function model($sid = null)
-	{
+    /**
+     * Returns the static model
+     *
+     * @static
+     * @access public
+     * @param int $surveyid
+     * @return CActiveRecord
+     */
+    public static function model($sid = null)
+    {
         if (!is_null($sid))
             self::sid($sid);
 
-		return parent::model(__CLASS__);
-	}
+        return parent::model(__CLASS__);
+    }
 
-	/**
-	 * Sets the survey ID for the next model
-	 *
-	 * @static
-	 * @access public
-	 * @param int $sid
-	 * @return void
-	 */
-	public static function sid($sid)
-	{
-		self::$sid = (int) $sid;
-	}
+    /**
+     * Sets the survey ID for the next model
+     *
+     * @static
+     * @access public
+     * @param int $sid
+     * @return void
+     */
+    public static function sid($sid)
+    {
+        self::$sid = (int) $sid;
+    }
 
     /**
      * Returns the setting's table name to be used by the model

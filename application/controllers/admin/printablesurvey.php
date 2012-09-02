@@ -32,7 +32,7 @@ class printablesurvey extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
 
         //$_POST['printableexport'] = true;
-		global $pdforientation, $pdfdefaultfont, $pdffontsize;
+        global $pdforientation, $pdfdefaultfont, $pdffontsize;
         // PRESENT SURVEY DATAENTRY SCREEN
         if(isset($_POST['printableexport']))
         {
@@ -242,168 +242,167 @@ class printablesurvey extends Survey_Common_Action
             //Alternate bgcolor for different groups
             if (!isset($group['ODD_EVEN']) || $group['ODD_EVEN'] == ' g-row-even')
             {
-				$group['ODD_EVEN'] = ' g-row-odd';}
-			else
-			{
-				$group['ODD_EVEN'] = ' g-row-even';
-			}
+                $group['ODD_EVEN'] = ' g-row-odd';}
+            else
+            {
+                $group['ODD_EVEN'] = ' g-row-even';
+            }
 
-			//Loop through questions
-			foreach ($deqrows as $deqrow)
-			{
-				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-				// START doing questions
+            //Loop through questions
+            foreach ($deqrows as $deqrow)
+            {
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // START doing questions
 
-				$q = createQuestion($deqrow->question_types['class'], array('id'=>$deqrow['qid'], 'gid'=>$deqrow['gid'], 'surveyid'=>$deqrow['sid'], 'isother'=>$deqrow['other']));
-				$qidattributes=$q->getAttributeValues();
-				if ($qidattributes['hidden'] == 1 && !$q->isEquation())
-				{
-					continue;
-				}
-				$bGroupHasVisibleQuestions = true;
+                $q = createQuestion($deqrow->question_types['class'], array('id'=>$deqrow['qid'], 'gid'=>$deqrow['gid'], 'surveyid'=>$deqrow['sid'], 'isother'=>$deqrow['other']));
+                $qidattributes=$q->getAttributeValues();
+                if ($qidattributes['hidden'] == 1 && !$q->isEquation())
+                {
+                    continue;
+                }
+                $bGroupHasVisibleQuestions = true;
 
-				//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
+                //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 
-				$printablesurveyoutput = '';
-				$explanation = ''; //reset conditions explanation
-				$s=0;
+                $printablesurveyoutput = '';
+                $explanation = ''; //reset conditions explanation
+                $s=0;
 
-				$qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
-				$relevance = trim($qinfo['info']['relevance']);
-				$explanation = $qinfo['relEqn'];
+                $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
+                $relevance = trim($qinfo['info']['relevance']);
+                $explanation = $qinfo['relEqn'];
 
-				if (trim($relevance) != '' && trim($relevance) != '1')
-				{
-					$explanation = "<b>".$clang->gT('Only answer this question if the following conditions are met:')."</b>"
-					."<br/> ° ".$explanation;
-				}
-				else
-				{
-					$explanation = '';
-				}
+                if (trim($relevance) != '' && trim($relevance) != '1')
+                {
+                    $explanation = "<b>".$clang->gT('Only answer this question if the following conditions are met:')."</b>"
+                    ."<br/> ° ".$explanation;
+                }
+                else
+                {
+                    $explanation = '';
+                }
 
-				++$total_questions;
+                ++$total_questions;
 
-				//TIBO map question qid to their q number
-				$mapquestionsNumbers[$deqrow['qid']]=$total_questions;
-				//END OF GETTING CONDITIONS
+                //TIBO map question qid to their q number
+                $mapquestionsNumbers[$deqrow['qid']]=$total_questions;
+                //END OF GETTING CONDITIONS
 
-				$qid = $deqrow['qid'];
-				$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
+                $qid = $deqrow['qid'];
+                $fieldname = "$surveyid"."X"."$gid"."X"."$qid";
 
-				if(isset($showsgqacode) && $showsgqacode == true)
-				{
-					$deqrow['question'] = $deqrow['question']."<br />".$clang->gT("ID:")." $fieldname <br />".
-										  $clang->gT("Question code:")." ".$deqrow['title'];
-				}
+                if(isset($showsgqacode) && $showsgqacode == true)
+                {
+                    $deqrow['question'] = $deqrow['question']."<br />".$clang->gT("ID:")." $fieldname <br />".
+                                          $clang->gT("Question code:")." ".$deqrow['title'];
+                }
 
-				$question = array(
-				 'QUESTION_NUMBER' => $total_questions    // content of the question code field
-				,'QUESTION_CODE' => $deqrow['title']
-				,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , $deqrow['question'])    // content of the question field
-				,'QUESTION_SCENARIO' => $explanation    // if there are conditions on a question, list the conditions.
-				,'QUESTION_MANDATORY' => ''        // translated 'mandatory' identifier
-				,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
-				,'QUESTION_CLASS' => $q->questionProperties('class')    // classes to be added to wrapping question div
-				,'QUESTION_TYPE_HELP' => $qinfo['validTip']   // ''		// instructions on how to complete the question // prettyValidTip is too verbose; assuming printable surveys will use static values
-				,'QUESTION_MAN_MESSAGE' => ''        // (not sure if this is used) mandatory error
-				,'QUESTION_VALID_MESSAGE' => ''        // (not sure if this is used) validation error
-				,'QUESTION_FILE_VALID_MESSAGE' => ''// (not sure if this is used) file validation error
-				,'QUESTIONHELP' => ''            // content of the question help field.
-				,'ANSWER' => ''                // contains formatted HTML answer
-				);
+                $question = array(
+                 'QUESTION_NUMBER' => $total_questions    // content of the question code field
+                ,'QUESTION_CODE' => $deqrow['title']
+                ,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , $deqrow['question'])    // content of the question field
+                ,'QUESTION_SCENARIO' => $explanation    // if there are conditions on a question, list the conditions.
+                ,'QUESTION_MANDATORY' => ''        // translated 'mandatory' identifier
+                ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
+                ,'QUESTION_CLASS' => $q->questionProperties('class')    // classes to be added to wrapping question div
+                ,'QUESTION_TYPE_HELP' => $qinfo['validTip']   // instructions on how to complete the question // prettyValidTip is too verbose; assuming printable surveys will use static values
+                ,'QUESTION_MAN_MESSAGE' => ''        // (not sure if this is used) mandatory error
+                ,'QUESTION_VALID_MESSAGE' => ''        // (not sure if this is used) validation error
+                ,'QUESTION_FILE_VALID_MESSAGE' => ''// (not sure if this is used) file validation error
+                ,'QUESTIONHELP' => ''            // content of the question help field.
+                ,'ANSWER' => ''                // contains formatted HTML answer
+                );
 
-				if($question['QUESTION_TYPE_HELP'] != "") {
-					$question['QUESTION_TYPE_HELP'] .= "<br />\n";
-				}
+                if($question['QUESTION_TYPE_HELP'] != "") {
+                    $question['QUESTION_TYPE_HELP'] .= "<br />\n";
+                }
 
-				if ($deqrow['mandatory'] == 'Y')
-				{
-					$question['QUESTION_MANDATORY'] = $clang->gT('*');
-					$question['QUESTION_CLASS'] .= ' mandatory';
-					$pdfoutput .= $clang->gT("*");
-				}
+                if ($deqrow['mandatory'] == 'Y')
+                {
+                    $question['QUESTION_MANDATORY'] = $clang->gT('*');
+                    $question['QUESTION_CLASS'] .= ' mandatory';
+                    $pdfoutput .= $clang->gT("*");
+                }
 
-				$pdfoutput ='';
+                $pdfoutput ='';
 
-				//DIFFERENT TYPES OF DATA FIELD HERE
-
-
-				if(isset($_POST['printableexport'])){$pdf->intopdf($deqrow['title']." ".$deqrow['question']);}
-
-				if ($deqrow['help'])
-				{
-					$hh = $deqrow['help'];
-					$question['QUESTIONHELP'] = $hh;
-
-					if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
-				}
+                //DIFFERENT TYPES OF DATA FIELD HERE
 
 
-				if (!empty($qidattributes['page_break']))
-				{
-					$question['QUESTION_CLASS'] .=' breakbefore ';
-				}
+                if(isset($_POST['printableexport'])){$pdf->intopdf($deqrow['title']." ".$deqrow['question']);}
+
+                if ($deqrow['help'])
+                {
+                    $hh = $deqrow['help'];
+                    $question['QUESTIONHELP'] = $hh;
+
+                    if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
+                }
 
 
-				if (isset($qidattributes['maximum_chars']) && $qidattributes['maximum_chars']!='') {
-					$question['QUESTION_CLASS'] ="max-chars-{$qidattributes['maximum_chars']} ".$question['QUESTION_CLASS'];
-				}
-				
-				$help = $q->getTypeHelp($clang);
-				$question['QUESTION_TYPE_HELP'] .= $help;
-				$question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-				if(isset($_POST['printableexport']))
-				{
-					$pdf->intopdf($help, "U");
-					$pdfoutput = $q->getPrintPDF($clang);
-					if (is_string($pdfoutput))
-						$pdf->intopdf($pdfoutput);
-					else if (is_array($pdfoutput) && count($pdfoutput) && is_array($pdfoutput[0]))
-					{
-						
-						$pdf->tableintopdf($pdfoutput);
-					}
-					else if (is_array($pdfoutput))
-					{
-						foreach ($pdfoutput as $output)
-						{
-							$pdf->intopdf($output);
-						}
-					}
+                if (!empty($qidattributes['page_break']))
+                {
+                    $question['QUESTION_CLASS'] .=' breakbefore ';
+                }
 
-					$pdf->ln(5);
-				}
-				else
-				{
-					$question['ANSWER'] .= $q->getPrintAnswers($clang);
-					$question['QUESTION_TYPE_HELP'] = self::_star_replace($question['QUESTION_TYPE_HELP']);
-					$group['QUESTIONS'] .= self::_populate_template( 'question' , $question);
-				}
-			}
-			if ($bGroupHasVisibleQuestions)
-			{
-				$survey_output['GROUPS'] .= self::_populate_template( 'group' , $group );
-			}
+
+                if (isset($qidattributes['maximum_chars']) && $qidattributes['maximum_chars']!='') {
+                    $question['QUESTION_CLASS'] ="max-chars-{$qidattributes['maximum_chars']} ".$question['QUESTION_CLASS'];
+                }
+
+                $help = $q->getTypeHelp($clang);
+                $question['QUESTION_TYPE_HELP'] .= $help;
+                $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
+                if(isset($_POST['printableexport']))
+                {
+                    $pdf->intopdf($help, "U");
+                    $pdfoutput = $q->getPrintPDF($clang);
+                    if (is_string($pdfoutput))
+                        $pdf->intopdf($pdfoutput);
+                    else if (is_array($pdfoutput) && count($pdfoutput) && is_array($pdfoutput[0]))
+                    {
+                        $pdf->tableintopdf($pdfoutput);
+                    }
+                    else if (is_array($pdfoutput))
+                    {
+                        foreach ($pdfoutput as $output)
+                        {
+                            $pdf->intopdf($output);
+                        }
+                    }
+
+                    $pdf->ln(5);
+                }
+                else
+                {
+                    $question['ANSWER'] .= $q->getPrintAnswers($clang);
+                    $question['QUESTION_TYPE_HELP'] = self::_star_replace($question['QUESTION_TYPE_HELP']);
+                    $group['QUESTIONS'] .= self::_populate_template( 'question' , $question);
+                }
+            }
+            if ($bGroupHasVisibleQuestions)
+            {
+                $survey_output['GROUPS'] .= self::_populate_template( 'group' , $group );
+            }
         }
 
-		if(isset($_POST['printableexport']))
-		{
-			if ($surveystartdate!='')
-			{
-				if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please submit by %s"), $surveyexpirydate));}
-			}
-			if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
-			{
-				if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please fax your completed survey to: %s"),$surveyfaxto),'B');}
-			}
-			$pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
-			$pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
-			return;
-		}
+        if(isset($_POST['printableexport']))
+        {
+            if ($surveystartdate!='')
+            {
+                if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please submit by %s"), $surveyexpirydate));}
+            }
+            if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
+            {
+                if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please fax your completed survey to: %s"),$surveyfaxto),'B');}
+            }
+            $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
+            $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
+            return;
+        }
 
         $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
-        
+
         // START recursive tag stripping.
         // PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression.
         // Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.

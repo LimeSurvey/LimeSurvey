@@ -32,7 +32,7 @@ class SelectQuestion extends ListQuestion
             $answer .= return_timer_script($aQuestionAttributes, $this);
         }
         //End Time Limit Code
-        
+
         //question attribute random order set?
         if ($aQuestionAttributes['random_order']==1)
         {
@@ -130,7 +130,7 @@ class SelectQuestion extends ListQuestion
                         $opt_select = '';
                     }
 
-                    $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
+                    $answer .= '                         <option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
                     ';
                 }
 
@@ -148,14 +148,14 @@ class SelectQuestion extends ListQuestion
                     $opt_select = '';
                 }
 
-                $answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
+                $answer .= '                         <option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
                 ';
             }
         }
 
         if (!$_SESSION['survey_'.$this->surveyid][$this->fieldname])
         {
-            $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
+            $answer = '                    <option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
         }
 
         if ($this->isother=='Y')
@@ -171,7 +171,7 @@ class SelectQuestion extends ListQuestion
             if ($prefixStyle == 1) {
                 $_prefix = ++$_rowNum . ') ';
             }
-            $answer .= '					<option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
+            $answer .= '                    <option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
         }
 
         if (($_SESSION['survey_'.$this->surveyid][$this->fieldname] || $_SESSION['survey_'.$this->surveyid][$this->fieldname] != '') && $this->mandatory != 'Y' && $this->mandatory != 'Y' && SHOW_NO_ANSWER == 1)
@@ -181,7 +181,7 @@ class SelectQuestion extends ListQuestion
             }
             $answer .= '<option class="noanswer-item" value="">'.$_prefix.$clang->gT('No answer')."</option>\n";
         }
-        $answer .= '				</select>
+        $answer .= '                </select>
         <input type="hidden" name="java'.$this->fieldname.'" id="java'.$this->fieldname.'" value="'.$_SESSION['survey_'.$this->surveyid][$this->fieldname].'" />';
 
         if ($this->isother=='Y')
@@ -217,18 +217,14 @@ class SelectQuestion extends ListQuestion
             ."}\n"
             ."\t}\n"
             ."//--></script>\n".$answer;
-            $answer .= '				<input type="text" id="othertext'.$this->fieldname.'" name="'.$this->fieldname.'other" style="display:';
+            $answer .= '                <input type="text" id="othertext'.$this->fieldname.'" name="'.$this->fieldname.'other" style="display:';
 
             if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] != '-oth-')
             {
                 $answer .= 'none';
             }
 
-            //		// --> START BUG FIX - text field for other was not repopulating when returning to page via << PREV
             $answer .= '"';
-            //		$thisfieldname=$this->fieldname.'other';
-            //		if (isset($_SESSION['survey_'.$this->surveyid][$thisfieldname])) { $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.$this->surveyid][$thisfieldname],ENT_QUOTES).'" ';}
-            //		// --> END BUG FIX
 
             // --> START NEW FEATURE - SAVE
             $answer .= "  alt='".$clang->gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";

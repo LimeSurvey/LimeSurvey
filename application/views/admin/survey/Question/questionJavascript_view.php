@@ -19,8 +19,8 @@ for ($i = 0; $i < 8; $i++)
     $exists = false;
     foreach ($selections as $key => $value)
     {
-        if ($value['other'] == ($i/1)%2 && 
-            $value['valid'] == ($i/2)%2 && 
+        if ($value['other'] == ($i/1)%2 &&
+            $value['valid'] == ($i/2)%2 &&
             $value['mandatory'] == ($i/4)%2)
         {
             $exists = true;

@@ -320,7 +320,7 @@ class CommentCheckQuestion extends CheckQuestion
     {
         $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$this->id} AND language='{$language->getlangcode()}' ORDER BY question_order, question";
         $mearesult = dbExecuteAssoc($meaquery);
-    
+
         $output = "<table border='0'>";
         foreach ($mearesult->readAll() as $mearow)
         {

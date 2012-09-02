@@ -2,7 +2,7 @@
 
 echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'2').'</div><div class="updater-background"><br />';
 if(!($error=="")) {
-	print( $error );
+    print( $error );
 }
 
 if (isset($updateinfo['error']))
@@ -28,8 +28,8 @@ if (!isset($updateinfo['files']))
 }
 else
 {
-	echo '<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>';
-	if (count($readonlyfiles)>0)
+    echo '<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>';
+    if (count($readonlyfiles)>0)
     {
         
         $readonlyfiles=array_unique($readonlyfiles);

@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*  $Id$
 */
 
 /**
@@ -55,7 +55,7 @@ function isNumericExtended($value)  {
 * @param mixed $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
 * @param mixed $na Value for N/A data
 * @param sep Quote separator. Use '\'' for SPSS, '"' for R
-* @param logical $header If TRUE, adds SQGA code as column headings (used by export to R) 
+* @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
 */
 function SPSSExportData ($iSurveyID, $iLength, $na = '', $qs='\'', $header=FALSE) {
 
@@ -86,7 +86,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $qs='\'', $header=FALSE
 
     foreach ($result as $row) {
         $row = array_change_key_case($row,CASE_UPPER);
-        //$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
+        //$row = $result->GetRowAssoc(true); //Get assoc array, use uppercase
         $i = 1;
         foreach ($fields as $field)
         {
@@ -1076,7 +1076,7 @@ function quexml_export($surveyi, $quexmllan)
 * Different SQL databases used different methods to combine strings together.
 * This function provides a wrapper.
 *
-* param s	variable number of string parameters
+* param s  variable number of string parameters
 *
 * Usage: $db->Concat($str1,$str2);
 *

@@ -13,8 +13,8 @@
         </body></html>
         <?php return;
     }
-	else
-	{ ?>
+    else
+    { ?>
         <div class='warningheader'><?php $clang->eT("Warning"); ?></div><br />
         <strong><?php $clang->eT("You are about to delete this survey"); ?> (<?php echo $surveyid; ?>)</strong><br /><br />
         <?php $clang->eT("This process will delete this survey, and all related groups, questions answers and conditions."); ?><br /><br />

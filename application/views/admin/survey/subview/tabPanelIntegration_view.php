@@ -1,6 +1,6 @@
 <?php
-	$yii = Yii::app();
-	$controller = $yii->getController();
+    $yii = Yii::app();
+    $controller = $yii->getController();
 ?>
 <script type="text/javascript">
     var jsonUrl = "<?php echo $yii->homeUrl.("/admin/survey/getUrlParamsJSON/surveyid/{$surveyid}");?>";

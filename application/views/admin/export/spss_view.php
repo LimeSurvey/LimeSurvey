@@ -26,4 +26,4 @@
 <li><?php $clang->eT("Edit the 4th line and complete the filename with a full path to the downloaded data file");?></li>
 <li><?php $clang->eT("Choose 'Run/All' from the menu to run the import");?></li>
 </ol><p>
-	<?php $clang->eT("Your data should be imported now");?></div>
+    <?php $clang->eT("Your data should be imported now");?></div>

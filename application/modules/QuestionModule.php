@@ -464,7 +464,7 @@ abstract class QuestionModule
     {
         return array();
     }
-    
+
     public function anyUnanswered($relevantSQs, $unansweredSQs)
     {
         return count($unansweredSQs) > 0;

@@ -118,8 +118,7 @@
                         { ?>
 
                         <select id='question_type' style='margin-bottom:5px' name='type' class='<?php echo $selectormodeclass; ?>'>
-                            <?php 
-                            
+                            <?php
                             foreach ($qTypeGroups as $group => $members)
                             {
                                 echo '<optgroup label="' . $group . '">';
@@ -235,49 +234,49 @@
                         <?php }
                 } elseif ($copying) { ?>
 
-					<li>
-						<label for='copysubquestions'><?php $clang->eT("Copy subquestions?"); ?></label>
-						<input type='checkbox' class='checkboxbtn' checked='checked' id='copysubquestions' name='copysubquestions' value='Y' />
-					</li>
-					<li>
-						<label for='copyanswers'><?php $clang->eT("Copy answer options?"); ?></label>
-						<input type='checkbox' class='checkboxbtn' checked='checked' id='copyanswers' name='copyanswers' value='Y' />
-					</li>
-					<li>
-						<label for='copyattributes'><?php $clang->eT("Copy advanced settings?"); ?></label>
-						<input type='checkbox' class='checkboxbtn' checked='checked' id='copyattributes' name='copyattributes' value='Y' />
-					</li>
+                    <li>
+                        <label for='copysubquestions'><?php $clang->eT("Copy subquestions?"); ?></label>
+                        <input type='checkbox' class='checkboxbtn' checked='checked' id='copysubquestions' name='copysubquestions' value='Y' />
+                    </li>
+                    <li>
+                        <label for='copyanswers'><?php $clang->eT("Copy answer options?"); ?></label>
+                        <input type='checkbox' class='checkboxbtn' checked='checked' id='copyanswers' name='copyanswers' value='Y' />
+                    </li>
+                    <li>
+                        <label for='copyattributes'><?php $clang->eT("Copy advanced settings?"); ?></label>
+                        <input type='checkbox' class='checkboxbtn' checked='checked' id='copyattributes' name='copyattributes' value='Y' />
+                    </li>
 
-				<?php } ?>
+                <?php } ?>
 
             </ul>
 
-			<?php if (!$copying) { ?>
-				<p><a id="showadvancedattributes"><?php $clang->eT("Show advanced settings"); ?></a><a id="hideadvancedattributes" style="display:none;"><?php $clang->eT("Hide advanced settings"); ?></a></p>
-				<div id="advancedquestionsettingswrapper" style="display:none;">
-					<div class="loader"><?php $clang->eT("Loading..."); ?></div>
-					<div id="advancedquestionsettings"></div>
-				</div><br />
-			<?php } ?>
+            <?php if (!$copying) { ?>
+                <p><a id="showadvancedattributes"><?php $clang->eT("Show advanced settings"); ?></a><a id="hideadvancedattributes" style="display:none;"><?php $clang->eT("Hide advanced settings"); ?></a></p>
+                <div id="advancedquestionsettingswrapper" style="display:none;">
+                    <div class="loader"><?php $clang->eT("Loading..."); ?></div>
+                    <div id="advancedquestionsettings"></div>
+                </div><br />
+            <?php } ?>
                 <?php if ($adding)
                     { ?>
                     <input type='hidden' name='action' value='insertquestion' />
                     <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
-					<p><input type='submit' value='<?php $clang->eT("Add question"); ?>' />
+                    <p><input type='submit' value='<?php $clang->eT("Add question"); ?>' />
                     <?php }
                     elseif ($copying)
                     { ?>
                     <input type='hidden' name='action' value='copyquestion' />
                     <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
                     <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $qid; ?>' />
-					<p><input type='submit' value='<?php $clang->eT("Copy question"); ?>' />
+                    <p><input type='submit' value='<?php $clang->eT("Copy question"); ?>' />
                     <?php }
                     else
                     { ?>
                     <input type='hidden' name='action' value='updatequestion' />
                     <input type='hidden' id='newpage' name='newpage' value='' />
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
-					<p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+                    <p><input type='button' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
                     <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
                     <?php } ?>
                 <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p><br />

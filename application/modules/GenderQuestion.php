@@ -11,13 +11,13 @@ class GenderQuestion extends QuestionModule
 
         $answer = "<ul class=\"answers-list radio-list\">\n"
         . "\t<li class=\"answer-item radio-item\">\n"
-        . '		<input class="radio" type="radio" name="'.$this->fieldname.'" id="answer'.$this->fieldname.'F" value="F"';
+        . '     <input class="radio" type="radio" name="'.$this->fieldname.'" id="answer'.$this->fieldname.'F" value="F"';
         if ($_SESSION['survey_'.$this->surveyid][$this->fieldname] == 'F')
         {
             $answer .= CHECKED;
         }
         $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        . '		<label for="answer'.$this->fieldname.'F" class="answertext">'.$clang->gT('Female')."</label>\n\t</li>\n";
+        . '     <label for="answer'.$this->fieldname.'F" class="answertext">'.$clang->gT('Female')."</label>\n\t</li>\n";
 
         $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$this->fieldname\" id=\"answer".$this->fieldname.'M" value="M"';
 
@@ -121,7 +121,7 @@ class GenderQuestion extends QuestionModule
     public function getVarAttributeShown($name, $default, $gseq, $qseq, $ansArray)
     {
         $code = LimeExpressionManager::GetVarAttribute($name,'code',$default,$gseq,$qseq);
-    
+
         if (is_null($ansArray))
         {
             return $default;
