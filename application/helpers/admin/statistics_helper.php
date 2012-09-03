@@ -504,7 +504,7 @@ function buildSelects($allfields, $surveyid, $language) {
 *                       "qquestion"=>The description of the question,
 *                       "qtype"=>The question type code
 */
-function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
+function buildOutputList($rt, $language, $surveyid, $outputType, $sql) { //AJS
 
     //Set up required variables
     $alist=array();
@@ -1718,8 +1718,8 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) {
 * @param mixed $sql
 * @param mixed $usegraph
 */
-function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf) {
-
+function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf)
+{
     /* Set up required variables */
     $TotalCompleted = 0; //Count of actually completed answers
     $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
@@ -1728,7 +1728,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
     $sDatabaseType = Yii::app()->db->getDriverName();
     $tempdir = Yii::app()->getConfig("tempdir");
     $tempurl = Yii::app()->getConfig("tempurl");
-    $firstletter = substr($rt, 0, 1);
+    $firstletter = substr($rt, 0, 1); //AJS
     $astatdata=array();
 
     if ($usegraph==1)
@@ -3268,7 +3268,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 
 
-    $selects=buildSelects($allfields, $surveyid, $language);
+    $selects=buildSelects($allfields, $surveyid, $language); //AJS
 
     //count number of answers
     $query = "SELECT count(*) FROM {{survey_$surveyid}}";
@@ -3411,12 +3411,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         {
 
             //Step 1: Get information about this response field (SGQA) for the summary
-            $outputs=buildOutputList($rt, $language, $surveyid, $outputType, $sql);
+            $outputs=buildOutputList($rt, $language, $surveyid, $outputType, $sql); //AJS
             $statisticsoutput .= $outputs['statisticsoutput'];
             //2. Collect and Display results #######################################################################
             if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
             {
-                $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf);
+                $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf); //AJS
                 $statisticsoutput .= $display['statisticsoutput'];
                 $astatdata = array_merge($astatdata, $display['astatdata']);
             } //end if -> collect and display results

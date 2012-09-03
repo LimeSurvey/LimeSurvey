@@ -43,38 +43,6 @@ class statistics extends Survey_Common_Action {
         $aData = array('clang' => $clang, 'imageurl' => $imageurl);
         $aData['sql']='';
 
-        /*
-         * We need this later:
-         *  1 - Array Dual Scale
-         *  5 - 5 Point Choice
-         *  A - Array (5 Point Choice)
-         *  B - Array (10 Point Choice)
-         *  C - Array (Yes/No/Uncertain)
-         *  D - Date
-         *  E - Array (Increase, Same, Decrease)
-         *  F - Array (Flexible Labels)
-         *  G - Gender
-         *  H - Array (Flexible Labels) by Column
-         *  I - Language Switch
-         *  K - Multiple Numerical Input
-         *  L - List (Radio)
-         *  M - Multiple choice
-         *  N - Numerical Input
-         *  O - List With Comment
-         *  P - Multiple choice with comments
-         *  Q - Multiple Short Text
-         *  R - Ranking
-         *  S - Short Free Text
-         *  T - Long Free Text
-         *  U - Huge Free Text
-         *  X - Boilerplate Question
-         *  Y - Yes/No
-         *  ! - List (Dropdown)
-         *  : - Array (Flexible Labels) multiple drop down
-         *  ; - Array (Flexible Labels) multiple texts
-         *  | - File Upload
-
-
          Debugging help:
          echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
          */
@@ -290,7 +258,7 @@ class statistics extends Survey_Common_Action {
             /////////////////////////////////////////////////////////////////////////////////////////////////
 
             //let's switch through the question type for each question
-            switch ($flt[2])
+            switch ($flt[2]) //AJS
             {
                 case "K": // Multiple Numerical
                     //get answers

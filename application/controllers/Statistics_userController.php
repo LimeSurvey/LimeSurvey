@@ -271,7 +271,7 @@ class Statistics_userController extends LSYii_Controller {
             $myfield = "{$iSurveyID}X{$flt[1]}X{$flt[0]}";
 
             //let's switch through the question type for each question
-            switch ($flt[2])
+            switch ($flt[2]) //AJS
             {
                 case "K": // Multiple Numerical
                 case "Q": // Multiple Short Text
@@ -282,7 +282,7 @@ class Statistics_userController extends LSYii_Controller {
                     //go through all the (multiple) answers
                     foreach($result as $row)
                     {
-                        $myfield2=$flt[2].$myfield.reset($row);
+                        $myfield2=$flt[2].$myfield.reset($row); //AJS
                         $allfields[] = $myfield2;
                     }
                     break;
@@ -364,7 +364,7 @@ class Statistics_userController extends LSYii_Controller {
                 case "M":  //M - Multiple choice
                 case "N":  //N - Numerical input
                 case "D":  //D - Date
-                    $myfield2 = $flt[2].$myfield;
+                    $myfield2 = $flt[2].$myfield; //AJS
                             $allfields[]=$myfield2;
                     break;
                 default:   //Default settings

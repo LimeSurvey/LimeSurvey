@@ -211,19 +211,19 @@
         $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]);
 
         if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
-            || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!')
+            || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!') //AJS
         { ?>
             <td>
         <?php
             //Multiple choice:
-            if ($flt[2] == "M") {$myfield = "M$myfield";}
-            if ($flt[2] == "P") {$myfield = "P$myfield";}
+            if ($flt[2] == "M") {$myfield = "M$myfield";} //AJS
+            if ($flt[2] == "P") {$myfield = "P$myfield";} //AJS
 
             // File Upload will need special filters in future, hence the special treatment
-            if ($flt[2] == "|") {$myfield = "|$myfield";}
+            if ($flt[2] == "|") {$myfield = "|$myfield";} //AJS
 
             //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-            if ($flt[2] == "N") {$myfield = "N$myfield";}
+            if ($flt[2] == "N") {$myfield = "N$myfield";} //AJS
         ?>
             <input type='checkbox'
                     id='filter<?php echo $myfield; ?>'
@@ -232,23 +232,23 @@
             if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; }
+                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; } //AJS
             ?> />
             <!-- QUESTION HEADING/TITLE -->
             <label for='filter<?php echo $myfield; ?>'><?php echo _showSpeaker(flattenText($flt[5],true)); ?></label><br />
             <?php
-                if ($flt[2] != "N" && $flt[2] != "|") {?>
+                if ($flt[2] != "N" && $flt[2] != "|") { //AJS?>
                 <select name='<?php
-                    if ($flt[2] == "M" ) { echo "M";};
-                    if ($flt[2] == "P" ) { echo "P";};
+                    if ($flt[2] == "M" ) { echo "M";}; //AJS
+                    if ($flt[2] == "P" ) { echo "P";}; //AJS
                     echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?>' multiple='multiple'>
                 <?php
                 }
         }?>
-        <!-- QUESTION TYPE = <?php echo $flt[2]; ?> -->
+        <!-- QUESTION TYPE = <?php echo $flt[2]; //AJS ?> -->
         <?php
 
-            switch ($flt[2])
+            switch ($flt[2]) //AJS
             {
                 case "K": // Multiple Numerical
                     echo "\t</tr>\n\t<tr>\n";
