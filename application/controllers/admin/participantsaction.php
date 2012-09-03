@@ -1154,15 +1154,32 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttribute_json()
     {
+        function subval_sort($a, $subkey, $order)
+        {
+            foreach ($a as $k => $v)
+            {
+                $b[$k] = strtolower($v[$subkey]);
+            }
+            if ($order == "asc")
+            {
+                asort($b, SORT_REGULAR);
+            }
+            else
+            {
+                arsort($b, SORT_REGULAR);
+            }
+            foreach ($b as $key => $val)
+            {
+                $c[] = $a[$key];
+            }
+            return $c;
+        }
+
         $iParticipantId = Yii::app()->request->getQuery('pid');
         $records = ParticipantAttributeNames::model()->getParticipantVisibleAttribute($iParticipantId);
         //$getallattributes = ParticipantAttributeNames::model()->with('participant_attribute_names_lang')->findAll();
-        $aData = new stdClass();
-        $aData->page = 1;
-        $aData->records = count($records);
-        $aData->total = ceil($aData->records / 10);
-        $aData->rows[0]['id'] = $iParticipantId;
-        $aData->rows[0]['cell'] = array();
+        $records = subval_sort($records, "attribute_name", "asc");
+
         $i = 0;
 
         $doneattributes = array(); //If the user has any actual attribute values, they'll be stored here
@@ -1170,8 +1187,7 @@ class participantsaction extends Survey_Common_Action
         /* Iterate through each attribute owned by this user */
         foreach ($records as $row)
         {
-            $aData->rows[$i]['id'] = $row['participant_id'] . "_" . $row['attribute_id'];
-            $aData->rows[$i]['cell'] = array("", $row['participant_id'], $row['attribute_type'], $row['attribute_name'], $row['value']);
+            $outputs[$i] = array("", $row['participant_id'], $row['attribute_type'], $row['attribute_name'], $row['value']);
             /* Collect allowed values for a DropDown attribute */
             if ($row['attribute_type'] == "DD")
             {
@@ -1185,16 +1201,16 @@ class participantsaction extends Survey_Common_Action
                         $attval .= ";";
                     }
                     $attval = substr($attval, 0, -1);
-                    array_push($aData->rows[$i]['cell'], $attval);
+                    array_push($outputs[$i], $attval);
                 }
                 else
                 {
-                    array_push($aData->rows[$i]['cell'], "");
+                    array_push($outputs[$i], "");
                 }
             }
             else
             {
-                array_push($aData->rows[$i]['cell'], "");
+                array_push($output[$i], "");
             }
             array_push($doneattributes, $row['attribute_id']);
             $i++;
@@ -1216,8 +1232,7 @@ class participantsaction extends Survey_Common_Action
         /* Go through the empty attributes and build an entry in the output for them */
         foreach ($attributenotdone as $row)
         {
-            $aData->rows[$i]['id'] = $iParticipantId . "_" . $row['attribute_id'];
-            $aData->rows[$i]['cell'] = array("", $iParticipantId, $row['attribute_type'], $row['attribute_name'], "");
+            $outputs[$i] = array("", $iParticipantId, $row['attribute_type'], $row['attribute_name'], "");
             if ($row['attribute_type'] == "DD")
             {
                 $attvalues = ParticipantAttributeNames::model()->getAttributesValues($row['attribute_id']);
@@ -1230,18 +1245,30 @@ class participantsaction extends Survey_Common_Action
                         $attval .= ";";
                     }
                     $attval = substr($attval, 0, -1);
-                    array_push($aData->rows[$i]['cell'], $attval);
+                    array_push($outputs[$i], $attval);
                 }
                 else
                 {
-                    array_push($aData->rows[$i]['cell'], "");
+                    array_push($outputs[$i], "");
                 }
             }
             else
             {
-                array_push($aData->rows[$i]['cell'], "");
+                array_push($outputs[$i], "");
             }
             $i++;
+        }
+        $outputs=subval_sort($outputs, 3, "asc");
+
+        $aData = new stdClass();
+        $aData->page = 1;
+        $aData->rows[0]['id'] = $iParticipantId;
+        $aData->rows[0]['cell'] = array();
+        $aData->records = count($outputs);
+        $aData->total = ceil($aData->records / 10);
+        foreach($outputs as $key=>$output) {
+            $aData->rows[$key]['id']=$output[1];
+            $aData->rows[$key]['cell']=$output;
         }
         /* TODO: It'd be nice to do a natural sort on the attribute list at some point.
                  Currently they're returned in order of attributes WITH values, then WITHOUT values
@@ -1410,7 +1437,7 @@ class participantsaction extends Survey_Common_Action
             foreach ($firstline as $key => $value)
             {
                 $testvalue = preg_replace('/[^(\x20-\x7F)]*/','', $value); //Remove invalid characters from string
-                if (!in_array($testvalue, $regularfields))
+                if (!in_array(strtolower($testvalue), $regularfields))
                 {
                     array_push($selectedcsvfields, $value);
                 }
@@ -1533,9 +1560,11 @@ class participantsaction extends Survey_Common_Action
                 {
                     $firstline[$index] = preg_replace("/(.*) <[^,]*>$/", "$1", $fieldname);
                     $fieldname = $firstline[$index];
-                    if (!in_array($fieldname, $allowedfieldnames))
+                    if (!in_array(strtolower($fieldname), $allowedfieldnames))
                     {
                         $ignoredcolumns[] = $fieldname;
+                    } else {
+                        $firstline[$index] = strtolower($fieldname);
                     }
                 }
                 if ((!in_array('firstname', $firstline) && !in_array('lastname', $firstline) && !in_array('email', $firstline)) && !in_array('participant_id', $firstline))
@@ -1553,6 +1582,7 @@ class participantsaction extends Survey_Common_Action
                     continue;
                 }
                 $writearray = array_combine($firstline, $line);
+
                 //kick out ignored columns
                 foreach ($ignoredcolumns as $column)
                 {

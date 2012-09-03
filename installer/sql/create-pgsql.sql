@@ -144,7 +144,7 @@ CREATE TABLE prefix_labelsets (
 CREATE TABLE prefix_participant_attribute (
   "participant_id" character varying( 50 ) NOT NULL,
   "attribute_id" integer NOT NULL,
-  "value" character varying(50) NOT NULL,
+  "value" text NOT NULL,
   CONSTRAINT prefix_participant_attribut_pkey PRIMARY KEY (participant_id,attribute_id)
 );
 
@@ -155,7 +155,7 @@ CREATE TABLE prefix_participant_attribute (
 CREATE TABLE prefix_participant_attribute_names_lang (
   "attribute_id" integer NOT NULL,
   "attribute_name" character varying( 30 ) NOT NULL,
-  "lang" character varying( 20 ) NOT NULL,
+  "lang" character varying( 255 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_lang_pkey PRIMARY KEY (attribute_id,lang)
 );
 
@@ -177,7 +177,7 @@ CREATE TABLE prefix_participant_attribute_names (
 CREATE TABLE prefix_participant_attribute_values (
   "value_id" serial PRIMARY KEY NOT NULL,
   "attribute_id" integer NOT NULL,
-  "value" character varying( 20 ) NOT NULL
+  "value" character text NOT NULL
 );
 
 
@@ -562,4 +562,4 @@ create index labels_code_idx on prefix_labels (code);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '161');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '162');

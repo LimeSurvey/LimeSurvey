@@ -216,14 +216,11 @@ $(document).ready(function() {
                 editurl:editAttributevalue,
                 datatype: "json",
                 mtype: "post",
-                pgbuttons:false,
-                recordtext:'',
-                pgtext:'',
                 caption: attributesHeadingTxt,
                 editable: true,
                 loadonce : true,
                 colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
-                colModel: [ { name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){
+                colModel: [ { name:'act',index:'act',width:55,align:'center',search: false,sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){
                     var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
                     editModifier(id,iRow, method='edit');
                 }}},
@@ -232,8 +229,17 @@ $(document).ready(function() {
                 { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
                 { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
                 { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:false,hidden:true}],
-                rowNum:20,
+                sortname: attributeNameColTxt,
+                sortorder: 'asc',
+                sortable: true,
                 pager: pager_id,
+                viewrecords: true,
+                pgbuttons: true,
+                pginput: true,
+                recordtext:'',
+                pgtext:'',
+                rowNum:10,
+                rowList:[10,25,50,100000],
                 gridComplete: function () {
                     /* Removes the delete icon from the actions bar */
                     $('div.ui-inline-del').html('');
@@ -244,6 +250,10 @@ $(document).ready(function() {
                 },
                 height: '100%'
             });
+
+            /* Pager for attribute subgrid */
+            jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{refresh: false, edit:false,add:false,del:false,search:false})
+            jQuery("#"+subgrid_table_id).jqGrid('filterToolbar', {searchOnEnter : false,defaultSearch: 'cn'});
         }
     });
 

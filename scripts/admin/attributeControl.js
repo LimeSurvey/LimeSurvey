@@ -65,7 +65,20 @@ $(document).ready(function() {
                                        {    reloadAfterSubmit: true,
                                             caption: deleteCaption,
                                             msg: deleteMsg,
-                                            width: 500
+                                            width: 500,
+                                            afterShowForm: function($form) {
+                                                /* This code sets the position of the delete dialog to just below the last selected item */
+                                                /* Unless this would put the delete dialog off the page, in which case it will be pushed up a bit */
+                                                var dialog = $form.closest('div.ui-jqdialog'),
+                                                selRowId = jQuery("#attributeControl").jqGrid('getGridParam', 'selrow'),
+                                                selRowCoordinates = $('#'+selRowId).offset();
+                                                selRowCoordinates.top=selRowCoordinates.top+25;
+                                                selRowCoordinates.left=50;
+                                                if(selRowCoordinates.top+325 > jQuery(window).height()) {
+                                                    selRowCoordinates.top=selRowCoordinates.top-325;
+                                                }
+                                                dialog.offset(selRowCoordinates);
+                                            }
                                            }, //Default settings for delete
                                        { multipleSearch:true,
                                          width:600,
