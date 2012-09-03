@@ -30,6 +30,7 @@ function db_upgrade_all($oldversion) {
 
     $sDBDriverName=setsDBDriverName();
     setVarchar($sDBDriverName);
+    $sChar = Yii::app()->getConfig('char');
     $sVarchar = Yii::app()->getConfig('varchar');
 
     if ($oldversion < 111)
@@ -994,8 +995,17 @@ function db_upgrade_all($oldversion) {
     {
         addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
         addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
     }
     if ($oldversion < 162)
+    {
+        /* Fix participant db types */
+        alterColumn('{{participant_attribute}}', 'value', "text", false);
+        alterColumn('{{participant_attribute_names_lang}}', 'attribute_name', "{$sVarchar}(255)", false);
+        alterColumn('{{participant_attribute_values}}', 'value', "text", false);
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
+    }
+    if ($oldversion < 163)
     {
         Yii::app()->db->createCommand()->createTable('{{question_types}}',array(
         'tid' => 'pk',
@@ -1020,15 +1030,15 @@ function db_upgrade_all($oldversion) {
 
         Yii::app()->db->createCommand()->addColumn('{{questions}}','tid',"integer NOT NULL DEFAULT '0' AFTER `gid`");
 
-        upgradeSurveys162();
-        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
+        upgradeSurveys163();
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
     }
 
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
 }
 
-function upgradeSurveys162()
+function upgradeSurveys163()
 {
     $types = array(
         array(1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
@@ -1814,17 +1824,20 @@ function setVarchar($sDBDriverName=null) {
 
     if ($sDBDriverName=='pgsql')
     {
-        Yii::app()->setConfig('varchar',$sVarchar='character varying');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='serial');
+        Yii::app()->setConfig('char', 'character');
+        Yii::app()->setConfig('varchar', 'character varying');
+        Yii::app()->setConfig('autoincrement', 'serial');
     }
     elseif ($sDBDriverName=='mssql')
     {
-        Yii::app()->setConfig('varchar',$sVarchar='varchar');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='integer NOT NULL IDENTITY (1,1)');
+        Yii::app()->setConfig('char', 'char');
+        Yii::app()->setConfig('varchar', 'varchar');
+        Yii::app()->setConfig('autoincrement', 'integer NOT NULL IDENTITY (1,1)');
     }
     else
     {
-        Yii::app()->setConfig('varchar',$sVarchar='varchar');
-        Yii::app()->setConfig('autoincrement', $sAutoIncrement='int(11) NOT NULL AUTO_INCREMENT');
+        Yii::app()->setConfig('char', 'char');
+        Yii::app()->setConfig('varchar','varchar');
+        Yii::app()->setConfig('autoincrement', 'int(11) NOT NULL AUTO_INCREMENT');
     }
 }

@@ -51,7 +51,7 @@ class Question_attributes extends CActiveRecord
         return 'qaid';
     }
 
-    function getQuestionAttributes($qid)
+    public function getQuestionAttributes($qid)
     {
         return Yii::app()->db->createCommand()
             ->select()

@@ -137,7 +137,7 @@ CREATE TABLE `prefix_labelsets` (
 CREATE TABLE `prefix_participant_attribute` (
   `participant_id` varchar(50) NOT NULL,
   `attribute_id` int(11) NOT NULL,
-  `value` varchar(50) NOT NULL,
+  `value` text NOT NULL,
   PRIMARY KEY  (`participant_id`,`attribute_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -148,7 +148,7 @@ CREATE TABLE `prefix_participant_attribute` (
 CREATE TABLE `prefix_participant_attribute_names_lang` (
   `attribute_id` int(11) NOT NULL,
   `attribute_name` varchar(30) NOT NULL,
-  `lang` varchar(20) NOT NULL,
+  `lang` varchar(255) NOT NULL,
    PRIMARY KEY  (`attribute_id`,`lang`)
  ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -170,7 +170,7 @@ CREATE TABLE `prefix_participant_attribute_names` (
 CREATE TABLE `prefix_participant_attribute_values` (
   `value_id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_id` int(11) NOT NULL,
-  `value` varchar(20) NOT NULL,
+  `value` text NOT NULL,
   PRIMARY KEY  ( `value_id`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -587,7 +587,7 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '162');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '163');
 
 INSERT INTO `prefix_question_types` (`tid`, `order`, `group`, `name`, `class`, `legacy`, `system`) VALUES
 (1, 1, 1, '5 point choice', 'FiveList', '5', 'Y'),
