@@ -399,7 +399,7 @@ class statistics extends Survey_Common_Action {
 		            {
 
 		                //check if there is a dualscale_headerA/B
-		                $dshresult = Question_attributes::getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
+		                $dshresult = Question_attributes::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
 		                $aData['dshresults'][$key1][$key] = $dshresult;
 
 
@@ -408,7 +408,7 @@ class statistics extends Survey_Common_Action {
 		                $aData['fresults'][$key1][$key] = $fresult;
 
 
-		                $dshresult2 = Question_attributes::getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerB'", '');
+		                $dshresult2 = Question_attributes::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerB'", '');
 		                $aData['dshresults2'][$key1][$key] = $dshresult2;
 		            }
 		            break;
