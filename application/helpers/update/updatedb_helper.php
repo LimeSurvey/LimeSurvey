@@ -994,6 +994,15 @@ function db_upgrade_all($oldversion) {
     {
         addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
         addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
+    }
+    if ($oldversion < 162)
+    {
+        /* Fix participant db types */
+        alterColumn('{{participant_attribute}}', 'value', "text", false);
+        alterColumn('{{participant_attribute_names_lang}}', 'attribute_name', "{$sVarchar}(255)", false);
+        alterColumn('{{participant_attribute_values}}', 'value', "text", false);
+        Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
     }
 
     fixLanguageConsistencyAllSurveys();
