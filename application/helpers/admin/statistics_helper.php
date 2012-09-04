@@ -1602,14 +1602,9 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) { //AJS
 
                     case "1": //array (dual scale)
 
-<<<<<<< HEAD
-                        $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
-=======
                 $clang = Yii::app()->lang;
                 $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                 $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
->>>>>>> d30ba3e6f28bb1111154eb324e82b0f15e705975
                 $sSubquestion = flattenText($questionDesc['question']);
 
                         //get question attributes

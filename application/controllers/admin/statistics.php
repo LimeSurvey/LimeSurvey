@@ -43,9 +43,10 @@ class statistics extends Survey_Common_Action {
         $aData = array('clang' => $clang, 'imageurl' => $imageurl);
         $aData['sql']='';
 
-         Debugging help:
+		/*
+		 Debugging help:
          echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
-         */
+		 */
 
         //split up results to extend statistics -> NOT WORKING YET! DO NOT ENABLE THIS!
         $showcombinedresults = 0;
@@ -270,16 +271,10 @@ class statistics extends Survey_Common_Action {
 
                 case "Q": // Multiple Short Text
 
-<<<<<<< HEAD
                     //get subqestions
                     $result = Questions::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
                     $aData['result'][$key1] = $result;
                     break;
-=======
-		                //check if there is a dualscale_headerA/B
-		                $dshresult = Question_attributes::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
-		                $aData['dshresults'][$key1][$key] = $dshresult;
->>>>>>> d30ba3e6f28bb1111154eb324e82b0f15e705975
 
                     //----------------------- ARRAYS --------------------------
 
@@ -291,13 +286,6 @@ class statistics extends Survey_Common_Action {
                     break;
 
 
-<<<<<<< HEAD
-=======
-		                $dshresult2 = Question_attributes::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerB'", '');
-		                $aData['dshresults2'][$key1][$key] = $dshresult2;
-		            }
-		            break;
->>>>>>> d30ba3e6f28bb1111154eb324e82b0f15e705975
 
                     //just like above only a different loop
                 case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
@@ -380,7 +368,7 @@ class statistics extends Survey_Common_Action {
                     {
 
                         //check if there is a dualscale_headerA/B
-                        $dshresult = Question_attributes::getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
+		                $dshresult = Question_attributes::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
                         $aData['dshresults'][$key1][$key] = $dshresult;
 
 
@@ -389,7 +377,7 @@ class statistics extends Survey_Common_Action {
                         $aData['fresults'][$key1][$key] = $fresult;
 
 
-                        $dshresult2 = Question_attributes::getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerB'", '');
+		                $dshresult2 = Question_attributes::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerB'", '');
                         $aData['dshresults2'][$key1][$key] = $dshresult2;
                     }
                     break;
