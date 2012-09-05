@@ -214,25 +214,11 @@
             || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!') //AJS
         { ?>
             <td>
-        <?php
-            //Multiple choice:
-            if ($flt[2] == "M") {$myfield = "M$myfield";} //AJS
-            if ($flt[2] == "P") {$myfield = "P$myfield";} //AJS
-
-            // File Upload will need special filters in future, hence the special treatment
-            if ($flt[2] == "|") {$myfield = "|$myfield";} //AJS
-
-            //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-            if ($flt[2] == "N") {$myfield = "N$myfield";} //AJS
-        ?>
             <input type='checkbox'
                     id='filter<?php echo $myfield; ?>'
                     name='summary[]'
                     value='<?php echo $myfield; ?>' <?php
-            if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-                    || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; } //AJS
+            if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) echo " checked='checked'";
             ?> />
             <!-- QUESTION HEADING/TITLE -->
             <label for='filter<?php echo $myfield; ?>'><?php echo _showSpeaker(flattenText($flt[5],true)); ?></label><br />
@@ -270,9 +256,9 @@
                             * - less than
                             */
 
-                            $myfield1="K".$myfield.$row[0];
-                            $myfield2="K{$myfield}".$row[0]."G";
-                            $myfield3="K{$myfield}".$row[0]."L";
+                            $myfield1=$myfield.$row[0];
+                            $myfield2=$myfield.$row[0]."G";
+                            $myfield3=$myfield.$row[0]."L";
                             if ($counter2 == 4) { echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
                             //start new TD
@@ -282,7 +268,7 @@
                             echo "<input type='checkbox'  name='summary[]' value='$myfield1'";
 
                             //check SGQA -> do we want to pre-check the checkbox?
-                            if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
+                            if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
                             {echo " checked='checked'";}
                             echo " />&nbsp;";
 
@@ -326,12 +312,12 @@
                         //collecting data for output, for details see above (question type "N")
 
                         //we have one input field for each answer
-                        $myfield2 = "Q".$myfield."$row[0]";
+                        $myfield2 = $myfield."$row[0]";
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
                         echo "\t<td>";
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
-                        if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
+                        if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
                         {echo " checked='checked'";}
 
                         echo " />&nbsp;";
@@ -358,19 +344,18 @@
                 case "T": // Long free text
                 case "U": // Huge free text
 
-                    $myfield2="T$myfield";
                     echo "\t<td>\n";
-                    echo "\t<input type='checkbox'  name='summary[]' value='$myfield2'";
-                    if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                    echo "\t<input type='checkbox'  name='summary[]' value='$myfield'";
+                    if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
                     {echo " checked='checked'";}
 
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
                     ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
-                    ."\t<textarea name='$myfield2' rows='3' cols='80'>";
+                    ."\t<textarea name='$myfield' rows='3' cols='80'>";
 
-                    if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                    if (isset($_POST[$myfield])) echo $_POST[$myfield];
 
                     echo "</textarea>\n"
                     ."\t</td>\n";
@@ -380,20 +365,19 @@
 
                 case "S": // Short free text
 
-                    $myfield2="T$myfield";
                     echo "\t<td>";
-                    echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
+                    echo "<input type='checkbox'  name='summary[]' value='$myfield'";
 
-                    if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                    if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
                     {echo " checked='checked'";}
 
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
                     ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
-                    ."\t<input type='text' name='$myfield2' value='";
+                    ."\t<input type='text' name='$myfield' value='";
 
-                    if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
+                    if (isset($_POST[$myfield])) {echo $_POST[$myfield];}
 
                     echo "' />";
                     echo "\t</td>\n";
@@ -466,13 +450,12 @@
                     * - date less than
                     * - date greater than
                     */
-                    $myfield2="D$myfield";
-                    $myfield3=$myfield2."eq";
-                    $myfield4=$myfield2."less";
-                    $myfield5=$myfield2."more";
+                    $myfield3=$myfield."eq";
+                    $myfield4=$myfield."less";
+                    $myfield5=$myfield."more";
                     echo "\t<td>";
 
-                    echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
+                    echo "<input type='checkbox'  name='summary[]' value='$myfield'";
 
                     if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
                     {echo " checked='checked'";}
@@ -796,7 +779,7 @@
                         $fresult = $fresults[$key1][$key];
                         foreach($fresult as $frow)
                         {
-                            $myfield2 = "T".$myfield . $row[0] . "_" . $frow['title'];
+                            $myfield2 = $myfield . $row[0] . "_" . $frow['title'];
                             echo "<!-- $myfield2 - ";
                             if (isset($_POST[$myfield2])) {echo $_POST[$myfield2];}
                             echo " -->\n";
@@ -995,7 +978,7 @@
 
                         //myfield is the SGQ identifier
                         //myfield2 is just used as comment in HTML like "R40X34X1721-1"
-                        $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
+                        $myfield2 = $myfield . $i . "-" . strlen($i);
                         $myfield3 = $myfield . $i;
                         echo "<!-- $myfield2 - ";
 

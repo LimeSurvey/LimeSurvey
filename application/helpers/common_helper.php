@@ -1718,18 +1718,19 @@ function createCompleteSGQA($iSurveyID, $sLanguage, $public  = false)
     $allfields = array();
     foreach(createFieldMap($iSurveyID, false, false, $sLanguage) as $q)
     {
-        if (!is_a($q, 'QuestionModule')) continue;
-        
-        $type = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
-        if ($q->statisticsFieldmap() && $public)
+        if (!is_a($q, 'QuestionModule') && $public)
+        {
+            continue;
+        }
+        elseif (is_a($q, 'QuestionModule') &&$q->statisticsFieldmap() && $public)
         {
             $attributes = $q->getAttributeValues();
             if ($q->availableAttributes('public_statistics') && trim($attributes['public_statistics']) == 1)
-                $allfields[$type . $q->fieldname] = $q;
+                $allfields[$q->fieldname] = $q;
         }
-        elseif ($q->statisticsFieldmap())
+        elseif (!is_a($q, 'QuestionModule') || $q->statisticsFieldmap())
         {
-            $allfields[$type . $q->fieldname] = $q;
+            $allfields[$q->fieldname] = $q;
         }
     }
     return $allfields;

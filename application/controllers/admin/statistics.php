@@ -85,15 +85,13 @@ class statistics extends Survey_Common_Action {
         $aData['language'] = $language;
 
         
-        $fieldmap = createFieldmap($surveyid, false, false, $language);
+        $fieldmap = createCompleteSGQA($surveyid, $language);
 
         $summary = array();
         foreach ($fieldmap as $fieldname => $q)
         {
-            if (!is_a($q, 'QuestionModule')) continue;
-            $type = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
             if (in_array($fieldname, $fieldlist)) $summary[$fieldname] = $q;
-            else if (in_array($type . $fieldname, $fieldlist)) $summary[$type . $fieldname] = $q; //AJS
+            else if (in_array($fieldname, $fieldlist)) $summary[$fieldname] = $q;
         }
 
         //Call the javascript file
@@ -422,7 +420,7 @@ class statistics extends Survey_Common_Action {
         //Show Summary results
         $usegraph=isset($_POST['usegraph']) ? 1 : 0;
         $aData['usegraph'] = $usegraph;
-        $outputType = $_POST['outputtype'];
+        $outputType = isset($_POST['outputtype']) ? $_POST['outputtype'] : false;
 
         $selects=buildSelects($summary, $surveyid, $statlang); //AJS
         $aData['sql']=implode(" AND ", $selects);

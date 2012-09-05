@@ -271,21 +271,10 @@ function getQuestionMapData($sField, $qsid)
 *                          ie: array("`FIELDNAME`='Y'", "`FIELDNAME2`='Hello'");
 *
 */
-function buildSelects($allfields, $surveyid, $language) {
+function buildSelects($summary, $surveyid, $language) {
 
     //Create required variables
-    $selects=array();
-    $aQuestionMap=array();
-
-    $fieldmap=createFieldMap($surveyid, false, false, $language);
-    foreach ($fieldmap as $q)
-    {
-        if(isset($q->id) && $q->id!='')
-            $aQuestionMap[]=$q->surveyid.'X'.$q->gid.'X'.$q->id;
-    }
-
-    // creates array of post variable names
-    for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;}
+    $selects=array();return array();
 
     /*
     * Iterate through postvars to create "nice" data for SQL later.
@@ -299,191 +288,184 @@ function buildSelects($allfields, $surveyid, $language) {
     * This array is used later to build the overall query used to limit the number of responses
     *
     */
-    if(isset($postvars))
-        foreach ($postvars as $pv)
+    foreach (array_keys($_POST) as $pv)
+    {
+        //Only do this if there is actually a value for the $pv
+        if (array_key_exists($pv, $summary))
         {
-            //Only do this if there is actually a value for the $pv
-            if (
-                    in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap)
-                    || (
-                            (
-                                $pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K'
-                            )
-                            && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)
-                       )
-               )
+
+            $q = $summary[$pv];
+            $firstletter = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
+            /*
+            * these question types WON'T be handled here:
+            * M = Multiple choice
+            * T - Long Free Text
+            * Q - Multiple Short Text
+            * D - Date
+            * N - Numerical Input
+            * | - File Upload
+            * K - Multiple Numerical Input
+            */
+            if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" && $firstletter != "S"  && $firstletter != "U"  &&
+            $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
+            $pv != "summary" && substr($q->fieldname, 0, 2) != "id" && substr($q->fieldname, 0, 9) != "datestamp") //pull out just the fieldnames
             {
-                $firstletter=substr($pv,0,1);
-                /*
-                * these question types WON'T be handled here:
-                * M = Multiple choice
-                * T - Long Free Text
-                * Q - Multiple Short Text
-                * D - Date
-                * N - Numerical Input
-                * | - File Upload
-                * K - Multiple Numerical Input
-                */
-                if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
-                $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
-                $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
+                //put together some SQL here
+                $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
+
+                foreach ($_POST[$pv] as $condition)
                 {
-                    //put together some SQL here
-                    $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
-
-                    foreach ($_POST[$pv] as $condition)
-                    {
-                        $thisquestion .= "'$condition', ";
-                    }
-
-                    $thisquestion = substr($thisquestion, 0, -2)
-                    . ")";
-
-                    //we collect all the to be selected data in this array
-                    $selects[]=$thisquestion;
+                    $thisquestion .= "'$condition', ";
                 }
 
-                //M - Multiple choice
-                //P - Multiple choice with comments
-                elseif ($firstletter == "M"  || $firstletter == "P")
-                {
-                    $mselects=array();
-                    //create a list out of the $pv array
-                    list($lsid, $lgid, $lqid) = explode("X", $pv);
+                $thisquestion = substr($thisquestion, 0, -2)
+                . ")";
 
-                    $aresult=Questions::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(":parent_qid"=>$lqid)));
-                    foreach ($aresult as $arow)
+                //we collect all the to be selected data in this array
+                $selects[]=$thisquestion;
+            }
+
+            //M - Multiple choice
+            //P - Multiple choice with comments
+            elseif ($firstletter == "M"  || $firstletter == "P")
+            {
+                $mselects=array();
+                //create a list out of the $pv array
+                list($lsid, $lgid, $lqid) = explode("X", $pv);
+
+                $aresult=Questions::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(":parent_qid"=>$lqid)));
+                foreach ($aresult as $arow)
+                {
+                    // only add condition if answer has been chosen
+                    if (in_array($arow['title'], $_POST[$pv]))
                     {
-                        // only add condition if answer has been chosen
-                        if (in_array($arow['title'], $_POST[$pv]))
-                        {
-                            $mselects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)).$arow['title'])." = 'Y'";
-                        }
-                    }
-                    /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
-                    if ($mselects)
-                    {
-                        $thismulti=implode(" OR ", $mselects);
-                        $selects[]="($thismulti)";
-                        unset($mselects);
+                        $mselects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)).$arow['title'])." = 'Y'";
                     }
                 }
-
-                //N - Numerical Input
-                //K - Multiple Numerical Input
-                elseif ($firstletter == "N" || $firstletter == "K")
+                /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
+                if ($mselects)
                 {
-                    //value greater than
+                    $thismulti=implode(" OR ", $mselects);
+                    $selects[]="($thismulti)";
+                    unset($mselects);
+                }
+            }
+
+            //N - Numerical Input
+            //K - Multiple Numerical Input
+            elseif ($firstletter == "N" || $firstletter == "K")
+            {
+                //value greater than
+                if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
+                {
+                    $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
+                }
+
+                //value less than
+                if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
+                {
+                    $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
+                }
+            }
+
+            //| - File Upload Question Type
+            else if ($firstletter == "|")
+                {
+                    // no. of files greater than
                     if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
-                    {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
-                    }
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
 
-                    //value less than
+                    // no. of files less than
                     if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-                    {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
-                    }
-                }
+                    $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
+            }
 
-                //| - File Upload Question Type
-                else if ($firstletter == "|")
-                    {
-                        // no. of files greater than
-                        if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
-                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
-
-                        // no. of files less than
-                        if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
-                }
-
-                //"id" is a built in field, the unique database id key of each response row
-                elseif (substr($pv, 0, 2) == "id")
+            //"id" is a built in field, the unique database id key of each response row
+            elseif (substr($pv, 0, 2) == "id")
+            {
+                if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                 {
-                    if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
-                    {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
-                    }
-                    if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-                    {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
-                    }
+                    $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
                 }
-
-                //T - Long Free Text
-                //Q - Multiple Short Text
-                elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
+                if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                 {
-                    $selectSubs = array();
-                    //We intepret and * and % as wildcard matches, and use ' OR ' and , as the seperators
-                    $pvParts = explode(",",str_replace('*','%', str_replace(' OR ',',',$_POST[$pv])));
-                    if(is_array($pvParts) AND count($pvParts)){
-                        foreach($pvParts AS $pvPart){
-                            $selectSubs[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)))." LIKE '".trim($pvPart)."'";
-                        }
-                        if(count($selectSubs)){
-                            $selects[] = ' ('.implode(' OR ',$selectSubs).') ';
-                        }
-                    }
+                    $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
                 }
+            }
 
-                //D - Date
-                elseif ($firstletter == "D" && $_POST[$pv] != "")
-                {
-                    //Date equals
-                    if (substr($pv, -1, 1) == "eq")
-                    {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
+            //T - Long Free Text
+            //Q - Multiple Short Text
+            elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
+            {
+                $selectSubs = array();
+                //We intepret and * and % as wildcard matches, and use ' OR ' and , as the seperators
+                $pvParts = explode(",",str_replace('*','%', str_replace(' OR ',',',$_POST[$pv])));
+                if(is_array($pvParts) AND count($pvParts)){
+                    foreach($pvParts AS $pvPart){
+                        $selectSubs[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)))." LIKE '".trim($pvPart)."'";
                     }
-                    else
-                    {
-                        //date less than
-                        if (substr($pv, -1, 1) == "less")
-                        {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " >= '".$_POST[$pv]."'";
-                        }
-
-                        //date greater than
-                        if (substr($pv, -1, 1) == "more")
-                        {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " <= '".$_POST[$pv]."'";
-                        }
-                    }
-                }
-
-                //check for datestamp of given answer
-                elseif (substr($pv, 0, 9) == "datestamp")
-                {
-                    //timestamp equals
-                    $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
-                    if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
-                    {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                        $_POST[$pv]=$datetimeobj->convert("Y-m-d");
-
-                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= '".$_POST[$pv]." 00:00:00' and ".Yii::app()->db->quoteColumnName('datestamp')." <= '".$_POST[$pv]." 23:59:59'";
-                    }
-                    else
-                    {
-                        //timestamp less than
-                        if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
-                        {
-                            $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                            $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < '".$_POST[$pv]."'";
-                        }
-
-                        //timestamp greater than
-                        if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
-                        {
-                            $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                            $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > '".$_POST[$pv]."'";
-                        }
+                    if(count($selectSubs)){
+                        $selects[] = ' ('.implode(' OR ',$selectSubs).') ';
                     }
                 }
             }
+
+            //D - Date
+            elseif ($firstletter == "D" && $_POST[$pv] != "")
+            {
+                //Date equals
+                if (substr($pv, -1, 1) == "eq")
+                {
+                    $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
+                }
+                else
+                {
+                    //date less than
+                    if (substr($pv, -1, 1) == "less")
+                    {
+                        $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " >= '".$_POST[$pv]."'";
+                    }
+
+                    //date greater than
+                    if (substr($pv, -1, 1) == "more")
+                    {
+                        $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-2)) . " <= '".$_POST[$pv]."'";
+                    }
+                }
+            }
+
+            //check for datestamp of given answer
+            elseif (substr($pv, 0, 9) == "datestamp")
+            {
+                //timestamp equals
+                $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
+                if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
+                {
+                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                    $_POST[$pv]=$datetimeobj->convert("Y-m-d");
+
+                    $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= '".$_POST[$pv]." 00:00:00' and ".Yii::app()->db->quoteColumnName('datestamp')." <= '".$_POST[$pv]." 23:59:59'";
+                }
+                else
+                {
+                    //timestamp less than
+                    if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
+                    {
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                        $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
+                        $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < '".$_POST[$pv]."'";
+                    }
+
+                    //timestamp greater than
+                    if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
+                    {
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                        $_POST[$pv]=$datetimeobj->convert("Y-m-d H:i:s");
+                        $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > '".$_POST[$pv]."'";
+                    }
+                }
+            }
+        }
     } //end foreach -> loop through filter options to create SQL
 
     return $selects;
@@ -1374,25 +1356,7 @@ function buildOutputList($q, $language, $outputType, $sql)
                 break;
 
             case ";": //Array (Multi Flexi) (Text)
-                list($qacode, $licode)=explode("_", $qanswer);
-
-                $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order";
-                $qresult=Yii::app()->db->createCommand($qquery)->query();
-
-                foreach ($qresult->readAll() as $qrow)
-                {
-                    $qrow=array_values($qrow);
-                    $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
-                    $fresult = Yii::app()->db->createCommand($fquery)->query();
-                    foreach ($fresult->readAll() as $frow)
-                    {
-                        $alist[]=array($frow['code'], $frow['answer']);
-                        $ltext=$frow['answer'];
-                    }
-                    $atext=flattenText($qrow[1]);
-                }
-
-                $qquestion .=  $linefeed."[".$atext."] [".$ltext."]";
+                $qquestion .=  $linefeed."[".$q->sq1."] [".$q->sq2."]";
                 $qtitle .= "($qanswer)";
                 break;
 
@@ -1623,7 +1587,7 @@ function displayResults($outputs, $results, $q, $outputType, $surveyid, $sql, $u
     $sDatabaseType = Yii::app()->db->getDriverName();
     $tempdir = Yii::app()->getConfig("tempdir");
     $tempurl = Yii::app()->getConfig("tempurl");
-    $firstletter = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
+    $type = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
     $astatdata=array();
 
     if ($usegraph==1)
@@ -1748,7 +1712,7 @@ function displayResults($outputs, $results, $q, $outputType, $surveyid, $sql, $u
                             $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2])." =";
 
                             //ranking question?
-                            if ($firstletter == "R")
+                            if ($type == "R")
                             {
                                 $query .= " '$al[0]'";
                             }
