@@ -308,6 +308,11 @@ class RankingQuestion extends QuestionModule
         return $map;
     }
 
+    public function statisticsFieldmap()
+    {
+        return true;
+    }
+
     public function getCsuffix()
     {
         return $this->aid;

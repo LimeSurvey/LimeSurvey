@@ -64,12 +64,13 @@ class statistics extends Survey_Common_Action {
         $cr_statisticsoutput = '';
 
         // This gets all the 'to be shown questions' from the POST and puts these into an array
-        $summary=returnGlobal('summary');
-        $statlang=returnGlobal('statlang');
+        $fieldlist = returnGlobal('summary');
+        if (!$fieldlist) $fieldlist = array();
+        $statlang = returnGlobal('statlang');
 
         //if $summary isn't an array we create one
-        if (isset($summary) && !is_array($summary)) {
-            $summary = explode("+", $summary);
+        if (isset($fieldlist) && !is_array($fieldlist)) {
+            $fieldlist = explode("+", $fieldlist);
         }
 
         //no survey ID? -> come and get one
@@ -83,6 +84,17 @@ class statistics extends Survey_Common_Action {
         $language = Survey::model()->findByPk($surveyid)->language;
         $aData['language'] = $language;
 
+        
+        $fieldmap = createFieldmap($surveyid, false, false, $language);
+
+        $summary = array();
+        foreach ($fieldmap as $fieldname => $q)
+        {
+            if (!is_a($q, 'QuestionModule')) continue;
+            $type = Question_types::model()->findByAttributes(array('class' => substr(get_class($q), 0, -8)))->getAttribute('legacy'); //AJS
+            if (in_array($fieldname, $fieldlist)) $summary[$fieldname] = $q;
+            else if (in_array($type . $fieldname, $fieldlist)) $summary[$type . $fieldname] = $q; //AJS
+        }
 
         //Call the javascript file
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'statistics.js');
@@ -408,32 +420,28 @@ class statistics extends Survey_Common_Action {
         $aData['showtextinline'] = $showtextinline;
 
         //Show Summary results
-        if (isset($summary) && $summary)
-        {
-            $usegraph=isset($_POST['usegraph']) ? 1 : 0;
-            $aData['usegraph'] = $usegraph;
-            $outputType = $_POST['outputtype'];
+        $usegraph=isset($_POST['usegraph']) ? 1 : 0;
+        $aData['usegraph'] = $usegraph;
+        $outputType = $_POST['outputtype'];
 
-            $selects=buildSelects($summary, $surveyid, $statlang); //AJS
-            $aData['sql']=implode(" AND ", $selects);
+        $selects=buildSelects($summary, $surveyid, $statlang); //AJS
+        $aData['sql']=implode(" AND ", $selects);
 
-            switch($outputType){
-                case 'html':
-                    $statisticsoutput .= generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
-                    break;
-                case 'pdf':
-                    generate_statistics($surveyid,$summary,$usegraph,$outputType,'I',$statlang); //AJS
-                    exit;
-                    break;
-                case 'xls':
-                    generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
-                    exit;
-                    break;
-                default:
-                    break;
-            }
-
-        } //end if -> show summary results
+        switch($outputType){
+            case 'html':
+                $statisticsoutput .= generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
+                break;
+            case 'pdf':
+                generate_statistics($surveyid,$summary,$usegraph,$outputType,'I',$statlang); //AJS
+                exit;
+                break;
+            case 'xls':
+                generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
+                exit;
+                break;
+            default:
+                break;
+        }
 
         $aData['sStatisticsLanguage']=$statlang;
         $aData['output'] = $statisticsoutput;

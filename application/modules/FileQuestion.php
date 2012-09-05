@@ -227,6 +227,11 @@ class FileQuestion extends QuestionModule
         return $map;
     }
 
+    public function statisticsFieldmap()
+    {
+        return strpos('_filecount', $this->fieldname) === false;
+    }
+
     public function fileUpload()
     {
         return true;

@@ -589,13 +589,12 @@ class remotecontrol_handle
         if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
             $sLanguage = $oSurvey->language;
 
-        $oAllQuestions = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$sLanguage));
-        $aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage); //AJS
+        $aSummary = createCompleteSGQA($iSurveyID, $sLanguage, false);
 
         switch ($docType)
         {
             case 'pdf':
-                $sTempFile = generate_statistics($iSurveyID,$aSummary,$graph,$docType,'F',$sLanguage); //AJS
+                $sTempFile = generate_statistics($iSurveyID,$aSummary,$graph,$docType,'F',$sLanguage);
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;

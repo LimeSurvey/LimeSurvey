@@ -619,6 +619,11 @@ class DualRadioArrayQuestion extends RadioArrayQuestion
         return $map;
     }
 
+    public function statisticsFieldmap()
+    {
+        return true;
+    }
+
     public function getFullAnswer($answerCode, $export, $survey)
     {
         if (mb_substr($this->fieldname, -1) == 0)

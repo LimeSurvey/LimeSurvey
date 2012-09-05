@@ -16,6 +16,11 @@ class DisplayQuestion extends QuestionModule
         return $answer;
     }
 
+    public function statisticsFieldmap()
+    {
+        return false;
+    }
+
     public function getDataEntry($idrow, &$fnames, $language)
     {
         return "";

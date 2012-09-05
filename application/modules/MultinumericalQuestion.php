@@ -382,6 +382,11 @@ class MultinumericalQuestion extends QuestionModule
         return $map;
     }
 
+    public function statisticsFieldmap()
+    {
+        return true;
+    }
+
     public function filter($value, $type)
     {
         if (trim($value)=='') {
@@ -587,6 +592,11 @@ class MultinumericalQuestion extends QuestionModule
         $question->appendChild($response);
     }
 
+    public function getStatisticsFilter()
+    {
+        $result = Questions::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
+    }
+    
     public function availableAttributes($attr = false)
     {
         $attrs=array("array_filter","array_filter_exclude","array_filter_style","equals_num_value","em_validation_q","em_validation_q_tip","em_validation_sq","em_validation_sq_tip","exclude_all_others","statistics_showgraph","statistics_graphtype","hide_tip","hidden","max_answers","max_num_value","max_num_value_n","maximum_chars","min_answers","min_num_value","min_num_value_n","page_break","prefix","public_statistics","random_order","parent_order","slider_layout","slider_min","slider_max","slider_accuracy","slider_default","slider_middlestart","slider_showminmax","slider_separator","suffix","text_input_width","random_group","value_range_allows_missing");

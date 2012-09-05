@@ -436,6 +436,11 @@ class NumberArrayQuestion extends ArrayQuestion
         return $map;
     }
 
+    public function statisticsFieldmap()
+    {
+        return true;
+    }
+
     public function getDBField()
     {
         return 'text';

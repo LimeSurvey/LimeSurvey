@@ -186,27 +186,6 @@ class Statistics_userController extends LSYii_Controller {
         $data['condition'] = $condition;
         $data['thisSurveyCssPath'] = $thisSurveyCssPath;
 
-        /*
-         * only show questions where question attribute "public_statistics" is set to "1"
-         */
-
-        $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa WHERE 'g.gid' = 'q.gid' AND 'g.language' = :lang AND 'q.language' = :lang AND 'q.sid' = :surveyid AND 'q.qid' = 'qa.qid' AND 'q.parent_qid' = 0 AND 'qa.attribute' = 'public_statistics'";
-        $databasetype = Yii::app()->db->getDriverName();
-        if ($databasetype=='mssql' || $databasetype=="sqlsrv")
-        {
-            $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
-        }
-        else
-        {
-            $query .="AND qa.value='1'\n";
-        }
-
-        //execute query
-        $oAllQuestions = Questions::model()->with('question_types')->with('question_attributes')->with('groups')->findAllByAttributes(
-            array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$surveylanguage),
-            array('order' => 'groups.group_order, question_order', 'condition' => 'question_attributes.value = "1"')
-        );
-
         //number of records for this survey
         $totalrecords = 0;
 
@@ -228,7 +207,7 @@ class Statistics_userController extends LSYii_Controller {
         }
 
         //---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
-        $summary = createCompleteSGQA($iSurveyID,$oAllQuestions,$surveylanguage);
+        $summary = createCompleteSGQA($iSurveyID,$surveylanguage,true);
 
         //---------- CREATE STATISTICS ----------
 

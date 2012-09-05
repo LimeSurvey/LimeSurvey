@@ -37,6 +37,11 @@ abstract class ArrayQuestion extends QuestionModule
         return $map;
     }
 
+    public function statisticsFieldmap()
+    {
+        return true;
+    }
+
     public function jsVarNameOn()
     {
         return 'java'.$this->fieldname;

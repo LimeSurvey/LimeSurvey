@@ -360,6 +360,11 @@ class ListQuestion extends QuestionModule
         return $map;
     }
 
+    public function statisticsFieldmap()
+    {
+        return (strpos('other', $this->fieldname) === false) && (strpos('comment', $this->fieldname) === false);
+    }
+
     public function getExtendedAnswer($value, $language)
     {
         if ($value == "-oth-")

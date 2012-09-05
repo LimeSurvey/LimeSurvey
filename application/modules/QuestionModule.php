@@ -157,6 +157,11 @@ abstract class QuestionModule
         return array($q->fieldname=>$q);
     }
 
+    public function statisticsFieldmap()
+    {
+        return true;
+    }
+
     public function fileUpload()
     {
         return false;
