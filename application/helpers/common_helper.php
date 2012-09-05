@@ -1715,6 +1715,7 @@ function validateTemplateDir($sTemplateName)
  */
 function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage)
 {
+    $allfields = array();
     foreach ($aFilters as $flt)
     {
         Yii::app()->loadHelper("surveytranslator");
@@ -1729,13 +1730,12 @@ function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage)
             case "K": // Multiple Numerical
             case "Q": // Multiple Short Text
                 //get answers
-                $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-                $result =  Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                $result = Questions::model()->findAllByAttributes(array('parent_qid' => 0, 'language' => $sLanguage), array('order' => 'question_order'));
 
                 //go through all the (multiple) answers
                 foreach($result as $row)
                 {
-                    $myfield2=$flt['type'].$myfield.reset($row); //AJS
+                    $myfield2=$flt['type'].$myfield.$row['title']; //AJS
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1746,13 +1746,11 @@ function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage)
             case "F": // FlEXIBLE ARRAY
             case "H": // ARRAY (By Column)
                 //get answers
-                $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-                $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
-
+                $result = Questions::model()->findAllByAttributes(array('parent_qid' => 0, 'language' => $sLanguage), array('order' => 'question_order'));
                 //go through all the (multiple) answers
                 foreach($result as $row)
                 {
-                    $myfield2 = $myfield.reset($row);
+                    $myfield2 = $myfield.$row['title'];
                     $allfields[]=$myfield2;
                 }
                 break;
@@ -1765,26 +1763,23 @@ function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage)
                 break;
             case ";":  //ARRAY (Multi Flex) (Text)
             case ":":  //ARRAY (Multi Flex) (Numbers)
-                $query = "SELECT title, question FROM {{questions}} WHERE parent_qid=:flt_0 AND language=:lang AND scale_id = 0 ORDER BY question_order";
-                $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                $result = Questions::model()->findAllByAttributes(array('parent_qid' => 0, 'language' => $sLanguage, 'scale_id' => 0), array('order' => 'question_order'));
                 foreach($result as $row)
                 {
-                    $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
-                    $fresult = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                    $fresult = Questions::model()->findAllByAttributes(array('parent_qid' => 0, 'language' => $sLanguage, 'scale_id' => 1), array('order' => 'question_order'));
                     foreach($fresult as $frow)
                     {
-                        $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
-                    $allfields[]=$myfield2;
-                }
+                        $myfield2 = $myfield . $row['title'] . "_" . $frow['title'];
+                        $allfields[]=$myfield2;
+                    }
                 }
                 break;
             case "R": //RANKING
                 //get some answers
-                $query = "SELECT code, answer FROM {{answers}} WHERE qid = :flt_0 AND language = :lang ORDER BY sortorder, answer";
-                $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                $result = Answers::model()->findAllByAttributes(array('qid' => $flt['qid'], 'language' => $sLanguage), array('order' => 'sortorder, answer'));
 
                 //get number of answers
-                $count = $result->num_rows();
+                $count = count($result);
 
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
                 for ($i=1; $i<=$count; $i++)
@@ -1798,17 +1793,16 @@ function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage)
                 break;
             case "1": // MULTI SCALE
                 //get answers
-                $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang ORDER BY question_order";
-                $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt['qid'], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                $result = Questions::model()->findAllByAttributes(array('parent_qid' => 0, 'language' => $sLanguage), array('order' => 'question_order'));
 
                 //loop through answers
                 foreach($result as $row)
                 {
                     //----------------- LABEL 1 ---------------------
-                    $myfield2 = $myfield . reset($row[0])."#0";
+                    $myfield2 = $myfield . "{$row['title']}#0";
                     $allfields[]=$myfield2;
                     //----------------- LABEL 2 ---------------------
-                    $myfield2 = $myfield . "$row[0]#1";
+                    $myfield2 = $myfield . "{$row['title']}#1";
                     $allfields[]=$myfield2;
                 } //end WHILE -> loop through all answers
                 break;
@@ -1823,6 +1817,26 @@ function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage)
             default:   //Default settings
                 $allfields[] = $myfield;
                 break;
+        } //end switch
+    }
+    return $allfields;
+}
+
+function createStatisticsSQGA($iSurveyID,$aFilters,$sLanguage)
+{
+    $fieldmap = array();
+    foreach ($aFilters as $flt)
+    {
+        Yii::app()->loadHelper("surveytranslator");
+        $myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
+        if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
+            $sLanguage = $oSurvey->language;
+
+        switch ($flt['type']) //AJS
+        {
+
         } //end switch
     }
     return $allfields;

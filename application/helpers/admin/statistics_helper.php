@@ -572,10 +572,10 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) { //AJS
                 $fld = substr($rt, 1, strlen($rt));
                 $q=$fieldmap[$fld];
 
-                list($qanswer, $qlid)=isset($q->aid) ? explode("_", $q->aid) : array("", "");
+                list($qanswer, $qlid)=(isset($q->aid) && $q->aid != '') ? explode("_", $q->aid) : array("", "");
 
                 //get question data
-        $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
+        $nresult = Questions::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$q->id));
         $qtitle=$nresult->title;
         $qtype=$nresult->type; //AJS
         $qquestion=flattenText($nresult->question);
@@ -736,19 +736,6 @@ function buildOutputList($rt, $language, $surveyid, $outputType, $sql) { //AJS
                     $showem[] = array($statlang->gT("Average file size"), $size/$filecount . " KB");
                     $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
 
-                    /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
-                    $result=db_execute_num($query) or safeDie("Couldn't get list of subquestions for multitype<br />$query<br />");
-
-                    //loop through multiple answers
-                    while ($row=$result->FetchRow())
-                    {
-                    $mfield=substr($rt, 1, strlen($rt))."$row[0]";
-
-                    //create an array containing answer code, answer and fieldname(??)
-                    $alist[]=array("$row[0]", flattenText($row[1]), $mfield);
-                    }
-
-                    */
                     //outputting
                     switch($outputType)
                     {
@@ -3054,7 +3041,6 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 *
 * @param int $surveyid The survey id
 * @param mixed $allfields
-* @param mixed $q2show
 * @param mixed $usegraph
 * @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
 * @param string $pdfOutput Sets the target for the PDF output: DD=File download , F=Save file to local disk
@@ -3062,7 +3048,7 @@ function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $
 * @param mixed $browse  Show browse buttons
 * @return buffer
 */
-function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true) //AJS
+function generate_statistics($surveyid, $summary, $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true) //AJS
 {
     global $pdfdefaultfont, $pdffontsize;
 
@@ -3115,70 +3101,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
     // Set language for questions and answers to base language of this survey
     $language=$statlangcode;
-
-    if($q2show=='all' )
-    {
-        $summarySql=" SELECT gid, parent_qid, qid, type "
-        ." FROM {{questions}} WHERE parent_qid=0"
-        ." AND sid=$surveyid "; //AJS
-
-        $summaryRs = Yii::app()->db->createCommand($summarySql)->query()->readAll();
-
-        foreach($summaryRs as $field)
-        {
-            $myField = $surveyid."X".$field['gid']."X".$field['qid'];
-
-            // Multiple choice get special treatment
-            if ($field['type'] == "M") {$myField = "M$myField";} //AJS
-            if ($field['type'] == "P") {$myField = "P$myField";} //AJS
-            //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-            if ($field['type'] == "N") {$myField = "N$myField";} //AJS
-
-            if ($field['type'] == "|") {$myField = "|$myField";} //AJS
-
-            if ($field['type'] == "Q") {$myField = "Q$myField";} //AJS
-            // textfields get special treatment
-            if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U"){$myField = "T$myField";} //AJS
-            //statistics for Date questions are not implemented yet.
-            if ($field['type'] == "D") {$myField = "D$myField";} //AJS
-            if ($field['type'] == "F" || $field['type'] == "H") //AJS
-            {
-                //Get answers. We always use the answer code because the label might be too long elsewise
-                $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
-                $result = Yii::app()->db->createCommand($query)->query();
-                $counter2=0;
-
-                //check all the answers
-                foreach ($result->readAll() as $row)
-                {
-                    $row=array_values($row);
-                    $myField = "$myField{$row[0]}";
-                }
-                //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
-
-
-            }
-            if($q2show=='all')
-                $summary[]=$myField;
-
-            //$allfields[]=$myField;
-        }
-    }
-    else
-    {
-        // This gets all the 'to be shown questions' from the POST and puts these into an array
-        if (!is_array($q2show))
-            $summary=returnGlobal('summary');
-        else
-            $summary = $q2show;
-
-        //print_r($_POST);
-        //if $summary isn't an array we create one
-        if (isset($summary) && !is_array($summary))
-        {
-            $summary = explode("+", $summary);
-        }
-    }
 
     /**
     * pdf Config
@@ -3269,7 +3191,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 
 
-    $selects=buildSelects($allfields, $surveyid, $language); //AJS
+    $selects=buildSelects($summary, $surveyid, $language); //AJS
 
     //count number of answers
     $query = "SELECT count(*) FROM {{survey_$surveyid}}";
@@ -3400,39 +3322,31 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
      *
      * */
 
-    if (isset($summary) && $summary)
+    //START Chop up fieldname and find matching questions
+    //loop through all selected questions
+    foreach ($summary as $rt)
     {
-        //let's run through the survey
-        $runthrough=$summary;
 
-        //START Chop up fieldname and find matching questions
-
-        //loop through all selected questions
-        foreach ($runthrough as $rt)
+        //Step 1: Get information about this response field (SGQA) for the summary
+        $outputs=buildOutputList($rt, $language, $surveyid, $outputType, $sql); //AJS
+        $statisticsoutput .= $outputs['statisticsoutput'];
+        //2. Collect and Display results #######################################################################
+        if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
         {
-
-            //Step 1: Get information about this response field (SGQA) for the summary
-            $outputs=buildOutputList($rt, $language, $surveyid, $outputType, $sql); //AJS
-            $statisticsoutput .= $outputs['statisticsoutput'];
-            //2. Collect and Display results #######################################################################
-            if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
-            {
-                $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf); //AJS
-                $statisticsoutput .= $display['statisticsoutput'];
-                $astatdata = array_merge($astatdata, $display['astatdata']);
-            } //end if -> collect and display results
+            $display=displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $pdf); //AJS
+            $statisticsoutput .= $display['statisticsoutput'];
+            $astatdata = array_merge($astatdata, $display['astatdata']);
+        } //end if -> collect and display results
 
 
-            //Delete Build Outputs data
-            unset($outputs);
-            unset($display);
-        } // end foreach -> loop through all questions
+        //Delete Build Outputs data
+        unset($outputs);
+        unset($display);
+    } // end foreach -> loop through all questions
 
-        //output
-        if($outputType=='html')
-            $statisticsoutput .= "<br />&nbsp;\n";
-
-    } //end if -> show summary results
+    //output
+    if($outputType=='html')
+        $statisticsoutput .= "<br />&nbsp;\n";
 
     switch($outputType)
     {

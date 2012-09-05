@@ -43,10 +43,10 @@ class statistics extends Survey_Common_Action {
         $aData = array('clang' => $clang, 'imageurl' => $imageurl);
         $aData['sql']='';
 
-		/*
-		 Debugging help:
+        /*
+         Debugging help:
          echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
-		 */
+        */
 
         //split up results to extend statistics -> NOT WORKING YET! DO NOT ENABLE THIS!
         $showcombinedresults = 0;
@@ -238,22 +238,6 @@ class statistics extends Survey_Common_Action {
 
             //full question title
 
-            /*
-             * Check question type: This question types will be used (all others are separated in the if clause)
-             *  5 - 5 Point Choice
-             G - Gender
-             I - Language Switch
-             L - List (Radio)
-             M - Multiple choice
-             N - Numerical Input
-             | - File Upload
-             O - List With Comment
-             P - Multiple choice with comments
-             Y - Yes/No
-             ! - List (Dropdown) )
-             */
-
-
             /////////////////////////////////////////////////////////////////////////////////////////////////
             //This section presents the filter list, in various different ways depending on the question type
             /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -430,19 +414,19 @@ class statistics extends Survey_Common_Action {
             $aData['usegraph'] = $usegraph;
             $outputType = $_POST['outputtype'];
 
-            $selects=buildSelects($summary, $surveyid, $statlang);
+            $selects=buildSelects($summary, $surveyid, $statlang); //AJS
             $aData['sql']=implode(" AND ", $selects);
 
             switch($outputType){
                 case 'html':
-                    $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
+                    $statisticsoutput .= generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
                     break;
                 case 'pdf':
-                    generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang); //AJS
+                    generate_statistics($surveyid,$summary,$usegraph,$outputType,'I',$statlang); //AJS
                     exit;
                     break;
                 case 'xls':
-                    generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
+                    generate_statistics($surveyid,$summary,$usegraph,$outputType,'DD',$statlang); //AJS
                     exit;
                     break;
                 default:

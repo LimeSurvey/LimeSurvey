@@ -202,26 +202,10 @@ class Statistics_userController extends LSYii_Controller {
         }
 
         //execute query
-        $result = Yii::app()->db->createCommand($query)->bindParam(":lang", $language, PDO::PARAM_STR)->bindParam(":surveyid", $iSurveyID, PDO::PARAM_INT)->queryAll();
-
-        //store all the data in $rows
-        $rows = $result;
-
-
-        //SORT IN NATURAL ORDER!
-        usort($rows, 'groupOrderThenQuestionOrder');
-
-        //put the question information into the filter array
-        foreach ($rows as $row)
-        {
-            //store some column names in $filters array
-            $filters[]=array($row['qid'],
-            $row['gid'],
-            $row['type'], //AJS
-            $row['title'],
-            $row['group_name'],
-            flattenText($row['question']));
-        }
+        $oAllQuestions = Questions::model()->with('question_types')->with('question_attributes')->with('groups')->findAllByAttributes(
+            array('sid' => $iSurveyID, 'parent_qid'=>'0','language'=>$surveylanguage),
+            array('order' => 'groups.group_order, question_order', 'condition' => 'question_attributes.value = "1"')
+        );
 
         //number of records for this survey
         $totalrecords = 0;
@@ -243,139 +227,8 @@ class Statistics_userController extends LSYii_Controller {
             $totalrecords = reset($row);
         }
 
-
-        //this is the array which we need later...
-        $summary = array();
-        //...while this is the array from copy/paste which we don't want to replace because this is a nasty source of error
-        $allfields = array();
-
-
         //---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
-
-                /*
-         * let's go through the filter array which contains
-         ['qid'],
-         ['gid'],
-         ['type'],
-         ['title'],
-         ['group_name'],
-         ['question'];
-                 */
-
-        $currentgroup='';
-        // use to check if there are any question with public statistics
-        if(isset($filters)){
-        foreach ($filters as $flt)
-        {
-            //SGQ identifier
-            $myfield = "{$iSurveyID}X{$flt[1]}X{$flt[0]}";
-
-            //let's switch through the question type for each question
-            switch ($flt[2]) //AJS
-            {
-                case "K": // Multiple Numerical
-                case "Q": // Multiple Short Text
-                    //get answers
-                    $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-                    $result =  Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
-
-                    //go through all the (multiple) answers
-                    foreach($result as $row)
-                    {
-                        $myfield2=$flt[2].$myfield.reset($row); //AJS
-                        $allfields[] = $myfield2;
-                    }
-                    break;
-                case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
-                case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-                case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
-                case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-                case "F": // FlEXIBLE ARRAY
-                case "H": // ARRAY (By Column)
-                    //get answers
-                    $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
-
-                    //go through all the (multiple) answers
-                    foreach($result as $row)
-                    {
-                        $myfield2 = $myfield.reset($row);
-                        $allfields[]=$myfield2;
-                    }
-                    break;
-                // all "free text" types (T, U, S)  get the same prefix ("T")
-                case "T": // Long free text
-                case "U": // Huge free text
-                case "S": // Short free text
-                    $myfield="T$myfield";
-                    $allfields[] = $myfield;
-                    break;
-                case ";":  //ARRAY (Multi Flex) (Text)
-                case ":":  //ARRAY (Multi Flex) (Numbers)
-                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid=:flt_0 AND language=:lang AND scale_id = 0 ORDER BY question_order";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
-                    foreach($result as $row)
-                    {
-                        $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
-                        $fresult = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
-                        foreach($fresult as $frow)
-                        {
-                            $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
-                        $allfields[]=$myfield2;
-                    }
-                    }
-                    break;
-                case "R": //RANKING
-                    //get some answers
-                    $query = "SELECT code, answer FROM {{answers}} WHERE qid = :flt_0 AND language = :lang ORDER BY sortorder, answer";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
-
-                    //get number of answers
-                    $count = $result->num_rows();
-
-                    //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                    for ($i=1; $i<=$count; $i++)
-                    {
-                        $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
-                        $allfields[]=$myfield2;
-                    }
-                    break;
-                //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-                case "X":  //This is a boilerplate question and it has no business in this script
-                    break;
-                case "1": // MULTI SCALE
-                    //get answers
-                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang ORDER BY question_order";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
-
-                    //loop through answers
-                    foreach($result as $row)
-                    {
-                        //----------------- LABEL 1 ---------------------
-                        $myfield2 = $myfield . reset($row[0])."#0";
-                        $allfields[]=$myfield2;
-                        //----------------- LABEL 2 ---------------------
-                        $myfield2 = $myfield . "$row[0]#1";
-                        $allfields[]=$myfield2;
-                    } //end WHILE -> loop through all answers
-                    break;
-
-                case "P":  //P - Multiple choice with comments
-                case "M":  //M - Multiple choice
-                case "N":  //N - Numerical input
-                case "D":  //D - Date
-                    $myfield2 = $flt[2].$myfield; //AJS
-                            $allfields[]=$myfield2;
-                    break;
-                default:   //Default settings
-                    $allfields[] = $myfield;
-                    break;
-
-            } //end switch -> check question types and create filter forms
-        }
-        //end foreach -> loop through all questions with "public_statistics" enabled
-        }// end if -> for removing the error message in case there are no filters
-        $summary = $allfields;
+        $summary = createCompleteSGQA($iSurveyID,$oAllQuestions,$surveylanguage);
 
         //---------- CREATE STATISTICS ----------
 
@@ -421,28 +274,24 @@ class Statistics_userController extends LSYii_Controller {
         $process_status = 40;
 
         //Show Summary results
-        if (isset($summary) && $summary)
+        //"Generating Summaries ..." is shown above the progress bar
+        $prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
+        $prb->moveStep($process_status);
+
+        //let's run through the survey // Fixed bug 3053 with array_unique
+        $runthrough=array_unique($summary);
+
+        //loop through all selected questions
+        foreach ($runthrough as $rt)
         {
-            //"Generating Summaries ..." is shown above the progress bar
-            $prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
+
+            //update progress bar
+            if ($process_status < 100) $process_status++;
             $prb->moveStep($process_status);
 
-            //let's run through the survey // Fixed bug 3053 with array_unique
-            $runthrough=array_unique($summary);
+        } // end foreach -> loop through all questions
 
-            //loop through all selected questions
-            foreach ($runthrough as $rt)
-            {
-
-                //update progress bar
-                if ($process_status < 100) $process_status++;
-                $prb->moveStep($process_status);
-
-            } // end foreach -> loop through all questions
-
-            $statisticsoutput .= generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html',null,$language,false);
-
-        } //end if -> show summary results
+        $statisticsoutput .= generate_statistics($iSurveyID, $summary, $publicgraphs, 'html',null,$language,false);
 
 
         //done! set progress bar to 100%

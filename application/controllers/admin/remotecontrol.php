@@ -595,17 +595,17 @@ class remotecontrol_handle
         switch ($docType)
         {
             case 'pdf':
-                $sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,$graph,$docType,'F',$sLanguage); //AJS
+                $sTempFile = generate_statistics($iSurveyID,$aSummary,$graph,$docType,'F',$sLanguage); //AJS
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
             case 'xls':
-                $sTempFile = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'F',$sLanguage); //AJS
+                $sTempFile = generate_statistics($iSurveyID,$aSummary,'0',$docType, 'F',$sLanguage); //AJS
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
             case 'html':
-                $sResult = generate_statistics($iSurveyID,$aSummary,$aSummary,'0',$docType, 'DD',$sLanguage); //AJS
+                $sResult = generate_statistics($iSurveyID,$aSummary,'0',$docType, 'DD',$sLanguage); //AJS
                 break;
         }
 

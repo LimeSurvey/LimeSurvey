@@ -1308,7 +1308,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
 
 <?php
 
-    /* This function builds the text description of eqch question in the filter section
+    /* This function builds the text description of each question in the filter section
      *
      * @param string $hinttext The question text
      *

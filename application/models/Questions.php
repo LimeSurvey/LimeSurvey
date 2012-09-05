@@ -73,6 +73,9 @@
             'question_types' => array(self::HAS_ONE, 'Question_types', '',
             'on' => 't.tid = question_types.tid',
             ),
+            'question_attributes' => array(self::HAS_MANY, 'Question_attributes', '',
+            'on' => 't.qid = question_attributes.qid',
+            ),
             );
         }
 
