@@ -288,6 +288,7 @@ function updatequestionattributes()
     $('#advancedquestionsettings').html('');
     var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
     if (selected_value==undefined) selected_value = qDescToCode[''+$("#question_type option:selected").text()];
+    if (selected_value==undefined) selected_value = $("#question_class").val();
     $('#advancedquestionsettings').load(attr_url,{qid:$('#qid').val(),
         class:selected_value,
         sid:$('#sid').val()
