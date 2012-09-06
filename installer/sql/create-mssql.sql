@@ -136,7 +136,7 @@ CREATE TABLE [prefix_labelsets] (
 CREATE TABLE [prefix_participant_attribute] (
   [participant_id] varchar(50) NOT NULL,
   [attribute_id] int NOT NULL,
-  [value] varchar(50) NOT NULL,
+  [value] varchar(max) NOT NULL,
   PRIMARY KEY  ([participant_id],[attribute_id])
 );
 
@@ -146,7 +146,7 @@ CREATE TABLE [prefix_participant_attribute] (
 --
 CREATE TABLE [prefix_participant_attribute_names_lang] (
   [attribute_id] int NOT NULL,
-  [attribute_name] varchar(30) NOT NULL,
+  [attribute_name] varchar(255) NOT NULL,
   [lang] varchar(20) NOT NULL,
   PRIMARY KEY  ([attribute_id],[lang])
 );
@@ -169,7 +169,7 @@ CREATE TABLE [prefix_participant_attribute_names] (
 CREATE TABLE [prefix_participant_attribute_values] (
   [value_id] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [attribute_id] int NOT NULL,
-  [value] varchar(20) NOT NULL
+  [value] varchar(max) NOT NULL
 );
 
 
@@ -551,4 +551,4 @@ create index [labels_code_idx] on [prefix_labels] ([code]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '161');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '162');
