@@ -27,7 +27,6 @@ $js_admin_includes[]='scripts/users.js';
 
 if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb" || $action == "editusergroup" || $action == "mailusergroup")
 {
-
     if($ugid)
     {
         $grpquery = "SELECT gp.* FROM ".db_table_name('user_groups')." AS gp, ".db_table_name('user_in_groups')." AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$_SESSION['loginID'];
@@ -637,7 +636,7 @@ if ($action == "editusergroup")
 {
     if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
-        $query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
+        $query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND owner_id = ".$_SESSION['loginID'];
         $result = db_select_limit_assoc($query, 1);
         $esrow = $result->FetchRow();
         $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Editing user group (Owner: %s)"),$_SESSION['user'])."</div>"
