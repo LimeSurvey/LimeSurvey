@@ -27,7 +27,7 @@ function fixNumbering($fixnumbering)
 
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
     //Fix a question id - requires renumbering a question
-    $oldqid = $fixnumbering;
+    $oldqid = sanitize_int($fixnumbering);
     $query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC";
     $result = db_select_limit_assoc($query, 1) or safe_die($query."<br />".$connect->ErrorMsg());
     while ($row=$result->FetchRow()) {$lastqid=$row['qid'];}
