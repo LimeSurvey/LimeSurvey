@@ -886,7 +886,7 @@ class SurveyAdmin extends Survey_Common_Action
 
                 if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'xls' && strtolower($sExtension) != 'lsa'))
                 {
-                    $aData['sErrorMessage'] = $clang->gT("Import failed. You specified an invalid file type.");
+                    $aData['sErrorMessage'] = sprintf($clang->gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
                     $aData['bFailed'] = true;
                 }
             }

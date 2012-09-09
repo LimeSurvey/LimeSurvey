@@ -5,7 +5,7 @@
         { ?>
             <div class='warningheader'><?php $clang->eT("Error"); ?></div><br />
              <?php echo $aImportResults['error']; ?><br /><br />
-            <input type='submit' value='<?php $clang->eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo site_url('admin'); ?>', '_top')" />
+            <input type='submit' value='<?php $clang->eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin'); ?>', '_top')" />
             <?php $importerror = true;
         }
         
@@ -58,7 +58,7 @@
             <?php } ?>
             
             <strong><?php $clang->eT("Copy of survey is completed."); ?></strong>
-            <a href='<?php echo site_url("admin/survey/view/".$aImportResults['newsid']); ?>'>
+            <a href='<?php echo $this->createUrl("admin/survey/view/".$aImportResults['newsid']); ?>'>
             <?php $clang->eT("Go to survey"); ?></a>
     <?php } ?>
 </div>
