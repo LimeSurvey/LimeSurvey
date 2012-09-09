@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-09-03 22:05:53+00:00\n"
+"POT-Creation-Date: 2012-09-09 15:05:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7081,8 +7081,6 @@ msgstr ""
 
 #: application/helpers/frontend_helper.php:1516
 #: application/helpers/frontend_helper.php:1689
-#: application/helpers/replacements_helper.php:576
-#: application/helpers/replacements_helper.php:597
 #: application/helpers/replacements_helper.php:660
 msgid "Security Question"
 msgstr ""
@@ -7299,6 +7297,7 @@ msgid "Upload your files"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:2864
+#: application/helpers/replacements_helper.php:542
 msgid "Return to survey"
 msgstr ""
 
@@ -7365,7 +7364,7 @@ msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr ""
 
 #: application/helpers/replacements_helper.php:410
-msgid "Exit and Clear Survey"
+msgid "Exit and clear survey"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:411
@@ -7383,6 +7382,9 @@ msgid "If you want to check any of the answers you have made, and/or change them
 msgstr ""
 
 #: application/helpers/replacements_helper.php:510
+msgid "Restart this survey"
+msgstr ""
+
 #: application/helpers/replacements_helper.php:519
 msgid "Restart this Survey"
 msgstr ""
@@ -7391,16 +7393,18 @@ msgstr ""
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:542
-msgid "Return To Survey"
-msgstr ""
-
 #: application/helpers/replacements_helper.php:562
-msgid "Repeat Password"
+msgid "Repeat password"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:568
-msgid "Your Email"
+msgid "Your email address"
+msgstr ""
+
+#: application/helpers/replacements_helper.php:576
+#: application/helpers/replacements_helper.php:597
+#: application/views/entertoken_view.php:41
+msgid "Security question"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:583
@@ -7408,15 +7412,15 @@ msgid "Saved name"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:600
-msgid "Load Now"
+msgid "Load now"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:779
-msgid "Answers Cleared"
+msgid "Answers cleared"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:782
-msgid "Your Assessment"
+msgid "Your assessment"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:783
@@ -7428,7 +7432,7 @@ msgid "Close this window"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:799
-msgid "Load A Previously Saved Survey"
+msgid "Load a previously saved survey"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:800
@@ -7464,7 +7468,7 @@ msgid "Enter your details below, and an email containing the link to participate
 msgstr ""
 
 #: application/helpers/replacements_helper.php:836
-msgid "Save Your Unfinished Survey"
+msgid "Save your unfinished survey"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:837
@@ -13988,10 +13992,6 @@ msgstr ""
 
 #: application/views/admin/usergroup/viewUserGroup_view.php:48
 msgid "Delete this user from group"
-msgstr ""
-
-#: application/views/entertoken_view.php:41
-msgid "Security question"
 msgstr ""
 
 #: application/views/installer/dbconfig_view.php:18
