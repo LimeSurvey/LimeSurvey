@@ -175,6 +175,14 @@
         $supportedLanguages['cs']['dateformat'] = 4;
         $supportedLanguages['cs']['radixpoint'] = 1;
 
+        // Czech informal
+        $supportedLanguages['cs-informal']['description'] = $clang->gT('Czech Informal');
+        $supportedLanguages['cs-informal']['nativedescription'] = '&#x010c;esky neformální';
+        $supportedLanguages['cs-informal']['rtl'] = false;
+        $supportedLanguages['cs-informal']['dateformat'] = 4;
+        $supportedLanguages['cs-informal']['radixpoint'] = 1;
+        
+        
         // Danish
         $supportedLanguages['da']['description'] = $clang->gT('Danish');
         $supportedLanguages['da']['nativedescription'] = 'Dansk';
