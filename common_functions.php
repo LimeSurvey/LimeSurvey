@@ -998,26 +998,6 @@ function question_class($input)
     };
 };
 
-if(!defined('COLSTYLE'))
-{
-    /**
-    * The following prepares and defines the 'COLSTYLE' constant which
-    * dictates how columns are to be marked up for list type questions.
-    *
-    * $column_style is initialised at the end of config-defaults.php or from within config.php
-    */
-    if( !isset($column_style)   ||
-    $column_style  != 'css' ||
-    $column_style  != 'ul'  ||
-    $column_style  != 'table' ||
-    $column_style  != null )
-    {
-        $column_style = 'ul';
-    };
-    define('COLSTYLE' ,strtolower($column_style), true);
-};
-
-
 function setup_columns($columns, $answer_count)
 {
     /**
@@ -1046,10 +1026,8 @@ function setup_columns($columns, $answer_count)
     *    $wrapper['cols']          = Number of columns to be inserted
     *                                (and checked against)
     *
-    * It also expect the constant COLSTYLE which sets how columns should
-    * be rendered.
-    *
-    * COLSTYLE is defined 30 lines above.
+    * It also expect the global parameter $column_style
+    * initialised at the end of config-defaults.php or from within config.php
     *
     * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     * Columns are a problem.
@@ -1088,7 +1066,11 @@ function setup_columns($columns, $answer_count)
     */
 
 
-    $colstyle = COLSTYLE;
+    global $column_style;
+    if ( !in_array($column_style,array('css','ul','table')) && !is_null($column_style) )
+    {
+        $column_style = 'ul';
+    };
 
     /*
     if(defined('PRINT_TEMPLATE')) // This forces tables based columns for printablesurvey
@@ -1098,7 +1080,7 @@ function setup_columns($columns, $answer_count)
     */
     if($columns < 2)
     {
-        $colstyle = null;
+        $column_style = null;
         $columns = 1;
     }
 
@@ -1113,9 +1095,9 @@ function setup_columns($columns, $answer_count)
     }
 
     $class_first = '';
-    if($columns > 1 && $colstyle != null)
+    if($columns > 1 && !is_null($column_style))
     {
-        if($colstyle == 'ul')
+        if($column_style == 'ul')
         {
             $ul = '-ul';
         }
@@ -1147,7 +1129,7 @@ function setup_columns($columns, $answer_count)
     ,'cols'     => $columns
     );
 
-    switch($colstyle)
+    switch($column_style)
     {
         case 'ul':  if($columns > 1)
             {
@@ -3265,7 +3247,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Category separator'));
 
     $qattributes["display_columns"]=array(
-    "types"=>"GLM",
+    "types"=>"LM",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'integer',
