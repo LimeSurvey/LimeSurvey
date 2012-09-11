@@ -966,25 +966,6 @@ function getQuestionClass($input)
     };
 };
 
-if(!defined('COLSTYLE'))
-{
-    /**
-    * The following prepares and defines the 'COLSTYLE' constant which
-    * dictates how columns are to be marked up for list type questions.
-    *
-    * $column_style is initialised at the end of config-defaults.php or from within config.php
-    */
-    if( !isset($column_style)   ||
-    $column_style  != 'css' ||
-    $column_style  != 'ul'  ||
-    $column_style  != 'table' ||
-    $column_style  != null )
-    {
-        $column_style = 'ul';
-    };
-    define('COLSTYLE' ,strtolower($column_style), true);
-};
-
 /**
 * setupColumns() defines all the html tags to be wrapped around
 * various list type answers.
@@ -1015,10 +996,6 @@ if(!defined('COLSTYLE'))
 *    $wrapper['cols']          = Number of columns to be inserted
 *                                (and checked against)
 *
-* It also expect the constant COLSTYLE which sets how columns should
-* be rendered.
-*
-* COLSTYLE is defined 30 lines above.
 *
 * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 * Columns are a problem.
@@ -1058,11 +1035,15 @@ if(!defined('COLSTYLE'))
 function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
 {
 
-    $colstyle = COLSTYLE;
+    $column_style = Yii::app()->getConfig('column_style');
+    if ( !in_array($column_style,array('css','ul','table')) && !is_null($column_style) )
+    {
+        $column_style = 'ul';
+    };
 
     if($columns < 2)
     {
-        $colstyle = null;
+        $column_style = null;
         $columns = 1;
     }
 
@@ -1077,9 +1058,9 @@ function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
     }
 
     $class_first = ' class="'.$wrapperclass.'"';
-    if($columns > 1 && $colstyle != null)
+    if($columns > 1 && !is_null($column_style))
     {
-        if($colstyle == 'ul')
+        if($column_style == 'ul')
         {
             $ul = '-ul';
         }
@@ -1112,7 +1093,7 @@ function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
     ,'cols'     => $columns
     );
 
-    switch($colstyle)
+    switch($column_style)
     {
         case 'ul':  if($columns > 1)
             {
@@ -3270,7 +3251,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Code filter'));
 
     $qattributes["display_columns"]=array(
-    "types"=>"GLMZ",
+    "types"=>"LM",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'integer',
