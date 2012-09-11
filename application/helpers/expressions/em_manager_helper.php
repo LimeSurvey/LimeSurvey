@@ -2579,7 +2579,7 @@
                 // other comment mandatory
                 if ($other_comment_mandatory!='')
                 {
-                    $qtips['other_comment_mandatory']=$this->gT('Please also fill in the "other comment" field.');
+                    $qtips['other_comment_mandatory']=$this->gT('Please also fill in the &#8220;other comment&#8221; field.');
                 }
 
                 // regular expression validation
