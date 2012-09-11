@@ -107,7 +107,6 @@
     <p>
         <?php $clang->eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."); ?>
     </p>
-    <span style="font-weight:bold;">Mandatory fields:</span><?php $clang->eT("firstname, lastname, email"); ?>
-    <br/>
-    <span style="font-weight:bold;">Optional fields:</span><?php $clang->eT("blacklist,language"); ?>
+    <span style="font-weight:bold;">Mandatory fields:</span> firstname, lastname, email    <br/>
+    <span style="font-weight:bold;">Optional fields:</span> blacklist,language
 </div>

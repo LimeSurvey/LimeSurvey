@@ -134,7 +134,7 @@ function getQueryVariable(variable, url) {
     }
     // If not found try with ?
     // TODO : replace by a regexp
-   var vars = url.split("&");
+   var vars = url.replace(/\&amp;/g,'&').split("&");
    for (var i=0;i<vars.length;i++) {
            var pair = vars[i].split("=");
            if(pair[0] == variable){return pair[1];}

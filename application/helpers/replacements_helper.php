@@ -400,7 +400,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
+        $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and clear survey") . "' class='clearall' "
         . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",array('move'=>'clearall','lang'=>$s_lang),'&amp;');
 
         if (returnGlobal('token'))
@@ -500,7 +500,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_restart= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/$surveyid/newtest/Y");
         if (isset($s_lang) && $s_lang!='') $_restart.="/lang/".$s_lang;
-        $_restart.="'>".$clang->gT("Restart this Survey")."</a>";
+        $_restart.="'>".$clang->gT("Restart this survey")."</a>";
     }
     else if (isset($surveyid))
         {
@@ -532,7 +532,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         {
             $_return_to_survey.= "?amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnGlobal('token')))));
         }
-        $_return_to_survey .= "'>" . $clang->gT("Return To Survey") . "</a>";
+        $_return_to_survey .= "'>" . $clang->gT("Return to survey") . "</a>";
     }
     else
     {
@@ -552,13 +552,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_saveform .= HTMLEscape(autoUnescape($_POST['savepass']));
     }
     $_saveform .= "' /></td></tr>\n"
-    . "<tr><td align='right'>" . $clang->gT("Repeat Password") . ":</td><td><input type='password' name='savepass2' value='";
+    . "<tr><td align='right'>" . $clang->gT("Repeat password") . ":</td><td><input type='password' name='savepass2' value='";
     if (isset($_POST['savepass2']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['savepass2']));
     }
     $_saveform .= "' /></td></tr>\n"
-    . "<tr><td align='right'>" . $clang->gT("Your Email") . ":</td><td><input type='text' name='saveemail' value='";
+    . "<tr><td align='right'>" . $clang->gT("Your email address") . ":</td><td><input type='text' name='saveemail' value='";
     if (isset($_POST['saveemail']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['saveemail']));
@@ -566,7 +566,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_saveform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+        $_saveform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
     $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
     . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
@@ -587,10 +587,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_loadform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+        $_loadform .="<tr><td align='right'>" . $clang->gT("Security question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
     $_loadform .="<tr><td align='right'></td><td></td></tr>\n"
-    . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load Now") . "' /></td></tr></table>\n";
+    . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load now") . "' /></td></tr></table>\n";
 
     // Registration Form
     if (isset($surveyid) || (isset($registerdata) && $debugSrc == 'register.php'))
@@ -769,10 +769,10 @@ EOD;
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['AID'] = isset($questiondetials->aid) ? $questiondetails->aid : '';
     $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
-    $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
+    $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers cleared");
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
-    $coreReplacements['ASSESSMENT_HEADING'] = $clang->gT("Your Assessment");
+    $coreReplacements['ASSESSMENT_HEADING'] = $clang->gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = "<noscript><span class='warningjs'>".$clang->gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>";
     $coreReplacements['CLEARALL'] = $_clearall;
     $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>";
@@ -789,7 +789,7 @@ EOD;
     $coreReplacements['LANGUAGECHANGER'] = isset($languagechanger) ? $languagechanger : '';    // global
     $coreReplacements['LOADERROR'] = isset($errormsg) ? $errormsg : ''; // global
     $coreReplacements['LOADFORM'] = $_loadform;
-    $coreReplacements['LOADHEADING'] = $clang->gT("Load A Previously Saved Survey");
+    $coreReplacements['LOADHEADING'] = $clang->gT("Load a previously saved survey");
     $coreReplacements['LOADMESSAGE'] = $clang->gT("You can load a survey that you have previously saved from this screen.")."<br />".$clang->gT("Type in the 'name' you used to save the survey, and the password.")."<br />";
     $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : '';    // global
     $coreReplacements['NOSURVEYID'] = (isset($surveylist))?$surveylist['nosid']:'';
@@ -826,7 +826,7 @@ EOD;
     $coreReplacements['SAVEDID'] = isset($saved_id) ? $saved_id : '';   // global
     $coreReplacements['SAVEERROR'] = isset($errormsg) ? $errormsg : ''; // global - same as LOADERROR
     $coreReplacements['SAVEFORM'] = $_saveform;
-    $coreReplacements['SAVEHEADING'] = $clang->gT("Save Your Unfinished Survey");
+    $coreReplacements['SAVEHEADING'] = $clang->gT("Save your unfinished survey");
     $coreReplacements['SAVEMESSAGE'] = $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
     $coreReplacements['SGQ'] = $_question_sgq;
     $coreReplacements['SID'] = (isset($surveyid) ? $surveyid : (isset($questiondetails->surveyid) ? $questiondetails->surveyid : ''));
