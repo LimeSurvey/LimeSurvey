@@ -670,7 +670,11 @@ class Participants extends CActiveRecord
      * @param int $surveyid The survey id
      * @param array $mapped An array containing a list of already existing/mapped attributes in the form of "token_field_name"=>"participant_attribute_id"
      * @param array $newcreate An array containing new attributes to create in the tokens table
-     * @param bool $overwrite If true, overwrite existing values in existint token attributes
+     * @param string $participantid A comma seperated string containing the participant ids of the participants we are adding
+     * @param bool $overwriteauto If true, overwrite automatically mapped data
+     * @param bool $overwriteman If true, overwrite manually mapped data
+     * @param bool $overwritest If true, overwrite standard fields (ie: names, email, participant_id, token)
+     * @param bool $createautomap If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
      * */
     function copytosurveyatt($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
     {
@@ -685,6 +689,8 @@ class Participants extends CActiveRecord
         $attributesadded = array(); //Will contain the actual field name of any new token attribute fields
         $attributeidadded = array(); //Will contain the description of any new token attribute fields
         $fieldcontents = array(); //Will contain serialised info for the surveys.attributedescriptions field
+        $surveyinfo=getSurveyInfo($surveyid);
+        $defaultsurveylang=$surveyinfo['surveyls_language'];
 
         $arr = Yii::app()->db
                          ->createCommand()
@@ -696,13 +702,16 @@ class Participants extends CActiveRecord
             $tokenfieldnames = array_keys($arr);
             $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
         }
+
+        /* Rename an existing attribute in the token table to this attribute so
+         * it maps automatically in future.
+         *
+         * Fieldname renamed from the $key of $mappeed to the $val of $mapped
+         * */
         if($createautomap=="true") {
-            //Rename the token table fieldnames contained in the $key of $mapped to the cpdb name for the $val of $mapped
             foreach($mapped as $key=>$val) {
                 if(is_numeric($val)) {
                     $newname = 'attribute_cpdb_' . intval($val);
-
-                    //$fields = array($value => array('name' => $newname, 'type' => 'TEXT'));
                     //Rename the field in the tokens_[sid] table
                     Yii::app()->db
                               ->createCommand()
@@ -712,6 +721,7 @@ class Participants extends CActiveRecord
                               ->createCommand()
                               ->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
 
+                    /* Update the attributedescriptions info */
                     $previousatt = Yii::app()->db
                                              ->createCommand()
                                              ->select('attributedescriptions')
@@ -725,6 +735,7 @@ class Participants extends CActiveRecord
                     $attributedetails=ParticipantAttributeNames::getAttributeNames($val);
                     $previousattribute[$newname]['description']=$attributedetails[0]['attribute_name'];
                     $previousattribute=serialize($previousattribute);
+
                     Yii::app()->db
                               ->createCommand()
                               ->update('{{surveys}}',
@@ -758,15 +769,25 @@ class Participants extends CActiveRecord
                 $fields[$newfieldname] = array('type' => 'VARCHAR', 'constraint' => '255');
                 $attname = Yii::app()->db
                                      ->createCommand()
-                                     ->select('{{participant_attribute_names_lang}}.attribute_name')
+                                     ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
                                      ->from('{{participant_attribute_names}}')
                                      ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
-                                     ->where('{{participant_attribute_names}}.attribute_id = :attrid AND lang = "' . Yii::app()
-                                     ->session['adminlang'] . '"')
+                                     ->where('{{participant_attribute_names}}.attribute_id = :attrid ')
                                      ->bindParam(":attrid", $value, PDO::PARAM_INT);
-                $attributename = $attname->queryRow();
+                $attributename = $attname->queryAll();
+                foreach($attributename as $att) {
+                    $languages[$att['lang']]=$att['attribute_name'];
+                }
+                //Check first for the default survey language
+                if(isset($languages[$defaultsurveylang])) {
+                    $newname=$languages[$defaultsurveylang];
+                } elseif (isset($language[Yii::app()->session['adminlang']])) {
+                    $newname=$languages[Yii::app()->session['adminlang']];
+                } else {
+                    $newname=$attributename[0]['attribute_name']; //Choose the first item in the list
+                }
                 $tokenattributefieldnames[] = $newfieldname;
-                $fieldcontents[$newfieldname]=array("description"=>$attributename['attribute_name'],
+                $fieldcontents[$newfieldname]=array("description"=>$newname,
                                                     "mandatory"=>"N",
                                                     "show_register"=>"N");
                 array_push($attributeidadded, 'attribute_cpdb_' . $value);
