@@ -326,13 +326,6 @@ $config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja',
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 
 
-
-// RemoteControl Settings
-/**
-* This value determines if the RemoteControl is enabled (true) or not (false)
-*/
-$config['enableLsrc'] = false;
-
 // CAS Settings
 /**
 * Please note that CAS functionality is very basic and you have to modify the client to your needs.

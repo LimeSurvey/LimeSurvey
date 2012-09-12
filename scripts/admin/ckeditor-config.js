@@ -13,6 +13,7 @@ CKEDITOR.editorConfig = function( config )
     config.toolbarCanCollapse = false;
     config.resize_enabled = false;
     config.autoParagraph = false;
+    config.entities = false;    
 	
 	if($('html').attr('dir') == 'rtl') {
 		config.contentsLangDirection = 'rtl';
