@@ -32,7 +32,7 @@ if (!isset($_GET['lang']) || $_GET['lang'] == "")
 {
     $language = GetBaseLanguageFromSurveyID($surveyid);
 } else {
-    $language = $_GET['lang'];
+    $language = sanitize_languagecode($_GET['lang']);
 }
 
 $_SESSION['s_lang'] = $language;
@@ -109,17 +109,17 @@ $dummy_js = <<< EOD
         $('#answer'+name).val(displayVal);
 
         if (typeof evt_type === 'undefined')
-        { 
-            evt_type = 'onchange'; 
-        }    
+        {
+            evt_type = 'onchange';
+        }
         checkconditions(newval, name, type, evt_type);
 	}
 
 	function checkconditions(value, name, type, evt_type)
 	{
-        if (typeof evt_type === 'undefined') 
-        { 
-            evt_type = 'onchange'; 
+        if (typeof evt_type === 'undefined')
+        {
+            evt_type = 'onchange';
         }
         if (type == 'radio' || type == 'select-one')
         {

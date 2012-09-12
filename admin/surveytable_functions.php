@@ -12,17 +12,17 @@ function surveyFixColumns($surveyid)
     global $dbprefix, $connect;
     // Check and fix duplicate column names
     surveyFixDuplicateColumns($surveyid);
-    
+
     // Get latest fieldmap
     $fieldmap=createFieldMap($surveyid);
-    
+
     // Find any fields that do not exist
     $fieldlist = array();
     foreach($fieldmap as $fielddata)
     {
         $fieldlist[]=$fielddata['fieldname'];
     }
-        
+
     $dict = NewDataDictionary($connect);
     $sqlfields = $dict->MetaColumns("{$dbprefix}survey_{$surveyid}");
     $sqllist = array();
@@ -30,16 +30,16 @@ function surveyFixColumns($surveyid)
     {
         $sqllist[]=$sqlfield->name;
     }
-    
+
     $missingFields = array_diff($fieldlist, $sqllist);
     $removedFields = array_diff($sqllist, $fieldlist);
-    
+
     die(print_r($missingFields).print_r($removedFields));
-    
+
     // Find any fields that have been removed
-    
+
     // Add fields that need to be added
-    
+
     // Remove fields that need to be removed
 }
 
@@ -144,7 +144,7 @@ function surveyFixQuestionNumbering($qid)
     //Now answers
     $query = "UPDATE {$dbprefix}answers SET qid=$newqid WHERE qid=$oldqid";
     $result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
-    
+
     LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
@@ -212,7 +212,7 @@ function surveyCheckStructure($surveyid)
     }
 
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
-    $chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type = ''";
+    $chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type = ''";
     $chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing types<br />$chkquery<br />".$connect->ErrorMsg());
     while ($chkrow = $chkresult->FetchRow())
     {
@@ -220,7 +220,7 @@ function surveyCheckStructure($surveyid)
     }
 
     //ChECK THAT certain array question types have answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1')";
+    $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=0)=0 and sid={$surveyid} AND type IN ('F', 'H', 'W', 'Z', '1')";
     $chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing answers<br />$chkquery<br />".$connect->ErrorMsg());
     while($chkrow = $chkresult->FetchRow())
     {
@@ -228,7 +228,7 @@ function surveyCheckStructure($surveyid)
     } // while
 
     //CHECK THAT DUAL Array has answers set
-    $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type='1'";
+    $chkquery = "SELECT q.qid, question, gid FROM {$dbprefix}questions as q WHERE (select count(*) from {$dbprefix}answers as a where a.qid=q.qid and scale_id=1)=0 and sid={$surveyid} AND type='1'";
     $chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing 2nd answer set<br />$chkquery<br />".$connect->ErrorMsg());
     while($chkrow = $chkresult->FetchRow())
     {
@@ -237,7 +237,7 @@ function surveyCheckStructure($surveyid)
 
     //CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
     //A: Make an array of all the qids in order of appearance
-    //	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
+    //	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$surveyid} ORDER BY {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
     //	$qorderresult=$connect->Execute($qorderquery) or safe_die("Couldn't generate a list of questions in order<br />$qorderquery<br />".$connect->ErrorMsg());
     //	$qordercount=$qorderresult->RecordCount();
     //	$c=0;
@@ -308,7 +308,7 @@ function surveyCreateTable($surveyid)
 {
     global $dbprefix, $databasetabletype, $connect;
     $createsurvey='';
-     
+
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$surveyid}";
     $presult=db_execute_assoc($pquery);
@@ -316,7 +316,7 @@ function surveyCreateTable($surveyid)
 
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
- 
+
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
         $createsurvey .= " `{$arow['fieldname']}`";
@@ -352,7 +352,7 @@ function surveyCreateTable($surveyid)
         }
         $createsurvey .= ",\n";
     }
-    
+
     //strip trailing comma and new line feed (if any)
     $createsurvey = rtrim($createsurvey, ",\n");
 

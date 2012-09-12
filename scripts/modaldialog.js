@@ -126,7 +126,7 @@ $(document).ready(function() {
 
 function getQueryVariable(variable, url) {
     var query = url.split("?");
-    var vars = query[1].split("&");
+    var vars = query[1].replace(/\&amp;/g,'&').split("&");
     for (var i=0;i<vars.length;i++) {
         var pair = vars[i].split("=");
         if (pair[0] == variable) {
