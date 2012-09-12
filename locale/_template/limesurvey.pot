@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-09-11 22:05:44+00:00\n"
+"POT-Creation-Date: 2012-09-12 22:05:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2134,19 +2134,19 @@ msgstr ""
 msgid "Email templates successfully saved."
 msgstr ""
 
-#: application/controllers/admin/export.php:224
-#: application/controllers/admin/export.php:397
-#: application/controllers/admin/export.php:664
+#: application/controllers/admin/export.php:191
+#: application/controllers/admin/export.php:364
+#: application/controllers/admin/export.php:631
 #: application/views/admin/export/exportresults_view.php:1
 #: application/views/admin/export/vv_view.php:21
 msgid "Export results"
 msgstr ""
 
-#: application/controllers/admin/export.php:904
+#: application/controllers/admin/export.php:871
 msgid "Export VV file"
 msgstr ""
 
-#: application/controllers/admin/export.php:1059
+#: application/controllers/admin/export.php:1026
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -8847,29 +8847,6 @@ msgstr ""
 #: application/views/admin/export/exportresults_view.php:132
 #: application/views/admin/export/spss_view.php:19
 msgid "Export data"
-msgstr ""
-
-#: application/views/admin/export/group_view.php:2
-msgid "Export group structure"
-msgstr ""
-
-#: application/views/admin/export/group_view.php:7
-#: application/views/admin/export/question_view.php:7
-msgid "LimeSurvey group file (*.csv)"
-msgstr ""
-
-#: application/views/admin/export/group_view.php:10
-#: application/views/admin/export/question_view.php:10
-msgid "Save for Lsrc (*.csv)"
-msgstr ""
-
-#: application/views/admin/export/group_view.php:14
-#: application/views/admin/export/question_view.php:14
-msgid "Export to file"
-msgstr ""
-
-#: application/views/admin/export/question_view.php:2
-msgid "Export question structure"
 msgstr ""
 
 #: application/views/admin/export/r_view.php:1
