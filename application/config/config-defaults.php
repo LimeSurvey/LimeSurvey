@@ -333,11 +333,6 @@ $config['pdforientation'] = 'P';                     // Set L for Landscape or P
 */
 $config['enableLsrc'] = false;
 
-/**
-* This value determines if you can save survey structures (as .csv) into your lsrc folder in export menu
-*/
-$config['export4lsrc'] = false;
-
 // CAS Settings
 /**
 * Please note that CAS functionality is very basic and you have to modify the client to your needs.

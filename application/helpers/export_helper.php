@@ -1399,147 +1399,6 @@ function concat()
     return implode('+', $arr);
 }
 
-/**
-* LSRC csv survey export
-*/
-function lsrccsv_export($iSurveyID)
-{
-    // DUMP THE RELATED DATA FOR A SINGLE SURVEY INTO A SQL FILE FOR IMPORTING LATER ON OR ON ANOTHER SURVEY SETUP
-    // DUMP ALL DATA WITH RELATED SID FROM THE FOLLOWING TABLES
-    // 1. Surveys
-    // 2. Surveys Language Table
-    // 3. Groups
-    // 4. Questions
-    // 5. Answers
-    // 6. Conditions
-    // 7. Label Sets
-    // 8. Labels
-    // 9. Question attributes
-    // 10. Assessments
-    // 11. Quota
-    // 12. Quota Members
-
-    if (!isset($iSurveyID)) {$iSurveyID=returnGlobal('sid');}
-
-
-    if (!$iSurveyID)
-    {
-        die("No SID has been provided. Cannot dump survey");
-    }
-
-    $dbversionnumber = getGlobalSetting('DBVersion');
-    $dumphead = "# LimeSurvey Survey Dump\n"
-    . "# DBVersion $dbversionnumber\n"
-    . "# This is a dumped survey from the LimeSurvey Script\n"
-    . "# http://www.limesurvey.org/\n"
-    . "# Do not change this header!\n";
-
-    //1: Surveys table
-    $squery = "SELECT *
-    FROM {{surveys}}
-    WHERE sid=$iSurveyID";
-    $sdump = BuildCSVFromQuery($squery);
-
-    //2: Surveys Languagsettings table
-    $slsquery = "SELECT *
-    FROM {{surveys_languagesettings}}
-    WHERE surveyls_survey_id=$iSurveyID";
-    $slsdump = BuildCSVFromQuery($slsquery);
-
-    //3: Groups Table
-    $gquery = "SELECT *
-    FROM {{groups}}
-    WHERE sid=$iSurveyID
-    ORDER BY gid";
-    $gdump = BuildCSVFromQuery($gquery);
-
-    //4: Questions Table
-    $qquery = "SELECT *
-    FROM {{questions}}
-    WHERE sid=$iSurveyID
-    ORDER BY qid";
-    $qdump = BuildCSVFromQuery($qquery);
-
-    //5: Answers table
-    $aquery = "SELECT {{answers}}.*
-    FROM {{answers}}, {{questions}}
-    WHERE {{answers}}.language={{questions}}.language
-    AND {{answers}}.qid={{questions}}.qid
-    AND {{questions}}.sid=$iSurveyID";
-    $adump = BuildCSVFromQuery($aquery);
-
-    //6: Conditions table
-    $cquery = "SELECT DISTINCT {{conditions}}.*
-    FROM {{conditions}}, {{questions}}
-    WHERE {{conditions}}.qid={{questions}}.qid
-    AND {{questions}}.sid=$iSurveyID";
-    $cdump = BuildCSVFromQuery($cquery);
-
-    //7: Label Sets
-    $lsquery = "SELECT DISTINCT {{labelsets}}.lid, label_name, {{labelsets}}.languages
-    FROM {{labelsets}}, {{questions}}
-    WHERE ({{labelsets}}.lid={{questions}}.lid or {{labelsets}}.lid={{questions}}.lid1)
-    AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';')
-    AND sid=$iSurveyID";
-    $lsdump = BuildCSVFromQuery($lsquery);
-
-    //8: Labels
-    $lquery = "SELECT {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language
-    FROM {{labels}}, {{questions}}
-    WHERE ({{labels}}.lid={{questions}}.lid or {{labels}}.lid={{questions}}.lid1)
-    AND type in ('F', 'W', 'H', 'Z', '1', ':', ';')
-    AND sid=$iSurveyID
-    GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language";
-    $ldump = BuildCSVFromQuery($lquery);
-
-    //9: Question attributes
-    $query = "SELECT DISTINCT {{question_attributes}}.*
-    FROM {{question_attributes}}, {{questions}}
-    WHERE {{question_attributes}}.qid={{questions}}.qid
-    AND {{questions}}.sid=$iSurveyID";
-    $qadump = BuildCSVFromQuery($query);
-
-    //10: Assessments;
-    $query = "SELECT {{assessments}}.*
-    FROM {{assessments}}
-    WHERE {{assessments}}.sid=$iSurveyID";
-    $asdump = BuildCSVFromQuery($query);
-
-    //11: Quota;
-    $query = "SELECT {{quota}}.*
-    FROM {{quota}}
-    WHERE {{quota}}.sid=$iSurveyID";
-    $quotadump = BuildCSVFromQuery($query);
-
-    //12: Quota Members;
-    $query = "SELECT {{quota_members}}.*
-    FROM {{quota_members}}
-    WHERE {{quota_members}}.sid=$iSurveyID";
-    $quotamemdump = BuildCSVFromQuery($query);
-
-    $lsrcString = $dumphead. $sdump. $gdump. $qdump. $adump. $cdump. $lsdump. $ldump. $qadump. $asdump. $slsdump. $quotadump. $quotamemdump."\n";
-
-    //Select title as Filename and save
-    $surveyTitleSql = "SELECT surveyls_title
-    FROM {{surveys_languagesettings}}
-    WHERE surveyls_survey_id=$iSurveyID";
-    $surveyTitleRs = Yii::app()->createCommand($surveyTitleSql)->query();
-    $surveyTitle = $surveyTitleRs->fetch();
-
-    $fn = "$surveyTitle[surveyls_title].csv";
-
-    header("Content-Type: application/download");
-    header("Content-Disposition: attachment; filename=$fn");
-    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");                          // HTTP/1.0
-
-    echo $lsrcString;
-    //header("Location: $scriptname?sid=$iSurveyID");
-    exit;
-}
-
 // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
 // ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
 // 1. questions
@@ -1550,26 +1409,12 @@ function group_export($action, $iSurveyID, $gid)
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();
 
-
-    if($action=='exportstructureLsrcCsvGroup')
-    {
-        include_once(APPPATH.'/remotecontrol/lsrc.config.php');
-        //Select group_name as Filename and save
-        $group = Groups::model()->findByAttributes(array('surveyid' => $iSurveyID, 'gid' => $gid));
-        $groupTitle = $group->title;
-        $xml->openURI('remotecontrol/'.$queDir.substr($groupTitle,0,20).".lsq");
-    }
-    else
-    {
-        header("Content-Type: text/html/force-download");
-        header("Content-Disposition: attachment; filename=$fn");
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Pragma: cache");                // HTTP/1.0
-
-        $xml->openURI('php://output');
-    }
+    header("Content-Type: text/html/force-download");
+    header("Content-Disposition: attachment; filename=$fn");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: cache");                // HTTP/1.0
 
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');

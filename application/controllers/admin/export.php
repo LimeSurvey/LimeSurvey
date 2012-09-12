@@ -111,24 +111,9 @@ class export extends Survey_Common_Action {
         $gid = sanitize_int(Yii::app()->request->getParam('gid'));
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
-        if ( Yii::app()->getConfig("export4lsrc") === TRUE && hasSurveyPermission($iSurveyID, 'survey', 'export') )
-        {
-            if ( ! empty($_POST['action']) )
-            {
-                group_export(Yii::app()->request->getPost('action'), $iSurveyID, $gid);
-                return;
-            }
+        group_export("exportstructurecsvGroup", $iSurveyID, $gid);
 
-            $data = array("surveyid" => $iSurveyID, "gid" => $gid);
-
-            $this->_renderWrappedTemplate('export', "group_view", $data);
-        }
-        else
-        {
-            group_export("exportstructurecsvGroup", $iSurveyID, $gid);
-
-            return;
-        }
+        return;
     }
 
     public function question()
@@ -136,25 +121,7 @@ class export extends Survey_Common_Action {
         $gid = sanitize_int(Yii::app()->request->getParam('gid'));
         $qid = sanitize_int(Yii::app()->request->getParam('qid'));
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
-
-        if( Yii::app()->getConfig('export4lsrc') === TRUE && hasSurveyPermission($iSurveyID, 'survey', 'export') )
-        {
-            if( ! empty($_POST['action']) )
-            {
-                questionExport(Yii::app()->request->getPost('action'), $iSurveyID, $gid, $qid);
-                return;
-            }
-
-            $data = array("surveyid" => $iSurveyID, "gid" => $gid, "qid" =>$qid);
-
-            $this->_renderWrappedTemplate('export', "question_view", $data);
-        }
-        else
-        {
-            questionExport("exportstructurecsvQuestion", $iSurveyID, $gid, $qid);
-
-            return;
-        }
+        questionExport("exportstructurecsvQuestion", $iSurveyID, $gid, $qid);
     }
 
     public function exportresults()
@@ -1289,10 +1256,6 @@ class export extends Survey_Common_Action {
                 echo quexml_export($iSurveyID, $quexmllang);
                 exit;
             }
-        }
-        elseif ( $action == "exportstructureLsrcCsv" )
-        {
-            lsrccsv_export($iSurveyID);
         }
         elseif ($action == 'exportstructureexcel')
         {
