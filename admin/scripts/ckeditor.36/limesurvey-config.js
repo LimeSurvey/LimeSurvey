@@ -12,6 +12,7 @@ CKEDITOR.editorConfig = function( config )
 	config.toolbarCanCollapse = false;
 	config.resize_enabled = false;
     config.autoParagraph = false;
+    config.entities = false;    
 
     config.toolbar_popup =
     [
