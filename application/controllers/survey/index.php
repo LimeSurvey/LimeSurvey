@@ -565,11 +565,6 @@ class index extends CAction {
             }
             killSurveySession($surveyid);
             sendCacheHeaders();
-            if (isset($_GET['redirect']))
-            {
-                killSurveySession($surveyid);
-                header("Location: {$_GET['redirect']}");
-            }
             doHeader();
 
             $redata = compact(array_keys(get_defined_vars()));
