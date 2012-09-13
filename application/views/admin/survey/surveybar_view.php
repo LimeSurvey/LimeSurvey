@@ -160,7 +160,7 @@
                                     <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php $clang->eT("queXML format (*.xml)");?></a>
                                 </li>
                                 <li><a href='<?php echo $this->createUrl("admin/export/survey/action/exportstructureexcel/surveyid/$surveyid");?>' >
-                                    <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php $clang->eT("Excel format (*.xls)");?></a>
+                                    <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php $clang->eT("Excel format (*.txt)");?></a>
                                 </li>
                                 <?php } ?>
 

@@ -1273,41 +1273,24 @@ class export extends Survey_Common_Action {
      */
     private function _exportexcel($surveyid)
     {
-        $fn = "limesurvey_survey_$surveyid.xls";
-        $this->_addHeaders($fn, "text/csv", 0);
+        $fn = "limesurvey_survey_$surveyid.txt";
+        header("Content-Type: text/tab-separated-values charset=UTF-8");
+        header("Content-Disposition: attachment; filename=$fn");
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Pragma: public");                          // HTTP/1.0
 
         $data =& LimeExpressionManager::ExcelSurveyExport($surveyid);
 
-        Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
-
-        // actually generate an Excel workbook
-        $workbook = new xlswriter;
-        $workbook->setVersion(8);
-        $workbook->setTempDir(Yii::app()->getConfig("tempdir"));
-        $workbook->send($fn);
-
-        $sheet =& $workbook->addWorksheet(); // do not translate/change this - the library does not support any special chars in sheet name
-        $sheet->setInputEncoding('utf-8');
-
-        $rc = -1;    // row counter
-        $cc = -1;    // column counter
+        $lines = array();
         foreach($data as $row)
         {
-            ++$rc;
-            $cc=-1;
-            foreach ($row as $col)
-            {
-                // Enclose in \" if begins by =
-                ++$cc;
-                if (substr($col,0,1) ==  "=")
-                {
-                    $col = "\"".$col."\"";
-                }
-                $col = str_replace(array("\t","\n","\r"),array(" "," "," "),$col);
-                $sheet->write($rc, $cc, $col);
-            }
+            $lines[] = implode("\t",str_replace(array("\t","\n","\r"),array(" "," "," "),$row));
         }
-        $workbook->close();
+        $output = implode("\n",$lines);
+//        echo "\xEF\xBB\xBF"; // UTF-8 BOM
+        echo $output;
         return;
     }
 
