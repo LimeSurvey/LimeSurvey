@@ -598,13 +598,15 @@ function modlabelsetanswers($lid)
         $_POST['method'] = $clang->gT("Save");
     }
 
+    $sPostData=html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8");
+    $sPostData=str_replace("\t", '', $sPostData); 
     if (get_magic_quotes_gpc())
     {
-        $data = json_decode(stripslashes(html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8")));
+        $data = json_decode(stripslashes($sPostData));    
     }
     else
     {
-        $data = json_decode(html_entity_decode($_POST['dataToSend'], ENT_QUOTES, "UTF-8"));
+        $data = json_decode($sPostData);
     }
 
 
