@@ -65,7 +65,7 @@ if ($action == 'importsurvey')
         }
 
     }
-    if (!$importerror && (strtolower($sExtension)!='csv' && strtolower($sExtension)!='lss' && strtolower($sExtension)!='xls'))
+    if (!$importerror && (strtolower($sExtension)!='csv' && strtolower($sExtension)!='lss' && strtolower($sExtension)!='txt'))
     {
         $importsurvey .= "<div class='errorheader'>".$clang->gT("Error")."</div>\n";
         $importsurvey .= $clang->gT("Import failed. You specified an invalid file type.")."\n";
@@ -118,7 +118,7 @@ if ($action == 'importsurvey' && !$importerror)
     {
         $aImportResults=XMLImportSurvey($sFullFilepath,null,null, null,(isset($_POST['translinksfields'])));
     }
-    elseif (isset($sExtension) && strtolower($sExtension)=='xls')
+    elseif (isset($sExtension) && strtolower($sExtension)=='txt')
     {
         $aImportResults=ExcelImportSurvey($sFullFilepath);
     }

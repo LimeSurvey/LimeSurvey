@@ -1673,7 +1673,7 @@ if($action == "exportstructure")
 
         $exportstructure.="<li><input type='radio' class='radiobtn' name='action' value='exportstructureexcel' id='surveyexcel'>"
         ."<label for='surveyexcel'>"
-        .$clang->gT("LimeSurvey Excel survey file (*.xls)")."</label></li>\n";
+        .$clang->gT("LimeSurvey Excel survey file (*.txt)")."</label></li>\n";
 
 	    // XXX
 	    //include("../config.php");

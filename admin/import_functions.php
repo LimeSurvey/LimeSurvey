@@ -1616,8 +1616,6 @@ function GetNewSurveyID($oldsid)
     }
 }
 
-require_once './classes/excel/excel_reader2.php';
-
 /**
  * Import survey from an Excel file template that does not require or allow assigning of GID or QID values.
  * NOTE:  This currently only supports import of one language
@@ -1638,8 +1636,59 @@ function ExcelImportSurvey($sFullFilepath)
     $baselang = 'en';   // TODO set proper default
 
     try {
-        $data = new Spreadsheet_Excel_Reader($sFullFilepath);
-        $adata = $data->dumptonamedarray();
+        $encoding='';
+        $handle = fopen($sFullFilepath, 'r');
+        $bom = fread($handle, 2);
+        rewind($handle);
+
+        // Excel tends to save CSV as UTF-16, which PHP does not properly detect
+        if($bom === chr(0xff).chr(0xfe)  || $bom === chr(0xfe).chr(0xff)){
+            // UTF16 Byte Order Mark present
+            $encoding = 'UTF-16';
+        } else {
+            $file_sample = fread($handle, 1000) + 'e'; //read first 1000 bytes
+            // + e is a workaround for mb_string bug
+            rewind($handle);
+
+            $encoding = mb_detect_encoding($file_sample , 'UTF-8, UTF-7, ASCII, EUC-JP,SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP');
+        }
+        if ($encoding && $encoding != 'UTF-8'){
+            stream_filter_append($handle, 'convert.iconv.'.$encoding.'/UTF-8');
+        }
+
+        $file = stream_get_contents($handle);
+        fclose($handle);
+
+        // fix Excel non-breaking space
+        $file = str_replace("0xC20xA0",' ',$file);
+        $filelines = explode("\n",$file);
+        $row = array_shift($filelines);
+        $headers = explode("\t",$row);
+        $rowheaders = array();
+        foreach ($headers as $header)
+        {
+            $rowheaders[] = trim($header);   
+        }
+        // remove BOM from the first header cell, if needed
+        $rowheaders[0] = preg_replace("/^\W+/","",$rowheaders[0]);
+
+        $adata = array();
+        foreach ($filelines as $rowline)
+        {
+            $rowarray = array();
+            $row = explode("\t",$rowline);
+            for ($i = 0; $i < count($rowheaders); ++$i)
+            {
+                $val = (isset($row[$i]) ? $row[$i] : '');
+                // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
+                if (preg_match('/^".*"$/',$val))
+                {
+                    $val = str_replace('""','"',substr($val,1,-1));
+                }
+                $rowarray[$rowheaders[$i]] = $val;
+            }
+            $adata[] = $rowarray;
+        }
 
         $results['defaultvalues']=0;
         $results['answers']=0;
@@ -1743,7 +1792,6 @@ function ExcelImportSurvey($sFullFilepath)
 
         foreach ($adata as $row)
         {
-            $row = str_replace(chr(0xA0),' ',$row);
             switch($row['class'])
             {
                 case 'G':
