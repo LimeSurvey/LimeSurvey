@@ -144,12 +144,16 @@ function modlabelsetanswers($lid)
         $_POST['method'] = $clang->gT("Save");
     }
 
-    //unescape single quotes
-    $labeldata = Yii::app()->getRequest()->getPost('dataToSend');
-    $labeldata = str_replace("\'","'",$labeldata);
-
-
-    $data = json_decode($labeldata);
+    $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
+    $sPostData=str_replace("\t", '', $sPostData); 
+    if (get_magic_quotes_gpc())
+    {
+        $data = json_decode(stripslashes($sPostData));    
+    }
+    else
+    {
+        $data = json_decode($sPostData);
+    }
 
     if ($ajax)
         $lid = insertlabelset();
