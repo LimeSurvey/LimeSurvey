@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-09-12 22:05:51+00:00\n"
+"POT-Creation-Date: 2012-09-13 22:05:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -59,12 +59,12 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:4064
 #: application/helpers/admin/import_helper.php:4125
 #: application/helpers/admin/import_helper.php:4180
-#: application/helpers/admin/import_helper.php:4279
-#: application/helpers/admin/import_helper.php:4310
-#: application/helpers/admin/import_helper.php:4355
+#: application/helpers/admin/import_helper.php:4328
+#: application/helpers/admin/import_helper.php:4359
 #: application/helpers/admin/import_helper.php:4403
-#: application/helpers/admin/import_helper.php:4526
-#: application/helpers/admin/import_helper.php:4566
+#: application/helpers/admin/import_helper.php:4451
+#: application/helpers/admin/import_helper.php:4574
+#: application/helpers/admin/import_helper.php:4614
 #: application/views/admin/dataentry/active_html_view.php:93
 #: application/views/admin/dataentry/warning_header.php:1
 #: application/views/admin/error_view.php:3
@@ -983,10 +983,10 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:160
 #: application/controllers/admin/tokens.php:1466
 #: application/controllers/admin/useraction.php:157
-#: application/helpers/admin/import_helper.php:4444
-#: application/helpers/admin/import_helper.php:4462
-#: application/helpers/admin/import_helper.php:4488
-#: application/helpers/admin/import_helper.php:4548
+#: application/helpers/admin/import_helper.php:4492
+#: application/helpers/admin/import_helper.php:4510
+#: application/helpers/admin/import_helper.php:4536
+#: application/helpers/admin/import_helper.php:4596
 #: application/views/admin/dataentry/import.php:31
 #: application/views/admin/survey/Question/questionbar_view.php:195
 #: application/views/admin/survey/Question/questionbar_view.php:204
@@ -4058,7 +4058,7 @@ msgstr ""
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr ""
 
-#: application/controllers/survey/index.php:670
+#: application/controllers/survey/index.php:665
 msgid "Your responses were successfully saved."
 msgstr ""
 
@@ -4382,44 +4382,44 @@ msgstr ""
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4310
+#: application/helpers/admin/import_helper.php:4359
 msgid "Failed to insert survey language"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4355
+#: application/helpers/admin/import_helper.php:4403
 msgid "Failed to insert group"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4355
 #: application/helpers/admin/import_helper.php:4403
-#: application/helpers/admin/import_helper.php:4444
-#: application/helpers/admin/import_helper.php:4462
-#: application/helpers/admin/import_helper.php:4488
-#: application/helpers/admin/import_helper.php:4526
-#: application/helpers/admin/import_helper.php:4548
-#: application/helpers/admin/import_helper.php:4566
+#: application/helpers/admin/import_helper.php:4451
+#: application/helpers/admin/import_helper.php:4492
+#: application/helpers/admin/import_helper.php:4510
+#: application/helpers/admin/import_helper.php:4536
+#: application/helpers/admin/import_helper.php:4574
+#: application/helpers/admin/import_helper.php:4596
+#: application/helpers/admin/import_helper.php:4614
 msgid "Excel row number "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4403
+#: application/helpers/admin/import_helper.php:4451
 msgid "Could not insert question"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4444
+#: application/helpers/admin/import_helper.php:4492
 msgid "Failed to insert question attribute"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4462
-#: application/helpers/admin/import_helper.php:4488
-#: application/helpers/admin/import_helper.php:4548
+#: application/helpers/admin/import_helper.php:4510
+#: application/helpers/admin/import_helper.php:4536
+#: application/helpers/admin/import_helper.php:4596
 msgid "Failed to insert default value"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4526
+#: application/helpers/admin/import_helper.php:4574
 msgid "Could not insert sub question"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:4566
+#: application/helpers/admin/import_helper.php:4614
 msgid "Could not insert answer"
 msgstr ""
 
@@ -12255,7 +12255,7 @@ msgid "Bounce Email:"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabImport_view.php:4
-msgid "Select survey structure file (*.lss, *.csv, *.xls) or survey archive (*.lsa):"
+msgid "Select survey structure file (*.lss, *.csv, *.txt) or survey archive (*.lsa):"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabImport_view.php:9
@@ -12758,7 +12758,7 @@ msgid "queXML format (*.xml)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:163
-msgid "Excel format (*.xls)"
+msgid "Excel format (*.txt)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:171
