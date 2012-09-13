@@ -75,8 +75,8 @@ if(isset($surveyid))
                 //Clean XSS
                 if ($filterxsshtml)
                 {
-                    $_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
-                    $_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
+                    $_POST['group_name_'.$grouplang]=$myFilter->process(html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8"));
+                    $_POST['description_'.$grouplang]=$myFilter->process(html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8"));
                 }
                 else
                 {
@@ -566,8 +566,8 @@ if(isset($surveyid))
                     {
                         if ($filterxsshtml)
                         {
-                            $_POST['question_'.$qlang]=$myFilter->process($_POST['question_'.$qlang]);
-                            $_POST['help_'.$qlang]=$myFilter->process($_POST['help_'.$qlang]);
+                            $_POST['question_'.$qlang]=$myFilter->process(html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8"));
+                            $_POST['help_'.$qlang]=$myFilter->process(html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8"));
                         }
                         else
                         {
