@@ -375,18 +375,18 @@ class tokens extends Survey_Common_Action
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 25; //Stop division by zero errors
         $page = isset($page) ? $page : 1; //Stop division by zero errors
-        $tokens = Tokens_dynamic::model($iSurveyId)->findAll(array("order"=>$sidx. " ". $sord));
+        $tokens = Tokens_dynamic::model($iSurveyId)->findAll(array("order"=>$sidx. " ". $sord, "offset"=>($page - 1) * $limit, "limit"=>$limit));
 
         $aData = new stdClass;
         $aData->page = $page;
-        $aData->records = count($tokens);
+        $aData->records = Tokens_dynamic::model($iSurveyId)->count();
         $aData->total = ceil($aData->records / $limit);
 
         Yii::app()->loadHelper("surveytranslator");
 
         $format = getDateFormatData(Yii::app()->session['dateformat']);
 
-        for ($i = 0, $j = ($page - 1) * $limit; $i < $limit && $j < $aData->records; $i++, $j++)
+        for ($i = 0, $j = 0; $i < $limit && $j < $limit; $i++, $j++)
         {
             $token = $tokens[$j];
             if ((int) $token['validfrom'])
