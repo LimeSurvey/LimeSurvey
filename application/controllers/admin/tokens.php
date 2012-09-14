@@ -1264,7 +1264,7 @@ class tokens extends Survey_Common_Action
         $aData['examplerow'] = $aExampleRow;
         $aData['tokenids'] = $aTokenIds;
         $aData['ishtml'] = $bHtml;
-        $iMaxEmails = Yii::app()->request->getPost('maxemails');
+        $iMaxEmails = Yii::app()->getConfig('maxemails');
 
         if (Yii::app()->request->getPost('bypassbademails') == 'Y')
         {
