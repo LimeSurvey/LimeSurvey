@@ -754,11 +754,23 @@ function db_upgrade_all($oldversion) {
         ));
 
         Yii::app()->db->createCommand()->dropTable('{{sessions}}');
-        createTable('{{sessions}}',array(
-        'id' => $sVarchar.'(32) NOT NULL',
-        'expire' => 'integer',
-        'data' => 'text'
-        ));
+        if ($sDBDriverName=='mysql')
+        {
+            Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
+            'id' => $sVarchar.'(32) NOT NULL',
+            'expire' => 'integer',
+            'data' => 'longtext'
+            ));
+        }
+        else
+        {
+            Yii::app()->db->createCommand()->createTable('{{sessions}}',array(
+            'id' => $sVarchar.'(32) NOT NULL',
+            'expire' => 'integer',
+            'data' => 'text'
+            ));
+        }
+
         addPrimaryKey('sessions', array('id'));
 
         addColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"TEXT");
