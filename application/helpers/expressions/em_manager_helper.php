@@ -8938,6 +8938,15 @@ EOD;
             }
             return $out;
         }
+        
+        /** 
+        * Returns the survey ID of the EM singleton
+        */
+        public static function getLEMsurveyId() {
+                $LEM =& LimeExpressionManager::singleton();
+                return $LEM->sid;
+        }  
+            
     }
 
     /**
@@ -8962,4 +8971,6 @@ EOD;
         }
         return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
+    
+  
 ?>
