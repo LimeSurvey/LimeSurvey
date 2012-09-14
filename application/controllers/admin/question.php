@@ -820,7 +820,7 @@ class question extends Survey_Common_Action
             {
                 // Get the questions for this group
                 $baselang = Survey::model()->findByPk($surveyid)->language;
-                $oqresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang), array('order' => 'question_order'));
+                $oqresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
 
