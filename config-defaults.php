@@ -582,8 +582,11 @@ $iFileUploadTotalSpaceMB=0;
 */
 $bServerBehindProxy=false;
 
-//DO NOT EVER CHANGE THE FOLLOWING 5 LINES ---------------
-require_once(dirname(__FILE__).'/config.php');
+//DO NOT EVER CHANGE THE FOLLOWING 8 LINES ---------------
+$configFile = empty($_SERVER['LIME_CONFIG_FILE']) ?
+    dirname(__FILE__) . '/config.php' :
+    $_SERVER['LIME_CONFIG_FILE'];
+require_once($configFile);
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='' && $_SERVER['HTTPS']!='off')
 {
        $rooturl=str_replace('http://', 'https://', $rooturl);
