@@ -841,6 +841,9 @@ class InstallerController extends CController {
 
         // zlib php library check
         check_PHPFunction('zlib_get_coding_type', $data['zlibPresent']);
+        
+        // imap php library check
+        check_PHPFunction('imap_open', $data['bIMAPPresent']);
 
         return $bProceed;
     }

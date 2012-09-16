@@ -118,6 +118,11 @@ function dirReport($dir, $write, $clang)
        <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $zlibPresent ; ?></td>
 </tr>
+<tr>
+       <td style="width: 209px;">PHP5 imap library</td>
+       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
+       <td align="center" style="width: 225px;"><?php echo $bIMAPPresent ; ?></td>
+</tr>
 
 </table>
 </fieldset>

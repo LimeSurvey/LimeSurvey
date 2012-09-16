@@ -92,6 +92,11 @@ class tokens extends Survey_Common_Action
         }
         if ($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off'))
         {
+            if (!function_exists('imap_open'))
+            {
+                   $clang->eT("The imap PHP library is not installed. Please contact your system administrator.");
+                   return;
+            }
             $bouncetotal = 0;
             $checktotal = 0;
             if ($thissurvey['bounceprocessing'] == 'G')
