@@ -117,11 +117,6 @@ class ParticipantAttributeNames extends CActiveRecord
 		));
 	}
 
-	function getVisibleAttributes()
-    {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names}}_lang.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names}}_lang', '{{participant_attribute_names}}_lang.attribute_id = {{participant_attribute_names}}.attribute_id')->where("{{participant_attribute_names}}.visible = 'TRUE' AND {{participant_attribute_names}}_lang.lang = '".Yii::app()->session['adminlang']."'")->queryAll();
-    }
-
     function getAllAttributes()
     {
         return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names}}_lang.*')
@@ -137,9 +132,39 @@ class ParticipantAttributeNames extends CActiveRecord
         return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_values}}')->queryAll();
     }
 
-    function getAttributeVisibleID()
+    function getVisibleAttributes()
     {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names_lang}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where("{{participant_attribute_names_lang}}.lang = '".Yii::app()->session['adminlang']."' AND {{participant_attribute_names}}.visible = 'TRUE'")->queryAll();
+        $currentlang=Yii::app()->session['adminlang'];
+        $output=array();
+        //First get all the distinct id's that are visible
+        $ids = ParticipantAttributeNames::model()->findAll("visible = 'TRUE'");
+        //Then find a language for each one - the current $lang, if possible, english second, otherwise, the first in the list
+        foreach($ids as $id) {
+            $langs=ParticipantAttributeNamesLang::model()->findAll("attribute_id = :attribute_id", array(":attribute_id"=>$id->attribute_id));
+            $language=null;
+            foreach($langs as $lang) {
+                //If we can find a language match, set the language and exit
+                if($lang->lang == $currentlang) {
+                    $language = $lang->lang;
+                    $attribute_name = $lang->attribute_name;
+                    break;
+                }
+                if($lang->lang == "en") {
+                    $language = $lang->lang;
+                    $attribute_name = $lang->attribute_name;
+                }
+            }
+            if($language==null) {
+                $language=$langs[0]->lang;
+                $attribute_name=$langs[0]->attribute_name;
+            }
+            $output[]=array("attribute_id"=>$id->attribute_id,
+                          "attribute_type"=>$id->attribute_type,
+                          "visible"=>$id->visible,
+                          "attribute_name"=>$attribute_name,
+                          "lang"=>$language);
+        }
+        return $output;
     }
 
     /**
@@ -198,7 +223,11 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAttributeValue($participantid,$attributeid)
     {
-        $data = Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute}}')->where('participant_id = "'.$participantid.'" AND attribute_id = '.$attributeid)->queryRow();
+        $data = Yii::app()->db->createCommand()
+                              ->select('*')
+                              ->from('{{participant_attribute}}')
+                              ->where('participant_id = "'.$participantid.'" AND attribute_id = '.$attributeid)
+                              ->queryRow();
         return $data;
     }
 
@@ -240,7 +269,12 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAttributesValues($attribute_id)
     {
-       return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_values}}')->where('attribute_id = :attribute_id')->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)->queryAll();
+       return Yii::app()->db->createCommand()
+                            ->select('*')
+                            ->from('{{participant_attribute_values}}')
+                            ->where('attribute_id = :attribute_id')
+                            ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
+                            ->queryAll();
     }
 
     // this is a very specific function used to get the attributes that are not present for the participant
