@@ -1,0 +1,45 @@
+/* Drag-n-drop ranking default styles */
+
+.dragDropTable .SortableTitle{display:block}
+.dragDropTable .columns2{width:50%;float:left;margin:0;padding:0;}
+:dir(ltr) .dragDropTable .columns2{float:right}
+.dragDropTable .clear{clear:both}
+
+.dragDropTable {
+    width: 100%;
+}
+
+
+.dragDropTable .dragDropChoices,
+.dragDropTable .dragDropRanks {
+	margin: 5px 0 0 0; 
+	background: transparent none;
+}
+
+.dragDropTable ul.dragDropChoiceList,
+.dragDropTable ol.dragDropRankList {
+    margin: 0;
+    padding: 3px 0;
+    padding-bottom:2em;
+    list-style-type: none;
+	display: block; /* Force the li to full width */
+}
+
+.dragDropTable ul.dragDropChoiceList li,
+.dragDropTable ol.dragDropRankList li {
+    margin: 3px;
+    margin-top:0;
+    padding: 3px;
+	min-height: 1.3em;
+	font-weight: normal;
+	cursor: move;
+	clear:both;
+	background-image: none;
+}
+.dragDropTable ul.dragDropChoiceList li.ui-sortable-placeholder,
+.dragDropTable ol.dragDropRankList li.ui-sortable-placeholder {
+	border: 1px dotted #CCC;
+}
+.dragDropTable .error {
+	border-color: fuchsia;
+}

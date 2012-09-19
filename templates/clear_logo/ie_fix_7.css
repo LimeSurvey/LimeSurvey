@@ -1,4 +1,34 @@
 /* The following styles are for all versions of IE 7 */
+
+/*** Start jQuery UI Theme Styles ***/
+
+.ui-button,
+input.ui-button { 
+	padding: 0.2em 0 0.1em 0; 
+}
+
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	margin-top: -9px;
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	padding: 0 0 0 1.0em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	padding: 0 1.2em 0 0; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	padding: 0 1.0em; 
+}
+
+/*** End jQuery UI Theme Styles ***/
+
 .choice-5-pt-radio ul {
   margin-left: 2.5em;
 }

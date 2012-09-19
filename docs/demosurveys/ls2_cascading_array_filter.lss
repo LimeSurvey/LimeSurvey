@@ -2101,8 +2101,8 @@
    <fieldname>navigationdelay</fieldname>
    <fieldname>nokeyboard</fieldname>
    <fieldname>alloweditaftercompletion</fieldname>
-   <fieldname>googleAnalyticsStyle</fieldname>
-   <fieldname>googleAnalyticsAPIKey</fieldname>
+   <fieldname>googleanalyticsstyle</fieldname>
+   <fieldname>googleanalyticsapikey</fieldname>
   </fields>
   <rows>
    <row>
@@ -2158,8 +2158,8 @@
     <navigationdelay><![CDATA[0]]></navigationdelay>
     <nokeyboard><![CDATA[N]]></nokeyboard>
     <alloweditaftercompletion><![CDATA[N]]></alloweditaftercompletion>
-    <googleAnalyticsStyle><![CDATA[]]></googleAnalyticsStyle>
-    <googleAnalyticsAPIKey><![CDATA[]]></googleAnalyticsAPIKey>
+    <googleanalyticsstyle><![CDATA[]]></googleanalyticsstyle>
+    <googleanalyticsapikey><![CDATA[]]></googleanalyticsapikey>
    </row>
   </rows>
  </surveys>

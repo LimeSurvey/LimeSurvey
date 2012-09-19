@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>CodeMirror UI Find/Replace</title>
+		<link rel="stylesheet" href="../css/codemirror-ui-find.css" type="text/css" media="screen" />
+		<script src="codemirror-ui-find.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<h3>Find/Replace</h3>
+		<form name="findReplaceForm">
+			<table>
+				<tr>
+					<td>Find</td>
+					<td><input id="find" type="text" value=""/></td>
+				</tr>
+				<tr>
+					<td>Replace</td>
+					<td><input id="replace" type="text" value=""/></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label>
+							<input type="radio" name="direction" value="forward" checked="checked"/>Forward
+						</label>
+						<label>
+							<input type="radio" name="direction" value="backward"/>Backward
+						</label>
+						<br/>
+						<label>
+							<input type="checkbox" id="wrap" value="true"/>Wrap Search
+						</label>
+						<br/>
+						<label>
+							<input type="checkbox" id="regex" value="true"/>Regex
+						</label>
+					</td>
+				</tr>
+			</table>
+		</form>
+		<table id="buttons">
+			<tr>
+				<td>
+					<a href="#" id="findButton">Find</a>
+				</td>
+				<td>
+					<a href="#" id="replaceFindButton">Replace/Find</a>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="#" id="replaceButton">Replace</a>
+				</td>
+				<td>
+					<a href="#" id="replaceAllButton">Replace All</a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<a href="#" id="closeButton">Close</a>
+				</td>
+			</tr>
+		</table>
+		<script type="text/javascript">
+			setupFindReplace();
+		</script>
+	</body>
+</html>

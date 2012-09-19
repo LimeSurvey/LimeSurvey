@@ -17,42 +17,10 @@
  * $Id:$
  */
 
-
-/*
- * The function focusFirst puts the Focus on the first non-hidden element in the Survey. 
- * 
- * Normally this is the first input field (the first answer).
- */
-function focusFirst(Event)
-{
-	$('#limesurvey :input:visible:enabled:first').focus();
+function navbuttonsJqueryUi(){
+    // Just deactivate default jquery-ui button
 }
 
-// Add empty class to input text and textarea
-function addClassEmpty(){
-      $('.answers-wrapper input.text[value=""]').addClass('empty');
-      $('.answers-wrapper input[type=text][value=""]').addClass('empty');
-      $('.answers-wrapper textarea').each(function(index) {
-        if ($(this).val() == ""){
-          $(this).addClass('empty');
-        }
-      });
-
-    $("input.text,input[type=text]").live("blur", function(){ 
-      if ($(this).val() == ""){
-        $(this).addClass('empty');
-      }else{
-        $(this).removeClass('empty');
-      }
-    });
-    $("textarea").live("blur", function(){ 
-      if ($(this).val() == ""){
-        $(this).addClass('empty');
-      }else{
-        $(this).removeClass('empty');
-      }
-    });
-}
 // Replace common alert with jquery-ui dialog
 function jalert(text) {
 	var $dialog = $('<div></div>')
@@ -71,19 +39,10 @@ function jalert(text) {
 	jalert(text);
 }*/
 
-/*
- * The focusFirst function is added to the eventlistener, when the page is loaded.
- * 
- * This can be used to start other functions on pageload as well. Just put it inside the 'ready' function block
- */
-
 
 
 $(document).ready(function(){
-  // focusFirst(); /** Uncomment if you want to use the focusFirst function **/
-  addClassEmpty();
-  //$(".help-wrapper > span,.help-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
-  //$(".help-wrapper .error-wrapper > span,.help-wrapper .error-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
+
 })
 
 

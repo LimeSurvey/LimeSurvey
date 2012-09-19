@@ -1,3 +1,139 @@
+
+/*** Start jQuery UI Theme Styles ***/
+
+button.ui-button::-moz-focus-inner {
+	border: 0; 
+	padding: 0;   /* Get rid of extra padding in focused button in FF */
+}
+
+.ui-widget {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.0em;
+}
+
+.ui-button { 
+	position: relative; 
+	padding: 0.1em 0 0.1em 0; 
+	cursor: pointer;
+	font-family: Arial, Verdana, Geneva, sans-serif;
+	font-size: 1.0em;
+	font-weight: normal;
+	line-height: normal;
+}
+
+button.ui-state-default,
+input.ui-state-default {  
+	color: #333333; 
+	background: #E0FCFF none;
+    border: 1px solid #86B8BC;
+}
+
+button.ui-state-hover,
+input.ui-state-hover {  
+	color: #212121;
+	background: #C2F9FF none; 
+	border: 1px solid #00677D;
+}
+
+button.ui-state-active,
+input.ui-state-active {  
+	color: #FFFFFF;
+	background: #7BBBCC none !important;  
+	border: 1px solid #00677D;
+}
+
+.ui-button-icon-only { 
+	width: 2.2em; /* To make room for the icon, a width needs to be set here */
+} 
+
+button.ui-button-icon-only { 
+	width: 2.4em; /* Button elements seem to need a little more width */
+}
+
+.ui-button-icons-only { 
+	width: 3.4em; 
+} 
+
+button.ui-button-icons-only {
+	width: 3.7em; 
+}
+
+/* Button text elements */
+.ui-button-text-only .ui-button-text {
+	padding: 0 1em; 
+}
+
+.ui-button-icon-only .ui-button-text, 
+.ui-button-icons-only .ui-button-text {
+	text-indent: -9999999px; 
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	padding: 0 0.7em 0 1.7em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	padding: 0 1.7em 0 0.7em; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	padding: 0 1.7em; 
+}
+
+input.ui-button {
+	padding: 0.1em 1em 0.1em 1em;  /* No icon support for input elements, provide padding by default */
+}
+
+/* Button icon element(s) */
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+	background-image: url(images/ui-icons_454545_256x240.png);
+}
+
+.ui-state-active .ui-icon {
+	background-image: url(images/ui-icons_ffffff_256x240.png);
+}
+
+.ui-button-icon-only .ui-icon {
+	left: 50%; 
+	margin-left: -8px; 
+}
+
+.ui-button-text-icon-primary .ui-button-icon-primary, 
+.ui-button-text-icons .ui-button-icon-primary, 
+.ui-button-icons-only .ui-button-icon-primary {
+	left: .4em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-icon-secondary, 
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+/* Button sets*/
+.ui-buttonset {
+	margin-right: 7px; 
+}
+
+.ui-buttonset .ui-button {
+	margin-left: 0;
+	margin-right: -.3em; 
+}
+
+/*** End jQuery UI Theme Styles ***/
+
 .rank,.rank td {
   background-color: #f5f9f9;
 }
@@ -286,6 +422,7 @@ div#footer .rk-2 {
   background-color: #e0fcff;
   border: 1px solid #86b8bc;
   cursor: pointer;
+  font-size: 13px;
 }
 
 .submit:hover {
@@ -303,6 +440,7 @@ input.submit:hover {
   background-color: #E0FCFF;
   border: 1px solid #86B8BC;
   cursor: pointer;
+  font-size: 13px;
 }
 
 .survey-survey-description {
@@ -426,7 +564,7 @@ span.qnumcode {
   background-color: #f0fdff;
 }
 
-.select {
+select.select {
   background-color: #f0fdff;
 }
 
@@ -563,8 +701,8 @@ a.imglink {
   font-size: 1.2em;
   font-weight: bold;
   text-align: center;
-  padding: 20px 10px;
-  margin: 20px 0;
+  padding: 20px 10px 20px 10px;
+  margin: 20px 0 20px 0;
   border: 1px solid #3c9aae;
   background-color: #e0fbff
 }
@@ -647,16 +785,23 @@ a.imglink {
   margin-left: 1em;
 }
 
-.date p.question select.day {
-  
+.date p.question select.day {  
 }
 
-.date p.question select.month {
-  
+.date p.question select.month {  
 }
 
-.date p.question select.year {
-  
+.date p.question select.year {  
+}
+
+#ui-datepicker-div {
+	z-index: 2 !important;
+	font-size: 0.9em;
+}
+
+#ui-datepicker-div .ui-state-active {
+	background: #00677D none;
+	border: 1px solid #00407A;
 }
 
 .date p.tip,.numeric-multi p.tip,.numeric p.tip {
@@ -687,23 +832,20 @@ a.imglink {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .list-radio-flexible
 .list-radio
-*/
+*//
 .list-radio .survey-question-answer li label,
 .list-with-comment .survey-question-answer li label {
   display: inline-block;
   width: 85%;
 }
-.list-radio .survey-question-answer li.other label,
-.list-with-comment .survey-question-answer li.other label {
-  display: inline;
-  width: auto;
-}
+
 .list-radio .survey-question-answer li input,
 .list-with-comment .survey-question-answer li input {
   vertical-align: top !important;
   margin-top: 2px;
   margin-top: -1px\9; /* IE9 and below */
 }
+
 
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
@@ -765,6 +907,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   padding: 0.5em;
   margin: 0;
 }
+.list-with-comment p.select select{
+  max-width: 99%;
+}
 
 .list-with-comment div.list p {
   margin: 0;
@@ -787,6 +932,40 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   
 }
 
+/* this is the color of the backgrounds/drop areas of the columns */
+.dragDropTable .dragDropChoiceList,
+.dragDropTable .dragDropRankList {
+	background: white;
+	border: 1px solid gray;
+}
+
+/* the draggable itself */
+.dragDropTable .dragDropChoiceList li,
+.dragDropTable .dragDropRankList li {
+	background: #D9F3FA;
+	border: 1px solid #479BB3;
+}
+
+/* placeholder */
+.dragDropTable .dragDropRankList li.ui-sortable-placeholder,
+.dragDropTable .dragDropChoiceList li.ui-sortable-placeholder {
+	background: #EDFBFF;
+	border-color: #66DEFF;
+	border-style: dotted;
+}
+
+/* background */
+.dragDropTable .dragDropRankList li.ui-sortable-placeholder.ui-sortable-background {
+	/* default has no border */
+	background: #E4FFD6;
+}
+
+
+/* the class applied to a maxed-out table */
+.dragDropTable .dragDropRankList.dragDropRankMaxedOut {
+	border: 1px solid red;
+}
+
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
@@ -795,15 +974,18 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin-top: 2px;
   margin-top: -1px\9; /* IE9 and below */
 }
+.multiple-opt-comments .survey-question-answer li .comment {
+  vertical-align: top !important;
+}
 
 .multiple-opt .survey-question-answer li label, .multiple-opt-comments .survey-question-answer li .option label {
   display: inline-block;
   width: 90%;
 }
-.multiple-opt .survey-question-answer li label, .multiple-opt-comments .survey-question-answer li .option label {
-  display: inline;
+.multiple-opt .survey-question-answer li.other-item label,.multiple-opt-comments .survey-question-answer li.other-item .option label {
   width: auto;
 }
+
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
 .multiple-opt-comments td.answer,.multiple-short-txt td.answer,.numeric-multi td.answer
   {
@@ -835,13 +1017,13 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0 0 0.5em 0.5em;
+  padding: 0.5em 0 0.5em 0;
   display: table-cell;
   vertical-align: baseline;
 }
 
 .multiple-short-txt ul li label,.numeric-multi ul li label {
-  padding: 0.3em 1em 0 0;
+  padding: 0 0 0.5em 0.5em;
   display: table-cell;
   vertical-align: middle;
 }
@@ -942,15 +1124,6 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   width: 97%;
 }
 
-/* Jquery CSS */ /** UI Base **/
-.ui-wrapper {
-  border: 1px solid #50A029;
-}
-
-.ui-wrapper input,.ui-wrapper textarea {
-  border: 0;
-}
-
 /** Progress bar **/
 #progress-wrapper .ui-widget-header {
   background-color: #3D9BAF;
@@ -970,10 +1143,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   height: 24px;
   width: 12px;
   top: -6px;
-  left: 0px;
+  left: 0;
   margin-left: -3px;
-  background-image: url(slider-handle.gif);
-  background-color: transparent;
+  background: transparent url(slider-handle.gif) 0 0 no-repeat;
   border-width: 0;
 }
 
@@ -1011,7 +1183,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   width: 50px;
   margin: 18px 0 0 0;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-  font-size: 0.7em;
+  font-size: 0.5em;
   font-weight: normal;
   text-align: left;
 }
@@ -1021,7 +1193,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   width: 50px;
   margin: 18px 0 0 0;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-  font-size: 0.7em;
+  font-size: 0.5em;
   font-weight: normal;
   text-align: right;
 }
@@ -1106,7 +1278,7 @@ p#tokenmessage {
   width: 80%;
   margin: 8px auto;
   background-color: #F5FEFF;
-  padding: 0px;
+  padding: 0;
   min-width: 690px;
   border: 1px solid #000000;
 }
@@ -1115,14 +1287,14 @@ p#tokenmessage {
   color: #FFF;
   background-color: #00677D;
   text-align: center;
-  padding: 10px 0px;
+  padding: 10px 0;
   height: 96px;
 }
 
 .statsSurveyTitle {
   font-size: 1.1em;
   font-weight: bold;
-  padding: 24px 0px 0px 0px;
+  padding: 24px 0 0 0;
   width: 100%;
   text-align: center;
   font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -1142,7 +1314,7 @@ p#tokenmessage {
 table.statisticstable {
   width: 90%;
   text-align: left;
-  margin: 0px auto;
+  margin: 0 auto;
   padding-bottom: 8px;
   font-family: Verdana, Arial, Helvetica, sans-serif;
   border: 1px solid #999;
@@ -1165,7 +1337,7 @@ table.statisticstable strong {
 
 div.fieldSummary {
   font-size: .9em;
-  padding: 0px 0px 0px 6px;
+  padding: 0 0 0 6px;
   text-align: left;
 }
 
@@ -1182,11 +1354,13 @@ td.statsImageholder {
 }
 
 /* Question Index */
-.outerframe.withindex,.withindex .outerframe{
+.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
-.allinone .withindex{margin:0}
+.allinone .outerframe{
+  margin:0;
+}
 
 #index {
   position: absolute;

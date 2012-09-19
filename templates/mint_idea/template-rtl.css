@@ -151,3 +151,13 @@ ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul
   text-align: left;
   padding: 0 0 0 0.5em;
 }
+
+/* ranking questions */
+.dragDropTable .dragDropChoiceList li,
+.dragDropTable .dragDropRankList li {
+	text-align: right;
+}
+.dragDropTable .dragDropRankList li span.DDRnumberprefix,
+.dragDropTable .dragDropChoiceList li span.DDRnumberprefix {
+	float: right;
+}

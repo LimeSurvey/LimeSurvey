@@ -125,15 +125,21 @@ $(document).ready(function() {
 });
 
 function getQueryVariable(variable, url) {
-    var query = url.split("?");
-    var vars = query[1].replace(/\&amp;/g,'&').split("&");
+    var vars = url.split("/");
     for (var i=0;i<vars.length;i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] == variable) {
-            return pair[1];
+        //var pair = vars[i].split("=");
+        if (vars[i] == variable) {
+        return vars[i+1];
         }
     }
-    return null;
+    // If not found try with ?
+    // TODO : replace by a regexp
+   var vars = url.replace(/\&amp;/g,'&').split("&");
+   for (var i=0;i<vars.length;i++) {
+           var pair = vars[i].split("=");
+           if(pair[0] == variable){return pair[1];}
+   }
+   return null;
 }
 
 function isValueInArray(arr, val) {
@@ -160,12 +166,12 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
     if (jsonstring !== '')
         {
         jsonobj = eval('(' + jsonstring + ')');
-        display = '<table width="100%"><tr><th align="center" width="20%">&nbsp;</th>';
+        display = '<table width="100%" class="question uploadedfiles"><thead><tr><td width="20%">&nbsp;</td>';
         if (show_title != 0)
-            display += '<th align="center"><b>'+translt.headTitle+'</b></th>';
+            display += '<th>'+translt.headTitle+'</th>';
         if (show_comment != 0)
-            display += '<th align="center"><b>'+translt.headComment+'</b></th>';
-        display += '<th align="center"><b>'+translt.headFileName+'</b></th></tr>';
+            display += '<th>'+translt.headComment+'</th>';
+        display += '<th>'+translt.headFileName+'</th></tr></thead><tbody>';
         var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
 
         for (i = 0; i < filecount; i++)
@@ -173,24 +179,24 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
             if (pos)
                 {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td><img src="'+rooturl+'/uploader.php?sid='+surveyid+'&amp;filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'" height=100px  align="center"/></td>';
+                    display += '<tr><td class="upload image"><img src="' + uploadurl + '/sid/'+surveyid+'/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
                 else
-                    display += '<tr><td><img src="'+rooturl+'/images/placeholder.png" height=100px  align="center"/></td>';
+                    display += '<tr><td class="upload placeholder"><img src="'+imageurl+'/placeholder.png" height=100px /></td>';
             }
             else
                 {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td><img src="'+rooturl+'/uploader.php?sid='+surveyid+'&amp;filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'" height=100px  align="center"/></td>';
+                    display += '<tr><td class="upload image"><img src="' + uploadurl + 'filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
                 else
-                    display += '<tr><td><img src="'+rooturl+'/images/placeholder.png" height=100px  align="center"/></td>';
+                    display += '<tr><td class="upload placeholder"><img src="'+imageurl+'/placeholder.png" height=100px /></td>';
             }
             if (show_title != 0)
-                display += '<td>'+jsonobj[i].title+'</td>';
+                display += '<td class="upload title">'+jsonobj[i].title+'</td>';
             if (show_comment != 0)
-                display += '<td>'+jsonobj[i].comment+'</td>';
-            display +='<td>'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="'+rooturl+'/images/edit.png" onclick="$(\'#upload_'+fieldname+'\').click()" style="cursor:pointer"></td></tr>';
+                display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
+            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="'+imageurl+'/edit.png" onclick="$(\'#upload_'+fieldname+'\').click()" style="cursor:pointer"></td></tr>';
         }
-        display += '</table>';
+        display += '</tbody></table>';
 
         $('#'+fieldname+'_uploadedfiles').html(display);
     }
@@ -199,7 +205,6 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
 function copyJSON(jsonstring, filecount, fieldname, show_title, show_comment, pos) {
     $('#'+fieldname).val(jsonstring);
     $('#'+fieldname+'_filecount').val(filecount);
-
     displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show_comment, pos);
 }
 

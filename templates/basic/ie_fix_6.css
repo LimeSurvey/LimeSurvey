@@ -25,7 +25,7 @@
   text-align: right;
 }
 
-.multiple-opt-comments ul li span.option {
+.multiple-opt-comments ul li .option {
   float: left;
   width: 40%;
   display: block;

@@ -1,6 +1,10 @@
 var DOM1;
 $(document).ready(function()
 {
+
+	// Jquery-ui navigation buttons
+    navbuttonsJqueryUi();
+    addClassEmpty();
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
@@ -81,44 +85,72 @@ $(document).ready(function()
 		marker.setPosition(markerLatLng);
 		currentMap.panTo(markerLatLng);
 	});
-
-    /*replacement for inline javascript for #index */
-    /*
-    $("#index").parents(".outerframe").addClass("withindex");
-     if ($("#index").size() && $("#index .row.current").size()){
-         var idx = $("#index");
-         var row = $("#index .row.current");
-         idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
-    */
+	
+	// #index
+    if ($("#index").size() && $("#index .row.current").size()){
+        var idx = $("#index");
+        var row = $("#index .row.current");
+        idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
+    }
 });
 
-function maxlengthtextarea(){
-    // Calling this function at document.ready : use maxlength attribute on textarea
-    // Can be replaced by inline javascript
-    $("textarea[maxlength]").change(function(){ // global solution
-        var maxlen=$(this).attr("maxlength");
-        if ($(this).val().length > maxlen) {
-            $(this).val($(this).val().substring(0, maxlen));
-        }
+
+// Set jquery-ui to LS Button
+function navbuttonsJqueryUi(){
+    if ($.browser.msie && $.browser.version.substr(0,1)<8 && $('button.submit').length > 0) { // Get rid of the focus outline in IE7
+        $('#movenextbtn, #movesubmitbtn').focus().blur(); 
+    }
+
+    $('[dir!="rtl"] #moveprevbtn').button({
+    icons: {
+        primary: 'ui-icon-triangle-1-w'
+    }
     });
-    $("textarea[maxlength]").keyup(function(){ // For copy/paste (not for all browser)
-        var maxlen=$(this).attr("maxlength");
-        if ($(this).val().length > maxlen) {
-            $(this).val($(this).val().substring(0, maxlen));
-        }
+    $('[dir="rtl"] #moveprevbtn').button({
+    icons: {
+        secondary: 'ui-icon-triangle-1-e'
+    }
     });
-    $("textarea[maxlength]").keydown(function(event){ // No new key after maxlength
-        var maxlen=$(this).attr("maxlength");
-        var k =event.keyCode;
-        if (($(this).val().length >= maxlen) &&
-         !(k == null ||k==0||k==8||k==9||k==13||k==27||k==37||k==38||k==39||k==40||k==46)) {
-            // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
-            return false;
+    $('[dir!="rtl"] #movenextbtn').button({
+    icons: {
+        secondary: 'ui-icon-triangle-1-e'
+    }
+    });
+    $('[dir="rtl"] #movenextbtn').button({
+    icons: {
+        primary: 'ui-icon-triangle-1-w'
+    }
+    });
+    $('#movesubmitbtn, input.saveall, input.clearall').button();
+}
+
+// Put a empty class on empty answer text item (limit to answers part)
+function addClassEmpty(){
+      $('.answer-item input.text[value=""]').addClass('empty');
+      $('.answer-item input[type=text][value=""]').addClass('empty');
+      $('.answer-item textarea').each(function(index) {
+        if ($(this).val() == ""){
+          $(this).addClass('empty');
         }
+      });
+
+    $(".answer-item input.text,.text-item input[type=text]").live("blur", function(){ 
+      if ($(this).val() == ""){
+        $(this).addClass('empty');
+      }else{
+        $(this).removeClass('empty');
+      }
+    });
+    $(".answer-item textarea").live("blur", function(){ 
+      if ($(this).val() == ""){
+        $(this).addClass('empty');
+      }else{
+        $(this).removeClass('empty');
+      }
     });
 }
 
-// OSMap
+
 gmaps = new Object;
 osmaps = new Object;
 zoom = [];
@@ -763,7 +795,7 @@ function multi_set(ids,_radix)
 			e=(e)?e:event;
 			var el=e.target||e.srcElement;
 			var _id=el.getAttribute(ie ? 'className' : 'class');
-            
+
             // eliminate bad numbers
             _aval=new String(el.value);
             if (radix!=='X') {
@@ -781,7 +813,7 @@ function multi_set(ids,_radix)
             else if (radix!=='X') {
                 el.value = _aval;
             }
-                    
+
 			//vert_[id] horo_[id] in class trigger vert or horo calc on row[id]
 			if(_id.match('vert_','ig'))
 			{
@@ -917,9 +949,29 @@ function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
     condfunction(value, name, type);
 }
 
-// Maxlength for textareas
-function textLimit(field, maxlen) { 
-	if (document.getElementById(field).value.length > maxlen) {
-		document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
-	}
+/* Maxlengt on textarea */
+function maxlengthtextarea(){
+    // Calling this function at document.ready : use maxlength attribute on textarea
+    // Can be replaced by inline javascript
+    $("textarea[maxlength]").change(function(){ // global solution
+        var maxlen=$(this).attr("maxlength");
+        if ($(this).val().length > maxlen) {
+            $(this).val($(this).val().substring(0, maxlen));
+        }
+    });
+    $("textarea[maxlength]").keyup(function(){ // For copy/paste (not for all browser)
+        var maxlen=$(this).attr("maxlength");
+        if ($(this).val().length > maxlen) {
+            $(this).val($(this).val().substring(0, maxlen));
+        }
+    });
+    $("textarea[maxlength]").keydown(function(event){ // No new key after maxlength
+        var maxlen=$(this).attr("maxlength");
+        var k =event.keyCode;
+        if (($(this).val().length >= maxlen) &&
+         !(k == null ||k==0||k==8||k==9||k==13||k==27||k==37||k==38||k==39||k==40||k==46)) {
+            // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
+            return false;
+        }
+    });
 }

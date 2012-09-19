@@ -1,0 +1,108 @@
+html, body{
+    height: 100%;
+}
+.main{
+  width: 1200px;
+  margin: 0 auto;
+}
+#sep{
+ margin-top: 10px;
+}
+
+.tokenatt, .standardfields {
+   margin-top: -5px;
+}
+
+.tokenatt li, .standardfields li {
+  margin-top: 10px;
+  border-bottom: 0px;
+  min-height: 35px;
+}
+
+.newcreate, .csvatt, .cpdbatt {
+    min-height: 100px;
+    padding-bottom: 50px;
+}
+
+#newcreated, #centralattribute, #tokenattribute{
+    float: left;
+    background-color: #D2E0F2;
+    height: 100%;
+    margin-top:10px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    border-color: blue;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 1px;
+    overflow : auto;
+    text-align:center;
+    width: 27%;
+}
+
+#newcreated ul, #centralattribute ul, #tokenattribute ul{
+    margin-left: -35px;
+}
+
+#newcreated, #tokenattribute {
+    height: 100%;
+}
+.heading{
+    background: #EAF2FF;
+    text-decoration: none;
+    color:#5670A1;
+    border-width: 1px;
+    vertical-align: middle;
+    height: 23px;
+    padding-top: 7px;
+    font-weight: bold;
+}
+
+
+#controllingarea {
+	text-align: right;
+	margin-right: 30px;
+}
+
+.tokenatt li{
+    border-color: #696565;
+    border-style:solid;
+    border-width:1px;
+    padding : 4px;
+}
+.newcreate ul{
+    padding : 100px;
+}
+
+li{
+        border:solid 2px #DEDEDE;
+        background:#FFFFFF ;
+        color:#222222;
+        width : 200px;
+        margin-top: 2px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2px;
+        list-style: none;
+        padding:4px;
+        text-align:center;
+        cursor: pointer;
+}
+.notsortable li{
+        background:#696565;
+        color: white;
+}
+.explanation {
+    font-size: 0.8em;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    padding: 5px 0px 5px 15px;
+}
+.explanation input {
+    position: relative;
+    margin-left: -20px;
+    top: 3px;
+}

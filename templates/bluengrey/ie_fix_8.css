@@ -1,8 +1,15 @@
 /* The following styles are for IE 8 only*/
-.rank label {
-  line-height: 27px;
+
+/*** Start jQuery UI Theme Styles ***/
+
+/* Button icon element(s) */
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	margin-top: -9px;
 }
 
-td .rank {
-  padding-right: 20px;
-}
+/*** End jQuery UI Theme Styles ***/
+

@@ -1,0 +1,154 @@
+    This is at least a partial credits-file of people who helped to
+    improve Limesurvey by submitting code, translations, manuals,
+    bug reports, patches or good suggestions. It is sorted by first
+    name.
+
+----------
+
+Adam Zammit
+Alex Simidchiev
+Alexander Shilov
+Alexei G. Tchernov
+Amit Shanker (texens)
+Anderson Laecio Galindo Trindade
+Andrea Simoes
+Andreas Gleis 
+Andreas Schroeter
+Andrie de Vries
+Aniessh Sethh
+Arjen Gideonse
+Artemis Mendrinos
+Bas Peusens
+Bjoern Mildh (bpmildh)
+Bob C
+Bogdan Anastasiei
+Brian O'Neill
+Brian Staats (bstaats)
+C. Scott Ananian
+Carlos Juan Martin Perez (kadejo)
+Carlos Neira Cortizas
+Carsten Schmitz (c_schmitz)
+Chris Wessells
+Christos Rodosthenous
+Cihat Karli
+Clemente Aguiar
+Damian Kubiak (xqleg)
+Daniel Dobosi
+Daniel Eggel
+Darrel O'Pry
+David Olivier (machaven)
+David Selmeczi
+David Wolff
+De Lucca
+Denis Chenu
+dionet
+Dominik Sommer
+Edita Paulisic
+Eirik Sunde
+Eleni Konstantinou (konstantinou)
+Elzbieta Lesinska (elisa)
+Esteban Adrian Perez (dgeaperez)
+Evan Caylor
+Evan Wills
+Francois Tissandier
+Frederik Kunz
+Gabriele Carioli
+Gasper Koren
+Georgallidie Eleni
+Glorianne Bezzina
+Gustavo San Roman (leochaton)
+Guttorm Flatabo
+Hai Mac Duy (macduy)
+Han Velthuis
+Hans Fraiponts
+Harsha Halgaswatta
+Hiroki Yoshino
+Igor Dobraca
+J. Luis Simon (jlsimon)
+James Barkley (barkleja)
+Jan Doemen
+Jason Cleeland (jcleeland)
+Jeff Clement
+Job Vieira Lucio
+Johan Geertsma
+Johannes Kutsam
+John Moorhouse
+Jonas Norlinder
+Jose Luis Ramirez Cuevas
+Josef Prandstetter (ElMatador69)
+Juan Ezeiza
+Juan Rafael Fernandez
+Juhan Sonin (jsonin)
+Jure Cuhalev (gandalfar)
+Juuso Heinisuo
+Karyl Stein
+Katarina Pavic
+Liang Zhao
+Livio Finos
+Lorenzo Vigentini
+Luis M. Martinez
+Lukas
+Maarten Tielemans (ttielu)
+Maciej Zawado
+Manolis Stamatogiannakis
+Marcel Minke (Mazi)
+Marco Ermini
+Marcus
+Mario Marani
+Mark Meytin
+Mark Rabideau
+Mark Yeung
+Maros Kollar
+Masaru Ryumae
+Matej Kovacic
+Max Zomborszki
+Menno Dekker
+Michael Macasek (macasek)
+Mikkel Skovgaard Sorensen
+Mitchell Butler
+Murad Bayram
+Nick Barcet
+Niklas Andersson
+Nikolay Tsanov
+Nikos Korfiatis
+Nino Cosic
+Odd-Jarle Kristoffersen
+Offiba Inc.
+Pal Monstad
+Pascal Bastien
+Patrick Drews
+Patrick McKnight
+paulearley
+Peter De Berdt
+Peter Sereinigg
+Peterjan Heyse
+Philip Roy
+Pieter-Jan Speelmans (MrP)
+Richard Pullicino
+Rob Thew (rob.thew)
+Rolf Njor Jensen
+Ronald Leenes
+Ronald Mulder
+Rosaura Gazzola
+Rui Gouveia
+Sabine Cretella
+Sebastien Gaugry (b00z00)
+Shawn Wales (swales)
+Shubham Sachdeva (magiclko)
+Smarth Behl
+Thibault Le Meur (lemeur)
+Thomas Lee
+Thomas M. White
+Tim Wahrendorff (rakete)
+Tom Klingenberg (mot)
+Tony Partner
+Tor de Vries
+Ulrika Olsson
+Verified Voting Foundation
+Vinh Ngo
+Wes Sonnenreich
+Yao-Wen (Wayne) Huong
+Yeung Kai Sun
+Yiannos Katsirintakis
+yooyooh
+Yuri D'Elia

@@ -33,13 +33,13 @@ div.questiontext ol {
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .answers ul,.list-radio-flexible .answers ul,.list-radio .answers ul,.list-with-comment .answers ul,.multiple-opt .answers ul,.multiple-opt-comments .answers ul,.multiple-short-txt .answers ul,.numeric-multi .answers ul,.yes-no .answers ul,.gender .answers ul
   {
-  margin-right: 0%;
-  padding-right: 0%;
+  margin-right: 0;
+  padding-right: 0;
 }
 .choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.multiple-opt .answers li,.multiple-opt-comments .answers li,.multiple-short-txt .answers li,.numeric-multi .answers li,.yes-no .answers li,.gender .answers li
   {
   text-align: right;
-  margin-left:0;margin-right:0.5em;
+  margin: 0 0.5em 0.3em 0;
 }
 .choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.yes-no .answers li,.gender .answers li
   {
@@ -196,4 +196,30 @@ table.statisticstable {
 #index .container .row .hdr {
   text-align: left;
   padding: 0 0 0 0.5em;
+}
+
+/*** Start jQuery UI Theme Styles ***/
+.ui-button-icon-only .ui-icon {
+	right: 50%; 
+	margin-right: -8px;margin-left: 0; 
+}
+.ui-buttonset {
+	margin-left: 7px; margin-right: 0;
+}
+
+.ui-buttonset .ui-button {
+	margin-right: 0;	margin-left: -.3em; 
+}
+
+/* ranking question */
+.dragDropTable td {
+	padding-left: 20px;padding-right:0;
+}
+.dragDropTable .dragDropChoiceList li,
+.dragDropTable .dragDropRankList li {
+	text-align: right;
+}
+.dragDropTable .dragDropRankList li span.DDRnumberprefix,
+.dragDropTable .dragDropChoiceList li span.DDRnumberprefix {
+	float: right;
 }

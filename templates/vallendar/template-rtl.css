@@ -148,3 +148,13 @@ table.rank td.helptext {
 #index .container .row .hdr {
   text-align: left;
 }
+
+/* ranking questions */
+.dragDropTable .dragDropChoiceList li,
+.dragDropTable .dragDropRankList li {
+	text-align: right;
+}
+.dragDropTable .dragDropRankList li span.DDRnumberprefix,
+.dragDropTable .dragDropChoiceList li span.DDRnumberprefix {
+	float: right;
+}

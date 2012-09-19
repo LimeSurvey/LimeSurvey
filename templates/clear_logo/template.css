@@ -1,3 +1,133 @@
+
+
+/*** Start jQuery UI Theme Styles ***/
+
+button.ui-button::-moz-focus-inner {
+	border: 0; 
+	padding: 0;   /* Get rid of extra padding in focused button in FF */
+}
+
+.ui-state-default, 
+.ui-widget-content .ui-state-default, 
+.ui-widget-header .ui-state-default {
+    color: #666666;
+}
+
+.ui-button { 
+	position: relative; 
+	padding: 0.15em 0 0.15em 0; 
+	cursor: pointer;
+	font-family: Arial, Verdana, Geneva, sans-serif;
+	font-size: 1.0em;
+	font-weight: normal;
+	line-height: normal;
+}
+
+button.ui-state-default,
+input.ui-state-default {  
+	color: #333333; 
+	border: 1px solid #A0A0A0;
+}
+
+button.ui-state-hover,
+input.ui-state-hover {  
+	color: #212121; 
+	border: 1px solid #999999;
+}
+
+button.ui-state-active,
+input.ui-state-active {  
+	color: #212121; 
+	border: 1px solid #AAAAAA; 
+}
+
+.ui-button-icon-only { 
+	width: 2.2em; /* To make room for the icon, a width needs to be set here */
+} 
+
+button.ui-button-icon-only { 
+	width: 2.4em; /* Button elements seem to need a little more width */
+}
+
+.ui-button-icons-only { 
+	width: 3.4em; 
+} 
+
+button.ui-button-icons-only {
+	width: 3.7em; 
+}
+
+/* Button text elements */
+.ui-button-text-only .ui-button-text {
+	padding: 0 1em; 
+}
+
+.ui-button-icon-only .ui-button-text, 
+.ui-button-icons-only .ui-button-text {
+	text-indent: -9999999px; 
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	padding: 0 0.7em 0 1.7em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	padding: 0 1.7em 0 0.7em; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	padding: 0 1.7em; 
+}
+
+input.ui-button {
+	padding: 0.15em 1em 0.15em 1em;  /* No icon support for input elements, provide padding by default */
+}
+
+/* Button icon element(s) */
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px; 
+}
+
+.ui-button-icon-only .ui-icon {
+	left: 50%; 
+	margin-left: -8px; 
+}
+
+.ui-button-text-icon-primary .ui-button-icon-primary, 
+.ui-button-text-icons .ui-button-icon-primary, 
+.ui-button-icons-only .ui-button-icon-primary {
+	left: .4em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-icon-secondary, 
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+/* Button sets*/
+.ui-buttonset {
+	margin-right: 7px; 
+}
+
+.ui-buttonset .ui-button {
+	margin-left: 0;
+	margin-right: -.3em; 
+}
+
+/*** End jQuery UI Theme Styles ***/
+
 body {
   font-family: arial, verdana, sans-serif;
   font-size: 14px;
@@ -112,14 +242,14 @@ td.graph {
   border: 1px solid maroon;
   margin-top: -1.7em;
   margin-left: 2.6em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 #progress-graph div.cent {
   width: 3em;
   margin-top: -1.5em;
   margin-left: 13.3em;
-  margin-right: 0%;
+  margin-right: 0;
 }
 
 /*
@@ -468,26 +598,31 @@ td.clearall-result .warning-text {
 
 .choice-5-pt-radio .answer ul li,.yes-no .answer ul li,.gender .answer ul li {
   display: inline;
-  padding: 0% 1em 0% 0%;
+  padding: 0 1em 0 0;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
 .date {}
 */
-p.question {
+.date p.question {
   margin-left: 1em;
 }
 
-.date p.question select.day {
-  
+.date p.question select.day {  
 }
 
-.date p.question select.month {
-  
+.date p.question select.month {  
 }
 
-.date p.question select.year {
-  
+.date p.question select.year {  
+}
+
+#ui-datepicker-div {
+	z-index: 2 !important;
+}
+
+p.question {
+  margin-left: 1em;margin-right:0;
 }
 
 .date p.tip,.numeric-multi p.tip,.numeric p.tip {
@@ -516,13 +651,12 @@ p.question {
   display: inline-block;
   width: 85%;
 }
-.list-radio .answer li.other label,
-.list-with-comment .answer li.other label {
-  display: inline;
+.list-radio .answer li.other-item label,
+.list-with-comment .answer li.other-item label {
   width: auto;
 }
-.list-radio .answer li input,
-.list-with-comment .answer li input {
+.list-radio .answer li input.radio,
+.list-with-comment .answer li input.radio {
   vertical-align: top !important;
   margin-top: 2px;
   margin-top: -2px\9; /* IE9 and below */
@@ -531,13 +665,13 @@ p.question {
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
-  margin: 0% auto 0% auto;
+  margin: 0 auto 0 auto;
 }
 
 ul.cols-2 li,ul.cols-2-ul,ul.cols-3 li,ul.cols-3-ul,ul.cols-4 li,ul.cols-4-ul,ul.cols-5 li,ul.cols-5-ul,ul.cols-6 li,ul.cols-6-ul,ul.cols-7 li,ul.cols-7-ul,ul.cols-8 li,ul.cols-8-ul
   {
   float: left;
-  padding: 0% 0.5em;
+  padding: 0 0.5em;
   white-space: normal
 }
 
@@ -586,16 +720,19 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   width: 47%;
   float: left;
   padding: 0.5em;
-  margin: 0%;
+  margin: 0;
+}
+.list-with-comment p.select select{
+  max-width: 99%;
 }
 
 .list-with-comment div.list p {
-  margin: 0%;
+  margin: 0;
   text-align: left;
 }
 
 .list-with-comment p.comment {
-  margin: 0%;
+  margin: 0;
   padding: 0.5em;
   text-align: left;
   float: left;
@@ -609,18 +746,20 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
-.multiple-opt .answer li input, .multiple-opt-comments .answer li .option input {
+.multiple-opt .answer li input.checkbox, .multiple-opt-comments .answer li .option input.checkbox {
   vertical-align: top !important;
   margin-top: 2px;
   margin-top: -2px\9; /* IE9 and below */
+}
+ .multiple-opt-comments .answer li .comment {
+  vertical-align: top !important;
 }
 
 .multiple-opt .answer li label, .multiple-opt-comments .answer li .option label {
   display: inline-block;
   width: 90%;
 }
-.multiple-opt .answer li.other label, .multiple-opt-comments .answer li.other .option label {
-  display: inline;
+.multiple-opt .answer li.other-item label {
   width: auto;
 }
 
@@ -633,12 +772,12 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 .multiple-opt-comments td.answer ul,.multiple-short-txt td.answer ul,.numeric-multi td.answer ul
   {
   display: table;
-  padding: 0%;
+  padding: 0;
   margin: 1em;
 }
 
 .numeric-multi td.answer ul {
-  margin: 0% 1em 1.5em 1em;
+  margin: 0 1em 1.5em 1em;
 }
 
 .numeric-multi td.answer ul.computed {
@@ -664,12 +803,12 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 
 .numeric-multi td.answer ul.computed li label
 .numeric-multi td.answer ul.slider.computed li label {
-  padding-right: 0%;
+  padding-right: 0;
 }
 
 .multiple-opt-comments td.answer ul li span.comment,.multiple-short-txt td.answer ul li span,.numeric-multi td.answer ul li span
   {
-  padding: 0.3em 0% 0% 1em;
+  padding: 0.3em 0 0 1em;
   display: table-cell;
   vertical-align: baseline;
   font-size: 80%;
@@ -677,7 +816,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
 }
 
 .multiple-opt-comments td.answer ul li span {
-  padding: 0.3em 1em 0% 0%;
+  padding: 0.3em 1em 0 0;
 }
 
 .numeric-multi td.answer div.multinum-slider {
@@ -749,19 +888,12 @@ table.rank td.helptext {
   padding: 5px 0 0 5px;
 }
 
-/* Jquery CSS
- */ /** UI Base **/
-.ui-wrapper {
-  border: 1px solid #50A029;
-}
 
-.ui-wrapper input,.ui-wrapper textarea {
-  border: 0;
-}
 
 /************** Progress bar ********************/
 #progress-wrapper .ui-widget-content {
   border: 1px solid #999999;
+  background: transparent none;
 }
 
 #progress-wrapper .ui-widget-header {
@@ -784,6 +916,8 @@ table.rank td.helptext {
   width: 10px !important;
   top: -7px !important;
   left: 0px;
+  margin-left: -0.4em !important;
+  -moz-border-radius: 5px 5px 5px 5px;
 }
 
 .multinum-slider .ui-state-default {
@@ -817,7 +951,7 @@ table.rank td.helptext {
   overflow: hidden;
   position: absolute;
   top: -22px;
-  margin-left: -7px;
+  margin-left: -3px;
   font-family: 'Arial';
   font-size: 9pt;
   color: #284a6e;
@@ -828,7 +962,7 @@ table.rank td.helptext {
 .slider_showmin {
   float: left;
   width: 50px;
-  margin: 15px 0 0 0;
+  margin: 15px 0 0 -0.3em;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.7em;
   font-weight: normal;
@@ -838,7 +972,7 @@ table.rank td.helptext {
 .slider_showmax {
   float: right;
   width: 50px;
-  margin: 15px 0 0 0;
+  margin: 15px -0.3em 0 0;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.7em;
   font-weight: normal;
@@ -1002,11 +1136,13 @@ span.qnumcode {
 }
 
 /* Question Index */
-.outerframe.withindex,.withindex .outerframe{
+.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
-.allinone .withindex{margin:0}
+.allinone .outerframe{
+  margin:0;
+}
 
 #index {
   position: absolute;
@@ -1054,7 +1190,6 @@ span.qnumcode {
 #index .container .row.current { background: #000; color: #fff; }
 #index .container .row.missing { background: #CC0000; color: #fff; }
 #index .container input { margin: 1em; }
-
 
 /* Tips / Validation Messages */
 /* If the question is invalid, but has not been submitted, give it a pleasant warning color */

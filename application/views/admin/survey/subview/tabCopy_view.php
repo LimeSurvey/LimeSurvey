@@ -1,0 +1,25 @@
+<div id='copy'>
+    <form class='form30' action='<?php echo $this->createUrl('admin/survey/copy'); ?>' id='copysurveyform' method='post'>
+        <ul>
+            <li><label for='copysurveylist'><?php $clang->eT("Select survey to copy:"); ?> </label>
+                <select id='copysurveylist' name='copysurveylist' required="required">
+                    <?php echo getSurveyList(false, true); ?> </select> <span class='annotation'><?php echo $clang->gT("Required"); ?> </span></li>
+            <li><label for='copysurveyname'><?php echo $clang->gT("New survey title:"); ?> </label>
+                <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' required="required" />
+                <span class='annotation'><?php echo $clang->gT("Required"); ?> </span></li>
+            <li><label for='copysurveytranslinksfields'><?php echo $clang->gT("Convert resource links and INSERTANS fields?"); ?> </label>
+                <input id='copysurveytranslinksfields' name="copysurveytranslinksfields" type="checkbox" checked='checked'/></li>
+            <li><label for='copysurveyexcludequotas'><?php $clang->eT("Exclude quotas?"); ?></label>
+                <input id='copysurveyexcludequotas' name="copysurveyexcludequotas" type="checkbox" /></li>
+            <li><label for='copysurveyexcludepermissions'><?php echo $clang->gT("Exclude survey permissions?"); ?> </label>
+                <input id='copysurveyexcludepermissions' name="copysurveyexcludepermissions" type="checkbox"/></li>
+            <li><label for='copysurveyexcludeanswers'><?php echo $clang->gT("Exclude answers?"); ?> </label>
+                <input id='copysurveyexcludeanswers' name="copysurveyexcludeanswers" type="checkbox" /></li>
+            <li><label for='copysurveyresetconditions'><?php echo $clang->gT("Reset conditions?"); ?></label>
+                <input id='copysurveyresetconditions' name="copysurveyresetconditions" type="checkbox" /></li>
+        </ul>
+        <p><input type='submit' value='<?php $clang->eT("Copy survey"); ?>' />
+            <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
+            <input type='hidden' name='action' value='copysurvey' /></p>
+    </form>
+</div>

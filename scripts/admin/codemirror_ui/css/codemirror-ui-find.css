@@ -1,0 +1,19 @@
+#buttons{
+	float:right;
+}
+
+#buttons a{
+	
+	display:block;
+	text-align:center;
+	background:#ddd;
+	border:1px solid black;
+	color:black;
+	text-decoration:none;
+	padding:3px;
+	
+}
+
+#buttons a:hover{
+	background:white;
+}

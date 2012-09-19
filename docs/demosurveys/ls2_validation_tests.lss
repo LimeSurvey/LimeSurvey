@@ -6209,8 +6209,8 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
    <fieldname>navigationdelay</fieldname>
    <fieldname>nokeyboard</fieldname>
    <fieldname>alloweditaftercompletion</fieldname>
-   <fieldname>googleAnalyticsStyle</fieldname>
-   <fieldname>googleAnalyticsAPIKey</fieldname>
+   <fieldname>googleanalyticsstyle</fieldname>
+   <fieldname>googleanalyticsapikey</fieldname>
   </fields>
   <rows>
    <row>
@@ -6266,8 +6266,8 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <navigationdelay><![CDATA[0]]></navigationdelay>
     <nokeyboard><![CDATA[N]]></nokeyboard>
     <alloweditaftercompletion><![CDATA[N]]></alloweditaftercompletion>
-    <googleAnalyticsStyle><![CDATA[0]]></googleAnalyticsStyle>
-    <googleAnalyticsAPIKey><![CDATA[]]></googleAnalyticsAPIKey>
+    <googleanalyticsstyle><![CDATA[0]]></googleanalyticsstyle>
+    <googleanalyticsapikey><![CDATA[]]></googleanalyticsapikey>
    </row>
   </rows>
  </surveys>
