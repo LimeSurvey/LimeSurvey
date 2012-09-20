@@ -595,7 +595,8 @@ a.optoutemail {
 .users,
 .assessmentlist,
 .listsurveys,
-.surveysecurity {
+.surveysecurity,
+.answertable {
     text-align:center;
     margin:0 auto;
 }
