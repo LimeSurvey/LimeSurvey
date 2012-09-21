@@ -808,11 +808,6 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
     session_destroy();
     setcookie(session_name(),"EXPIRED",time()-120);
     sendcacheheaders();
-    if (isset($_GET['redirect']))
-    {
-        session_write_close();
-        header("Location: {$_GET['redirect']}");
-    }
     doHeader();
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
