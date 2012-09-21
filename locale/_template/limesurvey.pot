@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2012-09-21 14:37:03+00:00\n"
+"POT-Creation-Date: 2012-09-21 22:05:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5147,11 +5147,11 @@ msgid "Sort answers alphabetically"
 msgstr ""
 
 #: application/helpers/common_helper.php:3189
-msgid "Set the percentage width of the answer column (1-100)"
+msgid "Set the percentage width of the (sub-)question column (1-100)"
 msgstr ""
 
 #: application/helpers/common_helper.php:3190
-msgid "Answer width"
+msgid "(Sub-)question width"
 msgstr ""
 
 #: application/helpers/common_helper.php:3198
