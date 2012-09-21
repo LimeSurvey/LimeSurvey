@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* 	$Id$
+*     $Id$
 */
 
 /**
@@ -18,8 +18,8 @@
 *
 * This controller performs token actions
 *
-* @package		LimeSurvey
-* @subpackage	Backend
+* @package        LimeSurvey
+* @subpackage    Backend
 */
 class tokens extends Survey_Common_Action
 {
@@ -1154,15 +1154,11 @@ class tokens extends Survey_Common_Action
             $fields['attribute_' . $i] = array('type' => 'VARCHAR', 'constraint' => '255');
         }
 
-        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-        $aData['surveyid'] = $iSurveyId;
-
-        $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
-        'title' => sprintf($clang->gT("%s field(s) were successfully added."), $number2add),
-        'message' => "<br /><input type='button' value='" . $clang->gT("Back to attribute field management.") . "' onclick=\"window.open('" . $this->getController()->createUrl("/admin/tokens/managetokenattributes/surveyid/$iSurveyId") . "', '_top')\" />"
-        )), $aData);
-
         LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
+
+        Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s field(s) were successfully added."), $number2add);
+        Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/managetokenattributes/surveyid/$iSurveyId"));
+
     }
 
     /**

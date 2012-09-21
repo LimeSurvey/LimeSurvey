@@ -230,34 +230,27 @@ class export extends Survey_Common_Action {
         $options->responseCompletionState = incompleteAnsFilterState();
 
         //If we have no data for the filter state then default to show all.
-        if ( empty($options->responseCompletionState) )
+        if ( $options->responseCompletionState =='all' )
         {
             if ( ! isset($_POST['attribute_select']) )
             {
                 $_POST['attribute_select'] = array();
             }
 
-            $options->responseCompletionState = 'all';
-
             $dquery = '';
             if ( in_array('first_name', Yii::app()->request->getPost('attribute_select')) )
             {
-                $dquery .= ", {{tokens_$iSurveyID}}.firstname";
+                $options->selectedColumns[]="firstname";
             }
 
             if ( in_array('last_name', Yii::app()->request->getPost('attribute_select')) )
             {
-                $dquery .= ", {{tokens_$iSurveyID}}.lastname";
+                $options->selectedColumns[]="lastname";
             }
 
             if ( in_array('email_address', Yii::app()->request->getPost('attribute_select')) )
             {
-                $dquery .= ", {{tokens_$iSurveyID}}.email";
-            }
-
-            if ( in_array('token', Yii::app()->request->getPost('attribute_select')) )
-            {
-                $dquery .= ", {{tokens_$iSurveyID}}.token";
+                $options->selectedColumns[]="email";
             }
 
             $attributeFields = getTokenFieldsAndNames($iSurveyID, TRUE);
@@ -266,7 +259,7 @@ class export extends Survey_Common_Action {
             {
                 if ( in_array($attr_name, Yii::app()->request->getPost('attribute_select')) )
                 {
-                    $dquery .= ", {{tokens_$iSurveyID}}.$attr_name";
+                    $options->selectedColumns[]=$attr_name;
                 }
             }
         }

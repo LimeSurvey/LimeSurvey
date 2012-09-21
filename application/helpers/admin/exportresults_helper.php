@@ -262,31 +262,31 @@ class SurveyDao
 
 
         //Load groups
-        $sql = 'SELECT g.* FROM {{groups}} AS g '.
+        $sQuery = 'SELECT g.* FROM {{groups}} AS g '.
         'WHERE g.sid = '.$intId.' '.
         'ORDER BY g.group_order;';
-        $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
         $survey->groups = $recordSet;
 
         //Load questions
-        $sql = 'SELECT q.* FROM {{questions}} AS q '.
+        $sQuery = 'SELECT q.* FROM {{questions}} AS q '.
         'JOIN {{groups}} AS g ON q.gid = g.gid '.
         'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
         'ORDER BY g.group_order, q.question_order;';
-        $survey->questions = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $survey->questions = Yii::app()->db->createCommand($sQuery)->query()->readAll();
 
         //Load answers
-        $sql = 'SELECT DISTINCT a.* FROM {{answers}} AS a '.
+        $sQuery = 'SELECT DISTINCT a.* FROM {{answers}} AS a '.
         'JOIN {{questions}} AS q ON a.qid = q.qid '.
         'WHERE q.sid = '.$intId.' AND a.language = \''.$lang.'\' '.
         'ORDER BY a.qid, a.sortorder;';
-        $survey->answers = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $survey->answers = Yii::app()->db->createCommand($sQuery)->query()->readAll();
 
         //Load tokens
         if (Yii::app()->db->schema->getTable('{{tokens_' . $intId . '}}'))
         {
-            $sql = 'SELECT t.* FROM {{tokens_' . $intId . '}} AS t;';
-            $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+            $sQuery = 'SELECT t.* FROM {{tokens_' . $intId . '}} AS t;';
+            $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
             $survey->tokens = $recordSet;
         }
         else
@@ -295,8 +295,8 @@ class SurveyDao
         }
 
         //Load language settings
-        $sql = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.';';
-        $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.';';
+        $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
         $survey->languageSettings = $recordSet;
 
         return $survey;
@@ -316,11 +316,16 @@ class SurveyDao
     {
 
         /* @var $recordSet ADORecordSet */
-        $sql = 'SELECT * FROM {{survey_' . $survey->id . '}} order by id';
+        $sQuery = 'SELECT * FROM {{survey_' . $survey->id . '}}';
+        if (tableExists('tokens_'.$survey->id))
+        {
+            $sQuery.=' left join {{tokens_' . $survey->id . '}} on {{tokens_' . $survey->id . '}}.token={{survey_' . $survey->id . '}}.token ';
+        }
+        $sQuery.=' order by id';
         if (!isset($minRecord) && !isset($maxRecord))
         {
             //Neither min or max is set, load it all.
-            $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+            $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
         }
         elseif (!isset($minRecord) xor !isset($maxRecord))
         {
@@ -330,7 +335,7 @@ class SurveyDao
         else
         {
             //Both min and max are set.
-            $recordSet = Yii::app()->db->createCommand($sql)->limit($maxRecord - $minRecord + 1, $minRecord)->query()->readAll();
+            $recordSet = Yii::app()->db->createCommand($sQuery)->limit($maxRecord - $minRecord + 1, $minRecord)->query()->readAll();
         }
         //Convert the data in the recordSet to a 2D array and stuff it in $responses.
         $survey->responses = $recordSet;
@@ -874,6 +879,7 @@ abstract class Writer implements IWriter
 
     protected function translateHeading($column, $sLanguageCode)
     {
+        if (substr($column,0,10)=='attribute_') return $column;
         return $this->translator->translateHeading($column, $sLanguageCode);
     }
 
