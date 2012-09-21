@@ -3186,8 +3186,8 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'integer',
     'min'=>'1',
     'max'=>'100',
-    "help"=>$clang->gT('Set the percentage width of the answer column (1-100)'),
-    "caption"=>$clang->gT('Answer width'));
+    "help"=>$clang->gT('Set the percentage width of the (sub-)question column (1-100)'),
+    "caption"=>$clang->gT('(Sub-)question width'));
 
     $qattributes["repeat_headings"]=array(
     "types"=>"F:1;",
