@@ -936,7 +936,7 @@ END;
             echo templatereplace(file_get_contents($sTemplatePath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
-            if ($groupdescription && !$previewquestion)
+            if (!$previewquestion)
             {
                 echo templatereplace(file_get_contents($sTemplatePath."groupdescription.pstpl"), array(), $redata);
             }
