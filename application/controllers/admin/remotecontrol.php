@@ -1906,7 +1906,7 @@ class remotecontrol_handle
 					return array('status' => 'Error: No token table');
 
 				if($bUnused)
-					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array("completed = 'N'", 'limit' => $iLimit, 'offset' => $iStart));
+					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array('condition'=>"completed = 'N'", 'limit' => $iLimit, 'offset' => $iStart));
 				else
 					$oTokens = Tokens_dynamic::model($iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
 					
