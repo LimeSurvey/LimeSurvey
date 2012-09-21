@@ -461,9 +461,6 @@ class statistics extends Survey_Common_Action {
             $aData['usegraph'] = $usegraph;
 		    $outputType = $_POST['outputtype'];
 
-            $selects=buildSelects($summary, $surveyid, $statlang);
-            $aData['sql']=implode(" AND ", $selects);
-
 		    switch($outputType){
 		        case 'html':
 		            $statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
