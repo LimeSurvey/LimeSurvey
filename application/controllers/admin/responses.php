@@ -701,7 +701,7 @@ class responses extends Survey_Common_Action
         $oCriteria->offset = $start;
         $oCriteria->limit = $limit;
 
-        $dtresult = Survey_timings::model($iSurveyID)->findAllAsArray($oCriteria) or die("Couldn't get surveys");
+        $dtresult = Survey_timings::model($iSurveyID)->findAllAsArray($oCriteria);
         $dtcount2 = count($dtresult);
         $cells = $fncount + 1;
 
@@ -769,60 +769,7 @@ class responses extends Survey_Common_Action
         }
 
         //interview Time statistics
-        $count = false;
-        //$survstats=substr($surveytableNq);
-        $oCriteria = new CDbCriteria;
-        $oCriteria->select = 'AVG(interviewtime) AS avg, COUNT(*) as count';
-        $oCriteria->join = " INNER JOIN {{survey_{$iSurveyID}}} s ON t.id = s.id";
-        $oCriteria->condition = 'submitdate IS NOT NULL';
-        $oCriteria->order = 'interviewtime';
-        $queryAvg = Survey_timings::model($iSurveyID)->find($oCriteria);
-
-        $oCriteria->select = 'interviewtime';
-        $queryAll = Survey_timings::model($iSurveyID)->findAll($oCriteria);
-
-        $count = count($queryAll);
-        if ($aData['result'] = $row = $queryAvg)
-        {
-            $aData['avgmin'] = (int) ($row['avg'] / 60);
-            $aData['avgsec'] = $row['avg'] % 60;
-            $aData['count'] = $row['count'];
-        }
-
-        if ($count && $result = $queryAll)
-        {
-
-            $middleval = floor(($count - 1) / 2);
-            $i = 0;
-            if ($count % 2)
-            {
-                foreach ($result as $row)
-                {
-                    if ($i == $middleval)
-                    {
-                        $median = $row['interviewtime'];
-                        break;
-                    }
-                    $i++;
-                }
-            }
-            else
-            {
-                foreach ($result as $row)
-                {
-                    if ($i == $middleval)
-                    {
-                        $nextrow = next($result);
-                        $median = ($row['interviewtime'] + $nextrow['interviewtime']) / 2;
-                        break;
-                    }
-                    $i++;
-                }
-            }
-            $aData['allmin'] = (int) ($median / 60);
-            $aData['allsec'] = $median % 60;
-        }
-
+        $aData['statistics'] = Survey_timings::model($iSurveyId)->statistics();
         $aData['num_total_answers'] = Survey_dynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
         $aViewUrls[] = 'browsetimefooter_view';
